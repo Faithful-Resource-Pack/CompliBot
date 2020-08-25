@@ -23,41 +23,46 @@ client.on("message", message => {
   const args = message.content.slice(process.env.PREFIX.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
 
-  // And our 2 real basic commands!
-  if (command === 'ping') {
-    message.channel.send('Pong!');
-  }
+  // COMMANDS WITH PREFIX:
+  // if there is the prefix at the begining of the message
+  if (message.content.indexOf(process.env.PREFIX) === 1){
+    if (command === 'ping') {
+      message.channel.send('Pong!');
+    }
+  } 
+  // COMMANDS WITHOUT PREFIX:
+  else {
+    // Submit texture feature:
+    // id: 747889024068485180 -> #submit-texture (Robert testing discord)
+    if (message.channel.id === '747889024068485180') {
+      // if message have a file attached:
+      if (message.attachments.size > 0) {
+        // run function to test url to see if file is an img
+        if (message.attachments.every(attachIsImage)){
 
-  // Submit texture feature:
-  // id: 747889024068485180 -> #submit-texture (Robert testing discord)
-  if (message.channel.id === '747889024068485180') {
-    // if message have a file attached:
-    if (message.attachments.size > 0) {
-      // run function to test url to see if file is an img
-      if (message.attachments.every(attachIsImage)){
+          // If message doesn't have the texture path:
+          if(!message.content.includes('(')) {
+            message.reply("You need to add the texture path to your texture submission, following this example: texture (file1/file2/texture.png)").then(msg => {
+              msg.delete({timeout: 3000});
+            });
+          } else try {
+            message.react('✅').then(() => {message.react('❌')});
+          } catch (error) {
+            console.error("ERROR | One of the emojis failed to react!");
+          }
 
-        // If message doesn't have the texture path:
-        if(!message.content.includes('(')) {
-          message.reply("You need to add the texture path to your texture submission, following this example: texture (file1/file2/texture.png)").then(msg => {
+        } else {
+          message.reply("Your texture submission needs to have an image file!").then(msg => {
             msg.delete({timeout: 3000});
           });
-        } else try {
-    	    message.react('✅').then(() => {message.react('❌')});
-    	  } catch (error) {
-    	    console.error("ERROR | One of the emojis failed to react!");
-    	  }
-
+        }
       } else {
-        message.reply("Your texture submission needs to have an image file!").then(msg => {
+        message.reply("You need to attach a png file!").then(msg => {
           msg.delete({timeout: 3000});
         });
       }
-    } else {
-      message.reply("You need to attach a png file!").then(msg => {
-        msg.delete({timeout: 3000});
-      });
     }
-  }
+  } 
 });
 
 
