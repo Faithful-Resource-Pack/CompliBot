@@ -28,7 +28,7 @@ client.on("message", message => {
     message.channel.send('JavaScript is ~~Awesome~~');
   }
   if (message.content.startsWith( prefix + ' behave' )) {
-    message.channel.reply("I'm so sorry! (⌯˃̶᷄ ﹏ ˂̶᷄⌯)")
+    message.channel.send("I'm so sorry! (⌯˃̶᷄ ﹏ ˂̶᷄⌯)")
   }
 
   // COMMANDS WITHOUT PREFIX:
@@ -42,7 +42,7 @@ client.on("message", message => {
 
         // If message doesn't have the texture path:
         if(!message.content.includes('(')) {
-          message.reply("You need to add the texture path to your texture submission, following this example: texture (file1/file2/texture.png)").then(msg => {
+          message.reply("You need to add the texture path to your texture submission, following this example: **texture** `(**file1**/**file2**/**texture.png**)`").then(msg => {
             msg.delete({timeout: 5000});
           });
         } else try {
@@ -66,7 +66,7 @@ client.on("message", message => {
   // Check texture feature
   // All channel without #submit-texture
   if (message.channel.id !== '747889024068485180' ) {
-    if(message.content.startsWith( prefix + ' #4393' )) {
+    if(message.content.includes('#4393' )) {
       const exampleEmbed = new Discord.MessageEmbed()
         .setColor('#dd7735')
         .setTitle('dirt_highblockhalls.png')
