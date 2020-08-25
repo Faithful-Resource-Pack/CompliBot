@@ -16,8 +16,6 @@ function attachIsImage(msgAttach) {
 client.on("message", message => {
   // Bot messages aren't read:
   if (message.author.bot) return;
-  // Prefix required to execute command:
-  if (message.content.indexOf(process.env.PREFIX) !== 0) return;
 
   // This is the usual argument parsing we love to use.
   const args = message.content.slice(process.env.PREFIX.length).trim().split(/ +/g);
