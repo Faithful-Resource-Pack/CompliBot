@@ -33,8 +33,9 @@ client.on("message", message => {
 
   // COMMANDS WITHOUT PREFIX:
   // Submit texture feature:
-  // id: 747889024068485180 -> #submit-texture (Robert's testing discord)
-  if (message.channel.id === '747889024068485180') {
+  // id: 747889024068485180 -> #submit-textures (Robert's testing discord)
+  // id: 715236892945285181 -> #submit-textures (Faithful Dungeons discord)
+  if (message.channel.id === '715236892945285181') {
     // if message have a file attached:
     if (message.attachments.size > 0) {
       // run function to test url to see if file is an img
@@ -43,7 +44,7 @@ client.on("message", message => {
         // If message doesn't have the texture path:
         if(!message.content.includes('(')) {
           message.reply("You need to add the texture path to your texture submission, following this example: **texture** `(**file1**/**file2**/**texture.png**)`").then(msg => {
-            msg.delete({timeout: 5000});
+            msg.delete({timeout: 30000});
           });
         } else try {
           message.react('✅').then(() => {message.react('❌')});
@@ -53,12 +54,12 @@ client.on("message", message => {
 
       } else {
         message.reply("Your texture submission needs to have an image file!").then(msg => {
-          msg.delete({timeout: 5000});
+          msg.delete({timeout: 30000});
         });
       }
     } else {
       message.reply("You need to attach a png file!").then(msg => {
-        msg.delete({timeout: 5000});
+        msg.delete({timeout: 30000});
       });
     }
   }
