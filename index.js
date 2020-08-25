@@ -27,7 +27,7 @@ client.on("message", message => {
 
 // There's zero need to put something here. Discord.js uses process.env.CLIENT_TOKEN if it's available,
 // and this is what is being used here. If on discord.js v12, it's DISCORD_TOKEN
-client.login();
+client.login(process.env.CLIENT_TOKEN);
 
 
 /*
