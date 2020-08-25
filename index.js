@@ -31,6 +31,25 @@ client.on('message', async message => {
 	}
 });
 
+client.on('message', message => {
+	if (message.channel.id === '720677267977535592') {
+		if(!message.content.includes("#4693")) {
+			const TextureEmbed = new Discord.MessageEmbed()
+				.setColor('#DD7735')
+				.setTitle('dirt_highblockhalls.png')
+				.setURL('https://raw.githubusercontent.com/Faithful-Dungeons/Resource-Pack/master/Block%20Textures/dirt_highblockhalls.png')
+				.setThumbnail('https://raw.githubusercontent.com/Faithful-Dungeons/Resource-Pack/master/Block%20Textures/dirt_highblockhalls.png')
+				.addFields(
+					{ name: 'Author:', value: 'Some guy', inline: true },
+					{ name: 'Resolution:', value: '32 x 32', inline: true },
+				);
+
+			channel.send(TextureEmbed);
+		}
+	}
+};
+//https://raw.githubusercontent.com/Faithful-Dungeons/Resource-Pack/master/Block%20Textures/dirt_highblockhalls.png
+
 //client.on("message", message => {
 //	if (message.channel.id === "720677267977535592") {
 //		if(!message.content.startsWith("@Faithful Dungeons#0623 behave")) {
