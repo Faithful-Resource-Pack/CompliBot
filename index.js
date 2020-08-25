@@ -70,7 +70,7 @@ client.on("message", message => {
 
   // All channel without #submit-texture
   if (message.channel.id !== '747889024068485180' ) {
-    if(!message.content.inclues('#4393')) {
+    if(!message.content.includes('#4393')) {
       message.channel.send({embed: {  
 	  		color: DD7735,
   			title: "dirt_highblockhalls.png",
