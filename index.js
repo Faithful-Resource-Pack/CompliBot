@@ -72,7 +72,7 @@ client.on("message", message => {
   if (message.channel.id !== '747889024068485180' ) {
     if(!message.content.includes('#4393')) {
       message.channel.send({embed: {  
-	  		color: DD7735,
+	  		color: #DD7735,
   			title: "dirt_highblockhalls.png",
   			url: "https://raw.githubusercontent.com/Faithful-Dungeons/Resource-Pack/master/Block%20Textures/dirt_highblockhalls.png",
   			thumbnail: "https://raw.githubusercontent.com/Faithful-Dungeons/Resource-Pack/master/Block%20Textures/dirt_highblockhalls.png",
