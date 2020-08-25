@@ -35,7 +35,7 @@ client.on("message", message => {
   // Submit texture feature:
   // id: 747889024068485180 -> #submit-textures (Robert's testing discord)
   // id: 715236892945285181 -> #submit-textures (Faithful Dungeons discord)
-  if (message.channel.id === '715236892945285181') {
+  if (message.channel.id === '715236892945285181' || message.channel.id === '715236892945285181') {
     // if message have a file attached:
     if (message.attachments.size > 0) {
       // run function to test url to see if file is an img
