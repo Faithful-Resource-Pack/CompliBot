@@ -70,7 +70,7 @@ client.on("message", message => {
 
   // All channel without #submit-texture
   if (message.channel.id !== '747889024068485180' ) {
-    if(!message.content.includes('#4393')) {
+    if(message.content.includes('#4393')) {
       const exampleEmbed = new Discord.MessageEmbed()
         .setColor('#dd7735')
         .setTitle('dirt_highblockhalls.png')
