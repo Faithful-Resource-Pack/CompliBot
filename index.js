@@ -30,12 +30,12 @@ client.on('message', async message => {
 	}
 });
 
-client.on("message", message => {
-	if (message.channel.id === "720677267977535592") {
-		if(!message.content.startsWith("@Faithful Dungeons#0623 behave")) {
-			message.reply("I'm so sorry! (⌯˃̶᷄ ﹏ ˂̶᷄⌯)")
-		}
-	}
-});
+//client.on("message", message => {
+//	if (message.channel.id === "720677267977535592") {
+//		if(!message.content.startsWith("@Faithful Dungeons#0623 behave")) {
+//			message.reply("I'm so sorry! (⌯˃̶᷄ ﹏ ˂̶᷄⌯)")
+//		}
+//	}
+//});
 
 client.login('NzIwNjgwMTkwNjQwMTI4MDEw.XuJfuw.n5WGlscZCeLAcQkYVuI4gAFILlQ');
