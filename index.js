@@ -47,7 +47,7 @@ client.on("message", message => {
           // If message doesn't have the texture path:
           if(!message.content.includes('(')) {
             message.reply("You need to add the texture path to your texture submission, following this example: texture (file1/file2/texture.png)").then(msg => {
-              msg.delete({timeout: 3000});
+              msg.delete({timeout: 5000});
             });
           } else try {
             message.react('✅').then(() => {message.react('❌')});
@@ -57,12 +57,12 @@ client.on("message", message => {
 
         } else {
           message.reply("Your texture submission needs to have an image file!").then(msg => {
-            msg.delete({timeout: 3000});
+            msg.delete({timeout: 5000});
           });
         }
       } else {
         message.reply("You need to attach a png file!").then(msg => {
-          msg.delete({timeout: 3000});
+          msg.delete({timeout: 5000});
         });
       }
     }
@@ -80,9 +80,8 @@ client.on("message", message => {
         .addFields(
           { name: 'Author:', value: 'Some guy', inline: true },
           { name: 'Resolution:', value: '32 x 32', inline: true },
-        );
-
-      channel.send(exampleEmbed);
+      );
+      message.channel.send(exampleEmbed);
     }
   }
 });
