@@ -42,8 +42,7 @@ client.on("message", message => {
             msg.delete({timeout: 3000});
           });
         } else try {
-    	    await message.react('✅');
-    	    await message.react('❌');
+    	    message.react('✅').then(() => {message.react('❌')});
     	  } catch (error) {
     	    console.error("ERROR | One of the emojis failed to react!");
     	  }
