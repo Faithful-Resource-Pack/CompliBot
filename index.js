@@ -1,3 +1,33 @@
+require('dotenv').config(); 
+const Discord = require("discord.js");
+const client = new Discord.Client();
+
+client.on("ready", () => {
+  console.log("I am ready!");
+});
+
+client.on("message", message => {
+  if (message.author.bot) return;
+  // The process.env.PREFIX is your bot's prefix in this case.
+  if (message.content.indexOf(process.env.PREFIX) !== 0) return;
+
+  // This is the usual argument parsing we love to use.
+  const args = message.content.slice(process.env.PREFIX.length).trim().split(/ +/g);
+  const command = args.shift().toLowerCase();
+
+  // And our 2 real basic commands!
+  if(command === 'ping') {
+    message.channel.send('Pong!');
+  } else
+  if (command === 'blah') {
+    message.channel.send('Meh.');
+  }
+});
+
+client.login();
+
+
+/*
 const Discord = require("discord.js");
 const client  = new Discord.Client();
 
@@ -12,7 +42,7 @@ client.on('message', async message => {
 	if (message.channel.id === "715236892945285181") {
 		if (message.attachments.size > 0) {
 			if(!message.content.includes("(")) {
-				message.reply("your texture submission doesn't contain a file path! Please specify the file path like this: `*texture name* (Content/*path*/*path*/*path*/*texture name*)`")
+				message.reply("your texture submission doesn't contain a file path! Please specify the file path like this: `*texture name* ()`")
 					.then(msg => {
 						msg.delete({ timeout: 30000 })
 					})
@@ -61,4 +91,5 @@ client.on('message', async message => {
 //});
 
 // token is available in configs vars in heroku settings
-client.login();
+
+*/
