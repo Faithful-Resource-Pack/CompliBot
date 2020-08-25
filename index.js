@@ -71,53 +71,20 @@ client.on("message", message => {
   // All channel without #submit-texture
   if (message.channel.id !== '747889024068485180' ) {
     if(!message.content.includes('#4393')) {
-      message.channel.send({embed: {  
-	  		color: #DD7735,
-  			title: "dirt_highblockhalls.png",
-  			url: "https://raw.githubusercontent.com/Faithful-Dungeons/Resource-Pack/master/Block%20Textures/dirt_highblockhalls.png",
-  			thumbnail: "https://raw.githubusercontent.com/Faithful-Dungeons/Resource-Pack/master/Block%20Textures/dirt_highblockhalls.png",
-  			fields: [{
-  				name: "Author:",
-  				value: "Some guy"
-  			},
-        {
-	  			name: "Resolution:",
-	  			value: "32 x 32"
-	  		}]
-  		}});
+      const exampleEmbed = new Discord.MessageEmbed()
+        .setColor('#dd7735')
+        .setTitle('dirt_highblockhalls.png')
+        .setURL('https://raw.githubusercontent.com/Faithful-Dungeons/Resource-Pack/master/Block%20Textures/dirt_highblockhalls.png')
+        .setDescription('block texture')
+        .setThumbnail('https://raw.githubusercontent.com/Faithful-Dungeons/Resource-Pack/master/Block%20Textures/dirt_highblockhalls.png')
+        .addFields(
+          { name: 'Author:', value: 'Some guy', inline: true },
+          { name: 'Resolution:', value: '32 x 32', inline: true },
+        );
+
+      channel.send(exampleEmbed);
     }
   }
 });
-
-
-/*client.on('message', message => {
-	if (message.channel.id === '720677267977535592') {
-		if(!message.content.includes("#4693")) {
-			message.channel.send({embed: {
-				color: DD7735,
-				title: "dirt_highblockhalls.png",
-				url: "https://raw.githubusercontent.com/Faithful-Dungeons/Resource-Pack/master/Block%20Textures/dirt_highblockhalls.png",
-				thumbnail: "https://raw.githubusercontent.com/Faithful-Dungeons/Resource-Pack/master/Block%20Textures/dirt_highblockhalls.png",
-				fields: [{
-					name: "Author:",
-					value: "Some guy"
-				  },
-				  {
-					name: "Resolution:",
-					value: "32 x 32"
-				  }
-				]
-			}});
-		}
-	}
-});*/
-
-//client.on("message", message => {
-//	if (message.channel.id === "720677267977535592") {
-//		if(!message.content.startsWith("@Faithful Dungeons#0623 behave")) {
-//			message.reply("")
-//		}
-//	}
-//});
 
 client.login(process.env.CLIENT_TOKEN);
