@@ -47,7 +47,7 @@ client.on('message', message => {
 			channel.send(TextureEmbed);
 		}
 	}
-};
+});
 //https://raw.githubusercontent.com/Faithful-Dungeons/Resource-Pack/master/Block%20Textures/dirt_highblockhalls.png
 
 //client.on("message", message => {
