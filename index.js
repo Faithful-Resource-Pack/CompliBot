@@ -1,15 +1,22 @@
-// This line MUST be first, for discord.js to read the process envs!
 require('dotenv').config(); 
 const Discord = require("discord.js");
 const client = new Discord.Client();
 
 client.on("ready", () => {
-  console.log("I am ready!");
+	client.user.setActivity("https://faithful-dungeons.github.io/Website/", {type: "PLAYING"});
+	console.log("I am turned on lmao");
 });
 
+function attachIsImage(msgAttach) {
+    var url = msgAttach.url;
+    //True if this url is a png image.
+    return url.indexOf("png", url.length - "png".length /*or 3*/) !== -1;
+}
+
 client.on("message", message => {
+  // Bot messages aren't read:
   if (message.author.bot) return;
-  // The process.env.PREFIX is your bot's prefix in this case.
+  // Prefix required to execute command:
   if (message.content.indexOf(process.env.PREFIX) !== 0) return;
 
   // This is the usual argument parsing we love to use.
@@ -17,73 +24,65 @@ client.on("message", message => {
   const command = args.shift().toLowerCase();
 
   // And our 2 real basic commands!
-  if(command === 'ping') {
+  if (command === 'ping') {
     message.channel.send('Pong!');
-  } else
-  if (command === 'blah') {
-    message.channel.send('Meh.');
+  }
+
+  // Submit texture feature:
+  // id: 747889024068485180 -> #submit-texture (Robert testing discord)
+  if (message.channel.id === '747889024068485180') {
+    // if message have a file attached:
+    if (message.attachments.size > 0) {
+      // run function to test url to see if file is an img
+      if (message.attachments.every(attachIsImage)){
+
+        // If message doesn't have the texture path:
+        if(!message.content.includes('(')) {
+          message.reply("You need to add the texture path to your texture submission, following this example: texture (file1/file2/texture.png)").then(msg => {
+            msg.delete({timeout: 3000});
+          });
+        } else try {
+    	    await message.react('✅');
+    	    await message.react('❌');
+    	  } catch (error) {
+    	    console.error("ERROR | One of the emojis failed to react!");
+    	  }
+
+      } else {
+        message.reply("Your texture submission needs to have an image file!").then(msg => {
+          msg.delete({timeout: 3000});
+        });
+      }
+    } else {
+      message.reply("You need to attach a png file!").then(msg => {
+        msg.delete({timeout: 3000});
+      });
+    }
   }
 });
 
-// There's zero need to put something here. Discord.js uses process.env.CLIENT_TOKEN if it's available,
-// and this is what is being used here. If on discord.js v12, it's DISCORD_TOKEN
-client.login(process.env.CLIENT_TOKEN);
 
-
-/*
-const Discord = require("discord.js");
-const client  = new Discord.Client();
-
-// Start bot process:
-client.once("ready", () =>{
-	client.user.setActivity("https://faithful-dungeons.github.io/Website/", {type: "PLAYING"});
-	console.log("I am turned on lmao");
-});
-
-// code:
-client.on('message', async message => {
-	if (message.channel.id === "715236892945285181") {
-		if (message.attachments.size > 0) {
-			if(!message.content.includes("(")) {
-				message.reply("your texture submission doesn't contain a file path! Please specify the file path like this: `*texture name* ()`")
-					.then(msg => {
-						msg.delete({ timeout: 30000 })
-					})
-			}
-    	    else try {
-    	    	await message.react('✅');
-    	    	await message.react('❌');
-    	    } catch (error) {
-    	    	console.error("ERROR | One of the emojis failed to react!");
-    	    }
+client.on('message', message => {
+	if (message.channel.id === '720677267977535592') /*The #general channel id on the testing discord*/ {
+		if(!message.content.includes("#4693")) {
+			message.channel.send({embed: {
+				color: DD7735,
+				title: "dirt_highblockhalls.png",
+				url: "https://raw.githubusercontent.com/Faithful-Dungeons/Resource-Pack/master/Block%20Textures/dirt_highblockhalls.png",
+				thumbnail: "https://raw.githubusercontent.com/Faithful-Dungeons/Resource-Pack/master/Block%20Textures/dirt_highblockhalls.png",
+				fields: [{
+					name: "Author:",
+					value: "Some guy"
+				  },
+				  {
+					name: "Resolution:",
+					value: "32 x 32"
+				  }
+				]
+			}});
 		}
-//		else if(!message.sender === "720680190640128010") {
-//			message.reply("this channel is only for textures. If you want to talk about about a submitted texture, then go to #texture-discussion")
-//				.then(msg => {
-//					msg.delete({ timeout: 30000 })
-//				})
-//	    }
 	}
 });
-
-//client.on('message', message => {
-//	if (message.channel.id === '720677267977535592') {
-//		if(!message.content.includes("#4693")) {
-//			const TextureEmbed = new Discord.MessageEmbed()
-//				.setColor('#DD7735')
-//				.setTitle('dirt_highblockhalls.png')
-//				.setURL('https://raw.githubusercontent.com/Faithful-Dungeons/Resource-Pack/master/Block%20Textures/dirt_highblockhalls.png')
-//				.setThumbnail('https://raw.githubusercontent.com/Faithful-Dungeons/Resource-Pack/master/Block%20Textures/dirt_highblockhalls.png')
-//				.addFields(
-//					{ name: 'Author:', value: 'Some guy', inline: true },
-//					{ name: 'Resolution:', value: '32 x 32', inline: true },
-//				);
-//
-//			message.channel.send(TextureEmbed);
-//		}
-//	}
-//});
-//https://raw.githubusercontent.com/Faithful-Dungeons/Resource-Pack/master/Block%20Textures/dirt_highblockhalls.png
 
 //client.on("message", message => {
 //	if (message.channel.id === "720677267977535592") {
@@ -93,6 +92,4 @@ client.on('message', async message => {
 //	}
 //});
 
-// token is available in configs vars in heroku settings
-
-*/
+client.login(process.env.CLIENT_TOKEN);
