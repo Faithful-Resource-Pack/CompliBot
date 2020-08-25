@@ -2,7 +2,7 @@ require('dotenv').config();
 const Discord = require("discord.js");
 const client = new Discord.Client();
 
-prefix = '@Faithful Dungeons#0623';
+prefix = process.env.PREFIX;
 token = process.env.CLIENT_TOKEN;
 
 client.on("ready", () => {
@@ -23,6 +23,8 @@ client.on("message", message => {
   // COMMANDS WITH PREFIX
   if (message.content.startsWith( prefix + ' ping' )) {
     message.channel.send('Pong!');
+  } catch (error) {
+    console.error("ERROR | Ping doesn't respond pong!");
   }
   if (message.content.startsWith( prefix + ' help' )) {
     message.channel.send('JavaScript is ~~Awesome~~');
@@ -76,7 +78,8 @@ client.on("message", message => {
         .addFields(
           { name: 'Author:', value: 'Some guy', inline: true },
           { name: 'Resolution:', value: '32 x 32', inline: true },
-      );
+      )
+      .setFooter('Faithful Dungeons', 'https://i.imgur.com/wSTFkRM.png');
       message.channel.send(exampleEmbed);
     }
   }
