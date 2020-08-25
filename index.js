@@ -27,11 +27,17 @@ client.on("message", message => {
     if (command === 'ping') {
       message.channel.send('Pong!');
     }
+    if (command === 'help') {
+      message.channel.send('JavaScript is ~~Awesome~~');
+    }
+    if (command === 'behave') {
+      message.channel.reply("I'm so sorry! (⌯˃̶᷄ ﹏ ˂̶᷄⌯)")
+    }
   } 
   // COMMANDS WITHOUT PREFIX:
   else {
     // Submit texture feature:
-    // id: 747889024068485180 -> #submit-texture (Robert testing discord)
+    // id: 747889024068485180 -> #submit-texture (Robert's testing discord)
     if (message.channel.id === '747889024068485180') {
       // if message have a file attached:
       if (message.attachments.size > 0) {
@@ -60,12 +66,32 @@ client.on("message", message => {
         });
       }
     }
-  } 
+  }
+
+  // All channel without #submit-texture
+  if (message.channel.id !== '747889024068485180' ) {
+    if(!message.content.inclues('#4393')) {
+      message.channel.send({embed: {  
+	  		color: DD7735,
+  			title: "dirt_highblockhalls.png",
+  			url: "https://raw.githubusercontent.com/Faithful-Dungeons/Resource-Pack/master/Block%20Textures/dirt_highblockhalls.png",
+  			thumbnail: "https://raw.githubusercontent.com/Faithful-Dungeons/Resource-Pack/master/Block%20Textures/dirt_highblockhalls.png",
+  			fields: [{
+  				name: "Author:",
+  				value: "Some guy"
+  			},
+        {
+	  			name: "Resolution:",
+	  			value: "32 x 32"
+	  		}]
+  		}});
+    }
+  }
 });
 
 
-client.on('message', message => {
-	if (message.channel.id === '720677267977535592') /*The #general channel id on the testing discord*/ {
+/*client.on('message', message => {
+	if (message.channel.id === '720677267977535592') {
 		if(!message.content.includes("#4693")) {
 			message.channel.send({embed: {
 				color: DD7735,
@@ -84,12 +110,12 @@ client.on('message', message => {
 			}});
 		}
 	}
-});
+});*/
 
 //client.on("message", message => {
 //	if (message.channel.id === "720677267977535592") {
 //		if(!message.content.startsWith("@Faithful Dungeons#0623 behave")) {
-//			message.reply("I'm so sorry! (⌯˃̶᷄ ﹏ ˂̶᷄⌯)")
+//			message.reply("")
 //		}
 //	}
 //});
