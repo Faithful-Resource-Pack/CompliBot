@@ -1,11 +1,13 @@
 const Discord = require("discord.js");
-const client = new Discord.Client();
+const client  = new Discord.Client();
 
+// Start bot process:
 client.once("ready", () =>{
 	client.user.setActivity("https://faithful-dungeons.github.io/Website/", {type: "PLAYING"});
 	console.log("I am turned on lmao");
 });
 
+// code:
 client.on('message', async message => {
 	if (message.channel.id === "715236892945285181") {
 		if (message.attachments.size > 0) {
@@ -58,4 +60,5 @@ client.on('message', async message => {
 //	}
 //});
 
-client.login('NzIwNjgwMTkwNjQwMTI4MDEw.XuJfuw.n5WGlscZCeLAcQkYVuI4gAFILlQ');
+// token is available in configs vars in heroku settings
+client.login();
