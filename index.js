@@ -23,8 +23,6 @@ client.on("message", message => {
   // COMMANDS WITH PREFIX
   if (message.content.startsWith( prefix + ' ping' )) {
     message.channel.send('Pong!');
-  } catch (error) {
-    console.error("ERROR | Ping doesn't respond pong!");
   }
   if (message.content.startsWith( prefix + ' help' )) {
     message.channel.send('JavaScript is ~~Awesome~~');
