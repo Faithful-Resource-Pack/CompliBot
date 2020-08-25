@@ -44,7 +44,7 @@ client.on('message', message => {
 					{ name: 'Resolution:', value: '32 x 32', inline: true },
 				);
 
-			channel.send(TextureEmbed);
+			message.channel.send(TextureEmbed);
 		}
 	}
 });
