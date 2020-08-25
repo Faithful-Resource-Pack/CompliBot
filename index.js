@@ -77,7 +77,7 @@ client.on("message", message => {
           { name: 'Author:', value: 'Some guy', inline: true },
           { name: 'Resolution:', value: '32 x 32', inline: true },
       )
-      .setFooter('Faithful Dungeons', 'https://i.imgur.com/wSTFkRM.png');
+      .setFooter('Faithful Dungeons', 'https://i.imgur.com/ldI5hDM.png');
       message.channel.send(exampleEmbed);
     }
   }
