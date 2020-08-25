@@ -21,13 +21,13 @@ client.on("message", message => {
   if (message.author.bot) return;
   
   // COMMANDS WITH PREFIX
-  if (message.content.startsWith('${prefix}ping')) {
+  if (message.content.startsWith( prefix + 'ping' )) {
     message.channel.send('Pong!');
   }
-  if (message.content.startsWith('${prefix}help')) {
+  if (message.content.startsWith( prefix + 'help' )) {
     message.channel.send('JavaScript is ~~Awesome~~');
   }
-  if (message.content.startsWith('${prefix}behave')) {
+  if (message.content.startsWith( prefix + 'behave' )) {
     message.channel.reply("I'm so sorry! (⌯˃̶᷄ ﹏ ˂̶᷄⌯)")
   }
 
@@ -66,7 +66,7 @@ client.on("message", message => {
   // Check texture feature
   // All channel without #submit-texture
   if (message.channel.id !== '747889024068485180' ) {
-    if(message.content.startsWith('${prefix}#4393')) {
+    if(message.content.startsWith( prefix + '#4393' )) {
       const exampleEmbed = new Discord.MessageEmbed()
         .setColor('#dd7735')
         .setTitle('dirt_highblockhalls.png')
