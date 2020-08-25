@@ -2,6 +2,7 @@ const Discord = require("discord.js");
 const client = new Discord.Client();
 
 client.once("ready", () =>{
+	client.user.setActivity("https://faithful-dungeons.github.io/Website/", {type: "PLAYING"});
 	console.log("I am turned on lmao");
 });
 
