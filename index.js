@@ -2,18 +2,18 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 
 client.once('ready', () =>{
-    console.log('I am turned on lmao');
+	console.log('I am turned on lmao');
 });
 
 client.on('message', async message => {
 	if (message.channel.id === '715236892945285181') {
-	    if (message.attachments.size > 0) {
-	        if(!message.content.includes("(")) {
-	            message.reply("your texture submission doesn't contain a file path! Please specify the file path like this: `*texture name* (Content/*path*/*path*/*path*/*texture name*)`")
-	                .then(msg => {
-	                    msg.delete({ timeout: 30000 })
-	                })
-	        }
+		if (message.attachments.size > 0) {
+			if(!message.content.includes("(")) {
+				message.reply("your texture submission doesn't contain a file path! Please specify the file path like this: `*texture name* (Content/*path*/*path*/*path*/*texture name*)`")
+					.then(msg => {
+						msg.delete({ timeout: 30000 })
+					})
+			}
     	    else try {
     	    	await message.react('✅');
     	    	await message.react('❌');
