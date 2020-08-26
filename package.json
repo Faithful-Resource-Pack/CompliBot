@@ -19,8 +19,11 @@
   },
   "homepage": "https://github.com/Faithful-Dungeons/Discord-Bot#readme",
   "dependencies": {
+    "axios": "^0.20.0",
     "discord.js": "^12.3.1",
     "dotenv": "^8.2.0",
+    "http": "0.0.1-security",
+    "image-size": "^0.8.3",
     "xmlhttprequest": "^1.8.0"
   },
   "engines": {

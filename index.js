@@ -2,6 +2,8 @@
 require('dotenv').config();
 const Discord = require("discord.js");
 const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+var http = require('http');
+var sizeOf = require('image-size');
 const client = new Discord.Client();
 
 // Secrets:
@@ -27,14 +29,24 @@ function attachIsImage(msgAttach) {
   return url.indexOf("png", url.length - "png".length /*or 3*/) !== -1;
 }
 //Return Image size, need url.
-function getMeta(url) {
-  var img = new Image();
-  img.src = url;
-	var sizes = [img.width, img.height];
-  return sizes;
+function getMeta(imgUrl) {
+	return new promise(function(resolve, reject) {
+		var options = url.parse(imgUrl);
+
+		http.get(options, function (response) {
+			var chunks = [];
+			response.on('data', function (chunk) {
+				chunks.push(chunk);
+			}).on('end', function() {
+				var buffer = Buffer.concat(chunks);
+				resolve(sizeOf(buffer));
+			});
+		}).on('error', function(error) {
+			reject(error);
+		});
+
+	});
 }
-
-
 
 // Run:
 client.on("message", message => {
@@ -99,29 +111,14 @@ client.on("message", message => {
 
 		var args  = message.content.split(' ').slice(1); // cut after command
 		var texture = args.join();
+			  
+		var imgURL = 'https://raw.githubusercontent.com/Faithful-Dungeons/Resource-Pack/master/Block%20Textures/' + texture + '.png';
 
-		// Check if url is valid
-		var checkURL = new XMLHttpRequest(),
-			  imgURL = 'https://raw.githubusercontent.com/Faithful-Dungeons/Resource-Pack/master/Block%20Textures/' + texture + '.png';
+		axios.get(imgURL).then(function () {
+			getMeta(imgURL).then(function (dimension) {
+				var size = dimension.width + 'x' + dimension.height;
 
-		checkURL.open('get', imgURL, true);
-		checkURL.onreadystatechange = checkReadyState;
-
-		function checkReadyState() {
-			if (checkURL.readyState === 4){
-				if ((checkURL.status == 200) || (checkURL.status == 0)) {
-					var urlExist = true;
-				} else {
-					var urlExist = false;
-				}
-			}
-		}
-
-		//var sizes = getMeta(imgURL);
-		//var size  = sizes[0] + 'x' + sizes[1]; 
-
-		if (urlExist) {
-			var embed = new Discord.MessageEmbed()
+				var embed = new Discord.MessageEmbed()
 				.setAuthor(message.member.user.tag)
 				.setTitle(texture)
 				.setColor('#dd7735')
@@ -130,15 +127,15 @@ client.on("message", message => {
 				.setThumbnail(imgURL)
 				.addFields(
 					{ name: 'Author:', value: 'WIP', inline: true },
-					{ name: 'Resolution:', value: 'size', inline: true }
+					{ name: 'Resolution:', value: size, inline: true }
 				)
 				.setFooter('Faithful Dungeons', BotImgURL);
 			
-			message.channel.send(embed);
-		} else {
+				message.channel.send(embed);
+			});
+		}).catch(function(error) {
 			message.reply('The specified texture need to exist first!');
-		}
-		
+		});
 	}
 
   // HELP SETTINGS:
