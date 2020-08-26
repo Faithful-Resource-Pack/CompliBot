@@ -40,7 +40,7 @@ client.on("message", message => {
       var ping = m.createdTimestamp - message.createdTimestamp;
 
       var embed = new Discord.MessageEmbed()
-        .setAuthor(message.member.user.tag, message.author.avatarURL)
+        .setAuthor(message.member.user.tag)
         .setTitle('Your ping is:')
         .setDescription('**' + ping + 'ms**')
         .setColor('#3aafa3')
@@ -80,6 +80,7 @@ client.on("message", message => {
     console.log('help triggered');
 
     var embed = new Discord.MessageEmbed()
+      .setAuthor(message.member.user.tag)
       .setTitle('Help Menu:')
       .setColor('#d4a011')
       .addFields(
@@ -95,6 +96,7 @@ client.on("message", message => {
     console.log('help submission triggered');
 
     var embed = new Discord.MessageEmbed()
+      .setAuthor(message.member.user.tag)
       .setTitle('Textures Submissions help')
       .setColor('#d4a011')
       .addFields(
@@ -107,7 +109,10 @@ client.on("message", message => {
 
   // Special commands: (easter eggs)
   if (message.content === prefix + 'behave') {
-    message.channel.send("I'm so sorry! (⌯˃̶᷄ ﹏ ˂̶᷄⌯)")
+    message.channel.send("I'm so sorry! (⌯˃̶᷄ ﹏ ˂̶᷄⌯)");
+  }
+  if (message.content === '(╯°□°）╯︵ ┻━┻') {
+    message.channel.send('┬─┬ ノ( ゜-゜ノ)');
   }
 
   /**********************************
@@ -146,6 +151,7 @@ client.on("message", message => {
   if (message.channel.id !== '747889024068485180' ) {
     if(message.content.includes('#4393' )) {
       const exampleEmbed = new Discord.MessageEmbed()
+        .setAuthor(message.member.user.tag)
         .setColor('#dd7735')
         .setTitle('dirt_highblockhalls.png')
         .setURL('https://raw.githubusercontent.com/Faithful-Dungeons/Resource-Pack/master/Block%20Textures/dirt_highblockhalls.png')
