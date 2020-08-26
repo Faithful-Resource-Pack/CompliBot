@@ -118,7 +118,7 @@ client.on("message", message => {
     message.channel.send("I'm so sorry! (⌯˃̶᷄ ﹏ ˂̶᷄⌯)");
   }
   if (message.content.includes('(╯°□°）╯︵ ┻━┻')) {
-    message.channel.reply('┬─┬ ノ( ゜-゜ノ) Take a coffee and calm down');
+    message.reply('┬─┬ ノ( ゜-゜ノ) Take a coffee and calm down');
   }
 
   /**********************************
