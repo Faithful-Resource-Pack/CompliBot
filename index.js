@@ -11,6 +11,9 @@ token = process.env.CLIENT_TOKEN;
 const IDsubmitR  = '747889024068485180'; // -> #submit-textures (Robert's testing discord)
 const IDsubmitFD = '715236892945285181'; // -> #submit-textures (Faithful Dungeons discord)
 
+// Bot logo:
+const BotImgURL = 'https://i.imgur.com/ldI5hDM.png';
+
 // Bot status:
 client.on("ready", () => {
 	client.user.setActivity("https://faithful-dungeons.github.io/Website/", {type: "PLAYING"});
@@ -19,8 +22,14 @@ client.on("ready", () => {
 
 //True if this url is a png image.
 function attachIsImage(msgAttach) {
-    var url = msgAttach.url;
-    return url.indexOf("png", url.length - "png".length /*or 3*/) !== -1;
+  var url = msgAttach.url;
+  return url.indexOf("png", url.length - "png".length /*or 3*/) !== -1;
+}
+//Return Image size, need url.
+function getMeta(url) {
+  var img = new Image();
+  img.src = url;
+  return var sizes = [img.width, img.height];
 }
 
 // Run:
@@ -44,6 +53,7 @@ client.on("message", message => {
         .setTitle('Your ping is:')
         .setDescription('**' + ping + 'ms**')
         .setColor('#3aafa3')
+        .setFooter('Faithful Dungeons', 'https://i.imgur.com/ldI5hDM.png');
 
       m.edit(embed);
     });
@@ -80,6 +90,33 @@ client.on("message", message => {
     }
   }
 
+	// TEXTURE REVIEW COMMANDS:
+	if (message.content.startsWith( prefix + 'get') ){
+
+		var args  = message.content.split(' ')slice(1); // cut after command
+		var texture = args.join();
+
+		var imgURL = 'https://raw.githubusercontent.com/Faithful-Dungeons/Resource-Pack/master/Block%20Textures/' + texture + '.png';
+
+		var sizes = getMeta(imgURL);
+		var size  = sizes[0] + 'x' + sizes[1]; 
+
+		var embed = new Discord.MessageEmbed()
+			.setAuthor(message.member.user.tag)
+			.setTitle(texture)
+			.setColor('#dd7735')
+			.setURL(imgURL)
+      .setDescription('block texture')
+      .setThumbnail(imgURL)
+      .addFields(
+        { name: 'Author:', value: 'WIP', inline: true },
+        { name: 'Resolution:', value: size, inline: true }
+      )
+      .setFooter('Faithful Dungeons', BotImgURL);
+    
+		message.channel.send(embed);
+	}
+
   // HELP SETTINGS:
   // Help:
   if (message.content === prefix + 'help') {
@@ -93,7 +130,8 @@ client.on("message", message => {
         { name: '`/help`', value: 'open this menu', inline: true },
         { name: '`/ping`', value: 'return user ping', inline: true },
         { name: '`/help submission`', value: 'get infos about textures submission', inline: true }
-      );
+      )
+      .setFooter('Faithful Dungeons', BotImgURL);
 
     message.channel.send(embed);
   }
@@ -108,7 +146,8 @@ client.on("message", message => {
       .addFields(
         { name: 'How submit a texture for review?', value: 'Go to #submit-textures channel, send a message with the texture you made.', inline: false },
         { name: 'Message Requirements:', value: 'Texture need to be a .png file, you also have to add the texture name & path (ex: texture `(path/file/file/texture.png)`', inline: false}
-      );
+      )
+      .setFooter('Faithful Dungeons', BotImgURL);
 
     message.channel.send(embed);
   }
@@ -167,7 +206,7 @@ client.on("message", message => {
           { name: 'Author:', value: 'Some guy', inline: true },
           { name: 'Resolution:', value: '32 x 32', inline: true }
       )
-      .setFooter('Faithful Dungeons', 'https://i.imgur.com/ldI5hDM.png');
+      .setFooter('Faithful Dungeons', BotImgURL);
       message.channel.send(exampleEmbed);
     }
   }
