@@ -29,7 +29,8 @@ function attachIsImage(msgAttach) {
 function getMeta(url) {
   var img = new Image();
   img.src = url;
-  return var sizes = [img.width, img.height];
+	var sizes = [img.width, img.height];
+  return sizes;
 }
 
 // Run:
