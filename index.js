@@ -33,6 +33,8 @@ function getMeta(url) {
   return sizes;
 }
 
+
+
 // Run:
 client.on("message", message => {
   // Bot messages aren't read:
@@ -97,25 +99,45 @@ client.on("message", message => {
 		var args  = message.content.split(' ').slice(1); // cut after command
 		var texture = args.join();
 
-		var imgURL = 'https://raw.githubusercontent.com/Faithful-Dungeons/Resource-Pack/master/Block%20Textures/' + texture + '.png';
+		// Check if url is valid
+		var checkURL = new XMLHttpRequest(),
+			  imgURL = 'https://raw.githubusercontent.com/Faithful-Dungeons/Resource-Pack/master/Block%20Textures/' + texture + '.png';
+
+		checkURL.open('get', imgURL, true);
+		checkURL.onreadystatechange = checkReadyState;
+
+		function checkReadyState() {
+			if (checkURL.readyState === 4){
+				if ((checkURL.status == 200) || (checkURL.status == 0)) {
+					var urlExist = true;
+				} else {
+					var urlExist = false;
+				}
+			}
+		}
 
 		//var sizes = getMeta(imgURL);
 		//var size  = sizes[0] + 'x' + sizes[1]; 
 
-		var embed = new Discord.MessageEmbed()
-			.setAuthor(message.member.user.tag)
-			.setTitle(texture)
-			.setColor('#dd7735')
-			.setURL(imgURL)
-      .setDescription('block texture')
-      .setThumbnail(imgURL)
-      .addFields(
-        { name: 'Author:', value: 'WIP', inline: true },
-        { name: 'Resolution:', value: 'size', inline: true }
-      )
-      .setFooter('Faithful Dungeons', BotImgURL);
-    
-		message.channel.send(embed);
+		if (urlExist) {
+			var embed = new Discord.MessageEmbed()
+				.setAuthor(message.member.user.tag)
+				.setTitle(texture)
+				.setColor('#dd7735')
+				.setURL(imgURL)
+				.setDescription('block texture')
+				.setThumbnail(imgURL)
+				.addFields(
+					{ name: 'Author:', value: 'WIP', inline: true },
+					{ name: 'Resolution:', value: 'size', inline: true }
+				)
+				.setFooter('Faithful Dungeons', BotImgURL);
+			
+			message.channel.send(embed);
+		} else {
+			message.reply('The specified texture need to exist first!');
+		}
+		
 	}
 
   // HELP SETTINGS:
