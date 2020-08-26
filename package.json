@@ -20,7 +20,8 @@
   "homepage": "https://github.com/Faithful-Dungeons/Discord-Bot#readme",
   "dependencies": {
     "discord.js": "^12.3.1",
-    "dotenv": "^8.2.0"
+    "dotenv": "^8.2.0",
+    "xmlhttprequest": "^1.8.0"
   },
   "engines": {
     "node": "12.18.3",

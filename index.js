@@ -1,6 +1,7 @@
 // Libs:
 require('dotenv').config();
 const Discord = require("discord.js");
+const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 const client = new Discord.Client();
 
 // Secrets:
