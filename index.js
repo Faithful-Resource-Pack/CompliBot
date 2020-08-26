@@ -94,7 +94,7 @@ client.on("message", message => {
 	// TEXTURE REVIEW COMMANDS:
 	if (message.content.startsWith( prefix + 'get') ){
 
-		var args  = message.content.split(' ')slice(1); // cut after command
+		var args  = message.content.split(' ').slice(1); // cut after command
 		var texture = args.join();
 
 		var imgURL = 'https://raw.githubusercontent.com/Faithful-Dungeons/Resource-Pack/master/Block%20Textures/' + texture + '.png';
