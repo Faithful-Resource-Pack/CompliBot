@@ -114,6 +114,7 @@ client.on("message", message => {
 		var texture = args.join();
 			  
 		var imgURL = 'https://raw.githubusercontent.com/Faithful-Dungeons/Resource-Pack/master/Block%20Textures/' + texture + '.png';
+		console.log(imgURL);
 
 		axios.get(imgURL).then(function () {
 			getMeta(imgURL).then(function (dimension) {
