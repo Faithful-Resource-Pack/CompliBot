@@ -14,7 +14,7 @@ const IDsubmitFD = '715236892945285181'; // -> #submit-textures (Faithful Dungeo
 // Bot status:
 client.on("ready", () => {
 	client.user.setActivity("https://faithful-dungeons.github.io/Website/", {type: "PLAYING"});
-	console.log("I am turned on lmao");
+	console.log("I am running fine :noise in JS:");
 });
 
 //True if this url is a png image.
