@@ -40,11 +40,32 @@ client.on("message", message => {
       var ping = m.createdTimestamp - message.createdTimestamp;
 
       var embed = new Discord.MessageEmbed()
-        .setAuthor('Your ping is ' + ping)
+        .setAuthor('Your ping is ' + ping + 'ms')
         .setColor('#3aafa3')
 
       m.edit(embed);
     });
+  }
+
+  // Clean command:
+  if (message.content.startsWith( prefix + 'clear') ){
+     console.log('clear triggered');
+
+    var args   = message.content.split(' ').slice(1); // cut after '/clear'
+    var amount = args.join(' ');
+
+    if (!amount) return message.reply("You haven't given an amount of messages which should be deleted!");
+    if (isNaN(amount)) return message.reply("The amount parameter isn't a number!");
+
+    if (amount > 100) return message.reply("You can't delete more than 100 messages at once!");
+    if (amount < 1) return message.reply("You have to delete at least 1 message :upside-down:");
+
+    if (message.member.hasPermission("MANAGE_MESSAGES")) {
+      message.channel.fetchMessages({ limit: amount })
+        .then(function(list){
+          message.channel.bulkDelete(list);
+      }, function(err){message.channel.send("ERROR: ERROR CLEARING CHANNEL.")})                        
+    }
   }
 
   // HELP SETTINGS:
