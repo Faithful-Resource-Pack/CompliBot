@@ -40,11 +40,15 @@ client.on("message", message => {
       var ping = m.createdTimestamp - message.createdTimestamp;
 
       var embed = new Discord.MessageEmbed()
-        .setAuthor('Your ping is ' + ping + 'ms')
+        .setAuthor(message.author)
+        .setTitle('Your ping is:')
+        .setDescription('**' + ping + 'ms**')
         .setColor('#3aafa3')
 
       m.edit(embed);
     });
+
+    message.delete(500);
   }
 
   // Clean command:
