@@ -60,9 +60,19 @@ client.on("message", message => {
     if (amount > 100) return message.reply("You can't delete more than 100 messages at once!");
     if (amount < 1) return message.reply("You have to delete at least 1 message :upside-down:");
 
-    message.channel.messages.fetch({ limit: amount }).then(messages => {
-      message.channel.bulkDelete(messages)
-    });
+    try { 
+      message.channel.messages.fetch({ limit: amount }).then(messages => {
+        message.channel.bulkDelete(messages)
+      });
+      message.reply("Sucess!" + amount + "messages deleted.").then(msg => {
+        msg.delete({timeout: 30000});
+      });
+    } catch(error) {
+      console.error(error);
+      message.reply("The amount contains messages older than 14 days, can't delete them").then(msg => {
+        msg.delete({timeout: 30000});
+      });
+    }
   }
 
   // HELP SETTINGS:
