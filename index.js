@@ -32,9 +32,8 @@ function attachIsImage(msgAttach) {
 //Return Image size, need url.
 function getMeta(imgUrl) {
 	return new Promise(function(resolve, reject) {
-		var options = url.parse(imgUrl);
 
-		http.get(options, function (response) {
+		http.get(imgUrl, function (response) {
 			var chunks = [];
 			response.on('data', function (chunk) {
 				chunks.push(chunk);
@@ -136,6 +135,8 @@ client.on("message", message => {
 				.setFooter('Faithful Dungeons', BotImgURL);
 			
 				message.channel.send(embed);
+			}).catch(function(error) {
+				console.log(error);
 			});
 		}).catch(function(error) {
 			console.log(error);
