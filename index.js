@@ -127,7 +127,7 @@ client.on("message", message => {
 				.setColor('#dd7735')
 				.setURL(imgURL)
 				.setDescription('block texture')
-				.setImage
+				.setImage(imgURL)
 				.addFields(
 					{ name: 'Author:', value: 'WIP', inline: true },
 					{ name: 'Resolution:', value: size, inline: true }
