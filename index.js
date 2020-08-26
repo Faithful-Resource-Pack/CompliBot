@@ -31,7 +31,7 @@ function attachIsImage(msgAttach) {
 }
 //Return Image size, need url.
 function getMeta(imgUrl) {
-	return new promise(function(resolve, reject) {
+	return new Promise(function(resolve, reject) {
 		var options = url.parse(imgUrl);
 
 		http.get(options, function (response) {
@@ -60,7 +60,7 @@ client.on("message", message => {
 
   // Ping command:
   if (message.content === prefix + 'ping') {
-    console.log('ping triggered');
+    console.trace('ping triggered');
 
     message.channel.send('Pinging...').then(m => {
       var ping = m.createdTimestamp - message.createdTimestamp;
@@ -79,7 +79,7 @@ client.on("message", message => {
   // Clean command:
   if (message.content.startsWith( prefix + 'clear') ){
     if(message.member.roles.cache.some(r=>["God", "Helper", "Mod", "Server Creator"].includes(r.name)) ) {
-      console.log('clear triggered');
+      console.trace('clear triggered');
 
       var args   = message.content.split(' ').slice(1); // cut after '/clear'
       var amount = args.join(' ');
@@ -109,6 +109,7 @@ client.on("message", message => {
 
 	// TEXTURE REVIEW COMMANDS:
 	if (message.content.startsWith( prefix + 'get') ){
+		console.trace('get triggered');
 
 		var args  = message.content.split(' ').slice(1); // cut after command
 		var texture = args.join();
@@ -117,7 +118,7 @@ client.on("message", message => {
 		console.log(imgURL);
 
 		axios.get(imgURL).then(function (response) {
-			console.log(response);
+			console.log('well played');
 			getMeta(imgURL).then(function (dimension) {
 				var size = dimension.width + 'x' + dimension.height;
 
@@ -147,7 +148,7 @@ client.on("message", message => {
   // HELP SETTINGS:
   // Help:
   if (message.content === prefix + 'help') {
-    console.log('help triggered');
+    console.trace('help triggered');
 
     var embed = new Discord.MessageEmbed()
       .setAuthor(message.member.user.tag)
@@ -164,7 +165,7 @@ client.on("message", message => {
   }
   // Help submission:
   if (message.content === prefix + 'help submission') {
-    console.log('help submission triggered');
+    console.trace('help submission triggered');
 
     var embed = new Discord.MessageEmbed()
       .setAuthor(message.member.user.tag)
