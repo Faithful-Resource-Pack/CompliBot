@@ -40,7 +40,7 @@ client.on("message", message => {
       var ping = m.createdTimestamp - message.createdTimestamp;
 
       var embed = new Discord.MessageEmbed()
-        .setAuthor(message.author)
+        .setAuthor(message.author.name, message.author.iconURL, message.author.url)
         .setTitle('Your ping is:')
         .setDescription('**' + ping + 'ms**')
         .setColor('#3aafa3')
@@ -68,10 +68,7 @@ client.on("message", message => {
       message.channel.messages.fetch({ limit: amount }).then(messages => {
         message.channel.bulkDelete(messages)
       });
-      message.reply("Sucess!" + amount + "messages deleted.").then(msg => {
-        msg.delete({timeout: 30000});
-      });
-    } catch(error) {
+    } catch(error) { // doesn't seems to work
       console.error(error);
       message.reply("The amount contains messages older than 14 days, can't delete them").then(msg => {
         msg.delete({timeout: 30000});
