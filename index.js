@@ -51,26 +51,32 @@ client.on("message", message => {
 
   // Clean command:
   if (message.content.startsWith( prefix + 'clear') ){
-     console.log('clear triggered');
+    if(message.guild.roles.find(role => role.name === "God")) {
+      console.log('clear triggered');
 
-    var args   = message.content.split(' ').slice(1); // cut after '/clear'
-    var amount = args.join(' ');
+      var args   = message.content.split(' ').slice(1); // cut after '/clear'
+      var amount = args.join(' ');
 
-    if (!amount) return message.reply("You haven't given an amount of messages which should be deleted!");
-    if (isNaN(amount)) return message.reply("The amount parameter isn't a number!");
+      if (!amount) return message.reply("You haven't given an amount of messages which should be deleted!");
+      if (isNaN(amount)) return message.reply("The amount parameter isn't a number!");
 
-    if (amount > 100) return message.reply("You can't delete more than 100 messages at once!");
-    if (amount < 1) return message.reply("You have to delete at least 1 message :upside-down:");
+      if (amount > 100) return message.reply("You can't delete more than 100 messages at once!");
+      if (amount < 1) return message.reply("You have to delete at least 1 message :upside-down:");
 
-    try { 
-      message.channel.messages.fetch({ limit: amount }).then(messages => {
-        message.channel.bulkDelete(messages)
-      });
-    } catch(error) { // doesn't seems to work
-      console.error(error);
-      message.reply("The amount contains messages older than 14 days, can't delete them").then(msg => {
-        msg.delete({timeout: 30000});
-      });
+      try { 
+        message.channel.messages.fetch({ limit: amount }).then(messages => {
+          message.channel.bulkDelete(messages)
+        });
+      } catch(error) { // doesn't seems to work
+        console.error(error);
+        message.reply("The amount contains messages older than 14 days, can't delete them").then(msg => {
+          msg.delete({timeout: 30000});
+        });
+      }
+    } else {
+      message.reply("You don't have the permission to do that!").then(msg => {
+          msg.delete({timeout: 30000});
+        });
     }
   }
 
