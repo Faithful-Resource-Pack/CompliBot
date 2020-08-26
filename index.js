@@ -141,12 +141,12 @@ client.on("message", message => {
         }
 
       } else {
-        message.reply("your texture submission needs to have an image attached!").then(msg => {
+        message.reply("you need to attach a png file!").then(msg => {
           msg.delete({timeout: 30000});
         });
       }
     } else {
-      message.reply("you need to attach a png file!").then(msg => {
+      message.reply("your texture submission needs to have an image attached!").then(msg => {
         msg.delete({timeout: 30000});
       });
     }
