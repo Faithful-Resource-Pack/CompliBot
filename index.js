@@ -2,6 +2,7 @@
 require('dotenv').config();
 const Discord = require("discord.js");
 const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+const axios = require('axios').default;
 var http = require('http');
 var sizeOf = require('image-size');
 const client = new Discord.Client();
