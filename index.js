@@ -40,7 +40,7 @@ client.on("message", message => {
       var ping = m.createdTimestamp - message.createdTimestamp;
 
       var embed = new Discord.MessageEmbed()
-        .setAuthor(message.member.user.tag, message.member.user.iconURL, message.member.user.url)
+        .setAuthor(message.member.user.tag, message.author.avatarURL)
         .setTitle('Your ping is:')
         .setDescription('**' + ping + 'ms**')
         .setColor('#3aafa3')
