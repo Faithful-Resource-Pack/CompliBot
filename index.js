@@ -60,12 +60,9 @@ client.on("message", message => {
     if (amount > 100) return message.reply("You can't delete more than 100 messages at once!");
     if (amount < 1) return message.reply("You have to delete at least 1 message :upside-down:");
 
-    if (message.member.hasPermission("MANAGE_MESSAGES")) {
-      message.channel.fetchMessages({ limit: amount })
-        .then(function(list){
-          message.channel.bulkDelete(list);
-      }, function(err){message.channel.send("ERROR: ERROR CLEARING CHANNEL.")})                        
-    }
+    await msg.channel.messages.fetch({ limit: amount }).then(messages => {
+      msg.channel.bulkDelete(messages)
+    });
   }
 
   // HELP SETTINGS:
