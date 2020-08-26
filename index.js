@@ -51,8 +51,7 @@ client.on("message", message => {
 
   // Clean command:
   if (message.content.startsWith( prefix + 'clear') ){
-    let allowedRole = message.guild.roles.find("747839021421428776");
-    if (message.member.roles.has(allowedRole.id) {
+    if (message.member.roles.find(r => r.name === "God")) {
       console.log('clear triggered');
 
       var args   = message.content.split(' ').slice(1); // cut after '/clear'
