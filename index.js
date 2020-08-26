@@ -106,8 +106,8 @@ client.on("message", message => {
       .setTitle('Textures Submissions help')
       .setColor('#d4a011')
       .addFields(
-        { name: 'How submit a texture for review?', value: 'Go to #submit-textures channel, send a message with the texture you made.', inline: true },
-        { name: 'Message Requirements:', value: 'Texture need to be a .png file, you also have to add the texture name & path (ex: texture `(path/file/file/texture.png)`', inline: true}
+        { name: 'How submit a texture for review?', value: 'Go to #submit-textures channel, send a message with the texture you made.', inline: false },
+        { name: 'Message Requirements:', value: 'Texture need to be a .png file, you also have to add the texture name & path (ex: texture `(path/file/file/texture.png)`', inline: false}
       );
 
     message.channel.send(embed);
@@ -117,8 +117,8 @@ client.on("message", message => {
   if (message.content === prefix + 'behave') {
     message.channel.send("I'm so sorry! (⌯˃̶᷄ ﹏ ˂̶᷄⌯)");
   }
-  if (message.content === '(╯°□°）╯︵ ┻━┻') {
-    message.channel.send('┬─┬ ノ( ゜-゜ノ)');
+  if (message.content.includes('(╯°□°）╯︵ ┻━┻')) {
+    message.channel.reply('┬─┬ ノ( ゜-゜ノ) Take a coffee and calm down');
   }
 
   /**********************************
