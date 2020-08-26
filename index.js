@@ -1,5 +1,5 @@
 // Libs:
-require('dotenv').config(); 
+require('dotenv').config();
 const Discord = require("discord.js");
 const client = new Discord.Client();
 
@@ -27,9 +27,9 @@ function attachIsImage(msgAttach) {
 client.on("message", message => {
   // Bot messages aren't read:
   if (message.author.bot) return;
-  
+
   /**********************************
-          COMMANDS WITH PREFIX 
+          COMMANDS WITH PREFIX
    **********************************/
 
   // Ping command:
@@ -63,7 +63,7 @@ client.on("message", message => {
       if (amount > 100) return message.reply("You can't delete more than 100 messages at once!");
       if (amount < 1) return message.reply("You have to delete at least 1 message :upside-down:");
 
-      try { 
+      try {
         message.channel.messages.fetch({ limit: amount }).then(messages => {
           message.channel.bulkDelete(messages)
         });
@@ -122,7 +122,7 @@ client.on("message", message => {
   }
 
   /**********************************
-         COMMANDS WITHOUT PREFIX 
+         COMMANDS WITHOUT PREFIX
    **********************************/
 
   // TEXTURES SUBMISSIONS:
@@ -131,7 +131,7 @@ client.on("message", message => {
         if (message.attachments.every(attachIsImage)){
 
         if(!message.content.includes('(')) {
-          message.reply("You need to add the texture path to your texture submission, following this example: **texture** `(**file1**/**file2**/**texture.png**)`").then(msg => {
+          message.reply("you need to add the texture path to your texture submission, follow this example: `**texture name** (Content/**folder1**/**folder2**/**texture name.png**)`").then(msg => {
             msg.delete({timeout: 30000});
           });
         } else try {
@@ -141,12 +141,12 @@ client.on("message", message => {
         }
 
       } else {
-        message.reply("Your texture submission needs to have an image file!").then(msg => {
+        message.reply("your texture submission needs to have an image attached!").then(msg => {
           msg.delete({timeout: 30000});
         });
       }
     } else {
-      message.reply("You need to attach a png file!").then(msg => {
+      message.reply("you need to attach a png file!").then(msg => {
         msg.delete({timeout: 30000});
       });
     }
