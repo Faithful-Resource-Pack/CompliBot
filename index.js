@@ -116,7 +116,8 @@ client.on("message", message => {
 		var imgURL = 'https://raw.githubusercontent.com/Faithful-Dungeons/Resource-Pack/master/Block%20Textures/' + texture + '.png';
 		console.log(imgURL);
 
-		axios.get(imgURL).then(function () {
+		axios.get(imgURL).then(function (response) {
+			console.log(response);
 			getMeta(imgURL).then(function (dimension) {
 				var size = dimension.width + 'x' + dimension.height;
 
@@ -136,7 +137,10 @@ client.on("message", message => {
 				message.channel.send(embed);
 			});
 		}).catch(function(error) {
-			message.reply('The specified texture need to exist first!');
+			console.log(error);
+			message.reply('The specified texture need to exist first!').then(msg => {
+        msg.delete({timeout: 30000});
+      });
 		});
 	}
 
