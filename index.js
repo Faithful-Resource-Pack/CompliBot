@@ -99,8 +99,8 @@ client.on("message", message => {
 
 		var imgURL = 'https://raw.githubusercontent.com/Faithful-Dungeons/Resource-Pack/master/Block%20Textures/' + texture + '.png';
 
-		var sizes = getMeta(imgURL);
-		var size  = sizes[0] + 'x' + sizes[1]; 
+		//var sizes = getMeta(imgURL);
+		//var size  = sizes[0] + 'x' + sizes[1]; 
 
 		var embed = new Discord.MessageEmbed()
 			.setAuthor(message.member.user.tag)
@@ -111,7 +111,7 @@ client.on("message", message => {
       .setThumbnail(imgURL)
       .addFields(
         { name: 'Author:', value: 'WIP', inline: true },
-        { name: 'Resolution:', value: size, inline: true }
+        { name: 'Resolution:', value: 'size', inline: true }
       )
       .setFooter('Faithful Dungeons', BotImgURL);
     
