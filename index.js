@@ -47,8 +47,6 @@ client.on("message", message => {
 
       m.edit(embed);
     });
-
-    message.delete(500);
   }
 
   // Clean command:
