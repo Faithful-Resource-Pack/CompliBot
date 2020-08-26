@@ -1,47 +1,97 @@
+// Libs:
 require('dotenv').config(); 
 const Discord = require("discord.js");
 const client = new Discord.Client();
 
+// Secrets:
 prefix = process.env.PREFIX;
 token = process.env.CLIENT_TOKEN;
 
+// Channels ids defitions:
+const IDsubmitR  = '747889024068485180'; // -> #submit-textures (Robert's testing discord)
+const IDsubmitFD = '715236892945285181'; // -> #submit-textures (Faithful Dungeons discord)
+
+// Bot status:
 client.on("ready", () => {
 	client.user.setActivity("https://faithful-dungeons.github.io/Website/", {type: "PLAYING"});
 	console.log("I am turned on lmao");
 });
 
+//True if this url is a png image.
 function attachIsImage(msgAttach) {
     var url = msgAttach.url;
-    //True if this url is a png image.
     return url.indexOf("png", url.length - "png".length /*or 3*/) !== -1;
 }
 
+// Run:
 client.on("message", message => {
   // Bot messages aren't read:
   if (message.author.bot) return;
   
-  // COMMANDS WITH PREFIX
-  if (message.content.startsWith( prefix + ' ping' )) {
-    message.channel.send('Pong!');
+  /**********************************
+          COMMANDS WITH PREFIX 
+   **********************************/
+
+  // Ping command:
+  if (message.content === prefix + 'ping') {
+    console.log('ping triggered');
+
+    message.channel.send('Pinging...').then(m => {
+      var ping = m.createdTimestamp - message.createdTimestamp;
+
+      var embed = new Discord.MessageEmbed()
+        .setAuthor('Your ping is ' + ping)
+        .setColor('#3aafa3')
+
+      m.edit(embed);
+    });
   }
-  if (message.content.startsWith( prefix + ' help' )) {
-    message.channel.send('JavaScript is ~~Awesome~~');
+
+  // HELP SETTINGS:
+  // Help:
+  if (message.content === prefix + 'help') {
+    console.log('help triggered');
+
+    var embed = new Discord.MessageEmbed()
+      .setTitle('Help Menu:')
+      .setColor('#d4a011')
+      .addFields(
+        { name: '`/help`', value: 'open this menu', inline: true },
+        { name: '`/ping`', value: 'return user ping', inline: true },
+        { name: '`/help submission`', value: 'get infos about textures submission', inline: true }
+      );
+
+    message.channel.send(embed);
   }
-  if (message.content.startsWith( prefix + ' behave' )) {
+  // Help submission:
+  if (message.content === prefix + 'help submission') {
+    console.log('help submission triggered');
+
+    var embed = new Discord.MessageEmbed()
+      .setTitle('Textures Submissions help')
+      .setColor('#d4a011')
+      .addFields(
+        { name: 'How submit a texture for review?', value: 'Go to #submit-textures channel, send a message with the texture you made.', inline: true },
+        { name: 'Message Requirements:', value: 'Texture need to be a .png file, you also have to add the texture name & path (ex: texture `(path/file/file/texture.png)`', inline: true}
+      );
+
+    message.channel.send(embed);
+  }
+
+  // Special commands: (easter eggs)
+  if (message.content === prefix + 'behave') {
     message.channel.send("I'm so sorry! (⌯˃̶᷄ ﹏ ˂̶᷄⌯)")
   }
 
-  // COMMANDS WITHOUT PREFIX:
-  // Submit texture feature:
-  // id: 747889024068485180 -> #submit-textures (Robert's testing discord)
-  // id: 715236892945285181 -> #submit-textures (Faithful Dungeons discord)
-  if (message.channel.id === '715236892945285181' || message.channel.id === '715236892945285181') {
-    // if message have a file attached:
+  /**********************************
+         COMMANDS WITHOUT PREFIX 
+   **********************************/
+
+  // TEXTURES SUBMISSIONS:
+  if (message.channel.id === (IDsubmitFD || IDsubmitR)) {
     if (message.attachments.size > 0) {
-      // run function to test url to see if file is an img
         if (message.attachments.every(attachIsImage)){
 
-        // If message doesn't have the texture path:
         if(!message.content.includes('(')) {
           message.reply("You need to add the texture path to your texture submission, following this example: **texture** `(**file1**/**file2**/**texture.png**)`").then(msg => {
             msg.delete({timeout: 30000});
@@ -76,7 +126,7 @@ client.on("message", message => {
         .setThumbnail('https://raw.githubusercontent.com/Faithful-Dungeons/Resource-Pack/master/Block%20Textures/dirt_highblockhalls.png')
         .addFields(
           { name: 'Author:', value: 'Some guy', inline: true },
-          { name: 'Resolution:', value: '32 x 32', inline: true },
+          { name: 'Resolution:', value: '32 x 32', inline: true }
       )
       .setFooter('Faithful Dungeons', 'https://i.imgur.com/ldI5hDM.png');
       message.channel.send(exampleEmbed);
