@@ -51,7 +51,7 @@ client.on("message", message => {
 
   // Clean command:
   if (message.content.startsWith( prefix + 'clear') ){
-    if(message.member.roles.cache.some(r=>["God", "Helper"].includes(r.name)) ) {
+    if(message.member.roles.cache.some(r=>["God", "Helper", "Mod", "Server Creator"].includes(r.name)) ) {
       console.log('clear triggered');
 
       var args   = message.content.split(' ').slice(1); // cut after '/clear'
