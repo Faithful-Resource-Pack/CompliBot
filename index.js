@@ -3,7 +3,7 @@ require('dotenv').config();
 const Discord = require("discord.js");
 const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 const axios = require('axios').default;
-var http = require('http');
+var https = require('https');
 var sizeOf = require('image-size');
 const client = new Discord.Client();
 
@@ -33,7 +33,7 @@ function attachIsImage(msgAttach) {
 function getMeta(imgUrl) {
 	return new Promise(function(resolve, reject) {
 
-		http.get(imgUrl, function (response) {
+		https.get(imgUrl, function (response) {
 			var chunks = [];
 			response.on('data', function (chunk) {
 				chunks.push(chunk);
