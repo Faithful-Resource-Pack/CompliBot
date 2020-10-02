@@ -7,6 +7,14 @@ var https = require('https');
 var sizeOf = require('image-size');
 const client = new Discord.Client();
 
+const express = require('express');
+const app = express();
+const port = 3000;
+
+app.get('/', (req, res) => res.send('Hello World!'));
+
+app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));
+
 // Secrets:
 prefix = process.env.PREFIX;
 token = process.env.CLIENT_TOKEN;
