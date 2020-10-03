@@ -56,8 +56,16 @@ function getMeta(imgUrl) {
 	});
 }
 
+const escapeRegex = str => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
 // Run:
 client.on("message", message => {
+  const prefixRegex = new RegExp(`^(<@!?${client.user.id}>|${escapeRegex(prefix)})\\s*`);
+	if (!prefixRegex.test(message.content)) return;
+
+	const [, matchedPrefix] = message.content.match(prefixRegex);
+	const args = message.content.slice(matchedPrefix.length).trim().split(/ +/);
+	const command = args.shift().toLowerCase();
   // Bot messages aren't read:
   if (message.author.bot) return;
 
@@ -67,7 +75,7 @@ client.on("message", message => {
 
   // Ping command:
   if (message.content === prefix + 'ping') {
-    console.trace('ping triggered');
+    //console.trace('ping triggered');
 
     message.channel.send('Pinging...').then(m => {
       var ping = m.createdTimestamp - message.createdTimestamp;
@@ -86,9 +94,9 @@ client.on("message", message => {
   // Clean command:
   if (message.content.startsWith( prefix + 'clear') ){
     if(message.member.roles.cache.some(r=>["God", "Helper", "Mod", "Server Creator"].includes(r.name)) ) {
-      console.trace('clear triggered');
+      //console.trace('clear triggered');
 
-      var args   = message.content.split(' ').slice(1); // cut after '/clear'
+      var argss   = message.content.split(' ').slice(1); // cut after '/clear'
       var amount = args.join(' ');
 
       if (!amount) return message.reply("You haven't given an amount of messages which should be deleted!");
@@ -116,16 +124,16 @@ client.on("message", message => {
 
 	// TEXTURE REVIEW COMMANDS:
 	if (message.content.startsWith( prefix + 'get') ){
-		console.trace('get triggered');
+		//console.trace('get triggered');
 
-		var args  = message.content.split(' ').slice(1); // cut after command
+		var argss  = message.content.split(' ').slice(1); // cut after command
 		var texture = args.join();
 			  
 		var imgURL = 'https://raw.githubusercontent.com/Faithful-Dungeons/Resource-Pack/master/Block%20Textures/' + texture + '.png';
 		console.log(imgURL);
 
 		axios.get(imgURL).then(function (response) {
-			console.log('well played');
+			//console.log('well played');
 			getMeta(imgURL).then(function (dimension) {
 				var size = dimension.width + 'x' + dimension.height;
 
@@ -157,7 +165,7 @@ client.on("message", message => {
   // HELP SETTINGS:
   // Help:
   if (message.content === prefix + 'help') {
-    console.trace('help triggered');
+    //console.trace('help triggered');
 
     var embed = new Discord.MessageEmbed()
       .setAuthor(message.member.user.tag)
@@ -174,7 +182,7 @@ client.on("message", message => {
   }
   // Help submission:
   if (message.content === prefix + 'help submission') {
-    console.trace('help submission triggered');
+    //console.trace('help submission triggered');
 
     var embed = new Discord.MessageEmbed()
       .setAuthor(message.member.user.tag)
@@ -190,7 +198,7 @@ client.on("message", message => {
   }
 
   // Special commands: (easter eggs)
-  if (message.content === prefix + 'behave') {
+  if (command === 'behave') {
     message.channel.send("I'm so sorry! (⌯˃̶᷄ ﹏ ˂̶᷄⌯)");
   }
   if (message.content.includes('(╯°□°）╯︵ ┻━┻')) {
