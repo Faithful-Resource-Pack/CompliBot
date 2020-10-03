@@ -1,15 +1,15 @@
 // Libs:
 require('dotenv').config();
-const Discord = require("discord.js");
+const Discord        = require("discord.js");
 const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
-const axios = require('axios').default;
-var https = require('https');
-var sizeOf = require('image-size');
-const client = new Discord.Client();
-
-const express = require('express');
-const app = express();
-const port = 3000;
+const axios          = require('axios').default;
+const express        = require('express');
+const app            = express();
+const port           = 3000;
+const speech         = require('./messages');
+var https            = require('https');
+var sizeOf           = require('image-size');
+const client         = new Discord.Client();
 
 app.get('/', (req, res) => res.send('Hello World!'));
 
@@ -156,7 +156,7 @@ client.on("message", message => {
 			});
 		}).catch(function(error) {
 			console.log(error);
-			message.reply('The specified texture need to exist first!').then(msg => {
+			message.reply(speech.BOT_TEXTURE_DOESNT_EXIST).then(msg => {
         msg.delete({timeout: 30000});
       });
 		});
