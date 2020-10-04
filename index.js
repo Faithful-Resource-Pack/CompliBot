@@ -6,25 +6,27 @@ const axios          = require('axios').default;
 const express        = require('express');
 const app            = express();
 const port           = 3000;
-const speech         = require('./messages');
 var https            = require('https');
 var sizeOf           = require('image-size');
 const client         = new Discord.Client();
 
 app.get('/', (req, res) => res.send('Hello World!'));
-
 app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));
+
+// External files
+const speech = require('./messages');
 
 // Secrets:
 prefix = process.env.PREFIX;
-token = process.env.CLIENT_TOKEN;
+token  = process.env.CLIENT_TOKEN;
 
 // Channels ids defitions:
 const IDsubmitR  = '747889024068485180'; // -> #submit-textures (Robert's testing discord)
 const IDsubmitFD = '715236892945285181'; // -> #submit-textures (Faithful Dungeons discord)
 
-// Bot logo:
-const BotImgURL = 'https://i.imgur.com/ldI5hDM.png';
+// Various settings:
+const BotImgURL   = 'https://i.imgur.com/ldI5hDM.png';
+const EMBED_COLOR = '#E1631F'
 
 // Bot status:
 client.on("ready", () => {
@@ -73,6 +75,24 @@ client.on("message", message => {
           COMMANDS WITH PREFIX
    **********************************/
 
+  // Modding Tools:
+  if (command === 'modtools') {
+    //console.trace('modding tools triggered');
+
+    const embed = new Discord.MessageEmbed()
+			.setTitle('Tools for making Dungeons mods:')
+			.setColor(EMBED_COLOR)
+			.setThumbnail(BotImgURL)
+			.addFields(
+				{ name: 'Dungeons mod kit by CCCode:', value: 'https://github.com/Dokucraft/Dungeons-Mod-Kit', inline: true },
+				{ name: 'Loading icon creator:', value: 'https://github.com/Faithful-Dungeons/Resource-Pack/tree/master/Tools/loader', inline: true },
+        { name: 'Alpha image converter:', value: 'https://github.com/Faithful-Dungeons/Resource-Pack/tree/master/Tools/alpha_img', inline: true },
+			)
+				.setFooter('Faithful Dungeons', BotImgURL);
+
+    message.channel.send(embed);
+  }
+
   // Ping command:
   if (message.content === prefix + 'ping') {
     //console.trace('ping triggered');
@@ -81,10 +101,9 @@ client.on("message", message => {
       var ping = m.createdTimestamp - message.createdTimestamp;
 
       var embed = new Discord.MessageEmbed()
-        .setAuthor(message.member.user.tag)
         .setTitle('Your ping is:')
         .setDescription('**' + ping + 'ms**')
-        .setColor('#3aafa3')
+        .setColor(EMBED_COLOR)
         .setFooter('Faithful Dungeons', 'https://i.imgur.com/ldI5hDM.png');
 
       m.edit(embed);
@@ -138,9 +157,8 @@ client.on("message", message => {
 				var size = dimension.width + 'x' + dimension.height;
 
 				var embed = new Discord.MessageEmbed()
-				.setAuthor(message.member.user.tag)
 				.setTitle(texture)
-				.setColor('#dd7735')
+				.setColor(EMBED_COLOR)
 				.setURL(imgURL)
 				.setDescription('block texture')
 				.setThumbnail(imgURL)
@@ -168,9 +186,8 @@ client.on("message", message => {
     //console.trace('help triggered');
 
     var embed = new Discord.MessageEmbed()
-      .setAuthor(message.member.user.tag)
       .setTitle('Help Menu:')
-      .setColor('#d4a011')
+      .setColor(EMBED_COLOR)
       .addFields(
         { name: '`/help`', value: 'open this menu', inline: true },
         { name: '`/ping`', value: 'return user ping', inline: true },
@@ -185,9 +202,8 @@ client.on("message", message => {
     //console.trace('help submission triggered');
 
     var embed = new Discord.MessageEmbed()
-      .setAuthor(message.member.user.tag)
       .setTitle('Textures Submissions help')
-      .setColor('#d4a011')
+      .setColor(EMBED_COLOR)
       .addFields(
         { name: 'How submit a texture for review?', value: 'Go to #submit-textures channel, send a message with the texture you made.', inline: false },
         { name: 'Message Requirements:', value: 'Texture need to be a .png file, you also have to add the texture name & path (ex: texture `(path/file/file/texture.png)`', inline: false}
