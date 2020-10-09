@@ -77,6 +77,10 @@ client.on('message', message => {
 
   const command = client.commands.get(commandName);
 
+  if (message.channel.type === 'dm') {
+  	return message.reply('My creators don\'t allow me to execute commands inside DMs, sorry!');
+  }
+
   try {
 	  command.execute(message, args);
   } catch (error) {
