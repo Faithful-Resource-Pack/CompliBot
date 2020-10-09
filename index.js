@@ -4,11 +4,15 @@ const Discord        = require("discord.js");
 const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 const axios          = require('axios').default;
 const express        = require('express');
+const fs             = require('fs');
 const app            = express();
 const port           = 3000;
 var https            = require('https');
 var sizeOf           = require('image-size');
 const client         = new Discord.Client();
+client.commands      = new Discord.Collection();
+
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
 app.get('/', (req, res) => res.send('Hello World!'));
 app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));
@@ -26,7 +30,7 @@ const IDsubmitFD = '715236892945285181'; // -> #submit-textures (Faithful Dungeo
 
 // Various settings:
 const BotImgURL   = 'https://i.imgur.com/ldI5hDM.png';
-const EMBED_COLOR = '#E1631F'
+const EMBED_COLOR = '#E1631F';
 
 // Bot status:
 client.on("ready", () => {
@@ -58,16 +62,32 @@ function getMeta(imgUrl) {
 	});
 }
 
-const escapeRegex = str => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+for (const file of commandFiles) {
+	const command = require(`./commands/${file}`);
+	client.commands.set(command.name, command);
+}
+
+client.on('message', message => {
+  if (!message.content.startsWith(prefix) || message.author.bot) return;
+
+	const args = message.content.slice(prefix.length).trim().split(/ +/);
+	const commandName = args.shift().toLowerCase();
+
+  if (!client.commands.has(commandName)) return;
+
+  const command = client.commands.get(commandName);
+
+  try {
+	  command.execute(message, args);
+  } catch (error) {
+	  console.error(error);
+	  message.reply('there was an error trying to execute that command!');
+  }
+});
+
 
 // Run:
 client.on("message", message => {
-  const prefixRegex = new RegExp(`^(<@!?${client.user.id}>|${escapeRegex(prefix)})\\s*`);
-	if (!prefixRegex.test(message.content)) return;
-
-	const [, matchedPrefix] = message.content.match(prefixRegex);
-	const args = message.content.slice(matchedPrefix.length).trim().split(/ +/);
-	const command = args.shift().toLowerCase();
   // Bot messages aren't read:
   if (message.author.bot) return;
 
@@ -75,43 +95,8 @@ client.on("message", message => {
           COMMANDS WITH PREFIX
    **********************************/
 
-  // Modding Tools:
-  if (command === 'modtools') {
-    //console.trace('modding tools triggered');
-
-    const embed = new Discord.MessageEmbed()
-			.setTitle('Tools for making Dungeons mods:')
-			.setColor(EMBED_COLOR)
-			.setThumbnail(BotImgURL)
-			.addFields(
-				{ name: 'Dungeons mod kit by CCCode:', value: 'https://github.com/Dokucraft/Dungeons-Mod-Kit', inline: true },
-				{ name: 'Loading icon creator:', value: 'https://github.com/Faithful-Dungeons/Resource-Pack/tree/master/Tools/loader', inline: true },
-        { name: 'Alpha image converter:', value: 'https://github.com/Faithful-Dungeons/Resource-Pack/tree/master/Tools/alpha_img', inline: true },
-			)
-				.setFooter('Faithful Dungeons', BotImgURL);
-
-    message.channel.send(embed);
-  }
-
-  // Ping command:
-  if (message.content === prefix + 'ping') {
-    //console.trace('ping triggered');
-
-    message.channel.send('Pinging...').then(m => {
-      var ping = m.createdTimestamp - message.createdTimestamp;
-
-      var embed = new Discord.MessageEmbed()
-        .setTitle('Your ping is:')
-        .setDescription('**' + ping + 'ms**')
-        .setColor(EMBED_COLOR)
-        .setFooter('Faithful Dungeons', 'https://i.imgur.com/ldI5hDM.png');
-
-      m.edit(embed);
-    });
-  }
-
   // Clean command:
-  if (message.content.startsWith( prefix + 'clear') ){
+  /*if (message.content.startsWith( prefix + 'clear') ){
     if(message.member.roles.cache.some(r=>["God", "Helper", "Mod", "Server Creator"].includes(r.name)) ) {
       //console.trace('clear triggered');
 
@@ -219,7 +204,7 @@ client.on("message", message => {
   }
   if (message.content.includes('(╯°□°）╯︵ ┻━┻')) {
     message.reply('┬─┬ ノ( ゜-゜ノ) Take a coffee and calm down');
-  }
+  }*/
 
   /**********************************
          COMMANDS WITHOUT PREFIX
@@ -254,7 +239,7 @@ client.on("message", message => {
 
   // Check texture feature
   // All channel without #submit-texture
-  if (message.channel.id !== '747889024068485180' ) {
+  /*if (message.channel.id !== '747889024068485180' ) {
     if(message.content.includes('#4393' )) {
       const exampleEmbed = new Discord.MessageEmbed()
         .setAuthor(message.member.user.tag)
@@ -270,7 +255,7 @@ client.on("message", message => {
       .setFooter('Faithful Dungeons', BotImgURL);
       message.channel.send(exampleEmbed);
     }
-  }
+  }*/
 });
 
 client.login(token);
