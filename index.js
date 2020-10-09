@@ -34,7 +34,7 @@ const EMBED_COLOR = '#E1631F';
 
 // Bot status:
 client.on("ready", () => {
-	client.user.setActivity("https://faithful-dungeons.github.io/Website/", {type: "PLAYING"});
+	client.user.setActivity("https://faithful.team/", {type: "PLAYING"});
 	console.log("JavaScript is pain, but i'm fine, i hope...");
 });
 
