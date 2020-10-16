@@ -38,6 +38,12 @@ client.on("ready", () => {
 	console.log("JavaScript is pain, but i'm fine, i hope...");
 });
 
+function NoPermission(message){
+	message.reply("You don't have the permission to do that!").then(msg => {
+		msg.delete({timeout: DELETE_TIME});
+	});
+}
+
 //True if this url is a png image.
 function attachIsImage(msgAttach) {
   var url = msgAttach.url;
@@ -205,10 +211,10 @@ client.on("message", message => {
   // Special commands: (easter eggs)
   if (command === 'behave') {
     message.channel.send("I'm so sorry! (⌯˃̶᷄ ﹏ ˂̶᷄⌯)");
-  }
+  }*/
   if (message.content.includes('(╯°□°）╯︵ ┻━┻')) {
     message.reply('┬─┬ ノ( ゜-゜ノ) Take a coffee and calm down');
-  }*/
+  }
 
   /**********************************
          COMMANDS WITHOUT PREFIX
