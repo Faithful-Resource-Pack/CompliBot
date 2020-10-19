@@ -56,6 +56,19 @@ module.exports = {
 
         m.edit(embed);
       });
+      //Faithful Traditional
+    } else if (message.guild.id === '766856721712545824') { 
+		  message.channel.send('Pinging...').then(m => {
+        var ping = m.createdTimestamp - message.createdTimestamp;
+
+        var embed = new Discord.MessageEmbed()
+          .setTitle('Your ping is:')
+          .setDescription('**' + ping + 'ms**')
+          .setColor('#FFD800')
+          .setFooter('Faithful Traditional', 'https://i.imgur.com/SLpji2x.png');
+
+        m.edit(embed);
+      });
       //Other servers
     } else { 
 		  message.channel.send('Pinging...').then(m => {

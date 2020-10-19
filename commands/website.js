@@ -40,6 +40,15 @@ module.exports = {
 	  		.setColor('#47E9D6')
 	  		.setFooter('Faithful Addons', 'https://i.imgur.com/OSpMYU6.png');
       message.channel.send(embed);
+      //Faithful Traditional
+    } else if (message.guild.id === '766856721712545824') { 
+		  const embed = new Discord.MessageEmbed()
+	  		.setTitle('Faithful Traditional page:')
+        .setDescription('https://www.planetminecraft.com/texture-pack/faithful-traditional-64x/')
+        .setThumbnail('https://i.imgur.com/SLpji2x.png')
+	  		.setColor('#FFD800')
+	  		.setFooter('Faithful Traditional', 'https://i.imgur.com/SLpji2x.png');
+      message.channel.send(embed);
       //Other servers
     } else { 
 		  const embed = new Discord.MessageEmbed()

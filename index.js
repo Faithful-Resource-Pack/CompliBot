@@ -44,7 +44,7 @@ function NoPermission(message){
 	});
 }
 
-//True if this url is a png image.
+//True if this url is a png image
 function attachIsImage(msgAttach) {
   var url = msgAttach.url;
   return url.indexOf("png", url.length - "png".length /*or 3*/) !== -1;
@@ -241,6 +241,20 @@ client.on("message", message => {
         });
       }
     } else {
+      message.reply("your texture submission needs to have an image attached!").then(msg => {
+        msg.delete({timeout: 30000});
+      });
+    }
+  }
+  // TEXTURES SUBMISSIONS FAITHFUL TRADITIONAL:
+  if (message.channel.id === ('767464832285933578')) {
+    if (message.attachments.size > 0) {
+      try {
+        message.react('✅').then(() => {message.react('❌')});
+      } catch (error) {
+        console.error("ERROR | One of the emojis failed to react!");
+      }
+    } else if(!message.member.roles.cache.some(r=>["Pack Managers", "Server Managers"].includes(r.name)) ) {
       message.reply("your texture submission needs to have an image attached!").then(msg => {
         msg.delete({timeout: 30000});
       });

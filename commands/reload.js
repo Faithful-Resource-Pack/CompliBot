@@ -3,7 +3,7 @@ module.exports = {
 	description: 'Reloads a command',
 	args: true,
 	execute(message, args) {
-    if(message.member.roles.cache.some(r=>["God", "Mod", "Server Manager", "Faithful Tweaks Team"].includes(r.name)) ) {
+    if(message.member.roles.cache.some(r=>["God", "Mod", "Server Manager", "Faithful Tweaks Team", "Server Managers"].includes(r.name)) ) {
 		  const commandName = args[0].toLowerCase();
 		  const command = message.client.commands.get(commandName)
 		  	|| message.client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
