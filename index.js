@@ -2,13 +2,10 @@
 require('dotenv').config();
 const Discord        = require("discord.js");
 const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
-const axios          = require('axios').default;
 const express        = require('express');
 const fs             = require('fs');
 const app            = express();
 const port           = 3000;
-var https            = require('https');
-var sizeOf           = require('image-size');
 const client         = new Discord.Client();
 client.commands      = new Discord.Collection();
 
@@ -16,9 +13,6 @@ const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('
 
 app.get('/', (req, res) => res.send('Hello World!'));
 app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));
-
-// External files
-const speech = require('./messages');
 
 // Secrets:
 prefix = process.env.PREFIX;
@@ -49,24 +43,6 @@ function attachIsImage(msgAttach) {
   var url = msgAttach.url;
   return url.indexOf("png", url.length - "png".length /*or 3*/) !== -1;
 }
-//Return Image size, need url.
-function getMeta(imgUrl) {
-	return new Promise(function(resolve, reject) {
-
-		https.get(imgUrl, function (response) {
-			var chunks = [];
-			response.on('data', function (chunk) {
-				chunks.push(chunk);
-			}).on('end', function() {
-				var buffer = Buffer.concat(chunks);
-				resolve(sizeOf(buffer));
-			});
-		}).on('error', function(error) {
-			reject(error);
-		});
-
-	});
-}
 
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
@@ -74,6 +50,7 @@ for (const file of commandFiles) {
 }
 
 client.on('message', message => {
+  // Bot messages aren't read:
   if (!message.content.startsWith(prefix) || message.author.bot) return;
 
 	const args = message.content.slice(prefix.length).trim().split(/ +/);
@@ -99,7 +76,7 @@ client.on('message', message => {
 // Run:
 client.on("message", message => {
   // Bot messages aren't read:
-  if (message.author.bot) return;
+  if (!message.content.startsWith(prefix) || message.author.bot) return;
 
   /**********************************
           COMMANDS WITH PREFIX
@@ -135,45 +112,6 @@ client.on("message", message => {
         });
     }
   }
-
-	// TEXTURE REVIEW COMMANDS:
-	if (message.content.startsWith( prefix + 'get') ){
-		//console.trace('get triggered');
-
-		var argss  = message.content.split(' ').slice(1); // cut after command
-		var texture = args.join();
-			  
-		var imgURL = 'https://raw.githubusercontent.com/Faithful-Dungeons/Resource-Pack/master/Block%20Textures/' + texture + '.png';
-		console.log(imgURL);
-
-		axios.get(imgURL).then(function (response) {
-			//console.log('well played');
-			getMeta(imgURL).then(function (dimension) {
-				var size = dimension.width + 'x' + dimension.height;
-
-				var embed = new Discord.MessageEmbed()
-				.setTitle(texture)
-				.setColor(EMBED_COLOR)
-				.setURL(imgURL)
-				.setDescription('block texture')
-				.setThumbnail(imgURL)
-				.addFields(
-					{ name: 'Author:', value: 'WIP', inline: true },
-					{ name: 'Resolution:', value: size, inline: true }
-				)
-				.setFooter('Faithful Dungeons', BotImgURL);
-			
-				message.channel.send(embed);
-			}).catch(function(error) {
-				console.log(error);
-			});
-		}).catch(function(error) {
-			console.log(error);
-			message.reply(speech.BOT_TEXTURE_DOESNT_EXIST).then(msg => {
-        msg.delete({timeout: 30000});
-      });
-		});
-	}
 
   // HELP SETTINGS:
   // Help:
@@ -261,25 +199,6 @@ client.on("message", message => {
     }
   }
 
-  // Check texture feature
-  // All channel without #submit-texture
-  /*if (message.channel.id !== '747889024068485180' ) {
-    if(message.content.includes('#4393' )) {
-      const exampleEmbed = new Discord.MessageEmbed()
-        .setAuthor(message.member.user.tag)
-        .setColor('#dd7735')
-        .setTitle('dirt_highblockhalls.png')
-        .setURL('https://raw.githubusercontent.com/Faithful-Dungeons/Resource-Pack/master/Block%20Textures/dirt_highblockhalls.png')
-        .setDescription('block texture')
-        .setThumbnail('https://raw.githubusercontent.com/Faithful-Dungeons/Resource-Pack/master/Block%20Textures/dirt_highblockhalls.png')
-        .addFields(
-          { name: 'Author:', value: 'Some guy', inline: true },
-          { name: 'Resolution:', value: '32 x 32', inline: true }
-      )
-      .setFooter('Faithful Dungeons', BotImgURL);
-      message.channel.send(exampleEmbed);
-    }
-  }*/
 });
 
 client.login(token);
