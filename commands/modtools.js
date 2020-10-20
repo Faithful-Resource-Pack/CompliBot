@@ -8,7 +8,9 @@ module.exports = {
 	execute(message, args) {
     if (message.guild.id !== '714910830272970834') return message.reply('This command can only be used in the Faithful Dungeons server!').then(msg => {
           msg.delete({timeout: 30000});
+          message.react('❌');
         });
+        
     else {
     //console.trace('modding tools triggered');
 

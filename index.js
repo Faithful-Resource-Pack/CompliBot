@@ -19,7 +19,7 @@ prefix = process.env.PREFIX;
 token  = process.env.CLIENT_TOKEN;
 
 // Channels ids defitions:
-const IDsubmitR  = '747889024068485180'; // -> #submit-textures (Robert's testing discord)
+const IDsubmitR  = '768097653376155659'; // -> #submit-textures (Robert's testing discord)
 const IDsubmitFD = '715236892945285181'; // -> #submit-textures (Faithful Dungeons discord)
 
 // Various settings:
@@ -77,10 +77,6 @@ client.on('message', message => {
 client.on("message", message => {
   // Bot messages aren't read:
   if (!message.content.startsWith(prefix) || message.author.bot) return;
-
-  /**********************************
-          COMMANDS WITH PREFIX
-   **********************************/
 
   // Clean command:
   /*if (message.content.startsWith( prefix + 'clear') ){
@@ -154,18 +150,15 @@ client.on("message", message => {
     message.reply('┬─┬ ノ( ゜-゜ノ) Take a coffee and calm down');
   }
 
-  /**********************************
-         COMMANDS WITHOUT PREFIX
-   **********************************/
-
   // TEXTURES SUBMISSIONS:
   if (message.channel.id === (IDsubmitFD || IDsubmitR)) {
     if (message.attachments.size > 0) {
         if (message.attachments.every(attachIsImage)){
 
         if(!message.content.includes('(')) {
-          message.reply("you need to add the texture path to your texture submission, follow this example: `**texture name** (Content/**folder1**/**folder2**/**texture name.png**)`").then(msg => {
+          message.reply("you need to add the texture path to your texture submission, follow this example: `**texture name** (Content/**folder1****folder2****texture name.png**)`").then(msg => {
             msg.delete({timeout: 30000});
+            message.react('⛔️');
           });
         } else try {
           message.react('✅').then(() => {message.react('❌')});
@@ -176,11 +169,13 @@ client.on("message", message => {
       } else {
         message.reply("you need to attach a png file!").then(msg => {
           msg.delete({timeout: 30000});
+          message.react('⛔️');
         });
       }
     } else {
       message.reply("your texture submission needs to have an image attached!").then(msg => {
         msg.delete({timeout: 30000});
+        message.react('⛔️');
       });
     }
   }
@@ -195,6 +190,7 @@ client.on("message", message => {
     } else if(!message.member.roles.cache.some(r=>["Pack Managers", "Server Managers"].includes(r.name)) ) {
       message.reply("your texture submission needs to have an image attached!").then(msg => {
         msg.delete({timeout: 30000});
+        message.react('⛔️');
       });
     }
   }

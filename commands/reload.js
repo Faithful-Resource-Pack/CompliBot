@@ -9,7 +9,7 @@ module.exports = {
 		  	|| message.client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
 		  if (!command) {
-        message.react('❌')
+        message.react('❌');
         return message.reply(`there is no command with name or alias \`${commandName}\`!`).then(msg => {
           msg.delete({timeout: 30000});
         });
@@ -20,13 +20,13 @@ module.exports = {
 		  try {
 		  	const newCommand = require(`./${command.name}.js`);
 		  	message.client.commands.set(newCommand.name, newCommand);
-		  	message.react('✅')
+		  	message.react('✅');
 		  } catch (error) {
 		  	console.error(error);
-		  	message.react('❌')
+		  	message.react('❌');
 		  }
     } else {
-      message.react('❌')
+      message.react('❌');
       message.reply("You don't have the permission to do that!").then(msg => {
           msg.delete({timeout: 30000});
         });

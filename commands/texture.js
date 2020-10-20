@@ -29,8 +29,9 @@ module.exports = {
 	name: 'texture',
 	description: 'Displays a specified texture from Faithful Dungeons',
 	execute(message, args) {
-    if (message.guild.id !== '714910830272970834') return message.reply('This command can only be used in the Faithful Dungeons server!').then(msg => {
+    if (message.guild.id !== '714910830272970834') return message.reply('this command can only be used in the Faithful Dungeons server!').then(msg => {
           msg.delete({timeout: 30000});
+          message.react('❌');
         });
     else {
       //console.trace('get texture triggered');
@@ -64,6 +65,7 @@ module.exports = {
 			  });
 		  }).catch(function(error) {
 			  console.log(error);
+        message.react('❌');
 			  message.reply(speech.BOT_TEXTURE_DOESNT_EXIST).then(msg => {
           msg.delete({timeout: 30000});
         });

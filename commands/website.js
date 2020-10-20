@@ -10,7 +10,7 @@ module.exports = {
 	  		.setTitle('Faithful Dungeons Website:')
         .setDescription('https://faithful-dungeons.github.io/Website/')
         .setThumbnail('https://i.imgur.com/ldI5hDM.png')
-	  		.setColor('#FFBB00')
+	  		.setColor('#E1631F')
 	  		.setFooter('Faithful Dungeons', 'https://i.imgur.com/ldI5hDM.png');
       message.channel.send(embed);
       //Faithful Mods

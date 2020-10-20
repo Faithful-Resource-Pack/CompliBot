@@ -12,7 +12,7 @@ module.exports = {
         var embed = new Discord.MessageEmbed()
           .setTitle('Your ping is:')
           .setDescription('**' + ping + 'ms**')
-          .setColor('#FFBB00')
+          .setColor('#E1631F')
           .setFooter('Faithful Dungeons', 'https://i.imgur.com/ldI5hDM.png');
 
         m.edit(embed);
