@@ -10,7 +10,6 @@ module.exports = {
           msg.delete({timeout: 30000});
           message.react('❌');
         });
-        
     else {
     //console.trace('modding tools triggered');
 

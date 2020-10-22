@@ -72,6 +72,13 @@ client.on('message', message => {
   }
 });
 
+/*client.on('message', message => {
+  if (message.content.startsWith(prefix) || message.author.bot) return;
+	console.log(message.content);
+  if (message.channel.id === ('768097653376155659')) {
+    message.channel.send('I got your message bro');
+  }
+});*/
 
 // Run:
 client.on("message", message => {
@@ -151,14 +158,14 @@ client.on("message", message => {
   }
 
   // TEXTURES SUBMISSIONS:
-  if (message.channel.id === (IDsubmitFD || IDsubmitR)) {
+  if (message.channel.id === IDsubmitFD) {
     if (message.attachments.size > 0) {
         if (message.attachments.every(attachIsImage)){
 
         if(!message.content.includes('(')) {
-          message.reply("you need to add the texture path to your texture submission, follow this example: `**texture name** (Content/**folder1****folder2****texture name.png**)`").then(msg => {
+          message.reply("you need to add the texture path to your texture submission, follow this example: `**texture name** (Content/**folder1**/**folder2**/**texture name.png**)`").then(msg => {
             msg.delete({timeout: 30000});
-            message.react('⛔️');
+            message.react('❌');
           });
         } else try {
           message.react('✅').then(() => {message.react('❌')});
@@ -169,18 +176,18 @@ client.on("message", message => {
       } else {
         message.reply("you need to attach a png file!").then(msg => {
           msg.delete({timeout: 30000});
-          message.react('⛔️');
+          message.react('❌');
         });
       }
     } else {
       message.reply("your texture submission needs to have an image attached!").then(msg => {
         msg.delete({timeout: 30000});
-        message.react('⛔️');
+        message.react('❌');
       });
     }
   }
   // TEXTURES SUBMISSIONS FAITHFUL TRADITIONAL:
-  if (message.channel.id === ('767464832285933578')) {
+  if (message.channel.id === '767464832285933578') {
     if (message.attachments.size > 0) {
       try {
         message.react('✅').then(() => {message.react('❌')});
@@ -190,7 +197,7 @@ client.on("message", message => {
     } else if(!message.member.roles.cache.some(r=>["Pack Managers", "Server Managers"].includes(r.name)) ) {
       message.reply("your texture submission needs to have an image attached!").then(msg => {
         msg.delete({timeout: 30000});
-        message.react('⛔️');
+        message.react('❌');
       });
     }
   }
