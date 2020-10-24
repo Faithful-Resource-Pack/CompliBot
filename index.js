@@ -83,7 +83,7 @@ client.on('message', message => {
 // Run:
 client.on("message", message => {
   // Bot messages aren't read:
-  if (!message.content.startsWith(prefix) || message.author.bot) return;
+  if (message.content.startsWith(prefix) || message.author.bot) return;
 
   // Clean command:
   /*if (message.content.startsWith( prefix + 'clear') ){
