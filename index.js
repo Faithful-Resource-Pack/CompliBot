@@ -1,7 +1,7 @@
 // Libs:
 require('dotenv').config();
-const Discord        = require("discord.js");
-const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+const Discord        = require('discord.js');
+const XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
 const express        = require('express');
 const fs             = require('fs');
 const app            = express();
@@ -27,13 +27,13 @@ const BotImgURL   = 'https://i.imgur.com/ldI5hDM.png';
 const EMBED_COLOR = '#E1631F';
 
 // Bot status:
-client.on("ready", () => {
-	client.user.setActivity("https://faithful.team/", {type: "PLAYING"});
-	console.log("JavaScript is pain, but i'm fine, i hope...");
+client.on('ready', () => {
+	client.user.setActivity('https://faithful.team/', {type: 'PLAYING'});
+	console.log('JavaScript is pain, but i\'m fine, i hope...');
 });
 
 function NoPermission(message){
-	message.reply("You don't have the permission to do that!").then(msg => {
+	message.reply('You don\'t have the permission to do that!').then(msg => {
 		msg.delete({timeout: DELETE_TIME});
 	});
 }
@@ -41,7 +41,7 @@ function NoPermission(message){
 //True if this url is a png image
 function attachIsImage(msgAttach) {
   var url = msgAttach.url;
-  return url.indexOf("png", url.length - "png".length /*or 3*/) !== -1;
+  return url.indexOf('png', url.length - 'png'.length /*or 3*/) !== -1;
 }
 
 for (const file of commandFiles) {
@@ -56,9 +56,10 @@ client.on('message', message => {
 	const args = message.content.slice(prefix.length).trim().split(/ +/);
 	const commandName = args.shift().toLowerCase();
 
-  if (!client.commands.has(commandName)) return;
+  const command = client.commands.get(commandName)
+		|| client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
-  const command = client.commands.get(commandName);
+	if (!command) return;
 
   if (message.channel.type === 'dm') {
   	return message.reply('My creators don\'t allow me to execute commands inside DMs, sorry!');
@@ -81,7 +82,7 @@ client.on('message', message => {
 });*/
 
 // Run:
-client.on("message", message => {
+client.on('message', message => {
   // Bot messages aren't read:
   if (message.content.startsWith(prefix) || message.author.bot) return;
 
@@ -163,24 +164,24 @@ client.on("message", message => {
         if (message.attachments.every(attachIsImage)){
 
         if(!message.content.includes('(')) {
-          message.reply("you need to add the texture path to your texture submission, follow this example: `**texture name** (Content/**folder1**/**folder2**/**texture name.png**)`").then(msg => {
+          message.reply('you need to add the texture path to your texture submission, follow this example: `**texture name** (Content/**folder1**/**folder2**/**texture name.png**)`').then(msg => {
             msg.delete({timeout: 30000});
             message.react('❌');
           });
         } else try {
           message.react('✅').then(() => {message.react('❌')});
         } catch (error) {
-          console.error("ERROR | One of the emojis failed to react!");
+          console.error('ERROR | One of the emojis failed to react!');
         }
 
       } else {
-        message.reply("you need to attach a png file!").then(msg => {
+        message.reply('you need to attach a png file!').then(msg => {
           msg.delete({timeout: 30000});
           message.react('❌');
         });
       }
     } else {
-      message.reply("your texture submission needs to have an image attached!").then(msg => {
+      message.reply('your texture submission needs to have an image attached!').then(msg => {
         msg.delete({timeout: 30000});
         message.react('❌');
       });
@@ -192,10 +193,10 @@ client.on("message", message => {
       try {
         message.react('✅').then(() => {message.react('❌')});
       } catch (error) {
-        console.error("ERROR | One of the emojis failed to react!");
+        console.error('ERROR | One of the emojis failed to react!');
       }
-    } else if(!message.member.roles.cache.some(r=>["Pack Managers", "Server Managers"].includes(r.name)) ) {
-      message.reply("your texture submission needs to have an image attached!").then(msg => {
+    } else if(!message.member.roles.cache.some(r=>['Pack Managers', 'Server Managers'].includes(r.name)) ) {
+      message.reply('your texture submission needs to have an image attached!').then(msg => {
         msg.delete({timeout: 30000});
         message.react('❌');
       });

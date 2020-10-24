@@ -1,4 +1,4 @@
-const Discord     = require("discord.js");
+const Discord     = require('discord.js');
 const EMBED_COLOR = '#E1631F';
 const BotImgURL   = 'https://i.imgur.com/ldI5hDM.png';
 const axios       = require('axios').default;

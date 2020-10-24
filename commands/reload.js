@@ -27,7 +27,7 @@ module.exports = {
 		  }
     } else {
       message.react('❌');
-      message.reply("You don't have the permission to do that!").then(msg => {
+      message.reply('You don\'t have the permission to do that!').then(msg => {
           msg.delete({timeout: 30000});
         });
     }
