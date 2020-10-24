@@ -1,5 +1,5 @@
 # Discord-Bot
-The official Discord bot of most Faithful servers.
+The official Discord bot of most Faithful servers. 
 
 # Online on:
 - Faithful Dungeons
