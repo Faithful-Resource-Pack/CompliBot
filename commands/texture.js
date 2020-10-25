@@ -1,10 +1,9 @@
-const Discord     = require('discord.js');
-const EMBED_COLOR = '#E1631F';
-const BotImgURL   = 'https://i.imgur.com/ldI5hDM.png';
-const axios       = require('axios').default;
-var https         = require('https');
-var sizeOf        = require('image-size');
-const speech      = require('../messages');
+const Discord  = require('discord.js');
+const axios    = require('axios').default;
+var https      = require('https');
+var sizeOf     = require('image-size');
+const speech   = require('../messages');
+const settings = require('../settings.js');
 
 //Return Image size, need url.
 function getMeta(imgUrl) {
@@ -49,7 +48,7 @@ module.exports = {
 
 				  var embed = new Discord.MessageEmbed()
 				  .setTitle(texture)
-				  .setColor(EMBED_COLOR)
+				  .setColor(settings.FDungeonsColor)
 				  .setURL(imgURL)
 				  .setDescription('block texture')
 				  .setThumbnail(imgURL)
@@ -57,7 +56,7 @@ module.exports = {
 				  	{ name: 'Author:', value: 'WIP', inline: true },
 				  	{ name: 'Resolution:', value: size, inline: true }
 				  )
-				  .setFooter('Faithful Dungeons', BotImgURL);
+				  .setFooter('Faithful Dungeons', settings.FDungeonsIMG);
 
 				  message.channel.send(embed);
 			  }).catch(function(error) {

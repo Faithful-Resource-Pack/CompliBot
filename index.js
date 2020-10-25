@@ -21,10 +21,6 @@ token  = process.env.CLIENT_TOKEN;
 // Channels ids defitions:
 const IDsubmitFD = '715236892945285181'; // -> #submit-textures (Faithful Dungeons discord)
 
-// Various settings:
-const BotImgURL   = 'https://i.imgur.com/ldI5hDM.png';
-const EMBED_COLOR = '#E1631F';
-
 // Bot status:
 client.on('ready', () => {
 	client.user.setActivity('https://faithful.team/', {type: 'PLAYING'});
