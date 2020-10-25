@@ -1,9 +1,20 @@
+const speech = require('../messages.js');
+
+uidR = process.env.UIDR;
+uidJ  = process.env.UIDJ;
+
 module.exports = {
 	name: 'reload',
 	description: 'Reloads a command',
 	args: true,
 	execute(message, args) {
-    if(message.member.roles.cache.some(r=>["God", "Mod", "Server Manager", "Faithful Tweaks Team", "Server Managers"].includes(r.name)) ) {
+    if (message.author.id !== (uidR || uidJ)) {
+      message.react('❌');
+      message.reply(speech.BOT_NO_PERMISSION).then(msg => {
+          msg.delete({timeout: 30000});
+        });
+    }
+    else {
 		  const commandName = args[0].toLowerCase();
 		  const command = message.client.commands.get(commandName)
 		  	|| message.client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
@@ -25,11 +36,6 @@ module.exports = {
 		  	console.error(error);
 		  	message.react('❌');
 		  }
-    } else {
-      message.react('❌');
-      message.reply('You don\'t have the permission to do that!').then(msg => {
-          msg.delete({timeout: 30000});
-        });
     }
 	}
 };

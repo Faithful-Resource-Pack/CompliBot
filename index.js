@@ -19,7 +19,6 @@ prefix = process.env.PREFIX;
 token  = process.env.CLIENT_TOKEN;
 
 // Channels ids defitions:
-const IDsubmitR  = '768097653376155659'; // -> #submit-textures (Robert's testing discord)
 const IDsubmitFD = '715236892945285181'; // -> #submit-textures (Faithful Dungeons discord)
 
 // Various settings:
@@ -31,12 +30,6 @@ client.on('ready', () => {
 	client.user.setActivity('https://faithful.team/', {type: 'PLAYING'});
 	console.log('JavaScript is pain, but i\'m fine, i hope...');
 });
-
-function NoPermission(message){
-	message.reply('You don\'t have the permission to do that!').then(msg => {
-		msg.delete({timeout: DELETE_TIME});
-	});
-}
 
 //True if this url is a png image
 function attachIsImage(msgAttach) {
@@ -111,7 +104,7 @@ client.on('message', message => {
         });
       }
     } else {
-      message.reply("You don't have the permission to do that!").then(msg => {
+      message.reply("speech.BOT_NO_PERMISSION").then(msg => {
           msg.delete({timeout: 30000});
         });
     }
