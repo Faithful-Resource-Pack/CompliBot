@@ -17,13 +17,18 @@ app.listen(port, () => console.log(`Example app listening at http://localhost:${
 // Secrets:
 prefix = process.env.PREFIX;
 token  = process.env.CLIENT_TOKEN;
+maintenance  = process.env.MAINTENANCE;
 
 // Channels ids defitions:
 const IDsubmitFD = '715236892945285181'; // -> #submit-textures (Faithful Dungeons discord)
 
 // Bot status:
 client.on('ready', () => {
-	client.user.setActivity('https://faithful.team/', {type: 'PLAYING'});
+  if (maintenance === 'true') {
+    client.user.setPresence({ activity: { name: 'Testing maintenance mode (I still work)' }, status: 'dnd' });
+  } else {
+    client.user.setActivity('https://faithful.team/', {type: 'PLAYING'});
+  }
 	console.log('JavaScript is pain, but i\'m fine, i hope...');
 });
 
