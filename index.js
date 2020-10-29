@@ -6,6 +6,7 @@ const express        = require('express');
 const fs             = require('fs');
 const app            = express();
 const port           = 3000;
+const membercount    = require('./other/member-count');
 const client         = new Discord.Client();
 client.commands      = new Discord.Collection();
 
@@ -30,6 +31,7 @@ client.on('ready', () => {
     client.user.setActivity('https://faithful.team/', {type: 'PLAYING'});
   }
 	console.log('JavaScript is pain, but i\'m fine, i hope...');
+  membercount(client);
 });
 
 //True if this url is a png image
