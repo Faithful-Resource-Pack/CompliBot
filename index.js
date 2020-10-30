@@ -26,7 +26,7 @@ const IDsubmitFD = '715236892945285181'; // -> #submit-textures (Faithful Dungeo
 // Bot status:
 client.on('ready', () => {
   if (maintenance === 'true') {
-    client.user.setPresence({ activity: { name: 'Testing maintenance mode (I still work)' }, status: 'dnd' });
+    client.user.setPresence({ activity: { name: 'maintenance mode (I may work, but not completely)' }, status: 'dnd' });
   } else {
     client.user.setActivity('https://faithful.team/', {type: 'PLAYING'});
   }

@@ -20,45 +20,45 @@ module.exports = {
 		  const embed = new Discord.MessageEmbed()
 	  		.setTitle('Faithful Mods Website:')
         .setDescription('https://faithful-mods.github.io/')
-        .setThumbnail(settings.FModsColor)
+        .setThumbnail(settings.FModsIMG)
 	  		.setColor(settings.FModsColor)
-	  		.setFooter('Faithful Mods', settings.FModsColor);
+	  		.setFooter('Faithful Mods', settings.FModsIMG);
       message.channel.send(embed);
       //Faithful Tweaks
     } else if (message.guild.id === settings.FTweaksID) { 
 		  const embed = new Discord.MessageEmbed()
 	  		.setTitle('Faithful Tweaks Website:')
         .setDescription('https://faithfultweaks.com/')
-        .setThumbnail(settings.FTweaksColor)
+        .setThumbnail(settings.FTweaksIMG)
 	  		.setColor(settings.FTweaksColor)
-	  		.setFooter('Faithful Tweaks', settings.FTweaksColor);
+	  		.setFooter('Faithful Tweaks', settings.FTweaksIMG);
       message.channel.send(embed);
       //Faithful Addons
     } else if (message.guild.id === settings.FAddonsID) { 
 		  const embed = new Discord.MessageEmbed()
 	  		.setTitle('Faithful Addons Website:')
         .setDescription('https://faithful.team/tag/faithful-addons/')
-        .setThumbnail(settings.FAddonsColor)
+        .setThumbnail(settings.FAddonsIMG)
 	  		.setColor(settings.FAddonsColor)
-	  		.setFooter('Faithful Addons', settings.FAddonsColor);
+	  		.setFooter('Faithful Addons', settings.FAddonsIMG);
       message.channel.send(embed);
       //Faithful Traditional
     } else if (message.guild.id === settings.FTraditionalID) { 
 		  const embed = new Discord.MessageEmbed()
 	  		.setTitle('Faithful Traditional page:')
         .setDescription('https://www.planetminecraft.com/texture-pack/faithful-traditional-64x/')
-        .setThumbnail(settings.FTraditionalColor)
+        .setThumbnail(settings.FTraditionalIMG)
 	  		.setColor(settings.FTraditionalColor)
-	  		.setFooter('Faithful Traditional', settings.FTraditionalColor);
+	  		.setFooter('Faithful Traditional', settings.FTraditionalIMG);
       message.channel.send(embed);
       //Other servers
     } else { 
 		  const embed = new Discord.MessageEmbed()
 	  		.setTitle('Faithful Website:')
         .setDescription('https://faithful.team/')
-        .setThumbnail(settings.FColor)
-	  		.setColor(settings.FTeamTeamColor)
-	  		.setFooter('Faithful Team', settings.FTeamColor);
+        .setThumbnail(settings.FTeamIMG)
+	  		.setColor(settings.FTeamColor)
+	  		.setFooter('Faithful Team', settings.FTeamIMG);
       message.channel.send(embed);
     }
 	}
