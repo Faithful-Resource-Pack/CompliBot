@@ -9,15 +9,18 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Faithful-Dungeons/Discord-Bot.git"
+    "url": "git+https://github.com/RobertRR11/Discord-Bot.git"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "RobertRR11",
+  "contributors": [
+    "Juknum"
+  ],
+  "license": "CC-BY-NC-SA 4.0",
   "bugs": {
-    "url": "https://github.com/Faithful-Dungeons/Discord-Bot/issues"
+    "url": "https://github.com/RobertRR11/Discord-Bot/issues"
   },
-  "homepage": "https://github.com/Faithful-Dungeons/Discord-Bot#readme",
+  "homepage": "https://github.com/RobertRR11/Discord-Bot#readme",
   "dependencies": {
     "axios": "^0.20.0",
     "discord.js": "^12.4.1",

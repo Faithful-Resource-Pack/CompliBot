@@ -6,7 +6,6 @@ const express        = require('express');
 const fs             = require('fs');
 const app            = express();
 const port           = 3000;
-const membercount    = require('./other/member-count');
 const client         = new Discord.Client();
 client.commands      = new Discord.Collection();
 
@@ -31,7 +30,9 @@ client.on('ready', () => {
     client.user.setActivity('https://faithful.team/', {type: 'PLAYING'});
   }
 	console.log('JavaScript is pain, but i\'m fine, i hope...');
-  membercount(client);
+  let fTweaksGuild = client.guilds.cache.get('720966967325884426');
+  let MemberCountChannel = fTweaksGuild.channels.cache.get('750638888296382504');
+  MemberCountChannel.setName('Member Count: ' + fTweaksGuild.memberCount)
 });
 
 //True if this url is a png image
@@ -45,8 +46,22 @@ for (const file of commandFiles) {
 	client.commands.set(command.name, command);
 }
 
+// Member counter
+client.on('guildMemberAdd', member =>{
+  let fTweaksGuild = client.guilds.cache.get('720966967325884426');
+  let MemberCountChannel = fTweaksGuild.channels.cache.get('750638888296382504');
+  MemberCountChannel.setName('Member Count: ' + fTweaksGuild.memberCount)
+});
+
+client.on('guildMemberRemove', member =>{
+  let fTweaksGuild = client.guilds.cache.get('720966967325884426');
+  let MemberCountChannel = fTweaksGuild.channels.cache.get('750638888296382504');
+  MemberCountChannel.setName('Member Count: ' + fTweaksGuild.memberCount)
+});
+
+// Command handler
 client.on('message', message => {
-  // Bot messages aren't read:
+  // Bot messages aren't read
   if (!message.content.startsWith(prefix) || message.author.bot) return;
 
 	const args = message.content.slice(prefix.length).trim().split(/ +/);
@@ -69,17 +84,8 @@ client.on('message', message => {
   }
 });
 
-/*client.on('message', message => {
-  if (message.content.startsWith(prefix) || message.author.bot) return;
-	console.log(message.content);
-  if (message.channel.id === ('768097653376155659')) {
-    message.channel.send('I got your message bro');
-  }
-});*/
-
-// Run:
 client.on('message', message => {
-  // Bot messages aren't read:
+  // Bot messages aren't read
   if (message.content.startsWith(prefix) || message.author.bot) return;
 
   // Clean command:
@@ -154,7 +160,7 @@ client.on('message', message => {
     message.reply('┬─┬ ノ( ゜-゜ノ) Take a coffee and calm down');
   }
 
-  // TEXTURES SUBMISSIONS:
+  // Texture submission:
   if (message.channel.id === IDsubmitFD) {
     if (message.attachments.size > 0) {
         if (message.attachments.every(attachIsImage)){
@@ -183,7 +189,7 @@ client.on('message', message => {
       });
     }
   }
-  // TEXTURES SUBMISSIONS FAITHFUL TRADITIONAL:
+  // Texture submission Faithful Traditional:
   if (message.channel.id === '767464832285933578') {
     if (message.attachments.size > 0) {
       try {
