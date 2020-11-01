@@ -5,7 +5,7 @@ module.exports = {
 	name: 'faq',
 	description: 'FAQ commands for Faithful Tweaks',
 	execute(message, args) {
-    if (message.guild.id !== '720966967325884426') return message.reply('this command can only be used in the Faithful Tweaks server!').then(msg => {
+    if (message.guild.id !== settings.FTweaksID) return message.reply('this command can only be used in the Faithful Tweaks server!').then(msg => {
           msg.delete({timeout: 30000});
           message.react('❌');
         });

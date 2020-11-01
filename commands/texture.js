@@ -28,7 +28,7 @@ module.exports = {
 	name: 'texture',
 	description: 'Displays a specified texture from Faithful Dungeons',
 	execute(message, args) {
-    if (message.guild.id !== '714910830272970834') return message.reply('this command can only be used in the Faithful Dungeons server!').then(msg => {
+    if (message.guild.id !== settings.FDungeonsID) return message.reply('this command can only be used in the Faithful Dungeons server!').then(msg => {
           msg.delete({timeout: 30000});
           message.react('❌');
         });

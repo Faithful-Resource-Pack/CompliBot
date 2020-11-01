@@ -10,6 +10,7 @@ const client         = new Discord.Client();
 client.commands      = new Discord.Collection();
 
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+const settings = require('./settings.js');
 
 app.get('/', (req, res) => res.send('Hello World!'));
 app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));
@@ -18,9 +19,6 @@ app.listen(port, () => console.log(`Example app listening at http://localhost:${
 prefix = process.env.PREFIX;
 token  = process.env.CLIENT_TOKEN;
 maintenance  = process.env.MAINTENANCE;
-
-// Channels ids defitions:
-const IDsubmitFD = '715236892945285181'; // -> #submit-textures (Faithful Dungeons discord)
 
 // Bot status:
 client.on('ready', () => {
@@ -31,8 +29,7 @@ client.on('ready', () => {
   }
 	console.log('JavaScript is pain, but i\'m fine, i hope...');
   let fTweaksGuild = client.guilds.cache.get('720966967325884426');
-  let MemberCountChannel = fTweaksGuild.channels.cache.get('750638888296382504');
-  MemberCountChannel.setName('Member Count: ' + fTweaksGuild.memberCount)
+  fTweaksGuild.channels.cache.get('750638888296382504').setName('Member Count: ' + fTweaksGuild.memberCount)
 });
 
 //True if this url is a png image
@@ -49,14 +46,12 @@ for (const file of commandFiles) {
 // Member counter
 client.on('guildMemberAdd', member =>{
   let fTweaksGuild = client.guilds.cache.get('720966967325884426');
-  let MemberCountChannel = fTweaksGuild.channels.cache.get('750638888296382504');
-  MemberCountChannel.setName('Member Count: ' + fTweaksGuild.memberCount)
+  fTweaksGuild.channels.cache.get('750638888296382504').setName('Member Count: ' + fTweaksGuild.memberCount);
 });
 
 client.on('guildMemberRemove', member =>{
   let fTweaksGuild = client.guilds.cache.get('720966967325884426');
-  let MemberCountChannel = fTweaksGuild.channels.cache.get('750638888296382504');
-  MemberCountChannel.setName('Member Count: ' + fTweaksGuild.memberCount)
+  fTweaksGuild.channels.cache.get('750638888296382504').setName('Member Count: ' + fTweaksGuild.memberCount);
 });
 
 // Command handler
@@ -161,7 +156,7 @@ client.on('message', message => {
   }
 
   // Texture submission:
-  if (message.channel.id === IDsubmitFD) {
+  if (message.channel.id === settings.FDungeonsSubmit) {
     if (message.attachments.size > 0) {
         if (message.attachments.every(attachIsImage)){
 
@@ -190,7 +185,7 @@ client.on('message', message => {
     }
   }
   // Texture submission Faithful Traditional:
-  if (message.channel.id === '767464832285933578') {
+  if (message.channel.id === settings.FTraditionalSubmit) {
     if (message.attachments.size > 0) {
       try {
         message.react('✅').then(() => {message.react('❌')});

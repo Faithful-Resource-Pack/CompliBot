@@ -2,6 +2,7 @@
 const FDungeonsIMG = 'https://i.imgur.com/ldI5hDM.png';
 const FDungeonsColor = '#E1631F';
 const FDungeonsID = '714910830272970834';
+const FDungeonsSubmit = '715236892945285181';
 
 // Faithful Mods
 const FModsIMG = 'https://i.imgur.com/scpOogK.png';
@@ -22,6 +23,7 @@ const FAddonsID = '614160586032414845';
 const FTraditionalIMG = 'https://i.imgur.com/SLpji2x.png';
 const FTraditionalColor = '#FFD800';
 const FTraditionalID = '766856721712545824';
+const FTraditionalSubmit = '767464832285933578';
 
 // Faithful Team
 const FTeamIMG = 'https://i.imgur.com/W1pfHe0.png';
@@ -31,6 +33,7 @@ module.exports = {
     FDungeonsIMG,
     FDungeonsColor,
     FDungeonsID,
+    FDungeonsSubmit,
     FModsIMG,
     FModsColor,
     FModsID,
@@ -43,6 +46,7 @@ module.exports = {
     FTraditionalIMG,
     FTraditionalColor,
     FTraditionalID,
+    FTraditionalSubmit,
     FTeamIMG,
     FTeamColor,
 }
