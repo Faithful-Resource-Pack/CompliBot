@@ -1,4 +1,4 @@
-/*const Discord  = require('discord.js');
+const Discord  = require('discord.js');
 const settings = require('../settings.js');
 
 module.exports = {
@@ -6,43 +6,43 @@ module.exports = {
   aliases: ['site'],
 	description: 'Displays the website of the discord',
 	execute(message, args) {
-    //Faithful Dungeons
-    if (message.guild.id === settings.FDungeonsID) {
+    //Compliance Dungeons
+    if (message.guild.id === settings.CDungeonsID) {
 		  const embed = new Discord.MessageEmbed()
-	  		.setTitle('Faithful Dungeons Website:')
+	  		.setTitle('Compliance Dungeons website:')
         .setDescription('https://faithful-dungeons.github.io/Website/')
-        .setThumbnail(settings.FDungeonsIMG)
-	  		.setColor(settings.FDungeonsColor)
-	  		.setFooter('Faithful Dungeons', settings.FDungeonsIMG);
+        .setThumbnail(settings.CDungeonsIMG)
+	  		.setColor(settings.CDungeonsColor)
+	  		.setFooter('Compliance Dungeons', settings.CDungeonsIMG);
       message.channel.send(embed);
-      //Faithful Mods
-    } else if (message.guild.id === settings.FModsID) { 
+      //Compliance Mods
+    } else if (message.guild.id === settings.CModsID) { 
 		  const embed = new Discord.MessageEmbed()
-	  		.setTitle('Faithful Mods Website:')
+	  		.setTitle('Compliance Mods website:')
         .setDescription('https://faithful-mods.github.io/')
-        .setThumbnail(settings.FModsIMG)
-	  		.setColor(settings.FModsColor)
-	  		.setFooter('Faithful Mods', settings.FModsIMG);
+        .setThumbnail(settings.CModsIMG)
+	  		.setColor(settings.CModsColor)
+	  		.setFooter('Compliance Mods', settings.CModsIMG);
       message.channel.send(embed);
-      //Faithful Tweaks
-    } else if (message.guild.id === settings.FTweaksID) { 
+      //Compliance Tweaks
+    } else if (message.guild.id === settings.CTweaksID) { 
 		  const embed = new Discord.MessageEmbed()
-	  		.setTitle('Faithful Tweaks Website:')
+	  		.setTitle('Compliance Tweaks website:')
         .setDescription('https://faithfultweaks.com/')
-        .setThumbnail(settings.FTweaksIMG)
-	  		.setColor(settings.FTweaksColor)
-	  		.setFooter('Faithful Tweaks', settings.FTweaksIMG);
+        .setThumbnail(settings.CTweaksIMG)
+	  		.setColor(settings.CTweaksColor)
+	  		.setFooter('Compliance Tweaks', settings.CTweaksIMG);
       message.channel.send(embed);
-      //Faithful Addons
-    } else if (message.guild.id === settings.FAddonsID) { 
+      //Compliance Addons
+    } else if (message.guild.id === settings.CAddonsID) { 
 		  const embed = new Discord.MessageEmbed()
-	  		.setTitle('Faithful Addons Website:')
-        .setDescription('https://faithful.team/tag/faithful-addons/')
-        .setThumbnail(settings.FAddonsIMG)
-	  		.setColor(settings.FAddonsColor)
-	  		.setFooter('Faithful Addons', settings.FAddonsIMG);
+	  		.setTitle('Compliance Addons website:')
+        .setDescription('Currently not done')
+        .setThumbnail(settings.CAddonsIMG)
+	  		.setColor(settings.CAddonsColor)
+	  		.setFooter('Compliance Addons', settings.CAddonsIMG);
       message.channel.send(embed);
-      //Faithful Traditional
+      //Compliance Traditional
     } else if (message.guild.id === settings.FTraditionalID) { 
 		  const embed = new Discord.MessageEmbed()
 	  		.setTitle('Faithful Traditional page:')
@@ -54,12 +54,12 @@ module.exports = {
       //Other servers
     } else { 
 		  const embed = new Discord.MessageEmbed()
-	  		.setTitle('Faithful Website:')
-        .setDescription('https://faithful.team/')
-        .setThumbnail(settings.FTeamIMG)
-	  		.setColor(settings.FTeamColor)
-	  		.setFooter('Faithful Team', settings.FTeamIMG);
+	  		.setTitle('Compliance 32x website:')
+        .setDescription('https://compliance-resource-pack.github.io/Website/')
+        .setThumbnail(settings.C32IMG)
+	  		.setColor(settings.C32Color)
+	  		.setFooter('Compliance 32x', settings.C32IMG);
       message.channel.send(embed);
     }
 	}
-};*/
+};

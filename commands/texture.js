@@ -26,9 +26,9 @@ function getMeta(imgUrl) {
 
 module.exports = {
 	name: 'texture',
-	description: 'Displays a specified texture from Faithful Dungeons',
+	description: 'Displays a specified texture from Compliance Dungeons',
 	execute(message, args) {
-    if (message.guild.id !== settings.FDungeonsID) return message.reply('this command can only be used in the Faithful Dungeons server!').then(msg => {
+    if (message.guild.id !== settings.CDungeonsID) return message.reply('this command can only be used in the Compliance Dungeons server!').then(msg => {
           msg.delete({timeout: 30000});
           message.react('❌');
         });
@@ -48,7 +48,7 @@ module.exports = {
 
 				  var embed = new Discord.MessageEmbed()
 				  .setTitle(texture)
-				  .setColor(settings.FDungeonsColor)
+				  .setColor(settings.CDungeonsColor)
 				  .setURL(imgURL)
 				  .setDescription('block texture')
 				  .setThumbnail(imgURL)
@@ -56,7 +56,7 @@ module.exports = {
 				  	{ name: 'Author:', value: 'WIP', inline: true },
 				  	{ name: 'Resolution:', value: size, inline: true }
 				  )
-				  .setFooter('Faithful Dungeons', settings.FDungeonsIMG);
+				  .setFooter('Compliance Dungeons', settings.CDungeonsIMG);
 
 				  message.channel.send(embed);
 			  }).catch(function(error) {

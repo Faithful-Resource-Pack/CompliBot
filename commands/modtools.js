@@ -5,7 +5,7 @@ module.exports = {
 	name: 'modtools',
 	description: 'Displays tools for Dungeons modding',
 	execute(message, args) {
-    if (message.guild.id !== settings.FDungeonsID) return message.reply('this command can only be used in the Faithful Dungeons server!').then(msg => {
+    if (message.guild.id !== settings.CDungeonsID) return message.reply('this command can only be used in the Compliance Dungeons server!').then(msg => {
           msg.delete({timeout: 30000});
           message.react('❌');
         });
@@ -14,14 +14,14 @@ module.exports = {
 
      const embed = new Discord.MessageEmbed()
 	  		.setTitle('Tools for making Dungeons mods:')
-	  		.setColor(settings.FDungeonsColor)
-	  		.setThumbnail(settings.FDungeonsIMG)
+	  		.setColor(settings.CDungeonsColor)
+	  		.setThumbnail(settings.CDungeonsIMG)
 	  		.addFields(
 				  { name: 'Dungeons mod kit by CCCode:', value: 'https://github.com/Dokucraft/Dungeons-Mod-Kit', inline: true },
 				  { name: 'Loading icon creator:', value: 'https://github.com/Faithful-Dungeons/Resource-Pack/tree/master/Tools/loader', inline: true },
           { name: 'Alpha image converter:', value: 'https://github.com/Faithful-Dungeons/Resource-Pack/tree/master/Tools/alpha_img', inline: true },
 		  	)
-	  		.setFooter('Faithful Dungeons', settings.FDungeonsIMG);
+	  		.setFooter('Compliance Dungeons', settings.CDungeonsIMG);
 
      message.channel.send(embed);
     }
