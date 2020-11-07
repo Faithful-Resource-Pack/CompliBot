@@ -25,6 +25,11 @@ const FTraditionalColor = '#FFD800';
 const FTraditionalID = '766856721712545824';
 const FTraditionalSubmit = '767464832285933578';
 
+// Compliance 32x
+const C32Submit1 = '773987409993793546';
+const C32Submit2 = '774554417935679498';
+const C32Submit3 = '774220983044669450';
+
 // Faithful Team
 const FTeamIMG = 'https://i.imgur.com/W1pfHe0.png';
 const FTeamColor = '#FFBB00';
@@ -49,4 +54,7 @@ module.exports = {
     FTraditionalSubmit,
     FTeamIMG,
     FTeamColor,
+    C32Submit1,
+    C32Submit2,
+    C32Submit3,
 }

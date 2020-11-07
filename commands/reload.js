@@ -1,7 +1,7 @@
 const speech = require('../messages.js');
 
 uidR = process.env.UIDR;
-uidJ  = process.env.UIDJ;
+uidJ = process.env.UIDJ;
 
 module.exports = {
 	name: 'reload',

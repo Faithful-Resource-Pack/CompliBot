@@ -1,4 +1,4 @@
-const Discord  = require('discord.js');
+/*const Discord  = require('discord.js');
 const settings = require('../settings.js');
 
 module.exports = {
@@ -62,4 +62,4 @@ module.exports = {
       message.channel.send(embed);
     }
 	}
-};
+};*/

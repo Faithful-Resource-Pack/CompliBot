@@ -10,7 +10,7 @@ const client         = new Discord.Client();
 client.commands      = new Discord.Collection();
 
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
-const settings = require('./settings.js');
+const settings     = require('./settings.js');
 
 app.get('/', (req, res) => res.send('Hello World!'));
 app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));
@@ -23,9 +23,9 @@ maintenance  = process.env.MAINTENANCE;
 // Bot status:
 client.on('ready', () => {
   if (maintenance === 'true') {
-    client.user.setPresence({ activity: { name: 'maintenance mode (I may work, but not completely)' }, status: 'dnd' });
+    client.user.setPresence({ activity: { name: 'rebranding...' }, status: 'dnd' });
   } else {
-    client.user.setActivity('https://faithful.team/', {type: 'PLAYING'});
+    client.user.setActivity('https://github.com/Compliance-Resource-Pack', {type: 'PLAYING'});
   }
 	console.log('JavaScript is pain, but i\'m fine, i hope...');
   let fTweaksGuild = client.guilds.cache.get('720966967325884426');
@@ -47,6 +47,10 @@ for (const file of commandFiles) {
 client.on('guildMemberAdd', member =>{
   let fTweaksGuild = client.guilds.cache.get('720966967325884426');
   fTweaksGuild.channels.cache.get('750638888296382504').setName('Member Count: ' + fTweaksGuild.memberCount);
+
+  let cGuild = client.guilds.cache.get('773983706582482946')
+  let role = cGuild.roles.cache.find(r => r.name === "Member");
+  member.roles.add(role).catch(console.error);
 });
 
 client.on('guildMemberRemove', member =>{
@@ -82,6 +86,50 @@ client.on('message', message => {
 client.on('message', message => {
   // Bot messages aren't read
   if (message.content.startsWith(prefix) || message.author.bot) return;
+
+/*	const args = message.content.slice(prefix.length).trim().split(/ +/g);
+	const command = args.shift().toLowerCase();
+
+	// Auto-translates the text into the command's language like /japanese, or /french
+	if (language.some(ele => ele.name === command)) {
+		if (args.length === 0) message.reply(speech.BOT_FULLNAME_AUTO_ERROR);
+		else {
+			let lang_to = language.filter(ele => ele.name===command)[0].abrv;
+			let text = args.slice(0).join(' ');
+			translate(text, {to: lang_to})
+				.then(res => message.channel.send(res.text))
+				.catch(err => message.channel.send(speech.BOT_TRANSLATION_ERROR + err));
+		}
+	}
+
+	// Auto translates with abbreviation like !ko, !en, or !de
+	if (language.some(ele => ele.abrv=== command)) {
+		if (args.length === 0) message.reply(speech.BOT_ABBR_AUTO_ERROR);
+		else {
+			let lang_to = language.filter(ele => ele.abrv===command)[0].abrv;
+			let text = args.slice(0).join(' ');
+			translate(text, {to: lang_to})
+				.then(res => message.channel.send(res.text))
+				.catch(err => message.channel.send(speech.BOT_TRANSLATION_ERROR + err));
+		}
+	}
+
+	// Specifies the text's language and translates it into a specific language
+	if (command === "translate") {
+		if (args.length < 3) message.reply(speech.BOT_TRANS_SPECIFIC_ERROR);
+		else {
+			let argFrom = args[0].toLowerCase();
+			let argTo = args[1].toLowerCase();
+
+			let lang_from = language.filter(ele => ele.name === argFrom)[0].abrv;
+			let lang_to = language.filter(ele => ele.name=== argTo)[0].abrv;
+			let text = args.slice(2).join(' ');
+
+			translate(text, {from: lang_from, to: lang_to})
+				.then(res => message.channel.send(res.text))
+				.catch(err => console.log(speech.BOT_TRANSLATION_ERROR + err));
+		}
+  }*/
 
   // Clean command:
   /*if (message.content.startsWith( prefix + 'clear') ){
@@ -152,7 +200,14 @@ client.on('message', message => {
     message.channel.send("I'm so sorry! (⌯˃̶᷄ ﹏ ˂̶᷄⌯)");
   }*/
   if (message.content.includes('(╯°□°）╯︵ ┻━┻')) {
-    message.reply('┬─┬ ノ( ゜-゜ノ) Take a coffee and calm down');
+    message.reply('┬─┬ ノ( ゜-゜ノ) calm down bro');
+  }
+  if (message.content === 'vizzy bad') {
+    if (message.guild.id !== '773983706582482946') return
+    message.reply('good opinion.');
+  }
+  if (message.content === 'F' ){
+    message.react('🇫');
   }
 
   // Texture submission:
@@ -199,7 +254,103 @@ client.on('message', message => {
       });
     }
   }
+  // Texture submission New Faithful:
+  if (message.channel.id === settings.C32Submit1) {
+    if (message.attachments.size > 0) {
+      try {
+        message.react('⬆️').then(() => {message.react('⬇️')});
+      } catch (error) {
+        console.error('ERROR | One of the emojis failed to react!');
+      }
+    } else if(!message.member.roles.cache.some(r=>['Mods'].includes(r.name)) ) {
+      message.reply('your texture submission needs to have an image attached!').then(msg => {
+        msg.delete({timeout: 30000});
+        message.react('❌');
+      });
+    }
+  }
+  if (message.channel.id === settings.C32Submit2) {
+    if (message.attachments.size > 0) {
+      try {
+        message.react('⬆️').then(() => {message.react('⬇️')});
+      } catch (error) {
+        console.error('ERROR | One of the emojis failed to react!');
+      }
+    } else if(!message.member.roles.cache.some(r=>['Mods'].includes(r.name)) ) {
+      message.reply('your texture submission needs to have an image attached!').then(msg => {
+        msg.delete({timeout: 30000});
+        message.react('❌');
+      });
+    }
+  }
+  if (message.channel.id === settings.C32Submit3) {
+    if (message.attachments.size > 0) {
+      try {
+        message.react('⬆️').then(() => {message.react('⬇️')});
+      } catch (error) {
+        console.error('ERROR | One of the emojis failed to react!');
+      }
+    } else if(!message.member.roles.cache.some(r=>['Mods'].includes(r.name)) ) {
+      message.reply('your texture submission needs to have an image attached!').then(msg => {
+        msg.delete({timeout: 30000});
+        message.react('❌');
+      });
+    }
+  }
 
 });
+
+/*client.on('message', async message => {
+  // Bot messages aren't read
+  if (message.content.startsWith(prefix) || message.author.bot) return;
+
+  // Texture submission:
+  if (message.channel.id === '768097653376155659') {
+    if (message.attachments.size > 0) {
+        if (message.attachments.every(attachIsImage)){
+
+        if(!message.content.includes('(')) {
+          await message.reply('you need to add the texture path to your texture submission, follow this example: `**texture name** (Content/**folder1****folder2****texture name.png**)`').then(msg => {
+            msg.delete({timeout: 30000});
+            await message.react('❌');
+          });
+        } else try {
+          await message.react('✅')
+          await message.react('❌');
+        } catch (error) {
+          console.error('ERROR | One of the emojis failed to react!');
+        }
+
+      } else {
+        await message.reply('you need to attach a png file!').then(msg => {
+          msg.delete({timeout: 30000});
+          await message.react('❌');
+        });
+      }
+    } else {
+      await message.reply('your texture submission needs to have an image attached!').then(msg => {
+        msg.delete({timeout: 30000});
+        await message.react('❌');
+      });
+    }
+  }
+  // Texture submission Faithful Traditional:
+  if (message.channel.id === '773613509815697468') {
+    if (message.attachments.size > 0) {
+      try {
+        await message.react('✅')
+        await message.react('❌');
+      } catch (error) {
+        console.error('ERROR | One of the emojis failed to react!');
+      }
+    } else if(!message.member.roles.cache.some(r=>['Pack Managers', 'Server Managers'].includes(r.name)) ) {
+      await message.reply('your texture submission needs to have an image attached!').then(msg => {
+        msg.delete({timeout: 30000});
+        await message.react('❌');
+      });
+    }
+  }
+
+});*/
 
 client.login(token);
