@@ -32,6 +32,7 @@ const C32ID = '773983706582482946';
 const C32Submit1 = '773987409993793546';
 const C32Submit2 = '774554417935679498';
 const C32Submit3 = '774220983044669450';
+const C32Submit4 = '775082936273600532';
 
 module.exports = {
     CDungeonsIMG,
@@ -57,4 +58,5 @@ module.exports = {
     C32Submit1,
     C32Submit2,
     C32Submit3,
+    C32Submit4,
 }
