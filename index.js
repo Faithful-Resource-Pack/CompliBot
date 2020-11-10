@@ -93,7 +93,7 @@ client.on('message', async message => {
     await message.reply(Uh-oh moment);
   }
   if (message.content === 'F' ){
-    await message.react('🇫b');
+    await message.react('🇫');
   }
 
   // Texture submission:
