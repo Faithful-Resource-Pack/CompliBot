@@ -89,6 +89,9 @@ client.on('message', async message => {
     if (message.guild.id !== '773983706582482946') return
     await message.reply('good opinion.');
   }
+  if (message.content === 'mhhh' || 'Mhhh') {
+    if (message.guild.id !== '773983706582482946') return
+    await message.reply(Uh-oh moment);
   if (message.content === 'F' ){
     await message.react('🇫');
   }
