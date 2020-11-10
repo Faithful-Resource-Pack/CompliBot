@@ -85,21 +85,51 @@ client.on('message', async message => {
   if (message.content.includes('(╯°□°）╯︵ ┻━┻')) {
     await message.reply('┬─┬ ノ( ゜-゜ノ) calm down bro');
   }
-  if (message.content === 'vizzy bad') {
-    if (message.guild.id !== '773983706582482946') return
-    await message.reply('good opinion.');
+  else if (message.content === 'mhhh' || message.content === 'Mhhh') {
+    const embed = new Discord.MessageEmbed()
+	    .setColor(settings.C32Color)
+	    .setTitle('Uh-oh moment')
+	    .setFooter('Swahili -> English', settings.C32IMG);
+    await message.channel.send(embed);
   }
-  if (message.content === 'mhhh' || 'Mhhh') {
-    await message.reply(Uh-oh moment);
-  }
-  if (message.content === 'F' ){
+  else if (message.content === 'F' ){
     await message.react('🇫');
   }
 
-  // Texture submission:
-  if (message.channel.id === settings.CDungeonsSubmit) {
+  // Texture submission Compliance 32x:
+  else if (message.channel.id === settings.C32Submit1 || message.channel.id === settings.C32Submit2 || message.channel.id === settings.C32Submit4) {
     if (message.attachments.size > 0) {
-        if (message.attachments.every(attachIsImage)){
+      try {
+        await message.react('⬆️');
+        await message.react('⬇️');
+      } catch (error) {
+        console.error('ERROR | One of the emojis failed to react!');
+      }
+    } else if(!message.member.roles.cache.some(r=>['Mods'].includes(r.name)) ) {
+      await message.reply('your texture submission needs to have an file attached!').then(async msg => {
+        await message.react('❌');
+        await msg.delete({timeout: 30000});
+      });
+    }
+  }
+  // Texture submission Compliance 32x 2:
+  else if (message.channel.id === settings.C32Submit3) {
+    if (message.attachments.size > 0) {
+      if (message.attachments.every(attachIsImage)){
+        try {
+          await message.react('⬆️');
+          await message.react('⬇️');
+        } catch (error) {
+          console.error('ERROR | One of the emojis failed to react!');
+        }
+      }
+    }
+  }
+
+  // Texture submission:
+  else if (message.channel.id === settings.CDungeonsSubmit) {
+    if (message.attachments.size > 0) {
+      if (message.attachments.every(attachIsImage)){
 
         if(!message.content.includes('(')) {
           await message.reply('you need to add the texture path to your texture submission, follow this example: `**texture name** (Content/**folder1**/**folder2**/**texture name.png**)`').then(async msg => {
@@ -127,7 +157,7 @@ client.on('message', async message => {
     }
   }
   // Texture submission Faithful Traditional:
-  if (message.channel.id === settings.FTraditionalSubmit) {
+  else if (message.channel.id === settings.FTraditionalSubmit) {
     if (message.attachments.size > 0) {
       try {
         await message.react('✅');
@@ -136,22 +166,6 @@ client.on('message', async message => {
         console.error('ERROR | One of the emojis failed to react!');
       }
     } else if(!message.member.roles.cache.some(r=>['Pack Managers', 'Server Managers'].includes(r.name)) ) {
-      await message.reply('your texture submission needs to have an file attached!').then(async msg => {
-        await message.react('❌');
-        await msg.delete({timeout: 30000});
-      });
-    }
-  }
-  // Texture submission Compliance 32x:
-  if (message.channel.id === settings.C32Submit1 || message.channel.id === settings.C32Submit2 || message.channel.id === settings.C32Submit3 || message.channel.id === settings.C32Submit4) {
-    if (message.attachments.size > 0) {
-      try {
-        await message.react('⬆️');
-        await message.react('⬇️');
-      } catch (error) {
-        console.error('ERROR | One of the emojis failed to react!');
-      }
-    } else if(!message.member.roles.cache.some(r=>['Mods'].includes(r.name)) ) {
       await message.reply('your texture submission needs to have an file attached!').then(async msg => {
         await message.react('❌');
         await msg.delete({timeout: 30000});
