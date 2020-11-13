@@ -37,7 +37,7 @@ module.exports = {
     } else if (message.guild.id === settings.CAddonsID) { 
 		  const embed = new Discord.MessageEmbed()
 	  		.setTitle('Compliance Addons website:')
-        .setDescription('Currently not done')
+        .setDescription('https://compliancepack.net/addons')
         .setThumbnail(settings.CAddonsIMG)
 	  		.setColor(settings.CAddonsColor)
 	  		.setFooter('Compliance Addons', settings.CAddonsIMG);
@@ -55,7 +55,7 @@ module.exports = {
     } else { 
 		  const embed = new Discord.MessageEmbed()
 	  		.setTitle('Compliance 32x website:')
-        .setDescription('https://compliance-resource-pack.github.io/Website/')
+        .setDescription('https://compliancepack.net/')
         .setThumbnail(settings.C32IMG)
 	  		.setColor(settings.C32Color)
 	  		.setFooter('Compliance 32x', settings.C32IMG);
