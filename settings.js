@@ -30,7 +30,7 @@ const C32IMG = 'https://i.imgur.com/nOpSBYX.png';
 const C32Color = '#76C945';
 const C32ID = '773983706582482946';
 const C32Submit1 = '773987409993793546';
-const C32Submit2 = '774554417935679498';
+const C32Submit2 = '777513329761189888';
 const C32Submit3 = '774220983044669450';
 const C32Submit4 = '775082936273600532';
 

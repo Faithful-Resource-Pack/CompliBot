@@ -22,9 +22,9 @@ maintenance  = process.env.MAINTENANCE;
 // Bot status:
 client.on('ready', () => {
   if (maintenance === 'true') {
-    client.user.setPresence({ activity: { name: 'rebranding...' }, status: 'dnd' });
+    client.user.setPresence({ activity: { name: 'maintenance' }, status: 'dnd' });
   } else {
-    client.user.setActivity('https://github.com/Compliance-Resource-Pack', {type: 'PLAYING'});
+    client.user.setActivity('https://compliancepack.net/', {type: 'PLAYING'});
   }
 	console.log('JavaScript is pain, but i\'m fine, i hope...');
   let fTweaksGuild = client.guilds.cache.get('720966967325884426');
@@ -105,7 +105,7 @@ client.on('message', async message => {
       } catch (error) {
         console.error('ERROR | One of the emojis failed to react!');
       }
-    } else if(!message.member.roles.cache.some(r=>['Mods'].includes(r.name)) ) {
+    } else if(!message.member.roles.cache.some(r=>['Moderators'].includes(r.name)) ) {
       await message.reply('your texture submission needs to have an file attached!').then(async msg => {
         await message.react('❌');
         await msg.delete({timeout: 30000});

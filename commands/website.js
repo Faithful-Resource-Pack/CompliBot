@@ -19,7 +19,7 @@ module.exports = {
     } else if (message.guild.id === settings.CModsID) { 
 		  const embed = new Discord.MessageEmbed()
 	  		.setTitle('Compliance Mods website:')
-        .setDescription('https://faithful-mods.github.io/')
+        .setDescription('https://compliancepack.net/mods')
         .setThumbnail(settings.CModsIMG)
 	  		.setColor(settings.CModsColor)
 	  		.setFooter('Compliance Mods', settings.CModsIMG);
