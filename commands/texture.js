@@ -39,7 +39,7 @@ module.exports = {
 		  var texture = args.join();
 
 		  var imgURL = 'https://raw.githubusercontent.com/Faithful-Dungeons/Resource-Pack/master/Block%20Textures/' + texture + '.png';
-		  console.log(imgURL);
+		  //console.log(imgURL);
 
 		  axios.get(imgURL).then(function (response) {
 			  //console.log('well played');

@@ -24,7 +24,7 @@ client.on('ready', () => {
   if (maintenance === 'true') {
     client.user.setPresence({ activity: { name: 'maintenance' }, status: 'dnd' });
   } else {
-    client.user.setActivity('https://compliancepack.net/', {type: 'PLAYING'});
+    client.user.setActivity('compliancepack.net', {type: 'PLAYING'});
   }
 	console.log('JavaScript is pain, but i\'m fine, i hope...');
   let fTweaksGuild = client.guilds.cache.get('720966967325884426');
@@ -243,11 +243,6 @@ client.on('message', async message => {
       .setFooter('Faithful Dungeons', BotImgURL);
 
     message.channel.send(embed);
-  }
-
-  // Special commands: (easter eggs)
-  if (command === 'behave') {
-    message.channel.send("I'm so sorry! (⌯˃̶᷄ ﹏ ˂̶᷄⌯)");
   }
 
 });*/
