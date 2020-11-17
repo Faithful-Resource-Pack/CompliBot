@@ -9,26 +9,22 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/RobertRR11/Discord-Bot.git"
+    "url": "git+https://github.com/Compliance-Resource-Pack/Discord-Bot.git"
   },
   "keywords": [],
-  "author": "RobertRR11",
-  "contributors": [
-    "Juknum"
-  ],
+  "author": "Compliance Team",
   "license": "CC-BY-NC-SA 4.0",
   "bugs": {
-    "url": "https://github.com/RobertRR11/Discord-Bot/issues"
+    "url": "https://github.com/Compliance-Resource-Pack/Discord-Bot/issues"
   },
-  "homepage": "https://github.com/RobertRR11/Discord-Bot#readme",
+  "homepage": "https://github.com/Compliance-Resource-Pack/Discord-Bot#readme",
   "dependencies": {
     "axios": "^0.21.0",
     "discord.js": "^12.4.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "http": "0.0.1-security",
-    "image-size": "^0.9.3",
-    "@vitalets/google-translate-api": "^4.0.0"
+    "image-size": "^0.9.3"
   },
   "engines": {
     "node": "12.19.0",
