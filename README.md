@@ -3,6 +3,7 @@ The official Discord bot of the Compliance Team.
 
 # Online on:
 - Compliance 32x
+- Compliance 64x
 - Compliance Addons
 - Compliance Tweaks
 - Compliance Dungeons
