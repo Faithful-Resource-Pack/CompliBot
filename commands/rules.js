@@ -9,11 +9,7 @@ module.exports = {
 	name: 'rules',
 	description: 'Creates rules embed',
 	execute(message, args) {
-    if (message.author.id !== (uidR || uidJ)) return message.reply(speech.BOT_NO_PERMISSION).then(msg => {
-          msg.delete({timeout: 30000});
-          message.react('❌');
-        });
-    else {
+    if (message.author.id === uidR || message.author.id === uidJ) {
      const embed1 = new Discord.MessageEmbed()
 	  		.setTitle('Rules')
 	  		.setColor(settings.C32Color)
@@ -45,5 +41,9 @@ module.exports = {
         message.channel.send(embed2);
     });
     }
+    else return message.reply(speech.BOT_NO_PERMISSION).then(msg => {
+          msg.delete({timeout: 30000});
+          message.react('❌');
+        });
   }
 };
