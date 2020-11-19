@@ -85,15 +85,22 @@ client.on('message', async message => {
   if (message.content.includes('(╯°□°）╯︵ ┻━┻')) {
     await message.reply('┬─┬ ノ( ゜-゜ノ) calm down bro');
   }
-  else if (message.content === 'mhhh' || message.content === 'Mhhh') {
+  else if (message.content.toLowerCase() === 'mhhh') {
     const embed = new Discord.MessageEmbed()
 	    .setColor(settings.C32Color)
 	    .setTitle('Uh-oh moment')
 	    .setFooter('Swahili -> English', settings.C32IMG);
     await message.channel.send(embed);
   }
-  else if (message.content === 'F' ){
+  else if (message.content === 'F' ) {
     await message.react('🇫');
+  }
+  else if (message.content.toLowerCase() === 'band') {
+    await message.react('🎤');
+    await message.react('🎸');
+    await message.react('🥁');
+    await message.react('🎺');
+    await message.react('🎹');
   }
 
   // Texture submission Compliance 32x:
