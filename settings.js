@@ -37,9 +37,7 @@ const C32Color = '#76C945';
 const C32ID = '773983706582482946';
 const C32ModsID = '773984348860711003';
 const C32Submit1 = '773987409993793546';
-const C32Submit2 = '777513329761189888';
-const C32Submit3 = '774220983044669450';
-const C32Submit4 = '775082936273600532';
+const C32Submit2 = '774220983044669450';
 
 module.exports = {
     CDungeonsIMG,
@@ -69,6 +67,4 @@ module.exports = {
     C64ModsID,
     C32Submit1,
     C32Submit2,
-    C32Submit3,
-    C32Submit4,
 }

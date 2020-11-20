@@ -104,7 +104,7 @@ client.on('message', async message => {
   }
 
   // Texture submission Compliance 32x:
-  else if (message.channel.id === settings.C32Submit1 || message.channel.id === settings.C32Submit2 || message.channel.id === settings.C32Submit4) {
+  else if (message.channel.id === settings.C32Submit1) {
     if (message.attachments.size > 0) {
       try {
         await message.react('⬆️');
@@ -112,7 +112,7 @@ client.on('message', async message => {
       } catch (error) {
         console.error('ERROR | One of the emojis failed to react!');
       }
-    } else if(!message.member.roles.cache.some(r=>['Moderators'].includes(r.name)) ) {
+    } else if(!message.member.roles.cache.has('773984348860711003')) {
       await message.reply('your texture submission needs to have an file attached!').then(async msg => {
         await message.react('❌');
         await msg.delete({timeout: 30000});
@@ -120,7 +120,7 @@ client.on('message', async message => {
     }
   }
   // Texture submission Compliance 32x 2:
-  else if (message.channel.id === settings.C32Submit3) {
+  else if (message.channel.id === settings.C32Submit2) {
     if (message.attachments.size > 0) {
       if (message.attachments.every(attachIsImage)){
         try {
@@ -172,7 +172,7 @@ client.on('message', async message => {
       } catch (error) {
         console.error('ERROR | One of the emojis failed to react!');
       }
-    } else if(!message.member.roles.cache.some(r=>['Pack Managers', 'Server Managers'].includes(r.name)) ) {
+    } else if(!message.member.roles.cache.has('766856790004072450')) {
       await message.reply('your texture submission needs to have an file attached!').then(async msg => {
         await message.react('❌');
         await msg.delete({timeout: 30000});
@@ -182,7 +182,7 @@ client.on('message', async message => {
 
 });
 
-// Stuff I need to add
+// old stuff that needs to be added
 
 /*client.on('message', message => {
   // Bot messages aren't read
