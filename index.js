@@ -11,22 +11,20 @@ client.commands      = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 const settings     = require('./settings.js');
 
-app.get('/', (req, res) => res.send('Hello World!'));
-app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));
+app.get('/', (req, res) => res.send('Hey, this is a Discord bot, not a website!'));
+app.listen(port, () => console.log(`listening at http://localhost:${port}`));
 
 // Secrets:
 prefix = process.env.PREFIX;
-token  = process.env.CLIENT_TOKEN;
-maintenance  = process.env.MAINTENANCE;
 
 // Bot status:
 client.on('ready', () => {
-  if (maintenance === 'true') {
+  if (process.env.MAINTENANCE === 'true') {
     client.user.setPresence({ activity: { name: 'maintenance' }, status: 'dnd' });
   } else {
     client.user.setActivity('compliancepack.net', {type: 'PLAYING'});
   }
-	console.log('JavaScript is pain, but i\'m fine, i hope...');
+	console.log('JavaScript is a pain, but i\'m fine, i hope...');
   let fTweaksGuild = client.guilds.cache.get('720966967325884426');
   fTweaksGuild.channels.cache.get('750638888296382504').setName('Member Count: ' + fTweaksGuild.memberCount)
 });
@@ -179,7 +177,6 @@ client.on('message', async message => {
       });
     }
   }
-
 });
 
 // old stuff that needs to be added
@@ -254,4 +251,4 @@ client.on('message', async message => {
 
 });*/
 
-client.login(token);
+client.login(process.env.CLIENT_TOKEN);

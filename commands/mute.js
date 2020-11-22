@@ -4,7 +4,7 @@ module.exports = {
 	name: 'mute',
 	description: 'Mute someone for life',
 	execute(message, args) {
-		
+
 		if(message.member.roles.cache.find(r => r.name === "God") || message.member.roles.cache.find(r => r.name === "Moderator") || message.member.roles.cache.find(r => r.name === "Moderators") ||message.member.roles.cache.find(r => r.name === "Mods")) {
 			if (args != '') {
 				if (args == '<@' + message.author.id  + '>'){

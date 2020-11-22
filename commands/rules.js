@@ -30,7 +30,7 @@ module.exports = {
           { name: '1️⃣3️⃣', value: 'Preferably no talk about why we moved, that is explained in `#faq`'}
 		  	)
 	  		.setFooter('The rules are subject to change, last edited: 13.11.2020', settings.C32IMG);
-    
+
     const embed2 = new Discord.MessageEmbed()
 	  		.setTitle('Latest changes as of 13.11.2020')
 	  		.setColor(settings.C32Color)

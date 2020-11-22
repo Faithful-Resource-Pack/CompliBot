@@ -48,7 +48,7 @@ module.exports = {
 			var embed = new Discord.MessageEmbed()
         .setTitle('Moderators:')
         .setDescription('You demanded that all moderators be present. You must have a good reason or penalties may be taken.')
-        .setColor('#1ABC9C');
+        .setColor('#22202C');
 				
 			message.channel.send(embed);
 			message.channel.send('<@&' + MODERATOR_ID  + '>');
@@ -86,15 +86,14 @@ module.exports = {
 				var embed = new Discord.MessageEmbed()
           .setTitle('Moderators:')
           .setDescription(content + '\n> use `/modping` to call mods! for help')
-          .setColor('#1ABC9C');
-				
+          .setColor('#22202C');
+
 				message.channel.send(embed);
-				
+
 				for (var i in mods_online){
 					text += '<@' + mods_online[i] + '> '
 				}
 				message.channel.send(text);
-
 
 			} else if (mods_dnd.length != 0) {
 				// We have 1 or more mods dnd
@@ -107,8 +106,8 @@ module.exports = {
 				var embed = new Discord.MessageEmbed()
           .setTitle('Moderators:')
           .setDescription(content + '\n> use `/modping` to call mods for help!')
-          .setColor('#1ABC9C');
-				
+          .setColor('#22202C');
+
 				message.channel.send(embed);
 
 				for (var i in mods_dnd){
@@ -120,8 +119,8 @@ module.exports = {
 				var embed = new Discord.MessageEmbed()
           .setTitle('Moderators:')
           .setDescription('There is currently no mods online ¯\\_(ツ)_/¯, I\'m going to ping them all\n> use `/modping` to call mods for help!')
-          .setColor('#1ABC9C');
-				
+          .setColor('#22202C');
+
 				message.channel.send(embed);
 				message.channel.send('<@&' + MODERATOR_ID  + '>');
 			}
