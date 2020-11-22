@@ -100,6 +100,11 @@ client.on('message', async message => {
     await message.react('🎺');
     await message.react('🎹');
   }
+	else if (message.content.toLowerCase() === 'hello there') {
+		var luck = Math.floor(Math.random() * Math.floor(5)); // random number between 0 and 4
+		if (luck != 1) message.channel.send('https://media1.tenor.com/images/8dc53503f5a5bb23ef12b2c83a0e1d4d/tenor.gif');
+		else message.channel.send('https://preview.redd.it/6n6zu25c66211.png?width=960&crop=smart&auto=webp&s=62024911a6d6dd85f83a2eb305df6082f118c8d1');
+	}
 
   // Texture submission Compliance 32x:
   else if (message.channel.id === settings.C32Submit1) {
