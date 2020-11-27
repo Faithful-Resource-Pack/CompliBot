@@ -29,6 +29,8 @@ const FTraditionalID = '766856721712545824';
 const FTraditionalSubmit = '767464832285933578';
 
 // Compliance 64x
+const C64IMG = 'https://i.imgur.com/EktsrA9.png';
+const C64ID = '747574286356840609';
 const C64ModsID = '747595211273797724';
 
 // Compliance 32x
@@ -69,4 +71,6 @@ module.exports = {
     C32Submit1,
     C32Submit2,
     C32Submit3,
+    C64IMG,
+    C64ID,
 }
