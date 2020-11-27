@@ -38,6 +38,7 @@ const C32ID = '773983706582482946';
 const C32ModsID = '773984348860711003';
 const C32Submit1 = '773987409993793546';
 const C32Submit2 = '774220983044669450';
+const C32Submit3 = '780507681987100682';
 
 module.exports = {
     CDungeonsIMG,
@@ -67,4 +68,5 @@ module.exports = {
     C64ModsID,
     C32Submit1,
     C32Submit2,
+    C32Submit3,
 }

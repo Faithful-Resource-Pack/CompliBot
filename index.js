@@ -102,8 +102,8 @@ client.on('message', async message => {
   }
 	else if (message.content.toLowerCase() === 'hello there') {
 		var luck = Math.floor(Math.random() * Math.floor(5)); // random number between 0 and 4
-		if (luck != 1) message.channel.send('https://media1.tenor.com/images/8dc53503f5a5bb23ef12b2c83a0e1d4d/tenor.gif');
-		else message.channel.send('https://preview.redd.it/6n6zu25c66211.png?width=960&crop=smart&auto=webp&s=62024911a6d6dd85f83a2eb305df6082f118c8d1');
+		if (luck != 1) await message.channel.send('https://media1.tenor.com/images/8dc53503f5a5bb23ef12b2c83a0e1d4d/tenor.gif');
+		else await message.channel.send('https://preview.redd.it/6n6zu25c66211.png?width=960&crop=smart&auto=webp&s=62024911a6d6dd85f83a2eb305df6082f118c8d1');
 	}
 
   // Texture submission Compliance 32x:
@@ -113,7 +113,7 @@ client.on('message', async message => {
         await message.react('⬆️');
         await message.react('⬇️');
       } catch (error) {
-        console.error('ERROR | One of the emojis failed to react!');
+        console.error('ERROR | One of the emojis failed to react!' + error);
       }
     } else if(!message.member.roles.cache.has('773984348860711003')) {
       await message.reply('your texture submission needs to have an file attached!').then(async msg => {
@@ -123,14 +123,14 @@ client.on('message', async message => {
     }
   }
   // Texture submission Compliance 32x 2:
-  else if (message.channel.id === settings.C32Submit2) {
+  else if (message.channel.id === settings.C32Submit2 || message.channel.id === settings.C32Submit3) {
     if (message.attachments.size > 0) {
       if (message.attachments.every(attachIsImage)){
         try {
           await message.react('⬆️');
           await message.react('⬇️');
         } catch (error) {
-          console.error('ERROR | One of the emojis failed to react!');
+          console.error('ERROR | One of the emojis failed to react!' + error);
         }
       }
     }
@@ -150,7 +150,7 @@ client.on('message', async message => {
           await message.react('✅');
           await message.react('❌');
         } catch (error) {
-          console.error('ERROR | One of the emojis failed to react!');
+          console.error('ERROR | One of the emojis failed to react!' + error);
         }
 
       } else {
@@ -173,7 +173,7 @@ client.on('message', async message => {
         await message.react('✅');
         await message.react('❌');
       } catch (error) {
-        console.error('ERROR | One of the emojis failed to react!');
+        console.error('ERROR | One of the emojis failed to react!' + error);
       }
     } else if(!message.member.roles.cache.has('766856790004072450')) {
       await message.reply('your texture submission needs to have an file attached!').then(async msg => {
