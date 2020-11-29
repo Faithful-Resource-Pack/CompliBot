@@ -3,6 +3,7 @@ require('dotenv').config();
 const Discord        = require('discord.js');
 const express        = require('express');
 const fs             = require('fs');
+const cron           = require('cron');
 const app            = express();
 const port           = 3000;
 const client         = new Discord.Client();
@@ -25,8 +26,41 @@ client.on('ready', () => {
     client.user.setActivity('compliancepack.net', {type: 'PLAYING'});
   }
 	console.log('JavaScript is a pain, but i\'m fine, i hope...');
+
+	// scheduledFunctions.start();
+
   let fTweaksGuild = client.guilds.cache.get('720966967325884426');
   fTweaksGuild.channels.cache.get('750638888296382504').setName('Member Count: ' + fTweaksGuild.memberCount)
+});
+
+// Texture submission process:
+let scheduledFunctions = new cron.CronJob('00 * * * * *', () => {
+	// this runs every day at 00:00:00
+	let channel = client.channels.cache.get('779759327665848320');
+
+	const DAYS_OFF = 0;
+
+	// return all messages from the channel
+	channel.messages.fetch().then(async messagesMap => {
+    console.log(`${messagesMap.size} messages.`);
+
+		let messages = Array.from(messagesMap.keys());	
+		for (var i in messages) {
+			let message   = channel.messages.cache.get(messages[i]);
+			let content   = message.content;
+			let timestamp = message.createdTimestamp;
+
+			var messageDate = new Date( timestamp );
+			var limitDate = new Date();
+ 			limitDate.setDate(limitDate.getDate()-DAYS_OFF);
+
+			if (messageDate.getDate() == limitDate.getDate() && messageDate.getMonth() == limitDate.getMonth()) {
+				console.log(content, messageDate);
+			}
+			
+		}
+
+	});
 });
 
 //True if this url is a png image

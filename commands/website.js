@@ -10,7 +10,7 @@ module.exports = {
     //Compliance Dungeons
     if (message.guild.id === settings.CDungeonsID) {
 		  const embed = new Discord.MessageEmbed()
-	  		.setTitle('Compliance Dungeons website:')
+	  		.setTitle('Compliance Dungeons sites:')
         .addFields(
 				  { name: 'Website:', value: 'https://compliancepack.net/#compliance-dungeons'},
 				  { name: 'CurseForge:', value: 'none'},
@@ -95,7 +95,7 @@ module.exports = {
     //Compliance Dungeons
     else if (args[0] === 'dungeons') {
 		  const embed = new Discord.MessageEmbed()
-	  		.setTitle('Compliance Dungeons website:')
+	  		.setTitle('Compliance Dungeons sites:')
         .addFields(
 				  { name: 'Website:', value: 'https://compliancepack.net/#compliance-dungeons'},
 				  { name: 'CurseForge:', value: 'none'},
