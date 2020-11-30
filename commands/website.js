@@ -171,6 +171,6 @@ module.exports = {
 	  		.setFooter('Compliance 64x', settings.C64IMG);
       message.channel.send(embed);
       //Other servers
-    } else return message.channel.send('Please specify a valid argument! \n You can use: \n `32x`, `64x`, `addons`, `tweaks`, `dungeons` and `mods`');
+    } else return message.channel.send('Please specify a valid argument! \nYou can use: \n`32x`, `64x`, `addons`, `tweaks`, `dungeons` and `mods`');
 	}
 };

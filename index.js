@@ -9,6 +9,10 @@ const port           = 3000;
 const client         = new Discord.Client();
 client.commands      = new Discord.Collection();
 
+// Admins: 
+uidR = process.env.UIDR;
+uidJ = process.env.UIDJ;
+
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 const settings     = require('./settings.js');
 
@@ -27,41 +31,187 @@ client.on('ready', () => {
   }
 	console.log('JavaScript is a pain, but i\'m fine, i hope...');
 
-	// scheduledFunctions.start();
+	scheduledFunctions.start();
 
   let fTweaksGuild = client.guilds.cache.get('720966967325884426');
   fTweaksGuild.channels.cache.get('750638888296382504').setName('Member Count: ' + fTweaksGuild.memberCount)
 });
 
 // Texture submission process:
-let scheduledFunctions = new cron.CronJob('00 * * * * *', () => {
-	// this runs every day at 00:00:00
-	let channel = client.channels.cache.get('779759327665848320');
-
-	const DAYS_OFF = 0;
-
-	// return all messages from the channel
-	channel.messages.fetch().then(async messagesMap => {
-    console.log(`${messagesMap.size} messages.`);
-
-		let messages = Array.from(messagesMap.keys());	
-		for (var i in messages) {
-			let message   = channel.messages.cache.get(messages[i]);
-			let content   = message.content;
-			let timestamp = message.createdTimestamp;
-
-			var messageDate = new Date( timestamp );
-			var limitDate = new Date();
- 			limitDate.setDate(limitDate.getDate()-DAYS_OFF);
-
-			if (messageDate.getDate() == limitDate.getDate() && messageDate.getMonth() == limitDate.getMonth()) {
-				console.log(content, messageDate);
-			}
-			
-		}
-
-	});
+let scheduledFunctions = new cron.CronJob('30 14 * * *', () => { // each day at 14:30 GMT
+	textureSubmission(settings.C32Submit1,settings.C32Submit2,5);									// 5 DAYS OFFSET
+	councilVoting(settings.C32Submit2,settings.C32Submit3,settings.C32Results,1);	// 1 DAYS OFFSET
+	textureRevote(settings.C32Submit3,settings.C32Results,3);											// 3 DAYS OFFSET
 });
+
+async function textureRevote (inputID, outputID, offset) {
+	let channelOutput = client.channels.cache.get(outputID);
+
+	const revoteSentence = 'The following texture has not passed council voting and thus is up for revote:\n';
+
+	let limitDate = new Date();
+	limitDate.setDate(limitDate.getDate() - offset);
+
+	let messages = await getMessages(inputID);
+	console.log(`${messages.length} messages in texture revote`);
+	
+	for (var i in messages) {
+		let message     = messages[i];
+		let messageDate = new Date(message.createdTimestamp);
+		let messageUpvote   = countReact(message,'⬆️');
+		let messageDownvote = countReact(message,'⬇️');
+
+		if (
+			messageUpvote > messageDownvote &&
+			message.attachments.size > 0 && //If something is attached
+			messageDate.getDate() == limitDate.getDate() &&
+			messageDate.getMonth() == limitDate.getMonth()
+		) {
+			await channelOutput.send(
+				'This texture has passed community voting and thus will be added into the pack.\n'
+				+ message.content.replace(revoteSentence,''), {files: [message.attachments.first().url]}
+			).then(async message => {
+				try {
+				  await message.react('✅');
+				} catch (error) {
+					console.error(error);
+				}
+			});
+		} else if (
+			message.attachments.size > 0 && 
+			messageDate.getDate() == limitDate.getDate() &&
+			messageDate.getMonth() == limitDate.getMonth()
+			) {
+			await channelOutput.send(
+				'This texture has not passed community and council voting, and thus will not be added into the pack.\n'
+				+ message.content.replace(revoteSentence,''), {files: [message.attachments.first().url]}
+			).then(async message => {
+				try {
+				  await message.react('❌');
+				} catch (error) {
+					console.error(error);
+				}
+			});
+		}
+	}
+}
+
+async function councilVoting (inputID, outputFalseID, outputTrueID, offset) {
+	let channelRevote  = client.channels.cache.get(outputFalseID);
+	let channelResults = client.channels.cache.get(outputTrueID);
+
+	let limitDate = new Date();
+	limitDate.setDate(limitDate.getDate() - offset);
+
+	let messages = await getMessages(inputID);
+	console.log(`${messages.length} messages in council vote`);
+	
+	for (var i in messages) {
+		let message     = messages[i];
+		let messageDate = new Date(message.createdTimestamp);
+		let messageUpvote   = countReact(message,'⬆️');
+		let messageDownvote = countReact(message,'⬇️');
+
+		if (
+			messageUpvote > messageDownvote &&
+			message.attachments.size > 0 && //If something is attached
+			messageDate.getDate() == limitDate.getDate() &&
+			messageDate.getMonth() == limitDate.getMonth()
+		) {
+			await channelResults.send(
+				'The following texture has passed council voting and will be added into the pack in a future version.\n' 
+				+ message.content, {files: [message.attachments.first().url]}
+				).then(async message => {
+				try {
+				  await message.react('✅');
+				} catch (error) {
+					console.error(error);
+				}
+			});
+		} else if (
+			message.attachments.size > 0 && 
+			messageDate.getDate() == limitDate.getDate() &&
+			messageDate.getMonth() == limitDate.getMonth()
+			) {
+			await channelRevote.send(
+				'The following texture has not passed council voting and thus is up for revote:\n'
+				+ message.content, {files: [message.attachments.first().url]})
+				.then(async message => {
+					try {
+				  await message.react('⬆️');
+				  await message.react('⬇️');
+				} catch (error) {
+					console.error(error);
+				}
+			});
+		}
+	}
+}
+
+async function textureSubmission (inputID, outputID, offset) {
+	let channelOutput = client.channels.cache.get(outputID); 
+
+	let limitDate = new Date();
+	limitDate.setDate(limitDate.getDate() - offset);
+
+	let messages = await getMessages(inputID);
+	console.log(`${messages.length} messages in textures submission`);
+	
+	for (var i in messages) {
+		let message     = messages[i];
+		let messageDate = new Date(message.createdTimestamp);
+		let messageUpvote   = countReact(message,'⬆️');
+		let messageDownvote = countReact(message,'⬇️');
+
+		if (
+			messageUpvote >= messageDownvote &&
+			message.attachments.size > 0 && //If something is attached
+			messageDate.getDate() == limitDate.getDate() &&
+			messageDate.getMonth() == limitDate.getMonth()
+		) {
+			await channelOutput.send('**'+message.content+'** \n> by <@' + message.author + '>', {files: [message.attachments.first().url]}).then(async message => {
+				try {
+					await message.react('⬆️');
+					await message.react('⬇️');
+				} catch (error) {
+					console.error(error);
+				}
+			});
+		}
+	}
+}
+
+// Fetch messages from channel, avoid 50 limitation of message.fetch()
+async function getMessages(channelID, limit = 500) {
+  const sum_messages = [];
+  let last_id;
+	let channel = client.channels.cache.get(channelID);
+
+  while (true) {
+    const options = { limit: 100 };
+  	if (last_id) {
+      options.before = last_id;
+    }
+
+    const messages = await channel.messages.fetch(options);
+    sum_messages.push(...messages.array());
+    last_id = messages.last().id;
+
+    if (messages.size != 100 || sum_messages >= limit) {
+      break;
+    }
+	}
+	return sum_messages;
+}
+
+// Tell how many people reacted with an emoji
+function countReact (message, emoji) {
+	var reaction = message.reactions.cache.get(emoji);
+
+	if (reaction != undefined) {
+		return reaction.count - 1; // remove bot vote
+	} else return 0
+}
 
 //True if this url is a png image
 function attachIsImage(msgAttach) {
@@ -79,7 +229,6 @@ client.on('guildMemberAdd', member =>{
   let fTweaksGuild = client.guilds.cache.get('720966967325884426');
   fTweaksGuild.channels.cache.get('750638888296382504').setName('Member Count: ' + fTweaksGuild.memberCount);
 });
-
 client.on('guildMemberRemove', member =>{
   let fTweaksGuild = client.guilds.cache.get('720966967325884426');
   fTweaksGuild.channels.cache.get('750638888296382504').setName('Member Count: ' + fTweaksGuild.memberCount);
@@ -139,6 +288,14 @@ client.on('message', async message => {
 		if (luck != 1) await message.channel.send('https://media1.tenor.com/images/8dc53503f5a5bb23ef12b2c83a0e1d4d/tenor.gif');
 		else await message.channel.send('https://preview.redd.it/6n6zu25c66211.png?width=960&crop=smart&auto=webp&s=62024911a6d6dd85f83a2eb305df6082f118c8d1');
 	}
+
+	/* DEBUG FOR TEXTURE SUBMISSION PROCESS
+	else if ((message.author.id === uidJ || message.author.id === uidR) && message.content === 'submission' ) {
+		// textureSubmission(settings.C32Submit1,settings.C32Submit2,5);									// 5 DAYS OFFSET
+		// councilVoting(settings.C32Submit2,settings.C32Submit3,settings.C32Results,1);	// 1 DAYS OFFSET
+		//	textureRevote(settings.C32Submit3,settings.C32Results,3);											// 3 DAYS OFFSET
+	}
+	*/
 
   // Texture submission Compliance 32x:
   else if (message.channel.id === settings.C32Submit1) {
@@ -217,77 +374,5 @@ client.on('message', async message => {
     }
   }
 });
-
-// old stuff that needs to be added
-
-/*client.on('message', message => {
-  // Bot messages aren't read
-  if (message.content.startsWith(prefix) || message.author.bot) return;
-
-  // Clean command:
-  if (message.content.startsWith( prefix + 'clear') ){
-    if(message.member.roles.cache.some(r=>["God", "Helper", "Mod", "Server Creator"].includes(r.name)) ) {
-      //console.trace('clear triggered');
-
-      var argss   = message.content.split(' ').slice(1); // cut after '/clear'
-      var amount = args.join(' ');
-
-      if (!amount) return message.reply("You haven't given an amount of messages which should be deleted!");
-      if (isNaN(amount)) return message.reply("The amount parameter isn't a number!");
-
-      if (amount > 100) return message.reply("You can't delete more than 100 messages at once!");
-      if (amount < 1) return message.reply("You have to delete at least 1 message :upside-down:");
-
-      try {
-        message.channel.messages.fetch({ limit: amount }).then(messages => {
-          message.channel.bulkDelete(messages)
-        });
-      } catch(error) { // doesn't seems to work
-        console.error(error);
-        message.reply("The amount contains messages older than 14 days, can't delete them").then(msg => {
-          msg.delete({timeout: 30000});
-        });
-      }
-    } else {
-      message.reply("speech.BOT_NO_PERMISSION").then(msg => {
-          msg.delete({timeout: 30000});
-        });
-    }
-  }
-
-  // HELP SETTINGS:
-  // Help:
-  if (message.content === prefix + 'help') {
-    //console.trace('help triggered');
-
-    var embed = new Discord.MessageEmbed()
-      .setTitle('Help Menu:')
-      .setColor(EMBED_COLOR)
-      .addFields(
-        { name: '`/help`', value: 'open this menu', inline: true },
-        { name: '`/ping`', value: 'return user ping', inline: true },
-        { name: '`/help submission`', value: 'get infos about textures submission', inline: true }
-      )
-      .setFooter('Faithful Dungeons', BotImgURL);
-
-    message.channel.send(embed);
-  }
-  // Help submission:
-  if (message.content === prefix + 'help submission') {
-    //console.trace('help submission triggered');
-
-    var embed = new Discord.MessageEmbed()
-      .setTitle('Textures Submissions help')
-      .setColor(EMBED_COLOR)
-      .addFields(
-        { name: 'How submit a texture for review?', value: 'Go to #submit-textures channel, send a message with the texture you made.', inline: false },
-        { name: 'Message Requirements:', value: 'Texture need to be a .png file, you also have to add the texture name & path (ex: texture `(path/file/file/texture.png)`', inline: false}
-      )
-      .setFooter('Faithful Dungeons', BotImgURL);
-
-    message.channel.send(embed);
-  }
-
-});*/
 
 client.login(process.env.CLIENT_TOKEN);

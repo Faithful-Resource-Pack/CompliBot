@@ -38,9 +38,10 @@ const C32IMG = 'https://i.imgur.com/nOpSBYX.png';
 const C32Color = '#76C945';
 const C32ID = '773983706582482946';
 const C32ModsID = '773984348860711003';
-const C32Submit1 = '773987409993793546';
-const C32Submit2 = '774220983044669450';
-const C32Submit3 = '780507681987100682';
+const C32Submit1 = '773987409993793546'; //#submit-textures
+const C32Submit2 = '774220983044669450'; //#council-voting
+const C32Submit3 = '780507681987100682'; //#texture-revote
+const C32Results = '780507804317384744'; //#texture-results
 
 module.exports = {
     CDungeonsIMG,
@@ -71,6 +72,7 @@ module.exports = {
     C32Submit1,
     C32Submit2,
     C32Submit3,
+		C32Results,
     C64IMG,
     C64ID,
 }
