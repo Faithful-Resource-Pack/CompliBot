@@ -1,13 +1,12 @@
 // Libs:
 require('dotenv').config();
-const Discord        = require('discord.js');
-const express        = require('express');
-const fs             = require('fs');
-const cron           = require('cron');
-const app            = express();
-const port           = 3000;
-const client         = new Discord.Client();
-client.commands      = new Discord.Collection();
+const Discord      = require('discord.js');
+const http         = require('http');
+const fs           = require('fs');
+const cron         = require('cron');
+const port         = 3000;
+const client       = new Discord.Client();
+client.commands    = new Discord.Collection();
 
 // Admins & settings : 
 uidR   = process.env.UIDR;
@@ -19,8 +18,11 @@ const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('
 const settings     = require('./settings.js');
 
 // Hosting settings:
-app.get('/', (req, res) => res.send('Hey, this is a Discord bot, not a website! Our website: https://compliancepack.net/'));
-app.listen(port, () => console.log(`listening at http://localhost:${port}`));
+const server = http.createServer((req, res) => {
+  res.writeHead(200);
+  res.end('Hey, this is a Discord bot, not a website! Our actual website: https://compliancepack.net/');
+});
+server.listen(3000, () => console.log(`listening at http://localhost:${port}`));
 
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
@@ -63,8 +65,9 @@ client.on('message', message => {
 	if (!command) return;
 	if (message.channel.type === 'dm') return message.reply('My creators don\'t allow me to execute commands inside DMs, sorry!');
 
-	try command.execute(message, args);
-	catch (error) {
+	try {
+		command.execute(message, args);
+	}	catch (error) {
 		console.error(error);
 		message.reply('there was an error trying to execute that command!');
 	}
@@ -113,7 +116,9 @@ client.on('message', async message => {
 			try {
 				await message.react('⬆️');
 				await message.react('⬇️');
-			} catch (error) console.error('ERROR | One of the emojis failed to react!' + error);
+			} catch (error) {
+				console.error('ERROR | One of the emojis failed to react!' + error);
+			}
 
 		} else if(!message.member.roles.cache.has(settings.C32ModsID)) {
 			await message.reply('your texture submission needs to have an file attached!').then(async msg => {
@@ -130,7 +135,9 @@ client.on('message', async message => {
 				try {
 					await message.react('⬆️');
 					await message.react('⬇️');
-				} catch (error)	console.error('ERROR | One of the emojis failed to react!' + error);
+				} catch (error) {
+					console.error('ERROR | One of the emojis failed to react!' + error);
+				}
 			}
 		}
 	}
@@ -148,7 +155,9 @@ client.on('message', async message => {
 				} else try {
 					await message.react('⬆️');
 					await message.react('⬇️');
-				} catch (error) console.error('ERROR | One of the emojis failed to react!' + error);
+				} catch (error) { 
+					console.error('ERROR | One of the emojis failed to react!' + error);
+				}
 
 			} else {
 				await message.reply('you need to attach a png file!').then(async msg => {
@@ -170,7 +179,9 @@ client.on('message', async message => {
 			try {
 				await message.react('✅');
 				await message.react('❌');
-			} catch (error) console.error('ERROR | One of the emojis failed to react!' + error);
+			} catch (error) {
+				console.error('ERROR | One of the emojis failed to react!' + error);
+			}
 		} else if(!message.member.roles.cache.has('766856790004072450')) {
 			await message.reply('your texture submission needs to have an file attached!').then(async msg => {
 				await message.react('❌');
@@ -210,14 +221,20 @@ async function textureRevote (inputID, outputID, offset) {
 		if (upvotePercentage > 66.66 &&	message.attachments.size > 0 && messageDate.getDate() == limitDate.getDate() &&	messageDate.getMonth() == limitDate.getMonth()) {
 			await channelOutput.send(`This texture has passed community voting and thus will be added into the pack.\n> With a percentage of ${upvotePercentage}% Upvotes (>66%).\n` + message.content.replace(revoteSentence,''), {files: [message.attachments.first().url]})
 			.then(async message => {
-				try await message.react('✅');
-				catch (error) console.error(error);
+				try {
+					await message.react('✅');
+				} catch (error) {
+					console.error(error);
+				}
 			});
 		} else if (message.attachments.size > 0 && messageDate.getDate() == limitDate.getDate() &&	messageDate.getMonth() == limitDate.getMonth()) {
 			await channelOutput.send(`This texture has not passed council and community voting (${upvotePercentage}% of upvotes), and thus will not be added into the pack.\n` + message.content.replace(revoteSentence,''), {files: [message.attachments.first().url]})
 			.then(async message => {
-				try await message.react('❌');
-				catch (error) console.error(error);
+				try {
+					await message.react('❌');
+				}	catch (error) {
+					console.error(error);
+				}
 			});
 		}
 	}
@@ -246,8 +263,11 @@ async function councilVoting (inputID, outputFalseID, outputTrueID, offset) {
 		if (messageUpvote > messageDownvote && message.attachments.size > 0 && messageDate.getDate() == limitDate.getDate() && messageDate.getMonth() == limitDate.getMonth()) {
 			await channelResults.send(trueSentence + message.content, {files: [message.attachments.first().url]})
 			.then(async message => {
-				try await message.react('✅');
-				catch (error)	console.error(error);
+				try {
+					await message.react('✅');
+				} catch (error)	{
+					console.error(error);
+				}
 			});
 		} else if (message.attachments.size > 0 && messageDate.getDate() == limitDate.getDate() && messageDate.getMonth() == limitDate.getMonth()) {
 			await channelRevote.send(falseSentence + message.content, {files: [message.attachments.first().url]})
@@ -255,7 +275,9 @@ async function councilVoting (inputID, outputFalseID, outputTrueID, offset) {
 				try {
 					await message.react('⬆️');
 					await message.react('⬇️');
-				} catch (error) console.error(error);
+				} catch (error) {
+					console.error(error);
+				}
 			});
 		}
 	}
@@ -283,7 +305,9 @@ async function textureSubmission (inputID, outputID, offset) {
 				try {
 					await message.react('⬆️');
 					await message.react('⬇️');
-				} catch (error)	console.error(error);
+				} catch (error) {
+					console.error(error);
+				}
 			});
 		}
 	}

@@ -37,7 +37,9 @@ module.exports = {
 								if (msg.attachments.size > 0) return magnify(FACTOR, msg.attachments.first().url);
 								else warnUser();
 							});
-						} catch (error) warnUser();
+						} catch (error) { 
+              warnUser();
+            }
 					}
 
 				// IF MESSAGE ID IS PROVIDED
@@ -47,7 +49,9 @@ module.exports = {
 							if (msg.attachments.size > 0) return magnify(FACTOR, msg.attachments.first().url);
 							else warnUser();
 						});
-					} catch (error)	warnUser();
+					} catch (error)	{
+						warnUser();
+					}
 				}
 
 			} else warnUser()
