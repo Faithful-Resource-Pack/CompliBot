@@ -5,6 +5,6 @@ const BOT_NO_PERMISSION = 'You don\'t have the permission to do that!';
 const BOT_TEXTURE_DOESNT_EXIST = 'The specified texture doesn\'t exist!';
 
 module.exports = {
-    BOT_TEXTURE_DOESNT_EXIST,
-    BOT_NO_PERMISSION,
+	BOT_TEXTURE_DOESNT_EXIST,
+	BOT_NO_PERMISSION,
 }

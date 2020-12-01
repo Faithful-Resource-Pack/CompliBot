@@ -22,9 +22,9 @@ module.exports = {
 			}
 		} else {
 			return message.reply(speech.BOT_NO_PERMISSION).then(msg => {
-        msg.delete({timeout: 30000});
-        message.react('❌');
-      });
+				msg.delete({timeout: 30000});
+				message.react('❌');
+			});
 		}
 	}
 };

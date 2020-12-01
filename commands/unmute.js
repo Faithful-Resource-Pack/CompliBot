@@ -13,14 +13,12 @@ module.exports = {
 				member.roles.remove(role);
 
 				message.reply(args + ' is not muted anymore.');
-			} else {
-				message.reply('Please provide a player tag!');
-			}
+			} else message.reply('Please provide a player tag!');
 		} else {
 			return message.reply(speech.BOT_NO_PERMISSION).then(msg => {
-        msg.delete({timeout: 30000});
-        message.react('❌');
-      });
+				msg.delete({timeout: 30000});
+				message.react('❌');
+			});
 		}
 	}
 };

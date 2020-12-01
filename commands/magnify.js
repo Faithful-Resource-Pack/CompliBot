@@ -37,9 +37,7 @@ module.exports = {
 								if (msg.attachments.size > 0) return magnify(FACTOR, msg.attachments.first().url);
 								else warnUser();
 							});
-						} catch (error) {
-							warnUser();
-						}
+						} catch (error) warnUser();
 					}
 
 				// IF MESSAGE ID IS PROVIDED
@@ -49,30 +47,24 @@ module.exports = {
 							if (msg.attachments.size > 0) return magnify(FACTOR, msg.attachments.first().url);
 							else warnUser();
 						});
-					} catch (error) {
-						warnUser();
-					}
+					} catch (error)	warnUser();
 				}
 
-			} else {
-				warnUser()
-			}
-		} else {
-			warnUser()
-		}
+			} else warnUser()
+		} else warnUser()
 
 		function warnUser() {
 			const embed = new Discord.MessageEmbed()
-	  		.setTitle('You need to specify 2 arguments:')
-	  		.setColor(settings.C32Color)
-	  		.setThumbnail(settings.C32IMG)
-        .setDescription('`/magnify <factor> <message URL/ID>` \nOR: \n`/magnify <factor> <image URL>` \nOR: \n`/magnify <factor> & attach an image`')
-	  		.setFooter('Compliance Team', settings.C32IMG);
+				.setTitle('You need to specify 2 arguments:')
+				.setColor(settings.C32Color)
+				.setThumbnail(settings.C32IMG)
+				.setDescription('`/magnify <factor> <message URL/ID>` \nOR: \n`/magnify <factor> <image URL>` \nOR: \n`/magnify <factor> & attach an image`')
+				.setFooter('Compliance Team', settings.C32IMG);
 
-      return message.channel.send(embed).then(embed => {
-        embed.delete({timeout: 30000});
-        message.react('❌'); 
-      });
+			return message.channel.send(embed).then(embed => {
+				embed.delete({timeout: 30000});
+				message.react('❌'); 
+			});
 		}
 
 		//Return Image size, need url.
@@ -97,8 +89,8 @@ module.exports = {
 		function magnify(factor, url) {
 			getMeta(url).then(async function (dimension) {
 
-				var sizeOrigin = dimension.width * dimension.height
-				var sizeResult = dimension.width*factor * dimension.height*factor
+				var sizeOrigin = dimension.width * dimension.height;
+				var sizeResult = (dimension.width*factor) * (dimension.height*factor);
 
 				if ( sizeOrigin > 262144 ) { // max 512x512
 					return message.reply(`Your default picture is already to big, take one tinier, **maximum input allowed: 262 144px² (512x512)**, your: `+sizeOrigin+'px².').then(msg => {
