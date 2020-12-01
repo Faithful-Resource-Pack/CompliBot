@@ -38,7 +38,7 @@ client.on('ready', () => {
 });
 
 // Texture submission process:
-let scheduledFunctions = new cron.CronJob('30 14 * * *', () => { // each day at 14:30 GMT
+let scheduledFunctions = new cron.CronJob('00 00 * * *', () => { // each day at 00:00 GMT
 	textureSubmission(settings.C32Submit1,settings.C32Submit2,5);									// 5 DAYS OFFSET
 	councilVoting(settings.C32Submit2,settings.C32Submit3,settings.C32Results,1);	// 1 DAYS OFFSET
 	textureRevote(settings.C32Submit3,settings.C32Results,3);											// 3 DAYS OFFSET
@@ -58,17 +58,19 @@ async function textureRevote (inputID, outputID, offset) {
 	for (var i in messages) {
 		let message     = messages[i];
 		let messageDate = new Date(message.createdTimestamp);
-		let messageUpvote   = countReact(message,'⬆️');
-		let messageDownvote = countReact(message,'⬇️');
+
+		let messageUpvote    = countReact(message,'⬆️');
+		let messageDownvote  = countReact(message,'⬇️');
+		let upvotePercentage = (messageUpvote * 100) / (messageUpvote + messageDownvote);
 
 		if (
-			messageUpvote > messageDownvote &&
+			upvotePercentage > 66.66 &&
 			message.attachments.size > 0 && //If something is attached
 			messageDate.getDate() == limitDate.getDate() &&
 			messageDate.getMonth() == limitDate.getMonth()
 		) {
 			await channelOutput.send(
-				'This texture has passed community voting and thus will be added into the pack.\n'
+				`This texture has passed community voting and thus will be added into the pack.\n> With a percentage of ${upvotePercentage}% Upvotes (>66%).`
 				+ message.content.replace(revoteSentence,''), {files: [message.attachments.first().url]}
 			).then(async message => {
 				try {
@@ -83,7 +85,7 @@ async function textureRevote (inputID, outputID, offset) {
 			messageDate.getMonth() == limitDate.getMonth()
 			) {
 			await channelOutput.send(
-				'This texture has not passed community and council voting, and thus will not be added into the pack.\n'
+				`This texture has not passed council and community voting (${upvotePercentage}% of upvotes), and thus will not be added into the pack.\n`
 				+ message.content.replace(revoteSentence,''), {files: [message.attachments.first().url]}
 			).then(async message => {
 				try {
