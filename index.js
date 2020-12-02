@@ -17,6 +17,11 @@ prefix = process.env.PREFIX;
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 const settings     = require('./settings.js');
 
+for (const file of commandFiles) {
+	const command = require(`./commands/${file}`);
+	client.commands.set(command.name, command);
+}
+
 // Hosting settings:
 const server = http.createServer((req, res) => {
   res.writeHead(200);
@@ -24,33 +29,29 @@ const server = http.createServer((req, res) => {
 });
 server.listen(3000, () => console.log(`listening at http://localhost:${port}`));
 
-for (const file of commandFiles) {
-	const command = require(`./commands/${file}`);
-	client.commands.set(command.name, command);
-}
-
 // Bot status:
-client.on('ready', () => {
+client.on('ready', async () => {
 	if (process.env.MAINTENANCE === 'true') client.user.setPresence({ activity: { name: 'maintenance' }, status: 'dnd' });
 	else client.user.setActivity('compliancepack.net', {type: 'PLAYING'});
 	
-	console.log('Starting...');
+	console.log('Starting submission functions...');
 	scheduledFunctions.start();
 
+  console.log('Updating member counters...');
 	let cTweaksGuild = client.guilds.cache.get('720966967325884426');
-	cTweaksGuild.channels.cache.get('750638888296382504').setName('Member Count: ' + cTweaksGuild.memberCount);
+	await cTweaksGuild.channels.cache.get('750638888296382504').setName('Member Count: ' + cTweaksGuild.memberCount);
 
 	console.log('JavaScript is a pain, but i\'m fine, i hope...');
 });
 
 // Member counter
-client.on('guildMemberAdd', member =>{
+client.on('guildMemberAdd', async member =>{
 	let cTweaksGuild = client.guilds.cache.get('720966967325884426');
-	cTweaksGuild.channels.cache.get('750638888296382504').setName('Member Count: ' + cTweaksGuild.memberCount);
+	await cTweaksGuild.channels.cache.get('750638888296382504').setName('Member Count: ' + cTweaksGuild.memberCount);
 });
-client.on('guildMemberRemove', member =>{
+client.on('guildMemberRemove', async member =>{
 	let cTweaksGuild = client.guilds.cache.get('720966967325884426');
-	cTweaksGuild.channels.cache.get('750638888296382504').setName('Member Count: ' + cTweaksGuild.memberCount);
+	await cTweaksGuild.channels.cache.get('750638888296382504').setName('Member Count: ' + cTweaksGuild.memberCount);
 });
 
 // Command handler
@@ -142,7 +143,7 @@ client.on('message', async message => {
 		}
 	}
 
-	// Texture submission:
+	// Texture submission Compliance Dungeons:
 	else if (message.channel.id === settings.CDungeonsSubmit) {
 		if (message.attachments.size > 0) {
 			if (message.attachments.every(attachIsImage)){
@@ -340,10 +341,11 @@ function countReact (message, emoji) {
 	else return 0
 }
 
-//True if this url is a png image
+// True if this url is a png image
 function attachIsImage(msgAttach) {
 	var url = msgAttach.url;
 	return url.indexOf('png', url.length - 'png'.length /*or 3*/) !== -1;
 }
 
+// Login the bot
 client.login(process.env.CLIENT_TOKEN);

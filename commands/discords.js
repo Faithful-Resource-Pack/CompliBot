@@ -21,6 +21,16 @@ module.exports = {
 				.then(() => message.channel.send('> Compliance 32x for Minecraft Java Mods: \nhttps://discord.gg/QF2CAX7'))
 				.then(() => message.channel.send('> Compliance Mod for Minecraft Dungeons: \nhttps://discord.gg/eeVpygu'))
 				.then(() => message.channel.send('> This Server: \nhttps://discord.gg/6psYdRF'));
+			} else if (message.guild.id === settings.C32ID) {
+				message.channel.send('This server: \n> https://discord.gg/sN9YRQbBv7')
+				.then(() => message.channel.send('Compliance 64x : \n> https://discord.gg/Tqtwtgh'))
+				.then(() => message.channel.send('Compliance Tweaks : \n> https://discord.gg/6psYdRF'))
+				.then(() => message.channel.send('Compliance Addons : \n> https://discord.gg/qVeDfZw'))
+				.then(() => message.channel.send('Compliance 32x for Minecraft Java Mods : \n> https://discord.gg/QF2CAX7'))
+				.then(() => message.channel.send('Compliance Mod for Minecraft Dungeons : \n> https://discord.gg/eeVpygu'))
+				.then(() => message.channel.send('Minecraft: \n> https://discord.gg/minecraft'))
+				.then(() => message.channel.send('Optifine: \n> https://discord.gg/3mMpcwW'))
+				.then(() => message.channel.send('Blockbench:  \n> https://discord.gg/fZQbxbg'));
 			} else return
 		} else return
 	}
