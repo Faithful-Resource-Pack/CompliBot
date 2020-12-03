@@ -217,7 +217,7 @@ async function textureRevote (inputID, outputID, offset) {
 
 		let messageUpvote    = countReact(message,'⬆️');
 		let messageDownvote  = countReact(message,'⬇️');
-		let upvotePercentage = (messageUpvote * 100) / (messageUpvote + messageDownvote);
+		let upvotePercentage = ((messageUpvote * 100) / (messageUpvote + messageDownvote)).toFixed(2);
 
 		if (upvotePercentage > 66.66 &&	message.attachments.size > 0 && messageDate.getDate() == limitDate.getDate() &&	messageDate.getMonth() == limitDate.getMonth()) {
 			await channelOutput.send(`This texture has passed community voting and thus will be added into the pack.\n> With a percentage of ${upvotePercentage}% Upvotes (>66%).\n` + message.content.replace(revoteSentence,''), {files: [message.attachments.first().url]})
