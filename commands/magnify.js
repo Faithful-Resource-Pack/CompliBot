@@ -13,56 +13,60 @@ module.exports = {
 		var FACTOR;
 		var DATA;
 
-		// IMAGE ATTACHED
 		if (args != '') {
-			if (args > 0 && !isNaN(args) && message.attachments.size > 0) {
+
+			// IMAGE ATTACHED
+			if (args > 1 && !isNaN(args) && message.attachments.size > 0) {
 				FACTOR = args;
 				DATA   = message.attachments.first().url;
 				return magnify(FACTOR, DATA);
+			}	
 
-			}	// NO IMAGE ATTACHED
-			else if (args[0] != '' && args[0] > 0 && !isNaN(args[0]) && (args[1] != '' && args[1] != undefined)) {
+			// NO IMAGE ATTACHED
+			else if (args[0] != '' && args[0] > 1 && !isNaN(args[0]) && (args[1] != '' && args[1] != undefined)) {
 				FACTOR = args[0];
 
 				// IF URL IS PROVIDED
 				if (args[1].startsWith('https://') || args[1].startsWith('http://')) {
+
 					// IF URL IS AN IMAGE
 					if (args[1].endsWith('.png') || args[1].endsWith('.jpeg') || args[1].endsWith('.jpg')) {
 						DATA = args[1];
 						return magnify(FACTOR,DATA);
+
 					// IF URL IS A DISCORD MESSAGE
 					} else {
-						try {
-							client.messages.fetch(args[1].split("/").pop()).then(msg => {
-								if (msg.attachments.size > 0) return magnify(FACTOR, msg.attachments.first().url);
-								else warnUser();
-							});
-						} catch (error) { 
-              warnUser();
-            }
+						client.messages.fetch(args[1].split("/").pop()).then(msg => {
+							if (msg.attachments.size > 0) return magnify(FACTOR, msg.attachments.first().url);
+							return warnUser('Error: The original message does not have an image attached');
+						}).catch(error => {
+							return warnUser(error);
+						});
 					}
 
 				// IF MESSAGE ID IS PROVIDED
 				} else {
-					try {
-						message.channel.messages.fetch(args[1]).then(msg => {
-							if (msg.attachments.size > 0) return magnify(FACTOR, msg.attachments.first().url);
-							else warnUser();
-						});
-					} catch (error)	{
-						warnUser();
-					}
+					message.channel.messages.fetch(args[1]).then(msg => {
+						if (msg.attachments.size > 0) return magnify(FACTOR, msg.attachments.first().url);
+						return warnUser('Error: The original message does not have an image attached');
+					}).catch(error => {
+						return warnUser(error);
+					});
 				}
+			}
+		}
+		
+		return warnUser(`Error: You did not provide valid arguments`);
 
-			} else warnUser()
-		} else warnUser()
+		function warnUser(text) {
 
-		function warnUser() {
+			if (!text) text = '';
+
 			const embed = new Discord.MessageEmbed()
-				.setTitle('You need to specify 2 arguments:')
+				.setTitle('Magnify command:')
 				.setColor(settings.C32Color)
 				.setThumbnail(settings.C32IMG)
-				.setDescription('`/magnify <factor> <message URL/ID>` \nOR: \n`/magnify <factor> <image URL>` \nOR: \n`/magnify <factor> & attach an image`')
+				.setDescription('`/magnify <factor> <message URL/ID>`\nOR:\n`/magnify <factor> <image URL>`\nOR:\n`/magnify <factor> & attach an image`\n\n' + text)
 				.setFooter('Compliance Team', settings.C32IMG);
 
 			return message.channel.send(embed).then(embed => {
@@ -96,48 +100,38 @@ module.exports = {
 				var sizeOrigin = dimension.width * dimension.height;
 				var sizeResult = (dimension.width*factor) * (dimension.height*factor);
 
-				if ( sizeOrigin > 262144 ) { // max 512x512
-					return message.reply(`Your default picture is already to big, take one tinier, **maximum input allowed: 262 144px² (512x512)**, your: `+sizeOrigin+'px².').then(msg => {
-						msg.delete({timeout: 30000});
-						message.react('❌');
-					});
-				} else if ( sizeResult > 1048576 ) { // max 1024x1024 (512 factor 2)
-					return message.reply('Your output picture will be too big, **maximum output allowed: 1 048 576px² (1024x1024)**, your: '+sizeResult+'px².').then(msg => {
-						msg.delete({timeout: 30000});
-						message.react('❌');
-					});
-				} else {
+				if ( sizeOrigin > 262144 ) return warnUser(`Your default picture is already to big, take one tinier, **maximum input allowed: 262 144px² (512x512)**, your: `+sizeOrigin+'px².');
+				if ( sizeResult > 1048576 ) return warnUser('Your output picture will be too big, **maximum output allowed: 1 048 576px² (1024x1024)**, your: '+sizeResult+'px².');
 				
-					var canvasStart  = Canvas.createCanvas(dimension.width, dimension.height).getContext('2d');
-					var canvasResult = Canvas.createCanvas(dimension.width*factor, dimension.height*factor)
-					var canvasResultCTX = canvasResult.getContext('2d');
+				var canvasStart  = Canvas.createCanvas(dimension.width, dimension.height).getContext('2d');
+				var canvasResult = Canvas.createCanvas(dimension.width*factor, dimension.height*factor);
+				var canvasResultCTX = canvasResult.getContext('2d');
 
-					const temp = await Canvas.loadImage(url);
-					canvasStart.drawImage(temp, 0, 0);
+				const temp = await Canvas.loadImage(url);
+				canvasStart.drawImage(temp, 0, 0);
 
-					var image = canvasStart.getImageData(0, 0, dimension.width, dimension.height).data;
+				var image = canvasStart.getImageData(0, 0, dimension.width, dimension.height).data;
 
-					var i;
-					var r;
-					var g;
-					var b; 
-					var a;
+				var i;
+				var r;
+				var g;
+				var b; 
+				var a;
 
-					for (var x = 0; x < dimension.width; x++) {
-						for (var y = 0; y < dimension.height; y++) {
-							i = (y * dimension.width + x)*4;
-							r = image[i];
-							g = image[i+1];
-							b = image[i+2];
-							a = image[i+3];
-							canvasResultCTX.fillStyle = 'rgba('+r+','+g+','+b+','+a+')';
-							canvasResultCTX.fillRect(x*factor,y*factor,factor,factor);
-						}
+				for (var x = 0; x < dimension.width; x++) {
+					for (var y = 0; y < dimension.height; y++) {
+						i = (y * dimension.width + x)*4;
+						r = image[i];
+						g = image[i+1];
+						b = image[i+2];
+						a = image[i+3];
+						canvasResultCTX.fillStyle = 'rgba('+r+','+g+','+b+','+a+')';
+						canvasResultCTX.fillRect(x*factor,y*factor,factor,factor);
 					}
-						
-					const attachment = new Discord.MessageAttachment(canvasResult.toBuffer());
-					message.channel.send(`Default size: ${dimension.width}x${dimension.height}\n> Magnified by x${factor}:`, attachment);
 				}
+						
+				const attachment = new Discord.MessageAttachment(canvasResult.toBuffer());
+				return message.channel.send(`Default size: ${dimension.width}x${dimension.height}\n> Magnified by x${factor}:`, attachment);
 			});
 		}
 	}
