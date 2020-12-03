@@ -25,7 +25,7 @@ for (const file of commandFiles) {
 // Hosting settings:
 const server = http.createServer((req, res) => {
   res.writeHead(200);
-  res.end('Hey, this is a Discord bot, not a website! Our actual website: https://compliancepack.net/');
+  res.end('Hey, this is a Discord bot, not a website! Our actual website is https://compliancepack.net/');
 });
 server.listen(3000, () => console.log(`listening at http://localhost:${port}`));
 
