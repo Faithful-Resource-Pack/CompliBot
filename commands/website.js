@@ -7,6 +7,7 @@ module.exports = {
 	description: 'Displays the website of the discord',
 	execute(message, args) {
 		if (!args.length) {
+      if (message.channel.type !== 'dm') {
 			//Compliance Dungeons
 			if (message.guild.id === settings.CDungeonsID) {
 				const embed = new Discord.MessageEmbed()
@@ -87,7 +88,8 @@ module.exports = {
 				message.channel.send(embed);
 				//Other servers
 			} else return message.channel.send('I don\'t have any website registered for this server :(');
-		}
+    } else return message.channel.send('Please specify a valid argument! \nYou can use: \n`32x`, `64x`, `addons`, `tweaks`, `dungeons` and `mods`');
+    }
 
 		//Compliance Dungeons
 		else if (args[0] === 'dungeons') {

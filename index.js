@@ -1,12 +1,12 @@
 // Libs:
 require('dotenv').config();
-const Discord      = require('discord.js');
-const http         = require('http');
-const fs           = require('fs');
-const cron         = require('cron');
-const port         = 3000;
-const client       = new Discord.Client();
-client.commands    = new Discord.Collection();
+const Discord   = require('discord.js');
+const http      = require('http');
+const fs        = require('fs');
+const cron      = require('cron');
+const port      = 3000;
+const client    = new Discord.Client();
+client.commands = new Discord.Collection();
 
 // Admins & settings : 
 uidR   = process.env.UIDR;
@@ -56,7 +56,7 @@ client.on('guildMemberRemove', async member =>{
 
 // Command handler
 client.on('message', message => {
-	// Avoid message WITH prefix & bot messages
+	// Avoid message WITHOUT prefix & bot messages
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
 
 	const args        = message.content.slice(prefix.length).trim().split(/ +/);
@@ -64,7 +64,7 @@ client.on('message', message => {
 	const command     = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
 	if (!command) return;
-	if (message.channel.type === 'dm') return message.reply('My creators don\'t allow me to execute commands inside DMs, sorry!');
+	//if (message.channel.type === 'dm') return message.reply('My creators don\'t allow me to execute commands inside DMs, sorry!');
 
 	try {
 		command.execute(message, args);
@@ -75,7 +75,7 @@ client.on('message', message => {
 });
 
 client.on('message', async message => {
-	// Avoid message WITHOUT prefix & bot messages
+	// Avoid message WITH prefix & bot messages
 	if (message.content.startsWith(prefix) || message.author.bot) return;
 
 	/*

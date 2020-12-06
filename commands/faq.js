@@ -5,7 +5,7 @@ module.exports = {
 	name: 'faq',
 	description: 'FAQ commands for Compliance Tweaks',
 	execute(message, args) {
-		if (message.guild.id !== settings.CTweaksID) return message.reply('this command can only be used in the Compliance Tweaks server!')
+		if (message.channel.type === 'dm' || message.guild.id !== settings.CTweaksID) return message.reply('this command can only be used in the Compliance Tweaks server!')
 			.then(msg => {
 				msg.delete({timeout: 30000});
 				message.react('❌');

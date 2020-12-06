@@ -28,7 +28,7 @@ module.exports = {
 	name: 'texture',
 	description: 'Displays a specified texture from Compliance Dungeons',
 	execute(message, args) {
-		if (message.guild.id !== settings.CDungeonsID) return message.reply('this command can only be used in the Compliance Dungeons server!')
+		if (message.channel.type === 'dm' || message.guild.id !== settings.CDungeonsID) return message.reply('this command can only be used in the Compliance Dungeons server!')
 			.then(msg => {
 				msg.delete({timeout: 30000});
 				message.react('❌');

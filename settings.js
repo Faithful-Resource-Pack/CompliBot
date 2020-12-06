@@ -43,6 +43,9 @@ const C32Submit2 = '774220983044669450';								// #council-voting
 const C32Submit3 = '780507681987100682';								// #texture-revote
 const C32Results = '780507804317384744';								// #texture-results
 
+// The bot itself
+const BotIMG = 'https://i.imgur.com/Hf0eeiU.png';
+
 module.exports = {
 	CDungeonsIMG,
 	CDungeonsColor,
@@ -75,4 +78,5 @@ module.exports = {
 	C32Results,
 	C64IMG,
 	C64ID,
+  BotIMG,
 }
