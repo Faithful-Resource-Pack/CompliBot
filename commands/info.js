@@ -4,6 +4,7 @@ const settings = require('../settings.js');
 
 module.exports = {
 	name: 'info',
+	aliases: ['information'],
 	description: 'displays some info of the bot',
 	execute(message, args) {
 		if (message.channel.type !== 'dm') {

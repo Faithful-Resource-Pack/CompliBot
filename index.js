@@ -370,4 +370,4 @@ function attachIsImage(msgAttach) {
 }
 
 // Login the bot
-client.login(process.env.CLIENT_TOKEN);
+client.login(process.env.CLIENT_TOKEN).catch(console.error);
