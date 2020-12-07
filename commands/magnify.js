@@ -64,10 +64,9 @@ module.exports = {
 
 			const embed = new Discord.MessageEmbed()
 				.setTitle('Magnify command:')
-				.setColor(settings.C32Color)
-				.setThumbnail(settings.C32IMG)
+				.setThumbnail(settings.BotIMG)
 				.setDescription('`/magnify <factor> <message URL/ID>`\nOR:\n`/magnify <factor> <image URL>`\nOR:\n`/magnify <factor> & attach an image`\n\n' + text)
-				.setFooter('Compliance Team', settings.C32IMG);
+				.setFooter('CompliBot', settings.BotIMG);
 
 			return message.channel.send(embed).then(embed => {
 				embed.delete({timeout: 30000});

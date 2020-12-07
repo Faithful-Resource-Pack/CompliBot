@@ -17,10 +17,11 @@ const CTweaksColor = '#658430';
 const CTweaksID    = '720966967325884426';								// Discord server
 
 // Compliance Addons
-const CAddonsIMG    = 'https://i.imgur.com/ty9n7nT.png';
-const CAddonsColor  = '#6D6163';
-const CAddonsID     = '614160586032414845'; 							// Discord server
-const CAddonsModsID = '614163845656608774';								// Moderator role
+const CAddonsIMG      = 'https://i.imgur.com/ty9n7nT.png';
+const CAddonsColor    = '#6D6163';
+const CAddons3DSubmit = '782574754866528277';								// #model-texture-submit
+const CAddonsID       = '614160586032414845'; 							// Discord server
+const CAddonsModsID   = '614163845656608774';								// Moderator role
 
 // Faithful Traditional
 const FTraditionalIMG    = 'https://i.imgur.com/SLpji2x.png';
@@ -61,6 +62,7 @@ module.exports = {
 	CTweaksID,
 	CAddonsIMG,
 	CAddonsColor,
+	CAddons3DSubmit,
 	CAddonsID,
 	CAddonsModsID,
 	FTraditionalIMG,

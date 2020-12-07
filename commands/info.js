@@ -23,12 +23,6 @@ module.exports = {
 
 			message.author.send(embed);
     }
-    
-    /*return message.reply('this command can only be used inside dm\'s!')
-			.then(msg => {
-				msg.delete({timeout: 30000});
-				message.react('❌');
-			});*/
 		else {
 			const embed = new Discord.MessageEmbed()
 				.setTitle('CompliBot info:')

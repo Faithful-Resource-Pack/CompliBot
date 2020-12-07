@@ -88,7 +88,7 @@ client.on('message', async message => {
 	else if (message.content === 'F' ) await message.react('🇫');
 
 	else if (message.content.toLowerCase() === 'mhhh') {
-		const embed = new Discord.MessageEmbed().setColor(settings.C32Color).setTitle('Uh-oh moment').setFooter('Swahili -> English', settings.C32IMG);
+		const embed = new Discord.MessageEmbed().setTitle('Uh-oh moment').setFooter('Swahili -> English', settings.BotIMG);
 		await message.channel.send(embed);
 	}
 
@@ -140,6 +140,28 @@ client.on('message', async message => {
 					console.error('ERROR | One of the emojis failed to react!' + error);
 				}
 			}
+		}
+	}
+
+	// Models submission for Compliance 3D addons
+	else if (message.channel.id === settings.CAddons3DSubmit) {
+		if (message.attachments.size > 0) {
+			if (!message.content.includes('/assets/')) {
+				await message.reply('you need to add the texture path to your texture submission, following this example: `**texture/model name** /assets/...`').then(async msg => {
+					await message.react('❌');
+					await msg.delete({timeout: 30000});
+				});
+			} else try {
+				await message.react('⬆️');
+				await message.react('⬇️');
+			} catch (error) { 
+				console.error('ERROR | One of the emojis failed to react!' + error);
+			}
+		} else {
+			await message.reply('your texture submission needs to have a file attached!').then(async msg => {
+				await message.react('❌');
+				await msg.delete({timeout: 30000});
+			});
 		}
 	}
 
