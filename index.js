@@ -335,6 +335,8 @@ async function textureSubmission (inputID, outputID, offset) {
 					console.error(error);
 				}
 			});
+
+			await channelOutput.send('<@'+settings.C32CouncilID+'> There are new textures to vote for!');
 		}
 	}
 }

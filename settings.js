@@ -36,14 +36,15 @@ const C64ID     = '747574286356840609';									// Discord server
 const C64ModsID = '747595211273797724';									// Moderator role
 
 // Compliance 32x
-const C32IMG     = 'https://i.imgur.com/nOpSBYX.png';
-const C32Color   = '#76C945';
-const C32ID      = '773983706582482946';								// Discord server
-const C32ModsID  = '773984348860711003';								// Moderator role
-const C32Submit1 = '773987409993793546';								// #submit-textures
-const C32Submit2 = '774220983044669450';								// #council-voting
-const C32Submit3 = '780507681987100682';								// #texture-revote
-const C32Results = '780507804317384744';								// #texture-results
+const C32IMG       = 'https://i.imgur.com/nOpSBYX.png';
+const C32Color     = '#76C945';
+const C32ID        = '773983706582482946';								// Discord server
+const C32ModsID    = '773984348860711003';								// Moderator role
+const C32CouncilID = '775636065338785813';								// Council role
+const C32Submit1   = '773987409993793546';								// #submit-textures
+const C32Submit2   = '774220983044669450';								// #council-voting
+const C32Submit3   = '780507681987100682';								// #texture-revote
+const C32Results   = '780507804317384744';								// #texture-results
 
 // The bot itself
 const BotIMG = 'https://i.imgur.com/Hf0eeiU.png';
@@ -75,6 +76,7 @@ module.exports = {
 	C32Color,
 	C32ID,
 	C32ModsID,
+	C32CouncilID,
 	C64ModsID,
 	C32Submit1,
 	C32Submit2,
