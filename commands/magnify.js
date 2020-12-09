@@ -20,10 +20,12 @@ module.exports = {
 				FACTOR = args;
 				DATA   = message.attachments.first().url;
 				return magnify(FACTOR, DATA);
-			}	
+			} else if (args > 1 && !isNaN(args)) {
+				return PreviousImage(args);
+			} else return WarnUser('Error: You did not provide valid arguments')
 
 			// NO IMAGE ATTACHED
-			else if (args[0] != '' && args[0] > 1 && !isNaN(args[0]) && (args[1] != '' && args[1] != undefined)) {
+			if (args[0] != '' && args[0] > 1 && !isNaN(args[0]) && (args[1] != '' && args[1] != undefined)) {
 				FACTOR = args[0];
 
 				// IF URL IS PROVIDED
@@ -38,34 +40,54 @@ module.exports = {
 					} else {
 						client.messages.fetch(args[1].split("/").pop()).then(msg => {
 							if (msg.attachments.size > 0) return magnify(FACTOR, msg.attachments.first().url);
-							return warnUser('Error: The original message does not have an image attached');
+							return WarnUser('Error: The original message does not have an image attached');
 						}).catch(error => {
-							return warnUser(error);
+							return WarnUser(error);
 						});
 					}
 
+				// IF THE USER ASKED TO MAGNIFY PREVIOUS IMAGE SENT
+				} else if (args[1] == '^' || args[1] == 'up' || args[1] == 'last') {
+					return PreviousImage(FACTOR);
+
 				// IF MESSAGE ID IS PROVIDED
-				} else {
+				}	else {
 					message.channel.messages.fetch(args[1]).then(msg => {
 						if (msg.attachments.size > 0) return magnify(FACTOR, msg.attachments.first().url);
-						return warnUser('Error: The original message does not have an image attached');
+						return WarnUser('Error: The original message does not have an image attached');
 					}).catch(error => {
-						return warnUser(error);
+						return WarnUser(error);
 					});
 				}
 			}
-		}
-		
-		return warnUser(`Error: You did not provide valid arguments`);
+		} else return WarnUser(`Error: You did not provide valid arguments`);
 
-		function warnUser(text) {
+		async function PreviousImage(FACTOR) {
+			var found = false;
+			var messages = [];
+			var list_messages = await message.channel.messages.fetch({ limit: 10 });
+			messages.push(...list_messages.array());
+
+			for (var i in messages) {
+				msg = messages[i]
+				if (msg.attachments.size > 0) {
+					found = true;
+					break;
+				}
+			}
+
+			if (found) await magnify(FACTOR, msg.attachments.first().url);
+			else return WarnUser('No image found in the 10 previous messages..');
+		}
+
+		function WarnUser(text) {
 
 			if (!text) text = '';
 
 			const embed = new Discord.MessageEmbed()
 				.setTitle('Magnify command:')
 				.setThumbnail(settings.BotIMG)
-				.setDescription('`/magnify <factor> <message URL/ID>`\nOR:\n`/magnify <factor> <image URL>`\nOR:\n`/magnify <factor> & attach an image`\n\n' + text)
+				.setDescription('``/magnify <factor> & attach an image``\nOR:\n``/magnify <factor> <DISCORD MESSAGE URL>``\n> Can be from anywhere, need to ends with ``.png`` or ``.jpg``/``.jpeg``\nOR:\n``/magnify <factor> <image URL>``\n> Can be an image from Google or anywhere else.\nOR:\n``/magnify <factor> <MESSAGE ID>``\n> The ID need to be from the same channel.\n					OR:\n``/magnify <factor> (up/^/last optional)``\n> Magnify the most recent image in the channel (10 messages ahead max).\n\n' + text)
 				.setFooter('CompliBot', settings.BotIMG);
 
 			return message.channel.send(embed).then(embed => {
@@ -99,8 +121,8 @@ module.exports = {
 				var sizeOrigin = dimension.width * dimension.height;
 				var sizeResult = (dimension.width*factor) * (dimension.height*factor);
 
-				if ( sizeOrigin > 262144 ) return warnUser(`Your default picture is already to big, take one tinier, **maximum input allowed: 262 144px² (512x512)**, your: `+sizeOrigin+'px².');
-				if ( sizeResult > 1048576 ) return warnUser('Your output picture will be too big, **maximum output allowed: 1 048 576px² (1024x1024)**, your: '+sizeResult+'px².');
+				if ( sizeOrigin > 262144 ) return WarnUser(`Your default picture is already to big, take one tinier, **maximum input allowed: 262 144px² (512x512)**, your: `+sizeOrigin+'px².');
+				if ( sizeResult > 1048576 ) return WarnUser('Your output picture will be too big, **maximum output allowed: 1 048 576px² (1024x1024)**, your: '+sizeResult+'px².');
 				
 				var canvasStart  = Canvas.createCanvas(dimension.width, dimension.height).getContext('2d');
 				var canvasResult = Canvas.createCanvas(dimension.width*factor, dimension.height*factor);
