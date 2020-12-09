@@ -12,9 +12,10 @@ const CModsID     = '748264625962877019';								// Discord server
 const CModsModsID = '748270445534380163';								// Moderator role
 
 // Compliance Tweaks
-const CTweaksIMG   = 'https://i.imgur.com/dliyq5U.png';
-const CTweaksColor = '#658430';
-const CTweaksID    = '720966967325884426';								// Discord server
+const CTweaksIMG     = 'https://i.imgur.com/dliyq5U.png';
+const CTweaksColor   = '#658430';
+const CTweaksID      = '720966967325884426';								// Discord server
+const CTweaksCounter = '750638888296382504';                // Member counter channel
 
 // Compliance Addons
 const CAddonsIMG      = 'https://i.imgur.com/ty9n7nT.png';
@@ -60,6 +61,7 @@ module.exports = {
 	CTweaksIMG,
 	CTweaksColor,
 	CTweaksID,
+  CTweaksCounter,
 	CAddonsIMG,
 	CAddonsColor,
 	CAddons3DSubmit,

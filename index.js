@@ -22,7 +22,8 @@ for (const file of commandFiles) {
 	client.commands.set(command.name, command);
 }
 
-// Hosting settings:
+// Ah, ha, ha, ha, stayin' alive, stayin' alive
+// Ah, ha, ha, ha, stayin' alive
 const server = http.createServer((req, res) => {
   res.writeHead(200);
   res.end('Hey, this is a Discord bot, not a website! Our actual website is https://compliancepack.net/');
@@ -38,20 +39,22 @@ client.on('ready', async () => {
 	scheduledFunctions.start();
 
   console.log('Updating member counters...');
-	let cTweaksGuild = client.guilds.cache.get('720966967325884426');
-	await cTweaksGuild.channels.cache.get('750638888296382504').setName('Member Count: ' + cTweaksGuild.memberCount);
+	updateMembers(settings.CTweaksID, settings.CTweaksCounter);
 
 	console.log('JavaScript is a pain, but i\'m fine, i hope...');
 });
 
+async function updateMembers (serverID, channelID) {
+  let guild = client.guilds.cache.get(serverID);
+	await guild.channels.cache.get(channelID).setName('Members: ' + guild.memberCount);
+}
+
 // Member counter
 client.on('guildMemberAdd', async member =>{
-	let cTweaksGuild = client.guilds.cache.get('720966967325884426');
-	await cTweaksGuild.channels.cache.get('750638888296382504').setName('Member Count: ' + cTweaksGuild.memberCount);
+  updateMembers(settings.CTweaksID, settings.CTweaksCounter);
 });
 client.on('guildMemberRemove', async member =>{
-	let cTweaksGuild = client.guilds.cache.get('720966967325884426');
-	await cTweaksGuild.channels.cache.get('750638888296382504').setName('Member Count: ' + cTweaksGuild.memberCount);
+	updateMembers(settings.CTweaksID, settings.CTweaksCounter);
 });
 
 // Command handler
