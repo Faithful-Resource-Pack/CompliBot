@@ -335,10 +335,9 @@ async function textureSubmission (inputID, outputID, offset) {
 					console.error(error);
 				}
 			});
-
-			await channelOutput.send('<@'+settings.C32CouncilID+'> There are new textures to vote for!');
 		}
 	}
+	await channelOutput.send('<@&'+settings.C32CouncilID+'> There are new textures to vote for!');
 }
 
 // Texture submission process: fetch messages from channel, avoid 50 limitation of message.fetch()

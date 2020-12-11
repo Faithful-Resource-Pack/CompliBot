@@ -1,4 +1,5 @@
-const speech = require('../messages');
+const Discord = require('discord.js');
+const speech  = require('../messages');
 
 module.exports = {
 	name: 'mute',
@@ -14,7 +15,11 @@ module.exports = {
         if (member.roles.cache.find(r => r.name === "Muted")) return message.reply('this user is already muted!');
 				else {
 					member.roles.add(role);
-					message.reply(args + ' is now muted.');
+          const embed = new Discord.MessageEmbed()
+            .setAuthor(message.author.tag, message.author.displayAvatarURL())
+				    .setDescription(`${args} is now muted`)
+				    .setTimestamp();
+			    message.channel.send(embed);
 				}
 			} else message.reply('Please provide a user tag!');
 		} else {
