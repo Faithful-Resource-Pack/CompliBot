@@ -4,7 +4,7 @@ uidJ = process.env.UIDJ;
 module.exports = {
 	name: 'order',
 	description: 'order something',
-	execute(message, args) {
+	execute(client, message, args) {
     if (args == '66') message.channel.send("https://media1.tenor.com/images/fb7250a2ef993a37e9c7f48af760821c/tenor.gif");
 		else if (args == 'help') message.channel.send('https://i.giphy.com/media/WNJGAwRW1LFG5T4qOs/giphy.webp');
     else if (args == 'pizza') {

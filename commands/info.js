@@ -1,12 +1,11 @@
 const Discord = require("discord.js");
-const client = new Discord.Client();
 const settings = require('../settings.js');
 
 module.exports = {
 	name: 'info',
 	aliases: ['information'],
 	description: 'displays some info of the bot',
-	execute(message, args) {
+	execute(client, message, args) {
 		if (message.channel.type !== 'dm') {
       message.reply('please check your dm\'s!');
       const embed = new Discord.MessageEmbed()

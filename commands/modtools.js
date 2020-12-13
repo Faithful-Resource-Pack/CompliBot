@@ -4,7 +4,7 @@ const settings = require('../settings.js');
 module.exports = {
 	name: 'modtools',
 	description: 'Displays tools for Dungeons modding',
-	execute(message, args) {
+	execute(client, message, args) {
 		if (message.channel.type === 'dm' || message.guild.id !== settings.CDungeonsID) return message.reply('this command can only be used in the Compliance Dungeons server!')
 			.then(msg => {
 				msg.delete({timeout: 30000});

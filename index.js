@@ -24,6 +24,7 @@ for (const file of commandFiles) {
 
 // Ah, ha, ha, ha, stayin' alive, stayin' alive
 // Ah, ha, ha, ha, stayin' alive
+// Corona says no ~Domi04151309
 const server = http.createServer((req, res) => {
   res.writeHead(200);
   res.end('Hey, this is a Discord bot, not a website! Our actual website is https://compliancepack.net/');
@@ -44,12 +45,12 @@ client.on('ready', async () => {
 	console.log('JavaScript is a pain, but i\'m fine, i hope...');
 });
 
+// Member counters
 async function updateMembers (serverID, channelID) {
   let guild = client.guilds.cache.get(serverID);
 	await guild.channels.cache.get(channelID).setName('Members: ' + guild.memberCount);
 }
 
-// Member counter
 client.on('guildMemberAdd', async member =>{
   updateMembers(settings.CTweaksID, settings.CTweaksCounter);
 });
@@ -70,7 +71,7 @@ client.on('message', message => {
 	//if (message.channel.type === 'dm') return message.reply('My creators don\'t allow me to execute commands inside DMs, sorry!');
 
 	try {
-		command.execute(message, args);
+		command.execute(client, message, args);
 	}	catch (error) {
 		console.error(error);
 		message.reply('there was an error trying to execute that command!');

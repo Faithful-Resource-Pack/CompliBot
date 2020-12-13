@@ -4,7 +4,7 @@ const settings = require('../settings.js');
 module.exports = {
 	name: 'ping',
 	description: 'Pong!',
-	execute(message, args) {
+	execute(client, message, args) {
     const m = new Discord.MessageEmbed().setTitle('Ping?')
 
     message.channel.send(m).then(m => {

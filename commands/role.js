@@ -3,7 +3,7 @@
 module.exports = {
 	name: 'role',
 	description: 'Send notification roles message',
-	execute(message, args) {
+	execute(client, message, args) {
     const embed = new Discord.MessageEmbed()
 	  		.setTitle('Notification Roles:')
         .setDescription('To recieve notifications for following roles, react to these emojis:')

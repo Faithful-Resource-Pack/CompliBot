@@ -5,7 +5,7 @@ module.exports = {
 	name: 'website',
 	aliases: ['site'],
 	description: 'Displays the website of the discord',
-	execute(message, args) {
+	execute(client, message, args) {
 		if (!args.length) {
       if (message.channel.type !== 'dm') {
 			//Compliance Dungeons

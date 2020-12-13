@@ -3,7 +3,7 @@ const speech = require('../messages');
 module.exports = {
 	name: 'clear',
 	description: 'Clear messages in a channel',
-	execute(message, args) {
+	execute(client, message, args) {
 
 		if(message.member.roles.cache.find(r => r.name === "God") || message.member.roles.cache.find(r => r.name === "Moderator") || message.member.roles.cache.find(r => r.name === "Moderators") ||message.member.roles.cache.find(r => r.name === "Mods")) {
 			if (args != '') {

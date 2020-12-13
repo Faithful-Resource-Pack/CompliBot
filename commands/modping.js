@@ -6,13 +6,12 @@ mods_dnd     = new Array();
 mods_online  = new Array();
 
 const Discord = require("discord.js");
-const client = new Discord.Client();
 const settings = require('../settings.js');
 
 module.exports = {
 	name: 'modping',
 	description: 'Tag online mods to invoke help!',
-	execute(message, args) {
+	execute(client, message, args) {
 
 		// void old list :
 		mods_dnd = [];

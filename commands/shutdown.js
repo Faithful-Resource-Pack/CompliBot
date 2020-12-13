@@ -6,7 +6,7 @@ uidJ = process.env.UIDJ;
 module.exports = {
 	name: 'shutdown',
 	description: 'stops the bot',
-	execute(message, args) {
+	execute(client, message, args) {
 		if (message.author.id === uidR || message.author.id === uidJ) {
 			message.channel.send('Shutting down...')
       .then(() => process.exit());

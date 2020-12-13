@@ -27,8 +27,8 @@ function getMeta(imgUrl) {
 module.exports = {
 	name: 'texture',
 	description: 'Displays a specified texture from Compliance Dungeons',
-	execute(message, args) {
-		if (message.channel.type === 'dm' || message.guild.id !== settings.CDungeonsID) return message.reply('this command can only be used in the Compliance Dungeons server!')
+	execute(client, message, args) {
+		if (message.channel.type === 'dm' || message.guild.id !== '720677267424018526') return message.reply('this command is currently disabled for testing!')
 			.then(msg => {
 				msg.delete({timeout: 30000});
 				message.react('❌');
@@ -36,10 +36,11 @@ module.exports = {
 		else {
 			//console.trace('get texture triggered');
 
-			var args  = message.content.split(' ').slice(1); // cut after command
+			var args = message.content.split(' ').slice(1); // cut after command
 			var texture = args.join();
+      var folder = 'block';
 
-			var imgURL = 'https://raw.githubusercontent.com/Faithful-Dungeons/Resource-Pack/master/Block%20Textures/' + texture + '.png';
+			var imgURL = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Resource-Pack-32x/master/Jappa/1.16.2%20-%201.16.4/assets/minecraft/textures/'+ folder + '/' + texture + '.png';
 			//console.log(imgURL);
 
 			axios.get(imgURL).then(function (response) {
@@ -49,15 +50,14 @@ module.exports = {
 
 					var embed = new Discord.MessageEmbed()
 					.setTitle(texture)
-					.setColor(settings.CDungeonsColor)
 					.setURL(imgURL)
-					.setDescription('block texture')
+					.setDescription(folder + 'texture')
 					.setThumbnail(imgURL)
 					.addFields(
-						{ name: 'Author:', value: 'WIP', inline: true },
+						//{ name: 'Author:', value: 'WIP', inline: true },
 						{ name: 'Resolution:', value: size, inline: true }
 					)
-					.setFooter('Compliance Dungeons', settings.CDungeonsIMG);
+					.setFooter('CompliBot', settings.BotIMG);
 
 					message.channel.send(embed);
 				}).catch(function(error) {

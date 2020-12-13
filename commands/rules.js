@@ -8,7 +8,7 @@ uidJ = process.env.UIDJ;
 module.exports = {
 	name: 'rules',
 	description: 'Creates rules embed',
-	execute(message, args) {
+	execute(client, message, args) {
 		if (message.author.id === uidR || message.author.id === uidJ) {
 			if (message.guild.id === settings.C32ID) {
 				const embed1 = new Discord.MessageEmbed()
