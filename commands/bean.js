@@ -8,7 +8,6 @@ module.exports = {
 
 		if(message.member.roles.cache.find(r => r.name === "God") || message.member.roles.cache.find(r => r.name === "Moderator") || message.member.roles.cache.find(r => r.name === "Moderators") ||message.member.roles.cache.find(r => r.name === "Mods")) {
 			if (args != '') {
-
 				if (args == '<@' + message.author.id  + '>') return message.reply('You can\'t bean yourself!')
 				else {
           const embed = new Discord.MessageEmbed()

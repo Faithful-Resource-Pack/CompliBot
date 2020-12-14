@@ -10,7 +10,7 @@ module.exports = {
     message.channel.send(m).then(m => {
     const embed = new Discord.MessageEmbed()
       .setTitle('Pong!')
-      .setDescription(`Latency: ${m.createdTimestamp - message.createdTimestamp}ms \nAPI Latency: ${Math.round(message.client.ws.ping)}ms`)
+      .setDescription(`Latency: ${m.createdTimestamp - message.createdTimestamp}ms \nAPI Latency: ${Math.round(client.ws.ping)}ms`)
       .setFooter('CompliBot', settings.BotIMG);
      m.edit(embed);
     })

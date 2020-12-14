@@ -131,8 +131,8 @@ module.exports = {
 				var sizeOrigin = dimension.width * dimension.height;
 				var sizeResult = (dimension.width * factor) * (dimension.height * factor);
 
-				if (sizeOrigin > 262144) return WarnUser(`Your default picture is already to big, take one tinier, **maximum input allowed: 262 144px² (512x512)**, your: ` + sizeOrigin + 'px².');
-				if (sizeResult > 1048576) return WarnUser('Your output picture will be too big, **maximum output allowed: 1 048 576px² (1024x1024)**, your: ' + sizeResult + 'px².');
+				if (sizeOrigin > 262144) return WarnUser(`Your default picture is already to big, take one tinier, **maximum input allowed: 262 144px² (512x512)**, yours is: ` + sizeOrigin + 'px².');
+				if (sizeResult > 1048576) return WarnUser('Your output picture will be too big, **maximum output allowed: 1 048 576px² (1024x1024)**, yours is: ' + sizeResult + 'px².');
 
 				var canvasStart = Canvas.createCanvas(dimension.width, dimension.height).getContext('2d');
 				var canvasResult = Canvas.createCanvas(dimension.width * factor, dimension.height * factor);

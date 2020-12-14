@@ -8,14 +8,47 @@
 ![PullRequests](https://img.shields.io/github/issues-pr/Compliance-Resource-Pack/Discord-Bot)
 </div>
 
-# Online on:
-- Compliance 32x
-- Compliance 64x
-- Compliance Addons
-- Compliance Tweaks
-- Compliance Dungeons
-- Compliance Mods
+___
+### Online on:
+- [Compliance 32x](https://discord.gg/sN9YRQbBv7)
+- [Compliance 64x](https://discord.gg/Tqtwtgh)
+- [Compliance Addons](https://discord.gg/qVeDfZw)
+- [Compliance Tweaks](https://discord.gg/6psYdRF)
+- [Compliance Dungeons](https://discord.gg/eeVpygu)
+- [Compliance Mods](https://discord.gg/QF2CAX7)
 
-# About our bot:
-- Uses discord.js in node.js
-- Hosted on [repl.it](https://repl.it/)
+___
+### Installation and launching:
+- Install **[Node.js](https://nodejs.org/)** on your machine. **Version 14.0.0 or newer is required!**  
+- Clone the repository on your machine.
+- Open your console in the cloned repository.
+- To complete the installation, write the following command in the console:
+```console
+npm install
+```
+- After installation, you will need to **[configure the bot](#bot-config:)**. 
+- To start the bot, write the following command in the console:
+```console
+node .
+```
+
+___
+### Bot config:
+
+**DISCLAIMER: We won't help you rebranding the bot for any other server. If you really want to do that, then you need to figure it out yourself.**
+
+- Create an app on the **[Discord Developer Portal](https://discord.com/developers/)**.
+- Go to the **Bot** tab, create a bot and copy its token.
+- Create a file named **.env** or rename the **.env.example** file to **.env**.
+- Open the **.env** file using any text editor.
+- This file contains general bot settings in this format:
+
+|Field name|Example value|Description|
+|:---:|:---:|:---:|
+|CLIENT_TOKEN|"-"|The token you copied from the Developer Portal, used to login the bot.|
+|PREFIX|"/"|This is the character used to execute commands.|
+|UIDR & UIDJ|"123456789123456789"|The user id's of both bot maintainers.|
+|MAINTENANCE|"false"|Makes all commands maintainer-only, sets status to dnd.|
+|MODS|"987654321987654321"|The id's of all people with a moderator role or higher, used for the modping command.|
+
+There also is `messages.js` and `settings.js` with various other settings, but that aren't needed for the bot to run.
