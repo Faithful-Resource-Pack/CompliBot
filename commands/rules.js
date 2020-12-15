@@ -1,6 +1,5 @@
 const Discord  = require("discord.js");
 const settings = require('../settings.js');
-const speech = require('../messages.js');
 
 uidR = process.env.UIDR;
 uidJ = process.env.UIDJ;
@@ -8,7 +7,7 @@ uidJ = process.env.UIDJ;
 module.exports = {
 	name: 'rules',
 	description: 'Creates rules embed',
-	execute(client, message, args) {
+	async execute(client, message, args) {
 		if (message.author.id === uidR || message.author.id === uidJ) {
 			if (message.guild.id === settings.C32ID) {
 				const embed1 = new Discord.MessageEmbed()
@@ -128,12 +127,6 @@ module.exports = {
         //.then(msg => {message.channel.send(embed2);});
 			}
 		}
-		else { 
-			return message.reply(speech.BOT_NO_PERMISSION)
-			.then(msg => {
-				msg.delete({timeout: 30000});
-				message.react('❌');
-			});
-		}
+		else return
 	}
 };

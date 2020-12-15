@@ -4,12 +4,12 @@ uidJ = process.env.UIDJ;
 module.exports = {
 	name: 'say',
 	description: 'Make the bot send any message you specify',
-	execute(client, message, args) {
+	async execute(client, message, args) {
     if (message.author.id === uidR || message.author.id === uidJ) {
-      if (!args.length) return message.reply('You haven\'t specified a message to send!');
+      if (!args.length) return await message.reply('You haven\'t specified a message to send!');
       else {
-        message.delete().catch();
-        message.channel.send(args.join(" "));
+        await message.delete().catch();
+        await message.channel.send(args.join(" "));
       }
     } else return
 	}

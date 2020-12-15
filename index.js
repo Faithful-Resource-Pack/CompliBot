@@ -59,14 +59,14 @@ client.on('guildMemberRemove', async member =>{
 });
 
 // Command handler
-client.on('message', message => {
+client.on('message', async message => {
 	// Avoid message WITHOUT prefix & bot messages
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
-  if (process.env.MAINTENANCE === 'true' && message.author.id !== uidR) return message.reply('I\'m currently in maintenance, try again later.')
-			.then(msg => {
-				msg.delete({timeout: 30000});
-				message.react('❌');
-			});
+  if (process.env.MAINTENANCE === 'true' && message.author.id !== uidR) {
+		const msg = await message.reply('I\'m currently in maintenance, please try again later.');
+    await message.react('❌');
+    await msg.delete({timeout: 30000});
+  }
 
 	const args        = message.content.slice(prefix.length).trim().split(/ +/);
 	const commandName = args.shift().toLowerCase();

@@ -6,8 +6,9 @@ var settings = require('../settings.js');
 
 module.exports = {
 	name: 'magnify',
+  aliases: ['zoom', 'scale', 'resize'],
 	description: 'resize an image',
-	execute(client, message, args) {
+	async execute(client, message, args) {
 		/* 		
 		* Magnify : 
 		* /magnify <factor> & attach an image

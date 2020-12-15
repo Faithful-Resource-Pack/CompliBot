@@ -6,17 +6,15 @@ uidJ = process.env.UIDJ;
 module.exports = {
 	name: 'shutdown',
 	description: 'stops the bot',
-	execute(client, message, args) {
+	async execute(client, message, args) {
 		if (message.author.id === uidR || message.author.id === uidJ) {
-			message.channel.send('Shutting down...')
-      .then(() => process.exit());
+			await message.channel.send('Shutting down...');
+      await process.exit();
 		} 
     else { 
-			return message.reply(speech.BOT_NO_PERMISSION)
-			.then(msg => {
-				msg.delete({timeout: 30000});
-				message.react('❌');
-			});
+			const msg = await message.reply(speech.BOT_NO_PERMISSION);
+      await message.react('❌');
+      await msg.delete({timeout: 30000});
 		}
 	}
 };

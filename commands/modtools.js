@@ -4,12 +4,12 @@ const settings = require('../settings.js');
 module.exports = {
 	name: 'modtools',
 	description: 'Displays tools for Dungeons modding',
-	execute(client, message, args) {
-		if (message.channel.type === 'dm' || message.guild.id !== settings.CDungeonsID) return message.reply('this command can only be used in the Compliance Dungeons server!')
-			.then(msg => {
-				msg.delete({timeout: 30000});
-				message.react('❌');
-			});
+	async execute(client, message, args) {
+		if (message.channel.type === 'dm' || message.guild.id !== settings.CDungeonsID) {
+			const msg = await message.reply('this command can only be used in the Compliance Dungeons server!');
+      await message.react('❌');
+      await msg.delete({timeout: 30000});
+    }
 		else {
 		//console.trace('modding tools triggered');
 
@@ -24,7 +24,7 @@ module.exports = {
 				)
 				.setFooter('Compliance Dungeons', settings.CDungeonsIMG);
 
-			message.channel.send(embed);
+			await message.channel.send(embed);
 		}
 	}
 };

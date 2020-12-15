@@ -5,9 +5,9 @@ module.exports = {
 	name: 'info',
 	aliases: ['information'],
 	description: 'displays some info of the bot',
-	execute(client, message, args) {
+	async execute(client, message, args) {
 		if (message.channel.type !== 'dm') {
-      message.reply('please check your dm\'s!');
+      await message.reply('please check your dm\'s!');
       const embed = new Discord.MessageEmbed()
 				.setTitle('CompliBot info:')
 				.setThumbnail(settings.BotIMG)
@@ -21,7 +21,7 @@ module.exports = {
         )
 				.setFooter('\u200B \nI am completely open source! \nYou can find me here: https://github.com/Compliance-Resource-Pack/Discord-Bot');
 
-			message.author.send(embed);
+			await message.author.send(embed);
     }
 		else {
 			const embed = new Discord.MessageEmbed()
@@ -37,7 +37,7 @@ module.exports = {
         )
 				.setFooter('\u200B \nI am completely open source! \nYou can find me here: https://github.com/Compliance-Resource-Pack/Discord-Bot');
 
-			message.channel.send(embed);
+			await message.channel.send(embed);
 		}
 	}
 };

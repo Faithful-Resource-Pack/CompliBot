@@ -27,7 +27,7 @@ function getMeta(imgUrl) {
 module.exports = {
 	name: 'texture',
 	description: 'Displays a specified texture from Compliance Dungeons',
-	execute(client, message, args) {
+	async execute(client, message, args) {
 		if (message.channel.type === 'dm' || message.guild.id !== '720677267424018526') return message.reply('this command is currently disabled for testing!')
 			.then(msg => {
 				msg.delete({timeout: 30000});

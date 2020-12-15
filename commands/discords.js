@@ -6,7 +6,7 @@ uidJ = process.env.UIDJ;
 module.exports = {
 	name: 'discords',
 	description: 'posts a list of specified discord servers',
-	execute(client, message, args) {
+	async execute(client, message, args) {
 		if (message.author.id === uidR || message.author.id === uidJ) {
 			if (message.guild.id === settings.CTweaksID) {
 				message.channel.send('> Help with Minecraft in general: \nhttps://discord.gg/minecraft')

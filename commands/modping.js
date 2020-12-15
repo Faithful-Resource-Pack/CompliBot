@@ -11,7 +11,7 @@ const settings = require('../settings.js');
 module.exports = {
 	name: 'modping',
 	description: 'Tag online mods to invoke help!',
-	execute(client, message, args) {
+	async execute(client, message, args) {
 
 		// void old list :
 		mods_dnd = [];

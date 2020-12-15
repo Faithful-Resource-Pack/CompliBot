@@ -3,9 +3,9 @@ const settings = require('../settings.js');
 
 module.exports = {
 	name: 'website',
-	aliases: ['site'],
+	aliases: ['site', 'sites', 'websites'],
 	description: 'Displays the website of the discord',
-	execute(client, message, args) {
+	async execute(client, message, args) {
 		if (!args.length) {
       if (message.channel.type !== 'dm') {
 			//Compliance Dungeons
