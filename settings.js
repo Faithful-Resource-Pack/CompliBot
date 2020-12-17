@@ -3,7 +3,7 @@ const CDungeonsIMG    = 'https://i.imgur.com/pNcC1c2.png';
 const CDungeonsColor  = '#DF7C2B';
 const CDungeonsID     = '714910830272970834';							// Discord server
 const CDungeonsModsID = '714911578750844988';							// Moderator role
-const CDungeonsSubmit = '715236892945285181';							// ?
+const CDungeonsSubmit = '715236892945285181';							// #submit-textures
 
 // Compliance Mods
 const CModsIMG    = 'https://i.imgur.com/Cy2y5cl.png';
@@ -28,7 +28,7 @@ const CAddonsModsID   = '614163845656608774';								// Moderator role
 const FTraditionalIMG    = 'https://i.imgur.com/SLpji2x.png';
 const FTraditionalColor  = '#FFD800';
 const FTraditionalID     = '766856721712545824';						// Discord server
-const FTraditionalSubmit = '767464832285933578';						// ?
+const FTraditionalSubmit = '767464832285933578';						// #64x-texture-submissions
 
 // Compliance 64x
 const C64IMG    = 'https://i.imgur.com/EktsrA9.png';

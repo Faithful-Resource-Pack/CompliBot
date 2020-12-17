@@ -73,7 +73,6 @@ client.on('message', async message => {
 	const command     = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
 	if (!command) return;
-	//if (message.channel.type === 'dm') return message.reply('My creators don\'t allow me to execute commands inside DMs, sorry!');
 
 	try {
 		command.execute(client, message, args);
@@ -97,7 +96,7 @@ client.on('message', async message => {
 	else if (message.content === 'F' ) await message.react('🇫');
 
 	else if (message.content.toLowerCase() === 'mhhh') {
-		const embed = new Discord.MessageEmbed().setTitle('Uh-oh moment').setFooter('Swahili -> English', settings.BotIMG);
+		const embed = new Discord.MessageEmbed().setAuthor(message.content, message.author.displayAvatarURL()).setTitle('Uh-oh moment').setFooter('Swahili -> English', settings.BotIMG);
 		await message.channel.send(embed);
 	}
 
@@ -230,6 +229,12 @@ let scheduledFunctions = new cron.CronJob('00 00 * * *', () => {
 	textureRevote(settings.C32Submit3,settings.C32Results,3);											// 3 DAYS OFFSET
 });
 
+/*
+ *  TEXTURE SUBMISSION PROCESS:
+ *  - textureSubmission()
+ * 	- councilVoting()
+ * 	- textureRevote()
+*/
 // Texture submission process: checking textures from #texture-revote
 async function textureRevote (inputID, outputID, offset) {
 	const revoteSentence = 'The following texture has not passed council voting and thus is up for revote:\n';
@@ -324,6 +329,8 @@ async function textureSubmission (inputID, outputID, offset) {
 
 	let messages = await getMessages(inputID);
 	console.log(`${messages.length} messages in textures submission`);
+
+	var texture = false;
 	
 	for (var i in messages) {
 		let message         = messages[i];
@@ -332,6 +339,7 @@ async function textureSubmission (inputID, outputID, offset) {
 		let messageDownvote = countReact(message,'⬇️');
 
 		if (messageUpvote >= messageDownvote &&	message.attachments.size > 0 && messageDate.getDate() == limitDate.getDate() && messageDate.getMonth() == limitDate.getMonth()) {
+			texture = true;
 			await channelOutput.send('**'+message.content+'** \n> by <@' + message.author + '>', {files: [message.attachments.first().url]})
 			.then(async message => {
 				try {
@@ -343,8 +351,15 @@ async function textureSubmission (inputID, outputID, offset) {
 			});
 		}
 	}
-	await channelOutput.send('<@&'+settings.C32CouncilID+'> There are new textures to vote for!');
+	if (texture) await channelOutput.send('<@&'+settings.C32CouncilID+'> There are new textures to vote for!');
 }
+
+/*
+ * USEFUL FUNCTIONS IN THE TEXTURE SUBMISSION PROCESS:
+ * - countReact()
+ * - attachIsImage() 
+ * - getMessages()
+*/
 
 // Texture submission process: fetch messages from channel, avoid 50 limitation of message.fetch()
 async function getMessages(channelID, limit = 500) {

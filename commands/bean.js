@@ -13,7 +13,20 @@ module.exports = {
             .setAuthor(message.author.tag, message.author.displayAvatarURL())
 				    .setDescription(`${args} was beaned!`)
 				    .setTimestamp();
-			    await message.channel.send(embed);
+			    const embedMessage = await message.channel.send(embed);
+          await embedMessage.react('🗑️');
+          const filter = (reaction, user) => {
+			      return ['🗑️'].includes(reaction.emoji.name) && user.id === message.author.id;
+	    	  };
+        	
+          embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
+			      .then(async collected => {
+				      const reaction = collected.first();
+				      if (reaction.emoji.name === '🗑️') {
+				      	await embedMessage.delete();
+                await message.delete();
+				      }
+			      })
 				}
 			} else await message.reply('Please provide a user tag!');
 		} else {
