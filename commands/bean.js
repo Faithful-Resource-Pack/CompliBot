@@ -4,6 +4,9 @@ const speech  = require('../messages');
 module.exports = {
 	name: 'bean',
 	description: 'get B E A N E D',
+	uses: 'Moderators',
+	syntax: `${prefix}bean <@user>`,
+
 	async execute(client, message, args) {
 		if(message.member.roles.cache.find(r => r.name === "God") || message.member.roles.cache.find(r => r.name === "Moderator") || message.member.roles.cache.find(r => r.name === "Moderators") ||message.member.roles.cache.find(r => r.name === "Mods")) {
 			if (args != '') {
@@ -27,6 +30,9 @@ module.exports = {
                 await message.delete();
 				      }
 			      })
+            .catch(async collected => {
+		          await embedMessage.reactions.cache.get('🗑️').remove();
+	          });
 				}
 			} else await message.reply('Please provide a user tag!');
 		} else {

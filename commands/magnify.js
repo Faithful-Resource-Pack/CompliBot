@@ -7,17 +7,10 @@ var settings = require('../settings.js');
 module.exports = {
 	name: 'magnify',
   aliases: ['zoom', 'scale', 'resize'],
-	description: 'resize an image',
+	description: 'Resize an image,\nImage URL need to ends with ``.png`` or ``.jpeg/jpg``,\nMessage ID need to be from the same channel',
+	uses: 'Anyone',
+	syntax: `${prefix}magnify <factor> & attach an image\n${prefix}magnify <factor> <Discord message url>\n${prefix}magnify <factor> <image URL>\n${prefix}magnify <factor> <message ID>\n${prefix}magnify <factor> [up/^/last]`,
 	async execute(client, message, args) {
-		/* 		
-		* Magnify : 
-		* /magnify <factor> & attach an image
-		* /magnify <factor> <DISCORD MESSAGE URL>
-		* /magnify <factor> <image URL>
-		* /magnify <factor> <MESSAGE ID>
-		* /magnify <factor> (up/^/last [optional])
-		*/
-
 		var FACTOR;
 		var DATA;
 

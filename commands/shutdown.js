@@ -5,7 +5,10 @@ uidJ = process.env.UIDJ;
 
 module.exports = {
 	name: 'shutdown',
+  aliases: ['logout'],
 	description: 'stops the bot',
+	uses: 'Bot Developers',
+	syntax: `${prefix}shutdown`,
 	async execute(client, message, args) {
 		if (message.author.id === uidR || message.author.id === uidJ) {
 			await message.channel.send('Shutting down...');

@@ -4,7 +4,9 @@ const settings = require('../settings.js');
 module.exports = {
 	name: 'info',
 	aliases: ['information'],
-	description: 'displays some info of the bot',
+	description: 'Displays some info of the bot in your DMs',
+	uses: 'Anyone',
+	syntax: `${prefix}info`,
 	async execute(client, message, args) {
 		if (message.channel.type !== 'dm') {
       await message.reply('please check your dm\'s!');

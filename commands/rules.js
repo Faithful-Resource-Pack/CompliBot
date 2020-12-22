@@ -7,6 +7,8 @@ uidJ = process.env.UIDJ;
 module.exports = {
 	name: 'rules',
 	description: 'Creates rules embed',
+	uses: 'Bot Developers',
+	syntax: `${prefix}rules`,
 	async execute(client, message, args) {
 		if (message.author.id === uidR || message.author.id === uidJ) {
 			if (message.guild.id === settings.C32ID) {
@@ -36,7 +38,8 @@ module.exports = {
 					.setColor(settings.C32Color)
 					.setDescription('- edited rule 5️⃣: Removed a duplicate mention. \n- edited rule 7️⃣: Replaced `@mods` with `/modping`');
 
-				message.channel.send(embed1).then(msg => {message.channel.send(embed2);});
+				await message.channel.send(embed1);
+        await message.channel.send(embed2);
 			} else if (message.guild.id === settings.C64ID) {
 				const embed1 = new Discord.MessageEmbed()
 					.setTitle('Rules')
@@ -65,8 +68,8 @@ module.exports = {
 					.setColor(settings.C32Color)
 					.setDescription('- edited rule 5️⃣: Removed a duplicate mention. \n- edited rule 7️⃣: Replaced `@mods` with `/modping`');
 			*/
-				message.channel.send(embed1)
-				//.then(msg => {message.channel.send(embed2);});
+				await message.channel.send(embed1);
+				//await message.channel.send(embed2);
 			} if (message.guild.id === settings.CModsID) {
 				const embed1 = new Discord.MessageEmbed()
 					.setTitle('Rules')
@@ -94,8 +97,8 @@ module.exports = {
 					.setColor(settings.C32Color)
 					.setDescription('- edited rule 5️⃣: Removed a duplicate mention. \n- edited rule 7️⃣: Replaced `@mods` with `/modping`');*/
 
-				message.channel.send(embed1)
-        //.then(msg => {message.channel.send(embed2);});
+				await message.channel.send(embed1);
+				//await message.channel.send(embed2);
 			} else if (message.guild.id === settings.CTweaksID) {
 				const embed1 = new Discord.MessageEmbed()
 					.setTitle('Rules')
@@ -123,8 +126,8 @@ module.exports = {
 					.setColor(settings.C32Color)
 					.setDescription('- edited rule 5️⃣: Removed a duplicate mention. \n- edited rule 7️⃣: Replaced `@mods` with `/modping`');
 */
-				message.channel.send(embed1)
-        //.then(msg => {message.channel.send(embed2);});
+				await message.channel.send(embed1);
+				//await message.channel.send(embed2);
 			}
 		}
 		else return

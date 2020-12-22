@@ -1,10 +1,12 @@
-/*const Discord  = require("discord.js");
+const Discord  = require("discord.js");
 const settings = require('../settings.js');
 
 module.exports = {
 	name: 'faq',
 	description: 'FAQ commands for Compliance Tweaks',
-	async execute(client, message, args) {
+	uses: 'Moderators',
+	syntax: `${prefix}faq`,
+	async execute(client, message, args) {/*
 		if (message.channel.type === 'dm' || message.guild.id !== settings.CTweaksID) return message.reply('this command can only be used in the Compliance Tweaks server!')
 			.then(msg => {
 				msg.delete({timeout: 30000});
@@ -75,6 +77,6 @@ module.exports = {
 				msg.delete({timeout: 30000});
 				message.react('❌');
 			});
-		}
+		}*/
 	}
-};*/
+};

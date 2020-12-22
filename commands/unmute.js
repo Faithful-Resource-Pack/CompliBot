@@ -3,7 +3,10 @@ const speech  = require('../messages');
 
 module.exports = {
 	name: 'unmute',
+	aliases: ['pardon'],
 	description: 'Remove Muted roles to someone',
+	uses: 'Moderators',
+	syntax: `${prefix}unmute <@user>`,
 	async execute(client, message, args) {
 
 		if(message.member.roles.cache.find(r => r.name === "God") || message.member.roles.cache.find(r => r.name === "Moderator") || message.member.roles.cache.find(r => r.name === "Moderators") ||message.member.roles.cache.find(r => r.name === "Mods")) {

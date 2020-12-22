@@ -5,7 +5,10 @@ uidJ = process.env.UIDJ;
 
 module.exports = {
 	name: 'reload',
+	aliases: ['r'],
 	description: 'Reloads a command',
+	uses: 'Bot Developers',
+	syntax: `${prefix}reload <command>`,
 	args: true,
 	async execute(client, message, args) {
 		if (message.author.id === uidR || message.author.id === uidJ) {
@@ -13,10 +16,9 @@ module.exports = {
 			const command = message.client.commands.get(commandName) || message.client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
 			if (!command) {
-				message.react('❌');
-				return message.reply(`there is no command with name or alias \`${commandName}\`!`).then(msg => {
-					msg.delete({timeout: 30000});
-				});
+        const msg = await message.reply(`there is no command with name or alias \`${commandName}\`!`);
+        await message.react('❌');
+        await msg.delete({timeout: 30000});
 			}
 
 			delete require.cache[require.resolve(`./${command.name}.js`)];
@@ -24,18 +26,16 @@ module.exports = {
 			try {
 				const newCommand = require(`./${command.name}.js`);
 				message.client.commands.set(newCommand.name, newCommand);
-				message.react('✅');
+				await message.react('✅');
 			} catch (error) {
 				console.error(error);
-				message.react('❌');
+				await message.react('❌');
 			}
 		}
 		else {
-			message.react('❌');
-			message.reply(speech.BOT_NO_PERMISSION)
-			.then(msg => {
-				msg.delete({timeout: 30000});
-			});
+			const msg = await message.reply(speech.BOT_NO_PERMISSION);
+      await message.react('❌');
+      await msg.delete({timeout: 30000});
 		}
 	}
 };

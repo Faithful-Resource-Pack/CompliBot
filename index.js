@@ -33,8 +33,12 @@ server.listen(3000, () => console.log(`listening at http://localhost:${port}`));
 
 // Bot status:
 client.on('ready', async () => {
-	if (process.env.MAINTENANCE === 'true') client.user.setPresence({ activity: { name: 'maintenance' }, status: 'dnd' });
-	else client.user.setActivity('compliancepack.net', {type: 'PLAYING'});
+	if (process.env.MAINTENANCE === 'true') {
+		client.user.setPresence({ activity: { name: 'Maintenance', type: 'PLAYING', url: 'https://compliancepack.net' }, status: 'dnd' });
+	}
+	else {
+		client.user.setPresence({ activity: { name: 'compliancepack.net', type: 'PLAYING', url: 'https://compliancepack.net' }, status: 'available' });
+	}
 	
 	console.log('Starting submission functions...');
 	scheduledFunctions.start();
@@ -351,7 +355,9 @@ async function textureSubmission (inputID, outputID, offset) {
 			});
 		}
 	}
+
 	if (texture) await channelOutput.send('<@&'+settings.C32CouncilID+'> There are new textures to vote for!');
+	else await channelOutput.send('No textures today!');
 }
 
 /*

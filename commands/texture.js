@@ -27,6 +27,8 @@ function getMeta(imgUrl) {
 module.exports = {
 	name: 'texture',
 	description: 'Displays a specified texture from Compliance Dungeons',
+	uses: 'Anyone on Compliance Dungeons Discord',
+	syntax: `${prefix}reload <command>`,
 	async execute(client, message, args) {
 		if (message.channel.type === 'dm' || message.guild.id !== '720677267424018526') return message.reply('this command is currently disabled for testing!')
 			.then(msg => {

@@ -5,7 +5,9 @@ uidJ = process.env.UIDJ;
 
 module.exports = {
 	name: 'discords',
-	description: 'posts a list of specified discord servers',
+	description: 'Posts a list of specified discord servers',
+	uses: 'Bot Developers',
+	syntax: `${prefix}discords`,
 	async execute(client, message, args) {
 		if (message.author.id === uidR || message.author.id === uidJ) {
 			if (message.guild.id === settings.CTweaksID) {

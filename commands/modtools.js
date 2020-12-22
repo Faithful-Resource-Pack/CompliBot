@@ -3,7 +3,9 @@ const settings = require('../settings.js');
 
 module.exports = {
 	name: 'modtools',
-	description: 'Displays tools for Dungeons modding',
+	description: 'Displays tools for Minecraft Dungeons modding',
+	uses: 'Anyone on Compliance Dungeons Discord',
+	syntax: `${prefix}modtools`,
 	async execute(client, message, args) {
 		if (message.channel.type === 'dm' || message.guild.id !== settings.CDungeonsID) {
 			const msg = await message.reply('this command can only be used in the Compliance Dungeons server!');
