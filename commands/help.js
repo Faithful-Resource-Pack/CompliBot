@@ -28,7 +28,7 @@ module.exports = {
 				var embed = new Discord.MessageEmbed()
 				.setTitle(`Help: ${prefix}${command.name}`)
 				.setThumbnail(settings.BotIMG)
-				.setDescription(`**Description:**\n${command.description || 'No description'}\n**Can be use by:**\n${command.uses || 'Not set'}\n**Syntax:**\n${syntax}\n**Aliases:**\n${aliases}`)
+				.setDescription(`**Description:**\n${command.description || 'No description'}\n**Can be used by:**\n${command.uses || 'Not set'}\n**Syntax:**\n${syntax}\n**Aliases:**\n${aliases}`)
 				.setFooter('CompliBot', settings.BotIMG);
 				
 			}
@@ -45,7 +45,7 @@ module.exports = {
 		if (!args[0]) {
 			
 			let commands = Array.from(client.commands.keys());
-			var list = 'Type ``' + prefix + 'help <command>`` to get more information about a command!\n> Do not use aliases please :warning:\n\n';
+			var list = 'Type ``' + prefix + 'help <command>`` to get more information about a command!\n> Do not use aliases :warning:\n\n';
 			for (var i in commands) {
 				command = client.commands.get(commands[i])
 				list += `**${prefix + command.name}**`
@@ -77,7 +77,7 @@ module.exports = {
 			  const reaction = collected.first();
 			  if (reaction.emoji.name === '🗑️') {
 			  	await embedMessage.delete();
-           await message.delete();
+          await message.delete();
 			  }
 			 })
       .catch(async collected => {

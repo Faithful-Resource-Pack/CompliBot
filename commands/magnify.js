@@ -7,7 +7,7 @@ var settings = require('../settings.js');
 module.exports = {
 	name: 'magnify',
   aliases: ['zoom', 'scale', 'resize'],
-	description: 'Resize an image,\nImage URL need to ends with ``.png`` or ``.jpeg/jpg``,\nMessage ID need to be from the same channel',
+	description: 'Resize an image,\nImage URL needs to end with ``.png`` or ``.jpeg/jpg``,\nMessage ID needs to be from the same channel',
 	uses: 'Anyone',
 	syntax: `${prefix}magnify <factor> & attach an image\n${prefix}magnify <factor> <Discord message url>\n${prefix}magnify <factor> <image URL>\n${prefix}magnify <factor> <message ID>\n${prefix}magnify <factor> [up/^/last]`,
 	async execute(client, message, args) {
@@ -41,7 +41,7 @@ module.exports = {
 						return magnify(FACTOR, DATA);
 					}
 					else return WarnUser(`Error: The message from the provided URL does not have any image attached.`);
-				}).catch(error => { return WarnUser(error + ' The message URL need to be from the same channel') });
+				}).catch(error => { return WarnUser(error + ' The message URL needs to be from the same channel') });
 			}
 
 			// Image URL
@@ -81,7 +81,7 @@ module.exports = {
 			}
 
 			if (found) await magnify(FACTOR, msg.attachments.first().url);
-			else return WarnUser('No image found in the 10 previous messages..');
+			else return WarnUser('No image found in the 10 previous messages.');
 		}
 
 		function WarnUser(text) {

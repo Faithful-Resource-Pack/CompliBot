@@ -112,15 +112,13 @@ client.on('message', async message => {
 		await message.react('🎹');
 	}
 	else if (message.content.toLowerCase() === 'hello there') {
-		const GIF1 = 'https://media1.tenor.com/images/8dc53503f5a5bb23ef12b2c83a0e1d4d/tenor.gif';
-		const GIF2 = 'https://preview.redd.it/6n6zu25c66211.png?width=960&crop=smart&auto=webp&s=62024911a6d6dd85f83a2eb305df6082f118c8d1';
-		if (Math.floor(Math.random() * Math.floor(5)) != 1) await message.channel.send(GIF1);
-		else await message.channel.send(GIF2);
+		if (Math.floor(Math.random() * Math.floor(5)) != 1) await message.channel.send('https://media1.tenor.com/images/8dc53503f5a5bb23ef12b2c83a0e1d4d/tenor.gif');
+		else await message.channel.send('https://preview.redd.it/6n6zu25c66211.png?width=960&crop=smart&auto=webp&s=62024911a6d6dd85f83a2eb305df6082f118c8d1');
 	}
 
 	/*
 	 * AUTO REACT:
-	 * (do not interfer with submission process)
+	 * (does not interfer with submission process)
 	*/
 
 	// Texture submission Compliance 32x (submit-texture):
@@ -134,10 +132,9 @@ client.on('message', async message => {
 			}
 
 		} else if(!message.member.roles.cache.has(settings.C32ModsID)) {
-			await message.reply('your texture submission needs to have an file attached!').then(async msg => {
-				await message.react('❌');
-				await msg.delete({timeout: 30000});
-			});
+			const msg = await message.reply('your texture submission needs to have an file attached!')
+			await message.react('❌');
+			await msg.delete({timeout: 30000});
 		}
 	}
 
@@ -159,10 +156,9 @@ client.on('message', async message => {
 	else if (message.channel.id === settings.CAddons3DSubmit) {
 		if (message.attachments.size > 0) {
 			if (!message.content.includes('/assets/')) {
-				await message.reply('you need to add the texture path to your texture submission, following this example: `**texture/model name** /assets/...`').then(async msg => {
-					await message.react('❌');
-					await msg.delete({timeout: 30000});
-				});
+				const msg = await message.reply('you need to add the texture path to your texture submission, following this example: `**texture/model name** /assets/...`')
+				await message.react('❌');
+				await msg.delete({timeout: 30000});
 			} else try {
 				await message.react('⬆️');
 				await message.react('⬇️');
@@ -170,10 +166,9 @@ client.on('message', async message => {
 				console.error('ERROR | One of the emojis failed to react!' + error);
 			}
 		} else {
-			await message.reply('your texture submission needs to have a file attached!').then(async msg => {
-				await message.react('❌');
-				await msg.delete({timeout: 30000});
-			});
+			const msg = await message.reply('your texture submission needs to have a file attached!')
+			await message.react('❌');
+			await msg.delete({timeout: 30000});
 		}
 	}
 
@@ -183,10 +178,9 @@ client.on('message', async message => {
 			if (message.attachments.every(attachIsImage)){
 
 				if(!message.content.includes('(')) {
-					await message.reply('you need to add the texture path to your texture submission, follow this example: `**texture name** (Content/**folder1**/**folder2**/**texture name.png**)`').then(async msg => {
-						await message.react('❌');
-						await msg.delete({timeout: 30000});
-					});
+					const msg = await message.reply('you need to add the texture path to your texture submission, follow this example: `**texture name** (Content/**folder1**/**folder2**/**texture name.png**)`')
+					await message.react('❌');
+					await msg.delete({timeout: 30000});
 				} else try {
 					await message.react('⬆️');
 					await message.react('⬇️');
@@ -195,16 +189,14 @@ client.on('message', async message => {
 				}
 
 			} else {
-				await message.reply('you need to attach a png file!').then(async msg => {
-					await message.react('❌');
-					await msg.delete({timeout: 30000});
-				});
-			}
-		} else {
-			await message.reply('your texture submission needs to have an image attached!').then(async msg => {
+				const msg = await message.reply('you need to attach a png file!')
 				await message.react('❌');
 				await msg.delete({timeout: 30000});
-			});
+			}
+		} else {
+			const msg = await message.reply('your texture submission needs to have an image attached!')
+			await message.react('❌');
+			await msg.delete({timeout: 30000});
 		}
 	}
 
@@ -218,10 +210,9 @@ client.on('message', async message => {
 				console.error('ERROR | One of the emojis failed to react!' + error);
 			}
 		} else if(!message.member.roles.cache.has('766856790004072450')) {
-			await message.reply('your texture submission needs to have an file attached!').then(async msg => {
-				await message.react('❌');
-				await msg.delete({timeout: 30000});
-			});
+			const msg = await message.reply('your texture submission needs to have an file attached!')
+			await message.react('❌');
+			await msg.delete({timeout: 30000});
 		}
 	}
 });
@@ -332,7 +323,7 @@ async function textureSubmission (inputID, outputID, offset) {
 	limitDate.setDate(limitDate.getDate() - offset);
 
 	let messages = await getMessages(inputID);
-	console.log(`${messages.length} messages in textures submission`);
+	console.log(`${messages.length} messages in texture submission`);
 
 	var texture = false;
 	

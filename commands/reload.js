@@ -11,7 +11,7 @@ module.exports = {
 	syntax: `${prefix}reload <command>`,
 	args: true,
 	async execute(client, message, args) {
-		if (message.author.id === uidR || message.author.id === uidJ) {
+		if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD) {
 			const commandName = args[0].toLowerCase();
 			const command = message.client.commands.get(commandName) || message.client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 

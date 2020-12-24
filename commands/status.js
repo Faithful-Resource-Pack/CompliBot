@@ -8,7 +8,7 @@ const presence = ['online', 'idle', 'dnd'];
 
 module.exports = {
 	name: 'status',
-	description: 'Change bot status',
+	description: 'Changes the bot\'s status',
 	uses: 'Bot Developers',
 	syntax: `${prefix}status <activity> <presence> <status>`,
 	async execute(client, message, args) {

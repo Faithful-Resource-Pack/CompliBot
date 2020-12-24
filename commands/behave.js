@@ -3,7 +3,7 @@ uidJ = process.env.UIDJ;
 
 module.exports = {
 	name: 'behave',
-	description: ':smirk:',
+	description: '(⌯˃̶᷄ ﹏ ˂̶᷄⌯)',
 	uses: 'Bot Developers',
 	syntax: `${prefix}behave`,
 
