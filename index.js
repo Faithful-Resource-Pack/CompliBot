@@ -26,27 +26,29 @@ for (const file of commandFiles) {
 // Ah, ha, ha, ha, stayin' alive
 // Corona says no ~Domi04151309
 const server = http.createServer((req, res) => {
-  res.writeHead(200);
-  res.end('Hey, this is a Discord bot, not a website! Our actual website is https://compliancepack.net/');
+  res.writeHead(302, {
+    'Location': 'https://compliancepack.net/'
+  });
+  res.end();
 });
 server.listen(3000, () => console.log(`listening at http://localhost:${port}`));
 
 // Bot status:
 client.on('ready', async () => {
-	if (process.env.MAINTENANCE === 'true') {
-		client.user.setPresence({ activity: { name: 'Maintenance', type: 'PLAYING', url: 'https://compliancepack.net' }, status: 'dnd' });
+	if (process.env.MAINTENANCE.toLowerCase() === 'true') {
+		client.user.setPresence({ activity: { name: 'maintenance', type: 'PLAYING', url: 'https://compliancepack.net' }, status: 'dnd' });
 	}
 	else {
 		client.user.setPresence({ activity: { name: 'compliancepack.net', type: 'PLAYING', url: 'https://compliancepack.net' }, status: 'available' });
 	}
-	
+
 	console.log('Starting submission functions...');
 	scheduledFunctions.start();
 
   console.log('Updating member counters...');
 	updateMembers(settings.CTweaksID, settings.CTweaksCounter);
 
-	console.log('JavaScript is a pain, but i\'m fine, i hope...');
+	console.log('JavaScript is a pain, but I\'m fine, I hope...');
 });
 
 // Member counters

@@ -15,7 +15,7 @@ module.exports = {
       await process.exit();
 		} 
     else { 
-			const msg = await message.reply(speech.BOT_NO_PERMISSION);
+			const msg = await message.reply(speech.COMMAND_NO_PERMISSION);
       await message.react('❌');
       await msg.delete({timeout: 30000});
 		}

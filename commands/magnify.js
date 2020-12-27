@@ -1,8 +1,9 @@
-var https = require('https');
-var Canvas = require('canvas');
-var Discord = require('discord.js');
-var sizeOf = require('image-size');
-var settings = require('../settings.js');
+const https = require('https');
+const Canvas = require('canvas');
+const Discord = require('discord.js');
+const sizeOf = require('image-size');
+const settings = require('../settings.js');
+const speech = require('../messages');
 
 module.exports = {
 	name: 'magnify',
@@ -19,7 +20,7 @@ module.exports = {
 			// <factor>
 			if (!isNaN(args[0]) && args[0] > 1) {
 				FACTOR = args[0];
-			} else return WarnUser(`Error: The factor must be greater than 1.`)
+			} else return WarnUser('The factor must be greater than 1.')
 
 			// <data>
 			// image attached
@@ -40,7 +41,7 @@ module.exports = {
 						DATA = msg.attachments.first().url;
 						return magnify(FACTOR, DATA);
 					}
-					else return WarnUser(`Error: The message from the provided URL does not have any image attached.`);
+					else return WarnUser(`The message from the provided URL does not have any image attached.`);
 				}).catch(error => { return WarnUser(error + ' The message URL needs to be from the same channel') });
 			}
 
@@ -49,7 +50,7 @@ module.exports = {
 				if (args[1].endsWith('.png') || args[1].endsWith('.jpeg') || args[1].endsWith('.jpg')) {
 					DATA = args[1];
 					return magnify(FACTOR, DATA);
-				} else return WarnUser(`Error: Image extension is not supported`)
+				} else return WarnUser(`Image extension is not supported`)
 			}
 
 			// Discord message ID
@@ -59,12 +60,12 @@ module.exports = {
 						DATA = msg.attachments.first().url;
 						return magnify(FACTOR, DATA);
 					}
-					else return WarnUser(`Error: The message from the provided ID does not have any image attached.`);
+					else return WarnUser(`The message from the provided ID does not have any image attached.`);
 				}).catch(error => {
 					return WarnUser(error);
 				})
 			}
-		} else return WarnUser(`Error: You did not provide any arguments.`);
+		} else return WarnUser(`You did not provide any arguments.`);
 
 		async function PreviousImage(FACTOR) {
 			var found = false;
@@ -85,19 +86,14 @@ module.exports = {
 		}
 
 		function WarnUser(text) {
+			if (!text) text = 'Unknown error';
 
-			if (!text) text = '';
+      var embed = new Discord.MessageEmbed()
+	            .setColor('#f44336')
+              .setTitle(speech.BOT_ERROR)
+              .setDescription(text);
 
-			const embed = new Discord.MessageEmbed()
-				.setTitle('Magnify command:')
-				.setThumbnail(settings.BotIMG)
-				.setDescription('``/magnify <factor> & attach an image``\nOR:\n``/magnify <factor> <DISCORD MESSAGE URL>``\n> Can be from anywhere, need to ends with ``.png`` or ``.jpg``/``.jpeg``\nOR:\n``/magnify <factor> <image URL>``\n> Can be an image from Google or anywhere else.\nOR:\n``/magnify <factor> <MESSAGE ID>``\n> The ID need to be from the same channel.\nOR:\n``/magnify <factor> (up/^/last optional)``\n> Magnify the most recent image in the channel (10 messages ahead max).\n\n' + text)
-				.setFooter('CompliBot', settings.BotIMG);
-
-			return message.channel.send(embed).then(embed => {
-				embed.delete({ timeout: 30000 });
-				message.react('❌');
-			});
+			return message.channel.send(embed)
 		}
 
 		//Return Image size, need url.
@@ -123,10 +119,10 @@ module.exports = {
 			getMeta(url).then(async function(dimension) {
 
 				var sizeOrigin = dimension.width * dimension.height;
-				var sizeResult = (dimension.width * factor) * (dimension.height * factor);
+				var sizeResult = dimension.width * dimension.height * Math.pow(factor, 2);
 
-				if (sizeOrigin > 262144) return WarnUser(`Your default picture is already to big, take one tinier, **maximum input allowed: 262 144px² (512x512)**, yours is: ` + sizeOrigin + 'px².');
-				if (sizeResult > 1048576) return WarnUser('Your output picture will be too big, **maximum output allowed: 1 048 576px² (1024x1024)**, yours is: ' + sizeResult + 'px².');
+				if (sizeOrigin > 262144) return WarnUser('The input picture is too big!');
+				if (sizeResult > 1048576) return WarnUser('The output picture will be too big!\nMaximum output allowed: 1024 x 1024 px²\nYours is: ' + dimension.width * factor + ' x ' + dimension.height * factor + ' px²');
 
 				var canvasStart = Canvas.createCanvas(dimension.width, dimension.height).getContext('2d');
 				var canvasResult = Canvas.createCanvas(dimension.width * factor, dimension.height * factor);
@@ -156,7 +152,13 @@ module.exports = {
 				}
 
 				const attachment = new Discord.MessageAttachment(canvasResult.toBuffer());
-				return message.channel.send(`Default size: ${dimension.width}x${dimension.height}\n> Magnified by x${factor}:`, attachment);
+
+        var embed = new Discord.MessageEmbed()
+              .setTitle(`Magnified by ${factor}x`)
+              .setDescription(`Original size: ${dimension.width} x ${dimension.height} px²\nNew size: ${dimension.width * factor} x ${dimension.height * factor} px²`)
+              .attachFiles([attachment]);
+
+        return message.channel.send(embed);
 			});
 		}
 	}

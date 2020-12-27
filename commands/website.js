@@ -1,5 +1,6 @@
 const Discord  = require('discord.js');
 const settings = require('../settings.js');
+const speech   = require('../messages');
 
 module.exports = {
 	name: 'website',
@@ -165,6 +166,6 @@ module.exports = {
 				settings.C32Color
 			);
 			//Other servers
-		} else return await message.channel.send('Please specify a valid argument! \nYou can use: \n`32x`, `64x`, `addons`, `tweaks`, `dungeons` and `mods`');
+		} else return await message.channel.send(settings.WEBSITE_PROVIDE_VALID_ARGUMENT);
 	}
 };

@@ -8,12 +8,15 @@ module.exports = {
 	syntax: `${prefix}bean <@user>`,
 
 	async execute(client, message, args) {
+
 		if(message.member.roles.cache.find(r => r.name === "God") || message.member.roles.cache.find(r => r.name === "Moderator") || message.member.roles.cache.find(r => r.name === "Moderators") ||message.member.roles.cache.find(r => r.name === "Mods")) {
 			if (args != '') {
-				if (args == '<@' + message.author.id  + '>') return await message.reply('You can\'t bean yourself!')
+				if (args == '<@!'+message.author.id+'>') {
+					return await message.reply('You can\'t bean yourself!');
+				}
 				else {
-          const embed = new Discord.MessageEmbed()
-            .setAuthor(message.author.tag, message.author.displayAvatarURL())
+					const embed = new Discord.MessageEmbed()
+						.setAuthor(message.author.tag, message.author.displayAvatarURL())
 				    .setDescription(`${args} was beaned!`)
 				    .setTimestamp();
 			    const embedMessage = await message.channel.send(embed);
@@ -34,9 +37,12 @@ module.exports = {
 		          await embedMessage.reactions.cache.get('🗑️').remove();
 	          });
 				}
-			} else await message.reply('Please provide a user tag!');
+			}
+			else {
+				return await message.reply(speech.COMMAND_PROVIDE_VALID_TAG);
+			}
 		} else {
-			const msg = await message.reply(speech.BOT_NO_PERMISSION);
+			const msg = await message.reply(speech.COMMAND_NO_PERMISSION);
       await message.react('❌');
       await msg.delete({timeout: 30000});
 		}

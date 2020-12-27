@@ -55,34 +55,41 @@ module.exports = {
 	CDungeonsID,
 	CDungeonsModsID,
 	CDungeonsSubmit,
+
 	CModsIMG,
 	CModsColor,
 	CModsID,
 	CModsModsID,
+
 	CTweaksIMG,
 	CTweaksColor,
 	CTweaksID,
   CTweaksCounter,
+
 	CAddonsIMG,
 	CAddonsColor,
 	CAddons3DSubmit,
 	CAddonsID,
 	CAddonsModsID,
+
 	FTraditionalIMG,
 	FTraditionalColor,
 	FTraditionalID,
 	FTraditionalSubmit,
+
+	C64ModsID,
+	C64IMG,
+	C64ID,
+
 	C32IMG,
 	C32Color,
 	C32ID,
 	C32ModsID,
 	C32CouncilID,
-	C64ModsID,
-	C32Submit1,
+  C32Submit1,
 	C32Submit2,
 	C32Submit3,
 	C32Results,
-	C64IMG,
-	C64ID,
+
   BotIMG,
 }

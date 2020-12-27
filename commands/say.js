@@ -1,5 +1,6 @@
 uidR = process.env.UIDR;
 uidJ = process.env.UIDJ;
+uidD = process.env.UIDD;
 
 module.exports = {
 	name: 'say',
@@ -7,7 +8,7 @@ module.exports = {
 	uses: 'Bot Developers',
 	syntax: `${prefix}say [message] [attach a file]`,
 	async execute(client, message, args) {
-    if (message.author.id === uidR || message.author.id === uidJ) {
+    if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD) {
       if (!args.length) return await message.reply('You haven\'t specified a message to send!');
       else {
 

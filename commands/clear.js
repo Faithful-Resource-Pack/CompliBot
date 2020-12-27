@@ -20,10 +20,10 @@ module.exports = {
 				await message.channel.bulkDelete(messages);
 
 			} else {
-				await message.reply('please provide a number!');
+				await message.reply(speech.COMMAND_PROVIDE_A_NUMBER);
 			}
 		} else {
-			const msg = await message.reply(speech.BOT_NO_PERMISSION);
+			const msg = await message.reply(speech.COMMAND_NO_PERMISSION);
       await message.react('❌');
       await msg.delete({timeout: 30000});
 		}
