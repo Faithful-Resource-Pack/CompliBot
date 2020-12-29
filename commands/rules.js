@@ -11,11 +11,11 @@ module.exports = {
 	syntax: `${prefix}rules`,
 	async execute(client, message, args) {
 		if (message.author.id === uidR || message.author.id === uidJ) {
-			if (message.guild.id === settings.C32ID) {
+			if (message.guild.id === settings.C32_ID) {
 				const embed1 = new Discord.MessageEmbed()
 					.setTitle('Rules')
-					.setColor(settings.C32Color)
-					.setThumbnail(settings.C32IMG)
+					.setColor(settings.C32_COLOR)
+					.setThumbnail(settings.C32_IMG)
 					.addFields(
 						{ name: '1️⃣', value: 'Follow Discord TOS and Guidelines.'},
 						{ name: '2️⃣', value: 'Be considerate of others.'},
@@ -31,20 +31,20 @@ module.exports = {
 						{ name: '1️⃣2️⃣', value: 'Stay on topic. There are multiple channels with different purposes for a reason.'},
 						{ name: '1️⃣3️⃣', value: 'Preferably no talk about why we moved, that is explained in `#faq`'}
 					)
-					.setFooter('The rules are subject to change, last edited: 30.11.2020', settings.C32IMG);
+					.setFooter('The rules are subject to change, last edited: 30.11.2020', settings.C32_IMG);
 
 				const embed2 = new Discord.MessageEmbed()
 					.setTitle('Latest changes as of 30.11.2020')
-					.setColor(settings.C32Color)
+					.setColor(settings.C32_COLOR)
 					.setDescription('- edited rule 5️⃣: Removed a duplicate mention. \n- edited rule 7️⃣: Replaced `@mods` with `/modping`');
 
 				await message.channel.send(embed1);
         await message.channel.send(embed2);
-			} else if (message.guild.id === settings.C64ID) {
+			} else if (message.guild.id === settings.C64_ID) {
 				const embed1 = new Discord.MessageEmbed()
 					.setTitle('Rules')
-					.setColor(settings.C32Color)
-					.setThumbnail(settings.C64IMG)
+					.setColor(settings.C32_COLOR)
+					.setThumbnail(settings.C64_IMG)
 					.addFields(
 						{ name: '1️⃣', value: 'Follow Discord TOS and Guidelines.'},
 						{ name: '2️⃣', value: 'Be considerate of others.'},
@@ -60,7 +60,7 @@ module.exports = {
 						{ name: '1️⃣2️⃣', value: 'Stay on topic. There are multiple channels with different purposes for a reason.'},
 						{ name: '1️⃣3️⃣', value: 'Preferably no talk about why we moved, that is explained in `#faq`'}
 					)
-					.setFooter('The rules are subject to change, last edited: 30.11.2020', settings.C64IMG);
+					.setFooter('The rules are subject to change, last edited: 30.11.2020', settings.C64_IMG);
 
 			/*
 				const embed2 = new Discord.MessageEmbed()
@@ -70,11 +70,11 @@ module.exports = {
 			*/
 				await message.channel.send(embed1);
 				//await message.channel.send(embed2);
-			} if (message.guild.id === settings.CModsID) {
+			} if (message.guild.id === settings.CMODS_ID) {
 				const embed1 = new Discord.MessageEmbed()
 					.setTitle('Rules')
-					.setColor(settings.CModsColor)
-					.setThumbnail(settings.CModsIMG)
+					.setColor(settings.CMODS_COLOR)
+					.setThumbnail(settings.CMODS_IMG)
 					.addFields(
 						{ name: '1️⃣', value: 'Follow Discord TOS and Guidelines.'},
 						{ name: '2️⃣', value: 'Be considerate of others.'},
@@ -90,20 +90,20 @@ module.exports = {
 						{ name: '1️⃣2️⃣', value: 'Stay on topic. There are multiple channels with different purposes for a reason.'},
 						{ name: '1️⃣3️⃣', value: 'Preferably no talk about why we moved, that is explained in `#faq`'}
 					)
-					.setFooter('The rules are subject to change, last edited: 30.11.2020', settings.CModsIMG);
+					.setFooter('The rules are subject to change, last edited: 30.11.2020', settings.CMODS_IMG);
 
 				/*const embed2 = new Discord.MessageEmbed()
 					.setTitle('Latest changes as of 30.11.2020')
-					.setColor(settings.C32Color)
+					.setColor(settings.C32_COLOR)
 					.setDescription('- edited rule 5️⃣: Removed a duplicate mention. \n- edited rule 7️⃣: Replaced `@mods` with `/modping`');*/
 
 				await message.channel.send(embed1);
 				//await message.channel.send(embed2);
-			} else if (message.guild.id === settings.CTweaksID) {
+			} else if (message.guild.id === settings.CTWEAKS_ID) {
 				const embed1 = new Discord.MessageEmbed()
 					.setTitle('Rules')
-					.setColor(settings.CTweaksColor)
-					.setThumbnail(settings.CTweaksIMG)
+					.setColor(settings.CTWEAKS_COLOR)
+					.setThumbnail(settings.CTWEAKS_IMG)
 					.addFields(
 						{ name: '1️⃣', value: 'Follow Discord TOS and Guidelines.'},
 						{ name: '2️⃣', value: 'Be considerate of others.'},
@@ -119,11 +119,11 @@ module.exports = {
 						{ name: '1️⃣2️⃣', value: 'Stay on topic. There are multiple channels with different purposes for a reason.'},
 						{ name: '1️⃣3️⃣', value: 'Preferably no talk about why we moved, that is explained in `#faq`'}
 					)
-					.setFooter('The rules are subject to change, last edited: 30.11.2020', settings.CTweaksIMG);
+					.setFooter('The rules are subject to change, last edited: 30.11.2020', settings.CTWEAKS_IMG);
 
 				/*const embed2 = new Discord.MessageEmbed()
 					.setTitle('Latest changes as of 30.11.2020')
-					.setColor(settings.C32Color)
+					.setColor(settings.C32_COLOR)
 					.setDescription('- edited rule 5️⃣: Removed a duplicate mention. \n- edited rule 7️⃣: Replaced `@mods` with `/modping`');
 */
 				await message.channel.send(embed1);

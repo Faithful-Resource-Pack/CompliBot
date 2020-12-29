@@ -9,6 +9,11 @@ module.exports = {
 	syntax: `${prefix}faq`,
 	async execute(client, message, args) {
 		message.channel.send(speech.COMMAND_DISABLED)
+
+		/*
+		* This command is deprecated : 
+		*/
+
 		/*
 		if (message.channel.type === 'dm' || message.guild.id !== settings.CTweaksID) return message.reply('this command can only be used in the Compliance Tweaks server!')
 			.then(msg => {

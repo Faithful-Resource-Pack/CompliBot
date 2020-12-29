@@ -13,7 +13,7 @@ module.exports = {
     }
     const embed = new Discord.MessageEmbed()
 			.setTitle('CompliBot Info:')
-			.setThumbnail(settings.BotIMG)
+			.setThumbnail(settings.BOT_IMG)
       .setDescription('This is the official bot of all Compliance Resource Pack discords, developed by the Compliance Team!')
 			.addFields(
 				{ name: '\u200B', value: '**Features:**'},

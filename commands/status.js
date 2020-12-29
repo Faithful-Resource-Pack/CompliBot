@@ -18,9 +18,9 @@ module.exports = {
       if (!args.length) {
 				const embed = new Discord.MessageEmbed()
 				.setTitle('Status command:')
-				.setThumbnail(settings.BotIMG)
+				.setThumbnail(settings.BOT_IMG)
 				.setDescription('``/status <activity> <presence> <status>``\n**Activity**:\nPLAYING, STREAMING, LISTENING, WATCHING, COMPETING, CUSTOM_STATUS (do not work)\n**Presence**:\nonline, idle, dnd')
-				.setFooter('CompliBot', settings.BotIMG);
+				.setFooter('CompliBot', settings.BOT_IMG);
 				
 				const msg = await message.channel.send(embed)
         await message.react('❌');

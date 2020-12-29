@@ -27,18 +27,18 @@ module.exports = {
 
 				var embed = new Discord.MessageEmbed()
 				.setTitle(`Help: ${prefix}${command.name}`)
-				.setThumbnail(settings.BotIMG)
+				.setThumbnail(settings.BOT_IMG)
 				.setDescription(`**Description:**\n${command.description || 'No description'}\n**Can be used by:**\n${command.uses || 'Not set'}\n**Syntax:**\n${syntax}\n**Aliases:**\n${aliases}`)
-				.setFooter('CompliBot', settings.BotIMG);
+				.setFooter('CompliBot', settings.BOT_IMG);
 				
 			}
 
 			else {
 				var embed = new Discord.MessageEmbed()
 				.setTitle('No commands found for: ' + prefix + args[0] )
-				.setThumbnail(settings.BotIMG)
+				.setThumbnail(settings.BOT_IMG)
 				.setDescription('Please provide valid commands & do not use aliases')
-				.setFooter('CompliBot', settings.BotIMG);
+				.setFooter('CompliBot', settings.BOT_IMG);
 			}
 		}
 
@@ -60,10 +60,9 @@ module.exports = {
 
 			var embed = new Discord.MessageEmbed()
 				.setTitle('Commands available:')
-				.setThumbnail(settings.BotIMG)
+				.setThumbnail(settings.BOT_IMG)
 				.setDescription(list)
-				.setFooter('CompliBot', settings.BotIMG);
-			
+				.setFooter('CompliBot', settings.BOT_IMG);
 		}
 
 		const embedMessage = await message.channel.send(embed);

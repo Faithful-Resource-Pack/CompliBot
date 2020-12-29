@@ -7,11 +7,11 @@ const speech   = require('../messages');
 const settings = require('../settings.js');
 
 module.exports = {
-	name: 'texture',
-	aliases: ['textures'],
+	name: 'texture16',
+	aliases: ['textures16'],
 	description: 'Displays a specified texture from Compliance!\nYou can ask for a texture name, or using ``_`` at the begining to ask for non-complete name (such as _swords).\nYou can also use ``/`` at the begining to specify a folder instead of a texture name.',
 	uses: 'Anyone',
-	syntax: `${prefix}texture <texture_name>\n${prefix}texture <_name>\n${prefix}texture </folder/>`,
+	syntax: `${prefix}texture16 <texture_name>\n${prefix}texture <_name>\n${prefix}texture </folder/>`,
 	async execute(client, message, args) {
 
 		// SEARCH:
@@ -140,7 +140,7 @@ function GetMeta(imgUrl) {
 }
 
 function GetTexture(texture, message) {
-	const imgURL = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-32x/Jappa-1.16.4/assets/minecraft/textures/' + texture;
+	const imgURL = 'https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/master/assets/minecraft/textures/' + texture;
 	
 	axios.get(imgURL).then(function (response) {
 		GetMeta(imgURL).then(async function (dimension) {

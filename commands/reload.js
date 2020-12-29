@@ -1,4 +1,6 @@
-const speech = require('../messages.js');
+const Discord  = require('discord.js');
+const speech   = require('../messages.js');
+const settings = require('../settings.js');
 
 uidR = process.env.UIDR;
 uidJ = process.env.UIDJ;
@@ -17,9 +19,14 @@ module.exports = {
 			const command = message.client.commands.get(commandName) || message.client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
 			if (!command) {
-        const msg = await message.reply(`there is no command with name or alias \`${commandName}\`!`);
+        const embed = new Discord.MessageEmbed()
+	        .setColor(settings.RED_COLOR)
+          .setTitle(speech.BOT_ERROR)
+          .setDescription(`There is no command with name or alias \`${commandName}\`!`)
+
+			  const embedMessage = await message.channel.send(embed)
         await message.react('❌');
-        await msg.delete({timeout: 30000});
+        await embedMessage.delete({timeout: 30000});
 			}
 
 			delete require.cache[require.resolve(`./${command.name}.js`)];

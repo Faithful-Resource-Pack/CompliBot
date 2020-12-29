@@ -13,7 +13,7 @@ module.exports = {
     const embed = new Discord.MessageEmbed()
       .setTitle('Pong!')
       .setDescription(`Latency: ${m.createdTimestamp - message.createdTimestamp}ms \nAPI Latency: ${Math.round(client.ws.ping)}ms`)
-      .setFooter('CompliBot', settings.BotIMG);
+      .setFooter('CompliBot', settings.BOT_IMG);
     await m.edit(embed);
     await m.react('🗑️');
     const filter = (reaction, user) => {

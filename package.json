@@ -1,11 +1,11 @@
 {
   "name": "Discord-Bot",
   "version": "1.0.0",
-  "description": "",
+  "description": "The official Discord bot of the Compliance Discord servers.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 0",
-    "start": "node index.js"
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 0"
   },
   "repository": {
     "type": "git",

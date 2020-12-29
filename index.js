@@ -15,16 +15,31 @@ prefix = process.env.PREFIX;
 
 // Import settings & commands handler:
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
-const settings     = require('./settings.js');
+const settings     = require('./settings');
+const speech       = require('./messages');
 
-for (const file of commandFiles) {
-	const command = require(`./commands/${file}`);
-	client.commands.set(command.name, command);
-}
+// Helpers (the start of modularization ew) 
+///// look at the /functions folder to a working example
+const { votingHelper } = require('./helpers/voting.js');
 
-// Ah, ha, ha, ha, stayin' alive, stayin' alive
-// Ah, ha, ha, ha, stayin' alive
-// Corona says no ~Domi04151309
+// Functions:
+const { countReact }    = require('./functions/countReact.js');
+const { attachIsImage } = require('./functions/attachIsImage.js');
+const { getMessages }   = require('./functions/getMessages.js');
+const { updateMembers } = require('./functions/updateMembers.js');
+
+const { textureSubmission } = require('./functions/textures_submission/textureSubmission');
+const { textureCouncil }    = require('./functions/textures_submission/textureCouncil');
+const { textureRevote }     = require('./functions/textures_submission/textureRevote');
+
+// Scheduled Functions:
+// Texture submission process: (each day at 00:00 GMT)
+let scheduledFunctions = new cron.CronJob('0 0 * * *', () => {
+	textureSubmission(client,settings.C32_SUBMIT_1,settings.C32_SUBMIT_2,5);									// 5 DAYS OFFSET
+	textureCouncil(client,settings.C32_SUBMIT_2,settings.C32_SUBMIT_3,settings.C32Results,1);	// 1 DAYS OFFSET
+	textureRevote(client,settings.C32_SUBMIT_3,settings.C32_RESULTS,3);											  // 3 DAYS OFFSET
+});
+
 const server = http.createServer((req, res) => {
   res.writeHead(302, {
     'Location': 'https://compliancepack.net/'
@@ -36,40 +51,93 @@ server.listen(3000, () => console.log(`listening at http://localhost:${port}`));
 // Bot status:
 client.on('ready', async () => {
 	if (process.env.MAINTENANCE.toLowerCase() === 'true') {
-		client.user.setPresence({ activity: { name: 'maintenance', type: 'PLAYING', url: 'https://compliancepack.net' }, status: 'dnd' });
+		client.user.setPresence(
+			{ 
+				activity: { 
+					name: 'maintenance', 
+					type: 'PLAYING',
+					url: 'https://compliancepack.net' 
+				},
+				status: 'dnd' 
+			}
+		);
 	}
 	else {
-		client.user.setPresence({ activity: { name: 'compliancepack.net', type: 'PLAYING', url: 'https://compliancepack.net' }, status: 'available' });
+		client.user.setPresence(
+			{
+				activity: { 
+					name: 'compliancepack.net', 
+					type: 'PLAYING', 
+					url: 'https://compliancepack.net' 
+				}, 
+				status: 'available' 
+			}
+		);
 	}
 
-	console.log('Starting submission functions...');
+	/*
+	 * ENABLE TEXTURE SUBMISSION PROCESS 
+	*/
 	scheduledFunctions.start();
 
-  console.log('Updating member counters...');
-	updateMembers(settings.CTweaksID, settings.CTweaksCounter);
+  /*
+	 * UPDATE MEMBERS 
+	*/
+	updateMembers(client, settings.CTWEAKS_ID, settings.CTWEAKS_COUNTER);
 
-	console.log('JavaScript is a pain, but I\'m fine, I hope...');
+  var embed = new Discord.MessageEmbed()
+    .setTitle('Started')
+    .setDescription(`<@!${client.user.id}> \n ID: ${client.user.id}`)
+    .setColor('#49d44d')
+    .setTimestamp();
+  await client.channels.cache.get('785867553095548948').send(embed);
 });
 
-// Member counters
-async function updateMembers (serverID, channelID) {
-  let guild = client.guilds.cache.get(serverID);
-	await guild.channels.cache.get(channelID).setName('Members: ' + guild.memberCount);
-}
+client.on('reconnecting', async () => {
+	var embed = new Discord.MessageEmbed()
+    .setTitle('Reconnecting...')
+    .setDescription(`<@!${client.user.id}> \n ID: ${client.user.id}`)
+    .setColor('#ffff00')
+    .setTimestamp();
+  await client.channels.cache.get('785867553095548948').send(embed);
+});
 
+client.on('disconnect', async () => {
+	var embed = new Discord.MessageEmbed()
+    .setTitle('Disconnect...')
+    .setDescription(`<@!${client.user.id}> \n ID: ${client.user.id}`)
+    .setColor('#ff0000')
+    .setTimestamp();
+  await client.channels.cache.get('785867553095548948').send(embed);
+});
+
+/*
+ * MEMBERS COUNTER
+*/
 client.on('guildMemberAdd', async member =>{
-  updateMembers(settings.CTweaksID, settings.CTweaksCounter);
+	updateMembers(client, settings.CTWEAKS_ID, settings.CTWEAKS_COUNTER);
 });
 client.on('guildMemberRemove', async member =>{
-	updateMembers(settings.CTweaksID, settings.CTweaksCounter);
+	updateMembers(client, settings.CTWEAKS_ID, settings.CTWEAKS_COUNTER);
 });
 
-// Command handler
+/*
+ * COMMANDS HANDLER
+ * - Automated: /commands & below
+ * - Easter Eggs & others: below
+*/
+for (const file of commandFiles) {
+	const command = require(`./commands/${file}`);
+	client.commands.set(command.name, command);
+}
+
+/*
+ * AUTOMATED:
+*/
 client.on('message', async message => {
-	// Avoid message WITHOUT prefix & bot messages
-	if (!message.content.startsWith(prefix) || message.author.bot) return;
+	if (!message.content.startsWith(prefix) || message.author.bot) return; // Avoid message WITHOUT prefix & bot messages
   if (process.env.MAINTENANCE === 'true' && message.author.id !== uidR) {
-		const msg = await message.reply('I\'m currently in maintenance, please try again later.');
+		const msg = await message.reply(speech.COMMAND_MAINTENANCE);
     await message.react('❌');
     await msg.delete({timeout: 30000});
   }
@@ -84,38 +152,54 @@ client.on('message', async message => {
 		command.execute(client, message, args);
 	}	catch (error) {
 		console.error(error);
-		message.reply('there was an error trying to execute that command!');
-	}
-});
+    const embed = new Discord.MessageEmbed()
+	    .setColor(settings.COLOR_RED)
+      .setTitle(speech.BOT_ERROR)
+      .setDescription(speech.COMMAND_ERROR);
 
-client.on('message', async message => {
-	// Avoid message WITH prefix & bot messages
-	if (message.content.startsWith(prefix) || message.author.bot) return;
+		const embedMessage = await message.channel.send(embed)
+    await message.react('❌');
+    await embedMessage.delete({timeout: 30000});
+	}
 
 	/*
-	 * SHORTS COMMANDS 
-	 * (easter eggs)
+	 * COMMANDS HISTORY
 	*/
+  var embed = new Discord.MessageEmbed()
+    .setAuthor(message.author.tag, message.author.displayAvatarURL())
+		.setDescription(`command: \`${commandName}\` \n args: \`${args}\``)
+		.setTimestamp()
+    .setFooter(`executed in: ${message.guild} \n\u200B`);
+  await client.channels.cache.get('785867690627039232').send(embed);
+});
 
-	if (message.content.includes('(╯°□°）╯︵ ┻━┻')) await message.reply('┬─┬ ノ( ゜-゜ノ) calm down bro');
+/*
+ * EASTER EGGS & CUSTOM COMMANDS:
+*/
+client.on('message', async message => {
+	if (message.content.startsWith(prefix) || message.author.bot) return; // Avoid message WITH prefix & bot messages
+
+	if (message.content.includes('(╯°□°）╯︵ ┻━┻')) return await message.reply('┬─┬ ノ( ゜-゜ノ) calm down bro');
 	
-	else if (message.content === 'F' ) await message.react('🇫');
+	if (message.content === 'F' ) return await message.react('🇫');
 
-	else if (message.content.toLowerCase() === 'mhhh') {
-		const embed = new Discord.MessageEmbed().setAuthor(message.content, message.author.displayAvatarURL()).setTitle('Uh-oh moment').setFooter('Swahili -> English', settings.BotIMG);
-		await message.channel.send(embed);
+	if (message.content.toLowerCase() === 'mhhh') {
+		const embed = new Discord.MessageEmbed().setAuthor(message.content, message.author.displayAvatarURL()).setTitle('Uh-oh moment').setFooter('Swahili -> English', settings.BOT_IMG);
+		return await message.channel.send(embed);
 	}
 
-	else if (message.content.toLowerCase() === 'band') {
+	if (message.content.toLowerCase() === 'band') {
 		await message.react('🎤');
 		await message.react('🎸');
 		await message.react('🥁');
 		await message.react('🎺');
 		await message.react('🎹');
+		return;
 	}
-	else if (message.content.toLowerCase() === 'hello there') {
-		if (Math.floor(Math.random() * Math.floor(5)) != 1) await message.channel.send('https://media1.tenor.com/images/8dc53503f5a5bb23ef12b2c83a0e1d4d/tenor.gif');
-		else await message.channel.send('https://preview.redd.it/6n6zu25c66211.png?width=960&crop=smart&auto=webp&s=62024911a6d6dd85f83a2eb305df6082f118c8d1');
+
+	if (message.content.toLowerCase() === 'hello there') {
+		if (Math.floor(Math.random() * Math.floor(5)) != 1) return await message.channel.send('https://media1.tenor.com/images/8dc53503f5a5bb23ef12b2c83a0e1d4d/tenor.gif');
+		else return await message.channel.send('https://preview.redd.it/6n6zu25c66211.png?width=960&crop=smart&auto=webp&s=62024911a6d6dd85f83a2eb305df6082f118c8d1');
 	}
 
 	/*
@@ -124,7 +208,7 @@ client.on('message', async message => {
 	*/
 
 	// Texture submission Compliance 32x (submit-texture):
-	else if (message.channel.id === settings.C32Submit1) {
+	if (message.channel.id === settings.C32_SUBMIT_1) {
 		if (message.attachments.size > 0) {
 			try {
 				await message.react('⬆️');
@@ -133,15 +217,22 @@ client.on('message', async message => {
 				console.error('ERROR | One of the emojis failed to react!' + error);
 			}
 
-		} else if(!message.member.roles.cache.has(settings.C32ModsID)) {
-			const msg = await message.reply('your texture submission needs to have an file attached!')
-			await message.react('❌');
-			await msg.delete({timeout: 30000});
+		} else if(!message.member.roles.cache.has(settings.C32_MODERATORS_ID)) {
+      await message.delete();
+
+      var embed = new Discord.MessageEmbed()
+        .setAuthor(message.author.tag, message.author.displayAvatarURL())
+	      .setColor(settings.COLOR_RED)
+        .setTitle(speech.BOT_ERROR)
+        .setDescription('Your texture submission has to have a file attached!');
+
+		  const msg = await message.channel.send(embed);
+      await msg.delete({timeout: 30000});
 		}
 	}
 
 	// Texture submission Compliance 32x (council-vote & texture-revote):
-	else if (message.channel.id === settings.C32Submit2 || message.channel.id === settings.C32Submit3) {
+	if (message.channel.id === settings.C32_SUBMIT_2 || message.channel.id === settings.C32_SUBMIT_3) {
 		if (message.attachments.size > 0) {
 			if (message.attachments.every(attachIsImage)){
 				try {
@@ -155,7 +246,7 @@ client.on('message', async message => {
 	}
 
 	// Models submission for Compliance 3D addons
-	else if (message.channel.id === settings.CAddons3DSubmit) {
+	if (message.channel.id === settings.CADDONS_3D_SUBMIT) {
 		if (message.attachments.size > 0) {
 			if (!message.content.includes('/assets/')) {
 				const msg = await message.reply('you need to add the texture path to your texture submission, following this example: `**texture/model name** /assets/...`')
@@ -175,7 +266,7 @@ client.on('message', async message => {
 	}
 
 	// Texture submission Compliance Dungeons:
-	else if (message.channel.id === settings.CDungeonsSubmit) {
+	if (message.channel.id === settings.CDUNGEONS_SUBMIT) {
 		if (message.attachments.size > 0) {
 			if (message.attachments.every(attachIsImage)){
 
@@ -201,197 +292,7 @@ client.on('message', async message => {
 			await msg.delete({timeout: 30000});
 		}
 	}
-
-	// Texture submission Faithful Traditional:
-	else if (message.channel.id === settings.FTraditionalSubmit) {
-		if (message.attachments.size > 0) {
-			try {
-				await message.react('✅');
-				await message.react('❌');
-			} catch (error) {
-				console.error('ERROR | One of the emojis failed to react!' + error);
-			}
-		} else if(!message.member.roles.cache.has('766856790004072450')) {
-			const msg = await message.reply('your texture submission needs to have an file attached!')
-			await message.react('❌');
-			await msg.delete({timeout: 30000});
-		}
-	}
 });
-
-// Texture submission process: (each day at 00:00 GMT)
-let scheduledFunctions = new cron.CronJob('00 00 * * *', () => {
-	textureSubmission(settings.C32Submit1,settings.C32Submit2,5);									// 5 DAYS OFFSET
-	councilVoting(settings.C32Submit2,settings.C32Submit3,settings.C32Results,1);	// 1 DAYS OFFSET
-	textureRevote(settings.C32Submit3,settings.C32Results,3);											// 3 DAYS OFFSET
-});
-
-/*
- *  TEXTURE SUBMISSION PROCESS:
- *  - textureSubmission()
- * 	- councilVoting()
- * 	- textureRevote()
-*/
-// Texture submission process: checking textures from #texture-revote
-async function textureRevote (inputID, outputID, offset) {
-	const revoteSentence = 'The following texture has not passed council voting and thus is up for revote:\n';
-
-	let channelOutput = client.channels.cache.get(outputID);
-	let limitDate     = new Date();
-
-	limitDate.setDate(limitDate.getDate() - offset);
-
-	let messages = await getMessages(inputID);
-	console.log(`${messages.length} messages in #texture-revote`);
-	
-	for (var i in messages) {
-		let message     = messages[i];
-		let messageDate = new Date(message.createdTimestamp);
-
-		let messageUpvote    = countReact(message,'⬆️');
-		let messageDownvote  = countReact(message,'⬇️');
-		let upvotePercentage = ((messageUpvote * 100) / (messageUpvote + messageDownvote)).toFixed(2);
-
-		if (upvotePercentage > 66.66 &&	message.attachments.size > 0 && messageDate.getDate() == limitDate.getDate() &&	messageDate.getMonth() == limitDate.getMonth()) {
-			await channelOutput.send(`This texture has passed community voting and thus will be added into the pack.\n> With a percentage of ${upvotePercentage}% Upvotes (>66%).\n` + message.content.replace(revoteSentence,''), {files: [message.attachments.first().url]})
-			.then(async message => {
-				try {
-					await message.react('✅');
-				} catch (error) {
-					console.error(error);
-				}
-			});
-		} else if (message.attachments.size > 0 && messageDate.getDate() == limitDate.getDate() &&	messageDate.getMonth() == limitDate.getMonth()) {
-			await channelOutput.send(`This texture has not passed council and community voting (${upvotePercentage}% of upvotes), and thus will not be added into the pack.\n` + message.content.replace(revoteSentence,''), {files: [message.attachments.first().url]})
-			.then(async message => {
-				try {
-					await message.react('❌');
-				}	catch (error) {
-					console.error(error);
-				}
-			});
-		}
-	}
-}
-
-// Texture submission process: checking texture in #council-vote
-async function councilVoting (inputID, outputFalseID, outputTrueID, offset) {
-	const trueSentence  = 'The following texture has passed council voting and will be added into the pack in a future version.\n';
-	const falseSentence = 'The following texture has not passed council voting and thus is up for revote:\n';
-
-	let channelRevote  = client.channels.cache.get(outputFalseID);
-	let channelResults = client.channels.cache.get(outputTrueID);
-
-	let limitDate = new Date();
-	limitDate.setDate(limitDate.getDate() - offset);
-
-	let messages = await getMessages(inputID);
-	console.log(`${messages.length} messages in #council-vote`);
-	
-	for (var i in messages) {
-		let message     = messages[i];
-		let messageDate = new Date(message.createdTimestamp);
-		let messageUpvote   = countReact(message,'⬆️');
-		let messageDownvote = countReact(message,'⬇️');
-
-		if (messageUpvote > messageDownvote && message.attachments.size > 0 && messageDate.getDate() == limitDate.getDate() && messageDate.getMonth() == limitDate.getMonth()) {
-			await channelResults.send(trueSentence + message.content, {files: [message.attachments.first().url]})
-			.then(async message => {
-				try {
-					await message.react('✅');
-				} catch (error)	{
-					console.error(error);
-				}
-			});
-		} else if (message.attachments.size > 0 && messageDate.getDate() == limitDate.getDate() && messageDate.getMonth() == limitDate.getMonth()) {
-			await channelRevote.send(falseSentence + message.content, {files: [message.attachments.first().url]})
-			.then(async message => {
-				try {
-					await message.react('⬆️');
-					await message.react('⬇️');
-				} catch (error) {
-					console.error(error);
-				}
-			});
-		}
-	}
-}
-
-// Texture submission process: checking texture from #submit-texture
-async function textureSubmission (inputID, outputID, offset) {
-	let channelOutput = client.channels.cache.get(outputID); 
-
-	let limitDate = new Date();
-	limitDate.setDate(limitDate.getDate() - offset);
-
-	let messages = await getMessages(inputID);
-	console.log(`${messages.length} messages in texture submission`);
-
-	var texture = false;
-	
-	for (var i in messages) {
-		let message         = messages[i];
-		let messageDate     = new Date(message.createdTimestamp);
-		let messageUpvote   = countReact(message,'⬆️');
-		let messageDownvote = countReact(message,'⬇️');
-
-		if (messageUpvote >= messageDownvote &&	message.attachments.size > 0 && messageDate.getDate() == limitDate.getDate() && messageDate.getMonth() == limitDate.getMonth()) {
-			texture = true;
-			await channelOutput.send('**'+message.content+'** \n> by <@' + message.author + '>', {files: [message.attachments.first().url]})
-			.then(async message => {
-				try {
-					await message.react('⬆️');
-					await message.react('⬇️');
-				} catch (error) {
-					console.error(error);
-				}
-			});
-		}
-	}
-
-	if (texture) await channelOutput.send('<@&'+settings.C32CouncilID+'> There are new textures to vote for!');
-	else await channelOutput.send('No textures today!');
-}
-
-/*
- * USEFUL FUNCTIONS IN THE TEXTURE SUBMISSION PROCESS:
- * - countReact()
- * - attachIsImage() 
- * - getMessages()
-*/
-
-// Texture submission process: fetch messages from channel, avoid 50 limitation of message.fetch()
-async function getMessages(channelID, limit = 500) {
-	const sum_messages = [];
-	let last_id;
-	let channel = client.channels.cache.get(channelID);
-
-	while (true) {
-		const options = { limit: 100 };
-		if (last_id) options.before = last_id;
-
-		const messages = await channel.messages.fetch(options);
-		sum_messages.push(...messages.array());
-		last_id = messages.last().id;
-
-		if (messages.size != 100 || sum_messages >= limit) break;
-	}
-	return sum_messages;
-}
-
-// Tell how many people reacted with an emoji
-function countReact (message, emoji) {
-	var reaction = message.reactions.cache.get(emoji);
-
-	if (reaction != undefined) return reaction.count - 1; // remove bot vote
-	else return 0
-}
-
-// True if this url is a png image
-function attachIsImage(msgAttach) {
-	var url = msgAttach.url;
-	return url.indexOf('png', url.length - 'png'.length /*or 3*/) !== -1;
-}
 
 // Login the bot
 client.login(process.env.CLIENT_TOKEN).catch(console.error);

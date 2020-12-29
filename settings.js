@@ -1,95 +1,92 @@
 // Compliance Dungeons
-const CDungeonsIMG    = 'https://i.imgur.com/pNcC1c2.png';
-const CDungeonsColor  = '#DF7C2B';
-const CDungeonsID     = '714910830272970834';							// Discord server
-const CDungeonsModsID = '714911578750844988';							// Moderator role
-const CDungeonsSubmit = '715236892945285181';							// #submit-textures
+const CDUNGEONS_IMG           = 'https://i.imgur.com/pNcC1c2.png';
+const CDUNGEONS_COLOR         = '#DF7C2B';
+const CDUNGEONS_ID            = '714910830272970834';
+const CDUNGEONS_MODERATORS_ID = '714911578750844988';
+const CDUNGEONS_SUBMIT        = '715236892945285181';
 
 // Compliance Mods
-const CModsIMG    = 'https://i.imgur.com/Cy2y5cl.png';
-const CModsColor  = '#349687';
-const CModsID     = '748264625962877019';								// Discord server
-const CModsModsID = '748270445534380163';								// Moderator role
+const CMODS_IMG           = 'https://i.imgur.com/Cy2y5cl.png';
+const CMODS_COLOR         = '#349687';
+const CMODS_ID            = '748264625962877019';
+const CMODS_MODERATORS_ID = '748270445534380163';
 
 // Compliance Tweaks
-const CTweaksIMG     = 'https://i.imgur.com/dliyq5U.png';
-const CTweaksColor   = '#658430';
-const CTweaksID      = '720966967325884426';								// Discord server
-const CTweaksCounter = '750638888296382504';                // Member counter channel
+const CTWEAKS_IMG     = 'https://i.imgur.com/dliyq5U.png';
+const CTWEAKS_COLOR   = '#658430';
+const CTWEAKS_ID      = '720966967325884426';
+const CTWEAKS_COUNTER = '750638888296382504'; // Member counter channel
 
 // Compliance Addons
-const CAddonsIMG      = 'https://i.imgur.com/ty9n7nT.png';
-const CAddonsColor    = '#6D6163';
-const CAddons3DSubmit = '782574754866528277';								// #model-texture-submit
-const CAddonsID       = '614160586032414845'; 							// Discord server
-const CAddonsModsID   = '614163845656608774';								// Moderator role
-
-// Faithful Traditional
-const FTraditionalIMG    = 'https://i.imgur.com/SLpji2x.png';
-const FTraditionalColor  = '#FFD800';
-const FTraditionalID     = '766856721712545824';						// Discord server
-const FTraditionalSubmit = '767464832285933578';						// #64x-texture-submissions
+const CADDONS_IMG              = 'https://i.imgur.com/ty9n7nT.png';
+const CADDONS_COLOR            = '#6D6163';
+const CADDONS_3D_SUBMIT        = '782574754866528277'; // #model-texture-submit
+const CADDONS_ID               = '614160586032414845';
+const CADDONS_MODERATORS_ID    = '614163845656608774';
 
 // Compliance 64x
-const C64IMG    = 'https://i.imgur.com/EktsrA9.png';
-const C64ID     = '747574286356840609';									// Discord server
-const C64ModsID = '747595211273797724';									// Moderator role
+const C64_IMG           = 'https://i.imgur.com/EktsrA9.png';
+const C64_ID            = '747574286356840609';	
+const C64_MODERATORS_ID = '747595211273797724';	
 
 // Compliance 32x
-const C32IMG       = 'https://i.imgur.com/nOpSBYX.png';
-const C32Color     = '#76C945';
-const C32ID        = '773983706582482946';								// Discord server
-const C32ModsID    = '773984348860711003';								// Moderator role
-const C32CouncilID = '775636065338785813';								// Council role
-const C32Submit1   = '773987409993793546';								// #submit-textures
-const C32Submit2   = '774220983044669450';								// #council-voting
-const C32Submit3   = '780507681987100682';								// #texture-revote
-const C32Results   = '780507804317384744';								// #texture-results
+const C32_IMG           = 'https://i.imgur.com/nOpSBYX.png';
+const C32_COLOR         = '#76C945';
+const C32_ID            = '773983706582482946';
+const C32_MODERATORS_ID = '773984348860711003';
+const C32_COUNCIL_ID    = '775636065338785813';								// Council role
+const C32_SUBMIT_1      = '773987409993793546';								// #submit-textures
+const C32_SUBMIT_2      = '774220983044669450';								// #council-voting
+const C32_SUBMIT_3      = '780507681987100682';								// #texture-revote
+const C32_RESULTS       = '780507804317384744';								// #texture-results
 
 // The bot itself
-const BotIMG = 'https://i.imgur.com/Hf0eeiU.png';
+const BOT_IMG       = 'https://i.imgur.com/Hf0eeiU.png';
+const COLOR_RED     = '#f44336';
+const COLOR_GREEN   = '#4CAF50';
+const COLOR_YELLOW  = '#ffff00';
+const COLOR_COUNCIL = '#9c3848';
 
 module.exports = {
-	CDungeonsIMG,
-	CDungeonsColor,
-	CDungeonsID,
-	CDungeonsModsID,
-	CDungeonsSubmit,
+	CDUNGEONS_IMG,
+	CDUNGEONS_COLOR,
+	CDUNGEONS_ID,
+	CDUNGEONS_MODERATORS_ID,
+	CDUNGEONS_SUBMIT,
 
-	CModsIMG,
-	CModsColor,
-	CModsID,
-	CModsModsID,
+	CMODS_IMG,
+	CMODS_COLOR,
+	CMODS_ID,
+	CMODS_MODERATORS_ID,
 
-	CTweaksIMG,
-	CTweaksColor,
-	CTweaksID,
-  CTweaksCounter,
+	CTWEAKS_IMG,
+	CTWEAKS_COLOR,
+	CTWEAKS_ID,
+  CTWEAKS_COUNTER,
 
-	CAddonsIMG,
-	CAddonsColor,
-	CAddons3DSubmit,
-	CAddonsID,
-	CAddonsModsID,
+	CADDONS_IMG,
+	CADDONS_COLOR,
+	CADDONS_3D_SUBMIT,
+	CADDONS_ID,
+	CADDONS_MODERATORS_ID,
 
-	FTraditionalIMG,
-	FTraditionalColor,
-	FTraditionalID,
-	FTraditionalSubmit,
+	C64_MODERATORS_ID,
+	C64_IMG,
+	C64_ID,
 
-	C64ModsID,
-	C64IMG,
-	C64ID,
+	C32_IMG,
+	C32_COLOR,
+	C32_ID,
+	C32_MODERATORS_ID,
+	C32_COUNCIL_ID,
+  C32_SUBMIT_1,
+	C32_SUBMIT_2,
+	C32_SUBMIT_3,
+	C32_RESULTS,
 
-	C32IMG,
-	C32Color,
-	C32ID,
-	C32ModsID,
-	C32CouncilID,
-  C32Submit1,
-	C32Submit2,
-	C32Submit3,
-	C32Results,
-
-  BotIMG,
+  BOT_IMG,
+  COLOR_RED,
+  COLOR_GREEN,
+  COLOR_YELLOW,
+	COLOR_COUNCIL
 }

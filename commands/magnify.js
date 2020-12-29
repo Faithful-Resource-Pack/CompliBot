@@ -1,9 +1,9 @@
-const https = require('https');
-const Canvas = require('canvas');
-const Discord = require('discord.js');
-const sizeOf = require('image-size');
+const https    = require('https');
+const Canvas   = require('canvas');
+const Discord  = require('discord.js');
+const sizeOf   = require('image-size');
 const settings = require('../settings.js');
-const speech = require('../messages');
+const speech   = require('../messages');
 
 module.exports = {
 	name: 'magnify',
@@ -89,7 +89,7 @@ module.exports = {
 			if (!text) text = 'Unknown error';
 
       var embed = new Discord.MessageEmbed()
-	            .setColor('#f44336')
+	            .setColor(setting.COLOR_RED)
               .setTitle(speech.BOT_ERROR)
               .setDescription(text);
 
@@ -154,9 +154,9 @@ module.exports = {
 				const attachment = new Discord.MessageAttachment(canvasResult.toBuffer());
 
         var embed = new Discord.MessageEmbed()
-              .setTitle(`Magnified by ${factor}x`)
-              .setDescription(`Original size: ${dimension.width} x ${dimension.height} px²\nNew size: ${dimension.width * factor} x ${dimension.height * factor} px²`)
-              .attachFiles([attachment]);
+          .setTitle(`Magnified by ${factor}x`)
+          .setDescription(`Original size: ${dimension.width} x ${dimension.height} px²\nNew size: ${dimension.width * factor} x ${dimension.height * factor} px²`)
+          .attachFiles([attachment]);
 
         return message.channel.send(embed);
 			});
