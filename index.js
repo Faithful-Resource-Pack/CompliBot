@@ -23,6 +23,7 @@ const speech       = require('./messages');
 const { votingHelper } = require('./helpers/voting.js');
 
 // Functions:
+const { autoReact }     = require('./functions/autoReact');
 const { countReact }    = require('./functions/countReact.js');
 const { attachIsImage } = require('./functions/attachIsImage.js');
 const { getMessages }   = require('./functions/getMessages.js');
@@ -43,6 +44,7 @@ let scheduledFunctions = new cron.CronJob('0 0 * * *', () => {
 // Ah, ha, ha, ha, stayin' alive, stayin' alive	
 // Ah, ha, ha, ha, stayin' alive	
 // Corona says no ~Domi04151309
+// ─=≡Σ((( つ◕ل͜◕)つ
 const server = http.createServer((req, res) => {
   res.writeHead(302, {
     'Location': 'https://compliancepack.net/'
@@ -212,106 +214,48 @@ client.on('message', async message => {
 	 * (does not interfer with submission process)
 	*/
 
-	// Texture submission Compliance 32x (submit-texture):
+	// Texture submission Compliance 32x (#submit-texture):
 	if (message.channel.id === settings.C32_SUBMIT_1) {
-		if (message.attachments.size > 0) {
-			try {
-				await message.react('⬆️');
-				await message.react('⬇️');
-			} catch (error) {
-				console.error('ERROR | One of the emojis failed to react!' + error);
-			}
-
-		} else if(!message.member.roles.cache.has(settings.C32_MODERATORS_ID)) {
-      await message.delete();
-
-      var embed = new Discord.MessageEmbed()
-        .setAuthor(message.author.tag, message.author.displayAvatarURL())
-	      .setColor(settings.COLOR_RED)
-        .setTitle(speech.BOT_ERROR)
-        .setDescription('Your texture submission has to have a file attached!');
-
-		  const msg = await message.channel.send(embed);
-      await msg.delete({timeout: 30000});
-		}
-	}
-
-	// Texture submission Compliance 32x (council-vote & texture-revote):
-	if (message.channel.id === settings.C32_SUBMIT_2 || message.channel.id === settings.C32_SUBMIT_3) {
-		if (message.attachments.size > 0) {
-			if (message.attachments.every(attachIsImage)){
-				try {
-					await message.react('⬆️');
-					await message.react('⬇️');
-				} catch (error) {
-					console.error('ERROR | One of the emojis failed to react!' + error);
-				}
-			}
-		}
+		return autoReact(
+			message,
+			['⬆️','⬇️'],
+			speech.SUBMIT_NO_FILE_ATTACHED,
+			'You need to add the texture folder of your texture between []:\n`texture_name [folder] (comment -> optional)`', 
+			['[',']']
+		);
 	}
 
 	// Models submission for Compliance 3D addons
 	if (message.channel.id === settings.CADDONS_3D_SUBMIT) {
-		if (message.attachments.size > 0) {
-			if (!message.content.includes('/assets/')) {
-				const msg = await message.reply('you need to add the texture path to your texture submission, following this example: `**texture/model name** /assets/...`')
-				await message.react('❌');
-				await msg.delete({timeout: 30000});
-			} else try {
-				await message.react('⬆️');
-				await message.react('⬇️');
-			} catch (error) { 
-				console.error('ERROR | One of the emojis failed to react!' + error);
-			}
-		} else {
-			const msg = await message.reply('your texture submission needs to have a file attached!')
-			await message.react('❌');
-			await msg.delete({timeout: 30000});
-		}
+		return autoReact(
+			message,
+			['⬆️','⬇️'],
+			speech.SUBMIT_NO_FILE_ATTACHED,
+			'You need to add the texture path to your submission:\n`**texture/model_name** /assets/...`',
+			['/assets/']
+		);
 	}
 
 	// Texture submission Compliance Dungeons:
 	if (message.channel.id === settings.CDUNGEONS_SUBMIT) {
-		if (message.attachments.size > 0) {
-			if (message.attachments.every(attachIsImage)){
-
-				if(!message.content.includes('(')) {
-					const msg = await message.reply('you need to add the texture path to your texture submission, follow this example: `**texture name** (Content/**folder1**/**folder2**/**texture name.png**)`')
-					await message.react('❌');
-					await msg.delete({timeout: 30000});
-				} else try {
-					await message.react('⬆️');
-					await message.react('⬇️');
-				} catch (error) { 
-					console.error('ERROR | One of the emojis failed to react!' + error);
-				}
-
-			} else {
-				const msg = await message.reply('you need to attach a png file!')
-				await message.react('❌');
-				await msg.delete({timeout: 30000});
-			}
-		} else {
-			const msg = await message.reply('your texture submission needs to have an image attached!')
-			await message.react('❌');
-			await msg.delete({timeout: 30000});
-		}
+		return autoReact(
+			message,
+			['⬆️','⬇️'],
+			speech.SUBMIT_NO_FILE_ATTACHED,
+			'You need to add the texture path to your submission:\n`**texture name** (Content/**folder1**/**folder2**/**texture name.png**)`',
+			['(',')']
+		);
 	}
 
-	// Texture submission Emulated Vattic Textures:
-	else if (message.channel.id === '767464832285933578') {	
-		if (message.attachments.size > 0) {	
-			try {	
-				await message.react('✅');	
-				await message.react('❌');	
-			} catch (error) {	
-				console.error('ERROR | One of the emojis failed to react!' + error);	
-			}	
-		} else if(!message.member.roles.cache.has('766856790004072450')) {	
-			const msg = await message.reply('your texture submission needs to have an file attached!')	
-			await message.react('❌');	
-			await msg.delete({timeout: 30000});	
-		}	
+	// Texture submission Emulated Vattic Textures (FHLX):
+	if (message.channel.id === '767464832285933578') {	
+		return autoReact(
+			message,
+			['✅','❌'],
+			speech.SUBMIT_NO_FILE_ATTACHED,
+			undefined,
+			undefined
+		);
 	}
 });
 

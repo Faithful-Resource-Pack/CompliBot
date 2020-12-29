@@ -1,5 +1,7 @@
 // General command stuff
-const BOT_ERROR = 'Error';
+const BOT_ERROR = 'Action Failed';
+const BOT_AUTOREACT_ERROR = 'Auto Reaction Failed';
+
 const COMMAND_NO_PERMISSION = 'You don\'t have the permission to do that!';
 const COMMAND_PROVIDE_VALID_TAG = 'Please provide a user tag!';
 const COMMAND_PROVIDE_A_NUMBER = 'Please provide a number!';
@@ -21,8 +23,13 @@ const TEXTURE_DEFEAT_COUNCIL = 'The following texture has not passed council vot
 const TEXTURE_WIN_REVOTE = 'This texture has passed community voting and thus will be added into the pack in a future version.';
 const TEXTURE_DEFEAT_REVOTE = 'This texture has not passed council and community voting and thus will not be added into the pack.';
 
+// Auto React command:
+const SUBMIT_NO_FILE_ATTACHED = 'Your submission has to have a file attached!';
+
 module.exports = {
   BOT_ERROR,
+	BOT_AUTOREACT_ERROR,
+
 	COMMAND_NO_PERMISSION,
 	COMMAND_PROVIDE_VALID_TAG,
 	COMMAND_PROVIDE_A_NUMBER,
@@ -39,5 +46,7 @@ module.exports = {
 	TEXTURE_WIN_COUNCIL,
 	TEXTURE_DEFEAT_COUNCIL,
 	TEXTURE_WIN_REVOTE,
-	TEXTURE_DEFEAT_REVOTE
+	TEXTURE_DEFEAT_REVOTE,
+
+	SUBMIT_NO_FILE_ATTACHED
 }

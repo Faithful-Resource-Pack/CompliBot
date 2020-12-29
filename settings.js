@@ -34,11 +34,11 @@ const C32_IMG           = 'https://i.imgur.com/nOpSBYX.png';
 const C32_COLOR         = '#76C945';
 const C32_ID            = '773983706582482946';
 const C32_MODERATORS_ID = '773984348860711003';
-const C32_COUNCIL_ID    = '775636065338785813';								// Council role
-const C32_SUBMIT_1      = '773987409993793546';								// #submit-textures
-const C32_SUBMIT_2      = '774220983044669450';								// #council-voting
-const C32_SUBMIT_3      = '780507681987100682';								// #texture-revote
-const C32_RESULTS       = '780507804317384744';								// #texture-results
+const C32_COUNCIL_ID    = '775636065338785813';	// Council role
+const C32_SUBMIT_1      = '773987409993793546';	// #submit-textures
+const C32_SUBMIT_2      = '774220983044669450';	// #council-voting
+const C32_SUBMIT_3      = '780507681987100682';	// #texture-revote
+const C32_RESULTS       = '780507804317384744';	// #texture-results
 
 // The bot itself
 const BOT_IMG       = 'https://i.imgur.com/Hf0eeiU.png';
