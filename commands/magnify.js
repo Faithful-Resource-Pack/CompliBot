@@ -89,9 +89,9 @@ module.exports = {
 			if (!text) text = 'Unknown error';
 
       var embed = new Discord.MessageEmbed()
-	            .setColor(setting.COLOR_RED)
-              .setTitle(speech.BOT_ERROR)
-              .setDescription(text);
+	      .setColor(settings.COLOR_RED)
+        .setTitle(speech.BOT_ERROR)
+        .setDescription(text);
 
 			return message.channel.send(embed)
 		}
@@ -154,6 +154,7 @@ module.exports = {
 				const attachment = new Discord.MessageAttachment(canvasResult.toBuffer());
 
         var embed = new Discord.MessageEmbed()
+					.setColor(settings.COLOR_GREEN)
           .setTitle(`Magnified by ${factor}x`)
           .setDescription(`Original size: ${dimension.width} x ${dimension.height} px²\nNew size: ${dimension.width * factor} x ${dimension.height * factor} px²`)
           .attachFiles([attachment]);

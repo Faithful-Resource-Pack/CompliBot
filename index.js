@@ -40,6 +40,9 @@ let scheduledFunctions = new cron.CronJob('0 0 * * *', () => {
 	textureRevote(client,settings.C32_SUBMIT_3,settings.C32_RESULTS,3);											  // 3 DAYS OFFSET
 });
 
+// Ah, ha, ha, ha, stayin' alive, stayin' alive	
+// Ah, ha, ha, ha, stayin' alive	
+// Corona says no ~Domi04151309
 const server = http.createServer((req, res) => {
   res.writeHead(302, {
     'Location': 'https://compliancepack.net/'
@@ -84,6 +87,8 @@ client.on('ready', async () => {
 	 * UPDATE MEMBERS 
 	*/
 	updateMembers(client, settings.CTWEAKS_ID, settings.CTWEAKS_COUNTER);
+
+  console.log('JavaScript is a pain, but I\'m fine, I hope...');
 
   var embed = new Discord.MessageEmbed()
     .setTitle('Started')
@@ -291,6 +296,22 @@ client.on('message', async message => {
 			await message.react('❌');
 			await msg.delete({timeout: 30000});
 		}
+	}
+
+	// Texture submission Emulated Vattic Textures:
+	else if (message.channel.id === '767464832285933578') {	
+		if (message.attachments.size > 0) {	
+			try {	
+				await message.react('✅');	
+				await message.react('❌');	
+			} catch (error) {	
+				console.error('ERROR | One of the emojis failed to react!' + error);	
+			}	
+		} else if(!message.member.roles.cache.has('766856790004072450')) {	
+			const msg = await message.reply('your texture submission needs to have an file attached!')	
+			await message.react('❌');	
+			await msg.delete({timeout: 30000});	
+		}	
 	}
 });
 
