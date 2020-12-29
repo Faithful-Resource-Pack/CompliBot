@@ -140,7 +140,7 @@ function GetMeta(imgUrl) {
 }
 
 function GetTexture(texture, message) {
-	const imgURL = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-32x/Jappa-1.16.4/assets/minecraft/textures/' + texture;
+	const imgURL = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-32x/Jappa-1.17/assets/minecraft/textures/' + texture;
 	
 	axios.get(imgURL).then(function (response) {
 		GetMeta(imgURL).then(async function (dimension) {

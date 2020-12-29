@@ -140,7 +140,7 @@ function GetMeta(imgUrl) {
 }
 
 function GetTexture(texture, message) {
-	const imgURL = 'https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/master/assets/minecraft/textures/' + texture;
+	const imgURL = 'https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/20w51a/assets/minecraft/textures/' + texture;
 	
 	axios.get(imgURL).then(function (response) {
 		GetMeta(imgURL).then(async function (dimension) {
