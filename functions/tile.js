@@ -13,14 +13,15 @@ function tile(message, url) {
 		if (sizeOrigin > 262144) return warnUser(message,'The input picture is too big!');
 		if (sizeResult > 1048576) return warnUser(message,'The output picture will be too big!\nMaximum output allowed: 1024 x 1024 px²\nYours is: ' + dimension.width * 2 + ' x ' + dimension.height * 2 + ' px²');
 
-    var canvas = Canvas.createCanvas(dimension.width * 2, dimension.height * 2);
+    var canvas = Canvas.createCanvas(dimension.width * 3, dimension.height * 3);
     var canvasContext = canvas.getContext('2d');
 
 		const temp = await Canvas.loadImage(url);
-		canvasContext.drawImage(temp, 0, 0);
-		canvasContext.drawImage(temp, dimension.width, 0);
-		canvasContext.drawImage(temp, dimension.width, dimension.height);
-		canvasContext.drawImage(temp, 0, dimension.height);
+    for (var i = 0; i <= 3; i++) {
+      for (var j = 0; j <= 3; j++) {
+        canvasContext.drawImage(temp, i * dimension.width, j * dimension.height);
+      }
+    }
 
 		const attachment = new Discord.MessageAttachment(canvas.toBuffer());
 		var embed = new Discord.MessageEmbed()
