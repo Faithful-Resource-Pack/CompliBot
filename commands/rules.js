@@ -1,8 +1,8 @@
 const Discord  = require("discord.js");
 const settings = require('../settings.js');
 
-uidR = process.env.UIDR;
-uidJ = process.env.UIDJ;
+const uidR = process.env.UIDR;
+const uidJ = process.env.UIDJ;
 
 module.exports = {
 	name: 'rules',

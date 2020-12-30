@@ -1,7 +1,7 @@
 const speech = require('../messages.js');
 
-uidR = process.env.UIDR;
-uidJ = process.env.UIDJ;
+const uidR = process.env.UIDR;
+const uidJ = process.env.UIDJ;
 
 const { warnUser } = require('../functions/warnUser.js');
 
@@ -15,7 +15,7 @@ module.exports = {
 		if (message.author.id === uidR || message.author.id === uidJ) {
 			await message.channel.send('Shutting down...');
       await process.exit();
-		} 
+		}
     else warnUser(message,speech.COMMAND_NO_PERMISSION);
 	}
 };

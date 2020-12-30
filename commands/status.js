@@ -1,7 +1,6 @@
-const Discord = require('discord.js');
-const settings = require('../settings.js');
-uidR = process.env.UIDR;
-uidJ = process.env.UIDJ;
+const speech = require('../messages.js');
+const uidR = process.env.UIDR;
+const uidJ = process.env.UIDJ;
 
 const { warnUser } = require('../functions/warnUser.js');
 
@@ -18,20 +17,20 @@ module.exports = {
     if (message.author.id === uidR || message.author.id === uidJ) {
 
       if (!args.length) return warnUser(message,speech.COMMAND_NO_ARGUMENTS_GIVEN) ;
-      
+
 			if(activity.includes(args[0]) && presence.includes(args[1])) {
 				client.user.setPresence(
-					{ 
-						activity: { 
-							name: args.join(" ").replace(args[0],'').replace(args[1], ''), 
-							type: args[0], 
-							url: 'https://compliancepack.net' 
-						}, 
+					{
+						activity: {
+							name: args.join(" ").replace(args[0],'').replace(args[1], ''),
+							type: args[0],
+							url: 'https://compliancepack.net'
+						},
 						status: args[1]
 					}
 				);
 			}
 
-    } else warnUser(message,speech.COMMAND_NO_PERMISSION);
+    } else warnUser(message, speech.COMMAND_NO_PERMISSION);
 	}
 };

@@ -11,7 +11,7 @@ async function textureSubmission(client, inputID, outputID, offset) {
 	let messages = await getMessages(client,inputID);
 
 	limitDate.setDate(limitDate.getDate() - offset);
-	
+
 	for (var i in messages) {
 		let message         = messages[i];
 		let messageDate     = new Date(message.createdTimestamp);
@@ -32,8 +32,8 @@ async function textureSubmission(client, inputID, outputID, offset) {
 
 			if (message.content.includes('(')) description = message.content.split('(').pop().split(')')[0];
 			if (message.content.includes('[')) folder      = message.content.split('[').pop().split(']')[0];
-			var name = message.content.replace('('+description+')', '').replace('['+folder+']', '').replace(' ','');
-			
+			name = message.content.replace('('+description+')', '').replace('['+folder+']', '').replace(' ','');
+
 			description = description.charAt(0).toUpperCase() + description.slice(1);
 
 			if (name === undefined || name == '') name = 'Not Provided';

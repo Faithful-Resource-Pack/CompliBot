@@ -36,7 +36,7 @@ function tile(message, url) {
     await embedMessage.react('🗑️');
 		await embedMessage.react('🔎');
 		//await embedMessage.react('🌀');
-							
+
 		const filter = (reaction, user) => {
 			return ['🗑️','🔎'].includes(reaction.emoji.name) && user.id === message.author.id;
 		};
@@ -56,8 +56,8 @@ function tile(message, url) {
 								if (textureSize == '16') return getTexture(32, texture);
 								if (textureSize == '32') return getTexture(16, texture);
               }*/
-						})	
-						.catch(async collected => {
+						})
+						.catch(async () => {
 							await embedMessage.reactions.cache.get('🗑️').remove();
 							await embedMessage.reactions.cache.get('🔎').remove();
 							//await embedMessage.reactions.cache.get('🌀').remove();

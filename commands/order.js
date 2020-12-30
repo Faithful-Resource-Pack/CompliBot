@@ -1,6 +1,3 @@
-uidR = process.env.UIDR;
-uidJ = process.env.UIDJ;
-
 module.exports = {
 	name: 'order',
 	description: 'Order something',

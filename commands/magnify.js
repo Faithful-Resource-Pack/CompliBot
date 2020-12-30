@@ -1,8 +1,3 @@
-const Discord  = require('discord.js');
-const settings = require('../settings.js');
-const speech   = require('../messages');
-
-const { getMeta } = require('../functions/getMeta.js');
 const { magnify } = require('../functions/magnify.js');
 const { warnUser } = require('../functions/warnUser.js');
 

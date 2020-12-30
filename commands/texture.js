@@ -1,7 +1,5 @@
 const Discord  = require('discord.js');
 const axios    = require('axios').default;
-const https    = require('https');
-const sizeOf   = require('image-size');
 const fs       = require('fs');
 const speech   = require('../messages');
 const settings = require('../settings.js');
@@ -16,7 +14,7 @@ module.exports = {
 	uses: 'Anyone',
 	syntax: `${prefix}texture <vanilla/32> <texture_name>\n${prefix}texture <vanilla/32> <_name>\n${prefix}texture <vanilla/32> </folder/>`,
 	async execute(client, message, args) {
-		
+
 		let rawdata  = fs.readFileSync('textures.json');
 		let textures = JSON.parse(rawdata);
 		var results  = [];
@@ -36,7 +34,7 @@ module.exports = {
 					if (String(args[1]).startsWith('/')) {
 						if (!String(args[1]).endsWith('/')) {
 							args[1] = args[1] + '/'; // to only check folder and not texture with the same name as folder
-						} 
+						}
 						for (var i=0 ; i < textures.length ; i++) {
 							if (textures[i].includes(args[1])) {
 								results.push(textures[i]);
@@ -57,7 +55,7 @@ module.exports = {
 
 					// multiple texture found
 					if (results.length > 1) return getMultipleTexture(args[0],results);
-					
+
 					// no texture found
 					if (results.length == 0) return warnUser(message,speech.TEXTURE_DOESNT_EXIST);
 				}
@@ -68,7 +66,7 @@ module.exports = {
 		else return warnUser(message,speech.COMMAND_NO_ARGUMENTS_GIVEN);
 
 		/*
-		 * ASK USER TO CHOOSE BETWEEN MULTIPLE TEXTURES 
+		 * ASK USER TO CHOOSE BETWEEN MULTIPLE TEXTURES
 		*/
 		async function getMultipleTexture(size,results) {
 			// max amount of reactions reached
@@ -85,7 +83,7 @@ module.exports = {
 				}
 			}
 			embed.setDescription(description);
-				
+
 			const embedMessage = await message.channel.send(embed);
 
 			for (var i=0; i < results.length; i++){
@@ -105,22 +103,22 @@ module.exports = {
 						await embedMessage.delete();
 						getTexture( size, results[emoji_num.indexOf(reaction.emoji.name)] );
 					}
-				}).catch(async collected => {
+				}).catch(async () => {
 					for (var i = 0; i < emoji_num.length; i++) {
 						await embedMessage.reactions.cache.get(emoji_num[i]).remove();
 					}
-				});	
+				});
 		}
 
 		/*
-		 * SHOW ASKED TEXTURE 
+		 * SHOW ASKED TEXTURE
 		*/
 		function getTexture(textureSize, texture) {
 			var imgURL = undefined;
 			if (textureSize == 'vanilla') imgURL = 'https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/20w51a/assets/minecraft/textures/' + texture;
 			if (textureSize == '32') imgURL = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-32x/Jappa-1.17/assets/minecraft/textures/' + texture;
 
-			axios.get(imgURL).then(function (response) {
+			axios.get(imgURL).then(function () {
 				getMeta(imgURL).then(async function (dimension) {
 					const size = dimension.width + 'x' + dimension.height;
 
@@ -135,14 +133,14 @@ module.exports = {
 
 					if (textureSize == 'vanilla') embed.setFooter('Defaults Texture');
 					if (textureSize == '32') embed.setFooter('Compliance 32x', settings.C32_IMG)//.addFields({name: 'Author', value:'WIP'});
-						
+
 					const embedMessage = await message.channel.send(embed);
 					await embedMessage.react('🗑️');
 					if (dimension.width < 129 && dimension.height < 129) {
 						await embedMessage.react('🔎');
 					}
 					await embedMessage.react('🌀');
-					
+
 					const filter = (reaction, user) => {
 						return ['🗑️','🔎','🌀'].includes(reaction.emoji.name) && user.id === message.author.id;
 					};
@@ -166,8 +164,8 @@ module.exports = {
 								if (textureSize == 'vanilla') return getTexture('32', texture);
 								if (textureSize == '32')      return getTexture('vanilla', texture);
 							}
-						})	
-						.catch(async collected => {
+						})
+						.catch(async () => {
 							await embedMessage.reactions.cache.get('🗑️').remove();
 							if (dimension.width < 129 && dimension.height < 129) {
 								await embedMessage.reactions.cache.get('🔎').remove();

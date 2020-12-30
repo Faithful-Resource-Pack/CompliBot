@@ -5,6 +5,8 @@ const speech   = require('../../messages');
 const { countReact }  = require('../countReact');
 const { getMessages } = require('../getMessages');
 
+var embed = null;
+
 async function textureRevote(client, inputID, outputID, offset) {
 	// remove this after migration
 	const revoteSentence = 'The following texture has not passed council voting and thus is up for revote:\n';
@@ -12,9 +14,9 @@ async function textureRevote(client, inputID, outputID, offset) {
 	let outputChannel = client.channels.cache.get(outputID);
 	let limitDate     = new Date();
 	let messages = await getMessages(client,inputID);
-	
+
 	limitDate.setDate(limitDate.getDate() - offset);
-	
+
 	for (var i in messages) {
 		let message     = messages[i];
 		let messageDate = new Date(message.createdTimestamp);
@@ -24,9 +26,9 @@ async function textureRevote(client, inputID, outputID, offset) {
 		let upvotePercentage = ((messageUpvote * 100) / (messageUpvote + messageDownvote)).toFixed(2);
 
 		if (
-			upvotePercentage >= 66.66 && 
-			(message.attachments.size > 0 || message.embeds !== undefined) && 
-			messageDate.getDate() == limitDate.getDate() &&	
+			upvotePercentage >= 66.66 &&
+			(message.attachments.size > 0 || message.embeds !== undefined) &&
+			messageDate.getDate() == limitDate.getDate() &&
 			messageDate.getMonth() == limitDate.getMonth()
 		) {
 
@@ -46,7 +48,7 @@ async function textureRevote(client, inputID, outputID, offset) {
 			else {
 			//////////////////////////////////////////////////////////////////////////////////////
 
-			var embed = new Discord.MessageEmbed()
+			embed = new Discord.MessageEmbed()
 				.setColor(settings.COLOR_GREEN)
 				.setAuthor(message.embeds[0].author.name, message.embeds[0].author.iconURL)
 				.setDescription(speech.TEXTURE_WIN_REVOTE)
@@ -68,7 +70,7 @@ async function textureRevote(client, inputID, outputID, offset) {
 			} // remove this bracket after migration
 		} else if (
 			(message.attachments.size > 0 || message.embeds !== undefined) &&
-			messageDate.getDate() == limitDate.getDate() &&	
+			messageDate.getDate() == limitDate.getDate() &&
 			messageDate.getMonth() == limitDate.getMonth()
 		) {
 
@@ -86,8 +88,8 @@ async function textureRevote(client, inputID, outputID, offset) {
 			}
 			else if (message.embeds[0]) {
 			//////////////////////////////////////////////////////////////////////////////////////
-			
-			var embed = new Discord.MessageEmbed()
+
+			embed = new Discord.MessageEmbed()
 				.setColor(settings.COLOR_RED)
 				.setAuthor(message.embeds[0].author.name, message.embeds[0].author.iconURL)
 				.setDescription(speech.TEXTURE_DEFEAT_REVOTE)

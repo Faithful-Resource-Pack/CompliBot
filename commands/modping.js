@@ -1,9 +1,8 @@
-uidR = process.env.UIDR;
-uidJ = process.env.UIDJ;
-mods = process.env.MODS.split(","); // moderator list
+const mods = process.env.MODS.split(","); // moderator list
 
-mods_dnd     = new Array();
-mods_online  = new Array();
+var mods_dnd     = new Array();
+var mods_online  = new Array();
+var embed        = null;
 
 const Discord = require("discord.js");
 const settings = require('../settings.js');
@@ -28,14 +27,14 @@ module.exports = {
 		if (message.guild.id == settings.CADDONS_ID)   MODERATOR_ID = settings.CADDONS_MODERATORS_ID;
 		if (message.guild.id == settings.C32_ID)       MODERATOR_ID = settings.C32_MODERATORS_ID;
 		if (message.guild.id == settings.C64_ID)       MODERATOR_ID = settings.C64_MODERATORS_ID;
-		
+
 		if (args == 'urgent') {
-			var embed = new Discord.MessageEmbed()
+			embed = new Discord.MessageEmbed()
         .setAuthor(message.author.tag, message.author.displayAvatarURL())
 				.setTitle('Moderators:')
 				.setDescription('You demanded that all moderators be present. You must have a good reason or penalties may be taken.')
 				.setColor('#22202C');
-				
+
 			message.channel.send(embed);
 			message.channel.send('<@&' + MODERATOR_ID  + '>');
 		}
@@ -55,7 +54,7 @@ module.exports = {
 				if (mods_online.length == 1) content = 'There is **' + mods_online.length + ' Mod online**';
 				else content = 'There are **' + mods_online.length + ' Mods online**';
 
-				var embed = new Discord.MessageEmbed()
+				embed = new Discord.MessageEmbed()
           .setAuthor(message.author.tag, message.author.displayAvatarURL())
 					.setTitle('Moderators:')
 					.setDescription(content + '\n> use `/modping` to call mods for help!')
@@ -71,7 +70,7 @@ module.exports = {
 				if (mods_dnd.length == 1) content = 'There is **' + mods_dnd.length + ' Mod in do not disturb / AFK**, he may not respond.';
 				else content = 'There are **' + mods_dnd.length + ' Mods in do not disturb / AFKs**, they may not respond.';
 
-				var embed = new Discord.MessageEmbed()
+				embed = new Discord.MessageEmbed()
           .setAuthor(message.author.tag, message.author.displayAvatarURL())
 					.setTitle('Moderators:')
 					.setDescription(content + '\n> use `/modping` to call mods for help!')
@@ -81,10 +80,10 @@ module.exports = {
 
 				for (var i in mods_dnd) text += '<@' + mods_dnd[i] + '> ';
 				message.channel.send(text);
-			
+
 			} else {
 				// No mods are online
-				var embed = new Discord.MessageEmbed()
+				embed = new Discord.MessageEmbed()
           .setAuthor(message.author.tag, message.author.displayAvatarURL())
 					.setTitle('Moderators:')
 					.setDescription('There are currently no mods online ¯\\_(ツ)_/¯, I\'m going to ping them all\n> use `/modping` to call mods for help!')

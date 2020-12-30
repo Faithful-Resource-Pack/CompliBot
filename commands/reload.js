@@ -1,10 +1,8 @@
-const Discord  = require('discord.js');
 const speech   = require('../messages.js');
-const settings = require('../settings.js');
 
-uidR = process.env.UIDR;
-uidJ = process.env.UIDJ;
-uidD = process.env.UIDD;
+const uidR = process.env.UIDR;
+const uidJ = process.env.UIDJ;
+const uidD = process.env.UIDD;
 
 const { warnUser } = require('../functions/warnUser.js');
 

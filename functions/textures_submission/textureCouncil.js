@@ -5,13 +5,15 @@ const speech    = require('../../messages');
 const { countReact }  = require('../countReact');
 const { getMessages } = require('../getMessages');
 
+var embed = null;
+
 async function textureCouncil(client, inputID, outputFalseID, outputTrueID, offset) {
 
 	let revoteChannel = client.channels.cache.get(outputFalseID);
 	let resultChannel = client.channels.cache.get(outputTrueID);
 	let limitDate = new Date();
 	let messages = await getMessages(client,inputID);
-	
+
 	limitDate.setDate(limitDate.getDate() - offset);
 	for (var i in messages) {
 		let message     = messages[i];
@@ -20,13 +22,13 @@ async function textureCouncil(client, inputID, outputFalseID, outputTrueID, offs
 		let messageDownvote = countReact(message,'⬇️');
 
 		if (
-			messageUpvote > messageDownvote && 
+			messageUpvote > messageDownvote &&
 			message.embeds !== undefined && //remove attachments size after migration
-			messageDate.getDate() == limitDate.getDate() && 
+			messageDate.getDate() == limitDate.getDate() &&
 			messageDate.getMonth() == limitDate.getMonth()
 		) {
 
-			var embed = new Discord.MessageEmbed()
+			embed = new Discord.MessageEmbed()
 				.setColor(settings.COLOR_GREEN)
 				.setAuthor(message.embeds[0].author.name, message.embeds[0].author.iconURL)
 				.setDescription(speech.TEXTURE_WIN_COUNCIL)
@@ -45,12 +47,12 @@ async function textureCouncil(client, inputID, outputFalseID, outputTrueID, offs
 			await resultChannel.send(embed);
 
 		} else if (
-			(message.attachments.size > 0 || message.embeds !== undefined) && 
-			messageDate.getDate() == limitDate.getDate() && 
+			(message.attachments.size > 0 || message.embeds !== undefined) &&
+			messageDate.getDate() == limitDate.getDate() &&
 			messageDate.getMonth() == limitDate.getMonth()
 		) {
-			
-			var embed = new Discord.MessageEmbed()
+
+			embed = new Discord.MessageEmbed()
 				.setColor(settings.COLOR_YELLOW)
 				.setAuthor(message.embeds[0].author.name, message.embeds[0].author.iconURL)
 				.setDescription(speech.TEXTURE_DEFEAT_COUNCIL)

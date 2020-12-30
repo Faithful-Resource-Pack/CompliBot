@@ -8,10 +8,10 @@ async function warnUser(message,text) {
 		.setTitle(speech.BOT_ERROR)
 		.setDescription(text)
 		.setFooter('Type /help to have more information', settings.BOT_IMG)
-					
+
 	const embedMessage = await message.channel.send(embed);
 	await embedMessage.react('🗑️');
-						
+
 	const filter = (reaction, user) => {
 		return ['🗑️'].includes(reaction.emoji.name) && user.id === message.author.id;
 	};
@@ -24,7 +24,7 @@ async function warnUser(message,text) {
 				await message.delete();
 			}
 		})
-		.catch(async collected => {
+		.catch(async () => {
 			await embedMessage.reactions.cache.get('🗑️').remove();
 		});
 }

@@ -8,25 +8,17 @@ const port      = 3000;
 const client    = new Discord.Client();
 client.commands = new Discord.Collection();
 
-// Admins & settings : 
-uidR   = process.env.UIDR;
-uidJ   = process.env.UIDJ;
-prefix = process.env.PREFIX;
+// Admins & settings :
+const uidR   = process.env.UIDR;
+const prefix = process.env.PREFIX;
 
 // Import settings & commands handler:
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 const settings     = require('./settings');
 const speech       = require('./messages');
 
-// Helpers (the start of modularization ew) 
-///// look at the /functions folder to a working example
-const { votingHelper } = require('./helpers/voting.js');
-
-// Functions:
+// Helpers (the start of modularization ew)
 const { autoReact }     = require('./functions/autoReact');
-const { countReact }    = require('./functions/countReact.js');
-const { attachIsImage } = require('./functions/attachIsImage.js');
-const { getMessages }   = require('./functions/getMessages.js');
 const { updateMembers } = require('./functions/updateMembers.js');
 
 const { textureSubmission } = require('./functions/textures_submission/textureSubmission');
@@ -41,8 +33,8 @@ let scheduledFunctions = new cron.CronJob('0 0 * * *', () => {
 	textureRevote(client,settings.C32_SUBMIT_3,settings.C32_RESULTS,3);											    // 3 DAYS OFFSET
 });
 
-// Ah, ha, ha, ha, stayin' alive, stayin' alive	
-// Ah, ha, ha, ha, stayin' alive	
+// Ah, ha, ha, ha, stayin' alive, stayin' alive
+// Ah, ha, ha, ha, stayin' alive
 // Corona says no ~Domi04151309
 // ─=≡Σ((( つ◕ل͜◕)つ
 const server = http.createServer((req, res) => {
@@ -57,36 +49,36 @@ server.listen(3000, () => console.log(`listening at http://localhost:${port}`));
 client.on('ready', async () => {
 	if (process.env.MAINTENANCE.toLowerCase() === 'true') {
 		client.user.setPresence(
-			{ 
-				activity: { 
-					name: 'maintenance', 
+			{
+				activity: {
+					name: 'maintenance',
 					type: 'PLAYING',
-					url: 'https://compliancepack.net' 
+					url: 'https://compliancepack.net'
 				},
-				status: 'dnd' 
+				status: 'dnd'
 			}
 		);
 	}
 	else {
 		client.user.setPresence(
 			{
-				activity: { 
-					name: 'compliancepack.net', 
-					type: 'PLAYING', 
-					url: 'https://compliancepack.net' 
-				}, 
-				status: 'available' 
+				activity: {
+					name: 'compliancepack.net',
+					type: 'PLAYING',
+					url: 'https://compliancepack.net'
+				},
+				status: 'available'
 			}
 		);
 	}
 
 	/*
-	 * ENABLE TEXTURE SUBMISSION PROCESS 
+	 * ENABLE TEXTURE SUBMISSION PROCESS
 	*/
 	scheduledFunctions.start();
 
   /*
-	 * UPDATE MEMBERS 
+	 * UPDATE MEMBERS
 	*/
 	updateMembers(client, settings.CTWEAKS_ID, settings.CTWEAKS_COUNTER);
 
@@ -121,10 +113,10 @@ client.on('disconnect', async () => {
 /*
  * MEMBERS COUNTER
 */
-client.on('guildMemberAdd', async member =>{
+client.on('guildMemberAdd', async () =>{
 	updateMembers(client, settings.CTWEAKS_ID, settings.CTWEAKS_COUNTER);
 });
-client.on('guildMemberRemove', async member =>{
+client.on('guildMemberRemove', async () =>{
 	updateMembers(client, settings.CTWEAKS_ID, settings.CTWEAKS_COUNTER);
 });
 
@@ -158,7 +150,7 @@ client.on('message', async message => {
   command.execute(client, message, args).catch(async (error) => {
     console.error(error);
     const embed = new Discord.MessageEmbed()
-	    .setColor(settings.COLOR_RED)
+      .setColor(settings.COLOR_RED)
       .setTitle(speech.BOT_ERROR)
       .setDescription(speech.COMMAND_ERROR);
 
@@ -185,7 +177,7 @@ client.on('message', async message => {
 	if (message.content.startsWith(prefix) || message.author.bot) return; // Avoid message WITH prefix & bot messages
 
 	if (message.content.includes('(╯°□°）╯︵ ┻━┻')) return await message.reply('┬─┬ ノ( ゜-゜ノ) calm down bro');
-	
+
 	if (message.content === 'F' ) return await message.react('🇫');
 
 	if (message.content.toLowerCase() === 'mhhh') {
@@ -218,7 +210,7 @@ client.on('message', async message => {
 			message,
 			['⬆️','⬇️'],
 			speech.SUBMIT_NO_FILE_ATTACHED,
-			'You need to add the texture folder of your texture between []:\n`texture_name [folder] (comment -> optional)`', 
+			'You need to add the texture folder of your texture between []:\n`texture_name [folder] (comment -> optional)`',
 			['[',']']
 		);
 	}
@@ -246,7 +238,7 @@ client.on('message', async message => {
 	}
 
 	// Texture submission Emulated Vattic Textures (FHLX):
-	if (message.channel.id === '767464832285933578') {	
+	if (message.channel.id === '767464832285933578') {
 		return autoReact(
 			message,
 			['✅','❌'],

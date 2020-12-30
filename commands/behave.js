@@ -1,6 +1,6 @@
-uidR = process.env.UIDR;
-uidJ = process.env.UIDJ;
-uidD = process.env.UIDD;
+const uidR = process.env.UIDR;
+const uidJ = process.env.UIDJ;
+const uidD = process.env.UIDD;
 
 module.exports = {
 	name: 'behave',

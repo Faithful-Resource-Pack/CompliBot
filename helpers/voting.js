@@ -1,3 +1,4 @@
+const Discord  = require('discord.js');
 const settings = require('../settings');
 
 module.exports = {
@@ -6,7 +7,7 @@ module.exports = {
       .setAuthor(textureAuthor.tag, textureAuthor.displayAvatarURL())
       .setTitle(textureName)
       .setImage(textureURL);
-    
+
     if (passed) {
       embed.setColor(settings.COLOR_GREEN)
       .setDescription('The following texture has passed council voting and will be added into the pack in a future version.')

@@ -26,7 +26,7 @@ module.exports = {
           const filter = (reaction, user) => {
 			      return ['🗑️'].includes(reaction.emoji.name) && user.id === message.author.id;
 	    	  };
-        	
+
           embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
 			      .then(async collected => {
 				      const reaction = collected.first();
@@ -35,7 +35,7 @@ module.exports = {
                 await message.delete();
 				      }
 			      })
-            .catch(async collected => {
+            .catch(async () => {
 		          await embedMessage.reactions.cache.get('🗑️').remove();
 	          });
 				}
