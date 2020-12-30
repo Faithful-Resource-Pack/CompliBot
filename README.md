@@ -48,7 +48,7 @@ ___
 |:---:|:---:|:---:|
 |CLIENT_TOKEN|"-"|The token you copied from the Developer Portal, used to login the bot.|
 |PREFIX|"/"|This is the character used to execute commands.|
-|UIDR, UIDJ & UIDD|"123456789123456789"|The user id's of both bot maintainers.|
+|UIDR, UIDJ & UIDD|"123456789123456789"|The user id's of the three bot maintainers.|
 |MAINTENANCE|"false"|Makes all commands maintainer-only, sets status to dnd.|
 |MODS|"987654321987654321"|The id's of all people with a moderator role or higher, used for the modping command.|
 
