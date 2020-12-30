@@ -14,7 +14,7 @@ module.exports = {
 	name: 'texture',
 	description: 'Displays a specified texture from Compliance!\nYou can ask for a texture name, or using ``_`` at the begining to ask for non-complete name (such as _swords).\nYou can also use ``/`` at the begining to specify a folder instead of a texture name.',
 	uses: 'Anyone',
-	syntax: `${prefix}texture <16/32> <texture_name>\n${prefix}texture <16/32> <_name>\n${prefix}texture <16/32> </folder/>`,
+	syntax: `${prefix}texture <vanilla/32> <texture_name>\n${prefix}texture <vanilla/32> <_name>\n${prefix}texture <vanilla/32> </folder/>`,
 	async execute(client, message, args) {
 		
 		let rawdata  = fs.readFileSync('textures.json');
@@ -22,7 +22,7 @@ module.exports = {
 		var results  = [];
 
 		if (args != '') {
-			if (args[0] == '16' || args[0] == '32') {
+			if (args[0] == 'vanilla' || args[0] == '32') {
 				if (args[1]) {
 					// begin with _, is inside : be able to search for _sword : sort all swords
 					if (String(args[1]).startsWith('_')) {
@@ -117,7 +117,7 @@ module.exports = {
 		*/
 		function getTexture(textureSize, texture) {
 			var imgURL = undefined;
-			if (textureSize == '16') imgURL = 'https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/20w51a/assets/minecraft/textures/' + texture;
+			if (textureSize == 'vanilla') imgURL = 'https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/20w51a/assets/minecraft/textures/' + texture;
 			if (textureSize == '32') imgURL = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-32x/Jappa-1.17/assets/minecraft/textures/' + texture;
 
 			axios.get(imgURL).then(function (response) {
@@ -133,14 +133,16 @@ module.exports = {
 							{ name: 'Resolution:', value: size, inline:true }
 						)
 
-					if (textureSize == '16') embed.setFooter('Defaults Texture');
+					if (textureSize == 'vanilla') embed.setFooter('Defaults Texture');
 					if (textureSize == '32') embed.setFooter('Compliance 32x', settings.C32_IMG)//.addFields({name: 'Author', value:'WIP'});
 						
 					const embedMessage = await message.channel.send(embed);
 					await embedMessage.react('🗑️');
-					await embedMessage.react('🔎');
+					if (dimension.width < 129 && dimension.height < 129) {
+						await embedMessage.react('🔎');
+					}
 					await embedMessage.react('🌀');
-							
+					
 					const filter = (reaction, user) => {
 						return ['🗑️','🔎','🌀'].includes(reaction.emoji.name) && user.id === message.author.id;
 					};
@@ -153,17 +155,23 @@ module.exports = {
 								await message.delete();
 							}
 							if (reaction.emoji.name === '🔎') {
-								if (textureSize == '16') return magnify(message, 20, embedMessage.embeds[0].image.url);
-								if (textureSize == '32') return magnify(message, 10, embedMessage.embeds[0].image.url);
+								if (size == '8x8')     return magnify(message, 32, embedMessage.embeds[0].image.url);
+								if (size == '16x16')   return magnify(message, 16, embedMessage.embeds[0].image.url);
+								if (size == '32x32')   return magnify(message,  8, embedMessage.embeds[0].image.url);
+								if (size == '64x64')   return magnify(message,  4, embedMessage.embeds[0].image.url);
+								if (size == '128x128') return magnify(message,  2, embedMessage.embeds[0].image.url);
+								return magnify(message, 8, embedMessage.embeds[0].image.url);
 							}
 							if (reaction.emoji.name === '🌀') {
-								if (textureSize == '16') return getTexture(32, texture);
-								if (textureSize == '32') return getTexture(16, texture);
+								if (textureSize == 'vanilla') return getTexture('32', texture);
+								if (textureSize == '32')      return getTexture('vanilla', texture);
 							}
 						})	
 						.catch(async collected => {
 							await embedMessage.reactions.cache.get('🗑️').remove();
-							await embedMessage.reactions.cache.get('🔎').remove();
+							if (dimension.width < 129 && dimension.height < 129) {
+								await embedMessage.reactions.cache.get('🔎').remove();
+							}
 							await embedMessage.reactions.cache.get('🌀').remove();
 						});
 

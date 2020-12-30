@@ -47,7 +47,15 @@ function magnify(message, factor, url) {
 			.setDescription(`Original size: ${dimension.width} x ${dimension.height} px²\nNew size: ${dimension.width * factor} x ${dimension.height * factor} px²`)
 			.attachFiles([attachment]);
 
-		return message.channel.send(embed);
+		await message.channel.send(embed);
+		/*
+			looks like : 
+			MessageAttachment {
+  			attachment: <Buffer 89 50 4e 47 0d 0a 1a 0a 00 00 00 0d 49 48 44 52 00 00 04 00 00 00 04 00 08 06 00 00 00 7f 1d 2b 83 00 00 00 06 62 4b 47 44 00 ff 00 ff 00 ff a0 bd a7 ... 8502 more bytes>,
+  			name: null
+			}
+		*/
+		return attachment; 
 	});
 }
 
