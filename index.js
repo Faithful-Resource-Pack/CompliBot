@@ -155,10 +155,8 @@ client.on('message', async message => {
 
 	if (!command) return;
 
-	try {
-		command.execute(client, message, args);
-	}	catch (error) {
-		console.error(error);
+  command.execute(client, message, args).catch(async (error) => {
+    console.error(error);
     const embed = new Discord.MessageEmbed()
 	    .setColor(settings.COLOR_RED)
       .setTitle(speech.BOT_ERROR)
@@ -167,7 +165,7 @@ client.on('message', async message => {
 		const embedMessage = await message.channel.send(embed)
     await message.react('❌');
     await embedMessage.delete({timeout: 30000});
-	}
+  })
 
 	/*
 	 * COMMANDS HISTORY
