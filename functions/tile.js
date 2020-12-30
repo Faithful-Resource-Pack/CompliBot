@@ -1,6 +1,6 @@
 const Canvas   = require('canvas');
 const Discord  = require('discord.js');
-const settings = require('../settings.js');
+const colors   = require('../res/colors');
 
 const { getMeta }  = require('./getMeta');
 const { warnUser } = require('./warnUser');
@@ -26,7 +26,7 @@ function tile(message, url) {
 
 		const attachment = new Discord.MessageAttachment(canvas.toBuffer());
 		var embed = new Discord.MessageEmbed()
-			.setColor(settings.COLOR_GREEN)
+			.setColor(colors.BLUE)
 			.setTitle('Tiled Texture')
 			.setDescription(`Original size: ${dimension.width} x ${dimension.height} px²`)
 			.attachFiles([attachment]);

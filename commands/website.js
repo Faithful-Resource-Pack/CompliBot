@@ -2,7 +2,7 @@ const prefix = process.env.PREFIX;
 
 const Discord  = require('discord.js');
 const settings = require('../settings.js');
-const speech   = require('../messages');
+const strings   = require('../res/strings');
 
 const { warnUser } = require('../functions/warnUser.js');
 
@@ -107,8 +107,8 @@ module.exports = {
 					settings.C32_COLOR
 				);
 				//Other servers
-			} else return warnUser(message,speech.WEBSITE_NO_SITE_REGISTERED);
-    } else return warnUser(message,speech.WEBSITE_PROVIDE_VALID_ARGUMENT);
+			} else return warnUser(message,strings.WEBSITE_NO_SITE_REGISTERED);
+    } else return warnUser(message,strings.WEBSITE_PROVIDE_VALID_ARGUMENT);
     }
 
 		//Compliance Dungeons
@@ -171,6 +171,6 @@ module.exports = {
 				settings.C32_Color
 			);
 			//Other servers
-		} else return warnUser(message,speech.WEBSITE_PROVIDE_VALID_ARGUMENT);
+		} else return warnUser(message,strings.WEBSITE_PROVIDE_VALID_ARGUMENT);
 	}
 };

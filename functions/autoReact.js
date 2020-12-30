@@ -1,10 +1,11 @@
 const Discord  = require('discord.js');
 const settings = require('../settings');
-const speech   = require('../messages');
+const colors   = require('../res/colors');
+const strings   = require('../res/strings');
 
-// 
+//
 async function autoReact(message, emojis, errorType, errorSpecificType, specific) {
-	
+
 	if (message.attachments.size > 0) {
 
 		let specificResult = true;
@@ -47,8 +48,8 @@ async function autoReact(message, emojis, errorType, errorSpecificType, specific
 		else {
 			var embed = new Discord.MessageEmbed()
 				.setAuthor(message.author.tag, message.author.displayAvatarURL())
-				.setColor(settings.COLOR_RED)
-				.setTitle(speech.BOT_AUTOREACT_ERROR)
+				.setColor(colors.RED)
+				.setTitle(strings.BOT_AUTOREACT_ERROR)
 				.setFooter('Submission will be removed in 30 seconds, please re-submit', settings.BOT_IMG);
 
 			if (specificError) embed.setDescription(errorSpecificType);

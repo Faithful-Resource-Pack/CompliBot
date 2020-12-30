@@ -19,14 +19,14 @@ ___
 
 ___
 ### Installation and launching:
-- Install **[Node.js](https://nodejs.org/)** on your machine. **Version 14.0.0 or newer is required!**  
+- Install **[Node.js](https://nodejs.org/)** on your machine. **Version 14.0.0 or newer is required!**
 - Clone the repository on your machine.
 - Open your console in the cloned repository.
 - To complete the installation, write the following command in the console:
 ```console
 npm install
 ```
-- After installation, you will need to **[configure the bot](#bot-config:)**. 
+- After installation, you will need to **[configure the bot](#bot-config:)**.
 - To start the bot, write the following command in the console:
 ```console
 node .
@@ -51,4 +51,4 @@ ___
 |MAINTENANCE|"false"|Makes all commands maintainer-only, sets status to dnd.|
 |MODS|"987654321987654321"|The id's of all people with a moderator role or higher, used for the modping command.|
 
-There also is `messages.js` and `settings.js` with various other settings, but that aren't needed for the bot to run.
+There also is `strings.js` and `settings.js` with various other settings, but that aren't needed for the bot to run.

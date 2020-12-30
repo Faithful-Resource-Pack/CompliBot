@@ -1,6 +1,7 @@
 const Discord  = require('discord.js');
 const settings = require('../../settings');
-const speech   = require('../../messages');
+const colors   = require('../../res/colors');
+const strings   = require('../../res/strings');
 
 const { countReact }  = require('../countReact');
 const { getMessages } = require('../getMessages');
@@ -49,9 +50,9 @@ async function textureRevote(client, inputID, outputID, offset) {
 			//////////////////////////////////////////////////////////////////////////////////////
 
 			embed = new Discord.MessageEmbed()
-				.setColor(settings.COLOR_GREEN)
+				.setColor(colors.GREEN)
 				.setAuthor(message.embeds[0].author.name, message.embeds[0].author.iconURL)
-				.setDescription(speech.TEXTURE_WIN_REVOTE)
+				.setDescription(strings.TEXTURE_WIN_REVOTE)
 				.addFields(
 					{ name: 'Name:', value: message.embeds[0].fields[0].value, inline: true },
 					{ name: 'Folder:', value: message.embeds[0].fields[1].value, inline: true },
@@ -90,9 +91,9 @@ async function textureRevote(client, inputID, outputID, offset) {
 			//////////////////////////////////////////////////////////////////////////////////////
 
 			embed = new Discord.MessageEmbed()
-				.setColor(settings.COLOR_RED)
+				.setColor(colors.RED)
 				.setAuthor(message.embeds[0].author.name, message.embeds[0].author.iconURL)
-				.setDescription(speech.TEXTURE_DEFEAT_REVOTE)
+				.setDescription(strings.TEXTURE_DEFEAT_REVOTE)
 				.addFields(
 					{ name: 'Name:', value: message.embeds[0].fields[0].value, inline: true },
 					{ name: 'Folder:', value: message.embeds[0].fields[1].value, inline: true },

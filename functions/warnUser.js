@@ -1,11 +1,12 @@
 const Discord  = require('discord.js');
 const settings = require('../settings.js');
-const speech   = require('../messages.js');
+const colors   = require('../res/colors');
+const strings   = require('../res/strings');
 
 async function warnUser(message,text) {
 	var embed = new Discord.MessageEmbed()
-		.setColor(settings.COLOR_RED)
-		.setTitle(speech.BOT_ERROR)
+		.setColor(colors.RED)
+		.setTitle(strings.BOT_ERROR)
 		.setDescription(text)
 		.setFooter('Type /help to have more information', settings.BOT_IMG)
 

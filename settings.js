@@ -26,8 +26,8 @@ const CADDONS_MODERATORS_ID    = '614163845656608774';
 
 // Compliance 64x
 const C64_IMG           = 'https://i.imgur.com/EktsrA9.png';
-const C64_ID            = '747574286356840609';	
-const C64_MODERATORS_ID = '747595211273797724';	
+const C64_ID            = '747574286356840609';
+const C64_MODERATORS_ID = '747595211273797724';
 
 // Compliance 32x
 const C32_IMG           = 'https://i.imgur.com/nOpSBYX.png';
@@ -42,10 +42,6 @@ const C32_RESULTS       = '780507804317384744';	// #texture-results
 
 // The bot itself
 const BOT_IMG       = 'https://i.imgur.com/Hf0eeiU.png';
-const COLOR_RED     = '#f44336';
-const COLOR_GREEN   = '#4CAF50';
-const COLOR_YELLOW  = '#ffff00';
-const COLOR_COUNCIL = '#9c3848';
 
 module.exports = {
 	CDUNGEONS_IMG,
@@ -84,9 +80,5 @@ module.exports = {
 	C32_SUBMIT_3,
 	C32_RESULTS,
 
-  BOT_IMG,
-  COLOR_RED,
-  COLOR_GREEN,
-  COLOR_YELLOW,
-	COLOR_COUNCIL
+  BOT_IMG
 }

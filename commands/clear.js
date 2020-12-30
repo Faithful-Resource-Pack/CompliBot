@@ -1,6 +1,6 @@
 const prefix = process.env.PREFIX;
 
-const speech = require('../messages');
+const strings = require('../res/strings');
 const { warnUser } = require('../functions/warnUser.js');
 
 module.exports = {
@@ -22,7 +22,7 @@ module.exports = {
 				const messages = await message.channel.messages.fetch({ limit: amount });
 				await message.channel.bulkDelete(messages);
 
-			} else return warnUser(message,speech.COMMAND_PROVIDE_A_NUMBER);
-		} else return warnUser(message,speech.COMMAND_NO_PERMISSION);
+			} else return warnUser(message,strings.COMMAND_PROVIDE_A_NUMBER);
+		} else return warnUser(message,strings.COMMAND_NO_PERMISSION);
 	}
 };

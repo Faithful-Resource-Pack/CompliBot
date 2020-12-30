@@ -1,6 +1,7 @@
 const Discord   = require('discord.js');
 const settings  = require('../../settings');
-const speech    = require('../../messages');
+const colors   = require('../../res/colors');
+const strings    = require('../../res/strings');
 
 const { countReact }  = require('../countReact');
 const { getMessages } = require('../getMessages');
@@ -29,9 +30,9 @@ async function textureCouncil(client, inputID, outputFalseID, outputTrueID, offs
 		) {
 
 			embed = new Discord.MessageEmbed()
-				.setColor(settings.COLOR_GREEN)
+				.setColor(colors.GREEN)
 				.setAuthor(message.embeds[0].author.name, message.embeds[0].author.iconURL)
-				.setDescription(speech.TEXTURE_WIN_COUNCIL)
+				.setDescription(strings.TEXTURE_WIN_COUNCIL)
 				.addFields(
 					{ name: 'Name:', value: message.embeds[0].fields[0].value, inline: true },
 					{ name: 'Folder:', value: message.embeds[0].fields[1].value, inline: true },
@@ -53,9 +54,9 @@ async function textureCouncil(client, inputID, outputFalseID, outputTrueID, offs
 		) {
 
 			embed = new Discord.MessageEmbed()
-				.setColor(settings.COLOR_YELLOW)
+				.setColor(colors.YELLOW)
 				.setAuthor(message.embeds[0].author.name, message.embeds[0].author.iconURL)
-				.setDescription(speech.TEXTURE_DEFEAT_COUNCIL)
+				.setDescription(strings.TEXTURE_DEFEAT_COUNCIL)
 				.addFields(
 					{ name: 'Name:', value: message.embeds[0].fields[0].value, inline: true },
 					{ name: 'Folder:', value: message.embeds[0].fields[1].value, inline: true },

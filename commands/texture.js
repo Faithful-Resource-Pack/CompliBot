@@ -3,7 +3,8 @@ const prefix = process.env.PREFIX;
 const Discord  = require('discord.js');
 const axios    = require('axios').default;
 const fs       = require('fs');
-const speech   = require('../messages');
+const strings   = require('../res/strings');
+const colors   = require('../res/colors');
 const settings = require('../settings.js');
 
 const { magnify }  = require('../functions/magnify.js');
@@ -59,13 +60,13 @@ module.exports = {
 					if (results.length > 1) return getMultipleTexture(args[0],results);
 
 					// no texture found
-					if (results.length == 0) return warnUser(message,speech.TEXTURE_DOESNT_EXIST);
+					if (results.length == 0) return warnUser(message,strings.TEXTURE_DOESNT_EXIST);
 				}
-				else return warnUser(message,speech.COMMAND_NOT_ENOUGH_ARGUMENTS_GIVEN);
+				else return warnUser(message,strings.COMMAND_NOT_ENOUGH_ARGUMENTS_GIVEN);
 			}
-			else return warnUser(message,speech.COMMAND_WRONG_ARGUMENTS_GIVEN);
+			else return warnUser(message,strings.COMMAND_WRONG_ARGUMENTS_GIVEN);
 		}
-		else return warnUser(message,speech.COMMAND_NO_ARGUMENTS_GIVEN);
+		else return warnUser(message,strings.COMMAND_NO_ARGUMENTS_GIVEN);
 
 		/*
 		 * ASK USER TO CHOOSE BETWEEN MULTIPLE TEXTURES
@@ -126,7 +127,7 @@ module.exports = {
 
 					var embed = new Discord.MessageEmbed()
 						.setTitle(texture)
-						.setColor(settings.COLOR_GREEN)
+						.setColor(colors.BLUE)
 						.setURL(imgURL)
 						.setImage(imgURL)
 						.addFields(

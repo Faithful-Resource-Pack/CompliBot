@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const settings  = require('../../settings');
+const colors   = require('../../res/colors');
 
 const { countReact }  = require('../countReact');
 const { getMessages } = require('../getMessages');
@@ -39,7 +40,7 @@ async function textureSubmission(client, inputID, outputID, offset) {
 			if (name === undefined || name == '') name = 'Not Provided';
 
 			var embed = new Discord.MessageEmbed()
-				.setColor(settings.COLOR_COUNCIL)
+				.setColor(colors.COUNCIL)
 				.setAuthor(message.author.tag, message.author.displayAvatarURL())
 				.setDescription(description)
 				.addFields(

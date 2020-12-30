@@ -1,6 +1,6 @@
 const prefix = process.env.PREFIX;
 
-const speech = require('../messages.js');
+const strings = require('../res/strings');
 
 const uidR = process.env.UIDR;
 const uidJ = process.env.UIDJ;
@@ -18,6 +18,6 @@ module.exports = {
 			await message.channel.send('Shutting down...');
       await process.exit();
 		}
-    else warnUser(message,speech.COMMAND_NO_PERMISSION);
+    else warnUser(message,strings.COMMAND_NO_PERMISSION);
 	}
 };

@@ -1,7 +1,7 @@
 const prefix = process.env.PREFIX;
 
 const Discord = require('discord.js');
-const speech  = require('../messages');
+const strings  = require('../res/strings');
 
 const { warnUser } = require('../functions/warnUser.js');
 
@@ -41,7 +41,7 @@ module.exports = {
 		          await embedMessage.reactions.cache.get('🗑️').remove();
 	          });
 				}
-			}	else return warnUser(message,speech.COMMAND_PROVIDE_VALID_TAG);
-		} else return warnUser(message,speech.COMMAND_NO_PERMISSION);
+			}	else return warnUser(message,strings.COMMAND_PROVIDE_VALID_TAG);
+		} else return warnUser(message,strings.COMMAND_NO_PERMISSION);
 	}
 };

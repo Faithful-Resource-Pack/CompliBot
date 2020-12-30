@@ -1,6 +1,6 @@
 const prefix = process.env.PREFIX;
 
-const speech = require('../messages.js');
+const strings = require('../res/strings');
 const uidR = process.env.UIDR;
 const uidJ = process.env.UIDJ;
 
@@ -18,7 +18,7 @@ module.exports = {
 	async execute(client, message, args) {
     if (message.author.id === uidR || message.author.id === uidJ) {
 
-      if (!args.length) return warnUser(message,speech.COMMAND_NO_ARGUMENTS_GIVEN) ;
+      if (!args.length) return warnUser(message,strings.COMMAND_NO_ARGUMENTS_GIVEN) ;
 
 			if(activity.includes(args[0]) && presence.includes(args[1])) {
 				client.user.setPresence(
@@ -33,6 +33,6 @@ module.exports = {
 				);
 			}
 
-    } else warnUser(message, speech.COMMAND_NO_PERMISSION);
+    } else warnUser(message, strings.COMMAND_NO_PERMISSION);
 	}
 };

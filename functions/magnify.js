@@ -1,6 +1,6 @@
 const Canvas   = require('canvas');
 const Discord  = require('discord.js');
-const settings = require('../settings.js');
+const colors   = require('../res/colors');
 
 const { getMeta }  = require('./getMeta');
 const { warnUser } = require('./warnUser');
@@ -42,20 +42,20 @@ function magnify(message, factor, url) {
 
 		const attachment = new Discord.MessageAttachment(canvasResult.toBuffer());
 		var embed = new Discord.MessageEmbed()
-			.setColor(settings.COLOR_GREEN)
+			.setColor(colors.BLUE)
 			.setTitle(`Magnified by ${factor}x`)
 			.setDescription(`Original size: ${dimension.width} x ${dimension.height} px²\nNew size: ${dimension.width * factor} x ${dimension.height * factor} px²`)
 			.attachFiles([attachment]);
 
 		await message.channel.send(embed);
 		/*
-			looks like : 
+			looks like :
 			MessageAttachment {
   			attachment: <Buffer 89 50 4e 47 0d 0a 1a 0a 00 00 00 0d 49 48 44 52 00 00 04 00 00 00 04 00 08 06 00 00 00 7f 1d 2b 83 00 00 00 06 62 4b 47 44 00 ff 00 ff 00 ff a0 bd a7 ... 8502 more bytes>,
   			name: null
 			}
 		*/
-		return attachment; 
+		return attachment;
 	});
 }
 

@@ -2,7 +2,7 @@ const prefix = process.env.PREFIX;
 
 const Discord  = require("discord.js");
 const settings = require('../settings.js');
-const speech  = require('../messages');
+const strings  = require('../res/strings');
 const { warnUser } = require('../functions/warnUser.js');
 
 module.exports = {
@@ -11,7 +11,7 @@ module.exports = {
 	uses: 'no one (disabled)',
 	syntax: `${prefix}faq`,
 	async execute(client, message, args) {
-		return warnUser(message,speech.COMMAND_DISABLED);
+		return warnUser(message,strings.COMMAND_DISABLED);
 
 		/*
 		* This command is deprecated :
