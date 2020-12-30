@@ -1,6 +1,8 @@
 const Discord = require('discord.js');
 const speech  = require('../messages');
 
+const { warnUser } = require('../functions/warnUser.js');
+
 module.exports = {
 	name: 'unmute',
 	aliases: ['pardon'],
@@ -22,11 +24,7 @@ module.exports = {
 				    .setTimestamp();
 			    await message.channel.send(embed);
         }
-			} else await message.reply('Please provide a user tag!');
-		} else {
-			const msg = await message.reply(speech.COMMAND_NO_PERMISSION);
-      await message.react('❌');
-      await msg.delete({timeout: 30000});
-		}
+			} else return warnUser(message,speech.COMMAND_PROVIDE_VALID_TAG);
+		} else return warnUser(message,speech.COMMAND_NO_PERMISSION);
 	}
 };

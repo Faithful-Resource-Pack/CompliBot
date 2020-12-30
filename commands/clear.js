@@ -1,4 +1,5 @@
 const speech = require('../messages');
+const { warnUser } = require('../functions/warnUser.js');
 
 module.exports = {
 	name: 'clear',
@@ -19,13 +20,7 @@ module.exports = {
 				const messages = await message.channel.messages.fetch({ limit: amount });
 				await message.channel.bulkDelete(messages);
 
-			} else {
-				await message.reply(speech.COMMAND_PROVIDE_A_NUMBER);
-			}
-		} else {
-			const msg = await message.reply(speech.COMMAND_NO_PERMISSION);
-      await message.react('❌');
-      await msg.delete({timeout: 30000});
-		}
+			} else return warnUser(message,speech.COMMAND_PROVIDE_A_NUMBER);
+		} else return warnUser(message,speech.COMMAND_NO_PERMISSION);
 	}
 };

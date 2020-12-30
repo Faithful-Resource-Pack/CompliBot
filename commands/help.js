@@ -1,7 +1,9 @@
-const Discord = require("discord.js");
+const Discord   = require("discord.js");
 const client    = new Discord.Client();
 client.commands = new Discord.Collection();
-const settings = require('../settings.js');
+
+const settings     = require('../settings.js');
+const { warnUser } = require('../functions/warnUser.js');
 
 module.exports = {
 	name: 'help',
@@ -33,13 +35,7 @@ module.exports = {
 				
 			}
 
-			else {
-				var embed = new Discord.MessageEmbed()
-				.setTitle('No commands found for: ' + prefix + args[0] )
-				.setThumbnail(settings.BOT_IMG)
-				.setDescription('Please provide valid commands & do not use aliases')
-				.setFooter('CompliBot', settings.BOT_IMG);
-			}
+			else return warnUser('Please provide valid commands & do not use aliases');
 		}
 
 		if (!args[0]) {

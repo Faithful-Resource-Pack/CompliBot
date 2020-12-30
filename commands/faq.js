@@ -1,6 +1,7 @@
 const Discord  = require("discord.js");
 const settings = require('../settings.js');
 const speech  = require('../messages');
+const { warnUser } = require('../functions/warnUser.js');
 
 module.exports = {
 	name: 'faq',
@@ -8,7 +9,7 @@ module.exports = {
 	uses: 'no one (disabled)',
 	syntax: `${prefix}faq`,
 	async execute(client, message, args) {
-		message.channel.send(speech.COMMAND_DISABLED)
+		return warnUser(message,speech.COMMAND_DISABLED);
 
 		/*
 		* This command is deprecated : 

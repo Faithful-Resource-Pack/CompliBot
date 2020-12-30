@@ -3,6 +3,8 @@ const speech = require('../messages.js');
 uidR = process.env.UIDR;
 uidJ = process.env.UIDJ;
 
+const { warnUser } = require('../functions/warnUser.js');
+
 module.exports = {
 	name: 'shutdown',
   aliases: ['logout'],
@@ -14,10 +16,6 @@ module.exports = {
 			await message.channel.send('Shutting down...');
       await process.exit();
 		} 
-    else { 
-			const msg = await message.reply(speech.COMMAND_NO_PERMISSION);
-      await message.react('❌');
-      await msg.delete({timeout: 30000});
-		}
+    else warnUser(message,speech.COMMAND_NO_PERMISSION);
 	}
 };

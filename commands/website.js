@@ -2,6 +2,8 @@ const Discord  = require('discord.js');
 const settings = require('../settings.js');
 const speech   = require('../messages');
 
+const { warnUser } = require('../functions/warnUser.js');
+
 module.exports = {
 	name: 'website',
 	aliases: ['site', 'sites', 'websites'],
@@ -103,8 +105,8 @@ module.exports = {
 					settings.C32_COLOR
 				);
 				//Other servers
-			} else return await message.channel.send(speech.WEBSITE_NO_SITE_REGISTERED);
-    } else return await message.channel.send(speech.WEBSITE_PROVIDE_VALID_ARGUMENT);
+			} else return warnUser(message,speech.WEBSITE_NO_SITE_REGISTERED);
+    } else return warnUser(message,speech.WEBSITE_PROVIDE_VALID_ARGUMENT);
     }
 
 		//Compliance Dungeons
@@ -167,6 +169,6 @@ module.exports = {
 				settings.C32_Color
 			);
 			//Other servers
-		} else return await message.channel.send(speech.WEBSITE_PROVIDE_VALID_ARGUMENT);
+		} else return warnUser(message,speech.WEBSITE_PROVIDE_VALID_ARGUMENT);
 	}
 };

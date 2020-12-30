@@ -1,6 +1,8 @@
 const Discord = require('discord.js');
 const speech  = require('../messages');
 
+const { warnUser } = require('../functions/warnUser.js');
+
 module.exports = {
 	name: 'bean',
 	description: 'get B E A N E D',
@@ -37,14 +39,7 @@ module.exports = {
 		          await embedMessage.reactions.cache.get('🗑️').remove();
 	          });
 				}
-			}
-			else {
-				return await message.reply(speech.COMMAND_PROVIDE_VALID_TAG);
-			}
-		} else {
-			const msg = await message.reply(speech.COMMAND_NO_PERMISSION);
-      await message.react('❌');
-      await msg.delete({timeout: 30000});
-		}
+			}	else return warnUser(message,speech.COMMAND_PROVIDE_VALID_TAG);
+		} else return warnUser(message,speech.COMMAND_NO_PERMISSION);
 	}
 };

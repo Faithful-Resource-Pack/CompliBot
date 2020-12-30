@@ -6,9 +6,6 @@ const { countReact }  = require('../countReact');
 const { getMessages } = require('../getMessages');
 
 async function textureCouncil(client, inputID, outputFalseID, outputTrueID, offset) {
-	// remove this when migration is done
-	const trueSentence  = 'The following texture has passed council voting and will be added into the pack in a future version.\n';
-	const falseSentence = 'The following texture has not passed council voting and thus is up for revote:\n';
 
 	let revoteChannel = client.channels.cache.get(outputFalseID);
 	let resultChannel = client.channels.cache.get(outputTrueID);
@@ -24,27 +21,11 @@ async function textureCouncil(client, inputID, outputFalseID, outputTrueID, offs
 
 		if (
 			messageUpvote > messageDownvote && 
-			(message.attachments.size > 0 || message.embeds !== undefined) && //remove attachments size after migration
+			message.embeds !== undefined && //remove attachments size after migration
 			messageDate.getDate() == limitDate.getDate() && 
 			messageDate.getMonth() == limitDate.getMonth()
 		) {
 
-			// REMOVE WHEN MIGRATION IS DONE:
-			//////////////////////////////////////////////////////////////////////////////////////
-			if (message.embeds[0] === undefined && message.attachments.size > 0){
-				await resultChannel.send(trueSentence + message.content, {files: [message.attachments.first().url]})
-				.then(async message => {
-					try {
-						await message.react('✅');
-					} catch (error)	{
-						console.error(error);
-					}
-				});
-			}
-
-			else if (message.embeds[0] !== undefined) {
-			//////////////////////////////////////////////////////////////////////////////////////
-			
 			var embed = new Discord.MessageEmbed()
 				.setColor(settings.COLOR_GREEN)
 				.setAuthor(message.embeds[0].author.name, message.embeds[0].author.iconURL)
@@ -61,9 +42,7 @@ async function textureCouncil(client, inputID, outputFalseID, outputTrueID, offs
 			}
 			else embed.setImage(message.embeds[0].image.url);
 
-			await resultChannel.send(embed)
-
-			} // remove this bracket when migration is done
+			await resultChannel.send(embed);
 
 		} else if (
 			(message.attachments.size > 0 || message.embeds !== undefined) && 
@@ -71,23 +50,6 @@ async function textureCouncil(client, inputID, outputFalseID, outputTrueID, offs
 			messageDate.getMonth() == limitDate.getMonth()
 		) {
 			
-			// REMOVE WHEN MIGRATION IS DONE:
-			//////////////////////////////////////////////////////////////////////////////////////
-			if (message.embeds[0] === undefined && message.attachments.size > 0){
-				await revoteChannel.send(falseSentence + message.content, {files: [message.attachments.first().url]})
-				.then(async message => {
-					try {
-						await message.react('⬆️');
-						await message.react('⬇️');
-					} catch (error) {
-						console.error(error);
-					}
-				});
-			}
-
-			else if (message.embeds[0] !== undefined) {
-			//////////////////////////////////////////////////////////////////////////////////////
-
 			var embed = new Discord.MessageEmbed()
 				.setColor(settings.COLOR_YELLOW)
 				.setAuthor(message.embeds[0].author.name, message.embeds[0].author.iconURL)
@@ -114,7 +76,6 @@ async function textureCouncil(client, inputID, outputFalseID, outputTrueID, offs
 				}
 			});
 
-			} // remove this bracket when migration is done
 		}
 	}
 }

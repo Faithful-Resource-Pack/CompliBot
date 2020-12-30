@@ -36,9 +36,9 @@ const { textureRevote }     = require('./functions/textures_submission/textureRe
 // Scheduled Functions:
 // Texture submission process: (each day at 00:00 GMT)
 let scheduledFunctions = new cron.CronJob('0 0 * * *', () => {
-	textureSubmission(client,settings.C32_SUBMIT_1,settings.C32_SUBMIT_2,5);									// 5 DAYS OFFSET
-	textureCouncil(client,settings.C32_SUBMIT_2,settings.C32_SUBMIT_3,settings.C32Results,1);	// 1 DAYS OFFSET
-	textureRevote(client,settings.C32_SUBMIT_3,settings.C32_RESULTS,3);											  // 3 DAYS OFFSET
+	textureSubmission(client,settings.C32_SUBMIT_1,settings.C32_SUBMIT_2,5);									  // 5 DAYS OFFSET
+	textureCouncil(client,settings.C32_SUBMIT_2,settings.C32_SUBMIT_3,settings.C32_RESULTS,1);	// 1 DAYS OFFSET
+	textureRevote(client,settings.C32_SUBMIT_3,settings.C32_RESULTS,3);											    // 3 DAYS OFFSET
 });
 
 // Ah, ha, ha, ha, stayin' alive, stayin' alive	
