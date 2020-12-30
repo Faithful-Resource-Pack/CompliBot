@@ -1,3 +1,5 @@
+const prefix = process.env.PREFIX;
+
 const Discord = require('discord.js');
 const speech  = require('../messages');
 

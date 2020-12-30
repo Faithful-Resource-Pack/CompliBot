@@ -1,3 +1,5 @@
+const prefix = process.env.PREFIX;
+
 const Discord  = require("discord.js");
 const settings = require('../settings.js');
 
@@ -10,7 +12,7 @@ module.exports = {
 	syntax: `${prefix}modtools`,
 	async execute(client, message, args) {
 		if (message.channel.type === 'dm' || message.guild.id !== settings.CDUNGEONS_ID) return warnUser(message,'This command can only be used in the Compliance Dungeons server!');
-		
+
 		const embed = new Discord.MessageEmbed()
 			.setTitle('Tools for making Dungeons mods:')
 			.setColor(settings.CDUNGEONS_COLOR)

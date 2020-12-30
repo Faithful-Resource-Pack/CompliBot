@@ -1,3 +1,5 @@
+const prefix = process.env.PREFIX;
+
 const mods = process.env.MODS.split(","); // moderator list
 
 var mods_dnd     = new Array();

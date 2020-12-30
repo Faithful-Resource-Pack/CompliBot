@@ -1,3 +1,5 @@
+const prefix = process.env.PREFIX;
+
 const { tile } = require('../functions/tile.js');
 const { warnUser } = require('../functions/warnUser.js');
 

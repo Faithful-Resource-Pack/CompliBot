@@ -1,3 +1,5 @@
+const prefix = process.env.PREFIX;
+
 const speech = require('../messages.js');
 
 const uidR = process.env.UIDR;

@@ -1,3 +1,5 @@
+const prefix = process.env.PREFIX;
+
 const Discord  = require("discord.js");
 const settings = require('../settings.js');
 const speech  = require('../messages');
@@ -12,7 +14,7 @@ module.exports = {
 		return warnUser(message,speech.COMMAND_DISABLED);
 
 		/*
-		* This command is deprecated : 
+		* This command is deprecated :
 		*/
 
 		/*

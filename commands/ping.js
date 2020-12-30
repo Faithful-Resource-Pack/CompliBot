@@ -1,3 +1,5 @@
+const prefix = process.env.PREFIX;
+
 const Discord  = require('discord.js');
 const settings = require('../settings.js');
 
@@ -19,7 +21,7 @@ module.exports = {
     const filter = (reaction, user) => {
 			return ['🗑️'].includes(reaction.emoji.name) && user.id === message.author.id;
 	  };
-        	
+
     m.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
 			.then(async collected => {
 				const reaction = collected.first();

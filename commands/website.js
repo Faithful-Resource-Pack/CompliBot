@@ -1,3 +1,5 @@
+const prefix = process.env.PREFIX;
+
 const Discord  = require('discord.js');
 const settings = require('../settings.js');
 const speech   = require('../messages');
@@ -28,7 +30,7 @@ module.exports = {
       const filter = (reaction, user) => {
 			  return ['🗑️'].includes(reaction.emoji.name) && user.id === message.author.id;
 	    };
-        	
+
       embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
 			  .then(async collected => {
 				  const reaction = collected.first();
@@ -47,61 +49,61 @@ module.exports = {
 			  //Compliance Dungeons
 			if (message.guild.id === settings.CDUNGEONS__ID) {
         websiteEmbed(
-					'Compliance Dungeons', 
-					'https://compliancepack.net/#compliance-dungeons', 
-					'soon™', 
-					'https://www.planetminecraft.com/member/faithful_dungeons/', 
-					settings.CDUNGEONS_IMG, 
+					'Compliance Dungeons',
+					'https://compliancepack.net/#compliance-dungeons',
+					'soon™',
+					'https://www.planetminecraft.com/member/faithful_dungeons/',
+					settings.CDUNGEONS_IMG,
 					settings.CDUNGEONS_COLOR
 				);
 				//Compliance Mods
 			} else if (message.guild.id === settings.CMODS__ID) {
         websiteEmbed(
-					'Compliance Mods', 
-					'https://compliancepack.net/mods', 
-					'none', 
-					'https://www.planetminecraft.com/member/faithful_mods/', 
-					settings.CMODS_IMG, 
+					'Compliance Mods',
+					'https://compliancepack.net/mods',
+					'none',
+					'https://www.planetminecraft.com/member/faithful_mods/',
+					settings.CMODS_IMG,
 					settings.CMODS_COLOR
 				);
 				//Compliance Tweaks
 			} else if (message.guild.id === settings.CTWEAKS_ID) {
         websiteEmbed(
-					'Compliance Tweaks', 
-					'https://faithfultweaks.com/', 
-					'none', 
-					'none', 
-					settings.CTWEAKS_IMG, 
+					'Compliance Tweaks',
+					'https://faithfultweaks.com/',
+					'none',
+					'none',
+					settings.CTWEAKS_IMG,
 					settings.CTWEAKS_COLOR
 				);
 				//Compliance Addons
 			} else if (message.guild.id === settings.CADDONS_ID) {
         websiteEmbed(
-					'Compliance Addons', 
-					'https://compliancepack.net/addons', 
-					'none', 
-					'none', 
-					settings.CADDONS_IMG, 
+					'Compliance Addons',
+					'https://compliancepack.net/addons',
+					'none',
+					'none',
+					settings.CADDONS_IMG,
 					settings.CADDONS_COLOR
 				);
 				//Compliance 32x
 			} else if (message.guild.id === settings.C32_ID) {
         websiteEmbed(
-					'Compliance 32x', 
-					'https://compliancepack.net/', 
-					'soon™', 
-					'soon™', 
-					settings.C32_IMG, 
+					'Compliance 32x',
+					'https://compliancepack.net/',
+					'soon™',
+					'soon™',
+					settings.C32_IMG,
 					settings.C32_COLOR
 				);
 				//Compliance 64x
 			} else if (message.guild.id === settings.C64_ID) {
         websiteEmbed(
-					'Compliance 64x', 
-					'https://compliancepack.net/#compliance-64x', 
+					'Compliance 64x',
+					'https://compliancepack.net/#compliance-64x',
 					'https://www.curseforge.com/minecraft/texture-packs/compliance-64x',
-          'https://www.planetminecraft.com/texture-pack/compliance-64x/', 
-					settings.C64_IMG, 
+          'https://www.planetminecraft.com/texture-pack/compliance-64x/',
+					settings.C64_IMG,
 					settings.C32_COLOR
 				);
 				//Other servers
@@ -112,60 +114,60 @@ module.exports = {
 		//Compliance Dungeons
 		else if (args[0] === 'dungeons') {
 			websiteEmbed(
-				'Compliance Dungeons', 
-				'https://compliancepack.net/#compliance-dungeons', 
-				'soon™', 
-				'https://www.planetminecraft.com/member/faithful_dungeons/', 
-				settings.CDUNGEONS_IMG, 
+				'Compliance Dungeons',
+				'https://compliancepack.net/#compliance-dungeons',
+				'soon™',
+				'https://www.planetminecraft.com/member/faithful_dungeons/',
+				settings.CDUNGEONS_IMG,
 				settings.CDUNGEONS_COLOR
 			);
 			//Compliance Mods
 		} else if (args[0] === 'mods') {
 			websiteEmbed(
-				'Compliance Mods', 
-				'https://compliancepack.net/mods', 
-				'none', 
-				'https://www.planetminecraft.com/member/faithful_mods/', 
-				settings.CMODS_IMG, 
+				'Compliance Mods',
+				'https://compliancepack.net/mods',
+				'none',
+				'https://www.planetminecraft.com/member/faithful_mods/',
+				settings.CMODS_IMG,
 				settings.CMODS_COLOR
 			);
 			//Compliance Tweaks
 		} else if (args[0] === 'tweaks') {
 			websiteEmbed(
-				'Compliance Tweaks', 
-				'https://faithfultweaks.com/', 
-				'none', 
-				'none', 
-				settings.CTWEAKS_IMG, 
+				'Compliance Tweaks',
+				'https://faithfultweaks.com/',
+				'none',
+				'none',
+				settings.CTWEAKS_IMG,
 				settings.CTWEAKS_COLOR
 			);
 			//Compliance Addons
 		} else if (args[0] === 'addons') {
 			websiteEmbed(
-				'Compliance Addons', 
-				'https://compliancepack.net/addons', 
-				'none', 
-				'none', 
-				settings.CADDONS_IMG, 
+				'Compliance Addons',
+				'https://compliancepack.net/addons',
+				'none',
+				'none',
+				settings.CADDONS_IMG,
 				settings.CADDONS_COLOR
 			);
 			//Compliance 32x
 		} else if (args[0] === '32'  || args[0] === '32x') {
 			websiteEmbed(
-				'Compliance 32x', 
-				'https://compliancepack.net/', 
-				'soon™', 
-				'soon™', 
-				settings.C32_IMG, 
+				'Compliance 32x',
+				'https://compliancepack.net/',
+				'soon™',
+				'soon™',
+				settings.C32_IMG,
 				settings.C32_Color
 			);
 			//Compliance 64x
 		} else if (args[0] === '64'  || args[0] === '64x') {
 			websiteEmbed(
-				'Compliance 64x', 
-				'https://compliancepack.net/#compliance-64x', 
-				'https://www.curseforge.com/minecraft/texture-packs/compliance-64x', 'https://www.planetminecraft.com/texture-pack/compliance-64x/', 
-				settings.C64_IMG, 
+				'Compliance 64x',
+				'https://compliancepack.net/#compliance-64x',
+				'https://www.curseforge.com/minecraft/texture-packs/compliance-64x', 'https://www.planetminecraft.com/texture-pack/compliance-64x/',
+				settings.C64_IMG,
 				settings.C32_Color
 			);
 			//Other servers

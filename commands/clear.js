@@ -1,3 +1,5 @@
+const prefix = process.env.PREFIX;
+
 const speech = require('../messages');
 const { warnUser } = require('../functions/warnUser.js');
 
@@ -13,8 +15,8 @@ module.exports = {
 			if (args != '') {
 				if (isNaN(args)) return await message.reply("the amount parameter isn't a number!");
 
-				if (args > 200) return await message.reply("you can't delete more than 200 messages at once!"); 
-				if (args < 1) return await message.reply('you have to delete at least 1 message!'); 
+				if (args > 200) return await message.reply("you can't delete more than 200 messages at once!");
+				if (args < 1) return await message.reply('you have to delete at least 1 message!');
 
 				var amount = parseInt(args, 10) + 1
 				const messages = await message.channel.messages.fetch({ limit: amount });

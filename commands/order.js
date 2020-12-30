@@ -1,3 +1,5 @@
+const prefix = process.env.PREFIX;
+
 module.exports = {
 	name: 'order',
 	description: 'Order something',

@@ -1,3 +1,5 @@
+const prefix = process.env.PREFIX;
+
 const uidR = process.env.UIDR;
 const uidJ = process.env.UIDJ;
 const uidD = process.env.UIDD;
