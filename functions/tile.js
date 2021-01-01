@@ -8,11 +8,8 @@ const { magnify }  = require('./magnify.js');
 
 function tile(message, url) {
 	getMeta(url).then(async function(dimension) {
-		var sizeOrigin = dimension.width * dimension.height;
-		var sizeResult = dimension.width * dimension.height * Math.pow(2, 2);
-
-		if (sizeOrigin > 262144) return warnUser(message,'The input picture is too big!');
-		if (sizeResult > 1048576) return warnUser(message,'The output picture will be too big!\nMaximum output allowed: 1024 x 1024 px²\nYours is: ' + dimension.width * 3 + ' x ' + dimension.height * 3 + ' px²');
+		var sizeResult = (dimension.width * dimension.height) * 3;
+		if (sizeResult > 65536) return warnUser(message,'The output picture will be too big!\nMaximum output allowed: 256 x 256 px²\nYours is: ' + dimension.width * 3 + ' x ' + dimension.height * 3 + ' px²');
 
     var canvas = Canvas.createCanvas(dimension.width * 3, dimension.height * 3);
     var canvasContext = canvas.getContext('2d');
@@ -33,9 +30,8 @@ function tile(message, url) {
 
 		const embedMessage = await message.channel.send(embed);
 
-    await embedMessage.react('🗑️');
-		await embedMessage.react('🔎');
-		//await embedMessage.react('🌀');
+    embedMessage.react('🗑️');
+		embedMessage.react('🔎');
 
 		const filter = (reaction, user) => {
 			return ['🗑️','🔎'].includes(reaction.emoji.name) && user.id === message.author.id;
@@ -45,22 +41,17 @@ function tile(message, url) {
 						.then(async collected => {
 							const reaction = collected.first();
 							if (reaction.emoji.name === '🗑️') {
-								await embedMessage.delete();
-								await message.delete();
+								embedMessage.delete();
+								message.delete();
 							}
 							if (reaction.emoji.name === '🔎') {
+                //TODO: This doesn't work
 								return magnify(message, 5, embedMessage.attachment.url);
-								//if (textureSize == '32') return magnify(message, 10, embedMessage.embeds[0].image.url);
 							}
-							/*if (reaction.emoji.name === '🌀') {
-								if (textureSize == '16') return getTexture(32, texture);
-								if (textureSize == '32') return getTexture(16, texture);
-              }*/
 						})
 						.catch(async () => {
 							await embedMessage.reactions.cache.get('🗑️').remove();
 							await embedMessage.reactions.cache.get('🔎').remove();
-							//await embedMessage.reactions.cache.get('🌀').remove();
 						});
 	});
 }

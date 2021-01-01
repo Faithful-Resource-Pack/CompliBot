@@ -24,7 +24,7 @@ async function textureCouncil(client, inputID, outputFalseID, outputTrueID, offs
 
 		if (
 			messageUpvote > messageDownvote &&
-			message.embeds !== undefined && //remove attachments size after migration
+			message.embeds[0] !== undefined &&
 			messageDate.getDate() == limitDate.getDate() &&
 			messageDate.getMonth() == limitDate.getMonth()
 		) {
@@ -48,13 +48,13 @@ async function textureCouncil(client, inputID, outputFalseID, outputTrueID, offs
 			await resultChannel.send(embed);
 
 		} else if (
-			(message.attachments.size > 0 || message.embeds !== undefined) &&
+			message.embeds[0] !== undefined &&
 			messageDate.getDate() == limitDate.getDate() &&
 			messageDate.getMonth() == limitDate.getMonth()
 		) {
 
 			embed = new Discord.MessageEmbed()
-				.setColor(colors.YELLOW)
+				.setColor(colors.RED)
 				.setAuthor(message.embeds[0].author.name, message.embeds[0].author.iconURL)
 				.setDescription(strings.TEXTURE_DEFEAT_COUNCIL)
 				.addFields(

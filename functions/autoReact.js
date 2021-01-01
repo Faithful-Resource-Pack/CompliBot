@@ -1,7 +1,7 @@
 const Discord  = require('discord.js');
 const settings = require('../settings');
 const colors   = require('../res/colors');
-const strings   = require('../res/strings');
+const strings  = require('../res/strings');
 
 //
 async function autoReact(message, emojis, errorType, errorSpecificType, specific) {

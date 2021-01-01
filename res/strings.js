@@ -3,15 +3,15 @@ const BOT_ERROR = 'Action Failed';
 const BOT_AUTOREACT_ERROR = 'Auto Reaction Failed';
 
 // commands stuff
-const COMMAND_DISABLED              = 'This command is currently disabled';
-const COMMAND_ERROR                 = 'There was an error trying to execute that command!';
-const COMMAND_MAINTENANCE           = 'I\'m currently in maintenance, please try again later.';
-const COMMAND_NO_ARGUMENTS_GIVEN    = 'You did not provide arguments';
-const COMMAND_NOT_ENOUGH_ARGUMENTS_GIVEN    = 'You did not provide enough arguments';
-const COMMAND_NO_PERMISSION         = 'You don\'t have the permission to do that!';
-const COMMAND_PROVIDE_VALID_TAG     = 'Please provide a user tag!';
-const COMMAND_PROVIDE_A_NUMBER      = 'Please provide a number!';
-const COMMAND_WRONG_ARGUMENTS_GIVEN = 'You did not provide valid arguments';
+const COMMAND_DISABLED                   = 'This command is currently disabled';
+const COMMAND_ERROR                      = 'There was an error trying to execute that command!';
+const COMMAND_MAINTENANCE                = 'I\'m currently in maintenance, please try again later.';
+const COMMAND_NO_ARGUMENTS_GIVEN         = 'You did not provide arguments';
+const COMMAND_NOT_ENOUGH_ARGUMENTS_GIVEN = 'You did not provide enough arguments';
+const COMMAND_NO_PERMISSION              = 'You don\'t have the permission to do that!';
+const COMMAND_PROVIDE_VALID_TAG          = 'Please provide a user tag!';
+const COMMAND_PROVIDE_A_NUMBER           = 'Please provide a number!';
+const COMMAND_WRONG_ARGUMENTS_GIVEN      = 'You did not provide valid arguments';
 
 // Website command
 const WEBSITE_PROVIDE_VALID_ARGUMENT = 'Please specify a valid argument! \nYou can use: \n`32x`, `64x`, `addons`, `tweaks`, `dungeons` and `mods`';

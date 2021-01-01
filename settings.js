@@ -42,6 +42,7 @@ const C32_RESULTS       = '780507804317384744';	// #texture-results
 
 // The bot itself
 const BOT_IMG       = 'https://i.imgur.com/Hf0eeiU.png';
+const VANILLA_IMG   = 'https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/master/assets/icons/icon_32x32.png';
 
 module.exports = {
 	CDUNGEONS_IMG,
@@ -80,5 +81,6 @@ module.exports = {
 	C32_SUBMIT_3,
 	C32_RESULTS,
 
-  BOT_IMG
+  BOT_IMG,
+  VANILLA_IMG
 }

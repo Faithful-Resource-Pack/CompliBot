@@ -12,13 +12,10 @@ client.commands = new Discord.Collection();
 const uidR   = process.env.UIDR;
 const prefix = process.env.PREFIX;
 
-// Import settings & commands handler:
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
-const settings     = require('./settings');
-
 // Helpers
 const { autoReact }     = require('./functions/autoReact');
 const { updateMembers } = require('./functions/updateMembers.js');
+const { walkSync }      = require('./functions/walkSync');
 
 const { textureSubmission } = require('./functions/textures_submission/textureSubmission');
 const { textureCouncil }    = require('./functions/textures_submission/textureCouncil');
@@ -26,7 +23,11 @@ const { textureRevote }     = require('./functions/textures_submission/textureRe
 
 // Resources
 const colors  = require('./res/colors');
-const strings  = require('./res/strings');
+const strings = require('./res/strings');
+
+// Import settings & commands handler:
+const commandFiles = walkSync('./commands').filter(file => file.endsWith('.js'));
+const settings     = require('./settings');
 
 // Scheduled Functions:
 // Texture submission process: (each day at 00:00 GMT)
@@ -39,7 +40,6 @@ let scheduledFunctions = new cron.CronJob('0 0 * * *', () => {
 // Ah, ha, ha, ha, stayin' alive, stayin' alive
 // Ah, ha, ha, ha, stayin' alive
 // Corona says no ~Domi04151309
-// ─=≡Σ((( つ◕ل͜◕)つ
 const server = http.createServer((req, res) => {
   res.writeHead(302, {
     'Location': 'https://compliancepack.net/'
@@ -85,12 +85,12 @@ client.on('ready', async () => {
 	*/
 	updateMembers(client, settings.CTWEAKS_ID, settings.CTWEAKS_COUNTER);
 
-  console.log('JavaScript is a pain, but I\'m fine, I hope...');
+	console.log(`--------------------------------------------------------------\n\n\n─=≡Σ((( つ◕ل͜◕)つ\nJavaScript is a pain, but I'm fine, I hope...\n\n\n--------------------------------------------------------------\n`);
 
   var embed = new Discord.MessageEmbed()
     .setTitle('Started')
     .setDescription(`<@!${client.user.id}> \n ID: ${client.user.id}`)
-    .setColor('#49d44d')
+    .setColor(colors.GREEN)
     .setTimestamp();
   await client.channels.cache.get('785867553095548948').send(embed);
 });
@@ -99,7 +99,7 @@ client.on('reconnecting', async () => {
 	var embed = new Discord.MessageEmbed()
     .setTitle('Reconnecting...')
     .setDescription(`<@!${client.user.id}> \n ID: ${client.user.id}`)
-    .setColor('#ffff00')
+    .setColor(colors.YELLOW)
     .setTimestamp();
   await client.channels.cache.get('785867553095548948').send(embed);
 });
@@ -108,7 +108,7 @@ client.on('disconnect', async () => {
 	var embed = new Discord.MessageEmbed()
     .setTitle('Disconnect...')
     .setDescription(`<@!${client.user.id}> \n ID: ${client.user.id}`)
-    .setColor('#ff0000')
+    .setColor(colors.RED)
     .setTimestamp();
   await client.channels.cache.get('785867553095548948').send(embed);
 });
@@ -129,7 +129,7 @@ client.on('guildMemberRemove', async () =>{
  * - Easter Eggs & others: below
 */
 for (const file of commandFiles) {
-	const command = require(`./commands/${file}`);
+	const command = require(file);
 	client.commands.set(command.name, command);
 }
 
@@ -150,7 +150,7 @@ client.on('message', async message => {
 
 	if (!command) return;
 
-  command.execute(client, message, args).catch(async (error) => {
+  command.execute(client, message, args).catch(async error => {
     console.error(error);
     const embed = new Discord.MessageEmbed()
       .setColor(colors.RED)

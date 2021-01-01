@@ -1,7 +1,7 @@
 const prefix = process.env.PREFIX;
 
 const Discord  = require('discord.js');
-const settings = require('../settings.js');
+const settings = require('../../settings.js');
 
 module.exports = {
 	name: 'ping',

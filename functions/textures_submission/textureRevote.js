@@ -28,7 +28,8 @@ async function textureRevote(client, inputID, outputID, offset) {
 
 		if (
 			upvotePercentage >= 66.66 &&
-			(message.attachments.size > 0 || message.embeds !== undefined) &&
+			// remove attachments size when migration is done
+			(message.attachments.size > 0 || message.embeds[0] !== undefined) &&
 			messageDate.getDate() == limitDate.getDate() &&
 			messageDate.getMonth() == limitDate.getMonth()
 		) {
@@ -70,7 +71,8 @@ async function textureRevote(client, inputID, outputID, offset) {
 
 			} // remove this bracket after migration
 		} else if (
-			(message.attachments.size > 0 || message.embeds !== undefined) &&
+			// remove attachments size when migration is done
+			(message.attachments.size > 0 || message.embeds[0] !== undefined) &&
 			messageDate.getDate() == limitDate.getDate() &&
 			messageDate.getMonth() == limitDate.getMonth()
 		) {

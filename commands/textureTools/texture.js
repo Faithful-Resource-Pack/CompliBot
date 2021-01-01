@@ -3,13 +3,13 @@ const prefix = process.env.PREFIX;
 const Discord  = require('discord.js');
 const axios    = require('axios').default;
 const fs       = require('fs');
-const strings   = require('../res/strings');
-const colors   = require('../res/colors');
-const settings = require('../settings.js');
+const strings  = require('../../res/strings');
+const colors   = require('../../res/colors');
+const settings = require('../../settings.js');
 
-const { magnify }  = require('../functions/magnify.js');
-const { getMeta }  = require('../functions/getMeta.js');
-const { warnUser } = require('../functions/warnUser.js');
+const { magnify }  = require('../../functions/magnify.js');
+const { getMeta }  = require('../../functions/getMeta.js');
+const { warnUser } = require('../../functions/warnUser.js');
 
 module.exports = {
 	name: 'texture',
@@ -89,11 +89,7 @@ module.exports = {
 
 			const embedMessage = await message.channel.send(embed);
 
-			for (var i=0; i < results.length; i++){
-				if (i < emoji_num.length) {
-					await embedMessage.react(emoji_num[i]);
-				}
-			}
+      asyncReaction(embedMessage, results, emoji_num);
 
 			const filter_num = (reaction, user) => {
 				return emoji_num.includes(reaction.emoji.name) && user.id === message.author.id;
@@ -103,15 +99,32 @@ module.exports = {
 				.then(async collected => {
 					const reaction = collected.first();
 					if (emoji_num.includes(reaction.emoji.name)) {
-						await embedMessage.delete();
+						embedMessage.delete();
 						getTexture( size, results[emoji_num.indexOf(reaction.emoji.name)] );
 					}
 				}).catch(async () => {
 					for (var i = 0; i < emoji_num.length; i++) {
-						await embedMessage.reactions.cache.get(emoji_num[i]).remove();
+						embedMessage.reactions.cache.get(emoji_num[i]).remove();
 					}
 				});
 		}
+
+    /*
+     * The reaction hack
+     */
+    async function asyncReaction(embedMessage, results, emoji_num) {
+      var hasBeenDeleted = false;
+			for (var i = 0; i < results.length; i++){
+				if (i < emoji_num.length && !hasBeenDeleted) {
+					await embedMessage.react(emoji_num[i]).catch(() => {
+            hasBeenDeleted = true
+            console.warn('The message has already been deleted!')
+          });
+				} else {
+          return;
+        }
+			}
+    }
 
 		/*
 		 * SHOW ASKED TEXTURE
@@ -121,8 +134,8 @@ module.exports = {
 			if (textureSize == 'vanilla') imgURL = 'https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/20w51a/assets/minecraft/textures/' + texture;
 			if (textureSize == '32') imgURL = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-32x/Jappa-1.17/assets/minecraft/textures/' + texture;
 
-			axios.get(imgURL).then(function () {
-				getMeta(imgURL).then(async function (dimension) {
+			axios.get(imgURL).then(() => {
+				getMeta(imgURL).then(async dimension => {
 					const size = dimension.width + 'x' + dimension.height;
 
 					var embed = new Discord.MessageEmbed()
@@ -134,15 +147,15 @@ module.exports = {
 							{ name: 'Resolution:', value: size, inline:true }
 						)
 
-					if (textureSize == 'vanilla') embed.setFooter('Defaults Texture');
+					if (textureSize == 'vanilla') embed.setFooter('Vanilla Texture', settings.VANILLA_IMG);
 					if (textureSize == '32') embed.setFooter('Compliance 32x', settings.C32_IMG)//.addFields({name: 'Author', value:'WIP'});
 
 					const embedMessage = await message.channel.send(embed);
-					await embedMessage.react('🗑️');
+					embedMessage.react('🗑️');
 					if (dimension.width < 129 && dimension.height < 129) {
-						await embedMessage.react('🔎');
+						embedMessage.react('🔎');
 					}
-					await embedMessage.react('🌀');
+					embedMessage.react('🌀');
 
 					const filter = (reaction, user) => {
 						return ['🗑️','🔎','🌀'].includes(reaction.emoji.name) && user.id === message.author.id;
@@ -152,15 +165,16 @@ module.exports = {
 						.then(async collected => {
 							const reaction = collected.first();
 							if (reaction.emoji.name === '🗑️') {
-								await embedMessage.delete();
-								await message.delete();
+								embedMessage.delete();
+								message.delete();
 							}
 							if (reaction.emoji.name === '🔎') {
-								if (size == '8x8')     return magnify(message, 32, embedMessage.embeds[0].image.url);
-								if (size == '16x16')   return magnify(message, 16, embedMessage.embeds[0].image.url);
-								if (size == '32x32')   return magnify(message,  8, embedMessage.embeds[0].image.url);
-								if (size == '64x64')   return magnify(message,  4, embedMessage.embeds[0].image.url);
-								if (size == '128x128') return magnify(message,  2, embedMessage.embeds[0].image.url);
+                if (size == '8x8')     return magnify(message, 64, embedMessage.embeds[0].image.url);
+								if (size == '16x16')   return magnify(message, 32, embedMessage.embeds[0].image.url);
+								if (size == '32x32')   return magnify(message, 16, embedMessage.embeds[0].image.url);
+								if (size == '64x64')   return magnify(message,  8, embedMessage.embeds[0].image.url);
+								if (size == '128x128') return magnify(message,  4, embedMessage.embeds[0].image.url);
+								if (size == '256x256') return magnify(message,  2, embedMessage.embeds[0].image.url);
 								return magnify(message, 8, embedMessage.embeds[0].image.url);
 							}
 							if (reaction.emoji.name === '🌀') {
@@ -169,14 +183,14 @@ module.exports = {
 							}
 						})
 						.catch(async () => {
-							await embedMessage.reactions.cache.get('🗑️').remove();
+							embedMessage.reactions.cache.get('🗑️').remove();
 							if (dimension.width < 129 && dimension.height < 129) {
-								await embedMessage.reactions.cache.get('🔎').remove();
+								embedMessage.reactions.cache.get('🔎').remove();
 							}
-							await embedMessage.reactions.cache.get('🌀').remove();
+							embedMessage.reactions.cache.get('🌀').remove();
 						});
 
-				}).catch(function(error) {
+				}).catch(error => {
 					console.log(error);
 				});
 			});
