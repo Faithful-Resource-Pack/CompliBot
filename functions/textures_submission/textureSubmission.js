@@ -69,8 +69,16 @@ async function textureSubmission(client, inputID, outputID, offset) {
 		}
 	}
 
-	if (texture) await outputChannel.send('<@&'+settings.C32_COUNCIL_ID+'> There are new textures to vote for!');
-	else await outputChannel.send('No textures today!');
+	if (inputID == settings.C32_SUBMIT_1) {
+		if (texture) await outputChannel.send('<@&'+settings.C32_COUNCIL_ID+'> There are new textures to vote for!');
+		else await outputChannel.send('No textures today!');
+	}
+
+	if (inputID == settings.C64_SUBMIT_1) {
+		if (texture) await outputChannel.send('<@&'+settings.C64_COUNCIL_ID+'> There are new textures to vote for!');
+		else await outputChannel.send('No textures today!');
+	}
+	
 }
 
 exports.textureSubmission = textureSubmission;

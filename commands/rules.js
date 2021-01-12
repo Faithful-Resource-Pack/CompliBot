@@ -19,7 +19,7 @@ module.exports = {
 					.setColor(settings.C32_COLOR)
 					.setThumbnail(settings.C32_IMG)
 					.addFields(
-						{ name: '1️⃣', value: 'Follow Discord TOS and Guidelines.'},
+						{ name: '1️⃣', value: 'Follow [Discord TOS and Guidelines](https://discord.com/terms).'},
 						{ name: '2️⃣', value: 'Be considerate of others.'},
 						{ name: '3️⃣', value: 'No advertising. This means no products or other Discord servers unless another user asks.'},
 						{ name: '4️⃣', value: 'No NSFW content, ie explicit photographs or graphic stories. Cursing is generally fine so long as it is not excessive.'},
@@ -33,12 +33,12 @@ module.exports = {
 						{ name: '1️⃣2️⃣', value: 'Stay on topic. There are multiple channels with different purposes for a reason.'},
 						{ name: '1️⃣3️⃣', value: 'Preferably no talk about why we moved, that is explained in `#faq`'}
 					)
-					.setFooter('The rules are subject to change, last edited: 30.11.2020', settings.C32_IMG);
+					.setFooter('The rules are subject to change, last edited: 08.01.2021', settings.C32_IMG);
 
 				const embed2 = new Discord.MessageEmbed()
-					.setTitle('Latest changes as of 30.11.2020')
+					.setTitle('Latest changes as of 08.01.2021')
 					.setColor(settings.C32_COLOR)
-					.setDescription('- edited rule 5️⃣: Removed a duplicate mention. \n- edited rule 7️⃣: Replaced `@mods` with `/modping`');
+					.setDescription('- Added a link to the Discord Terms of Service.');
 
 				await message.channel.send(embed1);
         await message.channel.send(embed2);
@@ -48,7 +48,7 @@ module.exports = {
 					.setColor(settings.C32_COLOR)
 					.setThumbnail(settings.C64_IMG)
 					.addFields(
-						{ name: '1️⃣', value: 'Follow Discord TOS and Guidelines.'},
+						{ name: '1️⃣', value: 'Follow [Discord TOS and Guidelines](https://discord.com/terms).'},
 						{ name: '2️⃣', value: 'Be considerate of others.'},
 						{ name: '3️⃣', value: 'No advertising. This means no products or other Discord servers unless another user asks.'},
 						{ name: '4️⃣', value: 'No NSFW content, ie explicit photographs or graphic stories. Cursing is generally fine so long as it is not excessive.'},
@@ -62,16 +62,15 @@ module.exports = {
 						{ name: '1️⃣2️⃣', value: 'Stay on topic. There are multiple channels with different purposes for a reason.'},
 						{ name: '1️⃣3️⃣', value: 'Preferably no talk about why we moved, that is explained in `#faq`'}
 					)
-					.setFooter('The rules are subject to change, last edited: 30.11.2020', settings.C64_IMG);
+					.setFooter('The rules are subject to change, last edited: 08.01.2021', settings.C64_IMG);
 
-			/*
 				const embed2 = new Discord.MessageEmbed()
-					.setTitle('Latest changes as of 30.11.2020')
-					.setColor(settings.C32Color)
-					.setDescription('- edited rule 5️⃣: Removed a duplicate mention. \n- edited rule 7️⃣: Replaced `@mods` with `/modping`');
-			*/
+					.setTitle('Latest changes as of 08.01.2021')
+					.setColor(settings.C32_COLOR)
+					.setDescription('- Added a link to the Discord Terms of Service.');
+
 				await message.channel.send(embed1);
-				//await message.channel.send(embed2);
+				await message.channel.send(embed2);
 			} if (message.guild.id === settings.CMODS_ID) {
 				const embed1 = new Discord.MessageEmbed()
 					.setTitle('Rules')

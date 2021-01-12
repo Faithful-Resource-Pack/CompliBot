@@ -40,6 +40,7 @@ async function autoReact(message, emojis, errorType, errorSpecificType, specific
 		if (
 			(
 				message.member.roles.cache.has(settings.C32_MODERATORS_ID) ||
+				message.member.roles.cache.has(settings.C64_MODERATORS_ID) ||
 				message.member.roles.cache.has(settings.CADDONS_MODERATORS_ID) ||
 				message.member.roles.cache.has(settings.CDUNGEONS_MODERATORS_ID)
 			) && specificError == false

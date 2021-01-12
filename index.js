@@ -32,9 +32,16 @@ const settings     = require('./settings');
 // Scheduled Functions:
 // Texture submission process: (each day at 00:00 GMT)
 let scheduledFunctions = new cron.CronJob('0 0 * * *', () => {
+
+	// C32
 	textureSubmission(client,settings.C32_SUBMIT_1,settings.C32_SUBMIT_2,5);									  // 5 DAYS OFFSET
 	textureCouncil(client,settings.C32_SUBMIT_2,settings.C32_SUBMIT_3,settings.C32_RESULTS,1);	// 1 DAYS OFFSET
 	textureRevote(client,settings.C32_SUBMIT_3,settings.C32_RESULTS,3);											    // 3 DAYS OFFSET
+	
+	// C64
+	textureSubmission(client,settings.C64_SUBMIT_1,settings.C64_SUBMIT_2,5);									  // 5 DAYS OFFSET
+	textureCouncil(client,settings.C64_SUBMIT_2,settings.C64_SUBMIT_3,settings.C64_RESULTS,1);	// 1 DAYS OFFSET
+	textureRevote(client,settings.C64_SUBMIT_3,settings.C64_RESULTS,3);											    // 3 DAYS OFFSET
 });
 
 // Ah, ha, ha, ha, stayin' alive, stayin' alive
@@ -209,6 +216,17 @@ client.on('message', async message => {
 
 	// Texture submission Compliance 32x (#submit-texture):
 	if (message.channel.id === settings.C32_SUBMIT_1) {
+		return autoReact(
+			message,
+			['⬆️','⬇️'],
+			strings.SUBMIT_NO_FILE_ATTACHED,
+			'You need to add the texture folder of your texture between []:\n`texture_name [folder] (comment -> optional)`',
+			['[',']']
+		);
+	}
+
+	// Texture submission Compliance 64x (#submit-texture):
+	if (message.channel.id === settings.C64_SUBMIT_1) {
 		return autoReact(
 			message,
 			['⬆️','⬇️'],

@@ -4,7 +4,7 @@ import json
 path = ''
 data = []
 
-folders = ['block','colormap','effect','entity','environment','font','gui','item','map','misc','mob_effect','models','painting','particle']
+folders = ['realms', 'minecraft']
 
 for folder in folders:
 	for root, directories, files in os.walk(path + '\\' + folder):

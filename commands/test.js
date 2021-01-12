@@ -1,6 +1,6 @@
-const { textureCouncil }    = require('../functions/textures_submission/textureCouncil');
-const { textureSubmission } = require('../functions/textures_submission/textureSubmission');
 const settings = require('../settings');
+const simpleGit = require('simple-git');
+const git = simpleGit();
 
 const uidR = process.env.UIDR;
 const uidJ = process.env.UIDJ;
@@ -14,7 +14,9 @@ module.exports = {
 	name: 'test',
 	async execute(client, message, args) {
     if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD) {
-			textureSubmission(client,settings.C32_SUBMIT_1,settings.C32_SUBMIT_2,5);
+
+
+
 		}
 	}
 }

@@ -19,13 +19,18 @@
   },
   "homepage": "https://github.com/Compliance-Resource-Pack/Discord-Bot#readme",
   "dependencies": {
+    "@octokit/rest": "^18.0.12",
     "axios": "^0.21.1",
     "canvas": "^2.6.1",
     "cron": "^1.8.2",
     "discord.js": "^12.5.1",
+    "discord.js-poll-embed": "^1.0.2",
     "dotenv": "^8.2.0",
+    "fs-extra": "^9.0.1",
+    "globby": "^11.0.1",
     "http": "0.0.1-security",
-    "image-size": "^0.9.3"
+    "image-size": "^0.9.3",
+    "simple-git": "^2.31.0"
   },
   "engines": {
     "node": "14.15.1",

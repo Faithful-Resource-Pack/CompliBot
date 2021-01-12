@@ -28,6 +28,11 @@ const CADDONS_MODERATORS_ID    = '614163845656608774';
 const C64_IMG           = 'https://i.imgur.com/EktsrA9.png';
 const C64_ID            = '747574286356840609';
 const C64_MODERATORS_ID = '747595211273797724';
+const C64_COUNCIL_ID    = '777642015885754368';	// Council role
+const C64_SUBMIT_1      = '747603911677837454';	// #submit-textures
+const C64_SUBMIT_2      = '797780897805238282';	// #council-voting
+const C64_SUBMIT_3      = '797649484259524648';	// #texture-revote
+const C64_RESULTS       = '797648495804678154';	// #texture-results
 
 // Compliance 32x
 const C32_IMG           = 'https://i.imgur.com/nOpSBYX.png';
@@ -70,6 +75,11 @@ module.exports = {
 	C64_MODERATORS_ID,
 	C64_IMG,
 	C64_ID,
+	C64_COUNCIL_ID,
+  C64_SUBMIT_1,
+	C64_SUBMIT_2,
+	C64_SUBMIT_3,
+	C64_RESULTS,
 
 	C32_IMG,
 	C32_COLOR,
