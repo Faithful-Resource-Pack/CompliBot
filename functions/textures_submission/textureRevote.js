@@ -28,27 +28,10 @@ async function textureRevote(client, inputID, outputID, offset) {
 
 		if (
 			upvotePercentage >= 66.66 &&
-			// remove attachments size when migration is done
-			(message.attachments.size > 0 || message.embeds[0] !== undefined) &&
+			message.embeds[0] !== undefined &&
 			messageDate.getDate() == limitDate.getDate() &&
 			messageDate.getMonth() == limitDate.getMonth()
 		) {
-
-			// REMOVE WHEN MIGRATION IS DONE:
-			//////////////////////////////////////////////////////////////////////////////////////
-			if (message.embeds[0] === undefined && message.attachments.size > 0){
-				await outputChannel.send(`This texture has passed community voting and thus will be added into the pack.\n> With a percentage of ${upvotePercentage}% Upvotes (>66%).\n` + message.content.replace(revoteSentence,''), {files: [message.attachments.first().url]})
-				.then(async message => {
-					try {
-						await message.react('✅');
-					} catch (error) {
-						console.error(error);
-					}
-				});
-			}
-
-			else {
-			//////////////////////////////////////////////////////////////////////////////////////
 
 			embed = new Discord.MessageEmbed()
 				.setColor(colors.GREEN)
@@ -69,28 +52,14 @@ async function textureRevote(client, inputID, outputID, offset) {
 
 			await outputChannel.send(embed)
 
-			} // remove this bracket after migration
-		} else if (
-			// remove attachments size when migration is done
-			(message.attachments.size > 0 || message.embeds[0] !== undefined) &&
+			}
+		} 
+		
+		if (
+			message.embeds[0] !== undefined &&
 			messageDate.getDate() == limitDate.getDate() &&
 			messageDate.getMonth() == limitDate.getMonth()
 		) {
-
-			// REMOVE WHEN MIGRATION IS DONE:
-			//////////////////////////////////////////////////////////////////////////////////////
-			if (message.embeds[0] === undefined && message.attachments.size > 0){
-				await outputChannel.send(`This texture has not passed council and community voting (${upvotePercentage}% of upvotes), and thus will not be added into the pack.\n` + message.content.replace(revoteSentence,''), {files: [message.attachments.first().url]})
-				.then(async message => {
-					try {
-						await message.react('❌');
-					}	catch (error) {
-						console.error(error);
-					}
-				});
-			}
-			else if (message.embeds[0]) {
-			//////////////////////////////////////////////////////////////////////////////////////
 
 			embed = new Discord.MessageEmbed()
 				.setColor(colors.RED)
@@ -110,8 +79,6 @@ async function textureRevote(client, inputID, outputID, offset) {
 			else embed.setImage(message.embeds[0].image.url);
 
 			await outputChannel.send(embed)
-
-			} // remove this bracket after migragtion
 		}
 	}
 }

@@ -28,6 +28,7 @@ const CADDONS_MODERATORS_ID    = '614163845656608774';
 const C64_IMG           = 'https://i.imgur.com/EktsrA9.png';
 const C64_ID            = '747574286356840609';
 const C64_MODERATORS_ID = '747595211273797724';
+const C64_LOGS          = '778189351703412767'; // #logs channel
 const C64_COUNCIL_ID    = '777642015885754368';	// Council role
 const C64_SUBMIT_1      = '747603911677837454';	// #submit-textures
 const C64_SUBMIT_2      = '797780897805238282';	// #council-voting
@@ -39,6 +40,7 @@ const C32_IMG           = 'https://i.imgur.com/nOpSBYX.png';
 const C32_COLOR         = '#76C945';
 const C32_ID            = '773983706582482946';
 const C32_MODERATORS_ID = '773984348860711003';
+const C32_LOGS          = '798893497204998161'; // #logs channel
 const C32_COUNCIL_ID    = '775636065338785813';	// Council role
 const C32_SUBMIT_1      = '773987409993793546';	// #submit-textures
 const C32_SUBMIT_2      = '774220983044669450';	// #council-voting
@@ -48,6 +50,7 @@ const C32_RESULTS       = '780507804317384744';	// #texture-results
 // The bot itself
 const BOT_IMG       = 'https://i.imgur.com/Hf0eeiU.png';
 const VANILLA_IMG   = 'https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/master/assets/icons/icon_32x32.png';
+const QUOTE_IMG     = 'https://i.imgur.com/e6dYZ8b.png';
 
 module.exports = {
 	CDUNGEONS_IMG,
@@ -75,6 +78,7 @@ module.exports = {
 	C64_MODERATORS_ID,
 	C64_IMG,
 	C64_ID,
+	C64_LOGS,
 	C64_COUNCIL_ID,
   C64_SUBMIT_1,
 	C64_SUBMIT_2,
@@ -84,6 +88,7 @@ module.exports = {
 	C32_IMG,
 	C32_COLOR,
 	C32_ID,
+	C32_LOGS,
 	C32_MODERATORS_ID,
 	C32_COUNCIL_ID,
   C32_SUBMIT_1,
@@ -92,5 +97,6 @@ module.exports = {
 	C32_RESULTS,
 
   BOT_IMG,
-  VANILLA_IMG
+  VANILLA_IMG,
+	QUOTE_IMG
 }

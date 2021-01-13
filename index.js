@@ -17,6 +17,9 @@ const { autoReact }     = require('./functions/autoReact');
 const { updateMembers } = require('./functions/updateMembers.js');
 const { walkSync }      = require('./functions/walkSync');
 
+const { quote } = require('./functions/quote');
+const { logs } = require('./functions/logs');
+
 const { textureSubmission } = require('./functions/textures_submission/textureSubmission');
 const { textureCouncil }    = require('./functions/textures_submission/textureCouncil');
 const { textureRevote }     = require('./functions/textures_submission/textureRevote');
@@ -121,7 +124,7 @@ client.on('disconnect', async () => {
 });
 
 /*
- * MEMBERS COUNTER
+ * MEMBER COUNTER
 */
 client.on('guildMemberAdd', async () =>{
 	updateMembers(client, settings.CTWEAKS_ID, settings.CTWEAKS_COUNTER);
@@ -131,7 +134,7 @@ client.on('guildMemberRemove', async () =>{
 });
 
 /*
- * COMMANDS HANDLER
+ * COMMAND HANDLER
  * - Automated: /commands & below
  * - Easter Eggs & others: below
 */
@@ -170,7 +173,7 @@ client.on('message', async message => {
   })
 
 	/*
-	 * COMMANDS HISTORY
+	 * COMMAND HISTORY
 	*/
   var embed = new Discord.MessageEmbed()
     .setAuthor(message.author.tag, message.author.displayAvatarURL())
@@ -208,6 +211,12 @@ client.on('message', async message => {
 		if (Math.floor(Math.random() * Math.floor(5)) != 1) return await message.channel.send('https://media1.tenor.com/images/8dc53503f5a5bb23ef12b2c83a0e1d4d/tenor.gif');
 		else return await message.channel.send('https://preview.redd.it/6n6zu25c66211.png?width=960&crop=smart&auto=webp&s=62024911a6d6dd85f83a2eb305df6082f118c8d1');
 	}
+
+	/*
+	 * MESSAGE URL QUOTE
+	 * when someone send a message with https://discord.com/channels/<server ID>/<channel ID>/<message ID>
+	*/
+	if (message.content.includes('https://discord.com/channels/')) quote(message);
 
 	/*
 	 * AUTO REACT:
@@ -268,6 +277,37 @@ client.on('message', async message => {
 			undefined
 		);
 	}
+
+	/*
+	 * MESSAGE LOGS : 
+	*/
+	//if (message.guild.id == settings.C64_ID) logs(client, settings.C64_ID, undefined, message, false);
+	//if (message.guild.id == settings.C32_ID) logs(client, settings.C32_ID, undefined, message, false);
+});
+
+client.on('messageUpdate', async (oldMessage, newMessage) => {
+	if (newMessage.content.startsWith(prefix) || newMessage.author.bot) return; // Avoid message WITH prefix & bot messages
+	
+	/*
+	 * MESSAGE URL QUOTE
+	 * when someone send a message with https://discord.com/channels/<server ID>/<channel ID>/<message ID>
+	*/
+	if (newMessage.content.includes('https://discord.com/channels/')) quote(newMessage);
+
+	/*
+	 * MESSAGE LOGS : 
+	*/
+	if (newMessage.guild.id == settings.C64_ID) logs(client, settings.C64_ID, oldMessage, newMessage, false);
+	if (newMessage.guild.id == settings.C32_ID) logs(client, settings.C32_ID, oldMessage, newMessage, false);
+});
+
+client.on('messageDelete', async message => {
+	if (message.content.startsWith(prefix) || message.author.bot) return; // Avoid message WITH prefix & bot messages
+	/*
+	 * MESSAGE LOGS : 
+	*/
+	if (message.guild.id == settings.C64_ID) logs(client, settings.C64_ID, undefined, message, true);
+	if (message.guild.id == settings.C32_ID) logs(client, settings.C32_ID, undefined, message, true);
 });
 
 // Login the bot

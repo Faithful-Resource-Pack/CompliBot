@@ -24,7 +24,6 @@
     "canvas": "^2.6.1",
     "cron": "^1.8.2",
     "discord.js": "^12.5.1",
-    "discord.js-poll-embed": "^1.0.2",
     "dotenv": "^8.2.0",
     "fs-extra": "^9.0.1",
     "globby": "^11.0.1",
