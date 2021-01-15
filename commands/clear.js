@@ -13,7 +13,7 @@ module.exports = {
 
 	async execute(client, message, args) {
 
-		if(message.member.roles.cache.find(r => r.name === "God") || message.member.roles.cache.find(r => r.name === "Moderator") || message.member.roles.cache.find(r => r.name === "Moderators") ||message.member.roles.cache.find(r => r.name === "Mods")) {
+		if (message.member.hasPermission('ADMINISTRATOR')) {
 			if (args != '') {
 				if (isNaN(args)) return await message.reply("the amount parameter isn't a number!");
 

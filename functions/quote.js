@@ -19,8 +19,30 @@ async function quote(msg) {
 		if (message.embeds[0] !== undefined) {
 			var embed = new Discord.MessageEmbed()
 				.setColor(colors.BLUE)
-				.setAuthor(`Message posted by ${message.author.tag}`, settings.QUOTE_IMG)
-				.setTitle(message.embeds[0])
+				.setDescription(message.embeds[0].description);
+
+			if (message.embeds[0].title != undefined) embed.setTitle(message.embeds[0].title)
+			if (message.embeds[0].url != undefined) embed.setURL(message.embeds[0].url)
+			
+			if (message.embeds[0].author != undefined && !message.embeds[0].author.name.startsWith('Embed posted by')) {
+				embed.setThumbnail(message.embeds[0].author.iconURL);
+				embed.setAuthor(`Embed posted by ${message.author.tag} (${message.embeds[0].author.name})`, settings.QUOTE_IMG);
+			} else {
+				embed.setThumbnail(message.author.displayAvatarURL());
+				embed.setAuthor(`Embed posted by ${message.author.tag}`, settings.QUOTE_IMG);
+			}
+
+			if (message.embeds[0].fields != undefined) {
+				for (var i = 0; i < message.embeds[0].fields.length; i++) {
+					embed.addFields({ name: message.embeds[0].fields[i].name, value: message.embeds[0].fields[i].value, inline: true });
+				}
+			}
+
+			if (message.embeds[0].image) {
+				embed.setImage(message.embeds[0].image.url);
+			}
+		
+			return await msg.channel.send(embed);
 		}
 
 		else {

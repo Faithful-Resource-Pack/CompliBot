@@ -52,8 +52,7 @@ async function textureRevote(client, inputID, outputID, offset) {
 
 			await outputChannel.send(embed)
 
-			}
-		} 
+		}
 		
 		if (
 			message.embeds[0] !== undefined &&
@@ -80,6 +79,7 @@ async function textureRevote(client, inputID, outputID, offset) {
 
 			await outputChannel.send(embed)
 		}
+		
 	}
 }
 
