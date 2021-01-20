@@ -9,7 +9,7 @@ module.exports = {
 	name: 'poll',
 	description: 'Make a poll to ask people!',
 	uses: 'Anyone',
-	syntax: `${prefix}poll <time in second> | <title> | <option1> | <option2> | ...`,
+	syntax: `${prefix}poll <time in seconds> | <title> | <option1> | <option2> | ...`,
 	async execute(client, message, args) {
 
 		if (message.content.includes(" | ")) {

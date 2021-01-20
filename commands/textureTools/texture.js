@@ -18,49 +18,99 @@ module.exports = {
 	syntax: `${prefix}texture <vanilla/32/64> <texture_name>\n${prefix}texture <vanilla/32/64> <_name>\n${prefix}texture <vanilla/32/64> </folder/>`,
 	async execute(client, message, args) {
 
-		let rawdata  = fs.readFileSync('textures.json');
-		let textures = JSON.parse(rawdata);
-		var results  = [];
+		var textures        = JSON.parse(fs.readFileSync('./contributors.json'));
+		var texturesBedrock = JSON.parse(fs.readFileSync('./contributorsBedrock.json'));
+		var results = [];
+		var index   = [];
+
+		const allowed = ['vanilla','vanillabedrock','16','16j','16b','32','32j','32b','64','64j','64b'];
+		const java    = ['16','32','64'];
+		const bedrock = ['16b','32b','64b'];
 
 		if (args != '') {
-			if (args[0] == 'vanilla' || args[0] == '16' || args[0] == '32' || args[0] == '64') {
-				if (args[0] == '16') args[0] = 'vanilla';
-				if (args[1]) {
+			if (allowed.includes(args[0])) {
+				if (args[0] == 'vanilla') args[0] = '16';
+				if (args[0] == 'vanillabedrock') args[0] = '16b';
+				if (args[0] == '16j') args[0] = '16';
+				if (args[0] == '32j') args[0] = '32';
+				if (args[0] == '64j') args[0] = '64';
+
+				if (args[1] && java.includes(args[0])){
 					// begin with _, is inside : be able to search for _sword : sort all swords
 					if (String(args[1]).startsWith('_')) {
 						for (var i=0 ; i < textures.length ; i++){
-							if (textures[i].split("/").pop().includes(args[1])) {
-								results.push(textures[i]);
+							if (textures[i].path.split("/").pop().includes(args[1])) {
+								results.push(textures[i].path);
+								index.push(i);
 							}
 						}
 					}
 					// ends with /, is in subfolder
 					if (String(args[1]).endsWith('/')) {
 						for (var i=0 ; i < textures.length ; i++) {
-							if (textures[i].includes(args[1])) {
-								results.push(textures[i]);
+							if (textures[i].path.includes(args[1])) {
+								results.push(textures[i].path);
+								index.push(i);
 							}
 						}
 					}
 					// classic search
 					else {
 						for (var i=0 ; i < textures.length ; i++){
-							if (textures[i].split("/").pop().startsWith(args[1])) {
-								results.push(textures[i]);
+							if (textures[i].path.split("/").pop().startsWith(args[1])) {
+								results.push(textures[i].path);
+								index.push(i);
 							}
 						}
 					}
 
 					// one texture found
-					if (results.length == 1) return getTexture(args[0],results[0]);
+					if (results.length == 1) return getTexture(args[0],results[0],index[0]);
 
 					// multiple texture found
-					if (results.length > 1) return getMultipleTexture(args[0],results);
+					if (results.length > 1) return getMultipleTexture(args[0],results,index);
 
 					// no texture found
 					if (results.length == 0) return warnUser(message,strings.TEXTURE_DOESNT_EXIST);
 				}
-				else return warnUser(message,strings.COMMAND_NOT_ENOUGH_ARGUMENTS_GIVEN);
+				else if (args[1] && bedrock.includes(args[0])) {
+					// begin with _, is inside : be able to search for _sword : sort all swords
+					if (String(args[1]).startsWith('_')) {
+						for (var i=0 ; i < texturesBedrock.length ; i++){
+							if (texturesBedrock[i].path.split("/").pop().includes(args[1])) {
+								results.push(texturesBedrock[i].path);
+								index.push(i);
+							}
+						}
+					}
+					// ends with /, is in subfolder
+					if (String(args[1]).endsWith('/')) {
+						for (var i=0 ; i < texturesBedrock.length ; i++) {
+							if (texturesBedrock[i].path.includes(args[1])) {
+								results.push(texturesBedrock[i].path);
+								index.push(i);
+							}
+						}
+					}
+					// classic search
+					else {
+						for (var i=0 ; i < texturesBedrock.length ; i++){
+							if (texturesBedrock[i].path.split("/").pop().startsWith(args[1])) {
+								results.push(texturesBedrock[i].path);
+								index.push(i);
+							}
+						}
+					}
+
+					// one texture found
+					if (results.length == 1) return getTexture(args[0],results[0],index[0]);
+
+					// multiple texture found
+					if (results.length > 1) return getMultipleTexture(args[0],results,index);
+
+					// no texture found
+					if (results.length == 0) return warnUser(message,strings.TEXTURE_DOESNT_EXIST);
+				} else return warnUser(message,strings.COMMAND_NOT_ENOUGH_ARGUMENTS_GIVEN);
 			}
 			else return warnUser(message,strings.COMMAND_WRONG_ARGUMENTS_GIVEN);
 		}
@@ -69,12 +119,12 @@ module.exports = {
 		/*
 		 * ASK USER TO CHOOSE BETWEEN MULTIPLE TEXTURES
 		*/
-		async function getMultipleTexture(size,results) {
+		async function getMultipleTexture(size,results,index) {
 			// max amount of reactions reached
 			const emoji_num = ['1️⃣','2️⃣','3️⃣','4️⃣','5️⃣','6️⃣','7️⃣','8️⃣','9️⃣','🔟','🇦','🇧','🇨','🇩','🇪','🇫','🇬','🇭','🇮','🇯'];
 
 			var embed = new Discord.MessageEmbed()
-				.setTitle(results.length + ' results for "' + args[1] + '" in '+args[0])
+				.setTitle(results.length + ' results for "' + args[1] + '" in '+args[0].replace('b'," Bedrock"))
         .setFooter('CompliBot', settings.BOT_IMG);
 
 			var description = 'Choose one texture using emoji reactions.\nIf you don\'t see what you\'re looking for, be more specific.\n\n';
@@ -98,7 +148,7 @@ module.exports = {
 					const reaction = collected.first();
 					if (emoji_num.includes(reaction.emoji.name)) {
 						embedMessage.delete();
-						getTexture( size, results[emoji_num.indexOf(reaction.emoji.name)] );
+						getTexture( size, results[emoji_num.indexOf(reaction.emoji.name)], index[emoji_num.indexOf(reaction.emoji.name)] );
 					}
 				}).catch(async () => {
 					for (var i = 0; i < results.length; i++) {
@@ -129,18 +179,23 @@ module.exports = {
 		/*
 		 * SHOW ASKED TEXTURE
 		*/
-		function getTexture(textureSize, texture) {
+		function getTexture(type, name, index) {
 			var imgURL = undefined;
-			if (textureSize == 'vanilla') imgURL = 'https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/20w51a/assets/' + texture;
-			if (textureSize == '32') imgURL = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-32x/Jappa-1.17/assets/' + texture;
-			if (textureSize == '64') imgURL = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-64x/Jappa-1.17/assets/' + texture;
+
+			if (type == '16') imgURL = 'https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/21w03a/assets/' + name;
+			if (type == '32') imgURL = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-32x/Jappa-1.17/assets/' + name;
+			if (type == '64') imgURL = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-64x/Jappa-1.17/assets/' + name;
+
+			if (type == '16b') imgURL = 'https://raw.githubusercontent.com/ZtechNetwork/MCBVanillaResourcePack/master/' + name;
+			if (type == '32b') imgURL = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Bedrock-32x/Jappa-1.16.200/' + name;
+			if (type == '64b') imgURL = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Bedrock-64x/Jappa-1.16.200/' + name;
 
 			axios.get(imgURL).then((response) => {
 				getMeta(imgURL).then(async dimension => {
 					const size = dimension.width + 'x' + dimension.height;
 
 					var embed = new Discord.MessageEmbed()
-						.setTitle(texture)
+						.setTitle(name)
 						.setColor(colors.BLUE)
 						.setURL(imgURL)
 						.setImage(imgURL)
@@ -148,9 +203,37 @@ module.exports = {
 							{ name: 'Resolution:', value: size, inline:true }
 						)
 
-					if (textureSize == 'vanilla') embed.setFooter('Vanilla Texture', settings.VANILLA_IMG);
-					if (textureSize == '32') embed.setFooter('Compliance 32x', settings.C32_IMG)//.addFields({name: 'Author', value:'WIP'});
-					if (textureSize == '64') embed.setFooter('Compliance 64x', settings.C64_IMG)//.addFields({name: 'Author', value:'WIP'});
+					if (type == '16' || type == '16b') embed.setFooter('Vanilla Texture', settings.VANILLA_IMG);
+					if (type == '32' || type == '32b') embed.setFooter('Compliance 32x', settings.C32_IMG)
+					if (type == '64' || type == '64b') embed.setFooter('Compliance 64x', settings.C64_IMG)
+
+					if (type == '32') {
+						embed.addFields(
+							{ name: 'Author(s)', value: textures[index].c32.author, inline: true},
+							{ name: 'Added', value: textures[index].c32.date, inline: true},
+						);
+					}
+
+					if (type == '64') {
+						embed.addFields(
+							{ name: 'Author(s)', value: textures[index].c64.author, inline: true},
+							{ name: 'Added', value: textures[index].c64.date, inline: true},
+						);
+					}
+
+					if (type == '32b') {
+						embed.addFields(
+							{ name: 'Author(s)', value: texturesBedrock[index].c32.author, inline: true},
+							{ name: 'Added', value: texturesBedrock[index].c32.date, inline: true},
+						);
+					}
+
+					if (type == '64b') {
+						embed.addFields(
+							{ name: 'Author(s)', value: texturesBedrock[index].c64.author, inline: true},
+							{ name: 'Added', value: texturesBedrock[index].c64.date, inline: true},
+						);
+					}
 
 					const embedMessage = await message.channel.send(embed);
 					embedMessage.react('🗑️');
@@ -179,10 +262,15 @@ module.exports = {
 								if (size == '256x256') return magnify(message,  2, embedMessage.embeds[0].image.url);
 								return magnify(message, 8, embedMessage.embeds[0].image.url);
 							}
-							if (reaction.emoji.name === '🌀') {
-								if (textureSize == 'vanilla') return getTexture('32', texture);
-								if (textureSize == '32')      return getTexture('64', texture);
-								if (textureSize == '64')      return getTexture('vanilla', texture);
+							if (reaction.emoji.name === '🌀' && java.includes(type)) {
+								if (type == '16') return getTexture('32', name, index);
+								if (type == '32') return getTexture('64', name, index);
+								if (type == '64') return getTexture('16', name, index);
+							}
+							if (reaction.emoji.name === '🌀' && bedrock.includes(type)) {
+								if (type == '16b') return getTexture('32b', name, index);
+								if (type == '32b') return getTexture('64b', name, index);
+								if (type == '64b') return getTexture('16b', name, index);
 							}
 						})
 						.catch(async () => {

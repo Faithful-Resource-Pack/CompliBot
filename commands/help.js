@@ -7,6 +7,10 @@ client.commands = new Discord.Collection();
 const settings     = require('../settings.js');
 const { warnUser } = require('../functions/warnUser.js');
 
+const BLACKLIST = [
+  'discords', 'reload', 'rules', 'shutdown', 'status', 'test'
+]
+
 module.exports = {
 	name: 'help',
 	aliases: ['h', 'commands'],
@@ -41,26 +45,36 @@ module.exports = {
 		}
 
 		if (!args[0]) {
+			var string = 'Type ``' + prefix + 'help <command>`` to get more information about a command!\n\n';
+      var commandsArray = []
 
-			let commands = Array.from(client.commands.keys());
-			var list = 'Type ``' + prefix + 'help <command>`` to get more information about a command!\n> Do not use aliases :warning:\n\n';
-			for (var i in commands) {
-				var command = client.commands.get(commands[i])
-				list += `**${prefix + command.name}**`
-				if (command.aliases) {
-					list += ' ( ';
-					for (var j in command.aliases) {
-						list += prefix + command.aliases[j] + ' '
-					}
-					list += ')\n';
-				} else list += '\n'
-			}
+      var stringBuilder = ""
+      client.commands.forEach((value, key, map) => {
+        if (!BLACKLIST.includes(value.name)) {
+          stringBuilder = ""
+          stringBuilder += `**${prefix + value.name}**`
+          if (value.aliases) {
+            stringBuilder += ' ( '
+            value.aliases.forEach(element => {
+              stringBuilder += prefix + element + ' '
+            })
+            stringBuilder += ')\n'
+          }
+          else stringBuilder += '\n'
+          commandsArray.push(stringBuilder)
+        }
+      })
+
+      commandsArray.sort()
+      commandsArray.forEach(element => {
+        string += element
+      })
 
 			var embed = new Discord.MessageEmbed()
-				.setTitle('Commands available:')
+				.setTitle('Commands available')
 				.setThumbnail(settings.BOT_IMG)
-				.setDescription(list)
-				.setFooter('CompliBot', settings.BOT_IMG);
+				.setDescription(string)
+				.setFooter('CompliBot', settings.BOT_IMG)
 		}
 
 		const embedMessage = await message.channel.send(embed);

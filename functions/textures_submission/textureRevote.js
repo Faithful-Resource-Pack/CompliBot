@@ -9,8 +9,6 @@ const { getMessages } = require('../getMessages');
 var embed = null;
 
 async function textureRevote(client, inputID, outputID, offset) {
-	// remove this after migration
-	const revoteSentence = 'The following texture has not passed council voting and thus is up for revote:\n';
 
 	let outputChannel = client.channels.cache.get(outputID);
 	let limitDate     = new Date();

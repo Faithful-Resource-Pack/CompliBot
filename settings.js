@@ -46,6 +46,7 @@ const C32_SUBMIT_1      = '773987409993793546';	// #submit-textures
 const C32_SUBMIT_2      = '774220983044669450';	// #council-voting
 const C32_SUBMIT_3      = '780507681987100682';	// #texture-revote
 const C32_RESULTS       = '780507804317384744';	// #texture-results
+const C32_AUTOPUSH_FAIL = '773989840286777345'; // #private
 
 // The bot itself
 const BOT_IMG       = 'https://i.imgur.com/Hf0eeiU.png';
@@ -95,6 +96,7 @@ module.exports = {
 	C32_SUBMIT_2,
 	C32_SUBMIT_3,
 	C32_RESULTS,
+	C32_AUTOPUSH_FAIL,
 
   BOT_IMG,
   VANILLA_IMG,

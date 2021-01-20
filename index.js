@@ -23,6 +23,7 @@ const { logs } = require('./functions/logs');
 const { textureSubmission } = require('./functions/textures_submission/textureSubmission');
 const { textureCouncil }    = require('./functions/textures_submission/textureCouncil');
 const { textureRevote }     = require('./functions/textures_submission/textureRevote');
+const { getResults }        = require('./functions/textures_submission/getResults.js');
 
 // Resources
 const colors  = require('./res/colors');
@@ -40,11 +41,13 @@ let scheduledFunctions = new cron.CronJob('0 0 * * *', () => {
 	textureSubmission(client,settings.C32_SUBMIT_1,settings.C32_SUBMIT_2,5);									  // 5 DAYS OFFSET
 	textureCouncil(client,settings.C32_SUBMIT_2,settings.C32_SUBMIT_3,settings.C32_RESULTS,1);	// 1 DAYS OFFSET
 	textureRevote(client,settings.C32_SUBMIT_3,settings.C32_RESULTS,3);											    // 3 DAYS OFFSET
+	getResults(client, settings.C32_RESULTS);																										// AutoPush textures from #results
 	
 	// C64
 	textureSubmission(client,settings.C64_SUBMIT_1,settings.C64_SUBMIT_2,5);									  // 5 DAYS OFFSET
 	textureCouncil(client,settings.C64_SUBMIT_2,settings.C64_SUBMIT_3,settings.C64_RESULTS,1);	// 1 DAYS OFFSET
 	textureRevote(client,settings.C64_SUBMIT_3,settings.C64_RESULTS,3);											    // 3 DAYS OFFSET
+	getResults(client, settings.C64_RESULTS);																										// AutoPush textures from #results
 });
 
 // Ah, ha, ha, ha, stayin' alive, stayin' alive
@@ -105,6 +108,8 @@ client.on('ready', async () => {
   await client.channels.cache.get('785867553095548948').send(embed);
 });
 
+/* unused or not working stuff, idk
+
 client.on('reconnecting', async () => {
 	var embed = new Discord.MessageEmbed()
     .setTitle('Reconnecting...')
@@ -121,15 +126,35 @@ client.on('disconnect', async () => {
     .setColor(colors.RED)
     .setTimestamp();
   await client.channels.cache.get('785867553095548948').send(embed);
-});
+});*/
 
 /*
  * MEMBER COUNTER
 */
-client.on('guildMemberAdd', async () =>{
+client.on('guildMemberAdd', async member =>{
+  /*if (member.guild.id == '773983706582482946') {
+    var embed = new Discord.MessageEmbed()
+	  	.setAuthor(`${member.tag} joined`)
+	  	.setColor(colors.GREEN)
+	  	//.setThumbnail(member.displayAvatarURL())
+	  	.setTimestamp()
+
+	  await member.guild.channels.cache.get('774333964101615637').send(embed);
+  }*/
+
 	updateMembers(client, settings.CTWEAKS_ID, settings.CTWEAKS_COUNTER);
 });
-client.on('guildMemberRemove', async () =>{
+client.on('guildMemberRemove', async member =>{
+  /*if (member.guild.id == '773983706582482946') {
+    var embed = new Discord.MessageEmbed()
+	  	.setAuthor(`${member.tag} left`)
+	  	.setColor(colors.RED)
+	  	//.setThumbnail(member.displayAvatarURL())
+	  	.setTimestamp()
+
+	  await member.guild.channels.cache.get('774333964101615637').send(embed);
+  }*/
+
 	updateMembers(client, settings.CTWEAKS_ID, settings.CTWEAKS_COUNTER);
 });
 
@@ -311,4 +336,5 @@ client.on('messageDelete', async message => {
 });
 
 // Login the bot
+// 01101000 01110100 01110100 01110000 01110011 00111010 00101111 00101111 01111001 01101111 01110101 01110100 01110101 00101110 01100010 01100101 00101111 01100100 01010001 01110111 00110100 01110111 00111001 01010111 01100111 01011000 01100011 01010001
 client.login(process.env.CLIENT_TOKEN).catch(console.error);
