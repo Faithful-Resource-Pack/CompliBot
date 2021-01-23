@@ -41,7 +41,7 @@ module.exports = {
 
 			}
 
-			else return warnUser('Please provide valid commands & do not use aliases');
+			else return warnUser(message, 'Please provide valid commands & do not use aliases');
 		}
 
 		if (!args[0]) {

@@ -13,13 +13,14 @@ const { warnUser } = require('../../functions/warnUser.js');
 
 module.exports = {
 	name: 'texture',
+	aliases: [ 'textures' ],
 	description: 'Displays a specified texture from Compliance!\nYou can ask for a texture name, or using ``_`` at the begining to ask for non-complete name (such as _sword).\nYou can also use ``/`` at the begining to specify a folder instead of a texture name.',
 	uses: 'Anyone',
 	syntax: `${prefix}texture <vanilla/32/64> <texture_name>\n${prefix}texture <vanilla/32/64> <_name>\n${prefix}texture <vanilla/32/64> </folder/>`,
 	async execute(client, message, args) {
 
-		var textures        = JSON.parse(fs.readFileSync('./contributors.json'));
-		var texturesBedrock = JSON.parse(fs.readFileSync('./contributorsBedrock.json'));
+		var textures        = JSON.parse(fs.readFileSync('./contributors/java.json'));
+		var texturesBedrock = JSON.parse(fs.readFileSync('./contributors/bedrock.json'));
 		var results = [];
 		var index   = [];
 
@@ -209,29 +210,29 @@ module.exports = {
 
 					if (type == '32') {
 						embed.addFields(
-							{ name: 'Author(s)', value: textures[index].c32.author, inline: true},
-							{ name: 'Added', value: textures[index].c32.date, inline: true},
+							{ name: 'Author(s)', value: authorsList(client, textures[index].c32.author), inline: true},
+							{ name: 'Added', value: isValidDate(textures[index].c32.date), inline: true},
 						);
 					}
 
 					if (type == '64') {
 						embed.addFields(
-							{ name: 'Author(s)', value: textures[index].c64.author, inline: true},
-							{ name: 'Added', value: textures[index].c64.date, inline: true},
+							{ name: 'Author(s)', value: authorsList(client, textures[index].c64.author), inline: true},
+							{ name: 'Added', value: isValidDate(textures[index].c64.date), inline: true},
 						);
 					}
 
 					if (type == '32b') {
 						embed.addFields(
-							{ name: 'Author(s)', value: texturesBedrock[index].c32.author, inline: true},
-							{ name: 'Added', value: texturesBedrock[index].c32.date, inline: true},
+							{ name: 'Author(s)', value: authorsList(client, texturesBedrock[index].c32.author), inline: true},
+							{ name: 'Added', value: isValidDate(texturesBedrock[index].c32.date), inline: true},
 						);
 					}
 
 					if (type == '64b') {
 						embed.addFields(
-							{ name: 'Author(s)', value: texturesBedrock[index].c64.author, inline: true},
-							{ name: 'Added', value: texturesBedrock[index].c64.date, inline: true},
+							{ name: 'Author(s)', value: authorsList(client, texturesBedrock[index].c64.author), inline: true},
+							{ name: 'Added', value: isValidDate(texturesBedrock[index].c64.date), inline: true},
 						);
 					}
 
@@ -288,4 +289,30 @@ module.exports = {
 		}
 
 	}
+}
+
+function mentionFromUserTag(client, UserTag) {
+	try {
+		client.users.cache.find(u => u.tag === UserTag).id
+	} catch (error) {
+		return UserTag;
+	}
+	return `<@${client.users.cache.find(u => u.tag === UserTag).id}>`;
+}
+
+function authorsList(client, array) {
+	if (array != undefined) {
+		string = '';
+		for (var i = 0; i < array.length; i++) {
+			if (i != array.length - 1) string += `${mentionFromUserTag(client, array[i])}\n`;
+			else string += `${mentionFromUserTag(client, array[i])}`;
+		}
+		return string;
+	}
+	else return `None`;
+}
+
+function isValidDate(string) {
+	if (string != undefined) return string;
+	else return `No date`;
 }

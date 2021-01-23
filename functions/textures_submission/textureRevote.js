@@ -12,7 +12,7 @@ async function textureRevote(client, inputID, outputID, offset) {
 
 	let outputChannel = client.channels.cache.get(outputID);
 	let limitDate     = new Date();
-	let messages = await getMessages(client,inputID);
+	let messages = await getMessages(client, inputID);
 
 	limitDate.setDate(limitDate.getDate() - offset);
 

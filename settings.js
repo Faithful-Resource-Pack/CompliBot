@@ -34,6 +34,7 @@ const C64_SUBMIT_1      = '747603911677837454';	// #submit-textures
 const C64_SUBMIT_2      = '797780897805238282';	// #council-voting
 const C64_SUBMIT_3      = '797649484259524648';	// #texture-revote
 const C64_RESULTS       = '797648495804678154';	// #texture-results
+const C64_AUTOPUSH_FAIL = '747817813636284490'; // #private
 
 // Compliance 32x
 const C32_IMG           = 'https://i.imgur.com/nOpSBYX.png';
@@ -41,6 +42,7 @@ const C32_COLOR         = '#76C945';
 const C32_ID            = '773983706582482946';
 const C32_MODERATORS_ID = '773984348860711003';
 const C32_LOGS          = '798893497204998161'; // #logs channel
+const C32_MOD_LOGS      = '776145239358046248'; // #mod-log channel
 const C32_COUNCIL_ID    = '775636065338785813';	// Council role
 const C32_SUBMIT_1      = '773987409993793546';	// #submit-textures
 const C32_SUBMIT_2      = '774220983044669450';	// #council-voting
@@ -85,11 +87,13 @@ module.exports = {
 	C64_SUBMIT_2,
 	C64_SUBMIT_3,
 	C64_RESULTS,
+	C64_AUTOPUSH_FAIL,
 
 	C32_IMG,
 	C32_COLOR,
 	C32_ID,
 	C32_LOGS,
+  C32_MOD_LOGS,
 	C32_MODERATORS_ID,
 	C32_COUNCIL_ID,
   C32_SUBMIT_1,

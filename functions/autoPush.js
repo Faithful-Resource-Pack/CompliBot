@@ -1,4 +1,3 @@
-// I haven't tested this code yet
 // original link : https://dev.to/lucis/how-to-push-files-programatically-to-a-repository-using-octokit-with-typescript-1nj0
 // (typescript)
 
@@ -7,7 +6,7 @@ const glob         = require('globby');
 const path         = require('path');
 const { readFile } = require('fs-extra');
 
-async function autoPush(ORGANIZATION, REPO, BRANCH, COMMITMESSAGE) {
+async function autoPush(ORGANIZATION, REPO, BRANCH, COMMITMESSAGE, LOCAL) {
 	
 	// Authentification trough CompliBot GitHub Account
 	const octo = new Octokit({
@@ -19,7 +18,7 @@ async function autoPush(ORGANIZATION, REPO, BRANCH, COMMITMESSAGE) {
 	})
 
 	// Upload files to repo:
-	await uploadToRepo(octo, `./texturesPush/${REPO}`, ORGANIZATION, REPO, BRANCH, COMMITMESSAGE);
+	await uploadToRepo(octo, LOCAL, ORGANIZATION, REPO, BRANCH, COMMITMESSAGE);
 }
 
 /*
@@ -67,8 +66,8 @@ const getCurrentCommit = async (octo, org, repo, branch) => {
 // Notice that readFile's utf8 is typed differently from Github's utf-8
 const getFileAsUTF8 = (filePath) => readFile(filePath, {encoding: 'utf8'})
 
-// Get file as binary file
-const getFileAsBinary = async (filePath) => readFile(filePath, {encoding: 'base64'})
+// Get file as binary file (used for .png files)
+const getFileAsBinary = (filePath) => readFile(filePath, {encoding: 'base64'})
 
 const createBlobForFile = (octo, org, repo) => async (filePath) => {
 	var content = undefined;

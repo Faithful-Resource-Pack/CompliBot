@@ -1,3 +1,13 @@
+/*
+ *    /---------\      \|/
+ *   /           \    --O--
+ *  /             \    /|\
+ *  |    (\_/)    | 
+ *  |   (='.'=)   |  <-- Juk's little vacation house
+ *  |   (")_(")   |  Yeah, that's true, Juk.
+ *  %_____________%
+ */
+
 // Libs:
 require('dotenv').config();
 const Discord   = require('discord.js');
@@ -18,12 +28,14 @@ const { updateMembers } = require('./functions/updateMembers.js');
 const { walkSync }      = require('./functions/walkSync');
 
 const { quote } = require('./functions/quote');
-const { logs } = require('./functions/logs');
+const { logs }  = require('./functions/logs');
 
 const { textureSubmission } = require('./functions/textures_submission/textureSubmission');
 const { textureCouncil }    = require('./functions/textures_submission/textureCouncil');
 const { textureRevote }     = require('./functions/textures_submission/textureRevote');
 const { getResults }        = require('./functions/textures_submission/getResults.js');
+const { autoPush }          = require('./functions/autoPush.js');
+const { doPush }            = require('./functions/doPush.js');
 
 // Resources
 const colors  = require('./res/colors');
@@ -36,18 +48,26 @@ const settings     = require('./settings');
 // Scheduled Functions:
 // Texture submission process: (each day at 00:00 GMT)
 let scheduledFunctions = new cron.CronJob('0 0 * * *', () => {
-
-	// C32
+	// C32x
 	textureSubmission(client,settings.C32_SUBMIT_1,settings.C32_SUBMIT_2,5);									  // 5 DAYS OFFSET
 	textureCouncil(client,settings.C32_SUBMIT_2,settings.C32_SUBMIT_3,settings.C32_RESULTS,1);	// 1 DAYS OFFSET
 	textureRevote(client,settings.C32_SUBMIT_3,settings.C32_RESULTS,3);											    // 3 DAYS OFFSET
-	getResults(client, settings.C32_RESULTS);																										// AutoPush textures from #results
 	
-	// C64
+	// C64x
 	textureSubmission(client,settings.C64_SUBMIT_1,settings.C64_SUBMIT_2,5);									  // 5 DAYS OFFSET
 	textureCouncil(client,settings.C64_SUBMIT_2,settings.C64_SUBMIT_3,settings.C64_RESULTS,1);	// 1 DAYS OFFSET
 	textureRevote(client,settings.C64_SUBMIT_3,settings.C64_RESULTS,3);											    // 3 DAYS OFFSET
-	getResults(client, settings.C64_RESULTS);																										// AutoPush textures from #results
+});
+
+// Texture submission push: (each day at 02:00 GMT)
+let pushToGithub = new cron.CronJob('0 2 * * *', () => {
+	// Download textures from #results
+	getResults(client, settings.C32_RESULTS);
+	getResults(client, settings.C64_RESULTS);
+	// Push them trough GitHub
+	doPush();
+	// Update Contributors
+	autoPush('Compliance-Resource-Pack', 'Contributors', 'main', `Daily update`, `./contributors`);
 });
 
 // Ah, ha, ha, ha, stayin' alive, stayin' alive
@@ -92,6 +112,7 @@ client.on('ready', async () => {
 	 * ENABLE TEXTURE SUBMISSION PROCESS
 	*/
 	scheduledFunctions.start();
+	pushToGithub.start();
 
   /*
 	 * UPDATE MEMBERS
@@ -302,12 +323,6 @@ client.on('message', async message => {
 			undefined
 		);
 	}
-
-	/*
-	 * MESSAGE LOGS : 
-	*/
-	//if (message.guild.id == settings.C64_ID) logs(client, settings.C64_ID, undefined, message, false);
-	//if (message.guild.id == settings.C32_ID) logs(client, settings.C32_ID, undefined, message, false);
 });
 
 client.on('messageUpdate', async (oldMessage, newMessage) => {

@@ -22,15 +22,13 @@ module.exports = {
 
 		if (message.member.hasPermission('ADMINISTRATOR')) {
 			if (Array.isArray(args) && args[0] != undefined) {
-				
-				console.log(args);
 
 				const repositories = ['Compliance-Java-32x','Compliance-Java-64x','Compliance-Bedrock-32x','Compliance-Bedrock-64x'];
 				if (!repositories.includes(args[0])) return warnUser(message, 'This repository isn\'t supported');
 				if (message.attachments.size == 0) return warnUser(message, 'You did not attached the texture!');
 
-				var textures        = JSON.parse(fs.readFileSync('./contributors.json'));
-				var texturesBedrock = JSON.parse(fs.readFileSync('./contributorsBedrock.json'));
+				var textures        = JSON.parse(fs.readFileSync('./contributors/java.json'));
+				var texturesBedrock = JSON.parse(fs.readFileSync('./contributors/bedrock.json'));
 
 				var textureAuthor = args[1];
 				var folder = args[2];
@@ -144,7 +142,7 @@ function generatePush(dir, commit_message) {
 	
 	if (dir.includes('Bedrock')) {
 		if (!isEmptyDir(`./texturesPush/${dir}/textures`)) {
-			autoPush('Compliance-Resource-Pack', dir, BRANCH_BEDROCK, commit_message).then(() => {
+			autoPush('Compliance-Resource-Pack', dir, BRANCH_BEDROCK, commit_message, `./texturesPush/${dir}`).then(() => {
 				fs.rmdirSync(`./texturesPush/${dir}/textures/`, { recursive: true });
 				console.log(`PUSHED TO GITHUB: ${dir}`);
 			});
@@ -152,7 +150,7 @@ function generatePush(dir, commit_message) {
 	}
 	else {
 		if(!isEmptyDir(`./texturesPush/${dir}/assets`)) {
-			autoPush('Compliance-Resource-Pack', dir, BRANCH_JAVA, commit_message).then(() => {
+			autoPush('Compliance-Resource-Pack', dir, BRANCH_JAVA, commit_message, `./texturesPush/${dir}`).then(() => {
 				fs.rmdirSync(`./texturesPush/${dir}/assets/`, { recursive: true });
 				console.log(`PUSHED TO GITHUB: ${dir}`);
 			});
