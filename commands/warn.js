@@ -11,7 +11,7 @@ module.exports = {
 	name: 'warn',
 	description: 'Warn someone',
 	uses: 'Moderators',
-	syntax: `${prefix}warn <@user>`,
+	syntax: `${prefix}warn <@user> <reason>`,
 	async execute(client, message, args) {
 
 		if (message.member.hasPermission('BAN_MEMBERS')) {

@@ -1883,7 +1883,11 @@
     "path": "minecraft/textures/block/dead_bush.png"
   },
   {
-    "c32": {},
+    "c32": {
+      "author": [
+        "Alexsor#0901"
+      ]
+    },
     "c64": {},
     "path": "minecraft/textures/block/dead_fire_coral.png"
   },
@@ -1893,7 +1897,11 @@
     "path": "minecraft/textures/block/dead_fire_coral_block.png"
   },
   {
-    "c32": {},
+    "c32": {
+      "author": [
+        "Alexsor#0901"
+      ]
+    },
     "c64": {},
     "path": "minecraft/textures/block/dead_fire_coral_fan.png"
   },
@@ -2316,7 +2324,11 @@
     "path": "minecraft/textures/block/fire_1.png"
   },
   {
-    "c32": {},
+    "c32": {
+      "author": [
+        "Alexsor#0901"
+      ]
+    },
     "c64": {},
     "path": "minecraft/textures/block/fire_coral.png"
   },
@@ -2330,7 +2342,11 @@
     "path": "minecraft/textures/block/fire_coral_block.png"
   },
   {
-    "c32": {},
+    "c32": {
+      "author": [
+        "Alexsor#0901"
+      ]
+    },
     "c64": {},
     "path": "minecraft/textures/block/fire_coral_fan.png"
   },
@@ -2741,7 +2757,11 @@
     "path": "minecraft/textures/block/horn_coral_block.png"
   },
   {
-    "c32": {},
+    "c32": {
+      "author": [
+        "Alexsor#0901"
+      ]
+    },
     "c64": {},
     "path": "minecraft/textures/block/horn_coral_fan.png"
   },
@@ -4429,7 +4449,11 @@
     "path": "minecraft/textures/block/repeater.png"
   },
   {
-    "c32": {},
+    "c32": {
+      "author": [
+        "verisimal#3136"
+      ]
+    },
     "c64": {},
     "path": "minecraft/textures/block/repeater_on.png"
   },
@@ -12489,7 +12513,11 @@
     "path": "minecraft/textures/item/lava_bucket.png"
   },
   {
-    "c32": {},
+    "c32": {
+      "author": [
+        "Alexsor#0901"
+      ]
+    },
     "c64": {},
     "path": "minecraft/textures/item/lead.png"
   },
