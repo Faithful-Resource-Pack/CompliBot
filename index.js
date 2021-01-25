@@ -37,9 +37,14 @@ const { getResults }        = require('./functions/textures_submission/getResult
 const { autoPush }          = require('./functions/autoPush.js');
 const { doPush }            = require('./functions/doPush.js');
 
+const { checkTimeout } = require('./functions/moderation/checkTimeout.js');
+const { addMutedRole } = require('./functions/moderation/addMutedRole.js');
+const warnList         = JSON.parse(fs.readFileSync('./json/moderation.json'));
+
 // Resources
 const colors  = require('./res/colors');
 const strings = require('./res/strings');
+const keywords = require('./res/keywords');
 
 // Import settings & commands handler:
 const commandFiles = walkSync('./commands').filter(file => file.endsWith('.js'));
@@ -47,28 +52,31 @@ const settings     = require('./settings');
 
 // Scheduled Functions:
 // Texture submission process: (each day at 00:00 GMT)
-let scheduledFunctions = new cron.CronJob('0 0 * * *', () => {
+let scheduledFunctions = new cron.CronJob('0 0 * * *', async () => {
 	// C32x
-	textureSubmission(client,settings.C32_SUBMIT_1,settings.C32_SUBMIT_2,5);									  // 5 DAYS OFFSET
-	textureCouncil(client,settings.C32_SUBMIT_2,settings.C32_SUBMIT_3,settings.C32_RESULTS,1);	// 1 DAYS OFFSET
-	textureRevote(client,settings.C32_SUBMIT_3,settings.C32_RESULTS,3);											    // 3 DAYS OFFSET
+	await textureSubmission(client,settings.C32_SUBMIT_1,settings.C32_SUBMIT_2,5);									  // 5 DAYS OFFSET
+	await textureCouncil(client,settings.C32_SUBMIT_2,settings.C32_SUBMIT_3,settings.C32_RESULTS,1);	// 1 DAYS OFFSET
+	await textureRevote(client,settings.C32_SUBMIT_3,settings.C32_RESULTS,3);											    // 3 DAYS OFFSET
 	
 	// C64x
-	textureSubmission(client,settings.C64_SUBMIT_1,settings.C64_SUBMIT_2,5);									  // 5 DAYS OFFSET
-	textureCouncil(client,settings.C64_SUBMIT_2,settings.C64_SUBMIT_3,settings.C64_RESULTS,1);	// 1 DAYS OFFSET
-	textureRevote(client,settings.C64_SUBMIT_3,settings.C64_RESULTS,3);											    // 3 DAYS OFFSET
+	await textureSubmission(client,settings.C64_SUBMIT_1,settings.C64_SUBMIT_2,5);									  // 5 DAYS OFFSET
+	await textureCouncil(client,settings.C64_SUBMIT_2,settings.C64_SUBMIT_3,settings.C64_RESULTS,1);	// 1 DAYS OFFSET
+	await textureRevote(client,settings.C64_SUBMIT_3,settings.C64_RESULTS,3);											    // 3 DAYS OFFSET
+	
 });
 
-// Texture submission push: (each day at 02:00 GMT)
-let pushToGithub = new cron.CronJob('0 2 * * *', () => {
+// Texture submission push: (each day at 01:00 GMT)
+let pushToGithub = new cron.CronJob('10 1 * * *', async () => {
 	// Download textures from #results
-	getResults(client, settings.C32_RESULTS);
-	getResults(client, settings.C64_RESULTS);
-	// Push them trough GitHub
-	doPush();
-	// Update Contributors
-	autoPush('Compliance-Resource-Pack', 'Contributors', 'main', `Daily update`, `./contributors`);
+	await getResults(client, settings.C32_RESULTS);
+	await getResults(client, settings.C64_RESULTS);
+
+	await doPush();	// Push them trough GitHub
+	await autoPush('Compliance-Resource-Pack', 'JSON', 'main', `Daily update`, `./json`);
 });
+
+// Moderation timeout check : (each 30s)
+setInterval(function() {checkTimeout(client)},30000)
 
 // Ah, ha, ha, ha, stayin' alive, stayin' alive
 // Ah, ha, ha, ha, stayin' alive
@@ -129,53 +137,26 @@ client.on('ready', async () => {
   await client.channels.cache.get('785867553095548948').send(embed);
 });
 
-/* unused or not working stuff, idk
-
-client.on('reconnecting', async () => {
-	var embed = new Discord.MessageEmbed()
-    .setTitle('Reconnecting...')
-    .setDescription(`<@!${client.user.id}> \n ID: ${client.user.id}`)
-    .setColor(colors.YELLOW)
-    .setTimestamp();
-  await client.channels.cache.get('785867553095548948').send(embed);
-});
-
-client.on('disconnect', async () => {
-	var embed = new Discord.MessageEmbed()
-    .setTitle('Disconnect...')
-    .setDescription(`<@!${client.user.id}> \n ID: ${client.user.id}`)
-    .setColor(colors.RED)
-    .setTimestamp();
-  await client.channels.cache.get('785867553095548948').send(embed);
-});*/
-
 /*
- * MEMBER COUNTER
+ * MEMBER JOIN
 */
 client.on('guildMemberAdd', async member =>{
-  /*if (member.guild.id == '773983706582482946') {
-    var embed = new Discord.MessageEmbed()
-	  	.setAuthor(`${member.tag} joined`)
-	  	.setColor(colors.GREEN)
-	  	//.setThumbnail(member.displayAvatarURL())
-	  	.setTimestamp()
 
-	  await member.guild.channels.cache.get('774333964101615637').send(embed);
-  }*/
+	// Muted role check:
+	for (var i = 0; i < warnList.length; i++) {
+		if (`${member.id}` == warnList[i].user && warnList[i].muted == true) {
+			const role = member.guild.roles.cache.find(r => r.name === 'Muted');
+			await member.roles.add(role);
+		}
+	}
 
 	updateMembers(client, settings.CTWEAKS_ID, settings.CTWEAKS_COUNTER);
 });
+
+/*
+ * MEMBER LEFT
+ */
 client.on('guildMemberRemove', async member =>{
-  /*if (member.guild.id == '773983706582482946') {
-    var embed = new Discord.MessageEmbed()
-	  	.setAuthor(`${member.tag} left`)
-	  	.setColor(colors.RED)
-	  	//.setThumbnail(member.displayAvatarURL())
-	  	.setTimestamp()
-
-	  await member.guild.channels.cache.get('774333964101615637').send(embed);
-  }*/
-
 	updateMembers(client, settings.CTWEAKS_ID, settings.CTWEAKS_COUNTER);
 });
 
@@ -199,7 +180,7 @@ client.on('message', async message => {
     await message.react('❌');
     await msg.delete({timeout: 30000});
   }
-
+	
 	const args        = message.content.slice(prefix.length).trim().split(/ +/);
 	const commandName = args.shift().toLowerCase();
 	const command     = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
@@ -223,9 +204,8 @@ client.on('message', async message => {
 	*/
   var embed = new Discord.MessageEmbed()
     .setAuthor(message.author.tag, message.author.displayAvatarURL())
-		.setDescription(`command: \`${commandName}\` \n args: \`${args}\``)
+		.setDescription(`[Jump to location](${message.url})\n\n**Command**: \`${commandName}\`\n**Channel**: <#${message.channel.id}>\n**Guild**: \`${message.guild}\`\n**User ID**: \`${message.author.id}\`\n**Message ID**: \`${message.id}\`\n**Command Sent**: \`${message.createdAt}\``)
 		.setTimestamp()
-    .setFooter(`executed in: ${message.guild} \n\u200B`);
   await client.channels.cache.get('785867690627039232').send(embed);
 });
 
@@ -233,8 +213,63 @@ client.on('message', async message => {
  * EASTER EGGS & CUSTOM COMMANDS:
 */
 client.on('message', async message => {
+	for (var i = 0; i < warnList.length; i++) {
+		if (warnList[i].user == message.author.id && warnList[i].muted == true) {
+			message.delete();
+			addMutedRole(client, message.author.id);
+		}
+	}
+
 	if (message.content.startsWith(prefix) || message.author.bot) return; // Avoid message WITH prefix & bot messages
 
+  /*
+   * Mod Assistance
+   */
+  var matchingWords = []
+  var reasons = []
+  keywords.POLITICAL.forEach(word => {
+    if (message.content.toLowerCase().includes(word.toLowerCase())) {
+      matchingWords.push(word);
+      if (!reasons.includes('politics')) reasons.push('politics');
+    }
+  })
+
+  keywords.HATE_SPEECH.forEach(word => {
+    if (message.content.toLowerCase().includes(word.toLowerCase())) {
+      matchingWords.push(word);
+      if (!reasons.includes('hate speech')) reasons.push('hate speech');
+    }
+  })
+
+	keywords.NSFW.forEach(word => {
+    if (message.content.toLowerCase().includes(word.toLowerCase())) {
+      matchingWords.push(word);
+      if (!reasons.includes('NSFW')) reasons.push('NSFW');
+    }
+  })
+
+	keywords.RELIGIOUS.forEach(word => {
+    if (message.content.toLowerCase().includes(word.toLowerCase())) {
+      matchingWords.push(word);
+      if (!reasons.includes('Religious')) reasons.push('Religious');
+    }
+  })
+
+  if (matchingWords.length != 0) {
+    var embed = new Discord.MessageEmbed()
+			.setAuthor(`${message.author.tag} may have broken the rules`, message.author.displayAvatarURL())
+		  .setColor(colors.RED)
+		  .setDescription(
+        `[Jump to message](${message.url})\n\n**Keywords**: \`${matchingWords.join(', ')}\`\n**Reasons**: \`${reasons.join(', ')}\`\n**Server**: \`${message.guild}\`\n\n\`\`\`${message.content}\`\`\``
+      )
+	    .setTimestamp()
+
+		client.channels.cache.get('803344583919534091').send(embed)
+  }
+
+  /*
+   * Funny Stuff
+   */
 	if (message.content.includes('(╯°□°）╯︵ ┻━┻')) return await message.reply('┬─┬ ノ( ゜-゜ノ) calm down bro');
 
 	if (message.content === 'F' ) return await message.react('🇫');

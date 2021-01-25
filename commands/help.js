@@ -45,7 +45,7 @@ module.exports = {
 		}
 
 		if (!args[0]) {
-			var string = 'Type ``' + prefix + 'help <command>`` to get more information about a command!\n\n';
+			var string = 'Type ``' + prefix + 'help <command>`` to get more information about a specific command!\n\n';
       var commandsArray = []
 
       var stringBuilder = ""

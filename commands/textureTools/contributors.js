@@ -17,13 +17,13 @@ module.exports = {
 		if (message.member.hasPermission('ADMINISTRATOR')) {
 
 			if (args[0] == 'update') {
-				autoPush('Compliance-Resource-Pack', 'Contributors', 'main', `Manual Update executed by: ${message.author.username}`, `./contributors`);
+				autoPush('Compliance-Resource-Pack', 'JSON', 'main', `Manual Update executed by: ${message.author.username}`, `./json`);
 				return await await message.react('✅');
 			}
 
 			if (args[0] == 'add' || args[0] == 'remove') {
-				var textures        = JSON.parse(fs.readFileSync('./contributors/java.json'));
-				var texturesBedrock = JSON.parse(fs.readFileSync('./contributors/bedrock.json'));
+				var textures        = JSON.parse(fs.readFileSync('./json/contributors/java.json'));
+				var texturesBedrock = JSON.parse(fs.readFileSync('./json/contributors/bedrock.json'));
 				var index = -1;
 
 				if (!args[4].includes('#') || args[4] == undefined) return warnUser(message, 'The author must be a Discord Tag, ex: `Name#1234`');
@@ -65,7 +65,7 @@ module.exports = {
 						} else return warnUser(message,'Unknown categorie, please use `c32` or `c64` yours: '+args[3]);
 					} else return warnUser(message, 'Unknown texture, please check spelling');
 
-					fs.writeFileSync('./contributors/java.json', JSON.stringify(textures, null, 2));
+					fs.writeFileSync('./json/contributors/java.json', JSON.stringify(textures, null, 2));
 
 				} 
 				else if (args[2].toLowerCase() == 'bedrock') {
@@ -106,7 +106,7 @@ module.exports = {
 						} else return warnUser(message,'Unknown categorie, please use `c32` or `c64` yours: '+args[3]);
 					} else return warnUser(message, 'Unknown texture, please check spelling');
 
-					fs.writeFileSync('./contributors/bedrock.json', JSON.stringify(texturesBedrock, null, 2));
+					fs.writeFileSync('./json/contributors/bedrock.json', JSON.stringify(texturesBedrock, null, 2));
 
 				} else return warnUser(message,'Unknown resource pack type, please use `java` or `bedrock` your: '+args[2]);
 			}

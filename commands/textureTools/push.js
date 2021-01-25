@@ -27,8 +27,8 @@ module.exports = {
 				if (!repositories.includes(args[0])) return warnUser(message, 'This repository isn\'t supported');
 				if (message.attachments.size == 0) return warnUser(message, 'You did not attached the texture!');
 
-				var textures        = JSON.parse(fs.readFileSync('./contributors/java.json'));
-				var texturesBedrock = JSON.parse(fs.readFileSync('./contributors/bedrock.json'));
+				var textures        = JSON.parse(fs.readFileSync('./json/contributors/java.json'));
+				var texturesBedrock = JSON.parse(fs.readFileSync('./json/contributors/bedrock.json'));
 
 				var textureAuthor = args[1];
 				var folder = args[2];
@@ -121,11 +121,11 @@ module.exports = {
 				path = undefined;
 				if (type == 'bedrock') {
 					let data = JSON.stringify(texturesBedrock, null, 2);
-					fs.writeFileSync('./contributorsBedrock.json', data);
+					fs.writeFileSync('./json/contributors/bedrock.json', data);
 					path = searchBedrock;
-				} else {
+				} else if (type == 'java') {
 					let data = JSON.stringify(textures, null, 2);
-					fs.writeFileSync('./contributors.json', data);
+					fs.writeFileSync('./json/contributors/java.json', data);
 					path = search;
 				}
 

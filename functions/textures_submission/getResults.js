@@ -8,8 +8,8 @@ const { getMessages } = require('../getMessages.js');
 async function getResults(client, inputID, OFFSET_DAY = 0) {
 
 	// get contributors files:
-	var texturesBedrock = JSON.parse(fs.readFileSync('./contributors/java.json'));
-	var texturesJava    =	JSON.parse(fs.readFileSync('./contributors/bedrock.json'));
+	var texturesBedrock = JSON.parse(fs.readFileSync('./json/contributors/java.json'));
+	var texturesJava    =	JSON.parse(fs.readFileSync('./json/contributors/bedrock.json'));
 
 	// set offset (used for developpment);
 	var offsetDate = new Date();
@@ -54,6 +54,7 @@ async function getResults(client, inputID, OFFSET_DAY = 0) {
 
 				// Search inside bedrock.json if java.json doesn't have the texture
 				if (textureIndex == -1) {
+					textureType = undefined;
 					var searchBedrock = `textures/${textureFolder.replace('textures/','')}/${textureName}`;
 
 					for (var i = 0; i < texturesBedrock.length; i++) {
@@ -99,12 +100,14 @@ async function getResults(client, inputID, OFFSET_DAY = 0) {
 					}
 
 					// Update Complibot files:
-					if (textureType == 'c32-bedrock' || textureType == 'c64-bedrock') await fs.writeFileSync('./contributors/bedrock.json', JSON.stringify(texturesBedrock, null, 2));
-					else if (textureType == 'c32' || textureType == 'c64') await fs.writeFileSync('./contributors/java.json', JSON.stringify(texturesJava, null, 2));
-
-					// Download file into Complibot files:
-					if (textureType == 'c32-bedrock' || textureType == 'c64-bedrock') await download(message.embeds[0].image.url, textureType, searchBedrock, textureName);
-					else if (textureType == 'c32' || textureType == 'c64') await download(message.embeds[0].image.url, textureType, searchJava, textureName);
+					if (textureType == 'c32-bedrock' || textureType == 'c64-bedrock') {
+						await fs.writeFileSync('./json/contributors/bedrock.json', JSON.stringify(texturesBedrock, null, 2));
+						await download(message.embeds[0].image.url, textureType, searchBedrock, textureName);
+					}
+					else if (textureType == 'c32' || textureType == 'c64') {
+						await fs.writeFileSync('./json/contributors/java.json', JSON.stringify(texturesJava, null, 2));
+						await download(message.embeds[0].image.url, textureType, searchJava, textureName);
+					}
 				}
 			}
 

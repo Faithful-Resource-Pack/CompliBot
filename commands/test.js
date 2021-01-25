@@ -17,7 +17,7 @@ module.exports = {
 	async execute(client, message, args) {
     if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD) {
 			
-			getResults(client, settings.C32_RESULTS);
+			// getResults(client, settings.C32_RESULTS);
 			// getResults(client, settings.C64_RESULTS);
 			// Push them trough GitHub
 			doPush();

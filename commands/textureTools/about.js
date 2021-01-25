@@ -14,8 +14,8 @@ module.exports = {
 	syntax: `${prefix}about me\n${prefix}about <userTag>\n`,
 	async execute(client, message, args) {
 
-		var textures        = JSON.parse(fs.readFileSync('./contributors/java.json'));
-		var texturesBedrock = JSON.parse(fs.readFileSync('./contributors/bedrock.json'));
+		var textures        = JSON.parse(fs.readFileSync('./json/contributors/java.json'));
+		var texturesBedrock = JSON.parse(fs.readFileSync('./json/contributors/bedrock.json'));
 		var embed = new Discord.MessageEmbed();
 
 		var javac32 = [];
@@ -101,9 +101,9 @@ module.exports = {
 		if (countJava32+countJava64+countBedrock32+countBedrock64 > 0) embed.addFields({name: 'Total:', value: countJava32+countJava64+countBedrock32+countBedrock64, inline: true});
 
 		if (countJava32 > 0) embedJava.addFields({name: 'Java 32x:', value: javac32, inline: true});
-		if (countJava64 > 0) embedJava.addFields({name: 'Java 64x:', value: javac32, inline: true});
-		if (countBedrock32 > 0) embedBedrock.addFields({name: 'Bedrock 32x:', value: bedrock32, inline: true});
-		if (countBedrock64 > 0) embedBedrock.addFields({name: 'Bedrock 64x:', value: bedrock64, inline: true});
+		if (countJava64 > 0) embedJava.addFields({name: 'Java 64x:', value: javac64, inline: true});
+		if (countBedrock32 > 0) embedBedrock.addFields({name: 'Bedrock 32x:', value: bedrockc32, inline: true});
+		if (countBedrock64 > 0) embedBedrock.addFields({name: 'Bedrock 64x:', value: bedrockc64, inline: true});
 
 		embed.setDescription(`${embed.description}\n\n1️⃣ To see Compliance Java textures list\n2️⃣ To see Compliance Bedrock textures list`)
 		var embedMessage = await message.channel.send(embed);

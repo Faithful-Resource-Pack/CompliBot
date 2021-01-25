@@ -19,8 +19,8 @@ module.exports = {
 	syntax: `${prefix}texture <vanilla/32/64> <texture_name>\n${prefix}texture <vanilla/32/64> <_name>\n${prefix}texture <vanilla/32/64> </folder/>`,
 	async execute(client, message, args) {
 
-		var textures        = JSON.parse(fs.readFileSync('./contributors/java.json'));
-		var texturesBedrock = JSON.parse(fs.readFileSync('./contributors/bedrock.json'));
+		var textures        = JSON.parse(fs.readFileSync('./json/contributors/java.json'));
+		var texturesBedrock = JSON.parse(fs.readFileSync('./json/contributors/bedrock.json'));
 		var results = [];
 		var index   = [];
 

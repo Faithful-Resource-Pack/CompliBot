@@ -1908,7 +1908,11 @@
     "path": "minecraft/textures/block/dead_horn_coral_block.png"
   },
   {
-    "c32": {},
+    "c32": {
+      "author": [
+        "EachMenderKhai#0260"
+      ]
+    },
     "c64": {},
     "path": "minecraft/textures/block/dead_horn_coral_fan.png"
   },
@@ -6670,12 +6674,20 @@
     "path": "minecraft/textures/entity/fish/tropical_b_pattern_6.png"
   },
   {
-    "c32": {},
+    "c32": {
+      "author": [
+        "Tekayo#5081"
+      ]
+    },
     "c64": {},
     "path": "minecraft/textures/entity/fox/fox.png"
   },
   {
-    "c32": {},
+    "c32": {
+      "author": [
+        "Tekayo#5081"
+      ]
+    },
     "c64": {},
     "path": "minecraft/textures/entity/fox/fox_sleep.png"
   },
@@ -11840,12 +11852,7 @@
         "FabriXd#8017"
       ]
     },
-    "c64": {
-      "author": [
-        "FabriXd#8017"
-      ],
-      "date": "01/23/2021"
-    },
+    "c64": {},
     "path": "minecraft/textures/item/diamond_sword.png"
   },
   {
@@ -12969,7 +12976,11 @@
     "path": "minecraft/textures/item/paper.png"
   },
   {
-    "c32": {},
+    "c32": {
+      "author": [
+        "Pythagoras_314#5176"
+      ]
+    },
     "c64": {},
     "path": "minecraft/textures/item/phantom_membrane.png"
   },
@@ -13050,7 +13061,11 @@
     "path": "minecraft/textures/item/potion_overlay.png"
   },
   {
-    "c32": {},
+    "c32": {
+      "author": [
+        "verisimal#3136"
+      ]
+    },
     "c64": {},
     "path": "minecraft/textures/item/powder_snow_bucket.png"
   },
