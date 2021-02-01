@@ -40,7 +40,7 @@ module.exports = {
 						return magnify(message, FACTOR, DATA);
 					}
 					else return warnUser(message,`The message from the provided URL does not have any image attached.`);
-				}).catch(error => { return warnUser(message,error + ' The message URL needs to be from the same channel') });
+				}).catch(error => { return warnUser(message,error + ' I can only magnify images from the channel. Don\'t ask why, I don\'t know myself.') });
 			}
 
 			// Image URL
