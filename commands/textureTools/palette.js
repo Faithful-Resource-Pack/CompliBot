@@ -1,21 +1,22 @@
 const prefix = process.env.PREFIX;
 
-const { tile } = require('../../functions/tile.js');
+const { palette } = require('../../functions/palette.js');
 const { warnUser } = require('../../functions/warnUser.js');
 
 module.exports = {
-	name: 'tile',
-	description: 'Tile an image,\nImage URL needs to end with ``.png`` or ``.jpeg/jpg``,\nMessage ID needs to be from the same channel',
+	name: 'palette',
+	aliases: [ 'colors', 'color', 'colormap' ],
+	description: 'Get colors of an image,\nImage URL needs to end with ``.png`` or ``.jpeg/jpg``,\nMessage ID needs to be from the same channel',
 	uses: 'Anyone',
-	syntax: `${prefix}tile attach an image\n${prefix}tile <Discord message url>\n${prefix}tile <image URL>\n${prefix}tile <message ID>\n${prefix}tile [up/^/last]`,
+	syntax: `${prefix}palette attach an image\n${prefix}palette <Discord message url>\n${prefix}palette <image URL>\n${prefix}palette <message ID>\n${prefix}palette [up/^/last]`,
 	async execute(client, message, args) {
 		var DATA;
-
+		
 		// <data>
 		// image attached
 		if ((args[0] == undefined || args[0] == '') && message.attachments.size > 0) {
 			DATA = message.attachments.first().url;
-			return tile(message, DATA);
+			return palette(message, DATA);
 		}
 
 		// previous image
@@ -28,7 +29,7 @@ module.exports = {
 			message.channel.messages.fetch(args[0].split('/').pop()).then(msg => {
 				if (msg.attachments.size > 0) {
 					DATA = msg.attachments.first().url;
-					return tile(message, DATA);
+					return palette(message, DATA);
 				}
 				else return warnUser(message,`The message from the provided URL does not have any image attached.`);
 			}).catch(error => { return warnUser(message,error + ' The message URL needs to be from the same channel') });
@@ -38,7 +39,7 @@ module.exports = {
 		else if (args[0].startsWith('https://') || args[0].startsWith('http://')) {
 			if (args[0].endsWith('.png') || args[0].endsWith('.jpeg') || args[0].endsWith('.jpg')) {
 				DATA = args[0];
-				return tile(message, DATA);
+				return palette(message, DATA);
 			} else return warnUser(message,`Image extension is not supported`)
 		}
 
@@ -47,14 +48,14 @@ module.exports = {
 			message.channel.messages.fetch(args[0]).then(msg => {
 				if (msg.attachments.size > 0) {
 					DATA = msg.attachments.first().url;
-					return tile(message, DATA);
+					return palette(message, DATA);
 				}
 				else return warnUser(message,`The message from the provided ID does not have any image attached.`);
 			}).catch(error => {
 				return warnUser(message,error);
 			})
 		}
-
+	
 		async function PreviousImage() {
 			var found = false;
 			var messages = [];
@@ -76,7 +77,7 @@ module.exports = {
 				}
 			}
 
-			if (found) await tile(message, url);
+			if (found) await palette(message, url);
 			else return warnUser(message,'No image found in the 10 previous messages.');
 		}
 	}

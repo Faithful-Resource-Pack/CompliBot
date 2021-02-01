@@ -91,8 +91,8 @@ module.exports = {
         websiteEmbed(
 					'Compliance 32x',
 					'https://compliancepack.net/',
-					'soon™',
-					'soon™',
+					'https://www.curseforge.com/minecraft/texture-packs/compliance-32x',
+					'https://www.planetminecraft.com/texture-pack/compliance-32x/',
 					settings.C32_IMG,
 					settings.C32_COLOR
 				);
@@ -168,8 +168,8 @@ module.exports = {
 			websiteEmbed(
 				'Compliance 32x',
 				'https://compliancepack.net/',
-				'soon™',
-				'soon™',
+				'https://www.curseforge.com/minecraft/texture-packs/compliance-32x',
+				'https://www.planetminecraft.com/texture-pack/compliance-32x/',
 				settings.C32_IMG,
 				settings.C32_Color
 			);

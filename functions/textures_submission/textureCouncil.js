@@ -34,15 +34,20 @@ async function textureCouncil(client, inputID, outputFalseID, outputTrueID, offs
 				.setAuthor(message.embeds[0].author.name, message.embeds[0].author.iconURL)
 				.setDescription(strings.TEXTURE_WIN_COUNCIL)
 				.addFields(
-					{ name: 'Name:', value: message.embeds[0].fields[0].value, inline: true },
-					{ name: 'Folder:', value: message.embeds[0].fields[1].value, inline: true },
-					{ name: 'Comment:', value: message.embeds[0].description }
+					{ name: 'Name:',    value: message.embeds[0].fields[0].value, inline: true },
+					{ name: 'Folder:',  value: message.embeds[0].fields[1].value, inline: true }
+					//{ name: 'Type:',    value: message.embeds[0].fields[2].value, inline: true } should be added after transition
 				)
 				.setFooter('CompliBot', settings.BOT_IMG);
 
-			if (message.embeds[0].title) {
-				embed.setTitle(message.embeds[0].title).setURL(message.embeds[0].url);
-			}
+			// should be removed after transition
+			if (message.embeds[0].fields[2] != undefined) embed.addFields({ name: 'Type:',    value: message.embeds[0].fields[2].value, inline: true });
+			else embed.addFields({ name: 'Type:', value: 'java', inline: true });
+			/////////////////////////////////////
+
+			if (message.embeds[0].description != undefined) embed.addFields({ name: 'Comment:', value: message.embeds[0].description });
+
+			if (message.embeds[0].title) embed.setTitle(message.embeds[0].title).setURL(message.embeds[0].url);
 			else embed.setImage(message.embeds[0].image.url);
 
 			await resultChannel.send(embed);
@@ -58,15 +63,20 @@ async function textureCouncil(client, inputID, outputFalseID, outputTrueID, offs
 				.setAuthor(message.embeds[0].author.name, message.embeds[0].author.iconURL)
 				.setDescription(strings.TEXTURE_DEFEAT_COUNCIL)
 				.addFields(
-					{ name: 'Name:', value: message.embeds[0].fields[0].value, inline: true },
-					{ name: 'Folder:', value: message.embeds[0].fields[1].value, inline: true },
-					{ name: 'Comment:', value: message.embeds[0].description }
+					{ name: 'Name:',    value: message.embeds[0].fields[0].value, inline: true },
+					{ name: 'Folder:',  value: message.embeds[0].fields[1].value, inline: true },
+					//{ name: 'Type:',    value: message.embeds[0].fields[2].value, inline: true } should be added after transition
 				)
 				.setFooter('CompliBot', settings.BOT_IMG);
+			
+			// should be removed after transition
+			if (message.embeds[0].fields[2] != undefined) embed.addFields({ name: 'Type:',    value: message.embeds[0].fields[2].value, inline: true });
+			else embed.addFields({ name: 'Type:', value: 'None', inline: true });
+			/////////////////////////////////////
 
-			if (message.embeds[0].title) {
-				embed.setTitle(message.embeds[0].title).setURL(message.embeds[0].url);
-			}
+			if (message.embeds[0].description != undefined) embed.addFields({ name: 'Comment:', value: message.embeds[0].description });
+
+			if (message.embeds[0].title) embed.setTitle(message.embeds[0].title).setURL(message.embeds[0].url);
 			else embed.setImage(message.embeds[0].image.url);
 
 			await revoteChannel.send(embed)

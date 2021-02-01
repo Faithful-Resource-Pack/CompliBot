@@ -33,7 +33,7 @@ module.exports = {
 		var   max = 0
 
 		if (args[0] == 'me' || args[0] == undefined) {
-			embed.setDescription(`About <@${client.users.cache.find(u => u.tag === message.author.tag).id}> contributions:`)
+			embed.setDescription(`About <@${client.users.cache.find(u => u.tag === message.author.tag).id}>'s contributions:`)
 				.setColor(colors.BLUE)
 				.setAuthor(message.author.tag, message.author.displayAvatarURL());
 			userTag = message.author.tag;
@@ -105,7 +105,7 @@ module.exports = {
 		if (countBedrock32 > 0) embedBedrock.addFields({name: 'Bedrock 32x:', value: bedrockc32, inline: true});
 		if (countBedrock64 > 0) embedBedrock.addFields({name: 'Bedrock 64x:', value: bedrockc64, inline: true});
 
-		embed.setDescription(`${embed.description}\n\n1️⃣ To see Compliance Java textures list\n2️⃣ To see Compliance Bedrock textures list`)
+		embed.setDescription(`${embed.description}\n\n1️⃣ To see the Compliance Java texture list\n2️⃣ To see the Compliance Bedrock texture list`)
 		var embedMessage = await message.channel.send(embed);
 		loop(embedMessage, message, embed, embedJava, embedBedrock);
 	}

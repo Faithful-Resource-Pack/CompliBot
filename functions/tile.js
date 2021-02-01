@@ -31,7 +31,7 @@ function tile(message, url) {
 		const embedMessage = await message.channel.send(embed);
 
     embedMessage.react('🗑️');
-		embedMessage.react('🔎');
+//		embedMessage.react('🔎');
 
 		const filter = (reaction, user) => {
 			return ['🗑️','🔎'].includes(reaction.emoji.name) && user.id === message.author.id;

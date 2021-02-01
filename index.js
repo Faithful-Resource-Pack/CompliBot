@@ -30,21 +30,21 @@ const { walkSync }      = require('./functions/walkSync');
 const { quote } = require('./functions/quote');
 const { logs }  = require('./functions/logs');
 
-const { textureSubmission } = require('./functions/textures_submission/textureSubmission');
-const { textureCouncil }    = require('./functions/textures_submission/textureCouncil');
-const { textureRevote }     = require('./functions/textures_submission/textureRevote');
+const { textureSubmission } = require('./functions/textures_submission/textureSubmission.js');
+const { textureCouncil }    = require('./functions/textures_submission/textureCouncil.js');
+const { textureRevote }     = require('./functions/textures_submission/textureRevote.js');
 const { getResults }        = require('./functions/textures_submission/getResults.js');
 const { autoPush }          = require('./functions/autoPush.js');
 const { doPush }            = require('./functions/doPush.js');
 
-const { checkTimeout } = require('./functions/moderation/checkTimeout.js');
-const { addMutedRole } = require('./functions/moderation/addMutedRole.js');
-const warnList         = JSON.parse(fs.readFileSync('./json/moderation.json'));
+const { checkTimeout }      = require('./functions/moderation/checkTimeout.js');
+const { addMutedRole }      = require('./functions/moderation/addMutedRole.js');
+const { keywordsDetection } = require('./functions/moderation/keywordsDetection.js');
+const warnList              = JSON.parse(fs.readFileSync('./json/moderation.json'));
 
 // Resources
 const colors  = require('./res/colors');
 const strings = require('./res/strings');
-const keywords = require('./res/keywords');
 
 // Import settings & commands handler:
 const commandFiles = walkSync('./commands').filter(file => file.endsWith('.js'));
@@ -55,18 +55,20 @@ const settings     = require('./settings');
 let scheduledFunctions = new cron.CronJob('0 0 * * *', async () => {
 	// C32x
 	await textureSubmission(client,settings.C32_SUBMIT_1,settings.C32_SUBMIT_2,5);									  // 5 DAYS OFFSET
+	await textureSubmission(client,settings.C32_SUBMIT_1B,settings.C32_SUBMIT_2,5);									  // 5 DAYS OFFSET
 	await textureCouncil(client,settings.C32_SUBMIT_2,settings.C32_SUBMIT_3,settings.C32_RESULTS,1);	// 1 DAYS OFFSET
 	await textureRevote(client,settings.C32_SUBMIT_3,settings.C32_RESULTS,3);											    // 3 DAYS OFFSET
 	
 	// C64x
 	await textureSubmission(client,settings.C64_SUBMIT_1,settings.C64_SUBMIT_2,5);									  // 5 DAYS OFFSET
+	await textureSubmission(client,settings.C64_SUBMIT_1B,settings.C64_SUBMIT_2,5);									  // 5 DAYS OFFSET
 	await textureCouncil(client,settings.C64_SUBMIT_2,settings.C64_SUBMIT_3,settings.C64_RESULTS,1);	// 1 DAYS OFFSET
 	await textureRevote(client,settings.C64_SUBMIT_3,settings.C64_RESULTS,3);											    // 3 DAYS OFFSET
 	
 });
 
 // Texture submission push: (each day at 01:00 GMT)
-let pushToGithub = new cron.CronJob('10 1 * * *', async () => {
+let pushToGithub = new cron.CronJob('10 0 * * *', async () => {
 	// Download textures from #results
 	await getResults(client, settings.C32_RESULTS);
 	await getResults(client, settings.C64_RESULTS);
@@ -225,47 +227,7 @@ client.on('message', async message => {
   /*
    * Mod Assistance
    */
-  var matchingWords = []
-  var reasons = []
-  keywords.POLITICAL.forEach(word => {
-    if (message.content.toLowerCase().includes(word.toLowerCase())) {
-      matchingWords.push(word);
-      if (!reasons.includes('politics')) reasons.push('politics');
-    }
-  })
-
-  keywords.HATE_SPEECH.forEach(word => {
-    if (message.content.toLowerCase().includes(word.toLowerCase())) {
-      matchingWords.push(word);
-      if (!reasons.includes('hate speech')) reasons.push('hate speech');
-    }
-  })
-
-	keywords.NSFW.forEach(word => {
-    if (message.content.toLowerCase().includes(word.toLowerCase())) {
-      matchingWords.push(word);
-      if (!reasons.includes('NSFW')) reasons.push('NSFW');
-    }
-  })
-
-	keywords.RELIGIOUS.forEach(word => {
-    if (message.content.toLowerCase().includes(word.toLowerCase())) {
-      matchingWords.push(word);
-      if (!reasons.includes('Religious')) reasons.push('Religious');
-    }
-  })
-
-  if (matchingWords.length != 0) {
-    var embed = new Discord.MessageEmbed()
-			.setAuthor(`${message.author.tag} may have broken the rules`, message.author.displayAvatarURL())
-		  .setColor(colors.RED)
-		  .setDescription(
-        `[Jump to message](${message.url})\n\n**Keywords**: \`${matchingWords.join(', ')}\`\n**Reasons**: \`${reasons.join(', ')}\`\n**Server**: \`${message.guild}\`\n\n\`\`\`${message.content}\`\`\``
-      )
-	    .setTimestamp()
-
-		client.channels.cache.get('803344583919534091').send(embed)
-  }
+  //keywordsDetection(client, message);
 
   /*
    * Funny Stuff
@@ -304,8 +266,17 @@ client.on('message', async message => {
 	 * (does not interfer with submission process)
 	*/
 
+	if (message.channel.id === '779759327665848320') {
+		return autoReactMainPack(
+			message,
+			['⬆️','⬇️'],
+			['You need to name your submission!', 'You need to add the folder!', 'You need to add the resource pack type! (java/bedrock)', 'Wrong resource pack type specified! (java/bedrock)'],
+			['java', 'bedrock']
+		)
+	}
+
 	// Texture submission Compliance 32x (#submit-texture):
-	if (message.channel.id === settings.C32_SUBMIT_1) {
+	if (message.channel.id === settings.C32_SUBMIT_1 || message.channel.id === settings.C32_SUBMIT_1B) {
 		return autoReact(
 			message,
 			['⬆️','⬇️'],
@@ -316,7 +287,7 @@ client.on('message', async message => {
 	}
 
 	// Texture submission Compliance 64x (#submit-texture):
-	if (message.channel.id === settings.C64_SUBMIT_1) {
+	if (message.channel.id === settings.C64_SUBMIT_1 || message.channel.id === settings.C64_SUBMIT_1B) {
 		return autoReact(
 			message,
 			['⬆️','⬇️'],
@@ -362,7 +333,12 @@ client.on('message', async message => {
 
 client.on('messageUpdate', async (oldMessage, newMessage) => {
 	if (newMessage.content.startsWith(prefix) || newMessage.author.bot) return; // Avoid message WITH prefix & bot messages
-	
+
+	/*
+	 * MODERATION
+	*/
+	//keywordsDetection(client, newMessage);
+
 	/*
 	 * MESSAGE URL QUOTE
 	 * when someone sends a message with https://discord.com/channels/<server ID>/<channel ID>/<message ID>

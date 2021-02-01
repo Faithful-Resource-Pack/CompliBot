@@ -79,7 +79,7 @@ module.exports = {
 					url = msg.attachments.first().url;
 					break;
 				}
-				if (msg.embeds[0] !== undefined) {
+				else if (msg.embeds[0] != undefined && msg.embeds[0] != null && msg.embeds[0].image) {
 					found = true;
 					url = msg.embeds[0].image.url;
 					break;

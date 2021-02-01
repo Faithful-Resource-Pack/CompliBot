@@ -8,6 +8,7 @@ const colors   = require('../../res/colors');
 const settings = require('../../settings.js');
 
 const { magnify }  = require('../../functions/magnify.js');
+const { palette }  = require('../../functions/palette.js');
 const { getMeta }  = require('../../functions/getMeta.js');
 const { warnUser } = require('../../functions/warnUser.js');
 
@@ -240,11 +241,12 @@ module.exports = {
 					embedMessage.react('🗑️');
 					if (dimension.width < 129 && dimension.height < 129) {
 						embedMessage.react('🔎');
+            embedMessage.react('🌀');
 					}
-					embedMessage.react('🌀');
+					embedMessage.react('🎨');
 
 					const filter = (reaction, user) => {
-						return ['🗑️','🔎','🌀'].includes(reaction.emoji.name) && user.id === message.author.id;
+						return ['🗑️','🔎','🌀','🎨'].includes(reaction.emoji.name) && user.id === message.author.id;
 					};
 
 					embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
@@ -253,6 +255,9 @@ module.exports = {
 							if (reaction.emoji.name === '🗑️') {
 								embedMessage.delete();
 								message.delete();
+							}
+							if (reaction.emoji.name === '🎨') {
+								return palette(message, embedMessage.embeds[0].image.url);
 							}
 							if (reaction.emoji.name === '🔎') {
                 if (size == '8x8')     return magnify(message, 64, embedMessage.embeds[0].image.url);
@@ -280,6 +285,7 @@ module.exports = {
 								embedMessage.reactions.cache.get('🔎').remove();
 							}
 							embedMessage.reactions.cache.get('🌀').remove();
+							embedMessage.reactions.cache.get('🎨').remove();
 						});
 
 				});

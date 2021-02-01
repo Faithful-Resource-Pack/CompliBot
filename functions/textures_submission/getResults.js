@@ -8,8 +8,8 @@ const { getMessages } = require('../getMessages.js');
 async function getResults(client, inputID, OFFSET_DAY = 0) {
 
 	// get contributors files:
-	var texturesBedrock = JSON.parse(fs.readFileSync('./json/contributors/java.json'));
-	var texturesJava    =	JSON.parse(fs.readFileSync('./json/contributors/bedrock.json'));
+	var texturesBedrock = JSON.parse(fs.readFileSync('./json/contributors/bedrock.json'));
+	var texturesJava    =	JSON.parse(fs.readFileSync('./json/contributors/java.json'));
 
 	// set offset (used for developpment);
 	var offsetDate = new Date();
@@ -23,96 +23,81 @@ async function getResults(client, inputID, OFFSET_DAY = 0) {
 		let messageDate = new Date(message.createdTimestamp);
 
 		// if : message is an embed && offset date == message date && embed color is green
-		if (
-			message.embeds[0] != undefined &&
-			message.embeds[0].color == 5025616 && 
-			messageDate.getDate() == offsetDate.getDate() && messageDate.getMonth() == offsetDate.getMonth()
-		) {
-			if (message.embeds[0].color == 5025616) {// 5025616 == #50AF4C == colors.GREEN
+		if (message.embeds[0] != undefined && message.embeds[0].color == 5025616 && messageDate.getDate() == offsetDate.getDate() && messageDate.getMonth() == offsetDate.getMonth()) {
+			var textureAuthor = message.embeds[0].author.name;
+			var textureName   = message.embeds[0].fields[0].value.replace('.png','') + '.png';
+			var textureFolder = message.embeds[0].fields[1].value;
+			var textureType   = message.embeds[0].fields[2].value || undefined;
+			var textureSize   = undefined;
+			var textureIndex  = -1;
 
-				var textureAuthor = message.embeds[0].author.name;
-				var textureName   = message.embeds[0].fields[0].value.replace('.png','') + '.png';
-				var textureFolder = message.embeds[0].fields[1].value;
-				var textureType   = undefined;
-				var textureIndex  = -1;
+			var folder = undefined;
+			var search = undefined;
 
-				var searchJava    = undefined;
-				var searchBedrock = undefined; 
-
-				// Search inside java.json contributors:
-				if (textureFolder.includes('realms')) searchJava = `realms/textures/${textureFolder.replace('realms/textures/','')}/${textureName}`;
-				else searchJava = `minecraft/textures/${textureFolder.replace('minecraft/textures/','')}/${textureName}`;
+			if (textureType == 'java') {
+				if (textureFolder.includes('realms')) {
+					folder = textureFolder.replace('realms/textures/','');
+					search = `realms/textures/${folder}/${textureName}`;
+				} else {
+					folder = textureFolder.replace('minecraft/textures/','');
+					search = `minecraft/textures/${folder}/${textureName}`;
+				}
 
 				for (var i = 0; i < texturesJava.length; i++) {
-					if (texturesJava[i].path.includes(searchJava)) {
+					if (texturesJava[i].path.includes(search)) {
 						textureIndex = i;
-						if (inputID == settings.C32_RESULTS) textureType = 'c32';
-						if (inputID == settings.C64_RESULTS) textureType = 'c64';
+						if (inputID == settings.C32_RESULTS) textureSize = 32;
+						if (inputID == settings.C64_RESULTS) textureSize = 64;
 						break;
 					}
 				}
-
-				// Search inside bedrock.json if java.json doesn't have the texture
-				if (textureIndex == -1) {
-					textureType = undefined;
-					var searchBedrock = `textures/${textureFolder.replace('textures/','')}/${textureName}`;
-
+			} else if (textureType == 'bedrock') {
+				folder = textureFolder.replace('textures/','');
+				search = `textures/${folder}/${textureName}`;
 					for (var i = 0; i < texturesBedrock.length; i++) {
-						if (texturesBedrock[i].path.includes(searchBedrock)) {
-							textureIndex = i;
-							if (inputID == settings.C32_RESULTS) textureType = 'c32-bedrock';
-							if (inputID == settings.C64_RESULTS) textureType = 'c64-bedrock';
-							break;
-						}
+					if (texturesBedrock[i].path.includes(search)) {
+						textureIndex = i;
+						if (inputID == settings.C32_RESULTS) textureSize = 32;
+						if (inputID == settings.C64_RESULTS) textureSize = 64;
+						break;
 					}
 				}
+			} else errorAutoPush(client, inputID, message, textureAuthor, textureName, textureFolder, textureType, `No Resource Pack type set up!`);
 
-				// Texture not found:
-				if (textureIndex == -1) errorAutoPush(client, inputID, message, textureAuthor, textureName, textureFolder, `Texture not found, check spelling or folder`);
-				if (textureIndex != -1 && textureType == undefined) errorAutoPush(client, inputID, message, textureAuthor, textureName, textureFolder, `Can't find default repository for this texture, contact Juknum if it's not a Zip archive`);
-
-				// Texture found:
-				if (textureIndex != 1 && textureType != undefined) {
-					// Update contributors
-					if (textureType == 'c32') {
-						if (texturesJava[textureIndex].c32.author == undefined) texturesJava[textureIndex].c32.author = [textureAuthor];
-						else if (!texturesJava[textureIndex].c32.author.includes(textureAuthor)) texturesJava[textureIndex].c32.author.push(textureAuthor);
-
-						if (!texturesJava[textureIndex].c32.date == undefined) texturesJava[textureIndex].c32.date = date();
-					}
-					if (textureType == 'c64') {
-						if (texturesJava[textureIndex].c64.author == undefined) texturesJava[textureIndex].c64.author = [textureAuthor];
-						else if (!texturesJava[textureIndex].c64.author.includes(textureAuthor)) texturesJava[textureIndex].c64.author.push(textureAuthor);
-
-						if (!texturesJava[textureIndex].c64.date == undefined) texturesJava[textureIndex].c64.date = date();
-					}
-					if (textureType == 'c32-bedrock') {
-						if (texturesBedrock[textureIndex].c32.author == undefined) texturesBedrock[textureIndex].c32.author = [textureAuthor];
-						else if (!texturesBedrock[textureIndex].c32.author.includes(textureAuthor)) texturesBedrock[textureIndex].c32.author.push(textureAuthor);
-
-						if (!texturesBedrock[textureIndex].c32.date == undefined) texturesBedrock[textureIndex].c32.date = date();
-					}
-					if (textureType == 'c64-bedrock') {
-						if (texturesBedrock[textureIndex].c64.author == undefined) texturesBedrock[textureIndex].c64.author = [textureAuthor];
-						else if (!texturesBedrock[textureIndex].c64.author.includes(textureAuthor)) texturesBedrock[textureIndex].c64.author.push(textureAuthor);
-
-						if (!texturesBedrock[textureIndex].c64.date == undefined) texturesBedrock[textureIndex].c64.date = date();
-					}
-
-					// Update Complibot files:
-					if (textureType == 'c32-bedrock' || textureType == 'c64-bedrock') {
-						await fs.writeFileSync('./json/contributors/bedrock.json', JSON.stringify(texturesBedrock, null, 2));
-						await download(message.embeds[0].image.url, textureType, searchBedrock, textureName);
-					}
-					else if (textureType == 'c32' || textureType == 'c64') {
-						await fs.writeFileSync('./json/contributors/java.json', JSON.stringify(texturesJava, null, 2));
-						await download(message.embeds[0].image.url, textureType, searchJava, textureName);
-					}
-				}
+			if (textureIndex == -1 && (textureType == 'java' || textureType == 'bedrock')) {
+				errorAutoPush(client, inputID, message, textureAuthor, textureName, textureFolder, textureType, `Texture not found, check spelling or folder`);
 			}
 
+			if (textureIndex != 1 && (textureType == 'java' || textureType == 'bedrock')) {
+				if (textureSize == 32 && textureType == 'java') {
+					if (texturesJava[textureIndex].c32.author == undefined) texturesJava[textureIndex].c32.author = [textureAuthor];
+					else if (!texturesJava[textureIndex].c32.author.includes(textureAuthor)) texturesJava[textureIndex].c32.author.push(textureAuthor);
+					if (!texturesJava[textureIndex].c32.date == undefined) texturesJava[textureIndex].c32.date = date();
+
+				}
+				if (textureSize == 64 && textureType == 'java') {
+					if (texturesJava[textureIndex].c64.author == undefined) texturesJava[textureIndex].c64.author = [textureAuthor];
+					else if (!texturesJava[textureIndex].c64.author.includes(textureAuthor)) texturesJava[textureIndex].c64.author.push(textureAuthor);
+					if (!texturesJava[textureIndex].c64.date == undefined) texturesJava[textureIndex].c64.date = date();
+				}
+				if (textureSize == 32 && textureType == 'bedrock') {
+					if (texturesBedrock[textureIndex].c32.author == undefined) texturesBedrock[textureIndex].c32.author = [textureAuthor];
+					else if (!texturesBedrock[textureIndex].c32.author.includes(textureAuthor)) texturesBedrock[textureIndex].c32.author.push(textureAuthor);
+					if (!texturesBedrock[textureIndex].c32.date == undefined) texturesBedrock[textureIndex].c32.date = date();
+				}
+				if (textureSize == 64 && textureType == 'bedrock') {
+					if (texturesBedrock[textureIndex].c64.author == undefined) texturesBedrock[textureIndex].c64.author = [textureAuthor];
+					else if (!texturesBedrock[textureIndex].c64.author.includes(textureAuthor)) texturesBedrock[textureIndex].c64.author.push(textureAuthor);
+					if (!texturesBedrock[textureIndex].c64.date == undefined) texturesBedrock[textureIndex].c64.date = date();
+				}
+			
+				await download(message.embeds[0].image.url, search, textureType, textureSize, textureName);
+			}
 		}
 	}
+
+	await fs.writeFileSync('./json/contributors/bedrock.json', JSON.stringify(texturesBedrock, null, 2));
+	await fs.writeFileSync('./json/contributors/java.json',    JSON.stringify(texturesJava,    null, 2));
 }
 
 function date() {
@@ -123,7 +108,7 @@ function date() {
 	return mm + '/' + dd + '/' + yyyy;
 }
 
-async function errorAutoPush(client, inputID, message, author, name, folder, error) {
+async function errorAutoPush(client, inputID, message, author, name, folder, type, error) {
 	var errorChannel = client.channels.cache.get(settings.C32_AUTOPUSH_FAIL);
 	if (inputID == settings.C64_RESULTS) errorChannel = client.channels.cache.get(settings.C64_AUTOPUSH_FAIL);
 
@@ -132,8 +117,9 @@ async function errorAutoPush(client, inputID, message, author, name, folder, err
 		.setAuthor(author, message.embeds[0].author.iconURL)
 		.setDescription(`Something went wrong during autopush:\nError: ${error}`)
 		.addFields(
-			{ name: 'Name:', value: name, inline: true },
+			{ name: 'Name:',   value: name,   inline: true },
 			{ name: 'Folder:', value: folder, inline: true },
+			{ name: 'Type:',   value: type,   inline: true }
 		)
 		.setFooter('CompliBot', settings.BOT_IMG)
 		
@@ -145,12 +131,12 @@ async function errorAutoPush(client, inputID, message, author, name, folder, err
 	await errorChannel.send(embed)
 }
 
-async function download(textureUrl, textureType, texturePath, textureName) {
+async function download(textureUrl, texturePath, textureType, textureSize, textureName) {
 	var localPath = undefined;
-	if (textureType == 'c32') localPath = `./texturesPush/Compliance-Java-32x/assets/${texturePath}`
-	if (textureType == 'c64') localPath = `./texturesPush/Compliance-Java-64x/assets/${texturePath}`
-	if (textureType == 'c32-bedrock') localPath = `./texturesPush/Compliance-Bedrock-32x/${texturePath}`
-	if (textureType == 'c64-bedrock') localPath = `./texturesPush/Compliance-Bedrock-64x/${texturePath}`
+	if (textureType == 'java' && textureSize == 32) localPath = `./texturesPush/Compliance-Java-32x/assets/${texturePath}`
+	if (textureType == 'java' && textureSize == 64) localPath = `./texturesPush/Compliance-Java-64x/assets/${texturePath}`
+	if (textureType == 'bedrock' && textureSize == 32) localPath = `./texturesPush/Compliance-Bedrock-32x/${texturePath}`
+	if (textureType == 'bedrock' && textureSize == 64) localPath = `./texturesPush/Compliance-Bedrock-64x/${texturePath}`
 
 	const response = await fetch(textureUrl);
 	const buffer   = await response.buffer();
