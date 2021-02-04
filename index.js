@@ -262,6 +262,21 @@ client.on('message', async message => {
 	if (message.content.includes('https://discord.com/channels/')) quote(message);
 
 	/*
+	 * DISCORD SERVER INVITE DETECTION
+	 * I hope there is no other use of this link type on Discord
+   * Found more information here: https://youtu.be/-51AfyMqnpI
+	*/
+  if (message.content.includes('https://discord.gg/')) {
+    var embed = new Discord.MessageEmbed()
+			.setAuthor(`${message.author.tag} may have advertised a discord server`, message.author.displayAvatarURL())
+			.setColor(colors.RED)
+			.setDescription(`[Jump to message](${message.url})\n\n**Channel**: <#${message.channel.id}>\n**Server**: \`${message.guild}\`\n**User ID**: \`${message.author.id}\`\n**Date**: \`${message.createdAt}\`\n\n\`\`\`${message.content}\`\`\``)
+			.setTimestamp()
+
+		client.channels.cache.get('803344583919534091').send(embed)
+  }
+
+	/*
 	 * AUTO REACT:
 	 * (does not interfer with submission process)
 	*/
