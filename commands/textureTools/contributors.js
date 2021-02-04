@@ -2,6 +2,7 @@ const Discord = require('discord.js');
 const fs      = require('fs');
 
 const prefix  = process.env.PREFIX;
+const strings = require('../../res/strings');
 
 const { autoPush } = require('../../functions/autoPush.js');
 const { warnUser } = require('../../functions/warnUser.js');

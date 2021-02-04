@@ -288,7 +288,7 @@
   {
     "c32": {
       "author": [
-        "verisimal#3136"
+        "Cituation#3136"
       ]
     },
     "c64": {},
@@ -356,6 +356,31 @@
     },
     "c64": {},
     "path": "minecraft/textures/block/attached_pumpkin_stem.png"
+  },
+  {
+    "c32": {},
+    "c64": {},
+    "path": "minecraft/textures/block/azalea_leaves.png"
+  },
+  {
+    "c32": {},
+    "c64": {},
+    "path": "minecraft/textures/block/azalea_leaves_flowers.png"
+  },
+  {
+    "c32": {},
+    "c64": {},
+    "path": "minecraft/textures/block/azalea_plant.png"
+  },
+  {
+    "c32": {},
+    "c64": {},
+    "path": "minecraft/textures/block/azalea_side.png"
+  },
+  {
+    "c32": {},
+    "c64": {},
+    "path": "minecraft/textures/block/azalea_top.png"
   },
   {
     "c32": {
@@ -582,6 +607,26 @@
     },
     "c64": {},
     "path": "minecraft/textures/block/bell_top.png"
+  },
+  {
+    "c32": {},
+    "c64": {},
+    "path": "minecraft/textures/block/big_dripleaf_side.png"
+  },
+  {
+    "c32": {},
+    "c64": {},
+    "path": "minecraft/textures/block/big_dripleaf_stem.png"
+  },
+  {
+    "c32": {},
+    "c64": {},
+    "path": "minecraft/textures/block/big_dripleaf_tip.png"
+  },
+  {
+    "c32": {},
+    "c64": {},
+    "path": "minecraft/textures/block/big_dripleaf_top.png"
   },
   {
     "c32": {
@@ -1186,6 +1231,26 @@
     },
     "c64": {},
     "path": "minecraft/textures/block/cauldron_top.png"
+  },
+  {
+    "c32": {},
+    "c64": {},
+    "path": "minecraft/textures/block/cave_vines_body.png"
+  },
+  {
+    "c32": {},
+    "c64": {},
+    "path": "minecraft/textures/block/cave_vines_body_lit.png"
+  },
+  {
+    "c32": {},
+    "c64": {},
+    "path": "minecraft/textures/block/cave_vines_head.png"
+  },
+  {
+    "c32": {},
+    "c64": {},
+    "path": "minecraft/textures/block/cave_vines_head_lit.png"
   },
   {
     "c32": {},
@@ -2371,6 +2436,16 @@
   {
     "c32": {},
     "c64": {},
+    "path": "minecraft/textures/block/flowering_azalea_side.png"
+  },
+  {
+    "c32": {},
+    "c64": {},
+    "path": "minecraft/textures/block/flowering_azalea_top.png"
+  },
+  {
+    "c32": {},
+    "c64": {},
     "path": "minecraft/textures/block/frosted_ice_0.png"
   },
   {
@@ -2675,6 +2750,11 @@
   {
     "c32": {},
     "c64": {},
+    "path": "minecraft/textures/block/hanging_roots.png"
+  },
+  {
+    "c32": {},
+    "c64": {},
     "path": "minecraft/textures/block/hay_block_side.png"
   },
   {
@@ -2762,7 +2842,7 @@
   {
     "c32": {
       "author": [
-        "verisimal#3136"
+        "Cituation#3136"
       ],
       "date": "01/09/2021"
     },
@@ -3364,6 +3444,11 @@
     },
     "c64": {},
     "path": "minecraft/textures/block/melon_top.png"
+  },
+  {
+    "c32": {},
+    "c64": {},
+    "path": "minecraft/textures/block/moss_block.png"
   },
   {
     "c32": {
@@ -4522,6 +4607,16 @@
     "path": "minecraft/textures/block/respawn_anchor_top_off.png"
   },
   {
+    "c32": {},
+    "c64": {},
+    "path": "minecraft/textures/block/root_vines_head.png"
+  },
+  {
+    "c32": {},
+    "c64": {},
+    "path": "minecraft/textures/block/rooted_dirt.png"
+  },
+  {
     "c32": {
       "author": [
         "Hozz#0889"
@@ -4697,6 +4792,16 @@
     "path": "minecraft/textures/block/small_amethyst_bud.png"
   },
   {
+    "c32": {},
+    "c64": {},
+    "path": "minecraft/textures/block/small_dripleaf_side.png"
+  },
+  {
+    "c32": {},
+    "c64": {},
+    "path": "minecraft/textures/block/small_dripleaf_top.png"
+  },
+  {
     "c32": {
       "author": [
         "Hozz#0889"
@@ -4859,6 +4964,16 @@
     },
     "c64": {},
     "path": "minecraft/textures/block/sponge.png"
+  },
+  {
+    "c32": {},
+    "c64": {},
+    "path": "minecraft/textures/block/spore_blossom.png"
+  },
+  {
+    "c32": {},
+    "c64": {},
+    "path": "minecraft/textures/block/spore_blossom_base.png"
   },
   {
     "c32": {
@@ -5878,7 +5993,7 @@
   {
     "c32": {
       "author": [
-        "verisimal#3136"
+        "Cituation#3136"
       ]
     },
     "c64": {},
@@ -8202,7 +8317,7 @@
   {
     "c32": {
       "author": [
-        "verisimal#3136"
+        "Cituation#3136"
       ],
       "date": "12/04/2020"
     },
@@ -8227,7 +8342,7 @@
   {
     "c32": {
       "author": [
-        "verisimal#3136"
+        "Cituation#3136"
       ],
       "date": "12/04/2020"
     },
@@ -9408,7 +9523,7 @@
     "c32": {
       "author": [
         "Alexsor#0901",
-        "verisimal#3136",
+        "Cituation#3136",
         "BellPepperBrian#0001"
       ]
     },
@@ -9816,7 +9931,7 @@
   {
     "c32": {
       "author": [
-        "verisimal#3136"
+        "Cituation#3136"
       ],
       "date": "01/09/2021"
     },
@@ -9831,7 +9946,7 @@
   {
     "c32": {
       "author": [
-        "verisimal#3136"
+        "Cituation#3136"
       ],
       "date": "12/04/2020"
     },
@@ -9841,7 +9956,7 @@
   {
     "c32": {
       "author": [
-        "verisimal#3136",
+        "Cituation#3136",
         "Pomik108#1378"
       ],
       "date": "01/01/2021"
@@ -9852,7 +9967,7 @@
   {
     "c32": {
       "author": [
-        "verisimal#3136",
+        "Cituation#3136",
         "Pomik108#1378"
       ],
       "date": "01/01/2021"
@@ -9863,7 +9978,7 @@
   {
     "c32": {
       "author": [
-        "verisimal#3136",
+        "Cituation#3136",
         "Pomik108#1378"
       ],
       "date": "01/01/2021"
@@ -9874,7 +9989,7 @@
   {
     "c32": {
       "author": [
-        "verisimal#3136",
+        "Cituation#3136",
         "Pomik108#1378"
       ],
       "date": "01/01/2021"
@@ -9885,7 +10000,7 @@
   {
     "c32": {
       "author": [
-        "verisimal#3136",
+        "Cituation#3136",
         "Pomik108#1378"
       ],
       "date": "01/01/2021"
@@ -9896,7 +10011,7 @@
   {
     "c32": {
       "author": [
-        "verisimal#3136",
+        "Cituation#3136",
         "Pomik108#1378"
       ],
       "date": "01/01/2021"
@@ -9907,7 +10022,7 @@
   {
     "c32": {
       "author": [
-        "verisimal#3136",
+        "Cituation#3136",
         "Pomik108#1378"
       ],
       "date": "01/01/2021"
@@ -9976,7 +10091,7 @@
   {
     "c32": {
       "author": [
-        "verisimal#3136"
+        "Cituation#3136"
       ],
       "date": "01/09/2021"
     },
@@ -10222,7 +10337,7 @@
     "c32": {
       "author": [
         "PeJohn#4519",
-        "verisimal#3136"
+        "Cituation#3136"
       ],
       "date": "01/09/2021"
     },
@@ -10378,7 +10493,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -10390,7 +10505,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -10402,7 +10517,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -10414,7 +10529,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -10426,7 +10541,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -10438,7 +10553,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -10450,7 +10565,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -10462,7 +10577,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -10474,7 +10589,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -10486,7 +10601,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -10498,7 +10613,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -10510,7 +10625,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -10522,7 +10637,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -10534,7 +10649,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -10546,7 +10661,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -10558,7 +10673,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -10570,7 +10685,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -10582,7 +10697,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -10594,7 +10709,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -10606,7 +10721,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -10618,7 +10733,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -10630,7 +10745,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -10642,7 +10757,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -10654,7 +10769,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -10666,7 +10781,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -10678,7 +10793,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -10690,7 +10805,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -10702,7 +10817,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -10714,7 +10829,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -10726,7 +10841,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -10738,7 +10853,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -10750,7 +10865,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -10762,7 +10877,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -10774,7 +10889,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -10786,7 +10901,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -10798,7 +10913,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -10810,7 +10925,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -10822,7 +10937,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -10834,7 +10949,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -10846,7 +10961,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -10858,7 +10973,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -10870,7 +10985,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -10882,7 +10997,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -10894,7 +11009,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -10906,7 +11021,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -10918,7 +11033,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -10930,7 +11045,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -10942,7 +11057,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -10954,7 +11069,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -10966,7 +11081,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -10978,7 +11093,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -10990,7 +11105,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -11002,7 +11117,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -11014,7 +11129,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -11026,7 +11141,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -11038,7 +11153,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -11050,7 +11165,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -11062,7 +11177,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -11074,7 +11189,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -11086,7 +11201,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -11098,7 +11213,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -11110,7 +11225,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -11122,7 +11237,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -11134,7 +11249,7 @@
     "c32": {
       "author": [
         "Deborn#6854",
-        "verisimal#3136",
+        "Cituation#3136",
         "Po3stell3d#1426"
       ],
       "date": "12/04/2020"
@@ -11877,7 +11992,7 @@
     "c32": {
       "author": [
         "Juknum#6148",
-        "verisimal#3136"
+        "Cituation#3136"
       ]
     },
     "c64": {},
@@ -12073,7 +12188,7 @@
   {
     "c32": {
       "author": [
-        "verisimal#3136"
+        "Cituation#3136"
       ],
       "date": "01/22/2021"
     },
@@ -12122,6 +12237,11 @@
     },
     "c64": {},
     "path": "minecraft/textures/item/glowstone_dust.png"
+  },
+  {
+    "c32": {},
+    "c64": {},
+    "path": "minecraft/textures/item/glow_berries.png"
   },
   {
     "c32": {},
@@ -12493,7 +12613,7 @@
   {
     "c32": {
       "author": [
-        "verisimal#3136"
+        "Cituation#3136"
       ],
       "date": "01/09/2021"
     },
@@ -12641,7 +12761,7 @@
   {
     "c32": {
       "author": [
-        "verisimal#3136"
+        "Cituation#3136"
       ],
       "date": "01/09/2021"
     },
@@ -13063,7 +13183,7 @@
   {
     "c32": {
       "author": [
-        "verisimal#3136"
+        "Cituation#3136"
       ]
     },
     "c64": {},
@@ -13212,7 +13332,8 @@
   {
     "c32": {
       "author": [
-        "verisimal#3136"
+        "Cituation#3136",
+        "Tekayo#5081"
       ],
       "date": "01/09/2021"
     },
@@ -13569,7 +13690,7 @@
   {
     "c32": {
       "author": [
-        "verisimal#3136"
+        "Cituation#3136"
       ],
       "date": "01/09/2021"
     },
@@ -13688,7 +13809,7 @@
   {
     "c32": {
       "author": [
-        "verisimal#3136"
+        "Cituation#3136"
       ],
       "date": "01/09/2021"
     },
@@ -13727,7 +13848,7 @@
   {
     "c32": {
       "author": [
-        "verisimal#3136"
+        "Cituation#3136"
       ],
       "date": "12/04/2020"
     },
@@ -13761,7 +13882,7 @@
   {
     "c32": {
       "author": [
-        "verisimal#3136"
+        "Cituation#3136"
       ],
       "date": "12/04/2020"
     },
@@ -13771,7 +13892,7 @@
   {
     "c32": {
       "author": [
-        "verisimal#3136"
+        "Cituation#3136"
       ],
       "date": "12/11/2020"
     },
@@ -13837,7 +13958,7 @@
   {
     "c32": {
       "author": [
-        "verisimal#3136"
+        "Cituation#3136"
       ]
     },
     "c64": {},
@@ -13892,7 +14013,7 @@
   {
     "c32": {
       "author": [
-        "verisimal#3136",
+        "Cituation#3136",
         "Hozz#0889"
       ],
       "date": "01/09/2021"
@@ -13903,7 +14024,7 @@
   {
     "c32": {
       "author": [
-        "verisimal#3136"
+        "Cituation#3136"
       ],
       "date": "12/04/2020"
     },
@@ -13918,7 +14039,7 @@
   {
     "c32": {
       "author": [
-        "verisimal#3136"
+        "Cituation#3136"
       ],
       "date": "01/09/2021"
     },
@@ -13928,7 +14049,7 @@
   {
     "c32": {
       "author": [
-        "verisimal#3136"
+        "Cituation#3136"
       ],
       "date": "01/09/2021"
     },
@@ -13943,7 +14064,7 @@
   {
     "c32": {
       "author": [
-        "verisimal#3136"
+        "Cituation#3136"
       ],
       "date": "01/09/2021"
     },
@@ -13953,7 +14074,7 @@
   {
     "c32": {
       "author": [
-        "verisimal#3136"
+        "Cituation#3136"
       ],
       "date": "01/09/2021"
     },
@@ -13987,7 +14108,7 @@
   {
     "c32": {
       "author": [
-        "verisimal#3136"
+        "Cituation#3136"
       ],
       "date": "01/09/2021"
     },
@@ -14011,7 +14132,7 @@
   {
     "c32": {
       "author": [
-        "verisimal#3136"
+        "Cituation#3136"
       ],
       "date": "01/09/2021"
     },
@@ -14021,7 +14142,7 @@
   {
     "c32": {
       "author": [
-        "verisimal#3136"
+        "Cituation#3136"
       ],
       "date": "12/04/2020"
     },
@@ -14646,7 +14767,7 @@
   {
     "c32": {
       "author": [
-        "verisimal#3136"
+        "Cituation#3136"
       ],
       "date": "12/04/2020"
     },
@@ -15096,7 +15217,7 @@
   {
     "c32": {
       "author": [
-        "verisimal#3136"
+        "Cituation#3136"
       ]
     },
     "c64": {},
@@ -15105,7 +15226,7 @@
   {
     "c32": {
       "author": [
-        "verisimal#3136"
+        "Cituation#3136"
       ]
     },
     "c64": {},
@@ -15114,7 +15235,7 @@
   {
     "c32": {
       "author": [
-        "verisimal#3136"
+        "Cituation#3136"
       ]
     },
     "c64": {},
@@ -15123,7 +15244,7 @@
   {
     "c32": {
       "author": [
-        "verisimal#3136"
+        "Cituation#3136"
       ]
     },
     "c64": {},
@@ -15132,7 +15253,7 @@
   {
     "c32": {
       "author": [
-        "verisimal#3136"
+        "Cituation#3136"
       ]
     },
     "c64": {},
@@ -15141,7 +15262,7 @@
   {
     "c32": {
       "author": [
-        "verisimal#3136"
+        "Cituation#3136"
       ]
     },
     "c64": {},
@@ -15150,7 +15271,7 @@
   {
     "c32": {
       "author": [
-        "verisimal#3136"
+        "Cituation#3136"
       ]
     },
     "c64": {},
@@ -15159,7 +15280,7 @@
   {
     "c32": {
       "author": [
-        "verisimal#3136"
+        "Cituation#3136"
       ]
     },
     "c64": {},

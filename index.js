@@ -320,7 +320,7 @@ client.on('message', async message => {
 	}
 
 	// Texture submission Emulated Vattic Textures (FHLX):
-	if (message.channel.id === '767464832285933578') {
+	if (message.channel.id === '767464832285933578' || message.channel.id === '806232895021776936') {
 		return autoReact(
 			message,
 			['✅','❌'],

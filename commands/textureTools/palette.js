@@ -11,7 +11,7 @@ module.exports = {
 	syntax: `${prefix}palette attach an image\n${prefix}palette <Discord message url>\n${prefix}palette <image URL>\n${prefix}palette <message ID>\n${prefix}palette [up/^/last]`,
 	async execute(client, message, args) {
 		var DATA;
-		
+
 		// <data>
 		// image attached
 		if ((args[0] == undefined || args[0] == '') && message.attachments.size > 0) {

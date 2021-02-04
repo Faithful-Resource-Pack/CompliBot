@@ -184,7 +184,7 @@ module.exports = {
 		function getTexture(type, name, index) {
 			var imgURL = undefined;
 
-			if (type == '16') imgURL = 'https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/21w03a/assets/' + name;
+			if (type == '16') imgURL = 'https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/21w05a/assets/' + name;
 			if (type == '32') imgURL = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-32x/Jappa-1.17/assets/' + name;
 			if (type == '64') imgURL = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-64x/Jappa-1.17/assets/' + name;
 
