@@ -1,3 +1,5 @@
+// CURRENTLY UNUSED
+
 const POLITICAL = [
 	'trump', 'biden', 'clinton', 'obama', 'politics', 'political', 'riot', 'unrest', 'Washington DC', 'putin', 'supreme court', 'congress', 'brexit', 'confederate', 'liberal', 'conservative', 'libtard', 'boris johnson', 'margaret thatcher', 'democrat', 'republican', 'democracy', 'authoritarian', 'theocracy', 'communism', 'capitalism', 'macron', 'merkel'
 ]

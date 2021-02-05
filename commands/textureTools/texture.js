@@ -170,7 +170,7 @@ module.exports = {
 				if (i < emoji_num.length && !hasBeenDeleted) {
 					await embedMessage.react(emoji_num[i]).catch(() => {
             hasBeenDeleted = true
-            console.warn('The message has already been deleted!')
+            //console.warn('The message has already been deleted!')
           });
 				} else {
           return;

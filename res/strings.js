@@ -4,7 +4,7 @@ const BOT_AUTOREACT_ERROR = 'Auto Reaction Failed';
 
 // commands stuff
 const COMMAND_DISABLED                   = 'This command is currently disabled';
-const COMMAND_ERROR                      = 'There was an error trying to execute that command!';
+const COMMAND_ERROR                      = 'One of my developers did an error while coding this command! I can\'t fix it myself, sorry.';
 const COMMAND_MAINTENANCE                = 'I\'m currently in maintenance, please try again later.';
 const COMMAND_NO_ARGUMENTS_GIVEN         = 'You did not provide arguments';
 const COMMAND_NOT_ENOUGH_ARGUMENTS_GIVEN = 'You did not provide enough arguments';

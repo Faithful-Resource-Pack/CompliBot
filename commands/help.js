@@ -8,7 +8,7 @@ const settings     = require('../settings.js');
 const { warnUser } = require('../functions/warnUser.js');
 
 const BLACKLIST = [
-  'discords', 'reload', 'rules', 'shutdown', 'status', 'test'
+  'discords', 'reload', 'rules', 'shutdown', 'status', 'test', 'say', 'behave'
 ]
 
 module.exports = {

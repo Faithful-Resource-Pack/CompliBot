@@ -138,6 +138,10 @@ async function download(textureUrl, texturePath, textureType, textureSize, textu
 	if (textureType == 'bedrock' && textureSize == 32) localPath = `./texturesPush/Compliance-Bedrock-32x/${texturePath}`
 	if (textureType == 'bedrock' && textureSize == 64) localPath = `./texturesPush/Compliance-Bedrock-64x/${texturePath}`
 
+	if (localPath == undefined) {
+		return errorAutoPush(client, 0, 'localPath cannot be found', textureUrl, textureName, texturePath, textureType, 'Yes, im working on it.\nJuknum');
+	}
+
 	const response = await fetch(textureUrl);
 	const buffer   = await response.buffer();
 	await fs.promises.mkdir(localPath.replace(`/${textureName}`,''), {recursive: true}).catch(console.error);

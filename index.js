@@ -1,4 +1,13 @@
-/*
+/* =====================================================
+ * COMPLIBOT DISCORD BOT FOR COMPLIANCE, 
+ * 	- Developed by the community, for the community.
+ * -----------------------------------------------------
+ * 	- Developpers:
+ * 		- Domi04151309
+ * 		- Juknum 
+ * 		- RobertR11
+ * =====================================================
+ * 
  *    /---------\      \|/
  *   /           \    --O--
  *  /             \    /|\
@@ -6,7 +15,7 @@
  *  |   (='.'=)   |  <-- Juk's little vacation house
  *  |   (")_(")   |  Yeah, that's true, Juk.
  *  %_____________%
- */
+*/
 
 // Libs:
 require('dotenv').config();
@@ -54,16 +63,16 @@ const settings     = require('./settings');
 // Texture submission process: (each day at 00:00 GMT)
 let scheduledFunctions = new cron.CronJob('0 0 * * *', async () => {
 	// C32x
-	await textureSubmission(client,settings.C32_SUBMIT_1,settings.C32_SUBMIT_2,5);									  // 5 DAYS OFFSET
-	await textureSubmission(client,settings.C32_SUBMIT_1B,settings.C32_SUBMIT_2,5);									  // 5 DAYS OFFSET
-	await textureCouncil(client,settings.C32_SUBMIT_2,settings.C32_SUBMIT_3,settings.C32_RESULTS,1);	// 1 DAYS OFFSET
-	await textureRevote(client,settings.C32_SUBMIT_3,settings.C32_RESULTS,3);											    // 3 DAYS OFFSET
+	await textureSubmission(client, settings.C32_SUBMIT_1,  settings.C32_SUBMIT_2, 5);							     		  // 5 DAYS OFFSET
+	await textureSubmission(client, settings.C32_SUBMIT_1B, settings.C32_SUBMIT_2, 5);							     		  // 5 DAYS OFFSET
+	await    textureCouncil(client, settings.C32_SUBMIT_2,  settings.C32_SUBMIT_3, settings.C32_RESULTS, 1);	// 1 DAYS OFFSET
+	await     textureRevote(client, settings.C32_SUBMIT_3,  settings.C32_RESULTS,  3);											  // 3 DAYS OFFSET
 	
 	// C64x
-	await textureSubmission(client,settings.C64_SUBMIT_1,settings.C64_SUBMIT_2,5);									  // 5 DAYS OFFSET
-	await textureSubmission(client,settings.C64_SUBMIT_1B,settings.C64_SUBMIT_2,5);									  // 5 DAYS OFFSET
-	await textureCouncil(client,settings.C64_SUBMIT_2,settings.C64_SUBMIT_3,settings.C64_RESULTS,1);	// 1 DAYS OFFSET
-	await textureRevote(client,settings.C64_SUBMIT_3,settings.C64_RESULTS,3);											    // 3 DAYS OFFSET
+	await textureSubmission(client, settings.C64_SUBMIT_1,  settings.C64_SUBMIT_2, 5);									      // 5 DAYS OFFSET
+	await textureSubmission(client, settings.C64_SUBMIT_1B, settings.C64_SUBMIT_2, 5);									      // 5 DAYS OFFSET
+	await    textureCouncil(client, settings.C64_SUBMIT_2,  settings.C64_SUBMIT_3, settings.C64_RESULTS, 1);	// 1 DAYS OFFSET
+	await     textureRevote(client, settings.C64_SUBMIT_3,  settings.C64_RESULTS,  3);										  	// 3 DAYS OFFSET
 	
 });
 
@@ -379,3 +388,13 @@ client.on('messageDelete', async message => {
 // Login the bot
 // 01101000 01110100 01110100 01110000 01110011 00111010 00101111 00101111 01111001 01101111 01110101 01110100 01110101 00101110 01100010 01100101 00101111 01100100 01010001 01110111 00110100 01110111 00111001 01010111 01100111 01011000 01100011 01010001
 client.login(process.env.CLIENT_TOKEN).catch(console.error);
+
+/*
+ *    /---------\      \|/
+ *   /           \    --O--
+ *  /             \    /|\
+ *  |    (\_/)    | 
+ *  |   (='.'=)   |  <-- Juk's little vacation house
+ *  |   (")_(")   |  Yeah, that's true, Juk.
+ *  %_____________%
+ */

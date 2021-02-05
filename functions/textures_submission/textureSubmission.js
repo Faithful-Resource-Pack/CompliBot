@@ -6,10 +6,10 @@ const { countReact }  = require('../countReact');
 const { getMessages } = require('../getMessages');
 
 async function textureSubmission(client, inputID, outputID, offset) {
-	var texture = false;
+	var texture       = false;
+	let limitDate     = new Date();
+	let messages      = await getMessages(client, inputID);
 	let outputChannel = client.channels.cache.get(outputID);
-	let limitDate = new Date();
-	let messages = await getMessages(client,inputID);
 
 	limitDate.setDate(limitDate.getDate() - offset);
 
