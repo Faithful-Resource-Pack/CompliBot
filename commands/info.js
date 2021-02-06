@@ -1,7 +1,8 @@
 const prefix = process.env.PREFIX;
 
-const Discord = require("discord.js");
+const Discord  = require("discord.js");
 const settings = require('../settings.js');
+const colors   = require('../res/colors');
 
 module.exports = {
 	name: 'info',
@@ -16,6 +17,7 @@ module.exports = {
     const embed = new Discord.MessageEmbed()
 			.setTitle('CompliBot Info:')
 			.setThumbnail(settings.BOT_IMG)
+      .setColor(colors.BLUE)
       .setDescription('This is the official bot of all Compliance Resource Pack discords, developed by the Compliance Team!')
 			.addFields(
 				{ name: '\u200B', value: '**Features:**'},

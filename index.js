@@ -7,14 +7,6 @@
  * 		- Juknum 
  * 		- RobertR11
  * =====================================================
- * 
- *    /---------\      \|/
- *   /           \    --O--
- *  /             \    /|\
- *  |    (\_/)    | 
- *  |   (='.'=)   |  <-- Juk's little vacation house
- *  |   (")_(")   |  Yeah, that's true, Juk.
- *  %_____________%
 */
 
 // Libs:
@@ -27,11 +19,11 @@ const port      = 3000;
 const client    = new Discord.Client();
 client.commands = new Discord.Collection();
 
-// Admins & settings :
+// Admins & settings:
 const uidR   = process.env.UIDR;
 const prefix = process.env.PREFIX;
 
-// Helpers
+// Helpers:
 const { autoReact }     = require('./functions/autoReact');
 const { updateMembers } = require('./functions/updateMembers.js');
 const { walkSync }      = require('./functions/walkSync');
@@ -51,7 +43,7 @@ const { addMutedRole }      = require('./functions/moderation/addMutedRole.js');
 const { keywordsDetection } = require('./functions/moderation/keywordsDetection.js');
 const warnList              = JSON.parse(fs.readFileSync('./json/moderation.json'));
 
-// Resources
+// Resources:
 const colors  = require('./res/colors');
 const strings = require('./res/strings');
 
@@ -393,7 +385,7 @@ client.login(process.env.CLIENT_TOKEN).catch(console.error);
  *    /---------\      \|/
  *   /           \    --O--
  *  /             \    /|\
- *  |    (\_/)    | 
+ *  |    (\_/)    |
  *  |   (='.'=)   |  <-- Juk's little vacation house
  *  |   (")_(")   |  Yeah, that's true, Juk.
  *  %_____________%

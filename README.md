@@ -50,6 +50,7 @@ ___
 |PREFIX|"/"|This is the character used to execute commands.|
 |UIDR, UIDJ & UIDD|"123456789123456789"|The user id's of the three bot maintainers.|
 |MAINTENANCE|"false"|Makes all commands maintainer-only, sets status to dnd.|
+|COMPLIBOT_GIT_TOKEN|"a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0"|Git token for the CompliBot account to push textures.|
 |MODS|"987654321987654321"|The id's of all people with a moderator role or higher, used for the modping command.|
 
 There also is `strings.js` and `settings.js` with various other settings, but that aren't needed for the bot to run.

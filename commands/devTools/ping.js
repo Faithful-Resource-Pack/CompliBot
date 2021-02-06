@@ -2,6 +2,7 @@ const prefix = process.env.PREFIX;
 
 const Discord  = require('discord.js');
 const settings = require('../../settings.js');
+const colors   = require('../../res/colors');
 
 module.exports = {
 	name: 'ping',
@@ -14,6 +15,7 @@ module.exports = {
     message.channel.send(m).then(async m => {
     const embed = new Discord.MessageEmbed()
       .setTitle('Pong!')
+      .setColor(colors.BLUE)
       .setDescription(`Latency: ${m.createdTimestamp - message.createdTimestamp}ms \nAPI Latency: ${Math.round(client.ws.ping)}ms`)
       .setFooter('CompliBot', settings.BOT_IMG);
     await m.edit(embed);

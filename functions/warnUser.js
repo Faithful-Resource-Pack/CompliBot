@@ -8,7 +8,7 @@ async function warnUser(message,text) {
 		.setColor(colors.RED)
 		.setTitle(strings.BOT_ERROR)
 		.setDescription(text)
-		.setFooter('Type /help to get more information', settings.BOT_IMG)
+		.setFooter('Type /help to get more information about commands', settings.BOT_IMG)
 
 	const embedMessage = await message.channel.send(embed);
 	await embedMessage.react('🗑️');

@@ -6,6 +6,7 @@ client.commands = new Discord.Collection();
 
 const settings     = require('../settings.js');
 const { warnUser } = require('../functions/warnUser.js');
+const colors       = require('../res/colors');
 
 const BLACKLIST = [
   'discords', 'reload', 'rules', 'shutdown', 'status', 'test', 'say', 'behave'
@@ -36,6 +37,7 @@ module.exports = {
 				var embed = new Discord.MessageEmbed()
 				.setTitle(`Help: ${prefix}${command.name}`)
 				.setThumbnail(settings.BOT_IMG)
+        .setColor(colors.BLUE)
 				.setDescription(`**Description:**\n${command.description || 'No description'}\n**Can be used by:**\n${command.uses || 'Not set'}\n**Syntax:**\n${syntax}\n**Aliases:**\n${aliases}`)
 				.setFooter('CompliBot', settings.BOT_IMG);
 
@@ -73,6 +75,7 @@ module.exports = {
 			var embed = new Discord.MessageEmbed()
 				.setTitle('Commands available')
 				.setThumbnail(settings.BOT_IMG)
+        .setColor(colors.BLUE)
 				.setDescription(string)
 				.setFooter('CompliBot', settings.BOT_IMG)
 		}
