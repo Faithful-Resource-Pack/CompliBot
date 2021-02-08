@@ -6,6 +6,8 @@
  * 		- Domi04151309
  * 		- Juknum 
  * 		- RobertR11
+ *  
+ *  DON'T FORGET TO LOOKS TROUGH OUR CHANGELOG
  * =====================================================
 */
 
@@ -197,9 +199,8 @@ client.on('message', async message => {
       .setTitle(strings.BOT_ERROR)
       .setDescription(strings.COMMAND_ERROR);
 
-		const embedMessage = await message.channel.send(embed)
+		await message.channel.send(embed)
     await message.react('❌');
-    await embedMessage.delete({timeout: 30000});
   })
 
 	/*

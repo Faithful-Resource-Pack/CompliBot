@@ -3130,12 +3130,12 @@
   {
     "c32": {},
     "c64": {},
-    "path": "minecraft/textures/block/lightly_weathered_copper_block.png"
+    "path": "minecraft/textures/block/exposed_copper_block.png"
   },
   {
     "c32": {},
     "c64": {},
-    "path": "minecraft/textures/block/lightly_weathered_cut_copper.png"
+    "path": "minecraft/textures/block/exposed_cut_copper.png"
   },
   {
     "c32": {},
@@ -4760,12 +4760,12 @@
   {
     "c32": {},
     "c64": {},
-    "path": "minecraft/textures/block/semi_weathered_copper_block.png"
+    "path": "minecraft/textures/block/weathered_copper_block.png"
   },
   {
     "c32": {},
     "c64": {},
-    "path": "minecraft/textures/block/semi_weathered_cut_copper.png"
+    "path": "minecraft/textures/block/weathered_cut_copper.png"
   },
   {
     "c32": {
@@ -5565,12 +5565,12 @@
   {
     "c32": {},
     "c64": {},
-    "path": "minecraft/textures/block/weathered_copper_block.png"
+    "path": "minecraft/textures/block/oxidized_copper_block.png"
   },
   {
     "c32": {},
     "c64": {},
-    "path": "minecraft/textures/block/weathered_cut_copper.png"
+    "path": "minecraft/textures/block/oxidized_cut_copper.png"
   },
   {
     "c32": {
@@ -5981,12 +5981,20 @@
     "path": "minecraft/textures/entity/spider_eyes.png"
   },
   {
-    "c32": {},
+    "c32": {
+      "author": [
+        "Sei#0721"
+      ]
+    },
     "c64": {},
     "path": "minecraft/textures/entity/squid/glow_squid.png"
   },
   {
-    "c32": {},
+    "c32": {
+      "author": [
+        "Sei#0721"
+      ]
+    },
     "c64": {},
     "path": "minecraft/textures/entity/squid/squid.png"
   },
