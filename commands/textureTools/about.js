@@ -14,6 +14,8 @@ module.exports = {
 	syntax: `${prefix}about me\n${prefix}about <userTag>\n`,
 	async execute(client, message, args) {
 
+		console.log(args+'\n\n');
+
 		var textures        = JSON.parse(fs.readFileSync('./json/contributors/java.json'));
 		var texturesBedrock = JSON.parse(fs.readFileSync('./json/contributors/bedrock.json'));
 		var embed = new Discord.MessageEmbed();
@@ -30,7 +32,10 @@ module.exports = {
 		var countBedrock64 = 0;
 
 		const MAX = 20;
-		var   max = 0
+		var   maxj32 = 0;
+		var   maxj64 = 0;
+		var   maxb32 = 0;
+		var   maxb64 = 0;
 
 		if (args[0] == 'me' || args[0] == undefined) {
 			embed.setDescription(`About <@${client.users.cache.find(u => u.tag === message.author.tag).id}>'s contributions:`)
@@ -42,7 +47,7 @@ module.exports = {
 		else {
 			
 			// allow people with space inside their tag name;
-			args[0] = args.join(' ');
+			//args[0] = args.join(' ');
 
 			try {
 				client.users.cache.find(u => u.tag === args[0]).id
@@ -58,34 +63,35 @@ module.exports = {
 
 		for (var i = 0; i < textures.length; i++) {
 			if (textures[i].c32.author != undefined && textures[i].c32.author.includes(userTag)) {
-				if (max <= MAX) {
+				if (maxj32 <= MAX) {
 					javac32.push(textures[i].path.replace('minecraft/textures/',''));
-					max++;
+					maxj32++;
 				}
 				countJava32++;
 			}
 			if (textures[i].c64.author != undefined && textures[i].c64.author.includes(userTag)) {
-				if (max <= MAX) {
-					javac64.push(textures[i].path.replace('minecraft/textures/'));
-					max++;
+				if (maxj64 <= MAX) {
+					javac64.push(textures[i].path.replace('minecraft/textures/',''));
+					maxj64++;
 				}
 				countJava64++;
+				console.log(textures[i].path);
 			}
 		}
 
 		max = 0;
 		for (var i = 0; i < texturesBedrock.length; i++) {
 			if (texturesBedrock[i].c32.author != undefined && texturesBedrock[i].c32.author.includes(userTag) && max <= MAX) {
-				if (max <= MAX) {
+				if (maxb32 <= MAX) {
 					bedrockc32.push(texturesBedrock[i].path.replace('textures/',''));
-					max++;
+					maxb32++;
 				}
 				countBedrock32++;
 			}
 			if (texturesBedrock[i].c64.author != undefined && texturesBedrock[i].c64.author.includes(userTag) && max <= MAX) {
-				if (max <= MAX) {
+				if (maxb64 <= MAX) {
 					bedrockc64.push(texturesBedrock[i].path.replace('textures/',''));
-					max++;
+					maxb64++;
 				}
 				countBedrock64++;
 			}
@@ -100,10 +106,10 @@ module.exports = {
 		if (countBedrock64 > 0) embed.addFields({name: 'Bedrock 64x:', value: countBedrock64, inline: true});
 		if (countJava32+countJava64+countBedrock32+countBedrock64 > 0) embed.addFields({name: 'Total:', value: countJava32+countJava64+countBedrock32+countBedrock64, inline: true});
 
-		if (countJava32 > 0) embedJava.addFields({name: 'Java 32x:', value: javac32, inline: true});
-		if (countJava64 > 0) embedJava.addFields({name: 'Java 64x:', value: javac64, inline: true});
-		if (countBedrock32 > 0) embedBedrock.addFields({name: 'Bedrock 32x:', value: bedrockc32, inline: true});
-		if (countBedrock64 > 0) embedBedrock.addFields({name: 'Bedrock 64x:', value: bedrockc64, inline: true});
+		if (countJava32 > 0 && javac32[0] != undefined) embedJava.addFields({name: 'Java 32x:', value: javac32, inline: true});
+		if (countJava64 > 0 && javac64[0] != undefined) embedJava.addFields({name: 'Java 64x:', value: javac64, inline: true});
+		if (countBedrock32 > 0 && bedrockc32[0] != undefined) embedBedrock.addFields({name: 'Bedrock 32x:', value: bedrockc32, inline: true});
+		if (countBedrock64 > 0 && bedrockc64[0] != undefined) embedBedrock.addFields({name: 'Bedrock 64x:', value: bedrockc64, inline: true});
 
 		embed.setDescription(`${embed.description}\n\n1️⃣ To see the Compliance Java texture list\n2️⃣ To see the Compliance Bedrock texture list`)
 		var embedMessage = await message.channel.send(embed);

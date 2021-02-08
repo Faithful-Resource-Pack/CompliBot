@@ -7,4 +7,5 @@
 
 - Introducing Changelog
 - Fixed wrong copper block name from /contributors/java.json
+- Fixed /about command
 ---------------------------------------
