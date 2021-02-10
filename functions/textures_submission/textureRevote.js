@@ -52,7 +52,8 @@ async function textureRevote(client, inputID, outputID, offset) {
 
 		}
 		
-		if (
+		else if (
+			upvotePercentage < 66.66 &&
 			message.embeds[0] !== undefined &&
 			messageDate.getDate() == limitDate.getDate() &&
 			messageDate.getMonth() == limitDate.getMonth()

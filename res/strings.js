@@ -1,3 +1,5 @@
+const LATEST_MC_JE_VERSION = '1.17';
+
 // General command stuff
 const BOT_ERROR = 'Action Failed';
 const BOT_AUTOREACT_ERROR = 'Auto Reaction Failed';
@@ -31,7 +33,9 @@ const TEXTURE_DEFEAT_REVOTE = 'This texture has not passed council and community
 const SUBMIT_NO_FILE_ATTACHED = 'Your submission has to have a file attached!';
 
 module.exports = {
-  BOT_ERROR,
+	LATEST_MC_JE_VERSION,
+	
+	BOT_ERROR,
 	BOT_AUTOREACT_ERROR,
 
 	COMMAND_NO_ARGUMENTS_GIVEN,

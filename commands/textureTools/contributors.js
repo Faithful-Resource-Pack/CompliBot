@@ -29,9 +29,16 @@ module.exports = {
 
 				if (!args[4].includes('#') || args[4] == undefined) return warnUser(message, 'The author must be a Discord Tag, ex: `Name#1234`');
 
+				try {
+					client.users.cache.find(u => u.tag === args[4]).id
+				} catch(error) {
+					return warnUser(message, 'This user doesn\'t exist!');
+				}
+				args[4] = client.users.cache.find(u => u.tag === args[4]).id;
+
 				if (args[2].toLowerCase() == 'java') {
 					for (var i = 0; i < textures.length; i++) {
-						if (textures[i].path.includes(args[1])) {
+						if (textures[i].version[strings.LATEST_MC_JE_VERSION].includes(args[1])) {
 							index = i;
 							break;
 						}

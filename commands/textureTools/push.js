@@ -6,11 +6,8 @@ const fs      = require('fs');
 const fetch   = require('node-fetch');
 const strings = require('../../res/strings');
 
-const BRANCH_JAVA    = 'Jappa-1.17';
-const BRANCH_BEDROCK = 'Jappa-1.16.200';
-
 const { warnUser } = require('../../functions/warnUser.js');
-const { autoPush } = require('../../functions/autoPush.js');
+const { doPush }   = require('../../functions/doPush.js');
 
 module.exports = {
 	name: 'push',
@@ -30,7 +27,8 @@ module.exports = {
 				var textures        = JSON.parse(fs.readFileSync('./json/contributors/java.json'));
 				var texturesBedrock = JSON.parse(fs.readFileSync('./json/contributors/bedrock.json'));
 
-				var textureAuthor = args[1];
+				var textureAuthor   = args[1];
+				var textureAuthorID = client.users.cache.find(u => u.tag === args[1]).id
 				var folder = args[2];
 				var name   = args[3].replace('.png','') + '.png';
 				var index  = -1;
@@ -41,7 +39,7 @@ module.exports = {
 
 				// JAVA
 				for (var i = 0; i < textures.length; i++) {
-					if (textures[i].path.includes(search)) {
+					if (textures[i].version[strings.LATEST_MC_JE_VERSION].includes(search)) {
 						index = i;
 						type  = 'java';
 						break;
@@ -66,12 +64,12 @@ module.exports = {
 				// ADD CONTRIBUTORS TO JSON
 				if (type == 'bedrock' && args[0].includes('32x')) {
 					if (texturesBedrock[index].c32.author == undefined) {
-						texturesBedrock[index].c32.author = [ textureAuthor ];
+						texturesBedrock[index].c32.author = [ textureAuthorID ];
 					}
 					else {
 						var authors = texturesBedrock[index].c32.author;
-						if (authors.includes(textureAuthor) == false) {
-							texturesBedrock[index].c32.author.push(textureAuthor);
+						if (authors.includes(textureAuthorID) == false) {
+							texturesBedrock[index].c32.author.push(textureAuthorID);
 						}
 					}
 
@@ -79,12 +77,12 @@ module.exports = {
 				}
 				if (type == 'bedrock' && args[0].includes('64x')) {
 					if (texturesBedrock[index].c64.author == undefined) {
-						texturesBedrock[index].c64.author = [ textureAuthor ];
+						texturesBedrock[index].c64.author = [ textureAuthorID ];
 					}
 					else {
 						var authors = texturesBedrock[index].c64.author;
-						if (authors.includes(textureAuthor) == false) {
-							texturesBedrock[index].c64.author.push(textureAuthor);
+						if (authors.includes(textureAuthorID) == false) {
+							texturesBedrock[index].c64.author.push(textureAuthorID);
 						}
 					}
 
@@ -92,12 +90,12 @@ module.exports = {
 				}
 				if (type == 'java' && args[0].includes('32x')) {
 					if (textures[index].c32.author == undefined) {
-						textures[index].c32.author = [ textureAuthor ];
+						textures[index].c32.author = [ textureAuthorID ];
 					}
 					else {
 						var authors = textures[index].c32.author;
-						if (authors.includes(textureAuthor) == false) {
-							textures[index].c32.author.push(textureAuthor);
+						if (authors.includes(textureAuthorID) == false) {
+							textures[index].c32.author.push(textureAuthorID);
 						}
 					}
 
@@ -105,12 +103,12 @@ module.exports = {
 				}
 				if (type == 'java' && args[0].includes('64x')) {
 					if (textures[index].c64.author == undefined) {
-						textures[index].c64.author = [ textureAuthor ];
+						textures[index].c64.author = [ textureAuthorID ];
 					}
 					else {
 						var authors = textures[index].c64.author;
-						if (authors.includes(textureAuthor) == false) {
-							textures[index].c64.author.push(textureAuthor);
+						if (authors.includes(textureAuthorID) == false) {
+							textures[index].c64.author.push(textureAuthorID);
 						}
 					}
 
@@ -129,8 +127,19 @@ module.exports = {
 					path = search;
 				}
 
-				await download(message.attachments.first().url, args[0], path, name);
-				await generatePush(args[0], `Manual Push for ${name} executed by: ${message.author.username}`);
+				if (type == 'java') {
+					await download_branch(message.attachments.first().url, textures[index].version['1.17'],   args[0], name, '1.17');
+					await download_branch(message.attachments.first().url, textures[index].version['1.16.5'], args[0], name, '1.16.5');
+					await download_branch(message.attachments.first().url, textures[index].version['1.15.2'], args[0], name, '1.15.2');
+					await download_branch(message.attachments.first().url, textures[index].version['1.14.4'], args[0], name, '1.14.4');
+					await download_branch(message.attachments.first().url, textures[index].version['1.13.2'], args[0], name, '1.13.2');
+					await download_branch(message.attachments.first().url, textures[index].version['1.12.2'], args[0], name, '1.12.2');
+				}
+				else if (type == 'bedrock') {
+					await download(message.attachments.first().url, args[0], path, name);
+				}
+
+				await doPush(`Manual Push for ${name} executed by: ${message.author.username}`);
 				await message.react('✅');
 				
 			} else return warnUser(message,'You did not provide args!');
@@ -138,25 +147,29 @@ module.exports = {
 	}
 }
 
-function generatePush(dir, commit_message) {
-	
-	if (dir.includes('Bedrock')) {
-		if (!isEmptyDir(`./texturesPush/${dir}/textures`)) {
-			autoPush('Compliance-Resource-Pack', dir, BRANCH_BEDROCK, commit_message, `./texturesPush/${dir}`).then(() => {
-				fs.rmdirSync(`./texturesPush/${dir}/textures/`, { recursive: true });
-				console.log(`PUSHED TO GITHUB: ${dir}`);
-			});
-		}
-	}
-	else {
-		if(!isEmptyDir(`./texturesPush/${dir}/assets`)) {
-			autoPush('Compliance-Resource-Pack', dir, BRANCH_JAVA, commit_message, `./texturesPush/${dir}`).then(() => {
-				fs.rmdirSync(`./texturesPush/${dir}/assets/`, { recursive: true });
-				console.log(`PUSHED TO GITHUB: ${dir}`);
-			});
-		}
-	}
+async function download_branch(url, path, type, name, branch) {
+	if (path == null || path == undefined) return;
 
+	var localPath = undefined;
+	if (type != undefined) localPath = `./texturesPush/${type}/${branch}/assets/${path}`;
+	else return warnUser(message, 'localPath undefined!');
+
+	const response = await fetch(url);
+	const buffer   = await response.buffer();
+	await fs.promises.mkdir(localPath.replace(`/${name}`,''), {recursive: true}).catch(console.error);
+	await fs.writeFile(localPath, buffer, () => console.log(`ADDED: ${name}\nTO: ${localPath}\n`));
+}
+
+async function download(url, type, path, name) {
+	var localPath = undefined;
+	if (type == 'Compliance-Bedrock-32x') localPath = `./texturesPush/Compliance-Bedrock-32x/${path}`
+	else if (type == 'Compliance-Bedrock-64x') localPath = `./texturesPush/Compliance-Bedrock-64x/${path}`
+	else return warnUser(message, 'Something went wrong');
+
+ 	const response = await fetch(url);
+  const buffer   = await response.buffer();
+	await fs.promises.mkdir(localPath.replace(`/${name}`,''), { recursive: true }).catch(console.error);
+  await fs.writeFile(localPath, buffer, () => console.log(`ADDED: ${name}\nTO: ${localPath}\n`));
 }
 
 function date() {
@@ -165,21 +178,6 @@ function date() {
 	var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
 	var yyyy = today.getFullYear();
 	return mm + '/' + dd + '/' + yyyy;
-}
-
-async function download(url, type, path, name) {
-	var localPath = undefined;
-	if (type == 'Compliance-Java-32x') localPath = `./texturesPush/Compliance-Java-32x/assets/${path}`
-	if (type == 'Compliance-Java-64x') localPath = `./texturesPush/Compliance-Java-64x/assets/${path}`
-	if (type == 'Compliance-Bedrock-32x') localPath = `./texturesPush/Compliance-Bedrock-32x/${path}`
-	if (type == 'Compliance-Bedrock-64x') localPath = `./texturesPush/Compliance-Bedrock-64x/${path}`
-
- 	const response = await fetch(url);
-  const buffer   = await response.buffer();
-	await fs.promises.mkdir(localPath.replace("/"+name,""), { recursive: true }).catch(console.error);
-  await fs.writeFile(localPath, buffer, () => console.log(`ADDED: ${name}\nTO: ${localPath}\n`));
-
-	return true;
 }
 
 function isEmptyDir(dirname){

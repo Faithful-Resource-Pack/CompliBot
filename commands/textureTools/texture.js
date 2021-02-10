@@ -41,8 +41,8 @@ module.exports = {
 					// begin with _, is inside : be able to search for _sword : sort all swords
 					if (String(args[1]).startsWith('_')) {
 						for (var i=0 ; i < textures.length ; i++){
-							if (textures[i].path.split("/").pop().includes(args[1])) {
-								results.push(textures[i].path);
+							if (textures[i].version[strings.LATEST_MC_JE_VERSION].split("/").pop().includes(args[1])) {
+								results.push(textures[i].version[strings.LATEST_MC_JE_VERSION]);
 								index.push(i);
 							}
 						}
@@ -50,8 +50,8 @@ module.exports = {
 					// ends with /, is in subfolder
 					if (String(args[1]).endsWith('/')) {
 						for (var i=0 ; i < textures.length ; i++) {
-							if (textures[i].path.includes(args[1])) {
-								results.push(textures[i].path);
+							if (textures[i].version[strings.LATEST_MC_JE_VERSION].includes(args[1])) {
+								results.push(textures[i].version[strings.LATEST_MC_JE_VERSION]);
 								index.push(i);
 							}
 						}
@@ -59,8 +59,8 @@ module.exports = {
 					// classic search
 					else {
 						for (var i=0 ; i < textures.length ; i++){
-							if (textures[i].path.split("/").pop().startsWith(args[1])) {
-								results.push(textures[i].path);
+							if (textures[i].version[strings.LATEST_MC_JE_VERSION].split("/").pop().startsWith(args[1])) {
+								results.push(textures[i].version[strings.LATEST_MC_JE_VERSION]);
 								index.push(i);
 							}
 						}
@@ -297,6 +297,7 @@ module.exports = {
 	}
 }
 
+// Old Format (Unused)
 function mentionFromUserTag(client, UserTag) {
 	try {
 		client.users.cache.find(u => u.tag === UserTag).id
@@ -306,12 +307,28 @@ function mentionFromUserTag(client, UserTag) {
 	return `<@${client.users.cache.find(u => u.tag === UserTag).id}>`;
 }
 
+// New format:
+function mentionFromUserID(client, UserID) {
+	try {
+		client.users.cache.find(u => u.id === UserID)
+	} catch (error) {
+		return UserID;
+	}
+	return `<@${UserID}>`;
+}
+
 function authorsList(client, array) {
 	if (array != undefined) {
 		string = '';
 		for (var i = 0; i < array.length; i++) {
-			if (i != array.length - 1) string += `${mentionFromUserTag(client, array[i])}\n`;
-			else string += `${mentionFromUserTag(client, array[i])}`;
+			if (isNaN(array[i])) {
+				if (i != array.length - 1) string += `${mentionFromUserTag(client, array[i])}\n`;
+				else string += `${mentionFromUserTag(client, array[i])}`;
+			}
+			else {
+				if (i != array.length - 1) string += `${mentionFromUserID(client, array[i])}\n`;
+				else string += `${mentionFromUserID(client, array[i])}`;
+			}
 		}
 		return string;
 	}

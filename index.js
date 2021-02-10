@@ -7,7 +7,7 @@
  * 		- Juknum 
  * 		- RobertR11
  *  
- *  DON'T FORGET TO LOOKS TROUGH OUR CHANGELOG
+ *  DON'T FORGET TO LOOK TROUGH OUR CHANGELOG
  * =====================================================
 */
 

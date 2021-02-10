@@ -35,15 +35,10 @@ async function textureCouncil(client, inputID, outputFalseID, outputTrueID, offs
 				.setDescription(strings.TEXTURE_WIN_COUNCIL)
 				.addFields(
 					{ name: 'Name:',    value: message.embeds[0].fields[0].value, inline: true },
-					{ name: 'Folder:',  value: message.embeds[0].fields[1].value, inline: true }
-					//{ name: 'Type:',    value: message.embeds[0].fields[2].value, inline: true } should be added after transition
+					{ name: 'Folder:',  value: message.embeds[0].fields[1].value, inline: true },
+					{ name: 'Type:',    value: message.embeds[0].fields[2].value, inline: true }
 				)
 				.setFooter('CompliBot', settings.BOT_IMG);
-
-			// should be removed after transition
-			if (message.embeds[0].fields[2] != undefined) embed.addFields({ name: 'Type:',    value: message.embeds[0].fields[2].value, inline: true });
-			else embed.addFields({ name: 'Type:', value: 'java', inline: true });
-			/////////////////////////////////////
 
 			if (message.embeds[0].description != undefined) embed.addFields({ name: 'Comment:', value: message.embeds[0].description });
 
@@ -65,14 +60,9 @@ async function textureCouncil(client, inputID, outputFalseID, outputTrueID, offs
 				.addFields(
 					{ name: 'Name:',    value: message.embeds[0].fields[0].value, inline: true },
 					{ name: 'Folder:',  value: message.embeds[0].fields[1].value, inline: true },
-					//{ name: 'Type:',    value: message.embeds[0].fields[2].value, inline: true } should be added after transition
+					{ name: 'Type:',    value: message.embeds[0].fields[2].value, inline: true }
 				)
 				.setFooter('CompliBot', settings.BOT_IMG);
-			
-			// should be removed after transition
-			if (message.embeds[0].fields[2] != undefined) embed.addFields({ name: 'Type:',    value: message.embeds[0].fields[2].value, inline: true });
-			else embed.addFields({ name: 'Type:', value: 'None', inline: true });
-			/////////////////////////////////////
 
 			if (message.embeds[0].description != undefined) embed.addFields({ name: 'Comment:', value: message.embeds[0].description });
 

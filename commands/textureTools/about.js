@@ -14,8 +14,6 @@ module.exports = {
 	syntax: `${prefix}about me\n${prefix}about <userTag>\n`,
 	async execute(client, message, args) {
 
-		console.log(args+'\n\n');
-
 		var textures        = JSON.parse(fs.readFileSync('./json/contributors/java.json'));
 		var texturesBedrock = JSON.parse(fs.readFileSync('./json/contributors/bedrock.json'));
 		var embed = new Discord.MessageEmbed();
@@ -32,15 +30,16 @@ module.exports = {
 		var countBedrock64 = 0;
 
 		const MAX = 20;
-		var   maxj32 = 0;
-		var   maxj64 = 0;
-		var   maxb32 = 0;
-		var   maxb64 = 0;
+		var maxj32 = 0;
+		var maxj64 = 0;
+		var maxb32 = 0;
+		var maxb64 = 0;
 
 		if (args[0] == 'me' || args[0] == undefined) {
 			embed.setDescription(`About <@${client.users.cache.find(u => u.tag === message.author.tag).id}>'s contributions:`)
 				.setColor(colors.BLUE)
 				.setAuthor(message.author.tag, message.author.displayAvatarURL());
+			userID  = client.users.cache.find(u => u.tag === message.author.tag).id;
 			userTag = message.author.tag;
 		}
 
@@ -58,37 +57,39 @@ module.exports = {
 			embed.setDescription(`About <@${client.users.cache.find(u => u.tag === args[0]).id}> contributions:`)
 				.setColor(colors.BLUE)
 				.setAuthor(message.author.tag, message.author.displayAvatarURL());
+			userID  = client.users.cache.find(u => u.tag === args[0]).id;
 			userTag = args[0];
 		}
 
+		/** JAVA *******************************/
 		for (var i = 0; i < textures.length; i++) {
-			if (textures[i].c32.author != undefined && textures[i].c32.author.includes(userTag)) {
+			if (textures[i].c32.author != undefined && textures[i].c32.author.includes(userID)) {
 				if (maxj32 <= MAX) {
-					javac32.push(textures[i].path.replace('minecraft/textures/',''));
+					javac32.push(textures[i].version[strings.LATEST_MC_JE_VERSION].replace('minecraft/textures/',''));
 					maxj32++;
 				}
 				countJava32++;
 			}
-			if (textures[i].c64.author != undefined && textures[i].c64.author.includes(userTag)) {
+			if (textures[i].c64.author != undefined && textures[i].c64.author.includes(userID)) {
 				if (maxj64 <= MAX) {
-					javac64.push(textures[i].path.replace('minecraft/textures/',''));
+					javac64.push(textures[i].version[strings.LATEST_MC_JE_VERSION].replace('minecraft/textures/',''));
 					maxj64++;
 				}
 				countJava64++;
-				console.log(textures[i].path);
+				console.log(textures[i].version[strings.LATEST_MC_JE_VERSION]);
 			}
 		}
 
-		max = 0;
+		/** BEDROCK ****************************/
 		for (var i = 0; i < texturesBedrock.length; i++) {
-			if (texturesBedrock[i].c32.author != undefined && texturesBedrock[i].c32.author.includes(userTag) && max <= MAX) {
+			if (texturesBedrock[i].c32.author != undefined && texturesBedrock[i].c32.author.includes(userID)) {
 				if (maxb32 <= MAX) {
 					bedrockc32.push(texturesBedrock[i].path.replace('textures/',''));
 					maxb32++;
 				}
 				countBedrock32++;
 			}
-			if (texturesBedrock[i].c64.author != undefined && texturesBedrock[i].c64.author.includes(userTag) && max <= MAX) {
+			if (texturesBedrock[i].c64.author != undefined && texturesBedrock[i].c64.author.includes(userID)) {
 				if (maxb64 <= MAX) {
 					bedrockc64.push(texturesBedrock[i].path.replace('textures/',''));
 					maxb64++;
