@@ -9,8 +9,12 @@ function getMeta(imgUrl) {
 				response.on('data', function(chunk) {
 				chunks.push(chunk);
 			}).on('end', function() {
-				var buffer = Buffer.concat(chunks);
-				resolve(sizeOf(buffer));
+        try {
+				  var buffer = Buffer.concat(chunks);
+				  resolve(sizeOf(buffer));
+        } catch(e) {
+          return
+        }
 			});
 		}).on('error', function(error) {
 			console.error(error);

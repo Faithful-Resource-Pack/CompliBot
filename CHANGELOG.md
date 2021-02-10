@@ -6,6 +6,7 @@
 > RobertR11
 
 - ignore various moderation commands when in dm's
+- prevent crash when trying to magnify or tile corrupted images
 
 #### February 8th 2021
 > Juknum  
