@@ -13,6 +13,7 @@ module.exports = {
 	syntax: `${prefix}slowmode <time in seconds/off/disable/stop>`,
 
 	async execute(client, message, args) {
+    if (!message.guild) return;
 
 		if (message.member.hasPermission('MANAGE_CHANNELS')) {
 			if (args != '') {

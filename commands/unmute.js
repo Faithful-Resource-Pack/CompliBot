@@ -17,6 +17,7 @@ module.exports = {
 	uses: 'Moderators',
 	syntax: `${prefix}unmute <@user> <reason>`,
 	async execute(client, message, args) {
+    if (!message.guild) return;
 
 		if (message.member.hasPermission('BAN_MEMBERS')) {
 			if (args != '') {

@@ -12,6 +12,7 @@ module.exports = {
 	syntax: `${prefix}clear <amount>`,
 
 	async execute(client, message, args) {
+    if (!message.guild) return;
 
 		if (message.member.hasPermission('ADMINISTRATOR')) {
 			if (args != '') {

@@ -16,6 +16,7 @@ module.exports = {
 	uses: 'Anyone',
 	syntax: `${prefix}modping`,
 	async execute(client, message, args) {
+    if (!message.guild) return;
 
 		// void old list :
 		mods_dnd = [];
