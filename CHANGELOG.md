@@ -7,6 +7,7 @@
 
 - ignore various moderation commands when in dm's
 - prevent crash when trying to magnify or tile corrupted images
+- add 21w06a texture support
 
 #### February 8th 2021
 > Juknum  
