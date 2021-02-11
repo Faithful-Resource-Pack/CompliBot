@@ -120,14 +120,14 @@ module.exports = {
 
 		/*
 		 * ASK USER TO CHOOSE BETWEEN MULTIPLE TEXTURES
-		*/
+		 */
 		async function getMultipleTexture(size,results,index) {
 			// max amount of reactions reached
 			const emoji_num = ['1️⃣','2️⃣','3️⃣','4️⃣','5️⃣','6️⃣','7️⃣','8️⃣','9️⃣','🔟','🇦','🇧','🇨','🇩','🇪','🇫','🇬','🇭','🇮','🇯'];
 
 			var embed = new Discord.MessageEmbed()
 				.setTitle(results.length + ' results for "' + args[1] + '" in '+args[0].replace('b'," Bedrock"))
-        .setFooter('CompliBot', settings.BOT_IMG);
+				.setFooter('CompliBot', settings.BOT_IMG);
 
 			var description = 'Choose one texture using emoji reactions.\nIf you don\'t see what you\'re looking for, be more specific.\n\n';
 			for (var i=0; i < results.length; i++){
@@ -139,7 +139,7 @@ module.exports = {
 
 			const embedMessage = await message.channel.send(embed);
 
-      asyncReaction(embedMessage, results, emoji_num);
+			asyncReaction(embedMessage, results, emoji_num);
 
 			const filter_num = (reaction, user) => {
 				return emoji_num.includes(reaction.emoji.name) && user.id === message.author.id;
@@ -161,26 +161,26 @@ module.exports = {
 				});
 		}
 
-    /*
-     * The reaction hack
-     */
-    async function asyncReaction(embedMessage, results, emoji_num) {
-      var hasBeenDeleted = false;
+		/*
+		 * The reaction hack
+		 */
+		async function asyncReaction(embedMessage, results, emoji_num) {
+			var hasBeenDeleted = false;
 			for (var i = 0; i < results.length; i++){
 				if (i < emoji_num.length && !hasBeenDeleted) {
 					await embedMessage.react(emoji_num[i]).catch(() => {
-            hasBeenDeleted = true
-            //console.warn('The message has already been deleted!')
-          });
+						hasBeenDeleted = true
+						//console.warn('The message has already been deleted!')
+					});
 				} else {
-          return;
-        }
+					return;
+				}
 			}
-    }
+		}
 
 		/*
 		 * SHOW ASKED TEXTURE
-		*/
+		 */
 		function getTexture(type, name, index) {
 			var imgURL = undefined;
 

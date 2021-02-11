@@ -31,28 +31,28 @@ function tile(message, url) {
 		const embedMessage = await message.channel.send(embed);
 
     embedMessage.react('🗑️');
-//		embedMessage.react('🔎');
+	//embedMessage.react('🔎');
 
 		const filter = (reaction, user) => {
 			return ['🗑️','🔎'].includes(reaction.emoji.name) && user.id === message.author.id;
 		};
 
-    embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
-						.then(async collected => {
-							const reaction = collected.first();
-							if (reaction.emoji.name === '🗑️') {
-								embedMessage.delete();
-								message.delete();
-							}
-							if (reaction.emoji.name === '🔎') {
-                //TODO: This doesn't work
-								return magnify(message, 5, embedMessage.attachment.url);
-							}
-						})
-						.catch(async () => {
-							await embedMessage.reactions.cache.get('🗑️').remove();
-							await embedMessage.reactions.cache.get('🔎').remove();
-						});
+		embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
+			.then(async collected => {
+				const reaction = collected.first();
+				if (reaction.emoji.name === '🗑️') {
+					embedMessage.delete();
+					message.delete();
+				}
+				/*TODO: This doesn't work
+				if (reaction.emoji.name === '🔎') {
+					return magnify(message, 5, embedMessage.attachment.url);
+				}*/
+			})
+			.catch(async () => {
+				await embedMessage.reactions.cache.get('🗑️').remove();
+				await embedMessage.reactions.cache.get('🔎').remove();
+			});
 	});
 }
 

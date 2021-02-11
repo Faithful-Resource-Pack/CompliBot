@@ -5,16 +5,16 @@ const sizeOf   = require('image-size');
 function getMeta(imgUrl) {
 	return new Promise(function(resolve, reject) {
 		https.get(imgUrl, function(response) {
-				var chunks = [];
-				response.on('data', function(chunk) {
+			var chunks = [];
+			response.on('data', function(chunk) {
 				chunks.push(chunk);
 			}).on('end', function() {
-        try {
-				  var buffer = Buffer.concat(chunks);
-				  resolve(sizeOf(buffer));
-        } catch(e) {
-          return
-        }
+        		try {
+					var buffer = Buffer.concat(chunks);
+					resolve(sizeOf(buffer));
+        		} catch(e) {
+          		return
+        		}
 			});
 		}).on('error', function(error) {
 			console.error(error);

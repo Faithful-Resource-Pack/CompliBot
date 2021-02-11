@@ -72,7 +72,6 @@ async function quote(msg) {
 		}
 	}
 
-	
 }
 
 exports.quote = quote;

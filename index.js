@@ -9,7 +9,7 @@
  *  
  *  DON'T FORGET TO LOOK TROUGH OUR CHANGELOG
  * =====================================================
-*/
+ */
 
 // Libs:
 require('dotenv').config();
@@ -57,16 +57,16 @@ const settings     = require('./settings');
 // Texture submission process: (each day at 00:00 GMT)
 let scheduledFunctions = new cron.CronJob('0 0 * * *', async () => {
 	// C32x
-	await textureSubmission(client, settings.C32_SUBMIT_1,  settings.C32_SUBMIT_2, 5);							     		  // 5 DAYS OFFSET
-	await textureSubmission(client, settings.C32_SUBMIT_1B, settings.C32_SUBMIT_2, 5);							     		  // 5 DAYS OFFSET
+	await textureSubmission(client, settings.C32_SUBMIT_1,  settings.C32_SUBMIT_2, 5);							// 5 DAYS OFFSET
+	await textureSubmission(client, settings.C32_SUBMIT_1B, settings.C32_SUBMIT_2, 5);							// 5 DAYS OFFSET
 	await    textureCouncil(client, settings.C32_SUBMIT_2,  settings.C32_SUBMIT_3, settings.C32_RESULTS, 1);	// 1 DAYS OFFSET
-	await     textureRevote(client, settings.C32_SUBMIT_3,  settings.C32_RESULTS,  3);											  // 3 DAYS OFFSET
+	await     textureRevote(client, settings.C32_SUBMIT_3,  settings.C32_RESULTS,  3);							// 3 DAYS OFFSET
 	
 	// C64x
-	await textureSubmission(client, settings.C64_SUBMIT_1,  settings.C64_SUBMIT_2, 5);									      // 5 DAYS OFFSET
-	await textureSubmission(client, settings.C64_SUBMIT_1B, settings.C64_SUBMIT_2, 5);									      // 5 DAYS OFFSET
+	await textureSubmission(client, settings.C64_SUBMIT_1,  settings.C64_SUBMIT_2, 5);							// 5 DAYS OFFSET
+	await textureSubmission(client, settings.C64_SUBMIT_1B, settings.C64_SUBMIT_2, 5);							// 5 DAYS OFFSET
 	await    textureCouncil(client, settings.C64_SUBMIT_2,  settings.C64_SUBMIT_3, settings.C64_RESULTS, 1);	// 1 DAYS OFFSET
-	await     textureRevote(client, settings.C64_SUBMIT_3,  settings.C64_RESULTS,  3);										  	// 3 DAYS OFFSET
+	await     textureRevote(client, settings.C64_SUBMIT_3,  settings.C64_RESULTS,  3);							// 3 DAYS OFFSET
 	
 });
 
@@ -87,10 +87,10 @@ setInterval(function() {checkTimeout(client)},30000)
 // Ah, ha, ha, ha, stayin' alive
 // Corona says no ~Domi04151309
 const server = http.createServer((req, res) => {
-  res.writeHead(302, {
-    'Location': 'https://compliancepack.net/'
-  });
-  res.end();
+	res.writeHead(302, {
+		'Location': 'https://compliancepack.net/'
+	});
+	res.end();
 });
 server.listen(3000, () => console.log(`listening at http://localhost:${port}`));
 
@@ -123,30 +123,29 @@ client.on('ready', async () => {
 
 	/*
 	 * ENABLE TEXTURE SUBMISSION PROCESS
-	*/
+	 */
 	scheduledFunctions.start();
 	pushToGithub.start();
 
-  /*
+	/*
 	 * UPDATE MEMBERS
-	*/
+	 */
 	updateMembers(client, settings.CTWEAKS_ID, settings.CTWEAKS_COUNTER);
 
 	console.log(`--------------------------------------------------------------\n\n\n─=≡Σ((( つ◕ل͜◕)つ\nJavaScript is a pain, but I'm fine, I hope...\n\n\n--------------------------------------------------------------\n`);
 
-  var embed = new Discord.MessageEmbed()
-    .setTitle('Started')
-    .setDescription(`<@!${client.user.id}> \n ID: ${client.user.id}`)
-    .setColor(colors.GREEN)
-    .setTimestamp();
-  await client.channels.cache.get('785867553095548948').send(embed);
+	var embed = new Discord.MessageEmbed()
+		.setTitle('Started')
+		.setDescription(`<@!${client.user.id}> \n ID: ${client.user.id}`)
+		.setColor(colors.GREEN)
+		.setTimestamp();
+	await client.channels.cache.get('785867553095548948').send(embed);
 });
 
 /*
  * MEMBER JOIN
-*/
+ */
 client.on('guildMemberAdd', async member =>{
-
 	// Muted role check:
 	for (var i = 0; i < warnList.length; i++) {
 		if (`${member.id}` == warnList[i].user && warnList[i].muted == true) {
@@ -169,7 +168,7 @@ client.on('guildMemberRemove', async member =>{
  * COMMAND HANDLER
  * - Automated: /commands & below
  * - Easter Eggs & others: below
-*/
+ */
 for (const file of commandFiles) {
 	const command = require(file);
 	client.commands.set(command.name, command);
@@ -177,14 +176,15 @@ for (const file of commandFiles) {
 
 /*
  * AUTOMATED:
-*/
+ */
 client.on('message', async message => {
 	if (!message.content.startsWith(prefix) || message.author.bot) return; // Avoid message WITHOUT prefix & bot messages
-  if (process.env.MAINTENANCE === 'true' && message.author.id !== uidR) {
+
+	if (process.env.MAINTENANCE === 'true' && message.author.id !== uidR) {
 		const msg = await message.reply(strings.COMMAND_MAINTENANCE);
-    await message.react('❌');
-    await msg.delete({timeout: 30000});
-  }
+		await message.react('❌');
+		await msg.delete({timeout: 30000});
+	}
 	
 	const args        = message.content.slice(prefix.length).trim().split(/ +/);
 	const commandName = args.shift().toLowerCase();
@@ -192,30 +192,30 @@ client.on('message', async message => {
 
 	if (!command) return;
 
-  command.execute(client, message, args).catch(async error => {
-    console.error(error);
-    const embed = new Discord.MessageEmbed()
-      .setColor(colors.RED)
-      .setTitle(strings.BOT_ERROR)
-      .setDescription(strings.COMMAND_ERROR);
+	command.execute(client, message, args).catch(async error => {
+		console.error(error);
+		const embed = new Discord.MessageEmbed()
+			.setColor(colors.RED)
+			.setTitle(strings.BOT_ERROR)
+			.setDescription(strings.COMMAND_ERROR);
 
 		await message.channel.send(embed)
-    await message.react('❌');
-  })
+		await message.react('❌');
+	})
 
 	/*
 	 * COMMAND HISTORY
-	*/
-  var embed = new Discord.MessageEmbed()
-    .setAuthor(message.author.tag, message.author.displayAvatarURL())
+	 */
+	var embed = new Discord.MessageEmbed()
+		.setAuthor(message.author.tag, message.author.displayAvatarURL())
 		.setDescription(`[Jump to location](${message.url})\n\n**Command**: \`${commandName}\`\n**Channel**: <#${message.channel.id}>\n**Guild**: \`${message.guild}\`\n**User ID**: \`${message.author.id}\`\n**Message ID**: \`${message.id}\`\n**Command Sent**: \`${message.createdAt}\``)
 		.setTimestamp()
-  await client.channels.cache.get('785867690627039232').send(embed);
+	await client.channels.cache.get('785867690627039232').send(embed);
 });
 
 /*
  * EASTER EGGS & CUSTOM COMMANDS:
-*/
+ */
 client.on('message', async message => {
 	for (var i = 0; i < warnList.length; i++) {
 		if (warnList[i].user == message.author.id && warnList[i].muted == true) {
@@ -226,14 +226,14 @@ client.on('message', async message => {
 
 	if (message.content.startsWith(prefix) || message.author.bot) return; // Avoid message WITH prefix & bot messages
 
-  /*
-   * Mod Assistance
-   */
-  //keywordsDetection(client, message);
+	/*
+	 * Mod Assistance
+	 */
+	//keywordsDetection(client, message);
 
-  /*
-   * Funny Stuff
-   */
+	/*
+	 * Funny Stuff
+	 */
 	if (message.content.includes('(╯°□°）╯︵ ┻━┻')) return await message.reply('┬─┬ ノ( ゜-゜ノ) calm down bro');
 
 	if (message.content === 'F' ) return await message.react('🇫');
@@ -260,28 +260,28 @@ client.on('message', async message => {
 	/*
 	 * MESSAGE URL QUOTE
 	 * when someone send a message with https://discord.com/channels/<server ID>/<channel ID>/<message ID>
-	*/
+	 */
 	if (message.content.includes('https://discord.com/channels/')) quote(message);
 
 	/*
 	 * DISCORD SERVER INVITE DETECTION
 	 * I hope there is no other use of this link type on Discord
-   * Found more information here: https://youtu.be/-51AfyMqnpI
-	*/
-  if (message.content.includes('https://discord.gg/')) {
-    var embed = new Discord.MessageEmbed()
+	 * Found more information here: https://youtu.be/-51AfyMqnpI
+	 */
+	if (message.content.includes('https://discord.gg/')) {
+		var embed = new Discord.MessageEmbed()
 			.setAuthor(`${message.author.tag} may have advertised a discord server`, message.author.displayAvatarURL())
 			.setColor(colors.RED)
 			.setDescription(`[Jump to message](${message.url})\n\n**Channel**: <#${message.channel.id}>\n**Server**: \`${message.guild}\`\n**User ID**: \`${message.author.id}\`\n**Date**: \`${message.createdAt}\`\n\n\`\`\`${message.content}\`\`\``)
 			.setTimestamp()
 
 		client.channels.cache.get('803344583919534091').send(embed)
-  }
+	}
 
 	/*
 	 * AUTO REACT:
 	 * (does not interfer with submission process)
-	*/
+	 */
 
 	if (message.channel.id === '779759327665848320') {
 		return autoReactMainPack(
@@ -353,13 +353,13 @@ client.on('messageUpdate', async (oldMessage, newMessage) => {
 
 	/*
 	 * MODERATION
-	*/
+	 */
 	//keywordsDetection(client, newMessage);
 
 	/*
 	 * MESSAGE URL QUOTE
 	 * when someone sends a message with https://discord.com/channels/<server ID>/<channel ID>/<message ID>
-	*/
+	 */
 	if (newMessage.content.includes('https://discord.com/channels/')) quote(newMessage);
 
 	/*

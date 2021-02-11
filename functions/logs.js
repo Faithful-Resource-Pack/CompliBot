@@ -8,7 +8,7 @@ async function logs(client, guildID, oldMessage, newMessage, deleted) {
 	if (guildID == settings.C64_ID) channel = client.channels.cache.get(settings.C64_LOGS);
 	if (guildID == settings.C32_ID) channel = client.channels.cache.get(settings.C32_LOGS);
 
-  if (oldMessage == newMessage) return
+	if (oldMessage == newMessage) return
 	if (oldMessage != undefined && channel != undefined && deleted == false) {
 		var embed = new Discord.MessageEmbed()
 			.setAuthor(`Edited by ${newMessage.author.tag}`)

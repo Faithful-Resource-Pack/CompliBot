@@ -47,8 +47,8 @@ async function keywordsDetection(client, message) {
 }
 
 function includesWord(string, word) {
-  if (string == word || string.startsWith(word + ' ') || string.endsWith(' ' + word) || string.includes(' ' + word + ' ')) return true
-  else return false
+	if (string == word || string.startsWith(word + ' ') || string.endsWith(' ' + word) || string.includes(' ' + word + ' ')) return true
+	else return false
 }
 
 exports.keywordsDetection = keywordsDetection;

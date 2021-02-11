@@ -17,31 +17,30 @@ module.exports = {
 
 		if (message.member.hasPermission('MANAGE_CHANNELS')) {
 			if (args != '') {
-        if (args == 'off' || args == 'disable' || args == 'stop') {
-          await message.channel.setRateLimitPerUser("0", `${message.author.tag} has used the slowmode command`);
-          var embed = new Discord.MessageEmbed()
+        		if (args == 'off' || args == 'disable' || args == 'stop') {
+					await message.channel.setRateLimitPerUser("0", `${message.author.tag} has used the slowmode command`);
+					var embed = new Discord.MessageEmbed()
 						.setAuthor(message.author.tag, message.author.displayAvatarURL())
 						.setColor(colors.BLUE)
 						.setDescription(`Disabled slowmode.`)
 						.setTimestamp();
 
-		      return await message.channel.send(embed);
-        }
+					return await message.channel.send(embed);
+				}
 
-        if (args > 21600) return warnUser(message, 'The number can\'t be bigger than 21600!')
-
+        		if (args > 21600) return warnUser(message, 'The number can\'t be bigger than 21600!')
 				if (isNaN(args)) return await warnUser(message, "The amount parameter isn't a number!")
 
-        else { 
+				else {
 					await message.channel.setRateLimitPerUser(parseInt(args[0]), `${message.author.tag} has used the slowmode command`);
-        	var embed = new Discord.MessageEmbed()
+					var embed = new Discord.MessageEmbed()
 						.setAuthor(message.author.tag, message.author.displayAvatarURL())
 						.setColor(colors.BLUE)
 						.setDescription(`Slowmode set to **${parseInt(args[0])} seconds**.`)
 						.setTimestamp();
 
-		    	return await message.channel.send(embed);
-        }
+					return await message.channel.send(embed);
+				}
 
 			} else return warnUser(message,strings.COMMAND_PROVIDE_A_NUMBER);
 		} else return warnUser(message,strings.COMMAND_NO_PERMISSION);

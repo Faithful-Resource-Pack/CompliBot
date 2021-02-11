@@ -8,22 +8,22 @@ const { getMessages } = require('../getMessages.js');
 
 async function getResults(client, inputID, OFFSET_DAY = 0) {
 
-	// get contributors files:
+	// get contributor files:
 	var texturesBedrock = JSON.parse(fs.readFileSync('./json/contributors/bedrock.json'));
 	var texturesJava    =	JSON.parse(fs.readFileSync('./json/contributors/java.json'));
 
-	// set offset (used for developpment);
+	// set offset (used for development);
 	var offsetDate = new Date();
 	offsetDate.setDate(offsetDate.getDate() - OFFSET_DAY);
 
-	// get messages list:
+	// get message list:
 	let messages = await getMessages(client, inputID);
 
 	for (var i in messages) {
 		let message     = messages[i];
 		let messageDate = new Date(message.createdTimestamp);
 
-		// if : message is an embed && offset date == message date && embed color is green
+		// if message is an embed && offset date == message date && embed color is green
 		if (message.embeds[0] != undefined && message.embeds[0].color == 5025616 && messageDate.getDate() == offsetDate.getDate() && messageDate.getMonth() == offsetDate.getMonth()) {
 			var textureAuthor   = message.embeds[0].author.name;
 			var textureAuthorID = client.users.cache.find(u => u.tag === textureAuthor).id

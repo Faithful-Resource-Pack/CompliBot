@@ -11,41 +11,41 @@ module.exports = {
 	description: 'get B E A N E D',
 	uses: 'Moderators',
 	syntax: `${prefix}bean <@user>`,
-
 	async execute(client, message, args) {
-    if (!message.guild) return;
+    	if (!message.guild) return;
 
 		if (message.member.hasPermission('BAN_MEMBERS')) {
 			if (args != '') {
-        const member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
-        const reason = args.slice(1).join(' ') || 'Not Specified';
-
+    	    	const member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
+    	    	const reason = args.slice(1).join(' ') || 'Not Specified';
 				if (args == '<@!'+message.author.id+'>') return await message.reply('You can\'t bean yourself!');
+
 				else {
 					const embed = new Discord.MessageEmbed()
 						.setAuthor(message.author.tag, message.author.displayAvatarURL())
-				    .setDescription(`Beaned ${member} \nReason: ${reason}`)
-            .setColor(colors.BLUE)
-				    .setTimestamp();
-			    const embedMessage = await message.channel.send(embed);
-          await embedMessage.react('🗑️');
-          const filter = (reaction, user) => {
-			      return ['🗑️'].includes(reaction.emoji.name) && user.id === message.author.id;
-	    	  };
+						.setDescription(`Beaned ${member} \nReason: ${reason}`)
+						.setColor(colors.BLUE)
+						.setTimestamp();
+					const embedMessage = await message.channel.send(embed);
+					await embedMessage.react('🗑️');
 
-          embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
-			      .then(async collected => {
-				      const reaction = collected.first();
-				      if (reaction.emoji.name === '🗑️') {
-				      	await embedMessage.delete();
-                await message.delete();
-				      }
-			      })
-            .catch(async () => {
-		          await embedMessage.reactions.cache.get('🗑️').remove();
-	          });
+					const filter = (reaction, user) => {
+						return ['🗑️'].includes(reaction.emoji.name) && user.id === message.author.id;
+					};
+
+					embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
+						.then(async collected => {
+							const reaction = collected.first();
+							if (reaction.emoji.name === '🗑️') {
+								await embedMessage.delete();
+								await message.delete();
+							}
+						})
+						.catch(async () => {
+							await embedMessage.reactions.cache.get('🗑️').remove();
+						});
 				}
-			}	else return warnUser(message,strings.COMMAND_PROVIDE_VALID_TAG);
+			} else return warnUser(message,strings.COMMAND_PROVIDE_VALID_TAG);
 		} else return warnUser(message,strings.COMMAND_NO_PERMISSION);
 	}
 };

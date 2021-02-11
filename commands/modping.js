@@ -58,7 +58,7 @@ module.exports = {
 				else content = 'There are **' + mods_online.length + ' Mods online**';
 
 				embed = new Discord.MessageEmbed()
-          .setAuthor(message.author.tag, message.author.displayAvatarURL())
+					.setAuthor(message.author.tag, message.author.displayAvatarURL())
 					.setTitle('Moderators:')
 					.setDescription(content + '\n> use `/modping` to call mods for help!')
 					.setColor('#22202C');
@@ -74,7 +74,7 @@ module.exports = {
 				else content = 'There are **' + mods_dnd.length + ' Mods in do not disturb / AFKs**, they may not respond.';
 
 				embed = new Discord.MessageEmbed()
-          .setAuthor(message.author.tag, message.author.displayAvatarURL())
+					.setAuthor(message.author.tag, message.author.displayAvatarURL())
 					.setTitle('Moderators:')
 					.setDescription(content + '\n> use `/modping` to call mods for help!')
 					.setColor('#22202C');
@@ -87,7 +87,7 @@ module.exports = {
 			} else {
 				// No mods are online
 				embed = new Discord.MessageEmbed()
-          .setAuthor(message.author.tag, message.author.displayAvatarURL())
+					.setAuthor(message.author.tag, message.author.displayAvatarURL())
 					.setTitle('Moderators:')
 					.setDescription('There are currently no mods online ¯\\_(ツ)_/¯, I\'m going to ping them all\n> use `/modping` to call mods for help!')
 					.setColor('#22202C');

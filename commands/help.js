@@ -35,67 +35,66 @@ module.exports = {
 				} else aliases = 'None'
 
 				var embed = new Discord.MessageEmbed()
-				.setTitle(`Help: ${prefix}${command.name}`)
-				.setThumbnail(settings.BOT_IMG)
-        .setColor(colors.BLUE)
-				.setDescription(`**Description:**\n${command.description || 'No description'}\n**Can be used by:**\n${command.uses || 'Not set'}\n**Syntax:**\n${syntax}\n**Aliases:**\n${aliases}`)
-				.setFooter('CompliBot', settings.BOT_IMG);
+					.setTitle(`Help: ${prefix}${command.name}`)
+					.setThumbnail(settings.BOT_IMG)
+					.setColor(colors.BLUE)
+					.setDescription(`**Description:**\n${command.description || 'No description'}\n**Can be used by:**\n${command.uses || 'Not set'}\n**Syntax:**\n${syntax}\n**Aliases:**\n${aliases}`)
+					.setFooter('CompliBot', settings.BOT_IMG);
 
-			}
-
-			else return warnUser(message, 'Please provide valid commands & do not use aliases');
+			} else return warnUser(message, 'Please provide valid commands & do not use aliases');
 		}
 
 		if (!args[0]) {
 			var string = 'Type ``' + prefix + 'help <command>`` to get more information about a specific command!\n\n';
-      var commandsArray = []
+			var commandsArray = []
 
-      var stringBuilder = ""
-      client.commands.forEach((value, key, map) => {
-        if (!BLACKLIST.includes(value.name)) {
-          stringBuilder = ""
-          stringBuilder += `**${prefix + value.name}**`
-          if (value.aliases) {
-            stringBuilder += ' ( '
-            value.aliases.forEach(element => {
-              stringBuilder += prefix + element + ' '
-            })
-            stringBuilder += ')\n'
-          }
-          else stringBuilder += '\n'
-          commandsArray.push(stringBuilder)
-        }
-      })
+			var stringBuilder = ""
+			client.commands.forEach((value, key, map) => {
+				if (!BLACKLIST.includes(value.name)) {
+					stringBuilder = ""
+					stringBuilder += `**${prefix + value.name}**`
+					if (value.aliases) {
+						stringBuilder += ' ( '
+						value.aliases.forEach(element => {
+							stringBuilder += prefix + element + ' '
+						})
+						stringBuilder += ')\n'
+					}
+					else stringBuilder += '\n'
+					commandsArray.push(stringBuilder)
+				}
+			})
 
-      commandsArray.sort()
-      commandsArray.forEach(element => {
-        string += element
-      })
+			commandsArray.sort()
+			commandsArray.forEach(element => {
+				string += element
+			})
 
 			var embed = new Discord.MessageEmbed()
 				.setTitle('Commands available')
 				.setThumbnail(settings.BOT_IMG)
-        .setColor(colors.BLUE)
+				.setColor(colors.BLUE)
 				.setDescription(string)
 				.setFooter('CompliBot', settings.BOT_IMG)
 		}
 
 		const embedMessage = await message.channel.send(embed);
-    await embedMessage.react('🗑️');
-    const filter = (reaction, user) => {
-		  return ['🗑️'].includes(reaction.emoji.name) && user.id === message.author.id;
-	  };
+		await embedMessage.react('🗑️');
 
-    embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
+		const filter = (reaction, user) => {
+		  return ['🗑️'].includes(reaction.emoji.name) && user.id === message.author.id;
+		};
+
+		embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
 			.then(async collected => {
-			  const reaction = collected.first();
-			  if (reaction.emoji.name === '🗑️') {
-			  	await embedMessage.delete();
-          await message.delete();
-			  }
-			 })
-      .catch(async collected => {
-		    await embedMessage.reactions.cache.get('🗑️').remove();
-	    });
+				const reaction = collected.first();
+				if (reaction.emoji.name === '🗑️') {
+					await embedMessage.delete();
+					await message.delete();
+				}
+			})
+			.catch(async collected => {
+				await embedMessage.reactions.cache.get('🗑️').remove();
+			});
 	}
 }

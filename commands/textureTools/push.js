@@ -167,9 +167,9 @@ async function download(url, type, path, name) {
 	else return warnUser(message, 'Something went wrong');
 
  	const response = await fetch(url);
-  const buffer   = await response.buffer();
+	const buffer   = await response.buffer();
 	await fs.promises.mkdir(localPath.replace(`/${name}`,''), { recursive: true }).catch(console.error);
-  await fs.writeFile(localPath, buffer, () => console.log(`ADDED: ${name}\nTO: ${localPath}\n`));
+	await fs.writeFile(localPath, buffer, () => console.log(`ADDED: ${name}\nTO: ${localPath}\n`));
 }
 
 function date() {

@@ -23,11 +23,10 @@ module.exports = {
 			if (args != '') {
 				var role = message.guild.roles.cache.find(role => role.name === 'Muted');
 				const member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
-        const reason = args.slice(1).join(' ') || 'Not Specified';
+				const reason = args.slice(1).join(' ') || 'Not Specified';
 
 				if (member == undefined) return;
-        else {
-
+				else {
 					removeMutedRole(client, member.id);
 
 					var warnList = JSON.parse(fs.readFileSync('./json/moderation.json'));
@@ -53,31 +52,32 @@ module.exports = {
 
 					fs.writeFileSync('./json/moderation.json', JSON.stringify(warnList, null, 2));
 
-          var embed = new Discord.MessageEmbed()
-            .setAuthor(message.author.tag, message.author.displayAvatarURL())
-				    .setDescription(`Unmuted ${member} \nReason: ${reason}`)
-            .setColor(colors.BLUE)
-				    .setTimestamp();
-			    const embedMessage = await message.channel.send(embed);
-          await embedMessage.react('🗑️');
-          const filter = (reaction, user) => {
-			      return ['🗑️'].includes(reaction.emoji.name) && user.id === message.author.id;
-	    	  };
+					var embed = new Discord.MessageEmbed()
+						.setAuthor(message.author.tag, message.author.displayAvatarURL())
+						.setDescription(`Unmuted ${member} \nReason: ${reason}`)
+						.setColor(colors.BLUE)
+						.setTimestamp();
 
-          embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
-			      .then(async collected => {
-				      const reaction = collected.first();
-				      if (reaction.emoji.name === '🗑️') {
-				      	await embedMessage.delete();
-                await message.delete();
-				      }
-			      })
-            .catch(async () => {
-		          await embedMessage.reactions.cache.get('🗑️').remove();
-	          });
+					const embedMessage = await message.channel.send(embed);
+					await embedMessage.react('🗑️');
+					const filter = (reaction, user) => {
+						return ['🗑️'].includes(reaction.emoji.name) && user.id === message.author.id;
+					};
 
-          modLog(client, message, member, reason, 0, 'unmuted')
-        }
+					embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
+						.then(async collected => {
+							const reaction = collected.first();
+							if (reaction.emoji.name === '🗑️') {
+								await embedMessage.delete();
+								await message.delete();
+							}
+						})
+						.catch(async () => {
+							await embedMessage.reactions.cache.get('🗑️').remove();
+						});
+
+					modLog(client, message, member, reason, 0, 'unmuted')
+				}
 			} else return warnUser(message,strings.COMMAND_PROVIDE_VALID_TAG);
 		} else return warnUser(message,strings.COMMAND_NO_PERMISSION);
 	}

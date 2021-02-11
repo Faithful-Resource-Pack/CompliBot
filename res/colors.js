@@ -6,10 +6,10 @@ const BLACK   = '#000000'; //muted
 const COUNCIL = '#9c3848'; //rick astley
 
 module.exports = {
-  RED,
-  GREEN,
-  YELLOW,
-  BLUE,
+	RED,
+	GREEN,
+	YELLOW,
+	BLUE,
 	BLACK,
-  COUNCIL
+	COUNCIL
 }

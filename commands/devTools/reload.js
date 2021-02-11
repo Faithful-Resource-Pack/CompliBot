@@ -1,6 +1,6 @@
 const prefix = process.env.PREFIX;
 
-const strings   = require('../../res/strings');
+const strings = require('../../res/strings');
 
 const uidR = process.env.UIDR;
 const uidJ = process.env.UIDJ;
@@ -18,12 +18,12 @@ module.exports = {
 	args: true,
 	async execute(client, message, args) {
 		if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD) {
-      const commandName = args[0].toLowerCase();
+			const commandName = args[0].toLowerCase();
 			const command = message.client.commands.get(commandName) || message.client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
 			if (!command) return warnUser(message,`There is no command with name or alias \`${commandName}\`!`);
 
-      var commandPath = walkSync('./commands').filter(file => file.includes(command.name))[0].replace('./commands/', '../');
+			var commandPath = walkSync('./commands').filter(file => file.includes(command.name))[0].replace('./commands/', '../');
 
 			delete require.cache[require.resolve(commandPath)];
 

@@ -125,8 +125,8 @@ module.exports = {
 				/*const embed2 = new Discord.MessageEmbed()
 					.setTitle('Latest changes as of 30.11.2020')
 					.setColor(settings.C32_COLOR)
-					.setDescription('- edited rule 5️⃣: Removed a duplicate mention. \n- edited rule 7️⃣: Replaced `@mods` with `/modping`');
-*/
+					.setDescription('- edited rule 5️⃣: Removed a duplicate mention. \n- edited rule 7️⃣: Replaced `@mods` with `/modping`');*/
+
 				await message.channel.send(embed1);
 				//await message.channel.send(embed2);
 			}
