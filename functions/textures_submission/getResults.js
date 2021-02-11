@@ -70,7 +70,7 @@ async function getResults(client, inputID, OFFSET_DAY = 0) {
 				errorAutoPush(client, inputID, message, textureAuthor, textureName, textureFolder, textureType, `Texture not found, check spelling or folder`);
 			}
 
-			if (textureIndex != 1 && (textureType == 'java' || textureType == 'bedrock')) {
+			if (textureIndex != -1 && (textureType == 'java' || textureType == 'bedrock')) {
 				//////////////////////////////////////////
 				if (textureSize == 32 && textureType == 'java') {
 					if (texturesJava[textureIndex].c32.author == undefined) texturesJava[textureIndex].c32.author = [textureAuthorID];
@@ -96,6 +96,11 @@ async function getResults(client, inputID, OFFSET_DAY = 0) {
 				}
 				//////////////////////////////////////////
 				if (textureType == 'java') {
+
+					if (texturesJava[textureIndex] == undefined) {
+						console.log(`textureIndex failed: ${textureIndex} - ${textureSize} - ${textureName}`);
+						break;
+					}
 
 					await download_branch(message.embeds[0].image.url, texturesJava[textureIndex].version['1.17'],   textureSize, textureName, '1.17');
 					await download_branch(message.embeds[0].image.url, texturesJava[textureIndex].version['1.16.5'], textureSize, textureName, '1.16.5');

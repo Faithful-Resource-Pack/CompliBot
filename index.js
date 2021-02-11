@@ -70,7 +70,7 @@ let scheduledFunctions = new cron.CronJob('0 0 * * *', async () => {
 	
 });
 
-// Texture submission push: (each day at 01:00 GMT)
+// Texture submission push: (each day at 00:10 GMT)
 let pushToGithub = new cron.CronJob('10 0 * * *', async () => {
 	// Download textures from #results
 	await getResults(client, settings.C32_RESULTS);
@@ -379,15 +379,4 @@ client.on('messageDelete', async message => {
 });
 
 // Login the bot
-// 01101000 01110100 01110100 01110000 01110011 00111010 00101111 00101111 01111001 01101111 01110101 01110100 01110101 00101110 01100010 01100101 00101111 01100100 01010001 01110111 00110100 01110111 00111001 01010111 01100111 01011000 01100011 01010001
 client.login(process.env.CLIENT_TOKEN).catch(console.error);
-
-/*
- *    /---------\      \|/
- *   /           \    --O--
- *  /             \    /|\
- *  |    (\_/)    |
- *  |   (='.'=)   |  <-- Juk's little vacation house
- *  |   (")_(")   |  Yeah, that's true, Juk.
- *  %_____________%
- */

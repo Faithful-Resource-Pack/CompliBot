@@ -34,6 +34,18 @@ async function doPush(COMMIT_MESSAGE) {
 		fs.rmdirSync(`./texturesPush/Compliance-Java-32x/1.14.4/assets/`, { recursive: true });
 		console.log(`PUSHED TO GITHUB: Compliance-Java-32x (Jappa-1.14.4)`);
 	}
+
+	if (!isEmptyDir(`./texturesPush/Compliance-Java-32x/1.13.2/assets`)) {
+		await autoPush('Compliance-Resource-Pack', 'Compliance-Java-32x', 'Jappa-1.13.2', COMMIT_MESSAGE, './texturesPush/Compliance-Java-32x/1.13.2/')
+		fs.rmdirSync(`./texturesPush/Compliance-Java-32x/1.13.2/assets/`, { recursive: true });
+		console.log(`PUSHED TO GITHUB: Compliance-Java-32x (Jappa-1.13.2)`);
+	}
+
+	if (!isEmptyDir(`./texturesPush/Compliance-Java-32x/1.12.2/assets`)) {
+		await autoPush('Compliance-Resource-Pack', 'Compliance-Java-32x', 'Jappa-1.12.2', COMMIT_MESSAGE, './texturesPush/Compliance-Java-32x/1.12.2/')
+		fs.rmdirSync(`./texturesPush/Compliance-Java-32x/1.12.2/assets/`, { recursive: true });
+		console.log(`PUSHED TO GITHUB: Compliance-Java-32x (Jappa-1.12.2)`);
+	}
 	
 	/* JAVA 64x *********************************************************************************************************************/
 
@@ -59,6 +71,18 @@ async function doPush(COMMIT_MESSAGE) {
 		await autoPush('Compliance-Resource-Pack', 'Compliance-Java-64x', 'Jappa-1.14.4', COMMIT_MESSAGE, './texturesPush/Compliance-Java-64x/1.14.4/')
 		fs.rmdirSync(`./texturesPush/Compliance-Java-64x/1.14.4/assets/`, { recursive: true });
 		console.log(`PUSHED TO GITHUB: Compliance-Java-64x (Jappa-1.14.4)`);
+	}
+
+	if (!isEmptyDir(`./texturesPush/Compliance-Java-64x/1.13.2/assets`)) {
+		await autoPush('Compliance-Resource-Pack', 'Compliance-Java-64x', 'Jappa-1.13.2', COMMIT_MESSAGE, './texturesPush/Compliance-Java-64x/1.13.2/')
+		fs.rmdirSync(`./texturesPush/Compliance-Java-64x/1.13.2/assets/`, { recursive: true });
+		console.log(`PUSHED TO GITHUB: Compliance-Java-64x (Jappa-1.13.2)`);
+	}
+
+	if (!isEmptyDir(`./texturesPush/Compliance-Java-64x/1.12.2/assets`)) {
+		await autoPush('Compliance-Resource-Pack', 'Compliance-Java-64x', 'Jappa-1.12.2', COMMIT_MESSAGE, './texturesPush/Compliance-Java-64x/1.12.2/')
+		fs.rmdirSync(`./texturesPush/Compliance-Java-64x/1.12.2/assets/`, { recursive: true });
+		console.log(`PUSHED TO GITHUB: Compliance-Java-64x (Jappa-1.12.2)`);
 	}
 	
 	/* BEDROCK ******************************************************************************************************************/

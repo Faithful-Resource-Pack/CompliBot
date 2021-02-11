@@ -19,7 +19,7 @@ module.exports = {
 
 			if (args[0] == 'update') {
 				autoPush('Compliance-Resource-Pack', 'JSON', 'main', `Manual Update executed by: ${message.author.username}`, `./json`);
-				return await await message.react('✅');
+				return await message.react('✅');
 			}
 
 			if (args[0] == 'add' || args[0] == 'remove') {

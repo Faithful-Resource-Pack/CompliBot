@@ -2,12 +2,24 @@
 ---------------------------------------
 ### February 2021
 
+#### February 11th 2021
+> Juknum
+
+- Added /autopush command, act the same way as GetResults.js, but it can be now executed manually
+
 #### February 10th 2021
 > RobertR11
 
-- ignore various moderation commands when in dm's
-- prevent crash when trying to magnify or tile corrupted images
-- add 21w06a texture support
+- Ignore various moderation commands when in dm's
+- Prevent crash when trying to magnify or tile corrupted images
+- Add 21w06a texture support
+
+#### February 9th 2021
+> Juknum
+
+- Contributors java & bedrock now use discord ID instead of discord Tag
+- Contributors Java is now ready to downgrade C32 & C64 from 1.17 to 1.12.2
+- Updated /about, /texture, /push commands following the new contributors format
 
 #### February 8th 2021
 > Juknum  
