@@ -6,32 +6,88 @@ const { getMeta }  = require('./getMeta');
 const { warnUser } = require('./warnUser');
 const { magnify }  = require('./magnify.js');
 
-function tile(message, url) {
+function tile(message, url, type) {
 	getMeta(url).then(async function(dimension) {
+
 		var sizeResult = (dimension.width * dimension.height) * 3;
 		if (sizeResult > 65536) return warnUser(message,'The output picture will be too big!\nMaximum output allowed: 256 x 256 px²\nYours is: ' + dimension.width * 3 + ' x ' + dimension.height * 3 + ' px²');
+		
+		if (type == undefined || type == 'grid') {
+			var canvas = Canvas.createCanvas(dimension.width * 3, dimension.height * 3);
+			var canvasContext = canvas.getContext('2d');
 
-    var canvas = Canvas.createCanvas(dimension.width * 3, dimension.height * 3);
-    var canvasContext = canvas.getContext('2d');
+			const temp = await Canvas.loadImage(url);
+			for (var i = 0; i < 3; i++) {
+				for (var j = 0; j < 3; j++) {
+					canvasContext.drawImage(temp, i * dimension.width, j * dimension.height);
+				}
+			}
+		}
 
-		const temp = await Canvas.loadImage(url);
-    for (var i = 0; i <= 3; i++) {
-      for (var j = 0; j <= 3; j++) {
-        canvasContext.drawImage(temp, i * dimension.width, j * dimension.height);
-      }
-    }
+		else if (type == 'vertical') {
+			var canvas = Canvas.createCanvas(dimension.width, dimension.height * 3);
+			var canvasContext = canvas.getContext('2d');
+
+			const temp = await Canvas.loadImage(url);
+			for (var i = 0; i < 3; i++) {
+				for (var j = 0; j < 3; j++) {
+					canvasContext.drawImage(temp, i * dimension.width, j * dimension.height);
+				}
+			}
+		}
+
+		else if (type == 'horizontal') {
+			var canvas = Canvas.createCanvas(dimension.width * 3, dimension.height);
+			var canvasContext = canvas.getContext('2d');
+
+			const temp = await Canvas.loadImage(url);
+			for (var i = 0; i < 3; i++) {
+				for (var j = 0; j < 3; j++) {
+					canvasContext.drawImage(temp, i * dimension.width, j * dimension.height);
+				}
+			}
+		}
+
+		else if (type == 'round') {
+			var canvas = Canvas.createCanvas(dimension.width * 3, dimension.height * 3);
+			var canvasContext = canvas.getContext('2d');
+
+			const temp = await Canvas.loadImage(url);
+			for (var i = 0; i < 3; i++) {
+				for (var j = 0; j < 3; j++) {
+					canvasContext.drawImage(temp, i * dimension.width, j * dimension.height);
+				}
+			}
+			canvasContext.clearRect(dimension.width, dimension.height, dimension.width, dimension.height);
+		}
+
+		else if (type == 'plus') {
+			var canvas = Canvas.createCanvas(dimension.width * 3, dimension.height * 3);
+			var canvasContext = canvas.getContext('2d');
+
+			const temp = await Canvas.loadImage(url);
+			for (var i = 0; i < 3; i++) {
+				for (var j = 0; j < 3; j++) {
+					canvasContext.drawImage(temp, i * dimension.width, j * dimension.height);
+				}
+			}
+			canvasContext.clearRect(0, 0, dimension.width, dimension.height); // top left
+			canvasContext.clearRect(dimension.width * 2, 0, dimension.width, dimension.height); // top right
+			canvasContext.clearRect(dimension.width * 2, dimension.height * 2, dimension.width, dimension.height); // bottom right
+			canvasContext.clearRect(0, dimension.height * 2, dimension.width, dimension.height); // bottom left
+		}
 
 		const attachment = new Discord.MessageAttachment(canvas.toBuffer());
 		var embed = new Discord.MessageEmbed()
 			.setColor(colors.BLUE)
-			.setTitle('Tiled Texture')
+			.setTitle(`Tiled texture (${type})`)
 			.setDescription(`Original size: ${dimension.width} x ${dimension.height} px²`)
 			.attachFiles([attachment]);
 
 		const embedMessage = await message.channel.send(embed);
 
     embedMessage.react('🗑️');
-	//embedMessage.react('🔎');
+		//embedMessage.react('🔎');
 
 		const filter = (reaction, user) => {
 			return ['🗑️','🔎'].includes(reaction.emoji.name) && user.id === message.author.id;
@@ -51,7 +107,7 @@ function tile(message, url) {
 			})
 			.catch(async () => {
 				await embedMessage.reactions.cache.get('🗑️').remove();
-				await embedMessage.reactions.cache.get('🔎').remove();
+				//await embedMessage.reactions.cache.get('🔎').remove();
 			});
 	});
 }

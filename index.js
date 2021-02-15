@@ -261,7 +261,7 @@ client.on('message', async message => {
 	 * MESSAGE URL QUOTE
 	 * when someone send a message with https://discord.com/channels/<server ID>/<channel ID>/<message ID>
 	 */
-	if (message.content.includes('https://discord.com/channels/')) quote(message);
+	if (message.content.includes('https://discord.com/channels/') || message.content.includes('https://discordapp.com/channels')) quote(message);
 
 	/*
 	 * DISCORD SERVER INVITE DETECTION
@@ -360,7 +360,7 @@ client.on('messageUpdate', async (oldMessage, newMessage) => {
 	 * MESSAGE URL QUOTE
 	 * when someone sends a message with https://discord.com/channels/<server ID>/<channel ID>/<message ID>
 	 */
-	if (newMessage.content.includes('https://discord.com/channels/')) quote(newMessage);
+	if (newMessage.content.includes('https://discord.com/channels/') || newMessage.content.includes('https://discordapp.com/channels')) quote(newMessage);
 
 	/*
 	 * MESSAGE LOGS : 

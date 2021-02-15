@@ -44,8 +44,6 @@ async function palette(message, url) {
 			.setColor(colors.BLUE)
 			.setAuthor(message.author.tag, message.author.displayAvatarURL())
 			.setDescription(`List of colors:\n`)
-			.setTitle(`Coolors.co`)
-			.setURL(`https://coolors.co/`)
 			.setFooter(`Total: ${colorsHEX.length}`);
 
 		var colorsHEXText  = '';

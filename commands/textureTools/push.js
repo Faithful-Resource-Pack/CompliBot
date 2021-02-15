@@ -142,7 +142,7 @@ module.exports = {
 				await doPush(`Manual Push for ${name} executed by: ${message.author.username}`);
 				await message.react('✅');
 				
-			} else return warnUser(message,'You did not provide args!');
+			} else return warnUser(message,strings.COMMAND_NO_ARGUMENTS_GIVEN);
 		} else return warnUser(message,strings.COMMAND_NO_PERMISSION);
 	}
 }
@@ -156,7 +156,7 @@ async function download_branch(url, path, type, name, branch) {
 
 	const response = await fetch(url);
 	const buffer   = await response.buffer();
-	await fs.promises.mkdir(localPath.replace(`/${name}`,''), {recursive: true}).catch(console.error);
+	await fs.promises.mkdir(localPath.substr(0, localPath.lastIndexOf('/')), {recursive: true}).catch(console.error);
 	await fs.writeFile(localPath, buffer, () => console.log(`ADDED: ${name}\nTO: ${localPath}\n`));
 }
 
@@ -168,7 +168,7 @@ async function download(url, type, path, name) {
 
  	const response = await fetch(url);
 	const buffer   = await response.buffer();
-	await fs.promises.mkdir(localPath.replace(`/${name}`,''), { recursive: true }).catch(console.error);
+	await fs.promises.mkdir(localPath.substr(0, localPath.lastIndexOf('/')), { recursive: true }).catch(console.error);
 	await fs.writeFile(localPath, buffer, () => console.log(`ADDED: ${name}\nTO: ${localPath}\n`));
 }
 

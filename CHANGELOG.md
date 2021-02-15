@@ -2,12 +2,19 @@
 ---------------------------------------
 ### February 2021
 
+#### February 14th 2021 (Happy Valentin's day btw)
+> Juknum
+
+- Added jpg & jpeg support for quotation system, added discordapp.com url support.
+- Modified `/tile` command: removed url/id/message url functionality (unused) & added parameters; You can now tile an image vertically & horizontally, round & plus shape, grid shape is still used by default, type `/help tile` for more information. Also made `/t` an alias for this command.
+- Started to work on a `/render` command.
+
 #### February 11th 2021
 > Juknum
 
-- Added /autopush command, act the same way as GetResults.js, but it can be now executed manually
-- Added /profile command, used to translate Discord ID into username, usefull for the website Gallery.
-- Added /hotfix command, basically a /test command but with a better name.
+- Added `/autopush` command, act the same way as GetResults.js, but it can be now executed manually
+- Added `/profile` command, used to translate Discord ID into username, usefull for the website Gallery.
+- Added `/hotfix` command, basically a `/test` command but with a better name.
 
 #### February 10th 2021
 > RobertR11

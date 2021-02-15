@@ -10,9 +10,13 @@ async function quote(msg) {
 			var ids = new URL(args[i]).pathname.replace('/channels/','').replace('message','').split('/');
 			break;
 		}
+		if (args[i].startsWith('https://discordapp.com/channels/')) {
+			var ids = new URL(args[i]).pathname.replace('/channels/','').split('/');
+			break;
+		}
 	}
 
-	if (msg.guild.id == ids[0]) {
+	if (ids[0] != undefined && msg.guild.id == ids[0]) {
 		let channel = msg.guild.channels.cache.get(ids[1]);
 		let message = await channel.messages.fetch(ids[2]);
 
@@ -41,6 +45,11 @@ async function quote(msg) {
 			if (message.embeds[0].image) {
 				embed.setImage(message.embeds[0].image.url);
 			}
+
+			if (message.attachments.size > 0 && message.embeds[0].image == undefined) {
+				var file = message.attachments.first().url;
+				if (file.endsWith('.png') || file.endsWith('.jpg') || file.endsWith('jpeg')) embed.setImage(file);
+			}
 		
 			return await msg.channel.send(embed);
 		}
@@ -55,7 +64,7 @@ async function quote(msg) {
 
 			if (message.attachments.size > 0) {
 				var file = message.attachments.first().url;
-				if (file.endsWith('.png')) embed.setImage(file);
+				if (file.endsWith('.png') || file.endsWith('.jpg') || file.endsWith('jpeg')) embed.setImage(file);
 			} 
 			else {
 				const messageArgs = message.content.split(' ');

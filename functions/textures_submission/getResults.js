@@ -134,7 +134,7 @@ async function download_branch(textureURL, texturePath, textureSize, textureName
 
 	const response = await fetch(textureURL);
 	const buffer   = await response.buffer();
-	await fs.promises.mkdir(localPath.replace(`/${textureName}`,''), {recursive: true}).catch(console.error);
+	await fs.promises.mkdir(localPath.substr(0, localPath.lastIndexOf('/')), {recursive: true}).catch(console.error);
 	await fs.writeFile(localPath, buffer, () => console.log(`ADDED: ${textureName}\nTO: ${localPath}\n`));
 }
 
@@ -150,7 +150,7 @@ async function download(textureUrl, texturePath, textureType, textureSize, textu
 
 	const response = await fetch(textureUrl);
 	const buffer   = await response.buffer();
-	await fs.promises.mkdir(localPath.replace(`/${textureName}`,''), {recursive: true}).catch(console.error);
+	await fs.promises.mkdir(localPath.substr(0, localPath.lastIndexOf('/')), {recursive: true}).catch(console.error);
 	await fs.writeFile(localPath, buffer, () => console.log(`ADDED: ${textureName}\nTO: ${localPath}\n`));
 }
 
