@@ -1,4 +1,5 @@
 const prefix = process.env.PREFIX;
+const strings = require('../../res/strings');
 
 const { tile } = require('../../functions/tile.js');
 const { warnUser } = require('../../functions/warnUser.js');
@@ -10,43 +11,41 @@ module.exports = {
 	uses: 'Anyone',
 	syntax: `${prefix}tile [vertical/horizontal/grid/round/plus] + attach a file`,
 	async execute(client, message, args) {
+		const tileArgs = ['grid', 'g', 'vertical', 'v', 'horizontal', 'h', 'round', 'r', 'plus', 'p'];
 		var DATA;
+
+		if (!tileArgs.includes(args[0]) && args[0] != undefined) return warnUser(message, strings.COMMAND_WRONG_ARGUMENTS_GIVEN);
 
 		// <data>
 		// image attached
-		if ((args[0] == undefined || args[0] == '' || args[0] == 'grid' || args[0] == 'g') && message.attachments.size > 0) {
+		if ((args[0] == undefined || tileArgs.includes(args[0])) && message.attachments.size > 0) {
 			DATA = message.attachments.first().url;
-			return tile(message, DATA, 'grid');
-		}
-		else if ((args[0] == 'vertical' || args[0] == 'v') && message.attachments.size > 0) {
-			DATA = message.attachments.first().url;
-			return tile(message, DATA, 'vertical');
-		}
-		else if ((args[0] == 'horizontal' || args[0] == 'h') && message.attachments.size > 0) {
-			DATA = message.attachments.first().url;
-			return tile(message, DATA, 'horizontal');
-		}
-		else if ((args[0] == 'round' || args[0] == 'r') && message.attachments.size > 0) {
-			DATA = message.attachments.first().url;
-			return tile(message, DATA, 'round');
+			return tile(message, DATA, args[0]);
 		}
 
 		// previous image with tiling options
-		else if (args[0] == undefined && message.attachments.size == 0) {
-			return PreviousImage('grid');
+		else if ((args[0] == undefined || tileArgs.includes(args[0])) && message.attachments.size == 0) {
+			return PreviousImage(args[0]);
 		}
-		else if ((args[0] == 'vertical' || args[0] == 'v') && message.attachments.size == 0) {
-			return PreviousImage('vertical');
+
+		// Discord message URL
+		/*else if (args[0].startsWith('https://discord.com/channels')) {
+			message.channel.messages.fetch(args[0].split('/').pop()).then(msg => {
+				if (msg.attachments.size > 0) {
+					DATA = msg.attachments.first().url;
+					return tile(message, DATA);
+				}
+				else return warnUser(message,`The message from the provided URL does not have any image attached.`);
+			}).catch(error => { return warnUser(message,error + ' The message URL needs to be from the same channel') });
 		}
-		else if ((args[0] == 'horizontal' || args[0] == 'h') && message.attachments.size == 0) {
-			return PreviousImage('horizontal');
-		}
-		else if ((args[0] == 'round' || args[0] == 'r') && message.attachments.size == 0) {
-			return PreviousImage('round');
-		}
-		else if ((args[0] == 'plus' || args[0] == 'p') && message.attachments.size == 0) {
-			return PreviousImage('plus');
-		}
+
+		// Image URL
+		else if (args[0].startsWith('https://') || args[0].startsWith('http://')) {
+			if (args[0].endsWith('.png') || args[0].endsWith('.jpeg') || args[0].endsWith('.jpg')) {
+				DATA = args[0];
+				return tile(message, DATA);
+			} else return warnUser(message,`Image extension is not supported`)
+		}*/
 
 		async function PreviousImage(type) {
 			if (type == undefined) type = 'grid'; // security

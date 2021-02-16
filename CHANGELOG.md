@@ -2,6 +2,17 @@
 ---------------------------------------
 ### February 2021
 
+#### February 16th 2021
+> RobertR11
+
+- disable mentioning "everyone" or "here" in any way
+- start working on `/quote` command (currently disabled)
+
+#### February 15th 2021
+> RobertR11
+
+- simplify `/tile` command (also tried to add message and image url back, but didn't work)
+
 #### February 14th 2021 (Happy Valentin's day btw)
 > Juknum
 

@@ -12,7 +12,7 @@ function tile(message, url, type) {
 		var sizeResult = (dimension.width * dimension.height) * 3;
 		if (sizeResult > 65536) return warnUser(message,'The output picture will be too big!\nMaximum output allowed: 256 x 256 px²\nYours is: ' + dimension.width * 3 + ' x ' + dimension.height * 3 + ' px²');
 		
-		if (type == undefined || type == 'grid') {
+		if (type == undefined || type == 'grid' || type == 'g') {
 			var canvas = Canvas.createCanvas(dimension.width * 3, dimension.height * 3);
 			var canvasContext = canvas.getContext('2d');
 
@@ -24,7 +24,7 @@ function tile(message, url, type) {
 			}
 		}
 
-		else if (type == 'vertical') {
+		else if (type == 'vertical' || type =='v') {
 			var canvas = Canvas.createCanvas(dimension.width, dimension.height * 3);
 			var canvasContext = canvas.getContext('2d');
 
@@ -36,7 +36,7 @@ function tile(message, url, type) {
 			}
 		}
 
-		else if (type == 'horizontal') {
+		else if (type == 'horizontal' || type == 'h') {
 			var canvas = Canvas.createCanvas(dimension.width * 3, dimension.height);
 			var canvasContext = canvas.getContext('2d');
 
@@ -48,7 +48,7 @@ function tile(message, url, type) {
 			}
 		}
 
-		else if (type == 'round') {
+		else if (type == 'round' || type == 'r') {
 			var canvas = Canvas.createCanvas(dimension.width * 3, dimension.height * 3);
 			var canvasContext = canvas.getContext('2d');
 
@@ -61,7 +61,7 @@ function tile(message, url, type) {
 			canvasContext.clearRect(dimension.width, dimension.height, dimension.width, dimension.height);
 		}
 
-		else if (type == 'plus') {
+		else if (type == 'plus' || type == 'p') {
 			var canvas = Canvas.createCanvas(dimension.width * 3, dimension.height * 3);
 			var canvasContext = canvas.getContext('2d');
 

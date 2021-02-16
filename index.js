@@ -18,7 +18,7 @@ const http      = require('http');
 const fs        = require('fs');
 const cron      = require('cron');
 const port      = 3000;
-const client    = new Discord.Client();
+const client    = new Discord.Client({ disableMentions: 'everyone' });
 client.commands = new Discord.Collection();
 
 // Admins & settings:

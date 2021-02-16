@@ -30,6 +30,7 @@
     "http": "0.0.1-security",
     "image-size": "^0.9.3",
     "node-fetch": "^2.6.1",
+    "puppeteer": "^7.1.0",
     "simple-git": "^2.34.2"
   },
   "engines": {
