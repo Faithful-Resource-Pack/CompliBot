@@ -2,6 +2,16 @@
 ---------------------------------------
 ### February 2021
 
+#### February 18th 2021
+> RobertR11
+
+- added reaction when texture gets into council vote
+
+#### February 17th 2021
+> RobertR11
+
+- added a size limit of 256x256 to the `/palette` command
+
 #### February 16th 2021
 > RobertR11
 

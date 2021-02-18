@@ -63,6 +63,8 @@ async function textureSubmission(client, inputID, outputID, offset) {
 			}
 			else embed.setImage(file);
 
+			await message.react('📩');
+
 			await outputChannel.send(embed)
 			.then(async message => {
 				try {
