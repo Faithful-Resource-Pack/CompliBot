@@ -3,6 +3,7 @@ const prefix = process.env.PREFIX;
 module.exports = {
 	name: 'order',
 	description: 'Order something',
+	guildOnly: false,
 	uses: 'Anyone',
 	syntax: `${prefix}order <pizza/66/help>`,
 	async execute(client, message, args) {

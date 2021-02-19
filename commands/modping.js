@@ -13,10 +13,10 @@ module.exports = {
 	name: 'modping',
 	aliases: ['moderators', 'pingmods'],
 	description: 'Tag online mods to invoke help!',
+	guildOnly: true,
 	uses: 'Anyone',
 	syntax: `${prefix}modping`,
 	async execute(client, message, args) {
-    if (!message.guild) return;
 
 		// void old list :
 		mods_dnd = [];

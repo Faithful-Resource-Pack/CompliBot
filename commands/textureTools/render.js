@@ -11,6 +11,7 @@ module.exports = {
 	name: 'render',
 	description: 'Soon TM',
 	uses: 'Anyone (Mods for dev)',
+	guildOnly: false,
 	syntax: `${prefix}render`,
 
 	async execute(client, message, args) {

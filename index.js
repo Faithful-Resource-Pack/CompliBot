@@ -30,8 +30,9 @@ const { autoReact }     = require('./functions/autoReact');
 const { updateMembers } = require('./functions/updateMembers.js');
 const { walkSync }      = require('./functions/walkSync');
 
-const { quote } = require('./functions/quote');
-const { logs }  = require('./functions/logs');
+const { quote }    = require('./functions/quote');
+const { logs }     = require('./functions/logs');
+const { warnUser } = require('./functions/warnUser.js');
 
 const { textureSubmission } = require('./functions/textures_submission/textureSubmission.js');
 const { textureCouncil }    = require('./functions/textures_submission/textureCouncil.js');
@@ -191,6 +192,10 @@ client.on('message', async message => {
 	const command     = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
 	if (!command) return;
+
+	if (command.guildOnly && message.channel.type === 'dm') {
+		return warnUser(message,strings.CANT_EXECUTE_IN_DMS);
+	}
 
 	command.execute(client, message, args).catch(async error => {
 		console.error(error);

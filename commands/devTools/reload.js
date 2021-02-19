@@ -13,6 +13,7 @@ module.exports = {
 	name: 'reload',
 	aliases: ['r'],
 	description: 'Reloads a command',
+	guildOnly: false,
 	uses: 'Bot Developers',
 	syntax: `${prefix}reload <command>`,
 	args: true,

@@ -7,6 +7,7 @@ const uidD = process.env.UIDD;
 module.exports = {
 	name: 'say',
 	description: 'Make the bot send any message you specify',
+	guildOnly: true,
 	uses: 'Bot Developers',
 	syntax: `${prefix}say [message] [attach a file]`,
 	async execute(client, message, args) {

@@ -9,6 +9,7 @@ const uidJ = process.env.UIDJ;
 module.exports = {
 	name: 'rules',
 	description: 'Creates rules embed',
+	guildOnly: true,
 	uses: 'Bot Developers',
 	syntax: `${prefix}rules`,
 	async execute(client, message, args) {

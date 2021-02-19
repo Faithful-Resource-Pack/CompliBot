@@ -9,10 +9,10 @@ const { warnUser } = require('../../functions/warnUser.js');
 module.exports = {
 	name: 'bean',
 	description: 'get B E A N E D',
+	guildOnly: true,
 	uses: 'Moderators',
 	syntax: `${prefix}bean <@user>`,
 	async execute(client, message, args) {
-    	if (!message.guild) return;
 
 		if (message.member.hasPermission('BAN_MEMBERS')) {
 			if (args != '') {

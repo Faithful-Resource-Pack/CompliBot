@@ -2,6 +2,11 @@
 ---------------------------------------
 ### February 2021
 
+#### February 19th 2021
+> RobertR11
+
+- check if command is guild only for every command
+
 #### February 18th 2021
 > RobertR11
 

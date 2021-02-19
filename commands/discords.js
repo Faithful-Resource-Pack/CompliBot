@@ -8,6 +8,7 @@ const uidJ = process.env.UIDJ;
 module.exports = {
 	name: 'discords',
 	description: 'Posts a list of specified discord servers',
+	guildOnly: true,
 	uses: 'Bot Developers',
 	syntax: `${prefix}discords`,
 	async execute(client, message, args) {

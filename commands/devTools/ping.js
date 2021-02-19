@@ -7,6 +7,7 @@ const colors   = require('../../res/colors');
 module.exports = {
 	name: 'ping',
 	description: 'Pong!',
+	guildOnly: false,
 	uses: 'Anyone',
 	syntax: `${prefix}ping`,
 	async execute(client, message, args) {

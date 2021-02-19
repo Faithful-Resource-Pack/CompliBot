@@ -8,6 +8,7 @@ const { warnUser } = require('../functions/warnUser.js');
 module.exports = {
 	name: 'faq',
 	description: 'FAQ commands for Compliance Tweaks',
+	guildOnly: false,
 	uses: 'no one (disabled)',
 	syntax: `${prefix}faq`,
 	async execute(client, message, args) {

@@ -16,6 +16,7 @@ module.exports = {
 	uses: 'Anyone',
 	syntax: `${prefix}profile username <Your Name>\n${prefix}profile uuid <Your MC uuid (full uuid)>\n${prefix}profile show -> Display what CompliBot know about you`,
 	description: 'Add personal information for the Compliance Website Gallery',
+	guildOnly: false,
 	async execute(client, message, args) {
 
 		var profiles = JSON.parse(fs.readFileSync('./json/profiles.json'));

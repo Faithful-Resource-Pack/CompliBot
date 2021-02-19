@@ -8,10 +8,11 @@ const { warnUser } = require('../functions/warnUser.js');
 module.exports = {
 	name: 'modtools',
 	description: 'Displays tools for Minecraft Dungeons modding',
+	guildOnly: true,
 	uses: 'Anyone on Compliance Dungeons Discord',
 	syntax: `${prefix}modtools`,
 	async execute(client, message, args) {
-		if (message.channel.type === 'dm' || message.guild.id !== settings.CDUNGEONS_ID) return warnUser(message,'This command can only be used in the Compliance Dungeons server!');
+		if (message.guild.id !== settings.CDUNGEONS_ID) return warnUser(message,'This command can only be used in the Compliance Dungeons server!');
 
 		const embed = new Discord.MessageEmbed()
 			.setTitle('Tools for making Dungeons mods:')

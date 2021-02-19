@@ -11,6 +11,7 @@ module.exports = {
 	name: 'contributors',
 	aliases: [ 'contributor' ],
 	description: 'Use: `/contributors update` to directly update the GitHub repository,\nuse: `/contributors add ...` to add a new author.\nuse: `/contributors remove ...` to remove a contributor',
+	guildOnly: false,
 	uses: 'Moderators',
 	syntax: `${prefix}contributors <update>\n${prefix}contributors <add/remove> <path+texture name> <type> <c32/c64> <author>`,
 

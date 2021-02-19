@@ -8,6 +8,7 @@ module.exports = {
 	name: 'info',
 	aliases: ['information'],
 	description: 'Displays some info about the bot in your DMs',
+	guildOnly: false,
 	uses: 'Anyone',
 	syntax: `${prefix}info`,
 	async execute(client, message, args) {

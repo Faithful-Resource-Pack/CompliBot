@@ -16,6 +16,7 @@ module.exports = {
 	name: 'texture',
 	aliases: [ 'textures' ],
 	description: 'Displays a specified texture from Compliance!\nYou can ask for a texture name, or using ``_`` at the begining to ask for non-complete name (such as _sword).\nYou can also use ``/`` at the begining to specify a folder instead of a texture name.',
+	guildOnly: false,
 	uses: 'Anyone',
 	syntax: `${prefix}texture <vanilla/32/64> <texture_name>\n${prefix}texture <vanilla/32/64> <_name>\n${prefix}texture <vanilla/32/64> </folder/>`,
 	async execute(client, message, args) {

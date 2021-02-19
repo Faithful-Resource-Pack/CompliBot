@@ -9,6 +9,7 @@ const { warnUser }   = require('../../functions/warnUser.js');
 module.exports = {
 	name: 'autopush',
 	description: 'Use: `/autopush` to push textures from #results to GitHub!',
+	guildOnly: false,
 	uses: 'Moderators',
 	syntax: `${prefix}autopush <both/c32/c64>`,
 	async execute(client, message, args) {

@@ -14,6 +14,7 @@ const COMMAND_NO_PERMISSION              = 'You don\'t have the permission to do
 const COMMAND_PROVIDE_VALID_TAG          = 'Please provide a user tag!';
 const COMMAND_PROVIDE_A_NUMBER           = 'Please provide a number!';
 const COMMAND_WRONG_ARGUMENTS_GIVEN      = 'You did not provide valid arguments';
+const CANT_EXECUTE_IN_DMS                = 'I can\'t execute this command inside DM\'s!'
 
 // Website command
 const WEBSITE_PROVIDE_VALID_ARGUMENT = 'Please specify a valid argument! \nYou can use: \n`32x`, `64x`, `addons`, `tweaks`, `dungeons` and `mods`';
@@ -47,6 +48,7 @@ module.exports = {
 	COMMAND_DISABLED,
 	COMMAND_MAINTENANCE,
 	COMMAND_ERROR,
+	CANT_EXECUTE_IN_DMS,
 
 	WEBSITE_PROVIDE_VALID_ARGUMENT,
 	WEBSITE_NO_SITE_REGISTERED,

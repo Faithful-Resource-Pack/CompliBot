@@ -7,6 +7,7 @@ module.exports = {
 	name: 'magnify',
 	aliases: ['zoom', 'scale', 'resize', 'm'],
 	description: 'Resize an image,\nImage URL needs to end with ``.png`` or ``.jpeg/jpg``,\nMessage ID needs to be from the same channel',
+	guildOnly: false,
 	uses: 'Anyone',
 	syntax: `${prefix}magnify <factor> & attach an image\n${prefix}magnify <factor> <Discord message url>\n${prefix}magnify <factor> <image URL>\n${prefix}magnify <factor> <message ID>\n${prefix}magnify <factor> [up/^/last]`,
 	async execute(client, message, args) {

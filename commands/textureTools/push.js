@@ -12,9 +12,9 @@ const { doPush }   = require('../../functions/doPush.js');
 module.exports = {
 	name: 'push',
 	description: 'Push file to GitHub & update contributors list',
+	guildOnly: false,
 	uses: 'Moderators',
 	syntax: `${prefix}push <repo> <author> <folder> <texturename> + attach file`,
-
 	async execute(client, message, args) {
 
 		if (message.member.hasPermission('ADMINISTRATOR')) {

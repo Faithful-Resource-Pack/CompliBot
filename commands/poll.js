@@ -8,6 +8,7 @@ const { warnUser } = require('../functions/warnUser.js');
 module.exports = {
 	name: 'poll',
 	description: 'Make a poll to ask people!',
+	guildOnly: true,
 	uses: 'Anyone',
 	syntax: `${prefix}poll <time in seconds> | <title> | <option1> | <option2> | ...`,
 	async execute(client, message, args) {

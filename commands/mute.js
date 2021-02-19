@@ -13,10 +13,10 @@ const { addMutedRole } = require('../functions/moderation/addMutedRole.js');
 module.exports = {
 	name: 'mute',
 	description: 'Mute someone',
+	guildOnly: true,
 	uses: 'Moderators',
 	syntax: `${prefix}mute <@user> <time> <reason>`,
 	async execute(client, message, args) {
-    if (!message.guild) return;
 
 		if (message.member.hasPermission('BAN_MEMBERS')) {
 			if (args != '') {

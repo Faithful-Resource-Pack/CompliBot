@@ -7,6 +7,7 @@ const uidD = process.env.UIDD;
 module.exports = {
 	name: 'behave',
 	description: '(⌯˃̶᷄ ﹏ ˂̶᷄⌯)',
+	guildOnly: false,
 	uses: 'Bot Developers',
 	syntax: `${prefix}behave`,
 

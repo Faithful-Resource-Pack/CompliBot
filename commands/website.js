@@ -10,6 +10,7 @@ module.exports = {
 	name: 'website',
 	aliases: ['site', 'sites', 'websites'],
 	description: 'Displays the website of the discord',
+	guildOnly: false,
 	uses: 'Anyone',
 	syntax: `${prefix}website [type]`,
 	async execute(client, message, args) {

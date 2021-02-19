@@ -6,6 +6,7 @@ const colors   = require('../../res/colors');
 module.exports = {
 	name: 'quote',
 	description: 'Get a random quote!',
+	guildOnly: false,
 	uses: 'Anyone',
 	syntax: `${prefix}quote`,
 	async execute(client, message, args) {

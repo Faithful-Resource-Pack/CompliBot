@@ -10,6 +10,7 @@ const { warnUser } = require('../../functions/warnUser.js');
 module.exports = {
 	name: 'about',
 	description: 'Displays texture that you or someone made',
+	guildOnly: false,
 	uses: 'Anyone',
 	syntax: `${prefix}about me\n${prefix}about <userTag>\n`,
 	async execute(client, message, args) {

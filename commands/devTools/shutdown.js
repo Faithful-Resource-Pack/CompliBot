@@ -11,6 +11,7 @@ module.exports = {
 	name: 'shutdown',
 	aliases: ['logout'],
 	description: 'stops the bot',
+	guildOnly: false,
 	uses: 'Bot Developers',
 	syntax: `${prefix}shutdown`,
 	async execute(client, message, args) {

@@ -18,6 +18,7 @@ module.exports = {
 	uses: 'Anyone',
 	syntax: `${prefix}help <command>`,
 	description: 'Show help for a specified command',
+	guildOnly: false,
 	async execute(client, message, args) {
 
 		if (args[0]) {

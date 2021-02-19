@@ -9,9 +9,9 @@ module.exports = {
 	name: 'embed',
 	aliases: ['embeds'],
 	description: 'Modify an embed!',
+	guildOnly: false,
 	uses: 'Moderators',
 	syntax: `${prefix}embed <id> <colors> <black/blue/green/red/yellow/crimson>\n\n${prefix}embed <id> <description> <set/add/remove> <value>\n\n${prefix}embed <id> <fields> <modify> <pos> <value>\n${prefix}embed <id> <fields> <add> <title> <value> [inline: true/false]\n${prefix}embed <id> <fields> <remove> <pos>`,
-
 	async execute(client, message, args) {
 
 		if (message.member.hasPermission('ADMINISTRATOR')) {

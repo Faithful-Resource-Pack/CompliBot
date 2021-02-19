@@ -8,6 +8,7 @@ module.exports = {
 	name: 'tile',
 	aliases: ['t'],
 	description: 'Tile an image, if no arguments are given, grid shape is selected by default & the bot search in the last 10 message for an image.',
+	guildOnly: false,
 	uses: 'Anyone',
 	syntax: `${prefix}tile [vertical/horizontal/grid/round/plus] + attach a file`,
 	async execute(client, message, args) {

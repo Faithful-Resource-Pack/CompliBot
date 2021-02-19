@@ -12,7 +12,8 @@ const presence = ['online', 'idle', 'dnd'];
 module.exports = {
 	name: 'status',
 	aliases: ['presence', 'activity'],
-	description: 'Changes the bot\'s status: \n**Activity**:\nPLAYING, STREAMING, LISTENING, WATCHING, COMPETING, CUSTOM_STATUS (do not work)\n**Presence**:\nonline, idle, dnd',
+	description: 'Changes the bot\'s status: \n**Activity**:\nPLAYING, STREAMING, LISTENING, WATCHING, COMPETING, CUSTOM_STATUS (does not work)\n**Presence**:\nonline, idle, dnd',
+	guildOnly: false,
 	uses: 'Bot Developers',
 	syntax: `${prefix}status <activity> <presence> <status>`,
 	async execute(client, message, args) {

@@ -20,6 +20,7 @@ module.exports = {
 	name: 'hotfix',
 	aliases: ['fix'],
 	description: 'Fix something, may change at anytime',
+	guildOnly: false,
 	uses: 'Bot Developers',
 	syntax: `${prefix}hotfix <something>`,
 	args: true,
