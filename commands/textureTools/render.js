@@ -1,4 +1,4 @@
-const Discord = require('discord.js');
+/*const Discord = require('discord.js');
 const colors = require('../../res/colors');
 const prefix = process.env.PREFIX;
 
@@ -34,4 +34,4 @@ module.exports = {
 
 		} else return warnUser(message, 'Currently in developpments, more information soon.')
 	}
-}
+}*/

@@ -134,7 +134,7 @@ async function loop(embedMessage, message, embed, embedJava, embedBedrock) {
 		
 			if (reaction.emoji.name === '🗑️') {
 				embedMessage.delete();
-				message.delete();
+				if (!message.deleted) message.delete();
 			}
 			
 			if (reaction.emoji.name === '1️⃣') {

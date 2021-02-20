@@ -8,11 +8,16 @@ const { magnify }  = require('./magnify.js');
 
 function tile(message, url, type) {
 	getMeta(url).then(async function(dimension) {
+		if (type == undefined || type == 'g') type = 'grid';
+		if (type =='v') type = 'vertical';
+		if (type == 'h') type = 'horizontal';
+		if (type == 'r') type = 'round';
+		if (type == 'p') type = 'plus';
 
 		var sizeResult = (dimension.width * dimension.height) * 3;
-		if (sizeResult > 65536) return warnUser(message,'The output picture will be too big!\nMaximum output allowed: 256 x 256 px²\nYours is: ' + dimension.width * 3 + ' x ' + dimension.height * 3 + ' px²');
+		if (sizeResult > 262144) return warnUser(message,'The output picture will be too big!\nMaximum output allowed: 256 x 256 px²\nYours is: ' + dimension.width * 3 + ' x ' + dimension.height * 3 + ' px²');
 		
-		if (type == undefined || type == 'grid' || type == 'g') {
+		if (type == 'grid') {
 			var canvas = Canvas.createCanvas(dimension.width * 3, dimension.height * 3);
 			var canvasContext = canvas.getContext('2d');
 
@@ -24,7 +29,7 @@ function tile(message, url, type) {
 			}
 		}
 
-		else if (type == 'vertical' || type =='v') {
+		else if (type == 'vertical') {
 			var canvas = Canvas.createCanvas(dimension.width, dimension.height * 3);
 			var canvasContext = canvas.getContext('2d');
 
@@ -36,7 +41,7 @@ function tile(message, url, type) {
 			}
 		}
 
-		else if (type == 'horizontal' || type == 'h') {
+		else if (type == 'horizontal') {
 			var canvas = Canvas.createCanvas(dimension.width * 3, dimension.height);
 			var canvasContext = canvas.getContext('2d');
 
@@ -48,7 +53,7 @@ function tile(message, url, type) {
 			}
 		}
 
-		else if (type == 'round' || type == 'r') {
+		else if (type == 'round') {
 			var canvas = Canvas.createCanvas(dimension.width * 3, dimension.height * 3);
 			var canvasContext = canvas.getContext('2d');
 
@@ -61,7 +66,7 @@ function tile(message, url, type) {
 			canvasContext.clearRect(dimension.width, dimension.height, dimension.width, dimension.height);
 		}
 
-		else if (type == 'plus' || type == 'p') {
+		else if (type == 'plus') {
 			var canvas = Canvas.createCanvas(dimension.width * 3, dimension.height * 3);
 			var canvasContext = canvas.getContext('2d');
 
@@ -98,7 +103,7 @@ function tile(message, url, type) {
 				const reaction = collected.first();
 				if (reaction.emoji.name === '🗑️') {
 					embedMessage.delete();
-					message.delete();
+					if (!message.deleted) message.delete();
 				}
 				/*TODO: This doesn't work
 				if (reaction.emoji.name === '🔎') {

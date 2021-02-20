@@ -2,10 +2,19 @@
 ---------------------------------------
 ### February 2021
 
+#### February 20th 2021
+> RobertR11
+
+- check if the user's message still exists on various commands to avoid discord api errors
+- revert the palette command limit to 256x256, because it was too much for the bot
+
 #### February 19th 2021
 > RobertR11
 
 - check if command is guild only for every command
+- added 21w07a support for `/texture` command
+- changed tile and palette limit to 512x512 (previously 256x256) so it's like the magnify limit
+- fixed the bot not showing the full arg or showing "undefined" in the tiling message
 
 #### February 18th 2021
 > RobertR11

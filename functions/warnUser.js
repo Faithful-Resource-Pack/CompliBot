@@ -22,7 +22,7 @@ async function warnUser(message,text) {
 			const reaction = collected.first();
 			if (reaction.emoji.name === '🗑️') {
 				await embedMessage.delete();
-				await message.delete();
+				if (!message.deleted) await message.delete();
 			}
 		})
 		.catch(async () => {

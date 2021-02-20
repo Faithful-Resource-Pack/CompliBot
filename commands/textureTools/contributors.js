@@ -71,7 +71,7 @@ module.exports = {
 									else textures[index].c64 = {};
 								} else return warnUser(message, 'This author doesn\'t exist');
 							}
-						} else return warnUser(message,'Unknown categorie, please use `c32` or `c64` yours: '+args[3]);
+						} else return warnUser(message,'Unknown category, please use `c32` or `c64` yours: '+args[3]);
 					} else return warnUser(message, 'Unknown texture, please check spelling');
 
 					fs.writeFileSync('./json/contributors/java.json', JSON.stringify(textures, null, 2));

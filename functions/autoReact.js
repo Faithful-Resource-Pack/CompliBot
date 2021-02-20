@@ -55,7 +55,7 @@ async function autoReact(message, emojis, errorType, errorSpecificType, specific
 
 			const msg = await message.channel.send(embed);
 			await msg.delete({timeout: 30000});
-			await message.delete({timeout: 10});
+			if (!message.deleted) await message.delete({timeout: 10});
 		}
 	}
 }
