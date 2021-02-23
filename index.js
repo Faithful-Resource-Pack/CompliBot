@@ -135,12 +135,21 @@ client.on('ready', async () => {
 
 	console.log(`--------------------------------------------------------------\n\n\n─=≡Σ((( つ◕ل͜◕)つ\nJavaScript is a pain, but I'm fine, I hope...\n\n\n--------------------------------------------------------------\n`);
 
-	var embed = new Discord.MessageEmbed()
+	// get out if no channel, no cache or empty cache
+	if(client.channels === undefined || client.channels.cache === undefined || client.channels.cache.length === 0)
+		return;
+
+	// get out if history channel not found
+	const destinationChannel = client.channels.cache.get('785867553095548948');
+	if(destinationChannel === undefined)
+		return;
+
+	const embed = new Discord.MessageEmbed()
 		.setTitle('Started')
 		.setDescription(`<@!${client.user.id}> \n ID: ${client.user.id}`)
 		.setColor(colors.GREEN)
 		.setTimestamp();
-	await client.channels.cache.get('785867553095548948').send(embed);
+	await destinationChannel.send(embed);
 });
 
 /*
@@ -211,11 +220,24 @@ client.on('message', async message => {
 	/*
 	 * COMMAND HISTORY
 	 */
+
+	// get out if no channel, no cache or empty cache
+	if(client.channels === undefined || client.channels.cache === undefined || client.channels.cache.length === 0)
+		return;
+
+	// get out if history channel not found
+	const destinationChannel = client.channels.cache.get('785867690627039232');
+	if(destinationChannel === undefined)
+		return;
+
+	// eventually create the embed and send it
+
 	var embed = new Discord.MessageEmbed()
 		.setAuthor(message.author.tag, message.author.displayAvatarURL())
 		.setDescription(`[Jump to location](${message.url})\n\n**Command**: \`${commandName}\`\n**Channel**: <#${message.channel.id}>\n**Guild**: \`${message.guild}\`\n**User ID**: \`${message.author.id}\`\n**Message ID**: \`${message.id}\`\n**Command Sent**: \`${message.createdAt}\``)
 		.setTimestamp()
-	await client.channels.cache.get('785867690627039232').send(embed);
+
+	await destinationChannel.send(embed);
 });
 
 /*
