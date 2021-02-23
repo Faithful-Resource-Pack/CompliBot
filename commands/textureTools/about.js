@@ -16,8 +16,8 @@ module.exports = {
 	syntax: `${prefix}about me\n${prefix}about <userTag>\n`,
 	async execute(client, message, args) {
 
-		var textures        = jsonContributionsJava.read();
-		var texturesBedrock = jsonContributionsBedrock.read();
+		var textures        = jsonContributionsJava.read(false);
+		var texturesBedrock = jsonContributionsBedrock.read(false);
 		var embed = new Discord.MessageEmbed();
 
 		var javac32 = [];

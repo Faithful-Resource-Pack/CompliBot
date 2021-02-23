@@ -23,8 +23,8 @@ module.exports = {
   syntax: `${prefix}texture <vanilla/32/64> <texture_name>\n${prefix}texture <vanilla/32/64> <_name>\n${prefix}texture <vanilla/32/64> </folder/>`,
   async execute(client, message, args) {
 
-    var textures = jsonContributionsJava.read();
-    var texturesBedrock = jsonContributionsBedrock.read();
+    var textures = jsonContributionsJava.read(false);
+    var texturesBedrock = jsonContributionsBedrock.read(false);
     var results = [];
     var index = [];
 
