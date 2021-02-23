@@ -80,16 +80,12 @@ class FileHandler {
       if(this.isJson) {
         fileContent = JSON.parse(fileContent)
       }
-    } catch (error) {
-      err = error
+    } catch (_error) {
+      fileContent = this.defaultValue
     }
 
     // ALWAYS ALWAYS increase current ticket
     this._increaseTicket()
-
-    // throw error after increasing ticket
-    if(err)
-      throw err
 
     // eventually return value
     return fileContent
