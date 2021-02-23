@@ -8,6 +8,7 @@ const strings = require('../../res/strings');
 
 const { warnUser } = require('../../functions/warnUser.js');
 const { doPush }   = require('../../functions/doPush.js');
+const { jsonContributionsJava, jsonContributionsBedrock } = require('../../helpers/fileHandler');
 
 module.exports = {
 	name: 'push',
@@ -24,8 +25,8 @@ module.exports = {
 				if (!repositories.includes(args[0])) return warnUser(message, 'This repository isn\'t supported');
 				if (message.attachments.size == 0) return warnUser(message, 'You did not attached the texture!');
 
-				var textures        = JSON.parse(fs.readFileSync('./json/contributors/java.json'));
-				var texturesBedrock = JSON.parse(fs.readFileSync('./json/contributors/bedrock.json'));
+				var textures        = jsonContributionsJava.read();
+				var texturesBedrock = jsonContributionsBedrock.read();
 
 				var textureAuthor   = args[1];
 				var textureAuthorID = client.users.cache.find(u => u.tag === args[1]).id
@@ -118,12 +119,10 @@ module.exports = {
 				// UPDATE JSON
 				path = undefined;
 				if (type == 'bedrock') {
-					let data = JSON.stringify(texturesBedrock, null, 2);
-					fs.writeFileSync('./json/contributors/bedrock.json', data);
+					jsonContributionsBedrock.write(texturesBedrock);
 					path = searchBedrock;
 				} else if (type == 'java') {
-					let data = JSON.stringify(textures, null, 2);
-					fs.writeFileSync('./json/contributors/java.json', data);
+					jsonContributionsJava.write(textures);
 					path = search;
 				}
 

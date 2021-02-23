@@ -6,6 +6,7 @@ const colors  = require('../../res/colors');
 const fs      = require('fs');
 
 const { warnUser } = require('../../functions/warnUser.js');
+const { jsonContributionsJava, jsonContributionsBedrock } = require('../../helpers/fileHandler');
 
 module.exports = {
 	name: 'about',
@@ -15,8 +16,8 @@ module.exports = {
 	syntax: `${prefix}about me\n${prefix}about <userTag>\n`,
 	async execute(client, message, args) {
 
-		var textures        = JSON.parse(fs.readFileSync('./json/contributors/java.json'));
-		var texturesBedrock = JSON.parse(fs.readFileSync('./json/contributors/bedrock.json'));
+		var textures        = jsonContributionsJava.read();
+		var texturesBedrock = jsonContributionsBedrock.read();
 		var embed = new Discord.MessageEmbed();
 
 		var javac32 = [];

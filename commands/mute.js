@@ -1,5 +1,6 @@
 const prefix = process.env.PREFIX;
 
+const { jsonModeration } = require('../helpers/fileHandler');
 const Discord  = require('discord.js');
 const strings  = require('../res/strings');
 const colors   = require('../res/colors');
@@ -33,7 +34,9 @@ module.exports = {
 					else timeout = `${time}`;
 
 					addMutedRole(client, member.id);
-					var warnList = JSON.parse(fs.readFileSync('./json/moderation.json'));
+					
+					let warnList = await jsonModeration.read();
+					
 					var index    = -1;
 
 					for (var i = 0; i < warnList.length; i++) {
@@ -54,7 +57,7 @@ module.exports = {
 						})
 					}
 					
-					fs.writeFileSync('./json/moderation.json', JSON.stringify(warnList, null, 2));
+					await jsonModeration.write(warnList);
 
 					var embed = new Discord.MessageEmbed()
 						.setAuthor(message.author.tag, message.author.displayAvatarURL())

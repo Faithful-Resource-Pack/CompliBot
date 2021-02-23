@@ -26,6 +26,7 @@ const uidR   = process.env.UIDR;
 const prefix = process.env.PREFIX;
 
 // Helpers:
+const { jsonModeration } = require('./helpers/fileHandler');
 const { autoReact }     = require('./functions/autoReact');
 const { updateMembers } = require('./functions/updateMembers.js');
 const { walkSync }      = require('./functions/walkSync');
@@ -44,7 +45,9 @@ const { doPush }            = require('./functions/doPush.js');
 const { checkTimeout }      = require('./functions/moderation/checkTimeout.js');
 const { addMutedRole }      = require('./functions/moderation/addMutedRole.js');
 const { keywordsDetection } = require('./functions/moderation/keywordsDetection.js');
-const warnList              = JSON.parse(fs.readFileSync('./json/moderation.json'));
+
+// try to read this json
+const warnList = jsonModeration.read(false); // YOU MUST NOT LOCK because only read
 
 // Resources:
 const colors  = require('./res/colors');
