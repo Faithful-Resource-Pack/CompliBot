@@ -121,9 +121,9 @@ module.exports = {
 }
 
 async function loop(embedMessage, message, embed, embedJava, embedBedrock) {
-	embedMessage.react('🗑️');
-	embedMessage.react('1️⃣');
-	embedMessage.react('2️⃣');
+	await embedMessage.react('🗑️');
+	await embedMessage.react('1️⃣');
+	await embedMessage.react('2️⃣');
 			
 	const filter = (reaction, user) => {
 		return ['🗑️','1️⃣','2️⃣'].includes(reaction.emoji.name) && user.id === message.author.id;
@@ -150,7 +150,7 @@ async function loop(embedMessage, message, embed, embedJava, embedBedrock) {
 				embedMessage.reactions.cache.get('1️⃣').remove();
 				embedMessage.reactions.cache.get('2️⃣').remove();
 				embedMessage.edit(embed);
-				loop(embedMessage, message, embed, embedJava, embedBedrock);
+				await loop(embedMessage, message, embed, embedJava, embedBedrock);
 			}	
 		}).catch(async () => {
 			embedMessage.reactions.cache.get('🗑️').remove();
