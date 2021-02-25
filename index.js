@@ -224,7 +224,7 @@ client.on('message', async message => {
 client.on('message', async message => {
 	for (var i = 0; i < warnList.length; i++) {
 		if (warnList[i].user == message.author.id && warnList[i].muted == true) {
-			message.delete();
+			//message.delete();
 			addMutedRole(client, message.author.id);
 		}
 	}
@@ -342,7 +342,7 @@ client.on('message', async message => {
 	}
 
 	// Texture submission Emulated Vattic Textures (FHLX):
-	if (message.channel.id === '767464832285933578' || message.channel.id === '806232895021776936') {
+	if (message.channel.id === '814209343502286899' || message.channel.id === '814201529032114226') {
 		return autoReact(
 			message,
 			['✅','❌'],

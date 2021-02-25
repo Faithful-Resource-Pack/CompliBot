@@ -1,4 +1,4 @@
-/*const prefix = process.env.PREFIX;
+const prefix = process.env.PREFIX;
 
 const strings  = require('../../res/strings');
 const settings = require('../../settings');
@@ -11,6 +11,7 @@ const { warnUser } = require('../../functions/warnUser.js');
 const { walkSync } = require('../../functions/walkSync');
 
 const { doPush }            = require('../../functions/doPush.js');
+const { autoPush }          = require('../../functions/autoPush.js');
 const { textureSubmission } = require('../../functions/textures_submission/textureSubmission.js');
 const { textureCouncil }    = require('../../functions/textures_submission/textureCouncil.js');
 const { textureRevote }     = require('../../functions/textures_submission/textureRevote.js');
@@ -27,14 +28,20 @@ module.exports = {
 	async execute(client, message, args) {
 		if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD) {
 			
-			await textureSubmission(client, settings.C64_SUBMIT_1,  settings.C64_SUBMIT_2, 5);							// 5 DAYS OFFSET
-			await textureSubmission(client, settings.C64_SUBMIT_1B, settings.C64_SUBMIT_2, 5);							// 5 DAYS OFFSET
-			await    textureCouncil(client, settings.C64_SUBMIT_2,  settings.C64_SUBMIT_3, settings.C64_RESULTS, 1);	// 1 DAYS OFFSET
-			await     textureRevote(client, settings.C64_SUBMIT_3,  settings.C64_RESULTS,  3);							// 3 DAYS OFFSET
+			// C32x
+			await    textureCouncil(client, settings.C32_SUBMIT_2,  settings.C32_SUBMIT_3, settings.C32_RESULTS, 1);	// 1 DAYS OFFSET
+			await     textureRevote(client, settings.C32_SUBMIT_3,  settings.C32_RESULTS,  3);							// 3 DAYS OFFSET
+	
+			// C64x
+			//await textureSubmission(client, settings.C64_SUBMIT_1,  settings.C64_SUBMIT_2, 5);							// 5 DAYS OFFSET
+			//await textureSubmission(client, settings.C64_SUBMIT_1B, settings.C64_SUBMIT_2, 5);							// 5 DAYS OFFSET
+			//await    textureCouncil(client, settings.C64_SUBMIT_2,  settings.C64_SUBMIT_3, settings.C64_RESULTS, 1);	// 1 DAYS OFFSET
+			//await     textureRevote(client, settings.C64_SUBMIT_3,  settings.C64_RESULTS,  3);	
 			
 
-			await getResults(client, settings.C64_RESULTS);
-			await doPush(`Manual AutoPush, executed by: ${message.author.username} (${date()})`);
+			//await getResults(client, settings.C32_RESULTS);
+			//await doPush(`Manual AutoPush, executed by: ${message.author.username} (${date()})`);
+			//await autoPush('Compliance-Resource-Pack', 'JSON', 'main', `Daily update`, `./json`);
 		}
 	}
 }
@@ -45,4 +52,4 @@ function date() {
 	var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
 	var yyyy = today.getFullYear();
 	return mm + '/' + dd + '/' + yyyy;
-}*/
+}

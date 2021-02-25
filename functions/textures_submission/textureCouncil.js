@@ -13,7 +13,7 @@ async function textureCouncil(client, inputID, outputFalseID, outputTrueID, offs
 	let revoteChannel = client.channels.cache.get(outputFalseID);
 	let resultChannel = client.channels.cache.get(outputTrueID);
 	let limitDate = new Date();
-	let messages = await getMessages(client,inputID);
+	let messages = await getMessages(client, inputID);
 
 	limitDate.setDate(limitDate.getDate() - offset);
 	for (var i in messages) {

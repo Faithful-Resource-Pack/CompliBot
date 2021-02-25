@@ -186,13 +186,14 @@ module.exports = {
             .setColor(colors.BLUE)
             .setURL(imgURL)
             .setImage(imgURL)
+            .setFooter('Note: this command isn\'t updated for 21w08a yet')
             .addFields(
               { name: 'Resolution:', value: size, inline: true }
             )
 
-          if (type == '16' || type == '16b') embed.setFooter('Vanilla Texture', settings.VANILLA_IMG);
-          if (type == '32' || type == '32b') embed.setFooter('Compliance 32x', settings.C32_IMG)
-          if (type == '64' || type == '64b') embed.setFooter('Compliance 64x', settings.C64_IMG)
+          //if (type == '16' || type == '16b') embed.setFooter('Vanilla Texture', settings.VANILLA_IMG);
+          //if (type == '32' || type == '32b') embed.setFooter('Compliance 32x', settings.C32_IMG)
+          //if (type == '64' || type == '64b') embed.setFooter('Compliance 64x', settings.C64_IMG)
 
           if (type == '32') {
             embed.addFields(

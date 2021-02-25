@@ -173,7 +173,7 @@ module.exports = {
 				'https://www.curseforge.com/minecraft/texture-packs/compliance-32x',
 				'https://www.planetminecraft.com/texture-pack/compliance-32x/',
 				settings.C32_IMG,
-				settings.C32_Color
+				settings.C32_COLOR
 			);
 		//Compliance 64x
 		} else if (args[0] === '64'  || args[0] === '64x') {
@@ -182,7 +182,7 @@ module.exports = {
 				'https://compliancepack.net/#compliance-64x',
 				'https://www.curseforge.com/minecraft/texture-packs/compliance-64x', 'https://www.planetminecraft.com/texture-pack/compliance-64x/',
 				settings.C64_IMG,
-				settings.C32_Color
+				settings.C32_COLOR
 			);
 		//Other servers
 		} else return warnUser(message,strings.WEBSITE_PROVIDE_VALID_ARGUMENT);
