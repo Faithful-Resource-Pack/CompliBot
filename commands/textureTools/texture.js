@@ -170,7 +170,7 @@ module.exports = {
     function getTexture(type, name, index) {
       var imgURL = undefined;
 
-      if (type == '16') imgURL = 'https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/21w07a/assets/' + name;
+      if (type == '16') imgURL = 'https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/21w08a/assets/' + name;
       if (type == '32') imgURL = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-32x/Jappa-1.17/assets/' + name;
       if (type == '64') imgURL = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-64x/Jappa-1.17/assets/' + name;
 
@@ -187,14 +187,14 @@ module.exports = {
             .setColor(colors.BLUE)
             .setURL(imgURL)
             .setImage(imgURL)
-            .setFooter('Note: this command isn\'t updated for 21w08a yet')
+            //.setFooter('Note: this command isn\'t updated for 21w08a yet')
             .addFields(
               { name: 'Resolution:', value: size, inline: true }
             )
 
-          //if (type == '16' || type == '16b') embed.setFooter('Vanilla Texture', settings.VANILLA_IMG);
-          //if (type == '32' || type == '32b') embed.setFooter('Compliance 32x', settings.C32_IMG)
-          //if (type == '64' || type == '64b') embed.setFooter('Compliance 64x', settings.C64_IMG)
+          if (type == '16' || type == '16b') embed.setFooter('Vanilla Texture', settings.VANILLA_IMG);
+          if (type == '32' || type == '32b') embed.setFooter('Compliance 32x', settings.C32_IMG)
+          if (type == '64' || type == '64b') embed.setFooter('Compliance 64x', settings.C64_IMG)
 
           if (type == '32') {
             embed.addFields(

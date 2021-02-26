@@ -1,6 +1,6 @@
 /*
  * A huge thanks to CodyJasonBennett who help us!
-*/
+
 
 //const puppeteer = require('puppeteer');
 const Discord   = require('discord.js');
@@ -131,7 +131,7 @@ function render(type, textures) {
 }
 
 
-/*
+
 var self = self || {}; // File:src/Three.js
 
 const canvasWidth = 1024;
@@ -230,5 +230,5 @@ function render(type, textures){
 		})
 	});
 }
-*/
-exports.render = render;
+
+exports.render = render;*/
