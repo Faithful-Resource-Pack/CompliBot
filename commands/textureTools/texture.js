@@ -17,7 +17,7 @@ const { jsonContributionsJava, jsonContributionsBedrock } = require('../../helpe
 module.exports = {
   name: 'texture',
   aliases: ['textures'],
-  description: 'Displays a specified texture from Compliance!\nYou can ask for a texture name, or using ``_`` at the begining to ask for non-complete name (such as _sword).\nYou can also use ``/`` at the begining to specify a folder instead of a texture name.',
+  description: 'Displays a specified texture from either vanilla or Compliance.\nYou can search for a texture name, or use ``_`` at the begining to search for non-complete names (such as _sword).\nYou can also use ``/`` at the begining to specify a folder instead of a texture name.',
   guildOnly: false,
   uses: 'Anyone',
   syntax: `${prefix}texture <vanilla/32/64> <texture_name>\n${prefix}texture <vanilla/32/64> <_name>\n${prefix}texture <vanilla/32/64> </folder/>`,

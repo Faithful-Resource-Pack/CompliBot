@@ -15,7 +15,7 @@ function tile(message, url, type) {
 		if (type == 'p') type = 'plus';
 
 		var sizeResult = (dimension.width * dimension.height) * 3;
-		if (sizeResult > 262144) return warnUser(message,'The output picture will be too big!\nMaximum output allowed: 256 x 256 px²\nYours is: ' + dimension.width * 3 + ' x ' + dimension.height * 3 + ' px²');
+		if (sizeResult > 262144) return warnUser(message,'The output picture will be too big!\nMaximum output allowed: 512 x 512 px²\nYours is: ' + dimension.width * 3 + ' x ' + dimension.height * 3 + ' px²');
 		
 		if (type == 'grid') {
 			var canvas = Canvas.createCanvas(dimension.width * 3, dimension.height * 3);

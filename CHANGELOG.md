@@ -2,6 +2,14 @@
 ---------------------------------------
 ### February 2021
 
+#### February 26th 2021
+> RobertR11
+
+- added 21w06a support for `/texture` command
+- fix typo in `/tile` command
+- move invite detection to its own file
+- improve spelling in the `/texture` command description
+
 #### February 20th 2021
 > RobertR11
 

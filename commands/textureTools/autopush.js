@@ -28,7 +28,7 @@ module.exports = {
 			await doPush(`Manual AutoPush, executed by: ${message.author.username} (${date()})`);	// Push them trough GitHub
 			
 			return await message.react('✅');
-		}
+		} else return
 	}
 }
 

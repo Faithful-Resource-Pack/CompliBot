@@ -44,7 +44,8 @@ const { doPush }            = require('./functions/doPush.js');
 
 const { checkTimeout }      = require('./functions/moderation/checkTimeout.js');
 const { addMutedRole }      = require('./functions/moderation/addMutedRole.js');
-const { keywordsDetection } = require('./functions/moderation/keywordsDetection.js');
+//const { keywordsDetection } = require('./functions/moderation/keywordsDetection.js');
+const { inviteDetection } = require('./functions/moderation/inviteDetection.js');
 
 // try to read this json
 const warnList = jsonModeration.read(false); // YOU MUST NOT LOCK because only read
@@ -298,15 +299,7 @@ client.on('message', async message => {
 	 * I hope there is no other use of this link type on Discord
 	 * Found more information here: https://youtu.be/-51AfyMqnpI
 	 */
-	if (message.content.includes('https://discord.gg/')) {
-		var embed = new Discord.MessageEmbed()
-			.setAuthor(`${message.author.tag} may have advertised a discord server`, message.author.displayAvatarURL())
-			.setColor(colors.RED)
-			.setDescription(`[Jump to message](${message.url})\n\n**Channel**: <#${message.channel.id}>\n**Server**: \`${message.guild}\`\n**User ID**: \`${message.author.id}\`\n**Date**: \`${message.createdAt}\`\n\n\`\`\`${message.content}\`\`\``)
-			.setTimestamp()
-
-		client.channels.cache.get('803344583919534091').send(embed)
-	}
+	if (message.content.includes('https://discord.gg/')) inviteDetection(client, message);
 
 	/*
 	 * AUTO REACT:
