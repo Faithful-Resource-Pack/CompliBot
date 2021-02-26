@@ -3,7 +3,7 @@
  * Goal is to have dynamic paths
  */
 const fs = require('fs')
-const { dirname } = require('path')
+const { dirname, normalize, join } = require('path')
 
 const JSON_WRITE_SPACES = 2
 const JSON_WRITE_REPLACER = null
@@ -107,7 +107,7 @@ class FileHandler {
 
     let err = undefined
     try {
-      fs.writeFileSync(this.filepath, content, { flag: 'w' })
+      fs.writeFileSync(join(process.cwd(), normalize(this.filepath)), content, { flag: 'w' })
     } catch (error) {
       err = error
     }
