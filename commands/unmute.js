@@ -9,6 +9,7 @@ const fs       = require('fs');
 const { warnUser }        = require('../functions/warnUser.js');
 const { modLog }          = require('../functions/moderation/modLog.js');
 const { removeMutedRole } = require('../functions/moderation/removeMutedRole.js');
+const { jsonModeration } = require('../helpers/fileHandler');
 
 module.exports = {
 	name: 'unmute',
@@ -29,7 +30,7 @@ module.exports = {
 				else {
 					removeMutedRole(client, member.id);
 
-					var warnList = JSON.parse(fs.readFileSync('./json/moderation.json'));
+					let warnList = jsonModeration.read();
 					var index    = -1;
 
 					for (var i = 0; i < warnList.length; i++) {
@@ -50,7 +51,7 @@ module.exports = {
 						})
 					}
 
-					fs.writeFileSync('./json/moderation.json', JSON.stringify(warnList, null, 2));
+					jsonModeration.write(warnList);
 
 					var embed = new Discord.MessageEmbed()
 						.setAuthor(message.author.tag, message.author.displayAvatarURL())

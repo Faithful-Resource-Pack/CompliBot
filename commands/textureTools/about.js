@@ -6,6 +6,7 @@ const colors  = require('../../res/colors');
 const fs      = require('fs');
 
 const { warnUser } = require('../../functions/warnUser.js');
+const { jsonContributionsJava, jsonContributionsBedrock } = require('../../helpers/fileHandler');
 
 module.exports = {
 	name: 'about',
@@ -15,8 +16,8 @@ module.exports = {
 	syntax: `${prefix}about me\n${prefix}about <userTag>\n`,
 	async execute(client, message, args) {
 
-		var textures        = JSON.parse(fs.readFileSync('./json/contributors/java.json'));
-		var texturesBedrock = JSON.parse(fs.readFileSync('./json/contributors/bedrock.json'));
+		var textures        = jsonContributionsJava.read(false);
+		var texturesBedrock = jsonContributionsBedrock.read(false);
 		var embed = new Discord.MessageEmbed();
 
 		var javac32 = [];
@@ -120,9 +121,9 @@ module.exports = {
 }
 
 async function loop(embedMessage, message, embed, embedJava, embedBedrock) {
-	embedMessage.react('🗑️');
-	embedMessage.react('1️⃣');
-	embedMessage.react('2️⃣');
+	await embedMessage.react('🗑️');
+	await embedMessage.react('1️⃣');
+	await embedMessage.react('2️⃣');
 			
 	const filter = (reaction, user) => {
 		return ['🗑️','1️⃣','2️⃣'].includes(reaction.emoji.name) && user.id === message.author.id;
@@ -149,7 +150,7 @@ async function loop(embedMessage, message, embed, embedJava, embedBedrock) {
 				embedMessage.reactions.cache.get('1️⃣').remove();
 				embedMessage.reactions.cache.get('2️⃣').remove();
 				embedMessage.edit(embed);
-				loop(embedMessage, message, embed, embedJava, embedBedrock);
+				await loop(embedMessage, message, embed, embedJava, embedBedrock);
 			}	
 		}).catch(async () => {
 			embedMessage.reactions.cache.get('🗑️').remove();

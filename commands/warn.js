@@ -9,6 +9,7 @@ const { warnUser }     = require('../functions/warnUser.js');
 const { modLog }       = require('../functions/moderation/modLog.js');
 const { addMutedRole } = require('../functions/moderation/addMutedRole.js');
 const fs = require('fs');
+const { jsonModeration } = require('../helpers/fileHandler');
 
 module.exports = {
 	name: 'warn',
@@ -27,7 +28,8 @@ module.exports = {
 				if (member.id == message.author.id) return await warnUser(message, 'You can\'t mute yourself!');
 				if (member == undefined) return warnUser(message, 'You must tag someone!');
 		
-				var warnList = JSON.parse(fs.readFileSync('./json/moderation.json'));
+				// try to read this json
+				let warnList = jsonModeration.read();
 					
 				var index = -1;
 				for (var i = 0; i < warnList.length; i++) {
@@ -95,7 +97,7 @@ module.exports = {
 				});
 
 				
-				fs.writeFileSync('./json/moderation.json', JSON.stringify(warnList, null, 2));
+				jsonModeration.write(warnList);
 				modLog(client, message, member, reason, time, 'warned');
 				
 

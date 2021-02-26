@@ -12,6 +12,7 @@ const { magnify } = require('../../functions/magnify.js');
 const { palette } = require('../../functions/palette.js');
 const { getMeta } = require('../../functions/getMeta.js');
 const { warnUser } = require('../../functions/warnUser.js');
+const { jsonContributionsJava, jsonContributionsBedrock } = require('../../helpers/fileHandler');
 
 module.exports = {
   name: 'texture',
@@ -22,8 +23,8 @@ module.exports = {
   syntax: `${prefix}texture <vanilla/32/64> <texture_name>\n${prefix}texture <vanilla/32/64> <_name>\n${prefix}texture <vanilla/32/64> </folder/>`,
   async execute(client, message, args) {
 
-    var textures = JSON.parse(fs.readFileSync('./json/contributors/java.json'));
-    var texturesBedrock = JSON.parse(fs.readFileSync('./json/contributors/bedrock.json'));
+    var textures = jsonContributionsJava.read(false);
+    var texturesBedrock = jsonContributionsBedrock.read(false);
     var results = [];
     var index = [];
 

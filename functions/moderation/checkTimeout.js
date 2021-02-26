@@ -1,12 +1,13 @@
 const Discord  = require('discord.js');
 const settings = require('../../settings.js');
 const colors   = require('../../res/colors.js');
+const { jsonModeration } = require('../../helpers/fileHandler');
 const fs       = require('fs');
 
 const { removeMutedRole } = require('../moderation/removeMutedRole.js');
 
 function checkTimeout(client) {
-	var warnList = JSON.parse(fs.readFileSync('./json/moderation.json'));
+	let warnList = jsonModeration.read();
 
 	for (var i = 0; i < warnList.length; i++) {
 		if (warnList[i].timeout > 0) {
@@ -21,7 +22,7 @@ function checkTimeout(client) {
 		}
 	}
 
-	fs.writeFileSync('./json/moderation.json', JSON.stringify(warnList, null, 2));
+	jsonModeration.write(warnList);
 }
 
 exports.checkTimeout = checkTimeout;

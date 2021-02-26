@@ -5,12 +5,13 @@ const strings  = require('../../res/strings.js');
 const fs       = require('fs');
 const fetch    = require('node-fetch');
 const { getMessages } = require('../getMessages.js');
+const { jsonContributionsBedrock, jsonContributionsJava } = require('../../helpers/fileHandler.js');
 
 async function getResults(client, inputID, OFFSET_DAY = 0) {
 
 	// get contributor files:
-	var texturesBedrock = JSON.parse(fs.readFileSync('./json/contributors/bedrock.json'));
-	var texturesJava    =	JSON.parse(fs.readFileSync('./json/contributors/java.json'));
+	var texturesBedrock = jsonContributionsBedrock.read();
+	var texturesJava    = jsonContributionsJava.read();
 
 	// set offset (used for development);
 	var offsetDate = new Date();
@@ -117,8 +118,8 @@ async function getResults(client, inputID, OFFSET_DAY = 0) {
 		}
 	}
 
-	await fs.writeFileSync('./json/contributors/bedrock.json', JSON.stringify(texturesBedrock, null, 2));
-	await fs.writeFileSync('./json/contributors/java.json',    JSON.stringify(texturesJava,    null, 2));
+	await jsonContributionsBedrock.write(texturesBedrock);
+	await jsonContributionsJava.write(texturesJava);
 }
 
 async function download_branch(textureURL, texturePath, textureSize, textureName, branch) {

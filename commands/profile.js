@@ -9,6 +9,7 @@ const settings     = require('../settings.js');
 const colors       = require('../res/colors.js');
 const strings      = require('../res/strings.js');
 const { warnUser } = require('../functions/warnUser.js');
+const { jsonProfiles } = require('../helpers/fileHandler.js');
 
 module.exports = {
 	name: 'profile',
@@ -19,7 +20,7 @@ module.exports = {
 	guildOnly: false,
 	async execute(client, message, args) {
 
-		var profiles = JSON.parse(fs.readFileSync('./json/profiles.json'));
+		var profiles = jsonProfiles.read();
 		var index = -1;
 		var username = '';
 
@@ -72,7 +73,7 @@ module.exports = {
 			else return warnUser(message, strings.COMMAND_WRONG_ARGUMENTS_GIVEN);
 		}
 
-		fs.writeFileSync('./json/profiles.json', JSON.stringify(profiles, null, 2));
+		jsonProfiles.write(profiles);
 		return await message.react('✅');
 
 		function showProfile(username = 'None', uuid = 'None', type = 'member') {
