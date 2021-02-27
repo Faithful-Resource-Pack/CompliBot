@@ -1,9 +1,9 @@
 const Discord = require('discord.js');
-const colors = require('../res/colors');
+const colors = require('../../res/colors');
 const prefix = process.env.PREFIX;
 
-const strings = require('../res/strings');
-const { warnUser } = require('../functions/warnUser.js');
+const strings = require('../../res/strings');
+const { warnUser } = require('../../functions/warnUser.js');
 
 module.exports = {
 	name: 'clear',

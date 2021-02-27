@@ -82,7 +82,7 @@ let pushToGithub = new cron.CronJob('10 0 * * *', async () => {
 	await getResults(client, settings.C64_RESULTS);
 
 	await doPush();	// Push them trough GitHub
-	await autoPush('Compliance-Resource-Pack', 'JSON', 'main', `Daily update`, `./json`);
+	//await autoPush('Compliance-Resource-Pack', 'JSON', 'main', `Daily update`, `./json`); // now done in doPush()
 });
 
 // Moderation timeout check : (each 30s)
@@ -101,30 +101,19 @@ server.listen(3000, () => console.log(`listening at http://localhost:${port}`));
 
 // Bot status:
 client.on('ready', async () => {
-	if (process.env.MAINTENANCE.toLowerCase() === 'true') {
-		client.user.setPresence(
-			{
-				activity: {
-					name: 'maintenance',
-					type: 'PLAYING',
-					url: 'https://compliancepack.net'
-				},
-				status: 'dnd'
-			}
-		);
-	}
-	else {
-		client.user.setPresence(
-			{
-				activity: {
-					name: 'compliancepack.net',
-					type: 'PLAYING',
-					url: 'https://compliancepack.net'
-				},
-				status: 'available'
-			}
-		);
-	}
+	const activities_list = [
+		"compliancepack.net",
+		"Bot Simulator 2077",
+		"Minecraft with Compliance 32x",
+		"Minecraft with Compliance 64x",
+	];
+
+	if (process.env.MAINTENANCE.toLowerCase() === 'true') client.user.setPresence({ activity: { name: 'maintenance' }, status: 'dnd' });
+	else client.user.setActivity('compliancepack.net', {type: 'PLAYING'});
+	/*else setInterval(() => {
+		var activity = activities_list[Math.floor(Math.random()*activities_list.length)]
+		client.user.setActivity(activity, {type: 'PLAYING'});
+	}, 600000);*/
 
 	/*
 	 * ENABLE TEXTURE SUBMISSION PROCESS
@@ -363,7 +352,7 @@ client.on('message', async message => {
 	if (message.channel.id === '814209343502286899' || message.channel.id === '814201529032114226') {
 		return autoReact(
 			message,
-			['✅','❌'],
+			['814569395493011477','814569427546144812'],
 			strings.SUBMIT_NO_FILE_ATTACHED,
 			undefined,
 			undefined

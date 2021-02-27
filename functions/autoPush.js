@@ -19,6 +19,8 @@ async function autoPush(ORGANIZATION, REPO, BRANCH, COMMITMESSAGE, LOCAL) {
 
 	// Upload files to repo:
 	await uploadToRepo(octo, LOCAL, ORGANIZATION, REPO, BRANCH, COMMITMESSAGE);
+
+	return;
 }
 
 /*
@@ -111,15 +113,8 @@ const createNewTree = async (octo, owner, repo, blobs = Octokit.GitCreateBlobRes
   return data
 }
 
-const createNewCommit = async (
-  octo,
-  org,
-  repo,
-  message,
-  currentTreeSha,
-  currentCommitSha
-) =>
-  (await octo.git.createCommit({
+const createNewCommit = async (octo, org, repo, message, currentTreeSha, currentCommitSha) => (
+	await octo.git.createCommit({
     owner: org,
     repo,
     message,
@@ -127,13 +122,7 @@ const createNewCommit = async (
     parents: [currentCommitSha],
   })).data
 
-const setBranchToCommit = (
-  octo,
-  org,
-  repo,
-  branch,
-  commitSha
-) =>
+const setBranchToCommit = (octo, org, repo, branch, commitSha) =>
   octo.git.updateRef({
     owner: org,
     repo,

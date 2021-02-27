@@ -4,6 +4,8 @@ const colors   = require('../../res/colors.js');
 const strings  = require('../../res/strings.js');
 const fs       = require('fs');
 const fetch    = require('node-fetch');
+
+const { date } = require('../utility/date.js');
 const { getMessages } = require('../getMessages.js');
 const { jsonContributionsBedrock, jsonContributionsJava } = require('../../helpers/fileHandler.js');
 
@@ -25,14 +27,24 @@ async function getResults(client, inputID, OFFSET_DAY = 0) {
 		let messageDate = new Date(message.createdTimestamp);
 
 		// if message is an embed && offset date == message date && embed color is green
-		if (message.embeds[0] != undefined && message.embeds[0].color == 5025616 && messageDate.getDate() == offsetDate.getDate() && messageDate.getMonth() == offsetDate.getMonth()) {
+		if (
+			message.embeds[0] != undefined && 
+			message.embeds[0].color == 5025616 && 
+			messageDate.getDate() == offsetDate.getDate() && 
+			messageDate.getMonth() == offsetDate.getMonth()) 
+		{
 			var textureAuthor   = message.embeds[0].author.name;
-			var textureAuthorID = client.users.cache.find(u => u.tag === textureAuthor).id
 			var textureName   = message.embeds[0].fields[0].value.replace('.png','') + '.png';
 			var textureFolder = message.embeds[0].fields[1].value;
 			var textureType   = message.embeds[0].fields[2].value || undefined;
 			var textureSize   = undefined;
 			var textureIndex  = -1;
+
+			try {
+				var textureAuthorID = client.users.cache.find(u => u.tag === textureAuthor).id || undefined
+			} catch (e) {
+				errorAutoPush(client, inputID, message, textureAuthor, textureName, textureFolder, textureType, `Can't find user ID! the user may have changed his nickname, Juknum#6148 ≠ juknum#6148`)
+			}
 
 			var folder = undefined;
 			var search = undefined;
@@ -86,13 +98,13 @@ async function getResults(client, inputID, OFFSET_DAY = 0) {
 				}
 				//////////////////////////////////////////
 				if (textureSize == 32 && textureType == 'bedrock') {
-					if (texturesBedrock[textureIndex].c32.author == undefined) texturesBedrock[textureIndex].c32.author = [textureAuthor];
-					else if (!texturesBedrock[textureIndex].c32.author.includes(textureAuthor)) texturesBedrock[textureIndex].c32.author.push(textureAuthor);
+					if (texturesBedrock[textureIndex].c32.author == undefined) texturesBedrock[textureIndex].c32.author = [textureAuthorID];
+					else if (!texturesBedrock[textureIndex].c32.author.includes(textureAuthorID)) texturesBedrock[textureIndex].c32.author.push(textureAuthorID);
 					if (!texturesBedrock[textureIndex].c32.date == undefined) texturesBedrock[textureIndex].c32.date = date();
 				}
 				if (textureSize == 64 && textureType == 'bedrock') {
-					if (texturesBedrock[textureIndex].c64.author == undefined) texturesBedrock[textureIndex].c64.author = [textureAuthor];
-					else if (!texturesBedrock[textureIndex].c64.author.includes(textureAuthor)) texturesBedrock[textureIndex].c64.author.push(textureAuthor);
+					if (texturesBedrock[textureIndex].c64.author == undefined) texturesBedrock[textureIndex].c64.author = [textureAuthorID];
+					else if (!texturesBedrock[textureIndex].c64.author.includes(textureAuthorID)) texturesBedrock[textureIndex].c64.author.push(textureAuthorID);
 					if (!texturesBedrock[textureIndex].c64.date == undefined) texturesBedrock[textureIndex].c64.date = date();
 				}
 				//////////////////////////////////////////
@@ -130,7 +142,7 @@ async function download_branch(textureURL, texturePath, textureSize, textureName
 	else if (textureSize == 64) localPath = `./texturesPush/Compliance-Java-64x/${branch}/assets/${texturePath}`;
 
 	else if (localPath == undefined) {
-		return errorAutoPush(client, 0, 'localPath undefined', textureUrl, textureName, texturePath, textureSize, 'Yes, im working on it.\nJuknum');
+		return errorAutoPush(client, 0, 'localPath undefined', textureUrl, textureName, texturePath, textureSize, 'localPath == undefined');
 	}
 
 	const response = await fetch(textureURL);
@@ -146,21 +158,13 @@ async function download(textureUrl, texturePath, textureType, textureSize, textu
 	else if (textureSize == 64) localPath = `./texturesPush/Compliance-Bedrock-64x/${texturePath}`
 
 	else if (localPath == undefined) {
-		return errorAutoPush(client, 0, 'localPath undefined', textureUrl, textureName, texturePath, textureType, 'Yes, im working on it.\nJuknum');
+		return errorAutoPush(client, 0, 'localPath undefined', textureUrl, textureName, texturePath, textureType, 'localPath == undefined');
 	}
 
 	const response = await fetch(textureUrl);
 	const buffer   = await response.buffer();
 	await fs.promises.mkdir(localPath.substr(0, localPath.lastIndexOf('/')), {recursive: true}).catch(console.error);
 	await fs.writeFile(localPath, buffer, () => console.log(`ADDED: ${textureName}\nTO: ${localPath}\n`));
-}
-
-function date() {
-	var today = new Date();
-	var dd = String(today.getDate()).padStart(2, '0');
-	var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-	var yyyy = today.getFullYear();
-	return mm + '/' + dd + '/' + yyyy;
 }
 
 async function errorAutoPush(client, inputID, message, author, name, folder, type, error) {

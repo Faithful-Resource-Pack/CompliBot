@@ -1,6 +1,7 @@
 const { autoPush } = require('../functions/autoPush.js');
 const fs = require('fs');
 
+const { date } = require('../functions/utility/date.js');
 const BRANCH_BEDROCK = 'Jappa-1.16.200';
 
 async function doPush(COMMIT_MESSAGE) {
@@ -89,23 +90,19 @@ async function doPush(COMMIT_MESSAGE) {
 
 	if (!isEmptyDir(`./texturesPush/Compliance-Bedrock-32x/textures`)) {
 		await autoPush('Compliance-Resource-Pack', 'Compliance-Bedrock-32x', BRANCH_BEDROCK, COMMIT_MESSAGE, './texturesPush/Compliance-Bedrock-32x/')
-		fs.rmdirSync(`./texturesPush/Compliance-Bedrock-32x/assets/`, { recursive: true });
+		fs.rmdirSync(`./texturesPush/Compliance-Bedrock-32x/textures/`, { recursive: true });
 		console.log(`PUSHED TO GITHUB: Compliance-Bedrock-32x`);
 	}
 
 	if (!isEmptyDir(`./texturesPush/Compliance-Bedrock-64x/textures`)) {
 		await autoPush('Compliance-Resource-Pack', 'Compliance-Bedrock-64x', BRANCH_BEDROCK, COMMIT_MESSAGE, './texturesPush/Compliance-Bedrock-64x/')
-		fs.rmdirSync(`./texturesPush/Compliance-Bedrock-64x/assets/`, { recursive: true });
+		fs.rmdirSync(`./texturesPush/Compliance-Bedrock-64x/textures/`, { recursive: true });
 		console.log(`PUSHED TO GITHUB: Compliance-Bedrock-64x`);
 	}
-}
 
-function date() {
-	var today = new Date();
-	var dd = String(today.getDate()).padStart(2, '0');
-	var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-	var yyyy = today.getFullYear();
-	return mm + '/' + dd + '/' + yyyy;
+	/* JSON ********************************************************************************************************************/
+	await autoPush('Compliance-Resource-Pack', 'JSON', 'main', COMMIT_MESSAGE, './json/')
+	console.log(`PUSHED TO GITHUB: JSON`);
 }
 
 function isEmptyDir(dirname){

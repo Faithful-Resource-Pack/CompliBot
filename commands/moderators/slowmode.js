@@ -1,9 +1,9 @@
 const Discord = require('discord.js');
 const prefix = process.env.PREFIX;
 
-const strings = require('../res/strings');
-const colors = require('../res/colors');
-const { warnUser } = require('../functions/warnUser.js');
+const strings = require('../../res/strings');
+const colors = require('../../res/colors');
+const { warnUser } = require('../../functions/warnUser.js');
 
 module.exports = {
 	name: 'slowmode',

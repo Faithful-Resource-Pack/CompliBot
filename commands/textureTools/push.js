@@ -12,10 +12,10 @@ const { jsonContributionsJava, jsonContributionsBedrock } = require('../../helpe
 
 module.exports = {
 	name: 'push',
-	description: 'Push file to GitHub & update contributors list',
+	description: 'Push file to GitHub & update contributors list, make /push done to push all files in GitHub and update contributors lists.',
 	guildOnly: false,
 	uses: 'Moderators',
-	syntax: `${prefix}push <repo> <author> <folder> <texturename> + attach file`,
+	syntax: `${prefix}push <repo> <author> <folder> <texturename> + attach file\n${prefix}push done`,
 	async execute(client, message, args) {
 
 		if (message.member.hasPermission('ADMINISTRATOR')) {

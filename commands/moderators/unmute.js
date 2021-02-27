@@ -1,42 +1,36 @@
 const prefix = process.env.PREFIX;
 
-const { jsonModeration } = require('../helpers/fileHandler');
 const Discord  = require('discord.js');
-const strings  = require('../res/strings');
-const colors   = require('../res/colors');
-const settings = require('../settings.js');
+const strings  = require('../../res/strings');
+const colors   = require('../../res/colors');
+const settings = require('../../settings.js');
 const fs       = require('fs');
 
-const { warnUser }     = require('../functions/warnUser.js');
-const { modLog }       = require('../functions/moderation/modLog.js');
-const { addMutedRole } = require('../functions/moderation/addMutedRole.js');
+const { warnUser }        = require('../../functions/warnUser.js');
+const { modLog }          = require('../../functions/moderation/modLog.js');
+const { removeMutedRole } = require('../../functions/moderation/removeMutedRole.js');
+const { jsonModeration } = require('../../helpers/fileHandler');
 
 module.exports = {
-	name: 'mute',
-	description: 'Mute someone',
+	name: 'unmute',
+	aliases: ['pardon'],
+	description: 'Remove Muted roles to someone',
 	guildOnly: true,
 	uses: 'Moderators',
-	syntax: `${prefix}mute <@user> <time> <reason>`,
+	syntax: `${prefix}unmute <@user> <reason>`,
 	async execute(client, message, args) {
 
 		if (message.member.hasPermission('BAN_MEMBERS')) {
 			if (args != '') {
-				var role = message.guild.roles.cache.find(r => r.name === 'Muted');
+				var role = message.guild.roles.cache.find(role => role.name === 'Muted');
 				const member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
-				const reason = args.slice(2).join(' ') || 'Not Specified';
-				const time   = args[1] || -100;
+				const reason = args.slice(1).join(' ') || 'Not Specified';
 
-				if (member.id == message.author.id) return await warnUser(message, 'You can\'t mute yourself!');
-				if (isNaN(time)) return await warnUser(message, 'You have to specify an integer!');		
+				if (member == undefined) return;
 				else {
-					var timeout = undefined;
-					if (time == -100) timeout = 'Unlimited';
-					else timeout = `${time}`;
+					removeMutedRole(client, member.id);
 
-					addMutedRole(client, member.id);
-					
-					let warnList = await jsonModeration.read();
-					
+					let warnList = jsonModeration.read();
 					var index    = -1;
 
 					for (var i = 0; i < warnList.length; i++) {
@@ -47,21 +41,21 @@ module.exports = {
 					}
 
 					if (index != -1) {
-						warnList[index].timeout = time;
-						warnList[index].muted   = true;
+						warnList[index].timeout = 0;
+						warnList[index].muted   = false;
 					} else {
 						warnList.push({
 							"user": `${member.id}`,
-							"timeout": parseInt(time),
-							"muted": true
+							"timeout": 0,
+							"muted": false
 						})
 					}
-					
-					await jsonModeration.write(warnList);
+
+					jsonModeration.write(warnList);
 
 					var embed = new Discord.MessageEmbed()
 						.setAuthor(message.author.tag, message.author.displayAvatarURL())
-						.setDescription(`Muted ${member}\nReason: ${reason}\nTime: ${timeout}`)
+						.setDescription(`Unmuted ${member} \nReason: ${reason}`)
 						.setColor(colors.BLUE)
 						.setTimestamp();
 
@@ -83,7 +77,7 @@ module.exports = {
 							await embedMessage.reactions.cache.get('🗑️').remove();
 						});
 
-					modLog(client, message, member, reason, time, 'muted');
+					modLog(client, message, member, reason, 0, 'unmuted')
 				}
 			} else return warnUser(message,strings.COMMAND_PROVIDE_VALID_TAG);
 		} else return warnUser(message,strings.COMMAND_NO_PERMISSION);

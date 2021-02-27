@@ -11,18 +11,13 @@ const { jsonContributionsJava, jsonContributionsBedrock } = require('../../helpe
 module.exports = {
 	name: 'contributors',
 	aliases: [ 'contributor' ],
-	description: 'Use: `/contributors update` to directly update the GitHub repository,\nuse: `/contributors add ...` to add a new author.\nuse: `/contributors remove ...` to remove a contributor',
+	description: 'Use: `/contributors add ...` to add a new author.\nuse: `/contributors remove ...` to remove a contributor',
 	guildOnly: false,
 	uses: 'Moderators',
-	syntax: `${prefix}contributors <update>\n${prefix}contributors <add/remove> <path+texture name> <type> <c32/c64> <author>`,
+	syntax: `${prefix}contributors <add/remove> <path+texture name> <type> <c32/c64> <author>`,
 
 	async execute(client, message, args) {
 		if (message.member.hasPermission('ADMINISTRATOR')) {
-
-			if (args[0] == 'update') {
-				autoPush('Compliance-Resource-Pack', 'JSON', 'main', `Manual Update executed by: ${message.author.username}`, `./json`);
-				return await message.react('✅');
-			}
 
 			if (args[0] == 'add' || args[0] == 'remove') {
 				var textures        = jsonContributionsJava.read();
@@ -121,7 +116,8 @@ module.exports = {
 				} else return warnUser(message,'Unknown resource pack type, please use `java` or `bedrock` your: '+args[2]);
 			}
 
-			return await message.react('✅');
+			autoPush('Compliance-Resource-Pack', 'JSON', 'main', `Added/Removed ${args[4]} from ${args[1]}, by: ${message.author.username}`, `./json`);
+			await message.react('✅');
 			
 		} else return warnUser(message,strings.COMMAND_NO_PERMISSION);
 	}
