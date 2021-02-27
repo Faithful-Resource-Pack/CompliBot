@@ -25,8 +25,8 @@ module.exports = {
 			}
 
 			if (args[0] == 'add' || args[0] == 'remove') {
-				var textures        = jsonContributionsJava.read();
-				var texturesBedrock = jsonContributionsBedrock.read();
+				var textures        = await jsonContributionsJava.read();
+				var texturesBedrock = await jsonContributionsBedrock.read();
 				var index = -1;
 
 				if (!args[4].includes('#') || args[4] == undefined) return warnUser(message, 'The author must be a Discord Tag, ex: `Name#1234`');
@@ -75,7 +75,7 @@ module.exports = {
 						} else return warnUser(message,'Unknown category, please use `c32` or `c64` yours: '+args[3]);
 					} else return warnUser(message, 'Unknown texture, please check spelling');
 
-					jsonContributionsJava.write(textures);
+					await jsonContributionsJava.write(textures);
 
 				} 
 				else if (args[2].toLowerCase() == 'bedrock') {
@@ -116,7 +116,7 @@ module.exports = {
 						} else return warnUser(message,'Unknown categorie, please use `c32` or `c64` yours: '+args[3]);
 					} else return warnUser(message, 'Unknown texture, please check spelling');
 
-					jsonContributionsBedrock.write(texturesBedrock);
+					await jsonContributionsBedrock.write(texturesBedrock);
 
 				} else return warnUser(message,'Unknown resource pack type, please use `java` or `bedrock` your: '+args[2]);
 			}

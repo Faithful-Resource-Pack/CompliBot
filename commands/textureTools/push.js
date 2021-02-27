@@ -25,8 +25,8 @@ module.exports = {
 				if (!repositories.includes(args[0])) return warnUser(message, 'This repository isn\'t supported');
 				if (message.attachments.size == 0) return warnUser(message, 'You did not attached the texture!');
 
-				var textures        = jsonContributionsJava.read();
-				var texturesBedrock = jsonContributionsBedrock.read();
+				var textures        = await jsonContributionsJava.read();
+				var texturesBedrock = await jsonContributionsBedrock.read();
 
 				var textureAuthor   = args[1];
 				var textureAuthorID = client.users.cache.find(u => u.tag === args[1]).id
@@ -119,10 +119,10 @@ module.exports = {
 				// UPDATE JSON
 				path = undefined;
 				if (type == 'bedrock') {
-					jsonContributionsBedrock.write(texturesBedrock);
+					await jsonContributionsBedrock.write(texturesBedrock);
 					path = searchBedrock;
 				} else if (type == 'java') {
-					jsonContributionsJava.write(textures);
+					await jsonContributionsJava.write(textures);
 					path = search;
 				}
 

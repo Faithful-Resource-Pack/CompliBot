@@ -29,7 +29,7 @@ module.exports = {
 				if (member == undefined) return warnUser(message, 'You must tag someone!');
 		
 				// try to read this json
-				let warnList = jsonModeration.read();
+				let warnList = await jsonModeration.read();
 					
 				var index = -1;
 				for (var i = 0; i < warnList.length; i++) {
@@ -97,7 +97,7 @@ module.exports = {
 				});
 
 				
-				jsonModeration.write(warnList);
+				await jsonModeration.write(warnList);
 				modLog(client, message, member, reason, time, 'warned');
 				
 

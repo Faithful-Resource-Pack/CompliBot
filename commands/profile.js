@@ -20,7 +20,7 @@ module.exports = {
 	guildOnly: false,
 	async execute(client, message, args) {
 
-		var profiles = jsonProfiles.read();
+		var profiles = await jsonProfiles.read();
 		var index = -1;
 		var username = '';
 
@@ -73,7 +73,7 @@ module.exports = {
 			else return warnUser(message, strings.COMMAND_WRONG_ARGUMENTS_GIVEN);
 		}
 
-		jsonProfiles.write(profiles);
+		await jsonProfiles.write(profiles);
 		return await message.react('✅');
 
 		function showProfile(username = 'None', uuid = 'None', type = 'member') {
