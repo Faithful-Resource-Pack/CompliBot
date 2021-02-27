@@ -110,11 +110,16 @@ class FileHandler {
 
     return new Promise((resolve, reject) => {
       try {
-        resolve(fs.writeFileSync(join(process.cwd(), normalize(this.filepath)), content, { flag: 'w' }))
+        fs.writeFileSync(join(process.cwd(), normalize(this.filepath)), content, { flag: 'w' })
+
+        // write and release
+        if(this.release)
+          this.release()
+
+        resolve()
       } catch (error) {
-        reject(error)
-      } finally {
         this.release()
+        reject(error)
       }
     })
   }
