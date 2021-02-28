@@ -15,6 +15,9 @@ async function getResults(client, inputID, OFFSET_DAY = 0) {
 	var texturesBedrock = await jsonContributionsBedrock.read();
 	var texturesJava    = await jsonContributionsJava.read();
 
+	// invisible try
+	try {
+
 	// set offset (used for development);
 	var offsetDate = new Date();
 	offsetDate.setDate(offsetDate.getDate() - OFFSET_DAY);
@@ -132,6 +135,12 @@ async function getResults(client, inputID, OFFSET_DAY = 0) {
 
 	await jsonContributionsBedrock.write(texturesBedrock);
 	await jsonContributionsJava.write(texturesJava);
+
+	// invisible catch
+	} catch(_error) {
+		jsonContributionsJava.release();
+		jsonContributionsBedrock.release();
+	}
 }
 
 async function download_branch(textureURL, texturePath, textureSize, textureName, branch) {
