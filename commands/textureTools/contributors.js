@@ -18,10 +18,10 @@ Array.prototype.remove = function() {
 module.exports = {
 	name: 'contributors',
 	aliases: [ 'contributor' ],
-	description: 'Use: `/contributors update` to directly update the GitHub repository,\nuse: `/contributors add ...` to add a new author.\nuse: `/contributors remove ...` to remove a contributor',
+	description: 'Use: `/contributors add ...` to add a new author.\nuse: `/contributors remove ...` to remove a contributor',
 	guildOnly: false,
 	uses: 'Moderators',
-	syntax: `${prefix}contributors <update>\n${prefix}contributors <add/remove> <path+texture name> <type> <c32/c64> <author>`,
+	syntax: `${prefix}contributors <add/remove> <path+texture name> <type> <c32/c64> <author>`,
 
 	async execute(client, message, args) {
 		// extract args
@@ -70,107 +70,71 @@ module.exports = {
 
 		// will be used later
 		let textures
+		let release
+		let write
+
 		let textureIndex = NO_TEXTURE_FOUND
 		let i = 0
 		
-		// java edition case
 		if (javaOrBedrock === 'java') {
-			// only HERE you ONLY OPEN java contributions and set a lock
 			textures = await jsonContributionsJava.read()
+			release = jsonContributionsJava.release
+			write = jsonContributionsJava.write
 
-			// find texture index
 			while (i < textures.length && !textureIndex) {
 				if (textures[i].version[strings.LATEST_MC_JE_VERSION].includes(pathTexture))
 					textureIndex = i
 				++i
 			}
-
-			if (textureIndex === NO_TEXTURE_FOUND) {
-				// in this case you should release the file
-				jsonContributionsJava.release()
-				return warnUser(message, 'Unknown texture, please check spelling')
-			}
-
-			if (addOrRemove === 'add') {
-				// create author array if not defined else append
-				if (textures[index][packResolution].author == undefined)
-					textures[index][packResolution].author = [discordTag]
-
-				else if (!textures[index][packResolution].author.includes(discordTag)) {}
-					textures[index][packResolution].author.push(discordTag)
-			}
-			// else it is remove
-			else {
-				// warn user if no author to remove
-				if (textures[index][packResolution].author == undefined) {
-					jsonContributionsJava.release()
-					return warnUser(message, 'This texture doesn\'t have an author!')
-				}
-
-				// warn if user not in this texture
-				if(!textures[index][packResolution].author.includes(discordTag)) {
-					jsonContributionsJava.release()
-					return warnUser(message, 'This author doesn\'t exist')
-				}
-
-				// remove this bad boy
-				if (textures[index][packResolution].author.length > 1)
-					textures[index][packResolution].author = textures[index][packResolution].author.remove(discordTag)
-					else
-						textures[index][packResolution].author = []
-			}
-
-			await jsonContributionsJava.write(textures)
-		}
-		// else it is bedrock
-		else {
+		} else {
 			textures = await jsonContributionsBedrock.read()
+			release = jsonContributionsBedrock.release
+			write = jsonContributionsBedrock.write
 
 			// find texture index
 			while (i < textures.length && !textureIndex) {
-				if (textures[i].path.includes(args[1]))
+				if (textures[i].path.includes(pathTexture))
 					textureIndex = i
 				++i
 			}
-
-			if (textureIndex === NO_TEXTURE_FOUND) {
-				// in this case you should release the file
-				jsonContributionsBedrock.release()
-				return warnUser(message, 'Unknown texture, please check spelling')
-			}
-
-			if (addOrRemove === 'add') {
-				// create author array if not defined else append
-				if (textures[index][packResolution].author == undefined)
-					textures[index][packResolution].author = [discordTag]
-
-				else if (!textures[index][packResolution].author.includes(discordTag)) {}
-					textures[index][packResolution].author.push(discordTag)
-			}
-			// else it is remove
-			else {
-				// warn user if no author to remove
-				if (textures[index][packResolution].author == undefined) {
-					jsonContributionsBedrock.release()
-					return warnUser(message, 'This texture doesn\'t have an author!')
-				}
-
-				// warn if user not in this texture
-				if(!textures[index][packResolution].author.includes(discordTag)) {
-					jsonContributionsBedrock.release()
-					return warnUser(message, 'This author doesn\'t exist')
-				}
-
-				// remove this bad boy
-				if (textures[index][packResolution].author.length > 1)
-					textures[index][packResolution].author = textures[index][packResolution].author.remove(discordTag)
-					else
-						textures[index][packResolution].author = []
-			}
-
-			await jsonContributionsBedrock.write(texturesBedrock)
+		}
+		
+		if (textureIndex === NO_TEXTURE_FOUND) {
+			// in this case you should release the file
+			release()
+			return warnUser(message, 'Unknown texture, please check spelling')
 		}
 
+		if (addOrRemove === 'add') {
+			// create author array if not defined else append
+			if (textures[index][packResolution].author == undefined)
+				textures[index][packResolution].author = [discordTag]
+
+			else if (!textures[index][packResolution].author.includes(discordTag)) {}
+				textures[index][packResolution].author.push(discordTag)
+		}
+		// else it is remove
+		else {
+			// warn user if no author to remove
+			if (textures[index][packResolution].author == undefined) {
+				release()
+				return warnUser(message, 'This texture doesn\'t have an author!')
+			}
+
+			// warn if user not in this texture
+			if(!textures[index][packResolution].author.includes(discordTag)) {
+				release()
+				return warnUser(message, 'This author doesn\'t exist')
+			}
+
+			// remove this bad boy
+			if (textures[index][packResolution].author.length > 1)
+				textures[index][packResolution].author = textures[index][packResolution].author.remove(discordTag)
+				else
+					textures[index][packResolution].author = []
+		}
+
+		await write(textures)
 		return await message.react('✅')
 	}
 }

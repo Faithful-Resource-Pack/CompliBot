@@ -2,6 +2,7 @@ const settings = require('../../settings');
 const prefix   = process.env.PREFIX;
 const strings  = require('../../res/strings');
 
+const { date }       = require('../../functions/utility/date.js')
 const { doPush }     = require('../../functions/doPush.js');
 const { getResults } = require('../../functions/textures_submission/getResults.js');
 const { warnUser }   = require('../../functions/warnUser.js');
@@ -30,12 +31,4 @@ module.exports = {
 			return await message.react('✅');
 		} else return
 	}
-}
-
-function date() {
-	var today = new Date();
-	var dd = String(today.getDate()).padStart(2, '0');
-	var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-	var yyyy = today.getFullYear();
-	return mm + '/' + dd + '/' + yyyy;
 }

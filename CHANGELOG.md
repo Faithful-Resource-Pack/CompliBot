@@ -2,6 +2,12 @@
 ---------------------------------------
 ### February 2021
 
+#### February 27th 2021
+> Juknum
+
+- Move `date()` into it's own file (`functions/utility/date.js`);
+- Improve code indentation & move some file into subfolders.
+
 #### February 26th 2021
 > RobertR11
 

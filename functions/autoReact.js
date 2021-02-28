@@ -3,7 +3,6 @@ const settings = require('../settings');
 const colors   = require('../res/colors');
 const strings  = require('../res/strings');
 
-//
 async function autoReact(message, emojis, errorType, errorSpecificType, specific) {
 
 	if (message.attachments.size > 0) {
