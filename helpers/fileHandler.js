@@ -20,16 +20,6 @@ const JSON_PATH_CONTRIBUTIONS_BEDROCK = './json/contributors/bedrock.json'
 const JSON_PATH_PROFILES = './json/profiles.json'
 const JSON_DEFAULT_PROFILES = []
 
-function sleep(ms) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms)
-  })
-}
-
-// PROS: prevent integer overflow
-// CONS: at the end two tickets can have the same number (i dont think you will have 10k simultaneous accesses)
-const MAX_TICKETS = 10000
-
 class FileHandler {
   constructor(filepath, defaultValue = '', isJson = true) {
     this.filepath = filepath
@@ -38,8 +28,15 @@ class FileHandler {
 
     // time to go serious with mutex locks
     // if you are curious https://www.youtube.com/watch?v=9lAuS6jsDgE
-    this.mutex = new Mutex();
-    this.release = undefined
+    this.mutex = new Mutex()
+    this._release = undefined
+  }
+
+  release() {
+    if(this._release !== undefined) {
+      this._release()
+      this._release = undefined
+    }
   }
 
   read(lock = true) {
@@ -78,7 +75,7 @@ class FileHandler {
           if(this.isJson) res = JSON.parse(res)
 
           // yeah yeah store the release function
-          this.release = release
+          this._release = release
           resolve(res)
         } catch (error) {
           // if no file found, give default
@@ -113,9 +110,7 @@ class FileHandler {
         fs.writeFileSync(join(process.cwd(), normalize(this.filepath)), content, { flag: 'w' })
 
         // write and release
-        if(this.release)
-          this.release()
-
+        this.release()
         resolve()
       } catch (error) {
         this.release()
