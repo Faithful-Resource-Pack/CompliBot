@@ -31,6 +31,10 @@ module.exports = {
 					removeMutedRole(client, member.id);
 
 					let warnList = await jsonModeration.read();
+
+					// invisible try
+					try {
+
 					var index    = -1;
 
 					for (var i = 0; i < warnList.length; i++) {
@@ -52,6 +56,11 @@ module.exports = {
 					}
 
 					await jsonModeration.write(warnList);
+
+					// invisible catch
+				  } catch(_error) {
+						jsonModeration.release();
+					}
 
 					var embed = new Discord.MessageEmbed()
 						.setAuthor(message.author.tag, message.author.displayAvatarURL())
