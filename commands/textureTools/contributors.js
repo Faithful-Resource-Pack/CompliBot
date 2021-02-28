@@ -78,7 +78,7 @@ module.exports = {
 			textureFileHandle = jsonContributionsJava
 			textures = await textureFileHandle.read()
 
-			while (i < textures.length && !textureIndex) {
+			while (i < textures.length && textureIndex == NO_TEXTURE_FOUND) {
 				if (textures[i].version[strings.LATEST_MC_JE_VERSION].includes(pathTexture))
 					textureIndex = i
 				++i
@@ -88,7 +88,7 @@ module.exports = {
 			textures = await textureFileHandle.read()
 
 			// find texture index
-			while (i < textures.length && !textureIndex) {
+			while (i < textures.length && textureIndex == NO_TEXTURE_FOUND) {
 				if (textures[i].path.includes(pathTexture))
 					textureIndex = i
 				++i
