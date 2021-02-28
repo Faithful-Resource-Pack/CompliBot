@@ -61,25 +61,22 @@ module.exports = {
 
 		// try to find user
 		try {
-			client.users.cache.find(u => u.tag === discordTag).id
+			const tmpDiscordTag = client.users.cache.find(u => u.tag === discordTag).id
+			discordTag = tmpDiscordTag
 		} catch(error) {
 			return warnUser(message, 'This user doesn\'t exist!')
 		}
 
-		discordTag = client.users.cache.find(u => u.tag === discordTag).id
-
 		// will be used later
 		let textures
-		let release
-		let write
+		let textureFileHandle
 
 		let textureIndex = NO_TEXTURE_FOUND
 		let i = 0
 		
 		if (javaOrBedrock === 'java') {
-			textures = await jsonContributionsJava.read()
-			release = jsonContributionsJava.release
-			write = jsonContributionsJava.write
+			textureFileHandle = jsonContributionsJava
+			textures = await textureFileHandle.read()
 
 			while (i < textures.length && !textureIndex) {
 				if (textures[i].version[strings.LATEST_MC_JE_VERSION].includes(pathTexture))
@@ -87,9 +84,8 @@ module.exports = {
 				++i
 			}
 		} else {
-			textures = await jsonContributionsBedrock.read()
-			release = jsonContributionsBedrock.release
-			write = jsonContributionsBedrock.write
+			textureFileHandle = jsonContributionsBedrock
+			textures = await textureFileHandle.read()
 
 			// find texture index
 			while (i < textures.length && !textureIndex) {
@@ -98,43 +94,51 @@ module.exports = {
 				++i
 			}
 		}
-		
-		if (textureIndex === NO_TEXTURE_FOUND) {
-			// in this case you should release the file
-			release()
-			return warnUser(message, 'Unknown texture, please check spelling')
-		}
 
-		if (addOrRemove === 'add') {
-			// create author array if not defined else append
-			if (textures[index][packResolution].author == undefined)
-				textures[index][packResolution].author = [discordTag]
+		// I am using a try catch st	tement because much more flexible in case of errors
+		try {
+			// check texture index
+			if (textureIndex === NO_TEXTURE_FOUND)
+				throw 'Unknown texture, please check spelling'
 
-			else if (!textures[index][packResolution].author.includes(discordTag)) {}
-				textures[index][packResolution].author.push(discordTag)
-		}
-		// else it is remove
-		else {
-			// warn user if no author to remove
-			if (textures[index][packResolution].author == undefined) {
-				release()
-				return warnUser(message, 'This texture doesn\'t have an author!')
+			if (addOrRemove === 'add') {
+				// create author array if not defined else append
+				if (textures[index][packResolution].author == undefined)
+					textures[index][packResolution].author = [discordTag]
+	
+				else if (!textures[index][packResolution].author.includes(discordTag)) {}
+					textures[index][packResolution].author.push(discordTag)
 			}
 
-			// warn if user not in this texture
-			if(!textures[index][packResolution].author.includes(discordTag)) {
-				release()
-				return warnUser(message, 'This author doesn\'t exist')
-			}
-
-			// remove this bad boy
-			if (textures[index][packResolution].author.length > 1)
-				textures[index][packResolution].author = textures[index][packResolution].author.remove(discordTag)
+			else {
+				// warn user if no author to remove
+				if (textures[index][packResolution].author == undefined)
+					throw 'This texture doesn\'t have an author!'
+				
+				// warn if user not in this texture
+				if(!textures[index][packResolution].author.includes(discordTag))
+					throw 'This author doesn\'t exist'
+				
+				// remoe this bad boy
+				if (textures[index][packResolution].author.length > 1)
+					textures[index][packResolution].author = textures[index][packResolution].author.remove(discordTag)
 				else
-					textures[index][packResolution].author = []
-		}
+					textures[index][packResolution] =  {}
+			}
+			
+			// else it is removed
 
-		await write(textures)
-		return await message.react('✅')
+			// write and release
+			await textureFileHandle.write(textures)
+
+			// react
+			return await message.react('✅')
+		} catch (error) {
+			// release 
+			textureFileHandle.release()
+
+			// and throw error
+			return warnUser(message, error.toString())
+		}
 	}
 }
