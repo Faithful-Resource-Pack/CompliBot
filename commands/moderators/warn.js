@@ -30,7 +30,10 @@ module.exports = {
 		
 				// try to read this json
 				let warnList = await jsonModeration.read();
-					
+				
+				// invisible try
+				try {
+
 				var index = -1;
 				for (var i = 0; i < warnList.length; i++) {
 					if (warnList[i].user == `${member.id}`) {
@@ -98,6 +101,12 @@ module.exports = {
 
 				
 				await jsonModeration.write(warnList);
+
+				// invisible catch
+				} catch(_error) {
+					jsonModeration.release();
+				}
+
 				modLog(client, message, member, reason, time, 'warned');
 				
 
