@@ -7,9 +7,10 @@ client.commands = new Discord.Collection();
 
 const settings     = require('../settings.js');
 const colors       = require('../res/colors.js');
-const strings      = require('../res/strings.js');
 const { warnUser } = require('../functions/warnUser.js');
 const { jsonProfiles } = require('../helpers/fileHandler.js');
+
+const NO_PROFILE_FOUND = -1
 
 module.exports = {
 	name: 'profile',
@@ -19,79 +20,80 @@ module.exports = {
 	description: 'Add personal information for the Compliance Website Gallery',
 	guildOnly: false,
 	async execute(client, message, args) {
+		const subcommand = (args[0] || '').trim().toLowerCase()
+		if(subcommand !== 'username' && subcommand !== 'uuid' && subcommand !== 'show')
+			return await warnUser(message, 'Incorrect subcommand, expected username, uuid or show')
 
-		var profiles = jsonProfiles.read();
-		var index = -1;
-		var username = '';
+		// load profiles and lock
+		const profiles = await jsonProfiles.read()
 
-		for (var i = 0; i < profiles.length; i++) {
-			if (profiles[i].id == message.author.id) {
-				index = i;
-				break;
+		try {
+			let authorProfileIndex = NO_PROFILE_FOUND
+			let i = 0
+
+			// search message author profile
+			while(i < profiles.length && authorProfileIndex == NO_PROFILE_FOUND) {
+				if(profiles[i].id === message.author.id)
+					authorProfileIndex = i
+				++i
 			}
-		}
 
-		for (var i = 1; i < args.length; i++) {
-			if (i != args.length-1) username += `${args[i]} `;
-			else username += args[i];
-		}
-
-		if (index != -1) {
-			if (args[0] == 'show') showProfile(profiles[index].username, profiles[index].uuid, profiles[index].type);
-			else if (args[0] == 'username') profiles[index].username = username;
-			else if (args[0] == 'uuid') profiles[index].uuid = args[1];
-
-			else return warnUser(message, strings.COMMAND_WRONG_ARGUMENTS_GIVEN);
-		} 
-		else {
-			if (args[0] == 'show') {
+			// if not found, add an empty one
+			if(authorProfileIndex == NO_PROFILE_FOUND) {
 				profiles.push({
 					username: null,
 					uuid: null,
 					id: message.author.id,
 					type: 'member'
 				})
-
-				showProfile();
 			}
-			else if (args[0] == 'username') {
-				profiles.push({
-					username: username,
-					uuid: null,
-					id: message.author.id,
-					type: 'member'
-				});
+
+			if(subcommand === 'show') {
+				showProfile(profiles[index].username, profiles[index].uuid, profiles[index].type)
 			}
-			else if (args[0] == 'uuid') {
-				profiles.push({
-					username: null,
-					uuid: args[1],
-					id: message.author.id,
-					type: 'member'
-				});
+			else {
+				// determine value
+				let value = ''
+				for(i = 1; i < args.length; ++i) {
+					value += `${ args[i] } `
+				}
+				value = value.trim()
+				
+				if(subcommand === 'username') {
+					profiles[authorProfileIndex].username = value
+				}
+				else { // else its UUID
+					profiles[authorProfileIndex].uuid = value
+				}
 			}
-			else return warnUser(message, strings.COMMAND_WRONG_ARGUMENTS_GIVEN);
-		}
 
-		jsonProfiles.write(profiles);
-		return await message.react('✅');
+			// write and release
+			await jsonProfiles.write(profiles)
 
-		function showProfile(username = 'None', uuid = 'None', type = 'member') {
-			if (username == null) username = 'None';
-			if (uuid == null) uuid = 'None';
-
-			var embed = new Discord.MessageEmbed()
-				.setAuthor(message.author.tag, message.author.avatarURL())
-				.addFields(
-					{ name: 'Website Username', value: username          },
-					{ name: 'Minecraft UUID',   value: uuid              },
-					{ name: 'Discord ID',       value: message.author.id },
-					{ name: 'Type',             value: type              }
-				)
-				.setColor(colors.BLUE)
-				.setFooter('CompliBot', settings.BOT_IMG);
-
-			return message.channel.send(embed);
+			// react
+			return await message.react('✅')
+		} catch(error) {
+			jsonProfiles.release()
+			console.error(error)
+			return await warnUser(message, error.toString())
 		}
 	}
+}
+
+function showProfile(username = 'None', uuid = 'None', type = 'member') {
+	if (username == null) username = 'None';
+	if (uuid == null) uuid = 'None';
+
+	var embed = new Discord.MessageEmbed()
+		.setAuthor(message.author.tag, message.author.avatarURL())
+		.addFields(
+			{ name: 'Website Username', value: username          },
+			{ name: 'Minecraft UUID',   value: uuid              },
+			{ name: 'Discord ID',       value: message.author.id },
+			{ name: 'Type',             value: type              }
+		)
+		.setColor(colors.BLUE)
+		.setFooter('CompliBot', settings.BOT_IMG);
+
+	return message.channel.send(embed);
 }

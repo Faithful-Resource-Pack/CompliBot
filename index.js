@@ -48,7 +48,7 @@ const { addMutedRole }      = require('./functions/moderation/addMutedRole.js');
 const { inviteDetection } = require('./functions/moderation/inviteDetection.js');
 
 // try to read this json
-const warnList = jsonModeration.read(false); // YOU MUST NOT LOCK because only read
+jsonModeration.read(false).then(warnList => { // YOU MUST NOT LOCK because only read
 
 // Resources:
 const colors  = require('./res/colors');
@@ -392,3 +392,7 @@ client.on('messageDelete', async message => {
 
 // Login the bot
 client.login(process.env.CLIENT_TOKEN).catch(console.error);
+
+}).catch(error => {
+	console.trace(error)
+})

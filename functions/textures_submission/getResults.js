@@ -12,8 +12,11 @@ const { jsonContributionsBedrock, jsonContributionsJava } = require('../../helpe
 async function getResults(client, inputID, OFFSET_DAY = 0) {
 
 	// get contributor files:
-	var texturesBedrock = jsonContributionsBedrock.read();
-	var texturesJava    = jsonContributionsJava.read();
+	var texturesBedrock = await jsonContributionsBedrock.read();
+	var texturesJava    = await jsonContributionsJava.read();
+
+	// invisible try
+	try {
 
 	// set offset (used for development);
 	var offsetDate = new Date();
@@ -132,6 +135,12 @@ async function getResults(client, inputID, OFFSET_DAY = 0) {
 
 	await jsonContributionsBedrock.write(texturesBedrock);
 	await jsonContributionsJava.write(texturesJava);
+
+	// invisible catch
+	} catch(_error) {
+		jsonContributionsJava.release();
+		jsonContributionsBedrock.release();
+	}
 }
 
 async function download_branch(textureURL, texturePath, textureSize, textureName, branch) {

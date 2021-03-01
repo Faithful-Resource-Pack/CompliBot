@@ -10,6 +10,8 @@ const { warnUser } = require('../../functions/warnUser.js');
 const { doPush }   = require('../../functions/doPush.js');
 const { jsonContributionsJava, jsonContributionsBedrock } = require('../../helpers/fileHandler');
 
+const TEXTURE_NOT_FOUND = -1
+
 module.exports = {
 	name: 'push',
 	description: 'Push file to GitHub & update contributors list, make /push done to push all files in GitHub and update contributors lists.',
@@ -17,132 +19,170 @@ module.exports = {
 	uses: 'Moderators',
 	syntax: `${prefix}push <repo> <author> <folder> <texturename> + attach file\n${prefix}push done`,
 	async execute(client, message, args) {
+		// if not administrator get out
+		if(!message.member.hasPermission('ADMINISTRATOR'))
+			return warnUser(message,strings.COMMAND_NO_PERMISSION)
 
-		if (message.member.hasPermission('ADMINISTRATOR')) {
-			if (Array.isArray(args) && args[0] != undefined) {
+		// if incorrect args get out
+		if((!Array.isArray(args)) || args[0] === undefined)
+			return warnUser(message,strings.COMMAND_NO_ARGUMENTS_GIVEN)
 
-				const repositories = ['Compliance-Java-32x','Compliance-Java-64x','Compliance-Bedrock-32x','Compliance-Bedrock-64x'];
-				if (!repositories.includes(args[0])) return warnUser(message, 'This repository isn\'t supported');
-				if (message.attachments.size == 0) return warnUser(message, 'You did not attached the texture!');
+		const repoArg = args[0]
+		const repositories = ['Compliance-Java-32x','Compliance-Java-64x','Compliance-Bedrock-32x','Compliance-Bedrock-64x']
+		if (!repositories.includes(repoArg))
+			return warnUser(message, 'This repository isn\'t supported')
+		if (message.attachments.size == 0)
+			return warnUser(message, 'You did not attached the texture!')
 
-				var textures        = jsonContributionsJava.read();
-				var texturesBedrock = jsonContributionsBedrock.read();
+		// find good author
+		const textureAuthorArg = args[1]
+		let textureAuthorID
+		try {
+			const tmpAuthorId = client.users.cache.find(u => u.tag === textureAuthorArg).id
+			textureAuthorID = tmpAuthorId
+		} catch(error) {
+			return warnUser(message, 'User not found in cache')
+		}
 
-				var textureAuthor   = args[1];
-				var textureAuthorID = client.users.cache.find(u => u.tag === args[1]).id
-				var folder = args[2];
-				var name   = args[3].replace('.png','') + '.png';
-				var index  = -1;
-				var type   = undefined;
+		let texturePath = args[2]
+		let textureFilename = args[3].replace('.png','') + '.png'
 
-				if (folder.includes("realms")) search = "realms/textures/" + folder.replace("realms/textures/","") + "/" + name;
-				else search = "minecraft/textures/" + folder.replace("minecraft/textures/","") + "/" + name;
+		let textures
+		let texturesBedrock
+		let fileHandle = undefined
 
-				// JAVA
-				for (var i = 0; i < textures.length; i++) {
-					if (textures[i].version[strings.LATEST_MC_JE_VERSION].includes(search)) {
-						index = i;
-						type  = 'java';
-						break;
+		let searchPath
+
+		let i
+		let textureIndex = TEXTURE_NOT_FOUND
+		let textureEdition = undefined
+
+		// Realms path tweaks
+		if (texturePath.includes("realms"))
+			searchPath = "realms/textures/" + texturePath.replace("realms/textures/","") + "/" + textureFilename
+		else
+			searchPath = "minecraft/textures/" + texturePath.replace("minecraft/textures/","") + "/" + textureFilename
+		
+		fileHandle = jsonContributionsJava
+		textures = await fileHandle.read()
+
+		try {
+			// find in JAVA edition
+			i = 0
+			while (i < textures.length && textureIndex === TEXTURE_NOT_FOUND) {
+				if (textures[i].version[strings.LATEST_MC_JE_VERSION].includes(searchPath)) {
+					textureIndex = i
+					textureEdition  = 'java'
+				}
+				++i
+			}
+
+			// if not found in java release the lock
+			if(textureIndex === TEXTURE_NOT_FOUND) {
+				fileHandle.release()
+
+				// find in BEDROCK edition
+				fileHandle = jsonContributionsBedrock
+				texturesBedrock = await fileHandle.read()
+
+				const searchBedrock = "textures/" + texturePath.replace("textures/","") + "/" + textureFilename;
+				i = 0
+				while(i < texturesBedrock.length && textureIndex === TEXTURE_NOT_FOUND) {
+					if (texturesBedrock[i].path.includes(searchBedrock)) {
+						textureIndex = i
+						textureEdition  = 'bedrock'
+					}
+					++i
+				}
+			}
+
+			// if still after bedrock and java not found, throw exception
+			if(textureIndex === TEXTURE_NOT_FOUND)
+				throw 'Texture not found.'
+
+			// ADD CONTRIBUTORS TO JSON
+			if (textureEdition == 'bedrock' && args[0].includes('32x')) {
+				if (texturesBedrock[textureIndex].c32.author == undefined) {
+					texturesBedrock[textureIndex].c32.author = [ textureAuthorID ];
+				}
+				else {
+					var authors = texturesBedrock[textureIndex].c32.author;
+					if (authors.includes(textureAuthorID) == false) {
+						texturesBedrock[textureIndex].c32.author.push(textureAuthorID);
 					}
 				}
 
-				// BEDROCK
-				if (index == -1) {
-					var searchBedrock = "textures/" + folder.replace("textures/","") + "/" + name;
-					for (var i = 0; i < texturesBedrock.length; i++) {
-						if (texturesBedrock[i].path.includes(searchBedrock)) {
-							index = i;
-							type  = 'bedrock';
-							break;
-						}
+				if (texturesBedrock[textureIndex].c32.date == undefined) texturesBedrock[textureIndex].c32.date = date();
+			}
+			if (textureEdition == 'bedrock' && args[0].includes('64x')) {
+				if (texturesBedrock[textureIndex].c64.author == undefined) {
+					texturesBedrock[textureIndex].c64.author = [ textureAuthorID ];
+				}
+				else {
+					var authors = texturesBedrock[textureIndex].c64.author;
+					if (authors.includes(textureAuthorID) == false) {
+						texturesBedrock[textureIndex].c64.author.push(textureAuthorID);
 					}
 				}
 
-				// NOT FOUND
-				if (index == -1) return warnUser(message, 'Texture not found.');
-
-				// ADD CONTRIBUTORS TO JSON
-				if (type == 'bedrock' && args[0].includes('32x')) {
-					if (texturesBedrock[index].c32.author == undefined) {
-						texturesBedrock[index].c32.author = [ textureAuthorID ];
-					}
-					else {
-						var authors = texturesBedrock[index].c32.author;
-						if (authors.includes(textureAuthorID) == false) {
-							texturesBedrock[index].c32.author.push(textureAuthorID);
-						}
-					}
-
-					if (texturesBedrock[index].c32.date == undefined) texturesBedrock[index].c32.date = date();
+				if (texturesBedrock[textureIndex].c64.date == undefined) texturesBedrock[textureIndex].c64.date = date();
+			}
+			if (textureEdition == 'java' && args[0].includes('32x')) {
+				if (textures[textureIndex].c32.author == undefined) {
+					textures[textureIndex].c32.author = [ textureAuthorID ];
 				}
-				if (type == 'bedrock' && args[0].includes('64x')) {
-					if (texturesBedrock[index].c64.author == undefined) {
-						texturesBedrock[index].c64.author = [ textureAuthorID ];
+				else {
+					var authors = textures[textureIndex].c32.author;
+					if (authors.includes(textureAuthorID) == false) {
+						textures[textureIndex].c32.author.push(textureAuthorID);
 					}
-					else {
-						var authors = texturesBedrock[index].c64.author;
-						if (authors.includes(textureAuthorID) == false) {
-							texturesBedrock[index].c64.author.push(textureAuthorID);
-						}
-					}
-
-					if (texturesBedrock[index].c64.date == undefined) texturesBedrock[index].c64.date = date();
-				}
-				if (type == 'java' && args[0].includes('32x')) {
-					if (textures[index].c32.author == undefined) {
-						textures[index].c32.author = [ textureAuthorID ];
-					}
-					else {
-						var authors = textures[index].c32.author;
-						if (authors.includes(textureAuthorID) == false) {
-							textures[index].c32.author.push(textureAuthorID);
-						}
-					}
-
-					if (textures[index].c32.date == undefined) textures[index].c32.date = date();
-				}
-				if (type == 'java' && args[0].includes('64x')) {
-					if (textures[index].c64.author == undefined) {
-						textures[index].c64.author = [ textureAuthorID ];
-					}
-					else {
-						var authors = textures[index].c64.author;
-						if (authors.includes(textureAuthorID) == false) {
-							textures[index].c64.author.push(textureAuthorID);
-						}
-					}
-
-					if (textures[index].c64.date == undefined) textures[index].c64.date = date();
 				}
 
-				// UPDATE JSON
-				path = undefined;
-				if (type == 'bedrock') {
-					jsonContributionsBedrock.write(texturesBedrock);
-					path = searchBedrock;
-				} else if (type == 'java') {
-					jsonContributionsJava.write(textures);
-					path = search;
+				if (textures[textureIndex].c32.date == undefined) textures[textureIndex].c32.date = date();
+			}
+			if (textureEdition == 'java' && args[0].includes('64x')) {
+				if (textures[textureIndex].c64.author == undefined) {
+					textures[textureIndex].c64.author = [ textureAuthorID ];
+				}
+				else {
+					var authors = textures[textureIndex].c64.author;
+					if (authors.includes(textureAuthorID) == false) {
+						textures[textureIndex].c64.author.push(textureAuthorID);
+					}
 				}
 
-				if (type == 'java') {
-					await download_branch(message.attachments.first().url, textures[index].version['1.17'],   args[0], name, '1.17');
-					await download_branch(message.attachments.first().url, textures[index].version['1.16.5'], args[0], name, '1.16.5');
-					await download_branch(message.attachments.first().url, textures[index].version['1.15.2'], args[0], name, '1.15.2');
-					await download_branch(message.attachments.first().url, textures[index].version['1.14.4'], args[0], name, '1.14.4');
-					await download_branch(message.attachments.first().url, textures[index].version['1.13.2'], args[0], name, '1.13.2');
-					await download_branch(message.attachments.first().url, textures[index].version['1.12.2'], args[0], name, '1.12.2');
-				}
-				else if (type == 'bedrock') {
-					await download(message.attachments.first().url, args[0], path, name);
-				}
+				if (textures[textureIndex].c64.date == undefined) textures[textureIndex].c64.date = date();
+			}
 
-				await doPush(`Manual Push for ${name} executed by: ${message.author.username}`);
-				await message.react('✅');
-				
-			} else return warnUser(message,strings.COMMAND_NO_ARGUMENTS_GIVEN);
-		} else return warnUser(message,strings.COMMAND_NO_PERMISSION);
+			// UPDATE JSON
+			path = undefined;
+			if (textureEdition == 'bedrock') {
+				await jsonContributionsBedrock.write(texturesBedrock);
+				path = searchBedrock;
+			} else if (textureEdition == 'java') {
+				await jsonContributionsJava.write(textures);
+				path = searchPath;
+			}
+	
+			if (textureEdition == 'java') {
+				await download_branch(message.attachments.first().url, textures[textureIndex].version['1.17'],   args[0], textureFilename, '1.17');
+				await download_branch(message.attachments.first().url, textures[textureIndex].version['1.16.5'], args[0], textureFilename, '1.16.5');
+				await download_branch(message.attachments.first().url, textures[textureIndex].version['1.15.2'], args[0], textureFilename, '1.15.2');
+				await download_branch(message.attachments.first().url, textures[textureIndex].version['1.14.4'], args[0], textureFilename, '1.14.4');
+				await download_branch(message.attachments.first().url, textures[textureIndex].version['1.13.2'], args[0], textureFilename, '1.13.2');
+				await download_branch(message.attachments.first().url, textures[textureIndex].version['1.12.2'], args[0], textureFilename, '1.12.2');
+			}
+			else if (textureEdition == 'bedrock') {
+				await download(message.attachments.first().url, args[0], path, textureFilename);
+			}
+			
+			await doPush(`Manual Push for ${textureFilename} executed by: ${message.author.username}`);
+			await message.react('✅');
+		} catch (error) {
+			if(fileHandle !== undefined)
+				fileHandle.release()
+			warnUser(message, error.toString())
+		}
 	}
 }
 

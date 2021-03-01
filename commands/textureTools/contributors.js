@@ -8,6 +8,13 @@ const { autoPush } = require('../../functions/autoPush.js');
 const { warnUser } = require('../../functions/warnUser.js');
 const { jsonContributionsJava, jsonContributionsBedrock } = require('../../helpers/fileHandler');
 
+const NO_TEXTURE_FOUND = -1
+
+// useful
+Array.prototype.remove = function() {
+	return this.filter(item => item !== el)
+}
+
 module.exports = {
 	name: 'contributors',
 	aliases: [ 'contributor' ],
@@ -17,114 +24,121 @@ module.exports = {
 	syntax: `${prefix}contributors <add/remove> <path+texture name> <type> <c32/c64> <author>`,
 
 	async execute(client, message, args) {
-		if (message.member.hasPermission('ADMINISTRATOR')) {
+		// extract args
+		const addOrRemove = args[0]
+		const pathTexture = args[1]
+		let   javaOrBedrock = args[2]
+		const packResolution = args[3]
+		let   discordTag = args[4]
 
-			if (args[0] == 'add' || args[0] == 'remove') {
-				var textures        = jsonContributionsJava.read();
-				var texturesBedrock = jsonContributionsBedrock.read();
-				var index = -1;
+		// reject directly not administrator
+		if (!message.member.hasPermission('ADMINISTRATOR'))
+			return warnUser(message,strings.COMMAND_NO_PERMISSION)
 
-				if (!args[4].includes('#') || args[4] == undefined) return warnUser(message, 'The author must be a Discord Tag, ex: `Name#1234`');
+		// update one
+		if (addOrRemove !== undefined && addOrRemove === 'update') {
+			autoPush('Compliance-Resource-Pack', 'JSON', 'main', `Manual Update executed by: ${message.author.username}`, `./json`)
+			return await message.react('✅')
+		}
 
-				try {
-					client.users.cache.find(u => u.tag === args[4]).id
-				} catch(error) {
-					return warnUser(message, 'This user doesn\'t exist!');
-				}
-				args[4] = client.users.cache.find(u => u.tag === args[4]).id;
+		// also you should verify arguments number
+		if (args.length !== 5)
+			return warnUser(message, 'contributors command always have 5 arguments')
 
-				if (args[2].toLowerCase() == 'java') {
-					for (var i = 0; i < textures.length; i++) {
-						if (textures[i].version[strings.LATEST_MC_JE_VERSION].includes(args[1])) {
-							index = i;
-							break;
-						}
-					}
+		if (addOrRemove === undefined || (addOrRemove !== 'add' && addOrRemove !== 'remove'))
+			return warnUser(message, 'contributors command only accepts update, add or remove')
 
-					if (index != -1) {
-						if (args[3] == 'c32') {
-							if (args[0] == 'add') {
-								if (textures[index].c32.author == undefined) textures[index].c32.author = [args[4]];
-								else if (!textures[index].c32.author.includes(args[4])) textures[index].c32.author.push(args[4]);
-							}
-							if (args[0] == 'remove') {
-								if (textures[index].c32.author == undefined) return warnUser(message, 'This texture doesn\'t have an author!');
-								else if (textures[index].c32.author.includes(args[4])) {
-									if (textures[index].c32.author.length > 1) textures[index].c32.author = arrayRemove(textures[index].c32.author, args[4]);
-									else textures[index].c32 = {};
-								} else return warnUser(message, 'This author doesn\'t exist');
-							}
+		if (javaOrBedrock === undefined || (javaOrBedrock !== 'java' && javaOrBedrock !== 'bedrock'))
+			return warnUser(message, 'contributors command only accepts java or bedrock edition')
+		else
+			javaOrBedrock = javaOrBedrock.toLowerCase()
 
-						} else if (args[3] == 'c64') {
-							if (args[0] == 'add') {
-								if (textures[index].c64.author == undefined) textures[index].c64.author = [args[4]];
-								else if (!textures[index].c64.author.includes(args[4])) textures[index].c64.author.push(args[4]);
-							}
-							if (args[0] == 'remove') {
-								if (textures[index].c64.author == undefined) return warnUser(message, 'This texture doesn\'t have an author!');
-								else if (textures[index].c64.author.includes(args[4])) {
-									if (textures[index].c64.author.length > 1) textures[index].c64.author = arrayRemove(textures[index].c64.author, args[4]);
-									else textures[index].c64 = {};
-								} else return warnUser(message, 'This author doesn\'t exist');
-							}
-						} else return warnUser(message,'Unknown category, please use `c32` or `c64` yours: '+args[3]);
-					} else return warnUser(message, 'Unknown texture, please check spelling');
+		if (packResolution === undefined || (packResolution !== 'c32' && packResolution !== 'c64'))
+			return warnUser(message, 'contributors command only accepts c32 and c64 resolution')
 
-					jsonContributionsJava.write(textures);
+		if (discordTag === undefined || !discordTag.includes('#'))
+			return warnUser(message, 'The author must be a Discord Tag, ex: `Name#1234`')
 
-				} 
-				else if (args[2].toLowerCase() == 'bedrock') {
-					for (var i = 0; i < texturesBedrock.length; i++) {
-						if (texturesBedrock[i].path.includes(args[1])) {
-							index = i;
-							break;
-						}
-					}
+		// try to find user
+		try {
+			const tmpDiscordTag = client.users.cache.find(u => u.tag === discordTag).id
+			discordTag = tmpDiscordTag
+		} catch(error) {
+			return warnUser(message, 'This user doesn\'t exist!')
+		}
 
-					if (index != -1) {
-						if (args[3] == 'c32') {
-							if (args[0] == 'add') {
-								if (texturesBedrock[index].c32.author == undefined) texturesBedrock[index].c32.author = [args[4]];
-								else if (!texturesBedrock[index].c32.author.includes(args[4])) texturesBedrock[index].c32.author.push(args[4]);
-							}
-							if (args[0] == 'remove') {
-								if (texturesBedrock[index].c32.author == undefined) return warnUser(message, 'This texture doesn\'t have an author!');
-								else if (texturesBedrock[index].c32.author.includes(args[4])) {
-									if (texturesBedrock[index].c32.author.length > 1) texturesBedrock[index].c32.author = arrayRemove(texturesBedrock[index].c32.author, args[4]);
-									else texturesBedrock[index].c32 = {};
-								} else return warnUser(message, 'This author doesn\'t exist');
-							}
+		// will be used later
+		let textures
+		let textureFileHandle
 
-						} else if (args[3] == 'c64') {
-							if (args[0] == 'add') {
-								if (texturesBedrock[index].c64.author == undefined) texturesBedrock[index].c64.author = [args[4]];
-								else if (!texturesBedrock[index].c64.author.includes(args[4])) texturesBedrock[index].c64.author.push(args[4]);
-							}
-							if (args[0] == 'remove') {
-								if (texturesBedrock[index].c64.author == undefined) return warnUser(message, 'This texture doesn\'t have an author!');
-								else if (texturesBedrock[index].c64.author.includes(args[4])) {
-									if (texturesBedrock[index].c64.author.length > 1) texturesBedrock[index].c64.author = arrayRemove(texturesBedrock[index].c64.author, args[4]);
-									else texturesBedrock[index].c64 = {};
-								} else return warnUser(message, 'This author doesn\'t exist');
-							}
+		let textureIndex = NO_TEXTURE_FOUND
+		let i = 0
+		
+		if (javaOrBedrock === 'java') {
+			textureFileHandle = jsonContributionsJava
+			textures = await textureFileHandle.read()
 
-						} else return warnUser(message,'Unknown categorie, please use `c32` or `c64` yours: '+args[3]);
-					} else return warnUser(message, 'Unknown texture, please check spelling');
+			while (i < textures.length && textureIndex == NO_TEXTURE_FOUND) {
+				if (textures[i].version[strings.LATEST_MC_JE_VERSION].includes(pathTexture))
+					textureIndex = i
+				++i
+			}
+		} else {
+			textureFileHandle = jsonContributionsBedrock
+			textures = await textureFileHandle.read()
 
-					jsonContributionsBedrock.write(texturesBedrock);
+			// find texture index
+			while (i < textures.length && textureIndex == NO_TEXTURE_FOUND) {
+				if (textures[i].path.includes(pathTexture))
+					textureIndex = i
+				++i
+			}
+		}
 
-				} else return warnUser(message,'Unknown resource pack type, please use `java` or `bedrock` your: '+args[2]);
+		// I am using a try catch st	tement because much more flexible in case of errors
+		try {
+			// check texture index
+			if (textureIndex === NO_TEXTURE_FOUND)
+				throw 'Unknown texture, please check spelling'
+
+			if (addOrRemove === 'add') {
+				// create author array if not defined else append
+				if (textures[index][packResolution].author == undefined)
+					textures[index][packResolution].author = [discordTag]
+	
+				else if (!textures[index][packResolution].author.includes(discordTag)) {}
+					textures[index][packResolution].author.push(discordTag)
 			}
 
-			autoPush('Compliance-Resource-Pack', 'JSON', 'main', `Added/Removed ${args[4]} from ${args[1]}, by: ${message.author.username}`, `./json`);
-			await message.react('✅');
+			else {
+				// warn user if no author to remove
+				if (textures[index][packResolution].author == undefined)
+					throw 'This texture doesn\'t have an author!'
+				
+				// warn if user not in this texture
+				if(!textures[index][packResolution].author.includes(discordTag))
+					throw 'This author doesn\'t exist'
+				
+				// remoe this bad boy
+				if (textures[index][packResolution].author.length > 1)
+					textures[index][packResolution].author = textures[index][packResolution].author.remove(discordTag)
+				else
+					textures[index][packResolution] =  {}
+			}
 			
-		} else return warnUser(message,strings.COMMAND_NO_PERMISSION);
-	}
-}
+			// else it is removed
 
-function arrayRemove(arr, value) {
-	return arr.filter(function(ele){ 
-		return ele != value;
-	});
+			// write and release
+			await textureFileHandle.write(textures)
+
+			// react
+			return await message.react('✅')
+		} catch (error) {
+			// release 
+			textureFileHandle.release()
+
+			// and throw error
+			return warnUser(message, error.toString())
+		}
+	}
 }

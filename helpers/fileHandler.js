@@ -3,7 +3,8 @@
  * Goal is to have dynamic paths
  */
 const fs = require('fs')
-const { dirname, normalize, join } = require('path')
+const { dirname, normalize, join, resolve } = require('path')
+const { Mutex } = require('async-mutex')
 
 const JSON_WRITE_SPACES = 2
 const JSON_WRITE_REPLACER = null
@@ -19,109 +20,103 @@ const JSON_PATH_CONTRIBUTIONS_BEDROCK = './json/contributors/bedrock.json'
 const JSON_PATH_PROFILES = './json/profiles.json'
 const JSON_DEFAULT_PROFILES = []
 
-function sleep(ms) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms)
-  })
-}
-
-// PROS: prevent integer overflow
-// CONS: at the end two tickets can have the same number (i dont think you will have 10k simultaneous accesses)
-const MAX_TICKETS = 10000
-
 class FileHandler {
   constructor(filepath, defaultValue = '', isJson = true) {
     this.filepath = filepath
     this.isJson = isJson
     this.defaultValue = defaultValue
 
-    // operations queue
-    this.ticket = 0
-    this.currentTicket = 0
-
-    // ESSENTIAL because always by pair
-    this.locked = false
+    // time to go serious with mutex locks
+    // if you are curious https://www.youtube.com/watch?v=9lAuS6jsDgE
+    this.mutex = new Mutex()
+    this._release = undefined
   }
 
-  _getTicket() {
-    // prevent overflow
-    const res = this.ticket % MAX_TICKETS
-
-    // update ticket number
-    this.ticket = (res + 1) % MAX_TICKETS
-
-    return res
-  }
-
-  _increaseTicket() {
-    // prevent overflow
-    this.currentTicket = (this.currentTicket + 1) % MAX_TICKETS
+  release() {
+    if(this._release !== undefined) {
+      this._release()
+      this._release = undefined
+    }
   }
 
   read(lock = true) {
-    // you cannot get a ticket while someone is reading, because the following must be a write ticket
-    while(this.locked){}
+    return new Promise((resolve, reject) => {
+      if(!lock) {
+        // if no lock, go on, take the file and get out
+        try {
+          let res = fs.readFileSync(this.filepath)
+          
+          if(this.isJson) res = JSON.parse(res)
 
-    // get a ticket
-    let ticket = this._getTicket()
+          resolve(res)
+        } catch (error) {
+          // if no file found, give default
+          if(error.code === 'ENOENT') {
+            resolve(this.defaultValue)
+          } else {
+            console.error(error)
+            reject(error)
+          }
+        }
 
-    // waiting my turn
-    while(ticket != this.currentTicket) {}
-
-    // now I am reading, and no one will occ
-    if(lock)
-      this.locked = true
-
-    let fileContent
-    let err = undefined
-    try {
-      fileContent = fs.readFileSync(this.filepath)
-
-      if(this.isJson) {
-        fileContent = JSON.parse(fileContent)
+        return
       }
-    } catch (_error) {
-      fileContent = this.defaultValue
-    }
 
-    // ALWAYS ALWAYS increase current ticket
-    this._increaseTicket()
+      // else we will have a problem
 
-    // eventually return value
-    return fileContent
+      // the mutex is a lock and you need to acquuire it to be authorized to do an action
+      this.mutex.acquire()
+      .then((release) => {
+
+        // wow you have the lock, now get the file, release and get out
+        try {
+          let res = fs.readFileSync(this.filepath)
+          
+          if(this.isJson) res = JSON.parse(res)
+
+          // yeah yeah store the release function
+          this._release = release
+          resolve(res)
+        } catch (error) {
+          // if no file found, give default
+          if(error.code === 'ENOENT') {
+            resolve(this.defaultValue)
+          } else {
+            console.error(error)
+
+            // if there is a real error, release it then and reject
+            release()
+            reject(error) 
+          }
+        }
+      })
+      .catch((err) => {
+        // should never, never happend, but we don't know
+        reject(err)
+      })
+    })
   }
 
-  write(content, unlock=true) {
-    // get a ticket
-    // the ticket following a read ticket is always a write ticket from the same script
-    let ticket = this._getTicket()
-
-    // create the folders recusively
+  write(content) {
+    // create the folders recusively if not existing
     fs.mkdirSync(dirname(this.filepath), { recursive: true })
 
     // this content is transformed in JSON if needed
     if(content !== 'string' && this.isJson)
       content = JSON.stringify(content, JSON_WRITE_REPLACER, JSON_WRITE_SPACES)
 
-    while(ticket != this.currentTicket){}
+    return new Promise((resolve, reject) => {
+      try {
+        fs.writeFileSync(join(process.cwd(), normalize(this.filepath)), content, { flag: 'w' })
 
-    let err = undefined
-    try {
-      fs.writeFileSync(join(process.cwd(), normalize(this.filepath)), content, { flag: 'w' })
-    } catch (error) {
-      err = error
-    }
-
-    // ALWAYS ALWAYS increase current ticket
-    this._increaseTicket()
-
-    // unlock if necessary
-    if(unlock)
-      this.locked = false
-
-    // throw error after increasing ticket
-    if(err)
-      throw err
+        // write and release
+        this.release()
+        resolve()
+      } catch (error) {
+        this.release()
+        reject(error)
+      }
+    })
   }
 }
 

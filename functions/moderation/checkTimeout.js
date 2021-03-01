@@ -6,9 +6,12 @@ const fs       = require('fs');
 
 const { removeMutedRole } = require('../moderation/removeMutedRole.js');
 
-function checkTimeout(client) {
-	let warnList = jsonModeration.read();
+async function checkTimeout(client) {
+	let warnList = await jsonModeration.read();
 
+	// invisible try
+	try {
+	
 	for (var i = 0; i < warnList.length; i++) {
 		if (warnList[i].timeout > 0) {
 			warnList[i].timeout = warnList[i].timeout - 30;
@@ -22,7 +25,12 @@ function checkTimeout(client) {
 		}
 	}
 
-	jsonModeration.write(warnList);
+	await jsonModeration.write(warnList);
+
+	// invisible catch
+	} catch(_error) {
+		jsonModeration.release();
+	}
 }
 
 exports.checkTimeout = checkTimeout;
