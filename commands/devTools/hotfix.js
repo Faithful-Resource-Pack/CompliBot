@@ -28,20 +28,22 @@ module.exports = {
 	async execute(client, message, args) {
 		if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD) {
 			
-			// C32x
-			await    textureCouncil(client, settings.C32_SUBMIT_2,  settings.C32_SUBMIT_3, settings.C32_RESULTS, 1);	// 1 DAYS OFFSET
-			await     textureRevote(client, settings.C32_SUBMIT_3,  settings.C32_RESULTS,  3);							// 3 DAYS OFFSET
+	// C32x
+	//await textureSubmission(client, settings.C32_SUBMIT_1,  settings.C32_SUBMIT_2, 5);							// 5 DAYS OFFSET
+	//await textureSubmission(client, settings.C32_SUBMIT_1B, settings.C32_SUBMIT_2, 5);							// 5 DAYS OFFSET
+	//await    textureCouncil(client, settings.C32_SUBMIT_2,  settings.C32_SUBMIT_3, settings.C32_RESULTS, 1);	// 1 DAYS OFFSET
+	//await     textureRevote(client, settings.C32_SUBMIT_3,  settings.C32_RESULTS,  3);							// 3 DAYS OFFSET
 	
-			// C64x
-			//await textureSubmission(client, settings.C64_SUBMIT_1,  settings.C64_SUBMIT_2, 5);							// 5 DAYS OFFSET
-			//await textureSubmission(client, settings.C64_SUBMIT_1B, settings.C64_SUBMIT_2, 5);							// 5 DAYS OFFSET
-			//await    textureCouncil(client, settings.C64_SUBMIT_2,  settings.C64_SUBMIT_3, settings.C64_RESULTS, 1);	// 1 DAYS OFFSET
-			//await     textureRevote(client, settings.C64_SUBMIT_3,  settings.C64_RESULTS,  3);	
-			
+	// C64x
+	//await textureSubmission(client, settings.C64_SUBMIT_1,  settings.C64_SUBMIT_2, 5);							// 5 DAYS OFFSET
+	//await textureSubmission(client, settings.C64_SUBMIT_1B, settings.C64_SUBMIT_2, 5);							// 5 DAYS OFFSET
+	//await    textureCouncil(client, settings.C64_SUBMIT_2,  settings.C64_SUBMIT_3, settings.C64_RESULTS, 1);	// 1 DAYS OFFSET
+	//await     textureRevote(client, settings.C64_SUBMIT_3,  settings.C64_RESULTS,  5);
+	await     textureRevote(client, settings.C64_SUBMIT_3,  settings.C64_RESULTS,  4);
 
-			//await getResults(client, settings.C32_RESULTS);
-			//await doPush(`Manual AutoPush, executed by: ${message.author.username} (${date()})`);
-			//await autoPush('Compliance-Resource-Pack', 'JSON', 'main', `Daily update`, `./json`);
+	//await getResults(client, settings.C64_RESULTS);
+
+	//await doPush();	// Push them trough GitHub
 		}
 	}
 }

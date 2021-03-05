@@ -70,7 +70,7 @@ module.exports = {
 
 			} else if (mods_dnd.length != 0) {
 				// We have 1 or more mods dnd
-				if (mods_dnd.length == 1) content = 'There is **' + mods_dnd.length + ' Mod in do not disturb / AFK**, he may not respond.';
+				if (mods_dnd.length == 1) content = 'There is **' + mods_dnd.length + ' Mod in do not disturb / AFK**, they may not respond.';
 				else content = 'There are **' + mods_dnd.length + ' Mods in do not disturb / AFKs**, they may not respond.';
 
 				embed = new Discord.MessageEmbed()

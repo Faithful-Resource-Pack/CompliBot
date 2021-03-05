@@ -2,6 +2,11 @@
 ---------------------------------------
 ### February 2021
 
+#### March 5th 2021
+> RobertR11
+
+- fix `/mute` command not working at all
+
 #### February 27th 2021
 > Juknum
 

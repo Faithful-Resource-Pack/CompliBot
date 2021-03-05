@@ -237,12 +237,12 @@ client.on('message', async message => {
  * EASTER EGGS & CUSTOM COMMANDS:
  */
 client.on('message', async message => {
-	for (var i = 0; i < warnList.length; i++) {
+	/*for (var i = 0; i < warnList.length; i++) {
 		if (warnList[i].user == message.author.id && warnList[i].muted == true) {
 			//message.delete();
 			addMutedRole(client, message.author.id);
 		}
-	}
+	}*/
 
 	if (message.content.startsWith(prefix) || message.author.bot) return; // Avoid message WITH prefix & bot messages
 

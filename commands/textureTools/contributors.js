@@ -11,7 +11,7 @@ const { jsonContributionsJava, jsonContributionsBedrock } = require('../../helpe
 const NO_TEXTURE_FOUND = -1
 
 // useful
-Array.prototype.remove = function() {
+Array.prototype.remove = function(el) {
 	return this.filter(item => item !== el)
 }
 
@@ -84,6 +84,7 @@ module.exports = {
 				++i
 			}
 		} else {
+			textureFileHandle.release()
 			textureFileHandle = jsonContributionsBedrock
 			textures = await textureFileHandle.read()
 
@@ -103,27 +104,27 @@ module.exports = {
 
 			if (addOrRemove === 'add') {
 				// create author array if not defined else append
-				if (textures[index][packResolution].author == undefined)
-					textures[index][packResolution].author = [discordTag]
+				if (textures[textureIndex][packResolution].author == undefined)
+					textures[textureIndex][packResolution].author = [discordTag]
 	
-				else if (!textures[index][packResolution].author.includes(discordTag)) {}
-					textures[index][packResolution].author.push(discordTag)
+				else if (!textures[textureIndex][packResolution].author.includes(discordTag)) {}
+					textures[textureIndex][packResolution].author.push(discordTag)
 			}
 
 			else {
 				// warn user if no author to remove
-				if (textures[index][packResolution].author == undefined)
+				if (textures[textureIndex][packResolution].author == undefined)
 					throw 'This texture doesn\'t have an author!'
 				
 				// warn if user not in this texture
-				if(!textures[index][packResolution].author.includes(discordTag))
+				if(!textures[textureIndex][packResolution].author.includes(discordTag))
 					throw 'This author doesn\'t exist'
 				
 				// remoe this bad boy
-				if (textures[index][packResolution].author.length > 1)
-					textures[index][packResolution].author = textures[index][packResolution].author.remove(discordTag)
+				if (textures[textureIndex][packResolution].author.length > 1)
+					textures[textureIndex][packResolution].author = textures[textureIndex][packResolution].author.remove(discordTag)
 				else
-					textures[index][packResolution] =  {}
+					textures[textureIndex][packResolution] =  {}
 			}
 			
 			// else it is removed
