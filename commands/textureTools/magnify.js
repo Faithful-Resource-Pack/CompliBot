@@ -75,20 +75,24 @@ module.exports = {
 			for (var i in messages) {
 				var msg = messages[i]
 				var url = '';
-				if (msg.attachments.size > 0) {
-					found = true;
-					url = msg.attachments.first().url;
-					break;
-				}
-				else if (msg.embeds[0] != undefined && msg.embeds[0] != null && msg.embeds[0].image) {
-					found = true;
-					url = msg.embeds[0].image.url;
-					break;
+				try {
+					if (msg.attachments.size > 0) {
+						found = true;
+						url = msg.attachments.first().url;
+						break;
+					}
+					else if (msg.embeds[0] != undefined && msg.embeds[0] != null && msg.embeds[0].image) {
+						found = true;
+						url = msg.embeds[0].image.url;
+						break;
+					}
+				} catch(e) {
+					return warnUser(message,'No image found in the 10 previous messages.');
 				}
 			}
 
 			if (found) await magnify(message, FACTOR, url);
-			else return warnUser(message,'No image found in the 10 previous messages.');
+			else return
 		}
 	}
 }

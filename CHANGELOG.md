@@ -6,6 +6,7 @@
 > RobertR11
 
 - fix `/mute` command not working at all
+- fix `/magnify`, `/tile` and `/palette` command giving errors when not finding any image in previous 10 messages
 
 #### February 27th 2021
 > Juknum
