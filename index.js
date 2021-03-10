@@ -258,6 +258,8 @@ client.on('message', async message => {
 
 	if (message.content === 'F' ) return await message.react('🇫');
 
+	if (message.content.toLowerCase() === 'engineer gaming' ) return await message.react('👷‍♂️');
+
 	if (message.content.toLowerCase() === 'mhhh') {
 		const embed = new Discord.MessageEmbed().setAuthor(message.content, message.author.displayAvatarURL()).setTitle('Uh-oh moment').setFooter('Swahili -> English', settings.BOT_IMG);
 		return await message.channel.send(embed);
