@@ -84,6 +84,7 @@ function tile(message, url, type) {
 
 		const attachment = new Discord.MessageAttachment(canvas.toBuffer());
 		var embed = new Discord.MessageEmbed()
+			.setAuthor(message.author.tag, message.author.displayAvatarURL())
 			.setColor(colors.BLUE)
 			.setTitle(`Tiled texture (${type})`)
 			.setDescription(`Original size: ${dimension.width} x ${dimension.height} px²`)
@@ -91,11 +92,10 @@ function tile(message, url, type) {
 
 		const embedMessage = await message.channel.send(embed);
 
-    embedMessage.react('🗑️');
-		//embedMessage.react('🔎');
+    if (message.channel.type != 'dm') await embedMessage.react('🗑️');
 
 		const filter = (reaction, user) => {
-			return ['🗑️','🔎'].includes(reaction.emoji.name) && user.id === message.author.id;
+			return ['🗑️'].includes(reaction.emoji.name) && user.id === message.author.id;
 		};
 
 		embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
@@ -105,14 +105,9 @@ function tile(message, url, type) {
 					embedMessage.delete();
 					if (!message.deleted) message.delete();
 				}
-				/*TODO: This doesn't work
-				if (reaction.emoji.name === '🔎') {
-					return magnify(message, 5, embedMessage.attachment.url);
-				}*/
 			})
 			.catch(async () => {
-				await embedMessage.reactions.cache.get('🗑️').remove();
-				//await embedMessage.reactions.cache.get('🔎').remove();
+				if (message.channel.type != 'dm') await embedMessage.reactions.cache.get('🗑️').remove();
 			});
 	});
 }

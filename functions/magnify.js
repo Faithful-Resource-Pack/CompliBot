@@ -42,12 +42,13 @@ function magnify(message, factor, url) {
 
 		const attachment = new Discord.MessageAttachment(canvasResult.toBuffer());
 		var embed = new Discord.MessageEmbed()
+			.setAuthor(message.author.tag, message.author.displayAvatarURL())
 			.setColor(colors.BLUE)
 			.setTitle(`Magnified by ${factor}x`)
 			.setDescription(`Original size: ${dimension.width} x ${dimension.height} px²\nNew size: ${dimension.width * factor} x ${dimension.height * factor} px²`)
 			.attachFiles([attachment]);
 
-		await message.channel.send(embed);
+		const embedMessage = await message.channel.send(embed);
 		/*
 			looks like :
 			MessageAttachment {
@@ -55,6 +56,25 @@ function magnify(message, factor, url) {
   			name: null
 			}
 		*/
+
+		if (message.channel.type != 'dm') await embedMessage.react('🗑️');
+
+		const filter = (reaction, user) => {
+			return ['🗑️'].includes(reaction.emoji.name) && user.id === message.author.id;
+		};
+
+		embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
+			.then(async collected => {
+				const reaction = collected.first();
+				if (reaction.emoji.name === '🗑️') {
+					embedMessage.delete();
+					if (!message.deleted) message.delete();
+				}
+			})
+			.catch(async () => {
+				if (message.channel.type != 'dm') await embedMessage.reactions.cache.get('🗑️').remove();
+			});
+
 		return attachment;
 	});
 }

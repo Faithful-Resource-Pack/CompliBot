@@ -46,6 +46,7 @@ async function palette(message, url) {
 		}
 
 		var embed = new Discord.MessageEmbed()
+			.setAuthor(message.author.tag, message.author.displayAvatarURL())
 			.setColor(colors.BLUE)
 			.setAuthor(message.author.tag, message.author.displayAvatarURL())
 			.setDescription(`List of colors:\n`)
@@ -99,7 +100,25 @@ async function palette(message, url) {
 			}
 		}
 
-		await message.channel.send(embed);
+		const embedMessage = await message.channel.send(embed);
+
+		if (message.channel.type != 'dm') await embedMessage.react('🗑️');
+
+		const filter = (reaction, user) => {
+			return ['🗑️'].includes(reaction.emoji.name) && user.id === message.author.id;
+		};
+
+		embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
+			.then(async collected => {
+				const reaction = collected.first();
+				if (reaction.emoji.name === '🗑️') {
+					embedMessage.delete();
+					if (!message.deleted) message.delete();
+				}
+			})
+			.catch(async () => {
+				if (message.channel.type != 'dm') await embedMessage.reactions.cache.get('🗑️').remove();
+			});
 	});
 }
 
