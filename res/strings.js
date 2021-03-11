@@ -21,7 +21,8 @@ const WEBSITE_PROVIDE_VALID_ARGUMENT = 'Please specify a valid argument! \nYou c
 const WEBSITE_NO_SITE_REGISTERED = 'I don\'t have any website registered for this server :(';
 
 // Texture command
-const TEXTURE_DOESNT_EXIST = '**Note: this command isn\'t updated for 21w10a yet, if you\'re currently looking for a 21w10a texture**\nThe specified texture/folder doesn\'t exist!';
+//const TEXTURE_DOESNT_EXIST = '**Note: this command isn\'t updated for 21w10a yet, if you\'re currently looking for a 21w10a texture**\nThe specified texture/folder doesn\'t exist!';
+const TEXTURE_DOESNT_EXIST = 'The specified texture/folder doesn\'t exist!';
 const TEXTURE_FAILED_LOADING = 'This texture has not yet been made or is not present on GitHub!';
 
 // Submission commands 

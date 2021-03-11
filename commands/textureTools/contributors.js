@@ -11,9 +11,9 @@ const { jsonContributionsJava, jsonContributionsBedrock } = require('../../helpe
 const NO_TEXTURE_FOUND = -1
 
 // useful
-Array.prototype.remove = function(el) {
-	return this.filter(item => item !== el)
-}
+//Array.prototype.remove = function(el) {
+//	return this.filter(item => item !== el)
+//}
 
 module.exports = {
 	name: 'contributors',

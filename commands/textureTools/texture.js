@@ -1,5 +1,7 @@
 const prefix = process.env.PREFIX;
 
+//const uidR = process.env.UIDR;
+
 const Discord = require('discord.js');
 const axios = require('axios').default;
 const fs = require('fs');
@@ -20,8 +22,10 @@ module.exports = {
   description: 'Displays a specified texture from either vanilla or Compliance.\nYou can search for a texture name, or use ``_`` at the begining to search for non-complete names (such as _sword).\nYou can also use ``/`` at the begining to specify a folder instead of a texture name.',
   guildOnly: false,
   uses: 'Anyone',
-  syntax: `${prefix}texture <vanilla/32/64> <texture_name>\n${prefix}texture <vanilla/32/64> <_name>\n${prefix}texture <vanilla/32/64> </folder/>`,
+  syntax: `${prefix}texture <16/32/64> <texture_name>\n${prefix}texture <16/32/64> <_name>\n${prefix}texture <16/32/64> </folder/>`,
   async execute(client, message, args) {
+
+		//if (message.author.id != uidR) return warnUser(message, 'This command is currently disabled due to updating to 21w10a, please try again in a few minutes.');
 
     var textures = await jsonContributionsJava.read(false);
     var texturesBedrock = await jsonContributionsBedrock.read(false);
@@ -129,7 +133,7 @@ module.exports = {
       const emoji_num = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟', '🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮', '🇯'];
 
       var embed = new Discord.MessageEmbed()
-				.setAuthor('Note: this command isn\'t updated for 21w10a yet')
+				//.setAuthor('Note: this command isn\'t updated for 21w10a yet')
         .setTitle(results.length + ' results for "' + args[1] + '" in ' + args[0].replace('b', " Bedrock"))
         .setFooter('CompliBot', settings.BOT_IMG);
 
@@ -171,7 +175,7 @@ module.exports = {
     function getTexture(type, name, index) {
       var imgURL = undefined;
 
-      if (type == '16') imgURL = 'https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/21w08a/assets/' + name;
+      if (type == '16') imgURL = 'https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/21w10a/assets/' + name;
       if (type == '32') imgURL = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-32x/Jappa-1.17/assets/' + name;
       if (type == '64') imgURL = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-64x/Jappa-1.17/assets/' + name;
 
@@ -184,7 +188,7 @@ module.exports = {
           const size = dimension.width + 'x' + dimension.height;
 
           var embed = new Discord.MessageEmbed()
-						.setAuthor('Note: this command isn\'t updated for 21w10a yet')
+						//.setAuthor('Note: this command isn\'t updated for 21w10a yet')
             .setTitle(name)
             .setColor(colors.BLUE)
             .setURL(imgURL)
