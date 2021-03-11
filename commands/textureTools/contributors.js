@@ -10,11 +10,6 @@ const { jsonContributionsJava, jsonContributionsBedrock } = require('../../helpe
 
 const NO_TEXTURE_FOUND = -1
 
-// useful
-//Array.prototype.remove = function(el) {
-//	return this.filter(item => item !== el)
-//}
-
 module.exports = {
 	name: 'contributors',
 	aliases: [ 'contributor' ],
@@ -120,9 +115,9 @@ module.exports = {
 				if(!textures[textureIndex][packResolution].author.includes(discordTag))
 					throw 'This author doesn\'t exist'
 				
-				// remoe this bad boy
+				// remove this bad boy
 				if (textures[textureIndex][packResolution].author.length > 1)
-					textures[textureIndex][packResolution].author = textures[textureIndex][packResolution].author.remove(discordTag)
+					textures[textureIndex][packResolution].author = textures[textureIndex][packResolution].author.filter(item => item !== discordTag)
 				else
 					textures[textureIndex][packResolution] =  {}
 			}
