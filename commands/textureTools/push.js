@@ -88,9 +88,9 @@ module.exports = {
 				const searchBedrock = "textures/" + texturePath.replace("textures/","") + "/" + textureFilename;
 				i = 0
 				while(i < texturesBedrock.length && textureIndex === TEXTURE_NOT_FOUND) {
-					if (texturesBedrock[i].path.includes(searchBedrock)) {
-						textureIndex = i
-						textureEdition  = 'bedrock'
+					if (texturesBedrock[i].version[LATEST_MC_BE_VERSION].includes(searchBedrock)) {
+						textureIndex   = i;
+						textureEdition = 'bedrock';
 					}
 					++i
 				}
@@ -165,15 +165,15 @@ module.exports = {
 			}
 	
 			if (textureEdition == 'java') {
-				await download_branch(message.attachments.first().url, textures[textureIndex].version['1.17'],   args[0], textureFilename, '1.17');
-				await download_branch(message.attachments.first().url, textures[textureIndex].version['1.16.5'], args[0], textureFilename, '1.16.5');
-				await download_branch(message.attachments.first().url, textures[textureIndex].version['1.15.2'], args[0], textureFilename, '1.15.2');
-				await download_branch(message.attachments.first().url, textures[textureIndex].version['1.14.4'], args[0], textureFilename, '1.14.4');
-				await download_branch(message.attachments.first().url, textures[textureIndex].version['1.13.2'], args[0], textureFilename, '1.13.2');
-				await download_branch(message.attachments.first().url, textures[textureIndex].version['1.12.2'], args[0], textureFilename, '1.12.2');
+				await download_branch(message.attachments.first().url, textures[textureIndex].version['1.17'],   args[0], textureFilename, '1.17'  , 'java');
+				await download_branch(message.attachments.first().url, textures[textureIndex].version['1.16.5'], args[0], textureFilename, '1.16.5', 'java');
+				await download_branch(message.attachments.first().url, textures[textureIndex].version['1.15.2'], args[0], textureFilename, '1.15.2', 'java');
+				await download_branch(message.attachments.first().url, textures[textureIndex].version['1.14.4'], args[0], textureFilename, '1.14.4', 'java');
+				await download_branch(message.attachments.first().url, textures[textureIndex].version['1.13.2'], args[0], textureFilename, '1.13.2', 'java');
+				await download_branch(message.attachments.first().url, textures[textureIndex].version['1.12.2'], args[0], textureFilename, '1.12.2', 'java');
 			}
 			else if (textureEdition == 'bedrock') {
-				await download(message.attachments.first().url, args[0], path, textureFilename);
+				await download_branch(message.attachments.first().url, texturesBedrock[textureIndex].version['1.16.200'], args[0], textureFilename, '1.16.200', 'bedrock');
 			}
 			
 			await doPush(`Manual Push for ${textureFilename} executed by: ${message.author.username}`);
@@ -186,12 +186,14 @@ module.exports = {
 	}
 }
 
-async function download_branch(url, path, type, name, branch) {
+async function download_branch(url, path, type, name, branch, type) {
 	if (path == null || path == undefined) return;
 
 	var localPath = undefined;
-	if (type != undefined) localPath = `./texturesPush/${type}/${branch}/assets/${path}`;
-	else return warnUser(message, 'localPath undefined!');
+	if      (type == 32 && type == 'java')    localPath = `./texturesPush/Compliance-Java-32x/${branch}/assets/${path}`;
+	else if (type == 64 && type == 'java')    localPath = `./texturesPush/Compliance-Java-64x/${branch}/assets/${path}`;
+	else if (type == 32 && type == 'bedrock') localPath = `./texturesPush/Compliance-Bedrock-32x/${branch}/${path}`;
+	else if (type == 64 && type == 'bedrock') localPath = `./texturesPush/Compliance-Bedrock-64x/${branch}/${path}`;
 
 	const response = await fetch(url);
 	const buffer   = await response.buffer();

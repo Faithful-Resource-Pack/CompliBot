@@ -36,7 +36,7 @@ async function getResults(client, inputID, OFFSET_DAY = 0) {
 			messageDate.getDate() == offsetDate.getDate() && 
 			messageDate.getMonth() == offsetDate.getMonth()) 
 		{
-			var textureAuthor   = message.embeds[0].author.name;
+			var textureAuthor = message.embeds[0].author.name;
 			var textureName   = message.embeds[0].fields[0].value.replace('.png','') + '.png';
 			var textureFolder = message.embeds[0].fields[1].value;
 			var textureType   = message.embeds[0].fields[2].value || undefined;
@@ -73,7 +73,7 @@ async function getResults(client, inputID, OFFSET_DAY = 0) {
 				folder = textureFolder.replace('textures/','');
 				search = `textures/${folder}/${textureName}`;
 					for (var i = 0; i < texturesBedrock.length; i++) {
-					if (texturesBedrock[i].path.includes(search)) {
+					if (texturesBedrock[i].version[strings.LATEST_MC_BE_VERSION].includes(search)) {
 						textureIndex = i;
 						if (inputID == settings.C32_RESULTS) textureSize = 32;
 						if (inputID == settings.C64_RESULTS) textureSize = 64;
@@ -87,7 +87,36 @@ async function getResults(client, inputID, OFFSET_DAY = 0) {
 			}
 
 			if (textureIndex != -1 && (textureType == 'java' || textureType == 'bedrock')) {
-				//////////////////////////////////////////
+
+				// Convert texture from java to bedrock (if available)
+				if (textureType == 'java' && texturesJava[textureIndex].isBedrock == true) {
+					search = texturesJava[textureIndex].bedrock[strings.LATEST_MC_BE_VERSION];
+
+					for (var i = 0; i < texturesBedrock.length; i++) {
+						// search corresponding texture inside bedrock.json
+						if (texturesBedrock[i].version[strings.LATEST_MC_BE_VERSION].includes(search)) {
+
+							// Add author to bedrock
+							if (textureSize == 32) {
+								if (texturesBedrock[i].c32.author == undefined) texturesBedrock[i].c32.author = [textureAuthorID];
+								else if (!texturesBedrock[i].c32.author.includes(textureAuthorID)) texturesBedrock[i].c32.author.push(textureAuthorID);
+								if (!texturesBedrock[i].c32.date == undefined) texturesBedrock[i].c32.date = date();
+							}
+							if (textureSize == 64) {
+								if (texturesBedrock[i].c32.author == undefined) texturesBedrock[i].c32.author = [textureAuthorID];
+								else if (!texturesBedrock[i].c32.author.includes(textureAuthorID)) texturesBedrock[i].c32.author.push(textureAuthorID);
+								if (!texturesBedrock[i].c32.date == undefined) texturesBedrock[i].c32.date = date();
+							}
+							
+							// Download texture to bedrock local file
+							await download_branch(message.embeds[0].image.url, texturesBedrock[i].version['1.16.200'], textureSize, textureName, '1.16.200', 'bedrock');
+							
+							break; // break if file is found (stop the for loop & avoid double push)
+						}
+					}
+				}
+
+				// Add author to java
 				if (textureSize == 32 && textureType == 'java') {
 					if (texturesJava[textureIndex].c32.author == undefined) texturesJava[textureIndex].c32.author = [textureAuthorID];
 					else if (!texturesJava[textureIndex].c32.author.includes(textureAuthorID)) texturesJava[textureIndex].c32.author.push(textureAuthorID);
@@ -99,7 +128,9 @@ async function getResults(client, inputID, OFFSET_DAY = 0) {
 					else if (!texturesJava[textureIndex].c64.author.includes(textureAuthorID)) texturesJava[textureIndex].c64.author.push(textureAuthorID);
 					if (!texturesJava[textureIndex].c64.date == undefined) texturesJava[textureIndex].c64.date = date();
 				}
-				//////////////////////////////////////////
+
+
+				// Add author to bedrock
 				if (textureSize == 32 && textureType == 'bedrock') {
 					if (texturesBedrock[textureIndex].c32.author == undefined) texturesBedrock[textureIndex].c32.author = [textureAuthorID];
 					else if (!texturesBedrock[textureIndex].c32.author.includes(textureAuthorID)) texturesBedrock[textureIndex].c32.author.push(textureAuthorID);
@@ -110,7 +141,8 @@ async function getResults(client, inputID, OFFSET_DAY = 0) {
 					else if (!texturesBedrock[textureIndex].c64.author.includes(textureAuthorID)) texturesBedrock[textureIndex].c64.author.push(textureAuthorID);
 					if (!texturesBedrock[textureIndex].c64.date == undefined) texturesBedrock[textureIndex].c64.date = date();
 				}
-				//////////////////////////////////////////
+
+				// Download files to local folder
 				if (textureType == 'java') {
 
 					if (texturesJava[textureIndex] == undefined) {
@@ -118,16 +150,16 @@ async function getResults(client, inputID, OFFSET_DAY = 0) {
 						break;
 					}
 
-					await download_branch(message.embeds[0].image.url, texturesJava[textureIndex].version['1.17'],   textureSize, textureName, '1.17');
-					await download_branch(message.embeds[0].image.url, texturesJava[textureIndex].version['1.16.5'], textureSize, textureName, '1.16.5');
-					await download_branch(message.embeds[0].image.url, texturesJava[textureIndex].version['1.15.2'], textureSize, textureName, '1.15.2');
-					await download_branch(message.embeds[0].image.url, texturesJava[textureIndex].version['1.14.4'], textureSize, textureName, '1.14.4');
-					await download_branch(message.embeds[0].image.url, texturesJava[textureIndex].version['1.13.2'], textureSize, textureName, '1.13.2');
-					await download_branch(message.embeds[0].image.url, texturesJava[textureIndex].version['1.12.2'], textureSize, textureName, '1.12.2');
+					await download_branch(message.embeds[0].image.url, texturesJava[textureIndex].version['1.17'],   textureSize, textureName, '1.17',   'java');
+					await download_branch(message.embeds[0].image.url, texturesJava[textureIndex].version['1.16.5'], textureSize, textureName, '1.16.5', 'java');
+					await download_branch(message.embeds[0].image.url, texturesJava[textureIndex].version['1.15.2'], textureSize, textureName, '1.15.2', 'java');
+					await download_branch(message.embeds[0].image.url, texturesJava[textureIndex].version['1.14.4'], textureSize, textureName, '1.14.4', 'java');
+					await download_branch(message.embeds[0].image.url, texturesJava[textureIndex].version['1.13.2'], textureSize, textureName, '1.13.2', 'java');
+					await download_branch(message.embeds[0].image.url, texturesJava[textureIndex].version['1.12.2'], textureSize, textureName, '1.12.2', 'java');
 
 				}
 				else if (textureType == 'bedrock') {
-					await download(message.embeds[0].image.url, search, textureType, textureSize, textureName);
+					await download_branch(message.embeds[0].image.url, texturesBedrock[textureIndex].version['1.16.200'], textureSize, textureName, '1.16.200', 'bedrock');
 				}
 			}
 		}
@@ -143,34 +175,20 @@ async function getResults(client, inputID, OFFSET_DAY = 0) {
 	}
 }
 
-async function download_branch(textureURL, texturePath, textureSize, textureName, branch) {
+async function download_branch(textureURL, texturePath, textureSize, textureName, branch, type) {
 	if (texturePath == null || texturePath == undefined) return;
 
 	var localPath = undefined;
-	if      (textureSize == 32) localPath = `./texturesPush/Compliance-Java-32x/${branch}/assets/${texturePath}`;
-	else if (textureSize == 64) localPath = `./texturesPush/Compliance-Java-64x/${branch}/assets/${texturePath}`;
+	if      (textureSize == 32 && type == 'java')    localPath = `./texturesPush/Compliance-Java-32x/${branch}/assets/${texturePath}`;
+	else if (textureSize == 64 && type == 'java')    localPath = `./texturesPush/Compliance-Java-64x/${branch}/assets/${texturePath}`;
+	else if (textureSize == 32 && type == 'bedrock') localPath = `./texturesPush/Compliance-Bedrock-32x/${branch}/${texturePath}`;
+	else if (textureSize == 64 && type == 'bedrock') localPath = `./texturesPush/Compliance-Bedrock-64x/${branch}/${texturePath}`;
 
 	else if (localPath == undefined) {
 		return errorAutoPush(client, 0, 'localPath undefined', textureUrl, textureName, texturePath, textureSize, 'localPath == undefined');
 	}
 
 	const response = await fetch(textureURL);
-	const buffer   = await response.buffer();
-	await fs.promises.mkdir(localPath.substr(0, localPath.lastIndexOf('/')), {recursive: true}).catch(console.error);
-	await fs.writeFile(localPath, buffer, () => console.log(`ADDED: ${textureName}\nTO: ${localPath}\n`));
-}
-
-async function download(textureUrl, texturePath, textureType, textureSize, textureName) {
-	var localPath = undefined;
-	
-	if (textureSize == 32) localPath = `./texturesPush/Compliance-Bedrock-32x/${texturePath}`
-	else if (textureSize == 64) localPath = `./texturesPush/Compliance-Bedrock-64x/${texturePath}`
-
-	else if (localPath == undefined) {
-		return errorAutoPush(client, 0, 'localPath undefined', textureUrl, textureName, texturePath, textureType, 'localPath == undefined');
-	}
-
-	const response = await fetch(textureUrl);
 	const buffer   = await response.buffer();
 	await fs.promises.mkdir(localPath.substr(0, localPath.lastIndexOf('/')), {recursive: true}).catch(console.error);
 	await fs.writeFile(localPath, buffer, () => console.log(`ADDED: ${textureName}\nTO: ${localPath}\n`));

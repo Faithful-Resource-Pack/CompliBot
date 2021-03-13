@@ -14,7 +14,7 @@ async function palette(message, url) {
 		var canvas = Canvas.createCanvas(dimension.width, dimension.height).getContext('2d');
 		var colorsHEX   = [];
 		var colorsRGBA  = [];
-		var colorsAlpha = [];
+		//var colorsAlpha = [];
 
 		const temp = await Canvas.loadImage(url);
 		canvas.drawImage(temp, 0, 0);
@@ -39,7 +39,7 @@ async function palette(message, url) {
 				if (!colorsRGBA.includes(`rgba(${r},${g},${b},${a})`)) {
 					colorsRGBA.push(`rgba(${r},${g},${b},${a})`);
 					colorsHEX.push(hex);
-			  	colorsAlpha.push(`${a}, ${(a | 1 << 8).toString(16).slice(1)}`);
+			  	//colorsAlpha.push(`${a}, ${(a | 1 << 8).toString(16).slice(1)}`);
 				}
 				
 			}
@@ -48,7 +48,6 @@ async function palette(message, url) {
 		var embed = new Discord.MessageEmbed()
 			.setAuthor(message.author.tag, message.author.displayAvatarURL())
 			.setColor(colors.BLUE)
-			.setAuthor(message.author.tag, message.author.displayAvatarURL())
 			.setDescription(`List of colors:\n`)
 			.setFooter(`Total: ${colorsHEX.length}`);
 
@@ -58,9 +57,9 @@ async function palette(message, url) {
 		for (var i = 0; i < colorsHEX.length; i++) {
 			if (i < 26) {
 				colorsHEXText  += `[\`#${colorsHEX[i]}\`](https://coolors.co/${colorsHEX[i]})\n`;
-				colorsAlphaText += `\`${colorsAlpha[i]}\`\n`;
+				//colorsAlphaText += `\`${colorsAlpha[i]}\`\n`;
 			} else {
-				colorsAlphaText += '**...**';
+				//colorsAlphaText += '**...**';
 				colorsHEXText += '**...**';
 				break;
 			}
@@ -68,7 +67,7 @@ async function palette(message, url) {
 
 		embed.addFields(
 			{ name: "Hex:",  value: colorsHEXText,  inline: true },
-			{ name: "Alpha:", value: colorsAlphaText, inline: true }
+			//{ name: "Alpha:", value: colorsAlphaText, inline: true }
 		);
 		
 		var URLs = [`https://coolors.co/`,`https://coolors.co/`,`https://coolors.co/`,`https://coolors.co/`];

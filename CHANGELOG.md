@@ -2,6 +2,13 @@
 ---------------------------------------
 ### February 2021
 
+#### March 13th 2021
+> Juknum
+
+- Finally updated bedrock.json format
+- Added author from java textures to bedrock textures (if a bedrock counter part exist)
+- Modified `GetResults.js` to automatically push java texture that are also on bedrock. This will also add author to bedrock textures.
+
 #### March 5th 2021
 > RobertR11
 

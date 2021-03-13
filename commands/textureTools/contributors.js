@@ -85,7 +85,7 @@ module.exports = {
 
 			// find texture index
 			while (i < textures.length && textureIndex == NO_TEXTURE_FOUND) {
-				if (textures[i].path.includes(pathTexture))
+				if (textures[i].version[strings.LATEST_MC_BE_VERSION].includes(pathTexture))
 					textureIndex = i
 				++i
 			}
@@ -99,11 +99,12 @@ module.exports = {
 
 			if (addOrRemove === 'add') {
 				// create author array if not defined else append
-				if (textures[textureIndex][packResolution].author == undefined)
+				if (textures[textureIndex][packResolution].author == undefined) {
 					textures[textureIndex][packResolution].author = [discordTag]
-	
-				else if (!textures[textureIndex][packResolution].author.includes(discordTag)) {}
+				}
+				else if (!textures[textureIndex][packResolution].author.includes(discordTag)) {
 					textures[textureIndex][packResolution].author.push(discordTag)
+				}
 			}
 
 			else {

@@ -1,4 +1,5 @@
 const LATEST_MC_JE_VERSION = '1.17';
+const LATEST_MC_BE_VERSION = '1.16.200';
 
 // General command stuff
 const BOT_ERROR = 'Action Failed';
@@ -36,6 +37,7 @@ const SUBMIT_NO_FILE_ATTACHED = 'Your submission has to have a file attached!';
 
 module.exports = {
 	LATEST_MC_JE_VERSION,
+	LATEST_MC_BE_VERSION,
 	
 	BOT_ERROR,
 	BOT_AUTOREACT_ERROR,

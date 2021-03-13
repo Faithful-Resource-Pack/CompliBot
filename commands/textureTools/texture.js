@@ -86,8 +86,8 @@ module.exports = {
           // begin with _, is inside : be able to search for _sword : sort all swords
           if (String(args[1]).startsWith('_')) {
             for (var i = 0; i < texturesBedrock.length; i++) {
-              if (texturesBedrock[i].path.split("/").pop().includes(args[1])) {
-                results.push(texturesBedrock[i].path);
+              if (texturesBedrock[i].version[strings.LATEST_MC_BE_VERSION].split("/").pop().includes(args[1])) {
+                results.push(texturesBedrock[i].version[strings.LATEST_MC_BE_VERSION]);
                 index.push(i);
               }
             }
@@ -95,8 +95,8 @@ module.exports = {
           // ends with /, is in subfolder
           if (String(args[1]).endsWith('/')) {
             for (var i = 0; i < texturesBedrock.length; i++) {
-              if (texturesBedrock[i].path.includes(args[1])) {
-                results.push(texturesBedrock[i].path);
+              if (texturesBedrock[i].version[strings.LATEST_MC_BE_VERSION].includes(args[1])) {
+                results.push(texturesBedrock[i].version[strings.LATEST_MC_BE_VERSION]);
                 index.push(i);
               }
             }
@@ -104,8 +104,8 @@ module.exports = {
           // classic search
           else {
             for (var i = 0; i < texturesBedrock.length; i++) {
-              if (texturesBedrock[i].path.split("/").pop().startsWith(args[1])) {
-                results.push(texturesBedrock[i].path);
+              if (texturesBedrock[i].version[strings.LATEST_MC_BE_VERSION].split("/").pop().startsWith(args[1])) {
+                results.push(texturesBedrock[i].version[strings.LATEST_MC_BE_VERSION]);
                 index.push(i);
               }
             }
