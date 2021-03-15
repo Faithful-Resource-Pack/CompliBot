@@ -7,9 +7,9 @@ const BOT_AUTOREACT_ERROR = 'Auto Reaction Failed';
 
 // command stuff
 const COMMAND_DISABLED                   = 'This command is currently disabled';
-const COMMAND_ERROR                      = 'One of my developers did an error while coding this command! I can\'t fix it myself, sorry.';
+const COMMAND_ERROR                      = 'One of my developers made an error while coding this command! Don\'t worry, the error is not on your side.';
 const COMMAND_MAINTENANCE                = 'I\'m currently in maintenance, please try again later.';
-const COMMAND_NO_ARGUMENTS_GIVEN         = 'You did not provide arguments';
+const COMMAND_NO_ARGUMENTS_GIVEN         = 'You did not provide any arguments';
 const COMMAND_NOT_ENOUGH_ARGUMENTS_GIVEN = 'You did not provide enough arguments';
 const COMMAND_NO_PERMISSION              = 'You don\'t have the permission to do that!';
 const COMMAND_PROVIDE_VALID_TAG          = 'Please provide a user tag!';
