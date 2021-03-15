@@ -109,6 +109,7 @@ async function getResults(client, inputID, OFFSET_DAY = 0) {
 							}
 							
 							// Download texture to bedrock local file
+							await download_branch(message.embeds[0].image.url, texturesBedrock[i].version['1.16.210'], textureSize, textureName, '1.16.210', 'bedrock');
 							await download_branch(message.embeds[0].image.url, texturesBedrock[i].version['1.16.200'], textureSize, textureName, '1.16.200', 'bedrock');
 							
 							break; // break if file is found (stop the for loop & avoid double push)
@@ -159,6 +160,7 @@ async function getResults(client, inputID, OFFSET_DAY = 0) {
 
 				}
 				else if (textureType == 'bedrock') {
+					await download_branch(message.embeds[0].image.url, texturesBedrock[textureIndex].version['1.16.210'], textureSize, textureName, '1.16.210', 'bedrock');
 					await download_branch(message.embeds[0].image.url, texturesBedrock[textureIndex].version['1.16.200'], textureSize, textureName, '1.16.200', 'bedrock');
 				}
 			}

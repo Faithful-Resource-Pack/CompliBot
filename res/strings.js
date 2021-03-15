@@ -1,5 +1,5 @@
 const LATEST_MC_JE_VERSION = '1.17';
-const LATEST_MC_BE_VERSION = '1.16.200';
+const LATEST_MC_BE_VERSION = '1.16.210';
 
 // General command stuff
 const BOT_ERROR = 'Action Failed';

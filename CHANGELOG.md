@@ -2,6 +2,11 @@
 ---------------------------------------
 ### February 2021
 
+#### March 14th 2021
+> Juknum
+
+- Fixed non pushing to bedrock thing (old version supported (1.16.200 instead of 210))
+
 #### March 13th 2021
 > Juknum
 
