@@ -31,7 +31,8 @@
     "http": "0.0.1-security",
     "image-size": "^0.9.5",
     "node-fetch": "^2.6.1",
-    "simple-git": "^2.36.2"
+    "simple-git": "^2.36.2",
+    "bing-translate-api": "^1.0.3"
   },
   "engines": {
     "node": "14.15.1",

@@ -1,6 +1,11 @@
 # CompliBot Changelog
 ---------------------------------------
-### February 2021
+### March 2021
+
+#### March 14th 2021
+> RobertR11 & Domi04151309
+
+- start working on translating
 
 #### March 14th 2021
 > Juknum
@@ -19,6 +24,8 @@
 
 - fix `/mute` command not working at all
 - fix `/magnify`, `/tile` and `/palette` command giving errors when not finding any image in previous 10 messages
+
+### February 2021
 
 #### February 27th 2021
 > Juknum
