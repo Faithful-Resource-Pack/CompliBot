@@ -18,7 +18,7 @@ module.exports = {
 			if (args != '') {
     	  const member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
     	  const reason = args.slice(1).join(' ') || 'Not Specified';
-				if (args == '<@!'+message.author.id+'>') return await message.reply('You can\'t bean yourself!');
+				if (args == '<@!'+message.author.id+'>') return await message.reply(strings.BEAN_CANT_BEAN_SELF);
 
 				else {
 					const embed = new Discord.MessageEmbed()

@@ -33,7 +33,7 @@ module.exports = {
 				.setAuthor(truncate(args.join(' '), 65), message.author.displayAvatarURL())
 				.setDescription(`\`\`\`${result.translation}\`\`\``)
 				.setColor(colors.BLUE)
-				.setFooter(`${result.language.from} --> ${result.language.to}`, settings.BOT_IMG);
+				.setFooter(`${result.language.from} → ${result.language.to}`, settings.BOT_IMG);
 				
 			const embedMessage = await message.channel.send(embed);
 

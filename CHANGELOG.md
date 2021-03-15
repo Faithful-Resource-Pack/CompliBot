@@ -7,6 +7,11 @@
 
 - start working on translating
 
+> RobertR11
+
+- removed the `messages.js` file, because it was already moved somewhere else a long time ago
+- started moving more messages to `strings.js` but reverted most stuff because it broke the bot
+
 #### March 14th 2021
 > Juknum
 

@@ -22,7 +22,7 @@ module.exports = {
 			const commandName = args[0].toLowerCase();
 			const command = message.client.commands.get(commandName) || message.client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
-			if (!command) return warnUser(message,`There is no command with name or alias \`${commandName}\`!`);
+			if (!command) return warnUser(message, `There is no command with name or alias \`${commandName}\`!`);
 
 			var commandPath = walkSync('./commands').filter(file => file.includes(command.name))[0].replace('./commands/', '../');
 
