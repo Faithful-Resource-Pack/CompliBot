@@ -8,7 +8,7 @@ const { warnUser } = require('../../functions/warnUser.js');
 module.exports = {
 	name: 'slowmode',
 	aliases: ['slow'],
-	description: 'Enable or disable the slowmode',
+	description: 'Enable or disable the slowmode in a channel',
 	guildOnly: true,
 	uses: 'Moderators',
 	syntax: `${prefix}slowmode <time in seconds/off/disable/stop>`,

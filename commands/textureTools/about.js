@@ -78,7 +78,7 @@ module.exports = {
 					maxj64++;
 				}
 				countJava64++;
-				console.log(textures[i].version[strings.LATEST_MC_JE_VERSION]);
+				//console.log(textures[i].version[strings.LATEST_MC_JE_VERSION]);
 			}
 		}
 
@@ -86,14 +86,14 @@ module.exports = {
 		for (var i = 0; i < texturesBedrock.length; i++) {
 			if (texturesBedrock[i].c32.author != undefined && texturesBedrock[i].c32.author.includes(userID)) {
 				if (maxb32 <= MAX) {
-					bedrockc32.push(texturesBedrock[i].path.replace('textures/',''));
+					bedrockc32.push(texturesBedrock[i].version[strings.LATEST_MC_BE_VERSION].replace('textures/',''));
 					maxb32++;
 				}
 				countBedrock32++;
 			}
 			if (texturesBedrock[i].c64.author != undefined && texturesBedrock[i].c64.author.includes(userID)) {
 				if (maxb64 <= MAX) {
-					bedrockc64.push(texturesBedrock[i].path.replace('textures/',''));
+					bedrockc64.push(texturesBedrock[i].version[strings.LATEST_MC_BE_VERSION].replace('textures/',''));
 					maxb64++;
 				}
 				countBedrock64++;
