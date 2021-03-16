@@ -32,7 +32,7 @@ module.exports = {
     var results = [];
     var index = [];
 
-    const allowed = ['vanilla', 'vanillabedrock', '16', '16j', '16b', '32', '32j', '32b', '64', '64j', '64b'];
+    const allowed = ['vanilla', 'vanillabedrock', '16', '16j', '16b', '32', '32j', '32b', '64', '64j', '64b', '16x', '16xj', '16xb', '32x', '32xj', '32xb', '64x', '64xj', '64xb'];
     const java = ['16', '32', '64'];
     const bedrock = ['16b', '32b', '64b'];
 
@@ -40,9 +40,9 @@ module.exports = {
       if (allowed.includes(args[0])) {
         if (args[0] == 'vanilla') args[0] = '16';
         if (args[0] == 'vanillabedrock') args[0] = '16b';
-        if (args[0] == '16j') args[0] = '16';
-        if (args[0] == '32j') args[0] = '32';
-        if (args[0] == '64j') args[0] = '64';
+        if (args[0] == '16j' || args[0] == '16xj' || args[0] == '16x') args[0] = '16';
+        if (args[0] == '32j' || args[0] == '32xj' || args[0] == '32x') args[0] = '32';
+        if (args[0] == '64j' || args[0] == '64xj' || args[0] == '64x') args[0] = '64';
 
         if (args[1] && java.includes(args[0])) {
           // begin with _, is inside : be able to search for _sword : sort all swords

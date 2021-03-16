@@ -26,8 +26,11 @@ module.exports = {
 	syntax: `${prefix}translate`,
 	async execute(client, message, args) {
 		if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD) {
-			const result = await translate(args.slice(1).join(' '), null, args[0]);
-			
+
+			if (args[0].length < 2) return warnUser(message, 'This language doesn\'t exist!');
+
+			const result = await translate(args.slice(1).join(' '), null, args[0], false);
+
 			args.shift()
 			const embed = new Discord.MessageEmbed()
 				.setAuthor(truncate(args.join(' '), 65), message.author.displayAvatarURL())
