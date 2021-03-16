@@ -25,8 +25,11 @@ module.exports = {
 				const reason = args.slice(1).join(' ') || 'Not Specified';
 				const role = message.guild.roles.cache.find(r => r.name === 'Muted');
 
-				if (member.id == message.author.id) return await warnUser(message, 'You can\'t mute yourself!');
-				if (member == undefined) return warnUser(message, 'You must tag someone!');
+				if (!member) return await warnUser(message, 'You need to specify a user to warn!');
+
+				if (member.id === message.author.id) return await warnUser(message, 'You can\'t warn yourself!');
+
+				if (member.id === client.user.id) return await warnUser(message, 'I won\'t warn myself!');
 		
 				// try to read this json
 				let warnList = await jsonModeration.read();

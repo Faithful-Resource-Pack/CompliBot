@@ -18,7 +18,12 @@ module.exports = {
 			if (args != '') {
     	  const member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
     	  const reason = args.slice(1).join(' ') || 'Not Specified';
-				if (args == '<@!'+message.author.id+'>') return await message.reply(strings.BEAN_CANT_BEAN_SELF);
+
+				if (!member) return await warnUser(message, 'You need to specify a user to bean!');
+
+				if (member.id === message.author.id) return await warnUser(message, strings.BEAN_CANT_BEAN_SELF);
+
+				if (member.id === client.user.id) return await warnUser(message, 'I\'m not going to bean myself smh');
 
 				else {
 					const embed = new Discord.MessageEmbed()

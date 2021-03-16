@@ -34,7 +34,12 @@ module.exports = {
 				else if (time.includes('y') || time.includes('year'))  time = 31536000 * parseInt(time, 10);
 				else return await warnUser(message, 'You did\'t specify a valid time!');	
 
-				if (member.id == message.author.id) return await warnUser(message, 'You can\'t mute yourself!');
+				if (!member) return await warnUser(message, 'You need to specify a user to mute!');
+
+				if (member.id === message.author.id) return await warnUser(message, 'You can\'t mute yourself!');
+
+				if (member.id === client.user.id) return await warnUser(message, 'I won\'t mute myself!');
+
 				if (isNaN(time)) return await warnUser(message, 'You have to specify an integer!');		
 				else {
 					var timeout = undefined;

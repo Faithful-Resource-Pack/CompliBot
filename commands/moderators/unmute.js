@@ -26,7 +26,8 @@ module.exports = {
 				const member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
 				const reason = args.slice(1).join(' ') || 'Not Specified';
 
-				if (member == undefined) return;
+				if (!member) return await warnUser(message, 'You need to specify a user to unmute!');
+
 				else {
 					removeMutedRole(client, member.id);
 

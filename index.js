@@ -379,8 +379,8 @@ client.on('messageUpdate', async (oldMessage, newMessage) => {
 	/*
 	 * MESSAGE LOGS : 
 	*/
-	if (newMessage.guild.id == settings.C64_ID) logs(client, settings.C64_ID, oldMessage, newMessage, false);
-	if (newMessage.guild.id == settings.C32_ID) logs(client, settings.C32_ID, oldMessage, newMessage, false);
+	//if (newMessage.guild.id == settings.C64_ID) logs(client, settings.C64_ID, oldMessage, newMessage, false);
+	//if (newMessage.guild.id == settings.C32_ID) logs(client, settings.C32_ID, oldMessage, newMessage, false);
 });
 
 client.on('messageDelete', async message => {
@@ -388,8 +388,8 @@ client.on('messageDelete', async message => {
 	/*
 	 * MESSAGE LOGS : 
 	*/
-	if (message.guild.id == settings.C64_ID) logs(client, settings.C64_ID, undefined, message, true);
-	if (message.guild.id == settings.C32_ID) logs(client, settings.C32_ID, undefined, message, true);
+	//if (message.guild.id == settings.C64_ID) logs(client, settings.C64_ID, undefined, message, true);
+	//if (message.guild.id == settings.C32_ID) logs(client, settings.C32_ID, undefined, message, true);
 });
 
 // Login the bot
