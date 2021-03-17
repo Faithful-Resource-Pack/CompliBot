@@ -290,7 +290,7 @@ client.on('message', async message => {
 	 * I hope there is no other use of this link type on Discord
 	 * Found more information here: https://youtu.be/-51AfyMqnpI
 	 */
-	if (message.content.includes('https://discord.gg/')) inviteDetection(client, message);
+	if (message.content.includes('https://discord.gg/') && message.guild.id != '814198513847631944') inviteDetection(client, message);
 
 	/*
 	 * AUTO REACT:

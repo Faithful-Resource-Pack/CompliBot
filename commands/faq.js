@@ -7,7 +7,7 @@ const { warnUser } = require('../functions/warnUser.js');
 
 module.exports = {
 	name: 'faq',
-	description: strings.HELP_DESC_FAQ,
+	description: 'none',
 	guildOnly: false,
 	uses: 'no one (disabled)',
 	syntax: `${prefix}faq`,

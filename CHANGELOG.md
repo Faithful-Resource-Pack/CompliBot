@@ -2,7 +2,14 @@
 ---------------------------------------
 ### March 2021
 
-#### March 14th 2021
+#### March 17th 2021
+> RobertR11
+
+- moved all command descriptions to `strings.js`
+- small `/info` command improvements
+- added a `/feedback` command
+
+#### March 15th 2021
 > RobertR11 & Domi04151309
 
 - start working on translating

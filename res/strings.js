@@ -47,6 +47,7 @@ const HELP_DESC_TEXTURE = 'Displays a specified texture from either vanilla or C
 const HELP_DESC_TILE = 'Tile an image, if no arguments are given, grid shape is selected by default & the bot search in the last 10 message for an image.';
 
 const HELP_DESC_DISCORDS = 'Posts a list of specified discord servers';
+const HELP_DESC_FEEDBACK = 'Suggest things or report bugs directly to the bot devs';
 const HELP_DESC_HELP = 'Show help for a specified command';
 const HELP_DESC_INFO = 'Displays some info about the bot in your DMs';
 const HELP_DESC_MODPING = 'Tag online mods to invoke help!';
