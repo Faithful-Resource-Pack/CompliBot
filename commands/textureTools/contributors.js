@@ -1,7 +1,7 @@
+const prefix = process.env.PREFIX;
+
 const Discord = require('discord.js');
 const fs      = require('fs');
-
-const prefix  = process.env.PREFIX;
 const strings = require('../../res/strings');
 
 const { autoPush } = require('../../functions/autoPush.js');
@@ -13,7 +13,7 @@ const NO_TEXTURE_FOUND = -1
 module.exports = {
 	name: 'contributors',
 	aliases: [ 'contributor' ],
-	description: 'Use: `/contributors add ...` to add a new author.\nuse: `/contributors remove ...` to remove a contributor',
+	description: strings.HELP_DESC_CONTRIBUTORS,
 	guildOnly: false,
 	uses: 'Moderators',
 	syntax: `${prefix}contributors <add/remove> <path+texture name> <type> <c32/c64> <author>`,

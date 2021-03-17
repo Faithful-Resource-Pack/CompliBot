@@ -12,7 +12,7 @@ const { walkSync } = require('../../functions/walkSync');
 module.exports = {
 	name: 'reload',
 	aliases: ['r'],
-	description: 'Reloads a command',
+	description: strings.HELP_DESC_RELOAD,
 	guildOnly: false,
 	uses: 'Bot Developers',
 	syntax: `${prefix}reload <command>`,

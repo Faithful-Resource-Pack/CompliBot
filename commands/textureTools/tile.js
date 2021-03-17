@@ -1,13 +1,14 @@
 const prefix = process.env.PREFIX;
+
 const strings = require('../../res/strings');
 
-const { tile } = require('../../functions/tile.js');
+const { tile }     = require('../../functions/tile.js');
 const { warnUser } = require('../../functions/warnUser.js');
 
 module.exports = {
 	name: 'tile',
 	aliases: ['t'],
-	description: 'Tile an image, if no arguments are given, grid shape is selected by default & the bot search in the last 10 message for an image.',
+	description: strings.HELP_DESC_TILE,
 	guildOnly: false,
 	uses: 'Anyone',
 	syntax: `${prefix}tile [vertical/horizontal/grid/round/plus] + attach a file`,

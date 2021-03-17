@@ -1,13 +1,13 @@
 const prefix = process.env.PREFIX;
 
-const strings = require('../res/strings');
-const colors = require('../res/colors');
+const strings          = require('../res/strings');
+const colors           = require('../res/colors');
 const { MessageEmbed } = require('discord.js');
-const { warnUser } = require('../functions/warnUser.js');
+const { warnUser }     = require('../functions/warnUser.js');
 
 module.exports = {
 	name: 'poll',
-	description: 'Make a poll to ask people!',
+	description: strings.HELP_DESC_POLL,
 	guildOnly: true,
 	uses: 'Anyone',
 	syntax: `${prefix}poll <time in seconds> | <title> | <option1> | <option2> | ...`,

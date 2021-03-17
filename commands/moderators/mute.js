@@ -1,19 +1,19 @@
 const prefix = process.env.PREFIX;
 
-const { jsonModeration } = require('../../helpers/fileHandler');
 const Discord  = require('discord.js');
 const strings  = require('../../res/strings');
 const colors   = require('../../res/colors');
 const settings = require('../../settings.js');
 const fs       = require('fs');
 
-const { warnUser }     = require('../../functions/warnUser.js');
-const { modLog }       = require('../../functions/moderation/modLog.js');
-const { addMutedRole } = require('../../functions/moderation/addMutedRole.js');
+const { jsonModeration } = require('../../helpers/fileHandler');
+const { warnUser }       = require('../../functions/warnUser.js');
+const { modLog }         = require('../../functions/moderation/modLog.js');
+const { addMutedRole }   = require('../../functions/moderation/addMutedRole.js');
 
 module.exports = {
 	name: 'mute',
-	description: 'Mute someone',
+	description: strings.HELP_DESC_MUTE,
 	guildOnly: true,
 	uses: 'Moderators',
 	syntax: `${prefix}mute <@user> <time> <reason>`,

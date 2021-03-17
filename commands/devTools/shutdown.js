@@ -10,7 +10,7 @@ const { warnUser } = require('../../functions/warnUser.js');
 module.exports = {
 	name: 'shutdown',
 	aliases: ['logout'],
-	description: 'stops the bot',
+	description: strings.HELP_DESC_SHUTDOWN,
 	guildOnly: false,
 	uses: 'Bot Developers',
 	syntax: `${prefix}shutdown`,

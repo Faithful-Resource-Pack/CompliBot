@@ -2,24 +2,24 @@ const prefix = process.env.PREFIX;
 
 //const uidR = process.env.UIDR;
 
-const Discord = require('discord.js');
-const axios = require('axios').default;
-const fs = require('fs');
-const strings = require('../../res/strings');
-const colors = require('../../res/colors');
-const settings = require('../../settings.js');
+const Discord    = require('discord.js');
+const axios      = require('axios').default;
+const fs         = require('fs');
+const strings    = require('../../res/strings');
+const colors     = require('../../res/colors');
+const settings   = require('../../settings.js');
 const asyncTools = require('../../helpers/asyncTools.js');
 
-const { magnify } = require('../../functions/magnify.js');
-const { palette } = require('../../functions/palette.js');
-const { getMeta } = require('../../functions/getMeta.js');
+const { magnify }  = require('../../functions/magnify.js');
+const { palette }  = require('../../functions/palette.js');
+const { getMeta }  = require('../../functions/getMeta.js');
 const { warnUser } = require('../../functions/warnUser.js');
 const { jsonContributionsJava, jsonContributionsBedrock } = require('../../helpers/fileHandler');
 
 module.exports = {
   name: 'texture',
   aliases: ['textures'],
-  description: 'Displays a specified texture from either vanilla or Compliance.\nYou can search for a texture name, or use ``_`` at the begining to search for non-complete names (such as _sword).\nYou can also use ``/`` at the begining to specify a folder instead of a texture name.',
+  description: strings.HELP_DESC_TEXTURE,
   guildOnly: false,
   uses: 'Anyone',
   syntax: `${prefix}texture <16/32/64> <texture_name>\n${prefix}texture <16/32/64> <_name>\n${prefix}texture <16/32/64> </folder/>`,
@@ -133,7 +133,7 @@ module.exports = {
       const emoji_num = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟', '🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮', '🇯'];
 
       var embed = new Discord.MessageEmbed()
-				//.setAuthor('Note: this command isn\'t updated for 21w10a yet')
+				.setAuthor('Note: this command isn\'t updated for 21w11a yet')
         .setTitle(results.length + ' results for "' + args[1] + '" in ' + args[0].replace('b', " Bedrock"))
         .setFooter('CompliBot', settings.BOT_IMG);
 
@@ -188,7 +188,7 @@ module.exports = {
           const size = dimension.width + 'x' + dimension.height;
 
           var embed = new Discord.MessageEmbed()
-						//.setAuthor('Note: this command isn\'t updated for 21w10a yet')
+						.setAuthor('Note: this command isn\'t updated for 21w11a yet')
             .setTitle(name)
             .setColor(colors.BLUE)
             .setURL(imgURL)

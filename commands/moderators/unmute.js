@@ -9,12 +9,12 @@ const fs       = require('fs');
 const { warnUser }        = require('../../functions/warnUser.js');
 const { modLog }          = require('../../functions/moderation/modLog.js');
 const { removeMutedRole } = require('../../functions/moderation/removeMutedRole.js');
-const { jsonModeration } = require('../../helpers/fileHandler');
+const { jsonModeration }  = require('../../helpers/fileHandler');
 
 module.exports = {
 	name: 'unmute',
 	aliases: ['pardon'],
-	description: 'Remove Muted roles to someone',
+	description: strings.HELP_DESC_UNMUTE,
 	guildOnly: true,
 	uses: 'Moderators',
 	syntax: `${prefix}unmute <@user> <reason>`,

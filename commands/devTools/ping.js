@@ -3,10 +3,11 @@ const prefix = process.env.PREFIX;
 const Discord  = require('discord.js');
 const settings = require('../../settings.js');
 const colors   = require('../../res/colors');
+const strings  = require('../../res/strings');
 
 module.exports = {
 	name: 'ping',
-	description: 'Pong!',
+	description: strings.HELP_DESC_PING,
 	guildOnly: false,
 	uses: 'Anyone',
 	syntax: `${prefix}ping`,

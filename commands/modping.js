@@ -6,13 +6,14 @@ var mods_dnd     = new Array();
 var mods_online  = new Array();
 var embed        = null;
 
-const Discord = require("discord.js");
+const Discord  = require("discord.js");
 const settings = require('../settings.js');
+const strings  = require('../res/strings');
 
 module.exports = {
 	name: 'modping',
 	aliases: ['moderators', 'pingmods'],
-	description: 'Tag online mods to invoke help!',
+	description: strings.HELP_DESC_MODPING,
 	guildOnly: true,
 	uses: 'Anyone',
 	syntax: `${prefix}modping`,

@@ -2,14 +2,14 @@ const prefix = process.env.PREFIX;
 
 const Discord  = require('discord.js');
 const settings = require('../settings.js');
-const strings   = require('../res/strings');
+const strings  = require('../res/strings');
 
 const { warnUser } = require('../functions/warnUser.js');
 
 module.exports = {
 	name: 'website',
 	aliases: ['site', 'sites', 'websites'],
-	description: 'Displays the website of the discord',
+	description: strings.HELP_DESC_WEBSITE,
 	guildOnly: false,
 	uses: 'Anyone',
 	syntax: `${prefix}website [type]`,

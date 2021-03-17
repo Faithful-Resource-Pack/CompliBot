@@ -10,7 +10,7 @@ const { jsonContributionsJava, jsonContributionsBedrock } = require('../../helpe
 
 module.exports = {
 	name: 'about',
-	description: 'Displays texture that you or someone made',
+	description: strings.HELP_DESC_ABOUT,
 	guildOnly: false,
 	uses: 'Anyone',
 	syntax: `${prefix}about me\n${prefix}about <userTag>\n`,

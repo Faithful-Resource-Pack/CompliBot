@@ -1,14 +1,14 @@
 const Discord = require('discord.js');
-const prefix = process.env.PREFIX;
+const prefix  = process.env.PREFIX;
 
-const strings = require('../../res/strings');
-const colors = require('../../res/colors');
+const strings      = require('../../res/strings');
+const colors       = require('../../res/colors');
 const { warnUser } = require('../../functions/warnUser.js');
 
 module.exports = {
 	name: 'slowmode',
 	aliases: ['slow'],
-	description: 'Enable or disable the slowmode in a channel',
+	description: strings.HELP_DESC_SLOWMODE,
 	guildOnly: true,
 	uses: 'Moderators',
 	syntax: `${prefix}slowmode <time in seconds/off/disable/stop>`,

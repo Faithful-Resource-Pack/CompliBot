@@ -1,10 +1,10 @@
 const prefix = process.env.PREFIX;
 
-const Discord = require('discord.js');
+const Discord       = require('discord.js');
 const { translate } = require('bing-translate-api');
 
-const strings = require('../res/strings');
-const colors = require('../res/colors');
+const strings  = require('../res/strings');
+const colors   = require('../res/colors');
 const settings = require('../settings.js');
 
 const uidR = process.env.UIDR;
@@ -20,7 +20,7 @@ function truncate(string, length) {
 
 module.exports = {
 	name: 'translate',
-	description: 'Translates messages (duh)',
+	description: strings.HELP_DESC_TRANSLATE,
 	guildOnly: false,
 	uses: 'Bot Developers',
 	syntax: `${prefix}translate`,

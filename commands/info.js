@@ -3,11 +3,12 @@ const prefix = process.env.PREFIX;
 const Discord  = require("discord.js");
 const settings = require('../settings.js');
 const colors   = require('../res/colors');
+const strings  = require('../res/strings');
 
 module.exports = {
 	name: 'info',
 	aliases: ['information'],
-	description: 'Displays some info about the bot in your DMs',
+	description: strings.HELP_DESC_INFO,
 	guildOnly: false,
 	uses: 'Anyone',
 	syntax: `${prefix}info`,

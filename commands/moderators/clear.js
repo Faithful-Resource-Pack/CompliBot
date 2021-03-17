@@ -7,7 +7,7 @@ const { warnUser } = require('../../functions/warnUser.js');
 
 module.exports = {
 	name: 'clear',
-	description: 'Clear messages in a channel',
+	description: strings.HELP_DESC_CLEAR,
 	guildOnly: true,
 	uses: 'Moderators',
 	syntax: `${prefix}clear <amount>`,

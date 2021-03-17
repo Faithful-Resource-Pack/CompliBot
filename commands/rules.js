@@ -2,13 +2,14 @@ const prefix = process.env.PREFIX;
 
 const Discord  = require("discord.js");
 const settings = require('../settings.js');
+const strings  = require('../res/strings');
 
 const uidR = process.env.UIDR;
 const uidJ = process.env.UIDJ;
 
 module.exports = {
 	name: 'rules',
-	description: 'Creates rules embed',
+	description: strings.HELP_DESC_RULES,
 	guildOnly: true,
 	uses: 'Bot Developers',
 	syntax: `${prefix}rules`,

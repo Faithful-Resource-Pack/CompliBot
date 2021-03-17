@@ -5,9 +5,10 @@ const Discord   = require("discord.js");
 const client    = new Discord.Client();
 client.commands = new Discord.Collection();
 
-const settings     = require('../settings.js');
-const colors       = require('../res/colors.js');
-const { warnUser } = require('../functions/warnUser.js');
+const settings         = require('../settings.js');
+const colors           = require('../res/colors.js');
+const strings          = require('../res/strings');
+const { warnUser }     = require('../functions/warnUser.js');
 const { jsonProfiles } = require('../helpers/fileHandler.js');
 
 const NO_PROFILE_FOUND = -1
@@ -17,7 +18,7 @@ module.exports = {
 	aliases: ['p'],
 	uses: 'Anyone',
 	syntax: `${prefix}profile username <Your Name>\n${prefix}profile uuid <Your MC uuid (full uuid)>\n${prefix}profile show -> Display what CompliBot know about you`,
-	description: 'Add personal information for the Compliance Website Gallery',
+	description: strings.HELP_DESC_PROFILE,
 	guildOnly: false,
 	async execute(client, message, args) {
 		const subcommand = (args[0] || '').trim().toLowerCase()

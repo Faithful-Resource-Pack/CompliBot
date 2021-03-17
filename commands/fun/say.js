@@ -1,12 +1,14 @@
 const prefix = process.env.PREFIX;
 
+const strings = require('../../res/strings');
+
 const uidR = process.env.UIDR;
 const uidJ = process.env.UIDJ;
 const uidD = process.env.UIDD;
 
 module.exports = {
 	name: 'say',
-	description: 'Make the bot send any message you specify',
+	description: strings.HELP_DESC_SAY,
 	guildOnly: true,
 	uses: 'Bot Developers',
 	syntax: `${prefix}say [message] [attach a file]`,

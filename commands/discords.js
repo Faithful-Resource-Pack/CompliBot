@@ -1,13 +1,14 @@
 const prefix = process.env.PREFIX;
 
 const settings = require('../settings.js');
+const strings  = require('../res/strings');
 
 const uidR = process.env.UIDR;
 const uidJ = process.env.UIDJ;
 
 module.exports = {
 	name: 'discords',
-	description: 'Posts a list of specified discord servers',
+	description: strings.HELP_DESC_DISCORDS,
 	guildOnly: true,
 	uses: 'Bot Developers',
 	syntax: `${prefix}discords`,

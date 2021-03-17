@@ -1,10 +1,10 @@
-const Discord = require('discord.js');
-const colors = require('../../res/colors');
 const prefix = process.env.PREFIX;
 
+const Discord = require('discord.js');
 const fs      = require('fs');
 const fetch   = require('node-fetch');
 const strings = require('../../res/strings');
+const colors  = require('../../res/colors');
 
 const { warnUser } = require('../../functions/warnUser.js');
 const { doPush }   = require('../../functions/doPush.js');
@@ -14,7 +14,7 @@ const TEXTURE_NOT_FOUND = -1
 
 module.exports = {
 	name: 'push',
-	description: 'Push file to GitHub & update contributors list, make /push done to push all files in GitHub and update contributors lists.',
+	description: strings.HELP_DESC_PUSH,
 	guildOnly: false,
 	uses: 'Moderators',
 	syntax: `${prefix}push <repo> <author> <folder> <texturename> + attach file\n${prefix}push done`,

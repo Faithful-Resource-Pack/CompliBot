@@ -3,10 +3,11 @@ const prefix = process.env.PREFIX;
 const Discord   = require("discord.js");
 const client    = new Discord.Client();
 client.commands = new Discord.Collection();
+const strings   = require('../res/strings');
+const settings  = require('../settings.js');
+const colors    = require('../res/colors');
 
-const settings     = require('../settings.js');
 const { warnUser } = require('../functions/warnUser.js');
-const colors       = require('../res/colors');
 
 const BLACKLIST = [
   'discords', 'reload', 'rules', 'shutdown', 'status', 'say', 'behave', 'embed', 'hotfix'
@@ -17,7 +18,7 @@ module.exports = {
 	aliases: ['h', 'commands'],
 	uses: 'Anyone',
 	syntax: `${prefix}help <command>`,
-	description: 'Show help for a specified command',
+	description: strings.HELP_DESC_HELP,
 	guildOnly: false,
 	async execute(client, message, args) {
 

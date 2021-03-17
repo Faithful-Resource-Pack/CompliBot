@@ -29,7 +29,7 @@ function isEmptyDir(dirname){
 module.exports = {
 	name: 'hotfix',
 	aliases: ['fix'],
-	description: 'Fix something, may change at anytime',
+	description: strings.HELP_DESC_HOTFIX,
 	guildOnly: false,
 	uses: 'Bot Developers',
 	syntax: `${prefix}hotfix <something>`,

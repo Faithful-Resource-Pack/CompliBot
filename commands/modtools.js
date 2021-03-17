@@ -2,12 +2,13 @@ const prefix = process.env.PREFIX;
 
 const Discord  = require("discord.js");
 const settings = require('../settings.js');
+const strings  = require('../res/strings');
 
 const { warnUser } = require('../functions/warnUser.js');
 
 module.exports = {
 	name: 'modtools',
-	description: 'Displays tools for Minecraft Dungeons modding',
+	description: strings.HELP_DESC_MODTOOLS,
 	guildOnly: true,
 	uses: 'Anyone on Compliance Dungeons Discord',
 	syntax: `${prefix}modtools`,

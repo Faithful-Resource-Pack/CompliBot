@@ -8,7 +8,7 @@ const { warnUser } = require('../../functions/warnUser.js');
 
 module.exports = {
 	name: 'bean',
-	description: 'get B E A N E D',
+	description: strings.HELP_DESC_BEAN,
 	guildOnly: true,
 	uses: 'Moderators',
 	syntax: `${prefix}bean <@user>`,

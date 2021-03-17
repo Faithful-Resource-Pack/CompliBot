@@ -1,12 +1,14 @@
 const prefix = process.env.PREFIX;
 
+const strings = require('../../res/strings');
+
 const uidR = process.env.UIDR;
 const uidJ = process.env.UIDJ;
 const uidD = process.env.UIDD;
 
 module.exports = {
 	name: 'behave',
-	description: '(⌯˃̶᷄ ﹏ ˂̶᷄⌯)',
+	description: strings.HELP_DESC_BEHAVE,
 	guildOnly: false,
 	uses: 'Bot Developers',
 	syntax: `${prefix}behave`,

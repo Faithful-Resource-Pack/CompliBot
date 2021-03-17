@@ -1,6 +1,8 @@
+const prefix   = process.env.PREFIX;
+
 const settings = require('../../settings');
 const colors   = require('../../res/colors.js');
-const prefix   = process.env.PREFIX;
+const strings = require('../../res/strings');
 const Discord  = require('discord.js');
 
 const { warnUser } = require('../../functions/warnUser.js');
@@ -8,7 +10,7 @@ const { warnUser } = require('../../functions/warnUser.js');
 module.exports = {
 	name: 'embed',
 	aliases: ['embeds'],
-	description: 'Modify an embed!',
+	description: strings.HELP_DESC_EMBED,
 	guildOnly: false,
 	uses: 'Moderators',
 	syntax: `${prefix}embed <id> <colors> <black/blue/green/red/yellow/crimson>\n\n${prefix}embed <id> <description> <set/add/remove> <value>\n\n${prefix}embed <id> <fields> <modify> <pos> <value>\n${prefix}embed <id> <fields> <add> <title> <value> [inline: true/false]\n${prefix}embed <id> <fields> <remove> <pos>`,

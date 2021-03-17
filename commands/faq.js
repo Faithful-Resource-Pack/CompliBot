@@ -1,13 +1,13 @@
 const prefix = process.env.PREFIX;
 
-const Discord  = require("discord.js");
-const settings = require('../settings.js');
-const strings  = require('../res/strings');
+const Discord      = require("discord.js");
+const settings     = require('../settings.js');
+const strings      = require('../res/strings');
 const { warnUser } = require('../functions/warnUser.js');
 
 module.exports = {
 	name: 'faq',
-	description: 'FAQ commands for Compliance Tweaks',
+	description: strings.HELP_DESC_FAQ,
 	guildOnly: false,
 	uses: 'no one (disabled)',
 	syntax: `${prefix}faq`,

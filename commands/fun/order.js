@@ -1,8 +1,10 @@
 const prefix = process.env.PREFIX;
 
+const strings = require('../../res/strings');
+
 module.exports = {
 	name: 'order',
-	description: 'Order something',
+	description: strings.HELP_DESC_ORDER,
 	guildOnly: false,
 	uses: 'Anyone',
 	syntax: `${prefix}order <pizza/66/help>`,

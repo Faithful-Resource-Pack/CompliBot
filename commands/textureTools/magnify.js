@@ -1,12 +1,14 @@
 const prefix = process.env.PREFIX;
 
-const { magnify } = require('../../functions/magnify.js');
+const strings = require('../../res/strings');
+
+const { magnify }  = require('../../functions/magnify.js');
 const { warnUser } = require('../../functions/warnUser.js');
 
 module.exports = {
 	name: 'magnify',
 	aliases: ['zoom', 'scale', 'resize', 'm'],
-	description: 'Resize an image,\nImage URL needs to end with ``.png`` or ``.jpeg/jpg``,\nMessage ID needs to be from the same channel',
+	description: strings.HELP_DESC_MAGNIFY,
 	guildOnly: false,
 	uses: 'Anyone',
 	syntax: `${prefix}magnify <factor> & attach an image\n${prefix}magnify <factor> <Discord message url>\n${prefix}magnify <factor> <image URL>\n${prefix}magnify <factor> <message ID>\n${prefix}magnify <factor> [up/^/last]`,

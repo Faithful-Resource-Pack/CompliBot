@@ -2,10 +2,11 @@
 
 const Discord  = require('discord.js');
 const colors   = require('../../res/colors');
+const strings  = require('../../res/strings');
 
 module.exports = {
 	name: 'quote',
-	description: 'Get a random quote!',
+	description: strings.HELP_DESC_QUOTE,
 	guildOnly: false,
 	uses: 'Anyone',
 	syntax: `${prefix}quote`,

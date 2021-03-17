@@ -1,5 +1,6 @@
-const settings = require('../../settings');
 const prefix   = process.env.PREFIX;
+
+const settings = require('../../settings');
 const strings  = require('../../res/strings');
 
 const { date }       = require('../../functions/utility/date.js')
@@ -9,7 +10,7 @@ const { warnUser }   = require('../../functions/warnUser.js');
 
 module.exports = {
 	name: 'autopush',
-	description: 'Use: `/autopush` to push textures from #results to GitHub!',
+	description: strings.HELP_DESC_AUTOPUSH,
 	guildOnly: false,
 	uses: 'Moderators',
 	syntax: `${prefix}autopush <both/c32/c64>`,
