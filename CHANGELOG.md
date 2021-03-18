@@ -2,6 +2,11 @@
 ---------------------------------------
 ### March 2021
 
+#### March 18th 2021
+> RobertR11
+
+- added 21w11a support to the `/texture` command
+
 #### March 17th 2021
 > RobertR11
 

@@ -129,13 +129,11 @@ client.on('ready', async () => {
 	console.log(`--------------------------------------------------------------\n\n\n─=≡Σ((( つ◕ل͜◕)つ\nJavaScript is a pain, but I'm fine, I hope...\n\n\n--------------------------------------------------------------\n`);
 
 	// get out if no channel, no cache or empty cache
-	if(client.channels === undefined || client.channels.cache === undefined || client.channels.cache.length === 0)
-		return;
+	if(client.channels === undefined || client.channels.cache === undefined || client.channels.cache.length === 0) return;
 
 	// get out if history channel not found
 	const destinationChannel = client.channels.cache.get('785867553095548948');
-	if(destinationChannel === undefined)
-		return;
+	if(destinationChannel === undefined) return;
 
 	const embed = new Discord.MessageEmbed()
 		.setTitle('Started')
