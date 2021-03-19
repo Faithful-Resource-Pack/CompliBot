@@ -29,7 +29,7 @@ module.exports = {
 
 				if (member.id === message.author.id) return await warnUser(message, 'You can\'t warn yourself!');
 
-				if (member.id === client.user.id) return await warnUser(message, 'I won\'t warn myself!');
+				if (member.id === client.user.id) return await message.channel.send('https://tenor.com/view/no-i-dont-think-i-will-captain-america-old-capt-gif-17162888');
 		
 				// try to read this json
 				let warnList = await jsonModeration.read();

@@ -33,7 +33,7 @@ module.exports = {
 
 			args.shift()
 			const embed = new Discord.MessageEmbed()
-				.setAuthor(truncate(args.join(' '), 65), message.author.displayAvatarURL())
+				.setAuthor(`${message.author.tag} translated: ${truncate(args.join(' '), 78+message.author.tag.length)}`, message.author.displayAvatarURL())
 				.setDescription(`\`\`\`${result.translation}\`\`\``)
 				.setColor(colors.BLUE)
 				.setFooter(`${result.language.from} → ${result.language.to}`, settings.BOT_IMG);

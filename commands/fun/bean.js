@@ -23,7 +23,7 @@ module.exports = {
 
 				if (member.id === message.author.id) return await warnUser(message, strings.BEAN_CANT_BEAN_SELF);
 
-				if (member.id === client.user.id) return await warnUser(message, 'I\'m not going to bean myself smh');
+				if (member.id === client.user.id) return await message.channel.send('https://tenor.com/view/no-i-dont-think-i-will-captain-america-old-capt-gif-17162888');
 
 				else {
 					const embed = new Discord.MessageEmbed()
