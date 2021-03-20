@@ -32,7 +32,7 @@ const { updateMembers } = require('./functions/updateMembers.js');
 const { walkSync }      = require('./functions/walkSync');
 
 const { quote }    = require('./functions/quote');
-const { logs }     = require('./functions/logs');
+//const { logs }     = require('./functions/logs');
 const { warnUser } = require('./functions/warnUser.js');
 
 const { textureSubmission } = require('./functions/textures_submission/textureSubmission.js');
@@ -45,7 +45,7 @@ const { doPush }            = require('./functions/doPush.js');
 const { checkTimeout }      = require('./functions/moderation/checkTimeout.js');
 const { addMutedRole }      = require('./functions/moderation/addMutedRole.js');
 //const { keywordsDetection } = require('./functions/moderation/keywordsDetection.js');
-const { inviteDetection } = require('./functions/moderation/inviteDetection.js');
+const { inviteDetection }   = require('./functions/moderation/inviteDetection.js');
 
 // try to read this json
 jsonModeration.read(false).then(warnList => { // YOU MUST NOT LOCK because only read
@@ -109,7 +109,7 @@ client.on('ready', async () => {
 	];
 
 	if (process.env.MAINTENANCE.toLowerCase() === 'true') client.user.setPresence({ activity: { name: 'maintenance' }, status: 'dnd' });
-	else client.user.setActivity('compliancepack.net', {type: 'PLAYING'});
+	else client.user.setActivity('Detroit: Become Human', {type: 'PLAYING'});
 	/*else setInterval(() => {
 		var activity = activities_list[Math.floor(Math.random()*activities_list.length)]
 		client.user.setActivity(activity, {type: 'PLAYING'});
@@ -176,7 +176,7 @@ for (const file of commandFiles) {
 }
 
 /*
- * AUTOMATED:
+ * COMMAND HANDLER
  */
 client.on('message', async message => {
 	if (!message.content.startsWith(prefix) || message.author.bot) return; // Avoid message WITHOUT prefix & bot messages
@@ -213,19 +213,20 @@ client.on('message', async message => {
 	 */
 
 	// get out if no channel, no cache or empty cache
-	if(client.channels === undefined || client.channels.cache === undefined || client.channels.cache.length === 0)
-		return;
+	if (client.channels === undefined || client.channels.cache === undefined || client.channels.cache.length === 0) return;
+
+	if (message.channel.type === 'dm') return;
 
 	// get out if history channel not found
 	const destinationChannel = client.channels.cache.get('785867690627039232');
-	if(destinationChannel === undefined)
-		return;
+	if (destinationChannel === undefined) return;
 
 	// eventually create the embed and send it
 
 	var embed = new Discord.MessageEmbed()
 		.setAuthor(message.author.tag, message.author.displayAvatarURL())
-		.setDescription(`[Jump to location](${message.url})\n\n**Command**: \`${commandName}\`\n**Channel**: <#${message.channel.id}>\n**Guild**: \`${message.guild}\`\n**User ID**: \`${message.author.id}\`\n**Message ID**: \`${message.id}\`\n**Command Sent**: \`${message.createdAt}\``)
+		.setColor(colors.BLUE)
+		.setDescription(`[Jump to location](${message.url})\n\n**Command**: \`${commandName}\`\n**Channel**: <#${message.channel.id}>\n**Guild**: \`${message.guild}\`\n**User ID**: \`${message.author.id}\`\n**Message ID**: \`${message.id}\`\n**Command Sent**: \`${message.createdAt.toLocaleString()}\``)
 		.setTimestamp()
 
 	await destinationChannel.send(embed);
@@ -259,7 +260,11 @@ client.on('message', async message => {
 	if (message.content.toLowerCase() === 'engineer gaming' ) return await message.react('👷‍♂️');
 
 	if (message.content.toLowerCase() === 'mhhh') {
-		const embed = new Discord.MessageEmbed().setAuthor(message.content, message.author.displayAvatarURL()).setTitle('Uh-oh moment').setFooter('Swahili -> English', settings.BOT_IMG);
+		const embed = new Discord.MessageEmbed()
+			.setAuthor(message.content, message.author.displayAvatarURL())
+			.setTitle('Uh-oh moment')
+			.setColor(colors.BLUE)
+			.setFooter('Swahili -> English', settings.BOT_IMG);
 		return await message.channel.send(embed);
 	}
 

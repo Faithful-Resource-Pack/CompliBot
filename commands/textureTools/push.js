@@ -173,7 +173,7 @@ module.exports = {
 				await download_branch(message.attachments.first().url, textures[textureIndex].version['1.12.2'], args[0], textureFilename, '1.12.2', 'java');
 			}
 			else if (textureEdition == 'bedrock') {
-				await download_branch(message.attachments.first().url, texturesBedrock[textureIndex].version['1.16.200'], args[0], textureFilename, '1.16.200', 'bedrock');
+				await download_branch(message.attachments.first().url, texturesBedrock[textureIndex].version['1.16.210'], args[0], textureFilename, '1.16.210', 'bedrock');
 			}
 			
 			await doPush(`Manual Push for ${textureFilename} executed by: ${message.author.username}`);

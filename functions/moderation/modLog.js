@@ -12,7 +12,7 @@ async function modLog(client, message, member, reason, time, type) {
 		.setAuthor(`${message.author.tag} ${type} someone`)
 		.setColor(colors.YELLOW)
 		.setThumbnail(message.author.displayAvatarURL())
-		.setDescription(`[Jump to message](${message.url})\n\n**Channel**: <#${message.channel.id}>\n**Warned user**: ${member}\n**Reason**: \`${reason}\`\n**Time**: \`${time}s\`\n**Date**: \`${message.createdAt}\``)
+		.setDescription(`[Jump to message](${message.url})\n\n**Channel**: <#${message.channel.id}>\n**Warned user**: ${member}\n**Reason**: \`${reason}\`\n**Time**: \`${time}s\`\n**Date**: \`${message.createdAt.toLocaleString()}\``)
 		.setTimestamp()
 
 	return await logChannel.send(embed);
