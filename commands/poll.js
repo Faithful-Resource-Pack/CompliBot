@@ -9,7 +9,7 @@ module.exports = {
 	name: 'poll',
 	description: strings.HELP_DESC_POLL,
 	guildOnly: true,
-	uses: 'Anyone',
+	uses: strings.COMMAND_USES_ANYONE,
 	syntax: `${prefix}poll <time in seconds> | <title> | <option1> | <option2> | ...`,
 	async execute(client, message, args) {
 

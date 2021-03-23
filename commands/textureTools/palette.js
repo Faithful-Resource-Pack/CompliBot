@@ -10,7 +10,7 @@ module.exports = {
 	aliases: [ 'colors', 'color', 'colormap' ],
 	description: strings.HELP_DESC_PALETTE,
 	guildOnly: false,
-	uses: 'Anyone',
+	uses: strings.COMMAND_USES_ANYONE,
 	syntax: `${prefix}palette attach an image\n${prefix}palette <Discord message url>\n${prefix}palette <image URL>\n${prefix}palette <message ID>\n${prefix}palette [up/^/last]`,
 	async execute(client, message, args) {
 		var DATA;

@@ -9,7 +9,7 @@ module.exports = {
 	name: 'ping',
 	description: strings.HELP_DESC_PING,
 	guildOnly: false,
-	uses: 'Anyone',
+	uses: strings.COMMAND_USES_ANYONE,
 	syntax: `${prefix}ping`,
 	async execute(client, message, args) {
 		const m = new Discord.MessageEmbed().setTitle('Ping?')

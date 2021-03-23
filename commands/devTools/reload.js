@@ -14,7 +14,7 @@ module.exports = {
 	aliases: ['r'],
 	description: strings.HELP_DESC_RELOAD,
 	guildOnly: false,
-	uses: 'Bot Developers',
+	uses: strings.COMMAND_USES_DEVS,
 	syntax: `${prefix}reload <command>`,
 	args: true,
 	async execute(client, message, args) {

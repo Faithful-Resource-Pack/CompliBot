@@ -22,7 +22,7 @@ module.exports = {
 	name: 'translate',
 	description: strings.HELP_DESC_TRANSLATE,
 	guildOnly: false,
-	uses: 'Bot Developers',
+	uses: strings.COMMAND_USES_DEVS,
 	syntax: `${prefix}translate`,
 	async execute(client, message, args) {
 		if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD) {

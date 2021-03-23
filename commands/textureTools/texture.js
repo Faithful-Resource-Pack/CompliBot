@@ -21,7 +21,7 @@ module.exports = {
   aliases: ['textures'],
   description: strings.HELP_DESC_TEXTURE,
   guildOnly: false,
-  uses: 'Anyone',
+  uses: strings.COMMAND_USES_ANYONE,
   syntax: `${prefix}texture <16/32/64> <texture_name>\n${prefix}texture <16/32/64> <_name>\n${prefix}texture <16/32/64> </folder/>`,
   async execute(client, message, args) {
 

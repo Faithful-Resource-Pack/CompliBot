@@ -10,7 +10,7 @@ module.exports = {
 	name: 'behave',
 	description: strings.HELP_DESC_BEHAVE,
 	guildOnly: false,
-	uses: 'Bot Developers',
+	uses: strings.COMMAND_USES_DEVS,
 	syntax: `${prefix}behave`,
 
 	async execute(client, message, args) {

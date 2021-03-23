@@ -10,7 +10,7 @@ module.exports = {
 	name: 'say',
 	description: strings.HELP_DESC_SAY,
 	guildOnly: true,
-	uses: 'Bot Developers',
+	uses: strings.COMMAND_USES_DEVS,
 	syntax: `${prefix}say [message] [attach a file]`,
 	async execute(client, message, args) {
 		if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD) {

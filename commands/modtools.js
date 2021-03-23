@@ -10,7 +10,7 @@ module.exports = {
 	name: 'modtools',
 	description: strings.HELP_DESC_MODTOOLS,
 	guildOnly: true,
-	uses: 'Anyone on Compliance Dungeons Discord',
+	uses: strings.COMMAND_USES_ANYONE_DUNGEONS,
 	syntax: `${prefix}modtools`,
 	async execute(client, message, args) {
 		if (message.guild.id !== settings.CDUNGEONS_ID) return warnUser(message,'This command can only be used in the Compliance Dungeons server!');

@@ -16,7 +16,7 @@ module.exports = {
 	aliases: ['pardon'],
 	description: strings.HELP_DESC_UNMUTE,
 	guildOnly: true,
-	uses: 'Moderators',
+	uses: strings.COMMAND_USES_MODS,
 	syntax: `${prefix}unmute <@user> <reason>`,
 	async execute(client, message, args) {
 

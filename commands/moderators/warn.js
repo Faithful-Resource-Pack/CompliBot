@@ -15,7 +15,7 @@ module.exports = {
 	name: 'warn',
 	description: strings.HELP_DESC_WARN,
 	guildOnly: true,
-	uses: 'Moderators',
+	uses: strings.COMMAND_USES_MODS,
 	syntax: `${prefix}warn <@user> <reason>`,
 	async execute(client, message, args) {
 

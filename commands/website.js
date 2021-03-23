@@ -11,7 +11,7 @@ module.exports = {
 	aliases: ['site', 'sites', 'websites'],
 	description: strings.HELP_DESC_WEBSITE,
 	guildOnly: false,
-	uses: 'Anyone',
+	uses: strings.COMMAND_USES_ANYONE,
 	syntax: `${prefix}website [type]`,
 	async execute(client, message, args) {
 

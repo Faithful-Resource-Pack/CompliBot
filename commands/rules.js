@@ -11,7 +11,7 @@ module.exports = {
 	name: 'rules',
 	description: strings.HELP_DESC_RULES,
 	guildOnly: true,
-	uses: 'Bot Developers',
+	uses: strings.COMMAND_USES_DEVS,
 	syntax: `${prefix}rules`,
 	async execute(client, message, args) {
 		if (message.author.id === uidR || message.author.id === uidJ) {

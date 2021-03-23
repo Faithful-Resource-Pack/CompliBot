@@ -14,7 +14,7 @@ module.exports = {
 	aliases: ['presence', 'activity'],
 	description: strings.HELP_DESC_STATUS,
 	guildOnly: false,
-	uses: 'Bot Developers',
+	uses: strings.COMMAND_USES_DEVS,
 	syntax: `${prefix}status <activity> <presence> <status>`,
 	async execute(client, message, args) {
     if (message.author.id === uidR || message.author.id === uidJ) {

@@ -31,7 +31,7 @@ module.exports = {
 	aliases: ['fix'],
 	description: strings.HELP_DESC_HOTFIX,
 	guildOnly: false,
-	uses: 'Bot Developers',
+	uses: strings.COMMAND_USES_DEVS,
 	syntax: `${prefix}hotfix <something>`,
 	args: true,
 	async execute(client, message, args) {

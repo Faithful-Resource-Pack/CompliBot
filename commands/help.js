@@ -16,7 +16,7 @@ const BLACKLIST = [
 module.exports = {
 	name: 'help',
 	aliases: ['h', 'commands'],
-	uses: 'Anyone',
+	uses: strings.COMMAND_USES_ANYONE,
 	syntax: `${prefix}help <command>`,
 	description: strings.HELP_DESC_HELP,
 	guildOnly: false,

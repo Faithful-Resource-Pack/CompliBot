@@ -15,7 +15,7 @@ module.exports = {
 	aliases: [ 'contributor' ],
 	description: strings.HELP_DESC_CONTRIBUTORS,
 	guildOnly: false,
-	uses: 'Moderators',
+	uses: strings.COMMAND_USES_MODS,
 	syntax: `${prefix}contributors <add/remove> <path+texture name> <type> <c32/c64> <author>`,
 
 	async execute(client, message, args) {

@@ -10,7 +10,7 @@ module.exports = {
 	aliases: ['t'],
 	description: strings.HELP_DESC_TILE,
 	guildOnly: false,
-	uses: 'Anyone',
+	uses: strings.COMMAND_USES_ANYONE,
 	syntax: `${prefix}tile [vertical/horizontal/grid/round/plus] + attach a file`,
 	async execute(client, message, args) {
 		const tileArgs = ['grid', 'g', 'vertical', 'v', 'horizontal', 'h', 'round', 'r', 'plus', 'p'];

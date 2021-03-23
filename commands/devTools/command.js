@@ -15,7 +15,7 @@ module.exports = {
 	aliases: ['com'],
 	description: 'testing flags in commands',
 	guildOnly: false,
-	uses: 'Bot Developers',
+	uses: strings.COMMAND_USES_DEVS,
 	syntax: `${prefix}command [-s]`,
 	args: true,
 	async execute(client, message, args) {

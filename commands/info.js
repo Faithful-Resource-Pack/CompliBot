@@ -10,7 +10,7 @@ module.exports = {
 	aliases: ['information'],
 	description: strings.HELP_DESC_INFO,
 	guildOnly: false,
-	uses: 'Anyone',
+	uses: strings.COMMAND_USES_ANYONE,
 	syntax: `${prefix}info`,
 	async execute(client, message, args) {
 		if (message.channel.type !== 'dm') {

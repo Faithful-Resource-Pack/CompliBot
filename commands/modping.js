@@ -15,7 +15,7 @@ module.exports = {
 	aliases: ['moderators', 'pingmods'],
 	description: strings.HELP_DESC_MODPING,
 	guildOnly: true,
-	uses: 'Anyone',
+	uses: strings.COMMAND_USES_ANYONE,
 	syntax: `${prefix}modping`,
 	async execute(client, message, args) {
 

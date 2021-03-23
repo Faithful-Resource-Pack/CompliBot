@@ -27,7 +27,6 @@ const HELP_DESC_STATUS = 'Changes the bot\'s status: \n**Activity**:\nPLAYING, S
 const HELP_DESC_BEAN = 'get B E A N E D';
 const HELP_DESC_BEHAVE = '(⌯˃̶᷄ ﹏ ˂̶᷄⌯)';
 const HELP_DESC_ORDER = 'Order something';
-const HELP_DESC_QUOTE = 'Get a random quote!';
 const HELP_DESC_SAY = 'Make the bot send any message you specify';
 
 const HELP_DESC_CLEAR = 'Clear messages in a channel';
@@ -57,6 +56,13 @@ const HELP_DESC_PROFILE = 'Add personal information for the Compliance Website G
 const HELP_DESC_RULES = 'Creates rules embed';
 const HELP_DESC_TRANSLATE = 'Translates messages (duh)';
 const HELP_DESC_WEBSITE = 'Displays the website of the discord';
+
+// Command uses
+const COMMAND_USES_ANYONE = 'Anyone';
+const COMMAND_USES_ANYONE_DUNGEONS = 'Anyone on Compliance Dungeons Discord';
+const COMMAND_USES_DEVS = 'Bot Developers';
+const COMMAND_USES_MODS = 'Moderators';
+const COMMAND_USES_DISABLED = 'no one (disabled)';
 
 // Bean command
 const BEAN_CANT_BEAN_SELF = 'You can\'t bean yourself!';
@@ -106,7 +112,6 @@ module.exports = {
 	HELP_DESC_BEAN,
 	HELP_DESC_BEHAVE,
 	HELP_DESC_ORDER,
-	HELP_DESC_QUOTE,
 	HELP_DESC_SAY,
 
 	HELP_DESC_CLEAR,
@@ -135,6 +140,12 @@ module.exports = {
 	HELP_DESC_RULES,
 	HELP_DESC_TRANSLATE,
 	HELP_DESC_WEBSITE,
+
+	COMMAND_USES_ANYONE,
+	COMMAND_USES_ANYONE_DUNGEONS,
+	COMMAND_USES_DEVS,
+	COMMAND_USES_MODS,
+	COMMAND_USES_DISABLED,
 
 	BEAN_CANT_BEAN_SELF,
 

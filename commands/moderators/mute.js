@@ -15,7 +15,7 @@ module.exports = {
 	name: 'mute',
 	description: strings.HELP_DESC_MUTE,
 	guildOnly: true,
-	uses: 'Moderators',
+	uses: strings.COMMAND_USES_MODS,
 	syntax: `${prefix}mute <@user> <time> <reason>`,
 	async execute(client, message, args) {
 

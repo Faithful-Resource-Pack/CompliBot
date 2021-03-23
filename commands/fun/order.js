@@ -6,7 +6,7 @@ module.exports = {
 	name: 'order',
 	description: strings.HELP_DESC_ORDER,
 	guildOnly: false,
-	uses: 'Anyone',
+	uses: strings.COMMAND_USES_ANYONE,
 	syntax: `${prefix}order <pizza/66/help>`,
 	async execute(client, message, args) {
     if (args == '66') return await message.channel.send("https://media1.tenor.com/images/fb7250a2ef993a37e9c7f48af760821c/tenor.gif");

@@ -12,7 +12,7 @@ module.exports = {
 	name: 'autopush',
 	description: strings.HELP_DESC_AUTOPUSH,
 	guildOnly: false,
-	uses: 'Moderators',
+	uses: strings.COMMAND_USES_MODS,
 	syntax: `${prefix}autopush <both/c32/c64>`,
 	async execute(client, message, args) {
     if (message.member.hasPermission('ADMINISTRATOR')) {

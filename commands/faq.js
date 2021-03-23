@@ -9,7 +9,7 @@ module.exports = {
 	name: 'faq',
 	description: 'none',
 	guildOnly: false,
-	uses: 'no one (disabled)',
+	uses: strings.COMMAND_USES_DISABLED,
 	syntax: `${prefix}faq`,
 	async execute(client, message, args) {
 		return warnUser(message,strings.COMMAND_DISABLED);

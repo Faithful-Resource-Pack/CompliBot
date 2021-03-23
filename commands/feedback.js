@@ -10,7 +10,7 @@ module.exports = {
 	name: 'feedback',
 	description: strings.HELP_DESC_FEEDBACK,
 	guildOnly: false,
-	uses: 'Anyone',
+	uses: strings.COMMAND_USES_ANYONE,
 	syntax: `${prefix}feedback [message]`,
 	async execute(client, message, args) {
 		const channel = client.channels.cache.get('821793794738749462');

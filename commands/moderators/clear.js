@@ -9,7 +9,7 @@ module.exports = {
 	name: 'clear',
 	description: strings.HELP_DESC_CLEAR,
 	guildOnly: true,
-	uses: 'Moderators',
+	uses: strings.COMMAND_USES_MODS,
 	syntax: `${prefix}clear <amount>`,
 	async execute(client, message, args) {
 

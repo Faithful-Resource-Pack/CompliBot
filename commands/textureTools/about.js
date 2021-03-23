@@ -12,7 +12,7 @@ module.exports = {
 	name: 'about',
 	description: strings.HELP_DESC_ABOUT,
 	guildOnly: false,
-	uses: 'Anyone',
+	uses: strings.COMMAND_USES_ANYONE,
 	syntax: `${prefix}about me\n${prefix}about <userTag>\n`,
 	async execute(client, message, args) {
 

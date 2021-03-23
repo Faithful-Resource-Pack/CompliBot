@@ -12,7 +12,7 @@ module.exports = {
 	aliases: ['logout'],
 	description: strings.HELP_DESC_SHUTDOWN,
 	guildOnly: false,
-	uses: 'Bot Developers',
+	uses: strings.COMMAND_USES_DEVS,
 	syntax: `${prefix}shutdown`,
 	async execute(client, message, args) {
 		if (message.author.id === uidR || message.author.id === uidJ) {

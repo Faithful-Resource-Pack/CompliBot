@@ -10,7 +10,7 @@ module.exports = {
 	name: 'discords',
 	description: strings.HELP_DESC_DISCORDS,
 	guildOnly: true,
-	uses: 'Bot Developers',
+	uses: strings.COMMAND_USES_DEVS,
 	syntax: `${prefix}discords`,
 	async execute(client, message, args) {
 		if (message.author.id === uidR || message.author.id === uidJ) {

@@ -16,7 +16,7 @@ module.exports = {
 	name: 'push',
 	description: strings.HELP_DESC_PUSH,
 	guildOnly: false,
-	uses: 'Moderators',
+	uses: strings.COMMAND_USES_MODS,
 	syntax: `${prefix}push <repo> <author> <folder> <texturename> + attach file\n${prefix}push done`,
 	async execute(client, message, args) {
 		// if not administrator get out

@@ -10,7 +10,7 @@ module.exports = {
 	aliases: ['slow'],
 	description: strings.HELP_DESC_SLOWMODE,
 	guildOnly: true,
-	uses: 'Moderators',
+	uses: strings.COMMAND_USES_MODS,
 	syntax: `${prefix}slowmode <time in seconds/off/disable/stop>`,
 	async execute(client, message, args) {
 

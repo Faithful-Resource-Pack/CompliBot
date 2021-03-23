@@ -12,7 +12,7 @@ module.exports = {
 	aliases: ['embeds'],
 	description: strings.HELP_DESC_EMBED,
 	guildOnly: false,
-	uses: 'Moderators',
+	uses: strings.COMMAND_USES_MODS,
 	syntax: `${prefix}embed <id> <colors> <black/blue/green/red/yellow/crimson>\n\n${prefix}embed <id> <description> <set/add/remove> <value>\n\n${prefix}embed <id> <fields> <modify> <pos> <value>\n${prefix}embed <id> <fields> <add> <title> <value> [inline: true/false]\n${prefix}embed <id> <fields> <remove> <pos>`,
 	async execute(client, message, args) {
 

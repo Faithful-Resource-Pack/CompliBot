@@ -10,7 +10,7 @@ module.exports = {
 	name: 'bean',
 	description: strings.HELP_DESC_BEAN,
 	guildOnly: true,
-	uses: 'Moderators',
+	uses: strings.COMMAND_USES_MODS,
 	syntax: `${prefix}bean <@user>`,
 	async execute(client, message, args) {
 
