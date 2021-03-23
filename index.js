@@ -27,9 +27,9 @@ const prefix = process.env.PREFIX;
 
 // Helpers:
 const { jsonModeration } = require('./helpers/fileHandler');
-const { autoReact }     = require('./functions/autoReact');
-const { updateMembers } = require('./functions/updateMembers.js');
-const { walkSync }      = require('./functions/walkSync');
+const { autoReact }      = require('./functions/autoReact');
+const { updateMembers }  = require('./functions/updateMembers.js');
+const { walkSync }       = require('./functions/walkSync');
 
 const { quote }    = require('./functions/quote');
 //const { logs }     = require('./functions/logs');
@@ -166,6 +166,45 @@ client.on('guildMemberRemove', async member =>{
 });
 
 /*
+ * BOT ADD OR REMOVE
+ */
+client.on('guildCreate', async guild =>{
+	var joinLeaveChannel = client.channels.cache.get('823891571547308053');
+
+	var embed = new Discord.MessageEmbed()
+		.setThumbnail(guild.iconURL())
+		.setColor(colors.YELLOW)
+		.setTitle(`I was added to a server!`)
+		.setDescription('Please check if this action was intended.')
+		.addFields(
+			{ name: 'Name:', value: `\`${guild.name}\``},
+			{ name: 'ID:', value: `\`${guild.id}\``},
+			{ name: 'Owner:', value: `\`${guild.owner.user.tag}\` | \`${guild.owner.id}\``},
+		)
+		.setTimestamp()
+
+	await joinLeaveChannel.send(embed);
+});
+
+client.on('guildDelete', async guild =>{
+	var joinLeaveChannel = client.channels.cache.get('823891571547308053');
+
+	var embed = new Discord.MessageEmbed()
+		.setThumbnail(guild.iconURL())
+		.setColor(colors.YELLOW)
+		.setTitle(`I was removed from a server!`)
+		.setDescription('Please check if this action was intended.')
+		.addFields(
+			{ name: 'Name:', value: `\`${guild.name}\``},
+			{ name: 'ID:', value: `\`${guild.id}\``},
+			{ name: 'Owner:', value: `\`${guild.owner.user.tag}\` | \`${guild.owner.id}\``},
+		)
+		.setTimestamp()
+
+	await joinLeaveChannel.send(embed);
+});
+
+/*
  * COMMAND HANDLER
  * - Automated: /commands & below
  * - Easter Eggs & others: below
@@ -261,10 +300,10 @@ client.on('message', async message => {
 
 	if (message.content.toLowerCase() === 'mhhh') {
 		const embed = new Discord.MessageEmbed()
-			.setAuthor(message.content, message.author.displayAvatarURL())
-			.setTitle('Uh-oh moment')
+			.setAuthor(`${message.author.tag} translated: ${message.content}`, message.author.displayAvatarURL())
+			.setDescription('```Uh-oh moment```')
 			.setColor(colors.BLUE)
-			.setFooter('Swahili -> English', settings.BOT_IMG);
+			.setFooter('Swahili → English', settings.BOT_IMG);
 		return await message.channel.send(embed);
 	}
 
