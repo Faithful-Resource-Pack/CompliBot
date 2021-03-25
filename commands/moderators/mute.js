@@ -38,7 +38,7 @@ module.exports = {
 
 				if (member.id === message.author.id) return await warnUser(message, 'You can\'t mute yourself!');
 
-				if (member.id === client.user.id) return await message.channel.send('https://tenor.com/view/no-i-dont-think-i-will-captain-america-old-capt-gif-17162888');
+				if (member.id === client.user.id) return await message.channel.send(strings.COMMAND_NOIDONTTHINKIWILL_LMAO);
 
 				if (isNaN(time)) return await warnUser(message, 'You have to specify an integer!');		
 				else {

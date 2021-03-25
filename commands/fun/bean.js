@@ -19,11 +19,11 @@ module.exports = {
     	  const member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
     	  const reason = args.slice(1).join(' ') || 'Not Specified';
 
-				if (!member) return await warnUser(message, 'You need to specify a user to bean!');
+				if (!member) return await warnUser(message, strings.BEAN_SPECIFY_USER);
 
 				if (member.id === message.author.id) return await warnUser(message, strings.BEAN_CANT_BEAN_SELF);
 
-				if (member.id === client.user.id) return await message.channel.send('https://tenor.com/view/no-i-dont-think-i-will-captain-america-old-capt-gif-17162888');
+				if (member.id === client.user.id) return await message.channel.send(strings.COMMAND_NOIDONTTHINKIWILL_LMAO);
 
 				else {
 					const embed = new Discord.MessageEmbed()

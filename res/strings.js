@@ -16,6 +16,7 @@ const COMMAND_PROVIDE_VALID_TAG          = 'Please provide a user tag!';
 const COMMAND_PROVIDE_A_NUMBER           = 'Please provide a number!';
 const COMMAND_WRONG_ARGUMENTS_GIVEN      = 'You did not provide valid arguments';
 const CANT_EXECUTE_IN_DMS                = 'I can\'t execute this command inside DM\'s!';
+const COMMAND_NOIDONTTHINKIWILL_LMAO = 'https://tenor.com/view/no-i-dont-think-i-will-captain-america-old-capt-gif-17162888';
 
 // Help descriptions
 const HELP_DESC_HOTFIX = 'Fix something, may change at anytime';
@@ -66,6 +67,10 @@ const COMMAND_USES_DISABLED = 'no one (disabled)';
 
 // Bean command
 const BEAN_CANT_BEAN_SELF = 'You can\'t bean yourself!';
+const BEAN_SPECIFY_USER = 'You need to specify a user to bean!';
+
+// Behave command
+const BEHAVE_ANSWER = 'I`\'m so sorry! (⌯˃̶᷄ ﹏ ˂̶᷄⌯)';
 
 // Website command
 const WEBSITE_PROVIDE_VALID_ARGUMENT = 'Please specify a valid argument! \nYou can use: \n`32x`, `64x`, `addons`, `tweaks`, `dungeons` and `mods`';
@@ -102,6 +107,7 @@ module.exports = {
 	COMMAND_MAINTENANCE,
 	COMMAND_ERROR,
 	CANT_EXECUTE_IN_DMS,
+	COMMAND_NOIDONTTHINKIWILL_LMAO,
 
 	HELP_DESC_HOTFIX,
 	HELP_DESC_PING,
@@ -148,6 +154,9 @@ module.exports = {
 	COMMAND_USES_DISABLED,
 
 	BEAN_CANT_BEAN_SELF,
+	BEAN_SPECIFY_USER,
+
+	BEHAVE_ANSWER,
 
 	WEBSITE_PROVIDE_VALID_ARGUMENT,
 	WEBSITE_NO_SITE_REGISTERED,
