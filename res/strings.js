@@ -22,7 +22,7 @@ const COMMAND_NOIDONTTHINKIWILL_LMAO = 'https://tenor.com/view/no-i-dont-think-i
 const HELP_DESC_HOTFIX = 'Fix something, may change at anytime';
 const HELP_DESC_PING = 'Pong!';
 const HELP_DESC_RELOAD = 'Reloads a command';
-const HELP_DESC_SHUTDOWN = 'stops the bot';
+const HELP_DESC_SHUTDOWN = 'Stops the bot';
 const HELP_DESC_STATUS = 'Changes the bot\'s status: \n**Activity**:\nPLAYING, STREAMING, LISTENING, WATCHING, COMPETING, CUSTOM_STATUS (does not work)\n**Presence**:\nonline, idle, dnd';
 
 const HELP_DESC_BEAN = 'get B E A N E D';
@@ -31,26 +31,26 @@ const HELP_DESC_ORDER = 'Order something';
 const HELP_DESC_SAY = 'Make the bot send any message you specify';
 
 const HELP_DESC_CLEAR = 'Clear messages in a channel';
-const HELP_DESC_EMBED = 'Modify an embed!';
+const HELP_DESC_EMBED = 'Modify an embed';
 const HELP_DESC_MUTE = 'Mute someone';
 const HELP_DESC_SLOWMODE = 'Enable or disable the slowmode in a channel';
-const HELP_DESC_UNMUTE = 'Remove Muted roles to someone';
+const HELP_DESC_UNMUTE = 'Unmute someone';
 const HELP_DESC_WARN = 'Warn someone';
 
-const HELP_DESC_ABOUT = 'Displays texture that you or someone made';
+const HELP_DESC_ABOUT = 'Displays a texture that you or someone else made';
 const HELP_DESC_AUTOPUSH = 'Use: `/autopush` to push textures from #results to GitHub!';
 const HELP_DESC_CONTRIBUTORS = 'Use: `/contributors add ...` to add a new author.\nuse: `/contributors remove ...` to remove a contributor';
 const HELP_DESC_MAGNIFY = 'Resize an image,\nImage URL needs to end with ``.png`` or ``.jpeg/jpg``,\nMessage ID needs to be from the same channel';
-const HELP_DESC_PALETTE = 'Get colors of an image,\nImage URL needs to end with ``.png`` or ``.jpeg/jpg``,\nMessage ID needs to be from the same channel';
-const HELP_DESC_PUSH = 'Push file to GitHub & update contributors list, make /push done to push all files in GitHub and update contributors lists.';
+const HELP_DESC_PALETTE = 'Get the colours of an image,\nImage URL needs to end with ``.png`` or ``.jpeg/jpg``,\nMessage ID needs to be from the same channel';
+const HELP_DESC_PUSH = 'Push file to GitHub & update contributors list, do `/push done` to push all files in GitHub and update contributors lists.';
 const HELP_DESC_TEXTURE = 'Displays a specified texture from either vanilla or Compliance.\nYou can search for a texture name, or use ``_`` at the begining to search for non-complete names (such as _sword).\nYou can also use ``/`` at the begining to specify a folder instead of a texture name.';
-const HELP_DESC_TILE = 'Tile an image, if no arguments are given, grid shape is selected by default & the bot search in the last 10 message for an image.';
+const HELP_DESC_TILE = 'Tile an image, if no arguments are given, a grid shape is selected by default. The bot searches the last 10 messages for an image.';
 
 const HELP_DESC_DISCORDS = 'Posts a list of specified discord servers';
 const HELP_DESC_FEEDBACK = 'Suggest things or report bugs directly to the bot devs';
 const HELP_DESC_HELP = 'Show help for a specified command';
 const HELP_DESC_INFO = 'Displays some info about the bot in your DMs';
-const HELP_DESC_MODPING = 'Tag online mods to invoke help!';
+const HELP_DESC_MODPING = 'Tag online mods to call for help';
 const HELP_DESC_MODTOOLS = 'Displays tools for Minecraft Dungeons modding';
 const HELP_DESC_POLL = 'Make a poll to ask people!';
 const HELP_DESC_PROFILE = 'Add personal information for the Compliance Website Gallery';
