@@ -94,7 +94,7 @@ module.exports = {
 			}
 
 			if (found) await magnify(message, FACTOR, url);
-			else return
+			else return warnUser(message,'No image found in the 10 previous messages.');
 		}
 	}
 }

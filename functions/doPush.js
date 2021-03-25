@@ -93,22 +93,10 @@ async function doPush(COMMIT_MESSAGE) {
 		console.log(`PUSHED TO GITHUB: Compliance-Bedrock-32x (1.16.210)`);
 	}
 
-	if (!isEmptyDir(`./texturesPush/Compliance-Bedrock-32x/1.16.200/textures`)) {
-		await autoPush('Compliance-Resource-Pack', 'Compliance-Bedrock-32x', 'Jappa-1.16.200', COMMIT_MESSAGE, './texturesPush/Compliance-Bedrock-32x/1.16.200')
-		fs.rmdirSync(`./texturesPush/Compliance-Bedrock-32x/1.16.200/textures/`, { recursive: true });
-		console.log(`PUSHED TO GITHUB: Compliance-Bedrock-32x (1.16.200)`);
-	}
-
 	if (!isEmptyDir(`./texturesPush/Compliance-Bedrock-64x/1.16.210/textures`)) {
 		await autoPush('Compliance-Resource-Pack', 'Compliance-Bedrock-64x', 'Jappa-1.16.210', COMMIT_MESSAGE, './texturesPush/Compliance-Bedrock-64x/1.16.210')
 		fs.rmdirSync(`./texturesPush/Compliance-Bedrock-64x/1.16.210/textures/`, { recursive: true });
 		console.log(`PUSHED TO GITHUB: Compliance-Bedrock-64x (1.16.210)`);
-	}
-
-	if (!isEmptyDir(`./texturesPush/Compliance-Bedrock-64x/1.16.200/textures`)) {
-		await autoPush('Compliance-Resource-Pack', 'Compliance-Bedrock-64x', 'Jappa-1.16.200', COMMIT_MESSAGE, './texturesPush/Compliance-Bedrock-64x/1.16.200')
-		fs.rmdirSync(`./texturesPush/Compliance-Bedrock-64x/1.16.200/textures/`, { recursive: true });
-		console.log(`PUSHED TO GITHUB: Compliance-Bedrock-64x (1.16.200)`);
 	}
 
 	/* JSON ********************************************************************************************************************/

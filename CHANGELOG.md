@@ -2,6 +2,14 @@
 ---------------------------------------
 ### March 2021
 
+#### March 25th 2021
+> Juknum
+
+- Revamp `/push` command :
+	Args can now be swapped.
+	Args can now have space.
+	Better code writted.
+
 #### March 18th 2021
 > RobertR11
 

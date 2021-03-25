@@ -10,8 +10,8 @@ function getMeta(imgUrl) {
 				chunks.push(chunk);
 			}).on('end', function() {
         		try {
-					var buffer = Buffer.concat(chunks);
-					resolve(sizeOf(buffer));
+							var buffer = Buffer.concat(chunks);
+							resolve(sizeOf(buffer));
         		} catch(e) {
           		return
         		}
