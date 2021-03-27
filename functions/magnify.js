@@ -40,7 +40,7 @@ function magnify(message, factor, url) {
 			}
 		}
 
-		const attachment = new Discord.MessageAttachment(canvasResult.toBuffer());
+		const attachment = new Discord.MessageAttachment(canvasResult.toBuffer(), 'output.png');
 		var embed = new Discord.MessageEmbed()
 			.setAuthor(message.author.tag, message.author.displayAvatarURL())
 			.setColor(colors.BLUE)

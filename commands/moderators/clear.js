@@ -15,10 +15,10 @@ module.exports = {
 
 		if (message.member.hasPermission('ADMINISTRATOR')) {
 			if (args != '') {
-				if (isNaN(args)) return await message.reply("the amount parameter isn't a number!");
+				if (isNaN(args)) return await message.reply(strings.CLEAR_NOT_A_NUMBER);
 
-				if (args > 200) return await message.reply("you can't delete more than 200 messages at once!");
-				if (args < 1) return await message.reply('you have to delete at least 1 message!');
+				if (args > 200) return await message.reply(strings.CLEAR_TOO_MUCH);
+				if (args < 1) return await message.reply(strings.CLEAR_NOT_ENOUGH);
 
 				var amount = parseInt(args, 10) + 1
 				const messages = await message.channel.messages.fetch({ limit: amount });

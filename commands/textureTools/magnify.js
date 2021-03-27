@@ -13,8 +13,8 @@ module.exports = {
 	uses: strings.COMMAND_USES_ANYONE,
 	syntax: `${prefix}magnify <factor> & attach an image\n${prefix}magnify <factor> <Discord message url>\n${prefix}magnify <factor> <image URL>\n${prefix}magnify <factor> <message ID>\n${prefix}magnify <factor> [up/^/last]`,
 	async execute(client, message, args) {
-		var FACTOR;
-		var DATA;
+		let FACTOR;
+		let DATA;
 
 		if (args != '') {
 
@@ -43,12 +43,12 @@ module.exports = {
 						return magnify(message, FACTOR, DATA);
 					}
 					else return warnUser(message,`The message from the provided URL does not have any image attached.`);
-				}).catch(error => { return warnUser(message,error + '. I can only magnify images from the same channel. Don\'t ask why, I don\'t know myself.') }); // rick astley
+				}).catch(error => { return warnUser(message,error + '. I can only magnify images from the same channel. Don\'t ask why, I don\'t know myself.') });
 			}
 
 			// Image URL
 			else if (args[1].startsWith('https://') || args[1].startsWith('http://')) {
-				if (args[1].endsWith('.png') || args[1].endsWith('.jpeg') || args[1].endsWith('.jpg')) {
+				if (args[1].endsWith('.png') || args[1].endsWith('.jpeg') || args[1].endsWith('.jpg') || args[1].endsWith('.gif')) {
 					DATA = args[1];
 					return magnify(message, FACTOR, DATA);
 				} else return warnUser(message,`Image extension is not supported`)

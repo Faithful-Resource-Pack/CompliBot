@@ -14,7 +14,7 @@ module.exports = {
 	syntax: `${prefix}say [message] [attach a file]`,
 	async execute(client, message, args) {
 		if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD) {
-			if (!args.length) return await message.reply('You haven\'t specified a message to send!');
+			if (!args.length) return await message.reply(strings.SAY_NOT_SPECIFIED);
 
 			else {
 				if (message.attachments.size > 0) {

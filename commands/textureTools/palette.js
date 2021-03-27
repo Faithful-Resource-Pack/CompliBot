@@ -40,7 +40,7 @@ module.exports = {
 
 		// Image URL
 		else if (args[0].startsWith('https://') || args[0].startsWith('http://')) {
-			if (args[0].endsWith('.png') || args[0].endsWith('.jpeg') || args[0].endsWith('.jpg')) {
+			if (args[0].endsWith('.png') || args[0].endsWith('.jpeg') || args[0].endsWith('.jpg') || args[0].endsWith('.gif')) {
 				DATA = args[0];
 				return palette(message, DATA);
 			} else return warnUser(message,`Image extension is not supported`)

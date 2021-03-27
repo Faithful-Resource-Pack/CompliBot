@@ -2,6 +2,13 @@
 ---------------------------------------
 ### March 2021
 
+#### March 27th 2021
+> Juknum
+
+- Added the `/animate` command! Type `/help animate` to see what it does! 
+- Removed `/command` & `command.js` (unused)
+
+
 #### March 25th 2021
 > Juknum
 
@@ -9,6 +16,7 @@
 	Args can now be swapped.
 	Args can now have space.
 	Better code writted.
+- Moved `push.js` to `./moderators`
 
 #### March 18th 2021
 > RobertR11
