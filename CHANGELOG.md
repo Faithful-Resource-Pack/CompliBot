@@ -2,10 +2,21 @@
 ---------------------------------------
 ### March 2021
 
+#### March 28th 2021
+> Juknum
+
+- Added previous image support for the `/animate` command.
+- The `/animate` command now support frametime & custom frames order parameters.
+- The flag `--mcmeta` from the `/animate` command have been renamed to `--custom`.
+- A new flag `--mcmeta` (that's why the other one have been renamed) is used to search trough the `/contributors/java.json` & `/contributors/bedrock.json` to find mcmeta from the given string.
+- Fixed `/mute` crash when no time was given.
+- Removed `settings.C3D_SUBMIT` & submission process because the channel have been removed.
+
 #### March 27th 2021
 > Juknum
 
-- Added the `/animate` command! Type `/help animate` to see what it does! 
+- Added the `/animate` command! Type `/help animate` to see what it does!
+	- With the `--mcmeta` flag, can be set to true to send custom mcmeta settings.
 - Removed `/command` & `command.js` (unused)
 
 

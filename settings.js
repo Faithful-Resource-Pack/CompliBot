@@ -34,7 +34,6 @@ const C64_AUTOPUSH_FAIL = '747817813636284490'; // #private
 // Compliance Addons
 const CADDONS_IMG          = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Discord-Bot/master/images/Logos/Compliance%20Addons.png';
 const CADDONS_COLOR        = '#6D6163';
-const CADDONS_3D_SUBMIT    = '782574754866528277'; // #model-texture-submit
 const CADDONS_ID           = '614160586032414845';
 const CADDONS_MODERATOR_ID = '614163845656608774';
 
@@ -91,7 +90,6 @@ module.exports = {
 
 	CADDONS_IMG,
 	CADDONS_COLOR,
-	CADDONS_3D_SUBMIT,
 	CADDONS_ID,
 	CADDONS_MODERATOR_ID,
 

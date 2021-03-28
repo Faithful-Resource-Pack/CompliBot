@@ -370,17 +370,6 @@ client.on('message', async message => {
 		);
 	}
 
-	// Models submission for Compliance 3D addons
-	if (message.channel.id === settings.CADDONS_3D_SUBMIT) {
-		return autoReact(
-			message,
-			['⬆️','⬇️'],
-			strings.SUBMIT_NO_FILE_ATTACHED,
-			'You need to add the texture path to your submission:\n`**texture/model_name** /assets/...`',
-			['/assets/']
-		);
-	}
-
 	// Texture submission Compliance Dungeons:
 	if (message.channel.id === settings.CDUNGEONS_SUBMIT) {
 		return autoReact(

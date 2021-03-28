@@ -26,13 +26,15 @@ module.exports = {
 				const reason = args.slice(2).join(' ') || 'Not Specified';
 				var time = args[1] || -100;
 
-				if (time.includes('min'))                              time = 60 * parseInt(time, 10);
-				else if (time.includes('h') || time.includes('hour'))  time = 3600 * parseInt(time, 10);
-				else if (time.includes('d') || time.includes('day'))   time = 86400 * parseInt(time, 10);
-				else if (time.includes('w') || time.includes('week'))  time = 604800 * parseInt(time, 10);
-				else if (time.includes('m') || time.includes('month')) time = 2592000 * parseInt(time, 10);
-				else if (time.includes('y') || time.includes('year'))  time = 31536000 * parseInt(time, 10);
-				else return await warnUser(message, strings.MUTE_NOT_VALID_TIME);	
+				if (typeof time === 'string') {
+					if (time.includes('min'))                              time = 60 * parseInt(time, 10);
+					else if (time.includes('h') || time.includes('hour'))  time = 3600 * parseInt(time, 10);
+					else if (time.includes('d') || time.includes('day'))   time = 86400 * parseInt(time, 10);
+					else if (time.includes('w') || time.includes('week'))  time = 604800 * parseInt(time, 10);
+					else if (time.includes('m') || time.includes('month')) time = 2592000 * parseInt(time, 10);
+					else if (time.includes('y') || time.includes('year'))  time = 31536000 * parseInt(time, 10);
+					else return await warnUser(message, strings.MUTE_NOT_VALID_TIME);	
+				}
 
 				if (!member) return await warnUser(message, strings.MUTE_SPECIFY_USER);
 

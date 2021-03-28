@@ -16,15 +16,13 @@ module.exports = {
 	description: strings.HELP_DESC_ANIMATE,
 	guildOnly: false,
 	uses: strings.COMMAND_USES_ANYONE,
-	syntax: `${prefix}animate [-c | -m] + file attached`,
+	syntax: `${prefix}animate [-c | -m] [-u | file attached]`,
 	flags: '-c | --custom : Boolean, set to false by default, set true if you want to give custom mcmeta settings.\n-m | --mcmeta : String, give texture name to find mcmeta, if none exist, default settings will be applied.',
-	example: `${prefix}animate + file attached\n${prefix}animate --mcmeta=true + file attached`,
+	example: `${prefix}animate + file attached\n${prefix}animate --mcmeta=true + file attached\n${prefix}play -u=https://discord.com/channels/.../.../...`,
 	async execute(client, message, args) {
 
-		let image;
-
-		if (message.attachments.size == 0) return warnUser(message, 'You did not attach a texture.');
-		else image = message.attachments.first().url;
+		let valURL;
+		if (message.attachments.size > 0) valURL = message.attachments.first().url;
 
 		args = parseArgs(args);
 
@@ -40,7 +38,7 @@ module.exports = {
 				valCustom = args[i].replace('-c=', '').replace('--custom=', '');
 				if (typeof valCustom === 'string' && valCustom.toLowerCase() == 'true') haveCustom = true;
 			}
-			if (args[i].startsWith('-m=') || args[i].startsWith('--mcmeta')) {
+			if (args[i].startsWith('-m=') || args[i].startsWith('--mcmeta=')) {
 				haveMCMETA = true;
 				valMCMETA  = args[i].replace('-m=', '').replace('--mcmeta=', '');
 			}
@@ -79,7 +77,10 @@ module.exports = {
 			}
 
 
-			if (index != -1 && textures[index].animated) return animate(message, textures[index].mcmeta, image);
+			if (index != -1 && textures[index].animated) {
+				if (valURL) return animate(message, textures[index].mcmeta, valURL);
+				else return previousImage(message, textures[index].mcmeta);
+			}
 			else if (index == -1) return warnUser(message, 'Texture not found.');
 			else if (!textures[index].animated) return warnUser(message, 'This texture is not animated by default, please use -c=true instead and provide a MCMETA config.');
 
@@ -114,7 +115,8 @@ module.exports = {
 						}
 
 						asyncTools.react(mcmetaMessage, '⌛');
-						return animate(message, mcmeta, image);
+						if (valURL) return animate(message, mcmeta, valURL);
+						else return previousImage(message, mcmeta);
 					} else {
 						warnUser(mcmetaMessage, 'Wrong format given!').then(async () => {
 							if (!message.deleted) asyncTools.react(message, '❌');
@@ -130,6 +132,36 @@ module.exports = {
 		else if (haveCustom && haveMCMETA) {
 			return warnUser(message, 'You can\'t specify both args at once.');
 		}
-		else return animate(message, mcmeta, image);
+		else if(valURL) return animate(message, mcmeta, valURL);
+		else return previousImage(message, mcmeta);
 	}
+}
+
+async function previousImage(message, mcmeta) {
+	var found = false;
+	var messages = [];
+	var list_messages = await message.channel.messages.fetch({ limit: 10 });
+	messages.push(...list_messages.array());
+
+	for (var i in messages) {
+		var msg = messages[i]
+		var url = '';
+		try {
+			if (msg.attachments.size > 0) {
+				found = true;
+				url = msg.attachments.first().url;
+				break;
+			}
+			else if (msg.embeds[0] != undefined && msg.embeds[0] != null && msg.embeds[0].image) {
+				found = true;
+				url = msg.embeds[0].image.url;
+				break;
+			}
+		} catch(e) {
+			return warnUser(message, strings.COMMAND_NO_IMAGE_FOUND);
+		}
+	}
+
+	if (found) await animate(message, mcmeta, url);
+	else return warnUser(message, strings.COMMAND_NO_IMAGE_FOUND);
 }
