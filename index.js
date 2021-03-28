@@ -106,6 +106,7 @@ client.on('ready', async () => {
 		"Bot Simulator 2077",
 		"Minecraft with Compliance 32x",
 		"Minecraft with Compliance 64x",
+		"Detroit: Become Human"
 	];
 
 	if (process.env.MAINTENANCE.toLowerCase() === 'true') client.user.setPresence({ activity: { name: 'maintenance' }, status: 'dnd' });

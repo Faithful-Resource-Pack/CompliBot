@@ -2,6 +2,12 @@
 ---------------------------------------
 ### March 2021
 
+#### March 29th 2021
+> Juknum
+
+- Rewritted the `rules.js` and make a `/rules <n>` command to show the `n` asked rule.
+- Old but gold, the previous `/rules` has been moved to `/rules all`, **now moderators can use it**.
+
 #### March 28th 2021
 > Juknum
 

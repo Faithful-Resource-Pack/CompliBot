@@ -96,11 +96,11 @@ const SLOWMODE_TOO_BIG = 'The number can\'t be bigger than 21600.';
 const UNMUTE_SPECIFY_USER = 'You need to specify a user to unmute.';
 
 // Warn command
-const WARN_SPECIFY_USER   = 'You need to specify a user to warn.;
+const WARN_SPECIFY_USER   = 'You need to specify a user to warn.';
 const WARN_CANT_WARN_SELF = 'You can\'t warn yourself!';
 
 // contributors command
-const CONTRIBUTORS_NOT_ENOUGH_ARGS     = 'The `/contributors` command requires 5 arguments be specified.';
+const CONTRIBUTORS_NOT_ENOUGH_ARGS     = 'The `/contributors` command requires 5 arguments to be specified.';
 const CONTRIBUTORS_ARG1_INVALID        = 'Invalid first argument. Available options: `update`, `add`, `remove`';
 // idk where the 2nd argument is       = 'just putting this here for consistency lol'; // double comment be like
 const CONTRIBUTORS_ARG3_INVALID        = 'Invalid third argument. Available options: `java`, `bedrock`';
