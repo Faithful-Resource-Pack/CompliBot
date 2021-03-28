@@ -53,7 +53,7 @@ module.exports = {
 			try {
 				client.users.cache.find(u => u.tag === args[0]).id
 			} catch(error) {
-				return warnUser(message, 'This user doesn\'t exist!');
+				return warnUser(message, strings.COMMAND_USER_DOESNT_EXIST);
 			}
 			
 			embed.setDescription(`About <@${client.users.cache.find(u => u.tag === args[0]).id}> contributions:`)

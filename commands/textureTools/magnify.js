@@ -89,12 +89,12 @@ module.exports = {
 						break;
 					}
 				} catch(e) {
-					return warnUser(message,'No image found in the 10 previous messages.');
+					return warnUser(message, strings.COMMAND_NO_IMAGE_FOUND);
 				}
 			}
 
 			if (found) await magnify(message, FACTOR, url);
-			else return warnUser(message,'No image found in the 10 previous messages.');
+			else return warnUser(message, strings.COMMAND_NO_IMAGE_FOUND);
 		}
 	}
 }

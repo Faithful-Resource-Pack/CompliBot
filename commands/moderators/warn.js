@@ -25,9 +25,9 @@ module.exports = {
 				const reason = args.slice(1).join(' ') || 'Not Specified';
 				const role = message.guild.roles.cache.find(r => r.name === 'Muted');
 
-				if (!member) return await warnUser(message, 'You need to specify a user to warn!');
+				if (!member) return await warnUser(message, strings.WARN_SPECIFY_USER);
 
-				if (member.id === message.author.id) return await warnUser(message, 'You can\'t warn yourself!');
+				if (member.id === message.author.id) return await warnUser(message, strings.WARN_CANT_WARN_SELF);
 
 				if (member.id === client.user.id) return await message.channel.send(strings.COMMAND_NOIDONTTHINKIWILL_LMAO);
 		

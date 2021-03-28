@@ -1,9 +1,9 @@
 const Discord  = require('discord.js');
 const settings = require('../../settings.js');
 const colors   = require('../../res/colors.js');
-const { jsonModeration } = require('../../helpers/fileHandler');
 const fs       = require('fs');
 
+const { jsonModeration }  = require('../../helpers/fileHandler');
 const { removeMutedRole } = require('../moderation/removeMutedRole.js');
 
 async function checkTimeout(client) {

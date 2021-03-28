@@ -17,6 +17,9 @@ const COMMAND_PROVIDE_A_NUMBER           = 'Please provide a number!';
 const COMMAND_WRONG_ARGUMENTS_GIVEN      = 'You did not provide valid arguments';
 const CANT_EXECUTE_IN_DMS                = 'I can\'t execute this command inside DM\'s!';
 const COMMAND_NOIDONTTHINKIWILL_LMAO     = 'https://tenor.com/view/no-i-dont-think-i-will-captain-america-old-capt-gif-17162888';
+const COMMAND_NOT_A_NUMBER               = 'The amount parameter isn\'t a number!';
+const COMMAND_USER_DOESNT_EXIST          = 'This user doesn\'t exist!';
+const COMMAND_NO_IMAGE_FOUND             = 'No image found in the 10 previous messages.';
 
 // Help descriptions
 const HELP_DESC_HOTFIX   = 'Fix something, may change at anytime';
@@ -77,18 +80,44 @@ const BEHAVE_ANSWER = 'I`\'m so sorry! (⌯˃̶᷄ ﹏ ˂̶᷄⌯)';
 const SAY_NOT_SPECIFIED = 'You haven\'t specified a message to send!';
 
 // Clear command
-const CLEAR_NOT_A_NUMBER = 'The amount parameter isn\'t a number!';
-const CLEAR_TOO_MUCH     = 'You can\'t delete more than 200 messages at once!';
-const CLEAR_NOT_ENOUGH   = 'You have to delete at least 1 message!';
+const CLEAR_TOO_MUCH   = 'You can\'t delete more than 200 messages at once!';
+const CLEAR_NOT_ENOUGH = 'You have to delete at least 1 message!';
 
-// Website command
-const WEBSITE_PROVIDE_VALID_ARGUMENT = 'Please specify a valid argument! \nYou can use: \n`32x`, `64x`, `addons`, `tweaks`, `dungeons` and `mods`';
-const WEBSITE_NO_SITE_REGISTERED     = 'I don\'t have any website registered for this server :(';
+// Mute command
+const MUTE_NOT_VALID_TIME  = 'You did\'t specify a valid time!';
+const MUTE_SPECIFY_USER    = 'You need to specify a user to mute!';
+const MUTE_CANT_MUTE_SELF  = 'You can\'t mute yourself!';
+const MUTE_SPECIFY_INTEGER = 'You have to specify an integer!';
+
+// Slowmode command
+const SLOWMODE_TOO_BIG = 'The number can\'t be bigger than 21600!';
+
+// Unmute command
+const UNMUTE_SPECIFY_USER = 'You need to specify a user to unmute!';
+
+// Warn command
+const WARN_SPECIFY_USER   = 'You need to specify a user to warn!';
+const WARN_CANT_WARN_SELF = 'You can\'t warn yourself!';
+
+// contributors command
+const CONTRIBUTORS_NOT_ENOUGH_ARGS     = 'contributors command always have 5 arguments';
+const CONTRIBUTORS_ARG1_INVALID        = 'contributors command only accepts update, add or remove';
+// idk where the 2nd argument is       = 'just putting this here for consistency lol'; // double comment be like
+const CONTRIBUTORS_ARG3_INVALID        = 'contributors command only accepts java or bedrock edition';
+const CONTRIBUTORs_ARG4_INVALID        = 'contributors command only accepts c32 and c64 resolution';
+const CONTRIBUTORS_ARG5_INVALID        = 'The author must be a Discord Tag, ex: `Name#1234`';
+const CONTRIBUTORS_UNKNOWN_TEXTURE     = 'Unknown texture, please check spelling';
+const CONTRIBUTORS_TEXTURE_NO_AUTHOR   = 'This texture doesn\'t have an author!';
+const CONTRIBUTORS_AUTHOR_DOESNT_EXIST = 'This author doesn\'t exist';
 
 // Texture command
 //const TEXTURE_DOESNT_EXIST = '**Note: this command isn\'t updated for 21w11a yet, if you\'re currently looking for a 21w11a texture**\nThe specified texture/folder doesn\'t exist!';
 const TEXTURE_DOESNT_EXIST   = 'The specified texture/folder doesn\'t exist!';
 const TEXTURE_FAILED_LOADING = 'This texture has not yet been made or is not present on GitHub!';
+
+// Website command
+const WEBSITE_PROVIDE_VALID_ARGUMENT = 'Please specify a valid argument! \nYou can use: \n`32x`, `64x`, `addons`, `tweaks`, `dungeons` and `mods`';
+const WEBSITE_NO_SITE_REGISTERED     = 'I don\'t have any website registered for this server :(';
 
 // Submissions
 const TEXTURE_WIN_COUNCIL    = 'The following texture has passed council voting and will be added into the pack in a future version.';
@@ -117,6 +146,9 @@ module.exports = {
 	COMMAND_ERROR,
 	CANT_EXECUTE_IN_DMS,
 	COMMAND_NOIDONTTHINKIWILL_LMAO,
+	COMMAND_NOT_A_NUMBER,
+	COMMAND_USER_DOESNT_EXIST,
+	COMMAND_NO_IMAGE_FOUND,
 
 	HELP_DESC_HOTFIX,
 	HELP_DESC_PING,
@@ -170,15 +202,35 @@ module.exports = {
 
 	SAY_NOT_SPECIFIED,
 
-	CLEAR_NOT_A_NUMBER,
 	CLEAR_TOO_MUCH,
 	CLEAR_NOT_ENOUGH,
 
-	WEBSITE_PROVIDE_VALID_ARGUMENT,
-	WEBSITE_NO_SITE_REGISTERED,
+	MUTE_NOT_VALID_TIME,
+	MUTE_SPECIFY_USER,
+	MUTE_CANT_MUTE_SELF,
+	MUTE_SPECIFY_INTEGER,
+
+	SLOWMODE_TOO_BIG,
+
+	UNMUTE_SPECIFY_USER,
+
+	WARN_SPECIFY_USER,
+	WARN_CANT_WARN_SELF,
+
+	CONTRIBUTORS_NOT_ENOUGH_ARGS,
+	CONTRIBUTORS_ARG1_INVALID,
+	CONTRIBUTORS_ARG3_INVALID,
+	CONTRIBUTORs_ARG4_INVALID,
+	CONTRIBUTORS_ARG5_INVALID,
+	CONTRIBUTORS_UNKNOWN_TEXTURE,
+	CONTRIBUTORS_TEXTURE_NO_AUTHOR,
+	CONTRIBUTORS_AUTHOR_DOESNT_EXIST,
 
 	TEXTURE_DOESNT_EXIST,
 	TEXTURE_FAILED_LOADING,
+
+	WEBSITE_PROVIDE_VALID_ARGUMENT,
+	WEBSITE_NO_SITE_REGISTERED,
 
 	TEXTURE_WIN_COUNCIL,
 	TEXTURE_DEFEAT_COUNCIL,

@@ -26,21 +26,21 @@ module.exports = {
 				const reason = args.slice(2).join(' ') || 'Not Specified';
 				var time = args[1] || -100;
 
-				if (time.includes('min'))                         time = 60 * parseInt(time, 10);
+				if (time.includes('min'))                              time = 60 * parseInt(time, 10);
 				else if (time.includes('h') || time.includes('hour'))  time = 3600 * parseInt(time, 10);
 				else if (time.includes('d') || time.includes('day'))   time = 86400 * parseInt(time, 10);
 				else if (time.includes('w') || time.includes('week'))  time = 604800 * parseInt(time, 10);
 				else if (time.includes('m') || time.includes('month')) time = 2592000 * parseInt(time, 10);
 				else if (time.includes('y') || time.includes('year'))  time = 31536000 * parseInt(time, 10);
-				else return await warnUser(message, 'You did\'t specify a valid time!');	
+				else return await warnUser(message, strings.MUTE_NOT_VALID_TIME);	
 
-				if (!member) return await warnUser(message, 'You need to specify a user to mute!');
+				if (!member) return await warnUser(message, strings.MUTE_SPECIFY_USER);
 
-				if (member.id === message.author.id) return await warnUser(message, 'You can\'t mute yourself!');
+				if (member.id === message.author.id) return await warnUser(message, strings.MUTE_CANT_MUTE_SELF);
 
 				if (member.id === client.user.id) return await message.channel.send(strings.COMMAND_NOIDONTTHINKIWILL_LMAO);
 
-				if (isNaN(time)) return await warnUser(message, 'You have to specify an integer!');		
+				if (isNaN(time)) return await warnUser(message, strings.MUTE_SPECIFY_INTEGER);		
 				else {
 					var timeout = undefined;
 					if (time == -100) timeout = 'Unlimited';

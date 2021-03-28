@@ -26,7 +26,7 @@ module.exports = {
 		const packResolution = args[3]
 		let   discordTag = args[4]
 
-		// reject directly not administrator
+		// reject if no admin permissions
 		if (!message.member.hasPermission('ADMINISTRATOR'))
 			return warnUser(message,strings.COMMAND_NO_PERMISSION)
 
@@ -36,30 +36,30 @@ module.exports = {
 			return await message.react('✅')
 		}
 
-		// also you should verify arguments number
+		// verify arguments
 		if (args.length !== 5)
-			return warnUser(message, 'contributors command always have 5 arguments')
+			return warnUser(message, strings.CONTRIBUTORS_NOT_ENOUGH_ARGS)
 
 		if (addOrRemove === undefined || (addOrRemove !== 'add' && addOrRemove !== 'remove'))
-			return warnUser(message, 'contributors command only accepts update, add or remove')
+			return warnUser(message, strings.CONTRIBUTORS_ARG1_INVALID)
 
 		if (javaOrBedrock === undefined || (javaOrBedrock !== 'java' && javaOrBedrock !== 'bedrock'))
-			return warnUser(message, 'contributors command only accepts java or bedrock edition')
+			return warnUser(message, strings.CONTRIBUTORS_ARG3_INVALID)
 		else
 			javaOrBedrock = javaOrBedrock.toLowerCase()
 
 		if (packResolution === undefined || (packResolution !== 'c32' && packResolution !== 'c64'))
-			return warnUser(message, 'contributors command only accepts c32 and c64 resolution')
+			return warnUser(message, strings.CONTRIBUTORs_ARG4_INVALID)
 
 		if (discordTag === undefined || !discordTag.includes('#'))
-			return warnUser(message, 'The author must be a Discord Tag, ex: `Name#1234`')
+			return warnUser(message, strings.CONTRIBUTORS_ARG5_INVALID)
 
 		// try to find user
 		try {
 			const tmpDiscordTag = client.users.cache.find(u => u.tag === discordTag).id
 			discordTag = tmpDiscordTag
 		} catch(error) {
-			return warnUser(message, 'This user doesn\'t exist!')
+			return warnUser(message, strings.COMMAND_USER_DOESNT_EXIST)
 		}
 
 		// will be used later
@@ -91,11 +91,11 @@ module.exports = {
 			}
 		}
 
-		// I am using a try catch st	tement because much more flexible in case of errors
+		// I am using a try catch statement because much more flexible in case of errors
 		try {
 			// check texture index
 			if (textureIndex === NO_TEXTURE_FOUND)
-				throw 'Unknown texture, please check spelling'
+				throw strings.CONTRIBUTORS_UNKNOWN_TEXTURE
 
 			if (addOrRemove === 'add') {
 				// create author array if not defined else append
@@ -110,11 +110,11 @@ module.exports = {
 			else {
 				// warn user if no author to remove
 				if (textures[textureIndex][packResolution].author == undefined)
-					throw 'This texture doesn\'t have an author!'
+					throw strings.CONTRIBUTORS_TEXTURE_NO_AUTHOR
 				
 				// warn if user not in this texture
 				if(!textures[textureIndex][packResolution].author.includes(discordTag))
-					throw 'This author doesn\'t exist'
+					throw strings.CONTRIBUTORS_AUTHOR_DOESNT_EXIST
 				
 				// remove this bad boy
 				if (textures[textureIndex][packResolution].author.length > 1)

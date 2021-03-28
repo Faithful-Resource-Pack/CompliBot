@@ -27,8 +27,8 @@ module.exports = {
 					return await message.channel.send(embed);
 				}
 
-        		if (args > 21600) return warnUser(message, 'The number can\'t be bigger than 21600!')
-				if (isNaN(args)) return await warnUser(message, "The amount parameter isn't a number!")
+        if (args > 21600) return warnUser(message, strings.SLOWMODE_TOO_BIG)
+				if (isNaN(args)) return await warnUser(message, strings.COMMAND_NOT_A_NUMBER)
 
 				else {
 					await message.channel.setRateLimitPerUser(parseInt(args[0]), `${message.author.tag} has used the slowmode command`);

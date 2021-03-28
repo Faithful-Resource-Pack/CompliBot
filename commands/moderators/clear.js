@@ -15,7 +15,7 @@ module.exports = {
 
 		if (message.member.hasPermission('ADMINISTRATOR')) {
 			if (args != '') {
-				if (isNaN(args)) return await message.reply(strings.CLEAR_NOT_A_NUMBER);
+				if (isNaN(args)) return await message.reply(strings.COMMAND_NOT_A_NUMBER);
 
 				if (args > 200) return await message.reply(strings.CLEAR_TOO_MUCH);
 				if (args < 1) return await message.reply(strings.CLEAR_NOT_ENOUGH);
