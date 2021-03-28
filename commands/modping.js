@@ -25,12 +25,12 @@ module.exports = {
 
 		var MODERATOR_ID = '747839021421428776'; // God id on Robert discord server test
 
-		if (message.guild.id == settings.CDUNGEONS_ID) MODERATOR_ID = settings.CDUNGEONS__MODERATORS_ID;
-		if (message.guild.id == settings.CMODS_ID)     MODERATOR_ID = settings.CMODS_MODERATORS_ID;
-		if (message.guild.id == settings.CTWEAKS_ID)   MODERATOR_ID = settings.CTWEAKS_MODERATORS_ID;
-		if (message.guild.id == settings.CADDONS_ID)   MODERATOR_ID = settings.CADDONS_MODERATORS_ID;
-		if (message.guild.id == settings.C32_ID)       MODERATOR_ID = settings.C32_MODERATORS_ID;
-		if (message.guild.id == settings.C64_ID)       MODERATOR_ID = settings.C64_MODERATORS_ID;
+		if (message.guild.id == settings.CDUNGEONS_ID) MODERATOR_ID = settings.CDUNGEONS__MODERATOR_ID;
+		if (message.guild.id == settings.CMODS_ID)     MODERATOR_ID = settings.CMODS_MODERATOR_ID;
+		if (message.guild.id == settings.CTWEAKS_ID)   MODERATOR_ID = settings.CTWEAKS_MODERATOR_ID;
+		if (message.guild.id == settings.CADDONS_ID)   MODERATOR_ID = settings.CADDONS_MODERATOR_ID;
+		if (message.guild.id == settings.C32_ID)       MODERATOR_ID = settings.C32_MODERATOR_ID;
+		if (message.guild.id == settings.C64_ID)       MODERATOR_ID = settings.C64_MODERATOR_ID;
 
 		if (args == 'urgent') {
 			embed = new Discord.MessageEmbed()
