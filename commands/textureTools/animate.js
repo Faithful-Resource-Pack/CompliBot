@@ -19,7 +19,7 @@ module.exports = {
 	flags: '-m | --mcmeta : Boolean, set to false by default, set true if you want to give mcmeta information.',
 	example: `${prefix}animate + file attached\n${prefix}animate --mcmeta=true + file attached`,
 	async execute(client, message, args) {
-		if (message.attachments.size == 0) return warnUser(message, 'You did not attached a texture.');
+		if (message.attachments.size == 0) return warnUser(message, 'You did not attach a texture.');
 
 		args = parseArgs(args);
 
@@ -65,7 +65,7 @@ module.exports = {
 							return;
 						}
 
-						asyncTools.react(mcmetaMessage, '✔️');
+						asyncTools.react(mcmetaMessage, '⌛');
 						return animate(message, mcmeta, message.attachments.first().url);
 					} else {
 						warnUser(mcmetaMessage, 'Wrong format given!').then(async () => {

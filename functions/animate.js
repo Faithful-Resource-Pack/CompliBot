@@ -6,7 +6,7 @@ const colors     = require('../res/colors');
 const { getMeta }  = require('./getMeta');
 const { warnUser } = require('./warnUser');
 
-const FACTOR = 8;
+var FACTOR = 8;
 
 async function animate(message, valMCMETA, valURL) {
 
@@ -14,7 +14,8 @@ async function animate(message, valMCMETA, valURL) {
 
 	getMeta(valURL).then(async function(dimension) {
 		if (dimension.width == dimension.height) return warnUser(message, 'This texture can\'t be animated.');
-		if (dimension.width * FACTOR > 1024) return warnUser(message, 'This texture is too wide.');
+		if (dimension.width * FACTOR > 4096) return warnUser(message, 'This texture is too wide.');
+		if (dimension.width * FACTOR > 1024) FACTOR = 1;
 
 		texture.canvas = await sizeUP(valURL, dimension);
 		texture.width  = dimension.width * FACTOR;
@@ -29,88 +30,116 @@ async function animate(message, valMCMETA, valURL) {
 		if (!MCMETA.animation) MCMETA.animation = {};
 
 		// Initialization:
-		let frametime = Math.max(MCMETA.animation.frametime || 1, 1);
+		let frametime = MCMETA.animation.frametime || 1;
 		let frames    = [];
-		let interval;
-		
-		if (Array.isArray(MCMETA.animation.frames) && MCMETA.animation.frames.length > 0) {
-			// If the animation should interpolate between frames or
-			// if any of the frames has a duration that is not a multiple of 'frametime',
-			// the animation should be updated every game tick (50ms)
-			if (MCMETA.animation.interpolate || (MCMETA.animation.frames.find(e => typeof e === 'object' && e.time % frametime != 0))) interval = 1;
-			else interval = frametime;
-			
-			// Convert frames from the MCMETA format
-			for (let i = 0; i < MCMETA.animation.frames.length; i++) {
-				const frame = MCMETA.animation.frames[i]
 
-				// Default frame duration
+		// MCMETA.animation.frames is defined
+		if (Array.isArray(MCMETA.animation.frames) && MCMETA.animation.frames.length > 0) {
+			for (let i = 0; i < MCMETA.animation.frames.length; i++) {
+				const frame = MCMETA.animation.frames[i];
+
 				if (typeof frame === 'number') {
 					frames.push({
-						index: frame,
-						duration: frametime / interval
-					})
+						index:    frame,
+						duration: frametime
+					});
 				}
-				// Non-default frame duration
+				else if (typeof frame === 'object') {
+					frames.push({
+						index: frame.index || i,
+						duration: frame.time || frametime
+					});
+				}
+				// If wrong frames support is given
 				else {
 					frames.push({
-						index: frame.index,
-						duration: Math.max(frame.time, 1) / interval
+						index:    i,
+						duration: frametime
 					})
 				}
 			}
 		}
-		// Default frame order, no varying frame durations
+		// MCMETA.animation.frames is not defined
 		else {
-			// If the animation should interpolate between frames, the animation should be updated every game tick (50ms)
-			if (MCMETA.animation.interpolate) {
-				interval = 1
-			} else {
-				interval = frametime
-			}
-
-			// Create frames
-			let n = texture.height / texture.width
-			for (let i = 0; i < n; i++) {
+			for (let i = 0; i < texture.height / texture.width; i++) {
 				frames.push({
-					index: i,
-					duration: frametime / interval
-				})
+					index:    i,
+					duration: frametime
+				});
 			}
 		}
+
+		// console.log(frames);
 
 		// Draw frames:
 		const encoder = new GIFEncoder(texture.width, texture.width);
 		encoder.start();
 
-		for (let i = 0; i < frames.length; i++) {
-			context.globalCompositeOperation = 'copy';
-			context.globalAlpha = 1;
+		context.globalCompositeOperation = 'copy';
 
-			// see: https://media.prod.mdn.mozit.cloud/attachments/2012/07/09/225/46ffb06174df7c077c89ff3055e6e524/Canvas_drawimage.jpg
-			context.drawImage(
-				texture.canvas, 										// image
-				0, texture.width * frames[i].index, // sx, sy
-				texture.width, texture.width,			  // sWidth, sHeight
-				0, 0,															  // dx, dy
-				canvas.width, canvas.height					// dWidth, dHeight
-			);
-	
-			// If interpolation is enabled, draw the next frame with the correct opacity
-			if (MCMETA.animation.interpolate) {
-				context.globalCompositeOperation = 'source-over';
-				context.globalAlpha = 0.5;
-				context.drawImage(
-					texture.canvas,																						// image
-					0, texture.width * frames[(i + 1) % frames.length].index, // sx, sy
-					texture.width, texture.width,															// sWidth, sHeight
-					0, 0,																											// dx, dy
-					canvas.width, canvas.height																// dWidth, dHeight
-				);
+		if (MCMETA.animation.interpolate) {
+			let ratio = 0;
+
+			let limit = frametime;
+			if (limit >= 100) limit /= 10;
+
+			for (let i = 0; i < frames.length; i++) {
+				for (let y = 1; y <= limit; y++) {
+					context.clearRect(0, 0, canvas.width, canvas.height);
+					context.imageSmoothingEnabled = texture.width > canvas.width;
+					context.globalAlpha = 1;
+
+					// frame i (always 100%)
+					context.drawImage(
+						texture.canvas, 										// image
+						0, texture.width * frames[i].index, // sx, sy
+						texture.width, texture.width,			  // sWidth, sHeight
+						0, 0,															  // dx, dy
+						canvas.width, canvas.height					// dWidth, dHeight
+					);
+
+					ratio = (100 / frametime) * y;
+					context.globalAlpha = ratio / 100;
+
+					// frame i + 1 (follow the ratio)
+					context.drawImage(
+						texture.canvas,																						// image
+						0, texture.width * frames[(i + 1) % frames.length].index, // sx, sy
+						texture.width, texture.width,															// sWidth, sHeight
+						0, 0,																											// dx, dy
+						canvas.width, canvas.height																// dWidth, dHeight
+					);
+
+					if (limit == frametime) encoder.setDelay(50); // frames count == frametime -> time of 1 frame == 1 tick -> 50ms
+					else encoder.setDelay(500);
+					encoder.addFrame(context);
+				}
 			}
-			
-			encoder.setDelay(50 * interval);
-			encoder.addFrame(context);
+
+			let bool = await isTransparent(valURL, dimension, frames);
+			encoder.setTransparent(bool);
+		}
+		else {
+			for (let i = 0; i < frames.length; i++) {
+				context.clearRect(0, 0, canvas.width, canvas.height)
+				context.imageSmoothingEnabled = texture.width > canvas.width;
+				context.globalAlpha = 1;
+
+				// see: https://media.prod.mdn.mozit.cloud/attachments/2012/07/09/225/46ffb06174df7c077c89ff3055e6e524/Canvas_drawimage.jpg
+				context.drawImage(
+					texture.canvas, 										// image
+					0, texture.width * frames[i].index, // sx, sy
+					texture.width, texture.width,			  // sWidth, sHeight
+					0, 0,															  // dx, dy
+					canvas.width, canvas.height					// dWidth, dHeight
+				);
+
+				encoder.setDelay(50 * frames[i].duration);
+				encoder.addFrame(context);
+			}
+
+			let bool = await isTransparent(valURL, dimension, frames);
+			encoder.setTransparent(bool);
 		}
 
 		encoder.finish();
@@ -126,6 +155,43 @@ async function animate(message, valMCMETA, valURL) {
 
 		const embedMessage = await message.channel.send(embed);
 	});
+}
+
+// Check if there is one frame non-transparent (avoid weird bug see: https://cdn.discordapp.com/attachments/792757663779389440/825420676310630460/output.gif)
+async function isTransparent(valURL, dimension, frames) {
+	let context = Canvas.createCanvas(dimension.width, dimension.width).getContext('2d');
+	let image   = await Canvas.loadImage(valURL);
+	let transparency = false;
+
+	for (let i = 0; i < dimension.height / dimension.width; i++) {
+		context.drawImage(
+			image, 															// image
+			0, dimension.width * frames[i].index, // sx, sy
+			dimension.width, dimension.width,		  // sWidth, sHeight
+			0, 0,															  	// dx, dy
+			dimension.width, dimension.width			// dWidth, dHeight
+		);
+
+		transparency = await isFrameTransparent(context, dimension.width);
+		if (!transparency) break;
+	}
+	return transparency;
+}
+
+async function isFrameTransparent(context, width) {
+	let image = context.getImageData(0,0, width, width).data;
+	let i, a;
+
+	for (var x = 0; x < width; x++) {
+		for (var y = 0; y < width; y++) {
+			i = (y * width + x) * 4;
+			a = image[i+3];
+
+			if (a == 0) return true;
+		}
+	}
+
+	return false;
 }
 
 async function sizeUP(valURL, dimension) {
@@ -147,8 +213,7 @@ async function sizeUP(valURL, dimension) {
 			b = image[i+2];
 			a = image[i+3];
 
-			if (a == 0) contextOUT.fillStyle = `rgba(54,57,63,1)`;
-			else contextOUT.fillStyle = `rgba(${r},${g},${b},${a})`;
+			contextOUT.fillStyle = `rgba(${r},${g},${b},${a})`;
 			contextOUT.fillRect(x * FACTOR, y * FACTOR, FACTOR, FACTOR);
 		}
 	}
@@ -157,3 +222,64 @@ async function sizeUP(valURL, dimension) {
 }
 
 exports.animate = animate;
+
+
+// OLD :
+
+	/*
+		
+		if (Array.isArray(MCMETA.animation.frames) && MCMETA.animation.frames.length > 0) {
+			// If the animation should interpolate between frames or
+			// if any of the frames has a duration that is not a multiple of 'frametime',
+			// the animation should be updated every game tick (50ms)
+			if (MCMETA.animation.interpolate || (MCMETA.animation.frames.find(e => typeof e === 'object' && e.time % frametime != 0))) interval = 1;
+			else interval = frametime;
+			
+			// Convert frames from the MCMETA format
+			for (let i = 0; i < MCMETA.animation.frames.length; i++) {
+				const frame = MCMETA.animation.frames[i]
+
+				// Default frame duration
+				if (typeof frame === 'number') {
+					frames.push({
+						index: frame,
+						duration: interval
+					})
+				}
+				// Non-default frame duration
+				else {
+					frames.push({
+						index: frame.index,
+						duration: Math.max(frame.time, 1) / interval
+					})
+				}
+			}
+		}
+		// Default frame order, no varying frame durations
+		else {
+			// If the animation should interpolate between frames, the animation should be updated every game tick (50ms)
+			if (MCMETA.animation.interpolate) {
+				interval = 1
+
+				// Create frames
+				let n = texture.height / texture.width
+				for (let i = 0; i < n; i++) {
+					frames.push({
+						index: i,
+						duration: frametime / interval
+					})
+				}
+			} else {
+				interval = frametime
+
+				// Create frames
+				let n = texture.height / texture.width
+				for (let i = 0; i < n; i++) {
+					frames.push({
+						index: i,
+						duration: frametime
+					})
+				}
+			}
+			
+		}*/
