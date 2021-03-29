@@ -21,7 +21,7 @@ module.exports = {
 			// <factor>
 			if (!isNaN(args[0]) && args[0] > 1) {
 				FACTOR = args[0];
-			} else return warnUser(message,'The factor must be greater than 1.')
+			} else return warnUser(message, 'The factor must be greater than 1.')
 
 			// <data>
 			// image attached
@@ -42,8 +42,8 @@ module.exports = {
 						DATA = msg.attachments.first().url;
 						return magnify(message, FACTOR, DATA);
 					}
-					else return warnUser(message,`The message from the provided URL does not have any image attached.`);
-				}).catch(error => { return warnUser(message,error + '. I can only magnify images from the same channel. Don\'t ask why, I don\'t know myself.') });
+					else return warnUser(message, strings.COMMAND_MESSAGE_IMAGE_NOT_ATTACHED);
+				}).catch(error => { return warnUser(message, error + '. I can only magnify images from the same channel. Don\'t ask why, I don\'t know myself.') });
 			}
 
 			// Image URL

@@ -1,15 +1,4 @@
-/* =====================================================
- * COMPLIBOT DISCORD BOT FOR COMPLIANCE, 
- * 	- Developed by the community, for the community.
- * -----------------------------------------------------
- * 	- Developpers:
- * 		- Domi04151309
- * 		- Juknum 
- * 		- RobertR11
- *  
- *  DON'T FORGET TO LOOK TROUGH OUR CHANGELOG
- * =====================================================
- */
+// Lipton Sparkling Ice Tea Classic 0,33L
 
 // Libs:
 require('dotenv').config();
@@ -44,7 +33,6 @@ const { doPush }            = require('./functions/doPush.js');
 
 const { checkTimeout }      = require('./functions/moderation/checkTimeout.js');
 const { addMutedRole }      = require('./functions/moderation/addMutedRole.js');
-//const { keywordsDetection } = require('./functions/moderation/keywordsDetection.js');
 const { inviteDetection }   = require('./functions/moderation/inviteDetection.js');
 
 // try to read this json

@@ -34,7 +34,7 @@ module.exports = {
 					DATA = msg.attachments.first().url;
 					return palette(message, DATA);
 				}
-				else return warnUser(message,`The message from the provided URL does not have any image attached.`);
+				else return warnUser(message, strings.COMMAND_MESSAGE_IMAGE_NOT_ATTACHED);
 			}).catch(error => { return warnUser(message,error + ' The message URL needs to be from the same channel') });
 		}
 

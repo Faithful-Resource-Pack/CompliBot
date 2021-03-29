@@ -20,6 +20,7 @@ const COMMAND_NOIDONTTHINKIWILL_LMAO     = 'https://tenor.com/view/no-i-dont-thi
 const COMMAND_NOT_A_NUMBER               = 'The amount parameter isn\'t a number.';
 const COMMAND_USER_DOESNT_EXIST          = 'This user doesn\'t exist.';
 const COMMAND_NO_IMAGE_FOUND             = 'No image found in 10 previous messages.';
+const COMMAND_MESSAGE_IMAGE_NOT_ATTACHED = 'This message does not have any image attached.';
 
 // Help descriptions
 const HELP_DESC_HOTFIX   = 'Fix something, may change at anytime';
@@ -111,6 +112,9 @@ const CONTRIBUTORS_UNKNOWN_TEXTURE     = 'Unknown texture, please check your spe
 const CONTRIBUTORS_TEXTURE_NO_AUTHOR   = 'This texture doesn\'t have an author.';
 const CONTRIBUTORS_AUTHOR_DOESNT_EXIST = 'This author doesn\'t exist.';
 
+// Magnify command
+const MAGNIFY_FACTOR_TOO_SMALL = 'The factor must be greater than 1.';
+
 // Texture command
 //const TEXTURE_DOESNT_EXIST = '**Note: this command isn\'t updated for 21w11a yet, if you\'re currently looking for a 21w11a texture**\nThe specified texture/folder doesn\'t exist!';
 const TEXTURE_DOESNT_EXIST   = 'The specified texture/folder doesn\'t exist!';
@@ -150,6 +154,7 @@ module.exports = {
 	COMMAND_NOT_A_NUMBER,
 	COMMAND_USER_DOESNT_EXIST,
 	COMMAND_NO_IMAGE_FOUND,
+	COMMAND_MESSAGE_IMAGE_NOT_ATTACHED,
 
 	HELP_DESC_HOTFIX,
 	HELP_DESC_PING,

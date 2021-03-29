@@ -104,12 +104,12 @@ module.exports = {
 					const embed = new Discord.MessageEmbed()
 						.setTitle(`Instapassed texture:`)
 						.setColor(colors.COUNCIL)
-						.setDescription(`The council have decided to instapassed this [texture](${valURL})`);
+						.setDescription(`The council has decided to instapassed this [texture](${valURL})`);
 
 					await message.channel.send(embed);
 					if (!message.deleted) message.delete();
 
-				} else return warnUser(message, 'This message does not have any texture attached.');
+				} else return warnUser(message, strings.COMMAND_MESSAGE_IMAGE_NOT_ATTACHED);
 			}).catch(error => {
 				console.log('\n\n ------------------ INSTAPASS ERROR ------------------\n');
 				console.error(error);

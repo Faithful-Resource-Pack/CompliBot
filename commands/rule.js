@@ -68,14 +68,14 @@ const RULES = [
 ]
 
 module.exports = {
-	name: 'rules',
-	aliases: [ 'rule' ],
+	name: 'rule',
+	aliases: [ 'rules' ],
 	description: strings.HELP_DESC_RULES,
 	guildOnly: true,
 	uses: strings.ANYONE,
-	syntax: `${prefix}rules <n>`,
+	syntax: `${prefix}rule <n>`,
 	flags: '',
-	example: `${prefix}rules 1`,
+	example: `${prefix}rule 1`,
 	async execute(client, message, args) {
 
 		let thumbnail = settings.BOT_IMG;
@@ -126,7 +126,7 @@ module.exports = {
 		else if (rule == -1) {
 			if (message.member.hasPermission('ADMINISTRATOR')) {
 				var embed = new Discord.MessageEmbed()
-					.setTitle(`Rules of Compliance Discord's Servers`)
+					.setTitle(`Rules of the Compliance Discord's Servers`)
 					.setColor(color)
 					.setThumbnail(thumbnail)
 					.setFooter(`The rules are subject to change, last edited: ${EDIT.date}`, thumbnail);
