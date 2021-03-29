@@ -57,6 +57,9 @@ const CDUNGEONS_ID           = '714910830272970834';
 const CDUNGEONS_MODERATOR_ID = '714911578750844988';
 const CDUNGEONS_SUBMIT       = '715236892945285181';
 
+// Repo settings
+const REPO_JSON_URL = 'https://github.com/Compliance-Resource-Pack/JSON/';
+
 module.exports = {
 	BOT_IMG,
 	VANILLA_IMG,
@@ -108,5 +111,7 @@ module.exports = {
 	CDUNGEONS_COLOR,
 	CDUNGEONS_ID,
 	CDUNGEONS_MODERATOR_ID,
-	CDUNGEONS_SUBMIT
+	CDUNGEONS_SUBMIT,
+
+	REPO_JSON: REPO_JSON_URL
 }

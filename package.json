@@ -29,6 +29,8 @@
     "dotenv": "^8.2.0",
     "fs-extra": "^9.1.0",
     "gif-encoder-2": "^1.0.5",
+    "git-clone": "^0.1.0",
+    "git-clone-promises": "^0.1.1",
     "globby": "^11.0.3",
     "http": "0.0.1-security",
     "image-size": "^0.9.7",

@@ -15,9 +15,16 @@
 require('dotenv').config();
 const Discord   = require('discord.js');
 const http      = require('http');
-const fs        = require('fs');
+const { clone } = require('git-clone-promises');
+const path      = require('path');
 const cron      = require('cron');
 const port      = 3000;
+const settings   = require('./settings');
+
+clone(settings.REPO_JSON, path.join(__dirname, './json'), {
+	remove: true
+}).then(() => {
+
 const client    = new Discord.Client({ disableMentions: 'everyone' });
 client.commands = new Discord.Collection();
 
@@ -54,9 +61,8 @@ jsonModeration.read(false).then(warnList => { // YOU MUST NOT LOCK because only 
 const colors  = require('./res/colors');
 const strings = require('./res/strings');
 
-// Import settings & commands handler:
+// Already imported settings, now import commands handler
 const commandFiles = walkSync('./commands').filter(file => file.endsWith('.js'));
-const settings     = require('./settings');
 
 // Scheduled Functions:
 // Texture submission process: (each day at 00:00 GMT)
@@ -428,5 +434,8 @@ client.on('messageDelete', async message => {
 client.login(process.env.CLIENT_TOKEN).catch(console.error);
 
 }).catch(error => {
+	console.trace(error)
+})
+}).catch(error => { // Clone promise error
 	console.trace(error)
 })
