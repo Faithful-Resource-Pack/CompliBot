@@ -40,6 +40,6 @@
     "npm": "6.14.11"
   },
   "devDependencies": {
-    "eslint": "^7.22.0"
+    "eslint": "^7.23.0"
   }
 }
