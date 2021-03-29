@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/Compliance-Resource-Pack/Discord-Bot#readme",
   "dependencies": {
-    "@octokit/rest": "^18.5.0",
+    "@octokit/rest": "^18.5.2",
     "async-mutex": "^0.3.1",
     "axios": "^0.21.1",
     "bing-translate-api": "^1.1.0",
@@ -42,6 +42,6 @@
     "npm": "6.14.11"
   },
   "devDependencies": {
-    "eslint": "^7.22.0"
+    "eslint": "^7.23.0"
   }
 }
