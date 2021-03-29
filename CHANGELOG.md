@@ -5,8 +5,10 @@
 #### March 29th 2021
 > Juknum
 
-- Rewritted the `rules.js` and make a `/rules <n>` command to show the `n` asked rule.
-- Old but gold, the previous `/rules` has been moved to `/rules all`, **now moderators can use it**.
+- Rewritted the `rules.js` and make a `/rules <n>` command to show the `n` asked rule. Old but gold, the previous `/rules` has been moved to `/rules all`, **now moderators can use it**.
+- Date format from `date.js` has been updated, now `dd/mm/yyyy` instead of `mm/dd/yyyy`.
+- Added `/instapass <message url>` to instapass texture directly to GitHub (by-pass council process), can be executed by Moderators only.
+- Modified & adapted `strings.js` to recent changes.
 
 #### March 28th 2021
 > Juknum

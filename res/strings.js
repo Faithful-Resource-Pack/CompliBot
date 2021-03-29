@@ -42,13 +42,14 @@ const HELP_DESC_WARN     = 'Warn someone';
 
 const HELP_DESC_ABOUT        = 'Displays a texture that you or someone else made';
 const HELP_DESC_ANIMATE      = 'Animates a texture.'
-const HELP_DESC_AUTOPUSH     = 'Use: `/autopush` to push textures from #results to GitHub.';
-const HELP_DESC_CONTRIBUTORS = 'Use: `/contributors add ...` to add a new author.\nuse: `/contributors remove ...` to remove a contributor.';
-const HELP_DESC_MAGNIFY      = 'Resize an image,\nImage URL needs to end with ``.png`` or ``.jpeg/jpg``,\nMessage ID needs to be from the same channel.';
-const HELP_DESC_PALETTE      = 'Get the colours of an image,\nImage URL needs to end with ``.png`` or ``.jpeg/jpg``,\nMessage ID needs to be from the same channel.';
-const HELP_DESC_PUSH         = 'Push file to GitHub & update the contributor list, do `/push done` to push all files in GitHub and update contributors lists.';
+const HELP_DESC_AUTOPUSH     = 'Use this command to push textures from #results to GitHub.';
+const HELP_DESC_CONTRIBUTORS = 'Use this command to manage contributors.';
+const HELP_DESC_INSTAPASS    = 'Use this command to by-pass council process.'
+const HELP_DESC_MAGNIFY      = 'Resize an image,\nImage URL needs to end with ``.png``, ``.jpeg/jpg`` or ``.gif``,\nMessage ID needs to be from the same channel.\nMagnify only the first frame of a GIF';
+const HELP_DESC_PALETTE      = 'Get the colours of an image,\nImage URL needs to end with ``.png``, ``.jpeg/jpg`` or ``.gif``,\nMessage ID needs to be from the same channel.\nGIF: Return the palette of the first frame only';
+const HELP_DESC_PUSH         = 'Push file to GitHub & update the contributor list.';
 const HELP_DESC_TEXTURE      = 'Displays a specified texture from either vanilla Minecraft or Compliance.\nYou can search for a texture name, or use ``_`` at the beginning to search for non-complete names (such as _sword).\nYou can also use ``/`` at the begining to specify a folder instead of a texture name.';
-const HELP_DESC_TILE         = 'Tile an image, if no arguments are given, a grid shape is selected by default. The bot searches the last 10 messages for an image.';
+const HELP_DESC_TILE         = 'Tile an image, if no arguments are given, a grid shape is selected by default. The bot searches the last 10 messages for an image.\nGIF: only works with the first frame.';
 
 const HELP_DESC_DISCORDS  = 'Posts a list of specified discord servers.';
 const HELP_DESC_FEEDBACK  = 'Suggest things or report bugs directly to the bot devs.';
@@ -172,6 +173,7 @@ module.exports = {
 	HELP_DESC_ANIMATE,
 	HELP_DESC_AUTOPUSH,
 	HELP_DESC_CONTRIBUTORS,
+	HELP_DESC_INSTAPASS,
 	HELP_DESC_MAGNIFY,
 	HELP_DESC_PALETTE,
 	HELP_DESC_PUSH,
