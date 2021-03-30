@@ -15,7 +15,7 @@ module.exports = {
 	async execute(client, message, args) {
 		const channel = client.channels.cache.get('821793794738749462');
 
-		if (!args[0]) return warnUser(message, 'Please write some feedback and don\'t just leave it empty!');
+		if (!args[0]) return warnUser(message, strings.FEEDBACK_NO_ARGS_GIVEN);
 
 		var embed = new Discord.MessageEmbed()
 			.setAuthor(`Feedback from ${message.author.tag}`, message.author.displayAvatarURL())
@@ -25,7 +25,7 @@ module.exports = {
 
 		var embed2 = new Discord.MessageEmbed()
 			.setColor(colors.BLUE)
-			.setDescription(`Your feedback has been sent to the developers!`)
+			.setDescription(strings.FEEDBACK_SUCCESS_DESCRPTION)
 			.setTimestamp()
 
 		await channel.send(embed);

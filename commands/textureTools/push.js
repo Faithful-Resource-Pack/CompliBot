@@ -68,14 +68,14 @@ module.exports = {
 		}
 
 		var warnMessage = '';
-		if (!haveAuth) warnMessage += 'No author given! ';
-		if (!havePath) warnMessage += 'No texture path given! ';
-		if (!haveRepo) warnMessage += 'No repository given! ';
-		if (message.attachments.size == 0) warnMessage += 'You did not attached the texture! ';
+		if (!haveAuth) warnMessage += strings.PUSH_ARG1_INVALID;
+		if (!havePath) warnMessage += strings.PUSH_ARG2_INVALID;
+		if (!haveRepo) warnMessage += strings.PUSH_ARG3_INVALID;
+		if (message.attachments.size == 0) warnMessage += strings.PUSH_NOT_ATTACHED;
 		if (warnMessage != '') return warnUser(message, warnMessage);
 
 		// Check repository:
-		if (!REPOSITORIES.includes(valRepo)) return warnUser(message, 'This repository does not exist or is not supported');
+		if (!REPOSITORIES.includes(valRepo)) return warnUser(message, strings.PUSH_INVALID_REPO);
 		if (REPOSITORIES.indexOf(valRepo) == 0 || REPOSITORIES.indexOf(valRepo) == 2) valSize = 32;
 		else valSize = 64;
 
@@ -86,7 +86,7 @@ module.exports = {
 			console.log('\n\n -------------- USER NOT FOUND IN CACHE --------------\n');
 			console.error(error);
 			console.log('\n -----------------------------------------------------');
-			return warnUser(message, 'User not found in cache');
+			return warnUser(message, strings.PUSH_USER_NOT_FOUND);
 		}
 
 		// Start search trough JAVA textures:
@@ -119,7 +119,7 @@ module.exports = {
 			fileHandle.release();
 		}
 		
-		if (!valType) return warnUser(message, 'Can\'t find this textures!')
+		if (!valType) return warnUser(message, strings.PUSH_TEXTURE_NOT_FOUND)
 		else {
 			await setAuthor(valType, valIndex, valAuth, valSize);
 			await download(message, valType, valIndex, valRepo, valSize);

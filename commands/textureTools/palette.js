@@ -35,7 +35,7 @@ module.exports = {
 					return palette(message, DATA);
 				}
 				else return warnUser(message, strings.COMMAND_MESSAGE_IMAGE_NOT_ATTACHED);
-			}).catch(error => { return warnUser(message,error + ' The message URL needs to be from the same channel') });
+			}).catch(error => { return warnUser(message, strings.COMMAND_URL_ONLY_SAME_CHANNEL) });
 		}
 
 		// Image URL
@@ -43,7 +43,7 @@ module.exports = {
 			if (args[0].endsWith('.png') || args[0].endsWith('.jpeg') || args[0].endsWith('.jpg') || args[0].endsWith('.gif')) {
 				DATA = args[0];
 				return palette(message, DATA);
-			} else return warnUser(message,`Image extension is not supported`)
+			} else return warnUser(message, strings.COMMAND_INVALID_EXTENSION)
 		}
 
 		// Discord message ID
@@ -53,7 +53,7 @@ module.exports = {
 					DATA = msg.attachments.first().url;
 					return palette(message, DATA);
 				}
-				else return warnUser(message,`The message from the provided ID does not have any image attached.`);
+				else return warnUser(message, strings.COMMAND_ID_IMAGE_NOT_ATTACHED);
 			}).catch(error => {
 				return warnUser(message,error);
 			})

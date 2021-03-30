@@ -21,6 +21,9 @@ const COMMAND_NOT_A_NUMBER               = 'The amount parameter isn\'t a number
 const COMMAND_USER_DOESNT_EXIST          = 'This user doesn\'t exist.';
 const COMMAND_NO_IMAGE_FOUND             = 'No image found in 10 previous messages.';
 const COMMAND_MESSAGE_IMAGE_NOT_ATTACHED = 'This message does not have any image attached.';
+const COMMAND_ID_IMAGE_NOT_ATTACHED      = 'This ID does not have any image attached.';
+const COMMAND_INVALID_EXTENSION          = 'Image extension is not supported';
+const COMMAND_URL_ONLY_SAME_CHANNEL      = 'The message URL needs to be from the same channel. Don\'t ask why, I don\'t know myself.';
 
 // Help descriptions
 const HELP_DESC_HOTFIX   = 'Fix something, may change at anytime';
@@ -76,7 +79,7 @@ const BEAN_CANT_BEAN_SELF = 'You can\'t bean yourself!';
 const BEAN_SPECIFY_USER   = 'You need to specify a user to bean!';
 
 // Behave command
-const BEHAVE_ANSWER = 'I`\'m so sorry! (⌯˃̶᷄ ﹏ ˂̶᷄⌯)';
+const BEHAVE_ANSWER = 'I\'m so sorry! (⌯˃̶᷄ ﹏ ˂̶᷄⌯)';
 
 // Say command
 const SAY_NOT_SPECIFIED = 'You haven\'t specified a message to send.';
@@ -114,11 +117,26 @@ const CONTRIBUTORS_AUTHOR_DOESNT_EXIST = 'This author doesn\'t exist.';
 
 // Magnify command
 const MAGNIFY_FACTOR_TOO_SMALL = 'The factor must be greater than 1.';
+const MAGNIFY_NO_ARGS_GIVEN    = 'You did not provide any arguments.';
+
+// Push command
+const PUSH_ARG1_INVALID      = 'No author given! ';
+const PUSH_ARG2_INVALID      = 'No texture path given! ';
+const PUSH_ARG3_INVALID      = 'No repository given! ';
+const PUSH_NOT_ATTACHED      = 'You did not attached the texture! ';
+const PUSH_INVALID_REPO      = 'This repository does not exist or is not supported';
+const PUSH_USER_NOT_FOUND    = 'User not found in cache';
+const PUSH_TEXTURE_NOT_FOUND = 'Can\'t find this textures!';
 
 // Texture command
 //const TEXTURE_DOESNT_EXIST = '**Note: this command isn\'t updated for 21w11a yet, if you\'re currently looking for a 21w11a texture**\nThe specified texture/folder doesn\'t exist!';
-const TEXTURE_DOESNT_EXIST   = 'The specified texture/folder doesn\'t exist!';
-const TEXTURE_FAILED_LOADING = 'This texture has not yet been made or is not present on GitHub!';
+const TEXTURE_DOESNT_EXIST       = 'The specified texture/folder doesn\'t exist!';
+const TEXTURE_FAILED_LOADING     = 'This texture has not yet been made or is not present on GitHub!';
+const TEXTURE_SEARCH_DESCRIPTION = 'Choose one texture using emoji reactions.\nIf you don\'t see what you\'re looking for, be more specific.\n\n';
+
+// Feedback command
+const FEEDBACK_NO_ARGS_GIVEN = 'Please write some feedback and don\'t just leave it empty!';
+const FEEDBACK_SUCCESS_DESCRPTION = 'Your feedback has been sent to the developers!';
 
 // Website command
 const WEBSITE_PROVIDE_VALID_ARGUMENT = 'Invalid argument. Available options: `32x`, `64x`, `addons`, `tweaks`, `dungeons`, `mods`';
@@ -155,6 +173,9 @@ module.exports = {
 	COMMAND_USER_DOESNT_EXIST,
 	COMMAND_NO_IMAGE_FOUND,
 	COMMAND_MESSAGE_IMAGE_NOT_ATTACHED,
+	COMMAND_ID_IMAGE_NOT_ATTACHED,
+	COMMAND_INVALID_EXTENSION,
+	COMMAND_URL_ONLY_SAME_CHANNEL,
 
 	HELP_DESC_HOTFIX,
 	HELP_DESC_PING,
@@ -233,8 +254,23 @@ module.exports = {
 	CONTRIBUTORS_TEXTURE_NO_AUTHOR,
 	CONTRIBUTORS_AUTHOR_DOESNT_EXIST,
 
+	MAGNIFY_FACTOR_TOO_SMALL,
+	MAGNIFY_NO_ARGS_GIVEN,
+
+	PUSH_ARG1_INVALID,
+	PUSH_ARG2_INVALID,
+	PUSH_ARG3_INVALID,
+	PUSH_NOT_ATTACHED,
+	PUSH_INVALID_REPO,
+	PUSH_USER_NOT_FOUND,
+	PUSH_TEXTURE_NOT_FOUND,
+
 	TEXTURE_DOESNT_EXIST,
 	TEXTURE_FAILED_LOADING,
+	TEXTURE_SEARCH_DESCRIPTION,
+
+	FEEDBACK_NO_ARGS_GIVEN,
+	FEEDBACK_SUCCESS_DESCRPTION,
 
 	WEBSITE_PROVIDE_VALID_ARGUMENT,
 	WEBSITE_NO_SITE_REGISTERED,

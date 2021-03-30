@@ -137,7 +137,7 @@ module.exports = {
         .setTitle(results.length + ' results for "' + args[1] + '" in ' + args[0].replace('b', " Bedrock"))
         .setFooter('CompliBot', settings.BOT_IMG);
 
-      var description = 'Choose one texture using emoji reactions.\nIf you don\'t see what you\'re looking for, be more specific.\n\n';
+      var description = strings.TEXTURE_SEARCH_DESCRIPTION;
       for (var i = 0; i < results.length; i++) {
         if (i < emoji_num.length) {
           description += emoji_num[i] + ' — ' + results[i].replace(args, '**' + args + '**').replace(/_/g, '＿') + '\n';

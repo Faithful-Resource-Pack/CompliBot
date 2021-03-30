@@ -21,7 +21,7 @@ module.exports = {
 			// <factor>
 			if (!isNaN(args[0]) && args[0] > 1) {
 				FACTOR = args[0];
-			} else return warnUser(message, 'The factor must be greater than 1.')
+			} else return warnUser(message, strings.MAGNIFY_FACTOR_TOO_SMALL)
 
 			// <data>
 			// image attached
@@ -43,7 +43,7 @@ module.exports = {
 						return magnify(message, FACTOR, DATA);
 					}
 					else return warnUser(message, strings.COMMAND_MESSAGE_IMAGE_NOT_ATTACHED);
-				}).catch(error => { return warnUser(message, error + '. I can only magnify images from the same channel. Don\'t ask why, I don\'t know myself.') });
+				}).catch(error => { return warnUser(message, strings.COMMAND_URL_ONLY_SAME_CHANNEL) });
 			}
 
 			// Image URL
@@ -51,7 +51,7 @@ module.exports = {
 				if (args[1].endsWith('.png') || args[1].endsWith('.jpeg') || args[1].endsWith('.jpg') || args[1].endsWith('.gif')) {
 					DATA = args[1];
 					return magnify(message, FACTOR, DATA);
-				} else return warnUser(message,`Image extension is not supported`)
+				} else return warnUser(message, strings.COMMAND_INVALID_EXTENSION)
 			}
 
 			// Discord message ID
@@ -61,12 +61,12 @@ module.exports = {
 						DATA = msg.attachments.first().url;
 						return magnify(message, FACTOR, DATA);
 					}
-					else return warnUser(message,`The message from the provided ID does not have any image attached.`);
+					else return warnUser(message, strings.COMMAND_ID_IMAGE_NOT_ATTACHED);
 				}).catch(error => {
 					return warnUser(message,error);
 				})
 			}
-		} else return warnUser(message,`You did not provide any arguments.`);
+		} else return warnUser(message, strings.MAGNIFY_NO_ARGS_GIVEN);
 
 		async function PreviousImage(FACTOR) {
 			var found = false;
