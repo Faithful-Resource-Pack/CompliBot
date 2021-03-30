@@ -70,7 +70,6 @@ let pushToGithub = new cron.CronJob('10 0 * * *', async () => {
 	await getResults(client, settings.C64_RESULTS);
 
 	await doPush();	// Push them trough GitHub
-	//await autoPush('Compliance-Resource-Pack', 'JSON', 'main', `Daily update`, `./json`); // now done in doPush()
 });
 
 // Moderation timeout check : (each 30s)
@@ -98,11 +97,10 @@ client.on('ready', async () => {
 	];
 
 	if (process.env.MAINTENANCE.toLowerCase() === 'true') client.user.setPresence({ activity: { name: 'maintenance' }, status: 'dnd' });
-	else client.user.setActivity('Detroit: Become Human', {type: 'PLAYING'});
-	/*else setInterval(() => {
+	else setInterval(() => {
 		var activity = activities_list[Math.floor(Math.random()*activities_list.length)]
 		client.user.setActivity(activity, {type: 'PLAYING'});
-	}, 600000);*/
+	}, 600000);
 
 	/*
 	 * ENABLE TEXTURE SUBMISSION PROCESS
@@ -412,9 +410,10 @@ client.on('messageDelete', async message => {
 	//if (message.guild.id == settings.C32_ID) logs(client, settings.C32_ID, undefined, message, true);
 });
 
-// Login the bot
-client.login(process.env.CLIENT_TOKEN).catch(console.error);
 
 }).catch(error => {
 	console.trace(error)
 })
+
+// Login the bot
+client.login(process.env.CLIENT_TOKEN).catch(console.error);

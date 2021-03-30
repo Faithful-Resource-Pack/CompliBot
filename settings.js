@@ -16,7 +16,7 @@ const C32_SUBMIT_1B     = '803652559922266192';	// #submit-bedrock
 const C32_SUBMIT_2      = '774220983044669450';	// #council-voting
 const C32_SUBMIT_3      = '780507681987100682';	// #texture-revote
 const C32_RESULTS       = '780507804317384744';	// #texture-results
-const C32_AUTOPUSH_FAIL = '773989840286777345'; // #private
+const C32_AUTOPUSH_FAIL = '779363363158229004'; // #council-talk
 
 // Compliance 64x
 const C64_IMG           = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Discord-Bot/master/images/Logos/Compliance%2064x.png';
@@ -29,7 +29,7 @@ const C64_SUBMIT_1B     = '803655327798132757';	// #submit-bedrock
 const C64_SUBMIT_2      = '797780897805238282';	// #council-voting
 const C64_SUBMIT_3      = '797649484259524648';	// #texture-revote
 const C64_RESULTS       = '797648495804678154';	// #texture-results
-const C64_AUTOPUSH_FAIL = '747817813636284490'; // #private
+const C64_AUTOPUSH_FAIL = '797780954626261022'; // #council-talk
 
 // Compliance Addons
 const CADDONS_IMG          = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Discord-Bot/master/images/Logos/Compliance%20Addons.png';

@@ -2,6 +2,13 @@
 ---------------------------------------
 ### March 2021
 
+#### March 30th 2021
+> Juknum
+
+- Fixed `/contributor` command, now works properly, now use flags.
+- Fixed contributor adding inside texture process (need to be verified).
+- Modified fallback channel from `#private` to `#council-talk`.
+
 #### March 29th 2021
 > Juknum
 

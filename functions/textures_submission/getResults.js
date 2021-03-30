@@ -95,52 +95,14 @@ async function getResults(client, inputID, OFFSET_DAY = 0) {
 					for (var i = 0; i < texturesBedrock.length; i++) {
 						// search corresponding texture inside bedrock.json
 						if (texturesBedrock[i].version[strings.LATEST_MC_BE_VERSION].includes(search)) {
-
-							// Add author to bedrock
-							if (textureSize == 32) {
-								if (texturesBedrock[i].c32.author == undefined) texturesBedrock[i].c32.author = [textureAuthorID];
-								else if (!texturesBedrock[i].c32.author.includes(textureAuthorID)) texturesBedrock[i].c32.author.push(textureAuthorID);
-								if (!texturesBedrock[i].c32.date == undefined) texturesBedrock[i].c32.date = date();
-							}
-							if (textureSize == 64) {
-								if (texturesBedrock[i].c32.author == undefined) texturesBedrock[i].c32.author = [textureAuthorID];
-								else if (!texturesBedrock[i].c32.author.includes(textureAuthorID)) texturesBedrock[i].c32.author.push(textureAuthorID);
-								if (!texturesBedrock[i].c32.date == undefined) texturesBedrock[i].c32.date = date();
-							}
-							
 							// Download texture to bedrock local file
 							await download_branch(message.embeds[0].image.url, texturesBedrock[i].version['1.16.210'], textureSize, textureName, '1.16.210', 'bedrock');
-							
 							break; // break if file is found (stop the for loop & avoid double push)
 						}
 					}
 				}
 
-				// Add author to java
-				if (textureSize == 32 && textureType == 'java') {
-					if (texturesJava[textureIndex].c32.author == undefined) texturesJava[textureIndex].c32.author = [textureAuthorID];
-					else if (!texturesJava[textureIndex].c32.author.includes(textureAuthorID)) texturesJava[textureIndex].c32.author.push(textureAuthorID);
-					if (!texturesJava[textureIndex].c32.date == undefined) texturesJava[textureIndex].c32.date = date();
-
-				}
-				if (textureSize == 64 && textureType == 'java') {
-					if (texturesJava[textureIndex].c64.author == undefined) texturesJava[textureIndex].c64.author = [textureAuthorID];
-					else if (!texturesJava[textureIndex].c64.author.includes(textureAuthorID)) texturesJava[textureIndex].c64.author.push(textureAuthorID);
-					if (!texturesJava[textureIndex].c64.date == undefined) texturesJava[textureIndex].c64.date = date();
-				}
-
-
-				// Add author to bedrock
-				if (textureSize == 32 && textureType == 'bedrock') {
-					if (texturesBedrock[textureIndex].c32.author == undefined) texturesBedrock[textureIndex].c32.author = [textureAuthorID];
-					else if (!texturesBedrock[textureIndex].c32.author.includes(textureAuthorID)) texturesBedrock[textureIndex].c32.author.push(textureAuthorID);
-					if (!texturesBedrock[textureIndex].c32.date == undefined) texturesBedrock[textureIndex].c32.date = date();
-				}
-				if (textureSize == 64 && textureType == 'bedrock') {
-					if (texturesBedrock[textureIndex].c64.author == undefined) texturesBedrock[textureIndex].c64.author = [textureAuthorID];
-					else if (!texturesBedrock[textureIndex].c64.author.includes(textureAuthorID)) texturesBedrock[textureIndex].c64.author.push(textureAuthorID);
-					if (!texturesBedrock[textureIndex].c64.date == undefined) texturesBedrock[textureIndex].c64.date = date();
-				}
+				await setAuthor(textureType, textureIndex, textureAuthorID, textureSize)
 
 				// Download files to local folder
 				if (textureType == 'java') {
@@ -215,6 +177,47 @@ async function errorAutoPush(client, inputID, message, author, name, folder, typ
 		else embed.setImage(message.embeds[0].image.url);
 
 	await errorChannel.send(embed)
+}
+
+async function setAuthor(valType, valIndex, valAuth, valSize) {
+	let fileHandle;
+	let fileHandle2;
+	let textures;
+
+	if (valType == 'java')    fileHandle = jsonContributionsJava;
+	if (valType == 'bedrock') fileHandle = jsonContributionsBedrock;
+
+	textures = await fileHandle.read();
+
+	if (valSize == 32) {
+		if (!textures[valIndex].c32.date) textures[valIndex].c32.date = date();
+		if (!textures[valIndex].c32.author) textures[valIndex].c32.author = [valAuth];
+		else if (!textures[valIndex].c32.author.includes(valAuth)) textures[valIndex].c32.author.push(valAuth);
+	}
+	if (valSize == 64) {
+		if (!textures[valIndex].c64.date) textures[valIndex].c64.date = date();
+		if (!textures[valIndex].c64.author) textures[valIndex].c64.author = [valAuth];
+		else if (!textures[valIndex].c64.author.includes(valAuth)) textures[valIndex].c64.author.push(valAuth);
+	}
+
+	if (valType == 'java' && textures[valIndex].isBedrock) {
+		fileHandle2 = jsonContributionsBedrock;
+		texturesBedrock = await fileHandle2.read();
+
+		for (const i in texturesBedrock) {
+			if (texturesBedrock[i].version[strings.LATEST_MC_BE_VERSION].includes(textures[valIndex].bedrock[strings.LATEST_MC_BE_VERSION])) {
+				fileHandle2.release(); // need to be before recursive to avoid infinite task
+				await setAuthor('bedrock', i, valAuth, valSize)
+				break;
+			}
+		}
+	}
+
+	if (valType == 'java')    await jsonContributionsJava.write(textures);
+	if (valType == 'bedrock') await jsonContributionsBedrock.write(textures);
+
+	fileHandle.release();
+
 }
 
 exports.getResults = getResults;

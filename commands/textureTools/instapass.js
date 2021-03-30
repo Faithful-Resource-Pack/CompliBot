@@ -104,7 +104,7 @@ module.exports = {
 					const embed = new Discord.MessageEmbed()
 						.setTitle(`Instapassed texture:`)
 						.setColor(colors.COUNCIL)
-						.setDescription(`The council has decided to instapassed this [texture](${valURL})`);
+						.setDescription(`The council has decided to instapass this [texture](${valURL})`);
 
 					await message.channel.send(embed);
 					if (!message.deleted) message.delete();

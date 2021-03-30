@@ -108,18 +108,6 @@ module.exports = {
 						settings.C64_IMG,
 						settings.C32_COLOR
 					);
-					/*const embed = new Discord.MessageEmbed()
-						.setTitle('Compliance 64x sites:')
-						.addFields(
-							{ name: 'Website:', value: 'https://compliancepack.net/#compliance-64x'},
-							{ name: 'CurseForge:', value: 'https://www.curseforge.com/minecraft/texture-packs/compliance-64x'},
-							{ name: 'Planet Minecraft:', value: 'https://www.planetminecraft.com/texture-pack/compliance-64x/'},
-							{ name: 'Alternative Environment:', value: 'https://www.curseforge.com/minecraft/texture-packs/compliance-64x-alternative-environment-add-on'},
-						)
-						.setThumbnail(settings.C64_IMG)
-						.setColor(settings.C32_COLOR)
-						.setFooter('Compliance 64x', settings.C64_IMG);
-					await message.channel.send(embed);*/
 				//Other servers
 				} else return warnUser(message,strings.WEBSITE_NO_SITE_REGISTERED);
     		} else return warnUser(message,strings.WEBSITE_PROVIDE_VALID_ARGUMENT);
