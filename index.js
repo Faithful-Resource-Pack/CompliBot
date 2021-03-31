@@ -97,10 +97,11 @@ client.on('ready', async () => {
 	];
 
 	if (process.env.MAINTENANCE.toLowerCase() === 'true') client.user.setPresence({ activity: { name: 'maintenance' }, status: 'dnd' });
-	else setInterval(() => {
+	else client.user.setActivity('Detroit: Become Human', {type: 'PLAYING'});
+	/*else setInterval(() => {
 		var activity = activities_list[Math.floor(Math.random()*activities_list.length)]
 		client.user.setActivity(activity, {type: 'PLAYING'});
-	}, 600000);
+	}, 600000);*/
 
 	/*
 	 * ENABLE TEXTURE SUBMISSION PROCESS

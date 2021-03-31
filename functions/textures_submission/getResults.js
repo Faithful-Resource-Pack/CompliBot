@@ -10,14 +10,6 @@ const { getMessages } = require('../getMessages.js');
 const { jsonContributionsBedrock, jsonContributionsJava } = require('../../helpers/fileHandler.js');
 
 async function getResults(client, inputID, OFFSET_DAY = 0) {
-
-	// get contributor files:
-	var texturesBedrock = await jsonContributionsBedrock.read();
-	var texturesJava    = await jsonContributionsJava.read();
-
-	// invisible try
-	try {
-
 	// set offset (used for development);
 	var offsetDate = new Date();
 	offsetDate.setDate(offsetDate.getDate() - OFFSET_DAY);
@@ -26,6 +18,9 @@ async function getResults(client, inputID, OFFSET_DAY = 0) {
 	let messages = await getMessages(client, inputID);
 
 	for (var i in messages) {
+		var texturesBedrock = await jsonContributionsBedrock.read();
+		var texturesJava    = await jsonContributionsJava.read();
+
 		let message     = messages[i];
 		let messageDate = new Date(message.createdTimestamp);
 
@@ -52,6 +47,8 @@ async function getResults(client, inputID, OFFSET_DAY = 0) {
 			var folder = undefined;
 			var search = undefined;
 
+			// get contributor files:
+
 			if (textureType == 'java') {
 				if (textureFolder.includes('realms')) {
 					folder = textureFolder.replace('realms/textures/','');
@@ -69,7 +66,8 @@ async function getResults(client, inputID, OFFSET_DAY = 0) {
 						break;
 					}
 				}
-			} else if (textureType == 'bedrock') {
+			} 
+			else if (textureType == 'bedrock') {
 				folder = textureFolder.replace('textures/','');
 				search = `textures/${folder}/${textureName}`;
 					for (var i = 0; i < texturesBedrock.length; i++) {
@@ -81,6 +79,7 @@ async function getResults(client, inputID, OFFSET_DAY = 0) {
 					}
 				}
 			} else errorAutoPush(client, inputID, message, textureAuthor, textureName, textureFolder, textureType, `No Resource Pack type set up!`);
+
 
 			if (textureIndex == -1 && (textureType == 'java' || textureType == 'bedrock')) {
 				errorAutoPush(client, inputID, message, textureAuthor, textureName, textureFolder, textureType, `Texture not found, check spelling or folder`);
@@ -102,8 +101,6 @@ async function getResults(client, inputID, OFFSET_DAY = 0) {
 					}
 				}
 
-				await setAuthor(textureType, textureIndex, textureAuthorID, textureSize)
-
 				// Download files to local folder
 				if (textureType == 'java') {
 
@@ -123,17 +120,21 @@ async function getResults(client, inputID, OFFSET_DAY = 0) {
 				else if (textureType == 'bedrock') {
 					await download_branch(message.embeds[0].image.url, texturesBedrock[textureIndex].version['1.16.210'], textureSize, textureName, '1.16.210', 'bedrock');
 				}
+
+				
 			}
 		}
-	}
 
-	await jsonContributionsBedrock.write(texturesBedrock);
-	await jsonContributionsJava.write(texturesJava);
-
-	// invisible catch
-	} catch(_error) {
 		jsonContributionsJava.release();
 		jsonContributionsBedrock.release();
+		if (textureIndex != -1 && (textureType == 'java' || textureType == 'bedrock')) await setAuthor(textureType, textureIndex, textureAuthorID, textureSize)
+	}
+
+	try {
+		jsonContributionsJava.release();
+		jsonContributionsBedrock.release();
+	} catch(e) {
+		console.log(e);
 	}
 }
 
