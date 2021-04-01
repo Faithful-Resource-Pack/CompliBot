@@ -133,7 +133,7 @@ module.exports = {
       const emoji_num = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟', '🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮', '🇯'];
 
       var embed = new Discord.MessageEmbed()
-				.setAuthor('Note: this command isn\'t updated for 21w13a yet')
+				//.setAuthor('Note: this command isn\'t updated for 21w13a yet')
         .setTitle(results.length + ' results for "' + args[1] + '" in ' + args[0].replace('b', " Bedrock"))
         .setFooter('CompliBot', settings.BOT_IMG);
 
@@ -175,7 +175,7 @@ module.exports = {
     function getTexture(type, name, index) {
       var imgURL = undefined;
 
-      if (type == '16') imgURL = 'https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/21w11a/assets/' + name;
+      if (type == '16') imgURL = 'https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/21w13a/assets/' + name;
       if (type == '32') imgURL = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-32x/Jappa-1.17/assets/' + name;
       if (type == '64') imgURL = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-64x/Jappa-1.17/assets/' + name;
 
@@ -188,7 +188,7 @@ module.exports = {
           const size = dimension.width + 'x' + dimension.height;
 
           var embed = new Discord.MessageEmbed()
-						.setAuthor('Note: this command isn\'t updated for 21w13a yet')
+						//.setAuthor('Note: this command isn\'t updated for 21w13a yet')
             .setTitle(name)
             .setColor(colors.BLUE)
             .setURL(imgURL)

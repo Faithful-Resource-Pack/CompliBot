@@ -97,7 +97,7 @@ client.on('ready', async () => {
 	];
 
 	if (process.env.MAINTENANCE.toLowerCase() === 'true') client.user.setPresence({ activity: { name: 'maintenance' }, status: 'dnd' });
-	else client.user.setActivity('Detroit: Become Human', {type: 'PLAYING'});
+	else client.user.setActivity('ඞ ඞ ඞ ඞ ඞ ඞ ඞ', {type: 'PLAYING'});
 	/*else setInterval(() => {
 		var activity = activities_list[Math.floor(Math.random()*activities_list.length)]
 		client.user.setActivity(activity, {type: 'PLAYING'});
