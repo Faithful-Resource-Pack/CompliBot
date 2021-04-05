@@ -12,6 +12,7 @@ module.exports = {
 	guildOnly: true,
 	uses: strings.COMMAND_USES_DEVS,
 	syntax: `${prefix}say [message] [attach a file]`,
+	example: `${prefix}say hello there`,
 	async execute(client, message, args) {
 		if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD) {
 			if (!args.length) return await message.reply(strings.SAY_NOT_SPECIFIED);

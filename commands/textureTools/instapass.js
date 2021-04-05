@@ -63,10 +63,6 @@ module.exports = {
 						if (valType == 'bedrock') valRepo = 'Compliance-Bedrock-64x';
 					}
 
-					// debug:
-					valRepo = 'Compliance-Java-32x';
-					valSize = 32;
-
 					let valPath = `${folder}/${name}.png`;
 
 					if (valType == 'java') {

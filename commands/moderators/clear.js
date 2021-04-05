@@ -11,6 +11,7 @@ module.exports = {
 	guildOnly: true,
 	uses: strings.COMMAND_USES_MODS,
 	syntax: `${prefix}clear <amount>`,
+	example: `${prefix}clear 10`,
 	async execute(client, message, args) {
 
 		if (message.member.hasPermission('ADMINISTRATOR')) {

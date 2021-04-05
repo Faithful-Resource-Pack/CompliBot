@@ -16,6 +16,7 @@ module.exports = {
 	guildOnly: false,
 	uses: strings.COMMAND_USES_DEVS,
 	syntax: `${prefix}reload <command>`,
+	example: `${prefix}reload magnify`,
 	args: true,
 	async execute(client, message, args) {
 		if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD) {

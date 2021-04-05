@@ -12,6 +12,7 @@ module.exports = {
 	guildOnly: true,
 	uses: strings.COMMAND_USES_MODS,
 	syntax: `${prefix}slowmode <time in seconds/off/disable/stop>`,
+	example: `${prefix}slowmode 10`,
 	async execute(client, message, args) {
 
 		if (message.member.hasPermission('MANAGE_CHANNELS')) {

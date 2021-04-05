@@ -17,6 +17,7 @@ module.exports = {
 	guildOnly: true,
 	uses: strings.COMMAND_USES_MODS,
 	syntax: `${prefix}warn <@user> <reason>`,
+	example: `${prefix}warn @Juknum#6148 breaking the bot`,
 	async execute(client, message, args) {
 
 		if (message.member.hasPermission('BAN_MEMBERS')) {

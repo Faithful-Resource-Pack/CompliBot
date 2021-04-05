@@ -8,6 +8,7 @@ module.exports = {
 	guildOnly: false,
 	uses: strings.COMMAND_USES_ANYONE,
 	syntax: `${prefix}order <pizza/66/help>`,
+	example: `${prefix}order pizza`,
 	async execute(client, message, args) {
     if (args == '66') return await message.channel.send("https://media1.tenor.com/images/fb7250a2ef993a37e9c7f48af760821c/tenor.gif");
 		else if (args == 'help') return await message.channel.send('https://i.giphy.com/media/WNJGAwRW1LFG5T4qOs/giphy.webp');

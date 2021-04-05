@@ -18,6 +18,7 @@ module.exports = {
 	guildOnly: true,
 	uses: strings.COMMAND_USES_MODS,
 	syntax: `${prefix}unmute <@user> <reason>`,
+	example: `${prefix}unmute @Domi#5813 not posting memes in #general`,
 	async execute(client, message, args) {
 
 		if (message.member.hasPermission('BAN_MEMBERS')) {

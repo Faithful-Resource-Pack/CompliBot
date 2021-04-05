@@ -12,7 +12,6 @@ module.exports = {
 	guildOnly: false,
 	uses: strings.COMMAND_USES_DEVS,
 	syntax: `${prefix}behave`,
-
 	async execute(client, message, args) {
 		if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD) {
 			await message.channel.send(strings.BEHAVE_ANSWER);

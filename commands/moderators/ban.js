@@ -13,6 +13,7 @@ module.exports = {
 	guildOnly: true,
 	uses: strings.COMMAND_USES_MODS,
 	syntax: `${prefix}ban <@user> <reason>`,
+	example: `${prefix}ban @RobertR11#7841 breaking rule 69`,
 	async execute(client, message, args) {
 		const member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
     const reason = args.slice(1).join(' ') || 'Not Specified';

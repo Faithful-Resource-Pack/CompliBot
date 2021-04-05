@@ -1,5 +1,3 @@
-// Lipton Sparkling Ice Tea Classic 0,33L
-
 // Libs:
 require('dotenv').config();
 const Discord   = require('discord.js');
@@ -21,7 +19,6 @@ const { updateMembers }  = require('./functions/updateMembers.js');
 const { walkSync }       = require('./functions/walkSync');
 
 const { quote }    = require('./functions/quote');
-//const { logs }     = require('./functions/logs');
 const { warnUser } = require('./functions/warnUser.js');
 
 const { textureSubmission } = require('./functions/textures_submission/textureSubmission.js');
@@ -50,16 +47,16 @@ const settings     = require('./settings');
 // Texture submission process: (each day at 00:00 GMT)
 let scheduledFunctions = new cron.CronJob('0 0 * * *', async () => {
 	// C32x
-	await textureSubmission(client, settings.C32_SUBMIT_1,  settings.C32_SUBMIT_2, 5);							// 5 DAYS OFFSET
-	await textureSubmission(client, settings.C32_SUBMIT_1B, settings.C32_SUBMIT_2, 5);							// 5 DAYS OFFSET
+	await textureSubmission(client, settings.C32_SUBMIT_1,  settings.C32_SUBMIT_2, 5);												// 5 DAYS OFFSET
+	await textureSubmission(client, settings.C32_SUBMIT_1B, settings.C32_SUBMIT_2, 5);												// 5 DAYS OFFSET
 	await    textureCouncil(client, settings.C32_SUBMIT_2,  settings.C32_SUBMIT_3, settings.C32_RESULTS, 1);	// 1 DAYS OFFSET
-	await     textureRevote(client, settings.C32_SUBMIT_3,  settings.C32_RESULTS,  3);							// 3 DAYS OFFSET
+	await     textureRevote(client, settings.C32_SUBMIT_3,  settings.C32_RESULTS,  3);												// 3 DAYS OFFSET
 	
 	// C64x
-	await textureSubmission(client, settings.C64_SUBMIT_1,  settings.C64_SUBMIT_2, 5);							// 5 DAYS OFFSET
-	await textureSubmission(client, settings.C64_SUBMIT_1B, settings.C64_SUBMIT_2, 5);							// 5 DAYS OFFSET
+	await textureSubmission(client, settings.C64_SUBMIT_1,  settings.C64_SUBMIT_2, 5);												// 5 DAYS OFFSET
+	await textureSubmission(client, settings.C64_SUBMIT_1B, settings.C64_SUBMIT_2, 5);												// 5 DAYS OFFSET
 	await    textureCouncil(client, settings.C64_SUBMIT_2,  settings.C64_SUBMIT_3, settings.C64_RESULTS, 1);	// 1 DAYS OFFSET
-	await     textureRevote(client, settings.C64_SUBMIT_3,  settings.C64_RESULTS,  3);							// 3 DAYS OFFSET
+	await     textureRevote(client, settings.C64_SUBMIT_3,  settings.C64_RESULTS,  3);												// 3 DAYS OFFSET
 	
 });
 
@@ -75,9 +72,6 @@ let pushToGithub = new cron.CronJob('10 0 * * *', async () => {
 // Moderation timeout check : (each 30s)
 setInterval(function() {checkTimeout(client)},30000)
 
-// Ah, ha, ha, ha, stayin' alive, stayin' alive
-// Ah, ha, ha, ha, stayin' alive
-// Corona says no ~Domi04151309
 const server = http.createServer((req, res) => {
 	res.writeHead(302, {
 		'Location': 'https://compliancepack.net/'
@@ -86,22 +80,24 @@ const server = http.createServer((req, res) => {
 });
 server.listen(3000, () => console.log(`listening at http://localhost:${port}`));
 
+/*
+ * COMMAND HANDLER
+ * - Automated: /commands & below
+ * - Easter Eggs & others: below
+ */
+let commands = [];
+for (const file of commandFiles) {
+	const command = require(file);
+	client.commands.set(command.name, command);
+	commands.push(command.name);
+}
+// console.table(commands); // DEBUG
+
 // Bot status:
 client.on('ready', async () => {
-	/*const activities_list = [
-		"compliancepack.net",
-		"Bot Simulator 2077",
-		"Minecraft with Compliance 32x",
-		"Minecraft with Compliance 64x",
-		"Detroit: Become Human"
-	];*/
 
 	if (process.env.MAINTENANCE.toLowerCase() === 'true') client.user.setPresence({ activity: { name: 'maintenance' }, status: 'dnd' });
-	else client.user.setActivity('Minecraft', {type: 'PLAYING'});
-	/*else setInterval(() => {
-		var activity = activities_list[Math.floor(Math.random()*activities_list.length)]
-		client.user.setActivity(activity, {type: 'PLAYING'});
-	}, 600000);*/
+	else client.user.setActivity('https://compliancepack.net/', {type: 'PLAYING'});
 
 	/*
 	 * ENABLE TEXTURE SUBMISSION PROCESS
@@ -114,7 +110,7 @@ client.on('ready', async () => {
 	 */
 	updateMembers(client, settings.CTWEAKS_ID, settings.CTWEAKS_COUNTER);
 
-	console.log(`--------------------------------------------------------------\n\n\n─=≡Σ((( つ◕ل͜◕)つ\nJavaScript is a pain, but I'm fine, I hope...\n\n\n--------------------------------------------------------------\n`);
+	console.log(`\n\n─=≡Σ((( つ◕ل͜◕)つ\nJavaScript is a pain, but I'm fine, I hope...\n\n\n--------------------------------------------------------------\n`);
 
 	// get out if no channel, no cache or empty cache
 	if(client.channels === undefined || client.channels.cache === undefined || client.channels.cache.length === 0) return;
@@ -194,17 +190,6 @@ client.on('guildDelete', async guild =>{
 
 /*
  * COMMAND HANDLER
- * - Automated: /commands & below
- * - Easter Eggs & others: below
- */
-for (const file of commandFiles) {
-	const command = require(file);
-	client.commands.set(command.name, command);
-	console.log(`Loaded command: ${command.name}`);
-}
-
-/*
- * COMMAND HANDLER
  */
 client.on('message', async message => {
 	if (!message.content.startsWith(prefix) || message.author.bot) return; // Avoid message WITHOUT prefix & bot messages
@@ -264,19 +249,14 @@ client.on('message', async message => {
  * EASTER EGGS & CUSTOM COMMANDS:
  */
 client.on('message', async message => {
-	/*for (var i = 0; i < warnList.length; i++) {
+	for (var i = 0; i < warnList.length; i++) {
 		if (warnList[i].user == message.author.id && warnList[i].muted == true) {
 			//message.delete();
 			addMutedRole(client, message.author.id);
 		}
-	}*/
+	}
 
 	if (message.content.startsWith(prefix) || message.author.bot) return; // Avoid message WITH prefix & bot messages
-
-	/*
-	 * Mod Assistance
-	 */
-	//keywordsDetection(client, message);
 
 	/*
 	 * Funny Stuff
@@ -386,11 +366,6 @@ client.on('messageUpdate', async (oldMessage, newMessage) => {
 	if (newMessage.content.startsWith(prefix) || newMessage.author.bot) return; // Avoid message WITH prefix & bot messages
 
 	/*
-	 * MODERATION
-	 */
-	//keywordsDetection(client, newMessage);
-
-	/*
 	 * MESSAGE URL QUOTE
 	 * when someone sends a message with https://discord.com/channels/<server ID>/<channel ID>/<message ID>
 	 */
@@ -405,11 +380,8 @@ client.on('messageUpdate', async (oldMessage, newMessage) => {
 
 client.on('messageDelete', async message => {
 	if (message.content.startsWith(prefix) || message.author.bot) return; // Avoid message WITH prefix & bot messages
-	/*
-	 * MESSAGE LOGS : 
-	*/
-	//if (message.guild.id == settings.C64_ID) logs(client, settings.C64_ID, undefined, message, true);
-	//if (message.guild.id == settings.C32_ID) logs(client, settings.C32_ID, undefined, message, true);
+	
+	// unused
 });
 
 
