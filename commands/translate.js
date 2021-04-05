@@ -1,7 +1,7 @@
 const prefix = process.env.PREFIX;
 
 const Discord       = require('discord.js');
-const { translate } = require('bing-translate-api');
+const translate = require('@vitalets/google-translate-api');
 
 const strings  = require('../res/strings');
 const colors   = require('../res/colors');
@@ -29,18 +29,18 @@ module.exports = {
 
 			if (args[0].length < 2) return warnUser(message, 'This language doesn\'t exist!');
 
-			const result = await translate(args.slice(1).join(' '), null, args[0], false);
+			const result = await translate(args.slice(1).join(' '), {to: args[0]});
 
 			args.shift()
 			const embed = new Discord.MessageEmbed()
 				.setAuthor(`${message.author.tag} translated: ${truncate(args.join(' '), 78+message.author.tag.length)}`, message.author.displayAvatarURL())
-				.setDescription(`\`\`\`${result.translation}\`\`\``)
+				.setDescription(`\`\`\`${result.text}\`\`\``)
 				.setColor(colors.BLUE)
-				.setFooter(`${result.language.from} → ${result.language.to}`, settings.BOT_IMG);
+				.setFooter(`${result.from.language.iso} → ${args[0]}`, settings.BOT_IMG);
 				
 			const embedMessage = await message.channel.send(embed);
 
-			if (result.translation.includes('sus')) {
+			if (result.text.includes('sus')) {
 				if (message.guild.id == settings.C32_ID) await embedMessage.react('814877213857546270');
 				if (message.guild.id == '720677267424018526') await embedMessage.react('821052515989979206');
 			}

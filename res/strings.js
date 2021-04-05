@@ -37,6 +37,7 @@ const HELP_DESC_BEHAVE = '(⌯˃̶᷄ ﹏ ˂̶᷄⌯)';
 const HELP_DESC_ORDER  = 'Order something';
 const HELP_DESC_SAY    = 'Make the bot send any message you specify';
 
+const HELP_DESC_BAN      = 'Ban a user from the current Discord server';
 const HELP_DESC_CLEAR    = 'Clear messages in a channel';
 const HELP_DESC_EMBED    = 'Modify an embed';
 const HELP_DESC_MUTE     = 'Mute someone';
@@ -83,6 +84,12 @@ const BEHAVE_ANSWER = 'I\'m so sorry! (⌯˃̶᷄ ﹏ ˂̶᷄⌯)';
 
 // Say command
 const SAY_NOT_SPECIFIED = 'You haven\'t specified a message to send.';
+
+// Ban command
+const BAN_CANT_BAN_SELF     = 'You can\'t ban yourself!';
+const BAN_SPECIFY_USER      = 'You need to specify a user to ban!';
+const BAN_BOT_NO_PERMISSION = 'I don\'t have enough permissions to ban users! Please enable the ban permission for my role.';
+const BAN_NOT_BANNABLE      = 'This user is not able to be banned!';
 
 // Clear command
 const CLEAR_TOO_MUCH   = 'You can\'t delete more than 200 messages at once.';
@@ -188,6 +195,7 @@ module.exports = {
 	HELP_DESC_ORDER,
 	HELP_DESC_SAY,
 
+	HELP_DESC_BAN,
 	HELP_DESC_CLEAR,
 	HELP_DESC_EMBED,
 	HELP_DESC_MUTE,
@@ -229,6 +237,11 @@ module.exports = {
 	BEHAVE_ANSWER,
 
 	SAY_NOT_SPECIFIED,
+
+	BAN_CANT_BAN_SELF,
+	BAN_SPECIFY_USER,
+	BAN_BOT_NO_PERMISSION,
+	BAN_NOT_BANNABLE,
 
 	CLEAR_TOO_MUCH,
 	CLEAR_NOT_ENOUGH,

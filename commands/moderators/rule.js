@@ -1,14 +1,15 @@
 const prefix = process.env.PREFIX;
 
 const Discord  = require("discord.js");
-const settings = require('../settings.js');
-const strings  = require('../res/strings');
-const colors   = require('../res/colors');
-const { warnUser } = require('../functions/warnUser.js');
+const settings = require('../../settings.js');
+const strings  = require('../../res/strings');
+const colors   = require('../../res/colors');
+
+const { warnUser } = require('../../functions/warnUser.js');
 
 const EDIT = {
-	date: '28/03/2021',
-	description: 'Rules can now be seen using the `/rule <n°>` command.',
+	date: '02.04.2021',
+	description: 'Merged rule 10 and 12 (now rule 11) as they are very similar.',
 	enabled: true
 }
 
@@ -51,18 +52,14 @@ const RULES = [
 	},
 	{
 		emoji: '🔟',
-		sentence: 'Respect channels for what they are made.'
-	},
-	{
-		emoji: '1️⃣1️⃣',
 		sentence: 'Don\'t ask to ask, please read FAQ first & ask after.'
 	},
 	{
-		emoji: '1️⃣2️⃣',
+		emoji: '1️⃣1️⃣',
 		sentence: 'Stay on topic. There are multiple channels with different purposes for a reason.'
 	},
 	{
-		emoji: '1️⃣3️⃣',
+		emoji: '1️⃣2️⃣',
 		sentence: 'Preferably no talk about why we moved, that is explained in `#faq`'
 	}
 ]
@@ -72,11 +69,13 @@ module.exports = {
 	aliases: [ 'rules' ],
 	description: strings.HELP_DESC_RULES,
 	guildOnly: true,
-	uses: strings.ANYONE,
+	uses: strings.COMMAND_USES_MODS,
 	syntax: `${prefix}rule <n>`,
 	flags: '',
 	example: `${prefix}rule 1`,
 	async execute(client, message, args) {
+
+		if (!message.member.hasPermission('ADMINISTRATOR')) return warnUser(message,strings.COMMAND_NO_PERMISSION)
 
 		let thumbnail = settings.BOT_IMG;
 		let color     = colors.COUNCIL;
@@ -124,33 +123,31 @@ module.exports = {
 		}
 
 		else if (rule == -1) {
-			if (message.member.hasPermission('ADMINISTRATOR')) {
-				var embed = new Discord.MessageEmbed()
-					.setTitle(`Rules of the Compliance Discord's Servers`)
+			var embed = new Discord.MessageEmbed()
+				.setTitle(`Rules of the Compliance Discord's Servers`)
+				.setColor(color)
+				.setThumbnail(thumbnail)
+				.setFooter(`The rules are subject to change, last edited: ${EDIT.date}`, thumbnail);
+
+			for (let i = 0; i < RULES.length; i++) {
+				embed.addFields({
+					name:  RULES[i].emoji,
+					value: RULES[i].sentence
+				});
+			}
+
+			await message.channel.send(embed);
+
+			if (EDIT.enabled) {
+				const embedChanges = new Discord.MessageEmbed()
+					.setTitle(`Latest changes as of ${EDIT.date}`)
 					.setColor(color)
-					.setThumbnail(thumbnail)
-					.setFooter(`The rules are subject to change, last edited: ${EDIT.date}`, thumbnail);
+					.setDescription(EDIT.description);
 
-				for (let i = 0; i < RULES.length; i++) {
-					embed.addFields({
-						name:  RULES[i].emoji,
-						value: RULES[i].sentence
-					});
-				}
+				await message.channel.send(embedChanges);
+			}
 
-				await message.channel.send(embed);
-
-				if (EDIT.enabled) {
-					const embedChanges = new Discord.MessageEmbed()
-						.setTitle(`Latest changes as of ${EDIT.date}`)
-						.setColor(color)
-						.setDescription(EDIT.description);
-
-					await message.channel.send(embedChanges);
-				}
-
-				if (!message.deleted) await message.delete();
-			} else return warnUser(message, 'You are not allowed to send all rules at once.');
+			if (!message.deleted) await message.delete();
 		}
 
 		// number is out of range

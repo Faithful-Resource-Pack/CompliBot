@@ -11,7 +11,7 @@ module.exports = {
 	description: strings.HELP_DESC_BEAN,
 	guildOnly: true,
 	uses: strings.COMMAND_USES_MODS,
-	syntax: `${prefix}bean <@user>`,
+	syntax: `${prefix}bean <@user> <reason>`,
 	async execute(client, message, args) {
 
 		if (message.member.hasPermission('BAN_MEMBERS')) {

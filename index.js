@@ -88,16 +88,16 @@ server.listen(3000, () => console.log(`listening at http://localhost:${port}`));
 
 // Bot status:
 client.on('ready', async () => {
-	const activities_list = [
+	/*const activities_list = [
 		"compliancepack.net",
 		"Bot Simulator 2077",
 		"Minecraft with Compliance 32x",
 		"Minecraft with Compliance 64x",
 		"Detroit: Become Human"
-	];
+	];*/
 
 	if (process.env.MAINTENANCE.toLowerCase() === 'true') client.user.setPresence({ activity: { name: 'maintenance' }, status: 'dnd' });
-	else client.user.setActivity('ඞ ඞ ඞ ඞ ඞ ඞ ඞ', {type: 'PLAYING'});
+	else client.user.setActivity('Minecraft', {type: 'PLAYING'});
 	/*else setInterval(() => {
 		var activity = activities_list[Math.floor(Math.random()*activities_list.length)]
 		client.user.setActivity(activity, {type: 'PLAYING'});
@@ -200,6 +200,7 @@ client.on('guildDelete', async guild =>{
 for (const file of commandFiles) {
 	const command = require(file);
 	client.commands.set(command.name, command);
+	console.log(`Loaded command: ${command.name}`);
 }
 
 /*
