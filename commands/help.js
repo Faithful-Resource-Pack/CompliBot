@@ -23,31 +23,28 @@ module.exports = {
 	async execute(client, message, args) {
 
 		if (args[0]) {
-			let command = args[0];
+			let command = client.commands.get(args[0]) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(args[0]));
+			
+			if (!command) return warnUser(message, 'This command/alias does not exist.');
+				
+			var aliases = '';
+			var syntax = '```' + command.syntax + '```';
+			if (command.flags) syntax += '```' + command.flags + '```';
 
-			if (client.commands.has(command)) {
-				command = client.commands.get(command);
+			if (command.aliases) {
+					for (var alias in command.aliases) {
+					aliases += '``' + prefix + command.aliases[alias] + '`` ';
+				}
+			} else aliases = 'None'
 
-				var aliases = '';
-				var syntax = '```' + command.syntax + '```';
-				if (command.flags) syntax += '```' + command.flags + '```';
+			var example = '```' + command.example + '```' || 'None';
 
-				if (command.aliases) {
-						for (var alias in command.aliases) {
-						aliases += '``' + prefix + command.aliases[alias] + '`` ';
-					}
-				} else aliases = 'None'
-
-				var example = '```' + command.example + '```' || 'None';
-
-				var embed = new Discord.MessageEmbed()
-					.setTitle(`Help: ${prefix}${command.name}`)
-					.setThumbnail(settings.BOT_IMG)
-					.setColor(colors.BLUE)
-					.setDescription(`**Description:**\n${command.description || 'No description'}\n**Can be used by:**\n${command.uses || 'Not set'}\n**Syntax:**\n${syntax}\n**Aliases:**\n${aliases}\n**Example:**\n${example}`)
-					.setFooter('CompliBot', settings.BOT_IMG);
-
-			} else return warnUser(message, 'Please provide valid commands & do not use aliases');
+			var embed = new Discord.MessageEmbed()
+				.setTitle(`Help: ${prefix}${command.name}`)
+				.setThumbnail(settings.BOT_IMG)
+				.setColor(colors.BLUE)
+				.setDescription(`**Description:**\n${command.description || 'No description'}\n**Can be used by:**\n${command.uses || 'Not set'}\n**Syntax:**\n${syntax}\n**Aliases:**\n${aliases}\n**Example:**\n${example}`)
+				.setFooter('CompliBot', settings.BOT_IMG);
 		}
 
 		if (!args[0]) {

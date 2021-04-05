@@ -2,6 +2,12 @@
 ---------------------------------------
 ### March 2021
 
+#### April 6th 2021
+> Juknum
+
+- Removed unused files.
+- `/help` now works with aliases.
+
 #### March 30th 2021
 > Juknum
 
