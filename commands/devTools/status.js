@@ -26,7 +26,7 @@ module.exports = {
 						activity: {
 							name: args.join(" ").replace(args[0],'').replace(args[1], ''),
 							type: args[0],
-							url: 'https://compliancepack.net'
+							url: 'compliancepack.net'
 						},
 						status: args[1]
 				});

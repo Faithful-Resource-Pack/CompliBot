@@ -136,7 +136,7 @@ module.exports = {
       var embed = new Discord.MessageEmbed()
 				//.setAuthor('Note: this command isn\'t updated for 21w13a yet')
         .setTitle(results.length + ' results for "' + args[1] + '" in ' + args[0].replace('b', " Bedrock"))
-        .setFooter('CompliBot', settings.BOT_IMG);
+        .setFooter(message.client.user.username, settings.BOT_IMG);
 
       var description = strings.TEXTURE_SEARCH_DESCRIPTION;
       for (var i = 0; i < results.length; i++) {

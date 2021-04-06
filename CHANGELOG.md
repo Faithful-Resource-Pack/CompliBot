@@ -8,6 +8,15 @@
 - Removed unused files.
 - `/help` now works with aliases.
 
+> RobertR11
+
+- Added examples to various commands
+- Made emoji reactions much faster
+- Added bot uptime to the `/info` command
+- Removed some client events that we aren't using
+- Use client username instead of hardcoded name on embeds
+- Removed CompliBot footer on submission embeds, because it kinda feels out of place
+
 #### March 30th 2021
 > Juknum
 

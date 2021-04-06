@@ -17,7 +17,7 @@ module.exports = {
 	name: 'profile',
 	aliases: ['p'],
 	uses: strings.COMMAND_USES_ANYONE,
-	syntax: `${prefix}profile username <Your Name>\n${prefix}profile uuid <Your MC uuid (full uuid)>\n${prefix}profile show -> Display what CompliBot know about you`,
+	syntax: `${prefix}profile username <Your Name>\n${prefix}profile uuid <Your MC uuid (full uuid)>\n${prefix}profile show -> Display what the bot knows about you`,
 	description: strings.HELP_DESC_PROFILE,
 	guildOnly: false,
 	async execute(client, message, args) {
@@ -94,7 +94,7 @@ function showProfile(username = 'None', uuid = 'None', type = 'member') {
 			{ name: 'Type',             value: type              }
 		)
 		.setColor(colors.BLUE)
-		.setFooter('CompliBot', settings.BOT_IMG);
+		.setFooter(message.client.user.username, settings.BOT_IMG);
 
 	return message.channel.send(embed);
 }

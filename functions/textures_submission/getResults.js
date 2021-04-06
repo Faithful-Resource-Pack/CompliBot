@@ -170,7 +170,7 @@ async function errorAutoPush(client, inputID, message, author, name, folder, typ
 			{ name: 'Folder:', value: folder, inline: true },
 			{ name: 'Type:',   value: type,   inline: true }
 		)
-		.setFooter('CompliBot', settings.BOT_IMG)
+		//.setFooter(message.client.user.username, settings.BOT_IMG)
 		
 		if (message.embeds[0].title) {
 			embed.setTitle(message.embeds[0].title).setURL(message.embeds[0].url);

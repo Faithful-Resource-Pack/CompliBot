@@ -41,7 +41,7 @@ async function textureRevote(client, inputID, outputID, offset) {
 					{ name: 'Type:',   value: message.embeds[0].fields[2].value, inline: true },
 					{ name: 'Percentage:', value: upvotePercentage+'% ⬆️', inline: false}
 				)
-				.setFooter('CompliBot', settings.BOT_IMG);
+				//.setFooter(message.client.user.username, settings.BOT_IMG);
 			
 			if (message.embeds[0].description != undefined) embed.addFields({ name: 'Comment:', value: message.embeds[0].fields[3].value });
 
@@ -69,7 +69,7 @@ async function textureRevote(client, inputID, outputID, offset) {
 					{ name: 'Type:',   value: message.embeds[0].fields[2].value, inline: true },
 					{ name: 'Percentage:', value: upvotePercentage+'% ⬆️ (<66.66%)', inline: false}
 				)
-				.setFooter('CompliBot', settings.BOT_IMG);
+				//.setFooter(message.client.user.username, settings.BOT_IMG);
 			
 			if (message.embeds[0].description != undefined) embed.addFields({ name: 'Comment:', value: message.embeds[0].fields[3].value });
 

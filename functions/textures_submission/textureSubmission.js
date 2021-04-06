@@ -50,7 +50,7 @@ async function textureSubmission(client, inputID, outputID, offset) {
 					{ name: 'Folder:', value: folder, inline: true },
 					{ name: 'Type:',   value: type,   inline: true }
 				)
-				.setFooter('CompliBot', settings.BOT_IMG);
+				//.setFooter(message.client.user.username, settings.BOT_IMG);
 
 			if (description != '') {
 				embed.setDescription(description);

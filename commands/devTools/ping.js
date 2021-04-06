@@ -19,7 +19,7 @@ module.exports = {
 			.setTitle('Pong!')
 			.setColor(colors.BLUE)
 			.setDescription(`Latency: ${m.createdTimestamp - message.createdTimestamp}ms \nAPI Latency: ${Math.round(client.ws.ping)}ms`)
-			.setFooter('CompliBot', settings.BOT_IMG);
+			.setFooter(message.client.user.username, settings.BOT_IMG);
 		await m.edit(embed);
 		await m.react('🗑️');
 		const filter = (reaction, user) => {

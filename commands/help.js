@@ -45,7 +45,7 @@ module.exports = {
 				.setThumbnail(settings.BOT_IMG)
 				.setColor(colors.BLUE)
 				.setDescription(`**Description:**\n${command.description || 'No description'}\n**Can be used by:**\n${command.uses || 'Not set'}\n**Syntax:**\n${syntax}\n**Aliases:**\n${aliases}\n**Example:**\n${example}`)
-				.setFooter('CompliBot', settings.BOT_IMG);
+				.setFooter(message.client.user.username, settings.BOT_IMG);
 		}
 
 		if (!args[0]) {
@@ -79,7 +79,7 @@ module.exports = {
 				.setThumbnail(settings.BOT_IMG)
 				.setColor(colors.BLUE)
 				.setDescription(string)
-				.setFooter('CompliBot', settings.BOT_IMG)
+				.setFooter(message.client.user.username, settings.BOT_IMG)
 		}
 
 		const embedMessage = await message.channel.send(embed);

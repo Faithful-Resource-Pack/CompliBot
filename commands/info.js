@@ -17,8 +17,17 @@ module.exports = {
 			await message.channel.send('Please check your dm\'s!');
 		}
 
+		let seconds = Math.floor(message.client.uptime / 1000);
+		let minutes = Math.floor(seconds / 60);
+		let hours = Math.floor(minutes / 60);
+		let days = Math.floor(hours / 24);
+
+		seconds %= 60;
+		minutes %= 60;
+		hours %= 24;
+
 		const embed = new Discord.MessageEmbed()
-			.setTitle('CompliBot Info:')
+			.setTitle(`${message.client.user.username} Info:`)
 			.setThumbnail(settings.BOT_IMG)
 			.setColor(colors.BLUE)
 			.setDescription('This is the official bot of all Compliance Resource Pack discords, developed by the Compliance Team!')
@@ -32,6 +41,7 @@ module.exports = {
 				{ name: 'And more!', value: 'If you need a full list of all my commands, then use `/help`!'},
 				{ name: '\u200B', value: '\n\nI am completely open source!\nYou can find me by [clicking here](https://github.com/Compliance-Resource-Pack/Discord-Bot).'},
 			)
+			.setFooter(`Bot Uptime: ${days} day(s), ${hours} hours, ${minutes} minutes, ${seconds} seconds`)
 
 		await message.author.send(embed);
 	}

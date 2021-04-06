@@ -368,29 +368,6 @@ client.on('message', async message => {
 	}
 });
 
-client.on('messageUpdate', async (oldMessage, newMessage) => {
-	if (newMessage.content.startsWith(prefix) || newMessage.author.bot) return; // Avoid message WITH prefix & bot messages
-
-	/*
-	 * MESSAGE URL QUOTE
-	 * when someone sends a message with https://discord.com/channels/<server ID>/<channel ID>/<message ID>
-	 */
-	if (newMessage.content.includes('https://discord.com/channels/') || newMessage.content.includes('https://discordapp.com/channels')) quote(newMessage);
-
-	/*
-	 * MESSAGE LOGS : 
-	*/
-	//if (newMessage.guild.id == settings.C64_ID) logs(client, settings.C64_ID, oldMessage, newMessage, false);
-	//if (newMessage.guild.id == settings.C32_ID) logs(client, settings.C32_ID, oldMessage, newMessage, false);
-});
-
-client.on('messageDelete', async message => {
-	if (message.content.startsWith(prefix) || message.author.bot) return; // Avoid message WITH prefix & bot messages
-	
-	// unused
-});
-
-
 }).catch(error => {
 	console.trace(error)
 })

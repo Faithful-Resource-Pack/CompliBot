@@ -38,7 +38,7 @@ async function textureCouncil(client, inputID, outputFalseID, outputTrueID, offs
 					{ name: 'Folder:',  value: message.embeds[0].fields[1].value, inline: true },
 					{ name: 'Type:',    value: message.embeds[0].fields[2].value, inline: true }
 				)
-				.setFooter('CompliBot', settings.BOT_IMG);
+				//.setFooter(message.client.user.username, settings.BOT_IMG);
 
 			if (message.embeds[0].description != undefined) embed.addFields({ name: 'Comment:', value: message.embeds[0].description });
 
@@ -62,7 +62,7 @@ async function textureCouncil(client, inputID, outputFalseID, outputTrueID, offs
 					{ name: 'Folder:',  value: message.embeds[0].fields[1].value, inline: true },
 					{ name: 'Type:',    value: message.embeds[0].fields[2].value, inline: true }
 				)
-				.setFooter('CompliBot', settings.BOT_IMG);
+				//.setFooter(message.client.user.username, settings.BOT_IMG);
 
 			if (message.embeds[0].description != undefined) embed.addFields({ name: 'Comment:', value: message.embeds[0].description });
 
