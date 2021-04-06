@@ -14,6 +14,7 @@ module.exports = {
 	guildOnly: false,
 	uses: strings.COMMAND_USES_ANYONE,
 	syntax: `${prefix}about me\n${prefix}about <userTag>\n`,
+	example: `${prefix}about Hozz#0889`,
 	async execute(client, message, args) {
 
 		var textures        = await jsonContributionsJava.read(false);

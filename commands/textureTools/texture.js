@@ -23,6 +23,7 @@ module.exports = {
   guildOnly: false,
   uses: strings.COMMAND_USES_ANYONE,
   syntax: `${prefix}texture <16/32/64> <texture_name>\n${prefix}texture <16/32/64> <_name>\n${prefix}texture <16/32/64> </folder/>`,
+	example: `${prefix}texture 16 dirt`,
   async execute(client, message, args) {
 
 		//if (message.author.id != uidR) return warnUser(message, 'This command is currently disabled due to updating to 21w11a, please try again in a few minutes.');

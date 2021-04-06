@@ -12,6 +12,7 @@ module.exports = {
 	guildOnly: false,
 	uses: strings.COMMAND_USES_ANYONE,
 	syntax: `${prefix}magnify <factor> & attach an image\n${prefix}magnify <factor> <Discord message url>\n${prefix}magnify <factor> <image URL>\n${prefix}magnify <factor> <message ID>\n${prefix}magnify <factor> [up/^/last]`,
+	example: `${prefix}magnify 5`,
 	async execute(client, message, args) {
 		let FACTOR;
 		let DATA;

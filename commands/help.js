@@ -17,9 +17,10 @@ module.exports = {
 	name: 'help',
 	aliases: ['h', 'commands'],
 	uses: strings.COMMAND_USES_ANYONE,
-	syntax: `${prefix}help <command>`,
+	syntax: `${prefix}help <command>\n${prefix}help <alias>`,
 	description: strings.HELP_DESC_HELP,
 	guildOnly: false,
+	example: `${prefix}help modping`,
 	async execute(client, message, args) {
 
 		if (args[0]) {

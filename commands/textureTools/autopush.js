@@ -14,6 +14,7 @@ module.exports = {
 	guildOnly: false,
 	uses: strings.COMMAND_USES_MODS,
 	syntax: `${prefix}autopush <both/c32/c64>`,
+	example: `${prefix}autopush c32`,
 	async execute(client, message, args) {
     if (message.member.hasPermission('ADMINISTRATOR')) {
 

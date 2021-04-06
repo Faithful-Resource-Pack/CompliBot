@@ -1,3 +1,5 @@
+// Lipton Sparkling Ice Tea Classic 0,33L
+
 // Libs:
 require('dotenv').config();
 const Discord   = require('discord.js');
@@ -72,6 +74,9 @@ let pushToGithub = new cron.CronJob('10 0 * * *', async () => {
 // Moderation timeout check : (each 30s)
 setInterval(function() {checkTimeout(client)},30000)
 
+// Ah, ha, ha, ha, stayin' alive, stayin' alive
+// Ah, ha, ha, ha, stayin' alive
+// Corona says no ~Domi04151309
 const server = http.createServer((req, res) => {
 	res.writeHead(302, {
 		'Location': 'https://compliancepack.net/'
@@ -90,6 +95,7 @@ for (const file of commandFiles) {
 	const command = require(file);
 	client.commands.set(command.name, command);
 	commands.push(command.name);
+	console.log(`Loaded command: ${command.name}`);
 }
 // console.table(commands); // DEBUG
 
@@ -97,7 +103,7 @@ for (const file of commandFiles) {
 client.on('ready', async () => {
 
 	if (process.env.MAINTENANCE.toLowerCase() === 'true') client.user.setPresence({ activity: { name: 'maintenance' }, status: 'dnd' });
-	else client.user.setActivity('https://compliancepack.net/', {type: 'PLAYING'});
+	else client.user.setActivity('Minecraft', {type: 'PLAYING'});
 
 	/*
 	 * ENABLE TEXTURE SUBMISSION PROCESS

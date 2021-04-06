@@ -12,6 +12,7 @@ module.exports = {
 	guildOnly: false,
 	uses: strings.COMMAND_USES_ANYONE,
 	syntax: `${prefix}feedback [message]`,
+	example: `${prefix}feedback Give the bot more beans`,
 	async execute(client, message, args) {
 		const channel = client.channels.cache.get('821793794738749462');
 

@@ -11,6 +11,7 @@ module.exports = {
 	guildOnly: true,
 	uses: strings.COMMAND_USES_ANYONE,
 	syntax: `${prefix}poll <time in seconds> | <title> | <option1> | <option2> | ...`,
+	example: `${prefix}poll 3600 | Add more beans to the bot? | Yes | No`,
 	async execute(client, message, args) {
 
 		if (message.content.includes(" | ")) {

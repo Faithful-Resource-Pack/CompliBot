@@ -24,6 +24,7 @@ module.exports = {
 	guildOnly: false,
 	uses: strings.COMMAND_USES_DEVS,
 	syntax: `${prefix}translate`,
+	example: `${prefix}translate de Hello world!`,
 	async execute(client, message, args) {
 		if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD) {
 
