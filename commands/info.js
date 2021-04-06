@@ -14,7 +14,7 @@ module.exports = {
 	syntax: `${prefix}info`,
 	async execute(client, message, args) {
 		if (message.channel.type !== 'dm') {
-			await message.channel.send('Please check your dm\'s!');
+			await message.inlineReply('Please check your dm\'s!');
 		}
 
 		let seconds = Math.floor(message.client.uptime / 1000);
@@ -43,6 +43,6 @@ module.exports = {
 			)
 			.setFooter(`Bot Uptime: ${days} day(s), ${hours} hours, ${minutes} minutes, ${seconds} seconds`)
 
-		await message.author.send(embed);
+		await message.inlineReply(embed);
 	}
 };

@@ -26,6 +26,6 @@ module.exports = {
 			)
 			.setFooter('Compliance Dungeons', settings.CDUNGEONS_IMG);
 
-		await message.channel.send(embed);
+		await message.inlineReply(embed);
 	}
 };

@@ -153,7 +153,7 @@ async function animate(message, valMCMETA, valURL) {
 			.setDescription(`Original size: ${dimension.width}px x ${dimension.height} px`)
 			.attachFiles([attachment]);
 
-		const embedMessage = await message.channel.send(embed);
+		const embedMessage = await message.inlineReply(embed);
 	});
 }
 

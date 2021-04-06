@@ -30,6 +30,6 @@ module.exports = {
 			.setTimestamp()
 
 		await channel.send(embed);
-		await message.channel.send(embed2);
+		await message.inlineReply(embed2);
 	}
 };

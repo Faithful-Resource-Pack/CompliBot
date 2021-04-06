@@ -8,7 +8,7 @@ async function inviteDetection(client, message) {
 			.setDescription(`[Jump to message](${message.url})\n\n**Channel**: <#${message.channel.id}>\n**Server**: \`${message.guild}\`\n**User ID**: \`${message.author.id}\`\n**Date**: \`${message.createdAt}\`\n\n\`\`\`${message.content}\`\`\``)
 			.setTimestamp()
 
-		client.channels.cache.get('803344583919534091').send(embed)
+		client.channels.cache.get('829047608781176853').send(embed)
 }
 
 exports.inviteDetection = inviteDetection;

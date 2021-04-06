@@ -16,6 +16,7 @@
 - Removed some client events that we aren't using
 - Use client username instead of hardcoded name on embeds
 - Removed CompliBot footer on submission embeds, because it kinda feels out of place
+- Added inline replies
 
 #### March 30th 2021
 > Juknum

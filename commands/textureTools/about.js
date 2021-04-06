@@ -116,7 +116,7 @@ module.exports = {
 		if (countBedrock64 > 0 && bedrockc64[0] != undefined) embedBedrock.addFields({name: 'Bedrock 64x:', value: bedrockc64, inline: true});
 
 		embed.setDescription(`${embed.description}\n\n1️⃣ To see the Compliance Java texture list\n2️⃣ To see the Compliance Bedrock texture list`)
-		var embedMessage = await message.channel.send(embed);
+		var embedMessage = await message.inlineReply(embed);
 		loop(embedMessage, message, embed, embedJava, embedBedrock);
 	}
 }

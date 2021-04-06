@@ -14,7 +14,7 @@ module.exports = {
 	async execute(client, message, args) {
 		const m = new Discord.MessageEmbed().setTitle('Ping?')
 
-		message.channel.send(m).then(async m => {
+		message.inlineReply(m).then(async m => {
 		const embed = new Discord.MessageEmbed()
 			.setTitle('Pong!')
 			.setColor(colors.BLUE)

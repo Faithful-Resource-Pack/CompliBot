@@ -51,7 +51,7 @@ async function quote(msg) {
 				if (file.endsWith('.png') || file.endsWith('.jpg') || file.endsWith('jpeg')) embed.setImage(file);
 			}
 		
-			return await msg.channel.send(embed);
+			return await msg.inlineReply(embed);
 		}
 
 		else {
@@ -77,7 +77,7 @@ async function quote(msg) {
 				}
 			}
 
-			return await msg.channel.send(embed);
+			return await msg.inlineReply(embed);
 		}
 	}
 

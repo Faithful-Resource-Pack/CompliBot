@@ -27,7 +27,7 @@ module.exports = {
 				.setColor(color)
 				.setFooter(title, img);
 
-			const embedMessage = await message.channel.send(embed);
+			const embedMessage = await message.inlineReply(embed);
 			await embedMessage.react('🗑️');
 			const filter = (reaction, user) => {
 				return ['🗑️'].includes(reaction.emoji.name) && user.id === message.author.id;

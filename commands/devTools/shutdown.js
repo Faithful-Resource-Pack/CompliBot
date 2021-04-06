@@ -16,7 +16,7 @@ module.exports = {
 	syntax: `${prefix}shutdown`,
 	async execute(client, message, args) {
 		if (message.author.id === uidR || message.author.id === uidJ) {
-			await message.channel.send('Shutting down...');
+			await message.inlineReply('Shutting down...');
 			await process.exit();
 		}
     else warnUser(message,strings.COMMAND_NO_PERMISSION);

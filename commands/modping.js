@@ -39,7 +39,7 @@ module.exports = {
 				.setDescription('You demanded that all moderators be present. You must have a good reason or penalties may be taken.')
 				.setColor('#22202C');
 
-			message.channel.send(embed);
+			message.inlineReply(embed);
 			message.channel.send('<@&' + MODERATOR_ID  + '>');
 		}
 		else {
@@ -64,7 +64,7 @@ module.exports = {
 					.setDescription(content + '\n> use `/modping` to call mods for help!')
 					.setColor('#22202C');
 
-				message.channel.send(embed);
+				message.inlineReply(embed);
 
 				for (var i in mods_online) text += '<@' + mods_online[i] + '> ';
 				message.channel.send(text);

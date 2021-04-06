@@ -90,7 +90,7 @@ function tile(message, url, type) {
 			.setDescription(`Original size: ${dimension.width} x ${dimension.height} px²`)
 			.attachFiles([attachment]);
 
-		const embedMessage = await message.channel.send(embed);
+		const embedMessage = await message.inlineReply(embed);
 
     if (message.channel.type != 'dm') await embedMessage.react('🗑️');
 

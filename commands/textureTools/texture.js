@@ -146,7 +146,7 @@ module.exports = {
       }
       embed.setDescription(description);
 
-      const embedMessage = await message.channel.send(embed);
+      const embedMessage = await message.inlineReply(embed);
 
       asyncTools.react(embedMessage, emoji_num.slice(0, results.length))
 
@@ -230,7 +230,7 @@ module.exports = {
             );
           }
 
-          const embedMessage = await message.channel.send(embed);
+          const embedMessage = await message.inlineReply(embed);
           embedMessage.react('🗑️');
           if (dimension.width < 129 && dimension.height < 129) {
             embedMessage.react('🔎');

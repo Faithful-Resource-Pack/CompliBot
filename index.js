@@ -9,6 +9,7 @@ const cron      = require('cron');
 const port      = 3000;
 const client    = new Discord.Client({ disableMentions: 'everyone', restTimeOffset: 0 });
 client.commands = new Discord.Collection();
+require("./ExtendedMessage");
 
 // Admins & settings:
 const uidR   = process.env.UIDR;
@@ -267,7 +268,7 @@ client.on('message', async message => {
 	/*
 	 * Funny Stuff
 	 */
-	if (message.content.includes('(╯°□°）╯︵ ┻━┻')) return await message.reply('┬─┬ ノ( ゜-゜ノ) calm down bro');
+	if (message.content.includes('(╯°□°）╯︵ ┻━┻')) return await message.inlineReply('┬─┬ ノ( ゜-゜ノ) calm down bro');
 
 	if (message.content === 'F' ) return await message.react('🇫');
 
@@ -279,7 +280,7 @@ client.on('message', async message => {
 			.setDescription('```Uh-oh moment```')
 			.setColor(colors.BLUE)
 			.setFooter('Swahili → English', settings.BOT_IMG);
-		return await message.channel.send(embed);
+		return await message.inlineReply(embed);
 	}
 
 	if (message.content.toLowerCase() === 'band') {

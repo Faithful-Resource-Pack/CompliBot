@@ -99,7 +99,7 @@ async function palette(message, url) {
 			}
 		}
 
-		const embedMessage = await message.channel.send(embed);
+		const embedMessage = await message.inlineReply(embed);
 
 		if (message.channel.type != 'dm') await embedMessage.react('🗑️');
 

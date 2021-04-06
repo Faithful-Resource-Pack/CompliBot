@@ -25,7 +25,7 @@ module.exports = {
 						.setDescription(`Disabled slowmode.`)
 						.setTimestamp();
 
-					return await message.channel.send(embed);
+					return await message.inlineReply(embed);
 				}
 
         if (args > 21600) return warnUser(message, strings.SLOWMODE_TOO_BIG)
@@ -39,7 +39,7 @@ module.exports = {
 						.setDescription(`Slowmode set to **${parseInt(args[0])} seconds**.`)
 						.setTimestamp();
 
-					return await message.channel.send(embed);
+					return await message.inlineReply(embed);
 				}
 
 			} else return warnUser(message,strings.COMMAND_PROVIDE_A_NUMBER);

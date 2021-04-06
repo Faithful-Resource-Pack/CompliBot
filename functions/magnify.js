@@ -42,13 +42,12 @@ function magnify(message, factor, url) {
 
 		const attachment = new Discord.MessageAttachment(canvasResult.toBuffer(), 'output.png');
 		var embed = new Discord.MessageEmbed()
-			.setAuthor(message.author.tag, message.author.displayAvatarURL())
 			.setColor(colors.BLUE)
 			.setTitle(`Magnified by ${factor}x`)
 			.setDescription(`Original size: ${dimension.width} x ${dimension.height} px²\nNew size: ${dimension.width * factor} x ${dimension.height * factor} px²`)
 			.attachFiles([attachment]);
 
-		const embedMessage = await message.channel.send(embed);
+		const embedMessage = await message.inlineReply(embed);
 		/*
 			looks like :
 			MessageAttachment {

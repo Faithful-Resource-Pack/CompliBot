@@ -119,7 +119,7 @@ module.exports = {
 				.setThumbnail(thumbnail)
 				.setDescription(RULES[rule-1].sentence);
 
-			return await message.channel.send(embed);
+			return await message.inlineReply(embed);
 		}
 
 		else if (rule == -1) {

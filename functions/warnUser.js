@@ -10,7 +10,7 @@ async function warnUser(message,text) {
 		.setDescription(text)
 		.setFooter('Type /help to get more information about commands', settings.BOT_IMG)
 
-	const embedMessage = await message.channel.send(embed);
+	const embedMessage = await message.inlineReply(embed);
 	await embedMessage.react('🗑️');
 
 	const filter = (reaction, user) => {

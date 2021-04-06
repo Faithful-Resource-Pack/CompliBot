@@ -32,7 +32,7 @@ module.exports = {
 						.setDescription(`Beaned ${member} \nReason: ${reason}`)
 						.setColor(colors.BLUE)
 						.setTimestamp();
-					const embedMessage = await message.channel.send(embed);
+					const embedMessage = await message.inlineReply(embed);
 					await embedMessage.react('🗑️');
 
 					const filter = (reaction, user) => {
