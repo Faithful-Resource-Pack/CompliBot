@@ -84,7 +84,6 @@ function tile(message, url, type) {
 
 		const attachment = new Discord.MessageAttachment(canvas.toBuffer());
 		var embed = new Discord.MessageEmbed()
-			.setAuthor(message.author.tag, message.author.displayAvatarURL())
 			.setColor(colors.BLUE)
 			.setTitle(`Tiled texture (${type})`)
 			.setDescription(`Original size: ${dimension.width} x ${dimension.height} px²`)

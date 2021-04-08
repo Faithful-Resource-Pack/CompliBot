@@ -46,7 +46,6 @@ async function palette(message, url) {
 		}
 
 		var embed = new Discord.MessageEmbed()
-			.setAuthor(message.author.tag, message.author.displayAvatarURL())
 			.setColor(colors.BLUE)
 			.setDescription(`List of colors:\n`)
 			.setFooter(`Total: ${colorsHEX.length}`);

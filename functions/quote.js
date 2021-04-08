@@ -30,10 +30,10 @@ async function quote(msg) {
 			
 			if (message.embeds[0].author != undefined && !message.embeds[0].author.name.startsWith('Embed posted by')) {
 				embed.setThumbnail(message.embeds[0].author.iconURL);
-				embed.setAuthor(`Embed posted by ${message.author.tag} (${message.embeds[0].author.name})`, settings.QUOTE_IMG);
+				embed.setAuthor(`Embed sent by ${message.author.tag} (${message.embeds[0].author.name})`, settings.QUOTE_IMG);
 			} else {
 				embed.setThumbnail(message.author.displayAvatarURL());
-				embed.setAuthor(`Embed posted by ${message.author.tag}`, settings.QUOTE_IMG);
+				embed.setAuthor(`Embed sent by ${message.author.tag}`, settings.QUOTE_IMG);
 			}
 
 			if (message.embeds[0].fields != undefined) {
@@ -57,7 +57,7 @@ async function quote(msg) {
 		else {
 			var embed = new Discord.MessageEmbed()
 				.setColor(colors.BLUE)
-				.setAuthor(`Message posted by ${message.author.tag}`, settings.QUOTE_IMG)
+				.setAuthor(`Message sent by ${message.author.tag}`, settings.QUOTE_IMG)
 				.setThumbnail(message.author.displayAvatarURL())
 				.setDescription(message.content)
 				.setFooter(`Quoted by ${msg.author.tag}`, msg.author.displayAvatarURL());

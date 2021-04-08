@@ -147,7 +147,6 @@ async function animate(message, valMCMETA, valURL) {
 		// Send result:
 		const attachment = new Discord.MessageAttachment(encoder.out.getData(), 'output.gif');
 		var embed = new Discord.MessageEmbed()
-			.setAuthor(message.author.tag, message.author.displayAvatarURL())
 			.setColor(colors.BLUE)
 			.setTitle(`Animated:`)
 			.setDescription(`Original size: ${dimension.width}px x ${dimension.height} px`)
