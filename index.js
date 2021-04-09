@@ -50,14 +50,14 @@ const settings     = require('./settings');
 // Texture submission process: (each day at 00:00 GMT)
 let scheduledFunctions = new cron.CronJob('0 0 * * *', async () => {
 	// C32x
-	await textureSubmission(client, settings.C32_SUBMIT_1,  settings.C32_SUBMIT_2, 5);												// 5 DAYS OFFSET
-	await textureSubmission(client, settings.C32_SUBMIT_1B, settings.C32_SUBMIT_2, 5);												// 5 DAYS OFFSET
+	await textureSubmission(client, settings.C32_SUBMIT_1,  settings.C32_SUBMIT_2, 3);												// 3 DAYS OFFSET
+	await textureSubmission(client, settings.C32_SUBMIT_1B, settings.C32_SUBMIT_2, 3);												// 3 DAYS OFFSET
 	await    textureCouncil(client, settings.C32_SUBMIT_2,  settings.C32_SUBMIT_3, settings.C32_RESULTS, 1);	// 1 DAYS OFFSET
 	await     textureRevote(client, settings.C32_SUBMIT_3,  settings.C32_RESULTS,  3);												// 3 DAYS OFFSET
 	
 	// C64x
-	await textureSubmission(client, settings.C64_SUBMIT_1,  settings.C64_SUBMIT_2, 5);												// 5 DAYS OFFSET
-	await textureSubmission(client, settings.C64_SUBMIT_1B, settings.C64_SUBMIT_2, 5);												// 5 DAYS OFFSET
+	await textureSubmission(client, settings.C64_SUBMIT_1,  settings.C64_SUBMIT_2, 3);												// 3 DAYS OFFSET
+	await textureSubmission(client, settings.C64_SUBMIT_1B, settings.C64_SUBMIT_2, 3);												// 3 DAYS OFFSET
 	await    textureCouncil(client, settings.C64_SUBMIT_2,  settings.C64_SUBMIT_3, settings.C64_RESULTS, 1);	// 1 DAYS OFFSET
 	await     textureRevote(client, settings.C64_SUBMIT_3,  settings.C64_RESULTS,  3);												// 3 DAYS OFFSET
 	
