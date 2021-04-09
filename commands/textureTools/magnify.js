@@ -7,67 +7,67 @@ const { warnUser } = require('../../functions/warnUser.js');
 
 module.exports = {
 	name: 'magnify',
-	aliases: ['zoom', 'scale', 'resize', 'm'],
+	aliases: ['zoom', 'scale', 'm'],
 	description: strings.HELP_DESC_MAGNIFY,
 	guildOnly: false,
 	uses: strings.COMMAND_USES_ANYONE,
-	syntax: `${prefix}magnify <factor> & attach an image\n${prefix}magnify <factor> <Discord message url>\n${prefix}magnify <factor> <image URL>\n${prefix}magnify <factor> <message ID>\n${prefix}magnify <factor> [up/^/last]`,
-	example: `${prefix}magnify 5`,
+	syntax: `${prefix}magnify (Default: up to 10 images above)\n${prefix}magnify attach an image\n${prefix}magnify <Discord message url>\n${prefix}magnify <image URL>\n${prefix}magnify <message ID>\n${prefix}magnify [up/^/last]`,
+	example: `${prefix}magnify`,
 	async execute(client, message, args) {
 		let FACTOR;
 		let DATA;
 
-		if (args != '') {
+		//if (args != '') {
 
 			// <factor>
-			if (!isNaN(args[0]) && args[0] > 1) {
-				FACTOR = args[0];
-			} else return warnUser(message, strings.MAGNIFY_FACTOR_TOO_SMALL)
+			//if (!isNaN(args[0]) && args[0] > 1) {
+			//	FACTOR = args[0];
+			//} else return warnUser(message, strings.MAGNIFY_FACTOR_TOO_SMALL)
 
 			// <data>
 			// image attached
-			if ((args[1] == undefined || args[1] == '') && message.attachments.size > 0) {
+			if ((args[0] == undefined || args[0] == '') && message.attachments.size > 0) {
 				DATA = message.attachments.first().url;
-				return magnify(message, FACTOR, DATA);
+				return magnify(message, DATA);
 			}
 
 			// previous image
-			else if ((args[1] == undefined || args[1] == '' || args[1] == 'up' || args[1] == '^' || args[1] == 'last') && message.attachments.size == 0) {
+			else if ((args[0] == undefined || args[0] == '' || args[0] == 'up' || args[0] == '^' || args[0] == 'last') && message.attachments.size == 0) {
 				return PreviousImage(FACTOR);
 			}
 
 			// Discord message URL
-			else if (args[1].startsWith('https://discord.com/channels')) {
-				message.channel.messages.fetch(args[1].split('/').pop()).then(msg => {
+			else if (args[0].startsWith('https://discord.com/channels')) {
+				message.channel.messages.fetch(args[0].split('/').pop()).then(msg => {
 					if (msg.attachments.size > 0) {
 						DATA = msg.attachments.first().url;
-						return magnify(message, FACTOR, DATA);
+						return magnify(message, DATA);
 					}
 					else return warnUser(message, strings.COMMAND_MESSAGE_IMAGE_NOT_ATTACHED);
 				}).catch(error => { return warnUser(message, strings.COMMAND_URL_ONLY_SAME_CHANNEL) });
 			}
 
 			// Image URL
-			else if (args[1].startsWith('https://') || args[1].startsWith('http://')) {
-				if (args[1].endsWith('.png') || args[1].endsWith('.jpeg') || args[1].endsWith('.jpg') || args[1].endsWith('.gif')) {
-					DATA = args[1];
-					return magnify(message, FACTOR, DATA);
+			else if (args[0].startsWith('https://') || args[0].startsWith('http://')) {
+				if (args[0].endsWith('.png') || args[0].endsWith('.jpeg') || args[0].endsWith('.jpg') || args[0].endsWith('.gif')) {
+					DATA = args[0];
+					return magnify(message, DATA);
 				} else return warnUser(message, strings.COMMAND_INVALID_EXTENSION)
 			}
 
 			// Discord message ID
-			else if (!isNaN(args[1])) {
-				message.channel.messages.fetch(args[1]).then(msg => {
+			else if (!isNaN(args[0])) {
+				message.channel.messages.fetch(args[0]).then(msg => {
 					if (msg.attachments.size > 0) {
 						DATA = msg.attachments.first().url;
-						return magnify(message, FACTOR, DATA);
+						return magnify(message, DATA);
 					}
 					else return warnUser(message, strings.COMMAND_ID_IMAGE_NOT_ATTACHED);
 				}).catch(error => {
 					return warnUser(message,error);
 				})
 			}
-		} else return warnUser(message, strings.MAGNIFY_NO_ARGS_GIVEN);
+		//} else return warnUser(message, strings.MAGNIFY_NO_ARGS_GIVEN);
 
 		async function PreviousImage(FACTOR) {
 			var found = false;
@@ -94,7 +94,7 @@ module.exports = {
 				}
 			}
 
-			if (found) await magnify(message, FACTOR, url);
+			if (found) await magnify(message, url);
 			else return warnUser(message, strings.COMMAND_NO_IMAGE_FOUND);
 		}
 	}

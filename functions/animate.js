@@ -146,13 +146,13 @@ async function animate(message, valMCMETA, valURL) {
 
 		// Send result:
 		const attachment = new Discord.MessageAttachment(encoder.out.getData(), 'output.gif');
-		var embed = new Discord.MessageEmbed()
+		/*var embed = new Discord.MessageEmbed()
 			.setColor(colors.BLUE)
 			.setTitle(`Animated:`)
 			.setDescription(`Original size: ${dimension.width}px x ${dimension.height} px`)
-			.attachFiles([attachment]);
+			.attachFiles([attachment]);*/
 
-		const embedMessage = await message.inlineReply(embed);
+		const embedMessage = await message.inlineReply(attachment);
 	});
 }
 

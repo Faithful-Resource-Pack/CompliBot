@@ -83,13 +83,13 @@ function tile(message, url, type) {
 		}
 
 		const attachment = new Discord.MessageAttachment(canvas.toBuffer());
-		var embed = new Discord.MessageEmbed()
+		/*var embed = new Discord.MessageEmbed()
 			.setColor(colors.BLUE)
 			.setTitle(`Tiled texture (${type})`)
 			.setDescription(`Original size: ${dimension.width} x ${dimension.height} px²`)
-			.attachFiles([attachment]);
+			.attachFiles([attachment]);*/
 
-		const embedMessage = await message.inlineReply(embed);
+		const embedMessage = await message.inlineReply(attachment);
 
     if (message.channel.type != 'dm') await embedMessage.react('🗑️');
 

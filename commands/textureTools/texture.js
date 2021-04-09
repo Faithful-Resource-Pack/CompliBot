@@ -253,13 +253,13 @@ module.exports = {
                 return palette(message, embedMessage.embeds[0].image.url);
               }
               if (reaction.emoji.name === '🔎') {
-                if (size == '8x8') return magnify(message, 64, embedMessage.embeds[0].image.url);
-                if (size == '16x16') return magnify(message, 32, embedMessage.embeds[0].image.url);
-                if (size == '32x32') return magnify(message, 16, embedMessage.embeds[0].image.url);
-                if (size == '64x64') return magnify(message, 8, embedMessage.embeds[0].image.url);
-                if (size == '128x128') return magnify(message, 4, embedMessage.embeds[0].image.url);
-                if (size == '256x256') return magnify(message, 2, embedMessage.embeds[0].image.url);
-                return magnify(message, 8, embedMessage.embeds[0].image.url);
+                if (size == '8x8') return magnify(message, embedMessage.embeds[0].image.url);
+                if (size == '16x16') return magnify(message, embedMessage.embeds[0].image.url);
+                if (size == '32x32') return magnify(message, embedMessage.embeds[0].image.url);
+                if (size == '64x64') return magnify(message, embedMessage.embeds[0].image.url);
+                if (size == '128x128') return magnify(message, embedMessage.embeds[0].image.url);
+                if (size == '256x256') return magnify(message, embedMessage.embeds[0].image.url);
+                return magnify(message, embedMessage.embeds[0].image.url);
               }
               if (reaction.emoji.name === '🌀' && java.includes(type)) {
                 if (type == '16') return getTexture('32', name, index);

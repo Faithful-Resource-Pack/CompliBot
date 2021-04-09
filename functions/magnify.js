@@ -5,13 +5,21 @@ const colors   = require('../res/colors');
 const { getMeta }  = require('./getMeta');
 const { warnUser } = require('./warnUser');
 
-function magnify(message, factor, url) {
+function magnify(message, url) {
 	getMeta(url).then(async function(dimension) {
 		var sizeOrigin = dimension.width * dimension.height;
-		var sizeResult = dimension.width * dimension.height * Math.pow(factor, 2);
+		//var sizeResult = dimension.width * dimension.height * Math.pow(factor, 2);
+
+		var factor = 64;
+
+		if (sizeOrigin == 256) factor = 32;
+		if (sizeOrigin > 256) factor = 16;
+		if (sizeOrigin > 1024) factor = 8;
+		if (sizeOrigin > 4096) factor = 4;
+		if (sizeOrigin > 65636) factor = 2;
 
 		if (sizeOrigin > 262144) return warnUser(message,'The input picture is too big!');
-		if (sizeResult > 1048576) return warnUser(message,'The output picture will be too big!\nMaximum output allowed: 1024 x 1024 px²\nYours is: ' + dimension.width * factor + ' x ' + dimension.height * factor + ' px²');
+		//if (sizeResult > 1048576) return warnUser(message,'The output picture will be too big!\nMaximum output allowed: 1024 x 1024 px²\nYours is: ' + dimension.width * factor + ' x ' + dimension.height * factor + ' px²');
 
 		var canvasStart = Canvas.createCanvas(dimension.width, dimension.height).getContext('2d');
 		var canvasResult = Canvas.createCanvas(dimension.width * factor, dimension.height * factor);
@@ -41,13 +49,13 @@ function magnify(message, factor, url) {
 		}
 
 		const attachment = new Discord.MessageAttachment(canvasResult.toBuffer(), 'output.png');
-		var embed = new Discord.MessageEmbed()
+		/*var embed = new Discord.MessageEmbed()
 			.setColor(colors.BLUE)
 			.setTitle(`Magnified by ${factor}x`)
 			.setDescription(`Original size: ${dimension.width} x ${dimension.height} px²\nNew size: ${dimension.width * factor} x ${dimension.height * factor} px²`)
-			.attachFiles([attachment]);
+			.attachFiles([attachment]);*/
 
-		const embedMessage = await message.inlineReply(embed);
+		const embedMessage = await message.inlineReply(attachment);
 		/*
 			looks like :
 			MessageAttachment {
