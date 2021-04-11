@@ -2,9 +2,12 @@
  * @brief File made to safely handle files and json more particularly.
  * Goal is to have dynamic paths
  */
+const { exec, execSync } = require('child_process')
 const fs = require('fs')
+const os = require('os')
 const { dirname, normalize, join, resolve } = require('path')
 const { Mutex } = require('async-mutex')
+require('dotenv').config()
 
 const JSON_WRITE_SPACES = 2
 const JSON_WRITE_REPLACER = null
@@ -20,6 +23,8 @@ const JSON_PATH_CONTRIBUTIONS_BEDROCK = './json/contributors/bedrock.json'
 const JSON_PATH_PROFILES = './json/profiles.json'
 const JSON_DEFAULT_PROFILES = []
 
+const OUT_NULL = os.platform() == 'win32' ? 'NUL' : '/dev/null'
+
 class FileHandler {
   constructor(filepath, defaultValue = '', isJson = true) {
     this.filepath = filepath
@@ -30,6 +35,126 @@ class FileHandler {
     // if you are curious https://www.youtube.com/watch?v=9lAuS6jsDgE
     this.mutex = new Mutex()
     this._release = undefined
+  }
+
+  /**
+   * Pulls file
+   * @returns {Promise}
+   */
+  pull() {
+    return new Promise((resolve, reject) => {
+      let cmd = ""
+      cmd += `cd json`
+      cmd +=" && git remote remove origin 2> " + OUT_NULL
+
+      try {
+        execSync(cmd)
+      } catch (_ignored) {}
+
+      cmd = ""
+      cmd += "cd json"
+      cmd +=" && git remote add origin https://" + process.env.COMPLIBOT_GIT_USERNAME + ":" + process.env.COMPLIBOT_GIT_TOKEN + "@github.com" + process.env.COMPLIBOT_GIT_JSON_REPO
+      cmd +=" && git fetch --all"
+      cmd +=" && git checkout origin/main -- " + this.filepath.replace('json/', '')
+      
+      exec(cmd, (error, stdout, stderr) => {
+        if(error) {
+          reject({
+            error: error,
+            stderr: stderr,
+            stdout: stdout
+          })
+        }
+        
+        resolve(stdout)
+      })
+    })
+  }
+  
+  /**
+   * Add file
+   * @returns {Promise}
+   */
+  add() {
+    return new Promise((resolve, reject) => {
+      let cmd = ""
+      cmd += `cd json`
+      cmd +=" && git config user.name " + process.env.COMPLIBOT_GIT_USERNAME
+      cmd +=" && git config user.email " + process.env.COMPLIBOT_GIT_EMAIL
+      cmd +=" && git add " + this.filepath.replace('json/', '')
+      
+      exec(cmd, (error, stdout, stderr) => {
+        if(error) {
+          reject({
+            error: error,
+            stderr: stderr,
+            stdout: stdout
+          })
+        }
+
+        resolve(stdout)
+      })
+    })
+  }
+
+  /**
+   * Commits changes
+   * @param {String} message Commit message
+   * @returns {Promise}
+   */
+  commit(message = 'AutoCommit made by FileHandler') {
+    return new Promise((resolve, reject) => {
+      let cmd = ""
+      cmd += `cd json`
+      cmd +=" && git config user.name " + process.env.COMPLIBOT_GIT_USERNAME
+      cmd +=" && git config user.email " + process.env.COMPLIBOT_GIT_EMAIL
+      cmd +=` && git commit -m "${ message }" 2>${ OUT_NULL }`
+
+      exec(cmd, (error, stdout, stderr) => {
+        if(error) {
+          reject({
+            error: error,
+            stderr: stderr,
+            stdout: stdout
+          })
+        }
+
+        resolve(stdout)
+      })
+    })
+  }
+
+  /**
+   * Pushes repo
+   * @returns {Promise}
+   */
+  push() {
+    return new Promise((resolve, reject) => {
+      let cmd = ""
+      cmd += "cd json"
+      cmd +=" && git remote remove origin"
+
+      try {
+        execSync(cmd)
+      } catch (_ignored) {}
+
+      cmd = ""
+      cmd += `cd json`
+      cmd +=" && git remote add origin https://" + process.env.COMPLIBOT_GIT_USERNAME + ":" + process.env.COMPLIBOT_GIT_TOKEN + "@github.com" + process.env.COMPLIBOT_GIT_JSON_REPO
+      cmd +=" && git push origin main"
+      
+      exec(cmd, (error, stdout, stderr) => {
+        if(error) {
+          reject({
+            error: error,
+            stderr: stderr,
+            stdout: stdout
+          })
+        }
+
+        resolve(stdout)
+      })
+    })
   }
 
   release() {
@@ -65,8 +190,12 @@ class FileHandler {
       // else we will have a problem
 
       // the mutex is a lock and you need to acquuire it to be authorized to do an action
+      let real = undefined
       this.mutex.acquire()
       .then((release) => {
+        real = release
+        return this.pull()
+      }).then(() => {
 
         // wow you have the lock, now get the file, release and get out
         try {
@@ -75,7 +204,7 @@ class FileHandler {
           if(this.isJson) res = JSON.parse(res)
 
           // yeah yeah store the release function
-          this._release = release
+          this._release = real
           resolve(res)
         } catch (error) {
           // if no file found, give default
