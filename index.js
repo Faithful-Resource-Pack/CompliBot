@@ -48,27 +48,29 @@ const settings     = require('./settings');
 
 // Scheduled Functions:
 // Texture submission process: (each day at 00:00 GMT)
-let scheduledFunctions = new cron.CronJob('0 0 * * *', async () => {
+let submissionProcess = new cron.CronJob('0 0 * * *', async () => {
 	// C32x
 	await textureSubmission(client, settings.C32_SUBMIT_1,  settings.C32_SUBMIT_2, 3);												// 3 DAYS OFFSET
-	await textureSubmission(client, settings.C32_SUBMIT_1B, settings.C32_SUBMIT_2, 3);												// 3 DAYS OFFSET
+	await textureSubmission(client, settings.C32_SUBMIT_1B, settings.C32_SUBMIT_2, 3);												
 	await    textureCouncil(client, settings.C32_SUBMIT_2,  settings.C32_SUBMIT_3, settings.C32_RESULTS, 1);	// 1 DAYS OFFSET
 	await     textureRevote(client, settings.C32_SUBMIT_3,  settings.C32_RESULTS,  3);												// 3 DAYS OFFSET
 	
 	// C64x
 	await textureSubmission(client, settings.C64_SUBMIT_1,  settings.C64_SUBMIT_2, 3);												// 3 DAYS OFFSET
-	await textureSubmission(client, settings.C64_SUBMIT_1B, settings.C64_SUBMIT_2, 3);												// 3 DAYS OFFSET
+	await textureSubmission(client, settings.C64_SUBMIT_1B, settings.C64_SUBMIT_2, 3);												
 	await    textureCouncil(client, settings.C64_SUBMIT_2,  settings.C64_SUBMIT_3, settings.C64_RESULTS, 1);	// 1 DAYS OFFSET
 	await     textureRevote(client, settings.C64_SUBMIT_3,  settings.C64_RESULTS,  3);												// 3 DAYS OFFSET
 	
 });
 
-// Texture submission push: (each day at 00:10 GMT)
-let pushToGithub = new cron.CronJob('10 0 * * *', async () => {
+// Texture submission download: (each day at 00:10 GMT)
+let downloadToBot = new cron.CronJob('10 0 * * *', async () => {
 	// Download textures from #results
 	await getResults(client, settings.C32_RESULTS);
 	await getResults(client, settings.C64_RESULTS);
+});
 
+let pushToGithub = new cron.CronJob('15 0 * * *', async () => {
 	await doPush();	// Push them trough GitHub
 });
 
@@ -109,7 +111,8 @@ client.on('ready', async () => {
 	/*
 	 * ENABLE TEXTURE SUBMISSION PROCESS
 	 */
-	scheduledFunctions.start();
+	submissionProcess.start();
+	downloadToBot.start();
 	pushToGithub.start();
 
 	/*

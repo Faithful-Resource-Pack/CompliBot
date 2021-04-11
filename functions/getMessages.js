@@ -1,4 +1,4 @@
-async function getMessages(client, channelID, limit = 500) {
+async function getMessages(client, channelID, limit = 200) {
 	const sum_messages = [];
 	let last_id;
 	let channel = await client.channels.cache.get(channelID);

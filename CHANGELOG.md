@@ -1,6 +1,24 @@
 # CompliBot Changelog
 ---------------------------------------
-### March 2021
+### April 2021
+
+#### April 11th 2021
+> Juknum
+
+- Split download & push process into 2 Cron functions, like that, if the download failed (fetcherror or anything), the push would still be made.
+- Reduce the max limit of `GetMessages.js` from 500 to 200. (there is still less than 200 textures/day, but just in case).
+
+#### April 9th 2021
+> Juknum
+
+- Added a specific rules for the CompliBot Discord dev server : no rules.
+- Removed old unused stuff from the `rules.js` file. 
+
+> RobertR11
+
+- removed the need for a factor in the `/magnify` command
+- removed the embeds in the `/magnify`, `/tile` and `/animate` command
+- added the changelog that I forgot before lol
 
 #### April 6th 2021
 > Juknum
@@ -17,6 +35,8 @@
 - Use client username instead of hardcoded name on embeds
 - Removed CompliBot footer on submission embeds, because it kinda feels out of place
 - Added inline replies
+
+### March 2021
 
 #### March 30th 2021
 > Juknum

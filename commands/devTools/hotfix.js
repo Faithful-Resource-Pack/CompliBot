@@ -54,6 +54,7 @@ module.exports = {
 			console.log('Hotfix ended')
 
 		*/
+		/*
 		await textureSubmission(client, settings.C32_SUBMIT_1,  settings.C32_SUBMIT_2, 4);							// 3 DAYS OFFSET
 		await textureSubmission(client, settings.C32_SUBMIT_1B, settings.C32_SUBMIT_2, 4);							// 3 DAYS OFFSET
 		await textureSubmission(client, settings.C32_SUBMIT_1,  settings.C32_SUBMIT_2, 3);							// 3 DAYS OFFSET
@@ -68,12 +69,13 @@ module.exports = {
 		await textureSubmission(client, settings.C64_SUBMIT_1B, settings.C64_SUBMIT_2, 3);							// 3 DAYS OFFSET
 		//await    textureCouncil(client, settings.C64_SUBMIT_2,  settings.C64_SUBMIT_3, settings.C64_RESULTS, 1);	// 1 DAYS OFFSET
 		//await     textureRevote(client, settings.C64_SUBMIT_3,  settings.C64_RESULTS,  3);							// 3 DAYS OFFSET
-		
+		*/
 		/*
 		await getResults(client, settings.C32_RESULTS);
 		await getResults(client, settings.C64_RESULTS);
 		
-		await doPush();	// Push them trough GitHub*/
+		*/
+		await doPush();	// Push them trough GitHub
 		}
 	}
 }
