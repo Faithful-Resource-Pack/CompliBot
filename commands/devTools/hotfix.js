@@ -6,6 +6,7 @@ const settings = require('../../settings');
 const uidR = process.env.UIDR;
 const uidJ = process.env.UIDJ;
 const uidD = process.env.UIDD;
+const uidT = process.env.UIDT;
 
 const { warnUser } = require('../../functions/warnUser.js');
 const { walkSync } = require('../../functions/walkSync');
@@ -34,7 +35,7 @@ module.exports = {
 	syntax: `${prefix}hotfix <something>`,
 	args: true,
 	async execute(client, message, args) {
-		if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD) {
+		if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD || message.author.id === uidT) {
 
 		/*
 			console.log('Hotfix started');

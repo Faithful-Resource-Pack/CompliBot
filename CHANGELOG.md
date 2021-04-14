@@ -7,6 +7,7 @@
 
 - Split download & push process into 2 Cron functions, like that, if the download failed (fetcherror or anything), the push would still be made.
 - Reduce the max limit of `GetMessages.js` from 500 to 200. (there is still less than 200 textures/day, but just in case).
+- Added TheRolf to the `.env` and in dev commands.
 
 #### April 9th 2021
 > Juknum

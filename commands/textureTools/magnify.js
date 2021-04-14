@@ -17,12 +17,7 @@ module.exports = {
 		let FACTOR;
 		let DATA;
 
-		//if (args != '') {
-
-			// <factor>
-			//if (!isNaN(args[0]) && args[0] > 1) {
-			//	FACTOR = args[0];
-			//} else return warnUser(message, strings.MAGNIFY_FACTOR_TOO_SMALL)
+			if (!isNaN(args[0])) return warnUser(message, 'Magnifying by a factor is not supported anymore. Please just type the command without specifying the factor.')
 
 			// <data>
 			// image attached
@@ -67,7 +62,6 @@ module.exports = {
 					return warnUser(message,error);
 				})
 			}
-		//} else return warnUser(message, strings.MAGNIFY_NO_ARGS_GIVEN);
 
 		async function PreviousImage(FACTOR) {
 			var found = false;

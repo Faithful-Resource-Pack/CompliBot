@@ -3,6 +3,8 @@ const prefix = process.env.PREFIX;
 const strings = require('../../res/strings');
 const uidR = process.env.UIDR;
 const uidJ = process.env.UIDJ;
+const uidD = process.env.UIDD;
+const uidT = process.env.UIDT;
 
 const { warnUser } = require('../../functions/warnUser.js');
 
@@ -17,7 +19,7 @@ module.exports = {
 	uses: strings.COMMAND_USES_DEVS,
 	syntax: `${prefix}status <activity> <presence> <status>`,
 	async execute(client, message, args) {
-    if (message.author.id === uidR || message.author.id === uidJ) {
+    if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD || message.author.id === uidT) {
 
 			if (!args.length) return warnUser(message,strings.COMMAND_NO_ARGUMENTS_GIVEN) ;
 

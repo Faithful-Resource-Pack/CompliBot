@@ -5,6 +5,7 @@ const strings = require('../../res/strings');
 const uidR = process.env.UIDR;
 const uidJ = process.env.UIDJ;
 const uidD = process.env.UIDD;
+const uidT = process.env.UIDT;
 
 module.exports = {
 	name: 'behave',
@@ -13,7 +14,7 @@ module.exports = {
 	uses: strings.COMMAND_USES_DEVS,
 	syntax: `${prefix}behave`,
 	async execute(client, message, args) {
-		if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD) {
+		if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD || message.author.id === uidT) {
 			await message.inlineReply(strings.BEHAVE_ANSWER);
 		} else return
 	}

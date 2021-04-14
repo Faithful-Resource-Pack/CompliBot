@@ -5,6 +5,7 @@ const strings = require('../../res/strings');
 const uidR = process.env.UIDR;
 const uidJ = process.env.UIDJ;
 const uidD = process.env.UIDD;
+const uidT = process.env.UIDT;
 
 const { warnUser } = require('../../functions/warnUser.js');
 const { walkSync } = require('../../functions/walkSync');
@@ -19,7 +20,7 @@ module.exports = {
 	example: `${prefix}reload magnify`,
 	args: true,
 	async execute(client, message, args) {
-		if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD) {
+		if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD || message.author.id === uidT) {
 			const commandName = args[0].toLowerCase();
 			const command = message.client.commands.get(commandName) || message.client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
