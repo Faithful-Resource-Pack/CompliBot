@@ -230,29 +230,6 @@ client.on('message', async message => {
 		await message.channel.send(embed)
 		await message.react('❌');
 	})
-
-	/*
-	 * COMMAND HISTORY
-	 */
-
-	// get out if no channel, no cache or empty cache
-	if (client.channels === undefined || client.channels.cache === undefined || client.channels.cache.length === 0) return;
-
-	if (message.channel.type === 'dm') return;
-
-	// get out if history channel not found
-	const destinationChannel = client.channels.cache.get('785867690627039232');
-	if (destinationChannel === undefined) return;
-
-	// eventually create the embed and send it
-
-	var embed = new Discord.MessageEmbed()
-		.setAuthor(message.author.tag, message.author.displayAvatarURL())
-		.setColor(colors.BLUE)
-		.setDescription(`[Jump to location](${message.url})\n\n**Command**: \`${commandName}\`\n**Channel**: <#${message.channel.id}>\n**Guild**: \`${message.guild}\`\n**User ID**: \`${message.author.id}\`\n**Message ID**: \`${message.id}\`\n**Command Sent**: \`${message.createdAt.toLocaleString()}\``)
-		.setTimestamp()
-
-	await destinationChannel.send(embed);
 });
 
 /*
