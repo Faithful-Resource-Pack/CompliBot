@@ -26,7 +26,14 @@ const JSON_DEFAULT_PROFILES = []
 const OUT_NULL = os.platform() == 'win32' ? 'NUL' : '/dev/null'
 
 class FileHandler {
-  constructor(filepath, defaultValue = '', isJson = true) {
+  /**
+   *
+   * @param {String} filepath Path to the file from here
+   * @param {String} defaultValue default parsed value
+   * @param {Boolean} isJson Auto parse value if JSON
+   * @param {Boolean} pull Pulling last version before modification
+   */
+  constructor(filepath, defaultValue = '', isJson = true, pull = true) {
     this.filepath = filepath
     this.isJson = isJson
     this.defaultValue = defaultValue
@@ -35,6 +42,7 @@ class FileHandler {
     // if you are curious https://www.youtube.com/watch?v=9lAuS6jsDgE
     this.mutex = new Mutex()
     this._release = undefined
+    this.pull = pull
   }
 
   /**
@@ -164,7 +172,7 @@ class FileHandler {
     }
   }
 
-  read(lock = true) {
+  read(lock = true, pull = true) {
     return new Promise((resolve, reject) => {
       if(!lock) {
         // if no lock, go on, take the file and get out
@@ -191,12 +199,17 @@ class FileHandler {
 
       // the mutex is a lock and you need to acquuire it to be authorized to do an action
       let real = undefined
-      this.mutex.acquire()
-      .then((release) => {
+      let promise = this.mutex.acquire().then(release => {
         real = release
-        return this.pull()
-      }).then(() => {
+      })
 
+      if(this.pull && pull) {
+        promise = promise.then(() => {
+          return this.pull()
+        })    
+      }
+
+      promise.then(() => {
         // wow you have the lock, now get the file, release and get out
         try {
           let res = fs.readFileSync(this.filepath)
@@ -254,6 +267,6 @@ module.exports = {
 
   jsonContributionsBedrock: new FileHandler(JSON_PATH_CONTRIBUTIONS_BEDROCK, JSON_DEFAULT_CONTRIBUTIONS),
   jsonContributionsJava: new FileHandler(JSON_PATH_CONTRIBUTIONS_JAVA, JSON_DEFAULT_CONTRIBUTIONS),
-  jsonModeration: new FileHandler(JSON_PATH_MODERATION, JSON_DEFAULT_MODERATION, true),
+  jsonModeration: new FileHandler(JSON_PATH_MODERATION, JSON_DEFAULT_MODERATION, true, false),
   jsonProfiles: new FileHandler(JSON_PATH_PROFILES, JSON_DEFAULT_PROFILES)
 }
