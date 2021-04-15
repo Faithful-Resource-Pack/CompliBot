@@ -115,6 +115,11 @@ module.exports = {
 		if (countBedrock32 > 0 && bedrockc32[0] != undefined) embedBedrock.addFields({name: 'Bedrock 32x:', value: bedrockc32, inline: true});
 		if (countBedrock64 > 0 && bedrockc64[0] != undefined) embedBedrock.addFields({name: 'Bedrock 64x:', value: bedrockc64, inline: true});
 
+		/*else {
+			if (args[0] == 'me' || args[0] == undefined) return await warnUser(message, 'You don\'t have any contributions!');
+			else return await warnUser(message, 'The specified user doesn\'t have any contributions!');
+		}*/
+
 		embed.setDescription(`${embed.description}\n\n1️⃣ To see the Compliance Java texture list\n2️⃣ To see the Compliance Bedrock texture list`)
 		var embedMessage = await message.inlineReply(embed);
 		loop(embedMessage, message, embed, embedJava, embedBedrock);
