@@ -42,7 +42,7 @@ class FileHandler {
     // if you are curious https://www.youtube.com/watch?v=9lAuS6jsDgE
     this.mutex = new Mutex()
     this._release = undefined
-    this.pull = pull
+    this.doPull = pull
   }
 
   /**
@@ -172,7 +172,7 @@ class FileHandler {
     }
   }
 
-  read(lock = true, pull = true) {
+  read(lock = true, forcePull = true) {
     return new Promise((resolve, reject) => {
       if(!lock) {
         // if no lock, go on, take the file and get out
@@ -203,7 +203,7 @@ class FileHandler {
         real = release
       })
 
-      if(this.pull && pull) {
+      if(this.doPull || forcePull) {
         promise = promise.then(() => {
           return this.pull()
         })    
