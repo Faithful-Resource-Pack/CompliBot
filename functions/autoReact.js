@@ -1,38 +1,47 @@
-const Discord  = require('discord.js');
-const settings = require('../settings');
-const colors   = require('../res/colors');
-const strings  = require('../res/strings');
+const Discord  = require('discord.js')
+const settings = require('../settings')
+const colors   = require('../res/colors')
+const strings  = require('../res/strings')
 
-async function autoReact(message, emojis, errorType, errorSpecificType, specific) {
+/**
+ * Add given reactions if condition are met
+ * @author Juknum
+ * @param {DiscordMessage} message message to be react
+ * @param {Array} emojis Array of String, has to be valid Discord Emoji
+ * @param {String} defaultErrorMsg Message if no file is attached
+ * @param {String} specificErrorMsg Message if one or more string from 'specific' can not be found
+ * @param {Array} specific Array of String
+ */
+async function autoReact(message, emojis, defaultErrorMsg, specificErrorMsg = undefined, specific = undefined) {
 
 	if (message.attachments.size > 0) {
 
-		let specificResult = true;
+		let specificResult = true
 
 		if (specific) {
-			let i = 0;
+			let i = 0
 			while (specific[i]) {
 				if (!message.content.includes(specific[i])) {
-					specificResult = false;
-					break;
+					specificResult = false
+					break
 				}
-				i++;
+				i++
 			}
 
 		}
-		else specificResult = true;
+		else specificResult = true
 
 		if (specificResult == true) {
 			for (var i = 0; i < emojis.length; i++){
 				try {
-					await message.react(emojis[i]);
+					await message.react(emojis[i])
 				} catch (error) {
-					console.error('Error: emoji n°'+i+' failed to react'+error);
+					console.error('Error: emoji n°'+i+' failed to react'+error)
 				}
 			}
-		} else return sendError(true);
+		} else return sendError(true)
 	}
-	else return sendError(false);
+	else return sendError(false)
 
 	async function sendError(specificError) {
 
@@ -40,27 +49,27 @@ async function autoReact(message, emojis, errorType, errorSpecificType, specific
 			(
 				message.member.hasPermission('ADMINISTRATOR')
 			) && specificError == false
-		) return;
+		) return
 
 		else {
-      try {
-        var embed = new Discord.MessageEmbed()
-          .setAuthor(message.author.tag, message.author.displayAvatarURL())
-          .setColor(colors.RED)
-          .setTitle(strings.BOT_AUTOREACT_ERROR)
-          .setFooter('Submission will be removed in 30 seconds, please re-submit', settings.BOT_IMG);
+			try {
+				var embed = new Discord.MessageEmbed()
+					.setAuthor(message.author.tag, message.author.displayAvatarURL())
+					.setColor(colors.RED)
+					.setTitle(strings.BOT_AUTOREACT_ERROR)
+					.setFooter('Submission will be removed in 30 seconds, please re-submit', settings.BOT_IMG)
 
-        if (specificError) embed.setDescription(errorSpecificType);
-        else embed.setDescription(errorType);
+				if (specificError) embed.setDescription(specificErrorMsg)
+				else embed.setDescription(defaultErrorMsg)
 
-        const msg = await message.channel.send(embed);
-        await msg.delete({timeout: 30000});
-        if (!message.deleted) await message.delete({timeout: 10});
-      } catch(error) {
-        console.error(error)
-      }
+				const msg = await message.channel.send(embed)
+				if (!msg.deleted) await msg.delete({timeout: 30000})
+				if (!message.deleted) await message.delete({timeout: 10})
+			} catch (error) {
+					console.error(error)
+			}
 		}
 	}
 }
 
-exports.autoReact = autoReact;
+exports.autoReact = autoReact

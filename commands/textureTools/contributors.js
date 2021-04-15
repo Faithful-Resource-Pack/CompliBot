@@ -31,7 +31,7 @@ module.exports = {
 			return await message.react('✅');
 		}
 
-		args = parseArgs(args);
+		args = parseArgs(message, args);
 
 		let havePath     = false;
 		let haveType     = false;

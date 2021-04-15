@@ -1,2 +1,2 @@
-node index.js
+node --use_strict --trace-warnings index.js
 pause

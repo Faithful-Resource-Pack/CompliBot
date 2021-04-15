@@ -1,5 +1,9 @@
 const { APIMessage, Structures } = require("discord.js");
 
+/**
+ * ALLOW THE BOT TO REPLY TO MESSAGE
+ * @author RobertR11
+ */
 class Message extends Structures.get("Message") {
 	async inlineReply(content, options) {
 		const mentionRepliedUser = typeof ((options || content || {}).allowedMentions || {}).repliedUser === "undefined" ? false : ((options || content).allowedMentions).repliedUser;

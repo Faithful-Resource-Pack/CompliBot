@@ -1,11 +1,14 @@
+/*eslint no-undef: "error" */
+/*eslint-env node*/
+
 /**
  * @brief File made to safely handle files and json more particularly.
  * Goal is to have dynamic paths
  */
-const { exec, execSync } = require('child_process')
 const fs = require('fs')
 const os = require('os')
-const { dirname, normalize, join, resolve } = require('path')
+const { exec, execSync } = require('child_process')
+const { dirname, normalize, join } = require('path')
 const { Mutex } = require('async-mutex')
 require('dotenv').config()
 
@@ -57,7 +60,9 @@ class FileHandler {
 
       try {
         execSync(cmd)
-      } catch (_ignored) {}
+      } catch (_ignored) {
+        // ignored
+      }
 
       cmd = ""
       cmd += `cd json`
@@ -65,7 +70,9 @@ class FileHandler {
 
       try {
         execSync(cmd)
-      } catch (_ignored) {}
+      } catch (_ignored) {
+        // ignored
+      }
 
       cmd = ""
       cmd += "cd json"
@@ -152,7 +159,9 @@ class FileHandler {
 
       try {
         execSync(cmd)
-      } catch (_ignored) {}
+      } catch (_ignored) {
+        // ignored
+      }
 
       cmd = ""
       cmd += `cd json`
@@ -235,7 +244,7 @@ class FileHandler {
             console.error(error)
 
             // if there is a real error, release it then and reject
-            release()
+            this.release()
             reject(error) 
           }
         }

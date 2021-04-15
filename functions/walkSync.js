@@ -1,13 +1,13 @@
 function walkSync(dir, filelist = []) {
 	if( dir[dir.length-1] != '/') dir = dir.concat('/')
-	var fs = fs || require('fs'), files = fs.readdirSync(dir);
+	var fs = fs || require('fs'), files = fs.readdirSync(dir)
 	files.forEach(file => {
 		if (fs.statSync(dir + file).isDirectory())
-			filelist = walkSync(dir + file + '/', filelist);
+			filelist = walkSync(dir + file + '/', filelist)
 		else
-			filelist.push(dir+file);
-	});
-	return filelist;
-};
+			filelist.push(dir+file)
+	})
+	return filelist
+}
 
-exports.walkSync = walkSync;
+exports.walkSync = walkSync

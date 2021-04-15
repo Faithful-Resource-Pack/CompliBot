@@ -1,25 +1,29 @@
-const https    = require('https');
-const sizeOf   = require('image-size');
+const https  = require('https')
+const sizeOf = require('image-size')
 
-// return img size;
-function getMeta(imgUrl) {
-	return new Promise(function(resolve, reject) {
-		https.get(imgUrl, function(response) {
-			var chunks = [];
+/**
+ * Get Meta of an image
+ * @author Juknum
+ * @param {String} imageURL Image URL
+ * @returns Promise (resolve)
+ */
+function getMeta(imageURL) {
+	return new Promise(function(resolve) {
+		https.get(imageURL, function(response) {
+			var chunks = []
 			response.on('data', function(chunk) {
-				chunks.push(chunk);
+				chunks.push(chunk)
 			}).on('end', function() {
-        		try {
-							var buffer = Buffer.concat(chunks);
-							resolve(sizeOf(buffer));
-        		} catch(e) {
-          		return
-        		}
-			});
+				try {
+					resolve(sizeOf(Buffer.concat(chunks)))
+				} catch(err) {
+					return console.error(err)
+				}
+			})
 		}).on('error', function(error) {
-			console.error(error);
-		});
-	});
+			console.error(error)
+		})
+	})
 }
 
-exports.getMeta = getMeta;
+exports.getMeta = getMeta

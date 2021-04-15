@@ -7,7 +7,7 @@ const BOT_AUTOREACT_ERROR = 'Auto Reaction Failed';
 
 // command stuff
 const COMMAND_DISABLED                   = 'This command is currently disabled.';
-const COMMAND_ERROR                      = 'One of my developers made an error while coding this command! Don\'t worry, the error is not on your side.';
+const COMMAND_ERROR                      = 'One of my developers made an error while coding this command! Don\'t worry, the error is not on your side. Please contact @Juknum, @Robert, @Domi or @TheRolf';
 const COMMAND_MAINTENANCE                = 'I\'m currently in maintenance, please try again later.';
 const COMMAND_NO_ARGUMENTS_GIVEN         = 'You did not provide any arguments.';
 const COMMAND_NOT_ENOUGH_ARGUMENTS_GIVEN = 'You did not provide enough arguments.';
@@ -189,7 +189,7 @@ module.exports = {
 	HELP_DESC_RELOAD,
 	HELP_DESC_SHUTDOWN,
 	HELP_DESC_STATUS,
-
+	HELP_DESC_FEEDBACK,
 	HELP_DESC_BEAN,
 	HELP_DESC_BEHAVE,
 	HELP_DESC_ORDER,

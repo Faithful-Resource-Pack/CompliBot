@@ -24,7 +24,7 @@ module.exports = {
 		let valURL;
 		if (message.attachments.size > 0) valURL = message.attachments.first().url;
 
-		args = parseArgs(args);
+		args = parseArgs(message, args);
 
 		let haveMCMETA = false;
 		let haveCustom = false;
