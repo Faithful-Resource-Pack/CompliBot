@@ -3,13 +3,13 @@ const colors   = require('../../res/colors')
 const settings = require('../../settings.js')
 
 /**
- * 
+ * Send a embed message in the logChannel
  * @param {Discord} client Discord Client
  * @param {Discord} message Discord Message
- * @param {String} member 
- * @param {String} reason 
- * @param {String} time 
- * @param {String} type 
+ * @param {String} member member name
+ * @param {String} reason reason
+ * @param {String} time time (in seconds)
+ * @param {String} type
  */
 async function modLog(client, message, member, reason, time, type) {
 	var logChannel = undefined
