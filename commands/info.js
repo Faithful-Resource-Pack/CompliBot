@@ -13,9 +13,7 @@ module.exports = {
 	uses: strings.COMMAND_USES_ANYONE,
 	syntax: `${prefix}info`,
 	async execute(client, message, args) {
-		if (message.channel.type !== 'dm') {
-			await message.inlineReply('Please check your dm\'s!');
-		}
+		if (message.channel.type !== 'dm') await message.inlineReply('Please check your dm\'s!');
 
 		let seconds = Math.floor(message.client.uptime / 1000);
 		let minutes = Math.floor(seconds / 60);
@@ -43,6 +41,7 @@ module.exports = {
 			)
 			.setFooter(`Bot Uptime: ${days} day(s), ${hours} hours, ${minutes} minutes, ${seconds} seconds`)
 
-		await message.inlineReply(embed);
+		if (message.channel.type !== 'dm') await message.author.send(embed);
+		else await message.inlineReply(embed);
 	}
 };
