@@ -60,6 +60,7 @@ class FileHandler {
       } catch (_ignored) {}
 
       cmd = ""
+      cmd += `cd json`
       cmd +="git remote remove origin 2> " + OUT_NULL
 
       try {

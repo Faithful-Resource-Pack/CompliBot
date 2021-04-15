@@ -43,18 +43,22 @@ async function autoReact(message, emojis, errorType, errorSpecificType, specific
 		) return;
 
 		else {
-			var embed = new Discord.MessageEmbed()
-				.setAuthor(message.author.tag, message.author.displayAvatarURL())
-				.setColor(colors.RED)
-				.setTitle(strings.BOT_AUTOREACT_ERROR)
-				.setFooter('Submission will be removed in 30 seconds, please re-submit', settings.BOT_IMG);
+      try {
+        var embed = new Discord.MessageEmbed()
+          .setAuthor(message.author.tag, message.author.displayAvatarURL())
+          .setColor(colors.RED)
+          .setTitle(strings.BOT_AUTOREACT_ERROR)
+          .setFooter('Submission will be removed in 30 seconds, please re-submit', settings.BOT_IMG);
 
-			if (specificError) embed.setDescription(errorSpecificType);
-			else embed.setDescription(errorType);
+        if (specificError) embed.setDescription(errorSpecificType);
+        else embed.setDescription(errorType);
 
-			const msg = await message.channel.send(embed);
-			await msg.delete({timeout: 30000});
-			if (!message.deleted) await message.delete({timeout: 10});
+        const msg = await message.channel.send(embed);
+        await msg.delete({timeout: 30000});
+        if (!message.deleted) await message.delete({timeout: 10});
+      } catch(error) {
+        console.error(error)
+      }
 		}
 	}
 }
