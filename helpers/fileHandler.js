@@ -53,7 +53,14 @@ class FileHandler {
     return new Promise((resolve, reject) => {
       let cmd = ""
       cmd += `cd json`
-      cmd +=" && git remote remove origin 2> " + OUT_NULL
+      cmd +=" && git init"
+
+      try {
+        execSync(cmd)
+      } catch (_ignored) {}
+
+      cmd = ""
+      cmd +="git remote remove origin 2> " + OUT_NULL
 
       try {
         execSync(cmd)
