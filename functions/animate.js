@@ -78,8 +78,7 @@ async function animate(message, valMCMETA, valURL) {
 		// Draw frames:
 		const encoder = new GIFEncoderFixed(texture.width, texture.width)
 		encoder.start()
-
-		encoder.setTransparency(true)
+		encoder.setTransparent(true)
 
 		context.globalCompositeOperation = 'copy'
 

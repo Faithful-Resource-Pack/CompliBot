@@ -121,7 +121,7 @@ if (DEBUG) console.table(commands)
 client.on('ready', async () => {
 	console.log(`┌─────────────────────────────────────────────────────────────┐`)
 	console.log(`│                                                             │`)
-	console.log(`│  ─=≡Σ((( つ◕ل͜◕)つ                                         │`)
+	console.log(`│  ─=≡Σ((( つ◕ل͜◕)つ                                           │`)
 	console.log(`│ JavaScript is a pain, but I'm fine, I hope...               │`)
 	console.log(`│                                                             │`)
 	console.log(`└─────────────────────────────────────────────────────────────┘\n\n`)
