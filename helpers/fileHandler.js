@@ -61,7 +61,7 @@ class FileHandler {
 
       cmd = ""
       cmd += `cd json`
-      cmd +="git remote remove origin 2> " + OUT_NULL
+      cmd +=" && git remote remove origin"
 
       try {
         execSync(cmd)
