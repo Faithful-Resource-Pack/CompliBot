@@ -134,7 +134,7 @@ module.exports = {
       const emoji_num = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟', '🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮', '🇯'];
 
       var embed = new Discord.MessageEmbed()
-				//.setAuthor('Note: this command isn\'t updated for 21w14a yet')
+				.setAuthor('Note: this command isn\'t updated for 21w15a yet')
         .setTitle(results.length + ' results for "' + args[1] + '" in ' + args[0].replace('b', " Bedrock"))
         .setFooter(message.client.user.username, settings.BOT_IMG);
 
@@ -189,7 +189,7 @@ module.exports = {
           const size = dimension.width + 'x' + dimension.height;
 
           var embed = new Discord.MessageEmbed()
-						//.setAuthor('Note: this command isn\'t updated for 21w14a yet')
+						.setAuthor('Note: this command isn\'t updated for 21w15a yet')
             .setTitle(name)
             .setColor(colors.BLUE)
             .setURL(imgURL)

@@ -1,19 +1,22 @@
-async function getMessages(client, channelID, limit = 200) {
-	const sum_messages = [];
-	let last_id;
-	let channel = await client.channels.cache.get(channelID);
+async function getMessages(client, id, limit = 100) {
+	if (limit > 100) limit = 100
+
+	let last_id        = undefined
+	const sum_messages = []
+	const channel      = await client.channels.cache.get(id)
+	const options      = { limit: limit }
 
 	while (true) {
-		const options = { limit: 100 };
-		if (last_id) options.before = last_id;
+		if (last_id) options.before = last_id
 
-		const messages = await channel.messages.fetch(options);
-		sum_messages.push(...messages.array());
-		last_id = messages.last().id;
+		const messages = await channel.messages.fetch(options)
+		sum_messages.push(...messages.array())
 
-		if (messages.size != 100 || sum_messages >= limit) break;
+		if (messages.size != limit || sum_messages >= limit) break
+		else last_id = messages.last().id
 	}
-	return sum_messages;
+
+	return sum_messages
 }
 
-exports.getMessages = getMessages;
+exports.getMessages = getMessages

@@ -2,6 +2,11 @@
 ---------------------------------------
 ### April 2021
 
+#### April 15th 2021
+> Juknum
+
+- Fixed `GetMessages.js`, now check if the limit is reached before attributing a new id.
+
 #### April 11th 2021
 > Juknum
 

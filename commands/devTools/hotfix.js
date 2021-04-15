@@ -17,6 +17,8 @@ const { textureCouncil }    = require('../../functions/textures_submission/textu
 const { textureRevote }     = require('../../functions/textures_submission/textureRevote.js');
 const { getResults }        = require('../../functions/textures_submission/getResults.js');
 
+const { getMessages }       = require('../../functions/getMessages.js');
+
 const fs = require('fs');
 
 const { date } = require('../../functions/utility/date.js');
@@ -61,22 +63,24 @@ module.exports = {
 		await textureSubmission(client, settings.C32_SUBMIT_1,  settings.C32_SUBMIT_2, 3);							// 3 DAYS OFFSET
 		await textureSubmission(client, settings.C32_SUBMIT_1B, settings.C32_SUBMIT_2, 3);							// 3 DAYS OFFSET
 		//await    textureCouncil(client, settings.C32_SUBMIT_2,  settings.C32_SUBMIT_3, settings.C32_RESULTS, 1);	// 1 DAYS OFFSET
-		//await     textureRevote(client, settings.C32_SUBMIT_3,  settings.C32_RESULTS,  3);							// 3 DAYS OFFSET
-		
+		//await     textureRevote(client, settings.C32_SUBMIT_3,  settings.C32_RESULTS,  3);							// 3 DAYS OFFSET*/
 		// C64x
-		await textureSubmission(client, settings.C64_SUBMIT_1,  settings.C64_SUBMIT_2, 4);							// 3 DAYS OFFSET
-		await textureSubmission(client, settings.C64_SUBMIT_1B, settings.C64_SUBMIT_2, 4);							// 3 DAYS OFFSET
-		await textureSubmission(client, settings.C64_SUBMIT_1,  settings.C64_SUBMIT_2, 3);							// 3 DAYS OFFSET
-		await textureSubmission(client, settings.C64_SUBMIT_1B, settings.C64_SUBMIT_2, 3);							// 3 DAYS OFFSET
-		//await    textureCouncil(client, settings.C64_SUBMIT_2,  settings.C64_SUBMIT_3, settings.C64_RESULTS, 1);	// 1 DAYS OFFSET
-		//await     textureRevote(client, settings.C64_SUBMIT_3,  settings.C64_RESULTS,  3);							// 3 DAYS OFFSET
-		*/
-		/*
-		await getResults(client, settings.C32_RESULTS);
+		await textureSubmission(client, settings.C64_SUBMIT_1,  settings.C64_SUBMIT_2, 3);
+		await textureSubmission(client, settings.C64_SUBMIT_1B, settings.C64_SUBMIT_2, 3);
+		await    textureCouncil(client, settings.C64_SUBMIT_2,  settings.C64_SUBMIT_3, settings.C64_RESULTS, 1);
+		await     textureRevote(client, settings.C64_SUBMIT_3,  settings.C64_RESULTS,  3);
+		
+		
+		//await getResults(client, settings.C32_RESULTS);
 		await getResults(client, settings.C64_RESULTS);
 		
+		
+		await doPush();	// Push them trough GitHub*/
+
+		/*
+		let messages = await getMessages(client, '792757663779389440');
+		console.log(messages[0])
 		*/
-		await doPush();	// Push them trough GitHub
 		}
 	}
 }
