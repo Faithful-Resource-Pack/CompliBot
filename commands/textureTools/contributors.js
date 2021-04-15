@@ -150,7 +150,7 @@ module.exports = {
 		if (haveToUpdate) {
 			autoPush('Compliance-Resource-Pack', 'JSON', 'main', `Manual Update executed by: ${message.author.username}`, `./json`);
 			return await message.react('✅');
-		} else return await message.react('✔️');
+		} else return await message.react('☑️');
 	}
 }
 
