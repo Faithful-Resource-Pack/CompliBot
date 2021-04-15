@@ -197,7 +197,7 @@ class FileHandler {
 
       // else we will have a problem
 
-      // the mutex is a lock and you need to acquuire it to be authorized to do an action
+      // the mutex is a lock and you need to acquire it to be authorized to do an action
       let real = undefined
       let promise = this.mutex.acquire().then(release => {
         real = release
