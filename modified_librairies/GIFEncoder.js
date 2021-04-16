@@ -1,10 +1,11 @@
 /* eslint-disable no-redeclare */
 
-const NeuQuant = require('../node_modules/gif-encoder-2/src/TypedNeuQuant.js')
-const { OctreeQuant, Color } = require('../node_modules/gif-encoder-2/src/OctreeQuant')
 const GIFEncoder = require('gif-encoder-2')
 
-// because the classic stuff is fucked up
+/**
+ * The original function can be found here:
+ * https://github.com/benjaminadk/gif-encoder-2/blob/master/src/GIFEncoder.js#L241
+ */
 class GIFEncoderFixed extends GIFEncoder {
 	findClosest(c) {
 		return 0
