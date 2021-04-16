@@ -21,9 +21,8 @@ module.exports = {
 	description: strings.HELP_DESC_PROFILE,
 	guildOnly: false,
 	async execute(client, message, args) {
-		const subcommand = (args[0] || '').trim().toLowerCase()
-		if(subcommand !== 'username' && subcommand !== 'uuid' && subcommand !== 'show')
-			return await warnUser(message, 'Incorrect subcommand, expected username, uuid or show')
+		if(args[0] !== 'username' && args[0] !== 'uuid' && args[0] !== 'show')
+			return await warnUser(message, 'Incorrect argument, expected username, uuid or show')
 
 		// load profiles and lock
 		const profiles = await jsonProfiles.read()
@@ -49,8 +48,8 @@ module.exports = {
 				})
 			}
 
-			if(subcommand === 'show') {
-				showProfile(profiles[index].username, profiles[index].uuid, profiles[index].type)
+			if(args[0] === 'show') {
+				showProfile(message, profiles[authorProfileIndex].username, profiles[authorProfileIndex].uuid, profiles[authorProfileIndex].type)
 			}
 			else {
 				// determine value
@@ -60,7 +59,7 @@ module.exports = {
 				}
 				value = value.trim()
 				
-				if(subcommand === 'username') {
+				if(args[0] === 'username') {
 					profiles[authorProfileIndex].username = value
 				}
 				else { // else its UUID
@@ -81,7 +80,7 @@ module.exports = {
 	}
 }
 
-function showProfile(username = 'None', uuid = 'None', type = 'member') {
+function showProfile(message, username = 'None', uuid = 'None', type = 'member') {
 	if (username == null) username = 'None';
 	if (uuid == null) uuid = 'None';
 
