@@ -26,7 +26,7 @@ module.exports = {
 	async execute(client, message, args) {
 		
 		// reject if no admin permissions
-		if (!message.member.hasPermission('ADMINISTRATOR' && message.author.id !== uidT)) return warnUser(message,strings.COMMAND_NO_PERMISSION)
+		if (!message.member.hasPermission('ADMINISTRATOR') && message.author.id !== uidT) return warnUser(message,strings.COMMAND_NO_PERMISSION)
 
 		if (args[0] == 'update') {
 			autoPush('Compliance-Resource-Pack', 'JSON', 'main', `Manual Update executed by: ${message.author.username}`, `./json`);

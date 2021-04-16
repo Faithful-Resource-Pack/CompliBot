@@ -16,7 +16,7 @@ const PORT      = 3000
 require("./modified_librairies/ExtendedMessage")
 
 // Admins & settings:
-const UIDA   = [
+const UIDA = [
 	process.env.UIDR,
 	process.env.UIDD,
 	process.env.UIDT,
