@@ -46,7 +46,7 @@ function magnify(message, url) {
 			}
 		}
 
-		const attachment   = new Discord.MessageAttachment(canvasResult.toBuffer(), 'output.png');
+		const attachment   = new Discord.MessageAttachment(canvasResult.toBuffer(), 'magnified.png');
 		const embedMessage = await message.inlineReply(attachment);
 
 		if (message.channel.type !== 'dm')  await embedMessage.react('🗑️');
@@ -59,7 +59,7 @@ function magnify(message, url) {
 			.then(async collected => {
 				const reaction = collected.first();
 				if (reaction.emoji.name === '🗑️') {
-					if (!embedMessage.deleted) embedMessage.delete();
+					embedMessage.delete();
 					if (!message.deleted) message.delete();
 				}
 			})

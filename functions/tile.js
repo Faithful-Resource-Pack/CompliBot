@@ -123,7 +123,7 @@ function tile(message, url, type) {
 			canvasContext.clearRect(0, dimension.height * 2, dimension.width, dimension.height) // bottom left
 		}
 
-		const attachment   = new Discord.MessageAttachment(canvas.toBuffer())
+		const attachment   = new Discord.MessageAttachment(canvas.toBuffer(), 'tiled.png')
 		const embedMessage = await message.inlineReply(attachment)
 
     if (message.channel.type !== 'dm')  await embedMessage.react('🗑️')
