@@ -11,7 +11,7 @@ const { jsonContributionsJava, jsonContributionsBedrock } = require('../../helpe
 module.exports = {
 	name: 'about',
 	description: strings.HELP_DESC_ABOUT,
-	guildOnly: false,
+	guildOnly: true,
 	uses: strings.COMMAND_USES_ANYONE,
 	syntax: `${prefix}about me\n${prefix}about <userTag>\n`,
 	example: `${prefix}about Hozz#0889`,

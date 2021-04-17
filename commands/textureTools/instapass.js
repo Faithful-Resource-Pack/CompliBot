@@ -18,7 +18,7 @@ const JE_BRANCHES = [ '1.12.2', '1.13.2', '1.14.4', '1.15.2', '1.16.5', '1.17' ]
 module.exports = {
 	name: 'instapass',
 	description: strings.HELP_DESC_INSTAPASS,
-	guildOnly: false,
+	guildOnly: true,
 	uses: strings.COMMAND_USES_MODS,
 	syntax: `${prefix}instapass <message URL>`,
 	flags: 'No flags',

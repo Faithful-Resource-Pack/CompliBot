@@ -16,7 +16,7 @@ async function warnUser(message, text) {
 		.setFooter('Type /help to get more information about commands', settings.BOT_IMG)
 
 	const embedMessage = await message.inlineReply(embed)
-	await embedMessage.react('🗑️')
+	if (message.channel.type !== 'dm') await embedMessage.react('🗑️')
 
 	const filter = (reaction, user) => {
 		return ['🗑️'].includes(reaction.emoji.name) && user.id === message.author.id
@@ -31,7 +31,7 @@ async function warnUser(message, text) {
 			}
 		})
 		.catch(async () => {
-			await embedMessage.reactions.cache.get('🗑️').remove()
+			if (message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🗑️').remove()
 		})
 }
 

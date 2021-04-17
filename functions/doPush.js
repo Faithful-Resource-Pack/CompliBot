@@ -4,7 +4,7 @@ const { autoPush } = require('../functions/autoPush.js')
 const fs = require('fs')
 
 const { date } = require('../functions/utility/date.js')
-const DEBUG    = process.env.DEBUG
+const DEBUG    = (process.env.DEBUG == 'true')
 
 /**
  * Push files from local storage to GitHub
@@ -14,7 +14,6 @@ const DEBUG    = process.env.DEBUG
 async function doPush(COMMIT_MESSAGE = `AutoPush passed textures from ${date()}`) {
 
 	/* JAVA 32x *********************************************************************************************************************/
-	
 	if (!isEmptyDir(`./texturesPush/Compliance-Java-32x/1.17/assets`)) {
 		await autoPush('Compliance-Resource-Pack', 'Compliance-Java-32x', 'Jappa-1.17', COMMIT_MESSAGE, './texturesPush/Compliance-Java-32x/1.17/')
 		fs.rmdirSync(`./texturesPush/Compliance-Java-32x/1.17/assets/`, { recursive: true })

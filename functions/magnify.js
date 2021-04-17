@@ -49,7 +49,7 @@ function magnify(message, url) {
 		const attachment   = new Discord.MessageAttachment(canvasResult.toBuffer(), 'output.png');
 		const embedMessage = await message.inlineReply(attachment);
 
-		if (message.channel.type != 'dm') await embedMessage.react('🗑️');
+		if (message.channel.type !== 'dm')  await embedMessage.react('🗑️');
 
 		const filter = (reaction, user) => {
 			return ['🗑️'].includes(reaction.emoji.name) && user.id === message.author.id;
@@ -64,7 +64,7 @@ function magnify(message, url) {
 				}
 			})
 			.catch(async () => {
-				if (message.channel.type != 'dm') await embedMessage.reactions.cache.get('🗑️').remove();
+				if (message.channel.type !== 'dm')  await embedMessage.reactions.cache.get('🗑️').remove();
 			});
 
 		return attachment;
