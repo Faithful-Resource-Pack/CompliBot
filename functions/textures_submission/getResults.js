@@ -6,6 +6,8 @@ const strings  = require('../../res/strings.js')
 const fs       = require('fs')
 const fetch    = require('node-fetch')
 
+const DEBUG = (process.env.DEBUG == 'true')
+
 const { date } = require('../utility/date.js')
 const { getMessages } = require('../getMessages.js')
 const { jsonContributionsBedrock, jsonContributionsJava } = require('../../helpers/fileHandler.js')
@@ -89,10 +91,11 @@ async function getResults(client, inputID, OFFSET_DAY = 0) {
 
 
 			if (textureIndex == -1 && (textureType == 'java' || textureType == 'bedrock')) {
+				if (DEBUG) console.log(`\nTEXTURE NOT FOUND: ${textureName}`)
 				errorAutoPush(client, inputID, message, textureAuthor, textureName, textureFolder, textureType, `Texture not found, check spelling or folder`)
 			}
 
-			if (textureIndex != -1 && (textureType == 'java' || textureType == 'bedrock')) {
+			else if (textureIndex != -1 && (textureType == 'java' || textureType == 'bedrock')) {
 
 				// Convert texture from java to bedrock (if available)
 				if (textureType == 'java' && texturesJava[textureIndex].isBedrock == true) {
@@ -116,6 +119,7 @@ async function getResults(client, inputID, OFFSET_DAY = 0) {
 						break
 					}
 
+					if (DEBUG) console.log(`\nADDING: ${textureName}`)
 					await download_branch(client, message.embeds[0].image.url, texturesJava[textureIndex].version['1.17'],   textureSize, textureName, '1.17',   'java')
 					await download_branch(client, message.embeds[0].image.url, texturesJava[textureIndex].version['1.16.5'], textureSize, textureName, '1.16.5', 'java')
 					await download_branch(client, message.embeds[0].image.url, texturesJava[textureIndex].version['1.15.2'], textureSize, textureName, '1.15.2', 'java')
@@ -125,11 +129,17 @@ async function getResults(client, inputID, OFFSET_DAY = 0) {
 
 				}
 				else if (textureType == 'bedrock') {
+					if (DEBUG) console.log(`\nADDING: ${textureName}`)
 					await download_branch(client, message.embeds[0].image.url, texturesBedrock[textureIndex].version['1.16.210'], textureSize, textureName, '1.16.210', 'bedrock')
 				}
 
-				
+				await setAuthor(textureType, textureIndex, textureAuthorID, textureSize)
 			}
+		}
+		// break for loop to avoid looping in older message (time saving)
+		else if (messageDate.getDate() != offsetDate.getDate() || messageDate.getMonth() != offsetDate.getMonth()) {
+			if (DEBUG) console.log('END OF DOWNLOADS')
+			break
 		}
 
 		jsonContributionsJava.release()
@@ -161,7 +171,10 @@ async function download_branch(client, textureURL, texturePath, textureSize, tex
 	const response = await fetch(textureURL)
 	const buffer   = await response.buffer()
 	await fs.promises.mkdir(localPath.substr(0, localPath.lastIndexOf('/')), {recursive: true}).catch(console.error)
-	await fs.writeFile(localPath, buffer, () => console.log(`ADDED: ${textureName}\nTO: ${localPath}\n`))
+	await fs.writeFile(localPath, buffer, function(err) {
+		if (err) return console.error(err)
+		else return console.log(`ADDED TO: ${localPath}`)
+	})
 }
 
 async function errorAutoPush(client, inputID, message, author, name, folder, type, error) {
@@ -188,7 +201,6 @@ async function errorAutoPush(client, inputID, message, author, name, folder, typ
 
 async function setAuthor(valType, valIndex, valAuth, valSize) {
 	let fileHandle
-	let fileHandle2
 	let textures
 
 	if (valType == 'java')    fileHandle = jsonContributionsJava
@@ -197,27 +209,14 @@ async function setAuthor(valType, valIndex, valAuth, valSize) {
 	textures = await fileHandle.read()
 
 	if (valSize == 32) {
-		if (!textures[valIndex].c32.date) textures[valIndex].c32.date = date()
-		if (!textures[valIndex].c32.author) textures[valIndex].c32.author = [valAuth]
-		else if (!textures[valIndex].c32.author.includes(valAuth)) textures[valIndex].c32.author.push(valAuth)
+		textures[valIndex].c32.date   = date()
+		textures[valIndex].c32.author = [valAuth]
+		if (DEBUG) console.log(`ADD ${valAuth} AS 32x AUTHOR OF ${valType}`)
 	}
 	if (valSize == 64) {
-		if (!textures[valIndex].c64.date) textures[valIndex].c64.date = date()
-		if (!textures[valIndex].c64.author) textures[valIndex].c64.author = [valAuth]
-		else if (!textures[valIndex].c64.author.includes(valAuth)) textures[valIndex].c64.author.push(valAuth)
-	}
-
-	if (valType == 'java' && textures[valIndex].isBedrock) {
-		fileHandle2 = jsonContributionsBedrock
-		var texturesBedrock = await fileHandle2.read()
-
-		for (const i in texturesBedrock) {
-			if (texturesBedrock[i].version[strings.LATEST_MC_BE_VERSION].includes(textures[valIndex].bedrock[strings.LATEST_MC_BE_VERSION])) {
-				fileHandle2.release() // need to be before recursive to avoid infinite task
-				await setAuthor('bedrock', i, valAuth, valSize)
-				break
-			}
-		}
+		textures[valIndex].c64.date   = date()
+		textures[valIndex].c64.author = [valAuth]
+		if (DEBUG) console.log(`ADD ${valAuth} AS 64x AUTHOR OF ${valType}`)
 	}
 
 	if (valType == 'java')    await jsonContributionsJava.write(textures)
@@ -225,6 +224,27 @@ async function setAuthor(valType, valIndex, valAuth, valSize) {
 
 	fileHandle.release()
 
+	if (valType == 'java' && textures[valIndex].isBedrock) {
+		let found = false
+		let index = -1
+
+		fileHandle = jsonContributionsBedrock
+		var texturesBedrock = await fileHandle.read()
+
+		for (var i in texturesBedrock) {
+			if (texturesBedrock[i].version[strings.LATEST_MC_BE_VERSION].includes(textures[valIndex].bedrock[strings.LATEST_MC_BE_VERSION])) {
+				found = true
+				index = i
+			}
+		}
+
+		if (found) {
+			fileHandle.release()
+			await setAuthor('bedrock', index, valAuth, valSize)
+		}
+	}
+
+	return
 }
 
 exports.getResults = getResults
