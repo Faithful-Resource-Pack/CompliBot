@@ -218,12 +218,15 @@ class FileHandler {
       let real = undefined
       let promise = this.mutex.acquire().then(release => {
         real = release
-      })
+      }).catch((err) => console.error(err))
 
       if(this.doPull || forcePull) {
         promise = promise.then(() => {
           return this.pull()
-        })    
+        })
+        .catch((err) => {
+          console.error(err)
+        })
       }
 
       promise.then(() => {
