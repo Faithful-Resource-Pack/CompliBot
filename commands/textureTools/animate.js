@@ -24,7 +24,7 @@ module.exports = {
 		let valURL;
 		if (message.attachments.size > 0) valURL = message.attachments.first().url;
 
-		args = parseArgs(args);
+		args = parseArgs(message, args);
 
 		let haveMCMETA = false;
 		let haveCustom = false;
@@ -156,6 +156,13 @@ async function previousImage(message, mcmeta) {
 				found = true;
 				url = msg.embeds[0].image.url;
 				break;
+			}
+			else if (msg.content.startsWith('https://') || msg.content.startsWith('http://')) {
+				if (msg.content.endsWith('.png') || msg.content.endsWith('.jpeg') || msg.content.endsWith('.jpg') || msg.content.endsWith('.gif')) {
+					found = true;
+					url = msg.content;
+					break;
+				}
 			}
 		} catch(e) {
 			return warnUser(message, strings.COMMAND_NO_IMAGE_FOUND);

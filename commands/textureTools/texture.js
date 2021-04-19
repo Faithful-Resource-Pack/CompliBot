@@ -164,7 +164,7 @@ module.exports = {
         }).catch(async () => {
           for (var i = 0; i < results.length; i++) {
             if (i < emoji_num.length) {
-              embedMessage.reactions.cache.get(emoji_num[i]).remove();
+              if (message.channel.type !== 'dm') embedMessage.reactions.cache.get(emoji_num[i]).remove();
             }
           }
         });
@@ -253,12 +253,6 @@ module.exports = {
                 return palette(message, embedMessage.embeds[0].image.url);
               }
               if (reaction.emoji.name === '🔎') {
-                if (size == '8x8') return magnify(message, embedMessage.embeds[0].image.url);
-                if (size == '16x16') return magnify(message, embedMessage.embeds[0].image.url);
-                if (size == '32x32') return magnify(message, embedMessage.embeds[0].image.url);
-                if (size == '64x64') return magnify(message, embedMessage.embeds[0].image.url);
-                if (size == '128x128') return magnify(message, embedMessage.embeds[0].image.url);
-                if (size == '256x256') return magnify(message, embedMessage.embeds[0].image.url);
                 return magnify(message, embedMessage.embeds[0].image.url);
               }
               if (reaction.emoji.name === '🌀' && java.includes(type)) {
@@ -273,12 +267,12 @@ module.exports = {
               }
             })
             .catch(async () => {
-              embedMessage.reactions.cache.get('🗑️').remove();
+              if (message.channel.type !== 'dm') embedMessage.reactions.cache.get('🗑️').remove();
               if (dimension.width < 129 && dimension.height < 129) {
-                embedMessage.reactions.cache.get('🔎').remove();
+                if (message.channel.type !== 'dm') embedMessage.reactions.cache.get('🔎').remove();
               }
-              embedMessage.reactions.cache.get('🌀').remove();
-              embedMessage.reactions.cache.get('🎨').remove();
+              if (message.channel.type !== 'dm') embedMessage.reactions.cache.get('🌀').remove();
+              if (message.channel.type !== 'dm') embedMessage.reactions.cache.get('🎨').remove();
             });
 
         });

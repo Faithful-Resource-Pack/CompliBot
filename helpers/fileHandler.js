@@ -1,11 +1,14 @@
+/*eslint no-undef: "error" */
+/*eslint-env node*/
+
 /**
  * @brief File made to safely handle files and json more particularly.
  * Goal is to have dynamic paths
  */
-const { exec, execSync } = require('child_process')
 const fs = require('fs')
 const os = require('os')
-const { dirname, normalize, join, resolve } = require('path')
+const { exec, execSync } = require('child_process')
+const { dirname, normalize, join } = require('path')
 const { Mutex } = require('async-mutex')
 require('dotenv').config()
 
@@ -53,11 +56,23 @@ class FileHandler {
     return new Promise((resolve, reject) => {
       let cmd = ""
       cmd += `cd json`
-      cmd +=" && git remote remove origin 2> " + OUT_NULL
+      cmd +=" && git init"
 
       try {
         execSync(cmd)
-      } catch (_ignored) {}
+      } catch (_ignored) {
+        // ignored
+      }
+
+      cmd = ""
+      cmd += `cd json`
+      cmd +=" && git remote remove origin"
+
+      try {
+        execSync(cmd)
+      } catch (_ignored) {
+        // ignored
+      }
 
       cmd = ""
       cmd += "cd json"
@@ -144,7 +159,9 @@ class FileHandler {
 
       try {
         execSync(cmd)
-      } catch (_ignored) {}
+      } catch (_ignored) {
+        // ignored
+      }
 
       cmd = ""
       cmd += `cd json`
@@ -201,12 +218,15 @@ class FileHandler {
       let real = undefined
       let promise = this.mutex.acquire().then(release => {
         real = release
-      })
+      }).catch((err) => console.error(err))
 
       if(this.doPull || forcePull) {
         promise = promise.then(() => {
           return this.pull()
-        })    
+        })
+        .catch((err) => {
+          console.error(err)
+        })
       }
 
       promise.then(() => {
@@ -227,7 +247,7 @@ class FileHandler {
             console.error(error)
 
             // if there is a real error, release it then and reject
-            release()
+            this.release()
             reject(error) 
           }
         }

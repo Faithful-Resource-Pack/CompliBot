@@ -34,7 +34,7 @@ module.exports = {
 
 		if(!message.member.hasPermission('ADMINISTRATOR')) return warnUser(message,strings.COMMAND_NO_PERMISSION);
 		
-		args = parseArgs(args);
+		args = parseArgs(message, args);
 		//console.log(args)
 
 		var haveAuth = false;

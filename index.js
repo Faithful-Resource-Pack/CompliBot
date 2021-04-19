@@ -1,141 +1,163 @@
-// Lipton Sparkling Ice Tea Classic 0,33L
+/*eslint-env node*/
+
+/**
+ * COMPLIBOT MAIN FILE:
+ * Developped by and for the Compliance Community.
+ */
 
 // Libs:
-require('dotenv').config();
-const Discord   = require('discord.js');
-const http      = require('http');
-const fs        = require('fs');
-const cron      = require('cron');
-const port      = 3000;
-const client    = new Discord.Client({ disableMentions: 'everyone', restTimeOffset: 0 });
-client.commands = new Discord.Collection();
-require("./ExtendedMessage");
+require('dotenv').config()
+const Discord   = require('discord.js')
+const http      = require('http')
+const cron      = require('cron')
+const client    = new Discord.Client({ disableMentions: 'everyone', restTimeOffset: 0 })
+client.commands = new Discord.Collection()
+const PORT      = 3000
+require("./modified_librairies/ExtendedMessage")
 
 // Admins & settings:
-const uidR   = process.env.UIDR;
-const prefix = process.env.PREFIX;
+const UIDA = [
+	process.env.UIDR,
+	process.env.UIDD,
+	process.env.UIDT,
+	process.env.UIDJ
+]
+const prefix      = process.env.PREFIX
+const DEBUG       = (process.env.DEBUG.toLowerCase() == 'true')
+const MAINTENANCE = (process.env.MAINTENANCE.toLowerCase() == 'true')
 
 // Helpers:
-const { jsonModeration } = require('./helpers/fileHandler');
-const { autoReact }      = require('./functions/autoReact');
-const { updateMembers }  = require('./functions/updateMembers.js');
-const { walkSync }       = require('./functions/walkSync');
+const { jsonModeration }    = require('./helpers/fileHandler')
 
-const { quote }    = require('./functions/quote');
-const { warnUser } = require('./functions/warnUser.js');
-
-const { textureSubmission } = require('./functions/textures_submission/textureSubmission.js');
-const { textureCouncil }    = require('./functions/textures_submission/textureCouncil.js');
-const { textureRevote }     = require('./functions/textures_submission/textureRevote.js');
-const { getResults }        = require('./functions/textures_submission/getResults.js');
-const { autoPush }          = require('./functions/autoPush.js');
-const { doPush }            = require('./functions/doPush.js');
-
-const { checkTimeout }      = require('./functions/moderation/checkTimeout.js');
-const { addMutedRole }      = require('./functions/moderation/addMutedRole.js');
-const { inviteDetection }   = require('./functions/moderation/inviteDetection.js');
+// Functions:
+const { autoReact }         = require('./functions/autoReact')
+const { updateMembers }     = require('./functions/updateMembers.js')
+const { walkSync }          = require('./functions/walkSync')
+const { quote }             = require('./functions/quote')
+const { warnUser }          = require('./functions/warnUser.js')
+const { textureSubmission } = require('./functions/textures_submission/textureSubmission.js')
+const { textureCouncil }    = require('./functions/textures_submission/textureCouncil.js')
+const { textureRevote }     = require('./functions/textures_submission/textureRevote.js')
+const { getResults }        = require('./functions/textures_submission/getResults.js')
+const { doPush }            = require('./functions/doPush.js')
+const { checkTimeout }      = require('./functions/moderation/checkTimeout.js')
+const { addMutedRole }      = require('./functions/moderation/addMutedRole.js')
+const { inviteDetection }   = require('./functions/moderation/inviteDetection.js')
 
 // try to read this json
 jsonModeration.read(false).then(warnList => { // YOU MUST NOT LOCK because only read
 
 // Resources:
-const colors  = require('./res/colors');
-const strings = require('./res/strings');
+const colors  = require('./res/colors')
+const strings = require('./res/strings')
 
 // Import settings & commands handler:
-const commandFiles = walkSync('./commands').filter(file => file.endsWith('.js'));
-const settings     = require('./settings');
+const commandFiles = walkSync('./commands').filter(file => file.endsWith('.js'))
+const settings     = require('./settings')
 
-// Scheduled Functions:
-// Texture submission process: (each day at 00:00 GMT)
-let submissionProcess = new cron.CronJob('0 0 * * *', async () => {
-	// C32x
-	await textureSubmission(client, settings.C32_SUBMIT_1,  settings.C32_SUBMIT_2, 3);												// 3 DAYS OFFSET
-	await textureSubmission(client, settings.C32_SUBMIT_1B, settings.C32_SUBMIT_2, 3);												
-	await    textureCouncil(client, settings.C32_SUBMIT_2,  settings.C32_SUBMIT_3, settings.C32_RESULTS, 1);	// 1 DAYS OFFSET
-	await     textureRevote(client, settings.C32_SUBMIT_3,  settings.C32_RESULTS,  3);												// 3 DAYS OFFSET
+/**
+ * SCHEDULED FUNCTIONS : Texture Submission
+ * - Global process (each day at 00:00 GMT)         : @function submissionProcess
+ * - Download process (each day at 00:10 GMT)       : @function downloadToBot
+ * - Push to GitHub process (each day at 00:15 GMT) : @function pushToGithub
+ */
+const submissionProcess = new cron.CronJob('0 0 * * *', async () => {
+	// Compliance 32x
+	await textureSubmission(client, settings.C32_SUBMIT_1,  settings.C32_SUBMIT_2, 3)
+	await textureSubmission(client, settings.C32_SUBMIT_1B, settings.C32_SUBMIT_2, 3)
+	await textureCouncil(client, settings.C32_SUBMIT_2,  settings.C32_SUBMIT_3, settings.C32_RESULTS, 1)
+	await textureRevote(client, settings.C32_SUBMIT_3,  settings.C32_RESULTS,  3)
 	
-	// C64x
-	await textureSubmission(client, settings.C64_SUBMIT_1,  settings.C64_SUBMIT_2, 3);												// 3 DAYS OFFSET
-	await textureSubmission(client, settings.C64_SUBMIT_1B, settings.C64_SUBMIT_2, 3);												
-	await    textureCouncil(client, settings.C64_SUBMIT_2,  settings.C64_SUBMIT_3, settings.C64_RESULTS, 1);	// 1 DAYS OFFSET
-	await     textureRevote(client, settings.C64_SUBMIT_3,  settings.C64_RESULTS,  3);												// 3 DAYS OFFSET
-	
-});
-
-// Texture submission download: (each day at 00:10 GMT)
-let downloadToBot = new cron.CronJob('10 0 * * *', async () => {
-	// Download textures from #results
-	await getResults(client, settings.C32_RESULTS);
-	await getResults(client, settings.C64_RESULTS);
-});
-
+	// Compliance 64x
+	await textureSubmission(client, settings.C64_SUBMIT_1,  settings.C64_SUBMIT_2, 3)
+	await textureSubmission(client, settings.C64_SUBMIT_1B, settings.C64_SUBMIT_2, 3)
+	await textureCouncil(client, settings.C64_SUBMIT_2,  settings.C64_SUBMIT_3, settings.C64_RESULTS, 1)
+	await textureRevote(client, settings.C64_SUBMIT_3,  settings.C64_RESULTS,  3)
+})
+const downloadToBot = new cron.CronJob('10 0 * * *', async () => {
+	await getResults(client, settings.C32_RESULTS)
+	await getResults(client, settings.C64_RESULTS)
+})
 let pushToGithub = new cron.CronJob('15 0 * * *', async () => {
-	await doPush();	// Push them trough GitHub
-});
+	await doPush()
+})
 
-// Moderation timeout check : (each 30s)
-setInterval(function() {checkTimeout(client)},30000)
+/**
+ * MODERATION UPDATE INTERVAL
+ * @param {int} TIME : in milliseconds
+ */
+const TIME = 30000
+setInterval(function() { checkTimeout(client) }, TIME)
 
-// Ah, ha, ha, ha, stayin' alive, stayin' alive
-// Ah, ha, ha, ha, stayin' alive
-// Corona says no ~Domi04151309
+/** 
+ * BOT HEARTBEAT:
+ * Keep the bot alive on repl.it
+ */
 const server = http.createServer((req, res) => {
 	res.writeHead(302, {
 		'Location': 'https://compliancepack.net/'
-	});
-	res.end();
-});
-server.listen(3000, () => console.log(`listening at http://localhost:${port}`));
+	})
+	res.end()
+})
+server.listen(3000, () => console.log(`listening at http://localhost:${PORT}`))
 
-/*
+/**
  * COMMAND HANDLER
  * - Automated: /commands & below
  * - Easter Eggs & others: below
  */
-let commands = [];
+let commands = []
 for (const file of commandFiles) {
-	const command = require(file);
-	client.commands.set(command.name, command);
-	commands.push(command.name);
-	console.log(`Loaded command: ${command.name}`);
+	const command = require(file)
+	client.commands.set(command.name, command)
+
+	if (DEBUG) commands.push(command.name)
 }
-// console.table(commands); // DEBUG
+if (DEBUG) console.table(commands)
 
-// Bot status:
+/**
+ * BOT STATUS:
+ */
 client.on('ready', async () => {
+	console.log(`┌─────────────────────────────────────────────────────────────┐`)
+	console.log(`│                                                             │`)
+	console.log(`│  ─=≡Σ((( つ◕ل͜◕)つ                                           │`)
+	console.log(`│ JavaScript is a pain, but I'm fine, I hope...               │`)
+	console.log(`│                                                             │`)
+	console.log(`└─────────────────────────────────────────────────────────────┘\n\n`)
 
-	if (process.env.MAINTENANCE.toLowerCase() === 'true') client.user.setPresence({ activity: { name: 'maintenance' }, status: 'dnd' });
-	else client.user.setActivity('Minecraft', {type: 'PLAYING'});
+	if (MAINTENANCE) client.user.setPresence({ activity: { name: 'maintenance' }, status: 'dnd' })
+	else client.user.setActivity('Minecraft', {type: 'PLAYING'})
+
+	/**
+	 * START TEXTURE SUBMISSION PROCESS
+	 * @see submissionProcess
+	 * @see downloadToBot
+	 * @see pushToGithub
+	 */
+	submissionProcess.start()
+	downloadToBot.start()
+	pushToGithub.start()
 
 	/*
-	 * ENABLE TEXTURE SUBMISSION PROCESS
+	 * UPDATE CTWEAKS MEMBERS
 	 */
-	submissionProcess.start();
-	downloadToBot.start();
-	pushToGithub.start();
-
-	/*
-	 * UPDATE MEMBERS
-	 */
-	updateMembers(client, settings.CTWEAKS_ID, settings.CTWEAKS_COUNTER);
-
-	console.log(`\n\n─=≡Σ((( つ◕ل͜◕)つ\nJavaScript is a pain, but I'm fine, I hope...\n\n\n--------------------------------------------------------------\n`);
+	updateMembers(client, settings.CTWEAKS_ID, settings.CTWEAKS_COUNTER)
 
 	// get out if no channel, no cache or empty cache
-	if(client.channels === undefined || client.channels.cache === undefined || client.channels.cache.length === 0) return;
+	if(client.channels === undefined || client.channels.cache === undefined || client.channels.cache.length === 0) return
 
 	// get out if history channel not found
-	const destinationChannel = client.channels.cache.get('785867553095548948');
-	if(destinationChannel === undefined) return;
+	const destinationChannel = client.channels.cache.get('785867553095548948')
+	if(destinationChannel === undefined) return
 
 	const embed = new Discord.MessageEmbed()
-		.setTitle('Started')
+		.setTitle('Started!')
 		.setDescription(`<@!${client.user.id}> \n ID: ${client.user.id}`)
 		.setColor(colors.GREEN)
-		.setTimestamp();
-	await destinationChannel.send(embed);
-});
+		.setTimestamp()
+	await destinationChannel.send(embed)
+})
 
 /*
  * MEMBER JOIN
@@ -144,26 +166,26 @@ client.on('guildMemberAdd', async member =>{
 	// Muted role check:
 	for (var i = 0; i < warnList.length; i++) {
 		if (`${member.id}` == warnList[i].user && warnList[i].muted == true) {
-			const role = member.guild.roles.cache.find(r => r.name === 'Muted');
-			await member.roles.add(role);
+			const role = member.guild.roles.cache.find(r => r.name === 'Muted')
+			await member.roles.add(role)
 		}
 	}
 
-	updateMembers(client, settings.CTWEAKS_ID, settings.CTWEAKS_COUNTER);
-});
+	updateMembers(client, settings.CTWEAKS_ID, settings.CTWEAKS_COUNTER)
+})
 
 /*
  * MEMBER LEFT
  */
-client.on('guildMemberRemove', async member =>{
-	updateMembers(client, settings.CTWEAKS_ID, settings.CTWEAKS_COUNTER);
-});
+client.on('guildMemberRemove', async () => {
+	updateMembers(client, settings.CTWEAKS_ID, settings.CTWEAKS_COUNTER)
+})
 
 /*
  * BOT ADD OR REMOVE
  */
 client.on('guildCreate', async guild =>{
-	var joinLeaveChannel = client.channels.cache.get('823891571547308053');
+	var joinLeaveChannel = client.channels.cache.get('823891571547308053')
 
 	var embed = new Discord.MessageEmbed()
 		.setThumbnail(guild.iconURL())
@@ -177,11 +199,11 @@ client.on('guildCreate', async guild =>{
 		)
 		.setTimestamp()
 
-	await joinLeaveChannel.send(embed);
-});
+	await joinLeaveChannel.send(embed)
+})
 
 client.on('guildDelete', async guild =>{
-	var joinLeaveChannel = client.channels.cache.get('823891571547308053');
+	var joinLeaveChannel = client.channels.cache.get('823891571547308053')
 
 	var embed = new Discord.MessageEmbed()
 		.setThumbnail(guild.iconURL())
@@ -195,114 +217,98 @@ client.on('guildDelete', async guild =>{
 		)
 		.setTimestamp()
 
-	await joinLeaveChannel.send(embed);
-});
+	await joinLeaveChannel.send(embed)
+})
 
 /*
  * COMMAND HANDLER
  */
 client.on('message', async message => {
-	if (!message.content.startsWith(prefix) || message.author.bot) return; // Avoid message WITHOUT prefix & bot messages
+	if (!message.content.startsWith(prefix) || message.author.bot) return // Avoid message WITHOUT prefix & bot messages
 
-	if (process.env.MAINTENANCE === 'true' && message.author.id !== uidR) {
-		const msg = await message.reply(strings.COMMAND_MAINTENANCE);
-		await message.react('❌');
-		await msg.delete({timeout: 30000});
+	if (MAINTENANCE && !UIDA.includes(message.author.id)) {
+		const msg = await message.inlineReply(strings.COMMAND_MAINTENANCE)
+		await message.react('❌')
+		if (!message.deleted) await msg.delete({timeout: TIME})
 	}
 	
-	const args        = message.content.slice(prefix.length).trim().split(/ +/);
-	const commandName = args.shift().toLowerCase();
-	const command     = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
+	const args        = message.content.slice(prefix.length).trim().split(/ +/)
+	const commandName = args.shift().toLowerCase()
+	const command     = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName))
 
-	if (!command) return;
-
-	if (command.guildOnly && message.channel.type === 'dm') {
-		return warnUser(message,strings.CANT_EXECUTE_IN_DMS);
-	}
+	if (!command) return
+	if (command.guildOnly && message.channel.type === 'dm') return warnUser(message,strings.CANT_EXECUTE_IN_DMS)
 
 	command.execute(client, message, args).catch(async error => {
-		console.error(error);
+		console.error(error)
 		const embed = new Discord.MessageEmbed()
 			.setColor(colors.RED)
 			.setTitle(strings.BOT_ERROR)
-			.setDescription(strings.COMMAND_ERROR);
+			.setDescription(strings.COMMAND_ERROR)
 
-		await message.channel.send(embed)
-		await message.react('❌');
+		await message.inlineReply(embed)
+		await message.react('❌')
 	})
-});
+})
 
 /*
  * EASTER EGGS & CUSTOM COMMANDS:
  */
 client.on('message', async message => {
+	// Avoid message WITH prefix & bot messages
+	if (message.content.startsWith(prefix) || message.author.bot) return
+
 	for (var i = 0; i < warnList.length; i++) {
 		if (warnList[i].user == message.author.id && warnList[i].muted == true) {
-			//message.delete();
-			addMutedRole(client, message.author.id);
+			addMutedRole(client, message.author.id)
 		}
 	}
-
-	if (message.content.startsWith(prefix) || message.author.bot) return; // Avoid message WITH prefix & bot messages
 
 	/*
 	 * Funny Stuff
 	 */
-	if (message.content.includes('(╯°□°）╯︵ ┻━┻')) return await message.inlineReply('┬─┬ ノ( ゜-゜ノ) calm down bro');
+	if (message.content.includes('(╯°□°）╯︵ ┻━┻')) return await message.inlineReply('┬─┬ ノ( ゜-゜ノ) calm down bro')
+	if (message.content.toLowerCase().includes('engineer gaming')) return await message.react('👷‍♂️')
+	if (message.content === 'F') return await message.react('🇫')
 
-	if (message.content === 'F' ) return await message.react('🇫');
-
-	if (message.content.toLowerCase() === 'engineer gaming' ) return await message.react('👷‍♂️');
-
-	if (message.content.toLowerCase() === 'mhhh') {
+	if (message.content.toLowerCase().includes('mhhh')) {
 		const embed = new Discord.MessageEmbed()
 			.setAuthor(`${message.author.tag} translated: ${message.content}`, message.author.displayAvatarURL())
 			.setDescription('```Uh-oh moment```')
 			.setColor(colors.BLUE)
-			.setFooter('Swahili → English', settings.BOT_IMG);
-		return await message.inlineReply(embed);
+			.setFooter('Swahili → English', settings.BOT_IMG)
+		return await message.inlineReply(embed)
 	}
 
 	if (message.content.toLowerCase() === 'band') {
-		await message.react('🎤');
-		await message.react('🎸');
-		await message.react('🥁');
-		await message.react('🎺');
-		await message.react('🎹');
-		return;
+		const band = ['🎤', '🎸', '🥁', '🎺', '🎹']
+		band.forEach(async emoji => { await message.react(emoji) })
+		return
 	}
 
 	if (message.content.toLowerCase() === 'hello there') {
-		if (Math.floor(Math.random() * Math.floor(5)) != 1) return await message.channel.send('https://media1.tenor.com/images/8dc53503f5a5bb23ef12b2c83a0e1d4d/tenor.gif');
-		else return await message.channel.send('https://preview.redd.it/6n6zu25c66211.png?width=960&crop=smart&auto=webp&s=62024911a6d6dd85f83a2eb305df6082f118c8d1');
+		if (Math.floor(Math.random() * Math.floor(5)) != 1) return await message.channel.send('https://media1.tenor.com/images/8dc53503f5a5bb23ef12b2c83a0e1d4d/tenor.gif')
+		else return await message.channel.send('https://preview.redd.it/6n6zu25c66211.png?width=960&crop=smart&auto=webp&s=62024911a6d6dd85f83a2eb305df6082f118c8d1')
 	}
 
-	/*
+	/**
 	 * MESSAGE URL QUOTE
 	 * when someone send a message with https://discord.com/channels/<server ID>/<channel ID>/<message ID>
+	 * @author Juknum
 	 */
-	if (message.content.includes('https://discord.com/channels/') || message.content.includes('https://discordapp.com/channels')) quote(message);
+	if (message.content.includes('https://canary.discord.com/channels/') || message.content.includes('https://discord.com/channels/') || message.content.includes('https://discordapp.com/channels')) quote(message)
 
-	/*
+	/**
 	 * DISCORD SERVER INVITE DETECTION
-	 * I hope there is no other use of this link type on Discord
+	 * @warn I hope there is no other use of this link type on Discord
 	 * Found more information here: https://youtu.be/-51AfyMqnpI
 	 */
-	if (message.content.includes('https://discord.gg/') && message.guild.id != '814198513847631944') inviteDetection(client, message);
+	if (message.content.includes('https://discord.gg/') && message.guild.id != '814198513847631944') inviteDetection(client, message)
 
 	/*
 	 * AUTO REACT:
 	 * (does not interfer with submission process)
 	 */
-
-	if (message.channel.id === '779759327665848320') {
-		return autoReactMainPack(
-			message,
-			['⬆️','⬇️'],
-			['You need to name your submission!', 'You need to add the folder!', 'You need to add the resource pack type! (java/bedrock)', 'Wrong resource pack type specified! (java/bedrock)'],
-			['java', 'bedrock']
-		)
-	}
 
 	// Texture submission Compliance 32x (#submit-texture):
 	if (message.channel.id === settings.C32_SUBMIT_1 || message.channel.id === settings.C32_SUBMIT_1B) {
@@ -310,9 +316,9 @@ client.on('message', async message => {
 			message,
 			['⬆️','⬇️'],
 			strings.SUBMIT_NO_FILE_ATTACHED,
-			'You need to add the texture folder of your texture between []:\n`texture_name [folder] (comment -> optional)`',
+			'You need to add the texture folder of your texture between []:\n`texture_name [folder] (optional comment)`',
 			['[',']']
-		);
+		)
 	}
 
 	// Texture submission Compliance 64x (#submit-texture):
@@ -321,9 +327,9 @@ client.on('message', async message => {
 			message,
 			['⬆️','⬇️'],
 			strings.SUBMIT_NO_FILE_ATTACHED,
-			'You need to add the texture folder of your texture between []:\n`texture_name [folder] (comment -> optional)`',
+			'You need to add the texture folder of your texture between []:\n`texture_name [folder] (optional comment)`',
 			['[',']']
-		);
+		)
 	}
 
 	// Texture submission Compliance Dungeons:
@@ -334,7 +340,7 @@ client.on('message', async message => {
 			strings.SUBMIT_NO_FILE_ATTACHED,
 			'You need to add the texture path to your submission:\n`**texture name** (Content/**folder1**/**folder2**/**texture name.png**)`',
 			['(',')']
-		);
+		)
 	}
 
 	// Texture submission Emulated Vattic Textures (FHLX):
@@ -342,16 +348,14 @@ client.on('message', async message => {
 		return autoReact(
 			message,
 			['814569395493011477','814569427546144812'],
-			strings.SUBMIT_NO_FILE_ATTACHED,
-			undefined,
-			undefined
-		);
+			strings.SUBMIT_NO_FILE_ATTACHED
+		)
 	}
-});
+})
 
 }).catch(error => {
 	console.trace(error)
 })
 
 // Login the bot
-client.login(process.env.CLIENT_TOKEN).catch(console.error);
+client.login(process.env.CLIENT_TOKEN).catch(console.error)

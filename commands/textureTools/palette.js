@@ -79,6 +79,13 @@ module.exports = {
 						url = msg.embeds[0].image.url;
 						break;
 					}
+					else if (msg.content.startsWith('https://') || msg.content.startsWith('http://')) {
+						if (msg.content.endsWith('.png') || msg.content.endsWith('.jpeg') || msg.content.endsWith('.jpg') || msg.content.endsWith('.gif')) {
+							found = true;
+							url = msg.content;
+							break;
+						}
+					}
 				} catch(e) {
 					return warnUser(message, strings.COMMAND_NO_IMAGE_FOUND);
 				}

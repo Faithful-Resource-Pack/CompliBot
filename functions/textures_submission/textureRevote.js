@@ -1,28 +1,36 @@
-const Discord  = require('discord.js');
-const settings = require('../../settings');
-const colors   = require('../../res/colors');
-const strings   = require('../../res/strings');
+const Discord  = require('discord.js')
+const colors   = require('../../res/colors')
+const strings  = require('../../res/strings')
 
-const { countReact }  = require('../countReact');
-const { getMessages } = require('../getMessages');
+const { countReact }  = require('../countReact')
+const { getMessages } = require('../getMessages')
 
-var embed = null;
+var embed = null
 
+/**
+ * Check if messages have enough reactions and send them to the output channel.
+ * A message need 66.66% of upvote to be accepted.
+ * @author Juknum
+ * @param {Discord} client Discord Client
+ * @param {String} inputID Discord Channel ID (Input)
+ * @param {String} outputID Discord Channel ID (Output)
+ * @param {Number} offset Number of day since the message have been posted
+ */
 async function textureRevote(client, inputID, outputID, offset) {
 
-	let outputChannel = client.channels.cache.get(outputID);
-	let limitDate     = new Date();
-	let messages = await getMessages(client, inputID);
+	let outputChannel = client.channels.cache.get(outputID)
+	let limitDate     = new Date()
+	let messages = await getMessages(client, inputID)
 
-	limitDate.setDate(limitDate.getDate() - offset);
+	limitDate.setDate(limitDate.getDate() - offset)
 
 	for (var i in messages) {
-		let message     = messages[i];
-		let messageDate = new Date(message.createdTimestamp);
+		let message     = messages[i]
+		let messageDate = new Date(message.createdTimestamp)
 
-		let messageUpvote    = countReact(message,'⬆️');
-		let messageDownvote  = countReact(message,'⬇️');
-		let upvotePercentage = ((messageUpvote * 100) / (messageUpvote + messageDownvote)).toFixed(2);
+		let messageUpvote    = countReact(message,'⬆️')
+		let messageDownvote  = countReact(message,'⬇️')
+		let upvotePercentage = ((messageUpvote * 100) / (messageUpvote + messageDownvote)).toFixed(2)
 
 		if (
 			upvotePercentage >= 66.66 &&
@@ -41,12 +49,11 @@ async function textureRevote(client, inputID, outputID, offset) {
 					{ name: 'Type:',   value: message.embeds[0].fields[2].value, inline: true },
 					{ name: 'Percentage:', value: upvotePercentage+'% ⬆️', inline: false}
 				)
-				//.setFooter(message.client.user.username, settings.BOT_IMG);
 			
-			if (message.embeds[0].description != undefined) embed.addFields({ name: 'Comment:', value: message.embeds[0].fields[3].value });
+			if (message.embeds[0].description != undefined) embed.addFields({ name: 'Comment:', value: message.embeds[0].fields[3].value })
 
-			if (message.embeds[0].title) embed.setTitle(message.embeds[0].title).setURL(message.embeds[0].url);
-			else embed.setImage(message.embeds[0].image.url);
+			if (message.embeds[0].title) embed.setTitle(message.embeds[0].title).setURL(message.embeds[0].url)
+			else embed.setImage(message.embeds[0].image.url)
 
 			await outputChannel.send(embed)
 
@@ -69,12 +76,11 @@ async function textureRevote(client, inputID, outputID, offset) {
 					{ name: 'Type:',   value: message.embeds[0].fields[2].value, inline: true },
 					{ name: 'Percentage:', value: upvotePercentage+'% ⬆️ (<66.66%)', inline: false}
 				)
-				//.setFooter(message.client.user.username, settings.BOT_IMG);
 			
-			if (message.embeds[0].description != undefined) embed.addFields({ name: 'Comment:', value: message.embeds[0].fields[3].value });
+			if (message.embeds[0].description != undefined) embed.addFields({ name: 'Comment:', value: message.embeds[0].fields[3].value })
 
-			if (message.embeds[0].title) embed.setTitle(message.embeds[0].title).setURL(message.embeds[0].url);
-			else embed.setImage(message.embeds[0].image.url);
+			if (message.embeds[0].title) embed.setTitle(message.embeds[0].title).setURL(message.embeds[0].url)
+			else embed.setImage(message.embeds[0].image.url)
 
 			await outputChannel.send(embed)
 		}
@@ -82,4 +88,4 @@ async function textureRevote(client, inputID, outputID, offset) {
 	}
 }
 
-exports.textureRevote = textureRevote;
+exports.textureRevote = textureRevote

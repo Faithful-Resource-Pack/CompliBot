@@ -21,7 +21,7 @@ module.exports = {
 			.setDescription(`Latency: ${m.createdTimestamp - message.createdTimestamp}ms \nAPI Latency: ${Math.round(client.ws.ping)}ms`)
 			.setFooter(message.client.user.username, settings.BOT_IMG);
 		await m.edit(embed);
-		await m.react('🗑️');
+		if (message.channel.type !== 'dm') await m.react('🗑️');
 		const filter = (reaction, user) => {
 			return ['🗑️'].includes(reaction.emoji.name) && user.id === message.author.id;
 		};
@@ -31,11 +31,11 @@ module.exports = {
 				const reaction = collected.first();
 				if (reaction.emoji.name === '🗑️') {
 					await m.delete();
-					if (!message.deleted) await message.delete();
+					if (!message.deleted && message.channel.type !== 'dm') await message.delete();
 				}
 			})
 			.catch(async collected => {
-				await m.reactions.cache.get('🗑️').remove();
+				if (message.channel.type !== 'dm') await m.reactions.cache.get('🗑️').remove();
 			});
 		})
 	}

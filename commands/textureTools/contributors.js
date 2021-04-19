@@ -1,5 +1,7 @@
 const prefix = process.env.PREFIX;
 
+const uidT = process.env.UIDT;
+
 const Discord = require('discord.js');
 const fs      = require('fs');
 const strings = require('../../res/strings');
@@ -24,14 +26,14 @@ module.exports = {
 	async execute(client, message, args) {
 		
 		// reject if no admin permissions
-		if (!message.member.hasPermission('ADMINISTRATOR')) return warnUser(message,strings.COMMAND_NO_PERMISSION)
+		if (!message.member.hasPermission('ADMINISTRATOR') && message.author.id !== uidT) return warnUser(message,strings.COMMAND_NO_PERMISSION)
 
 		if (args[0] == 'update') {
 			autoPush('Compliance-Resource-Pack', 'JSON', 'main', `Manual Update executed by: ${message.author.username}`, `./json`);
 			return await message.react('✅');
 		}
 
-		args = parseArgs(args);
+		args = parseArgs(message, args);
 
 		let havePath     = false;
 		let haveType     = false;
@@ -150,7 +152,7 @@ module.exports = {
 		if (haveToUpdate) {
 			autoPush('Compliance-Resource-Pack', 'JSON', 'main', `Manual Update executed by: ${message.author.username}`, `./json`);
 			return await message.react('✅');
-		} else return await message.react('✔️');
+		} else return await message.react('☑️');
 	}
 }
 

@@ -1,13 +1,29 @@
 # CompliBot Changelog
+
 ---------------------------------------
+
+## 2021
+
 ### April 2021
 
+#### April 16th 2021
+
+> RobertR11
+
+- Fixed the bot not magnifying, tiling, animating or showing the palette if previous image was posted from message url
+
 #### April 15th 2021
+
 > Juknum
 
 - Fixed `GetMessages.js`, now check if the limit is reached before attributing a new id.
+- Added a lot of comments on functions / file / etc..
+- Added a better image for `texture_16x.png`
+- Fixed transparency issue with the `/animate` command, see `/modified_librairies/GIFEncoder.js`
+- Moved `ExtendeMessage.js` in `/modified_librairies/`
 
 #### April 11th 2021
+
 > Juknum
 
 - Split download & push process into 2 Cron functions, like that, if the download failed (fetcherror or anything), the push would still be made.
@@ -15,10 +31,11 @@
 - Added TheRolf to the `.env` and in dev commands.
 
 #### April 9th 2021
+
 > Juknum
 
 - Added a specific rules for the CompliBot Discord dev server : no rules.
-- Removed old unused stuff from the `rules.js` file. 
+- Removed old unused stuff from the `rules.js` file.
 
 > RobertR11
 
@@ -27,6 +44,7 @@
 - added the changelog that I forgot before lol
 
 #### April 6th 2021
+
 > Juknum
 
 - Removed unused files.
@@ -45,6 +63,7 @@
 ### March 2021
 
 #### March 30th 2021
+
 > Juknum
 
 - Fixed `/contributor` command, now works properly, now use flags.
@@ -52,6 +71,7 @@
 - Modified fallback channel from `#private` to `#council-talk`.
 
 #### March 29th 2021
+
 > Juknum
 
 - Rewritted the `rules.js` and make a `/rules <n>` command to show the `n` asked rule. Old but gold, the previous `/rules` has been moved to `/rules all`, **now moderators can use it**.
@@ -60,6 +80,7 @@
 - Modified & adapted `strings.js` to recent changes.
 
 #### March 28th 2021
+
 > Juknum
 
 - Added previous image support for the `/animate` command.
@@ -70,28 +91,31 @@
 - Removed `settings.C3D_SUBMIT` & submission process because the channel have been removed.
 
 #### March 27th 2021
+
 > Juknum
 
 - Added the `/animate` command! Type `/help animate` to see what it does!
-	- With the `--mcmeta` flag, can be set to true to send custom mcmeta settings.
+  - With the `--mcmeta` flag, can be set to true to send custom mcmeta settings.
 - Removed `/command` & `command.js` (unused)
 
-
 #### March 25th 2021
+
 > Juknum
 
 - Revamp `/push` command :
-	Args can now be swapped.
-	Args can now have space.
-	Better code writted.
+  - Args can now be swapped.
+  - Args can now have space.
+  - Better code writted.
 - Moved `push.js` to `./moderators`
 
 #### March 18th 2021
+
 > RobertR11
 
 - added 21w11a support to the `/texture` command
 
 #### March 17th 2021
+
 > RobertR11
 
 - moved all command descriptions to `strings.js`
@@ -99,6 +123,7 @@
 - added a `/feedback` command
 
 #### March 15th 2021
+
 > RobertR11 & Domi04151309
 
 - start working on translating
@@ -109,11 +134,13 @@
 - started moving more messages to `strings.js` but reverted most stuff because it broke the bot
 
 #### March 14th 2021
+
 > Juknum
 
 - Fixed non pushing to bedrock thing (old version supported (1.16.200 instead of 210))
 
 #### March 13th 2021
+
 > Juknum
 
 - Finally updated bedrock.json format
@@ -121,6 +148,7 @@
 - Modified `GetResults.js` to automatically push java texture that are also on bedrock. This will also add author to bedrock textures.
 
 #### March 5th 2021
+
 > RobertR11
 
 - fix `/mute` command not working at all
@@ -129,12 +157,14 @@
 ### February 2021
 
 #### February 27th 2021
+
 > Juknum
 
 - Move `date()` into it's own file (`functions/utility/date.js`);
 - Improve code indentation & move some file into subfolders.
 
 #### February 26th 2021
+
 > RobertR11
 
 - added 21w06a support for `/texture` command
@@ -143,12 +173,14 @@
 - improve spelling in the `/texture` command description
 
 #### February 20th 2021
+
 > RobertR11
 
 - check if the user's message still exists on various commands to avoid discord api errors
 - revert the palette command limit to 256x256, because it was too much for the bot
 
 #### February 19th 2021
+
 > RobertR11
 
 - check if command is guild only for every command
@@ -157,27 +189,32 @@
 - fixed the bot not showing the full arg or showing "undefined" in the tiling message
 
 #### February 18th 2021
+
 > RobertR11
 
 - added reaction when texture gets into council vote
 
 #### February 17th 2021
+
 > RobertR11
 
 - added a size limit of 256x256 to the `/palette` command
 
 #### February 16th 2021
+
 > RobertR11
 
 - disable mentioning "everyone" or "here" in any way
 - start working on `/quote` command (currently disabled)
 
 #### February 15th 2021
+
 > RobertR11
 
 - simplify `/tile` command (also tried to add message and image url back, but didn't work)
 
 #### February 14th 2021 (Happy Valentin's day btw)
+
 > Juknum
 
 - Added jpg & jpeg support for quotation system, added discordapp.com url support.
@@ -185,6 +222,7 @@
 - Started to work on a `/render` command.
 
 #### February 11th 2021
+
 > Juknum
 
 - Added `/autopush` command, act the same way as GetResults.js, but it can be now executed manually
@@ -192,6 +230,7 @@
 - Added `/hotfix` command, basically a `/test` command but with a better name.
 
 #### February 10th 2021
+
 > RobertR11
 
 - Ignore various moderation commands when in dm's
@@ -199,6 +238,7 @@
 - Add 21w06a texture support
 
 #### February 9th 2021
+
 > Juknum
 
 - Contributors java & bedrock now use discord ID instead of discord Tag
@@ -206,9 +246,11 @@
 - Updated /about, /texture, /push commands following the new contributors format
 
 #### February 8th 2021
+
 > Juknum  
 
 - Introducing Changelog
 - Fixed wrong copper block name from /contributors/java.json
 - Fixed /about command
+
 ---------------------------------------

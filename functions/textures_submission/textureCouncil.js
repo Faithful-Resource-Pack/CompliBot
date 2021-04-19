@@ -1,26 +1,35 @@
-const Discord   = require('discord.js');
-const settings  = require('../../settings');
-const colors   = require('../../res/colors');
-const strings    = require('../../res/strings');
+const Discord = require('discord.js')
+const colors  = require('../../res/colors')
+const strings = require('../../res/strings')
 
-const { countReact }  = require('../countReact');
-const { getMessages } = require('../getMessages');
+const { countReact }  = require('../countReact')
+const { getMessages } = require('../getMessages')
 
-var embed = null;
+var embed = null
 
+/**
+ * Check if messages have enough reactions and send them to outputTrue when it succeed.
+ * A message needs upvote > downvote to be accepted.
+ * @author Juknum
+ * @param {Discord} client Discord Client
+ * @param {String} inputID Discord Channel ID (Input)
+ * @param {String} outputFalseID Discord Channel ID (Output if failed)
+ * @param {String} outputTrueID Discord Channel ID (Output if succeed)
+ * @param {Number} offset Number of day since the message have been posted
+ */
 async function textureCouncil(client, inputID, outputFalseID, outputTrueID, offset) {
 
-	let revoteChannel = client.channels.cache.get(outputFalseID);
-	let resultChannel = client.channels.cache.get(outputTrueID);
-	let limitDate = new Date();
-	let messages = await getMessages(client, inputID);
+	let revoteChannel = client.channels.cache.get(outputFalseID)
+	let resultChannel = client.channels.cache.get(outputTrueID)
+	let limitDate = new Date()
+	let messages = await getMessages(client, inputID)
 
-	limitDate.setDate(limitDate.getDate() - offset);
+	limitDate.setDate(limitDate.getDate() - offset)
 	for (var i in messages) {
-		let message     = messages[i];
-		let messageDate = new Date(message.createdTimestamp);
-		let messageUpvote   = countReact(message,'⬆️');
-		let messageDownvote = countReact(message,'⬇️');
+		let message     = messages[i]
+		let messageDate = new Date(message.createdTimestamp)
+		let messageUpvote   = countReact(message,'⬆️')
+		let messageDownvote = countReact(message,'⬇️')
 
 		if (
 			messageUpvote > messageDownvote &&
@@ -38,14 +47,13 @@ async function textureCouncil(client, inputID, outputFalseID, outputTrueID, offs
 					{ name: 'Folder:',  value: message.embeds[0].fields[1].value, inline: true },
 					{ name: 'Type:',    value: message.embeds[0].fields[2].value, inline: true }
 				)
-				//.setFooter(message.client.user.username, settings.BOT_IMG);
 
-			if (message.embeds[0].description != undefined) embed.addFields({ name: 'Comment:', value: message.embeds[0].description });
+			if (message.embeds[0].description != undefined) embed.addFields({ name: 'Comment:', value: message.embeds[0].description })
 
-			if (message.embeds[0].title) embed.setTitle(message.embeds[0].title).setURL(message.embeds[0].url);
-			else embed.setImage(message.embeds[0].image.url);
+			if (message.embeds[0].title) embed.setTitle(message.embeds[0].title).setURL(message.embeds[0].url)
+			else embed.setImage(message.embeds[0].image.url)
 
-			await resultChannel.send(embed);
+			await resultChannel.send(embed)
 
 		} else if (
 			message.embeds[0] !== undefined &&
@@ -62,25 +70,24 @@ async function textureCouncil(client, inputID, outputFalseID, outputTrueID, offs
 					{ name: 'Folder:',  value: message.embeds[0].fields[1].value, inline: true },
 					{ name: 'Type:',    value: message.embeds[0].fields[2].value, inline: true }
 				)
-				//.setFooter(message.client.user.username, settings.BOT_IMG);
 
-			if (message.embeds[0].description != undefined) embed.addFields({ name: 'Comment:', value: message.embeds[0].description });
+			if (message.embeds[0].description != undefined) embed.addFields({ name: 'Comment:', value: message.embeds[0].description })
 
-			if (message.embeds[0].title) embed.setTitle(message.embeds[0].title).setURL(message.embeds[0].url);
-			else embed.setImage(message.embeds[0].image.url);
+			if (message.embeds[0].title) embed.setTitle(message.embeds[0].title).setURL(message.embeds[0].url)
+			else embed.setImage(message.embeds[0].image.url)
 
 			await revoteChannel.send(embed)
 			.then(async message => {
 				try {
-					await message.react('⬆️');
-					await message.react('⬇️');
+					await message.react('⬆️')
+					await message.react('⬇️')
 				} catch (error) {
-					console.error(error);
+					console.error(error)
 				}
-			});
+			})
 
 		}
 	}
 }
 
-exports.textureCouncil = textureCouncil;
+exports.textureCouncil = textureCouncil

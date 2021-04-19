@@ -28,7 +28,7 @@ module.exports = {
 				.setFooter(title, img);
 
 			const embedMessage = await message.inlineReply(embed);
-			await embedMessage.react('🗑️');
+			if (message.channel.type !== 'dm') await embedMessage.react('🗑️');
 			const filter = (reaction, user) => {
 				return ['🗑️'].includes(reaction.emoji.name) && user.id === message.author.id;
 			};
@@ -42,7 +42,7 @@ module.exports = {
 					}
 				})
 				.catch(async collected => {
-					await embedMessage.reactions.cache.get('🗑️').remove();
+					if (message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🗑️').remove();
 				});
 		}
 

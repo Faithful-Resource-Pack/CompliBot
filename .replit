@@ -1,2 +1,2 @@
 language = "nodejs"
-run = "npm start --use_strict"
+run = "node --use_strict --trace-warnings index.js"

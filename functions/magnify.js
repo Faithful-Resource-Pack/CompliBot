@@ -1,70 +1,55 @@
-const Canvas   = require('canvas');
-const Discord  = require('discord.js');
-const colors   = require('../res/colors');
+const Canvas   = require('canvas')
+const Discord  = require('discord.js')
 
-const { getMeta }  = require('./getMeta');
-const { warnUser } = require('./warnUser');
+const { getMeta }  = require('./getMeta')
+const { warnUser } = require('./warnUser')
 
+/**
+ * Magnify image
+ * @author Juknum
+ * @param {DiscordMessage} message 
+ * @param {String} url Image URL
+ * @returns Send a message with the magnified image
+ */
 function magnify(message, url) {
 	getMeta(url).then(async function(dimension) {
-		var sizeOrigin = dimension.width * dimension.height;
-		//var sizeResult = dimension.width * dimension.height * Math.pow(factor, 2);
+		var sizeOrigin = dimension.width * dimension.height
+		var factor     = 64
 
-		var factor = 64;
+		if (sizeOrigin == 256)  factor = 32
+		if (sizeOrigin > 256)   factor = 16
+		if (sizeOrigin > 1024)  factor = 8
+		if (sizeOrigin > 4096)  factor = 4
+		if (sizeOrigin > 65636) factor = 2
+		if (sizeOrigin > 262144) return warnUser(message, 'The input picture is too big!')
 
-		if (sizeOrigin == 256) factor = 32;
-		if (sizeOrigin > 256) factor = 16;
-		if (sizeOrigin > 1024) factor = 8;
-		if (sizeOrigin > 4096) factor = 4;
-		if (sizeOrigin > 65636) factor = 2;
+		var canvasStart = Canvas.createCanvas(dimension.width, dimension.height).getContext('2d')
+		var canvasResult = Canvas.createCanvas(dimension.width * factor, dimension.height * factor)
+		var canvasResultCTX = canvasResult.getContext('2d')
 
-		if (sizeOrigin > 262144) return warnUser(message,'The input picture is too big!');
-		//if (sizeResult > 1048576) return warnUser(message,'The output picture will be too big!\nMaximum output allowed: 1024 x 1024 px²\nYours is: ' + dimension.width * factor + ' x ' + dimension.height * factor + ' px²');
+		const temp = await Canvas.loadImage(url)
+		canvasStart.drawImage(temp, 0, 0)
 
-		var canvasStart = Canvas.createCanvas(dimension.width, dimension.height).getContext('2d');
-		var canvasResult = Canvas.createCanvas(dimension.width * factor, dimension.height * factor);
-		var canvasResultCTX = canvasResult.getContext('2d');
+		var image = canvasStart.getImageData(0, 0, dimension.width, dimension.height).data
 
-		const temp = await Canvas.loadImage(url);
-		canvasStart.drawImage(temp, 0, 0);
-
-		var image = canvasStart.getImageData(0, 0, dimension.width, dimension.height).data;
-
-		var i;
-		var r;
-		var g;
-		var b;
-		var a;
+		let index, r, g, b, a
 
 		for (var x = 0; x < dimension.width; x++) {
 			for (var y = 0; y < dimension.height; y++) {
-				i = (y * dimension.width + x) * 4;
-				r = image[i];
-				g = image[i + 1];
-				b = image[i + 2];
-				a = image[i + 3];
-				canvasResultCTX.fillStyle = 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')';
-				canvasResultCTX.fillRect(x * factor, y * factor, factor, factor);
+				index = (y * dimension.width + x) * 4
+				r = image[index];
+				g = image[index + 1]
+				b = image[index + 2]
+				a = image[index + 3]
+				canvasResultCTX.fillStyle = `rgba(${r},${g},${b},${a})`
+				canvasResultCTX.fillRect(x * factor, y * factor, factor, factor)
 			}
 		}
 
-		const attachment = new Discord.MessageAttachment(canvasResult.toBuffer(), 'output.png');
-		/*var embed = new Discord.MessageEmbed()
-			.setColor(colors.BLUE)
-			.setTitle(`Magnified by ${factor}x`)
-			.setDescription(`Original size: ${dimension.width} x ${dimension.height} px²\nNew size: ${dimension.width * factor} x ${dimension.height * factor} px²`)
-			.attachFiles([attachment]);*/
-
+		const attachment   = new Discord.MessageAttachment(canvasResult.toBuffer(), 'magnified.png');
 		const embedMessage = await message.inlineReply(attachment);
-		/*
-			looks like :
-			MessageAttachment {
-  			attachment: <Buffer 89 50 4e 47 0d 0a 1a 0a 00 00 00 0d 49 48 44 52 00 00 04 00 00 00 04 00 08 06 00 00 00 7f 1d 2b 83 00 00 00 06 62 4b 47 44 00 ff 00 ff 00 ff a0 bd a7 ... 8502 more bytes>,
-  			name: null
-			}
-		*/
 
-		if (message.channel.type != 'dm') await embedMessage.react('🗑️');
+		if (message.channel.type !== 'dm')  await embedMessage.react('🗑️');
 
 		const filter = (reaction, user) => {
 			return ['🗑️'].includes(reaction.emoji.name) && user.id === message.author.id;
@@ -79,7 +64,7 @@ function magnify(message, url) {
 				}
 			})
 			.catch(async () => {
-				if (message.channel.type != 'dm') await embedMessage.reactions.cache.get('🗑️').remove();
+				if (message.channel.type !== 'dm')  await embedMessage.reactions.cache.get('🗑️').remove();
 			});
 
 		return attachment;

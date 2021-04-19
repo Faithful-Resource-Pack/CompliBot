@@ -1,11 +1,24 @@
-// original link : https://dev.to/lucis/how-to-push-files-programatically-to-a-repository-using-octokit-with-typescript-1nj0
-// (typescript)
+/*eslint-env node*/
 
-const { Octokit }  = require('@octokit/rest');
-const glob         = require('globby');
-const path         = require('path');
-const { readFile } = require('fs-extra');
+/**
+ * ORIGINAL LINK: (Typescrit)
+ * https://dev.to/lucis/how-to-push-files-programatically-to-a-repository-using-octokit-with-typescript-1nj0
+ * 
+ */
 
+const { Octokit }  = require('@octokit/rest')
+const glob         = require('globby')
+const path         = require('path')
+const { readFile } = require('fs-extra')
+
+/**
+ * Automated push trough GitHub
+ * @param {String} ORGANIZATION 
+ * @param {String} REPO 
+ * @param {String} BRANCH 
+ * @param {String} COMMITMESSAGE 
+ * @param {String} LOCAL 
+ */
 async function autoPush(ORGANIZATION, REPO, BRANCH, COMMITMESSAGE, LOCAL) {
 	
 	// Authentification trough CompliBot GitHub Account
@@ -13,25 +26,27 @@ async function autoPush(ORGANIZATION, REPO, BRANCH, COMMITMESSAGE, LOCAL) {
 		auth: process.env.COMPLIBOT_GIT_TOKEN,
 	})
 
-	const repos = await octo.repos.listForOrg({
-		org: ORGANIZATION,
-	})
-
 	// Upload files to repo:
-	await uploadToRepo(octo, LOCAL, ORGANIZATION, REPO, BRANCH, COMMITMESSAGE);
+	await uploadToRepo(octo, LOCAL, ORGANIZATION, REPO, BRANCH, COMMITMESSAGE)
 
-	return;
+	return
 }
 
-/*
- * UPLOADING FILES:
-*/
+/**
+ * Upload files to repository
+ * @param {Octokit} octo 
+ * @param {String} coursePath path from where file are uploaded
+ * @param {String} org GitHub organisation
+ * @param {String} repo GitHub repository of the organisation
+ * @param {String} branch GitHub branch of the repository
+ * @param {String} commitMessage Message of commit
+ */
 const uploadToRepo = async (octo, coursePath, org, repo, branch, commitMessage) => {
 	const currentCommit = await getCurrentCommit(octo, org, repo, branch)
-	const filesPaths = await glob(coursePath)
-	const filesBlobs = await Promise.all(filesPaths.map(createBlobForFile(octo, org, repo)))
+	const filesPaths    = await glob(coursePath)
+	const filesBlobs    = await Promise.all(filesPaths.map(createBlobForFile(octo, org, repo))).catch(console.error)
 	const pathsForBlobs = filesPaths.map(fullPath => path.normalize(path.relative(coursePath, fullPath)).replace(/\\/g, '/'))
-	const newTree = await createNewTree(octo,	org, repo, filesBlobs, pathsForBlobs,	currentCommit.treeSha)
+	const newTree   = await createNewTree(octo,	org, repo, filesBlobs, pathsForBlobs,	currentCommit.treeSha)
 	const newCommit = await createNewCommit(
 		octo,
 		org,
@@ -43,10 +58,14 @@ const uploadToRepo = async (octo, coursePath, org, repo, branch, commitMessage) 
 	await setBranchToCommit(octo, org, repo, branch, newCommit.sha)
 }
 
-/*
- * GET CURRENT COMMIT
- * -> used to make a new commit
-*/
+/**
+ * Get current commit of a branch from a repository
+ * @param {Octokit} octo 
+ * @param {String} org GitHub organisation
+ * @param {String} repo GitHub repository of the organisation
+ * @param {String} branch GitHub branch of the repository
+ * @returns 
+ */
 const getCurrentCommit = async (octo, org, repo, branch) => {
 	const { data: refData } = await octo.git.getRef({
 		owner: org,
@@ -65,15 +84,31 @@ const getCurrentCommit = async (octo, org, repo, branch) => {
 	}
 }
 
-// Notice that readFile's utf8 is typed differently from Github's utf-8
+/**
+ * Get file as utf8 file
+ * Notice that readFile's UTF8 is typed differently from Github's UTF-8
+ * @param {String} filePath 
+ * @returns an utf8 file
+ */
 const getFileAsUTF8 = (filePath) => readFile(filePath, {encoding: 'utf8'})
 
-// Get file as binary file (used for .png files)
+/**
+ * Get file as binary file (used for .png files)
+ * @param {String} filePath 
+ * @returns a base64 file
+ */
 const getFileAsBinary = (filePath) => readFile(filePath, {encoding: 'base64'})
 
+/**
+ * Create blob for a file
+ * @param {Octokit} octo 
+ * @param {String} org Github organisation
+ * @param {String} repo Github repository of the organisation
+ * @returns data of the blob
+ */
 const createBlobForFile = (octo, org, repo) => async (filePath) => {
-	var content = undefined;
-	var blobData = undefined;
+	var content = undefined
+	var blobData = undefined
 
 	if (filePath.endsWith('.png')) {
 		content = await getFileAsBinary(filePath)
@@ -82,7 +117,7 @@ const createBlobForFile = (octo, org, repo) => async (filePath) => {
 			repo,
 			content,
 			encoding: 'base64',
-		});
+		})
 	}
 	else {
 		content = await getFileAsUTF8(filePath)
@@ -91,11 +126,21 @@ const createBlobForFile = (octo, org, repo) => async (filePath) => {
 			repo,
 			content,
 			encoding: 'utf-8',
-		});
+		})
 	}
   return blobData.data
 }
-//const newTree = await createNewTree(octo,	org, repo, filesBlobs, pathsForBlobs,	currentCommit.treeSha)
+
+/**
+ * 
+ * @param {Octokit} octo 
+ * @param {String} owner GitHub organisation
+ * @param {String} repo GitHub repository of the organisation
+ * @param {Blob} blobs
+ * @param {*} paths
+ * @param {*} parentTreeSha 
+ * @returns data : {owner, repo, tree, base_tree: parentTreeSha }
+ */
 const createNewTree = async (octo, owner, repo, blobs = Octokit.GitCreateBlobResponse, paths, parentTreeSha) => {
   const tree = blobs.map(({ sha }, index) => ({
     path: paths[index],
@@ -113,6 +158,15 @@ const createNewTree = async (octo, owner, repo, blobs = Octokit.GitCreateBlobRes
   return data
 }
 
+/**
+ * Create a new commit
+ * @param {Octokit} octo 
+ * @param {String} org GitHub organisation
+ * @param {String} repo GitHub repository of the organisation
+ * @param {String} message Commit message
+ * @param {*} currentTreeSha 
+ * @param {*} currentCommitSha 
+ */
 const createNewCommit = async (octo, org, repo, message, currentTreeSha, currentCommitSha) => (
 	await octo.git.createCommit({
     owner: org,
@@ -122,6 +176,15 @@ const createNewCommit = async (octo, org, repo, message, currentTreeSha, current
     parents: [currentCommitSha],
   })).data
 
+/**
+ * Set branch to commit
+ * @param {Octokit} octo 
+ * @param {String} org GitHub organisation
+ * @param {String} repo GitHub repository of the organisation
+ * @param {String} branch GitHub branch of the repository
+ * @param {*} commitSha 
+ * @returns 
+ */
 const setBranchToCommit = (octo, org, repo, branch, commitSha) =>
   octo.git.updateRef({
     owner: org,
@@ -130,4 +193,4 @@ const setBranchToCommit = (octo, org, repo, branch, commitSha) =>
     sha: commitSha,
   })
 
-exports.autoPush = autoPush;
+exports.autoPush = autoPush
