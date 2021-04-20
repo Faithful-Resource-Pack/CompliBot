@@ -38,7 +38,7 @@ module.exports = {
 				}
 			} else aliases = 'None'
 
-			var example = '```' + command.example + '```' || 'None';
+			var example = '```' + (command.example || 'None') + '```';
 
 			var embed = new Discord.MessageEmbed()
 				.setTitle(`Help: ${prefix}${command.name}`)
