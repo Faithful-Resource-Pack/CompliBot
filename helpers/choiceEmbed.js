@@ -1,5 +1,6 @@
 const Discord = require('discord.js')
 const asyncTools = require('./asyncTools')
+const settings = require('../settings')
 
 /**
  * 
@@ -28,6 +29,7 @@ const DEFAULT = {
   footer: 'chooseEmbed',
   max: 1,
   separator: ' — ',
+  imageURL: settings.BOT_IMG,
   timeout: 60000
 }
 
@@ -48,7 +50,7 @@ module.exports = function(message, params) {
     let embed = new Discord.MessageEmbed()
       .setTitle(params.title)
     
-    if(params.image)
+    if(params.imageURL)
       embed = embed.setFooter(params.footer, params.imageURL)
     else
       embed = embed.setFooter(params.footer)

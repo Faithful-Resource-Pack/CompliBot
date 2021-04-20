@@ -7,7 +7,6 @@ const Discord   = require('discord.js')
 const getops    = require('getopts')
 const Canvas    = require('canvas')
 
-const settings = require('../../settings')
 const strings  = require('../../res/strings')
 
 const FindTexture = require('../../functions/textures/findTexture')
@@ -114,7 +113,6 @@ module.exports = {
       finalResult = await choiceEmbed(message, {
         title: `Select texture for search: '${search}'`,
         footer: `${message.client.user.username}`,
-        imageURL: settings.BOT_IMG,
         propositions: results.map(searchItem => searchItem.path)
       })
       .then(choice => {
