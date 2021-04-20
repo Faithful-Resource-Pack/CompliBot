@@ -20,9 +20,19 @@ module.exports = {
 		let hours = Math.floor(minutes / 60);
 		let days = Math.floor(hours / 24);
 
+		let tseconds = 'seconds';
+		let tminutes = 'minutes';
+		let thours   = 'hours';
+		let tdays    = 'days';
+
 		seconds %= 60;
 		minutes %= 60;
-		hours %= 24;
+		hours   %= 24;
+
+		if (seconds == 1) tseconds = 'second';
+		if (minutes == 1) tminutes = 'minute';
+		if (hours == 1)   thours = 'hour';
+		if (days == 1)    thours = 'day';
 
 		const embed = new Discord.MessageEmbed()
 			.setTitle(`${message.client.user.username} Info:`)
@@ -39,7 +49,7 @@ module.exports = {
 				{ name: 'And more!', value: 'If you need a full list of all my commands, then use `/help`!'},
 				{ name: '\u200B', value: '\n\nI am completely open source!\nYou can find me by [clicking here](https://github.com/Compliance-Resource-Pack/Discord-Bot).'},
 			)
-			.setFooter(`Bot Uptime: ${days} day(s), ${hours} hours, ${minutes} minutes, ${seconds} seconds`)
+			.setFooter(`Bot Uptime: ${days} ${tdays}, ${hours} ${thours}, ${minutes} ${tminutes}, ${seconds} ${tseconds}`)
 
 		if (message.channel.type !== 'dm') await message.author.send(embed);
 		else await message.inlineReply(embed);

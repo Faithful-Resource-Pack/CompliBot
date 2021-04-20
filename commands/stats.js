@@ -17,25 +17,34 @@ module.exports = {
 
 		let seconds = Math.floor(message.client.uptime / 1000);
 		let minutes = Math.floor(seconds / 60);
-		let hours = Math.floor(minutes / 60);
-		let days = Math.floor(hours / 24);
+		let hours   = Math.floor(minutes / 60);
+		let days    = Math.floor(hours / 24);
+
+		let tseconds = 'seconds';
+		let tminutes = 'minutes';
+		let thours   = 'hours';
+		let tdays    = 'days';
 
 		seconds %= 60;
 		minutes %= 60;
-		hours %= 24;
+		hours   %= 24;
+
+		if (seconds == 1) tseconds = 'second';
+		if (minutes == 1) tminutes = 'minute';
+		if (hours == 1)   thours = 'hour';
+		if (days == 1)    thours = 'day';
 
 		const embed = new Discord.MessageEmbed()
 			.setTitle(`${message.client.user.username} Stats:`)
 			.setThumbnail(settings.BOT_IMG)
 			.setColor(colors.BLUE)
 			.addFields(
-				{ name: 'Uptime', value: `${days} day(s), ${hours} hours, ${minutes} minutes, ${seconds} seconds`},
+				{ name: 'Uptime', value: `${days} ${tdays}, ${hours} ${thours}, ${minutes} ${tminutes}, ${seconds} ${tseconds}`},
 				{ name: 'RAM Usage', value: `${((process.memoryUsage().heapUsed / 1024) / 1024).toFixed(2)} MB`},
 				{ name: 'Discord Library', value: `discord.js ${Discord.version}`},
 				{ name: 'Node.js', value: `Version ${process.version}`},
-				{ name: 'InGuilds', value: client.guilds.cache.size},
+				{ name: 'In Guilds', value: client.guilds.cache.size},
 			)
-			//.setFooter(`Bot Uptime: ${days} day(s), ${hours} hours, ${minutes} minutes, ${seconds} seconds`)
 
 		if (message.channel.type !== 'dm') await message.author.send(embed);
 		else await message.inlineReply(embed);
