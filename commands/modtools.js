@@ -3,6 +3,7 @@ const prefix = process.env.PREFIX;
 const Discord  = require("discord.js");
 const settings = require('../settings.js');
 const strings  = require('../res/strings');
+const colors   = require('../res/colors');
 
 const { warnUser } = require('../functions/warnUser.js');
 
@@ -17,7 +18,7 @@ module.exports = {
 
 		const embed = new Discord.MessageEmbed()
 			.setTitle('Tools for making Dungeons mods:')
-			.setColor(settings.CDUNGEONS_COLOR)
+			.setColor(colors.CDUNGEONS)
 			.setThumbnail(settings.CDUNGEONS_IMG)
 			.addFields(
 				{ name: 'Dungeons mod kit by CCCode:', value: 'https://github.com/Dokucraft/Dungeons-Mod-Kit', inline: true },

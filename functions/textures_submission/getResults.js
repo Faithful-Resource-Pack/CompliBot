@@ -155,7 +155,7 @@ async function getResults(client, inputID, OFFSET_DAY = 0) {
 					jsonContributionsBedrock.release()
 					
 					await setAuthor(textureType, textureIndex, textureAuthor, textureCoAuthor, textureSize)
-					console.log(textureType, textureAuthor, textureCoAuthor, textureName, texturePath, textureSize, textureIndex)
+					//console.log(textureType, textureAuthor, textureCoAuthor, textureName, texturePath, textureSize, textureIndex)
 				}
 			}
 		}

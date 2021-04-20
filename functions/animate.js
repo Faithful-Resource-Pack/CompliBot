@@ -1,6 +1,6 @@
 const Canvas     = require('canvas')
 const Discord    = require('discord.js')
-const GIFEncoderFixed = require('../modified_librairies/GIFEncoder.js')
+const GIFEncoderFixed = require('../modified_libraries/GIFEncoder.js')
 
 const { getMeta }  = require('./getMeta')
 const { warnUser } = require('./warnUser')

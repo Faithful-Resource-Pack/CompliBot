@@ -13,7 +13,7 @@ const cron      = require('cron')
 const client    = new Discord.Client({ disableMentions: 'everyone', restTimeOffset: 0 })
 client.commands = new Discord.Collection()
 const PORT      = 3000
-require("./modified_librairies/ExtendedMessage")
+require("./modified_libraries/ExtendedMessage")
 
 // Admins & settings:
 const UIDA = [

@@ -64,6 +64,7 @@ const HELP_DESC_MODPING   = 'Tag online mods to call for help.';
 const HELP_DESC_MODTOOLS  = 'Displays tools for Minecraft Dungeons modding.';
 const HELP_DESC_POLL      = 'Make a poll to ask people!';
 const HELP_DESC_PROFILE   = 'Add personal information for the Compliance Website Gallery.';
+const HELP_DESC_STATS     = 'Displays various stats of the bot in your DMs.';
 const HELP_DESC_RULES     = 'Creates rules embed.';
 const HELP_DESC_TRANSLATE = 'Translates messages (duh)';
 const HELP_DESC_WEBSITE   = 'Displays the website of the discord.';
@@ -221,6 +222,7 @@ module.exports = {
 	HELP_DESC_MODTOOLS,
 	HELP_DESC_POLL,
 	HELP_DESC_PROFILE,
+	HELP_DESC_STATS,
 	HELP_DESC_RULES,
 	HELP_DESC_TRANSLATE,
 	HELP_DESC_WEBSITE,

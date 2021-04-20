@@ -12,7 +12,6 @@ const COUNCIL = '#9c3848'; //crimson
 const GREEN = '#4CAF50'; //positive
 
 const C32       = '#76C945';
-const C64       = '#76C945';
 const CADDONS   = '#6D6163';
 const CTWEAKS   = '#658430';
 const CMODS     = '#349687';
@@ -25,8 +24,8 @@ module.exports = {
 	BLUE,
 	BLACK,
 	COUNCIL,
+
 	C32,
-	C64,
 	CADDONS,
 	CTWEAKS,
 	CMODS,

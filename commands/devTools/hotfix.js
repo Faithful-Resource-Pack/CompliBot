@@ -65,13 +65,14 @@ module.exports = {
 		//await    textureCouncil(client, settings.C32_SUBMIT_2,  settings.C32_SUBMIT_3, settings.C32_RESULTS, 1);	// 1 DAYS OFFSET
 		//await     textureRevote(client, settings.C32_SUBMIT_3,  settings.C32_RESULTS,  3);							// 3 DAYS OFFSET*/
 		// C64x
+		/*
 		await textureSubmission(client, settings.C64_SUBMIT_1,  settings.C64_SUBMIT_2, 3);
 		await textureSubmission(client, settings.C64_SUBMIT_1B, settings.C64_SUBMIT_2, 3);
 		await    textureCouncil(client, settings.C64_SUBMIT_2,  settings.C64_SUBMIT_3, settings.C64_RESULTS, 1);
 		await     textureRevote(client, settings.C64_SUBMIT_3,  settings.C64_RESULTS,  3);
+		*/
 		
-		
-		//await getResults(client, settings.C32_RESULTS);
+		await getResults(client, settings.C32_RESULTS);
 		await getResults(client, settings.C64_RESULTS);
 		
 		

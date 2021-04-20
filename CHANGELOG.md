@@ -10,6 +10,15 @@
 
 > RobertR11
 
+- added a `/stats` command
+- updated README
+- fixed modified_libraries folder typo
+- move server colors from `settings.js` to `colors.js`
+
+#### April 16th 2021
+
+> RobertR11
+
 - Fixed the bot not magnifying, tiling, animating or showing the palette if previous image was posted from message url
 
 #### April 15th 2021

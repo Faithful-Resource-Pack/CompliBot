@@ -48,9 +48,17 @@ ___
 |:---:|:---:|:---:|
 |CLIENT_TOKEN|"-"|The token you copied from the Developer Portal, used to login the bot.|
 |PREFIX|"/"|This is the character used to execute commands.|
-|UIDR, UIDJ & UIDD|"123456789123456789"|The user id's of the three bot maintainers.|
+|UIDR, UIDJ, UIDD, UIDT|"123456789123456789"|The user id's of the four bot maintainers.|
 |MAINTENANCE|"false"|Makes all commands maintainer-only, sets status to dnd.|
+|DEBUG|"false"|Shows advanced console logs|
+|COMPLIBOT_GIT_USERNAME|"CompliBot"|Git username for the CompliBot account.|
+|COMPLIBOT_GIT_EMAIL|"CompliBot@users.noreply.github.com"|Git email for the CompliBot account.|
+|COMPLIBOT_GIT_JSON_REPO|"/Compliance-Resource-Pack/JSON/"|Github repository to push/pull json files.|
 |COMPLIBOT_GIT_TOKEN|"a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0"|Git token for the CompliBot account to push textures.|
 |MODS|"987654321987654321"|The id's of all people with a moderator role or higher, used for the modping command.|
 
-There also is `strings.js` and `settings.js` with various other settings, but that aren't needed for the bot to run.
+#### Other configs:
+
+- `res/colors.js` for embed colors
+- `res/strings.js` for embed or message texts
+- `settings.js` for role and channel id's

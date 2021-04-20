@@ -7,7 +7,7 @@ const strings  = require('../res/strings');
 
 module.exports = {
 	name: 'info',
-	aliases: ['information'],
+	aliases: ['botinfo'],
 	description: strings.HELP_DESC_INFO,
 	guildOnly: false,
 	uses: strings.COMMAND_USES_ANYONE,

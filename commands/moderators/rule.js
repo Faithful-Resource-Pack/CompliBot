@@ -86,7 +86,7 @@ module.exports = {
 		}
 		if (message.guild.id === settings.C64_ID) {
 			thumbnail = settings.C64_IMG;
-			color     = colors.C64;
+			color     = colors.C32;
 		}
 		if (message.guild.id === settings.CADDONS_ID) {
 			thumbnail = settings.CADDONS_IMG;

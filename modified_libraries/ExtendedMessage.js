@@ -1,8 +1,8 @@
 const { APIMessage, Structures } = require("discord.js");
 
 /**
- * ALLOW THE BOT TO REPLY TO MESSAGE
- * @author RobertR11
+ * Allows the bot to reply to messages
+ * Taken from the discord.js master branch, which is unreleased
  */
 class Message extends Structures.get("Message") {
 	async inlineReply(content, options) {
