@@ -183,7 +183,7 @@ module.exports = {
     // if there is some errors
     if(!promiseResults || promiseResults.results.includes(undefined)) {
       // if undefined then all are errors
-      let failedRes = textureResolutions
+      let failedRes = (!promiseResults) ? textureResolutions : []
 
       // if one suceeded promises succeeded with value
       if(promiseResults) {
