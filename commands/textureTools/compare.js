@@ -43,10 +43,34 @@ module.exports = {
       }
     })
 
-    const search = parsedArguments['_'] ? parsedArguments['_'].join(' ') : ''
+    // give default value to resolutions
+    if(!parsedArguments.resolution)
+      parsedArguments.resolution = []
+    
+    // else put in array to simplify comparaison
+    else if(typeof(parsedArguments.resolution) === 'string')
+      parsedArguments.resolution = [parsedArguments.resolution]
+
+    if(!parsedArguments._)
+      parsedArguments._ = ''
+    let search
+    const searchTerms = []
+    if(typeof(parsedArguments._) === 'string') {
+      search = parsedArguments._
+    } else {
+      parsedArguments._.forEach(el => {
+        if(RES_ALLOWED.includes(el)) {
+          parsedArguments.resolution.push(el)
+        } else {
+          searchTerms.push(el)
+        }
+      })
+
+      search = searchTerms.join(' ')
+    }
 
     // Check correct args
-    let correctRes = parsedArguments.resolution && parsedArguments.resolution.length > 0
+    let correctRes = parsedArguments.resolution && (typeof(parsedArguments.resolution) === 'string' || parsedArguments.resolution.length > 0)
 
     // reject if no resolutions
     if(!correctRes) {
@@ -89,6 +113,7 @@ module.exports = {
     // if we have java and bedrock resolutions, we search in java and after we will check if there is a bedrock url
     const searchInJava = java ? true : false
 
+    // search in correct file
     let findPromise
     if(searchInJava) {
       findPromise = FindTexture.findJava(search)
@@ -97,16 +122,19 @@ module.exports = {
       findPromise = FindTexture.findBedrock(search)
     }
 
+    // determine if error
     let results = await findPromise
     .catch(err => {
       if(process.env.DEBUG) console.error(err)
     })
 
+    // if you don't get results error
     if(!results || results.length == 0) {
       await warnUser(message, `${strings.TEXTURE_DOESNT_EXIST}\nCouldn't find any match for search : ${search}`)
       return
     }
 
+    // choose if multiple result
     /** @type {FindTexture.SearchResult} */
     let finalResult
     if(results.length > 1) {
@@ -125,14 +153,18 @@ module.exports = {
       finalResult = results[0]
     }
 
+    // if eventually still no result it means the user didn't chose the texture fase enough
     if(!finalResult) {
       await warnUser(message, strings.TEXTURE_NOT_CHOSEN)
       return
     }
 
+    // determine respecitve java and bedrock paths
     let javaTexturePath = java ? finalResult.path : undefined
     let bedrockTexturePath = (java && bedrock) ? finalResult.bedrockPath : finalResult.path
-    if(java && bedrock && !finalResult.raw.isBedrock) {
+
+    // reject if wanted bedrock and java so if foind bedrock path
+    if(java && bedrock && !finalResult.bedrockPath) {
       await warnUser(`Texture doesn't have a bedrock version`)
       return
     }
@@ -172,6 +204,7 @@ module.exports = {
     // map to get image back
     const textureImages = promiseResults.results.map((value, index) => { return {res: textureResolutions[index], image: value }}).filter(obj => obj.image !== undefined).sort((a, b) => parseInt(a.res) - parseInt(b.res)).map(obj => obj.image)
 
+    // get image data from image
     const texturesImageData = textureImages.map(image => {
       const ctx = Canvas.createCanvas(image.naturalWidth, image.naturalHeight).getContext('2d')
       ctx.drawImage(image, 0, 0)
@@ -181,6 +214,7 @@ module.exports = {
     // make new big canvas
     // height is the maximum height
     // width is n * maximum width
+    // sorted by res so last one is bigger
     const referenceHeight = textureImages[textureImages.length - 1].naturalHeight * parsedArguments.scale
     const referenceWidth  = textureImages[textureImages.length - 1].naturalWidth  * parsedArguments.scale
 
