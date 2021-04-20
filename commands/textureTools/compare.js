@@ -1,9 +1,10 @@
-/* eslint-disable no-constant-condition */
+/* eslint-disable no-unreachable */
 /* global process */
 const prefix = process.env.PREFIX
 
+require('dotenv').config()
 const Discord   = require('discord.js')
-const { bargs } = require('bargs')
+const getops    = require('getopts')
 const Canvas    = require('canvas')
 
 const settings = require('../../settings')
@@ -11,19 +12,13 @@ const strings  = require('../../res/strings')
 
 const FindTexture = require('../../functions/textures/findTexture')
 const choiceEmbed = require('../../helpers/choiceEmbed')
+const promiseEvery = require('../../helpers/promiseEvery')
 const { warnUser } = require('../../functions/warnUser')
-
-const definitions = [
-  { name: "left", type: String, aliases: [ "l" ] },
-  { name: "right", type: String, aliases: [ "r" ] },
-  { name: "search", type: String, default: true },
-  { name: "scale", type: Number, aliases: ["s"] }
-]
 
 const RES_SIDE = [16, 32, 64]
 const RES_JAVA = 'j'
 const RES_BEDROCK = 'b'
-const RES_ALLOWED = [ ...['16'] , ...RES_SIDE.map(el => `${el}${RES_JAVA}`), ...RES_SIDE.map(el => `${el}${RES_BEDROCK}`)]
+const RES_ALLOWED = [ ...RES_SIDE.map(el => `${el}${RES_JAVA}`), ...RES_SIDE.map(el => `${el}${RES_BEDROCK}`)]
 
 module.exports = {
 	name: 'compare',
@@ -31,8 +26,8 @@ module.exports = {
 	description: strings.HELP_DESC_COMPARE,
 	guildOnly: false,
 	uses: strings.COMMAND_USES_ANYONE,
-	syntax: `${prefix}compare <search> <--left|-l> <${RES_ALLOWED.join('|')}> <--right|-r> <${RES_ALLOWED.join('|')}> [<--scale|-s> <1..10>]`,
-  example: `${prefix}cmp bucket -l 16 -r 64j -s 2`,
+	syntax: `${prefix}compare <search> <--resolution|--res|--r>=<${RES_ALLOWED.join('|')}> [<--scale|--s>=<1..10>]`,
+  example: `${prefix}compare bucket --resolution=16j  --res=32j --r=64j --s=2\n${prefix}cmp bucket -resolution 16j -res 32j -r 64j -s 2`,
 
   /**
    * 
@@ -42,59 +37,82 @@ module.exports = {
    */
   // eslint-disable-next-line no-unused-vars
   async execute(client, message, args) {
-    const parsedArguments = bargs(definitions, args)
+    const parsedArguments = getops(args, {
+      alias: {
+        resolution: ['res', 'r'],
+        scale: ['s']
+      }
+    })
 
-    // check id correct syntax
-    if (
-      !parsedArguments.left ||
-      !RES_ALLOWED.includes(parsedArguments.left.toLowerCase()) ||
-      !parsedArguments.right ||
-      !RES_ALLOWED.includes(parsedArguments.left.toLowerCase()) ||
-      parsedArguments.left == parsedArguments.right ||
-      !parsedArguments.search
-    ) {
-      await warnUser(message, strings.COMMAND_WRONG_ARGUMENTS_GIVEN)
+    const search = parsedArguments['_'] ? parsedArguments['_'].join(' ') : ''
+
+    // Check correct args
+    let correctRes = parsedArguments.resolution && parsedArguments.resolution.length > 0
+
+    // reject if no resolutions
+    if(!correctRes) {
+      await warnUser(message, `${strings.COMMAND_WRONG_ARGUMENTS_GIVEN}\n No resolutions.`)
       return
     }
-    parsedArguments.left = parsedArguments.left.toLowerCase()
-    parsedArguments.right = parsedArguments.right.toLowerCase()
 
-    if(!parsedArguments.scale)
-      parsedArguments.scale = 1
+    // check if and what incorrect res
+    // also we determine minecraft edition search
+    let incorrectRes = ''
+    let java = false
+    let bedrock = false
+    let resIndex = 0
+    while(resIndex < parsedArguments.resolution.length && correctRes) {
+      if(!RES_ALLOWED.includes(parsedArguments.resolution[resIndex])) {
+        correctRes = false
+        incorrectRes = parsedArguments.resolution[resIndex]
+      }
+      else if(!java && parsedArguments.resolution[resIndex].endsWith('j')) {
+        java = true
+      } else if(!bedrock && parsedArguments.resolution[resIndex].endsWith('b')) {
+        bedrock = true
+      }
 
-    parsedArguments.scale = Math.min(Math.max(Math.round(parsedArguments.scale), 1), 10)
-
-    // if we have 16 in parse arguments, use other to determine edition search
-    // default argument chosen is left
-    /** @type {String} */
-    let searchEdition = parsedArguments.left
-    if(parsedArguments.left === '16' || parsedArguments.right === '16') {
-      // this operation is valid because we exluded same values for left and right
-      searchEdition = (parsedArguments.left === '16') ? parsedArguments.right : parsedArguments.left
+      ++resIndex
     }
+
+    // reject if so
+    if(!correctRes) {
+      await warnUser(message, `${strings.COMMAND_WRONG_ARGUMENTS_GIVEN}\nIncorrect resolution : ${incorrectRes}`)
+      return
+    }
+
+    // replace default value to scale else limit it
+    if(!parsedArguments.scale || typeof(parsedArguments.scale) !== 'number')
+      parsedArguments.scale = 1
+    else
+      parsedArguments.scale = Math.min(Math.max(Math.round(parsedArguments.scale), 1), 10)
+
+    // if we have java and bedrock resolutions, we search in java and after we will check if there is a bedrock url
+    const searchInJava = java ? true : false
 
     let findPromise
-    if(searchEdition.endsWith(RES_JAVA)) {
-      findPromise = FindTexture.findJava(parsedArguments.search)
+    if(searchInJava) {
+      findPromise = FindTexture.findJava(search)
     }
     else {
-      findPromise = FindTexture.findBedrock(parsedArguments.search)
+      findPromise = FindTexture.findBedrock(search)
     }
 
     let results = await findPromise
     .catch(err => {
-      if(false) console.error(err)
+      if(process.env.DEBUG) console.error(err)
     })
 
     if(!results || results.length == 0) {
-      await warnUser(message, strings.TEXTURE_DOESNT_EXIST)
+      await warnUser(message, `${strings.TEXTURE_DOESNT_EXIST}\nCouldn't find any match for search : ${search}`)
       return
     }
 
+    /** @type {FindTexture.SearchResult} */
     let finalResult
     if(results.length > 1) {
       finalResult = await choiceEmbed(message, {
-        title: `Select among ${results.length} found textures`,
+        title: `Select texture for search: '${search}'`,
         footer: `${message.client.user.username}`,
         imageURL: settings.BOT_IMG,
         propositions: results.map(searchItem => searchItem.path)
@@ -103,7 +121,7 @@ module.exports = {
         return results[choice.index]
       })
       .catch((message, error) => {
-        if(false) console.error(message, error)
+        if(process.env.DEBUG) console.error(message, error)
       })
     } else {
       finalResult = results[0]
@@ -114,28 +132,48 @@ module.exports = {
       return
     }
 
+    let javaTexturePath = java ? finalResult.path : undefined
+    let bedrockTexturePath = (java && bedrock) ? finalResult.bedrockPath : finalResult.path
+    if(java && bedrock && !finalResult.raw.isBedrock) {
+      await warnUser(`Texture doesn't have a bedrock version`)
+      return
+    }
+
     // start get promises on textures
-    const textureResolutions = [parsedArguments.left, parsedArguments.right].map(el => parseInt(el))
+    const textureResolutions = parsedArguments.resolution
     const texturePromises = []
     textureResolutions.forEach(res => {
-      const url = FindTexture.pathToTextureURL(finalResult.path, searchEdition.endsWith(RES_JAVA) ? 'java' : 'bedrock', parseInt(res))
+      const url = FindTexture.pathToTextureURL(res.endsWith('j') ? javaTexturePath : bedrockTexturePath, res.endsWith('j') ? 'java' : 'bedrock', parseInt(res))
       texturePromises.push(Canvas.loadImage(url))
     })
 
     // get texture buffers
-    /** @type {Canvas.Image[]} */
-    const textureImages = await Promise.all(texturePromises).catch(err => {
-      if(false) console.error(err)
-    })
+    let promiseResults = await promiseEvery(texturePromises)
 
-    if(!textureImages) {
-      await warnUser(message, strings.TEXTURE_DOESNT_EXIST)
-      return
+    // if there is some errors
+    if(!promiseResults || promiseResults.results.includes(undefined)) {
+      // if undefined then all are errors
+      let failedRes = textureResolutions
+
+      // if one suceeded promises succeeded with value
+      if(promiseResults) {
+        // fetch failed resolutions in errors
+        promiseResults.errors.forEach((err, index) => {
+          if(err !== undefined) failedRes.push(textureResolutions[index])
+        })
+      }
+
+      // warn user of failed textures
+      await warnUser(message, `Failed to load textures for given resolutions: ${failedRes.join(', ')}`)
     }
 
-    // sort by size decreasing
-    textureImages.sort((a, b) => b.naturalHeight*b.naturalWidth - a.naturalHeight*a.naturalWidth)
-    
+    // sort texture images by res and not undefined
+    // map to make structure with res and image
+    // filter where obj.image is not undefined
+    // sort by obj.res ascending
+    // map to get image back
+    const textureImages = promiseResults.results.map((value, index) => { return {res: textureResolutions[index], image: value }}).filter(obj => obj.image !== undefined).sort((a, b) => parseInt(a.res) - parseInt(b.res)).map(obj => obj.image)
+
     const texturesImageData = textureImages.map(image => {
       const ctx = Canvas.createCanvas(image.naturalWidth, image.naturalHeight).getContext('2d')
       ctx.drawImage(image, 0, 0)
@@ -145,15 +183,15 @@ module.exports = {
     // make new big canvas
     // height is the maximum height
     // width is n * maximum width
-    const referenceHeight = textureImages[0].naturalHeight * parsedArguments.scale
-    const referenceWidth = textureImages[0].naturalWidth * parsedArguments.scale
+    const referenceHeight = textureImages[textureImages.length - 1].naturalHeight * parsedArguments.scale
+    const referenceWidth  = textureImages[textureImages.length - 1].naturalWidth  * parsedArguments.scale
 
     const canvasHeight = referenceHeight
     const canvasWidth  =  referenceWidth * textureImages.length
 
     const canvasResult = Canvas.createCanvas(canvasWidth, canvasHeight)
     const ctx = canvasResult.getContext('2d')
-    let textureImage, textureImageData, scale, xOffset, i, r, g, b, a
+    let textureImage, textureImageData, scale, xOffset, pixelIndex, r, g, b, a
     for(let texIndex = 0; texIndex < textureImages.length; ++texIndex) {
       // get image
       textureImage = textureImages[texIndex]
@@ -163,11 +201,11 @@ module.exports = {
       xOffset = referenceWidth * texIndex
       for(let x = 0; x < textureImage.naturalWidth; ++x) {
         for(let y = 0; y < textureImage.naturalHeight; ++y) {
-          i = (y * textureImage.naturalWidth + x) * 4
-          r = textureImageData[i]
-          g = textureImageData[i + 1]
-          b = textureImageData[i + 2]
-          a = textureImageData[i + 3]
+          pixelIndex = (y * textureImage.naturalWidth + x) * 4
+          r = textureImageData[pixelIndex]
+          g = textureImageData[pixelIndex + 1]
+          b = textureImageData[pixelIndex + 2]
+          a = textureImageData[pixelIndex + 3]
 
           ctx.fillStyle = 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')'
           ctx.fillRect(xOffset + x*scale, y*scale, scale, scale)

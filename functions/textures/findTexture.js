@@ -8,6 +8,9 @@ const https    = require('https')
 /**
  * @typedef {Object} SearchResult
  * @property {Number} index Content index in JSON
+ * @property {Object} raw Raw content of element in JSON
+ * @property {String} path Full texture path
+ * @property {String?} bedrockPath Full texture path
  * @property {String} criteria Context criteria chosen
  */
 
@@ -73,11 +76,19 @@ module.exports =  {
   beginSearch: function(content, path, criteria, search, start = false) {
     /** @type {Array<SearchResult>} */
     const searchItems = content.map((el, index) => {
+      /** @type {SearchResult} */
       const res = {
         index: index,
+        raw: el,
         path: '',
         criteria: ''
       }
+
+      // added bedrock path to search
+      if(el.isBedrock) {
+        res.bedrockPath = el.bedrock[strings.LATEST_MC_BE_VERSION]
+      }
+
       try {
         res.path = path(el)
         res.criteria = criteria(res.path)
