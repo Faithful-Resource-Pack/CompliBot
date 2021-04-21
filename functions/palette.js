@@ -16,7 +16,7 @@ async function palette(message, url) {
 	getMeta(url).then(async function(dimension) {
 		var sizeOrigin = dimension.width * dimension.height
 
-		if (sizeOrigin > 65536) return warnUser(message,'The input picture is too big!')
+		if (sizeOrigin > 65536) return warnUser(message, 'The input picture is too big!')
 
 		var canvas = Canvas.createCanvas(dimension.width, dimension.height).getContext('2d')
 		var colorsHEX   = []
@@ -39,6 +39,7 @@ async function palette(message, url) {
 				a = image[index + 3]
 
 				var hex = rgbToHex(r,g,b)
+				if (colorsHEX.length > 256) return warnUser(message, 'The image has too many colors! (more than 256)')
 				if (!colorsRGBA.includes(`rgba(${r},${g},${b},${a})`)) {
 					colorsRGBA.push(`rgba(${r},${g},${b},${a})`)
 					colorsHEX.push(hex)
