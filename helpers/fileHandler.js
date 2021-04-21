@@ -28,6 +28,16 @@ const JSON_DEFAULT_PROFILES = []
 
 const OUT_NULL = os.platform() == 'win32' ? 'NUL' : '/dev/null'
 
+function __prep() {
+  try {
+    execSync("cd json && git init")
+    execSync(`cd json && git remote remove origin > ${OUT_NULL}`)
+    execSync(`cd json && rm -rf .git/refs/remotes/origin/ > ${OUT_NULL}`)
+  } catch (_ignored) {
+    // ignored
+  }
+}
+
 class FileHandler {
   /**
    *
@@ -54,27 +64,9 @@ class FileHandler {
    */
   pull() {
     return new Promise((resolve, reject) => {
+      __prep()
+      
       let cmd = ""
-      cmd += `cd json`
-      cmd +=" && git init"
-
-      try {
-        execSync(cmd)
-      } catch (_ignored) {
-        // ignored
-      }
-
-      cmd = ""
-      cmd += `cd json`
-      cmd +=" && git remote remove origin"
-
-      try {
-        execSync(cmd)
-      } catch (_ignored) {
-        // ignored
-      }
-
-      cmd = ""
       cmd += "cd json"
       cmd +=" && git remote add origin https://" + process.env.COMPLIBOT_GIT_USERNAME + ":" + process.env.COMPLIBOT_GIT_TOKEN + "@github.com" + process.env.COMPLIBOT_GIT_JSON_REPO
       cmd +=" && git fetch --all"
