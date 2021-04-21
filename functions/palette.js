@@ -24,7 +24,7 @@ async function palette(message, url) {
 	getMeta(url).then(async function(dimension) {
 		var sizeOrigin = dimension.width * dimension.height
 
-		if (sizeOrigin > 65536) return warnUser(message,'The input picture is too big!')
+		if (sizeOrigin > 65536) return warnUser(message, 'The input picture is too big!')
 
 		var canvas = Canvas.createCanvas(dimension.width, dimension.height).getContext('2d')
 		const allColors = {}
