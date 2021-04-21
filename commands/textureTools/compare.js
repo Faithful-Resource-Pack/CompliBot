@@ -26,7 +26,7 @@ module.exports = {
 	guildOnly: false,
 	uses: strings.COMMAND_USES_ANYONE,
 	syntax: `${prefix}compare <search> <--resolution|--res|--r>=<${RES_ALLOWED.join('|')}> [<--scale|--s>=<1..10>]`,
-  example: `${prefix}compare bucket --resolution=16j  --res=32j --r=64j --s=2\n${prefix}cmp bucket -resolution 16j -res 32j -r 64j -s 2\n${prefix}cmp bucket -r 16j 32j 64j -s 2\n${prefix}cmp bucket 16j 32j 64j -s 2`,
+  example: `${prefix}compare bucket --resolution 16j 32j 64j --s=2\n${prefix}cmp bucket -resolution 16j 32j -s 2\n${prefix}cmp bucket -r 16j 32j 64j -s 10\n${prefix}cmp bucket 16j 32j 64j -s 2`,
 
   /**
    * 
