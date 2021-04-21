@@ -7,7 +7,7 @@ const { warnUser } = require('../../functions/warnUser.js');
 
 module.exports = {
 	name: 'magnify',
-	aliases: ['zoom', 'scale', 'm'],
+	aliases: ['zoom', 'z', 'scale', 'mag', 'm'],
 	description: strings.HELP_DESC_MAGNIFY,
 	guildOnly: false,
 	uses: strings.COMMAND_USES_ANYONE,
