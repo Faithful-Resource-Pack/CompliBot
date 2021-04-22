@@ -139,8 +139,8 @@ const PUSH_USER_NOT_FOUND    = 'User not found in cache';
 const PUSH_TEXTURE_NOT_FOUND = 'Can\'t find this textures!';
 
 // Texture command
-const TEXTURE_DOESNT_EXIST       = '**Note: this command isn\'t updated for 21w16a yet, if you\'re currently looking for a 21w16a texture**\nThe specified texture/folder doesn\'t exist!';
-//const TEXTURE_DOESNT_EXIST       = 'The specified texture/folder doesn\'t exist!';
+//const TEXTURE_DOESNT_EXIST       = '**Note: this command isn\'t updated for 21w17a yet, if you\'re currently looking for a 21w17a texture**\nThe specified texture/folder doesn\'t exist!';
+const TEXTURE_DOESNT_EXIST       = 'The specified texture/folder doesn\'t exist!';
 const TEXTURE_NOT_CHOSEN				 = 'Texture was not chosen fast enough';
 const TEXTURE_FAILED_LOADING     = 'This texture has not yet been made or is not present on GitHub!';
 const TEXTURE_SEARCH_DESCRIPTION = 'Choose one texture using emoji reactions.\nIf you don\'t see what you\'re looking for, be more specific.\n\n';

@@ -1,6 +1,8 @@
 const Canvas   = require('canvas')
 const Discord  = require('discord.js')
 
+const colors2 = require('../res/colors')
+
 const { getMeta }  = require('./getMeta')
 const { warnUser } = require('./warnUser')
 
@@ -63,7 +65,7 @@ async function palette(message, url) {
 
 		var embed = new Discord.MessageEmbed()
 			.setTitle('Palette results')
-			.setColor(colors.BLUE)
+			.setColor(colors2.BLUE)
 			.setDescription(`List of colors:\n`)
 			.setFooter(`Total: ${Object.values(allColors).length}`)
 
