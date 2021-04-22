@@ -27,6 +27,8 @@ module.exports = {
 
 		if(!message.member.hasPermission('ADMINISTRATOR')) return warnUser(message,strings.COMMAND_NO_PERMISSION);
 
+		if(!args || !args[0]) return warnUser(message, `${strings.COMMAND_WRONG_ARGUMENTS_GIVEN}\nMissing Discord message URL as first argument.`)
+
 		let valURL = args[0];
 
 		if (valURL.startsWith('https://discord.com/channels')) {
