@@ -26,7 +26,7 @@ module.exports = {
 	example: `${prefix}texture 16 dirt`,
   async execute(client, message, args) {
 
-		if (message.author.id != uidR) return warnUser(message, 'This command is currently disabled due to updating to 21w14a, please try again in a few minutes.');
+		//if (message.author.id != uidR) return warnUser(message, 'This command is currently disabled due to updating to 21w17a, please try again in a few minutes.');
 
     var textures = await jsonContributionsJava.read(false);
     var texturesBedrock = await jsonContributionsBedrock.read(false);
