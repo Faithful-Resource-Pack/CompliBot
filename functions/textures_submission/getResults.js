@@ -9,7 +9,7 @@ const fetch    = require('node-fetch')
 
 const DEBUG = (process.env.DEBUG == 'true')
 
-const { date } = require('../utility/date.js')
+//const { date } = require('../utility/date.js')
 const { getMessages } = require('../getMessages.js')
 const { jsonContributionsBedrock, jsonContributionsJava } = require('../../helpers/fileHandler.js')
 
@@ -48,20 +48,6 @@ async function getResults(client, inputID, OFFSET_DAY = 0) {
 				textureName = message.embeds[0].fields[0].value.replace('.png', '') + '.png' || null
 				texturePath = message.embeds[0].fields[1].value || null
 				textureType = message.embeds[0].fields[2].value || null
-
-				try {
-					textureAuthor = `${client.users.cache.find(u => u.tag === `${message.embeds[0].author.name}`).id}` || undefined
-				} catch (error) {
-					console.log(`Can't find this user: ${message.embeds[0].author.name}`)
-				}
-
-				if (message.embeds[0].fields[3]) {
-					let words = message.embeds[0].fields[3].value.split(' ')
-					for (let k = 0; k < words.length; k++) {
-						let id = await getUserIDFromMention(words[k])
-						if (id) textureCoAuthor.push(id)
-					}
-				}
 
 				let folder   = undefined
 				let search   = undefined
@@ -154,7 +140,7 @@ async function getResults(client, inputID, OFFSET_DAY = 0) {
 					jsonContributionsJava.release()
 					jsonContributionsBedrock.release()
 					
-					await setAuthor(textureType, textureIndex, textureAuthor, textureCoAuthor, textureSize)
+					//await setAuthor(textureType, textureIndex, textureAuthor, textureCoAuthor, textureSize)
 					//console.log(textureType, textureAuthor, textureCoAuthor, textureName, texturePath, textureSize, textureIndex)
 				}
 			}
@@ -162,16 +148,6 @@ async function getResults(client, inputID, OFFSET_DAY = 0) {
 	}
 
 	console.log('END')
-}
-
-async function getUserIDFromMention(mention) {
-	if (!mention) return
-	if (mention.startsWith('<@') && mention.endsWith('>')) {
-		mention = mention.slice(2, -1)
-		if (mention.startsWith('!')) mention = mention.slice(1)
-
-		return mention
-	}
 }
 
 async function download_branch(client, textureURL, texturePath, textureSize, textureName, branch, type) {
@@ -217,7 +193,7 @@ async function errorAutoPush(client, inputID, message, author, name, folder, typ
 
 	await errorChannel.send(embed)
 }
-
+/*
 async function setAuthor(valType, valIndex, valAuth, valCoAuth = [], valSize) {
 	// If the author is not already in co-authors
 	if (valCoAuth[0] && !valCoAuth.includes(valAuth)) valCoAuth.push(valAuth)
@@ -272,5 +248,5 @@ async function setAuthor(valType, valIndex, valAuth, valCoAuth = [], valSize) {
 
 	return
 }
-
+*/
 exports.getResults = getResults
