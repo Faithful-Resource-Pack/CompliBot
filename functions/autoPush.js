@@ -44,6 +44,7 @@ async function autoPush(ORGANIZATION, REPO, BRANCH, COMMITMESSAGE, LOCAL) {
 const uploadToRepo = async (octo, coursePath, org, repo, branch, commitMessage) => {
 	const currentCommit = await getCurrentCommit(octo, org, repo, branch)
 	const filesPaths    = await glob(coursePath)
+	if(!filesPaths) return
 	const filesBlobs    = await Promise.all(filesPaths.map(createBlobForFile(octo, org, repo))).catch(console.error)
 	const pathsForBlobs = filesPaths.map(fullPath => path.normalize(path.relative(coursePath, fullPath)).replace(/\\/g, '/'))
 	const newTree   = await createNewTree(octo,	org, repo, filesBlobs, pathsForBlobs,	currentCommit.treeSha)
