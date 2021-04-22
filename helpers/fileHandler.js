@@ -28,6 +28,22 @@ const JSON_DEFAULT_PROFILES = []
 
 const OUT_NULL = os.platform() == 'win32' ? 'NUL' : '/dev/null'
 
+/* eslint-disable no-empty */
+function __prep() {
+  try {
+    // remove everything
+    execSync("cd json && rm -rf .git/") // delete git
+    execSync("cd json && git init") // restart fresh
+
+    // add origin
+    execSync("cd json && git remote add origin https://" + process.env.COMPLIBOT_GIT_USERNAME + ":" + process.env.COMPLIBOT_GIT_TOKEN + "@github.com" + process.env.COMPLIBOT_GIT_JSON_REPO)
+    
+    // set username and email
+    execSync(`cd json && git config user.name "${process.env.COMPLIBOT_GIT_USERNAME}"`)
+    execSync(`cd json && git config user.name "${process.env.COMPLIBOT_GIT_EMAIL}"`)
+  } catch (__ignored) {}
+}
+
 class FileHandler {
   /**
    *
@@ -54,29 +70,10 @@ class FileHandler {
    */
   pull() {
     return new Promise((resolve, reject) => {
+      __prep()
+
       let cmd = ""
-      cmd += `cd json`
-      cmd +=" && git init"
-
-      try {
-        execSync(cmd)
-      } catch (_ignored) {
-        // ignored
-      }
-
-      cmd = ""
-      cmd += `cd json`
-      cmd +=" && git remote remove origin"
-
-      try {
-        execSync(cmd)
-      } catch (_ignored) {
-        // ignored
-      }
-
-      cmd = ""
       cmd += "cd json"
-      cmd +=" && git remote add origin https://" + process.env.COMPLIBOT_GIT_USERNAME + ":" + process.env.COMPLIBOT_GIT_TOKEN + "@github.com" + process.env.COMPLIBOT_GIT_JSON_REPO
       cmd +=" && git fetch --all"
       cmd +=" && git checkout origin/main -- " + this.filepath.replace('json/', '')
       
@@ -102,8 +99,6 @@ class FileHandler {
     return new Promise((resolve, reject) => {
       let cmd = ""
       cmd += `cd json`
-      cmd +=" && git config user.name " + process.env.COMPLIBOT_GIT_USERNAME
-      cmd +=" && git config user.email " + process.env.COMPLIBOT_GIT_EMAIL
       cmd +=" && git add " + this.filepath.replace('json/', '')
       
       exec(cmd, (error, stdout, stderr) => {
