@@ -184,7 +184,7 @@ class FileHandler {
     }
   }
 
-  read(lock = true, forcePull = true) {
+  read(lock = true, doThePull = true) {
     return new Promise((resolve, reject) => {
       if(!lock) {
         // if no lock, go on, take the file and get out
@@ -215,7 +215,7 @@ class FileHandler {
         real = release
       }).catch((err) => console.error(err))
 
-      if(this.doPull || forcePull) {
+      if(this.doPull && doThePull) {
         promise = promise.then(() => {
           return this.pull()
         })

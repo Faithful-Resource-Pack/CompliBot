@@ -42,6 +42,9 @@ async function getContributors(client, inputID) {
   ]
   */
 
+  jsonContributionsBedrock.pull()
+  jsonContributionsJava.pull()
+
   for (const message of messages) {
     if (message.embeds[0] && message.embeds[0].color == 5025616) {
       // reset previous iteration
@@ -68,7 +71,7 @@ async function getContributors(client, inputID) {
       }
 
       if (textureType == 'java') {
-        textures = await jsonContributionsJava.read()
+        textures = await jsonContributionsJava.read(true, false)
 
         if (texturePath.includes('realms')) {
           folder = texturePath.replace('realms/textures/', '')
@@ -99,7 +102,7 @@ async function getContributors(client, inputID) {
 
         // if texture is also in bedrock:
         if (textureIndex != -1 && textures[textureIndex].isBedrock) {
-          texturesB = await jsonContributionsBedrock.read()
+          texturesB = await jsonContributionsBedrock.read(true, false)
           search    = textures[textureIndex].bedrock[strings.LATEST_MC_BE_VERSION]
           
           for (let b = 0; b < texturesB.length; b++) {
@@ -155,8 +158,8 @@ async function getContributors(client, inputID) {
 }
 
 async function setContributors(java, bedrock) {
-  let texturesJava    = await jsonContributionsJava.read()
-  let texturesBedrock = await jsonContributionsBedrock.read()
+  let texturesJava    = await jsonContributionsJava.read(true, false)
+  let texturesBedrock = await jsonContributionsBedrock.read(true, false)
 
   for (const item of java) {
     if (item.coauthors != [] && !item.coauthors.includes(item.author)) item.coauthors.push(item.author)
@@ -187,23 +190,10 @@ async function setContributors(java, bedrock) {
   await jsonContributionsJava.write(texturesJava)
   await jsonContributionsBedrock.write(texturesBedrock)
 
-  try {
-    jsonContributionsJava.push()
-  }
-  catch (err) {
-    console.error(err)
-  }
-  try {
-    jsonContributionsBedrock.push()
-  }
-  catch (err) {
-    console.error(err)
-  }
-
   jsonContributionsJava.release()
   jsonContributionsBedrock.release()
 
-  //autoPush('Compliance-Resource-Pack', 'JSON', 'main', `(WIP) AutoPush passed textures from ${date()}`, './json/')
+  autoPush('Compliance-Resource-Pack', 'JSON', 'main', `(WIP) AutoPush passed textures from ${date()}`, './json/')
 }
 
 async function getUserIDFromMention(mention) {
