@@ -11,6 +11,9 @@ const COLORS_PER_PALETTE_LINE = 3
 
 const COLORS_TOP = COLORS_PER_PALETTE * 6
 
+const GRADIENT_TOP = 250
+const GRADIENT_SAT_THRESHOLD = 15/100
+const GRADIENT_HUE_DIFF = 13/100
 const GRADIENT_WIDTH = 700
 const GRADIENT_BAND_WIDTH = 3
 const GRADIENT_HEIGHT = 50
@@ -91,7 +94,7 @@ async function palette(message, url) {
 		
 		let groupValue
 		field_groups.forEach((group, index) => {
-			groupValue = group.map(line => line.map(color => `[\`${color}\`](https://coolors.co/${color})`).join(' ')).join(' ')
+			groupValue = group.map(line => line.map(color => `[\`${color}\`](https://coolors.co/${color.replace('#', '')})`).join(' ')).join(' ')
 			embed.addFields({ name: "Hex" + ((field_groups.length > 1) ? ` part ${ (index + 1) }` : '') + ': ',  value: groupValue,  inline: true })
 		})
 		
@@ -132,27 +135,23 @@ async function palette(message, url) {
 		// append palettes to description
 		embed.setDescription(finalDescription)
 
-		// create gradient canvas for top 250 colors
-		const bandWidth = Object.values(allColors).length > 250 ? GRADIENT_BAND_WIDTH : Math.floor(GRADIENT_WIDTH / Object.values(allColors).length)
+		// create gradient canvas for top GRADIENT_TOP colors
+		const bandWidth = Object.values(allColors).length > GRADIENT_TOP ? GRADIENT_BAND_WIDTH : Math.floor(GRADIENT_WIDTH / Object.values(allColors).length)
 		// compute width
-		const allColorsSorted = Object.values(allColors).sort((a, b) => b.count - a.count).slice(0, 250).sort((a, b) => {
-			const [ha, la, va] = step(a.rgb[0], a.rgb[1], a.rgb[2], 8)
-			const [hb, lb, vb] = step(b.rgb[0], b.rgb[1], b.rgb[2], 8)
+		const allColorsSorted = Object.values(allColors).sort((a, b) => b.count - a.count).slice(0, GRADIENT_TOP).sort((a, b) => {
+			let [ha, sa, la] = rgbToHsl(a.rgb[0], a.rgb[1], a.rgb[2])
+			let [hb, sb, lb] = rgbToHsl(b.rgb[0], b.rgb[1], b.rgb[2])
 
-			if(ha > hb)
-				return 1
-			else if(ha < hb)
+			if((sa <= GRADIENT_SAT_THRESHOLD && sb > GRADIENT_SAT_THRESHOLD))
 				return -1
-			else if(la > lb)
+			else if((sa > GRADIENT_SAT_THRESHOLD && sb <= GRADIENT_SAT_THRESHOLD))
 				return 1
-			else if(la < lb)
-				return -1
-			else if(va > vb)
-				return 1
-			else if(va < vb)
-				return -1
-
-			return 0
+			else if((sa <= GRADIENT_SAT_THRESHOLD && sb <= GRADIENT_SAT_THRESHOLD)) {
+				return (la > lb) ? 1 : -(la < lb)
+			}
+			else if(Math.abs(ha - hb) > GRADIENT_HUE_DIFF)
+				return (ha > hb) ? 1 : -(ha < hb)			
+			return (la > lb) ? 1 : -(la < lb)
 		})
 
 		const canvasWidth = bandWidth * allColorsSorted.length
@@ -206,20 +205,20 @@ function rgbToHex(r,g,b) {
  * @param   Number  r       The red color value
  * @param   Number  g       The green color value
  * @param   Number  b       The blue color value
- * @return  Array           The HSV representation
+ * @return  Number[]        The HSL representation
  */
- function rgbToHsv(r, g, b) {
+ function rgbToHsl(r, g, b) {
   r /= 255, g /= 255, b /= 255;
 
   var max = Math.max(r, g, b), min = Math.min(r, g, b);
-  var h, s, v = max;
-
-  var d = max - min;
-  s = max == 0 ? 0 : d / max;
+  var h, s, l = (max + min) / 2;
 
   if (max == min) {
-    h = 0; // achromatic
+    h = s = 0; // achromatic
   } else {
+    var d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+
     switch (max) {
       case r: h = (g - b) / d + (g < b ? 6 : 0); break;
       case g: h = (b - r) / d + 2; break;
@@ -229,23 +228,7 @@ function rgbToHex(r,g,b) {
     h /= 6;
   }
 
-  return [ h, s, v ];
-}
-
-function step(r, g, b, repetitions=1) {
-	const lum = Math.sqrt( .241 * r + .691 * g + .068 * b )
-	// eslint-disable-next-line no-unused-vars
-	const [h, s, v] = rgbToHsv(r, g, b)
-
-	let h2, v2
-	h2 = Math.floor(h * repetitions)
-	v2 = Math.floor(v * repetitions)
-
-	if(h2 % 2 == 1) {
-		v2 = repetitions - v2
-	}
-
-	return [h2, lum, v2]
+  return [ h, s, l ];
 }
 
 exports.palette = palette
