@@ -5,16 +5,22 @@ require('dotenv').config()
 const { jsonModeration, jsonContributionsJava, jsonContributionsBedrock, jsonProfiles } = require('./fileHandler')
 
 /**
- * @typedef {Object} Contributor
- * @property {Number} id
+ * @typedef {Object} User
+ * @property {Number} userID
  * @property {String} username
  * @property {String[]} type
- * @property {String} uuid
- * @property {String[]} warns
  * @property {Object} muted
- * @property {Number} timeout
  * @property {Number?} muted.start
  * @property {Number?} muted.end
+ * @property {Number} timeout
+ * @property {Function: Contributor?} contributor
+ */
+
+/**
+ * @typedef {Object} Contributor
+ * @property {Number} userID
+ * @property {String} uuid
+ * @property {String[]} warns
  * @property {Function} contributions
  */
 
@@ -69,6 +75,9 @@ let all_contributions = []
 /** @type {Contributor[]} */
 let all_contributors = []
 
+/** @type {User[]} */
+let all_users = []
+
 /** @type {Texture[]} */
 let all_minecraft = []
 
@@ -100,17 +109,24 @@ const build_from_files = async function() {
   const old_profiles = await jsonProfiles.read(false, false)
   // getting contributors done
   old_profiles.forEach(p => {
-    /** @type {Contributor} */
-    const c = {
-      username: p.username,
-      type: (typeof(p.type === 'string')) ? [p.type] : p.type,
+    /** @type {User} */
+    const u = {
       id: parseInt(p.id),
-      uuid: p.uuid,
+      type: (Array.isArray(p.type)) ? p.type : ((typeof(p.type) === 'string') ? [p.type] : ['Member']),
       muted: {},
       timeout: 0,
       warns: [],
+    }
+
+    all_users.push(u)
+
+    /** @type {Contributor} */
+    const c = {
+      userID: parseInt(p.id),
+      username: p.username,
+      uuid: p.uuid,
       contributions: function() {
-        return all_contributions.filter(contrib => parseInt(p.id) === contrib.contributorID)
+        return all_contributions.filter(contrib => this.userID === contrib.contributorID)
       }
     }
     all_contributors.push(c)
@@ -118,13 +134,21 @@ const build_from_files = async function() {
 
   const old_moderation = await jsonModeration.read(false, false)
   old_moderation.forEach(m => {
-    const c = all_contributors.filter(c => c.id === parseInt(m.user))[0]
-    if(c) {
-      c.timeout = m.timeout || 0
-      c.warns = m.warn || []
-    } else {
-      if(process.env.DEBUG) console.warn('moderated not a contributor', m)
+    let u = all_users.filter(u => u.id === parseInt(m.user))[0]
+    if(!u) {
+      u = {
+        id: parseInt(m.user),
+        type: ['Member'],
+        muted: {},
+        timeout: 0,
+        warns: [],
+      }
+  
+      all_users.push(u)
     }
+    
+    u.timeout = m.timeout || 0
+    u.warns = m.warn || []
   })
 
   const javaContributions = await jsonContributionsJava.read(false, false)
@@ -138,7 +162,7 @@ const build_from_files = async function() {
         path: contrib.version[v],
         version: v,
         use: function() {
-          return all_texture_uses.filter(u => u.useID === textureUSEID)[0]
+          return all_texture_uses.filter(u => u.useID === this.useID)[0]
         }
       }
       
@@ -176,7 +200,7 @@ const build_from_files = async function() {
           path: contrib.version[v],
           version: v,
           use: function() {
-            return all_texture_uses.filter(u => u.useID === textureUSEID)[0]
+            return all_texture_uses.filter(u => u.useID === this.useID)[0]
           }
         }
         all_paths.push(tp)
@@ -195,14 +219,14 @@ const build_from_files = async function() {
     const tex = {
       id: textureID,
       uses: function() {
-        return all_texture_uses.sort(u => u.id == textureID)
+        return all_texture_uses.sort(u => u.id === this.id)
       },
       paths: function(fil = el => el) {
         const useIDs = this.uses().map(u => u.useID)
         return all_paths.filter(pa => useIDs.includes(pa.useID)).filter(fil)
       },
       contributions: function(fil = el => el) {
-        return all_contributions.filter(ctr => ctr.textureID == textureID).filter(fil)
+        return all_contributions.filter(ctr => ctr.textureID === this.id).filter(fil)
       },
       lastContributorID: function () {
         return this.contributions().sort((a, b) => a.date > b.date ? -1 : +(a.date < a.date))[0]
@@ -256,14 +280,14 @@ const build_from_files = async function() {
     const tex = {
       id: textureID,
       uses: function() {
-        return all_texture_uses.sort(u => u.id == textureID)
+        return all_texture_uses.sort(u => u.id === this.id)
       },
       paths: function(fil = el => el) {
         const useIDs = this.uses().map(u => u.useID)
         return all_paths.filter(pa => useIDs.includes(pa.useID)).filter(fil)
       },
       contributions: function(fil = el => el) {
-        return all_contributions.filter(ctr => ctr.textureID == textureID).filter(fil)
+        return all_contributions.filter(ctr => ctr.textureID === this.id).filter(fil)
       },
       lastContributorID: function () {
         return this.contributions().sort((a, b) => a.date > b.date ? -1 : +(a.date < a.date))[0]
@@ -288,6 +312,12 @@ const build_from_files = async function() {
     textureUSEID++
   })
 
+  all_users.forEach(u => {
+    u.contributor = function() {
+      return all_contributors.filter(c => this.userID == c.userID)[0]
+    }
+  })
+
   wasBuilt = true
   if(process.env.DEBUG) console.log(module.exports)
   if(process.env.DEBUG) console.log('Ended build of database')
@@ -300,6 +330,7 @@ module.exports = {
   AllContributions: all_contributions,
   AllContributors: all_contributors,
   AllTexturesMinecraft: all_minecraft,
+  AllUsers: all_users,
   AllPaths: all_paths,
   AllAnimations: all_animations
 }
