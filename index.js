@@ -185,7 +185,20 @@ client.on('guildMemberRemove', async () => {
  * BOT ADD OR REMOVE
  */
 client.on('guildCreate', async guild =>{
-	var joinLeaveChannel = client.channels.cache.get('823891571547308053')
+	var embed = new Discord.MessageEmbed()
+		.setTitle(`Thanks for adding me to ${guild.name}!`)
+		.addFields(
+				{ name: 'Commands', value: `My prefix is: \`${prefix}\` \nUse \`${prefix}help\` to see a list of all my commands!`},
+				{ name: 'Feedback', value: `If you have a suggestion or want to report a bug, then please use the command \`${prefix}feedback [your message]\``},
+				{ name: 'Personalisation', value: 'soon:tm:'},
+			)
+		.setColor(colors.BLUE)
+		.setThumbnail(settings.BOT_IMG)
+		.setFooter(client.user.username, settings.BOT_IMG);
+
+	var channel = guild.channels.cache.find(channel => channel.type === 'text' && channel.permissionsFor(guild.me).has('SEND_MESSAGES'))
+	await channel.send(embed)
+	/*var joinLeaveChannel = client.channels.cache.get('823891571547308053')
 
 	var embed = new Discord.MessageEmbed()
 		.setThumbnail(guild.iconURL())
@@ -199,10 +212,10 @@ client.on('guildCreate', async guild =>{
 		)
 		.setTimestamp()
 
-	await joinLeaveChannel.send(embed)
+	await joinLeaveChannel.send(embed)*/
 })
 
-client.on('guildDelete', async guild =>{
+/*client.on('guildDelete', async guild =>{
 	var joinLeaveChannel = client.channels.cache.get('823891571547308053')
 
 	var embed = new Discord.MessageEmbed()
@@ -218,7 +231,7 @@ client.on('guildDelete', async guild =>{
 		.setTimestamp()
 
 	await joinLeaveChannel.send(embed)
-})
+})*/
 
 /*
  * COMMAND HANDLER

@@ -1,6 +1,9 @@
-const prefix = process.env.PREFIX;
+const prefix  = process.env.PREFIX;
+const Discord = require('discord.js');
 
-const strings = require('../../res/strings');
+const strings  = require('../../res/strings');
+const colors   = require('../../res/colors');
+const settings = require('../../settings');
 
 const uidR = process.env.UIDR;
 const uidJ = process.env.UIDJ;
@@ -21,6 +24,13 @@ module.exports = {
 			await message.inlineReply('Shutting down...');
 			await process.exit();
 		}
-    else warnUser(message,strings.COMMAND_NO_PERMISSION);
+    else {
+			var embed = new Discord.MessageEmbed()
+				.setAuthor(message.client.user.username, settings.BOT_IMG)
+				.setDescription(`Banned <@${message.author.id}> \nReason: trying to stop me`)
+				.setColor(colors.BLUE)
+				.setTimestamp();
+			const embedMessage = await message.inlineReply(embed);
+		}
 	}
 };
