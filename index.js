@@ -99,7 +99,7 @@ const server = http.createServer((req, res) => {
 	})
 	res.end()
 })
-server.listen(3000, () => console.log(`listening at http://localhost:${PORT}`))
+server.listen(PORT, () => console.log(`listening at http://localhost:${PORT}`))
 
 /**
  * COMMAND HANDLER
