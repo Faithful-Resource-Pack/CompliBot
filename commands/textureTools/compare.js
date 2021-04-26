@@ -176,6 +176,10 @@ module.exports = {
       const url = FindTexture.pathToTextureURL(res.endsWith('j') ? javaTexturePath : bedrockTexturePath, res.endsWith('j') ? 'java' : 'bedrock', parseInt(res))
       texturePromises.push(Canvas.loadImage(url))
     })
+    
+    if(message.attachments.size > 0) {
+      texturePromises.push(Canvas.loadImage(message.attachments.first().url))
+    }
 
     // get texture buffers
     let promiseResults = await promiseEvery(texturePromises)
@@ -189,7 +193,12 @@ module.exports = {
       if(promiseResults) {
         // fetch failed resolutions in errors
         promiseResults.errors.forEach((err, index) => {
-          if(err !== undefined) failedRes.push(textureResolutions[index])
+          if(err) {
+            if(index == promiseResults.errors.length && message.attachments.size)
+              failedRes.push('your texture')
+            else
+              failedRes.push(textureResolutions[index])
+          }
         })
       }
 
@@ -214,9 +223,10 @@ module.exports = {
     // make new big canvas
     // height is the maximum height
     // width is n * maximum width
-    // sorted by res so last one is bigger
-    const referenceHeight = textureImages[textureImages.length - 1].naturalHeight * parsedArguments.scale
-    const referenceWidth  = textureImages[textureImages.length - 1].naturalWidth  * parsedArguments.scale
+    // sorted by res so last one is bigger if no custom image else previous last one
+    const referenceTextureIndex = textureImages[textureImages.length - 1].res ? textureImages.length - 1 : textureImages.length - 2
+    const referenceHeight = textureImages[referenceTextureIndex].naturalHeight * parsedArguments.scale
+    const referenceWidth  = textureImages[referenceTextureIndex].naturalWidth  * parsedArguments.scale
 
     const canvasHeight = referenceHeight
     const canvasWidth  =  referenceWidth * textureImages.length
