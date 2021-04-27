@@ -33,7 +33,7 @@ module.exports = {
 	async execute(client, message, args) {
 
 		if(!message.member.hasPermission('ADMINISTRATOR')) return warnUser(message,strings.COMMAND_NO_PERMISSION);
-		
+
 		args = parseArgs(message, args);
 		//console.log(args)
 
@@ -118,7 +118,7 @@ module.exports = {
 
 			fileHandle.release();
 		}
-		
+
 		if (!valType) return warnUser(message, strings.PUSH_TEXTURE_NOT_FOUND)
 		else {
 			await setAuthor(valType, valIndex, valAuth, valSize);
@@ -154,12 +154,12 @@ async function download(message, valType, valIndex, valRepo, valSize) {
 	if (valType == 'bedrock') {
 		fileHandle = jsonContributionsBedrock;
 		textures = await fileHandle.read();
-	
+
 		for (const i in BE_BRANCHES) {
 			await download_branch(message.attachments.first().url, textures[valIndex].version[BE_BRANCHES[i]], valRepo, BE_BRANCHES[i]);
 		}
 	}
-	
+
 	fileHandle.release();
 }
 

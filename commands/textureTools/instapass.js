@@ -97,6 +97,8 @@ module.exports = {
 					await setAuthor(valType, valIndex, `${msg.author.id}`, valSize);
 					await download(msg, valType, valIndex, valRepo, valSize);
 					await doPush(`Instapass for ${valPath.split('/').pop()} executed by: ${message.author.username}`);
+					await msg.reactions.cache.get('⬆️').remove();
+					await msg.reactions.cache.get('⬇️').remove();
 					await msg.react('⏩');
 
 					const embed = new Discord.MessageEmbed()
