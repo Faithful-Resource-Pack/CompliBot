@@ -46,7 +46,7 @@ const { jsonModeration, jsonContributionsJava, jsonContributionsBedrock, jsonPro
  * @typedef {Object} TexturePath
  * @property {Number} useID
  * @property {String} path
- * @property {String} version
+ * @property {String[]} versions
  * @property {String} edition
  * @property {function(): TextureUse} use
  */
@@ -153,20 +153,27 @@ const build_from_files = async function() {
 
   const javaContributions = await jsonContributionsJava.read(false, false)
   javaContributions.forEach(contrib => {
+    let lastPath = undefined
+
     Object.keys(contrib.version).forEach(v => {
-      // add texture paths
-      /** @type {TexturePath} */
-      const tp = {
-        useID: textureUSEID,
-        edition: 'java',
-        path: contrib.version[v],
-        version: v,
-        use: function() {
-          return all_texture_uses.filter(u => u.useID === this.useID)[0]
+      if(contrib.version[v] !== lastPath) {
+        /** @type {TexturePath} */
+        const tp = {
+          useID: textureUSEID,
+          edition: 'java',
+          path: contrib.version[v],
+          versions: [v],
+          use: function() {
+            return all_texture_uses.filter(u => u.useID === textureUSEID)[0]
+          }
         }
+
+        lastPath = tp.path
+
+        all_paths.push(tp)
+      } else {
+        all_paths[all_paths.length - 1].versions.push(v)
       }
-      
-      all_paths.push(tp)
     })
 
     // add texture contributions
@@ -191,19 +198,27 @@ const build_from_files = async function() {
 
     // add bedrock texture
     if(contrib.isBedrock && contrib.bedrock) {
+      let lastPath = undefined
+      
       Object.keys(contrib.bedrock).forEach(v => {
-        // add texture paths
-        /** @type {TexturePath} */
-        const tp = {
-          useID: textureUSEID,
-          edition: 'bedrock',
-          path: contrib.version[v],
-          version: v,
-          use: function() {
-            return all_texture_uses.filter(u => u.useID === this.useID)[0]
+        if(contrib.version[v] !== lastPath) {
+          /** @type {TexturePath} */
+          const tp = {
+            useID: textureUSEID,
+            edition: 'bedrock',
+            path: contrib.version[v],
+            versions: [v],
+            use: function() {
+              return all_texture_uses.filter(u => u.useID === textureUSEID)[0]
+            }
           }
+  
+          lastPath = tp.path
+  
+          all_paths.push(tp)
+        } else {
+          all_paths[all_paths.length - 1].versions.push(v)
         }
-        all_paths.push(tp)
       })  
     }
 
@@ -253,19 +268,27 @@ const build_from_files = async function() {
 
   const bedrockContributions = await jsonContributionsBedrock.read(false, false)
   bedrockContributions.forEach(contrib => {
-    Object.keys(contrib.version).forEach(v => {
-      /** @type {TexturePath} */
-      const tp = {
-        useID: textureUSEID,
-        edition: 'bedrock',
-        path: contrib.version[v],
-        version: v,
-        use: function() {
-          return all_texture_uses.filter(u => u.useID === textureUSEID)[0]
-        }
-      }
-      all_paths.push(tp)
+    let lastPath = undefined
 
+    Object.keys(contrib.version).forEach(v => {
+      if(contrib.version[v] !== lastPath) {
+        /** @type {TexturePath} */
+        const tp = {
+          useID: textureUSEID,
+          edition: 'bedrock',
+          path: contrib.version[v],
+          versions: [v],
+          use: function() {
+            return all_texture_uses.filter(u => u.useID === textureUSEID)[0]
+          }
+        }
+
+        lastPath = tp.path
+
+        all_paths.push(tp)
+      } else {
+        all_paths[all_paths.length - 1].versions.push(v)
+      }
     })
 
     /** @type {TextureUse} */
