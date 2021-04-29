@@ -23,6 +23,8 @@ module.exports = {
 
 		if (!message.member.hasPermission('BAN_MEMBERS')) return await warnUser(message, strings.COMMAND_NO_PERMISSION);
 
+		if (!args.length) return warnUser(message, strings.COMMAND_NO_ARGUMENTS_GIVEN);
+
 		if (!member) return await warnUser(message, strings.BAN_SPECIFY_USER);
 
 		if (member.id === message.author.id) return await warnUser(message, strings.BAN_CANT_BAN_SELF);
@@ -31,34 +33,32 @@ module.exports = {
 
 		if (!member.bannable) return await warnUser(message, strings.BAN_NOT_BANNABLE);
 
-		if (args != '') {
-			message.guild.members.cache.get(member.id).ban({reason: reason});
+		message.guild.members.cache.get(member.id).ban({reason: reason});
 
-			modLog(client, message, member, reason, 'none', 'banned');
+		modLog(client, message, member, reason, 'none', 'banned');
 				
-			var embed = new Discord.MessageEmbed()
-				.setAuthor(message.author.tag, message.author.displayAvatarURL())
-				.setDescription(`Banned ${member} \nReason: ${reason}`)
-				.setColor(colors.BLUE)
-				.setTimestamp();
-			const embedMessage = await message.inlineReply(embed);
-			await embedMessage.react('🗑️');
+		var embed = new Discord.MessageEmbed()
+			.setAuthor(message.author.tag, message.author.displayAvatarURL())
+			.setDescription(`Banned ${member} \nReason: ${reason}`)
+			.setColor(colors.BLUE)
+			.setTimestamp();
+		const embedMessage = await message.inlineReply(embed);
+		await embedMessage.react('🗑️');
 
-			const filter = (reaction, user) => {
-				return ['🗑️'].includes(reaction.emoji.name) && user.id === message.author.id;
-			};
+		const filter = (reaction, user) => {
+			return ['🗑️'].includes(reaction.emoji.name) && user.id === message.author.id;
+		};
 
-			embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
-				.then(async collected => {
-					const reaction = collected.first();
-					if (reaction.emoji.name === '🗑️') {
-						await embedMessage.delete();
-						if (!message.deleted) await message.delete();
-					}
-				})
-				.catch(async () => {
-					await embedMessage.reactions.cache.get('🗑️').remove();
-				});
-		} else return await warnUser(message,strings.COMMAND_PROVIDE_VALID_TAG);
+		embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
+			.then(async collected => {
+				const reaction = collected.first();
+				if (reaction.emoji.name === '🗑️') {
+					await embedMessage.delete();
+					if (!message.deleted) await message.delete();
+				}
+			})
+			.catch(async () => {
+				await embedMessage.reactions.cache.get('🗑️').remove();
+			});
 	}
 };

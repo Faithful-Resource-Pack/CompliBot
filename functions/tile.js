@@ -29,7 +29,7 @@ function tile(message, url, type) {
 		let i, j
 		
 		/**
-		 * Follow this pattern:
+		 * Follows this pattern:
 		 *  x x x
 		 *  x x x
 		 *  x x x
@@ -47,7 +47,7 @@ function tile(message, url, type) {
 		}
 
 		/**
-		 * Follow this pattern:
+		 * Follows this pattern:
 		 *  . x .
 		 *  . x .
 		 *  . x .
@@ -65,7 +65,7 @@ function tile(message, url, type) {
 		}
 
 		/**
-		 * Follow this pattern:
+		 * Follows this pattern:
 		 *  . . .
 		 *  x x x
 		 *  . . .
@@ -83,7 +83,7 @@ function tile(message, url, type) {
 		}
 
 		/**
-		 * Follow this pattern:
+		 * Follows this pattern:
 		 *  x x x
 		 *  x . x
 		 *  x x x
@@ -102,7 +102,7 @@ function tile(message, url, type) {
 		}
 
 		/**
-		 * Follow this pattern:
+		 * Follows this pattern:
 		 *  . x .
 		 *  x x x
 		 *  . x .

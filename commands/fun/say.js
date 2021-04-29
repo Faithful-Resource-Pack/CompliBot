@@ -16,7 +16,7 @@ module.exports = {
 	example: `${prefix}say hello there`,
 	async execute(client, message, args) {
 		if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD || message.author.id === uidT) {
-			if (!args.length) return await message.reply(strings.SAY_NOT_SPECIFIED);
+			if (!args.length) return warnUser(message, strings.COMMAND_NO_ARGUMENTS_GIVEN);
 
 			else {
 				if (message.attachments.size > 0) {

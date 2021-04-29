@@ -17,41 +17,41 @@ module.exports = {
 
 		if (!message.member.hasPermission('BAN_MEMBERS')) return warnUser(message,strings.COMMAND_NO_PERMISSION);
 
-		if (args != '') {
-      const member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
-      const reason = args.slice(1).join(' ') || 'Not Specified';
+		if (!args.length) return warnUser(message, strings.COMMAND_NO_ARGUMENTS_GIVEN);
 
-			if (!member) return await warnUser(message, strings.BEAN_SPECIFY_USER);
+    const member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
+    const reason = args.slice(1).join(' ') || 'Not Specified';
 
-			if (member.id === message.author.id) return await warnUser(message, strings.BEAN_CANT_BEAN_SELF);
+		if (!member) return await warnUser(message, strings.BEAN_SPECIFY_USER);
 
-			if (member.id === client.user.id) return await message.channel.send(strings.COMMAND_NOIDONTTHINKIWILL_LMAO);
+		if (member.id === message.author.id) return await warnUser(message, strings.BEAN_CANT_BEAN_SELF);
 
-			else {
-				const embed = new Discord.MessageEmbed()
-					.setAuthor(message.author.tag, message.author.displayAvatarURL())
-					.setDescription(`Beaned ${member} \nReason: ${reason}`)
-					.setColor(colors.BLUE)
-					.setTimestamp();
-				const embedMessage = await message.inlineReply(embed);
-				await embedMessage.react('🗑️');
+		if (member.id === client.user.id) return await message.channel.send(strings.COMMAND_NOIDONTTHINKIWILL_LMAO);
 
-				const filter = (reaction, user) => {
-					return ['🗑️'].includes(reaction.emoji.name) && user.id === message.author.id;
-				};
+		else {
+			const embed = new Discord.MessageEmbed()
+				.setAuthor(message.author.tag, message.author.displayAvatarURL())
+				.setDescription(`Beaned ${member} \nReason: ${reason}`)
+				.setColor(colors.BLUE)
+				.setTimestamp();
+			const embedMessage = await message.inlineReply(embed);
+			await embedMessage.react('🗑️');
 
-				embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
-					.then(async collected => {
-						const reaction = collected.first();
-						if (reaction.emoji.name === '🗑️') {
-							await embedMessage.delete();
-							if (!message.deleted) await message.delete();
-						}
-					})
-					.catch(async () => {
-						await embedMessage.reactions.cache.get('🗑️').remove();
-					});
-			}
-		} else return warnUser(message,strings.COMMAND_PROVIDE_VALID_TAG);
+			const filter = (reaction, user) => {
+				return ['🗑️'].includes(reaction.emoji.name) && user.id === message.author.id;
+			};
+
+			embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
+				.then(async collected => {
+					const reaction = collected.first();
+					if (reaction.emoji.name === '🗑️') {
+						await embedMessage.delete();
+						if (!message.deleted) await message.delete();
+					}
+				})
+				.catch(async () => {
+					await embedMessage.reactions.cache.get('🗑️').remove();
+				});
+		}
 	}
 };
