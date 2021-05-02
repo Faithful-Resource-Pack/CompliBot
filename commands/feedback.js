@@ -21,7 +21,7 @@ module.exports = {
 		var embed = new Discord.MessageEmbed()
 			.setAuthor(`Feedback from ${message.author.tag}`, message.author.displayAvatarURL())
 			.setColor(colors.BLUE)
-			.setDescription(`\`\`\`${args.join(' ')}\`\`\``)
+			.setDescription(`[Jump to message](${message.url})\n\n\`\`\`${args.join(' ')}\`\`\``)
 			.setTimestamp()
 
 		var embed2 = new Discord.MessageEmbed()

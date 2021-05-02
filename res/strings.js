@@ -45,6 +45,8 @@ const HELP_DESC_SLOWMODE = 'Enable or disable the slowmode in a channel';
 const HELP_DESC_UNMUTE   = 'Unmute someone';
 const HELP_DESC_WARN     = 'Warn someone';
 
+const HELP_DESC_GUIDELINES = 'Shows the texturing guidelines of Compliance 32x.';
+
 const HELP_DESC_ABOUT        = 'Displays a texture that you or someone else made';
 const HELP_DESC_ANIMATE      = 'Animates a texture.'
 const HELP_DESC_AUTOPUSH     = 'Use this command to push textures from #results to GitHub.';
@@ -207,6 +209,8 @@ module.exports = {
 	HELP_DESC_SLOWMODE,
 	HELP_DESC_UNMUTE,
 	HELP_DESC_WARN,
+
+	HELP_DESC_GUIDELINES,
 
 	HELP_DESC_ABOUT,
 	HELP_DESC_ANIMATE,

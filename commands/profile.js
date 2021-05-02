@@ -15,7 +15,6 @@ const NO_PROFILE_FOUND = -1
 
 module.exports = {
 	name: 'profile',
-	aliases: ['p'],
 	uses: strings.COMMAND_USES_ANYONE,
 	syntax: `${prefix}profile username <Your Name>\n${prefix}profile uuid <Your MC uuid (full uuid)>\n${prefix}profile show -> Display what the bot knows about you`,
 	description: strings.HELP_DESC_PROFILE,

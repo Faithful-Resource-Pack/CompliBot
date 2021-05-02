@@ -196,7 +196,7 @@ client.on('guildCreate', async guild =>{
 		.setThumbnail(settings.BOT_IMG)
 		.setFooter(client.user.username, settings.BOT_IMG);
 
-	var channel = guild.channels.cache.find(channel => channel.type === 'text' && channel.permissionsFor(guild.me).has('SEND_MESSAGES'))
+	var channel = guild.channels.cache.find(channel => channel.type === 'text' && channel.permissionsFor(guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES']))
 	await channel.send(embed)
 })
 
@@ -261,7 +261,7 @@ client.on('message', async message => {
 	}
 
 	if (message.content.toLowerCase() === 'band') {
-		const band = ['🎤', '🎸', '🥁', '🎺', '🎹']
+		const band = ['🎤', '🎸', '🥁', '🎺', '🎹', '🎻']
 		band.forEach(async emoji => { await message.react(emoji) })
 		return
 	}
