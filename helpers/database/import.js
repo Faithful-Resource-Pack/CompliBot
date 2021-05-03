@@ -103,8 +103,8 @@ let wasBuilt = false
 // Create a new client
 const firestore = require('./database')
 const save = async function() {
-  const writePromises = all_users.map(obj => JSON.parse(JSON.stringify(obj))).map(obj => {
-    return firestore.collection("users").doc("" + obj.id).set(obj)
+  const writePromises = all_animations.map(obj => JSON.parse(JSON.stringify(obj))).map(obj => {
+    return firestore.collection("animations").doc("" + obj.useID).set(obj)
   })
 
   Promise.all(writePromises)
@@ -265,6 +265,7 @@ const build_from_files = async function() {
     if(contrib.animated) {
       /** @type {TextureAnimation} */
       const anim = {
+        useID: textureUSEID,
         mcmeta: contrib.mcmeta,
         edition: "java"
       }
@@ -334,8 +335,9 @@ const build_from_files = async function() {
     if(contrib.animated) {
       /** @type {TextureAnimation} */
       const anim = {
+        useID: textureUSEID,
         mcmeta: contrib.mcmeta,
-        edition: "java"
+        edition: "bedrock"
       }
       all_animations.push(anim)
     }
