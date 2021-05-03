@@ -7,7 +7,7 @@ const { warnUser } = require('../../functions/warnUser.js');
 
 module.exports = {
 	name: 'palette',
-	aliases: [ 'colors', 'color', 'colormap' ],
+	aliases: [ 'colors', 'color', 'colormap', 'p' ],
 	description: strings.HELP_DESC_PALETTE,
 	guildOnly: false,
 	uses: strings.COMMAND_USES_ANYONE,

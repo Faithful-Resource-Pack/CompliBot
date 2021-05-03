@@ -16,6 +16,6 @@ module.exports = {
 	async execute(client, message, args) {
 		if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD || message.author.id === uidT) {
 			await message.inlineReply(strings.BEHAVE_ANSWER);
-		} else return
+		} else return await message.inlineReply('lol no');
 	}
 };

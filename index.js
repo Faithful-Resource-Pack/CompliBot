@@ -127,7 +127,7 @@ client.on('ready', async () => {
 	console.log(`└─────────────────────────────────────────────────────────────┘\n\n`)
 
 	if (MAINTENANCE) client.user.setPresence({ activity: { name: 'maintenance' }, status: 'dnd' })
-	else client.user.setActivity('Minecraft', {type: 'PLAYING'})
+	else client.user.setActivity('/help', {type: 'LISTENING'})
 
 	/**
 	 * START TEXTURE SUBMISSION PROCESS
@@ -196,42 +196,9 @@ client.on('guildCreate', async guild =>{
 		.setThumbnail(settings.BOT_IMG)
 		.setFooter(client.user.username, settings.BOT_IMG);
 
-	var channel = guild.channels.cache.find(channel => channel.type === 'text' && channel.permissionsFor(guild.me).has('SEND_MESSAGES'))
+	var channel = guild.channels.cache.find(channel => channel.type === 'text' && channel.permissionsFor(guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES']))
 	await channel.send(embed)
-	/*var joinLeaveChannel = client.channels.cache.get('823891571547308053')
-
-	var embed = new Discord.MessageEmbed()
-		.setThumbnail(guild.iconURL())
-		.setColor(colors.YELLOW)
-		.setTitle(`I was added to a server!`)
-		.setDescription('Please check if this action was intended.')
-		.addFields(
-			{ name: 'Name:', value: `\`${guild.name}\``},
-			{ name: 'ID:', value: `\`${guild.id}\``},
-			{ name: 'Owner:', value: `\`${guild.owner.user.tag}\` | \`${guild.owner.id}\``},
-		)
-		.setTimestamp()
-
-	await joinLeaveChannel.send(embed)*/
 })
-
-/*client.on('guildDelete', async guild =>{
-	var joinLeaveChannel = client.channels.cache.get('823891571547308053')
-
-	var embed = new Discord.MessageEmbed()
-		.setThumbnail(guild.iconURL())
-		.setColor(colors.YELLOW)
-		.setTitle(`I was removed from a server!`)
-		.setDescription('Please check if this action was intended.')
-		.addFields(
-			{ name: 'Name:', value: `\`${guild.name}\``},
-			{ name: 'ID:', value: `\`${guild.id}\``},
-			{ name: 'Owner:', value: `\`${guild.owner.user.tag}\` | \`${guild.owner.id}\``},
-		)
-		.setTimestamp()
-
-	await joinLeaveChannel.send(embed)
-})*/
 
 /*
  * COMMAND HANDLER
@@ -294,7 +261,7 @@ client.on('message', async message => {
 	}
 
 	if (message.content.toLowerCase() === 'band') {
-		const band = ['🎤', '🎸', '🥁', '🎺', '🎹']
+		const band = ['🎤', '🎸', '🥁', '🎺', '🎹', '🎻']
 		band.forEach(async emoji => { await message.react(emoji) })
 		return
 	}

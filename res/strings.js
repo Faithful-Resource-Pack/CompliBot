@@ -45,6 +45,8 @@ const HELP_DESC_SLOWMODE = 'Enable or disable the slowmode in a channel';
 const HELP_DESC_UNMUTE   = 'Unmute someone';
 const HELP_DESC_WARN     = 'Warn someone';
 
+const HELP_DESC_GUIDELINES = 'Shows the texturing guidelines of Compliance 32x.';
+
 const HELP_DESC_ABOUT        = 'Displays a texture that you or someone else made';
 const HELP_DESC_ANIMATE      = 'Animates a texture.'
 const HELP_DESC_AUTOPUSH     = 'Use this command to push textures from #results to GitHub.';
@@ -64,6 +66,7 @@ const HELP_DESC_MODPING   = 'Tag online mods to call for help.';
 const HELP_DESC_MODTOOLS  = 'Displays tools for Minecraft Dungeons modding.';
 const HELP_DESC_POLL      = 'Make a poll to ask people!';
 const HELP_DESC_PROFILE   = 'Add personal information for the Compliance Website Gallery.';
+const HELP_DESC_SKIN      = 'Get the skin of a Minecraft Player.';
 const HELP_DESC_STATS     = 'Displays various stats of the bot in your DMs.';
 const HELP_DESC_RULES     = 'Creates rules embed.';
 const HELP_DESC_TRANSLATE = 'Translates messages (duh)';
@@ -139,7 +142,7 @@ const PUSH_USER_NOT_FOUND    = 'User not found in cache';
 const PUSH_TEXTURE_NOT_FOUND = 'Can\'t find this textures!';
 
 // Texture command
-//const TEXTURE_DOESNT_EXIST       = '**Note: this command isn\'t updated for 21w17a yet, if you\'re currently looking for a 21w17a texture**\nThe specified texture/folder doesn\'t exist!';
+//const TEXTURE_DOESNT_EXIST       = '**Note: this command isn\'t updated for 21w18a yet, if you\'re currently looking for a 21w18a texture**\nThe specified texture/folder doesn\'t exist!';
 const TEXTURE_DOESNT_EXIST       = 'The specified texture/folder doesn\'t exist!';
 const TEXTURE_NOT_CHOSEN				 = 'Texture was not chosen fast enough';
 const TEXTURE_FAILED_LOADING     = 'This texture has not yet been made or is not present on GitHub!';
@@ -207,6 +210,8 @@ module.exports = {
 	HELP_DESC_UNMUTE,
 	HELP_DESC_WARN,
 
+	HELP_DESC_GUIDELINES,
+
 	HELP_DESC_ABOUT,
 	HELP_DESC_ANIMATE,
 	HELP_DESC_AUTOPUSH,
@@ -225,6 +230,7 @@ module.exports = {
 	HELP_DESC_MODTOOLS,
 	HELP_DESC_POLL,
 	HELP_DESC_PROFILE,
+	HELP_DESC_SKIN,
 	HELP_DESC_STATS,
 	HELP_DESC_RULES,
 	HELP_DESC_TRANSLATE,

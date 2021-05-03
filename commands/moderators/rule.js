@@ -75,7 +75,7 @@ module.exports = {
 	example: `${prefix}rule 1`,
 	async execute(client, message, args) {
 
-		if (!message.member.hasPermission('ADMINISTRATOR')) return warnUser(message,strings.COMMAND_NO_PERMISSION)
+		if (!message.member.hasPermission('ADMINISTRATOR')) return warnUser(message, strings.COMMAND_NO_PERMISSION)
 
 		let thumbnail = settings.BOT_IMG;
 		let color     = colors.COUNCIL;
