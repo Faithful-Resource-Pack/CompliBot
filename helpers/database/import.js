@@ -2,7 +2,7 @@
 /* eslint-disable no-unexpected-multiline */
 /* eslint-disable no-constant-condition */
 require('dotenv').config()
-const { jsonModeration, jsonContributionsJava, jsonContributionsBedrock, jsonProfiles } = require('./fileHandler')
+const { jsonModeration, jsonContributionsJava, jsonContributionsBedrock, jsonProfiles } = require('../fileHandler')
 
 /**
  * @typedef {Object} User
@@ -13,6 +13,7 @@ const { jsonModeration, jsonContributionsJava, jsonContributionsBedrock, jsonPro
  * @property {Number?} muted.start
  * @property {Number?} muted.end
  * @property {Number} timeout
+ * @property {String[]} warns
  * @property {Function: Contributor?} contributor
  */
 
@@ -20,7 +21,6 @@ const { jsonModeration, jsonContributionsJava, jsonContributionsBedrock, jsonPro
  * @typedef {Object} Contributor
  * @property {Number} userID
  * @property {String} uuid
- * @property {String[]} warns
  * @property {Function} contributions
  */
 
@@ -100,6 +100,16 @@ let textureUSEID = 0
 
 let wasBuilt = false
 
+// Create a new client
+const firestore = require('./database')
+const save = async function() {
+  const writePromises = all_users.map(obj => JSON.parse(JSON.stringify(obj))).map(obj => {
+    return firestore.collection("users").doc("" + obj.id).set(obj)
+  })
+
+  Promise.all(writePromises)
+}
+
 const build_from_files = async function() {
   if(wasBuilt)
     return module.exports
@@ -112,6 +122,7 @@ const build_from_files = async function() {
     /** @type {User} */
     const u = {
       id: parseInt(p.id),
+      username: p.username,
       type: (Array.isArray(p.type)) ? p.type : ((typeof(p.type) === 'string') ? [p.type] : ['Member']),
       muted: {},
       timeout: 0,
@@ -137,18 +148,18 @@ const build_from_files = async function() {
     let u = all_users.filter(u => u.id === parseInt(m.user))[0]
     if(!u) {
       u = {
-        id: parseInt(m.user),
-        type: ['Member'],
-        muted: {},
-        timeout: 0,
-        warns: [],
+        id: parseInt(m.user)
       }
   
       all_users.push(u)
     }
     
-    u.timeout = m.timeout || 0
-    u.warns = m.warn || []
+    if(m.timeout)
+      u.timeout = m.timeout
+    if(u.warns)
+      u.warns = m.warn
+
+    all_users.push(u)
   })
 
   const javaContributions = await jsonContributionsJava.read(false, false)
@@ -342,7 +353,9 @@ const build_from_files = async function() {
   })
 
   wasBuilt = true
-  if(process.env.DEBUG) console.log(module.exports)
+  // if(process.env.DEBUG) console.log(module.exports)
+  const res = await save()
+  console.log(res)
   if(process.env.DEBUG) console.log('Ended build of database')
 }
 
@@ -353,7 +366,9 @@ module.exports = {
   AllContributions: all_contributions,
   AllContributors: all_contributors,
   AllTexturesMinecraft: all_minecraft,
+  AllTextureUses: all_texture_uses,
   AllUsers: all_users,
   AllPaths: all_paths,
-  AllAnimations: all_animations
+  AllAnimations: all_animations,
+  save: save
 }
