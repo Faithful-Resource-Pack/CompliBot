@@ -142,11 +142,3 @@ module.exports = {
     })
   }
 }
-
-module.exports.setField(173336582265241601, "username", "TheRolf")
-.then(res => {
-  console.log(res)
-})
-.catch(err => {
-  console.error(err)
-})
