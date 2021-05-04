@@ -1,6 +1,6 @@
-const Discord  = require('discord.js')
-const colors   = require('../../res/colors')
-const strings  = require('../../res/strings')
+const Discord = require('discord.js')
+const colors  = require('../../res/colors')
+const strings = require('../../res/strings')
 
 const { countReact }  = require('../countReact')
 const { getMessages } = require('../getMessages')

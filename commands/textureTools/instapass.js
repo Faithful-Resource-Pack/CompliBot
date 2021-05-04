@@ -25,7 +25,7 @@ module.exports = {
 	example: `${prefix}instapass https://discord.com/channels/.../.../...`,
 	async execute(client, message, args) {
 
-		if(!message.member.hasPermission('ADMINISTRATOR')) return warnUser(message,strings.COMMAND_NO_PERMISSION);
+		if(!message.member.hasPermission('ADMINISTRATOR')) return warnUser(message, strings.COMMAND_NO_PERMISSION);
 
 		if(!args || !args[0]) return warnUser(message, `${strings.COMMAND_WRONG_ARGUMENTS_GIVEN}\nMissing Discord message URL as first argument.`)
 

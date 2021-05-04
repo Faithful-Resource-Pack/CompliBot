@@ -39,6 +39,6 @@ module.exports = {
 				await message.react('❌');
 			}
 		}
-		else return warnUser(message,strings.COMMAND_NO_PERMISSION);
+		else return warnUser(message, strings.COMMAND_NO_PERMISSION);
 	}
 };

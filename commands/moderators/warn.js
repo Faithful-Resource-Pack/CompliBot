@@ -114,7 +114,7 @@ module.exports = {
 				modLog(client, message, member, reason, time, 'warned');
 				
 
-			} else return warnUser(message,strings.COMMAND_PROVIDE_VALID_TAG);
-		} else return warnUser(message,strings.COMMAND_NO_PERMISSION);
+			} else return warnUser(message, strings.COMMAND_PROVIDE_VALID_TAG);
+		} else return warnUser(message, strings.COMMAND_NO_PERMISSION);
 	}
 };

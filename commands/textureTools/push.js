@@ -32,7 +32,7 @@ module.exports = {
 	example: `${prefix}push -r=Compliance-Java-32x -p=textures/block/stone.png -a=Someone#1234`,
 	async execute(client, message, args) {
 
-		if(!message.member.hasPermission('ADMINISTRATOR')) return warnUser(message,strings.COMMAND_NO_PERMISSION);
+		if(!message.member.hasPermission('ADMINISTRATOR')) return warnUser(message, strings.COMMAND_NO_PERMISSION);
 
 		args = parseArgs(message, args);
 		//console.log(args)

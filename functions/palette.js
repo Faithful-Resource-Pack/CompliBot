@@ -1,22 +1,22 @@
-const Canvas   = require('canvas')
-const Discord  = require('discord.js')
+const Canvas  = require('canvas')
+const Discord = require('discord.js')
 
 const colors2 = require('../res/colors')
 
 const { getMeta }  = require('./getMeta')
 const { warnUser } = require('./warnUser')
 
-const COLORS_PER_PALETTE = 9
+const COLORS_PER_PALETTE      = 9
 const COLORS_PER_PALETTE_LINE = 3
 
 const COLORS_TOP = COLORS_PER_PALETTE * 6
 
-const GRADIENT_TOP = 250
+const GRADIENT_TOP           = 250
 const GRADIENT_SAT_THRESHOLD = 15/100
-const GRADIENT_HUE_DIFF = 13/100
-const GRADIENT_WIDTH = 700
-const GRADIENT_BAND_WIDTH = 3
-const GRADIENT_HEIGHT = 50
+const GRADIENT_HUE_DIFF      = 13/100
+const GRADIENT_WIDTH         = 700
+const GRADIENT_BAND_WIDTH    = 3
+const GRADIENT_HEIGHT        = 50
 
 /**
  * Get an color palette from a image

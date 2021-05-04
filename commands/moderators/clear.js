@@ -33,7 +33,7 @@ module.exports = {
 
 		    await client.channels.cache.get('798676864599195655').send(embed);
 
-			} else return warnUser(message,strings.COMMAND_PROVIDE_A_NUMBER);
-		} else return warnUser(message,strings.COMMAND_NO_PERMISSION);
+			} else return warnUser(message, strings.COMMAND_PROVIDE_A_NUMBER);
+		} else return warnUser(message, strings.COMMAND_NO_PERMISSION);
 	}
 };

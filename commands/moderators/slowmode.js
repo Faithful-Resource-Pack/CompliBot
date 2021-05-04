@@ -42,7 +42,7 @@ module.exports = {
 					return await message.inlineReply(embed);
 				}
 
-			} else return warnUser(message,strings.COMMAND_PROVIDE_A_NUMBER);
-		} else return warnUser(message,strings.COMMAND_NO_PERMISSION);
+			} else return warnUser(message, strings.COMMAND_PROVIDE_A_NUMBER);
+		} else return warnUser(message, strings.COMMAND_NO_PERMISSION);
 	}
 };

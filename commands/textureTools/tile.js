@@ -37,7 +37,7 @@ module.exports = {
 					DATA = msg.attachments.first().url;
 					return tile(message, DATA);
 				}
-				else return warnUser(message,`The message from the provided URL does not have any image attached.`);
+				else return warnUser(message, `The message from the provided URL does not have any image attached.`);
 			}).catch(error => { return warnUser(message,error + ' The message URL needs to be from the same channel') });
 		}
 
@@ -46,7 +46,7 @@ module.exports = {
 			if (args[0].endsWith('.png') || args[0].endsWith('.jpeg') || args[0].endsWith('.jpg')) {
 				DATA = args[0];
 				return tile(message, DATA);
-			} else return warnUser(message,`Image extension is not supported`)
+			} else return warnUser(message, `Image extension is not supported`)
 		}*/
 
 		async function PreviousImage(type) {

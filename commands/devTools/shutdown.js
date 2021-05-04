@@ -10,8 +10,6 @@ const uidJ = process.env.UIDJ;
 const uidD = process.env.UIDD;
 const uidT = process.env.UIDT;
 
-const { warnUser } = require('../../functions/warnUser.js');
-
 module.exports = {
 	name: 'shutdown',
 	aliases: ['logout'],

@@ -90,7 +90,7 @@ module.exports = {
 
 					modLog(client, message, member, reason, 0, 'unmuted')
 				}
-			} else return warnUser(message,strings.COMMAND_PROVIDE_VALID_TAG);
-		} else return warnUser(message,strings.COMMAND_NO_PERMISSION);
+			} else return warnUser(message, strings.COMMAND_PROVIDE_VALID_TAG);
+		} else return warnUser(message, strings.COMMAND_NO_PERMISSION);
 	}
 };

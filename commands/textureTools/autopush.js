@@ -16,7 +16,7 @@ module.exports = {
 	syntax: `${prefix}autopush <both/c32/c64>`,
 	example: `${prefix}autopush c32`,
 	async execute(client, message, args) {
-    if(!message.member.hasPermission('ADMINISTRATOR')) return warnUser(message,strings.COMMAND_NO_PERMISSION);
+    if(!message.member.hasPermission('ADMINISTRATOR')) return warnUser(message, strings.COMMAND_NO_PERMISSION);
 
 		if (args[0] == '' || args[0] == undefined) return warnUser(message, strings.COMMAND_WRONG_ARGUMENTS_GIVEN);
 

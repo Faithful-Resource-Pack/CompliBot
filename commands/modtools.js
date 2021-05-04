@@ -14,7 +14,7 @@ module.exports = {
 	uses: strings.COMMAND_USES_ANYONE_DUNGEONS,
 	syntax: `${prefix}modtools`,
 	async execute(client, message, args) {
-		if (message.guild.id !== settings.CDUNGEONS_ID) return warnUser(message,'This command can only be used in the Compliance Dungeons server!');
+		if (message.guild.id !== settings.CDUNGEONS_ID) return warnUser(message, 'This command can only be used in the Compliance Dungeons server!');
 
 		const embed = new Discord.MessageEmbed()
 			.setTitle('Tools for making Dungeons mods:')

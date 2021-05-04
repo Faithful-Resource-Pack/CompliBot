@@ -110,8 +110,8 @@ module.exports = {
 						colors.C32
 					);
 				//Other servers
-				} else return warnUser(message,strings.WEBSITE_NO_SITE_REGISTERED);
-    		} else return warnUser(message,strings.WEBSITE_PROVIDE_VALID_ARGUMENT);
+				} else return warnUser(message, strings.WEBSITE_NO_SITE_REGISTERED);
+    		} else return warnUser(message, strings.WEBSITE_PROVIDE_VALID_ARGUMENT);
     	}
 
 		//Compliance Dungeons
@@ -174,6 +174,6 @@ module.exports = {
 				colors.C32
 			);
 		//Other servers
-		} else return warnUser(message,strings.WEBSITE_PROVIDE_VALID_ARGUMENT);
+		} else return warnUser(message, strings.WEBSITE_PROVIDE_VALID_ARGUMENT);
 	}
 };

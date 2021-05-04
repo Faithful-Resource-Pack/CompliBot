@@ -217,7 +217,7 @@ client.on('message', async message => {
 	const command     = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName))
 
 	if (!command) return
-	if (command.guildOnly && message.channel.type === 'dm') return warnUser(message,strings.CANT_EXECUTE_IN_DMS)
+	if (command.guildOnly && message.channel.type === 'dm') return warnUser(message, strings.CANT_EXECUTE_IN_DMS)
 
 	command.execute(client, message, args).catch(async error => {
 		console.error(error)
