@@ -167,7 +167,7 @@ async function palette(message, url) {
 		// create the attachement
 		const colorImageAttachment = new Discord.MessageAttachment(colorCanvas.toBuffer(), 'colors.png');
 
-		const embedMessage = await message.reply({
+		const embedMessage = await message.inlineReply({
 			embed: embed,
 			files: [colorImageAttachment]
 		})

@@ -16,6 +16,7 @@ const C32_SUBMIT_2      = '774220983044669450';	// #council-voting
 const C32_SUBMIT_3      = '780507681987100682';	// #texture-revote
 const C32_RESULTS       = '780507804317384744';	// #texture-results
 const C32_AUTOPUSH_FAIL = '779363363158229004'; // #council-talk
+const C32_COUNTER       = '774333964101615637';
 
 // Compliance 64x
 const C64_IMG           = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Discord-Bot/master/images/Logos/Compliance%2064x.png';
@@ -69,6 +70,7 @@ module.exports = {
 	C32_SUBMIT_3,
 	C32_RESULTS,
 	C32_AUTOPUSH_FAIL,
+	C32_COUNTER,
 
 	C64_MODERATOR_ID,
 	C64_IMG,
