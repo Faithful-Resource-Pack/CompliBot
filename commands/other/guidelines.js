@@ -11,20 +11,21 @@ module.exports = {
 	async execute(client, message, args) {
 		const embedMessage = await message.inlineReply('https://docs.compliancepack.net/pages/textures/texturing-guidelines');
 		if (message.channel.type !== 'dm') await embedMessage.react('🗑️');
-			const filter = (reaction, user) => {
-				return ['🗑️'].includes(reaction.emoji.name) && user.id === message.author.id;
-			};
 
-			embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
-				.then(async collected => {
-					const reaction = collected.first();
-					if (reaction.emoji.name === '🗑️') {
-						await embedMessage.delete();
-						await message.delete();
-					}
-				})
-				.catch(async collected => {
-					if (message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🗑️').remove();
-				});
+		const filter = (reaction, user) => {
+			return ['🗑️'].includes(reaction.emoji.name) && user.id === message.author.id;
+		};
+
+		embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
+			.then(async collected => {
+				const reaction = collected.first();
+				if (reaction.emoji.name === '🗑️') {
+					await embedMessage.delete();
+					await message.delete();
+				}
+			})
+			.catch(async collected => {
+				if (message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🗑️').remove();
+			});
 	}
 };

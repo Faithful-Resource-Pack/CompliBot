@@ -18,7 +18,7 @@ module.exports = {
 	async execute(client, message, args) {
     if(!message.member.hasPermission('ADMINISTRATOR')) return warnUser(message, strings.COMMAND_NO_PERMISSION);
 
-		if (args[0] == '' || args[0] == undefined) return warnUser(message, strings.COMMAND_WRONG_ARGUMENTS_GIVEN);
+		if (!args.length) return warnUser(message, strings.COMMAND_WRONG_ARGUMENTS_GIVEN);
 
 		if (args[0] == 'both') {
 			await getResults(client, settings.C64_RESULTS);

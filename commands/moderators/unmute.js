@@ -21,76 +21,76 @@ module.exports = {
 	example: `${prefix}unmute @Domi#5813 not posting memes in #general`,
 	async execute(client, message, args) {
 
-		if (message.member.hasPermission('BAN_MEMBERS')) {
-			if (args != '') {
-				var role = message.guild.roles.cache.find(role => role.name === 'Muted');
-				const member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
-				const reason = args.slice(1).join(' ') || 'Not Specified';
+		if (!message.member.hasPermission('BAN_MEMBERS')) return await warnUser(message, strings.COMMAND_NO_PERMISSION);
 
-				if (!member) return await warnUser(message, strings.UNMUTE_SPECIFY_USER);
+		if (!args.length) return warnUser(message, strings.COMMAND_NO_ARGUMENTS_GIVEN);
 
-				else {
-					removeMutedRole(client, member.id);
+		var role = message.guild.roles.cache.find(role => role.name === 'Muted');
+		const member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
+		const reason = args.slice(1).join(' ') || 'Not Specified';
 
-					let warnList = await jsonModeration.read();
+		if (!member) return await warnUser(message, strings.UNMUTE_SPECIFY_USER);
 
-					// invisible try
-					try {
+		else {
+			removeMutedRole(client, member.id);
 
-					var index    = -1;
+			let warnList = await jsonModeration.read();
 
-					for (var i = 0; i < warnList.length; i++) {
-						if (warnList[i].user == `${member.id}`) {
-							index = i;
-							break;
-						}
-					}
+			// invisible try
+			try {
 
-					if (index != -1) {
-						warnList[index].timeout = 0;
-						warnList[index].muted   = false;
-					} else {
-						warnList.push({
-							"user": `${member.id}`,
-							"timeout": 0,
-							"muted": false
-						})
-					}
+			var index    = -1;
 
-					await jsonModeration.write(warnList);
-
-					// invisible catch
-				  } catch(_error) {
-						jsonModeration.release();
-					}
-
-					var embed = new Discord.MessageEmbed()
-						.setAuthor(message.author.tag, message.author.displayAvatarURL())
-						.setDescription(`Unmuted ${member} \nReason: ${reason}`)
-						.setColor(colors.BLUE)
-						.setTimestamp();
-
-					const embedMessage = await message.inlineReply(embed);
-					await embedMessage.react('🗑️');
-					const filter = (reaction, user) => {
-						return ['🗑️'].includes(reaction.emoji.name) && user.id === message.author.id;
-					};
-
-					embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
-						.then(async collected => {
-							const reaction = collected.first();
-							if (reaction.emoji.name === '🗑️') {
-								await embedMessage.delete();
-								if (!message.deleted) await message.delete();
-							}
-						})
-						.catch(async () => {
-							await embedMessage.reactions.cache.get('🗑️').remove();
-						});
-
-					modLog(client, message, member, reason, 0, 'unmuted')
+			for (var i = 0; i < warnList.length; i++) {
+				if (warnList[i].user == `${member.id}`) {
+					index = i;
+					break;
 				}
-			} else return warnUser(message, strings.COMMAND_PROVIDE_VALID_TAG);
-		} else return warnUser(message, strings.COMMAND_NO_PERMISSION);
+			}
+
+			if (index != -1) {
+				warnList[index].timeout = 0;
+				warnList[index].muted   = false;
+			} else {
+				warnList.push({
+					"user": `${member.id}`,
+					"timeout": 0,
+					"muted": false
+				})
+			}
+
+			await jsonModeration.write(warnList);
+
+			// invisible catch
+			} catch(_error) {
+				jsonModeration.release();
+			}
+
+			var embed = new Discord.MessageEmbed()
+				.setAuthor(message.author.tag, message.author.displayAvatarURL())
+				.setDescription(`Unmuted ${member} \nReason: ${reason}`)
+				.setColor(colors.BLUE)
+				.setTimestamp();
+
+			const embedMessage = await message.inlineReply(embed);
+			await embedMessage.react('🗑️');
+			const filter = (reaction, user) => {
+				return ['🗑️'].includes(reaction.emoji.name) && user.id === message.author.id;
+			};
+
+			embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
+				.then(async collected => {
+					const reaction = collected.first();
+					if (reaction.emoji.name === '🗑️') {
+						await embedMessage.delete();
+						if (!message.deleted) await message.delete();
+					}
+				})
+				.catch(async () => {
+					await embedMessage.reactions.cache.get('🗑️').remove();
+				});
+
+			modLog(client, message, member, reason, 0, 'unmuted')
+		}
 	}
 };

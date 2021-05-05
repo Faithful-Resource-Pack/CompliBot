@@ -16,11 +16,11 @@ function magnify(message, url) {
 		var sizeOrigin = dimension.width * dimension.height
 		var factor     = 64
 
-		if (sizeOrigin == 256)  factor = 32
-		if (sizeOrigin > 256)   factor = 16
-		if (sizeOrigin > 1024)  factor = 8
-		if (sizeOrigin > 4096)  factor = 4
-		if (sizeOrigin > 65636) factor = 2
+		if (sizeOrigin == 256)   factor = 32
+		if (sizeOrigin > 256)    factor = 16
+		if (sizeOrigin > 1024)   factor = 8
+		if (sizeOrigin > 4096)   factor = 4
+		if (sizeOrigin > 65636)  factor = 2
 		if (sizeOrigin > 262144) return warnUser(message, 'The input picture is too big!')
 
 		var canvasStart = Canvas.createCanvas(dimension.width, dimension.height).getContext('2d')
