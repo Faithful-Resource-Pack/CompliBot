@@ -2,8 +2,8 @@
 /* global Buffer */
 
 const { FileHandler, jsonContributionsJava, jsonContributionsBedrock } = require('../../helpers/fileHandler')
-const strings  = require('../../res/strings')
-const https    = require('https')
+const strings = require('../../res/strings')
+const https   = require('https')
 
 /**
  * @typedef {Object} SearchResult

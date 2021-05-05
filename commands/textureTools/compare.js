@@ -165,7 +165,7 @@ module.exports = {
 
     // reject if wanted bedrock and java so if foind bedrock path
     if(java && bedrock && !finalResult.bedrockPath) {
-      await warnUser(`Texture doesn't have a bedrock version`)
+      await warnUser(message, `Texture doesn't have a bedrock version`)
       return
     }
 

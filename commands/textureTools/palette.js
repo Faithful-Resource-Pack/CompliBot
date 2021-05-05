@@ -7,7 +7,7 @@ const { warnUser } = require('../../functions/warnUser.js');
 
 module.exports = {
 	name: 'palette',
-	aliases: [ 'colors', 'color', 'colormap', 'p' ],
+	aliases: [ 'colors', 'color', 'colormap', 'p', 'colours', 'colour' ],
 	description: strings.HELP_DESC_PALETTE,
 	guildOnly: false,
 	uses: strings.COMMAND_USES_ANYONE,
@@ -55,7 +55,7 @@ module.exports = {
 				}
 				else return warnUser(message, strings.COMMAND_ID_IMAGE_NOT_ATTACHED);
 			}).catch(error => {
-				return warnUser(message,error);
+				return warnUser(message, error);
 			})
 		}
 	

@@ -1,6 +1,6 @@
 const prefix = process.env.PREFIX;
 
-const Discord       = require('discord.js');
+const Discord   = require('discord.js');
 const translate = require('@vitalets/google-translate-api');
 
 const strings  = require('../res/strings');

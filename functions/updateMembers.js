@@ -5,10 +5,14 @@
  * @param {String} channelID use to set the count
  */
 async function updateMembers(client, serverID, channelID) {
-	let guild = client.guilds.cache.get(serverID);
-	
-	if(guild !== undefined && guild.channels !== undefined)
-		await guild.channels.cache.get(channelID).setName('Members: ' + guild.memberCount);
+	var guild = client.guilds.cache.get(serverID);
+	var memberChannel = guild.channels.cache.get(channelID);
+
+	if(guild === undefined && guild.channels === undefined) return
+
+	if (memberChannel.type === 'voice') await memberChannel.setName('Members: ' + guild.memberCount);
+
+	else await memberChannel.setName('members-' + guild.memberCount);
 }
 
 exports.updateMembers = updateMembers;

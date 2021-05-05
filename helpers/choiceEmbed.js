@@ -1,6 +1,6 @@
-const Discord = require('discord.js')
+const Discord    = require('discord.js')
 const asyncTools = require('./asyncTools')
-const settings = require('../settings')
+const settings   = require('../settings')
 
 /**
  * 

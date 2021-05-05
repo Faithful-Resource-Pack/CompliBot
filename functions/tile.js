@@ -1,5 +1,5 @@
-const Canvas   = require('canvas')
-const Discord  = require('discord.js')
+const Canvas  = require('canvas')
+const Discord = require('discord.js')
 
 const { getMeta }  = require('./getMeta')
 const { warnUser } = require('./warnUser')
@@ -22,7 +22,7 @@ function tile(message, url, type) {
 		if (type == 'p') type = 'plus'
 
 		var sizeResult = (dimension.width * dimension.height) * 3
-		if (sizeResult > 262144) return warnUser(message,'The output picture will be too big!\nMaximum output allowed: 512 x 512 px²\nYours is: ' + dimension.width * 3 + ' x ' + dimension.height * 3 + ' px²')
+		if (sizeResult > 262144) return warnUser(message, 'The output picture will be too big!\nMaximum output allowed: 512 x 512 px²\nYours is: ' + dimension.width * 3 + ' x ' + dimension.height * 3 + ' px²')
 		
 		let canvas
 		let canvasContext

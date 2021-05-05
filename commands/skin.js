@@ -17,8 +17,6 @@ module.exports = {
 	async execute(client, message, args) {
 			if (!args.length) return await warnUser(message, strings.COMMAND_NO_ARGUMENTS_GIVEN);
 
-			//if (args[0] === 'Notch') return await warnUser(message, 'That player can\'t be loaded for unknown reasons.');
-
 			axios.get(`https://api.mojang.com/users/profiles/minecraft/${args[0]}`)
 			.then(async function (response) {
 				if (response.data.id == undefined) return await warnUser(message, 'That player doesn\'t exist!');
@@ -30,8 +28,6 @@ module.exports = {
 					.setDescription(`UUID: ${response.data.id}`)
 					.setImage(`https://visage.surgeplay.com/full/512/${response.data.id}`)
 					.setThumbnail(`https://visage.surgeplay.com/skin/512/${response.data.id}`)
-					//.setImage(`https://crafatar.com/renders/body/${response.data.id}?overlay`)
-					//.setThumbnail(`https://crafatar.com/skins/${response.data.id}`)
 					.setFooter('Powered by visage.surgeplay.com', 'https://visage.surgeplay.com/steve.png')
 
 					const embedMessage = await message.inlineReply(embed);

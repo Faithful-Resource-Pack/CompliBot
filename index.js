@@ -143,6 +143,7 @@ client.on('ready', async () => {
 	 * UPDATE CTWEAKS MEMBERS
 	 */
 	updateMembers(client, settings.CTWEAKS_ID, settings.CTWEAKS_COUNTER)
+	updateMembers(client, settings.C32_ID, settings.C32_COUNTER)
 
 	// get out if no channel, no cache or empty cache
 	if(client.channels === undefined || client.channels.cache === undefined || client.channels.cache.length === 0) return
@@ -172,6 +173,7 @@ client.on('guildMemberAdd', async member =>{
 	}
 
 	updateMembers(client, settings.CTWEAKS_ID, settings.CTWEAKS_COUNTER)
+	updateMembers(client, settings.C32_ID, settings.C32_COUNTER)
 })
 
 /*
@@ -179,6 +181,7 @@ client.on('guildMemberAdd', async member =>{
  */
 client.on('guildMemberRemove', async () => {
 	updateMembers(client, settings.CTWEAKS_ID, settings.CTWEAKS_COUNTER)
+	updateMembers(client, settings.C32_ID, settings.C32_COUNTER)
 })
 
 /*
@@ -217,7 +220,7 @@ client.on('message', async message => {
 	const command     = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName))
 
 	if (!command) return
-	if (command.guildOnly && message.channel.type === 'dm') return warnUser(message,strings.CANT_EXECUTE_IN_DMS)
+	if (command.guildOnly && message.channel.type === 'dm') return warnUser(message, strings.CANT_EXECUTE_IN_DMS)
 
 	command.execute(client, message, args).catch(async error => {
 		console.error(error)
@@ -282,6 +285,7 @@ client.on('message', async message => {
 	 * DISCORD SERVER INVITE DETECTION
 	 * @warn I hope there is no other use of this link type on Discord
 	 * Found more information here: https://youtu.be/-51AfyMqnpI
+	 * @author RobertR11
 	 */
 	if (message.content.includes('https://discord.gg/') && message.guild.id != '814198513847631944') inviteDetection(client, message)
 
