@@ -1,3 +1,4 @@
+/* global process */
 const Discord  = require('discord.js')
 const settings = require('../settings')
 const colors   = require('../res/colors')
@@ -11,6 +12,9 @@ const colors   = require('../res/colors')
 async function quote(msg) {
 	const args = msg.content.split(' ')
 	let i, ids, embed, file
+
+	// do not quote behave command
+	if(args[0].startsWith(process.env.PREFIX + 'behave')) return
 
 	/**
 	 * If a new type of URL for discord message is added, add it here
