@@ -211,10 +211,11 @@ module.exports = {
     // filter where obj.image is not undefined
     // sort by obj.res ascending
     // map to get image back
-    const textureImages = promiseResults.results.map((value, index) => { return {res: textureResolutions[index], image: value }}).filter(obj => obj.image !== undefined).sort((a, b) => parseInt(a.res) - parseInt(b.res)).map(obj => obj.image)
+    const textureImages = promiseResults.results.map((value, index) => { return {res: textureResolutions[index], image: value }}).filter(obj => obj.image !== undefined).sort((a, b) => parseInt(a.res) - parseInt(b.res))
 
     // get image data from image
-    const texturesImageData = textureImages.map(image => {
+    const texturesImageData = textureImages.map(obj => {
+      const image = obj.image
       const ctx = Canvas.createCanvas(image.naturalWidth, image.naturalHeight).getContext('2d')
       ctx.drawImage(image, 0, 0)
       return ctx.getImageData(0, 0, image.naturalWidth, image.naturalHeight).data
@@ -224,9 +225,9 @@ module.exports = {
     // height is the maximum height
     // width is n * maximum width
     // sorted by res so last one is bigger if no custom image else previous last one
-    const referenceTextureIndex = textureImages[textureImages.length - 1].res ? textureImages.length - 1 : textureImages.length - 2
-    const referenceHeight = textureImages[referenceTextureIndex].naturalHeight * parsedArguments.scale
-    const referenceWidth  = textureImages[referenceTextureIndex].naturalWidth  * parsedArguments.scale
+    const referenceTextureIndex = Math.max(textureImages[textureImages.length - 1].res ? (textureImages.length - 1) : (textureImages.length - 2), 0)
+    const referenceHeight = textureImages[referenceTextureIndex].image.naturalHeight * parsedArguments.scale
+    const referenceWidth  = textureImages[referenceTextureIndex].image.naturalWidth  * parsedArguments.scale
 
     const canvasHeight = referenceHeight
     const canvasWidth  =  referenceWidth * textureImages.length
@@ -236,7 +237,7 @@ module.exports = {
     let textureImage, textureImageData, scale, xOffset, pixelIndex, r, g, b, a
     for(let texIndex = 0; texIndex < textureImages.length; ++texIndex) {
       // get image
-      textureImage = textureImages[texIndex]
+      textureImage = textureImages[texIndex].image
       textureImageData = texturesImageData[texIndex]
 
       scale = Math.floor(referenceWidth / textureImage.naturalWidth)
