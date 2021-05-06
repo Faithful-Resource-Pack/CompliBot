@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/Compliance-Resource-Pack/Discord-Bot#readme",
   "dependencies": {
-    "@google-cloud/firestore": "^4.10.1",
+    "@google-cloud/firestore": "^4.11.0",
     "@octokit/rest": "^18.5.3",
     "@vitalets/google-translate-api": "^7.0.0",
     "async-mutex": "^0.3.1",
