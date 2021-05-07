@@ -190,7 +190,7 @@ async function sizeUP(valURL, dimension) {
 			r = image[i]
 			g = image[i+1]
 			b = image[i+2]
-			a = image[i+3]
+			a = image[i+3]/255
 
 			contextOUT.fillStyle = `rgba(${r},${g},${b},${a})`
 			contextOUT.fillRect(x * FACTOR, y * FACTOR, FACTOR, FACTOR)
