@@ -7,11 +7,28 @@ const { default: axios } = require("axios")
  * @property {String | Number | Boolean | Array } value // the value you want to compare
  */
 
-let _address = 'https://therolf.fr/json_db/'
+let _address = undefined
 let _token = undefined
 
-const readAddress = () => { return _address + 'get.php' }
-const writeAddress = () => { return _address + 'put.php' }
+const readAddress = () => {
+  if(!_address)
+    throw new Error('Firestorm address was not configured')
+  
+  return _address + 'get.php'
+}
+const writeAddress = () => {
+  if(!_address)
+    throw new Error('Firestorm address was not configured')
+  
+  return _address + 'put.php'
+}
+
+const writeToken = () => {
+  if(!_token)
+    throw new Error('Firestorm token was not configured')
+
+  return _token
+}
 
 class Collection {
   /** @param {String} name The name of the Collection */
@@ -77,7 +94,7 @@ class Collection {
    */
   __write_data(command, value = undefined) {
     const obj = {
-      "token": _token || '',
+      "token": writeToken(),
       "collection": this.collectionName,
       "command": command
     }
