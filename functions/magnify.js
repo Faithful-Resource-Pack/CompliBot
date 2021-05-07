@@ -40,7 +40,7 @@ function magnify(message, url) {
 				r = image[index];
 				g = image[index + 1]
 				b = image[index + 2]
-				a = image[index + 3]
+				a = image[index + 3] / 255
 				canvasResultCTX.fillStyle = `rgba(${r},${g},${b},${a})`
 				canvasResultCTX.fillRect(x * factor, y * factor, factor, factor)
 			}
