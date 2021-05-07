@@ -22,6 +22,7 @@ module.exports = {
 			.setFooter(message.client.user.username, settings.BOT_IMG);
 		await m.edit(embed);
 		if (message.channel.type !== 'dm') await m.react('🗑️');
+
 		const filter = (reaction, user) => {
 			return ['🗑️'].includes(reaction.emoji.name) && user.id === message.author.id;
 		};
@@ -35,7 +36,7 @@ module.exports = {
 				}
 			})
 			.catch(async collected => {
-				if (message.channel.type !== 'dm') await m.reactions.cache.get('🗑️').remove();
+				if (!message.deleted && message.channel.type !== 'dm') await m.reactions.cache.get('🗑️').remove();
 			});
 		})
 	}

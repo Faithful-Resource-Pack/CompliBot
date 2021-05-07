@@ -30,6 +30,7 @@ module.exports = {
 
 			const embedMessage = await message.inlineReply(embed);
 			if (message.channel.type !== 'dm') await embedMessage.react('🗑️');
+
 			const filter = (reaction, user) => {
 				return ['🗑️'].includes(reaction.emoji.name) && user.id === message.author.id;
 			};
@@ -39,11 +40,11 @@ module.exports = {
 					const reaction = collected.first();
 					if (reaction.emoji.name === '🗑️') {
 						await embedMessage.delete();
-						await message.delete();
+						if (!message.deleted && message.channel.type !== 'dm') await message.delete();
 					}
 				})
 				.catch(async collected => {
-					if (message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🗑️').remove();
+					if (!message.deleted && message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🗑️').remove();
 				});
 		}
 

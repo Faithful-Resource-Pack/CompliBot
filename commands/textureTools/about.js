@@ -19,20 +19,20 @@ module.exports = {
 
 		var textures        = await jsonContributionsJava.read(false);
 		var texturesBedrock = await jsonContributionsBedrock.read(false);
-		var embed = new Discord.MessageEmbed();
+		var embed           = new Discord.MessageEmbed();
 
-		var javac32 = [];
-		var javac64 = [];
+		var javac32    = [];
+		var javac64    = [];
 		var bedrockc32 = [];
 		var bedrockc64 = [];
 
-		var userTag = undefined;
-		var countJava32 = 0;
-		var countJava64 = 0;
+		var userTag        = undefined;
+		var countJava32    = 0;
+		var countJava64    = 0;
 		var countBedrock32 = 0;
 		var countBedrock64 = 0;
 
-		const MAX = 20;
+		const MAX  = 20;
 		var maxj32 = 0;
 		var maxj64 = 0;
 		var maxb32 = 0;
@@ -104,16 +104,16 @@ module.exports = {
 		var embedJava = new Discord.MessageEmbed();
 		var embedBedrock = new Discord.MessageEmbed();
 
-		if (countJava32 > 0) embed.addFields({name: 'Java 32x:', value: countJava32, inline: true});
-		if (countJava64 > 0) embed.addFields({name: 'Java 64x:', value: countJava64, inline: true});
-		if (countBedrock32 > 0) embed.addFields({name: 'Bedrock 32x:', value: countBedrock32, inline: true});
-		if (countBedrock64 > 0) embed.addFields({name: 'Bedrock 64x:', value: countBedrock64, inline: true});
-		if (countJava32+countJava64+countBedrock32+countBedrock64 > 0) embed.addFields({name: 'Total:', value: countJava32+countJava64+countBedrock32+countBedrock64, inline: true});
+		if (countJava32 > 0)    embed.addField('Java 32x:', countJava32, true);
+		if (countJava64 > 0)    embed.addField('Java 64x:', countJava64, true);
+		if (countBedrock32 > 0) embed.addField('Bedrock 32x:', countBedrock32, true);
+		if (countBedrock64 > 0) embed.addField('Bedrock 64x:', countBedrock64, true);
+		if (countJava32+countJava64+countBedrock32+countBedrock64 > 0) embed.addField('Total:', countJava32+countJava64+countBedrock32+countBedrock64, true);
 
-		if (countJava32 > 0 && javac32[0] != undefined) embedJava.addFields({name: 'Java 32x:', value: javac32, inline: true});
-		if (countJava64 > 0 && javac64[0] != undefined) embedJava.addFields({name: 'Java 64x:', value: javac64, inline: true});
-		if (countBedrock32 > 0 && bedrockc32[0] != undefined) embedBedrock.addFields({name: 'Bedrock 32x:', value: bedrockc32, inline: true});
-		if (countBedrock64 > 0 && bedrockc64[0] != undefined) embedBedrock.addFields({name: 'Bedrock 64x:', value: bedrockc64, inline: true});
+		if (countJava32 > 0 && javac32[0] != undefined)       embedJava.addField('Java 32x:', javac32, true);
+		if (countJava64 > 0 && javac64[0] != undefined)       embedJava.addField('Java 64x:', javac64, true);
+		if (countBedrock32 > 0 && bedrockc32[0] != undefined) embedBedrock.addField('Bedrock 32x:', bedrockc32, true);
+		if (countBedrock64 > 0 && bedrockc64[0] != undefined) embedBedrock.addField('Bedrock 64x:', bedrockc64, true);
 
 		/*else {
 			if (args[0] == 'me' || args[0] == undefined) return await warnUser(message, 'You don\'t have any contributions!');
@@ -140,8 +140,8 @@ async function loop(embedMessage, message, embed, embedJava, embedBedrock) {
 			const reaction = collected.first();
 		
 			if (reaction.emoji.name === '🗑️') {
-				embedMessage.delete();
-				if (!message.deleted) message.delete();
+				await embedMessage.delete();
+				if (!message.deleted) await message.delete();
 			}
 			
 			if (reaction.emoji.name === '1️⃣') {
@@ -152,15 +152,15 @@ async function loop(embedMessage, message, embed, embedJava, embedBedrock) {
 			}
 
 			if (reaction.emoji.name === '1️⃣' || reaction.emoji.name === '2️⃣') {
-				embedMessage.reactions.cache.get('🗑️').remove();
-				embedMessage.reactions.cache.get('1️⃣').remove();
-				embedMessage.reactions.cache.get('2️⃣').remove();
-				embedMessage.edit(embed);
+				await embedMessage.reactions.cache.get('🗑️').remove();
+				await embedMessage.reactions.cache.get('1️⃣').remove();
+				await embedMessage.reactions.cache.get('2️⃣').remove();
+				await embedMessage.edit(embed);
 				await loop(embedMessage, message, embed, embedJava, embedBedrock);
 			}	
 		}).catch(async () => {
-			embedMessage.reactions.cache.get('🗑️').remove();
-			embedMessage.reactions.cache.get('1️⃣').remove();
-			embedMessage.reactions.cache.get('2️⃣').remove();
+			await embedMessage.reactions.cache.get('🗑️').remove();
+			await embedMessage.reactions.cache.get('1️⃣').remove();
+			await embedMessage.reactions.cache.get('2️⃣').remove();
 		});
 }
