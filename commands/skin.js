@@ -42,11 +42,11 @@ module.exports = {
 							const reaction = collected.first();
 							if (reaction.emoji.name === '🗑️') {
 								await embedMessage.delete();
-								if (!message.deleted) await message.delete();
+								if (!message.deleted && message.channel.type !== 'dm') await message.delete();
 							}
 						})
 						.catch(async () => {
-							await embedMessage.reactions.cache.get('🗑️').remove();
+							if (!message.deleted && message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🗑️').remove();
 						});
 			})
 			.catch(async function (error) {

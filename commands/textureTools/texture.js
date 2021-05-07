@@ -267,12 +267,12 @@ module.exports = {
               }
             })
             .catch(async () => {
-              if (message.channel.type !== 'dm') embedMessage.reactions.cache.get('🗑️').remove();
+              if (!message.deleted && message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🗑️').remove();
               if (dimension.width < 129 && dimension.height < 129) {
-                if (message.channel.type !== 'dm') embedMessage.reactions.cache.get('🔎').remove();
+                if (!message.deleted && message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🔎').remove();
               }
-              if (message.channel.type !== 'dm') embedMessage.reactions.cache.get('🌀').remove();
-              if (message.channel.type !== 'dm') embedMessage.reactions.cache.get('🎨').remove();
+              if (!message.deleted && message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🌀').remove();
+              if (!message.deleted && message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🎨').remove();
             });
 
         });
