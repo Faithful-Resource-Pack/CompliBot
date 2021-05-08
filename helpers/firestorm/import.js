@@ -1,3 +1,4 @@
+/* eslint-disable no-unreachable */
 /* global process */
 /* eslint-disable no-unexpected-multiline */
 /* eslint-disable no-constant-condition */
@@ -124,7 +125,7 @@ const build_from_files = async function() {
   // getting contributors done
   old_profiles.forEach(p => {
     /** @type {User} */
-    const userID = parseInt(p.id)
+    const userID = p.id
 
     const u = {
       username: p.username,
