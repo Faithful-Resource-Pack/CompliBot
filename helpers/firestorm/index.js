@@ -22,7 +22,7 @@ const writeAddress = () => {
   if(!_address)
     throw new Error('Firestorm address was not configured')
   
-  return _address + 'put.php'
+  return _address + 'post.php'
 }
 
 const writeToken = () => {
@@ -124,13 +124,18 @@ class Collection {
    * @param {Object?} value The value for this command 
    * @returns {Object} Write data object
    */
-  __write_data(command, value = undefined) {
+  __write_data(command, value = undefined, multiple = false) {
     const obj = {
       "token": writeToken(),
       "collection": this.collectionName,
       "command": command
     }
-    if(value) obj["value"] = value
+    if(value) {
+      if(multiple)
+        obj["values"] = value
+      else
+        obj["value"] = value
+    }
 
     return obj
   }
@@ -159,7 +164,7 @@ class Collection {
    * @returns {Promise<any>}
    */
   addBulk(values) {
-    return this.__extract_data(axios.post(writeAddress(), this.__write_data('addBulk', values)))
+    return this.__extract_data(axios.post(writeAddress(), this.__write_data('addBulk', values, true)))
   }
 
   /**
@@ -176,8 +181,8 @@ class Collection {
    * @param {String[] | Number[]} keys The key from the entries to remove
    * @returns {Promise<any>}
    */
-  removeBuks(keys) {
-    return this.__extract_data(axios.post(writeAddress(), this.__write_data('write_raw', keys)))
+  removeBulk(keys) {
+    return this.__extract_data(axios.post(writeAddress(), this.__write_data('removeBulk', keys)))
   }
 
   /**
@@ -187,7 +192,7 @@ class Collection {
    * @returns {Promise<any>}
    */
   set(key, value) {
-    const data = this.__write_data('write_raw', value)
+    const data = this.__write_data('set', value)
     data['key'] = key
     return this.__extract_data(axios.post(writeAddress(), data))
   }
@@ -199,9 +204,8 @@ class Collection {
    * @returns {Promise<any>}
    */
   setBulk(keys, values) {
-    const data = this.__write_data('write_raw')
+    const data = this.__write_data('setBulk', values, true)
     data['keys'] = keys
-    data['values'] = values
     return this.__extract_data(axios.post(writeAddress(), data))
   }
 }
