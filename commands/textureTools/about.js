@@ -3,7 +3,6 @@ const prefix = process.env.PREFIX;
 const Discord = require('discord.js');
 const strings = require('../../res/strings');
 const colors  = require('../../res/colors');
-const fs      = require('fs');
 
 const { warnUser } = require('../../functions/warnUser.js');
 const { jsonContributionsJava, jsonContributionsBedrock } = require('../../helpers/fileHandler');
@@ -26,7 +25,6 @@ module.exports = {
 		var bedrockc32 = [];
 		var bedrockc64 = [];
 
-		var userTag        = undefined;
 		var countJava32    = 0;
 		var countJava64    = 0;
 		var countBedrock32 = 0;
@@ -38,12 +36,12 @@ module.exports = {
 		var maxb32 = 0;
 		var maxb64 = 0;
 
+		let userID
 		if (args[0] == 'me' || args[0] == undefined) {
 			embed.setDescription(`About <@${client.users.cache.find(u => u.tag === message.author.tag).id}>'s contributions:`)
 				.setColor(colors.BLUE)
 				.setAuthor(message.author.tag, message.author.displayAvatarURL());
 			userID  = client.users.cache.find(u => u.tag === message.author.tag).id;
-			userTag = message.author.tag;
 		}
 
 		else {
@@ -61,11 +59,10 @@ module.exports = {
 				.setColor(colors.BLUE)
 				.setAuthor(message.author.tag, message.author.displayAvatarURL());
 			userID  = client.users.cache.find(u => u.tag === args[0]).id;
-			userTag = args[0];
 		}
 
 		/** JAVA *******************************/
-		for (var i = 0; i < textures.length; i++) {
+		for (let i = 0; i < textures.length; i++) {
 			if (textures[i].c32.author != undefined && textures[i].c32.author.includes(userID)) {
 				if (maxj32 <= MAX) {
 					javac32.push(textures[i].version[strings.LATEST_MC_JE_VERSION].replace('minecraft/textures/',''));
