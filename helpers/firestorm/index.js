@@ -53,14 +53,6 @@ class Collection {
         if(Array.isArray(el))
           return resolve(el.map(e => this.addMethods(e)))
         
-        const keys = Object.keys(el)
-        if(keys.length == 1) {
-          const id = keys[0]
-          const res = el[id]
-          res[ID_FIELD_NAME] = id
-          return resolve(this.addMethods(res))
-        }
-        
         // else on the object itself
         return resolve(this.addMethods(el))
       }).catch(err => reject(err))

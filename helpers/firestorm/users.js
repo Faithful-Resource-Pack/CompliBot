@@ -8,6 +8,7 @@ require('./firestorm_config')()
  * @property {Number} userID Discord ID
  * @property {String?} username Minecraft userbame
  * @property {String[]} type User type on server
+ * @property {String} uuid User minecraft id
  * @property {Object} muted Object if user muted on server
  * @property {Number?} muted.start
  * @property {Number?} muted.end
