@@ -36,14 +36,10 @@ module.exports = {
 
 		/** @type {import('../helpers/firestorm/users').User} */
 		let user = await usersCollection.get(message.author.id).catch(err => console.error(err))
-
-		console.log(user)
-
 		// create empty user
 		if(!user)
 			user = {}
 
-		console.log(user)
 		if(subcommand === 'show')
 			return showProfile(message, user.username, user.uuid, user.type ? user.type.join(', ') : undefined)
 		
