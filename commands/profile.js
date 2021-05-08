@@ -1,5 +1,5 @@
+/* global process */
 const prefix = process.env.PREFIX;
-const fs     = require('fs');
 
 const Discord   = require("discord.js");
 const client    = new Discord.Client();
@@ -9,9 +9,6 @@ const settings         = require('../settings.js');
 const colors           = require('../res/colors.js');
 const strings          = require('../res/strings');
 const { warnUser }     = require('../functions/warnUser.js');
-const { jsonProfiles } = require('../helpers/fileHandler.js');
-
-const NO_PROFILE_FOUND = -1
 
 module.exports = {
 	name: 'profile',
@@ -19,63 +16,46 @@ module.exports = {
 	syntax: `${prefix}profile username <Your Name>\n${prefix}profile uuid <Your MC uuid (full uuid)>\n${prefix}profile show -> Display what the bot knows about you`,
 	description: strings.HELP_DESC_PROFILE,
 	guildOnly: false,
-	async execute(client, message, args) {
-		if(args[0] !== 'username' && args[0] !== 'uuid' && args[0] !== 'show')
+	/**
+	 * @param {Discord.Client} _client Discord client handling command
+	 * @param {Discord.Message} message Discord origin message
+	 * @param {String[]} args Command arguments
+	 */
+	async execute(_client, message, args) {
+		// check first if you have arguments
+		if(!args.length)
+			return await warnUser(message, 'No arguments, expected username, uuid or show')
+
+		// what we want
+		const subcommand = args[0]
+		if(subcommand !== 'username' && subcommand !== 'uuid' && subcommand !== 'show')
 			return await warnUser(message, 'Incorrect argument, expected username, uuid or show')
 
-		// load profiles and lock
-		const profiles = await jsonProfiles.read()
+		// get users location
+		const usersCollection = require('../helpers/firestorm/users')
 
-		try {
-			let authorProfileIndex = NO_PROFILE_FOUND
-			let i = 0
+		/** @type {import('../helpers/firestorm/users').User} */
+		let user = await usersCollection.get(message.author.id).catch(err => console.error(err))
 
-			// search message author profile
-			while(i < profiles.length && authorProfileIndex == NO_PROFILE_FOUND) {
-				if(profiles[i].id === message.author.id)
-					authorProfileIndex = i
-				++i
-			}
+		console.log(user)
 
-			// if not found, add an empty one
-			if(authorProfileIndex == NO_PROFILE_FOUND) {
-				profiles.push({
-					username: null,
-					uuid: null,
-					id: message.author.id,
-					type: 'member'
-				})
-			}
+		// create empty user
+		if(!user)
+			user = {}
 
-			if(args[0] === 'show') {
-				showProfile(message, profiles[authorProfileIndex].username, profiles[authorProfileIndex].uuid, profiles[authorProfileIndex].type)
-			}
-			else {
-				// determine value
-				let value = ''
-				for(i = 1; i < args.length; ++i) {
-					value += `${ args[i] } `
-				}
-				value = value.trim()
-				
-				if(args[0] === 'username') {
-					profiles[authorProfileIndex].username = value
-				}
-				else { // else its UUID
-					profiles[authorProfileIndex].uuid = value
-				}
-			}
+		console.log(user)
+		if(subcommand === 'show')
+			return showProfile(message, user.username, user.uuid, user.type ? user.type.join(', ') : undefined)
+		
+		// value is the rest of arguments concatenated
+		const argumentsLeft = args.slice(1).join(' ')
 
-			// write and release
-			await jsonProfiles.write(profiles)
+		// else it is username or uuid so we can trust subcommand
+		user[subcommand] = argumentsLeft
 
-			// react
-			return await message.react('✅')
-		} catch(error) {
-			jsonProfiles.release()
-			console.error(error)
-			return await warnUser(message, error.toString())
-		}
+		let writeResult = await usersCollection.set(message.author.id, user).catch(err => console.error(err))
+		
+		return await message.react(writeResult ? '✅' : '❌')
 	}
 }
 
