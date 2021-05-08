@@ -102,9 +102,16 @@ let wasBuilt = false
 // Create a new client
 const all = require('./all')
 
-const save = async function() {
-  // wait please
-  console.warn('Not implemented')
+const save = function() {
+  return new Promise((resolve, reject) => {
+    all.users.write_raw({})
+    .then(() => 
+    all.users.setBulk(Object.keys(all_users), Object.values(all_users)))
+    .then(console.log)
+    .catch(err => {
+      console.error(err.response.data)
+    })
+  })
 }
 
 const build_from_files = async function() {
@@ -271,12 +278,14 @@ const build_from_files = async function() {
       textureID: textureID,
       textureUseName: "",
     }
-    all_texture_uses[textureUSEID] = tu
+    all_texture_uses['' + textureUSEID] = tu
     
     /** @type {Texture} */
     const tex = {
       name: ''
     }
+
+    all_minecraft['' + textureID] = tex
 
     if(contrib.animated) {
       /** @type {TextureAnimation} */

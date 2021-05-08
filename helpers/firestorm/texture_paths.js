@@ -13,7 +13,7 @@ require('./firestorm_config')()
  * @property {Function} texture
  */
 
-module.exports = firestorm.collection('users', el => {
+module.exports = firestorm.collection('paths', el => {
   /** @returns {Promise<import('./texture_use').TextureUse>} */
   el.use = function() {
     return texture_use.get(el.useID)
