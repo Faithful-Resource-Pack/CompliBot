@@ -1,7 +1,7 @@
 const { default: axios } = require("axios")
 
 /**
- * @typedef {SearchOption}
+ * @typedef {Object} SearchOption
  * @property {String} field The field you want to search in
  * @property {"!=" | "==" | ">=" | "<=" | "<" | ">" | "in" | "includes" | "startsWith" | "endsWith" | "array-contains" | "array-contains-any"} criteria // filter criteria
  * @property {String | Number | Boolean | Array } value // the value you want to compare
@@ -9,6 +9,8 @@ const { default: axios } = require("axios")
 
 let _address = undefined
 let _token = undefined
+
+const ID_FIELD_NAME = 'id'
 
 const readAddress = () => {
   if(!_address)
@@ -30,15 +32,44 @@ const writeToken = () => {
   return _token
 }
 
+/**
+ * Class representing a collection
+ * @template T
+ */
 class Collection {
-  /** @param {String} name The name of the Collection */
-  constructor(name) {
+  /** 
+   * @param {String} name The name of the Collection
+   * @param {Function?} addMethods Additional methods and data to add to the objects
+   */
+  constructor(name, addMethods = el => el) {
+    this.addMethods = addMethods
     this.collectionName = name
+  }
+
+  __add_methods(req) {
+    return new Promise((resolve, reject) => {
+      req
+      .then(el => {
+        if(Array.isArray(el))
+          return resolve(el.map(e => this.addMethods(e)))
+        
+        const keys = Object.keys(el)
+        if(keys.length == 1) {
+          const id = keys[0]
+          const res = el[id]
+          res[ID_FIELD_NAME] = id
+          return resolve(this.addMethods(res))
+        }
+        
+        // else on the object itself
+        return resolve(this.addMethods(el))
+      }).catch(err => reject(err))
+    })
   }
 
   /**
    * Auto-extracts data from Axios request
-   * @param {Promise<any>} request The Axios concerned request
+   * @param {Promise<T>} request The Axios concerned request
    */
   __extract_data(request) {
     return new Promise((resolve, reject) => {
@@ -53,26 +84,27 @@ class Collection {
   /**
    * Get an element from the collection
    * @param {String|Number} id The entry ID
-   * @returns {Promise} Result entry you may be looking for
+   * @returns {Promise<T>} Result entry you may be looking for
    */
   get(id) {
-    return this.__extract_data(axios.get(readAddress(), { data: {
+    return this.__add_methods(this.__extract_data(axios.get(readAddress(), { data: {
       "collection": this.collectionName,
       "command": "get",
       "id": id
-    }}))
+    }})))
   }
 
   /**
    * Search through collection
-   * @param {SearchOption[]} searchOptions 
+   * @param {SearchOption[]} searchOptions
+   * @returns {Promise<T[]>}
    */
   search(searchOptions) {
-    return this.__extract_data(axios.get(readAddress(), { data: {
+    return this.__add_methods(this.__extract_data(axios.get(readAddress(), { data: {
       "collection": this.collectionName,
       "command": "search",
       "search": searchOptions
-    }}))
+    }})))
   }
 
   /**
@@ -83,7 +115,7 @@ class Collection {
     return this.__extract_data(axios.get(readAddress(), { data: {
       "collection": this.collectionName,
       "command": "read_raw"
-    }}))
+    }})).map(el => this.addMethods(el))
   }
 
   /**
@@ -193,11 +225,11 @@ module.exports = {
     return _token
   },
   /**
-   * 
    * @param {String} name Collection name to get
+   * @param {Function?} addMethods Additional methods and data to add to the objects
    */
-  collection: function(name) {
-    return new Collection(name)
+  collection: function(name, addMethods = el => el) {
+    return new Collection(name, addMethods)
   },
 
   /**
@@ -206,5 +238,7 @@ module.exports = {
    */
   table: function(name) {
     return this.collection(name)
-  }
+  },
+
+  ID_FIELD: ID_FIELD_NAME
 }
