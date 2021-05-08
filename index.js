@@ -337,10 +337,10 @@ client.on('message', async message => {
 	}
 })
 
-client.on("error", (e) => console.error(e))
+/*client.on("error", (e) => console.error(e))
 client.on("warn", (e) => console.warn(e))
 client.on("debug", (e) => console.info(e))
-client.on('debug', console.log)
+client.on('debug', console.log)*/
 
 client.on('rateLimit', (e) => console.log(e))
 

@@ -9,6 +9,9 @@ const settings = require('../../settings');
 const { getResults } = require('../../functions/textures_submission/getResults.js');
 const { date }       = require('../../functions/utility/date.js');
 const { doPush }     = require('../../functions/doPush.js');
+const { textureSubmission } = require('../../functions/textures_submission/textureSubmission.js')
+const { textureCouncil }    = require('../../functions/textures_submission/textureCouncil.js')
+const { textureRevote }     = require('../../functions/textures_submission/textureRevote.js')
 
 const uidR = process.env.UIDR;
 const uidJ = process.env.UIDJ;
@@ -28,15 +31,19 @@ module.exports = {
 	async execute(client, message, args) {
 		if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD || message.author.id === uidT) {
 
-			/*await getResults(client, settings.C64_RESULTS, 1);
-			await getResults(client, settings.C64_RESULTS, 5);
-			await getResults(client, settings.C64_RESULTS, 6);
-			await getResults(client, settings.C64_RESULTS, 7);
-			await getResults(client, settings.C64_RESULTS, 8);
-			await getResults(client, settings.C64_RESULTS, 9);
-			await getResults(client, settings.C64_RESULTS, 14);*/
+			// Compliance 32x
+			await textureSubmission(client, settings.C32_SUBMIT_1,  settings.C32_SUBMIT_2, 3)
+			await textureSubmission(client, settings.C32_SUBMIT_1B, settings.C32_SUBMIT_2, 3)
+			await textureCouncil(client, settings.C32_SUBMIT_2,  settings.C32_SUBMIT_3, settings.C32_RESULTS, 1)
+			await textureRevote(client, settings.C32_SUBMIT_3,  settings.C32_RESULTS,  3)
+	
+			// Compliance 64x
+			await textureSubmission(client, settings.C64_SUBMIT_1,  settings.C64_SUBMIT_2, 3)
+			await textureSubmission(client, settings.C64_SUBMIT_1B, settings.C64_SUBMIT_2, 3)
+			await textureCouncil(client, settings.C64_SUBMIT_2,  settings.C64_SUBMIT_3, settings.C64_RESULTS, 1)
+			await textureRevote(client, settings.C64_SUBMIT_3,  settings.C64_RESULTS,  3)
 		
-			await doPush(`Manual AutoPush, executed by: ${message.author.username} (${date()})`);
+			//await doPush(`Manual AutoPush, executed by: ${message.author.username} (${date()})`);
 		} else return
 	}
 }
