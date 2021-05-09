@@ -1,5 +1,5 @@
 const firestorm = require('.')
-const texture_use = require('./texture_use')
+
 
 require('./firestorm_config')()
 
@@ -16,6 +16,8 @@ require('./firestorm_config')()
 module.exports = firestorm.collection('paths', el => {
   /** @returns {Promise<import('./texture_use').TextureUse>} */
   el.use = function() {
+    const texture_use = require('./texture_use')
+    
     return texture_use.get(el.useID)
   }
 

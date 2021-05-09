@@ -24,11 +24,11 @@ module.exports = firestorm.collection('textures', el => {
   
   /** @returns {Promise<import('./contributions').Contribution[]>} */
   el.contributions = function() {
-    return contributions.search({
+    return contributions.search([{
       field: 'textureID',
       criteria: '==',
       value: el[firestorm.ID_FIELD]
-    })
+    }])
   }
 
   /** @returns {Promise<import('./contributions').Contribution>} */
