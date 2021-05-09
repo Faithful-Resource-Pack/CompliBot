@@ -254,7 +254,7 @@ client.on('message', async message => {
 	if (message.content.toLowerCase().includes('engineer gaming')) return await message.react('👷‍♂️')
 	if (message.content === 'F') return await message.react('🇫')
 
-	if (message.content.toLowerCase().includes('mhhh')) {
+	if (message.content.toLowerCase() === 'mhhh') {
 		const embed = new Discord.MessageEmbed()
 			.setAuthor(`${message.author.tag} translated: ${message.content}`, message.author.displayAvatarURL())
 			.setDescription('```Uh-oh moment```')
