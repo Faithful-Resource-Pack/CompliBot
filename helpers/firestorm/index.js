@@ -122,10 +122,18 @@ class Collection {
    * @returns {Promise} // the get promise of the collection raw file content
    */
   read_raw() {
-    return this.__extract_data(axios.get(readAddress(), { data: {
-      "collection": this.collectionName,
-      "command": "read_raw"
-    }})).map(el => this.addMethods(el))
+    let data = this.__extract_data(axios.get(readAddress(), {
+      data: {
+        "collection": this.collectionName,
+        "command": "read_raw"
+      }
+    }))
+
+    Object.keys(data).forEach(key => {
+      this.addMethods(data[key])
+    })
+
+    return data
   }
 
   /**
