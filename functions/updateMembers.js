@@ -6,7 +6,11 @@
  */
 async function updateMembers(client, serverID, channelID) {
 	var guild = client.guilds.cache.get(serverID);
-	var memberChannel = guild.channels.cache.get(channelID);
+	try {
+		var memberChannel = guild.channels.cache.get(channelID);
+	} catch (err) {
+		return // return if channel can't be fetch
+	}
 
 	if(guild === undefined && guild.channels === undefined) return
 
