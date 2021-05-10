@@ -37,12 +37,12 @@ async function textureIDQuote(message, content) {
     let type = texturePath[0].edition
 
     let contrib32 = await texture.lastContribution('c32')
-    let timestamp32 = contrib32?.date
-    let author32 = contrib32?.contributorID
+    let timestamp32 = contrib32 ? contrib32.date : undefined
+    let author32 = contrib32 ? contrib32.contributorID : undefined
 
     let contrib64 = await texture.lastContribution('c64')
-    let timestamp64 = contrib64?.date
-    let author64 = contrib64?.contributorID
+    let timestamp64 = contrib64 ? contrib64.date : undefined
+    let author64 = contrib64 ? contrib64.contributorID : undefined
 
     if (type == 'java') {
       path = {
