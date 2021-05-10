@@ -23,24 +23,30 @@ module.exports = firestorm.collection('textures', el => {
   }
   
   /** @returns {Promise<import('./contributions').Contribution[]>} */
-  el.contributions = function() {
-    return contributions.search([{
+  el.contributions = function(res = undefined) {
+    const s = [{
       field: 'textureID',
       criteria: '==',
       value: el[firestorm.ID_FIELD]
-    }])
+    }]
+    
+    if (res) s.push({
+      field: 'res',
+      criteria: '==',
+      value: res
+    })
+
+    return contributions.search(s)
   }
 
   /** @returns {Promise<import('./contributions').Contribution>} */
-  el.lastContribution = function() {
+  el.lastContribution = function(res) {
     return new Promise((resolve, reject) => {
-      el.contributions()
+      el.contributions(res)
       .then(res => {
-        const contro = Object.values(res).map(ctr => ctr.date).sort()
+        const contro = res.sort((a, b) => b.date - a.date)
         if(contro.length) {
-          const objres = {}
-          objres[contro[contro.length - 1]] = res[contro[contro.length - 1]]
-
+          let objres = contro[0]
           resolve(objres)
         }
 
