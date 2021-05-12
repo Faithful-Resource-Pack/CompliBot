@@ -144,6 +144,7 @@ class Collection {
         resolve(this.__add_methods(Promise.resolve(arr)))
 
       }).catch(err => reject(err))
+    })
   }
 
   /**
@@ -177,6 +178,14 @@ class Collection {
       "collection": this.collectionName,
       "command": command
     }
+    if(multiple) {
+      value.forEach(v => {
+        delete v[ID_FIELD_NAME]
+      })
+    } else {
+      delete value[ID_FIELD_NAME]
+    }
+
     if(value) {
       if(multiple)
         obj["values"] = value
