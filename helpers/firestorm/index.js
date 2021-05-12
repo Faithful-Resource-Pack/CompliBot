@@ -100,6 +100,23 @@ class Collection {
   }
 
   /**
+   * Search specific keys through collection
+   * @param {String[]|Number[]} keys Wanted keys
+   * @returns {Promise<T[]>} Search results
+   */
+  searchKeys(keys) {
+    if(!Array.isArray(keys))
+      return Promise.reject('Incorrect keys')
+
+    
+    return this.__add_methods(this.__extract_data(axios.get(readAddress(), { data: {
+      "collection": this.collectionName,
+      "command": "searchKeys",
+      "search": keys
+    }})))
+  }
+
+  /**
    * Returns the whole content of the file
    * @returns {Promise} // the get promise of the collection raw file content
    */
