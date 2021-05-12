@@ -50,9 +50,13 @@ class Collection {
     return new Promise((resolve, reject) => {
       req
       .then(el => {
-        if(Array.isArray(el))
+        if(Array.isArray(el)) {
           return resolve(el.map(e => this.addMethods(e)))
-        
+        }
+
+        el[Object.keys(el)[0]][ID_FIELD_NAME] = Object.keys(el)[0]
+        el = el[Object.keys(el)[0]]
+
         // else on the object itself
         return resolve(this.addMethods(el))
       }).catch(err => reject(err))
@@ -92,11 +96,25 @@ class Collection {
    * @returns {Promise<T[]>}
    */
   search(searchOptions) {
-    return this.__add_methods(this.__extract_data(axios.get(readAddress(), { data: {
-      "collection": this.collectionName,
-      "command": "search",
-      "search": searchOptions
-    }})))
+    return new Promise((resolve, reject) => {
+      this.__extract_data(axios.get(readAddress(), {
+        data: {
+          "collection": this.collectionName,
+          "command": "search",
+          "search": searchOptions
+        }
+      })).then(res => {
+        const arr = []
+        Object.keys(res).forEach(contribID => {
+          const tmp = res[contribID]
+          tmp[ID_FIELD_NAME] = contribID
+          arr.push(tmp)
+        })
+
+        resolve(this.__add_methods(Promise.resolve(arr)))
+
+      }).catch(err => reject(err))
+    })
   }
 
   /**
@@ -121,10 +139,18 @@ class Collection {
    * @returns {Promise} // the get promise of the collection raw file content
    */
   read_raw() {
-    return this.__extract_data(axios.get(readAddress(), { data: {
-      "collection": this.collectionName,
-      "command": "read_raw"
-    }})).map(el => this.addMethods(el))
+    let data = this.__extract_data(axios.get(readAddress(), {
+      data: {
+        "collection": this.collectionName,
+        "command": "read_raw"
+      }
+    }))
+
+    Object.keys(data).forEach(key => {
+      this.addMethods(data[key])
+    })
+
+    return data
   }
 
   /**
@@ -197,7 +223,7 @@ class Collection {
   /**
    * Sets an entry in the JSON
    * @param {String} key The key of the value you want to set
-   * @param {Object} value The value tou want for this key
+   * @param {Object} value The value you want for this key
    * @returns {Promise<any>}
    */
   set(key, value) {
