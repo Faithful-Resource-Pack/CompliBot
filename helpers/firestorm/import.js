@@ -192,7 +192,7 @@ const build_from_files = async function() {
         const time = new Date( myDate[2] || '1970', (myDate[1] - 1) || '0', (myDate[0] || '1')).getTime()
 
         const cb = {
-          contributorID: parseInt(id),
+          contributorID: id,
           date: time,
           res: res,
           textureID: textureID
@@ -272,6 +272,28 @@ const build_from_files = async function() {
       } else {
         all_paths[all_paths.length - 1].versions.push(v)
       }
+    })
+
+    // add texture contributions
+    const resss = ['c32', 'c64']
+    resss.forEach(res => {
+      if(!contrib[res] || !contrib[res].author)
+        return
+      
+      // add contributions
+      contrib[res].author.forEach(id => {
+        /** @type {Contribution} */
+        const myDate = (contrib[res].date || '01/01/2021').split('/')
+        const time = new Date( myDate[2] || '1970', (myDate[1] - 1) || '0', (myDate[0] || '1')).getTime()
+
+        const cb = {
+          contributorID: id,
+          date: time,
+          res: res,
+          textureID: textureID
+        }
+        all_contributions.push(cb)
+      })
     })
 
     /** @type {TextureUse} */
