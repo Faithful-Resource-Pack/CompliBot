@@ -126,12 +126,24 @@ class Collection {
     if(!Array.isArray(keys))
       return Promise.reject('Incorrect keys')
 
-    
-    return this.__add_methods(this.__extract_data(axios.get(readAddress(), { data: {
-      "collection": this.collectionName,
-      "command": "searchKeys",
-      "search": keys
-    }})))
+    return new Promise((resolve, reject) => {
+      this.__extract_data(axios.get(readAddress(), {
+        data: {
+          "collection": this.collectionName,
+          "command": "searchKeys",
+          "search": keys
+        }
+      })).then(res => {
+        const arr = []
+        Object.keys(res).forEach(contribID => {
+          const tmp = res[contribID]
+          tmp[ID_FIELD_NAME] = contribID
+          arr.push(tmp)
+        })
+
+        resolve(this.__add_methods(Promise.resolve(arr)))
+
+      }).catch(err => reject(err))
   }
 
   /**
