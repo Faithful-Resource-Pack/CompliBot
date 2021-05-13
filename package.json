@@ -28,7 +28,7 @@
     "cron": "^1.8.2",
     "discord.js": "^12.5.3",
     "dotenv": "^9.0.1",
-    "firebase": "^8.5.0",
+    "firebase": "^8.6.1",
     "firebase-admin": "^9.7.0",
     "fs-extra": "^10.0.0",
     "getopts": "^2.3.0",
