@@ -53,7 +53,7 @@ module.exports = {
 			var text = '';
 			var content = '';
 
-			if (mods_online.length != 0){
+			if (mods_online.length != 0) {
 				// We have 1 or more mods online
 				if (mods_online.length == 1) content = 'There is **' + mods_online.length + ' Mod online**';
 				else content = 'There are **' + mods_online.length + ' Mods online**';

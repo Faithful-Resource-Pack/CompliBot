@@ -230,7 +230,7 @@ module.exports = {
     const referenceWidth  = textureImages[referenceTextureIndex].image.naturalWidth  * parsedArguments.scale
 
     const canvasHeight = referenceHeight
-    const canvasWidth  =  referenceWidth * textureImages.length
+    const canvasWidth  = referenceWidth * textureImages.length
 
     const canvasResult = Canvas.createCanvas(canvasWidth, canvasHeight)
     const ctx = canvasResult.getContext('2d')

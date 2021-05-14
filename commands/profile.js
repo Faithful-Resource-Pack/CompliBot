@@ -5,10 +5,11 @@ const Discord   = require("discord.js");
 const client    = new Discord.Client();
 client.commands = new Discord.Collection();
 
-const settings         = require('../settings.js');
-const colors           = require('../res/colors.js');
-const strings          = require('../res/strings');
-const { warnUser }     = require('../functions/warnUser.js');
+const settings = require('../settings.js');
+const colors   = require('../res/colors.js');
+const strings  = require('../res/strings');
+
+const { warnUser } = require('../functions/warnUser.js');
 
 module.exports = {
 	name: 'profile',
@@ -22,15 +23,6 @@ module.exports = {
 	 * @param {String[]} args Command arguments
 	 */
 	async execute(_client, message, args) {
-		// check first if you have arguments
-		if(!args.length)
-			return await warnUser(message, 'No arguments, expected username, uuid or show')
-
-		// what we want
-		const subcommand = args[0]
-		if(subcommand !== 'username' && subcommand !== 'uuid' && subcommand !== 'show')
-			return await warnUser(message, 'Incorrect argument, expected username, uuid or show')
-
 		// get users location
 		const usersCollection = require('../helpers/firestorm/users')
 
@@ -40,14 +32,20 @@ module.exports = {
 		if(!user)
 			user = {}
 
-		if(subcommand === 'show')
+		if(!args.length) return showProfile(message, user.username, user.uuid, user.type ? user.type.join(', ') : undefined)
+
+		// what we want
+		if(args[0] !== 'username' && args[0] !== 'uuid' && args[0] !== 'show')
+			return warnUser(message, strings.COMMAND_WRONG_ARGUMENTS_GIVEN)
+
+		if(args[0] === 'show')
 			return showProfile(message, user.username, user.uuid, user.type ? user.type.join(', ') : undefined)
 		
 		// value is the rest of arguments concatenated
 		const argumentsLeft = args.slice(1).join(' ')
 
 		// else it is username or uuid so we can trust subcommand
-		user[subcommand] = argumentsLeft
+		user[args[0]] = argumentsLeft
 
 		let writeResult = await usersCollection.set(message.author.id, user).catch(err => console.error(err))
 		

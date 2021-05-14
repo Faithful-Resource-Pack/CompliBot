@@ -1,7 +1,7 @@
 const RED     = '#f44336'; //negative
 const YELLOW  = '#FFEB3B'; //warning
-//const BLUE    = '#919AB1';
-const BLUE    = '#7289DA'; //for Project Blurple
+const BLUE    = '#919AB1';
+//const BLUE    = '#7289DA'; //for Project Blurple
 const BLACK   = '#000000'; //muted
 const COUNCIL = '#9c3848'; //crimson
 

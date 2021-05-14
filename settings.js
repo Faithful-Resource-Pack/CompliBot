@@ -1,6 +1,7 @@
 // Bot assets
-//const BOT_IMG     = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Discord-Bot/master/images/Logos/CompliBot.png';
-const BOT_IMG     = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Discord-Bot/master/images/Logos/CompliBlurpleBot.png';
+const BOT_IMG     = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Discord-Bot/master/images/Logos/CompliBot.png';
+// Projct Blurple
+//const BOT_IMG     = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Discord-Bot/master/images/Logos/CompliBlurpleBot.png';
 const VANILLA_IMG = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Discord-Bot/master/images/texture_16x.png';
 const QUOTE_IMG   = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Discord-Bot/master/images/quote.png';
 
