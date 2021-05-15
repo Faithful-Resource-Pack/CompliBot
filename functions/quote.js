@@ -13,7 +13,7 @@ async function quote(msg) {
 	const args = msg.content.split(' ')
 	let i, ids, embed, file
 
-	if (message.channel.type === 'dm') return
+	if (msg.channel.type === 'dm') return
 
 	// do not quote behave command
 	if(args[0].startsWith(process.env.PREFIX + 'behave')) return
