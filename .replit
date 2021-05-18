@@ -1,0 +1,2 @@
+language = "nodejs"
+run = "node --use_strict --trace-warnings index.js"

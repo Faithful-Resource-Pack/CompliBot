@@ -9,8 +9,10 @@
 require('dotenv').config()
 const Discord   = require('discord.js')
 const cron      = require('cron')
+const http      = require('http')
 const client    = new Discord.Client({ disableMentions: 'everyone', restTimeOffset: 0 })
 client.commands = new Discord.Collection()
+const PORT      = 3000
 require("./modified_libraries/ExtendedMessage")
 
 // Admins & settings:
@@ -87,6 +89,18 @@ let pushToGithub = new cron.CronJob('15 0 * * *', async () => {
  */
 const TIME = 30000
 setInterval(function() { checkTimeout(client) }, TIME)
+
+/** 
+ * BOT HEARTBEAT:
+ * Keep the bot alive on repl.it
+ */
+const server = http.createServer((req, res) => {
+	res.writeHead(302, {
+		'Location': 'https://compliancepack.net/'
+	})
+	res.end()
+})
+server.listen(PORT, () => console.log(`listening at http://localhost:${PORT}`))
 
 /**
  * COMMAND HANDLER

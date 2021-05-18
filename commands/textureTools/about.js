@@ -17,6 +17,8 @@ module.exports = {
 	example: `${prefix}about Hozz#0889`,
 	async execute(client, message, args) {
 
+		return warnUser(message,strings.COMMAND_DISABLED);
+
 		var textures        = await jsonContributionsJava.read(false);
 		var texturesBedrock = await jsonContributionsBedrock.read(false);
 		var embed           = new Discord.MessageEmbed();

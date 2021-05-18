@@ -184,6 +184,8 @@ module.exports = {
     // get texture buffers
     let promiseResults = await promiseEvery(texturePromises)
 
+    console.log(promiseResults)
+
     // if there is some errors
     if(!promiseResults || promiseResults.results.includes(undefined)) {
       // if undefined then all are errors
@@ -224,8 +226,17 @@ module.exports = {
     // make new big canvas
     // height is the maximum height
     // width is n * maximum width
-    // sorted by res so last one is bigger if no custom image else previous last one
-    const referenceTextureIndex = Math.max(textureImages[textureImages.length - 1].res ? (textureImages.length - 1) : (textureImages.length - 2), 0)
+    // sorted by max area is better
+    // so I need to figure out which one is the largest
+    const areaArray = textureImages.map(obj => obj.image ? obj.image.naturalHeight * obj.image.naturalWidth : 0)
+
+    let referenceTextureIndex = 0
+    for(let texIndex = 0; texIndex < areaArray.length; ++texIndex) {
+      if(areaArray[texIndex] > areaArray[referenceTextureIndex]) {
+        referenceTextureIndex = texIndex
+      }
+    }
+
     const referenceHeight = textureImages[referenceTextureIndex].image.naturalHeight * parsedArguments.scale
     const referenceWidth  = textureImages[referenceTextureIndex].image.naturalWidth  * parsedArguments.scale
 
