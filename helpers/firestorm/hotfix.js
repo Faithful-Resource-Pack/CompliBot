@@ -1,59 +1,55 @@
 const firestorm = require('./index')
 const all = require('./all')
 
-const up = all.texture_use.read_raw()
-const tpp = all.texture_path.read_raw()
+let contrib
+let idsToDelete, idsToSet
 
-Promise.all([up, tpp])
+const cp = all.contributions.read_raw()
+
+Promise.all([cp])
 .then(arr => {
-  /** @type {import('./texture_use').TextureUse[]} */
-  const uses = arr[0]
+  contrib = arr[0]
+  contrib = Object.values(contrib)
 
-  let paths = arr[1]
-  paths = Object.values(paths)  
-
-  let editionObj
-  uses.forEach((use, index) => {
-    editionObj =  {}
-
-    const usePaths = paths.filter(p => p.useID == index)
-
-    usePaths.forEach(path => {
-      editionObj[path.edition] = 1
-
-      Object.values(path.versions).forEach(v => {
-        if([
-          "1.17",
-          "1.16.5",
-          "1.15.2",
-          "1.14.4",
-          "1.13.2",
-          "1.12.2"
-        ].includes(v))
-          editionObj['java'] = 1
-
-        if(["1.16.210", "1.16.200"].includes(v))
-          editionObj["bedrock"] = 1
+  idsToDelete = []
+  idsToSet = []
+  contrib.forEach(c => {
+    if(!idsToDelete.includes([firestorm.ID_FIELD])) {
+      const same = contrib.filter(el => el[firestorm.ID_FIELD] != c[firestorm.ID_FIELD] && el.date == c.date && c.textureID == el.textureID && c.res == el.res)
+  
+      same.forEach(s => {
+        idsToDelete.push(s[firestorm.ID_FIELD])
       })
-    })
 
-    use.editions = Object.keys(editionObj)
+      idsToSet.push(c[firestorm.ID_FIELD])
+  
+      c.contributors = {}
+      c.contributors[c.contributorID] = true
+
+      const others = same.map(s => s.contributorID)
+      if(others.length) {
+        others.forEach(id => {
+          c.contributors[id] = id
+        })
+      }
+    
+      c.contributors = Object.keys(c.contributors)
+    }
   })
 
-  return [uses, paths]
-}).then(res => {
-  const uses = res[0]
-  const paths = res[1]
+  console.log(contrib.filter(c => c.contributors.length > 1).map(c => c.contributors))
 
-  const pathKeys = paths.map(p => p[firestorm.ID_FIELD])
-  paths.forEach(p => {
-    delete p.edition
+
+  contrib = contrib.filter(c => idsToSet.includes(c[firestorm.ID_FIELD]))
+
+  contrib.forEach(c => {
+    delete c.contributorID
   })
 
-  const useKeys = uses.map((u, i) => i)
-  let setPaths = all.texture_path.setBulk(pathKeys, paths)
-  let setUses = all.texture_use.setBulk(useKeys, uses)
-  return Promise.all([setPaths, setUses])
+}).then(() => {
+  return all.contributions.removeBulk(idsToDelete)
+}).then(() => {
+  return all.contributions.setBulk(idsToSet, contrib)
 }).then(res => {
   console.log(res)
 }).catch(err => {
