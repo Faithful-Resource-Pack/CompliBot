@@ -1,5 +1,4 @@
 const Discord  = require("discord.js");
-const settings = require('../../settings.js');
 const colors   = require('../../res/colors.js');
 
 // const strings  = require('../res/strings');
@@ -30,34 +29,38 @@ async function textureIDQuote(message, content) {
 
     let id = texture.id
     let name = texture.name
+
+    /** @type {import("../../helpers/firestorm/texture_use.js").TextureUse[]} */
     let uses = await texture.uses()
+
+    /** @type {import("../../helpers/firestorm/texture_paths.js").TexturePath[]} */
     let texturePath = await uses[0].paths()
 
     let path = texturePath[0].path
-    let type = texturePath[0].edition
+    let editions = uses[0].editions
 
     let contrib32 = await texture.lastContribution('c32')
     let timestamp32 = contrib32 ? contrib32.date : undefined
-    let author32 = contrib32 ? contrib32.contributorID : undefined
+    let author32 = contrib32 ? contrib32.contributors : undefined
 
     let contrib64 = await texture.lastContribution('c64')
     let timestamp64 = contrib64 ? contrib64.date : undefined
-    let author64 = contrib64 ? contrib64.contributorID : undefined
+    let author64 = contrib64 ? contrib64.contributors : undefined
 
-    if (type == 'java') {
-      path = {
-        c32: `https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-32x/Jappa-1.17/assets/${path}`,
-        c64: `https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-64x/Jappa-1.17/assets/${path}`
-      }
+    const pathObj = {}
+    if (editions.includes('java')) {
+      pathObj.c32 = `https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-32x/Jappa-1.17/assets/${path}`
+      pathObj.c64 = `https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-64x/Jappa-1.17/assets/${path}`
     } else warnUser(message, "Not defined yet!")
 
     /** @type {import('../helpers/firestorm/users').User} */
 
     let author = [ author32, author64 ]
     let timestamp = [ timestamp32, timestamp64 ]
+
     let resolution = ['32x', '64x']
 
-    makeEmbed(message, author, timestamp, path, name, id, resolution)
+    makeEmbed(message, author, timestamp, pathObj, name, id, resolution)
   }
 
 }
@@ -74,7 +77,7 @@ function makeEmbed(message, author, timestamp, path, name, id, res) {
     res.forEach((r, index) => {
       embed.addField(
         r,
-        author[index] != undefined ? `<@!${author[index]}> - ${timestampConverter(timestamp[index])}` : `No information`
+        author[index] != undefined && author[index].length ? `<@!${author[index].join('> <@!')}> - ${timestampConverter(timestamp[index])}` : `No information`
       )
     })
 
