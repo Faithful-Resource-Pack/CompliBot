@@ -20,8 +20,8 @@ require('./firestorm_config')()
  module.exports = firestorm.collection('users', el => {
   el.contributions = function() {
     return contributions.search([{
-      field: 'contributorID',
-      criteria: '==',
+      field: 'contributors',
+      criteria: 'array-contains',
       value: el[firestorm.ID_FIELD]
     }])
   }

@@ -8,16 +8,16 @@ require('./firestorm_config')()
  * @typedef {Object} Contribution
  * @property {String} date // date of contribution
  * @property {Number} textureID // texture's id modified
- * @property {Number} contributorID // author of the contribution
+ * @property {String[]} contributors // authors of the contribution
  * @property {String} res // res of contribution (c32, c64)
- * @property {Function} contributor // user assiocated to this contribution
+ * @property {Function} getContributors // users assiocated to this contribution
  * @property {Function} texture // texture assiocated to this contribution
  */
 
 module.exports = firestorm.collection('contributions', el => {
   /** @returns {Promise<import('./texture').Texture>} */
-  el.contributor = function() {
-    return users.get(el.contributorID)
+  el.getContributors = function() {
+    return users.searchKeys(el.contributors || [])
   }
   
   /** @returns {Promise<import('./texture').Texture>} */
