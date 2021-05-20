@@ -8,8 +8,8 @@
 // Libs:
 require('dotenv').config()
 const Discord   = require('discord.js')
-const http      = require('http')
 const cron      = require('cron')
+const http      = require('http')
 const client    = new Discord.Client({ disableMentions: 'everyone', restTimeOffset: 0 })
 client.commands = new Discord.Collection()
 const PORT      = 3000

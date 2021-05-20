@@ -204,28 +204,28 @@ module.exports = {
 
           if (type == '32') {
             embed.addFields(
-              { name: 'Author(s)', value: authorsList(client, textures[index].c32.author), inline: true },
+							//{ name: 'Author(s)', value: authorsList(client, textures[index].c32.author), inline: true },
               { name: 'Added', value: isValidDate(textures[index].c32.date), inline: true },
             );
           }
 
           if (type == '64') {
             embed.addFields(
-              { name: 'Author(s)', value: authorsList(client, textures[index].c64.author), inline: true },
+							//{ name: 'Author(s)', value: authorsList(client, textures[index].c64.author), inline: true },
               { name: 'Added', value: isValidDate(textures[index].c64.date), inline: true },
             );
           }
 
           if (type == '32b') {
             embed.addFields(
-              { name: 'Author(s)', value: authorsList(client, texturesBedrock[index].c32.author), inline: true },
+							//{ name: 'Author(s)', value: authorsList(client, texturesBedrock[index].c32.author), inline: true },
               { name: 'Added', value: isValidDate(texturesBedrock[index].c32.date), inline: true },
             );
           }
 
           if (type == '64b') {
             embed.addFields(
-              { name: 'Author(s)', value: authorsList(client, texturesBedrock[index].c64.author), inline: true },
+              //{ name: 'Author(s)', value: authorsList(client, texturesBedrock[index].c64.author), inline: true },
               { name: 'Added', value: isValidDate(texturesBedrock[index].c64.date), inline: true },
             );
           }
@@ -285,7 +285,7 @@ module.exports = {
 }
 
 // Old Format (Unused)
-function mentionFromUserTag(client, UserTag) {
+/*function mentionFromUserTag(client, UserTag) {
   try {
     client.users.cache.find(u => u.tag === UserTag).id
   } catch (error) {
@@ -320,7 +320,7 @@ function authorsList(client, array) {
     return string;
   }
   else return `None`;
-}
+}*/
 
 function isValidDate(string) {
   if (string != undefined) return string;

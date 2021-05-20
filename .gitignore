@@ -7,3 +7,4 @@ desktop.ini
 .env
 .vscode/
 firestore.json
+bot.service

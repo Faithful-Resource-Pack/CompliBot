@@ -4,7 +4,7 @@
   "description": "The official Discord bot of the Compliance Discord servers.",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node --use_strict --trace-warnings index.js",
     "test": "echo \"Error: no test specified\" && exit 0"
   },
   "repository": {
@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/Compliance-Resource-Pack/Discord-Bot#readme",
   "dependencies": {
-    "@google-cloud/firestore": "^4.11.0",
+    "@google-cloud/firestore": "^4.11.1",
     "@octokit/rest": "^18.5.3",
     "@vitalets/google-translate-api": "^7.0.0",
     "async-mutex": "^0.3.1",
@@ -27,9 +27,9 @@
     "canvas": "^2.7.0",
     "cron": "^1.8.2",
     "discord.js": "^12.5.3",
-    "dotenv": "^9.0.1",
-    "firebase": "^8.5.0",
-    "firebase-admin": "^9.7.0",
+    "dotenv": "^9.0.2",
+    "firebase": "^8.6.1",
+    "firebase-admin": "^9.8.0",
     "fs-extra": "^10.0.0",
     "getopts": "^2.3.0",
     "gif-encoder-2": "^1.0.5",
@@ -37,10 +37,7 @@
     "http": "0.0.1-security",
     "image-size": "^1.0.0",
     "node-fetch": "^2.6.1",
-    "simple-git": "^2.38.1"
-  },
-  "engines": {
-    "node": "14.16.0"
+    "simple-git": "^2.39.0"
   },
   "devDependencies": {
     "eslint": "^7.26.0"
