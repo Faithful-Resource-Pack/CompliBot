@@ -152,18 +152,23 @@ class Collection {
    * @returns {Promise} // the get promise of the collection raw file content
    */
   read_raw() {
-    let data = this.__extract_data(axios.get(readAddress(), {
-      data: {
-        "collection": this.collectionName,
-        "command": "read_raw"
-      }
-    }))
+    return new Promise((resolve, reject) => {
+      this.__extract_data(axios.get(readAddress(), {
+        data: {
+          "collection": this.collectionName,
+          "command": "read_raw"
+        }
+      }))
+      .then(data => {
+        Object.keys(data).forEach(key => {
+          data[key][ID_FIELD_NAME] = key
+          this.addMethods(data[key])
+        })
 
-    Object.keys(data).forEach(key => {
-      this.addMethods(data[key])
+        resolve(data)
+      })
+      .catch(reject)
     })
-
-    return data
   }
 
   /**
@@ -220,7 +225,13 @@ class Collection {
    * @returns {Promise<any>}
    */
   addBulk(values) {
-    return this.__extract_data(axios.post(writeAddress(), this.__write_data('addBulk', values, true)))
+    return new Promise((resolve, reject) => {
+    this.__extract_data(axios.post(writeAddress(), this.__write_data('addBulk', values, true)))
+      .then(res => {
+        resolve(res.ids)
+      })
+      .catch(reject)
+    })
   }
 
   /**
