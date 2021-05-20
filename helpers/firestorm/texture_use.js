@@ -10,6 +10,7 @@ require('./firestorm_config')()
  * @property {Number} textureID // texture ID
  * @property {String} textureUseName // texture use human name
  * @property {Function} texture // get the texture associated for this use
+ * @property {String[]} editions // editions for this use
  * @property {Function} paths // get the paths for this texture
  * @property {Function} animation // get the animation for this texture
  */

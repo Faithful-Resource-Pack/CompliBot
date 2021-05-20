@@ -5,12 +5,11 @@ require('./firestorm_config')()
 
 /**
  * @typedef {Object} TexturePath
- * @property {Number} useID
- * @property {String} path
- * @property {String} edition
- * @property {String[]} versions
- * @property {Function} use
- * @property {Function} texture
+ * @property {Number} useID // use id of this path
+ * @property {String} path // path itself
+ * @property {String[]} versions // minecraft versions (any edition)
+ * @property {Function} use // get the use from the path
+ * @property {Function} texture // get the texture from the path
  */
 
 module.exports = firestorm.collection('paths', el => {
