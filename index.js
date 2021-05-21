@@ -43,7 +43,8 @@ const { doPush }            = require('./functions/doPush.js')
 const { checkTimeout }      = require('./functions/moderation/checkTimeout.js')
 const { addMutedRole }      = require('./functions/moderation/addMutedRole.js')
 const { inviteDetection }   = require('./functions/moderation/inviteDetection.js')
-const { textureIDQuote } = require('./functions/textures/textureIDQuote')
+const { textureIDQuote }    = require('./functions/textures/textureIDQuote.js')
+//const { submitTexture }     = require('./functions/textures/submission/submitTexture.js')
 
 // try to read this json
 jsonModeration.read(false).then(warnList => { // YOU MUST NOT LOCK because only read
@@ -290,7 +291,7 @@ client.on('message', async message => {
 	 * @TODO: add Compare textures inside the embed, the compare command needs to be split into functions first
 	 * @TODO: add Co-Authors as co-authors (the database should be updated to specify when a texture has co-authors)
 	 */
-	// textureIDQuote(message, message.content);
+	//textureIDQuote(message);
 
 	/**
 	 * DISCORD SERVER INVITE DETECTION
@@ -299,6 +300,12 @@ client.on('message', async message => {
 	 * @author RobertR11
 	 */
 	if (message.content.includes('https://discord.gg/') && message.guild.id != '814198513847631944') inviteDetection(client, message)
+
+	/**
+	 * AUTO REACT 2.0:
+	 * (use the new database to detect if a texture exist)
+	 */
+	//if (message.channel.id === '841396215211360296') return submitTexture(message)
 
 	/*
 	 * AUTO REACT:

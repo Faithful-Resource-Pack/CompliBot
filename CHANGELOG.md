@@ -11,6 +11,7 @@
 - updated the `/texture` command to use the new database system
 - moved default texture path into `settings.js`
 - removed all `;` from the `string.js` file
+- update `IDQuote.js` to show all texture in the same image : need to be fix when the url is 404
 
 ### April 2021
 
