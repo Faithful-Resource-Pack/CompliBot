@@ -147,7 +147,7 @@ module.exports = {
       finalResult = results[0]
     }
 
-    // if eventually still no result it means the user didn't chose the texture fase enough
+    // if eventually still no result it means the user didn't chose the texture fast enough
     if (!finalResult) {
       await warnUser(message, strings.TEXTURE_NOT_CHOSEN)
       return
