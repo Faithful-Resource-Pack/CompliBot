@@ -31,29 +31,8 @@ module.exports = {
 	async execute(client, message, args) {
 		if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD || message.author.id === uidT) {
 
-			/*let valURL = args[0];
-			message.channel.messages.fetch(valURL.split('/').pop()).then(async msg => {
-				await msg.react('⬆️');
-				await msg.react('⬇️');
-				if (!message.deleted) await message.delete();
-			})*/
-			
+			console.log('Hello World')
 
-			// Compliance 32x
-			/*await textureSubmission(client, settings.C32_SUBMIT_1,  settings.C32_SUBMIT_2, 3)
-			await textureSubmission(client, settings.C32_SUBMIT_1B, settings.C32_SUBMIT_2, 3)
-			await textureCouncil(client, settings.C32_SUBMIT_2,  settings.C32_SUBMIT_3, settings.C32_RESULTS, 1)
-			await textureRevote(client, settings.C32_SUBMIT_3,  settings.C32_RESULTS,  3)
-	
-			// Compliance 64x
-			await textureSubmission(client, settings.C64_SUBMIT_1,  settings.C64_SUBMIT_2, 3)
-			await textureSubmission(client, settings.C64_SUBMIT_1B, settings.C64_SUBMIT_2, 3)
-			await textureCouncil(client, settings.C64_SUBMIT_2,  settings.C64_SUBMIT_3, settings.C64_RESULTS, 1)
-			await textureRevote(client, settings.C64_SUBMIT_3,  settings.C64_RESULTS,  3)*/
-
-			await getResults(client, settings.C32_RESULTS, 6);
-		
-			await doPush(`Manual AutoPush, executed by: ${message.author.username} (${date()})`);
 		} else return
 	}
 }
