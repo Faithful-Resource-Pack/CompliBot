@@ -4,6 +4,14 @@
 
 ## 2021
 
+### May 2021
+
+#### May 21st 2021
+
+- updated the `/texture` command to use the new database system
+- moved default texture path into `settings.js`
+- removed all `;` from the `string.js` file
+
 ### April 2021
 
 #### April 16th 2021

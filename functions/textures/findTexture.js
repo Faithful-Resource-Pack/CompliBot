@@ -3,6 +3,7 @@
 
 const { FileHandler, jsonContributionsJava, jsonContributionsBedrock } = require('../../helpers/fileHandler')
 const strings = require('../../res/strings')
+const settings = require('../../settings')
 const https   = require('https')
 
 /**
@@ -160,11 +161,11 @@ module.exports =  {
    */
   pathToTextureURL: function(path, edition, res) {
     if(edition.toLowerCase() === 'java') {
-      if (res == 16)  return 'https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/21w15a/assets/' + path
+      if (res == 16)  return settings.DEFAULT_MC_JAVA_TEXTURE + path
       if (res == 32)  return 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-32x/Jappa-1.17/assets/' + path
       if (res == 64)  return 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-64x/Jappa-1.17/assets/' + path
     } else {
-      if (res == 16) return 'https://raw.githubusercontent.com/ZtechNetwork/MCBVanillaResourcePack/master/' + path
+      if (res == 16) return settings.DEFAULT_MC_BEDROCK_TEXTURE + path
       if (res == 32) return 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Bedrock-32x/Jappa-1.16.200/' + path
       if (res == 64) return 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Bedrock-64x/Jappa-1.16.200/' + path
     }
