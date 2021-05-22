@@ -72,11 +72,20 @@ module.exports = {
         criteria: "==",
         value: search
       }])
+
+      if(results.length == 0) {
+        // no equal result, searching with includes
+        results = await textures.search([{
+          field: "name",
+          criteria: 'includes',
+          value: search
+        }])
+      }
     }
 
     if (results.length > 1) getMultipleTexture(message, results, search, res)
-    else getTexture(message, res, results[0])
-
+    else if (results.length == 1) getTexture(message, res, results[0])
+    else return await warnUser(message, 'I am so sorry, I didn\'t find your texture...')
   }
 }
 

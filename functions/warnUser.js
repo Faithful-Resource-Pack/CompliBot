@@ -5,7 +5,7 @@ const strings  = require('../res/strings')
 
 /**
  * Reply to a user with an embed, use to warn a user
- * @param {DiscordMessage} message 
+ * @param {Discord.Message} message 
  * @param {String} text 
  */
 async function warnUser(message, text) {
