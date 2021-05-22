@@ -1,7 +1,7 @@
-const Discord   = require("discord.js");
-const colors    = require('../../res/colors.js');
-const settings  = require('../../settings.js');
-const fetch = require('node-fetch');
+const Discord  = require("discord.js");
+const colors   = require('../../res/colors.js');
+const settings = require('../../settings.js');
+const fetch    = require('node-fetch');
 const { timestampConverter } = require('../timestampConverter');
 
 const CANVAS_FUNCTION_PATH = '../../functions/canvas'

@@ -1,22 +1,13 @@
 const prefix = process.env.PREFIX;
 
-const Discord   = require('discord.js');
-const translate = require('@vitalets/google-translate-api');
-
-const strings  = require('../res/strings');
-const colors   = require('../res/colors');
-const settings = require('../settings.js');
+const strings = require('../res/strings');
 
 const uidR = process.env.UIDR;
 const uidJ = process.env.UIDJ;
 const uidD = process.env.UIDD;
 
-const { warnUser } = require('../functions/warnUser.js');
-
-function truncate(string, length) {
-	if (string.length <= length) return string
-  else return string.substr(0, length - 1) + '\u2026'
-}
+const { translate } = require('../functions/translate.js');
+const { warnUser }  = require('../functions/warnUser.js');
 
 module.exports = {
 	name: 'translate',
@@ -30,22 +21,35 @@ module.exports = {
 
 			if (args[0].length < 2) return warnUser(message, 'This language doesn\'t exist!');
 
-			const result = await translate(args.slice(1).join(' '), {to: args[0]});
-
-			args.shift()
-			const embed = new Discord.MessageEmbed()
-				.setAuthor(`${message.author.tag} translated: ${truncate(args.join(' '), 78+message.author.tag.length)}`, message.author.displayAvatarURL())
-				.setDescription(`\`\`\`${result.text}\`\`\``)
-				.setColor(colors.BLUE)
-				.setFooter(`${result.from.language.iso} → ${args[0]}`, settings.BOT_IMG);
-				
-			const embedMessage = await message.channel.send(embed);
-
-			if (result.text.includes('sus')) {
-				if (message.guild.id == settings.C32_ID) await embedMessage.react('814877213857546270');
-				if (message.guild.id == '720677267424018526') await embedMessage.react('821052515989979206');
+			else if ((args[1] == undefined || args[1] == '' || args[1] == 'up' || args[1] == '^' || args[1] == 'last')) {
+				return PreviousMessage();
 			}
+
+			return await translate(message, args.slice(1), args);
+
+		async function PreviousMessage() {
+			var found = false;
+			var messages = [];
+			var list_messages = await message.channel.messages.fetch({ limit: 10 });
+			messages.push(...list_messages.array());
+
+			for (var i in messages) {
+				var msg = messages[i]
+				var content = '';
+				try {
+					if (msg.content && !msg.content.startsWith(prefix)) {
+						found = true;
+						content = msg.content.trim().split(/ +/)
+						break;
+					}
+				} catch(e) {
+					return warnUser(message, 'I didn\'t find any message to translate!');
+				}
+			}
+
+			if (found) await translate(message, content, args);
+			else return warnUser(message, 'I didn\'t find any message to translate!');
 		}
-    else warnUser(message, 'This command is currently disabled for testing!');
+		} else warnUser(message, 'This command is currently disabled for testing!');
 	}
 };

@@ -2,16 +2,16 @@
 
 const prefix = process.env.PREFIX;
 
-const Discord = require('discord.js');
-const axios = require('axios').default;
-const strings = require('../../res/strings');
-const colors = require('../../res/colors');
-const settings = require('../../settings.js');
+const Discord    = require('discord.js');
+const axios      = require('axios').default;
+const strings    = require('../../res/strings');
+const colors     = require('../../res/colors');
+const settings   = require('../../settings.js');
 const asyncTools = require('../../helpers/asyncTools.js');
 
-const { magnify } = require('../../functions/magnify.js');
-const { palette } = require('../../functions/palette.js');
-const { getMeta } = require('../../functions/getMeta.js');
+const { magnify }  = require('../../functions/magnify.js');
+const { palette }  = require('../../functions/palette.js');
+const { getMeta }  = require('../../functions/getMeta.js');
 const { warnUser } = require('../../functions/warnUser.js');
 const { timestampConverter } = require ('../../functions/timestampConverter');
 
@@ -85,7 +85,7 @@ module.exports = {
 
     if (results.length > 1) getMultipleTexture(message, results, search, res)
     else if (results.length == 1) getTexture(message, res, results[0])
-    else return await warnUser(message, 'I am so sorry, I didn\'t find your texture...')
+    else return await warnUser(message, strings.TEXTURE_DOESNT_EXIST)
   }
 }
 
@@ -103,6 +103,7 @@ async function getMultipleTexture(message, results, search, res) {
   var embed = new Discord.MessageEmbed()
     //.setAuthor('Note: this command isn\'t updated for 21w20a yet')
     .setTitle(`${results.length} results, react to choose one!`)
+		.setColor(colors.BLUE)
     .setFooter(message.client.user.username, settings.BOT_IMG)
 
   var description = strings.TEXTURE_SEARCH_DESCRIPTION
@@ -184,7 +185,7 @@ async function getTexture(message, res, texture) {
 
       if (res != '16') {
         embed.addFields(
-          { name: 'Author(s)', value: contributors, inline: true },
+          //{ name: 'Author(s)', value: contributors, inline: true },
           { name: 'Added', value: date, inline: true }
         )
       }
