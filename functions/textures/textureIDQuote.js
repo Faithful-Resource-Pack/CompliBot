@@ -1,8 +1,7 @@
 const Discord   = require("discord.js");
 const colors    = require('../../res/colors.js');
 const settings  = require('../../settings.js');
-const urlExists = require('url-exists');
-const { warnUser } = require('../warnUser');
+const fetch = require('node-fetch');
 const { timestampConverter } = require('../timestampConverter');
 
 const CANVAS_FUNCTION_PATH = '../../functions/canvas'
@@ -23,7 +22,7 @@ async function textureIDQuote(message) {
   const promiseEvery = require('../../helpers/promiseEvery')
   const promiseArray = ids.map(id => texturesCollection.get(id))
 
-  let res = await promiseEvery(promiseArray).catch(err => console.error(err))
+  let res = await promiseEvery(promiseArray).catch(() => {})
   
   if (!res) return // if nothing is found -> we don't deserve it.
   else res = res.results.filter(el => el !== undefined)
@@ -70,11 +69,10 @@ async function textureIDQuote(message) {
 
     const CanvasDrawer = require(CANVAS_FUNCTION_PATH)
     const drawer = new CanvasDrawer()
-
-    /**
-     * TODO: test if the url return 404 : if true, remove it from the array
-     */
+    
     drawer.urls = [paths.c16, paths.c32, paths.c64]
+    let resultsPromises = await Promise.all(drawer.urls.map(url => fetch(url))).catch(() => drawer.urls = [])
+    drawer.urls = drawer.urls.filter((__el, index) => resultsPromises[index].ok && resultsPromises[index].status === 200)
 
     const bufferResult = await drawer.draw().catch(err => { throw err })
     const attachment = new Discord.MessageAttachment(bufferResult, 'output.png')
@@ -85,8 +83,8 @@ async function textureIDQuote(message) {
       .attachFiles(attachment)
       .setImage('attachment://output.png')
       .addFields(
-        { name: '32x', value: author[0] != undefined && author[0].length ? `<@!${author[0].join('> <@!')}> - ${timestampConverter(timestamp[0])}` : `No information` },
-        { name: '64x', value: author[1] != undefined && author[1].length ? `<@!${author[1].join('> <@!')}> - ${timestampConverter(timestamp[1])}` : `No information` }
+        { name: '32x', value: author[0] != undefined && author[0].length ? `<@!${author[0].join('> <@!')}> - ${timestampConverter(timestamp[0])}` : `Contribution not found` },
+        { name: '64x', value: author[1] != undefined && author[1].length ? `<@!${author[1].join('> <@!')}> - ${timestampConverter(timestamp[1])}` : `Contribution not found` }
       )
 
     return message.inlineReply(embed)
