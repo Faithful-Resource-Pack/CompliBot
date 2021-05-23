@@ -147,7 +147,7 @@ const PUSH_TEXTURE_NOT_FOUND = 'Can\'t find this textures!'
 const TEXTURE_DOESNT_EXIST       = 'The specified texture/folder doesn\'t exist!'
 const TEXTURE_NOT_CHOSEN				 = 'Texture was not chosen fast enough'
 const TEXTURE_FAILED_LOADING     = 'This texture has not yet been made or is not present on GitHub!'
-const TEXTURE_SEARCH_DESCRIPTION = 'Choose one texture using emoji reactions.\nIf you don\'t see what you\'re looking for, be more specific.\n\n'
+const TEXTURE_SEARCH_DESCRIPTION = 'Choose one texture using emoji reactions.\nIf you don\'t see what you\'re looking for, be more specific.\n'
 
 // Feedback command
 const FEEDBACK_NO_ARGS_GIVEN = 'Please write some feedback and don\'t just leave it empty!'

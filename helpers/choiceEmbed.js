@@ -1,6 +1,7 @@
 const Discord    = require('discord.js')
 const asyncTools = require('./asyncTools')
 const settings   = require('../settings')
+const colors     = require('../res/colors')
 
 /**
  * 
@@ -26,6 +27,7 @@ const settings   = require('../settings')
  */
 const DEFAULT = {
   title: 'Choose proposition',
+  description: 'Please choose one result using the associated reaction.\n',
   footer: 'chooseEmbed',
   max: 1,
   separator: ' — ',
@@ -49,6 +51,7 @@ module.exports = function(message, params) {
 
     let embed = new Discord.MessageEmbed()
       .setTitle(params.title)
+      .setColor(colors.BLUE)
     
     if(params.imageURL)
       embed = embed.setFooter(params.footer, params.imageURL)
@@ -67,7 +70,7 @@ module.exports = function(message, params) {
     }
 
     // create description
-    let description = []
+    let description = [params.description]
     const emojis = Object.keys(propObj)
     emojis.forEach(emoji => {
       description.push(`${emoji}${params.separator}${propObj[emoji]}`)

@@ -2,12 +2,13 @@
 
 const prefix = process.env.PREFIX;
 
-const Discord    = require('discord.js');
-const axios      = require('axios').default;
-const strings    = require('../../res/strings');
-const colors     = require('../../res/colors');
-const settings   = require('../../settings.js');
-const asyncTools = require('../../helpers/asyncTools.js');
+const Discord     = require('discord.js');
+const axios       = require('axios').default;
+const strings     = require('../../res/strings');
+const colors      = require('../../res/colors');
+const settings    = require('../../settings.js');
+const asyncTools  = require('../../helpers/asyncTools.js');
+const choiceEmbed = require('../../helpers/choiceEmbed')
 
 const { magnify }  = require('../../functions/magnify.js');
 const { palette }  = require('../../functions/palette.js');
@@ -83,62 +84,32 @@ module.exports = {
       }
     }
 
-    if (results.length > 1) getMultipleTexture(message, results, search, res)
+    if (results.length > 1) {
+
+      let choice = [];
+      for (let i = 0; results[i]; i++) {
+        let uses = await results[i].uses()
+        let paths = await uses[0].paths()
+
+        choice.push(`\`[#${results[i].id}]\` ${paths[0].path.replace(search, `**${search}**`).replace(/_/g, '＿')}`)
+      }
+
+      choiceEmbed(message, {
+        title: `${results.length} results, react to choose one!`,
+        description: strings.TEXTURE_SEARCH_DESCRIPTION,
+        footer: `${message.client.user.username}`,
+        propositions: choice
+      })
+      .then(choice => {
+        return getTexture(message, res, results[choice.index])
+      })
+      .catch((message, error) => {
+        if (process.env.DEBUG) console.error(message, error)
+      })
+    }
     else if (results.length == 1) getTexture(message, res, results[0])
     else return await warnUser(message, strings.TEXTURE_DOESNT_EXIST)
   }
-}
-
-/**
- * TODO : make this function in it's own file?
- * Show an embed an let the user choose which texture he wiould to see
- * @param {DiscordMessage} message discord message
- * @param {Array} results array of textures
- * @param {String} search texture name search
- * @param {String} res texture resolution
- */
-async function getMultipleTexture(message, results, search, res) {
-  const emoji_num = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟', '🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮', '🇯']
-
-  var embed = new Discord.MessageEmbed()
-    //.setAuthor('Note: this command isn\'t updated for 21w20a yet')
-    .setTitle(`${results.length} results, react to choose one!`)
-		.setColor(colors.BLUE)
-    .setFooter(message.client.user.username, settings.BOT_IMG)
-
-  var description = strings.TEXTURE_SEARCH_DESCRIPTION
-
-  for (let i = 0; i < results.length; i++) {
-    if (i < emoji_num.length) {
-      let uses     = await results[i].uses()
-      let paths    = await uses[0].paths()
-      
-      description += `${emoji_num[i]} — \`[#${results[i].id}]\` ${paths[0].path.replace(search, `**${search}**`).replace(/_/g, '＿')}\n`
-    }
-  }
-  embed.setDescription(description)
-
-  const embedMessage = await message.inlineReply(embed)
-  asyncTools.react(embedMessage, emoji_num.slice(0, results.length))
-
-  const filter_num = (reaction, user) => {
-    return emoji_num.includes(reaction.emoji.name) && user.id === message.author.id
-  }
-
-  embedMessage.awaitReactions(filter_num, { max: 1, time: 60000, errors: ['time'] })
-  .then(async collected => {
-    const reaction = collected.first()
-    if (emoji_num.includes(reaction.emoji.name)) {
-      embedMessage.delete()
-      return getTexture(message, res, results[emoji_num.indexOf(reaction.emoji.name)])
-    }
-  }).catch(async () => {
-    for (let i = 0; i < results.length; i++) {
-      if (i < emoji_num.length) {
-        if (message.channel.type !== 'dm') embedMessage.reactions.cache.get(emoji_num[i]).remove()
-      }
-    }
-  })
 }
 
 /**
