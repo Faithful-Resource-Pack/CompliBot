@@ -98,7 +98,7 @@ module.exports = {
 				}
 			})
 			.catch(async collected => {
-				if (message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🗑️').remove();
+				if (!embedMessage.deleted && message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🗑️').remove();
 			});
 	}
 }

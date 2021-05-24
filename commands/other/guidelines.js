@@ -10,7 +10,7 @@ module.exports = {
 	syntax: `${prefix}guidelines`,
 	async execute(client, message, args) {
 		const embedMessage = await message.inlineReply('https://docs.compliancepack.net/pages/textures/texturing-guidelines');
-		if (message.channel.type !== 'dm') await embedMessage.react('🗑️');
+		await embedMessage.react('🗑️');
 
 		const filter = (reaction, user) => {
 			return ['🗑️'].includes(reaction.emoji.name) && user.id === message.author.id;
@@ -25,7 +25,7 @@ module.exports = {
 				}
 			})
 			.catch(async collected => {
-				if (message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🗑️').remove();
+				await embedMessage.reactions.cache.get('🗑️').remove();
 			});
 	}
 };

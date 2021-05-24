@@ -194,12 +194,12 @@ async function getTexture(message, res, texture) {
         }
       })
       .catch(async () => {
-        if (!message.deleted && message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🗑️').remove()
+        if (!embedMessage.deleted && message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🗑️').remove()
         if (dimension.width <= 128 && dimension.height <= 128) {
-          if (!message.deleted && message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🔎').remove()
+          if (!embedMessage.deleted && message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🔎').remove()
         }
-        if (!message.deleted && message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🌀').remove()
-        if (!message.deleted && message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🎨').remove()
+        if (!embedMessage.deleted && message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🌀').remove()
+        if (!embedMessage.deleted && message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🎨').remove()
       })
 
     })

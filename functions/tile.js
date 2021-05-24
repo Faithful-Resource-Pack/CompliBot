@@ -3,6 +3,7 @@ const Discord = require('discord.js')
 
 const { getMeta }  = require('./getMeta')
 const { warnUser } = require('./warnUser')
+const { magnify }  = require('./magnify');
 
 /**
  * Tile an image
@@ -126,10 +127,13 @@ function tile(message, url, type) {
 		const attachment   = new Discord.MessageAttachment(canvas.toBuffer(), 'tiled.png')
 		const embedMessage = await message.inlineReply(attachment)
 
-    if (message.channel.type !== 'dm')  await embedMessage.react('🗑️')
+    if (message.channel.type !== 'dm') await embedMessage.react('🗑️')
+		if (dimension.width <= 512 && dimension.height <= 512) {
+		embedMessage.react('🔎');
+		}
 
 		const filter = (reaction, user) => {
-			return ['🗑️'].includes(reaction.emoji.name) && user.id === message.author.id
+			return ['🗑️', '🔎'].includes(reaction.emoji.name) && user.id === message.author.id
 		}
 
 		embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
@@ -139,9 +143,13 @@ function tile(message, url, type) {
 					await embedMessage.delete()
 					if (!message.deleted && message.channel.type !== 'dm') await message.delete()
 				}
+				if (reaction.emoji.name === '🔎') {
+					return magnify(embedMessage, embedMessage.attachments.first().url)
+				}
 			})
 			.catch(async () => {
-				if (!message.deleted && message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🗑️').remove()
+				if (!embedMessage.deleted && message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🗑️').remove()
+				if (!embedMessage.deleted && message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🔎').remove()
 			})
 	})
 }
