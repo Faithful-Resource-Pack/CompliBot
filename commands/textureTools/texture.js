@@ -91,7 +91,12 @@ module.exports = {
         let uses = await results[i].uses()
         let paths = await uses[0].paths()
 
-        choice.push(`\`[#${results[i].id}]\` ${paths[0].path.replace(search, `**${search}**`).replace(/_/g, '＿')}`)
+        console.log(paths)
+
+        let descPaths = []
+        for (let j = 0; paths[j]; j++) descPaths.push(`　\`[${paths[j].versions[0]}...]\` ${paths[j].path}`)
+
+        choice.push(`\`[#${results[i].id}]\` ${results[i].name}:\n${descPaths.join('\n')}`)
       }
 
       choiceEmbed(message, {
@@ -157,7 +162,8 @@ async function getTexture(message, res, texture) {
       if (res != '16') {
         embed.addFields(
           //{ name: 'Author(s)', value: contributors, inline: true },
-          { name: 'Added', value: date, inline: true }
+          { name: 'Added', value: date, inline: true },
+          { name: 'Name', value: texture.name, inline: true }
         )
       }
 
