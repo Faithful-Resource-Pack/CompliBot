@@ -3,6 +3,7 @@
 const prefix = process.env.PREFIX;
 
 const Discord  = require('discord.js');
+const { warnUser } = require('../../functions/warnUser');
 const colors   = require('../../res/colors');
 const strings  = require('../../res/strings');
 const settings = require('../../settings');
@@ -20,6 +21,7 @@ module.exports = {
   uses: strings.COMMAND_USES_DEVS,
   syntax: `${prefix}database <set> <#id> <field> <value>\n${prefix}db <get> <#id>\n${prefix}db <delete> <#id>\n${prefix}db <add> <#id> <field> <value>`,
   args: true,
+  example: `${prefix}db set #1 name configure_icon`,
   async execute(_client, message, args) {
     if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD || message.author.id === uidT) {
 
@@ -29,6 +31,7 @@ module.exports = {
       let type = args[0]
       let id = args[1] ? (args[1].startsWith('#') ? args[1].slice(1) : args[1]) : undefined
       let field = args[2]
+      let options1 = args[3]
       let texture
 
       var embed = new Discord.MessageEmbed().setColor(colors.BLUE)
@@ -70,7 +73,7 @@ module.exports = {
           embed.setDescription(`**uses:**\n[${text.join(',\n')}]`)
         }
 
-        else embed.setDescription(`${field} is not set up yet.`)
+        else if (field !== undefined) embed.setDescription(`${field} is not set up yet.`)
 
         embed.addFields(
             { name: 'name:', value: texture.name },
@@ -81,8 +84,7 @@ module.exports = {
       }
 
       if (type == 'add') {
-        embed.setDescription('WIP')
-
+        if (field == undefined) warnUser(message, 'You need to provide a field value')
         texture = await textures.get(id)
 
         if (field == 'uses') {
@@ -92,23 +94,30 @@ module.exports = {
            * TODO: finish it -> add to array, send to database
            * HELP: how did i add a function to an object???
            */
-          uses.push({
-            textureID: texture.id,
-            textureUseName: '',
-            editions: [],
-            id: uses.length+1
-          })
-          
         }
-
+        else embed.setDescription(`${field} is not set up yet.`)
 
         message.inlineReply(embed)
       }
       if (type == 'set') {
-        embed.setDescription('WIP')
+        if (field == undefined) warnUser(message, 'You need to provide a field value')
+
+        if (field == 'name') {
+          textures.set(id, {
+            name: options1
+          })
+          
+          embed.setDescription(`type \`${prefix}db get ${id}\` to see changes`)
+        }
+        else embed.setDescription(`${field} is not set up yet.`)
+
         message.inlineReply(embed)
       }
       if (type == 'delete') {
+        embed.setDescription('WIP')
+        message.inlineReply(embed)
+      }
+      if (type == 'merge') {
         embed.setDescription('WIP')
         message.inlineReply(embed)
       }
