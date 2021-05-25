@@ -16,16 +16,18 @@ nocache(CANVAS_FUNCTION_PATH)
 async function textureIDQuote(message) {
   const args = message.content.split(' ') // get all words in the message content
   let ids = args.filter(el => el.charAt(0) === '#' && !isNaN(el.slice(1))).map(el => el.slice(1)) // filter textures ids and slice '#'
-  ids = ids.filter((el, index) => ids.indexOf(el) === index && el > 0) // avoid doublon and wrong id
+  ids = ids.filter((el, index) => ids.indexOf(el) === index && el >= 0) // avoid doublon and wrong id
 
   const texturesCollection = require('../../helpers/firestorm/texture')
   const promiseEvery = require('../../helpers/promiseEvery')
   const promiseArray = ids.map(id => texturesCollection.get(id))
 
   let res = await promiseEvery(promiseArray).catch(() => {})
-  
+
   if (!res) return // if nothing is found -> we don't deserve it.
   else res = res.results.filter(el => el !== undefined)
+
+  console.log(res)
 
   for (let i = 0; i < res.length; i++) {
     let texture = res[i];
@@ -38,6 +40,14 @@ async function textureIDQuote(message) {
 
     /** @type {import("../../helpers/firestorm/texture_paths.js").TexturePath[]} */
     let texturePath = await uses[0].paths()
+
+    let pathText = []
+    for (let i = 0; uses[i]; i++) {
+      let localPath = await uses[i].paths()
+      for (let k = 0; localPath[k]; k++) {
+        pathText.push(`\`[${localPath[k].versions[localPath[k].versions.length - 1]}+]\` ${localPath[k].path}`)
+      }
+    }
 
     let path = texturePath[0].path
     let editions = uses[0].editions
@@ -84,7 +94,8 @@ async function textureIDQuote(message) {
       .setImage('attachment://output.png')
       .addFields(
         { name: '32x', value: author[0] != undefined && author[0].length ? `<@!${author[0].join('> <@!')}> - ${timestampConverter(timestamp[0])}` : `Contribution not found` },
-        { name: '64x', value: author[1] != undefined && author[1].length ? `<@!${author[1].join('> <@!')}> - ${timestampConverter(timestamp[1])}` : `Contribution not found` }
+        { name: '64x', value: author[1] != undefined && author[1].length ? `<@!${author[1].join('> <@!')}> - ${timestampConverter(timestamp[1])}` : `Contribution not found` },
+        { name: 'Paths', value: pathText.join('\n') }
       )
 
     return message.inlineReply(embed)

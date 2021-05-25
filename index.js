@@ -284,14 +284,12 @@ client.on('message', async message => {
 	if (message.content.includes('https://canary.discord.com/channels/') || message.content.includes('https://discord.com/channels/') || message.content.includes('https://discordapp.com/channels')) quote(message)
 
 	/**
-	 * DESACTIVATED !!
 	 * TEXTURE ID QUOTE
 	 * when someone type #1234, send an embed with the given texture id
 	 * @author Juknum
-	 * @TODO: add Compare textures inside the embed, the compare command needs to be split into functions first
 	 * @TODO: add Co-Authors as co-authors (the database should be updated to specify when a texture has co-authors)
 	 */
-	//textureIDQuote(message);
+	textureIDQuote(message);
 
 	/**
 	 * DISCORD SERVER INVITE DETECTION

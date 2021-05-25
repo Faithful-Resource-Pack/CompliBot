@@ -28,7 +28,7 @@ module.exports = {
 		await message.channel.bulkDelete(messages);
     var embed = new Discord.MessageEmbed()
 			.setAuthor(`${message.author.tag} bulk deleted ${args} messages!`)
-			 .setColor(colors.RED)
+			.setColor(colors.RED)
 			.setThumbnail(message.author.displayAvatarURL())
 			.setDescription(`[Jump to location](${message.url})\n\n**Server**: ${message.guild}\n\n**Channel**: <#${message.channel.id}>`)
 			.setTimestamp()

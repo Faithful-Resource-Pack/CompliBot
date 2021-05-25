@@ -1,6 +1,5 @@
 const firestorm = require('.')
 
-
 require('./firestorm_config')()
 
 /**

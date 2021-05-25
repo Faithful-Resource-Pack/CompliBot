@@ -51,7 +51,7 @@ module.exports = {
     if (args[0].includes('64')) res = '64'
 
     // partial texture name (_sword, _axe -> diamond_sword, diamond_axe...)
-    if (search.startsWith('_')) {
+    if (search.startsWith('_') || search.endsWith('_')) {
       results = await textures.search([{
         field: "name",
         criteria: "includes",
@@ -59,12 +59,19 @@ module.exports = {
       }])
     }
     // looking for path + texture (block/stone -> stone)
-    else if (search.endsWith('/')) {
+    else if (search.startsWith('/') || search.endsWith('/')) {
       results = await paths.search([{
         field: "path",
         criteria: "includes",
         value: search
       }])
+      // transform paths results into textures
+      let output = new Array()
+      for (let i = 0; results[i]; i++) {
+        let use = await results[i].use()
+        output.push(await textures.get(use.textureID))
+      }
+      results = output
     }
     // looking for all exact matches (stone -> stone.png)
     else {
@@ -91,12 +98,7 @@ module.exports = {
         let uses = await results[i].uses()
         let paths = await uses[0].paths()
 
-        console.log(paths)
-
-        let descPaths = []
-        for (let j = 0; paths[j]; j++) descPaths.push(`　\`[${paths[j].versions[0]}...]\` ${paths[j].path}`)
-
-        choice.push(`\`[#${results[i].id}]\` ${results[i].name}:\n${descPaths.join('\n')}`)
+        choice.push(`\`[#${results[i].id}]\` ${results[i].name.replace(search, `**${search}**`)} — ${paths[0].path.replace(search, `**${search}**`)}`)
       }
 
       choiceEmbed(message, {
@@ -126,28 +128,33 @@ module.exports = {
 async function getTexture(message, res, texture) {
   var imgURL = undefined;
 
-  const uses  = await texture.uses()
-  const paths = await uses[0].paths()
-  const path  = paths[0].path
+  const uses = await texture.uses()
+  const path = (await uses[0].paths())[0].path
+
+  let pathsText = []
+  for (let x = 0; uses[x]; x++) {
+    let paths = await uses[x].paths()
+    for (let i = 0; paths[i]; i++) pathsText.push(`\`[${paths[i].versions[paths[i].versions.length - 1]}+]\` ${paths[i].path}`)
+  }
 
   if (res == '16') imgURL = settings.DEFAULT_MC_JAVA_TEXTURE + path;
-  if (res == '32') imgURL = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-32x/Jappa-1.17/assets/' + path;
-  if (res == '64') imgURL = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-64x/Jappa-1.17/assets/' + path;
+  if (res == '32') imgURL = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-32x/Jappa-' + strings.LATEST_MC_JE_VERSION + '/assets/' + path;
+  if (res == '64') imgURL = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-64x/Jappa-' + strings.LATEST_MC_JE_VERSION + '/assets/' + path;
   
   if (path.startsWith('textures')) { // hacks to get the right url with bedrock textures
     if (res == '16') imgURL = settings.DEFAULT_MC_BEDROCK_TEXTURE + path;
-    if (res == '32') imgURL = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Bedrock-32x/Jappa-1.16.200/' + path;
-    if (res == '64') imgURL = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Bedrock-64x/Jappa-1.16.200/' + path;
+    if (res == '32') imgURL = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Bedrock-32x/Jappa-' + strings.LATEST_MC_BE_VERSION + '/' + path;
+    if (res == '64') imgURL = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Bedrock-64x/Jappa-' + strings.LATEST_MC_BE_VERSION + '/' + path;
   }
 
-  axios.get(imgURL).then((response) => {
+  axios.get(imgURL).then(() => {
     getMeta(imgURL).then(async dimension => {
       const size = dimension.width + '×' + dimension.height;
 
       var embed = new Discord.MessageEmbed()
-        .setTitle(`[#${texture.id}] ${path}`)
+        .setTitle(`[#${texture.id}] ${texture.name}`)
         .setColor(colors.BLUE)
-        .setURL(imgURL)
+        //.setURL(imgURL) TODO: add a link to the website gallery where more information could be found about the texture
         .setImage(imgURL)
         .addField('Resolution:', size,true)
 
@@ -161,13 +168,11 @@ async function getTexture(message, res, texture) {
 
       if (res != '16') {
         embed.addFields(
-          //{ name: 'Author(s)', value: contributors, inline: true },
+          { name: 'Author(s)', value: contributors, inline: true },
           { name: 'Added', value: date, inline: true },
-          { name: 'Name', value: texture.name, inline: true }
+          { name: 'Paths', value: pathsText.join('\n'), inline: true }
         )
       }
-
-      embed.addField('Edition', path.startsWith('textures') ? 'Bedrock': 'Java', true)
 
       const embedMessage = await message.inlineReply(embed);
       embedMessage.react('🗑️');
@@ -210,6 +215,6 @@ async function getTexture(message, res, texture) {
 
     })
   }).catch((error) => {
-    return warnUser(message, strings.TEXTURE_FAILED_LOADING + '\n' + error)
+    return warnUser(message, strings.TEXTURE_FAILED_LOADING + '\n' + error + `: [link](${imgURL})`)
   })
 }

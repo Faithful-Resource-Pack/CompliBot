@@ -1,3 +1,4 @@
+/* eslint-disable no-irregular-whitespace */
 
 const prefix = process.env.PREFIX;
 
@@ -26,7 +27,8 @@ module.exports = {
       const paths = require('../../helpers/firestorm/texture_paths')
 
       let type = args[0]
-      let id = args[1].startsWith('#') ? args[1].slice(1) : args[1]
+      let id = args[1] ? (args[1].startsWith('#') ? args[1].slice(1) : args[1]) : undefined
+      let field = args[2]
       let texture
 
       var embed = new Discord.MessageEmbed().setColor(colors.BLUE)
@@ -34,53 +36,84 @@ module.exports = {
       if (type == 'get') {
         texture = await textures.get(id)
 
-        let uses = await texture.uses()
-        let contrib = await texture.contributions()
-        let lastContrib = await texture.lastContribution()
+        let text = []
 
-        let usesText = []
-        let contribText = []
-
-        for (let i = 0; uses[i]; i++) {
-          let paths = await uses[i].paths()
-          let pathsText = []
-          for (let x = 0; paths[x]; x++) {
-            console.log(paths[x])
-            pathsText.push(`　{\n　　useID: ${paths[x].useID},\n　　path: ${paths[x].path},\n　　versions: [${paths[x].versions.join(', ')}],\n　　use: function(),\n　　texture: function()\n　}`)
+        if (field == 'uses') {
+          let uses = await texture.uses()
+          for (let i = 0; uses[i]; i++) {
+            let paths = await uses[i].paths()
+            let pathsText = []
+            for (let x = 0; paths[x]; x++) {
+              pathsText.push(`
+              　　　{
+              　　　　**useID**: ${paths[x].useID},
+              　　　　**path**: ${paths[x].path},
+              　　　　**versions**: [${paths[x].versions.join(', ')}],
+              　　　　**use**: _function()_,
+              　　　　**texture**: _function()_
+              　　　}`)
+            }
+            text.push(`
+            　{
+            　　**textureID**: ${uses[i].textureID},
+            　　**textureUseName**: "${uses[i].textureUseName}",
+            　　**editions**: [${uses[i].editions.join(', ')}],
+            　　**id**: ${uses[i].id},
+            　　**texture**: function(),
+            　　**paths**: [${pathsText.join(',')}
+            　　],
+            　　**animation**: _function()_
+            　}
+            `)
           }
-          usesText.push(`textureID: ${uses[i].textureID},\ntextureUseName: "${uses[i].textureUseName}",\neditions: [${uses[i].editions.join(', ')}],\nid: ${uses[i].id},\ntexture: function(),\npaths: [\n${pathsText.join('\n')}\n],\nanimation: function()`)
-        }
-        for (let i = 0; contrib[i]; i++) {
-          let contributors = await contrib[i].getContributors();
-          let contributorsText = []
-          for (let x = 0; contributors[x]; x++) {
-            contributorsText.push(`　{\n　　username: ${contributors[x].username},\n　　type: [${contributors[x].type}],\n　　uuid: ${contributors[x].uuid},\n　　id: ${contributors[x].id},\n　　contributions: function()\n　}`)
-          }
-          contribText.push(`date: ${contrib[i].date},\nres: ${contrib[i].res},\ntextureID: ${contrib[i].textureID},\ncontributors: [${contrib[i].contributors}],\nid: ${contrib[i].id},\ngetContributors: [\n${contributorsText.join('\n')}\n],\ntexture: function()\n`)
-        }
-        if (lastContrib) lastContrib = `date: ${lastContrib.date},\nres: ${lastContrib.res},\ntextureID: ${lastContrib.textureID},\ncontributors: ${lastContrib.contributors},\nid: ${lastContrib.id},\ngetContributors: function(),\ntexture: function()`
 
-        embed
-          .addFields(
+          embed.setDescription(`**uses:**\n[${text.join(',\n')}]`)
+        }
+
+        else embed.setDescription(`${field} is not set up yet.`)
+
+        embed.addFields(
             { name: 'name:', value: texture.name },
             { name: 'id:', value: texture.id },
-            { name: 'uses:', value: `[\n${usesText.join('\n\n')}\n]` },
-            { name: 'contributions():', value: contrib[0] == undefined ? '[]' : `[\n${contribText.join('\n\n')}\n]` },
-            { name: 'lastContribution():', value: lastContrib == undefined ? 'undefined' : lastContrib }
           )
+        
+        message.inlineReply(embed)
       }
 
       if (type == 'add') {
         embed.setDescription('WIP')
+
+        texture = await textures.get(id)
+
+        if (field == 'uses') {
+          let uses = await texture.uses()
+
+          /**
+           * TODO: finish it -> add to array, send to database
+           * HELP: how did i add a function to an object???
+           */
+          uses.push({
+            textureID: texture.id,
+            textureUseName: '',
+            editions: [],
+            id: uses.length+1
+          })
+          
+        }
+
+
+        message.inlineReply(embed)
       }
       if (type == 'set') {
         embed.setDescription('WIP')
+        message.inlineReply(embed)
       }
       if (type == 'delete') {
         embed.setDescription('WIP')
+        message.inlineReply(embed)
       }
 
-      message.inlineReply(embed);
+      
     } else return
   }
 }
