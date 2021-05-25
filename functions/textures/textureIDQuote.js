@@ -98,7 +98,23 @@ async function textureIDQuote(message) {
         { name: 'Paths', value: pathText.join('\n') }
       )
 
-    return message.inlineReply(embed)
+    const embedMessage = await message.inlineReply(embed)
+		if (message.channel.type !== 'dm') await embedMessage.react('🗑️')
+
+		const filter = (reaction, user) => {
+			return ['🗑️'].includes(reaction.emoji.name) && user.id === message.author.id
+		}
+
+		embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
+			.then(async collected => {
+				const reaction = collected.first()
+				if (reaction.emoji.name === '🗑️') {
+					await embedMessage.delete()
+				}
+			})
+			.catch(async () => {
+				if (!embedMessage.deleted && message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🗑️').remove()
+			})
   }
 
 }
