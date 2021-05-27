@@ -29,7 +29,7 @@
     "discord.js": "^12.5.3",
     "dotenv": "^9.0.2",
     "firebase": "^8.6.2",
-    "firebase-admin": "^9.8.0",
+    "firebase-admin": "^9.9.0",
     "fs-extra": "^10.0.0",
     "getopts": "^2.3.0",
     "gif-encoder-2": "^1.0.5",
