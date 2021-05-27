@@ -50,6 +50,11 @@ module.exports = {
     if (args[0].includes('32')) res = '32'
     if (args[0].includes('64')) res = '64'
 
+		var waitEmbed = new Discord.MessageEmbed()
+        .setTitle(`Searching for your texture, please wait...`)
+        .setColor(colors.BLUE)
+		const waitEmbedMessage = await message.inlineReply(waitEmbed);
+
     // partial texture name (_sword, _axe -> diamond_sword, diamond_axe...)
     if (search.startsWith('_') || search.endsWith('_')) {
       results = await textures.search([{
@@ -81,7 +86,7 @@ module.exports = {
         value: search
       }])
 
-      if(results.length == 0) {
+      if (results.length == 0) {
         // no equal result, searching with includes
         results = await textures.search([{
           field: "name",
@@ -101,6 +106,7 @@ module.exports = {
         choice.push(`\`[#${results[i].id}]\` ${results[i].name.replace(search, `**${search}**`)} — ${paths[0].path.replace(search, `**${search}**`)}`)
       }
 
+			if (!waitEmbedMessage.deleted) await waitEmbedMessage.delete();
       choiceEmbed(message, {
         title: `${results.length} results, react to choose one!`,
         description: strings.TEXTURE_SEARCH_DESCRIPTION,
@@ -114,8 +120,14 @@ module.exports = {
         if (process.env.DEBUG) console.error(message, error)
       })
     }
-    else if (results.length == 1) getTexture(message, res, results[0])
-    else return await warnUser(message, strings.TEXTURE_DOESNT_EXIST)
+    else if (results.length == 1) {
+			await getTexture(message, res, results[0])
+			if (!waitEmbedMessage.deleted) await waitEmbedMessage.delete();
+		}
+    else {
+			return await warnUser(message, strings.TEXTURE_DOESNT_EXIST)
+			if (!waitEmbedMessage.deleted) await waitEmbedMessage.delete();
+		}
   }
 }
 
@@ -152,6 +164,7 @@ async function getTexture(message, res, texture) {
       const size = dimension.width + '×' + dimension.height;
 
       var embed = new Discord.MessageEmbed()
+				.setAuthor('Note: this command isn\'t updated for 1.17 Pre-Release 1 yet')
         .setTitle(`[#${texture.id}] ${texture.name}`)
         .setColor(colors.BLUE)
         //.setURL(imgURL) TODO: add a link to the website gallery where more information could be found about the texture
@@ -166,21 +179,21 @@ async function getTexture(message, res, texture) {
       let contributors = lastContribution ? lastContribution.contributors.map(contributor => { return `<@!${contributor}>` }) : 'None'
       let date = lastContribution ? timestampConverter(lastContribution.date) : 'None'
 
-      if (res != '16') {
+      /*if (res != '16') {
         embed.addFields(
           { name: 'Author(s)', value: contributors, inline: true },
           { name: 'Added', value: date, inline: true },
-          { name: 'Paths', value: pathsText.join('\n'), inline: true }
         )
-      }
+			}*/
+      embed.addField('Paths', pathsText.join('\n'), false)
 
       const embedMessage = await message.inlineReply(embed);
-      embedMessage.react('🗑️');
+      await embedMessage.react('🗑️');
       if (dimension.width <= 128 && dimension.height <= 128) {
-        embedMessage.react('🔎');
+        await embedMessage.react('🔎');
       }
-      embedMessage.react('🌀');
-      embedMessage.react('🎨');
+      await embedMessage.react('🌀');
+      await embedMessage.react('🎨');
 
       const filter = (reaction, user) => {
         return ['🗑️', '🔎', '🌀', '🎨'].includes(reaction.emoji.name) && user.id === message.author.id;
@@ -200,7 +213,7 @@ async function getTexture(message, res, texture) {
           return magnify(embedMessage, embedMessage.embeds[0].image.url)
         }
         if (reaction.emoji.name === '🌀' && used.includes(res)) {
-          if (!embedMessage.deleted) embedMessage.delete()
+          if (!embedMessage.deleted) await embedMessage.delete()
           return getTexture(message, used[(used.indexOf(res) + 1) % used.length], texture)
         }
       })

@@ -258,7 +258,6 @@ client.on('message', async message => {
 
 	if (message.content.toLowerCase() === 'mhhh') {
 		const embed = new Discord.MessageEmbed()
-			.setAuthor(`${message.author.tag} translated: ${message.content}`, message.author.displayAvatarURL())
 			.setDescription('```Uh-oh moment```')
 			.setColor(colors.BLUE)
 			.setFooter('Swahili → English', settings.BOT_IMG)

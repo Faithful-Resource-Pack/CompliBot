@@ -10,7 +10,7 @@ const colors    = require('../res/colors');
 const { warnUser } = require('../functions/warnUser.js');
 
 const BLACKLIST = [
-  'discords', 'reload', 'rules', 'shutdown', 'status', 'say', 'behave', 'embed', 'hotfix'
+  'discords', 'reload', 'rules', 'shutdown', 'status', 'say', 'behave', 'embed', 'hotfix', 'database'
 ]
 
 module.exports = {
