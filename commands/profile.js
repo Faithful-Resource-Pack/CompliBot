@@ -14,7 +14,7 @@ const { warnUser } = require('../functions/warnUser.js');
 module.exports = {
 	name: 'profile',
 	uses: strings.COMMAND_USES_ANYONE,
-	syntax: `${prefix}profile username <Your Name>\n${prefix}profile uuid <Your MC uuid (full uuid)>\n${prefix}profile show -> Display what the bot knows about you`,
+	syntax: `${prefix}profile username <Your Name>\n${prefix}profile uuid <Your MC uuid (full uuid)>\n${prefix}profile show -> Display what the bot knows about you\n\nModerators only:\n${prefix}profile <@someone>`,
 	description: strings.HELP_DESC_PROFILE,
 	guildOnly: false,
 	/**
@@ -29,17 +29,30 @@ module.exports = {
 		/** @type {import('../helpers/firestorm/users').User} */
 		let user = await usersCollection.get(message.author.id).catch(err => console.error(err))
 		// create empty user
-		if(!user)
-			user = {}
-
-		if(!args.length) return showProfile(message, user.username, user.uuid, user.type ? user.type.join(', ') : undefined)
+		if (!user) user = new Object()
+		if (!args.length) return showProfile(message, user)
 
 		// what we want
-		if(args[0] !== 'username' && args[0] !== 'uuid' && args[0] !== 'show')
+		if (args[0].startsWith('<@') && message.member.hasPermission('ADMINISTRATOR')) {
+
+			let userID = args[0].replace('<@', '').replace('>', '').replace('!', '')
+
+			try {
+				user = await usersCollection.get(userID)
+			}
+			catch (err) {
+				user = {}
+			}
+
+			return showProfile(message, user, userID)
+		}
+		else if (args[0].startsWith('<@') && !message.member.hasPermission('ADMINISTRATOR'))
+			return warnUser(message, strings.COMMAND_NO_PERMISSION)
+		else if (args[0] !== 'username' && args[0] !== 'uuid' && args[0] !== 'show')
 			return warnUser(message, strings.COMMAND_WRONG_ARGUMENTS_GIVEN)
 
-		if(args[0] === 'show')
-			return showProfile(message, user.username, user.uuid, user.type ? user.type.join(', ') : undefined)
+		if (args[0] === 'show')
+			return showProfile(message, user)
 		
 		// value is the rest of arguments concatenated
 		const argumentsLeft = args.slice(1).join(' ')
@@ -53,17 +66,31 @@ module.exports = {
 	}
 }
 
-function showProfile(message, username = 'None', uuid = 'None', type = 'member') {
-	if (username == null) username = 'None';
-	if (uuid == null) uuid = 'None';
+async function showProfile(message, user = undefined, memberID = 'None') {
+	let username  = user.username ? user.username : 'None'
+	let uuid      = user.uuid == null ? 'None' : user.uuid
+	let	type      = user.type ? user.type.join(', ') : 'member'
+	let warns     = user.warns ? user.warns.map(el => '- ' + el) : 'None'
+	let discordID = user.id ? user.id : memberID
+	let discordname
+
+	if (discordID == memberID) {
+		try {
+			discordname = await message.guild.members.cache.get(memberID)
+			discordname = discordname.user.username
+		}
+		catch (err) { /* Not found error */ }
+	}
 
 	var embed = new Discord.MessageEmbed()
 		.setAuthor(message.author.tag, message.author.avatarURL())
+		.setTitle(`${discordname ? discordname : username}'s profile`)
 		.addFields(
-			{ name: 'Website Username', value: username          },
-			{ name: 'Minecraft UUID',   value: uuid              },
-			{ name: 'Discord ID',       value: message.author.id },
-			{ name: 'Type',             value: type              }
+			{ name: 'Website Username', value: username  },
+			{ name: 'Minecraft UUID',   value: uuid      },
+			{ name: 'Discord ID',       value: discordID },
+			{ name: 'Type',             value: type      },
+			{ name: `Warns ${warns == 'None' ? '' : '(' + warns.length + ')'}`, value: warns }
 		)
 		.setColor(colors.BLUE)
 		.setFooter(message.client.user.username, settings.BOT_IMG);
