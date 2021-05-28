@@ -125,7 +125,7 @@ module.exports = {
 			if (!waitEmbedMessage.deleted) await waitEmbedMessage.delete();
 		}
     else {
-			return await warnUser(message, strings.TEXTURE_DOESNT_EXIST)
+			await warnUser(message, strings.TEXTURE_DOESNT_EXIST)
 			if (!waitEmbedMessage.deleted) await waitEmbedMessage.delete();
 		}
   }

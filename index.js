@@ -142,13 +142,13 @@ client.on('ready', async () => {
 	pushToGithub.start()
 
 	/*
-	 * UPDATE CTWEAKS MEMBERS
+	 * UPDATE MEMBERS
 	 */
 	updateMembers(client, settings.CTWEAKS_ID, settings.CTWEAKS_COUNTER)
 	updateMembers(client, settings.C32_ID, settings.C32_COUNTER)
 
 	// get out if no channel, no cache or empty cache
-	if(client.channels === undefined || client.channels.cache === undefined || client.channels.cache.length === 0) return
+	/*if(client.channels === undefined || client.channels.cache === undefined || client.channels.cache.length === 0) return
 
 	// get out if history channel not found
 	const destinationChannel = client.channels.cache.get('785867553095548948')
@@ -159,7 +159,7 @@ client.on('ready', async () => {
 		.setDescription(`<@!${client.user.id}> \n ID: ${client.user.id}`)
 		.setColor(colors.GREEN)
 		.setTimestamp()
-	await destinationChannel.send(embed)
+	await destinationChannel.send(embed)*/
 })
 
 /*
