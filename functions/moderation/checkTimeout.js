@@ -13,11 +13,7 @@ async function checkTimeout(client) {
 			timestamp = timestamp.getTime()
 
 			// if the actual timestamp is greater than the end timestamp, remove the mute role
-			if (timestamp > endTimestamp && endTimestamp != 0) {
-				user.muted = {}
-				usersCollection.set(user.id, user)
-				removeMutedRole(client, user.id)
-			}
+			if (timestamp > endTimestamp && endTimestamp != 0) removeMutedRole(client, user.id)
 		}
 	}
 }

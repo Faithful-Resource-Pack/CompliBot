@@ -1,4 +1,5 @@
 const settings = require('../../settings.js')
+const users = require('../../helpers/firestorm/users.js')
 
 /**
  * Take a user, remove it's muted role
@@ -23,6 +24,13 @@ async function removeMutedRole(client, userID) {
 		let role   = member === undefined ? undefined : await server.roles.cache.find(r => r.name === 'Muted')
 		if (role) await member.roles.remove(role)
 	}
+
+	// get the user from the db
+	let user = await users.searchKeys([userID])
+
+	// replace it's muted obj with an empty one
+	user[0].muted = new Object()
+	users.set(userID, user[0])
 }
 
 exports.removeMutedRole = removeMutedRole

@@ -51,8 +51,6 @@ async function addMutedRole(client, userID, seconds) {
 		end: endAt.getTime()
 	}
 	users.set(userID, user[0])
-
-	console.log(user[0]);
 }
 
 exports.addMutedRole = addMutedRole

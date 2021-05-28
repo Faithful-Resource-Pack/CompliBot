@@ -21,22 +21,31 @@ module.exports = {
 	async execute(client, message, args) {
 
 		if (!message.member.hasPermission('BAN_MEMBERS')) return await warnUser(message, strings.COMMAND_NO_PERMISSION)
-
 		if (!args.length) return warnUser(message, strings.COMMAND_NO_ARGUMENTS_GIVEN)
 
-		const member = message.mentions.members.first() || message.guild.members.cache.get(args[0])
+		let userID = undefined
+		try {
+			let member = message.mentions.member.first() || message.guild.members.cache.get(args[0])
+			userID = userID
+		}
+		catch (err) {
+			userID = args[0].replace('<!@', '').replace('<@', '').replace('>', '')
+		}
+
+		if (userID.startsWith('!')) userID = userID.replace('!', '')
+
 		const reason = args.slice(1).join(' ') || 'Not Specified'
 
-		if (!member) return await warnUser(message, strings.WARN_SPECIFY_USER)
-		//if (member.id === message.author.id) return await warnUser(message, strings.WARN_CANT_WARN_SELF)
-		if (member.id === client.user.id) return await message.channel.send(strings.COMMAND_NOIDONTTHINKIWILL_LMAO)
+		if (!userID) return await warnUser(message, strings.WARN_SPECIFY_USER)
+		if (userID === message.author.id) return await warnUser(message, strings.WARN_CANT_WARN_SELF)
+		if (userID === client.user.id) return await message.channel.send(strings.COMMAND_NOIDONTTHINKIWILL_LMAO)
 
 		// get the user from the db
-		let user = await users.searchKeys([member.id])
+		let user = await users.searchKeys([userID])
 
 		// if the user doesn't exist, create a new one (add username for a better readability when looking at the db)
 		if (!user[0]) {
-			const discord_user = await client.users.cache.find(user => user.id === member.id)
+			const discord_user = await client.users.cache.find(user => user.id === userID)
 
 			user[0] = {
 				username: discord_user.username
@@ -51,7 +60,7 @@ module.exports = {
 
 		// update the db
 		user[0].warns = warns
-		users.set(member.id, user[0])
+		users.set(userID, user[0])
 
 		// mute the user if warns >= 3
 		let time = 0
@@ -60,7 +69,7 @@ module.exports = {
 
 			var mutedEmbed = new Discord.MessageEmbed()
 				.setAuthor(message.author.tag, message.author.displayAvatarURL())
-				.setDescription(`After ${warns.length} warns, ${member} has been muted for \`${time / 86400}\` days`)
+				.setDescription(`After ${warns.length} warns, <@!${userID}> has been muted for \`${time / 86400}\` days`)
 				.setColor(colors.BLACK)
 				.setTimestamp();
 
@@ -70,18 +79,18 @@ module.exports = {
 				})
 			}
 
-			addMutedRole(client, member.id, time);
+			addMutedRole(client, userID, time);
 		}
 
 		var embed = new Discord.MessageEmbed()
 			.setAuthor(message.author.tag, message.author.displayAvatarURL())
 			.setTitle(`Warned someone:`)
-			.setDescription(`**User:** ${member}\n**Reason:** \`${reason}\``)
+			.setDescription(`**User:** <@!${userID}>\n**Reason:** \`${reason}\``)
 			.setColor(colors.BLACK)
 			.setTimestamp()
 		await message.inlineReply(embed)
 
 		if (mutedEmbed) await message.channel.send(mutedEmbed) // send it after the warn message
-		modLog(client, message, member, reason, time, 'warned')
+		modLog(client, message, userID, reason, time, 'warned')
 	}
 };
