@@ -175,7 +175,7 @@ async function getTexture(message, res, texture) {
       if (res === '32' || res === '32b') embed.setFooter('Compliance 32x', settings.C32_IMG)
       if (res === '64' || res === '64b') embed.setFooter('Compliance 64x', settings.C64_IMG)
 
-      let lastContribution = await texture.lastContribution((res == '32' || res == '64') ? 'c'+res : undefined);
+      let lastContribution = await texture.lastContribution((res == '32' || res == '64') ? `c${res}` : undefined);
       let contributors = lastContribution ? lastContribution.contributors.map(contributor => { return `<@!${contributor}>` }) : 'None'
       let date = lastContribution ? timestampConverter(lastContribution.date) : 'None'
 

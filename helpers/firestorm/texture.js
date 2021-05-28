@@ -1,7 +1,4 @@
 const firestorm = require('.')
-const contributions = require('./contributions')
-const texture_use = require('./texture_use')
-
 require('./firestorm_config')() 
 
 /**
@@ -15,6 +12,8 @@ require('./firestorm_config')()
 module.exports = firestorm.collection('textures', el => {
   /** @returns {Promise<import('./texture_use').TextureUse[]> */
   el.uses = function() {
+    const texture_use = require('./texture_use')
+
     return texture_use.search([{
       field: 'textureID',
       criteria: '==',
@@ -24,6 +23,8 @@ module.exports = firestorm.collection('textures', el => {
   
   /** @returns {Promise<import('./contributions').Contribution[]>} */
   el.contributions = function(res = undefined) {
+    const contributions = require('./contributions')
+
     const s = [{
       field: 'textureID',
       criteria: '==',

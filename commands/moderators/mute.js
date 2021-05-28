@@ -40,9 +40,7 @@ module.exports = {
 		}
 
 		if (!member) return await warnUser(message, strings.MUTE_SPECIFY_USER);
-
 		if (member.id === message.author.id) return await warnUser(message, strings.MUTE_CANT_MUTE_SELF);
-
 		if (member.id === client.user.id) return await message.channel.send(strings.COMMAND_NOIDONTTHINKIWILL_LMAO);
 
 		if (isNaN(time)) return await warnUser(message, strings.MUTE_SPECIFY_INTEGER);		
