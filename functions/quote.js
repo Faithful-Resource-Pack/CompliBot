@@ -97,8 +97,23 @@ async function quote(msg) {
 				}
 			}
 
-			await msg.inlineReply(embed)
-			return
+			const embedMessage = await msg.inlineReply(embed)
+			await embedMessage.react('🗑️')
+
+			const filter = (reaction, user) => {
+				return ['🗑️'].includes(reaction.emoji.name) && user.id === msg.author.id
+			}
+
+			embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
+				.then(async collected => {
+					const reaction = collected.first()
+					if (reaction.emoji.name === '🗑️') {
+						await embedMessage.delete()
+					}
+				})
+				.catch(async () => {
+					if (!embedMessage.deleted) await embedMessage.reactions.cache.get('🗑️').remove()
+				})
 		}
 	}
 }

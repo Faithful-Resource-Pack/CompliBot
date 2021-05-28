@@ -80,7 +80,7 @@ module.exports = function(message, params) {
 
     if (description.length >= 2048) {
       description = description.slice(0, 2048)
-      embed.addField('⚠️ WARNING', 'This description is too long for Discord Embeds (>2048), some elements have been deleted!', true)
+			embed.addField('⚠️ WARNING', 'The amount of textures is too much for Discord to show, further textures cannot be displayed!', true)
     }
 
     embed.setDescription(description)
