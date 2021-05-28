@@ -13,16 +13,15 @@ async function removeMutedRole(client, userID) {
 		settings.CADDONS_ID, 
 		settings.C64_ID, 
 		settings.C32_ID, 
-		'814198513847631944'
+		'814198513847631944', // what the hell is this server id ??
+		'720677267424018526' // Bot dev discord
 	]
 	
 	for (var i = 0; i < servers.length; i++) {
-		var server = await client.guilds.cache.get(servers[i]) || undefined
-		var member = await server.members.cache.get(userID) || undefined
-		var role   = await server.roles.cache.find(r => r.name === 'Muted')
-		if (server != undefined && member != undefined) {
-			await member.roles.remove(role)
-		}
+		let server = await client.guilds.cache.get(servers[i]) || undefined
+		let member = server === undefined ? undefined : await server.members.cache.get(userID)
+		let role   = member === undefined ? undefined : await server.roles.cache.find(r => r.name === 'Muted')
+		if (role) await member.roles.remove(role)
 	}
 }
 

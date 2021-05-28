@@ -24,18 +24,18 @@ module.exports = {
 
 		if (!args.length) return warnUser(message, strings.COMMAND_NO_ARGUMENTS_GIVEN);
 
-		var role = message.guild.roles.cache.find(r => r.name === 'Muted');
 		const member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
 		const reason = args.slice(2).join(' ') || 'Not Specified';
 		var time = args[1] || -100;
 
 		if (typeof time === 'string') {
-			if (time.includes('min'))                              time = 60 * parseInt(time, 10);
-			else if (time.includes('h') || time.includes('hour'))  time = 3600 * parseInt(time, 10);
-			else if (time.includes('d') || time.includes('day'))   time = 86400 * parseInt(time, 10);
-			else if (time.includes('w') || time.includes('week'))  time = 604800 * parseInt(time, 10);
-			else if (time.includes('m') || time.includes('month')) time = 2592000 * parseInt(time, 10);
-			else if (time.includes('y') || time.includes('year'))  time = 31536000 * parseInt(time, 10);
+			if (time.includes('s') || time.includes('seconds'))        time = parseInt(time, 10);
+			else if (time.includes('min') || time.includes('minutes')) time = 60 * parseInt(time, 10);
+			else if (time.includes('h') || time.includes('hour'))      time = 3600 * parseInt(time, 10);
+			else if (time.includes('d') || time.includes('day'))       time = 86400 * parseInt(time, 10);
+			else if (time.includes('w') || time.includes('week'))      time = 604800 * parseInt(time, 10);
+			else if (time.includes('m') || time.includes('month'))     time = 2592000 * parseInt(time, 10);
+			else if (time.includes('y') || time.includes('year'))      time = 31536000 * parseInt(time, 10);
 			else return await warnUser(message, strings.MUTE_NOT_VALID_TIME);	
 		}
 
@@ -48,66 +48,24 @@ module.exports = {
 		if (isNaN(time)) return await warnUser(message, strings.MUTE_SPECIFY_INTEGER);		
 		else {
 			var timeout = undefined;
-			if (time == -100) timeout = 'Unlimited';
+			if (time < 0) timeout = 'Unlimited';
 			else timeout = `${time}`;
 
-			addMutedRole(client, member.id);
-					
-			let warnList = await jsonModeration.read();
-					
-			// invisible try
-			try {
-
-			var index    = -1;
-
-			for (var i = 0; i < warnList.length; i++) {
-				if (warnList[i].user == `${member.id}`) {
-					index = i;
-					break;
-				}
-			}
-
-			if (index != -1) {
-				warnList[index].timeout = time;
-				warnList[index].muted   = true;
-			} else {
-				warnList.push({
-					"user": `${member.id}`,
-					"timeout": parseInt(time),
-					"muted": true
-				})
-			}
-					
-			await jsonModeration.write(warnList);
-
-			// invisible catch
-			} catch(_error) {
-				jsonModeration.release();
-			}
+			addMutedRole(client, member.id, time);
+			
+			var endsAt = new Date();
+			endsAt.setSeconds(endsAt.getSeconds() + time)
+			if (time < 0) endsAt = "Never"
+			else endsAt = `${endsAt.getUTCDate()}/${endsAt.getUTCMonth() + 1}/${endsAt.getUTCFullYear()} ${endsAt.getUTCHours()}:${endsAt.getUTCMinutes()}:${endsAt.getUTCSeconds()} UTC`
 
 			var embed = new Discord.MessageEmbed()
 				.setAuthor(message.author.tag, message.author.displayAvatarURL())
-				.setDescription(`Muted ${member}\nReason: ${reason}\nTime: ${timeout} seconds`)
-				.setColor(colors.BLUE)
+				.setTitle(`Muted someone:`)
+				.setDescription(`**User:** ${member}\n**Reason:** \`${reason}\`\n**Time:** \`${timeout != 'Unlimited' ? timeout + ' seconds' : 'Unlimited'}\`\n**Ends at:** \`${endsAt}\``)
+				.setColor(colors.BLACK)
 				.setTimestamp();
 
-			const embedMessage = await message.inlineReply(embed);
-			await embedMessage.react('🗑️');
-			const filter = (reaction, user) => {
-				return ['🗑️'].includes(reaction.emoji.name) && user.id === message.author.id;
-			};
-
-			embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
-				.then(async collected => {
-					const reaction = collected.first();
-					if (reaction.emoji.name === '🗑️') {
-						await embedMessage.delete();
-						if (!message.deleted) await message.delete();
-					}
-				})
-				.catch(async () => {
-					await embedMessage.reactions.cache.get('🗑️').remove();
-				});
+			await message.inlineReply(embed);
 
 			modLog(client, message, member, reason, time, 'muted');
 		}

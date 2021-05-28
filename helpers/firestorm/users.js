@@ -10,14 +10,15 @@ require('./firestorm_config')()
  * @property {String[]} type User type on server
  * @property {String} uuid User minecraft id
  * @property {Object} muted Object if user muted on server
- * @property {Number?} muted.start
- * @property {Number?} muted.end
+ * @property {Number?} muted.start timestamp of the beginning of mute
+ * @property {Number?} muted.end timestamp of the end of mute
  * @property {Number} timeout Number if user muted on server
  * @property {String[]} warns List of all reasons warns
  * @property {Function} contributions Gets all contributions of the user
  */
 
  module.exports = firestorm.collection('users', el => {
+  /** @returns {Promise<import('./contributions').Contribution[]>} */
   el.contributions = function() {
     return contributions.search([{
       field: 'contributors',

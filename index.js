@@ -88,7 +88,7 @@ let pushToGithub = new cron.CronJob('15 0 * * *', async () => {
  * MODERATION UPDATE INTERVAL
  * @param {int} TIME : in milliseconds
  */
-const TIME = 30000
+const TIME = 5000
 setInterval(function() { checkTimeout(client) }, TIME)
 
 /** 
