@@ -103,7 +103,7 @@ module.exports = {
         let uses = await results[i].uses()
         let paths = await uses[0].paths()
 
-        choice.push(`\`[#${results[i].id}]\` ${results[i].name.replace(search, `**${search}**`)} — ${paths[0].path.replace(search, `**${search}**`)}`)
+        choice.push(`\`[#${results[i].id}]\` ${results[i].name.replace(search, `**${search}**`).replace(/_/g, '\\_')} — ${paths[0].path.replace(search, `**${search}**`).replace(/_/g, '\\_')}`)
       }
 
 			if (!waitEmbedMessage.deleted) await waitEmbedMessage.delete();
@@ -179,6 +179,9 @@ async function getTexture(message, res, texture) {
       let contributors = lastContribution ? lastContribution.contributors.map(contributor => { return `<@!${contributor}>` }) : 'None'
       let date = lastContribution ? timestampConverter(lastContribution.date) : 'None'
 
+      /**
+       * TODO: fix the authors using the new database first
+       */
       /*if (res != '16') {
         embed.addFields(
           { name: 'Author(s)', value: contributors, inline: true },

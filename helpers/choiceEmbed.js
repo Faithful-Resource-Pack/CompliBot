@@ -29,6 +29,7 @@ const DEFAULT = {
   title: 'Choose proposition',
   description: 'Please choose one result using the associated reaction.\n',
   footer: 'chooseEmbed',
+  color: colors.BLUE,
   max: 1,
   separator: ' — ',
   imageURL: settings.BOT_IMG,
@@ -51,7 +52,7 @@ module.exports = function(message, params) {
 
     let embed = new Discord.MessageEmbed()
       .setTitle(params.title)
-      .setColor(colors.BLUE)
+      .setColor(params.color)
     
     if(params.imageURL)
       embed = embed.setFooter(params.footer, params.imageURL)
@@ -76,6 +77,12 @@ module.exports = function(message, params) {
       description.push(`${emoji}${params.separator}${propObj[emoji]}`)
     })
     description = description.join('\n')
+
+    if (description.length >= 2048) {
+      description = description.slice(0, 2048)
+      embed.addField('⚠️ WARNING', 'This description is too long for Discord Embeds (>2048), some elements have been deleted!', true)
+    }
+
     embed.setDescription(description)
 
     // reply to the sent message
