@@ -88,20 +88,17 @@ let pushToGithub = new cron.CronJob('15 0 * * *', async () => {
  * MODERATION UPDATE INTERVAL
  * @param {int} TIME : in milliseconds
  */
-const TIME = 5000
+const TIME = 30000
 setInterval(function() { checkTimeout(client) }, TIME)
 
 /** 
  * BOT HEARTBEAT:
  * Keep the bot alive on repl.it
  */
-const server = http.createServer((req, res) => {
-	res.writeHead(302, {
-		'Location': 'https://compliancepack.net/'
-	})
-	res.end()
-})
-server.listen(PORT, () => console.log(`listening at http://localhost:${PORT}`))
+http.createServer((req, res) => {
+  res.write("h");
+  res.end();
+}).listen(PORT, () => console.log(`listening at http://localhost:${PORT}`));
 
 /**
  * COMMAND HANDLER
@@ -288,7 +285,7 @@ client.on('message', async message => {
 	 * @author Juknum
 	 * @TODO: add Co-Authors as co-authors (the database should be updated to specify when a texture has co-authors)
 	 */
-	textureIDQuote(message);
+	//if (message.content.includes('#')) textureIDQuote(message);
 
 	/**
 	 * DISCORD SERVER INVITE DETECTION

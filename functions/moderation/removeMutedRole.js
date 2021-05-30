@@ -14,7 +14,6 @@ async function removeMutedRole(client, userID) {
 		settings.CADDONS_ID, 
 		settings.C64_ID, 
 		settings.C32_ID, 
-		'814198513847631944', // what the hell is this server id ??
 		'720677267424018526' // Bot dev discord
 	]
 	

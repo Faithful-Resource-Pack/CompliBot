@@ -8,59 +8,59 @@ const colors   = require('../../res/colors');
 const { warnUser } = require('../../functions/warnUser.js');
 
 const EDIT = {
-	date: '02.04.2021',
-	description: 'Merged rule 10 and 12 (now rule 11) as they are very similar.',
+	date: '30/05/2021',
+	description: 'All rules were completely rewritten.',
 	enabled: true
 }
 
 const RULES = [
 	{
 		emoji: '1️⃣',
-		sentence: 'Follow [Discord TOS and Guidelines](https://discord.com/terms).'
+		sentence: '**Follow [Discord TOS and Guidelines](https://discord.com/terms).**'
 	},
 	{
 		emoji: '2️⃣',
-		sentence: 'Be considerate of others.'
+		sentence: '**Be respectful of others.**\nThis is your standard "don\'t be a dick" rule. Just be polite to others and you\'ll be fine.\n\n__Examples of unnaceptable behaviour:__\n• Mocking and/or making fun of people, especially after being told to stop.\n• Being unable to accept civil feedback from others. If others can provide constructive criticism for your creation, you can be civil about it too!\n\nThese are just examples, and other behaviour not listed here may be considered unacceptable as well.\n\n__The following behaviour does NOT fall under this rule:__\n• Obvious jokes. Harmless funny teasing is fine, just don\'t let it go too far.\n• Feedback on creations, as long as it\'s civil and constructive.'
 	},
 	{ 
 		emoji: '3️⃣',
-		sentence: 'No advertising. This means no products or other Discord servers unless another user asks.'
+		sentence: '**No advertising.**\nThis means no advertising of products or other Discord servers unless another user asks.'
 	},
 	{
 		emoji: '4️⃣',
-		sentence: 'No NSFW content, ie explicit photographs or graphic stories. Cursing is generally fine so long as it is not excessive.'
+		sentence: '**No NSFW content, including but not limited to explicit photographs or graphic stories.**\nIf you think something is NSFW, it is NSFW. Don\'t post it. (or DM a moderator to approve the image)'
 	},
 	{
 		emoji: '5️⃣',
-		sentence: 'Ignoring, not knowing and/or bypassing the rules, as well as not listening to the moderators is no excuse.'
+		sentence: '**Provide constructive criticism.**\nNever say just "that\'s bad" when giving your opinion on something. Always elaborate on your view, and remember to stay polite!'
 	},
 	{
 		emoji: '6️⃣',
-		sentence: 'No spamming.'
+		sentence: '**No spamming.**\nThat includes walls of text as well as excessively long chains of similar/identical messages.'
 	},
 	{
 		emoji: '7️⃣',
-		sentence: 'Only use `/modping` when it is absolutely necessary.'
+		sentence: '**Absolutely no politics.**\nThis is a Minecraft resource pack server. Take your political discussions somewhere else. That includes talking about recent political events.'
 	},
 	{
 		emoji: '8️⃣',
-		sentence: 'No politics.'
+		sentence: '**No hate speech.**\nThat includes, but is not limited to: racial slurs, homophobia, transphobia and other slurs related to sexual orientation/sex/gender, general derogatory names etc.'
 	},
 	{
 		emoji: '9️⃣',
-		sentence: 'No hate speech. This includes racial slurs, sexual slurs, general derogatory names, etc.'
+		sentence: '**Don\'t ask to ask.**\nDon\'t just go in a channel and say "can anybody help me?" – Ask your question directly instead. Also, remember to read our FAQ.'
 	},
 	{
 		emoji: '🔟',
-		sentence: 'Don\'t ask to ask, please read FAQ first & ask after.'
+		sentence: '**Stay on topic.**\nThere are multiple channels with different purposes for a reason.'
 	},
 	{
 		emoji: '1️⃣1️⃣',
-		sentence: 'Stay on topic. There are multiple channels with different purposes for a reason.'
+		sentence: '**Leaking private information from staff without permission is strictly prohibited.**\nThis applies to channel names, as well as all content shared in these private channels.'
 	},
 	{
 		emoji: '1️⃣2️⃣',
-		sentence: 'Preferably no talk about why we moved, that is explained in `#faq`'
+		sentence: '**Ignoring, not knowing and/or bypassing the rules, as well as not listening to the moderators is not an excuse for misbehaving.**\nRemember, by talking in this server you\'re agreeing to follow these rules.'
 	}
 ]
 
@@ -144,12 +144,13 @@ module.exports = {
 					});
 				}
 			}
+			embed.addField('\u200B', 'Please understand that failing to comply to these rules will result in an adequate punishment.')
 
 			await message.channel.send(embed);
 
 			if (EDIT.enabled && message.guild.id !== "720677267424018526") {
 				const embedChanges = new Discord.MessageEmbed()
-					.setTitle(`Latest changes as of ${EDIT.date}`)
+					.setTitle(`Latest changes as of the ${EDIT.date}`)
 					.setColor(color)
 					.setDescription(EDIT.description);
 

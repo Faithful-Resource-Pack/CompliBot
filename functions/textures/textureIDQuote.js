@@ -27,7 +27,7 @@ async function textureIDQuote(message) {
   if (!res) return // if nothing is found -> we don't deserve it.
   else res = res.results.filter(el => el !== undefined)
 
-  console.log(res)
+  //console.log(res)
 
   for (let i = 0; i < res.length; i++) {
     let texture = res[i];
