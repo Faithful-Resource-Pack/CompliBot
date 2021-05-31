@@ -28,7 +28,7 @@ const RULES = [
 	},
 	{
 		emoji: '4️⃣',
-		sentence: '**No NSFW content, including but not limited to explicit photographs or graphic stories.**\nIf you think something is NSFW, it is NSFW. Don\'t post it. (or DM a moderator to approve the image)'
+		sentence: '**No NSFW content, including, but not limited to explicit photographs or graphic stories.**\nIf you think something is NSFW, it is NSFW. Don\'t post it. (or DM a moderator to approve the image)'
 	},
 	{
 		emoji: '5️⃣',
