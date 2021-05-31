@@ -1,9 +1,9 @@
 const Canvas          = require('canvas')
 const Discord         = require('discord.js')
-const GIFEncoderFixed = require('../modified_libraries/GIFEncoder.js')
+const GIFEncoderFixed = require('../../modified_libraries/GIFEncoder.js')
 
-const { getMeta }  = require('../helpers/getMeta')
-const { warnUser } = require('../helpers/warnUser')
+const { getMeta }  = require('../../helpers/getMeta')
+const { warnUser } = require('../../helpers/warnUser')
 
 // "magnify" the output GIF (the output will be to small)
 var FACTOR = 8

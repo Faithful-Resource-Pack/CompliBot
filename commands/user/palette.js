@@ -1,7 +1,7 @@
 const prefix  = process.env.PREFIX;
 const strings = require('../../ressources/strings');
 
-const { palette }  = require('../../functions/palette.js');
+const { palette }  = require('../../functions/textures/palette.js');
 const { warnUser } = require('../../helpers/warnUser.js');
 
 module.exports = {

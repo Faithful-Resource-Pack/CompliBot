@@ -15,7 +15,7 @@ const RES_JAVA = 'j'
 const RES_BEDROCK = 'b'
 const RES_ALLOWED = [...RES_SIDE.map(el => `${el}${RES_JAVA}`), ...RES_SIDE.map(el => `${el}${RES_BEDROCK}`)]
 
-const CANVAS_FUNCTION_PATH = '../../functions/canvas'
+const CANVAS_FUNCTION_PATH = '../../functions/textures/canvas'
 
 function nocache (module) { require('fs').watchFile(require('path').resolve(module), () => { delete require.cache[require.resolve(module)] }) }
 nocache(CANVAS_FUNCTION_PATH)

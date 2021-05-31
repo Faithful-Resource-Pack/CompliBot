@@ -1,7 +1,7 @@
 const Discord  = require('discord.js')
-const settings = require('../ressources/settings')
-const colors   = require('../ressources/colors')
-const strings  = require('../ressources/strings')
+const settings = require('../../ressources/settings')
+const colors   = require('../../ressources/colors')
+const strings  = require('../../ressources/strings')
 
 /**
  * Add given reactions if condition are met

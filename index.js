@@ -33,8 +33,8 @@ const { walkSync }       = require('./helpers/walkSync')
 
 
 // Functions:
-const { autoReact }         = require('./functions/autoReact')
-const { updateMembers }     = require('./functions/updateMembers.js')
+const { autoReact }         = require('./functions/moderation/autoReact')
+const { updateMembers }     = require('./functions/moderation/updateMembers.js')
 const { quote }             = require('./functions/quote')
 const { textureSubmission } = require('./functions/textures_submission/textureSubmission.js')
 const { textureCouncil }    = require('./functions/textures_submission/textureCouncil.js')

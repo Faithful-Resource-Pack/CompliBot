@@ -1,10 +1,10 @@
 const Canvas  = require('canvas')
 const Discord = require('discord.js')
 
-const colors2 = require('../ressources/colors')
+const colors2 = require('../../ressources/colors')
 
-const { getMeta }  = require('../helpers/getMeta')
-const { warnUser } = require('../helpers/warnUser')
+const { getMeta }  = require('../../helpers/getMeta')
+const { warnUser } = require('../../helpers/warnUser')
 
 const COLORS_PER_PALETTE      = 9
 const COLORS_PER_PALETTE_LINE = 3

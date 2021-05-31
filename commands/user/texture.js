@@ -9,8 +9,8 @@ const colors      = require('../../ressources/colors');
 const settings    = require('../../ressources/settings.js');
 const choiceEmbed = require('../../helpers/choiceEmbed')
 
-const { magnify }  = require('../../functions/magnify.js');
-const { palette }  = require('../../functions/palette.js');
+const { magnify }  = require('../../functions/textures/magnify.js');
+const { palette }  = require('../../functions/textures/palette.js');
 const { getMeta }  = require('../../helpers/getMeta.js');
 const { warnUser } = require('../../helpers/warnUser.js');
 const { timestampConverter } = require ('../../helpers/timestampConverter');

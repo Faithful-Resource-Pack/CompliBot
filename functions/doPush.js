@@ -102,8 +102,8 @@ async function doPush(COMMIT_MESSAGE = `githubPush passed textures from ${date()
 		if (DEBUG) console.log(`PUSHED TO GITHUB: Compliance-Bedrock-64x (1.16.210)`)
 	}
 
-	/* JSON ********************************************************************************************************************/
-	await githubPush('Compliance-Resource-Pack', 'JSON', 'main', COMMIT_MESSAGE, './json/')
+	/* JSON DB ********************************************************************************************************************/
+	await githubPush('Compliance-Resource-Pack', 'JSON', 'main', COMMIT_MESSAGE, './json/database')
 	if (DEBUG) console.log(`PUSHED TO GITHUB: JSON`)
 }
 

@@ -4,7 +4,7 @@ const settings = require('../../ressources/settings.js');
 const fetch    = require('node-fetch');
 const { timestampConverter } = require('../../helpers/timestampConverter');
 
-const CANVAS_FUNCTION_PATH = '../../functions/canvas'
+const CANVAS_FUNCTION_PATH = '../../functions/textures/canvas'
 function nocache(module) { require('fs').watchFile(require('path').resolve(module), () => { delete require.cache[require.resolve(module)] }) }
 nocache(CANVAS_FUNCTION_PATH)
 
