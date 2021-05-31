@@ -1,6 +1,6 @@
 const Discord  = require('discord.js')
-const colors   = require('../../res/colors')
-const settings = require('../../settings.js')
+const colors   = require('../../ressources/colors')
+const settings = require('../../ressources/settings.js')
 
 /**
  * Send a embed message in the logChannel

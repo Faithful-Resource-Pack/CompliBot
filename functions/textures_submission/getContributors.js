@@ -1,10 +1,10 @@
 /*eslint-env node*/
-const settings = require('../../settings.js')
-const strings  = require('../../res/strings.js')
+const settings = require('../../ressources/settings.js')
+const strings  = require('../../ressources/strings.js')
 
 const { date }        = require('../utility/date.js')
 const { getMessages } = require('../getMessages.js')
-const { autoPush }    = require('../autoPush.js')
+const { githubPush }    = require('../githubPush.js')
 const { jsonContributionsBedrock, jsonContributionsJava } = require('../../helpers/fileHandler.js')
 
 async function getContributors(client, inputID) {
@@ -193,7 +193,7 @@ async function setContributors(java, bedrock) {
   jsonContributionsJava.release()
   jsonContributionsBedrock.release()
 
-  autoPush('Compliance-Resource-Pack', 'JSON', 'main', `(WIP) AutoPush passed textures from ${date()}`, './json/')
+  githubPush('Compliance-Resource-Pack', 'JSON', 'main', `(WIP) githubPush passed textures from ${date()}`, './json/')
 }
 
 async function getUserIDFromMention(mention) {

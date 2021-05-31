@@ -1,11 +1,10 @@
-const prefix = process.env.PREFIX;
-
+const prefix   = process.env.PREFIX;
 const Discord  = require("discord.js");
-const settings = require('../../settings.js');
-const strings  = require('../../res/strings');
-const colors   = require('../../res/colors');
+const settings = require('../../ressources/settings.js');
+const strings  = require('../../ressources/strings');
+const colors   = require('../../ressources/colors');
 
-const { warnUser } = require('../../functions/warnUser.js');
+const { warnUser } = require('../../helpers/warnUser.js');
 
 const FAQS = [
 	{

@@ -1,11 +1,9 @@
-const prefix   = process.env.PREFIX;
+const prefix  = process.env.PREFIX;
+const colors  = require('../../ressources/colors.js');
+const strings = require('../../ressources/strings');
+const Discord = require('discord.js');
 
-const settings = require('../../settings');
-const colors   = require('../../res/colors.js');
-const strings = require('../../res/strings');
-const Discord  = require('discord.js');
-
-const { warnUser } = require('../../functions/warnUser.js');
+const { warnUser } = require('../../helpers/warnUser.js');
 
 module.exports = {
 	name: 'embed',

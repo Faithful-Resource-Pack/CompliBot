@@ -1,7 +1,6 @@
-/* global process */
 const Discord  = require('discord.js')
-const settings = require('../settings')
-const colors   = require('../res/colors')
+const settings = require('../ressources/settings')
+const colors   = require('../ressources/colors')
 
 /**
  * Quote a message when discord message URL is found

@@ -1,8 +1,8 @@
 const Discord  = require("discord.js");
-const colors   = require('../../res/colors.js');
-const settings = require('../../settings.js');
+const colors   = require('../../ressources/colors.js');
+const settings = require('../../ressources/settings.js');
 const fetch    = require('node-fetch');
-const { timestampConverter } = require('../timestampConverter');
+const { timestampConverter } = require('../../helpers/timestampConverter');
 
 const CANVAS_FUNCTION_PATH = '../../functions/canvas'
 function nocache(module) { require('fs').watchFile(require('path').resolve(module), () => { delete require.cache[require.resolve(module)] }) }
@@ -15,8 +15,8 @@ nocache(CANVAS_FUNCTION_PATH)
  */
 async function textureIDQuote(message) {
   const args = message.content.split(' ') // get all words in the message content
-  let ids = args.filter(el => el.charAt(0) === '#' && !isNaN(el.slice(1))).map(el => el.slice(1)) // filter textures ids and slice '#'
-  ids = ids.filter((el, index) => ids.indexOf(el) === index && el >= 0) // avoid doublon and wrong id
+  let ids = args.filter(el => el.charAt(0) === '[' && el.charAt(1) === '#' && el.slice(-1) == "]").map(el => el.slice(2, el.length - 1)) // filter textures ids and slice '#'
+  ids = ids.filter(el => el != '').filter((el, index) => ids.indexOf(el) === index && el >= 0) // avoid doublon, empty and wrong id
 
   const texturesCollection = require('../../helpers/firestorm/texture')
   const promiseEvery = require('../../helpers/promiseEvery')
@@ -26,8 +26,6 @@ async function textureIDQuote(message) {
 
   if (!res) return // if nothing is found -> we don't deserve it.
   else res = res.results.filter(el => el !== undefined)
-
-  //console.log(res)
 
   for (let i = 0; i < res.length; i++) {
     let texture = res[i];

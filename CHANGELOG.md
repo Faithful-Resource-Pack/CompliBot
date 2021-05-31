@@ -4,9 +4,22 @@
 
 ## 2021
 
+### June 2021
+
 ### May 2021
 
+#### May 31st 2021
+
+> Juknum
+
+- reordered functions files, moved somes to `/helpers`, renamed `/res` to `/ressources` & moved `settings.js` to it.
+- sorted commands by rank access, `/users` now group all commands that everyone can do.
+- textureIDQuote now target ids following this template `[#<id>]` instead of `#<id>`.
+- fixed most of the warning that VSCode was crying to xd
+
 #### May 21st 2021
+
+> Juknum
 
 - updated the `/texture` command to use the new database system
 - moved default texture path into `settings.js`
@@ -243,7 +256,7 @@
 
 > Juknum
 
-- Added `/autopush` command, act the same way as GetResults.js, but it can be now executed manually
+- Added `/githubPush` command, act the same way as GetResults.js, but it can be now executed manually
 - Added `/profile` command, used to translate Discord ID into username, usefull for the website Gallery.
 - Added `/hotfix` command, basically a `/test` command but with a better name.
 

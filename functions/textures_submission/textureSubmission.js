@@ -1,8 +1,8 @@
 const Discord  = require('discord.js')
-const settings = require('../../settings')
-const colors   = require('../../res/colors')
+const settings = require('../../ressources/settings')
+const colors   = require('../../ressources/colors')
 
-const { countReact }  = require('../countReact')
+const { countReact }  = require('../../helpers/countReact')
 const { getMessages } = require('../getMessages')
 
 /**

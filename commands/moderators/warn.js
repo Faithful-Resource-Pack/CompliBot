@@ -1,13 +1,10 @@
-const prefix = process.env.PREFIX;
+const prefix  = process.env.PREFIX;
+const Discord = require('discord.js');
+const strings = require('../../ressources/strings');
+const colors  = require('../../ressources/colors');
+const users   = require('../../helpers/firestorm/users.js')
 
-const Discord  = require('discord.js');
-const fs       = require('fs');
-const strings  = require('../../res/strings');
-const colors   = require('../../res/colors');
-const settings = require('../../settings.js');
-const users    = require('../../helpers/firestorm/users.js')
-
-const { warnUser }     = require('../../functions/warnUser.js');
+const { warnUser }     = require('../../helpers/warnUser.js');
 const { modLog }       = require('../../functions/moderation/modLog.js');
 const { addMutedRole } = require('../../functions/moderation/addMutedRole.js');
 
@@ -26,7 +23,7 @@ module.exports = {
 		let userID = undefined
 		try {
 			let member = message.mentions.member.first() || message.guild.members.cache.get(args[0])
-			userID = userID
+			userID = member.id
 		}
 		catch (err) {
 			userID = args[0].replace('<!@', '').replace('<@', '').replace('>', '')

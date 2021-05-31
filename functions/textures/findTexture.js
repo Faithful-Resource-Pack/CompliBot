@@ -2,8 +2,8 @@
 /* global Buffer */
 
 const { FileHandler, jsonContributionsJava, jsonContributionsBedrock } = require('../../helpers/fileHandler')
-const strings = require('../../res/strings')
-const settings = require('../../settings')
+const strings = require('../../ressources/strings')
+const settings = require('../../ressources/settings')
 const https   = require('https')
 
 /**

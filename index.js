@@ -27,14 +27,15 @@ const DEBUG       = (process.env.DEBUG.toLowerCase() == 'true')
 const MAINTENANCE = (process.env.MAINTENANCE.toLowerCase() == 'true')
 
 // Helpers:
-const { jsonModeration }    = require('./helpers/fileHandler')
+const { jsonModeration } = require('./helpers/fileHandler')
+const { warnUser }       = require('./helpers/warnUser.js')
+const { walkSync }       = require('./helpers/walkSync')
+
 
 // Functions:
 const { autoReact }         = require('./functions/autoReact')
 const { updateMembers }     = require('./functions/updateMembers.js')
-const { walkSync }          = require('./functions/walkSync')
 const { quote }             = require('./functions/quote')
-const { warnUser }          = require('./functions/warnUser.js')
 const { textureSubmission } = require('./functions/textures_submission/textureSubmission.js')
 const { textureCouncil }    = require('./functions/textures_submission/textureCouncil.js')
 const { textureRevote }     = require('./functions/textures_submission/textureRevote.js')
@@ -50,12 +51,12 @@ const { textureIDQuote }    = require('./functions/textures/textureIDQuote.js')
 jsonModeration.read(false).then(warnList => { // YOU MUST NOT LOCK because only read
 
 // Resources:
-const colors  = require('./res/colors')
-const strings = require('./res/strings')
+const colors  = require('./ressources/colors')
+const strings = require('./ressources/strings')
 
 // Import settings & commands handler:
 const commandFiles = walkSync('./commands').filter(file => file.endsWith('.js'))
-const settings     = require('./settings')
+const settings     = require('./ressources/settings')
 
 /**
  * SCHEDULED FUNCTIONS : Texture Submission
@@ -281,11 +282,10 @@ client.on('message', async message => {
 
 	/**
 	 * TEXTURE ID QUOTE
-	 * when someone type #1234, send an embed with the given texture id
+	 * when someone type [#1234], send an embed with the given texture id
 	 * @author Juknum
-	 * @TODO: add Co-Authors as co-authors (the database should be updated to specify when a texture has co-authors)
 	 */
-	//if (message.content.includes('#')) textureIDQuote(message);
+	textureIDQuote(message)
 
 	/**
 	 * DISCORD SERVER INVITE DETECTION

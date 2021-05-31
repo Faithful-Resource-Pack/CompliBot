@@ -1,8 +1,8 @@
 const { warnUser } = require("../../warnUser")
 const Discord  = require('discord.js')
-const settings = require('../../../settings')
-const colors   = require('../../../res/colors')
-const strings  = require('../../../res/strings')
+const settings = require('../../../ressources/settings')
+const colors   = require('../../../ressources/colors')
+const strings  = require('../../../ressources/strings')
 /**
  * Check if the given texture exist, and embed it if true
  * @param {DiscordMessage} message

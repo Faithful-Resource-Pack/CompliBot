@@ -1,4 +1,4 @@
-const settings = require('../../settings.js')
+const settings = require('../../ressources/settings.js')
 const users = require('../../helpers/firestorm/users.js')
 
 /**

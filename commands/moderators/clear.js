@@ -1,9 +1,9 @@
 const Discord = require('discord.js');
-const colors = require('../../res/colors');
+const colors = require('../../ressources/colors');
 const prefix = process.env.PREFIX;
 
-const strings = require('../../res/strings');
-const { warnUser } = require('../../functions/warnUser.js');
+const strings = require('../../ressources/strings');
+const { warnUser } = require('../../helpers/warnUser.js');
 
 module.exports = {
 	name: 'clear',
@@ -15,11 +15,8 @@ module.exports = {
 	async execute(client, message, args) {
 
 		if (!message.member.hasPermission('ADMINISTRATOR')) return warnUser(message, strings.COMMAND_NO_PERMISSION);
-
 		if (!args.length) return warnUser(message, strings.COMMAND_NO_ARGUMENTS_GIVEN);
-
 		if (isNaN(args)) return await message.reply(strings.COMMAND_NOT_A_NUMBER);
-
 		if (args > 200) return await message.reply(strings.CLEAR_TOO_MUCH);
 		if (args < 1) return await message.reply(strings.CLEAR_NOT_ENOUGH);
 

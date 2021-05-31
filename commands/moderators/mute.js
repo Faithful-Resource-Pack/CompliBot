@@ -1,13 +1,10 @@
 const prefix = process.env.PREFIX;
 
-const Discord  = require('discord.js');
-const strings  = require('../../res/strings');
-const colors   = require('../../res/colors');
-const settings = require('../../settings.js');
-const fs       = require('fs');
+const Discord = require('discord.js');
+const strings = require('../../ressources/strings');
+const colors  = require('../../ressources/colors');
 
-const { jsonModeration } = require('../../helpers/fileHandler');
-const { warnUser }       = require('../../functions/warnUser.js');
+const { warnUser }       = require('../../helpers/warnUser.js');
 const { modLog }         = require('../../functions/moderation/modLog.js');
 const { addMutedRole }   = require('../../functions/moderation/addMutedRole.js');
 

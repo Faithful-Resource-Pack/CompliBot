@@ -1,8 +1,8 @@
 const Discord   = require('discord.js');
 const translate2 = require('@vitalets/google-translate-api');
 
-const colors   = require('../res/colors');
-const settings = require('../settings.js');
+const colors   = require('../ressources/colors');
+const settings = require('../ressources/settings.js');
 
 async function translate(message, content, args) {
 

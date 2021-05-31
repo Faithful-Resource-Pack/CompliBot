@@ -65,6 +65,7 @@ class FileHandler {
   }
 
   /**
+   * !DEPRECATED
    * Pulls file
    * @returns {Promise}
    */
@@ -92,6 +93,7 @@ class FileHandler {
   }
   
   /**
+   * !DEPRECATED
    * Add file
    * @returns {Promise}
    */
@@ -116,6 +118,7 @@ class FileHandler {
   }
 
   /**
+   * !DEPRECATED
    * Commits changes
    * @param {String} message Commit message
    * @returns {Promise}
@@ -143,6 +146,7 @@ class FileHandler {
   }
 
   /**
+   * !DEPRECATED
    * Pushes repo
    * @returns {Promise}
    */
@@ -184,6 +188,9 @@ class FileHandler {
     }
   }
 
+  /**
+   * !DEPRECATED
+   */
   read(lock = true, doThePull = true) {
     return new Promise((resolve, reject) => {
       if(!lock) {
@@ -254,6 +261,9 @@ class FileHandler {
     })
   }
 
+  /**
+   * !DEPRECATED
+   */
   write(content) {
     // create the folders recusively if not existing
     fs.mkdirSync(dirname(this.filepath), { recursive: true })

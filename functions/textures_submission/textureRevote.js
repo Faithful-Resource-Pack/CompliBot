@@ -1,8 +1,8 @@
 const Discord = require('discord.js')
-const colors  = require('../../res/colors')
-const strings = require('../../res/strings')
+const colors  = require('../../ressources/colors')
+const strings = require('../../ressources/strings')
 
-const { countReact }  = require('../countReact')
+const { countReact }  = require('../../helpers/countReact')
 const { getMessages } = require('../getMessages')
 
 var embed = null

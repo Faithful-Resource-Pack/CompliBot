@@ -1,9 +1,9 @@
 /*eslint-env node*/
 
 const Discord  = require('discord.js')
-const settings = require('../../settings.js')
-const colors   = require('../../res/colors.js')
-const strings  = require('../../res/strings.js')
+const settings = require('../../ressources/settings.js')
+const colors   = require('../../ressources/colors.js')
+const strings  = require('../../ressources/strings.js')
 const fs       = require('fs')
 const fetch    = require('node-fetch')
 
@@ -35,7 +35,7 @@ async function getResults(client, inputID, OFFSET_DAY = 0) {
 		var isGoodColor    = (isMessageEmbed && message.embeds[0].color == 5025616)
 
 		var textureAuthor   = undefined
-		var textureCoAuthor = []
+		//var textureCoAuthor = []
 		var textureName     = undefined
 		var textureType     = undefined
 		var texturePath     = undefined
@@ -99,11 +99,11 @@ async function getResults(client, inputID, OFFSET_DAY = 0) {
 
 					jsonContributionsBedrock.release()
 				}
-				else errorAutoPush(client, inputID, message, textureAuthor, textureName, texturePath, textureType, `No texture type set up (java or bedrock)`)
+				else errorgithubPush(client, inputID, message, textureAuthor, textureName, texturePath, textureType, `No texture type set up (java or bedrock)`)
 
 				if (textureIndex == -1 && (textureType == 'java' || textureType == 'bedrock')) {
 					if (DEBUG) console.log(`\nTEXTURE NOT FOUND: ${textureName}`)
-					errorAutoPush(client, inputID, message, textureAuthor, textureName, texturePath, textureType, `Texture not found, check spelling or folder`)
+					errorgithubPush(client, inputID, message, textureAuthor, textureName, texturePath, textureType, `Texture not found, check spelling or folder`)
 				}
 				else if (textureIndex != -1 && (textureType == 'java' || textureType == 'bedrock')) {
 
@@ -160,7 +160,7 @@ async function download_branch(client, textureURL, texturePath, textureSize, tex
 	else if (textureSize == 64 && type == 'bedrock') localPath = `./texturesPush/Compliance-Bedrock-64x/${branch}/${texturePath}`
 
 	else if (localPath == undefined) {
-		return errorAutoPush(client, 0, 'localPath undefined', textureURL, textureName, texturePath, textureSize, 'localPath == undefined')
+		return errorgithubPush(client, 0, 'localPath undefined', textureURL, textureName, texturePath, textureSize, 'localPath == undefined')
 	}
 
 	const response = await fetch(textureURL)
@@ -172,14 +172,14 @@ async function download_branch(client, textureURL, texturePath, textureSize, tex
 	})
 }
 
-async function errorAutoPush(client, inputID, message, author, name, folder, type, error) {
-	var errorChannel = client.channels.cache.get(settings.C32_AUTOPUSH_FAIL)
-	if (inputID == settings.C64_RESULTS) errorChannel = client.channels.cache.get(settings.C64_AUTOPUSH_FAIL)
+async function errorgithubPush(client, inputID, message, author, name, folder, type, error) {
+	var errorChannel = client.channels.cache.get(settings.C32_githubPush_FAIL)
+	if (inputID == settings.C64_RESULTS) errorChannel = client.channels.cache.get(settings.C64_githubPush_FAIL)
 
 	var embed = new Discord.MessageEmbed()
 		.setColor(colors.YELLOW)
 		.setAuthor(author, message.embeds[0].author.iconURL)
-		.setDescription(`Something went wrong during autopush:\nError: ${error}`)
+		.setDescription(`Something went wrong during githubPush:\nError: ${error}`)
 		.addFields(
 			{ name: 'Name:', value: name, inline: true },
 			{ name: 'Folder:', value: folder, inline: true },
