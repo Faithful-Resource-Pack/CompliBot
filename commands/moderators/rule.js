@@ -8,8 +8,8 @@ const colors   = require('../../ressources/colors');
 const { warnUser } = require('../../helpers/warnUser.js');
 
 const EDIT = {
-	date: '30/05/2021',
-	description: 'All rules were completely rewritten.',
+	date: '31/05/2021',
+	description: 'Fixed typo.',
 	enabled: true
 }
 
@@ -20,7 +20,7 @@ const RULES = [
 	},
 	{
 		emoji: '2️⃣',
-		sentence: '**Be respectful of others.**\nThis is your standard "don\'t be a dick" rule. Just be polite to others and you\'ll be fine.\n\n__Examples of unaceptable behaviour:__\n• Mocking and/or making fun of people, especially after being told to stop.\n• Being unable to accept civil feedback from others. If others can provide constructive criticism for your creation, you can be civil about it too!\n\nThese are just examples, and other behaviour not listed here may be considered unacceptable as well.\n\n__The following behaviour does NOT fall under this rule:__\n• Obvious jokes. Harmless funny teasing is fine, just don\'t let it go too far.\n• Feedback on creations, as long as it\'s civil and constructive.'
+		sentence: '**Be respectful of others.**\nThis is your standard "don\'t be a dick" rule. Just be polite to others and you\'ll be fine.\n\n__Examples of unacceptable behaviour:__\n• Mocking and/or making fun of people, especially after being told to stop.\n• Being unable to accept civil feedback from others. If others can provide constructive criticism for your creation, you can be civil about it too!\n\nThese are just examples, and other behaviour not listed here may be considered unacceptable as well.\n\n__The following behaviour does NOT fall under this rule:__\n• Obvious jokes. Harmless funny teasing is fine, just don\'t let it go too far.\n• Feedback on creations, as long as it\'s civil and constructive.'
 	},
 	{ 
 		emoji: '3️⃣',
