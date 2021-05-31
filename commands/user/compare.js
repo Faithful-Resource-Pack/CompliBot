@@ -2,12 +2,12 @@
 const prefix = process.env.PREFIX
 
 require('dotenv').config()
-const Discord = require('discord.js')
-const getops  = require('getopts')
-const strings = require('../../ressources/strings')
+const Discord     = require('discord.js')
+const getops      = require('getopts')
+const strings     = require('../../ressources/strings')
+const FindTexture = require('../../functions/textures/findTexture')
+const choiceEmbed = require('../../helpers/choiceEmbed')
 
-const FindTexture  = require('../../functions/textures/findTexture')
-const choiceEmbed  = require('../../helpers/choiceEmbed')
 const { warnUser } = require('../../helpers/warnUser')
 
 const RES_SIDE = [16, 32, 64]

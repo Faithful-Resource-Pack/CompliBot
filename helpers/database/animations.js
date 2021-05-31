@@ -1,6 +1,5 @@
-const admin = require('firebase-admin')
-const firestore = require('./database')
-
+const admin           = require('firebase-admin')
+const firestore       = require('./database')
 const COLLECTION_NAME = 'animations'
 
 /**

@@ -1,14 +1,15 @@
 const prefix   = process.env.PREFIX;
+
 const Discord  = require('discord.js');
 const fs       = require('fs');
 const fetch    = require('node-fetch');
 const strings  = require('../../ressources/strings');
 const colors   = require('../../ressources/colors');
-const settings = require('../../ressources/settings.js');
+const settings = require('../../ressources/settings');
 
-const { date }     = require('../../helpers/date.js');
-const { warnUser } = require('../../helpers/warnUser.js');
-const { doPush }   = require('../../functions/doPush.js');
+const { date }     = require('../../helpers/date');
+const { warnUser } = require('../../helpers/warnUser');
+const { doPush }   = require('../../functions/doPush');
 const { jsonContributionsJava, jsonContributionsBedrock } = require('../../helpers/fileHandler');
 
 const BE_BRANCHES = [ '1.16.210' ];

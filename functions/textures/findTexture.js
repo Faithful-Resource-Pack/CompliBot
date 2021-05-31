@@ -1,10 +1,11 @@
 /* eslint-disable no-unused-vars */
 /* global Buffer */
 
-const { FileHandler, jsonContributionsJava, jsonContributionsBedrock } = require('../../helpers/fileHandler')
-const strings = require('../../ressources/strings')
+const strings  = require('../../ressources/strings')
 const settings = require('../../ressources/settings')
-const https   = require('https')
+const https    = require('https')
+
+const { FileHandler, jsonContributionsJava, jsonContributionsBedrock } = require('../../helpers/fileHandler')
 
 /**
  * @typedef {Object} SearchResult

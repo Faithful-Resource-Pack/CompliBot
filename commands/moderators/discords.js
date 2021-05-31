@@ -1,6 +1,6 @@
 const prefix = process.env.PREFIX;
 
-const settings = require('../../ressources/settings.js');
+const settings = require('../../ressources/settings');
 const strings  = require('../../ressources/strings');
 
 const uidR = process.env.UIDR;

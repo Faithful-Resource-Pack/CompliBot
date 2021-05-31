@@ -1,17 +1,17 @@
 /*eslint-env node*/
 
 const Discord  = require('discord.js')
-const settings = require('../../ressources/settings.js')
-const colors   = require('../../ressources/colors.js')
-const strings  = require('../../ressources/strings.js')
+const settings = require('../../ressources/settings')
+const colors   = require('../../ressources/colors')
+const strings  = require('../../ressources/strings')
 const fs       = require('fs')
 const fetch    = require('node-fetch')
 
 const DEBUG = (process.env.DEBUG == 'true')
 
-//const { date } = require('../utility/date.js')
-const { getMessages } = require('../getMessages.js')
-const { jsonContributionsBedrock, jsonContributionsJava } = require('../../helpers/fileHandler.js')
+//const { date } = require('../utility/date')
+const { getMessages } = require('../getMessages')
+const { jsonContributionsBedrock, jsonContributionsJava } = require('../../helpers/fileHandler')
 
 /**
  * Check if embed messages use green color and download image attached if true.
@@ -99,11 +99,11 @@ async function getResults(client, inputID, OFFSET_DAY = 0) {
 
 					jsonContributionsBedrock.release()
 				}
-				else errorgithubPush(client, inputID, message, textureAuthor, textureName, texturePath, textureType, `No texture type set up (java or bedrock)`)
+				else errorgithubPush(client, inputID, message, textureAuthor, textureName, texturePath, textureType, strings.AUTOPUSH_ERROR_TYPE)
 
 				if (textureIndex == -1 && (textureType == 'java' || textureType == 'bedrock')) {
 					if (DEBUG) console.log(`\nTEXTURE NOT FOUND: ${textureName}`)
-					errorgithubPush(client, inputID, message, textureAuthor, textureName, texturePath, textureType, `Texture not found, check spelling or folder`)
+					errorgithubPush(client, inputID, message, textureAuthor, textureName, texturePath, textureType, strings.AUTOPUSH_ERROR_SPELLING)
 				}
 				else if (textureIndex != -1 && (textureType == 'java' || textureType == 'bedrock')) {
 

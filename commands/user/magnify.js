@@ -1,8 +1,9 @@
 const prefix  = process.env.PREFIX;
+
 const strings = require('../../ressources/strings');
 
-const { magnify }  = require('../../functions/textures/magnify.js');
-const { warnUser } = require('../../helpers/warnUser.js');
+const { magnify }  = require('../../functions/textures/magnify');
+const { warnUser } = require('../../helpers/warnUser');
 
 module.exports = {
 	name: 'magnify',

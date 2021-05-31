@@ -1,12 +1,13 @@
 const prefix  = process.env.PREFIX;
+
 const Discord = require('discord.js');
 const strings = require('../../ressources/strings');
 const colors  = require('../../ressources/colors');
-const users   = require('../../helpers/firestorm/users.js')
+const users   = require('../../helpers/firestorm/users')
 
-const { warnUser }     = require('../../helpers/warnUser.js');
-const { modLog }       = require('../../functions/moderation/modLog.js');
-const { addMutedRole } = require('../../functions/moderation/addMutedRole.js');
+const { warnUser }     = require('../../helpers/warnUser');
+const { modLog }       = require('../../functions/moderation/modLog');
+const { addMutedRole } = require('../../functions/moderation/addMutedRole');
 
 module.exports = {
 	name: 'warn',

@@ -1,11 +1,11 @@
 /*eslint-env node*/
-const settings = require('../../ressources/settings.js')
-const strings  = require('../../ressources/strings.js')
+const settings = require('../../ressources/settings')
+const strings  = require('../../ressources/strings')
 
-const { date }        = require('../utility/date.js')
-const { getMessages } = require('../getMessages.js')
-const { githubPush }    = require('../githubPush.js')
-const { jsonContributionsBedrock, jsonContributionsJava } = require('../../helpers/fileHandler.js')
+const { date }        = require('../utility/date')
+const { getMessages } = require('../getMessages')
+const { githubPush }  = require('../githubPush')
+const { jsonContributionsBedrock, jsonContributionsJava } = require('../../helpers/fileHandler')
 
 async function getContributors(client, inputID) {
   const messages = await getMessages(client, inputID, 10)

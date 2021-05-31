@@ -1,4 +1,4 @@
-const firestorm = require('.')
+const firestorm     = require('.')
 const contributions = require('./contributions')
 
 require('./firestorm_config')() 

@@ -1,5 +1,5 @@
-const Canvas   = require('canvas')
-const Discord  = require('discord.js')
+const Canvas  = require('canvas')
+const Discord = require('discord.js')
 
 const { getMeta }  = require('../../helpers/getMeta')
 const { warnUser } = require('../../helpers/warnUser')

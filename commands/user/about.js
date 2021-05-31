@@ -6,7 +6,7 @@ const Discord = require('discord.js')
 const strings = require('../../ressources/strings')
 const colors  = require('../../ressources/colors')
 
-const { warnUser } = require('../../helpers/warnUser.js')
+const { warnUser } = require('../../helpers/warnUser')
 const { jsonContributionsJava, jsonContributionsBedrock } = require('../../helpers/fileHandler')
 
 module.exports = {

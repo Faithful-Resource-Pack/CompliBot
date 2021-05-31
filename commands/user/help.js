@@ -1,12 +1,13 @@
 const prefix    = process.env.PREFIX;
+
 const Discord   = require("discord.js");
 const client    = new Discord.Client();
 client.commands = new Discord.Collection();
 const strings   = require('../../ressources/strings');
-const settings  = require('../../ressources/settings.js');
+const settings  = require('../../ressources/settings');
 const colors    = require('../../ressources/colors');
 
-const { warnUser } = require('../../helpers/warnUser.js');
+const { warnUser } = require('../../helpers/warnUser');
 
 const BLACKLIST = [
   'discords', 'reload', 'rules', 'shutdown', 'status', 'say', 'behave', 'embed', 'hotfix', 'database'

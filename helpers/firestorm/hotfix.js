@@ -1,5 +1,5 @@
 const firestorm = require('./index')
-const all = require('./all')
+const all       = require('./all')
 
 let contrib
 let idsToDelete, idsToSet

@@ -1,7 +1,7 @@
 const prefix = process.env.PREFIX;
 
 const Discord  = require("discord.js");
-const settings = require('../../ressources/settings.js');
+const settings = require('../../ressources/settings');
 const colors   = require('../../ressources/colors');
 const strings  = require('../../ressources/strings');
 

@@ -1,6 +1,5 @@
 const Canvas  = require('canvas')
 const Discord = require('discord.js')
-
 const colors2 = require('../../ressources/colors')
 
 const { getMeta }  = require('../../helpers/getMeta')

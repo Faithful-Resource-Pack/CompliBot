@@ -1,10 +1,11 @@
 const prefix  = process.env.PREFIX;
-const strings = require('../../ressources/strings');
 
 const uidR = process.env.UIDR;
 const uidJ = process.env.UIDJ;
 const uidD = process.env.UIDD;
 const uidT = process.env.UIDT;
+
+const strings = require('../../ressources/strings');
 
 module.exports = {
 	name: 'behave',

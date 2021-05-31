@@ -1,6 +1,6 @@
 const firestorm = require('.')
-const texture = require('./texture')
-const users = require('./users')
+const texture   = require('./texture')
+const users     = require('./users')
 
 require('./firestorm_config')()
 

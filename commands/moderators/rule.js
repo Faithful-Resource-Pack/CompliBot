@@ -1,11 +1,11 @@
 const prefix = process.env.PREFIX;
 
 const Discord  = require("discord.js");
-const settings = require('../../ressources/settings.js');
+const settings = require('../../ressources/settings');
 const strings  = require('../../ressources/strings');
 const colors   = require('../../ressources/colors');
 
-const { warnUser } = require('../../helpers/warnUser.js');
+const { warnUser } = require('../../helpers/warnUser');
 
 const EDIT = {
 	date: '31/05/2021',

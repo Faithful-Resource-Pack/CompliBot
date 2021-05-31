@@ -4,11 +4,11 @@ const Discord   = require("discord.js");
 const client    = new Discord.Client();
 client.commands = new Discord.Collection();
 
-const settings = require('../../ressources/settings.js');
-const colors   = require('../../ressources/colors.js');
+const settings = require('../../ressources/settings');
+const colors   = require('../../ressources/colors');
 const strings  = require('../../ressources/strings');
 
-const { warnUser } = require('../../helpers/warnUser.js');
+const { warnUser } = require('../../helpers/warnUser');
 
 module.exports = {
 	name: 'profile',

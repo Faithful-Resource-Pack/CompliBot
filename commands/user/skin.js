@@ -1,11 +1,11 @@
 const prefix = process.env.PREFIX;
-const axios  = require('axios');
 
+const axios   = require('axios');
 const Discord = require("discord.js");
 const colors  = require('../../ressources/colors');
 const strings = require('../../ressources/strings');
 
-const { warnUser } = require('../../helpers/warnUser.js');
+const { warnUser } = require('../../helpers/warnUser');
 
 module.exports = {
 	name: 'skin',

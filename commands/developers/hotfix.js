@@ -1,13 +1,14 @@
 /* eslint-disable no-unused-vars */
 const prefix   = process.env.PREFIX;
-const strings  = require('../../ressources/strings');
-const settings = require('../../ressources/settings');
-const allCollection = require('../../helpers/firestorm/all')
 
 const uidR = process.env.UIDR;
 const uidJ = process.env.UIDJ;
 const uidD = process.env.UIDD;
 const uidT = process.env.UIDT;
+
+const strings       = require('../../ressources/strings');
+const settings      = require('../../ressources/settings');
+const allCollection = require('../../helpers/firestorm/all')
 
 module.exports = {
 	name: 'hotfix',

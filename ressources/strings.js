@@ -1,10 +1,9 @@
-const LATEST_MC_JE_VERSION    = '1.17'
-const LATEST_MC_BE_VERSION    = '1.16.210'
+const LATEST_MC_JE_VERSION = '1.17'
+const LATEST_MC_BE_VERSION = '1.16.210'
 
 
 // General stuff
-const BOT_ERROR           = 'Action Failed'
-const BOT_AUTOREACT_ERROR = 'Auto Reaction Failed'
+const BOT_ERROR = 'Action Failed'
 
 // command stuff
 const COMMAND_DISABLED                   = 'This command is currently disabled.'
@@ -163,15 +162,22 @@ const TEXTURE_DEFEAT_COUNCIL = 'The following texture has not passed council vot
 const TEXTURE_WIN_REVOTE     = 'This texture has passed community voting and thus will be added into the pack in a future version.'
 const TEXTURE_DEFEAT_REVOTE  = 'This texture has not passed council and community voting and thus will not be added into the pack.'
 
-// Auto React command:
-const SUBMIT_NO_FILE_ATTACHED = 'Your submission has to have a file attached!'
+// Auto reactions:
+const SUBMIT_NO_FILE_ATTACHED             = 'Your submission has to have a file attached!'
+const SUBMIT_NO_FOLDER_SPECIFIED          = 'You need to add the texture folder of your texture between []:\n`texture_name [folder] (optional comment)`'
+const SUBMIT_NO_FOLDER_SPECIFIED_DUNGEONS = 'You need to add the texture path to your submission:\n`**texture name** (Content/**folder1**/**folder2**/**texture name.png**)`'
+const SUBMIT_AUTOREACT_ERROR_TITLE        = 'Auto Reaction Failed'
+const SUBMIT_AUTOREACT_ERROR_FOOTER       = 'Submission will be removed in 30 seconds, please re-submit'
+
+// AutoPush errors
+const AUTOPUSH_ERROR_TYPE     = 'No texture type set up (java or bedrock)'
+const AUTOPUSH_ERROR_SPELLING = 'Texture not found, check spelling or folder'
 
 module.exports = {
 	LATEST_MC_JE_VERSION,
 	LATEST_MC_BE_VERSION,
 	
 	BOT_ERROR,
-	BOT_AUTOREACT_ERROR,
 
 	COMMAND_NO_ARGUMENTS_GIVEN,
 	COMMAND_WRONG_ARGUMENTS_GIVEN,
@@ -308,5 +314,12 @@ module.exports = {
 	TEXTURE_WIN_REVOTE,
 	TEXTURE_DEFEAT_REVOTE,
 
-	SUBMIT_NO_FILE_ATTACHED
+	SUBMIT_NO_FILE_ATTACHED,
+	SUBMIT_NO_FOLDER_SPECIFIED,
+	SUBMIT_NO_FOLDER_SPECIFIED_DUNGEONS,
+	SUBMIT_AUTOREACT_ERROR_TITLE,
+	SUBMIT_AUTOREACT_ERROR_FOOTER,
+
+	AUTOPUSH_ERROR_TYPE,
+	AUTOPUSH_ERROR_SPELLING
 }

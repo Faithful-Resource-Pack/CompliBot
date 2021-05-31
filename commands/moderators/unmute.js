@@ -1,12 +1,12 @@
 const prefix = process.env.PREFIX;
 
-const Discord  = require('discord.js');
-const strings  = require('../../ressources/strings');
-const colors   = require('../../ressources/colors');
+const Discord = require('discord.js');
+const strings = require('../../ressources/strings');
+const colors  = require('../../ressources/colors');
 
-const { warnUser }        = require('../../helpers/warnUser.js');
-const { modLog }          = require('../../functions/moderation/modLog.js');
-const { removeMutedRole } = require('../../functions/moderation/removeMutedRole.js');
+const { warnUser }        = require('../../helpers/warnUser');
+const { modLog }          = require('../../functions/moderation/modLog');
+const { removeMutedRole } = require('../../functions/moderation/removeMutedRole');
 
 module.exports = {
 	name: 'unmute',

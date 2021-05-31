@@ -6,7 +6,7 @@ var mods_online = new Array();
 var embed       = null;
 
 const Discord  = require("discord.js");
-const settings = require('../../ressources/settings.js');
+const settings = require('../../ressources/settings');
 const strings  = require('../../ressources/strings');
 
 module.exports = {

@@ -1,18 +1,17 @@
 /*eslint-env node*/
-
 const prefix = process.env.PREFIX;
 
 const Discord     = require('discord.js');
 const axios       = require('axios').default;
 const strings     = require('../../ressources/strings');
 const colors      = require('../../ressources/colors');
-const settings    = require('../../ressources/settings.js');
+const settings    = require('../../ressources/settings');
 const choiceEmbed = require('../../helpers/choiceEmbed')
 
-const { magnify }  = require('../../functions/textures/magnify.js');
-const { palette }  = require('../../functions/textures/palette.js');
-const { getMeta }  = require('../../helpers/getMeta.js');
-const { warnUser } = require('../../helpers/warnUser.js');
+const { magnify }  = require('../../functions/textures/magnify');
+const { palette }  = require('../../functions/textures/palette');
+const { getMeta }  = require('../../helpers/getMeta');
+const { warnUser } = require('../../helpers/warnUser');
 const { timestampConverter } = require ('../../helpers/timestampConverter');
 
 const allowed = ['vanilla', '16', '32', '64'];

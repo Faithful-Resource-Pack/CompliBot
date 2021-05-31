@@ -1,12 +1,13 @@
-const prefix  = process.env.PREFIX
-const Discord = require('discord.js')
-const strings = require('../../ressources/strings')
-const colors  = require('../../ressources/colors')
+const prefix = process.env.PREFIX
 
-const { animate }   = require('../../functions/textures/animate.js')
-const { warnUser }  = require('../../helpers/warnUser.js')
-const { parseArgs } = require('../../helpers/parseArgs.js')
-const asyncTools    = require('../../helpers/asyncTools.js')
+const Discord    = require('discord.js')
+const strings    = require('../../ressources/strings')
+const colors     = require('../../ressources/colors')
+const asyncTools = require('../../helpers/asyncTools')
+
+const { animate }   = require('../../functions/textures/animate')
+const { warnUser }  = require('../../helpers/warnUser')
+const { parseArgs } = require('../../helpers/parseArgs')
 const { jsonContributionsJava, jsonContributionsBedrock } = require('../../helpers/fileHandler')
 
 module.exports = {

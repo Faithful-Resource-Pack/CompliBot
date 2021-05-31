@@ -1,12 +1,13 @@
-const prefix  = process.env.PREFIX;
-const strings = require('../../ressources/strings');
+const prefix = process.env.PREFIX;
 
 const uidR = process.env.UIDR;
 const uidJ = process.env.UIDJ;
 const uidD = process.env.UIDD;
 
-const { translate } = require('../../functions/translate.js');
-const { warnUser }  = require('../../helpers/warnUser.js');
+const strings = require('../../ressources/strings');
+
+const { translate } = require('../../functions/translate');
+const { warnUser }  = require('../../helpers/warnUser');
 
 module.exports = {
 	name: 'translate',

@@ -1,10 +1,10 @@
 /*eslint-env node*/
 
-const { githubPush } = require('../functions/push')
-const fs = require('fs')
+const DEBUG = (process.env.DEBUG == 'true')
+const fs    = require('fs')
 
-const { date } = require('../helpers/date.js')
-const DEBUG    = (process.env.DEBUG == 'true')
+const { githubPush } = require('../functions/push')
+const { date }       = require('../helpers/date.js')
 
 /**
  * Push files from local storage to GitHub

@@ -1,4 +1,4 @@
-const firestorm = require('.')
+const firestorm   = require('.')
 const texture_use = require('./texture_use')
 
 require('./firestorm_config')()

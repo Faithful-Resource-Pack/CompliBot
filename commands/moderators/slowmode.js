@@ -1,9 +1,10 @@
-const Discord = require('discord.js');
 const prefix  = process.env.PREFIX;
 
-const strings      = require('../../ressources/strings');
-const colors       = require('../../ressources/colors');
-const { warnUser } = require('../../helpers/warnUser.js');
+const Discord = require('discord.js');
+const strings = require('../../ressources/strings');
+const colors  = require('../../ressources/colors');
+
+const { warnUser } = require('../../helpers/warnUser');
 
 module.exports = {
 	name: 'slowmode',

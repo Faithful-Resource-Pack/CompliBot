@@ -1,11 +1,13 @@
 const prefix  = process.env.PREFIX;
-const strings = require('../../ressources/strings');
-const { warnUser } = require('../../helpers/warnUser.js');
 
 const uidR = process.env.UIDR;
 const uidJ = process.env.UIDJ;
 const uidD = process.env.UIDD;
 const uidT = process.env.UIDT;
+
+const strings = require('../../ressources/strings');
+
+const { warnUser } = require('../../helpers/warnUser.js');
 
 module.exports = {
 	name: 'say',

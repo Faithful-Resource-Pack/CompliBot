@@ -1,12 +1,13 @@
 const prefix = process.env.PREFIX;
 
-const strings = require('../../ressources/strings');
 const uidR = process.env.UIDR;
 const uidJ = process.env.UIDJ;
 const uidD = process.env.UIDD;
 const uidT = process.env.UIDT;
 
-const { warnUser } = require('../../helpers/warnUser.js');
+const strings = require('../../ressources/strings');
+
+const { warnUser } = require('../../helpers/warnUser');
 
 const activity = ['PLAYING', 'STREAMING', 'LISTENING', 'WATCHING', 'CUSTOM_STATUS', 'COMPETING'];
 const presence = ['online', 'idle', 'dnd'];

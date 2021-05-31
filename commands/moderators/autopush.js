@@ -1,11 +1,12 @@
 const prefix   = process.env.PREFIX;
+
 const settings = require('../../ressources/settings');
 const strings  = require('../../ressources/strings');
 
-const { date }       = require('../../helpers/date.js')
-const { doPush }     = require('../../functions/doPush.js');
-const { getResults } = require('../../functions/textures_submission/getResults.js');
-const { warnUser }   = require('../../helpers/warnUser.js');
+const { date }       = require('../../helpers/date')
+const { doPush }     = require('../../functions/doPush');
+const { getResults } = require('../../functions/textures_submission/getResults');
+const { warnUser }   = require('../../helpers/warnUser');
 
 module.exports = {
 	name: 'autopush',

@@ -1,13 +1,14 @@
 const prefix   = process.env.PREFIX;
-const Discord  = require('discord.js');
-const strings  = require('../../ressources/strings');
-const colors   = require('../../ressources/colors');
-const settings = require('../../ressources/settings');
 
 const uidR = process.env.UIDR;
 const uidJ = process.env.UIDJ;
 const uidD = process.env.UIDD;
 const uidT = process.env.UIDT;
+
+const Discord  = require('discord.js');
+const strings  = require('../../ressources/strings');
+const colors   = require('../../ressources/colors');
+const settings = require('../../ressources/settings');
 
 module.exports = {
 	name: 'shutdown',

@@ -191,10 +191,10 @@ client.on('guildCreate', async guild =>{
 	var embed = new Discord.MessageEmbed()
 		.setTitle(`Thanks for adding me to ${guild.name}!`)
 		.addFields(
-				{ name: 'Commands', value: `My prefix is: \`${prefix}\` \nUse \`${prefix}help\` to see a list of all my commands!`},
-				{ name: 'Feedback', value: `If you have a suggestion or want to report a bug, then please use the command \`${prefix}feedback [your message]\``},
-				{ name: 'Personalisation', value: 'soon:tm:'},
-			)
+			{ name: 'Commands', value: `My prefix is: \`${prefix}\` \nUse \`${prefix}help\` to see a list of all my commands!`},
+			{ name: 'Feedback', value: `If you have a suggestion or want to report a bug, then please use the command \`${prefix}feedback [your message]\``},
+			{ name: 'Personalisation', value: 'soon:tm:'},
+		)
 		.setColor(colors.BLUE)
 		.setThumbnail(settings.BOT_IMG)
 		.setFooter(client.user.username, settings.BOT_IMG);
@@ -312,7 +312,7 @@ client.on('message', async message => {
 			message,
 			['⬆️','⬇️'],
 			strings.SUBMIT_NO_FILE_ATTACHED,
-			'You need to add the texture folder of your texture between []:\n`texture_name [folder] (optional comment)`',
+			strings.SUBMIT_NO_FOLDER_SPECIFIED,
 			['[',']']
 		)
 	}
@@ -323,7 +323,7 @@ client.on('message', async message => {
 			message,
 			['⬆️','⬇️'],
 			strings.SUBMIT_NO_FILE_ATTACHED,
-			'You need to add the texture folder of your texture between []:\n`texture_name [folder] (optional comment)`',
+			strings.SUBMIT_NO_FOLDER_SPECIFIED,
 			['[',']']
 		)
 	}
@@ -334,7 +334,7 @@ client.on('message', async message => {
 			message,
 			['⬆️','⬇️'],
 			strings.SUBMIT_NO_FILE_ATTACHED,
-			'You need to add the texture path to your submission:\n`**texture name** (Content/**folder1**/**folder2**/**texture name.png**)`',
+			strings.SUBMIT_NO_FOLDER_SPECIFIED_DUNGEONS,
 			['(',')']
 		)
 	}

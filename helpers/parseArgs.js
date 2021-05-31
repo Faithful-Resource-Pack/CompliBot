@@ -1,4 +1,4 @@
-const { warnUser } = require('./warnUser.js')
+const { warnUser } = require('./warnUser')
 
 /**
  * 

@@ -1,8 +1,10 @@
-const { warnUser } = require("../../warnUser")
 const Discord  = require('discord.js')
 const settings = require('../../../ressources/settings')
 const colors   = require('../../../ressources/colors')
 const strings  = require('../../../ressources/strings')
+
+const { warnUser } = require("../../warnUser")
+
 /**
  * Check if the given texture exist, and embed it if true
  * @param {DiscordMessage} message
@@ -27,8 +29,8 @@ async function invalidSubmission(message) {
     var embed = new Discord.MessageEmbed()
       .setAuthor(message.author.tag, message.author.displayAvatarURL())
       .setColor(colors.RED)
-      .setTitle(strings.BOT_AUTOREACT_ERROR)
-      .setFooter('Submission will be removed in 30 seconds, please re-submit', settings.BOT_IMG)
+      .setTitle(strings.SUBMIT_AUTOREACT_ERROR_TITLE)
+      .setFooter(strings.SUBMIT_AUTOREACT_ERROR_FOOTER, settings.BOT_IMG)
 
     const msg = await message.inlineReply(embed);
     if (!msg.deleted) await msg.delete({ timeout: 30000 })

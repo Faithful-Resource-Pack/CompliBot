@@ -56,8 +56,8 @@ async function autoReact(message, emojis, defaultErrorMsg, specificErrorMsg = un
 				var embed = new Discord.MessageEmbed()
 					.setAuthor(message.author.tag, message.author.displayAvatarURL())
 					.setColor(colors.RED)
-					.setTitle(strings.BOT_AUTOREACT_ERROR)
-					.setFooter('Submission will be removed in 30 seconds, please re-submit', settings.BOT_IMG)
+					.setTitle(strings.SUBMIT_AUTOREACT_ERROR_TITLE)
+					.setFooter(strings.SUBMIT_AUTOREACT_ERROR_FOOTER, settings.BOT_IMG)
 
 				if (specificError) embed.setDescription(specificErrorMsg)
 				else embed.setDescription(defaultErrorMsg)

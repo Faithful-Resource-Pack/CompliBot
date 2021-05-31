@@ -1,5 +1,5 @@
 const Discord = require('discord.js')
-const colors  = require('../../ressources/colors.js')
+const colors  = require('../../ressources/colors')
 
 /**
  * Send an embed message when triggered

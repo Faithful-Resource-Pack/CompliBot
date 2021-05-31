@@ -1,15 +1,16 @@
 /* eslint-disable no-irregular-whitespace */
-
-const prefix       = process.env.PREFIX;
-const Discord      = require('discord.js');
-const { warnUser } = require('../../helpers/warnUser');
-const colors       = require('../../ressources/colors');
-const strings      = require('../../ressources/strings');
+const prefix = process.env.PREFIX;
 
 const uidR = process.env.UIDR;
 const uidJ = process.env.UIDJ;
 const uidD = process.env.UIDD;
 const uidT = process.env.UIDT;
+
+const Discord = require('discord.js');
+const colors  = require('../../ressources/colors');
+const strings = require('../../ressources/strings');
+
+const { warnUser } = require('../../helpers/warnUser');
 
 module.exports = {
   name: 'users',

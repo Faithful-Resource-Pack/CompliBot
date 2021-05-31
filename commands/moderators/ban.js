@@ -4,8 +4,8 @@ const Discord = require('discord.js');
 const strings = require('../../ressources/strings');
 const colors  = require('../../ressources/colors');
 
-const { warnUser } = require('../../helpers/warnUser.js');
-const { modLog }   = require('../../functions/moderation/modLog.js');
+const { warnUser } = require('../../helpers/warnUser');
+const { modLog }   = require('../../functions/moderation/modLog');
 
 module.exports = {
 	name: 'ban',

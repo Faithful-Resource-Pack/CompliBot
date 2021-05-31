@@ -1,8 +1,9 @@
 const prefix  = process.env.PREFIX;
+
 const strings = require('../../ressources/strings');
 
-const { tile }     = require('../../functions/textures/tile.js');
-const { warnUser } = require('../../helpers/warnUser.js');
+const { tile }     = require('../../functions/textures/tile');
+const { warnUser } = require('../../helpers/warnUser');
 
 module.exports = {
 	name: 'tile',

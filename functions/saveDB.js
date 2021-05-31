@@ -1,6 +1,7 @@
 const fs = require('fs')
-const { githubPush } = require('../functions/push')
 const allCollection  = require('../helpers/firestorm/all')
+
+const { githubPush } = require('../functions/push')
 const { dirname, normalize, join } = require('path')
 
 /**

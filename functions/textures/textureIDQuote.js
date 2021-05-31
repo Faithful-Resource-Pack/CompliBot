@@ -1,6 +1,6 @@
 const Discord  = require("discord.js");
-const colors   = require('../../ressources/colors.js');
-const settings = require('../../ressources/settings.js');
+const colors   = require('../../ressources/colors');
+const settings = require('../../ressources/settings');
 const fetch    = require('node-fetch');
 const { timestampConverter } = require('../../helpers/timestampConverter');
 

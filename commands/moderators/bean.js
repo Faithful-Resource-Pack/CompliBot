@@ -1,9 +1,10 @@
 const prefix  = process.env.PREFIX;
 const Discord = require('discord.js');
+
 const strings = require('../../ressources/strings');
 const colors  = require('../../ressources/colors');
 
-const { warnUser } = require('../../helpers/warnUser.js');
+const { warnUser } = require('../../helpers/warnUser');
 
 module.exports = {
 	name: 'bean',

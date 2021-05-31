@@ -1,5 +1,5 @@
-const settings = require('../../ressources/settings.js')
-const users = require('../../helpers/firestorm/users.js')
+const settings = require('../../ressources/settings')
+const users    = require('../../helpers/firestorm/users')
 
 /**
  * Take a user, remove it's muted role

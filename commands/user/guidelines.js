@@ -1,4 +1,5 @@
-const prefix  = process.env.PREFIX;
+const prefix = process.env.PREFIX;
+
 const strings = require('../../ressources/strings');
 
 module.exports = {

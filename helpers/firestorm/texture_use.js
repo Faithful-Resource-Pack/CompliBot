@@ -1,6 +1,6 @@
-const firestorm = require('.')
-const animations = require('./animations')
-const texture = require('./texture')
+const firestorm     = require('.')
+const animations    = require('./animations')
+const texture       = require('./texture')
 const texture_paths = require('./texture_paths')
 
 require('./firestorm_config')()
