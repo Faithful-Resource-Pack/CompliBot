@@ -12,6 +12,7 @@
 
 > Juknum
 
+- added `/backup` command to backup the distant database to the [JSON](https://github.com/Compliance-Resource-Pack/JSON) repository
 - reordered functions files, moved somes to `/helpers`, renamed `/res` to `/ressources` & moved `settings.js` to it.
 - sorted commands by rank access, `/users` now group all commands that everyone can do.
 - textureIDQuote now target ids following this template `[#<id>]` instead of `#<id>`.
