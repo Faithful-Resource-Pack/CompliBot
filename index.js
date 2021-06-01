@@ -10,7 +10,7 @@ require('dotenv').config()
 const Discord   = require('discord.js')
 const cron      = require('cron')
 const http      = require('http')
-const client    = new Discord.Client({ disableMentions: 'everyone', restTimeOffset: 0 })
+const client    = new Discord.Client({ disableMentions: 'everyone', restTimeOffset: 0, partials: Object.values(Discord.Constants.PartialTypes) })
 client.commands = new Discord.Collection()
 const PORT      = 3000
 require("./modified_libraries/ExtendedMessage")
@@ -28,24 +28,29 @@ const MAINTENANCE = (process.env.MAINTENANCE.toLowerCase() == 'true')
 
 // Helpers:
 const { jsonModeration } = require('./helpers/fileHandler')
-const { warnUser }       = require('./helpers/warnUser.js')
+const { warnUser }       = require('./helpers/warnUser')
 const { walkSync }       = require('./helpers/walkSync')
 
 
 // Functions:
-const { autoReact }         = require('./functions/moderation/autoReact')
-const { updateMembers }     = require('./functions/moderation/updateMembers.js')
-const { quote }             = require('./functions/quote')
-const { textureSubmission } = require('./functions/textures_submission/textureSubmission.js')
-const { textureCouncil }    = require('./functions/textures_submission/textureCouncil.js')
-const { textureRevote }     = require('./functions/textures_submission/textureRevote.js')
-const { getResults }        = require('./functions/textures_submission/getResults.js')
-const { doPush }            = require('./functions/doPush.js')
-const { checkTimeout }      = require('./functions/moderation/checkTimeout.js')
-const { addMutedRole }      = require('./functions/moderation/addMutedRole.js')
-const { inviteDetection }   = require('./functions/moderation/inviteDetection.js')
-const { textureIDQuote }    = require('./functions/textures/textureIDQuote.js')
-//const { submitTexture }     = require('./functions/textures/submission/submitTexture.js')
+const { autoReact }          = require('./functions/moderation/autoReact')
+const { updateMembers }      = require('./functions/moderation/updateMembers')
+
+const { textureIDQuote }     = require('./functions/textures/textureIDQuote')
+const { quote }              = require('./functions/quote')
+
+const { retrieveSubmission } = require('./functions/textures/submission/retrieveSubmission')
+const { councilSubmission }  = require('./functions/textures/submission/councilSubmission')
+const { revoteSubmission }   = require('./functions/textures/submission/revoteSubmission')
+const { downloadResults }    = require('./functions/textures/admission/downloadResults')
+const { pushTextures }       = require('./functions/textures/admission/pushTextures')
+
+const { checkTimeout }       = require('./functions/moderation/checkTimeout')
+const { addMutedRole }       = require('./functions/moderation/addMutedRole')
+const { inviteDetection }    = require('./functions/moderation/inviteDetection')
+
+const { submitTexture }  = require('./functions/textures/submission/submitTexture')
+const { editSubmission } = require('./functions/textures/submission/editSubmission')
 
 // try to read this json
 jsonModeration.read(false).then(warnList => { // YOU MUST NOT LOCK because only read
@@ -66,27 +71,25 @@ const settings     = require('./ressources/settings')
  */
 const submissionProcess = new cron.CronJob('0 0 * * *', async () => {
 	// Compliance 32x
-	await textureSubmission(client, settings.C32_SUBMIT_1,  settings.C32_SUBMIT_2, 3)
-	await textureSubmission(client, settings.C32_SUBMIT_1B, settings.C32_SUBMIT_2, 3)
-	await textureCouncil(client, settings.C32_SUBMIT_2,  settings.C32_SUBMIT_3, settings.C32_RESULTS, 1)
-	await textureRevote(client, settings.C32_SUBMIT_3,  settings.C32_RESULTS,  3)
+	await retrieveSubmission(client, settings.C32_SUBMIT_TEXTURES, settings.C32_SUBMIT_COUNCIL, 3)
+	await councilSubmission(client, settings.C32_SUBMIT_COUNCIL, settings.C32_RESULTS, settings.C32_SUBMIT_REVOTE, 1)
+	await revoteSubmission(client, settings.C32_SUBMIT_REVOTE, settings.C32_RESULTS, 3)
 	
 	// Compliance 64x
-	await textureSubmission(client, settings.C64_SUBMIT_1,  settings.C64_SUBMIT_2, 3)
-	await textureSubmission(client, settings.C64_SUBMIT_1B, settings.C64_SUBMIT_2, 3)
-	await textureCouncil(client, settings.C64_SUBMIT_2,  settings.C64_SUBMIT_3, settings.C64_RESULTS, 1)
-	await textureRevote(client, settings.C64_SUBMIT_3,  settings.C64_RESULTS,  3)
+	await retrieveSubmission(client, settings.C64_SUBMIT_TEXTURES, settings.C64_SUBMIT_COUNCIL, 3)
+	await councilSubmission(client, settings.C64_SUBMIT_COUNCIL, settings.C64_RESULTS, settings.C64_SUBMIT_REVOTE, 1)
+	await revoteSubmission(client, settings.C64_SUBMIT_REVOTE, settings.C64_RESULTS, 3)
 })
 const downloadToBot = new cron.CronJob('10 0 * * *', async () => {
-	await getResults(client, settings.C32_RESULTS)
-	await getResults(client, settings.C64_RESULTS)
+	await downloadResults(client, settings.C32_RESULTS)
+	await downloadResults(client, settings.C64_RESULTS)
 })
 let pushToGithub = new cron.CronJob('15 0 * * *', async () => {
-	await doPush()
+	await pushTextures()
 })
 
 /**
- * MODERATION UPDATE INTERVAL
+ * MODERATION MUTE SYSTEM UPDATE INTERVAL
  * @param {int} TIME : in milliseconds
  */
 const TIME = 30000
@@ -234,6 +237,23 @@ client.on('message', async message => {
 	})
 })
 
+/**
+ * REACTION EVENT LISTENER
+ */
+client.on('messageReactionAdd', async (reaction, user) => {
+	if (user.bot) return
+	if (reaction.message.partial) await reaction.message.fetch() // dark magic to fetch message that are sent before the start of the bot
+	
+	/**
+	 * NEW TEXTURE SUBMISSION
+	 */
+	if (reaction.message.channel.id === '841396215211360296'  || reaction.message.channel.id === '849267113594978374'  || reaction.message.channel.id === '849308347328626750'  || reaction.message.channel.id === '849308334770094090' || // dev server
+			reaction.message.channel.id === settings.C32_SUBMIT_TEXTURES || reaction.message.channel.id === settings.C32_SUBMIT_COUNCIL || reaction.message.channel.id === settings.C32_SUBMIT_REVOTE || reaction.message.channel.id === settings.C32_RESULTS || // c32x server
+			reaction.message.channel.id === settings.C64_SUBMIT_TEXTURES || reaction.message.channel.id === settings.C64_SUBMIT_COUNCIL || reaction.message.channel.id === settings.C64_SUBMIT_REVOTE || reaction.message.channel.id === settings.C64_RESULTS || // c64x server
+			reaction.message.channel.id === settings.CDUNGEONS_SUBMIT // dungeons server
+		) editSubmission(client, reaction, user)
+})
+
 /*
  * EASTER EGGS & CUSTOM COMMANDS:
  */
@@ -299,7 +319,16 @@ client.on('message', async message => {
 	 * AUTO REACT 2.0:
 	 * (use the new database to detect if a texture exist)
 	 */
-	//if (message.channel.id === '841396215211360296') return submitTexture(message)
+	if (message.channel.id === '841396215211360296') return submitTexture(client, message)
+
+	/**
+	 * NEW TEXTURE SUBMISSION
+	 */
+	if (message.channel.id === '841396215211360296' || // #submit-texture from the dev server
+			message.channel.id === settings.C32_SUBMIT_TEXTURES ||
+			message.channel.id === settings.C64_SUBMIT_TEXTURES ||
+			message.channel.id === settings.CDUNGEONS_SUBMIT
+		) return submitTexture(client, message)
 
 	/*
 	 * AUTO REACT:
@@ -307,7 +336,7 @@ client.on('message', async message => {
 	 */
 
 	// Texture submission Compliance 32x (#submit-texture):
-	if (message.channel.id === settings.C32_SUBMIT_1 || message.channel.id === settings.C32_SUBMIT_1B) {
+	if (message.channel.id === settings.C32_SUBMIT_TEXTURES || message.channel.id === settings.C32_SUBMIT_TEXTURESB) {
 		return autoReact(
 			message,
 			['⬆️','⬇️'],
@@ -318,7 +347,7 @@ client.on('message', async message => {
 	}
 
 	// Texture submission Compliance 64x (#submit-texture):
-	if (message.channel.id === settings.C64_SUBMIT_1 || message.channel.id === settings.C64_SUBMIT_1B) {
+	if (message.channel.id === settings.C64_SUBMIT_TEXTURES || message.channel.id === settings.C64_SUBMIT_TEXTURESB) {
 		return autoReact(
 			message,
 			['⬆️','⬇️'],

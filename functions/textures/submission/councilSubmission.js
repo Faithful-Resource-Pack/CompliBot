@@ -11,7 +11,7 @@ const { getMessages } = require('../../../helpers/getMessages')
  * @param {Integer} delay delay in day from today
  */
 async function councilSubmission(client, channelFromID, channelOutID, channelOutInvalidID, delay) {
-  let messages = await getMessages(client, channelFromID, 10)
+  let messages = await getMessages(client, channelFromID)
   let channelOut = client.channels.cache.get(channelOutID)
   let channelOutInvalid = client.channels.cache.get(channelOutInvalidID)
 

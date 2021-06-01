@@ -1,8 +1,8 @@
 const fs = require('fs')
 const allCollection  = require('../helpers/firestorm/all')
 
-const { githubPush } = require('../functions/push')
-const { dirname, normalize, join } = require('path')
+const { pushToGitHub } = require('../functions/pushToGitHub')
+const { join } = require('path')
 
 /**
  * Save the Database distant files to local, then push them to the JSON repository (using allCollection as base)
@@ -21,16 +21,14 @@ async function saveDB(commitMessage) {
 
   for (const [key, collection] of Object.entries(allCollection)) {
     let text = JSON.stringify(await collection.read_raw(), null, 2)
-    fs.writeFileSync(join(
-      folderPath,
-      key + '.json'
-      ),
+    fs.writeFileSync(
+      join(folderPath, key + '.json'),
       text,
       { flag: 'w+', encoding: 'utf-8' }
     )
   }
   
-  githubPush('Compliance-Resource-Pack', 'JSON', 'main', commitMessage, './json/')
+  pushToGitHub('Compliance-Resource-Pack', 'JSON', 'main', commitMessage, './json/')
 }
 
 exports.saveDB = saveDB

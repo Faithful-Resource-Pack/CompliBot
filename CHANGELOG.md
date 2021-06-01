@@ -257,7 +257,7 @@
 
 > Juknum
 
-- Added `/githubPush` command, act the same way as GetResults.js, but it can be now executed manually
+- Added `/pushToGitHub` command, act the same way as GetResults.js, but it can be now executed manually
 - Added `/profile` command, used to translate Discord ID into username, usefull for the website Gallery.
 - Added `/hotfix` command, basically a `/test` command but with a better name.
 

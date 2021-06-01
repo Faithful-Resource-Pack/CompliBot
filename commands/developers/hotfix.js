@@ -13,6 +13,10 @@ const allCollection          = require('../../helpers/firestorm/all')
 const { retrieveSubmission } = require('../../functions/textures/submission/retrieveSubmission')
 const { councilSubmission }  = require('../../functions/textures/submission/councilSubmission')
 const { revoteSubmission }   = require('../../functions/textures/submission/revoteSubmission')
+const { downloadResults }    = require('../../functions/textures/admission/downloadResults')
+const { pushTextures }       = require('../../functions/textures/admission/pushTextures')
+
+const contributionsCollection = require('../../helpers/firestorm/contributions')
 
 module.exports = {
 	name: 'hotfix',

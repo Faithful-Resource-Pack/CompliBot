@@ -19,7 +19,7 @@ const { readFile } = require('fs-extra')
  * @param {String} commitMessage
  * @param {String} localPath
  */
-async function githubPush(org, repo, branch, commitMessage, localPath) {
+async function pushToGitHub(org, repo, branch, commitMessage, localPath) {
 	// Authentification trough CompliBot GitHub Account
 	const octo = new Octokit({
 		auth: process.env.COMPLIBOT_GIT_TOKEN,
@@ -131,7 +131,6 @@ const createBlobForFile = (octo, org, repo) => async (filePath) => {
 }
 
 /**
- * 
  * @param {Octokit} octo 
  * @param {String} owner GitHub organisation
  * @param {String} repo GitHub repository of the organisation
@@ -145,12 +144,12 @@ const createNewTree = async (octo, owner, repo, blobs = Octokit.GitCreateBlobRes
     path: paths[index],
     mode: `100644`,
     type: `blob`,
-    sha,
+    sha: sha,
   })) //as Octokit.GitCreateTreeParamsTree()
   const { data } = await octo.git.createTree({
-    owner,
-    repo,
-    tree,
+    owner: owner,
+    repo: repo,
+    tree: tree,
     base_tree: parentTreeSha,
   })
 
@@ -192,4 +191,4 @@ const setBranchToCommit = (octo, org, repo, branch, commitSha) =>
     sha: commitSha,
   })
 
-exports.githubPush = githubPush
+exports.pushToGitHub = pushToGitHub

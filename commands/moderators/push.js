@@ -17,7 +17,7 @@ const JE_BRANCHES = [ '1.12.2', '1.13.2', '1.14.4', '1.15.2', '1.16.5', '1.17' ]
 const { parseArgs } = require('../../helpers/parseArgs');
 const { date }      = require('../../helpers/date');
 const { warnUser }  = require('../../helpers/warnUser');
-const { doPush }    = require('../../functions/doPush');
+const { pushTextures }    = require('../../functions/textures/admission/pushTextures');
 const { jsonContributionsJava, jsonContributionsBedrock } = require('../../helpers/fileHandler');
 
 module.exports = {
@@ -29,6 +29,7 @@ module.exports = {
 	flags: '-r | --repo :\n\tCompliance-[Java|Bedrock]-[32x-64x]\n-p | --path :\n\tTexture path \n-a | --author :\n\tDiscord tag of texture\'s author.',
 	example: `${prefix}push -r=Compliance-Java-32x -p=textures/block/stone.png -a=Someone#1234`,
 	async execute(client, message, args) {
+		return warnUser(message, 'NOT UPDATED TO THE NEW DATABASE SYSTEM')
 
 		if(!message.member.hasPermission('ADMINISTRATOR')) return warnUser(message, strings.COMMAND_NO_PERMISSION);
 
@@ -121,7 +122,7 @@ module.exports = {
 		else {
 			await setAuthor(valType, valIndex, valAuth, valSize);
 			await download(message, valType, valIndex, valRepo, valSize);
-			await doPush(`Manual Push for ${valPath.split('/').pop()} executed by: ${message.author.username}`);
+			await pushTextures(`Manual Push for ${valPath.split('/').pop()} executed by: ${message.author.username}`);
 			await message.react('✅');
 		}
 

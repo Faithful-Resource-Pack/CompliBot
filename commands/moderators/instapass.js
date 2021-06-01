@@ -9,7 +9,7 @@ const settings = require('../../ressources/settings');
 
 const { date }     = require('../../helpers/date');
 const { warnUser } = require('../../helpers/warnUser');
-const { doPush }   = require('../../functions/doPush');
+const { pushTextures }   = require('../../functions/textures/admission/pushTextures');
 const { jsonContributionsJava, jsonContributionsBedrock } = require('../../helpers/fileHandler');
 
 const BE_BRANCHES = [ '1.16.210' ];
@@ -24,6 +24,7 @@ module.exports = {
 	flags: 'No flags',
 	example: `${prefix}instapass https://discord.com/channels/.../.../...`,
 	async execute(client, message, args) {
+		return warnUser(message, 'NOT UPDATED TO THE NEW DATABASE SYSTEM')
 
 		if(!message.member.hasPermission('ADMINISTRATOR')) return warnUser(message, strings.COMMAND_NO_PERMISSION);
 
@@ -48,8 +49,8 @@ module.exports = {
 					folder = args[1].split('[').pop().split(']')[0];
 					name   = args[0];
 
-					if (msg.channel.id === settings.C32_SUBMIT_1 || msg.channel.id === settings.C64_SUBMIT_1) valType = 'java';
-					else if (msg.channel.id === settings.C32_SUBMIT_1B || msg.channel.id === settings.C64_SUBMIT_1B) valType = 'bedrock';
+					if (msg.channel.id === settings.C32_SUBMIT_TEXTURES || msg.channel.id === settings.C64_SUBMIT_TEXTURES) valType = 'java';
+					else if (msg.channel.id === settings.C32_SUBMIT_TEXTURESB || msg.channel.id === settings.C64_SUBMIT_TEXTURESB) valType = 'bedrock';
 
 					if (name === undefined || name == '') name = 'Not Provided';
 					if (!valType) valType = 'java';
@@ -96,7 +97,7 @@ module.exports = {
 
 					await setAuthor(valType, valIndex, `${msg.author.id}`, valSize);
 					await download(msg, valType, valIndex, valRepo, valSize);
-					await doPush(`Instapass for ${valPath.split('/').pop()} executed by: ${message.author.username}`);
+					await pushTextures(`Instapass for ${valPath.split('/').pop()} executed by: ${message.author.username}`);
 					await msg.reactions.cache.get('⬆️').remove();
 					await msg.reactions.cache.get('⬇️').remove();
 					await msg.react('⏩');

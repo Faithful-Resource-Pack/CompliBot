@@ -3,7 +3,7 @@ const prefix  = process.env.PREFIX;
 const strings = require('../../ressources/strings');
 
 const { parseArgs }  = require('../../helpers/parseArgs');
-const { githubPush } = require('../../functions/push');
+const { pushToGitHub } = require('../../functions/pushToGitHub');
 const { warnUser }   = require('../../helpers/warnUser');
 const { date }       = require('../../helpers/date');
 const { jsonContributionsJava, jsonContributionsBedrock } = require('../../helpers/fileHandler');
@@ -24,7 +24,7 @@ module.exports = {
 		if (!message.member.hasPermission('ADMINISTRATOR') && message.author.id !== uidT) return warnUser(message, strings.COMMAND_NO_PERMISSION)
 
 		if (args[0] == 'update') {
-			githubPush('Compliance-Resource-Pack', 'JSON', 'main', `Manual Update executed by: ${message.author.username}`, `./json`);
+			pushToGitHub('Compliance-Resource-Pack', 'JSON', 'main', `Manual Update executed by: ${message.author.username}`, `./json`);
 			return await message.react('✅');
 		}
 
@@ -144,7 +144,7 @@ module.exports = {
 		}
 		
 		if (haveToUpdate) {
-			githubPush('Compliance-Resource-Pack', 'JSON', 'main', `Manual Update executed by: ${message.author.username}`, `./json`);
+			pushToGitHub('Compliance-Resource-Pack', 'JSON', 'main', `Manual Update executed by: ${message.author.username}`, `./json`);
 			return await message.react('✅');
 		} else return await message.react('☑️');
 	}
