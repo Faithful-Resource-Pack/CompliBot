@@ -3,8 +3,16 @@ const { default: axios } = require("axios")
 /**
  * @typedef {Object} SearchOption
  * @property {String} field The field you want to search in
- * @property {"!=" | "==" | ">=" | "<=" | "<" | ">" | "in" | "includes" | "startsWith" | "endsWith" | "array-contains" | "array-contains-any"} criteria // filter criteria
+ * @property {"!=" | "==" | ">=" | "<=" | "<" | ">" | "in" | "includes" | "startsWith" | "endsWith" | "array-contains" | "array-contains-any" | "array-length-(eq|df|gt|lt|ge|le)" } criteria // filter criteria
  * @property {String | Number | Boolean | Array } value // the value you want to compare
+ */
+
+/**
+ * @typedef {Object} EditObject
+ * @property {String | Number } id the affected element
+ * @property {String} field The field you want to edit
+ * @property {"set" | "remove" | "append" | "increment" | "decrement" | "array-push" | "array-delete" | "array-splice"} operation Wanted operation on field
+ * @property {String | Number | Boolean | Array } [value] // the value you want to compare
  */
 
 let _address = undefined
@@ -175,6 +183,7 @@ class Collection {
    * 
    * @param {String} command The write command you want
    * @param {Object?} value The value for this command 
+   * @param {Boolean | undefined} multiple if I need to delete multiple 
    * @returns {Object} Write data object
    */
   __write_data(command, value = undefined, multiple = false) {
@@ -183,11 +192,11 @@ class Collection {
       "collection": this.collectionName,
       "command": command
     }
-    if(multiple) {
+    if(multiple === true) {
       value.forEach(v => {
         delete v[ID_FIELD_NAME]
       })
-    } else {
+    } else if(multiple === false) {
       delete value[ID_FIELD_NAME]
     }
 
@@ -274,6 +283,26 @@ class Collection {
     const data = this.__write_data('setBulk', values, true)
     data['keys'] = keys
     return this.__extract_data(axios.post(writeAddress(), data))
+  }
+
+  /**
+   * Changes one field from an element in this collection
+   * @param {EditObject} obj The edit object
+   * @returns {Promise<any>}
+   */
+  editField(obj) {
+    const data = this.__write_data('editField', obj, undefined)
+    return this.__extract_data(axios.post(writeAddress()), data)
+  }
+
+  /**
+   * Changes one field from an element in this collection
+   * @param {EditObject[]} objArray The edit object array with operations
+   * @returns {Promise<any>}
+   */
+  editFieldBulk(objArray) {
+    const data = this.__write_data('editFieldBulk', objArray, undefined)
+    return this.__extract_data(axios.post(writeAddress()), data)
   }
 }
 
