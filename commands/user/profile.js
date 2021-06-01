@@ -68,8 +68,8 @@ module.exports = {
 async function showProfile(message, user = undefined, memberID = 'None') {
 	let username  = user.username ? user.username : 'None'
 	let uuid      = user.uuid == null ? 'None' : user.uuid
-	let	type      = user.type ? user.type.join(', ') : 'member'
-	let warns     = user.warns ? user.warns.map(el => '- ' + el) : 'None'
+	let	type      = (user.type && Array.isArray(user.type) && user.type.length > 0) ? user.type.join(', ') + '' : 'member'
+	let warns     = (user.warns && Array.isArray(user.warns) && user.warns.length > 0) ? user.warns.map(el => '- ' + el) + '' : 'None'
 	let discordID = user.id ? user.id : memberID
 	let discordname
 
