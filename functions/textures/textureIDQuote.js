@@ -42,9 +42,8 @@ async function textureIDQuote(message) {
     let pathText = []
     for (let i = 0; uses[i]; i++) {
       let localPath = await uses[i].paths()
-      for (let k = 0; localPath[k]; k++) {
-        pathText.push(`\`[${localPath[k].versions[localPath[k].versions.length - 1]}+]\` ${localPath[k].path}`)
-      }
+      pathText.push(`**${uses[i].editions[0].charAt(0).toUpperCase() + uses[i].editions[0].slice(1)}**`)
+      for (let k = 0; localPath[k]; k++) pathText.push(`\`[${localPath[k].versions[localPath[k].versions.length - 1]}+]\` ${localPath[k].path}`)
     }
 
     let path = texturePath[0].path
@@ -93,7 +92,7 @@ async function textureIDQuote(message) {
       .addFields(
         { name: '32x', value: author[0] != undefined && author[0].length ? `<@!${author[0].join('> <@!')}> - ${timestampConverter(timestamp[0])}` : `Contribution not found` },
         { name: '64x', value: author[1] != undefined && author[1].length ? `<@!${author[1].join('> <@!')}> - ${timestampConverter(timestamp[1])}` : `Contribution not found` },
-        { name: 'Paths', value: pathText.join('\n') }
+        { name: '\u200B', value: pathText, inline: false }
       )
 
     const embedMessage = await message.inlineReply(embed)

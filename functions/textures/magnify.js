@@ -9,9 +9,18 @@ const { warnUser } = require('../../helpers/warnUser')
  * @author Juknum
  * @param {DiscordMessage} message 
  * @param {String} url Image URL
+ * @param {DiscordUserID} gotocomplichannel if set, the message is send to the corresponding #complibot
  * @returns Send a message with the magnified image
  */
-function magnify(message, url) {
+function magnify(message, url, gotocomplichannel = undefined) {
+
+	let complichannel
+	if (gotocomplichannel) {
+		if (message.guild.id == '720677267424018526') complichannel = message.guild.channels.cache.get('849000453256773722')
+		if (message.guild.id == '773983706582482946') complichannel = message.guild.channels.cache.get('794137845408595978') // C32x discord
+		if (message.guild.id == '747574286356840609') complichannel = message.guild.channels.cache.get('798208196405362708') // C64x discord
+	}
+
 	getMeta(url).then(async function(dimension) {
 		var sizeOrigin = dimension.width * dimension.height
 		var factor     = 64
@@ -47,7 +56,10 @@ function magnify(message, url) {
 		}
 
 		const attachment   = new Discord.MessageAttachment(canvasResult.toBuffer(), 'magnified.png');
-		const embedMessage = await message.inlineReply(attachment);
+		
+		let embedMessage
+		if (gotocomplichannel) embedMessage = await complichannel.send(`<@!${gotocomplichannel}>`, attachment);
+		else embedMessage = await message.inlineReply(attachment);
 
 		if (message.channel.type !== 'dm')  await embedMessage.react('🗑️');
 

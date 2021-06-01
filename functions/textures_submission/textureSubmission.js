@@ -3,7 +3,7 @@ const settings = require('../../ressources/settings')
 const colors   = require('../../ressources/colors')
 
 const { countReact }  = require('../../helpers/countReact')
-const { getMessages } = require('../getMessages')
+const { getMessages } = require('../../helpers/getMessages')
 
 /**
  * Check if messages have enough reactions and send them to the output channel.

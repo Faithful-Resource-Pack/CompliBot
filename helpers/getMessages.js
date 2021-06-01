@@ -3,12 +3,16 @@
  * @author Juknum
  * @param {DiscordClient} client 
  * @param {String} id Channel from where messages are fetched
- * @param {*} limit Max amount of message fetch
+ * @param {Integer} limit Max amount of message fetch
  * @returns Returns an Array of all fetched messages
  */
 async function getMessages(client, id, limit = 100) {
-	const channel = await client.channels.cache.get(id)
-	const sum_messages = []
+	let channel
+	try {
+		channel = await client.channels.cache.get(id)
+	} catch (err) { return new Array() }
+
+	const sum_messages = new Array()
 	let last_id
 	let done = false
 	

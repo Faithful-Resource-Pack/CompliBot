@@ -10,7 +10,7 @@ const fetch    = require('node-fetch')
 const DEBUG = (process.env.DEBUG == 'true')
 
 //const { date } = require('../utility/date')
-const { getMessages } = require('../getMessages')
+const { getMessages } = require('../../helpers/getMessages')
 const { jsonContributionsBedrock, jsonContributionsJava } = require('../../helpers/fileHandler')
 
 /**

@@ -3,7 +3,7 @@ const colors  = require('../../ressources/colors')
 const strings = require('../../ressources/strings')
 
 const { countReact }  = require('../../helpers/countReact')
-const { getMessages } = require('../getMessages')
+const { getMessages } = require('../../helpers/getMessages')
 
 var embed = null
 
