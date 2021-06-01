@@ -15,7 +15,7 @@ const C32_LOGS          = '798893497204998161' // #logs channel
 const C32_MOD_LOGS      = '776145239358046248' // #mod-log channel
 const C32_COUNCIL_ID    = '775636065338785813' // Council role
 
-const C32_SUBMIT_TEXTURES = '849395454390304829' // #submit-textures
+const C32_SUBMIT_TEXTURES = '773987409993793546' // #submit-textures
 const C32_SUBMIT_COUNCIL  = '774220983044669450' // #council-voting
 const C32_SUBMIT_REVOTE   = '780507681987100682' // #texture-revote
 const C32_RESULTS         = '780507804317384744' // #texture-results
@@ -29,7 +29,7 @@ const C64_MODERATOR_ID  = '747595211273797724'
 const C64_LOGS          = '778189351703412767' // #logs channel
 const C64_COUNCIL_ID    = '777642015885754368' // Council role
 
-const C64_SUBMIT_TEXTURES = '849398158886567977' // #submit-textures
+const C64_SUBMIT_TEXTURES = '747603911677837454' // #submit-textures
 const C64_SUBMIT_COUNCIL  = '797780897805238282' // #council-voting
 const C64_SUBMIT_REVOTE   = '797649484259524648' // #texture-revote
 const C64_RESULTS         = '797648495804678154' // #texture-results
