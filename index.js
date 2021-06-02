@@ -237,10 +237,6 @@ client.on('messageReactionAdd', async (reaction, user) => {
 	 * NEW TEXTURE SUBMISSION
 	 */
 	if (
-		reaction.message.channel.id === '841396215211360296'  || 
-		reaction.message.channel.id === '849267113594978374'  || 
-		reaction.message.channel.id === '849308347328626750'  || 
-		reaction.message.channel.id === '849308334770094090'  || // dev server
 		reaction.message.channel.id === settings.C32_SUBMIT_TEXTURES ||
 		reaction.message.channel.id === settings.C32_SUBMIT_COUNCIL  || 
 		reaction.message.channel.id === settings.C32_SUBMIT_REVOTE   || 
@@ -313,8 +309,7 @@ client.on('message', async message => {
 	/**
 	 * TEXTURE SUBMISSION
 	 */
-	if (message.channel.id === '841396215211360296' || // #submit-texture from the dev server
-			message.channel.id === settings.C32_SUBMIT_TEXTURES ||
+	if (message.channel.id === settings.C32_SUBMIT_TEXTURES ||
 			message.channel.id === settings.C64_SUBMIT_TEXTURES ||
 			message.channel.id === settings.CDUNGEONS_SUBMIT
 		) return submitTexture(client, message)

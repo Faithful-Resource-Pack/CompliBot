@@ -9,14 +9,12 @@ const uidT = process.env.UIDT
 const strings                = require('../../ressources/strings')
 const emojis                 = require('../../ressources/emojis')
 const settings               = require('../../ressources/settings')
-const allCollection          = require('../../helpers/firestorm/all')
+const colors                 = require('../../ressources/colors')
 const { retrieveSubmission } = require('../../functions/textures/submission/retrieveSubmission')
 const { councilSubmission }  = require('../../functions/textures/submission/councilSubmission')
 const { revoteSubmission }   = require('../../functions/textures/submission/revoteSubmission')
 const { downloadResults }    = require('../../functions/textures/admission/downloadResults')
 const { pushTextures }       = require('../../functions/textures/admission/pushTextures')
-
-const contributionsCollection = require('../../helpers/firestorm/contributions')
 
 module.exports = {
 	name: 'hotfix',
@@ -29,8 +27,8 @@ module.exports = {
 	async execute(client, message, args) {
 		if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD || message.author.id === uidT) {
 			
-			await retrieveSubmission(client, settings.C32_SUBMIT_TEXTURES, settings.C32_SUBMIT_COUNCIL, 3)
-
+			/* Nothing */
+			
 		} else return
 	}
 }

@@ -29,6 +29,9 @@ async function editSubmission(client, reaction, user) {
     // if the message does not have up/down vote react, remove INSTAPASS & INVALID from the emojis list (already instapassed or votes flushed)
     if (!message.embeds[0].fields[1].value.includes('⏳')) EMOJIS = EMOJIS.filter(emoji => emoji !== emojis.INSTAPASS && emoji !== emojis.INVALID && emoji !== emojis.DELETE)
 
+		// if the message is in #council-vote #texture-revote, remove delete reaction (avoid missclick)
+		if (message.channel.id === settings.C32_SUBMIT_COUNCIL || message.channel.id === settings.C32_SUBMIT_REVOTE || message.channel.id === settings.C32_SUBMIT_COUNCIL || message.channel.id === settings.C32_SUBMIT_REVOTE) EMOJIS = EMOJIS.filter(emoji => emoji !== emojis.DELETE)
+
     // add reacts
     for (let i = 0; EMOJIS[i]; i++) await message.react(EMOJIS[i])
 
@@ -51,8 +54,8 @@ async function editSubmission(client, reaction, user) {
        */
       if (REACTION.emoji.id === emojis.INSTAPASS && member.hasPermission('ADMINISTRATOR')) {
         removeReact(message, [emojis.UPVOTE, emojis.DOWNVOTE])
-        instapass(client, message)
         changeStatus(message, `<:instapass:${emojis.INSTAPASS}> Instapassed`)
+        instapass(client, message)
       }
       if (REACTION.emoji.id === emojis.INVALID && member.hasPermission('ADMINISTRATOR')) {
         removeReact(message, [emojis.UPVOTE, emojis.DOWNVOTE])
@@ -77,16 +80,18 @@ async function editSubmission(client, reaction, user) {
 }
 
 async function instapass(client, message) {
-
   let channelOut
-  if (message.channel.id == '841396215211360296')              channelOut = client.channels.cache.get('849308334770094090')
-  else if (message.channel.id == settings.C32_SUBMIT_TEXTURES) channelOut = client.channels.cache.get(settings.C32_RESULTS)
-  else if (message.channel.id == settings.C64_SUBMIT_TEXTURES) channelOut = client.channels.cache.get(settings.C64_RESULTS)
+  if (message.channel.id == '841396215211360296')              
+		channelOut = client.channels.cache.get('849308334770094090')
+  else if (message.channel.id == settings.C32_SUBMIT_TEXTURES) 
+		channelOut = client.channels.cache.get(settings.C32_RESULTS)
+  else if (message.channel.id == settings.C64_SUBMIT_TEXTURES) 
+		channelOut = client.channels.cache.get(settings.C64_RESULTS)
 
   channelOut.send(
-    message.embed
+    message.embeds[0]
       .setColor(colors.GREEN)
-      .setDescription(`[Original Post](${message.message.url})\n${message.embed.description ? message.embed.description : ''}`)
+      .setDescription(`[Original Post](${message.url})\n${message.embeds[0].description ? message.embeds[0].description : ''}`)
   )
   .then(async sentMessage => {
       for (const emojiID of [emojis.SEE_MORE]) await sentMessage.react(client.emojis.cache.get(emojiID))
@@ -98,7 +103,14 @@ async function instapass(client, message) {
 async function editEmbed(message) {
   let embed = message.embeds[0]
   // fix the weird bug that also apply changes to the old embed (wtf)
-  embed.setColor(colors.BLUE)
+	if (message.channel.id == '841396215211360296') embed.setColor(colors.BLUE)
+  else if (message.channel.id == settings.C32_SUBMIT_TEXTURES || message.channel.id == settings.C64_SUBMIT_TEXTURES) 
+		embed.setColor(colors.BLUE)
+	else if (message.channel.id == settings.C32_SUBMIT_COUNCIL || message.channel.id == settings.C64_SUBMIT_COUNCIL) 
+		embed.setColor(colors.COUNCIl)
+	else if (message.channel.id == settings.C32_SUBMIT_REVOTE || message.channel.id == settings.C64_SUBMIT_REVOTE) 
+		embed.setColor(colors.RED)
+
   if (embed.description !== null) embed.setDescription(message.embeds[0].description.replace(`[Original Post](${message.url})\n`, ''))
 
   await message.edit(embed)
