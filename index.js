@@ -79,12 +79,15 @@ const submissionProcess = new cron.CronJob('25 0 * * *', async () => {
 	await retrieveSubmission(client, settings.C64_SUBMIT_TEXTURES, settings.C64_SUBMIT_COUNCIL, 3)
 	await councilSubmission(client, settings.C64_SUBMIT_COUNCIL, settings.C64_RESULTS, settings.C64_SUBMIT_REVOTE, 1)
 	await revoteSubmission(client, settings.C64_SUBMIT_REVOTE, settings.C64_RESULTS, 3)
+
+	// TRANSITION: need to be removed after it (olds #submit-bedrock)
+	await retrieveSubmission(client, '803652559922266192', settings.C32_SUBMIT_COUNCIL, 3)
 })
-const downloadToBot = new cron.CronJob('30 0 * * *', async () => {
+const downloadToBot = new cron.CronJob('40 0 * * *', async () => {
 	await downloadResults(client, settings.C32_RESULTS)
 	await downloadResults(client, settings.C64_RESULTS)
 })
-let pushToGithub = new cron.CronJob('35 0 * * *', async () => {
+let pushToGithub = new cron.CronJob('45 0 * * *', async () => {
 	await pushTextures()
 })
 
@@ -247,10 +250,22 @@ client.on('messageReactionAdd', async (reaction, user) => {
 	/**
 	 * NEW TEXTURE SUBMISSION
 	 */
-	if (reaction.message.channel.id === '841396215211360296'  || reaction.message.channel.id === '849267113594978374'  || reaction.message.channel.id === '849308347328626750'  || reaction.message.channel.id === '849308334770094090' || // dev server
-			reaction.message.channel.id === settings.C32_SUBMIT_TEXTURES || reaction.message.channel.id === settings.C32_SUBMIT_COUNCIL || reaction.message.channel.id === settings.C32_SUBMIT_REVOTE || reaction.message.channel.id === settings.C32_RESULTS || // c32x server
-			reaction.message.channel.id === settings.C64_SUBMIT_TEXTURES || reaction.message.channel.id === settings.C64_SUBMIT_COUNCIL || reaction.message.channel.id === settings.C64_SUBMIT_REVOTE || reaction.message.channel.id === settings.C64_RESULTS || // c64x server
-			reaction.message.channel.id === settings.CDUNGEONS_SUBMIT // dungeons server
+	if (
+		reaction.message.channel.id === '841396215211360296'  || 
+		reaction.message.channel.id === '849267113594978374'  || 
+		reaction.message.channel.id === '849308347328626750'  || 
+		reaction.message.channel.id === '849308334770094090'  || // dev server
+		reaction.message.channel.id === settings.C32_SUBMIT_TEXTURES ||
+		reaction.message.channel.id === settings.C32_SUBMIT_COUNCIL  || 
+		reaction.message.channel.id === settings.C32_SUBMIT_REVOTE   || 
+		reaction.message.channel.id === settings.C32_RESULTS         || // c32x server
+
+		reaction.message.channel.id === settings.C64_SUBMIT_TEXTURES ||
+		reaction.message.channel.id === settings.C64_SUBMIT_COUNCIL  ||
+		reaction.message.channel.id === settings.C64_SUBMIT_REVOTE   ||
+		reaction.message.channel.id === settings.C64_RESULTS         || // c64x server
+
+		reaction.message.channel.id === settings.CDUNGEONS_SUBMIT // dungeons server
 		) editSubmission(client, reaction, user)
 })
 
@@ -329,61 +344,7 @@ client.on('message', async message => {
 			message.channel.id === settings.C64_SUBMIT_TEXTURES ||
 			message.channel.id === settings.CDUNGEONS_SUBMIT
 		) return submitTexture(client, message)
-
-	/*
-	 * AUTO REACT:
-	 * (does not interfer with submission process)
-	 */
-
-	// Texture submission Compliance 32x (#submit-texture):
-	if (message.channel.id === settings.C32_SUBMIT_TEXTURES || message.channel.id === settings.C32_SUBMIT_TEXTURESB) {
-		return autoReact(
-			message,
-			['⬆️','⬇️'],
-			strings.SUBMIT_NO_FILE_ATTACHED,
-			strings.SUBMIT_NO_FOLDER_SPECIFIED,
-			['[',']']
-		)
-	}
-
-	// Texture submission Compliance 64x (#submit-texture):
-	if (message.channel.id === settings.C64_SUBMIT_TEXTURES || message.channel.id === settings.C64_SUBMIT_TEXTURESB) {
-		return autoReact(
-			message,
-			['⬆️','⬇️'],
-			strings.SUBMIT_NO_FILE_ATTACHED,
-			strings.SUBMIT_NO_FOLDER_SPECIFIED,
-			['[',']']
-		)
-	}
-
-	// Texture submission Compliance Dungeons:
-	if (message.channel.id === settings.CDUNGEONS_SUBMIT) {
-		return autoReact(
-			message,
-			['⬆️','⬇️'],
-			strings.SUBMIT_NO_FILE_ATTACHED,
-			strings.SUBMIT_NO_FOLDER_SPECIFIED_DUNGEONS,
-			['(',')']
-		)
-	}
-
-	// Texture submission Emulated Vattic Textures (FHLX):
-	if (message.channel.id === '814209343502286899' || message.channel.id === '814201529032114226') {
-		return autoReact(
-			message,
-			['814569395493011477','814569427546144812'],
-			strings.SUBMIT_NO_FILE_ATTACHED
-		)
-	}
 })
-
-/*client.on("error", (e) => console.error(e))
-client.on("warn", (e) => console.warn(e))
-client.on("debug", (e) => console.info(e))
-client.on('debug', console.log)
-
-client.on('rateLimit', (e) => console.log(e))*/
 
 }).catch(error => {
 	console.trace(error)

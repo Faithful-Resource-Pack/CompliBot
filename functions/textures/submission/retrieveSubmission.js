@@ -117,6 +117,7 @@ async function makeEmbed(message) {
 	const Discord = require('discord.js')
 
 	let embed = new Discord.MessageEmbed()
+		.setImage(message.attachments.first().url)
 		.setColor(colors.COUNCIL)
 		.setAuthor(message.author.tag, message.author.displayAvatarURL())
 		.setDescription(`[Original Post](${message.url})`)

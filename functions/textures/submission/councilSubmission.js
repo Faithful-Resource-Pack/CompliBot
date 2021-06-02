@@ -24,25 +24,6 @@ async function councilSubmission(client, channelFromID, channelOutID, channelOut
     return messageDate.getDate() == delayedDate.getDate() && messageDate.getMonth() == delayedDate.getMonth()
   })
 
-	/**
-	 * TRANSITION REMOVE AFTER
-	 */
-
-	let oldMessages = messages
-		.filter(message => message.embeds.length > 0)
-		.filter(message => message.embeds[0].fields[1] !== undefined && message.embeds[0].fields[1].name == 'Folder:')
-
-	for (let i = 0; oldMessages[i]; i++) {
-		oldMessages[i] = {
-			upvote:   oldMessages[i].reactions.cache.get('⬆️').count,
-			downvote: oldMessages[i].reactions.cache.get('⬇️').count,
-			embed:    await modifyEmbed(oldMessages[i].embeds[0]),
-			message:  oldMessages[i]
-		}
-	}
-
-	///////////////////////////////////////////////////////////
-
   // filter message that only have embeds & that have a pending status
   messages = messages
     .filter(message => message.embeds.length > 0)
@@ -94,37 +75,6 @@ async function councilSubmission(client, channelFromID, channelOutID, channelOut
 
     editEmbed(message.message, `<:upvote:${emojis.UPVOTE}> Sent to results!`)
   })
-
-	/** TRANSITION REMOVE AFTER IT */
-	let oldMessageUpvoted = oldMessages.filter(message => message.upvote > message.downvote)
-  let oldMessageDownvoted = oldMessages.filter(message => message.upvote <= message.downvote)
-
-	oldMessageDownvoted.forEach(message => {
-    
-    channelOutInvalid.send(
-      message.embed
-        .setColor(colors.RED)
-    )
-      .then(async sentMessage => {
-        for (const emojiID of [emojis.UPVOTE, emojis.DOWNVOTE, emojis.SEE_MORE]) await sentMessage.react(client.emojis.cache.get(emojiID))
-      })
-  })
-
-	oldMessageUpvoted.forEach(message => {
-
-    let embed = message.embed
-    embed.setColor(colors.GREEN)
-
-		if (embed.title.startsWith('[#???]')) embed.fields[1].value = `❓ Will be added in a future version!`
-    else embed.fields[1].value = `<:upvote:${emojis.UPVOTE}> Will be added in a future version!`
-
-    channelOut.send(embed)
-      .then(async sentMessage => {
-        for (const emojiID of EMOJIS) await sentMessage.react(client.emojis.cache.get(emojiID))
-      })
-  })
-
-	////////////////////////////////////////////////
 }
 
 async function editEmbed(message, string) {
@@ -138,46 +88,3 @@ async function editEmbed(message, string) {
 }
 
 exports.councilSubmission = councilSubmission
-
-/** REMOVE AFTER TRANSITION */
-async function modifyEmbed(embed) {
-	const Discord = require('discord.js')
-
-	let newEmbed = new Discord.MessageEmbed()
-		.setImage(embed.image.url)
-		.setDescription(`${embed.description}.`)
-		.addFields(
-			{ name: 'Author', value: `<@!340497757410295808>`, inline: true },
-			{ name: 'Status', value: '⏳ Pending...', inline: true },
-		)
-
-	const textures = require('../../../helpers/firestorm/texture')
-	results = await textures.search([{
-		field: "name",
-		criteria: "==",
-		value: embed.fields[0].value
-	}])
-	
-	if (results.length != 0) {
-		texture = results[0]
-
-		newEmbed.setTitle(`[#${texture.id}] ${texture.name}`)
-
-		/** @type {import("../../helpers/firestorm/texture_use.js").TextureUse[]} */
-		let uses = await texture.uses()
-		let pathText = []
-
-		for (let i = 0; uses[i]; i++) {
-			let localPath = await uses[i].paths()
-			pathText.push(`**${uses[i].editions[0].charAt(0).toUpperCase() + uses[i].editions[0].slice(1)}**`)
-			for (let k = 0; localPath[k]; k++) pathText.push(`\`[${localPath[k].versions[localPath[k].versions.length - 1]}+]\` ${localPath[k].path}`)
-		}
-
-		newEmbed.addFields({ name: '\u200B', value: pathText, inline: false })
-	}
-	else {
-		newEmbed.setTitle(`[#???] ${embed.fields[0].value}`)
-	}
-
-	return newEmbed
-}
