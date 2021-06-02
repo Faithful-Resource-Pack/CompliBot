@@ -69,7 +69,7 @@ const settings     = require('./ressources/settings')
  * - Download process (each day at 00:10 GMT)       : @function downloadToBot
  * - Push to GitHub process (each day at 00:15 GMT) : @function pushToGithub
  */
-const submissionProcess = new cron.CronJob('0 0 * * *', async () => {
+const submissionProcess = new cron.CronJob('25 0 * * *', async () => {
 	// Compliance 32x
 	await retrieveSubmission(client, settings.C32_SUBMIT_TEXTURES, settings.C32_SUBMIT_COUNCIL, 3)
 	await councilSubmission(client, settings.C32_SUBMIT_COUNCIL, settings.C32_RESULTS, settings.C32_SUBMIT_REVOTE, 1)
@@ -80,11 +80,11 @@ const submissionProcess = new cron.CronJob('0 0 * * *', async () => {
 	await councilSubmission(client, settings.C64_SUBMIT_COUNCIL, settings.C64_RESULTS, settings.C64_SUBMIT_REVOTE, 1)
 	await revoteSubmission(client, settings.C64_SUBMIT_REVOTE, settings.C64_RESULTS, 3)
 })
-const downloadToBot = new cron.CronJob('10 0 * * *', async () => {
+const downloadToBot = new cron.CronJob('30 0 * * *', async () => {
 	await downloadResults(client, settings.C32_RESULTS)
 	await downloadResults(client, settings.C64_RESULTS)
 })
-let pushToGithub = new cron.CronJob('15 0 * * *', async () => {
+let pushToGithub = new cron.CronJob('35 0 * * *', async () => {
 	await pushTextures()
 })
 
@@ -130,7 +130,7 @@ client.on('ready', async () => {
 	console.log(`└─────────────────────────────────────────────────────────────┘\n\n`)
 
 	if (MAINTENANCE) client.user.setPresence({ activity: { name: 'maintenance' }, status: 'dnd' })
-	else client.user.setActivity('/help', {type: 'LISTENING'})
+	else client.user.setActivity(`${prefix}/help`, {type: 'LISTENING'})
 
 	/**
 	 * START TEXTURE SUBMISSION PROCESS

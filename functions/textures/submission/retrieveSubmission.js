@@ -22,6 +22,26 @@ async function retrieveSubmission(client, channelFromID, channelOutID, delay) {
     return messageDate.getDate() == delayedDate.getDate() && messageDate.getMonth() == delayedDate.getMonth()
   })
 
+	/**
+	 * OLD SUBMISSION TRANSITION REMOVE AFTER TRANSITION
+	 */
+
+	let oldMessage = messages
+		.filter(message => message.embeds.length == 0)
+		.filter(message => message.reactions.cache.get('⬆️') !== undefined)
+		.filter(message => message.reactions.cache.get('⬆️').count != 0 && message.reactions.cache.get('⬇️').count != 0)
+
+	for (let i = 0; oldMessage[i]; i++) {
+		oldMessage[i] = {
+			upvote:   oldMessage[i].reactions.cache.get('⬆️').count,
+			downvote: oldMessage[i].reactions.cache.get('⬇️').count,
+			embed:    await makeEmbed(oldMessage[i]),
+			message:  oldMessage[i]
+		}
+	}
+
+	//////////////////////////////////////
+
   // filter message that only have embeds & that have a pending status
   messages = messages
     .filter(message => message.embeds.length > 0)
@@ -62,6 +82,19 @@ async function retrieveSubmission(client, channelFromID, channelOutID, delay) {
 
     editEmbed(message.message, `<:upvote:${emojis.UPVOTE}> Sent to Council!`)
   })
+
+	/**
+	 * TRANSITION REMOVE AFTER
+	 */
+	oldMessage = oldMessage.filter(message => message.upvote >= message.downvote)
+	oldMessage.forEach(message => {
+		channelOut.send(message.embed)
+      .then(async sentMessage => {
+        for (const emojiID of EMOJIS) await sentMessage.react(client.emojis.cache.get(emojiID))
+      })
+	})
+
+	////////////////////////////////////////////////////
 }
 
 async function editEmbed(message, string) {
@@ -76,3 +109,51 @@ async function editEmbed(message, string) {
 }
 
 exports.retrieveSubmission = retrieveSubmission
+
+/**
+ * REMOVE AFTER TRANSITION
+ */
+async function makeEmbed(message) {
+	const Discord = require('discord.js')
+
+	let embed = new Discord.MessageEmbed()
+		.setColor(colors.COUNCIL)
+		.setAuthor(message.author.tag, message.author.displayAvatarURL())
+		.setDescription(`[Original Post](${message.url})`)
+		.addFields(
+			{ name: 'Author', value: `<@!${message.author.id}>`, inline: true },
+			{ name: 'Status', value: '⏳ Pending...', inline: true },
+		)
+
+	const textures = require('../../../helpers/firestorm/texture')
+	results = await textures.search([{
+		field: "name",
+		criteria: "==",
+		value: message.content.split(' ')[0]
+	}])
+	
+	if (results.length != 0) {
+		texture = results[0]
+
+		embed.setTitle(`[#${texture.id}] ${texture.name}`)
+
+		/** @type {import("../../helpers/firestorm/texture_use.js").TextureUse[]} */
+		let uses = await texture.uses()
+		let pathText = []
+
+		for (let i = 0; uses[i]; i++) {
+			let localPath = await uses[i].paths()
+			pathText.push(`**${uses[i].editions[0].charAt(0).toUpperCase() + uses[i].editions[0].slice(1)}**`)
+			for (let k = 0; localPath[k]; k++) pathText.push(`\`[${localPath[k].versions[localPath[k].versions.length - 1]}+]\` ${localPath[k].path}`)
+		}
+
+		embed.addFields({ name: '\u200B', value: pathText, inline: false })
+	}
+	else {
+		embed.setTitle(`[#???] ${message.content.split(' ')[0]}`)
+	}
+
+	return embed
+}
+
+////////////////////////////////////////////////////
