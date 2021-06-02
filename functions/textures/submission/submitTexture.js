@@ -42,7 +42,6 @@ async function submitTexture(client, message) {
 
   // if no name are given, take the image url and get it's name
   if (!search) search = message.attachments.first().url.split('/').slice(-1)[0].replace('.png', '')
-  console.log(search)
 
   // detect co-authors as mentions:
   let mentions  = message.mentions.users
@@ -183,7 +182,7 @@ async function makeEmbed(client, message, texture, param = new Object()) {
 }
 
 async function invalidSubmission(message, error = 'Not given') {
-  // if (message.member.hasPermission('ADMINISTRATOR')) return
+  if (message.member.hasPermission('ADMINISTRATOR')) return // allow admins to talk in submit channels
   
   try {
     var embed = new Discord.MessageEmbed()

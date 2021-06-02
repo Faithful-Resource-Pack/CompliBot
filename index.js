@@ -22,20 +22,20 @@ const UIDA = [
 	process.env.UIDT,
 	process.env.UIDJ
 ]
+
 const prefix      = process.env.PREFIX
 const DEBUG       = (process.env.DEBUG.toLowerCase() == 'true')
 const MAINTENANCE = (process.env.MAINTENANCE.toLowerCase() == 'true')
 
 // Helpers:
-const { warnUser }       = require('./helpers/warnUser')
-const { walkSync }       = require('./helpers/walkSync')
-
+const { warnUser } = require('./helpers/warnUser')
+const { walkSync } = require('./helpers/walkSync')
 
 // Functions:
-const { updateMembers }      = require('./functions/moderation/updateMembers')
+const { updateMembers } = require('./functions/moderation/updateMembers')
 
-const { textureIDQuote }     = require('./functions/textures/textureIDQuote')
-const { quote }              = require('./functions/quote')
+const { textureIDQuote } = require('./functions/textures/textureIDQuote')
+const { quote }          = require('./functions/quote')
 
 const { retrieveSubmission } = require('./functions/textures/submission/retrieveSubmission')
 const { councilSubmission }  = require('./functions/textures/submission/councilSubmission')
@@ -43,8 +43,8 @@ const { revoteSubmission }   = require('./functions/textures/submission/revoteSu
 const { downloadResults }    = require('./functions/textures/admission/downloadResults')
 const { pushTextures }       = require('./functions/textures/admission/pushTextures')
 
-const { checkTimeout }       = require('./functions/moderation/checkTimeout')
-const { inviteDetection }    = require('./functions/moderation/inviteDetection')
+const { checkTimeout }    = require('./functions/moderation/checkTimeout')
+const { inviteDetection } = require('./functions/moderation/inviteDetection')
 
 const { submitTexture }  = require('./functions/textures/submission/submitTexture')
 const { editSubmission } = require('./functions/textures/submission/editSubmission')
@@ -313,6 +313,28 @@ client.on('message', async message => {
 			message.channel.id === settings.C64_SUBMIT_TEXTURES ||
 			message.channel.id === settings.CDUNGEONS_SUBMIT
 		) return submitTexture(client, message)
+
+	/**
+	 * EMULATED VATTIC TEXTURES BASIC AUTOREACT (FHLX's server)
+	 */
+	if (message.channel.id === '814209343502286899' || message.channel.id === '814201529032114226') {
+		if (message.attachments.size > 0 && !message.member.hasPermission('ADMINISTRATOR')) {
+			var embed = new Discord.MessageEmbed()
+				.setAuthor(message.author.tag, message.author.displayAvatarURL())
+				.setColor(colors.RED)
+				.setTitle(strings.SUBMIT_AUTOREACT_ERROR_TITLE)
+				.setDescription(strings.SUBMIT_NO_FILE_ATTACHED)
+				.setFooter('Submission will be removed in 30 seconds, please re-submit', settings.BOT_IMG)
+
+			const msg = await message.channel.send(embed)
+			if (!msg.deleted) await msg.delete({timeout: 30000})
+			if (!message.deleted) await message.delete({timeout: 10})
+		} else {
+			await message.react('814569395493011477')
+			await message.react('814569427546144812')
+		}
+	}
+
 })
 
 // Login the bot
