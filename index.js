@@ -310,7 +310,6 @@ client.on('message', async message => {
 	 * TEXTURE SUBMISSION
 	 */
 	if (
-			message.channel.id === '841396215211360296' ||
 			message.channel.id === settings.C32_SUBMIT_TEXTURES ||
 			message.channel.id === settings.C64_SUBMIT_TEXTURES ||
 			message.channel.id === settings.CDUNGEONS_SUBMIT
