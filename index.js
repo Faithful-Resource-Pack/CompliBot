@@ -318,15 +318,15 @@ client.on('message', async message => {
 	 * EMULATED VATTIC TEXTURES BASIC AUTOREACT (FHLX's server)
 	 */
 	if (message.channel.id === '814209343502286899' || message.channel.id === '814201529032114226') {
-		if (message.attachments.size > 0 && !message.member.hasPermission('ADMINISTRATOR')) {
+		if (!message.attachments.size) {
+			if (message.member.hasPermission('ADMINISTRATOR')) return
 			var embed = new Discord.MessageEmbed()
-				.setAuthor(message.author.tag, message.author.displayAvatarURL())
 				.setColor(colors.RED)
 				.setTitle(strings.SUBMIT_AUTOREACT_ERROR_TITLE)
 				.setDescription(strings.SUBMIT_NO_FILE_ATTACHED)
 				.setFooter('Submission will be removed in 30 seconds, please re-submit', settings.BOT_IMG)
 
-			const msg = await message.channel.send(embed)
+			const msg = await message.inlineReply(embed)
 			if (!msg.deleted) await msg.delete({timeout: 30000})
 			if (!message.deleted) await message.delete({timeout: 10})
 		} else {
