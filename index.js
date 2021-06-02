@@ -27,13 +27,11 @@ const DEBUG       = (process.env.DEBUG.toLowerCase() == 'true')
 const MAINTENANCE = (process.env.MAINTENANCE.toLowerCase() == 'true')
 
 // Helpers:
-const { jsonModeration } = require('./helpers/fileHandler')
 const { warnUser }       = require('./helpers/warnUser')
 const { walkSync }       = require('./helpers/walkSync')
 
 
 // Functions:
-const { autoReact }          = require('./functions/moderation/autoReact')
 const { updateMembers }      = require('./functions/moderation/updateMembers')
 
 const { textureIDQuote }     = require('./functions/textures/textureIDQuote')
@@ -46,14 +44,10 @@ const { downloadResults }    = require('./functions/textures/admission/downloadR
 const { pushTextures }       = require('./functions/textures/admission/pushTextures')
 
 const { checkTimeout }       = require('./functions/moderation/checkTimeout')
-const { addMutedRole }       = require('./functions/moderation/addMutedRole')
 const { inviteDetection }    = require('./functions/moderation/inviteDetection')
 
 const { submitTexture }  = require('./functions/textures/submission/submitTexture')
 const { editSubmission } = require('./functions/textures/submission/editSubmission')
-
-// try to read this json
-jsonModeration.read(false).then(warnList => { // YOU MUST NOT LOCK because only read
 
 // Resources:
 const colors  = require('./ressources/colors')
@@ -169,15 +163,7 @@ client.on('ready', async () => {
 /*
  * MEMBER JOIN
  */
-client.on('guildMemberAdd', async member =>{
-	// Muted role check:
-	for (var i = 0; i < warnList.length; i++) {
-		if (`${member.id}` == warnList[i].user && warnList[i].muted == true) {
-			const role = member.guild.roles.cache.find(r => r.name === 'Muted')
-			await member.roles.add(role)
-		}
-	}
-
+client.on('guildMemberAdd', async () =>{
 	updateMembers(client, settings.CTWEAKS_ID, settings.CTWEAKS_COUNTER)
 	updateMembers(client, settings.C32_ID, settings.C32_COUNTER)
 })
@@ -276,12 +262,6 @@ client.on('message', async message => {
 	// Avoid message WITH prefix & bot messages
 	if (message.content.startsWith(prefix) || message.author.bot) return
 
-	for (var i = 0; i < warnList.length; i++) {
-		if (warnList[i].user == message.author.id && warnList[i].muted == true) {
-			addMutedRole(client, message.author.id)
-		}
-	}
-
 	/*
 	 * Funny Stuff
 	 */
@@ -331,23 +311,13 @@ client.on('message', async message => {
 	if (message.content.includes('https://discord.gg/') && message.guild.id != '814198513847631944') inviteDetection(client, message)
 
 	/**
-	 * AUTO REACT 2.0:
-	 * (use the new database to detect if a texture exist)
-	 */
-	if (message.channel.id === '841396215211360296') return submitTexture(client, message)
-
-	/**
-	 * NEW TEXTURE SUBMISSION
+	 * TEXTURE SUBMISSION
 	 */
 	if (message.channel.id === '841396215211360296' || // #submit-texture from the dev server
 			message.channel.id === settings.C32_SUBMIT_TEXTURES ||
 			message.channel.id === settings.C64_SUBMIT_TEXTURES ||
 			message.channel.id === settings.CDUNGEONS_SUBMIT
 		) return submitTexture(client, message)
-})
-
-}).catch(error => {
-	console.trace(error)
 })
 
 // Login the bot
