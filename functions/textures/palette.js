@@ -177,8 +177,8 @@ async function palette(message, url, gotocomplichannel = undefined) {
 
 		let embedMessage
 		if (gotocomplichannel) {
-			embedMessage = await complichannel.send({
-				content: `<@!${gotocomplichannel}>`,
+			const member = await message.guild.members.cache.get(gotocomplichannel)
+			embedMessage = await member.send({
 				embed: embed,
 				files: [colorImageAttachment]
 			})
@@ -190,7 +190,7 @@ async function palette(message, url, gotocomplichannel = undefined) {
 			})
 		}
 
-		if (message.channel.type !== 'dm') await embedMessage.react('🗑️')
+		if (embedMessage.channel.type !== 'dm') await embedMessage.react('🗑️')
 
 		const filter = (reaction, user) => {
 			return ['🗑️'].includes(reaction.emoji.name) && user.id === message.author.id
@@ -205,7 +205,7 @@ async function palette(message, url, gotocomplichannel = undefined) {
 				}
 			})
 			.catch(async () => {
-				if (!embedMessage.deleted && message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🗑️').remove()
+				if (!embedMessage.deleted && embedMessage.channel.type !== 'dm') await embedMessage.reactions.cache.get('🗑️').remove()
 			})
 	})
 }

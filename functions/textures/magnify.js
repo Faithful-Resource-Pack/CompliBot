@@ -56,12 +56,15 @@ function magnify(message, url, gotocomplichannel = undefined) {
 		}
 
 		const attachment   = new Discord.MessageAttachment(canvasResult.toBuffer(), 'magnified.png');
-		
+
 		let embedMessage
-		if (gotocomplichannel) embedMessage = await complichannel.send(`<@!${gotocomplichannel}>`, attachment);
+		if (gotocomplichannel) {
+			const member = await message.guild.members.cache.get(gotocomplichannel)
+			embedMessage = await member.send(attachment);
+		}
 		else embedMessage = await message.inlineReply(attachment);
 
-		if (message.channel.type !== 'dm')  await embedMessage.react('🗑️');
+		if (embedMessage.channel.type !== 'dm') await embedMessage.react('🗑️');
 
 		const filter = (reaction, user) => {
 			return ['🗑️'].includes(reaction.emoji.name) && user.id === message.author.id;
@@ -76,7 +79,7 @@ function magnify(message, url, gotocomplichannel = undefined) {
 				}
 			})
 			.catch(async () => {
-				if (!embedMessage.deleted && message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🗑️').remove();
+				if (!embedMessage.deleted && embedMessage.channel.type !== 'dm') await embedMessage.reactions.cache.get('🗑️').remove();
 			});
 
 		return attachment;
