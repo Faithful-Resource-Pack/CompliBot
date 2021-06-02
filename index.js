@@ -127,7 +127,7 @@ client.on('ready', async () => {
 	console.log(`└─────────────────────────────────────────────────────────────┘\n\n`)
 
 	if (MAINTENANCE) client.user.setPresence({ activity: { name: 'maintenance' }, status: 'dnd' })
-	else client.user.setActivity(`${prefix}/help`, {type: 'LISTENING'})
+	else client.user.setActivity(`${prefix}help`, {type: 'LISTENING'})
 
 	/**
 	 * START TEXTURE SUBMISSION PROCESS
@@ -309,8 +309,7 @@ client.on('message', async message => {
 	/**
 	 * TEXTURE SUBMISSION
 	 */
-	if (
-			message.channel.id === settings.C32_SUBMIT_TEXTURES ||
+	if (message.channel.id === settings.C32_SUBMIT_TEXTURES ||
 			message.channel.id === settings.C64_SUBMIT_TEXTURES ||
 			message.channel.id === settings.CDUNGEONS_SUBMIT
 		) return submitTexture(client, message)
