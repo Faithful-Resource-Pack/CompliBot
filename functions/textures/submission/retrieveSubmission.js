@@ -127,14 +127,14 @@ async function makeEmbed(message) {
 		)
 
 	const textures = require('../../../helpers/firestorm/texture')
-	results = await textures.search([{
+	let results = await textures.search([{
 		field: "name",
 		criteria: "==",
 		value: message.content.split(' ')[0]
 	}])
 	
 	if (results.length != 0) {
-		texture = results[0]
+		let texture = results[0]
 
 		embed.setTitle(`[#${texture.id}] ${texture.name}`)
 

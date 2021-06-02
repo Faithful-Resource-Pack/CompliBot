@@ -1,4 +1,6 @@
-const emojis = require('../../../ressources/emojis')
+const emojis   = require('../../../ressources/emojis')
+const settings = require('../../../ressources/settings')
+const colors   = require('../../../ressources/colors')
 
 const { magnify } = require('../../../functions/textures/magnify')
 const { palette } = require('../../../functions/textures/palette')
@@ -49,11 +51,12 @@ async function editSubmission(client, reaction, user) {
        */
       if (REACTION.emoji.id === emojis.INSTAPASS && member.hasPermission('ADMINISTRATOR')) {
         removeReact(message, [emojis.UPVOTE, emojis.DOWNVOTE])
-        editEmbed(message, `<:instapass:${emojis.INSTAPASS}> Instapassed`)
+        instapass(client, message)
+        changeStatus(message, `<:instapass:${emojis.INSTAPASS}> Instapassed`)
       }
       if (REACTION.emoji.id === emojis.INVALID && member.hasPermission('ADMINISTRATOR')) {
         removeReact(message, [emojis.UPVOTE, emojis.DOWNVOTE])
-        editEmbed(message, `<:invalid:${emojis.INVALID}> Invalid`)
+        changeStatus(message, `<:invalid:${emojis.INVALID}> Invalid`)
       }
 
       // delete message only if the first author of the field 0 is the discord user who reacted, or if the user who react is admin
@@ -73,7 +76,35 @@ async function editSubmission(client, reaction, user) {
   
 }
 
-async function editEmbed(message, string) {
+async function instapass(client, message) {
+
+  let channelOut
+  if (message.channel.id == '841396215211360296')              channelOut = client.channels.cache.get('849308334770094090')
+  else if (message.channel.id == settings.C32_SUBMIT_TEXTURES) channelOut = client.channels.cache.get(settings.C32_RESULTS)
+  else if (message.channel.id == settings.C64_SUBMIT_TEXTURES) channelOut = client.channels.cache.get(settings.C64_RESULTS)
+
+  channelOut.send(
+    message.embed
+      .setColor(colors.GREEN)
+      .setDescription(`[Original Post](${message.message.url})\n${message.embed.description ? message.embed.description : ''}`)
+  )
+  .then(async sentMessage => {
+      for (const emojiID of [emojis.SEE_MORE]) await sentMessage.react(client.emojis.cache.get(emojiID))
+    })
+
+  editEmbed(message)
+}
+
+async function editEmbed(message) {
+  let embed = message.embeds[0]
+  // fix the weird bug that also apply changes to the old embed (wtf)
+  embed.setColor(colors.BLUE)
+  if (embed.description !== null) embed.setDescription(message.embeds[0].description.replace(`[Original Post](${message.url})\n`, ''))
+
+  await message.edit(embed)
+}
+
+async function changeStatus(message, string) {
   let embed = message.embeds[0]
   embed.fields[1].value = string
   await message.edit(embed)
