@@ -133,7 +133,7 @@ async function submitTexture(client, message) {
     }
     else {
       if (!waitEmbedMessage.deleted) await waitEmbedMessage.delete()
-      await invalidSubmission(message, strings.TEXTURE_DOESNT_EXIST)
+      await invalidSubmission(message, strings.TEXTURE_DOESNT_EXIST + '\n' + search)
     }
   }
 }
