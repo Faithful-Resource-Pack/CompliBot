@@ -31,10 +31,18 @@ async function submitTexture(client, message) {
     description: description,
   }
 
-  // if no name/id is given, invalid submission
-  if (!id && !search) return invalidSubmission(message, 'No valid id/name/path given\nValid submission: (#<id>) comments + file attached\nOR:\n(name/path) comments + file attached')
   // same if no file is attached
-  if (message.attachments.size == 0) return invalidSubmission(message, 'You did not attached an image to your submission!')
+  if (message.attachments.size == 0) return invalidSubmission(message, 'You did not attached a texture to your submission!')
+  // same if it's not a PNG
+  if (
+    message.attachments.first().url.endsWith('.zip')  ||
+    message.attachments.first().url.endsWith('.rar')  ||
+    message.attachments.first().url.endsWith('.7zip')
+  ) return invalidSubmission(message, 'Please provide a PNG, `.zip`, `.rar` & `.7zip` are not supported')
+
+  // if no name are given, take the image url and get it's name
+  if (!search) search = message.attachments.first().url.split('/').slice(-1)[0].replace('.png', '')
+  console.log(search)
 
   // detect co-authors as mentions:
   let mentions  = message.mentions.users
@@ -42,8 +50,14 @@ async function submitTexture(client, message) {
   mentions.forEach(mention => { if (!param.authors.includes(mention.id)) param.authors.push(mention.id) })
 
   let results = new Array()
-
-  if (!id && search) {
+  
+  // priority to ids -> faster
+  if (id) {
+    let texture = await textures.get(id).catch(err => invalidSubmission(message, 'It seems that this ID does not exist\n' + err))
+    await makeEmbed(client, message, texture, param)
+  }
+  // no id given, search texture
+  else if (!id && search) {
     var waitEmbed = new Discord.MessageEmbed()
       .setTitle(`Searching for your texture, please wait...`)
       .setColor(colors.BLUE)
@@ -115,11 +129,11 @@ async function submitTexture(client, message) {
     }
     else if (results.length == 1) {
       await makeEmbed(client, message, results[0], param)
-      if (!waitEmbedMessage.deleted) await waitEmbedMessage.delete();
+      if (!waitEmbedMessage.deleted) await waitEmbedMessage.delete()
     }
     else {
-      await warnUser(message, strings.TEXTURE_DOESNT_EXIST)
-      if (!waitEmbedMessage.deleted) await waitEmbedMessage.delete();
+      if (!waitEmbedMessage.deleted) await waitEmbedMessage.delete()
+      await invalidSubmission(message, strings.TEXTURE_DOESNT_EXIST)
     }
   }
 }
@@ -168,8 +182,8 @@ async function makeEmbed(client, message, texture, param = new Object()) {
   }
 }
 
-async function invalidSubmission(message) {
-  if (message.member.hasPermission('ADMINISTRATOR')) return
+async function invalidSubmission(message, error = 'Not given') {
+  // if (message.member.hasPermission('ADMINISTRATOR')) return
   
   try {
     var embed = new Discord.MessageEmbed()
@@ -177,6 +191,7 @@ async function invalidSubmission(message) {
       .setColor(colors.RED)
       .setTitle(strings.SUBMIT_AUTOREACT_ERROR_TITLE)
       .setFooter(strings.SUBMIT_AUTOREACT_ERROR_FOOTER, settings.BOT_IMG)
+      .setDescription(error)
 
     const msg = await message.inlineReply(embed);
     if (!msg.deleted) await msg.delete({ timeout: 30000 })
