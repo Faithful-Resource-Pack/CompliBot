@@ -55,12 +55,16 @@ function magnify(message, url, gotocomplichannel = undefined) {
 			}
 		}
 
-		const attachment   = new Discord.MessageAttachment(canvasResult.toBuffer(), 'magnified.png');
+		const attachment = new Discord.MessageAttachment(canvasResult.toBuffer(), 'magnified.png');
 
 		let embedMessage
 		if (gotocomplichannel) {
-			const member = await message.guild.members.cache.get(gotocomplichannel)
-			embedMessage = await member.send(attachment);
+			try {
+				const member = await message.guild.members.cache.get(gotocomplichannel)
+				embedMessage = await member.send(attachment);
+			} catch(e) {
+				embedMessage = await complichannel.send(`<@!${gotocomplichannel}>`, attachment);
+			}
 		}
 		else embedMessage = await message.inlineReply(attachment);
 

@@ -177,11 +177,19 @@ async function palette(message, url, gotocomplichannel = undefined) {
 
 		let embedMessage
 		if (gotocomplichannel) {
-			const member = await message.guild.members.cache.get(gotocomplichannel)
-			embedMessage = await member.send({
-				embed: embed,
-				files: [colorImageAttachment]
-			})
+			try {
+				const member = await message.guild.members.cache.get(gotocomplichannel)
+				embedMessage = await member.send({
+					embed: embed,
+					files: [colorImageAttachment]
+				})
+			} catch(e) {
+				embedMessage = await complichannel.send({
+					content: `<@!${gotocomplichannel}>`,
+					embed: embed,
+					files: [colorImageAttachment]
+				})
+			}
 		}
 		else {
 			embedMessage = await message.inlineReply({
