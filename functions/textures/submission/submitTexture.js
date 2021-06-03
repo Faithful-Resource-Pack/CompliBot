@@ -1,12 +1,11 @@
-const Discord      = require('discord.js')
-const settings     = require('../../../ressources/settings')
-const colors       = require('../../../ressources/colors')
-const strings      = require('../../../ressources/strings')
-const emojis       = require('../../../ressources/emojis')
-const { warnUser } = require('../../../helpers/warnUser')
-const choiceEmbed  = require('../../../helpers/choiceEmbed')
-const textures     = require('../../../helpers/firestorm/texture')
-const paths        = require('../../../helpers/firestorm/texture_paths')
+const Discord     = require('discord.js')
+const settings    = require('../../../ressources/settings')
+const colors      = require('../../../ressources/colors')
+const strings     = require('../../../ressources/strings')
+const emojis      = require('../../../ressources/emojis')
+const choiceEmbed = require('../../../helpers/choiceEmbed')
+const textures    = require('../../../helpers/firestorm/texture')
+const paths       = require('../../../helpers/firestorm/texture_paths')
 
 /**
  * Check if the given texture exist, and embed it if true
