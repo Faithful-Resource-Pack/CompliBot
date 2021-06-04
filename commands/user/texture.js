@@ -147,10 +147,11 @@ async function getTexture(message, res, texture) {
   for (let x = 0; uses[x]; x++) {
     let paths = await uses[x].paths()
     pathsText.push(`**__${uses[x].editions.join(', ')}__**`)
-    for (let i = 0; paths[i]; i++) pathsText.push(`\`[${paths[i].versions[0]} — ${paths[i].versions[paths[i].versions.length - 1]}]\` ${paths[i].path}`)
+    for (let i = 0; paths[i]; i++) {
+      if (paths[i].versions.length > 1) pathsText.push(`\`[${paths[i].versions[paths[i].versions.length - 1]} — ${paths[i].versions[0]}]\` ${paths[i].path}`)
+      else pathsText.push(`\`[${paths[i].versions[0]}]\` ${paths[i].path}`)
+    }
   }
-
-  console.log(path, pathVersion)
 
   if (pathUseType == "java") {
     switch (res) {
