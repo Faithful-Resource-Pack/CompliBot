@@ -144,7 +144,7 @@ async function setPath(id, args) {
         return errorEmbed("You must give a JSON Array, not a JSON Object")
 
       var k = 0
-      while (i < arr.length && typeof (arr[k]) === 'string') { k++ }
+      while (k < arr.length && typeof arr[k] === 'string') { k++ }
       if (arr.length !== k)
         return errorEmbed("The provided Array does not follow requirement, example: [ \"MC VERSION\" ] (array of string only)")
 
