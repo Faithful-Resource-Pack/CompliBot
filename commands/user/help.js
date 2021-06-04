@@ -10,7 +10,7 @@ const colors    = require('../../ressources/colors');
 const { warnUser } = require('../../helpers/warnUser');
 
 const BLACKLIST = [
-  'discords', 'reload', 'rules', 'shutdown', 'status', 'say', 'behave', 'embed', 'hotfix', 'database'
+  'shutdown', 'say', 'behave', 'hotfix', 'bean'
 ]
 
 module.exports = {
@@ -51,37 +51,65 @@ module.exports = {
 		}
 
 		if (!args[0]) {
-			var string = 'Type ``' + prefix + 'help <command>`` to get more information about a specific command!\n\n';
-			var commandsArray = []
+			
+			let commands_anyone   = new Array()
+			let commands_devs     = new Array()
+			let commands_mods     = new Array()
+			let commands_disabled = new Array()
+			let commands_others   = new Array()
 
-			var stringBuilder = ""
-			client.commands.forEach((value, _key, _map) => {
-				if (!BLACKLIST.includes(value.name)) {
-					stringBuilder = ""
-					stringBuilder += `**${prefix + value.name}**`
-					if (value.aliases) {
-						stringBuilder += ' ( '
-						value.aliases.forEach(element => {
-							stringBuilder += prefix + element + ' '
+			client.commands.forEach(command => {
+				if (!BLACKLIST.includes(command.name) && command.name !== undefined) {
+
+					let stringBuilder
+
+					stringBuilder = `— \`${prefix + command.name}\``
+					if (command.aliases) {
+						command.aliases.forEach(alias => {
+							stringBuilder += `, \`${prefix + alias}\``
 						})
-						stringBuilder += ')\n'
 					}
-					else stringBuilder += '\n'
-					commandsArray.push(stringBuilder)
+
+					switch (command.uses) {
+						case strings.COMMAND_USES_ANYONE:
+							commands_anyone.push(stringBuilder)
+							break
+						case strings.COMMAND_USES_DEVS:
+							commands_devs.push(stringBuilder)
+							break
+						case strings.COMMAND_USES_MODS:
+							commands_mods.push(stringBuilder)
+							break
+						case strings.COMMAND_DISABLED:
+							commands_disabled.push(stringBuilder)
+							break
+						default:
+							commands_others.push(`${stringBuilder} — ${command.uses}`)
+							break
+					}
+
 				}
 			})
 
-			commandsArray.sort()
-			commandsArray.forEach(element => {
-				string += element
-			})
+			commands_anyone.sort()
+			commands_devs.sort()
+			commands_mods.sort()
+			commands_disabled.sort()
+			commands_others.sort()
 
 			embed
-				.setTitle('Commands available')
-				.setThumbnail(settings.BOT_IMG)
-				.setColor(colors.BLUE)
-				.setDescription(string)
-				.setFooter(message.client.user.username, settings.BOT_IMG)
+			.setTitle('Commands available')
+			.setThumbnail(settings.BOT_IMG)
+			.setColor(colors.BLUE)
+			.setDescription(`Type \`${prefix}help <command>\` to get more information about the specified command!`)
+			.setFooter(message.client.user.username, settings.BOT_IMG)
+			.addFields(
+				{ name: "\u200B", value: commands_anyone[0] === undefined ? "None" : commands_anyone.join('\n') },
+				{ name: "Moderators", value: commands_mods[0] === undefined ? "None" : commands_mods.join('\n') },
+				{ name: "Developers", value: commands_devs[0] === undefined ? "None" : commands_devs.join('\n') },
+				{ name: "Others", value: commands_others[0] === undefined ? "None" : commands_others.join('\n') },
+				{ name: "Disabled", value: commands_disabled[0] === undefined ? "None" : commands_disabled.join('\n') }
+			)
 		}
 
 		const embedMessage = await message.inlineReply(embed);
