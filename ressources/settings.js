@@ -4,7 +4,7 @@ const VANILLA_IMG = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/
 const QUOTE_IMG   = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Discord-Bot/master/ressources/images/quote.png'
 
 // Default texture repo for java
-const DEFAULT_MC_JAVA_TEXTURE = 'https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/21w20a/assets/'
+const DEFAULT_MC_JAVA_TEXTURE = 'https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.17-pre4/assets/'
 const DEFAULT_MC_BEDROCK_TEXTURE = 'https://raw.githubusercontent.com/ZtechNetwork/MCBVanillaResourcePack/master/'
 
 // Compliance 32x

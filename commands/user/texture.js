@@ -163,7 +163,7 @@ async function getTexture(message, res, texture) {
       const size = dimension.width + '×' + dimension.height;
 
       var embed = new Discord.MessageEmbed()
-				.setAuthor('Note: this command isn\'t updated for 1.17 Pre-Release 3 yet')
+				//.setAuthor('Note: this command isn\'t updated for 1.17 Pre-Release 3 yet')
         .setTitle(`[#${texture.id}] ${texture.name}`)
         .setColor(colors.BLUE)
         //.setURL(imgURL) TODO: add a link to the website gallery where more information could be found about the texture
