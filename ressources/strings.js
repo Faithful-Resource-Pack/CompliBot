@@ -1,6 +1,7 @@
 const LATEST_MC_JE_VERSION = '1.17'
 const LATEST_MC_BE_VERSION = '1.16.210'
 
+const SNAPSHOT_MC_JE_VERSION = '1.17-pre4'
 
 // General stuff
 const BOT_ERROR = 'Action Failed'
@@ -176,6 +177,8 @@ const AUTOPUSH_ERROR_SPELLING = 'Texture not found, check spelling or folder'
 module.exports = {
 	LATEST_MC_JE_VERSION,
 	LATEST_MC_BE_VERSION,
+
+	SNAPSHOT_MC_JE_VERSION,
 	
 	BOT_ERROR,
 

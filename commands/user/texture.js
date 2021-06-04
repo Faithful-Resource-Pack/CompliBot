@@ -140,22 +140,43 @@ async function getTexture(message, res, texture) {
 
   const uses = await texture.uses()
   const path = (await uses[0].paths())[0].path
+  let pathVersion = (await uses[0].paths())[0].versions[0]
+  const pathUseType = uses[0].editions[0]
 
   let pathsText = []
   for (let x = 0; uses[x]; x++) {
     let paths = await uses[x].paths()
     pathsText.push(`**__${uses[x].editions.join(', ')}__**`)
-    for (let i = 0; paths[i]; i++) pathsText.push(`\`[${paths[i].versions[paths[i].versions.length - 1]}+]\` ${paths[i].path}`)
+    for (let i = 0; paths[i]; i++) pathsText.push(`\`[${paths[i].versions[0]} — ${paths[i].versions[paths[i].versions.length - 1]}]\` ${paths[i].path}`)
   }
 
-  if (res == '16') imgURL = settings.DEFAULT_MC_JAVA_TEXTURE + path;
-  if (res == '32') imgURL = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-32x/Jappa-' + strings.LATEST_MC_JE_VERSION + '/assets/' + path;
-  if (res == '64') imgURL = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-64x/Jappa-' + strings.LATEST_MC_JE_VERSION + '/assets/' + path;
-  
-  if (path.startsWith('textures')) { // hacks to get the right url with bedrock textures
-    if (res == '16') imgURL = settings.DEFAULT_MC_BEDROCK_TEXTURE + path;
-    if (res == '32') imgURL = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Bedrock-32x/Jappa-' + strings.LATEST_MC_BE_VERSION + '/' + path;
-    if (res == '64') imgURL = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Bedrock-64x/Jappa-' + strings.LATEST_MC_BE_VERSION + '/' + path;
+  console.log(path, pathVersion)
+
+  if (pathUseType == "java") {
+    switch (res) {
+      case "16":
+        if (pathVersion === '1.17') pathVersion = strings.SNAPSHOT_MC_JE_VERSION
+        imgURL = settings.DEFAULT_MC_JAVA_REPOSITORY + pathVersion + '/assets/' + path
+        break
+      case "32":
+        imgURL = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-32x/Jappa-' + pathVersion + '/assets/' + path
+        break
+      case "64":
+        imgURL = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-64x/Jappa-' + pathVersion + '/assets/' + path
+        break
+    }
+  }
+  else {
+    switch (res) {
+      case "16":
+        imgURL = settings.DEFAULT_MC_BEDROCK_REPOSITORY + path
+        break
+      case "32":
+        imgURL = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Bedrock-32x/Jappa-' + pathVersion + '/' + path
+        break
+      case "64":
+        imgURL = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Bedrock-64x/Jappa-' + pathVersion + '/' + path
+    }
   }
 
   axios.get(imgURL).then(() => {
@@ -170,23 +191,20 @@ async function getTexture(message, res, texture) {
         .setImage(imgURL)
         .addField('Resolution:', size,true)
 
-      if (res === '16' || res === '16b') embed.setFooter('Vanilla Texture', settings.VANILLA_IMG);
-      if (res === '32' || res === '32b') embed.setFooter('Compliance 32x', settings.C32_IMG)
-      if (res === '64' || res === '64b') embed.setFooter('Compliance 64x', settings.C64_IMG)
+      if (res === '16') embed.setFooter('Vanilla Texture', settings.VANILLA_IMG);
+      if (res === '32') embed.setFooter('Compliance 32x', settings.C32_IMG)
+      if (res === '64') embed.setFooter('Compliance 64x', settings.C64_IMG)
 
       let lastContribution = await texture.lastContribution((res == '32' || res == '64') ? `c${res}` : undefined);
       let contributors = lastContribution ? lastContribution.contributors.map(contributor => { return `<@!${contributor}>` }) : 'None'
       let date = lastContribution ? timestampConverter(lastContribution.date) : 'None'
 
-      /**
-       * TODO: fix the authors using the new database first
-       */
-      /*if (res != '16') {
+      if (res != '16') {
         embed.addFields(
           { name: 'Author(s)', value: contributors, inline: true },
           { name: 'Added', value: date, inline: true },
         )
-			}*/
+			}
       embed.addField('Paths', pathsText.join('\n'), false)
 
       const embedMessage = await message.inlineReply(embed);

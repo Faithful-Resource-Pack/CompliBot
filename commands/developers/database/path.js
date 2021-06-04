@@ -118,7 +118,7 @@ async function setPath(id, args) {
 
       return getPath(id)
     case "useID":
-      path.useID = parseInt(args[0], 10)
+      path.useID = args[0]
       
       try {
         await allCollection.texture_path.set(id, path)

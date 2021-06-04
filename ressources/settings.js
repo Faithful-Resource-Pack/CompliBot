@@ -7,6 +7,9 @@ const QUOTE_IMG   = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/
 const DEFAULT_MC_JAVA_TEXTURE = 'https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.17-pre4/assets/'
 const DEFAULT_MC_BEDROCK_TEXTURE = 'https://raw.githubusercontent.com/ZtechNetwork/MCBVanillaResourcePack/master/'
 
+const DEFAULT_MC_JAVA_REPOSITORY    = 'https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/'
+const DEFAULT_MC_BEDROCK_REPOSITORY = 'https://raw.githubusercontent.com/ZtechNetwork/MCBVanillaResourcePack/master/'
+
 // Compliance 32x
 const C32_IMG           = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Discord-Bot/master/ressources/images/Logos/Compliance%2032x.png'
 const C32_ID            = '773983706582482946'
@@ -63,6 +66,8 @@ module.exports = {
 
 	DEFAULT_MC_JAVA_TEXTURE,
 	DEFAULT_MC_BEDROCK_TEXTURE,
+	DEFAULT_MC_JAVA_REPOSITORY,
+	DEFAULT_MC_BEDROCK_REPOSITORY,
 
 	C32_IMG,
 	C32_ID,
