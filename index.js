@@ -37,6 +37,10 @@ const { updateMembers } = require('./functions/moderation/updateMembers')
 const { textureIDQuote } = require('./functions/textures/textureIDQuote')
 const { quote }          = require('./functions/quote')
 
+const jiraJE    = require('./functions/minecraftUpdates/jira-je')
+const jiraBE    = require('./functions/minecraftUpdates/jira-be')
+const minecraft = require('./functions/minecraftUpdates/minecraft')
+
 const { retrieveSubmission } = require('./functions/textures/submission/retrieveSubmission')
 const { councilSubmission }  = require('./functions/textures/submission/councilSubmission')
 const { revoteSubmission }   = require('./functions/textures/submission/revoteSubmission')
@@ -81,6 +85,12 @@ const downloadToBot = new cron.CronJob('15 0 * * *', async () => {
 let pushToGithub = new cron.CronJob('30 0 * * *', async () => {
 	await pushTextures()
 })
+
+function doMCUpdateCheck () {
+	jiraJE.updateJiraVersions(client)
+	jiraBE.updateJiraVersions(client)
+	minecraft.updateMCVersions(client)
+}
 
 /**
  * MODERATION MUTE SYSTEM UPDATE INTERVAL
@@ -136,25 +146,16 @@ client.on('ready', async () => {
 	downloadToBot.start()
 	pushToGithub.start()
 
+	await jiraJE.loadJiraVersions()
+	await jiraBE.loadJiraVersions()
+	await minecraft.loadMCVersions()
+	setInterval(() => doMCUpdateCheck(), 60000)
+
 	/*
 	 * UPDATE MEMBERS
 	 */
 	updateMembers(client, settings.CTWEAKS_ID, settings.CTWEAKS_COUNTER)
 	updateMembers(client, settings.C32_ID, settings.C32_COUNTER)
-
-	// get out if no channel, no cache or empty cache
-	/*if(client.channels === undefined || client.channels.cache === undefined || client.channels.cache.length === 0) return
-
-	// get out if history channel not found
-	const destinationChannel = client.channels.cache.get('785867553095548948')
-	if(destinationChannel === undefined) return
-
-	const embed = new Discord.MessageEmbed()
-		.setTitle('Started!')
-		.setDescription(`<@!${client.user.id}> \n ID: ${client.user.id}`)
-		.setColor(colors.GREEN)
-		.setTimestamp()
-	await destinationChannel.send(embed)*/
 })
 
 /*
