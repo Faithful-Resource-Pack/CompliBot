@@ -101,19 +101,19 @@ module.exports = {
       for (let i = 0; results[i]; i++) {
         let uses = await results[i].uses()
         let path = await uses[0].paths()
-        let versions = []
+        let stringBuilder = []
 
         for (let j = 0; uses[j]; j++) {
           let paths = await uses[j].paths()
           for (let k = 0; paths[k]; k++) {
-            if (paths[k].versions.length > 1) versions.push(`\`[${paths[k].versions[paths[k].versions.length - 1]} — ${paths[k].versions[0]}]\``)
-            else versions.push(`\`[${paths[k].versions[0]}]\``)
+            if (paths[k].versions.length > 1) stringBuilder.push(`\`[${paths[k].versions[paths[k].versions.length - 1]}+]\`\t${paths[k].path.replace(search, `**${search}**`).replace(/_/g, '\\_')}`)
+            else stringBuilder.push(`\`[${paths[k].versions[0]}]\`\t${paths[k].path.replace(search, `**${search}**`).replace(/_/g, '\\_')}`)
           }
         }
 
         choice.push(
-          `\`[#${results[i].id}]\` ${results[i].name.replace(search, `**${search}**`).replace(/_/g, '\\_')} — ${versions.join(' & ')}
-          > ${path[0].path.replace(search, `**${search}**`).replace(/_/g, '\\_')}`
+          `\`[#${results[i].id}]\` ${results[i].name.replace(search, `**${search}**`).replace(/_/g, '\\_')}
+          > ${stringBuilder.join('\n> ')}\n`
         )
         //choice.push(`\`[#${results[i].id}]\` ${results[i].name.replace(search, `**${search}**`).replace(/_/g, '\\_')} — \n> ${paths[0].path.replace(search, `**${search}**`).replace(/_/g, '\\_')}`)
       }
