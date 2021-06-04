@@ -1,5 +1,5 @@
 // Bot assets
-const BOT_IMG     = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Discord-Bot/master/ressources/images/Logos/CompliBot.png'
+const BOT_IMG     = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Discord-Bot/master/ressources/images/Logos/CompliPride.png'
 const VANILLA_IMG = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Discord-Bot/master/ressources/images/texture_16x.png'
 const QUOTE_IMG   = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Discord-Bot/master/ressources/images/quote.png'
 
