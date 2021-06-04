@@ -200,12 +200,12 @@ async function getTexture(message, res, texture) {
       let contributors = lastContribution ? lastContribution.contributors.map(contributor => { return `<@!${contributor}>` }) : 'None'
       let date = lastContribution ? timestampConverter(lastContribution.date) : 'None'
 
-      if (res != '16') {
+      /*if (res != '16') {
         embed.addFields(
           { name: 'Author(s)', value: contributors, inline: true },
           { name: 'Added', value: date, inline: true },
         )
-			}
+			}*/
       embed.addField('Paths', pathsText.join('\n'), false)
 
       const embedMessage = await message.inlineReply(embed);
