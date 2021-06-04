@@ -4,7 +4,10 @@ const { removeMutedRole } = require('../moderation/removeMutedRole')
 
 async function checkTimeout(client) {
 
-	const users = await usersCollection.read_raw();
+	let users
+	try {
+		users = await usersCollection.read_raw()
+	} catch (err) { return } // avoid Request faild with status code 525/502 etc..
 
 	for (const [_key, user] of Object.entries(users)) {
 		// check if the user has 'muted: {}' && 'muted: { start: n }'

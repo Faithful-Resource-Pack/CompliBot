@@ -97,11 +97,25 @@ module.exports = {
     if (results.length > 1) {
 
       let choice = [];
+      
       for (let i = 0; results[i]; i++) {
         let uses = await results[i].uses()
-        let paths = await uses[0].paths()
+        let path = await uses[0].paths()
+        let versions = []
 
-        choice.push(`\`[#${results[i].id}]\` ${results[i].name.replace(search, `**${search}**`).replace(/_/g, '\\_')} — ${paths[0].path.replace(search, `**${search}**`).replace(/_/g, '\\_')}`)
+        for (let j = 0; uses[j]; j++) {
+          let paths = await uses[j].paths()
+          for (let k = 0; paths[k]; k++) {
+            if (paths[k].versions.length > 1) versions.push(`\`[${paths[k].versions[paths[k].versions.length - 1]} — ${paths[k].versions[0]}]\``)
+            else versions.push(`\`[${paths[k].versions[0]}]\``)
+          }
+        }
+
+        choice.push(
+          `\`[#${results[i].id}]\` ${results[i].name.replace(search, `**${search}**`).replace(/_/g, '\\_')} — ${versions.join(' & ')}
+          > ${path[0].path.replace(search, `**${search}**`).replace(/_/g, '\\_')}`
+        )
+        //choice.push(`\`[#${results[i].id}]\` ${results[i].name.replace(search, `**${search}**`).replace(/_/g, '\\_')} — \n> ${paths[0].path.replace(search, `**${search}**`).replace(/_/g, '\\_')}`)
       }
 
 			if (!waitEmbedMessage.deleted) await waitEmbedMessage.delete();
@@ -197,15 +211,19 @@ async function getTexture(message, res, texture) {
       if (res === '64') embed.setFooter('Compliance 64x', settings.C64_IMG)
 
       let lastContribution = await texture.lastContribution((res == '32' || res == '64') ? `c${res}` : undefined);
+      
+      /*
+      TODO: Get missing contributors from #results and add them to the contribution collection first
       let contributors = lastContribution ? lastContribution.contributors.map(contributor => { return `<@!${contributor}>` }) : 'None'
       let date = lastContribution ? timestampConverter(lastContribution.date) : 'None'
 
-      /*if (res != '16') {
+      if (res != '16') {
         embed.addFields(
           { name: 'Author(s)', value: contributors, inline: true },
           { name: 'Added', value: date, inline: true },
         )
-			}*/
+			}
+      */
       embed.addField('Paths', pathsText.join('\n'), false)
 
       const embedMessage = await message.inlineReply(embed);

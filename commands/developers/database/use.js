@@ -189,7 +189,7 @@ async function getUse(id) {
     { name: 'textureID', value: use.textureID },
     { name: 'editions', value: use.editions[0] ? use.editions : 'None' },
     { name: 'id', value: use.id },
-    { name: 'uses:', value: pathsID.length !== 0 ? `\`${prefix}db path get [${pathsID.join('|')}]\`` : `NO PATH FOUND, CREATE A NEW ONE USING:\n\`${prefix}db path add <useID> ...\`` }
+    { name: 'paths:', value: pathsID.length !== 0 ? `\`${prefix}db path get [${pathsID.join('|')}]\`` : `NO PATH FOUND, CREATE A NEW ONE USING:\n\`${prefix}db path add <useID> ...\`` }
   )
 
   return embed
