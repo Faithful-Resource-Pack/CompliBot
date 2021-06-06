@@ -106,11 +106,11 @@ async function textureIDQuote(message) {
 			.then(async collected => {
 				const reaction = collected.first()
 				if (reaction.emoji.name === '🗑️') {
-					await embedMessage.delete()
+					return await embedMessage.delete()
 				}
 			})
 			.catch(async () => {
-				if (!embedMessage.deleted && message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🗑️').remove()
+				if (message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🗑️').remove()
 			})
   }
 

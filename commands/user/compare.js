@@ -204,12 +204,12 @@ module.exports = {
       .then(async collected => {
         const reaction = collected.first()
         if (reaction.emoji.name === '🗑️') {
-          embedMessage.delete()
-          if (!message.deleted) message.delete()
+          await embedMessage.delete()
+          if (!message.deleted && message.channel.type !== 'dm') return await message.delete()
         }
       })
       .catch(async () => {
-        if (!embedMessage.deleted && message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🗑️').remove()
+        if (message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🗑️').remove()
       })
   }
 }

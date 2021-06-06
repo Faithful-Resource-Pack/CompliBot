@@ -209,11 +209,11 @@ async function palette(message, url, gotocomplichannel = undefined) {
 				const reaction = collected.first()
 				if (reaction.emoji.name === '🗑️') {
 					await embedMessage.delete()
-					if (!message.deleted && message.channel.type !== 'dm') await message.delete()
+					if (!message.deleted && message.channel.type !== 'dm') return await message.delete()
 				}
 			})
 			.catch(async () => {
-				if (!embedMessage.deleted && embedMessage.channel.type !== 'dm') await embedMessage.reactions.cache.get('🗑️').remove()
+				if (embedMessage.channel.type !== 'dm') await embedMessage.reactions.cache.get('🗑️').remove()
 			})
 	})
 }

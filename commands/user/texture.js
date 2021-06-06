@@ -242,8 +242,8 @@ async function getTexture(message, res, texture) {
       .then(async collected => {
         const reaction = collected.first()
         if (reaction.emoji.name === '🗑️') {
-          if (!embedMessage.deleted) embedMessage.delete()
-          if (!message.deleted) message.delete()
+          await embedMessage.delete()
+          if (!message.deleted && message.channel.type !== 'dm') return await message.delete()
         }
         if (reaction.emoji.name === '🎨') {
           return palette(embedMessage, embedMessage.embeds[0].image.url)
@@ -257,12 +257,12 @@ async function getTexture(message, res, texture) {
         }
       })
       .catch(async () => {
-        if (!embedMessage.deleted && message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🗑️').remove()
+        if (message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🗑️').remove()
         if (dimension.width <= 128 && dimension.height <= 128) {
-          if (!embedMessage.deleted && message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🔎').remove()
+          if (message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🔎').remove()
         }
-        if (!embedMessage.deleted && message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🌀').remove()
-        if (!embedMessage.deleted && message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🎨').remove()
+        if (message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🌀').remove()
+        if (message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🎨').remove()
       })
 
     })

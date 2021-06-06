@@ -28,11 +28,11 @@ async function warnUser(message, text) {
 			const reaction = collected.first()
 			if (reaction.emoji.name === '🗑️') {
 				await embedMessage.delete()
-				if (!message.deleted && message.channel.type !== 'dm') await message.delete()
+				if (!message.deleted && message.channel.type !== 'dm') return await message.delete()
 			}
 		})
 		.catch(async () => {
-			if (!embedMessage.deleted && message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🗑️').remove()
+			if (message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🗑️').remove()
 		})
 }
 
