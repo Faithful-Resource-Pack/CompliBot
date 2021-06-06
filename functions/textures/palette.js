@@ -4,6 +4,7 @@ const colors2 = require('../../ressources/colors')
 
 const { getMeta }  = require('../../helpers/getMeta')
 const { warnUser } = require('../../helpers/warnUser')
+const { addDeleteReact } = require('../../helpers/addDeleteReact')
 
 const COLORS_PER_PALETTE      = 9
 const COLORS_PER_PALETTE_LINE = 3
@@ -198,23 +199,7 @@ async function palette(message, url, gotocomplichannel = undefined) {
 			})
 		}
 
-		if (embedMessage.channel.type !== 'dm') await embedMessage.react('🗑️')
-
-		const filter = (reaction, user) => {
-			return ['🗑️'].includes(reaction.emoji.name) && user.id === message.author.id
-		}
-
-		embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
-			.then(async collected => {
-				const reaction = collected.first()
-				if (reaction.emoji.name === '🗑️') {
-					await embedMessage.delete()
-					if (!message.deleted && message.channel.type !== 'dm') return await message.delete()
-				}
-			})
-			.catch(async () => {
-				if (embedMessage.channel.type !== 'dm') await embedMessage.reactions.cache.get('🗑️').remove()
-			})
+		addDeleteReact(embedMessage, message)
 	})
 }
 

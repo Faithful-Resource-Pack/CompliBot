@@ -23,7 +23,10 @@ async function getMessages(client, id, limit = 100) {
 		const options = { limit: fetchLimit }
 		if (last_id) options.before = last_id
 
-		const messages = await channel.messages.fetch(options)
+		let messages
+		try {
+			messages = await channel.messages.fetch(options)
+		} catch (err) { console.log(err) }
 		sum_messages.push(...messages.array())
 		last_id = messages.last().id
 

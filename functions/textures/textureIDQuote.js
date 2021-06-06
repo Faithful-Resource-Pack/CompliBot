@@ -3,6 +3,7 @@ const colors   = require('../../ressources/colors');
 const settings = require('../../ressources/settings');
 const fetch    = require('node-fetch');
 const { timestampConverter } = require('../../helpers/timestampConverter');
+const { addDeleteReact } = require("../../helpers/addDeleteReact");
 
 const CANVAS_FUNCTION_PATH = '../../functions/textures/canvas'
 function nocache(module) { require('fs').watchFile(require('path').resolve(module), () => { delete require.cache[require.resolve(module)] }) }
@@ -96,22 +97,7 @@ async function textureIDQuote(message) {
       )
 
     const embedMessage = await message.inlineReply(embed)
-		if (message.channel.type !== 'dm') await embedMessage.react('🗑️')
-
-		const filter = (reaction, user) => {
-			return ['🗑️'].includes(reaction.emoji.name) && user.id === message.author.id
-		}
-
-		embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
-			.then(async collected => {
-				const reaction = collected.first()
-				if (reaction.emoji.name === '🗑️') {
-					return await embedMessage.delete()
-				}
-			})
-			.catch(async () => {
-				if (message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🗑️').remove()
-			})
+		addDeleteReact(embedMessage, message)
   }
 
 }

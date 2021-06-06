@@ -137,6 +137,9 @@ async function loop (embedMessage, message, embed, embedJava, embedBedrock) {
   await embedMessage.react('1️⃣')
   await embedMessage.react('2️⃣')
 
+	/**
+	 * TODO: use addDeleteReact() instead
+	 */
   const filter = (reaction, user) => {
     return ['🗑️', '1️⃣', '2️⃣'].includes(reaction.emoji.name) && user.id === message.author.id
   }

@@ -1,5 +1,6 @@
 const Canvas  = require('canvas')
 const Discord = require('discord.js')
+const { addDeleteReact } = require('../../helpers/addDeleteReact')
 
 const { getMeta }  = require('../../helpers/getMeta')
 const { warnUser } = require('../../helpers/warnUser')
@@ -67,24 +68,7 @@ function magnify(message, url, gotocomplichannel = undefined) {
 			}
 		}
 		else embedMessage = await message.inlineReply(attachment);
-
-		if (embedMessage.channel.type !== 'dm') await embedMessage.react('🗑️');
-
-		const filter = (reaction, user) => {
-			return ['🗑️'].includes(reaction.emoji.name) && user.id === message.author.id;
-		};
-
-		embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
-			.then(async collected => {
-				const reaction = collected.first();
-				if (reaction.emoji.name === '🗑️') {
-					await embedMessage.delete();
-					if (!message.deleted && message.channel.type !== 'dm') return await message.delete();
-				}
-			})
-			.catch(async () => {
-				if (embedMessage.channel.type !== 'dm') await embedMessage.reactions.cache.get('🗑️').remove();
-			});
+		addDeleteReact(embedMessage, message)
 
 		return attachment;
 	});

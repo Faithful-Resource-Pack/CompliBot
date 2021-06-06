@@ -1,5 +1,6 @@
 const Canvas  = require('canvas')
-const Discord = require('discord.js')
+const Discord = require('discord.js');
+const { addDeleteReact } = require('../../helpers/addDeleteReact');
 
 const { getMeta }  = require('../../helpers/getMeta')
 const { warnUser } = require('../../helpers/warnUser')
@@ -126,31 +127,28 @@ function tile(message, url, type) {
 
 		const attachment   = new Discord.MessageAttachment(canvas.toBuffer(), 'tiled.png')
 		const embedMessage = await message.inlineReply(attachment)
+		addDeleteReact(embedMessage, message)
 
-    if (message.channel.type !== 'dm') await embedMessage.react('🗑️')
 		if (dimension.width <= 512 && dimension.height <= 512) {
-		embedMessage.react('🔎');
-		}
+			embedMessage.react('🔎');
 
-		const filter = (reaction, user) => {
-			return ['🗑️', '🔎'].includes(reaction.emoji.name) && user.id === message.author.id
-		}
+			const filter = (reaction, user) => {
+				return ['🔎'].includes(reaction.emoji.name) && user.id === message.author.id
+			}
 
-		embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
-			.then(async collected => {
-				const reaction = collected.first()
-				if (reaction.emoji.name === '🗑️') {
-					await embedMessage.delete()
-					if (!message.deleted && message.channel.type !== 'dm') return await message.delete()
-				}
-				if (reaction.emoji.name === '🔎') {
-					return magnify(embedMessage, embedMessage.attachments.first().url)
-				}
-			})
-			.catch(async () => {
-				if (message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🗑️').remove()
-				if (message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🔎').remove()
-			})
+			embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
+				.then(async collected => {
+					const reaction = collected.first()
+					if (reaction.emoji.name === '🔎') {
+						return magnify(embedMessage, embedMessage.attachments.first().url)
+					}
+				})
+				.catch(async () => {
+					try {
+						if (message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🔎').remove()
+					} catch (err) { /* Message already deleted */ }
+				})
+		}
 	})
 }
 

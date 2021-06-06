@@ -30,8 +30,8 @@ async function revoteSubmission(client, channelFromID, channelOutID, delay) {
   // map messages adding reacts count, embed and message (easier management like that)
   messages = messages.map(message => {
     message = {
-      upvote: message.reactions.cache.get(emojis.UPVOTE).count,
-      downvote: message.reactions.cache.get(emojis.DOWNVOTE).count,
+      upvote: message.reactions.cache.get(emojis.UPVOTE).count + message.reactions.cache.get(emojis.UPVOTE_OLD),
+      downvote: message.reactions.cache.get(emojis.DOWNVOTE).count + message.reactions.cache.get(emojis.DOWNVOTE_OLD),
       percentage: null,
       embed: message.embeds[0],
       message: message

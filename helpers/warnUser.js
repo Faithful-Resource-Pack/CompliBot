@@ -2,6 +2,7 @@ const Discord  = require('discord.js')
 const settings = require('../ressources/settings')
 const colors   = require('../ressources/colors')
 const strings  = require('../ressources/strings')
+const { addDeleteReact } = require('./addDeleteReact')
 
 /**
  * Reply to a user with an embed, use to warn a user
@@ -17,23 +18,7 @@ async function warnUser(message, text) {
 		.setFooter('Type /help to get more information about commands', settings.BOT_IMG)
 
 	const embedMessage = await message.inlineReply(embed)
-	if (message.channel.type !== 'dm') await embedMessage.react('🗑️')
-
-	const filter = (reaction, user) => {
-		return ['🗑️'].includes(reaction.emoji.name) && user.id === message.author.id
-	}
-
-	embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
-		.then(async collected => {
-			const reaction = collected.first()
-			if (reaction.emoji.name === '🗑️') {
-				await embedMessage.delete()
-				if (!message.deleted && message.channel.type !== 'dm') return await message.delete()
-			}
-		})
-		.catch(async () => {
-			if (message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🗑️').remove()
-		})
+	addDeleteReact(embedMessage, message)
 }
 
 exports.warnUser = warnUser

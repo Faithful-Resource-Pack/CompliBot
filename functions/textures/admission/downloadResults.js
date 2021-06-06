@@ -24,7 +24,7 @@ async function downloadResults(client, channelInID) {
   // select good messages
   messages = messages
     .filter(message => message.embeds.length > 0)
-    .filter(message => message.embeds[0].fields[1] !== undefined && message.embeds[0].fields[1].value.includes(`<:upvote:${emojis.UPVOTE}>`))
+    .filter(message => message.embeds[0].fields[1] !== undefined && (message.embeds[0].fields[1].value.includes(`<:upvote:${emojis.UPVOTE}>`) || message.embeds[0].fields[1].value.includes(`<:upvote:${emojis.UPVOTE_OLD}>`)))
 
   // map the array for easier management
   let textures = messages.map(message => {

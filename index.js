@@ -60,6 +60,7 @@ const strings = require('./ressources/strings')
 // Import settings & commands handler:
 const commandFiles = walkSync('./commands').filter(file => file.endsWith('.js'))
 const settings     = require('./ressources/settings')
+const { addDeleteReact } = require('./helpers/addDeleteReact')
 
 /**
  * SCHEDULED FUNCTIONS : Texture Submission
@@ -91,13 +92,6 @@ function doMCUpdateCheck () {
 	jiraBE.updateJiraVersions(client)
 	minecraft.updateMCVersions(client)
 }
-
-/**
- * MODERATION MUTE SYSTEM UPDATE INTERVAL
- * @param {int} TIME : in milliseconds
- */
-const TIME = 30000
-setInterval(function() { checkTimeout(client) }, TIME)
 
 /** 
  * BOT HEARTBEAT:
@@ -146,19 +140,29 @@ client.on('ready', async () => {
 	downloadToBot.start()
 	pushToGithub.start()
 
+	/**
+	 * MINECRAFT UPDATE DETECTION INTERVAL
+	 * @param {int} TIME : in milliseconds
+	 */
 	await jiraJE.loadJiraVersions()
 	await jiraBE.loadJiraVersions()
 	await minecraft.loadMCVersions()
 	setInterval(() => doMCUpdateCheck(), 60000)
 
-	/*
+	/**
+	 * MODERATION MUTE SYSTEM UPDATE INTERVAL
+	 * @param {int} TIME : in milliseconds
+	 */
+	setInterval(function () { checkTimeout(client) }, 30000)
+
+	/**
 	 * UPDATE MEMBERS
 	 */
 	updateMembers(client, settings.CTWEAKS_ID, settings.CTWEAKS_COUNTER)
 	updateMembers(client, settings.C32_ID, settings.C32_COUNTER)
 })
 
-/*
+/**
  * MEMBER JOIN
  */
 client.on('guildMemberAdd', async () =>{
@@ -166,7 +170,7 @@ client.on('guildMemberAdd', async () =>{
 	updateMembers(client, settings.C32_ID, settings.C32_COUNTER)
 })
 
-/*
+/**
  * MEMBER LEFT
  */
 client.on('guildMemberRemove', async () => {
@@ -174,7 +178,7 @@ client.on('guildMemberRemove', async () => {
 	updateMembers(client, settings.C32_ID, settings.C32_COUNTER)
 })
 
-/*
+/**
  * BOT ADD OR REMOVE
  */
 client.on('guildCreate', async guild =>{
@@ -193,16 +197,16 @@ client.on('guildCreate', async guild =>{
 	await channel.send(embed)
 })
 
-/*
+/**
  * COMMAND HANDLER
  */
 client.on('message', async message => {
-	if (!message.content.startsWith(prefix) || message.author.bot) return // Avoid message WITHOUT prefix & bot messages
+	if (!message.content.startsWith(prefix) || message.author.bot) return // Avoid messages WITHOUT prefix & bot messages
 
 	if (MAINTENANCE && !UIDA.includes(message.author.id)) {
 		const msg = await message.inlineReply(strings.COMMAND_MAINTENANCE)
 		await message.react('❌')
-		if (!message.deleted) await msg.delete({timeout: TIME})
+		if (!message.deleted) await msg.delete({timeout: 30000})
 	}
 	
 	const args        = message.content.slice(prefix.length).trim().split(/ +/)
@@ -235,29 +239,29 @@ client.on('messageReactionAdd', async (reaction, user) => {
 	 * NEW TEXTURE SUBMISSION
 	 */
 	if (
-		reaction.message.channel.id === settings.C32_SUBMIT_TEXTURES ||
+		reaction.message.channel.id === settings.C32_SUBMIT_TEXTURES || // c32x server
 		reaction.message.channel.id === settings.C32_SUBMIT_COUNCIL  || 
 		reaction.message.channel.id === settings.C32_SUBMIT_REVOTE   || 
-		reaction.message.channel.id === settings.C32_RESULTS         || // c32x server
+		reaction.message.channel.id === settings.C32_RESULTS         ||
 
-		reaction.message.channel.id === settings.C64_SUBMIT_TEXTURES ||
+		reaction.message.channel.id === settings.C64_SUBMIT_TEXTURES || // c64x server
 		reaction.message.channel.id === settings.C64_SUBMIT_COUNCIL  ||
 		reaction.message.channel.id === settings.C64_SUBMIT_REVOTE   ||
-		reaction.message.channel.id === settings.C64_RESULTS         || // c64x server
+		reaction.message.channel.id === settings.C64_RESULTS         ||
 
-		reaction.message.channel.id === settings.CDUNGEONS_SUBMIT // dungeons server
+		reaction.message.channel.id === settings.CDUNGEONS_SUBMIT 			// dungeons server
 		) editSubmission(client, reaction, user)
 })
 
-/*
+/**
  * EASTER EGGS & CUSTOM COMMANDS:
  */
 client.on('message', async message => {
 	// Avoid message WITH prefix & bot messages
 	if (message.content.startsWith(prefix) || message.author.bot) return
 
-	/*
-	 * Funny Stuff
+	/**
+	 * EASTER EGGS
 	 */
 	if (message.content.includes('(╯°□°）╯︵ ┻━┻')) return await message.inlineReply('┬─┬ ノ( ゜-゜ノ) calm down bro')
 	if (message.content.toLowerCase().includes('engineer gaming')) return await message.react('👷‍♂️')
@@ -268,18 +272,24 @@ client.on('message', async message => {
 			.setDescription('```Uh-oh moment```')
 			.setColor(colors.BLUE)
 			.setFooter('Swahili → English', settings.BOT_IMG)
-		return await message.inlineReply(embed)
+		let msgEmbed = await message.inlineReply(embed)
+		return addDeleteReact(msgEmbed, message)
 	}
 
 	if (message.content.toLowerCase() === 'band') {
-		const band = ['🎤', '🎸', '🥁', '🎺', '🎹', '🎻']
-		band.forEach(async emoji => { await message.react(emoji) })
-		return
+		return ['🎶', '🎤', '🎸', '🥁', '🪘', '🎺', '🎷', '🎹', '🪗', '🎻', '🎵'].forEach(async emoji => { await message.react(emoji) })
+	}
+
+	if (message.content === 'monke Bob') {
+		return ['🎷','🐒'].forEach(async emoji => { await message.react(emoji) })
 	}
 
 	if (message.content.toLowerCase() === 'hello there') {
-		if (Math.floor(Math.random() * Math.floor(5)) != 1) return await message.channel.send('https://media1.tenor.com/images/8dc53503f5a5bb23ef12b2c83a0e1d4d/tenor.gif')
-		else return await message.channel.send('https://preview.redd.it/6n6zu25c66211.png?width=960&crop=smart&auto=webp&s=62024911a6d6dd85f83a2eb305df6082f118c8d1')
+		let msgEmbed
+		if (Math.floor(Math.random() * Math.floor(5)) != 1) msgEmbed = await message.inlineReply('https://media1.tenor.com/images/8dc53503f5a5bb23ef12b2c83a0e1d4d/tenor.gif')
+		else msgEmbed = await message.inlineReply('https://preview.redd.it/6n6zu25c66211.png?width=960&crop=smart&auto=webp&s=62024911a6d6dd85f83a2eb305df6082f118c8d1')
+
+		return addDeleteReact(msgEmbed, message)
 	}
 
 	/**
@@ -287,7 +297,11 @@ client.on('message', async message => {
 	 * when someone send a message with https://discord.com/channels/<server ID>/<channel ID>/<message ID>
 	 * @author Juknum
 	 */
-	if (message.content.includes('https://canary.discord.com/channels/') || message.content.includes('https://discord.com/channels/') || message.content.includes('https://discordapp.com/channels')) quote(message)
+	if (
+		message.content.includes('https://canary.discord.com/channels/') || 
+		message.content.includes('https://discord.com/channels/')        || 
+		message.content.includes('https://discordapp.com/channels')
+	)	quote(message)
 
 	/**
 	 * TEXTURE ID QUOTE
@@ -307,10 +321,11 @@ client.on('message', async message => {
 	/**
 	 * TEXTURE SUBMISSION
 	 */
-	if (message.channel.id === settings.C32_SUBMIT_TEXTURES ||
-			message.channel.id === settings.C64_SUBMIT_TEXTURES ||
-			message.channel.id === settings.CDUNGEONS_SUBMIT
-		) return submitTexture(client, message)
+	if (
+		message.channel.id === settings.C32_SUBMIT_TEXTURES ||
+		message.channel.id === settings.C64_SUBMIT_TEXTURES ||
+		message.channel.id === settings.CDUNGEONS_SUBMIT
+	) return submitTexture(client, message)
 
 	/**
 	 * EMULATED VATTIC TEXTURES BASIC AUTOREACT (FHLX's server)

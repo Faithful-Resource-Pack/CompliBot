@@ -20,7 +20,7 @@ async function editSubmission(client, reaction, user) {
 
   const authorID = await message.embeds[0].fields[0].value.split('\n').map(el => el.replace('<@', '').replace('!', '').replace('>', ''))[0]
 
-  if (reaction.emoji.id === emojis.SEE_MORE) {
+  if (reaction.emoji.id === emojis.SEE_MORE || reaction.emoji.id === emojis.SEE_MORE_OLD) {
 
     reaction.remove().catch(err => { if (process.DEBUG) console.error(err)} )
 

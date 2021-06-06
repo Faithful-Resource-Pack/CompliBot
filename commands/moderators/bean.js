@@ -5,6 +5,7 @@ const strings = require('../../ressources/strings');
 const colors  = require('../../ressources/colors');
 
 const { warnUser } = require('../../helpers/warnUser');
+const { addDeleteReact } = require('../../helpers/addDeleteReact');
 
 module.exports = {
 	name: 'bean',
@@ -32,23 +33,7 @@ module.exports = {
 				.setColor(colors.BLUE)
 				.setTimestamp();
 			const embedMessage = await message.inlineReply(embed);
-			await embedMessage.react('🗑️');
-
-			const filter = (reaction, user) => {
-				return ['🗑️'].includes(reaction.emoji.name) && user.id === message.author.id;
-			};
-
-			embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
-				.then(async collected => {
-					const reaction = collected.first();
-					if (reaction.emoji.name === '🗑️') {
-						await embedMessage.delete();
-						if (!message.deleted) await message.delete();
-					}
-				})
-				.catch(async () => {
-					await embedMessage.reactions.cache.get('🗑️').remove();
-				});
+			addDeleteReact(embedMessage, message)
 		}
 	}
 };

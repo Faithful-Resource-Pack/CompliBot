@@ -1,6 +1,7 @@
 const Discord  = require('discord.js')
 const settings = require('../ressources/settings')
 const colors   = require('../ressources/colors')
+const { addDeleteReact } = require('../helpers/addDeleteReact')
 
 /**
  * Quote a message when discord message URL is found
@@ -97,22 +98,7 @@ async function quote(msg) {
 			}
 
 			const embedMessage = await msg.inlineReply(embed)
-			await embedMessage.react('🗑️')
-
-			const filter = (reaction, user) => {
-				return ['🗑️'].includes(reaction.emoji.name) && user.id === msg.author.id
-			}
-
-			embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
-				.then(async collected => {
-					const reaction = collected.first()
-					if (reaction.emoji.name === '🗑️') {
-						await embedMessage.delete()
-					}
-				})
-				.catch(async () => {
-					if (!embedMessage.deleted) await embedMessage.reactions.cache.get('🗑️').remove()
-				})
+			addDeleteReact(embedMessage, msg)
 		}
 	}
 }

@@ -6,6 +6,7 @@ const colors  = require('../../ressources/colors');
 const strings = require('../../ressources/strings');
 
 const { warnUser } = require('../../helpers/warnUser');
+const { addDeleteReact } = require('../../helpers/addDeleteReact');
 
 module.exports = {
 	name: 'skin',
@@ -30,24 +31,8 @@ module.exports = {
 					.setThumbnail(`https://visage.surgeplay.com/skin/512/${response.data.id}`)
 					.setFooter('Powered by visage.surgeplay.com', 'https://visage.surgeplay.com/steve.png')
 
-					const embedMessage = await message.inlineReply(embed);
-					await embedMessage.react('🗑️');
-
-					const filter = (reaction, user) => {
-						return ['🗑️'].includes(reaction.emoji.name) && user.id === message.author.id;
-					};
-
-					embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
-						.then(async collected => {
-							const reaction = collected.first();
-							if (reaction.emoji.name === '🗑️') {
-								await embedMessage.delete();
-								if (!message.deleted && message.channel.type !== 'dm') return await message.delete();
-							}
-						})
-						.catch(async () => {
-							if (message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🗑️').remove();
-						});
+				const embedMessage = await message.inlineReply(embed);
+				addDeleteReact(embedMessage, message)
 			})
 			.catch(async function () {
 				return await warnUser(message, 'That player doesn\'t exist!');

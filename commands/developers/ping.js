@@ -1,9 +1,10 @@
-const prefix  = process.env.PREFIX;
-const Discord = require('discord.js');
+const prefix  = process.env.PREFIX
+const Discord = require('discord.js')
 
-const settings = require('../../ressources/settings');
-const colors   = require('../../ressources/colors');
-const strings  = require('../../ressources/strings');
+const settings = require('../../ressources/settings')
+const colors   = require('../../ressources/colors')
+const strings  = require('../../ressources/strings')
+const { addDeleteReact } = require('../../helpers/addDeleteReact')
 
 module.exports = {
 	name: 'ping',
@@ -15,29 +16,14 @@ module.exports = {
 		const m = new Discord.MessageEmbed().setTitle('Ping?')
 
 		message.inlineReply(m).then(async m => {
-		const embed = new Discord.MessageEmbed()
-			.setTitle('Pong!')
-			.setColor(colors.BLUE)
-			.setDescription(`Latency: ${m.createdTimestamp - message.createdTimestamp}ms \nAPI Latency: ${Math.round(client.ws.ping)}ms`)
-			.setFooter(message.client.user.username, settings.BOT_IMG);
-		await m.edit(embed);
-		if (message.channel.type !== 'dm') await m.react('🗑️');
-
-		const filter = (reaction, user) => {
-			return ['🗑️'].includes(reaction.emoji.name) && user.id === message.author.id;
-		};
-
-		m.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
-			.then(async collected => {
-				const reaction = collected.first();
-				if (reaction.emoji.name === '🗑️') {
-					await m.delete();
-					if (!message.deleted && message.channel.type !== 'dm') return await message.delete();
-				}
-			})
-			.catch(async () => {
-				if (message.channel.type !== 'dm') await m.reactions.cache.get('🗑️').remove();
-			});
+			const embed = new Discord.MessageEmbed()
+				.setTitle('Pong!')
+				.setColor(colors.BLUE)
+				.setDescription(`Latency: ${m.createdTimestamp - message.createdTimestamp}ms \nAPI Latency: ${Math.round(client.ws.ping)}ms`)
+				.setFooter(message.client.user.username, settings.BOT_IMG)
+				
+			await m.edit(embed)
+			addDeleteReact(m, message)
 		})
 	}
-};
+}

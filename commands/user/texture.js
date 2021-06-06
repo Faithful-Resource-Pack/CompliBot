@@ -13,6 +13,7 @@ const { palette }  = require('../../functions/textures/palette')
 const { getMeta }  = require('../../helpers/getMeta')
 const { warnUser } = require('../../helpers/warnUser')
 const { timestampConverter } = require ('../../helpers/timestampConverter')
+const { addDeleteReact } = require('../../helpers/addDeleteReact')
 
 const allowed = ['vanilla', '16', '32', '64'];
 const used = ['16', '32', '64'];
@@ -100,7 +101,6 @@ module.exports = {
       
       for (let i = 0; results[i]; i++) {
         let uses = await results[i].uses()
-        let path = await uses[0].paths()
         let stringBuilder = []
 
         for (let j = 0; uses[j]; j++) {
@@ -227,7 +227,8 @@ async function getTexture(message, res, texture) {
       embed.addField('Paths', pathsText.join('\n'), false)
 
       const embedMessage = await message.inlineReply(embed);
-      await embedMessage.react('🗑️');
+      addDeleteReact(embedMessage, message)
+
       if (dimension.width <= 128 && dimension.height <= 128) {
         await embedMessage.react('🔎');
       }
@@ -235,16 +236,12 @@ async function getTexture(message, res, texture) {
       await embedMessage.react('🎨');
 
       const filter = (reaction, user) => {
-        return ['🗑️', '🔎', '🌀', '🎨'].includes(reaction.emoji.name) && user.id === message.author.id;
+        return ['🔎', '🌀', '🎨'].includes(reaction.emoji.name) && user.id === message.author.id;
       };
 
       embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
       .then(async collected => {
         const reaction = collected.first()
-        if (reaction.emoji.name === '🗑️') {
-          await embedMessage.delete()
-          if (!message.deleted && message.channel.type !== 'dm') return await message.delete()
-        }
         if (reaction.emoji.name === '🎨') {
           return palette(embedMessage, embedMessage.embeds[0].image.url)
         }
@@ -257,12 +254,14 @@ async function getTexture(message, res, texture) {
         }
       })
       .catch(async () => {
-        if (message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🗑️').remove()
-        if (dimension.width <= 128 && dimension.height <= 128) {
-          if (message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🔎').remove()
-        }
-        if (message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🌀').remove()
-        if (message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🎨').remove()
+        try {
+          if (message.channel.type !== 'dm' && (dimension.width <= 128 && dimension.height <= 128))
+            await embedMessage.reactions.cache.get('🔎').remove()
+          if (message.channel.type !== 'dm')
+            await embedMessage.reactions.cache.get('🌀').remove()
+          if (message.channel.type !== 'dm')
+            await embedMessage.reactions.cache.get('🎨').remove()
+        } catch (err) { /* Message deleted */ }
       })
 
     })
