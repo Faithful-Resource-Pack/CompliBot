@@ -11,7 +11,7 @@ const DEBUG = process.DEBUG == "true" ? true : false
  * @author Juknum
  * @param {String} COMMIT_MESSAGE
  */
-async function pushTextures(COMMIT_MESSAGE = `pushToGitHub passed textures from ${date()}`) {
+async function pushTextures(COMMIT_MESSAGE = `Autopush passed textures from ${date()}`) {
 
 	const REPO_JAVA    = [ 'Compliance-Java-32x', 'Compliance-Java-64x' ]
 	const REPO_BEDROCK = ['Compliance-Bedrock-32x', 'Compliance-Bedrock-64x' ]

@@ -167,7 +167,7 @@ async function makeEmbed(client, message, texture, param = new Object()) {
   // add, if provided, the description
   if (param.description) embed.setDescription(param.description)
   // add an s to author if there is multiple authors
-  if (param.authors.length > 1) embed.fields[0].name = 'Author'
+  if (param.authors.length > 1) embed.fields[0].name = 'Authors'
 
   // send the embed
   const msg = await message.channel.send(embed);
