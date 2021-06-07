@@ -3,6 +3,7 @@ const emojis   = require('../../../ressources/emojis')
 const settings = require('../../../ressources/settings')
 const strings  = require('../../../ressources/strings')
 const colors   = require('../../../ressources/colors')
+const fetch    = require('node-fetch')
 
 const { addDeleteReact } = require('../../../helpers/addDeleteReact')
 const { magnify } = require('../../../functions/textures/magnify')
@@ -34,7 +35,7 @@ async function editSubmission(client, reaction, user) {
 
     reaction.remove().catch(err => { if (process.DEBUG) console.error(err)} )
 
-    let EMOJIS = [emojis.SEE_LESS, emojis.DELETE, emojis.INSTAPASS, emojis.INVALID, emojis.MAGNIFY, emojis.PALETTE, emojis.TILE]
+    let EMOJIS = [emojis.SEE_LESS, emojis.DELETE, emojis.INSTAPASS, emojis.INVALID, emojis.MAGNIFY, emojis.PALETTE, emojis.TILE, emojis.COMPARE]
 
     // if the message does not have up/down vote react, remove INSTAPASS & INVALID from the emojis list (already instapassed or votes flushed)
     if (!message.embeds[0].fields[1].value.includes('⏳')) EMOJIS = EMOJIS.filter(emoji => emoji !== emojis.INSTAPASS && emoji !== emojis.INVALID && emoji !== emojis.DELETE)
@@ -54,70 +55,89 @@ async function editSubmission(client, reaction, user) {
     message.awaitReactions(filter, { max: 1, time: 30000, errors: [ 'time' ] })
     .then(async collected => {
       const REACTION = collected.first()
-      const USER_ID = collected.first().users.cache.array().filter(user => user.bot === false).map(user => user.id)[0]
-
-      if (REACTION.emoji.id === emojis.PALETTE) palette(message, message.embeds[0].image.url, user.id)
-      if (REACTION.emoji.id === emojis.MAGNIFY) magnify(message, message.embeds[0].image.url, user.id)
-      if (REACTION.emoji.id === emojis.TILE)    tile(message, message.embeds[0].image.url, 'grid', user.id)
-
-      if (REACTION.emoji.id === emojis.COMPARE) {
-
+      const USER_ID  = collected.first().users.cache.array().filter(user => user.bot === false).map(user => user.id)[0]
+			
+      if (REACTION.emoji.id === emojis.PALETTE)      palette(message, message.embeds[0].image.url, user.id)
+      else if (REACTION.emoji.id === emojis.MAGNIFY) magnify(message, message.embeds[0].image.url, user.id)
+      else if (REACTION.emoji.id === emojis.TILE)    tile(message, message.embeds[0].image.url, 'grid', user.id)
+      
+			/**
+			 * TODO: find why you can't have 2 textures of the same resolution in the drawer.urls (the texture isn't processed??)
+			 */
+			else if (REACTION.emoji.id === emojis.COMPARE) {
         let results = new Array()
         try {
           results = await textures.search([{
             field: "name",
             criteria: "==",
-            value: message.embeds[0].image.url.split('/').last()
+            value: message.embeds[0].image.url.split('/').pop().replace('.png', '')
           }])
         } catch (err) { /* Avoid crash */ }
 
-        let texture = results[0]
-        let uses = await texture.uses()
-        let path = (await uses[0].paths())[0].path
-        let pathVersion = (await uses[0].paths())[0].versions[0]
-        let pathUseType = uses[0].editions[0]
+				let complichannel
+				if (message.guild.id == settings.C32_ID) complichannel = message.guild.channels.cache.get(settings.C32_COMPLICHANNEL)
+				if (message.guild.id == settings.C64_ID) complichannel = message.guild.channels.cache.get(settings.C64_COMPLICHANNEL)
 
-        let paths = new Object()
-        if (pathVersion === '1.17') pathVersion = strings.SNAPSHOT_MC_JE_VERSION
+				if (results.length > 0) {
+					let texture = results[0]
+					let uses    = await texture.uses()
+					let path    = (await uses[0].paths())[0].path
 
-        if (pathUseType == "java") {
-          paths = {
-            c16: settings.DEFAULT_MC_JAVA_REPOSITORY + pathVersion + '/assets/' + path,
-            c32: 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-32x/Jappa-' + pathVersion + '/assets/' + path,
-            c64: 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-64x/Jappa-' + pathVersion + '/assets/' + path
-          }
-        }
-        else {
-          paths = {
-            c16: settings.DEFAULT_MC_BEDROCK_REPOSITORY + path,
-            c32: 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Bedrock-32x/Jappa-' + pathVersion + '/' + path,
-            c64: 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Bedrock-64x/Jappa-' + pathVersion + '/' + path
-          }
-        }
+					let pathVersion = (await uses[0].paths())[0].versions[0]
+					let pathUseType = uses[0].editions[0]
 
-        const CanvasDrawer = require(CANVAS_FUNCTION_PATH)
-        const drawer = new CanvasDrawer()
+					let paths = new Object()
+					if (pathVersion === '1.17') pathVersion = strings.SNAPSHOT_MC_JE_VERSION
 
-        if (message.guild.id == settings.C32_ID) drawer.urls = [paths.c16, message.embeds[0].image.url, paths.c64]
-        else drawer.urls = [paths.c16, paths.c32, message.embeds[0].image.url]
+					if (pathUseType == "java") {
+						paths = {
+							c16: settings.DEFAULT_MC_JAVA_REPOSITORY + pathVersion + '/assets/' + path,
+							c32: 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-32x/Jappa-' + pathVersion + '/assets/' + path,
+							c64: 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-64x/Jappa-' + pathVersion + '/assets/' + path
+						}
+					}
+					else {
+						paths = {
+							c16: settings.DEFAULT_MC_BEDROCK_REPOSITORY + path,
+							c32: 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Bedrock-32x/Jappa-' + pathVersion + '/' + path,
+							c64: 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Bedrock-64x/Jappa-' + pathVersion + '/' + path
+						}
+					}
 
-        let resultsPromises = await Promise.all(drawer.urls.map(url => fetch(url))).catch(() => drawer.urls = [])
-        drawer.urls = drawer.urls.filter((__el, index) => resultsPromises[index].ok && resultsPromises[index].status === 200)
+					const CanvasDrawer = require(CANVAS_FUNCTION_PATH)
+					const drawer = new CanvasDrawer()
 
-        const bufferResult = await drawer.draw().catch(err => { throw err })
-        const attachment = new Discord.MessageAttachment(bufferResult, 'output.png')
+					drawer.urls = [
+						message.embeds[0].image.url,
+						paths.c16,
+						paths.c32,
+						paths.c64
+					]
 
-        let complichannel, embedMessage
-        if (message.guild.id == settings.C32_ID) complichannel = message.guild.channels.cache.get(settings.C32_COMPLICHANNEL)
-        if (message.guild.id == settings.C64_ID) complichannel = message.guild.channels.cache.get(settings.C64_COMPLICHANNEL)
+					let resultsPromises = await Promise.all(drawer.urls.map(url => fetch(url))).catch(() => drawer.urls = [])
+					drawer.urls = drawer.urls.filter((__el, index) => resultsPromises[index].ok && resultsPromises[index].status === 200)
 
-        try {
-          const member = await message.guild.members.cache.get(user.id)
-          embedMessage = await member.send(attachment)
-        } catch (e) {
-          embedMessage = await complichannel.send(attachment)
-        }
-        addDeleteReact(embedMessage, message)
+					const bufferResult = await drawer.draw().catch(err => { throw err })
+					const attachment = new Discord.MessageAttachment(bufferResult, 'output.png')
+
+					let embedMessage
+					
+					try {
+						const member = await message.guild.members.cache.get(user.id)
+						embedMessage = await member.send(attachment)
+					} catch (e) {
+						embedMessage = await complichannel.send(attachment)
+					}
+					addDeleteReact(embedMessage, message)
+				}
+				else {
+					try {
+						const member = await message.guild.members.cache.get(user.id)
+						embedMessage = await member.send(`Can't find any results to compare for \`${message.embeds[0].image.url.split('/').pop().replace('.png', '')}\``)
+					} catch (e) {
+						embedMessage = await complichannel.send(`Can't find any results to compare for \`${message.embeds[0].image.url.split('/').pop().replace('.png', '')}\``)
+					}
+				}
       }
 
       /**
@@ -140,11 +160,13 @@ async function editSubmission(client, reaction, user) {
       await message.react(client.emojis.cache.get(emojis.SEE_MORE))
 
     })
-    .catch(async () => {
+    .catch(async err => {
       if (!message.deleted) {
         removeReact(message, EMOJIS)
         await message.react(client.emojis.cache.get(emojis.SEE_MORE))
       }
+
+			console.log(err)
     })
   }
   

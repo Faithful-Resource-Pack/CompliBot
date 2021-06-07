@@ -149,7 +149,7 @@ function tile(message, url, type, gotocomplichannel = undefined) {
 		}
 		addDeleteReact(embedMessage, message, true)
 
-		if (dimension.width <= 512 && dimension.height <= 512) {
+		if (dimension.width <= 512 && dimension.height <= 512 && message.channel.type !== 'dm') {
 			embedMessage.react(emojis.MAGNIFY);
 
 			const filter = (reaction, user) => {
@@ -165,7 +165,7 @@ function tile(message, url, type, gotocomplichannel = undefined) {
 				})
 				.catch(async () => {
 					try {
-						if (message.channel.type !== 'dm') await embedMessage.reactions.cache.get(emojis.MAGNIFY).remove()
+						await embedMessage.reactions.cache.get(emojis.MAGNIFY).remove()
 					} catch (err) { /* Message already deleted */ }
 				})
 		}
