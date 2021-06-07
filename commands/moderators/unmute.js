@@ -7,7 +7,6 @@ const colors  = require('../../ressources/colors');
 const { warnUser }        = require('../../helpers/warnUser');
 const { modLog }          = require('../../functions/moderation/modLog');
 const { removeMutedRole } = require('../../functions/moderation/removeMutedRole');
-const { addDeleteReact } = require('../../helpers/addDeleteReact');
 
 module.exports = {
 	name: 'unmute',
@@ -46,7 +45,6 @@ module.exports = {
 			.setTimestamp();
 
 		const embedMessage = await message.inlineReply(embed);
-		addDeleteReact(embedMessage, message)
 
 		modLog(client, message, userID, reason, 0, 'unmuted')
 	}

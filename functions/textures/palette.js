@@ -199,7 +199,7 @@ async function palette(message, url, gotocomplichannel = undefined) {
 			})
 		}
 
-		addDeleteReact(embedMessage, message)
+		addDeleteReact(embedMessage, message, true)
 	})
 }
 

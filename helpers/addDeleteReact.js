@@ -5,7 +5,7 @@ const emojis = require('../ressources/emojis')
  * @param {DiscordMessage} sentMessage message sent by the bot
  * @param {DiscordMessage} authorMessage message the bot has respond to
  */
-async function addDeleteReact(sentMessage, authorMessage) {
+async function addDeleteReact(sentMessage, authorMessage, deleteAuthorMessage = false) {
   if (sentMessage.channel.type === 'dm') return
 
   await sentMessage.react(emojis.DELETE)
@@ -19,6 +19,7 @@ async function addDeleteReact(sentMessage, authorMessage) {
     const reaction = collected.first()
     if (reaction.emoji.id === emojis.DELETE) {
       await sentMessage.delete()
+      if (deleteAuthorMessage == true && !authorMessage.deleted) await authorMessage.delete()
     }
   })
   .catch(async () => {

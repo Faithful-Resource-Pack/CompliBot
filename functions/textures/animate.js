@@ -148,7 +148,7 @@ async function animate(message, valMCMETA, valURL) {
 		const attachment = new Discord.MessageAttachment(encoder.out.getData(), 'output.gif')
 
 		const embedMessage = await message.inlineReply(attachment)
-		addDeleteReact(embedMessage, message)
+		addDeleteReact(embedMessage, message, true)
 	})
 }
 

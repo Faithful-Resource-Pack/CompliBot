@@ -3,6 +3,7 @@ const translate2 = require('@vitalets/google-translate-api')
 
 const colors   = require('../ressources/colors')
 const settings = require('../ressources/settings')
+
 const { addDeleteReact } = require('../helpers/addDeleteReact')
 
 async function translate(message, content, args) {
@@ -17,7 +18,7 @@ async function translate(message, content, args) {
 		.setFooter(`${result.from.language.iso} → ${langTo}`, settings.BOT_IMG)
 
 	const messageEmbed = await message.inlineReply(embed)
-	addDeleteReact(messageEmbed, message)
+	addDeleteReact(messageEmbed, message, true)
 }
 
 exports.translate = translate;

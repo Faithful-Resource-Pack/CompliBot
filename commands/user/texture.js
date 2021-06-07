@@ -242,7 +242,7 @@ async function getTexture(message, res, texture) {
       embed.addField('Paths', pathsText.join('\n'), false)
 
       const embedMessage = await message.inlineReply(embed);
-      addDeleteReact(embedMessage, message)
+      addDeleteReact(embedMessage, message, true)
 
       await embedMessage.react(emojis.NEXT_RES);
       if (dimension.width <= 128 && dimension.height <= 128)

@@ -6,9 +6,10 @@
  * 
  */
 
+const glob = require('globby')
+const path = require('path')
+
 const { Octokit }  = require('@octokit/rest')
-const glob         = require('globby')
-const path         = require('path')
 const { readFile } = require('fs-extra')
 
 /**

@@ -5,7 +5,6 @@ const strings = require('../../ressources/strings');
 const colors  = require('../../ressources/colors');
 
 const { warnUser } = require('../../helpers/warnUser');
-const { addDeleteReact } = require('../../helpers/addDeleteReact');
 
 module.exports = {
 	name: 'bean',
@@ -19,8 +18,8 @@ module.exports = {
 		if (!message.member.hasPermission('BAN_MEMBERS')) return warnUser(message,strings.COMMAND_NO_PERMISSION);
 		if (!args.length) return warnUser(message, strings.COMMAND_NO_ARGUMENTS_GIVEN);
 
-    const member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
-    const reason = args.slice(1).join(' ') || 'Not Specified';
+		const member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
+		const reason = args.slice(1).join(' ') || 'Not Specified';
 
 		if (!member) return warnUser(message, strings.BEAN_SPECIFY_USER);
 		if (member.id === message.author.id) return warnUser(message, strings.BEAN_CANT_BEAN_SELF);
@@ -33,7 +32,6 @@ module.exports = {
 				.setColor(colors.BLUE)
 				.setTimestamp();
 			const embedMessage = await message.inlineReply(embed);
-			addDeleteReact(embedMessage, message)
 		}
 	}
 };

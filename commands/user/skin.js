@@ -32,7 +32,7 @@ module.exports = {
 					.setFooter('Powered by visage.surgeplay.com', 'https://visage.surgeplay.com/steve.png')
 
 				const embedMessage = await message.inlineReply(embed);
-				addDeleteReact(embedMessage, message)
+				addDeleteReact(embedMessage, message, true)
 			})
 			.catch(async function () {
 				return await warnUser(message, 'That player doesn\'t exist!');

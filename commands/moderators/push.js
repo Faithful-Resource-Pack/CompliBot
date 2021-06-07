@@ -14,10 +14,10 @@ const REPOSITORIES = [
 const BE_BRANCHES = [ '1.16.210' ];
 const JE_BRANCHES = [ '1.12.2', '1.13.2', '1.14.4', '1.15.2', '1.16.5', '1.17' ];
 
-const { parseArgs } = require('../../helpers/parseArgs');
-const { date }      = require('../../helpers/date');
-const { warnUser }  = require('../../helpers/warnUser');
-const { pushTextures }    = require('../../functions/textures/admission/pushTextures');
+const { parseArgs }    = require('../../helpers/parseArgs');
+const { date }         = require('../../helpers/date');
+const { warnUser }     = require('../../helpers/warnUser');
+const { pushTextures } = require('../../functions/textures/admission/pushTextures');
 const { jsonContributionsJava, jsonContributionsBedrock } = require('../../helpers/fileHandler');
 
 module.exports = {

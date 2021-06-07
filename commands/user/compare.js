@@ -8,7 +8,7 @@ const strings     = require('../../ressources/strings')
 const FindTexture = require('../../functions/textures/findTexture')
 const choiceEmbed = require('../../helpers/choiceEmbed')
 
-const { warnUser } = require('../../helpers/warnUser')
+const { warnUser }       = require('../../helpers/warnUser')
 const { addDeleteReact } = require('../../helpers/addDeleteReact')
 
 const RES_SIDE = [16, 32, 64]
@@ -194,6 +194,6 @@ module.exports = {
     })
     const attachment = new Discord.MessageAttachment(bufferResult, 'output.png')
     const embedMessage = await message.inlineReply(attachment)
-    addDeleteReact(embedMessage, message)
+    addDeleteReact(embedMessage, message, true)
   }
 }

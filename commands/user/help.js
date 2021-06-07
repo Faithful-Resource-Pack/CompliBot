@@ -114,6 +114,6 @@ module.exports = {
 		}
 
 		const embedMessage = await message.inlineReply(embed);
-		addDeleteReact(embedMessage, message)
+		addDeleteReact(embedMessage, message, true)
 	}
 }

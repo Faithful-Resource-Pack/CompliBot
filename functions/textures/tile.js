@@ -147,7 +147,7 @@ function tile(message, url, type, gotocomplichannel = undefined) {
 		else {
 			embedMessage = await message.inlineReply(attachment)
 		}
-		addDeleteReact(embedMessage, message)
+		addDeleteReact(embedMessage, message, true)
 
 		if (dimension.width <= 512 && dimension.height <= 512) {
 			embedMessage.react(emojis.MAGNIFY);

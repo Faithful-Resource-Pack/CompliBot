@@ -11,6 +11,6 @@ module.exports = {
 	syntax: `${prefix}guidelines`,
 	async execute(client, message, _args) {
 		const embedMessage = await message.inlineReply('https://docs.compliancepack.net/pages/textures/texturing-guidelines');
-		addDeleteReact(embedMessage, message)
+		addDeleteReact(embedMessage, message, true)
 	}
 };

@@ -1,8 +1,9 @@
 /*eslint-env node*/
 
-const fs    = require('fs')
+const fs = require('fs')
+
 const { pushToGitHub } = require('../../pushToGitHub')
-const { date }       = require('../../../helpers/date.js')
+const { date }         = require('../../../helpers/date.js')
 
 const DEBUG = process.DEBUG == "true" ? true : false
 

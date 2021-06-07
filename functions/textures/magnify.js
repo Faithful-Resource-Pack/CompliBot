@@ -68,7 +68,7 @@ function magnify(message, url, gotocomplichannel = undefined) {
 			}
 		}
 		else embedMessage = await message.inlineReply(attachment);
-		addDeleteReact(embedMessage, message)
+		addDeleteReact(embedMessage, message, true)
 
 		return attachment;
 	});

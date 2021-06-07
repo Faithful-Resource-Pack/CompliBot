@@ -23,7 +23,7 @@ module.exports = {
 				.setFooter(message.client.user.username, settings.BOT_IMG)
 				
 			await m.edit(embed)
-			addDeleteReact(m, message)
+			addDeleteReact(m, message, true)
 		})
 	}
 }

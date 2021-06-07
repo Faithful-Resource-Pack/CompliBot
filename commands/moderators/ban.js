@@ -6,7 +6,6 @@ const colors  = require('../../ressources/colors')
 
 const { warnUser } = require('../../helpers/warnUser')
 const { modLog }   = require('../../functions/moderation/modLog')
-const { addDeleteReact } = require('../../helpers/addDeleteReact')
 
 module.exports = {
 	name: 'ban',
@@ -17,7 +16,7 @@ module.exports = {
 	example: `${prefix}ban @RobertR11#7841 breaking rule 69`,
 	async execute(client, message, args) {
 		const member = message.mentions.members.first() || message.guild.members.cache.get(args[0])
-    const reason = args.slice(1).join(' ') || 'Not Specified'
+		const reason = args.slice(1).join(' ') || 'Not Specified'
 		const bob    = message.guild.members.cache.get(client.user.id)
 
 		if (!bob.hasPermission('BAN_MEMBERS')) return await warnUser(message, strings.BAN_BOT_NO_PERMISSION)
@@ -39,6 +38,5 @@ module.exports = {
 			.setTimestamp()
 
 		const embedMessage = await message.inlineReply(embed)
-		addDeleteReact(embedMessage, message)
 	}
 }

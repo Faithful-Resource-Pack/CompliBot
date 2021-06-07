@@ -2,10 +2,10 @@ const prefix  = process.env.PREFIX;
 
 const strings = require('../../ressources/strings');
 
-const { parseArgs }  = require('../../helpers/parseArgs');
+const { parseArgs }    = require('../../helpers/parseArgs');
 const { pushToGitHub } = require('../../functions/pushToGitHub');
-const { warnUser }   = require('../../helpers/warnUser');
-const { date }       = require('../../helpers/date');
+const { warnUser }     = require('../../helpers/warnUser');
+const { date }         = require('../../helpers/date');
 const { jsonContributionsJava, jsonContributionsBedrock } = require('../../helpers/fileHandler');
 
 const uidT = process.env.UIDT;

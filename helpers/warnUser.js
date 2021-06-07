@@ -2,6 +2,7 @@ const Discord  = require('discord.js')
 const settings = require('../ressources/settings')
 const colors   = require('../ressources/colors')
 const strings  = require('../ressources/strings')
+
 const { addDeleteReact } = require('./addDeleteReact')
 
 /**
@@ -18,7 +19,7 @@ async function warnUser(message, text) {
 		.setFooter('Type /help to get more information about commands', settings.BOT_IMG)
 
 	const embedMessage = await message.inlineReply(embed)
-	addDeleteReact(embedMessage, message)
+	addDeleteReact(embedMessage, message, true)
 }
 
 exports.warnUser = warnUser

@@ -24,7 +24,7 @@ module.exports = {
 		var amount = parseInt(args, 10) + 1
 		const messages = await message.channel.messages.fetch({ limit: amount });
 		await message.channel.bulkDelete(messages);
-    var embed = new Discord.MessageEmbed()
+		var embed = new Discord.MessageEmbed()
 			.setAuthor(`${message.author.tag} bulk deleted ${args} messages!`)
 			.setColor(colors.RED)
 			.setThumbnail(message.author.displayAvatarURL())
