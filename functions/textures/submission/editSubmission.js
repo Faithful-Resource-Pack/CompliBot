@@ -1,9 +1,19 @@
+const Discord  = require('discord.js')
 const emojis   = require('../../../ressources/emojis')
 const settings = require('../../../ressources/settings')
+const strings  = require('../../../ressources/strings')
 const colors   = require('../../../ressources/colors')
 
+const { addDeleteReact } = require('../../../helpers/addDeleteReact')
 const { magnify } = require('../../../functions/textures/magnify')
 const { palette } = require('../../../functions/textures/palette')
+const { tile }    = require('../tile')
+
+const textures = require('../../../helpers/firestorm/texture')
+
+const CANVAS_FUNCTION_PATH = '../../../functions/textures/canvas'
+function nocache(module) { require('fs').watchFile(require('path').resolve(module), () => { delete require.cache[require.resolve(module)] }) }
+nocache(CANVAS_FUNCTION_PATH)
 
 /**
  * Edit the embed of the submission
@@ -24,7 +34,7 @@ async function editSubmission(client, reaction, user) {
 
     reaction.remove().catch(err => { if (process.DEBUG) console.error(err)} )
 
-    let EMOJIS = [emojis.SEE_LESS, emojis.INSTAPASS, emojis.INVALID, emojis.DELETE, emojis.MAGNIFY, emojis.PALETTE]
+    let EMOJIS = [emojis.SEE_LESS, emojis.DELETE, emojis.INSTAPASS, emojis.INVALID, emojis.MAGNIFY, emojis.PALETTE, emojis.TILE]
 
     // if the message does not have up/down vote react, remove INSTAPASS & INVALID from the emojis list (already instapassed or votes flushed)
     if (!message.embeds[0].fields[1].value.includes('⏳')) EMOJIS = EMOJIS.filter(emoji => emoji !== emojis.INSTAPASS && emoji !== emojis.INVALID && emoji !== emojis.DELETE)
@@ -48,6 +58,67 @@ async function editSubmission(client, reaction, user) {
 
       if (REACTION.emoji.id === emojis.PALETTE) palette(message, message.embeds[0].image.url, user.id)
       if (REACTION.emoji.id === emojis.MAGNIFY) magnify(message, message.embeds[0].image.url, user.id)
+      if (REACTION.emoji.id === emojis.TILE)    tile(message, message.embeds[0].image.url, 'grid', user.id)
+
+      if (REACTION.emoji.id === emojis.COMPARE) {
+
+        let results = new Array()
+        try {
+          results = await textures.search([{
+            field: "name",
+            criteria: "==",
+            value: message.embeds[0].image.url.split('/').last()
+          }])
+        } catch (err) { /* Avoid crash */ }
+
+        let texture = results[0]
+        let uses = await texture.uses()
+        let path = (await uses[0].paths())[0].path
+        let pathVersion = (await uses[0].paths())[0].versions[0]
+        let pathUseType = uses[0].editions[0]
+
+        let paths = new Object()
+        if (pathVersion === '1.17') pathVersion = strings.SNAPSHOT_MC_JE_VERSION
+
+        if (pathUseType == "java") {
+          paths = {
+            c16: settings.DEFAULT_MC_JAVA_REPOSITORY + pathVersion + '/assets/' + path,
+            c32: 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-32x/Jappa-' + pathVersion + '/assets/' + path,
+            c64: 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-64x/Jappa-' + pathVersion + '/assets/' + path
+          }
+        }
+        else {
+          paths = {
+            c16: settings.DEFAULT_MC_BEDROCK_REPOSITORY + path,
+            c32: 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Bedrock-32x/Jappa-' + pathVersion + '/' + path,
+            c64: 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Bedrock-64x/Jappa-' + pathVersion + '/' + path
+          }
+        }
+
+        const CanvasDrawer = require(CANVAS_FUNCTION_PATH)
+        const drawer = new CanvasDrawer()
+
+        if (message.guild.id == settings.C32_ID) drawer.urls = [paths.c16, message.embeds[0].image.url, paths.c64]
+        else drawer.urls = [paths.c16, paths.c32, message.embeds[0].image.url]
+
+        let resultsPromises = await Promise.all(drawer.urls.map(url => fetch(url))).catch(() => drawer.urls = [])
+        drawer.urls = drawer.urls.filter((__el, index) => resultsPromises[index].ok && resultsPromises[index].status === 200)
+
+        const bufferResult = await drawer.draw().catch(err => { throw err })
+        const attachment = new Discord.MessageAttachment(bufferResult, 'output.png')
+
+        let complichannel, embedMessage
+        if (message.guild.id == settings.C32_ID) complichannel = message.guild.channels.cache.get(settings.C32_COMPLICHANNEL)
+        if (message.guild.id == settings.C64_ID) complichannel = message.guild.channels.cache.get(settings.C64_COMPLICHANNEL)
+
+        try {
+          const member = await message.guild.members.cache.get(user.id)
+          embedMessage = await member.send(attachment)
+        } catch (e) {
+          embedMessage = await complichannel.send(attachment)
+        }
+        addDeleteReact(embedMessage, message)
+      }
 
       /**
        * TODO: for instapass & flush reacts, check if the user who reacted have the Council role, and not admin perms

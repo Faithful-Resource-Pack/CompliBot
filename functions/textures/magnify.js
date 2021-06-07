@@ -1,7 +1,8 @@
-const Canvas  = require('canvas')
-const Discord = require('discord.js')
-const { addDeleteReact } = require('../../helpers/addDeleteReact')
+const Canvas   = require('canvas')
+const Discord  = require('discord.js')
+const settings = require('../../ressources/settings')
 
+const { addDeleteReact } = require('../../helpers/addDeleteReact')
 const { getMeta }  = require('../../helpers/getMeta')
 const { warnUser } = require('../../helpers/warnUser')
 
@@ -17,9 +18,8 @@ function magnify(message, url, gotocomplichannel = undefined) {
 
 	let complichannel
 	if (gotocomplichannel) {
-		if (message.guild.id == '720677267424018526') complichannel = message.guild.channels.cache.get('849000453256773722')
-		if (message.guild.id == '773983706582482946') complichannel = message.guild.channels.cache.get('794137845408595978') // C32x discord
-		if (message.guild.id == '747574286356840609') complichannel = message.guild.channels.cache.get('798208196405362708') // C64x discord
+		if (message.guild.id == settings.C32_ID) complichannel = message.guild.channels.cache.get(settings.C32_COMPLICHANNEL) // C32x discord
+		if (message.guild.id == settings.C64_ID) complichannel = message.guild.channels.cache.get(settings.C64_COMPLICHANNEL) // C64x discord
 	}
 
 	getMeta(url).then(async function(dimension) {

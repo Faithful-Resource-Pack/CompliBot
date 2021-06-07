@@ -1,6 +1,7 @@
-const Canvas  = require('canvas')
-const Discord = require('discord.js')
-const colors2 = require('../../ressources/colors')
+const Canvas   = require('canvas')
+const Discord  = require('discord.js')
+const colors2  = require('../../ressources/colors')
+const settings = require('../../ressources/settings')
 
 const { getMeta }  = require('../../helpers/getMeta')
 const { warnUser } = require('../../helpers/warnUser')
@@ -30,9 +31,8 @@ async function palette(message, url, gotocomplichannel = undefined) {
 
 	let complichannel
 	if (gotocomplichannel) {
-		if (message.guild.id == '720677267424018526') complichannel = message.guild.channels.cache.get('849000453256773722')
-		if (message.guild.id == '773983706582482946') complichannel = message.guild.channels.cache.get('794137845408595978') // C32x discord
-		if (message.guild.id == '747574286356840609') complichannel = message.guild.channels.cache.get('798208196405362708') // C64x discord
+		if (message.guild.id == settings.C32_ID) complichannel = message.guild.channels.cache.get(settings.C32_COMPLICHANNEL) // C32x discord
+		if (message.guild.id == settings.C64_ID) complichannel = message.guild.channels.cache.get(settings.C64_COMPLICHANNEL) // C64x discord
 	}
 
 	getMeta(url).then(async function(dimension) {

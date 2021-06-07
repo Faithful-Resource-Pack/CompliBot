@@ -6,6 +6,7 @@ const axios       = require('axios').default
 const strings     = require('../../ressources/strings')
 const colors      = require('../../ressources/colors')
 const settings    = require('../../ressources/settings')
+const emojis      = require('../../ressources/emojis')
 const choiceEmbed = require('../../helpers/choiceEmbed')
 
 const { magnify }  = require('../../functions/textures/magnify')
@@ -56,42 +57,57 @@ module.exports = {
 
     // partial texture name (_sword, _axe -> diamond_sword, diamond_axe...)
     if (search.startsWith('_') || search.endsWith('_')) {
-      results = await textures.search([{
-        field: "name",
-        criteria: "includes",
-        value: search
-      }])
+      try {
+        results = await textures.search([{
+          field: "name",
+          criteria: "includes",
+          value: search
+        }])
+      }
+      catch (err) { return warnUser(message, err) }
     }
     // looking for path + texture (block/stone -> stone)
     else if (search.startsWith('/') || search.endsWith('/')) {
-      results = await paths.search([{
-        field: "path",
-        criteria: "includes",
-        value: search
-      }])
+      try {
+        results = await paths.search([{
+          field: "path",
+          criteria: "includes",
+          value: search
+        }])
+      }
+      catch (err) { return warnUser(message, err) }
+
       // transform paths results into textures
       let output = new Array()
       for (let i = 0; results[i]; i++) {
-        let use = await results[i].use()
-        output.push(await textures.get(use.textureID))
+        let texture
+        try {
+          let use = await results[i].use()
+          texture = await textures.get(use.textureID)
+        } catch (err) { return warnUser(message, err) }
+        output.push(texture)
       }
       results = output
     }
     // looking for all exact matches (stone -> stone.png)
     else {
-      results = await textures.search([{
-        field: "name",
-        criteria: "==",
-        value: search
-      }])
+      try {
+        results = await textures.search([{
+          field: "name",
+          criteria: "==",
+          value: search
+        }])
+      } catch (err) { return warnUser(message, err) }
 
       if (results.length == 0) {
         // no equal result, searching with includes
-        results = await textures.search([{
-          field: "name",
-          criteria: 'includes',
-          value: search
-        }])
+        try {
+          results = await textures.search([{
+            field: "name",
+            criteria: 'includes',
+            value: search
+          }])
+        } catch (err) { return warnUser(message, err) }
       }
     }
 
@@ -115,7 +131,6 @@ module.exports = {
           `\`[#${results[i].id}]\` ${results[i].name.replace(search, `**${search}**`).replace(/_/g, '\\_')}
           > ${stringBuilder.join('\n> ')}\n`
         )
-        //choice.push(`\`[#${results[i].id}]\` ${results[i].name.replace(search, `**${search}**`).replace(/_/g, '\\_')} — \n> ${paths[0].path.replace(search, `**${search}**`).replace(/_/g, '\\_')}`)
       }
 
 			if (!waitEmbedMessage.deleted) await waitEmbedMessage.delete();
@@ -229,26 +244,25 @@ async function getTexture(message, res, texture) {
       const embedMessage = await message.inlineReply(embed);
       addDeleteReact(embedMessage, message)
 
-      if (dimension.width <= 128 && dimension.height <= 128) {
-        await embedMessage.react('🔎');
-      }
-      await embedMessage.react('🌀');
-      await embedMessage.react('🎨');
+      await embedMessage.react(emojis.NEXT_RES);
+      if (dimension.width <= 128 && dimension.height <= 128)
+        await embedMessage.react(emojis.MAGNIFY);
+      await embedMessage.react(emojis.PALETTE);
 
       const filter = (reaction, user) => {
-        return ['🔎', '🌀', '🎨'].includes(reaction.emoji.name) && user.id === message.author.id;
+        return [emojis.MAGNIFY, emojis.NEXT_RES, emojis.PALETTE].includes(reaction.emoji.id) && user.id === message.author.id;
       };
 
       embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
       .then(async collected => {
         const reaction = collected.first()
-        if (reaction.emoji.name === '🎨') {
+        if (reaction.emoji.id === emojis.PALETTE) {
           return palette(embedMessage, embedMessage.embeds[0].image.url)
         }
-        if (reaction.emoji.name === '🔎') {
+        if (reaction.emoji.id === emojis.MAGNIFY) {
           return magnify(embedMessage, embedMessage.embeds[0].image.url)
         }
-        if (reaction.emoji.name === '🌀' && used.includes(res)) {
+        if (reaction.emoji.id === emojis.NEXT_RES && used.includes(res)) {
           if (!embedMessage.deleted) await embedMessage.delete()
           return getTexture(message, used[(used.indexOf(res) + 1) % used.length], texture)
         }
@@ -256,11 +270,11 @@ async function getTexture(message, res, texture) {
       .catch(async () => {
         try {
           if (message.channel.type !== 'dm' && (dimension.width <= 128 && dimension.height <= 128))
-            await embedMessage.reactions.cache.get('🔎').remove()
+            await embedMessage.reactions.cache.get(emojis.MAGNIFY).remove()
           if (message.channel.type !== 'dm')
-            await embedMessage.reactions.cache.get('🌀').remove()
+            await embedMessage.reactions.cache.get(emojis.NEXT_RES).remove()
           if (message.channel.type !== 'dm')
-            await embedMessage.reactions.cache.get('🎨').remove()
+            await embedMessage.reactions.cache.get(emojis.PALETTE).remove()
         } catch (err) { /* Message deleted */ }
       })
 

@@ -1,7 +1,7 @@
 const emojis = require('../ressources/emojis')
 
 /**
- * Add a trash can emote and await it, if used, the authorMessage is deleted
+ * Add a trash can emote and await it, if used, the authorMessage is deleted, does nothing if sentMessage is in DM
  * @param {DiscordMessage} sentMessage message sent by the bot
  * @param {DiscordMessage} authorMessage message the bot has respond to
  */

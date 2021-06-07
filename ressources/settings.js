@@ -22,8 +22,8 @@ const C32_SUBMIT_TEXTURES = '773987409993793546' // #submit-textures
 const C32_SUBMIT_COUNCIL  = '774220983044669450' // #council-voting
 const C32_SUBMIT_REVOTE   = '780507681987100682' // #texture-revote
 const C32_RESULTS         = '780507804317384744' // #texture-results
-
-const C32_COUNTER       = '774333964101615637'
+const C32_COMPLICHANNEL   = '794137845408595978'
+const C32_COUNTER         = '774333964101615637'
 
 // Compliance 64x
 const C64_IMG           = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Discord-Bot/master/ressources/images/Logos/Compliance%2064x.png'
@@ -36,6 +36,7 @@ const C64_SUBMIT_TEXTURES = '747603911677837454' // #submit-textures
 const C64_SUBMIT_COUNCIL  = '797780897805238282' // #council-voting
 const C64_SUBMIT_REVOTE   = '797649484259524648' // #texture-revote
 const C64_RESULTS         = '797648495804678154' // #texture-results
+const C64_COMPLICHANNEL   = '798208196405362708'
 
 // Compliance Addons
 const CADDONS_IMG          = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Discord-Bot/master/ressources/images/Logos/Compliance%20Addons.png'
@@ -80,7 +81,7 @@ module.exports = {
 	C32_SUBMIT_COUNCIL,
 	C32_SUBMIT_REVOTE,
 	C32_RESULTS,
-
+	C32_COMPLICHANNEL,
 	C32_COUNTER,
 
 	C64_MODERATOR_ID,
@@ -93,6 +94,7 @@ module.exports = {
 	C64_SUBMIT_COUNCIL,
 	C64_SUBMIT_REVOTE,
 	C64_RESULTS,
+	C64_COMPLICHANNEL,
 
 	CADDONS_IMG,
 	CADDONS_ID,
