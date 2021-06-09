@@ -244,9 +244,9 @@ async function getTexture(message, res, texture) {
       const embedMessage = await message.inlineReply(embed);
       addDeleteReact(embedMessage, message, true)
 
-      await embedMessage.react(emojis.NEXT_RES);
       if (dimension.width <= 128 && dimension.height <= 128)
         await embedMessage.react(emojis.MAGNIFY);
+      await embedMessage.react(emojis.NEXT_RES);
       await embedMessage.react(emojis.PALETTE);
 
       const filter = (reaction, user) => {
