@@ -22,7 +22,7 @@ const { jsonContributionsJava, jsonContributionsBedrock } = require('../../helpe
 
 module.exports = {
 	name: 'push',
-	description: strings.HELP_DESC_PUSH,
+	description: strings.HELP_DESC_ADMINS,
 	guildOnly: false,
 	uses: strings.COMMAND_DISABLED,
 	//uses: strings.COMMAND_USES_MODS,
@@ -30,8 +30,10 @@ module.exports = {
 	flags: '-r | --repo :\n\tCompliance-[Java|Bedrock]-[32x-64x]\n-p | --path :\n\tTexture path \n-a | --author :\n\tDiscord tag of texture\'s author.',
 	example: `${prefix}push -r=Compliance-Java-32x -p=textures/block/stone.png -a=Someone#1234`,
 	async execute(client, message, args) {
-		return warnUser(message, 'NOT UPDATED TO THE NEW DATABASE SYSTEM')
+		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("God"))) return warnUser(message, strings.COMMAND_NO_PERMISSION)
 
+		return warnUser(message, 'NOT UPDATED TO THE NEW DATABASE SYSTEM')
+		/*
 		if(!message.member.hasPermission('ADMINISTRATOR')) return warnUser(message, strings.COMMAND_NO_PERMISSION);
 
 		args = parseArgs(message, args);
@@ -215,6 +217,7 @@ async function setAuthor(valType, valIndex, valAuth, valSize) {
 	if (valType == 'java')    await jsonContributionsJava.write(textures);
 	if (valType == 'bedrock') await jsonContributionsBedrock.write(textures);
 
-	fileHandle.release();
+	fileHandle.release();*/
+	}
 
 }

@@ -14,8 +14,8 @@ module.exports = {
 	syntax: `${prefix}clear <amount>`,
 	example: `${prefix}clear 10`,
 	async execute(client, message, args) {
+		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("God"))) return warnUser(message, strings.COMMAND_NO_PERMISSION)
 
-		if (!message.member.hasPermission('ADMINISTRATOR')) return warnUser(message, strings.COMMAND_NO_PERMISSION);
 		if (!args.length) return warnUser(message, strings.COMMAND_NO_ARGUMENTS_GIVEN);
 		if (isNaN(args)) return await message.reply(strings.COMMAND_NOT_A_NUMBER);
 		if (args > 200) return await message.reply(strings.CLEAR_TOO_MUCH);

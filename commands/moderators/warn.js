@@ -17,8 +17,7 @@ module.exports = {
 	syntax: `${prefix}warn <@user> <reason>`,
 	example: `${prefix}warn @Juknum#6148 breaking the bot`,
 	async execute(client, message, args) {
-
-		if (!message.member.hasPermission('BAN_MEMBERS')) return await warnUser(message, strings.COMMAND_NO_PERMISSION)
+		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("Moderator") || role.name.includes("God"))) return warnUser(message, strings.COMMAND_NO_PERMISSION)
 		if (!args.length) return warnUser(message, strings.COMMAND_NO_ARGUMENTS_GIVEN)
 
 		let userID = undefined

@@ -15,9 +15,7 @@ module.exports = {
 	syntax: `${prefix}slowmode <time in seconds/off/disable/stop>`,
 	example: `${prefix}slowmode 10`,
 	async execute(client, message, args) {
-
-		if (!message.member.hasPermission('MANAGE_CHANNELS')) return await warnUser(message, strings.COMMAND_NO_PERMISSION);
-
+		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("Moderator") || role.name.includes("God"))) return warnUser(message, strings.COMMAND_NO_PERMISSION)
 		if (!args.length) return warnUser(message, strings.COMMAND_NO_ARGUMENTS_GIVEN);
 
     if (args == 'off' || args == 'disable' || args == 'stop') {

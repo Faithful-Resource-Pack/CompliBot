@@ -27,28 +27,27 @@ module.exports = {
 		let embed = new Discord.MessageEmbed()
 
 		if (args[0]) {
-			let command = client.commands.get(args[0]) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(args[0]));
+			let command = client.commands.get(args[0]) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(args[0]))
 			
-			if (!command) return warnUser(message, 'This command/alias does not exist.');
+			if (!command) return warnUser(message, 'This command/alias does not exist.')
 				
-			var aliases = '';
-			var syntax = '```' + command.syntax + '```';
-			if (command.flags) syntax += '```' + command.flags + '```';
+			var aliases = ''
+			var syntax = '```' + command.syntax + '```'
+			if (command.flags) syntax += '```' + command.flags + '```'
 
 			if (command.aliases) {
 					for (var alias in command.aliases) {
-					aliases += '``' + prefix + command.aliases[alias] + '`` ';
+					aliases += '``' + prefix + command.aliases[alias] + '`` '
 				}
 			} else aliases = 'None'
 
-			var example = '```' + (command.example || 'None') + '```';
+			var example = '```' + (command.example || 'None') + '```'
 
-			embed
-				.setTitle(`Help: ${prefix}${command.name}`)
+			embed.setTitle(`Help: ${prefix}${command.name}`)
 				.setThumbnail(settings.BOT_IMG)
 				.setColor(colors.BLUE)
 				.setDescription(`**Description:**\n${command.description || 'No description'}\n**Can be used by:**\n${command.uses || 'Not set'}\n**Syntax:**\n${syntax}\n**Aliases:**\n${aliases}\n**Example:**\n${example}`)
-				.setFooter(message.client.user.username, settings.BOT_IMG);
+				.setFooter(message.client.user.username, settings.BOT_IMG)
 		}
 
 		if (!args[0]) {
@@ -56,6 +55,7 @@ module.exports = {
 			let commands_anyone   = new Array()
 			let commands_devs     = new Array()
 			let commands_mods     = new Array()
+			let commands_admins   = new Array()
 			let commands_disabled = new Array()
 			let commands_others   = new Array()
 
@@ -78,6 +78,9 @@ module.exports = {
 						case strings.COMMAND_USES_DEVS:
 							commands_devs.push(stringBuilder)
 							break
+						case strings.COMMAND_USES_ADMINS:
+							commands_admins.push(stringBuilder)
+							break
 						case strings.COMMAND_USES_MODS:
 							commands_mods.push(stringBuilder)
 							break
@@ -94,6 +97,7 @@ module.exports = {
 
 			commands_anyone.sort()
 			commands_devs.sort()
+			commands_admins.sort()
 			commands_mods.sort()
 			commands_disabled.sort()
 			commands_others.sort()
@@ -107,6 +111,7 @@ module.exports = {
 			.addFields(
 				{ name: "\u200B", value: commands_anyone[0] === undefined ? "None" : commands_anyone.join('\n') },
 				{ name: "Moderators", value: commands_mods[0] === undefined ? "None" : commands_mods.join('\n') },
+				{ name: "Administrators", value: commands_admins[0] === undefined ? "None" : commands_admins.join('\n') },
 				{ name: "Developers", value: commands_devs[0] === undefined ? "None" : commands_devs.join('\n') },
 				{ name: "Others", value: commands_others[0] === undefined ? "None" : commands_others.join('\n') },
 				{ name: "Disabled", value: commands_disabled[0] === undefined ? "None" : commands_disabled.join('\n') }

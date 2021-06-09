@@ -71,37 +71,55 @@ module.exports = {
 	flags: '',
 	example: `${prefix}faq`,
 	async execute(client, message, args) {
-
-		if (!message.member.hasPermission('ADMINISTRATOR')) return warnUser(message, strings.COMMAND_NO_PERMISSION)
+		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("Moderator") || role.name.includes("God"))) return warnUser(message, strings.COMMAND_NO_PERMISSION)
 
 		let color = colors.COUNCIL;
 
-		if (message.guild.id === settings.C32_ID) {
-			color = colors.C32;
-		}
-		if (message.guild.id === settings.C64_ID) {
-			color = colors.C32;
-		}
-		if (message.guild.id === settings.CADDONS_ID) {
-			color = colors.CADDONS;
-		}
-		if (message.guild.id === settings.CMODS_ID) {
-			color = colors.CMODS;
-		}
-		if (message.guild.id === settings.CTWEAKS_ID) {
-			color = colors.CTWEAKS;
-		}
-		if (message.guild.id === settings.CDUNGEONS_ID) {
-			color = colors.CDUNGEONS;
+		switch (message.guild.id) {
+			case settings.C32_ID:
+				color = colors.C32
+				break
+			case settings.C64_ID:
+				color = colors.C32
+				break
+			case settings.CADDONS_ID:
+				color = colors.CADDONS
+				break
+			case settings.CMODS_ID:
+				color = colors.CMODS
+				break;
+			case settings.CTWEAKS_ID:
+				color = colors.CTWEAKS
+				break
+			case settings.CDUNGEONS_ID:
+				color = colors.CDUNGEONS
+				break
+		
+			default:
+				color = colors.C32
+				break
 		}
 
-		for (let i = 0; i < FAQS.length; i++) {
-			var embed = new Discord.MessageEmbed()
-				.setTitle(FAQS[i].title)
-				.setColor(color)
-				.setDescription(FAQS[i].description)
-			await message.channel.send(embed);
+		let faq
+
+		if (message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("God"))) {
+			if (args[0] == "all") faq = -1
+		} else warnUser(message, "Only Administrators can do that!")
+
+		/**
+		 * TODO: add a keyword faq questions detections
+		 * if i made /faq download -> send the corresponding faq question
+		 */
+
+		if (faq == -1) {
+			for (let i = 0; i < FAQS.length; i++) {
+				var embed = new Discord.MessageEmbed()
+					.setTitle(FAQS[i].title)
+					.setColor(color)
+					.setDescription(FAQS[i].description)
+				await message.channel.send(embed)
+			}
+			if (!message.deleted) await message.delete()
 		}
-		if (!message.deleted) await message.delete();
 	}
 }

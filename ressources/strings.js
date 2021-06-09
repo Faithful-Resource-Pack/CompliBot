@@ -79,6 +79,7 @@ const HELP_DESC_COMPARE   = 'Allows vanilla / pack comparaison side by side'
 const COMMAND_USES_ANYONE          = 'Anyone'
 const COMMAND_USES_ANYONE_DUNGEONS = 'Anyone on Compliance Dungeons Discord'
 const COMMAND_USES_DEVS            = 'Bot Developers'
+const COMMAND_USES_ADMINS          = 'Administrators'
 const COMMAND_USES_MODS            = 'Moderators'
 const COMMAND_USES_DISABLED        = 'no one (disabled)'
 
@@ -252,6 +253,7 @@ module.exports = {
 	COMMAND_USES_ANYONE_DUNGEONS,
 	COMMAND_USES_DEVS,
 	COMMAND_USES_MODS,
+	COMMAND_USES_ADMINS,
 	COMMAND_USES_DISABLED,
 
 	BEAN_CANT_BEAN_SELF,

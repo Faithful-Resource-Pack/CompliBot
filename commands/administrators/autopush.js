@@ -12,11 +12,12 @@ module.exports = {
 	name: 'autopush',
 	description: strings.HELP_DESC_AUTOPUSH,
 	guildOnly: false,
-	uses: strings.COMMAND_USES_MODS,
+	uses: strings.COMMAND_USES_ADMINS,
 	syntax: `${prefix}autopush <both/c32/c64>`,
 	example: `${prefix}autopush c32`,
 	async execute(client, message, args) {
-    if(!message.member.hasPermission('ADMINISTRATOR')) return warnUser(message, strings.COMMAND_NO_PERMISSION)
+		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("God"))) return warnUser(message, strings.COMMAND_NO_PERMISSION)
+
 		if (!args.length) return warnUser(message, strings.COMMAND_WRONG_ARGUMENTS_GIVEN)
 
 		if (args[0] == 'both') {

@@ -22,10 +22,11 @@ module.exports = {
 	flags: '-p | --path:\nTexture path (folder + texture name)\n-t | --type:\nTexture type (java or bedrock)\n-s | --size:\nTexture Resolution (c32 or c64)\n-a | --author:\nTexture author (discord tag)\n-A | -Add:\nBoolean, true by default, remove author if set to false\n-u | --update:\nBoolean, false by default, push JSON to GitHub if set to true.',
 	example: `${prefix}contributor -p=entity/slime/magmacube -t=java -s=c32 -a=Someone#1234 -u=true\n${prefix}contributor -p=entity/slime/magmacube -t=java -s=c32 -a=Someone#1234 -A=false`,
 	async execute(client, message, args) {
-		if (!message.member.hasPermission('ADMINISTRATOR') && message.author.id !== uidT) return warnUser(message, strings.COMMAND_NO_PERMISSION)
+		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("God"))) return warnUser(message, strings.COMMAND_NO_PERMISSION)
 
 		return warnUser(message, 'NOT UPDATED TO THE NEW DATABASE SYSTEM')
 
+		/*
 		if (args[0] == 'update') {
 			pushToGitHub('Compliance-Resource-Pack', 'JSON', 'main', `Manual Update executed by: ${message.author.username}`, `./json`);
 			return await message.react('✅');
@@ -190,6 +191,6 @@ async function setAuthor(valType, valIndex, valAuth, valSize) {
 	if (valType == 'java')    await jsonContributionsJava.write(textures);
 	if (valType == 'bedrock') await jsonContributionsBedrock.write(textures);
 
-	fileHandle.release();
-
+	fileHandle.release();*/
+	}
 }

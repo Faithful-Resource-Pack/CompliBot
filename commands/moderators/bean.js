@@ -14,24 +14,23 @@ module.exports = {
 	syntax: `${prefix}bean <@user> <reason>`,
 	example: `${prefix}bean @Sei#0721 spilling the beans`,
 	async execute(client, message, args) {
+		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("Moderator") || role.name.includes("God"))) return warnUser(message, strings.COMMAND_NO_PERMISSION)
+		if (!args.length) return warnUser(message, strings.COMMAND_NO_ARGUMENTS_GIVEN)
 
-		if (!message.member.hasPermission('BAN_MEMBERS')) return warnUser(message,strings.COMMAND_NO_PERMISSION);
-		if (!args.length) return warnUser(message, strings.COMMAND_NO_ARGUMENTS_GIVEN);
+		const member = message.mentions.members.first() || message.guild.members.cache.get(args[0])
+		const reason = args.slice(1).join(' ') || 'Not Specified'
 
-		const member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
-		const reason = args.slice(1).join(' ') || 'Not Specified';
-
-		if (!member) return warnUser(message, strings.BEAN_SPECIFY_USER);
-		if (member.id === message.author.id) return warnUser(message, strings.BEAN_CANT_BEAN_SELF);
-		if (member.id === client.user.id) return await message.channel.send(strings.COMMAND_NOIDONTTHINKIWILL_LMAO);
+		if (!member) return warnUser(message, strings.BEAN_SPECIFY_USER)
+		if (member.id === message.author.id) return warnUser(message, strings.BEAN_CANT_BEAN_SELF)
+		if (member.id === client.user.id) return await message.channel.send(strings.COMMAND_NOIDONTTHINKIWILL_LMAO)
 
 		else {
 			const embed = new Discord.MessageEmbed()
 				.setAuthor(message.author.tag, message.author.displayAvatarURL())
 				.setDescription(`Beaned ${member} \nReason: ${reason}`)
 				.setColor(colors.BLUE)
-				.setTimestamp();
-			const embedMessage = await message.inlineReply(embed);
+				.setTimestamp()
+			await message.inlineReply(embed)
 		}
 	}
-};
+}
