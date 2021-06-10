@@ -30,9 +30,23 @@ async function retrieveSubmission(client, channelFromID, channelOutID, delay) {
 
   // map messages adding reacts count, embed and message (easier management like that)
   messages = messages.map(message => {
+		let upvotes
+		try {
+			upvotes = message.reactions.cache.get(emojis.UPVOTE_OLD).count
+		} catch (err) {
+			upvotes = message.reactions.cache.get(emojis.UPVOTE).count
+		}
+
+		let downvotes
+		try {
+			downvotes = message.reactions.cache.get(emojis.DOWNVOTE_OLD).count
+		} catch (err) {
+			downvotes = message.reactions.cache.get(emojis.DOWNVOTE).count
+		}
+
     message = {
-      upvote: message.reactions.cache.get(emojis.UPVOTE).count + message.reactions.cache.get(emojis.UPVOTE_OLD),
-      downvote: message.reactions.cache.get(emojis.DOWNVOTE).count + message.reactions.cache.get(emojis.DOWNVOTE_OLD),
+			upvote: upvotes,
+			downvote: downvotes,
       embed: message.embeds[0],
       message: message
     }

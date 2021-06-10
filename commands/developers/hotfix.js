@@ -27,9 +27,8 @@ module.exports = {
 	async execute(client, message, args) {
 		if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD || message.author.id === uidT) {
 			
-			await downloadResults(client, settings.C32_RESULTS)
-			await pushTextures()
-			
+			/* Nothing */
+
 		} else return
 	}
 }
