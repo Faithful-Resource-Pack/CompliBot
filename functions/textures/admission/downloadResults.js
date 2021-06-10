@@ -65,11 +65,8 @@ async function downloadResults(client, channelInID) {
       for (let k = 0; paths[k]; k++) {
         let versions = paths[k].versions
         for (let l = 0; versions[l]; l++) {
-
-          if (versions[l] != '1.16.200') { // HARD FIX: TODO: REMOVE 1.16.200 OCCURENCE FROM THE DB
-            if (uses[j].editions[0] == 'java') allPaths.push(localPath + '/' + versions[l] + '/assets/' + paths[k].path)
-            else allPaths.push(localPath + '/' + versions[l] + '/' + paths[k].path)
-          }
+          if (uses[j].editions[0] == 'java') allPaths.push(localPath + '/' + versions[l] + '/assets/' + paths[k].path)
+          else allPaths.push(localPath + '/' + versions[l] + '/' + paths[k].path)
         }
       }
     }
