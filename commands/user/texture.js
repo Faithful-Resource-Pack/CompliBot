@@ -29,8 +29,6 @@ module.exports = {
   example: `${prefix}texture 16 dirt`,
   async execute(_client, message, args) {
 
-		return warnUser(message, 'I currenty can\'t find any textures due to the database experiencing issues.');
-
     let results    = []
     const textures = require('../../helpers/firestorm/texture')
     const paths    = require('../../helpers/firestorm/texture_paths')
