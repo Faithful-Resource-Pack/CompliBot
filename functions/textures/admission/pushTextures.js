@@ -18,7 +18,7 @@ async function pushTextures(COMMIT_MESSAGE = `Autopush passed textures from ${da
 	const REPO_BEDROCK = ['Compliance-Bedrock-32x', 'Compliance-Bedrock-64x' ]
 
 	const BRANCHES_JAVA    = [ '1.17', '1.16.5', '1.15.2', '1.14.4', '1.13.2', '1.12.2' ]
-	const BRANCHES_BEDROCK = [ '1.16.210' ]
+	const BRANCHES_BEDROCK = [ '1.17.0', '1.16.220' ]
 
 	for (let i = 0; REPO_JAVA[i]; i++) {
 		for (let j = 0; BRANCHES_JAVA[j]; j++) {
@@ -46,7 +46,7 @@ async function pushTextures(COMMIT_MESSAGE = `Autopush passed textures from ${da
 		}
 	}
 	
-	await pushToGitHub('Compliance-Resource-Pack', 'JSON', 'main', COMMIT_MESSAGE, './json/')
+	await pushToGitHub('Compliance-Resource-Pack', 'JSON', 'main', `Daily backup ${date()}`, './json/')
 	if (DEBUG) console.log(`PUSHED TO GITHUB: JSON`)
 }
 

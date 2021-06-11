@@ -4,11 +4,14 @@ const VANILLA_IMG = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/
 const QUOTE_IMG   = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Discord-Bot/master/ressources/images/quote.png'
 
 // Default texture repo for java
-const DEFAULT_MC_JAVA_TEXTURE = 'https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.17-pre4/assets/'
-const DEFAULT_MC_BEDROCK_TEXTURE = 'https://raw.githubusercontent.com/ZtechNetwork/MCBVanillaResourcePack/master/'
+const DEFAULT_MC_JAVA_REPOSITORY    = 'https://raw.githubusercontent.com/CompliBot/Default-Java/'
+const DEFAULT_MC_BEDROCK_REPOSITORY = 'https://raw.githubusercontent.com/CompliBot/Default-Bedrock/'
 
-const DEFAULT_MC_JAVA_REPOSITORY    = 'https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/'
-const DEFAULT_MC_BEDROCK_REPOSITORY = 'https://raw.githubusercontent.com/ZtechNetwork/MCBVanillaResourcePack/master/'
+const COMPLIANCE_32X_JAVA_REPOSITORY_JAPPA = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-32x/Jappa-'
+const COMPLIANCE_64X_JAVA_REPOSITORY_JAPPA = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-64x/Jappa-'
+
+const LATEST_MC_JE_VERSION = '1.17'
+const LATEST_MC_BE_VERSION = '1.17.0'
 
 // Compliance 32x
 const C32_IMG           = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Discord-Bot/master/ressources/images/Logos/Compliance%2032x.png'
@@ -59,10 +62,13 @@ module.exports = {
 	VANILLA_IMG,
 	QUOTE_IMG,
 
-	DEFAULT_MC_JAVA_TEXTURE,
-	DEFAULT_MC_BEDROCK_TEXTURE,
 	DEFAULT_MC_JAVA_REPOSITORY,
 	DEFAULT_MC_BEDROCK_REPOSITORY,
+	COMPLIANCE_32X_JAVA_REPOSITORY_JAPPA,
+	COMPLIANCE_64X_JAVA_REPOSITORY_JAPPA,
+
+	LATEST_MC_JE_VERSION,
+	LATEST_MC_BE_VERSION,
 
 	C32_IMG,
 	C32_ID,

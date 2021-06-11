@@ -96,7 +96,7 @@ module.exports = {
 		textures   = await fileHandle.read();
 
 		for (const i in textures) {
-			if (textures[i].version[strings.LATEST_MC_JE_VERSION].includes(valPath)) {
+			if (textures[i].version[settings.LATEST_MC_JE_VERSION].includes(valPath)) {
 				valIndex = i;
 				valType  = 'java';
 				break;
@@ -111,7 +111,7 @@ module.exports = {
 			textures   = await fileHandle.read();
 
 			for (const i in textures) {
-				if (textures[i].version[strings.LATEST_MC_BE_VERSION].includes(valPath)) {
+				if (textures[i].version[settings.LATEST_MC_BE_VERSION].includes(valPath)) {
 					valIndex = i;
 					valType  = 'bedrock';
 					break;
@@ -206,7 +206,7 @@ async function setAuthor(valType, valIndex, valAuth, valSize) {
 		let texturesBedrock = await fileHandle2.read();
 
 		for (const i in texturesBedrock) {
-			if (texturesBedrock[i].version[strings.LATEST_MC_BE_VERSION].includes(textures[valIndex].bedrock[strings.LATEST_MC_BE_VERSION])) {
+			if (texturesBedrock[i].version[settings.LATEST_MC_BE_VERSION].includes(textures[valIndex].bedrock[settings.LATEST_MC_BE_VERSION])) {
 				fileHandle2.release(); // need to be before recursive to avoid infinite task
 				await setAuthor('bedrock', i, valAuth, valSize)
 				break;

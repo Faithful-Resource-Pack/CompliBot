@@ -50,24 +50,25 @@ async function textureIDQuote(message) {
     let path = texturePath[0].path
     let editions = uses[0].editions
 
-    let contrib32 = await texture.lastContribution('c32')
+    let contrib32   = await texture.lastContribution('c32')
     let timestamp32 = contrib32 ? contrib32.date : undefined
-    let author32 = contrib32 ? contrib32.contributors : undefined
+    let author32    = contrib32 ? contrib32.contributors : undefined
 
-    let contrib64 = await texture.lastContribution('c64')
+    let contrib64   = await texture.lastContribution('c64')
     let timestamp64 = contrib64 ? contrib64.date : undefined
-    let author64 = contrib64 ? contrib64.contributors : undefined
+    let author64    = contrib64 ? contrib64.contributors : undefined
 
     const paths = {}
+    const pathVersion = texturePath[0].versions[0]
     if (editions.includes('java')) {
-      paths.c16 = settings.DEFAULT_MC_JAVA_TEXTURE + path;
-      paths.c32 = `https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-32x/Jappa-1.17/assets/${path}`
-      paths.c64 = `https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-64x/Jappa-1.17/assets/${path}`
+      paths.c16 = settings.DEFAULT_MC_JAVA_REPOSITORY + pathVersion + '/' + path
+      paths.c32 = settings.COMPLIANCE_32X_JAVA_REPOSITORY_JAPPA + pathVersion + '/' + path
+      paths.c64 = settings.COMPLIANCE_64X_JAVA_REPOSITORY_JAPPA + pathVersion + '/' + path
     } 
     else {
-      paths.c16 = settings.DEFAULT_MC_BEDROCK_TEXTURE + path;
-      paths.c32 = `https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Bedrock-32x/Jappa-1.16.210/${path}`
-      paths.c64 = `https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Bedrock-64x/Jappa-1.16.210/${path}`
+      paths.c16 = settings.DEFAULT_MC_BEDROCK_REPOSITORY + pathVersion + '/' + path
+      paths.c32 = settings.COMPLIANCE_32X_BEDROCK_REPOSITORY_JAPPA + pathVersion + '/' + path
+      paths.c64 = settings.COMPLIANCE_64X_BEDROCK_REPOSITORY_JAPPA + pathVersion + '/' + path
     }
 
     /** @type {import('../helpers/firestorm/users').User} */

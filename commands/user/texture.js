@@ -169,7 +169,7 @@ async function getTexture(message, res, texture) {
 
   const uses = await texture.uses()
   const path = (await uses[0].paths())[0].path
-  let pathVersion = (await uses[0].paths())[0].versions[0]
+  const pathVersion = (await uses[0].paths())[0].versions[0]
   const pathUseType = uses[0].editions[0]
 
   let pathsText = []
@@ -185,27 +185,26 @@ async function getTexture(message, res, texture) {
   if (pathUseType == "java") {
     switch (res) {
       case "16":
-        if (pathVersion === '1.17') pathVersion = strings.SNAPSHOT_MC_JE_VERSION
-        imgURL = settings.DEFAULT_MC_JAVA_REPOSITORY + pathVersion + '/assets/' + path
+        imgURL = settings.DEFAULT_MC_JAVA_REPOSITORY + pathVersion + '/' + path
         break
       case "32":
-        imgURL = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-32x/Jappa-' + pathVersion + '/assets/' + path
+        imgURL = settings.COMPLIANCE_32X_JAVA_REPOSITORY_JAPPA + pathVersion + '/' + path
         break
       case "64":
-        imgURL = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-64x/Jappa-' + pathVersion + '/assets/' + path
+        imgURL = settings.COMPLIANCE_64X_JAVA_REPOSITORY_JAPPA + pathVersion + '/' + path
         break
     }
   }
   else {
     switch (res) {
       case "16":
-        imgURL = settings.DEFAULT_MC_BEDROCK_REPOSITORY + path
+        imgURL = settings.DEFAULT_MC_BEDROCK_REPOSITORY + pathVersion + '/' + path
         break
       case "32":
-        imgURL = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Bedrock-32x/Jappa-' + pathVersion + '/' + path
+        imgURL = settings.COMPLIANCE_32X_BEDROCK_REPOSITORY_JAPPA + pathVersion + '/' + path
         break
       case "64":
-        imgURL = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Bedrock-64x/Jappa-' + pathVersion + '/' + path
+        imgURL = settings.COMPLIANCE_64X_BEDROCK_REPOSITORY_JAPPA + pathVersion + '/' + path
     }
   }
 

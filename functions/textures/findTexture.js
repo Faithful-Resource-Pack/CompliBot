@@ -88,7 +88,7 @@ module.exports =  {
 
       // added bedrock path to search
       if(el.isBedrock) {
-        res.bedrockPath = el.bedrock[strings.LATEST_MC_BE_VERSION]
+        res.bedrockPath = el.bedrock[settings.LATEST_MC_BE_VERSION]
       }
 
       try {
@@ -116,11 +116,11 @@ module.exports =  {
       .then(content => {
         let res = []
         if(search.startsWith('_'))
-          res = [ ...res, ...this.beginSearch(content, tex => tex.version[strings.LATEST_MC_JE_VERSION], path => path.split("/").pop(), search)]
+          res = [ ...res, ...this.beginSearch(content, tex => tex.version[settings.LATEST_MC_JE_VERSION], path => path.split("/").pop(), search)]
         else if(search.endsWith('/'))
-          res = [ ...res, ...this.beginSearch(content, tex => tex.version[strings.LATEST_MC_JE_VERSION], path => path, search)]
+          res = [ ...res, ...this.beginSearch(content, tex => tex.version[settings.LATEST_MC_JE_VERSION], path => path, search)]
         else
-          res = [ ...res, ...this.beginSearch(content, tex => tex.version[strings.LATEST_MC_JE_VERSION], path => path.split("/").pop(), search, true)]
+          res = [ ...res, ...this.beginSearch(content, tex => tex.version[settings.LATEST_MC_JE_VERSION], path => path.split("/").pop(), search, true)]
 
         if(res.length)
           resolve(res)
@@ -141,11 +141,11 @@ module.exports =  {
       .then(content => {
         let res = []
         if(search.startsWith('_'))
-          res = [ ...res, ...this.beginSearch(content, tex => tex.version[strings.LATEST_MC_BE_VERSION], path => path.split("/").pop(), search)]
+          res = [ ...res, ...this.beginSearch(content, tex => tex.version[settings.LATEST_MC_BE_VERSION], path => path.split("/").pop(), search)]
         else if(search.endsWith('/'))
-          res = [ ...res, ...this.beginSearch(content, tex => tex.version[strings.LATEST_MC_BE_VERSION], path => path, search)]
+          res = [ ...res, ...this.beginSearch(content, tex => tex.version[settings.LATEST_MC_BE_VERSION], path => path, search)]
         else
-          res = [ ...res, ...this.beginSearch(content, tex => tex.version[strings.LATEST_MC_BE_VERSION], path => path.split("/").pop(), search, true)]
+          res = [ ...res, ...this.beginSearch(content, tex => tex.version[settings.LATEST_MC_BE_VERSION], path => path.split("/").pop(), search, true)]
 
         if(res.length)
           resolve(res)
@@ -159,16 +159,18 @@ module.exports =  {
    * @param {String} path Texture path
    * @param {String} edition Resource pack edition
    * @param {Number} res Texture resolution
+   * @param {String} version Minecraft version (1.17, 1.16.220)
    */
-  pathToTextureURL: function(path, edition, res) {
+  pathToTextureURL: function(path, edition, res, version = undefined) {
     if(edition.toLowerCase() === 'java') {
-      if (res == 16)  return settings.DEFAULT_MC_JAVA_TEXTURE + path
-      if (res == 32)  return 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-32x/Jappa-1.17/assets/' + path
-      if (res == 64)  return 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-64x/Jappa-1.17/assets/' + path
-    } else {
-      if (res == 16) return settings.DEFAULT_MC_BEDROCK_TEXTURE + path
-      if (res == 32) return 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Bedrock-32x/Jappa-1.16.200/' + path
-      if (res == 64) return 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Bedrock-64x/Jappa-1.16.200/' + path
+      if (res == 16) return settings.DEFAULT_MC_JAVA_REPOSITORY + (version === undefined ? settings.LATEST_MC_JE_VERSION : version) + '/' + path
+      if (res == 32) return settings.COMPLIANCE_32X_JAVA_REPOSITORY_JAPPA + (version === undefined ? settings.LATEST_MC_JE_VERSION : version) + '/' + path
+      if (res == 64) return settings.COMPLIANCE_64X_JAVA_REPOSITORY_JAPPA + (version === undefined ? settings.LATEST_MC_JE_VERSION : version) + '/' + path
+    }
+    else if (edition.toLowerCase() === 'bedrock') {
+      if (res == 16) return settings.DEFAULT_MC_BEDROCK_REPOSITORY + (version === undefined ? settings.LATEST_MC_BE_VERSION : version) + '/' + path
+      if (res == 32) return settings.COMPLIANCE_32X_BEDROCK_REPOSITORY_JAPPA + (version === undefined ? settings.LATEST_MC_BE_VERSION : version) + '/' + path
+      if (res == 64) return settings.COMPLIANCE_64X_BEDROCK_REPOSITORY_JAPPA + (version === undefined ? settings.LATEST_MC_BE_VERSION : version) + '/' + path
     }
 
     throw(new Error(strings.COMMAND_WRONG_ARGUMENTS_GIVEN))

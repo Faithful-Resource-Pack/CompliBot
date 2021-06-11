@@ -38,7 +38,7 @@ async function downloadResults(client, channelInID) {
   })
 
   // for each texture:
-  let allContribution = []
+  let allContribution = new Array()
   for (let i = 0; textures[i]; i++) {
     let textureID = textures[i].id
     let textureURL = textures[i].url
@@ -48,26 +48,42 @@ async function downloadResults(client, channelInID) {
     let texture = await texturesCollection.get(textureID)
     let uses    = await texture.uses()
 
-    let allPaths = []
+    let allPaths = new Array()
     // get all paths of the texture
     for (let j = 0; uses[j]; j++) {
-      let localPath = './texturesPush'
-      if (uses[j].editions[0] == 'java') localPath += '/Compliance-Java-'
-      else if (uses[j].editions[0] == 'bedrock') localPath += '/Compliance-Bedrock-'
-      else localPath += '/MISSING_REPOSITORY_TYPE'
+      
+      let localPath 
+      switch (uses[j].editions[0].toLowerCase()) {
+        case "java":
+          localPath = './texturesPush/Compliance-Java-'
+          break
+        case "bedrock":
+          localPath = './texturesPush/Compliance-Bedrock-'
+          break
+        default:
+          localPath = './texturesPush/EDITIONS_NOT_FOUND-'
+          break
+      }
 
-      if (res == 'c32')      localPath += '32x'
-      else if (res == 'c64') localPath += '64x'
-      else                   localPath += 'MISSING_RES'
+      switch (res) {
+        case "c32":
+          localPath += '32x'
+          break
+        case "c64":
+          localPath += '64x'
+          break
+        default:
+          localPath += 'RES_NOT_FOUND'
+          break
+      }
 
       let paths = await uses[j].paths()
 
+      // for all paths
       for (let k = 0; paths[k]; k++) {
         let versions = paths[k].versions
-        for (let l = 0; versions[l]; l++) {
-          if (uses[j].editions[0] == 'java') allPaths.push(localPath + '/' + versions[l] + '/assets/' + paths[k].path)
-          else allPaths.push(localPath + '/' + versions[l] + '/' + paths[k].path)
-        }
+        // for each version of each path
+        for (let l = 0; versions[l]; l++) allPaths.push(`${localPath}/${versions[l]}/${paths[k].path}`)
       }
     }
 
@@ -79,10 +95,11 @@ async function downloadResults(client, channelInID) {
       // create full folder path
       await fs.promises.mkdir(allPaths[j].substr(0, allPaths[j].lastIndexOf('/')), { recursive: true })
         .catch(err => { if (process.DEBUG) console.error(err) })
+
       // write texture to the corresponding path
       fs.writeFile(allPaths[j], buffer, function (err) {
-        if (err && process.DEBUG) return console.error(err)
-        else if (process.DEBUG) return console.log(`ADDED TO: ${allPaths[j]}`)
+        if (err && process.DEBUG == "true") return console.error(err)
+        else if (process.DEBUG == "true") return console.log(`ADDED TO: ${allPaths[j]}`)
       })
     }
 
