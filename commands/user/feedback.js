@@ -24,6 +24,14 @@ module.exports = {
 			.setDescription(`[Jump to message](${message.url})\n\n\`\`\`${args.join(' ')}\`\`\``)
 			.setTimestamp()
 
+		if (message.channel.type === 'dm') embed.addField('Channel:', 'Private message (DM)')
+		else {
+			embed.addFields(
+				{ name: 'Server:', value: `\`${message.guild.name}\`` },
+				{ name: 'Channel:', value: `<#${message.channel.id}>` }
+			)
+		}
+
 		var embed2 = new Discord.MessageEmbed()
 			.setColor(colors.BLUE)
 			.setDescription(strings.FEEDBACK_SUCCESS_DESCRPTION)

@@ -74,43 +74,43 @@ module.exports = {
 	flags: '',
 	example: `${prefix}rule 1`,
 	async execute(client, message, args) {
+		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("Moderator") || role.name.includes("God"))) return warnUser(message, strings.COMMAND_NO_PERMISSION)
 
-		if (!message.member.hasPermission('ADMINISTRATOR')) return warnUser(message, strings.COMMAND_NO_PERMISSION)
+		let thumbnail = settings.BOT_IMG
+		let color     = colors.COUNCIL
 
-		let thumbnail = settings.BOT_IMG;
-		let color     = colors.COUNCIL;
+		switch (message.guild.id) {
+			case settings.C32_ID:
+				color = colors.C32
+				break
+			case settings.C64_ID:
+				color = colors.C32
+				break
+			case settings.CADDONS_ID:
+				color = colors.CADDONS
+				break
+			case settings.CMODS_ID:
+				color = colors.CMODS
+				break
+			case settings.CTWEAKS_ID:
+				color = colors.CTWEAKS
+				break
+			case settings.CDUNGEONS_ID:
+				color = colors.CDUNGEONS
+				break
 
-		if (message.guild.id === settings.C32_ID) {
-			thumbnail = settings.C32_IMG;
-			color     = colors.C32;
-		}
-		if (message.guild.id === settings.C64_ID) {
-			thumbnail = settings.C64_IMG;
-			color     = colors.C32;
-		}
-		if (message.guild.id === settings.CADDONS_ID) {
-			thumbnail = settings.CADDONS_IMG;
-			color     = colors.CADDONS;
-		}
-		if (message.guild.id === settings.CMODS_ID) {
-			thumbnail = settings.CMODS_IMG;
-			color     = colors.CMODS;
-		}
-		if (message.guild.id === settings.CTWEAKS_ID) {
-			thumbnail = settings.CTWEAKS_IMG;
-			color     = colors.CTWEAKS;
-		}
-		if (message.guild.id === settings.CDUNGEONS_ID) {
-			thumbnail = settings.CDUNGEONS_IMG;
-			color     = colors.CDUNGEONS;
+			default:
+				color = colors.C32
+				break
 		}
 
 		let rule;
 
-		if (parseInt(args[0]) || args[0] == 'all') {
+		if (message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("God"))) {
 			if (args[0] == 'all') rule = -1;
-			else rule = parseInt(args[0]); 
-		} else warnUser(message, 'You did not provide a number')
+		} else warnUser(message, "Only Administrators can do that!")
+
+		if (rule != -1) rule = parseInt(args[0], 10)
 
 		if (rule <= RULES.length && rule > 0) {
 			const embed = new Discord.MessageEmbed()

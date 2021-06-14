@@ -14,22 +14,26 @@ const REPOSITORIES = [
 const BE_BRANCHES = [ '1.16.210' ];
 const JE_BRANCHES = [ '1.12.2', '1.13.2', '1.14.4', '1.15.2', '1.16.5', '1.17' ];
 
-const { parseArgs } = require('../../helpers/parseArgs');
-const { date }      = require('../../helpers/date');
-const { warnUser }  = require('../../helpers/warnUser');
-const { doPush }    = require('../../functions/doPush');
+const { parseArgs }    = require('../../helpers/parseArgs');
+const { date }         = require('../../helpers/date');
+const { warnUser }     = require('../../helpers/warnUser');
+const { pushTextures } = require('../../functions/textures/admission/pushTextures');
 const { jsonContributionsJava, jsonContributionsBedrock } = require('../../helpers/fileHandler');
 
 module.exports = {
 	name: 'push',
-	description: strings.HELP_DESC_PUSH,
+	description: strings.HELP_DESC_ADMINS,
 	guildOnly: false,
-	uses: strings.COMMAND_USES_MODS,
+	uses: strings.COMMAND_DISABLED,
+	//uses: strings.COMMAND_USES_MODS,
 	syntax: `${prefix}push -r -p -a + file attached`,
 	flags: '-r | --repo :\n\tCompliance-[Java|Bedrock]-[32x-64x]\n-p | --path :\n\tTexture path \n-a | --author :\n\tDiscord tag of texture\'s author.',
 	example: `${prefix}push -r=Compliance-Java-32x -p=textures/block/stone.png -a=Someone#1234`,
 	async execute(client, message, args) {
+		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("God"))) return warnUser(message, strings.COMMAND_NO_PERMISSION)
 
+		return warnUser(message, 'NOT UPDATED TO THE NEW DATABASE SYSTEM')
+		/*
 		if(!message.member.hasPermission('ADMINISTRATOR')) return warnUser(message, strings.COMMAND_NO_PERMISSION);
 
 		args = parseArgs(message, args);
@@ -92,7 +96,7 @@ module.exports = {
 		textures   = await fileHandle.read();
 
 		for (const i in textures) {
-			if (textures[i].version[strings.LATEST_MC_JE_VERSION].includes(valPath)) {
+			if (textures[i].version[settings.LATEST_MC_JE_VERSION].includes(valPath)) {
 				valIndex = i;
 				valType  = 'java';
 				break;
@@ -107,7 +111,7 @@ module.exports = {
 			textures   = await fileHandle.read();
 
 			for (const i in textures) {
-				if (textures[i].version[strings.LATEST_MC_BE_VERSION].includes(valPath)) {
+				if (textures[i].version[settings.LATEST_MC_BE_VERSION].includes(valPath)) {
 					valIndex = i;
 					valType  = 'bedrock';
 					break;
@@ -121,7 +125,7 @@ module.exports = {
 		else {
 			await setAuthor(valType, valIndex, valAuth, valSize);
 			await download(message, valType, valIndex, valRepo, valSize);
-			await doPush(`Manual Push for ${valPath.split('/').pop()} executed by: ${message.author.username}`);
+			await pushTextures(`Manual Push for ${valPath.split('/').pop()} executed by: ${message.author.username}`);
 			await message.react('✅');
 		}
 
@@ -202,7 +206,7 @@ async function setAuthor(valType, valIndex, valAuth, valSize) {
 		let texturesBedrock = await fileHandle2.read();
 
 		for (const i in texturesBedrock) {
-			if (texturesBedrock[i].version[strings.LATEST_MC_BE_VERSION].includes(textures[valIndex].bedrock[strings.LATEST_MC_BE_VERSION])) {
+			if (texturesBedrock[i].version[settings.LATEST_MC_BE_VERSION].includes(textures[valIndex].bedrock[settings.LATEST_MC_BE_VERSION])) {
 				fileHandle2.release(); // need to be before recursive to avoid infinite task
 				await setAuthor('bedrock', i, valAuth, valSize)
 				break;
@@ -213,6 +217,7 @@ async function setAuthor(valType, valIndex, valAuth, valSize) {
 	if (valType == 'java')    await jsonContributionsJava.write(textures);
 	if (valType == 'bedrock') await jsonContributionsBedrock.write(textures);
 
-	fileHandle.release();
+	fileHandle.release();*/
+	}
 
 }

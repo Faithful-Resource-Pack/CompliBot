@@ -8,7 +8,8 @@ const strings     = require('../../ressources/strings')
 const FindTexture = require('../../functions/textures/findTexture')
 const choiceEmbed = require('../../helpers/choiceEmbed')
 
-const { warnUser } = require('../../helpers/warnUser')
+const { warnUser }       = require('../../helpers/warnUser')
+const { addDeleteReact } = require('../../helpers/addDeleteReact')
 
 const RES_SIDE = [16, 32, 64]
 const RES_JAVA = 'j'
@@ -193,23 +194,6 @@ module.exports = {
     })
     const attachment = new Discord.MessageAttachment(bufferResult, 'output.png')
     const embedMessage = await message.inlineReply(attachment)
-
-    if (message.channel.type !== 'dm') await embedMessage.react('🗑️')
-
-    const filter = (reaction, user) => {
-      return ['🗑️'].includes(reaction.emoji.name) && user.id === message.author.id
-    }
-
-    embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
-      .then(async collected => {
-        const reaction = collected.first()
-        if (reaction.emoji.name === '🗑️') {
-          embedMessage.delete()
-          if (!message.deleted) message.delete()
-        }
-      })
-      .catch(async () => {
-        if (!embedMessage.deleted && message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🗑️').remove()
-      })
+    addDeleteReact(embedMessage, message, true)
   }
 }

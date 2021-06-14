@@ -4,6 +4,7 @@ const GIFEncoderFixed = require('../../modified_libraries/GIFEncoder')
 
 const { getMeta }  = require('../../helpers/getMeta')
 const { warnUser } = require('../../helpers/warnUser')
+const { addDeleteReact } = require('../../helpers/addDeleteReact')
 
 // "magnify" the output GIF (the output will be to small)
 var FACTOR = 8
@@ -147,23 +148,7 @@ async function animate(message, valMCMETA, valURL) {
 		const attachment = new Discord.MessageAttachment(encoder.out.getData(), 'output.gif')
 
 		const embedMessage = await message.inlineReply(attachment)
-		if (message.channel.type !== 'dm')  await embedMessage.react('🗑️');
-
-		const filter = (reaction, user) => {
-			return ['🗑️'].includes(reaction.emoji.name) && user.id === message.author.id;
-		};
-
-		embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
-			.then(async collected => {
-				const reaction = collected.first();
-				if (reaction.emoji.name === '🗑️') {
-					await embedMessage.delete();
-					if (!message.deleted && message.channel.type !== 'dm') await message.delete();
-				}
-			})
-			.catch(async () => {
-				if (!embedMessage.deleted && message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🗑️').remove();
-			});
+		addDeleteReact(embedMessage, message, true)
 	})
 }
 

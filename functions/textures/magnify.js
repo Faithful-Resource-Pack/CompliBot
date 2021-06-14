@@ -1,6 +1,8 @@
-const Canvas  = require('canvas')
-const Discord = require('discord.js')
+const Canvas   = require('canvas')
+const Discord  = require('discord.js')
+const settings = require('../../ressources/settings')
 
+const { addDeleteReact } = require('../../helpers/addDeleteReact')
 const { getMeta }  = require('../../helpers/getMeta')
 const { warnUser } = require('../../helpers/warnUser')
 
@@ -9,9 +11,17 @@ const { warnUser } = require('../../helpers/warnUser')
  * @author Juknum
  * @param {DiscordMessage} message 
  * @param {String} url Image URL
+ * @param {DiscordUserID} gotocomplichannel if set, the message is send to the corresponding #complibot
  * @returns Send a message with the magnified image
  */
-function magnify(message, url) {
+function magnify(message, url, gotocomplichannel = undefined) {
+
+	let complichannel
+	if (gotocomplichannel) {
+		if (message.guild.id == settings.C32_ID) complichannel = message.guild.channels.cache.get(settings.C32_COMPLICHANNEL) // C32x discord
+		if (message.guild.id == settings.C64_ID) complichannel = message.guild.channels.cache.get(settings.C64_COMPLICHANNEL) // C64x discord
+	}
+
 	getMeta(url).then(async function(dimension) {
 		var sizeOrigin = dimension.width * dimension.height
 		var factor     = 64
@@ -46,26 +56,19 @@ function magnify(message, url) {
 			}
 		}
 
-		const attachment   = new Discord.MessageAttachment(canvasResult.toBuffer(), 'magnified.png');
-		const embedMessage = await message.inlineReply(attachment);
+		const attachment = new Discord.MessageAttachment(canvasResult.toBuffer(), 'magnified.png');
 
-		if (message.channel.type !== 'dm')  await embedMessage.react('🗑️');
-
-		const filter = (reaction, user) => {
-			return ['🗑️'].includes(reaction.emoji.name) && user.id === message.author.id;
-		};
-
-		embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
-			.then(async collected => {
-				const reaction = collected.first();
-				if (reaction.emoji.name === '🗑️') {
-					await embedMessage.delete();
-					if (!message.deleted && message.channel.type !== 'dm') await message.delete();
-				}
-			})
-			.catch(async () => {
-				if (!embedMessage.deleted && message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🗑️').remove();
-			});
+		let embedMessage
+		if (gotocomplichannel) {
+			try {
+				const member = await message.guild.members.cache.get(gotocomplichannel)
+				embedMessage = await member.send(attachment);
+			} catch(e) {
+				embedMessage = await complichannel.send(`<@!${gotocomplichannel}>`, attachment);
+			}
+		}
+		else embedMessage = await message.inlineReply(attachment);
+		addDeleteReact(embedMessage, message, true)
 
 		return attachment;
 	});

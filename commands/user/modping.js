@@ -1,13 +1,7 @@
-const prefix = process.env.PREFIX;
-const mods   = process.env.MODS.split(","); // moderator list
-
-var mods_dnd    = new Array();
-var mods_online = new Array();
-var embed       = null;
-
-const Discord  = require("discord.js");
-const settings = require('../../ressources/settings');
-const strings  = require('../../ressources/strings');
+const prefix   = process.env.PREFIX
+const Discord  = require("discord.js")
+const strings  = require('../../ressources/strings')
+const { warnUser } = require('../../helpers/warnUser')
 
 module.exports = {
 	name: 'modping',
@@ -18,84 +12,67 @@ module.exports = {
 	syntax: `${prefix}modping`,
 	async execute(client, message, args) {
 
-		// void old list :
-		mods_dnd = [];
-		mods_online = [];
+		const MOD_ROLE = message.guild.roles.cache.find(role => role.name.includes("Moderator"))
+		console.log(MOD_ROLE)
+		if (MOD_ROLE === undefined) return warnUser(message, 'There is no "Moderator" role on this server')
+		const MODERATORS_ID = message.guild.roles.cache.find(role => role.name.includes("Moderator")).members.map(member => member.user.id)
 
-		var MODERATOR_ID = '747839021421428776'; // God id on Robert discord server test
-
-		if (message.guild.id == settings.CDUNGEONS_ID) MODERATOR_ID = settings.CDUNGEONS__MODERATOR_ID;
-		if (message.guild.id == settings.CMODS_ID)     MODERATOR_ID = settings.CMODS_MODERATOR_ID;
-		if (message.guild.id == settings.CTWEAKS_ID)   MODERATOR_ID = settings.CTWEAKS_MODERATOR_ID;
-		if (message.guild.id == settings.CADDONS_ID)   MODERATOR_ID = settings.CADDONS_MODERATOR_ID;
-		if (message.guild.id == settings.C32_ID)       MODERATOR_ID = settings.C32_MODERATOR_ID;
-		if (message.guild.id == settings.C64_ID)       MODERATOR_ID = settings.C64_MODERATOR_ID;
-
-		if (args == 'urgent') {
-			embed = new Discord.MessageEmbed()
-        .setAuthor(message.author.tag, message.author.displayAvatarURL())
+		let embed = new Discord.MessageEmbed()
+		if (args.includes('urgent') || args.includes('important') || args.includes('urgents')) {
+      embed.setAuthor(message.author.tag, message.author.displayAvatarURL())
 				.setTitle('Moderators:')
 				.setDescription('You demanded that all moderators be present. You must have a good reason or penalties may be taken.')
-				.setColor('#22202C');
+				.setColor('#22202C')
+				.setFooter(`use ${prefix}modping to call mods for help!`)
 
-			message.inlineReply(embed);
-			message.channel.send('<@&' + MODERATOR_ID  + '>');
+			await message.inlineReply(embed)
+			return message.channel.send(`<@&${MOD_ROLE.id}>`)
 		}
-		else {
-			for(let i in mods){
-				if (message.guild.member(mods[i])) {
-					if (message.guild.members.cache.get(mods[i]).presence.status == 'dnd' || message.guild.members.cache.get(mods[i]).presence.status == 'idle') mods_dnd.push(mods[i]);
-					if (message.guild.members.cache.get(mods[i]).presence.status == 'online')	mods_online.push(mods[i]);
-				}
-			}
+		
+		let MODERATORS_DND    = new Array()
+		let MODERATORS_ONLINE = new Array()
 
-			var text = '';
-			var content = '';
-
-			if (mods_online.length != 0) {
-				// We have 1 or more mods online
-				if (mods_online.length == 1) content = 'There is **' + mods_online.length + ' Mod online**';
-				else content = 'There are **' + mods_online.length + ' Mods online**';
-
-				embed = new Discord.MessageEmbed()
-					.setAuthor(message.author.tag, message.author.displayAvatarURL())
-					.setTitle('Moderators:')
-					.setDescription(content + '\n> use `/modping` to call mods for help!')
-					.setColor('#22202C');
-
-				message.inlineReply(embed);
-
-				for (let i in mods_online) text += '<@' + mods_online[i] + '> ';
-				message.channel.send(text);
-
-			} else if (mods_dnd.length != 0) {
-				// We have 1 or more mods dnd
-				if (mods_dnd.length == 1) content = 'There is **' + mods_dnd.length + ' Mod in do not disturb / AFK**, they may not respond.';
-				else content = 'There are **' + mods_dnd.length + ' Mods in do not disturb / AFKs**, they may not respond.';
-
-				embed = new Discord.MessageEmbed()
-					.setAuthor(message.author.tag, message.author.displayAvatarURL())
-					.setTitle('Moderators:')
-					.setDescription(content + '\n> use `/modping` to call mods for help!')
-					.setColor('#22202C');
-
-				message.channel.send(embed);
-
-				for (let i in mods_dnd) text += '<@' + mods_dnd[i] + '> ';
-				message.channel.send(text);
-
-			} else {
-				// No mods are online
-				embed = new Discord.MessageEmbed()
-					.setAuthor(message.author.tag, message.author.displayAvatarURL())
-					.setTitle('Moderators:')
-					.setDescription('There are currently no mods online ¯\\_(ツ)_/¯, I\'m going to ping them all\n> use `/modping` to call mods for help!')
-					.setColor('#22202C');
-
-				message.channel.send(embed);
-				message.channel.send('<@&' + MODERATOR_ID  + '>');
-			}
-
+		for (let i = 0; MODERATORS_ID[i]; i++) {
+			if (message.guild.members.cache.get(MODERATORS_ID[i]).presence.status === 'dnd' || message.guild.members.cache.get(MODERATORS_ID[i]).presence.status === 'idle')
+				MODERATORS_DND.push(`<@${MODERATORS_ID[i]}>`)
+			
+			if (message.guild.members.cache.get(MODERATORS_ID[i]).presence.status === 'online')
+				MODERATORS_ONLINE.push(`<@${MODERATORS_ID[i]}>`)
 		}
+
+		if (MODERATORS_ONLINE.length > 0) {
+			embed.setAuthor(message.author.tag, message.author.displayAvatarURL())
+				.setTitle('Moderators:')
+				.setDescription(`There ${MODERATORS_ONLINE.length > 1 ? "are" : "is"} **${MODERATORS_ONLINE.length} Moderator${MODERATORS_ONLINE.length > 1 ? "s" : ""} online**.`)
+				.setColor('#22202C')
+				.setFooter(`use ${prefix}modping to call mods for help!`)
+
+			await message.inlineReply(embed)
+
+			return message.channel.send(MODERATORS_ONLINE.join(', '))
+		}
+
+		if (MODERATORS_DND.length > 0) {
+			embed.setAuthor(message.author.tag, message.author.displayAvatarURL())
+				.setTitle('Moderators:')
+				.setDescription(`There ${MODERATORS_DND.length > 1 ? "are" : "is" } **${MODERATORS_DND.length} Moderators in do no disturb / AFK**, they may not respond.`)
+				.setColor('#22202C')
+				.setFooter(`use ${prefix}modping to call mods for help!`)
+
+			await message.inlineReply(embed)
+
+			return message.channel.send(MODERATORS_DND.join(', '))
+		}
+
+		// No moderators online
+		embed.setAuthor(message.author.tag, message.author.displayAvatarURL())
+			.setTitle('Moderators:')
+			.setDescription('There are currently no moderators online ¯\\_(ツ)_/¯, I\'m going to ping them all.')
+			.setColor('#22202C')
+			.setFooter(`use ${prefix}modping to call mods for help!`)
+
+		await message.channel.send(embed)
+		message.channel.send(`<@&${MOD_ROLE.id}>`)
+
 	}
-};
+}

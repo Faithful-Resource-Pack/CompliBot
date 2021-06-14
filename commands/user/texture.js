@@ -1,18 +1,20 @@
 /*eslint-env node*/
-const prefix = process.env.PREFIX;
+const prefix = process.env.PREFIX
 
-const Discord     = require('discord.js');
-const axios       = require('axios').default;
-const strings     = require('../../ressources/strings');
-const colors      = require('../../ressources/colors');
-const settings    = require('../../ressources/settings');
+const Discord     = require('discord.js')
+const axios       = require('axios').default
+const strings     = require('../../ressources/strings')
+const colors      = require('../../ressources/colors')
+const settings    = require('../../ressources/settings')
+const emojis      = require('../../ressources/emojis')
 const choiceEmbed = require('../../helpers/choiceEmbed')
 
-const { magnify }  = require('../../functions/textures/magnify');
-const { palette }  = require('../../functions/textures/palette');
-const { getMeta }  = require('../../helpers/getMeta');
-const { warnUser } = require('../../helpers/warnUser');
-const { timestampConverter } = require ('../../helpers/timestampConverter');
+const { magnify }  = require('../../functions/textures/magnify')
+const { palette }  = require('../../functions/textures/palette')
+const { getMeta }  = require('../../helpers/getMeta')
+const { warnUser } = require('../../helpers/warnUser')
+const { timestampConverter } = require ('../../helpers/timestampConverter')
+const { addDeleteReact } = require('../../helpers/addDeleteReact')
 
 const allowed = ['vanilla', '16', '32', '64'];
 const used = ['16', '32', '64'];
@@ -55,53 +57,80 @@ module.exports = {
 
     // partial texture name (_sword, _axe -> diamond_sword, diamond_axe...)
     if (search.startsWith('_') || search.endsWith('_')) {
-      results = await textures.search([{
-        field: "name",
-        criteria: "includes",
-        value: search
-      }])
+      try {
+        results = await textures.search([{
+          field: "name",
+          criteria: "includes",
+          value: search
+        }])
+      }
+      catch (err) { return warnUser(message, err) }
     }
     // looking for path + texture (block/stone -> stone)
     else if (search.startsWith('/') || search.endsWith('/')) {
-      results = await paths.search([{
-        field: "path",
-        criteria: "includes",
-        value: search
-      }])
+      try {
+        results = await paths.search([{
+          field: "path",
+          criteria: "includes",
+          value: search
+        }])
+      }
+      catch (err) { return warnUser(message, err) }
+
       // transform paths results into textures
       let output = new Array()
       for (let i = 0; results[i]; i++) {
-        let use = await results[i].use()
-        output.push(await textures.get(use.textureID))
+        let texture
+        try {
+          let use = await results[i].use()
+          texture = await textures.get(use.textureID)
+        } catch (err) { return warnUser(message, err) }
+        output.push(texture)
       }
       results = output
     }
     // looking for all exact matches (stone -> stone.png)
     else {
-      results = await textures.search([{
-        field: "name",
-        criteria: "==",
-        value: search
-      }])
+      try {
+        results = await textures.search([{
+          field: "name",
+          criteria: "==",
+          value: search
+        }])
+      } catch (err) { return warnUser(message, err) }
 
       if (results.length == 0) {
         // no equal result, searching with includes
-        results = await textures.search([{
-          field: "name",
-          criteria: 'includes',
-          value: search
-        }])
+        try {
+          results = await textures.search([{
+            field: "name",
+            criteria: 'includes',
+            value: search
+          }])
+        } catch (err) { return warnUser(message, err) }
       }
     }
 
     if (results.length > 1) {
 
       let choice = [];
+      
       for (let i = 0; results[i]; i++) {
         let uses = await results[i].uses()
-        let paths = await uses[0].paths()
+        let stringBuilder = []
 
-        choice.push(`\`[#${results[i].id}]\` ${results[i].name.replace(search, `**${search}**`).replace(/_/g, '\\_')} — ${paths[0].path.replace(search, `**${search}**`).replace(/_/g, '\\_')}`)
+        for (let j = 0; uses[j]; j++) {
+          let paths = await uses[j].paths()
+          for (let k = 0; paths[k]; k++) {
+            if (paths[k].versions.length > 1) stringBuilder.push(`\`[${paths[k].versions[paths[k].versions.length - 1]}+]\`\t${paths[k].path.replace(search, `**${search}**`).replace(/_/g, '\\_')}`)
+            else stringBuilder.push(`\`[${paths[k].versions[0]}]\`\t${paths[k].path.replace(search, `**${search}**`).replace(/_/g, '\\_')}`)
+          }
+        }
+
+        choice.push(
+          `\`[#${results[i].id}]\` ${results[i].name.replace(search, `**${search}**`).replace(/_/g, '\\_')}
+          > ${stringBuilder.join('\n> ')}\n`
+        )
       }
 
 			if (!waitEmbedMessage.deleted) await waitEmbedMessage.delete();
@@ -140,22 +169,43 @@ async function getTexture(message, res, texture) {
 
   const uses = await texture.uses()
   const path = (await uses[0].paths())[0].path
+  const pathVersion = (await uses[0].paths())[0].versions[0]
+  const pathUseType = uses[0].editions[0]
 
   let pathsText = []
   for (let x = 0; uses[x]; x++) {
     let paths = await uses[x].paths()
     pathsText.push(`**__${uses[x].editions.join(', ')}__**`)
-    for (let i = 0; paths[i]; i++) pathsText.push(`\`[${paths[i].versions[paths[i].versions.length - 1]}+]\` ${paths[i].path}`)
+    for (let i = 0; paths[i]; i++) {
+      if (paths[i].versions.length > 1) pathsText.push(`\`[${paths[i].versions[paths[i].versions.length - 1]} — ${paths[i].versions[0]}]\` ${paths[i].path}`)
+      else pathsText.push(`\`[${paths[i].versions[0]}]\` ${paths[i].path}`)
+    }
   }
 
-  if (res == '16') imgURL = settings.DEFAULT_MC_JAVA_TEXTURE + path;
-  if (res == '32') imgURL = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-32x/Jappa-' + strings.LATEST_MC_JE_VERSION + '/assets/' + path;
-  if (res == '64') imgURL = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-64x/Jappa-' + strings.LATEST_MC_JE_VERSION + '/assets/' + path;
-  
-  if (path.startsWith('textures')) { // hacks to get the right url with bedrock textures
-    if (res == '16') imgURL = settings.DEFAULT_MC_BEDROCK_TEXTURE + path;
-    if (res == '32') imgURL = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Bedrock-32x/Jappa-' + strings.LATEST_MC_BE_VERSION + '/' + path;
-    if (res == '64') imgURL = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Bedrock-64x/Jappa-' + strings.LATEST_MC_BE_VERSION + '/' + path;
+  if (pathUseType == "java") {
+    switch (res) {
+      case "16":
+        imgURL = settings.DEFAULT_MC_JAVA_REPOSITORY + pathVersion + '/' + path
+        break
+      case "32":
+        imgURL = settings.COMPLIANCE_32X_JAVA_REPOSITORY_JAPPA + pathVersion + '/' + path
+        break
+      case "64":
+        imgURL = settings.COMPLIANCE_64X_JAVA_REPOSITORY_JAPPA + pathVersion + '/' + path
+        break
+    }
+  }
+  else {
+    switch (res) {
+      case "16":
+        imgURL = settings.DEFAULT_MC_BEDROCK_REPOSITORY + pathVersion + '/' + path
+        break
+      case "32":
+        imgURL = settings.COMPLIANCE_32X_BEDROCK_REPOSITORY_JAPPA + pathVersion + '/' + path
+        break
+      case "64":
+        imgURL = settings.COMPLIANCE_64X_BEDROCK_REPOSITORY_JAPPA + pathVersion + '/' + path
+    }
   }
 
   axios.get(imgURL).then(() => {
@@ -163,69 +213,68 @@ async function getTexture(message, res, texture) {
       const size = dimension.width + '×' + dimension.height;
 
       var embed = new Discord.MessageEmbed()
-				.setAuthor('Note: this command isn\'t updated for 1.17 Pre-Release 1 yet')
+				//.setAuthor('Note: this command isn\'t updated for 1.17 Pre-Release 3 yet')
         .setTitle(`[#${texture.id}] ${texture.name}`)
         .setColor(colors.BLUE)
         //.setURL(imgURL) TODO: add a link to the website gallery where more information could be found about the texture
         .setImage(imgURL)
         .addField('Resolution:', size,true)
 
-      if (res === '16' || res === '16b') embed.setFooter('Vanilla Texture', settings.VANILLA_IMG);
-      if (res === '32' || res === '32b') embed.setFooter('Compliance 32x', settings.C32_IMG)
-      if (res === '64' || res === '64b') embed.setFooter('Compliance 64x', settings.C64_IMG)
+      if (res === '16') embed.setFooter('Vanilla Texture', settings.VANILLA_IMG);
+      if (res === '32') embed.setFooter('Compliance 32x', settings.C32_IMG)
+      if (res === '64') embed.setFooter('Compliance 64x', settings.C64_IMG)
 
       let lastContribution = await texture.lastContribution((res == '32' || res == '64') ? `c${res}` : undefined);
+      
+      /*
+      TODO: Get missing contributors from #results and add them to the contribution collection first
       let contributors = lastContribution ? lastContribution.contributors.map(contributor => { return `<@!${contributor}>` }) : 'None'
       let date = lastContribution ? timestampConverter(lastContribution.date) : 'None'
 
-      /**
-       * TODO: fix the authors using the new database first
-       */
-      /*if (res != '16') {
+      if (res != '16') {
         embed.addFields(
           { name: 'Author(s)', value: contributors, inline: true },
           { name: 'Added', value: date, inline: true },
         )
-			}*/
+			}
+      */
       embed.addField('Paths', pathsText.join('\n'), false)
 
       const embedMessage = await message.inlineReply(embed);
-      await embedMessage.react('🗑️');
-      if (dimension.width <= 128 && dimension.height <= 128) {
-        await embedMessage.react('🔎');
-      }
-      await embedMessage.react('🌀');
-      await embedMessage.react('🎨');
+      addDeleteReact(embedMessage, message, true)
+
+      if (dimension.width <= 128 && dimension.height <= 128)
+        await embedMessage.react(emojis.MAGNIFY);
+      await embedMessage.react(emojis.NEXT_RES);
+      await embedMessage.react(emojis.PALETTE);
 
       const filter = (reaction, user) => {
-        return ['🗑️', '🔎', '🌀', '🎨'].includes(reaction.emoji.name) && user.id === message.author.id;
+        return [emojis.MAGNIFY, emojis.NEXT_RES, emojis.PALETTE].includes(reaction.emoji.id) && user.id === message.author.id;
       };
 
       embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
       .then(async collected => {
         const reaction = collected.first()
-        if (reaction.emoji.name === '🗑️') {
-          if (!embedMessage.deleted) embedMessage.delete()
-          if (!message.deleted) message.delete()
-        }
-        if (reaction.emoji.name === '🎨') {
+        if (reaction.emoji.id === emojis.PALETTE) {
           return palette(embedMessage, embedMessage.embeds[0].image.url)
         }
-        if (reaction.emoji.name === '🔎') {
+        if (reaction.emoji.id === emojis.MAGNIFY) {
           return magnify(embedMessage, embedMessage.embeds[0].image.url)
         }
-        if (reaction.emoji.name === '🌀' && used.includes(res)) {
+        if (reaction.emoji.id === emojis.NEXT_RES && used.includes(res)) {
           if (!embedMessage.deleted) await embedMessage.delete()
           return getTexture(message, used[(used.indexOf(res) + 1) % used.length], texture)
         }
       })
       .catch(async () => {
-        if (!embedMessage.deleted && message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🗑️').remove()
-        if (dimension.width <= 128 && dimension.height <= 128) {
-          if (!embedMessage.deleted && message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🔎').remove()
-        }
-        if (!embedMessage.deleted && message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🌀').remove()
-        if (!embedMessage.deleted && message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🎨').remove()
+        try {
+          if (message.channel.type !== 'dm' && (dimension.width <= 128 && dimension.height <= 128))
+            await embedMessage.reactions.cache.get(emojis.MAGNIFY).remove()
+          if (message.channel.type !== 'dm')
+            await embedMessage.reactions.cache.get(emojis.NEXT_RES).remove()
+          if (message.channel.type !== 'dm')
+            await embedMessage.reactions.cache.get(emojis.PALETTE).remove()
+        } catch (err) { /* Message deleted */ }
       })
 
     })

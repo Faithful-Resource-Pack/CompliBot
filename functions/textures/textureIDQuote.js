@@ -3,6 +3,7 @@ const colors   = require('../../ressources/colors');
 const settings = require('../../ressources/settings');
 const fetch    = require('node-fetch');
 const { timestampConverter } = require('../../helpers/timestampConverter');
+const { addDeleteReact } = require("../../helpers/addDeleteReact");
 
 const CANVAS_FUNCTION_PATH = '../../functions/textures/canvas'
 function nocache(module) { require('fs').watchFile(require('path').resolve(module), () => { delete require.cache[require.resolve(module)] }) }
@@ -42,32 +43,32 @@ async function textureIDQuote(message) {
     let pathText = []
     for (let i = 0; uses[i]; i++) {
       let localPath = await uses[i].paths()
-      for (let k = 0; localPath[k]; k++) {
-        pathText.push(`\`[${localPath[k].versions[localPath[k].versions.length - 1]}+]\` ${localPath[k].path}`)
-      }
+      pathText.push(`**${uses[i].editions[0].charAt(0).toUpperCase() + uses[i].editions[0].slice(1)}**`)
+      for (let k = 0; localPath[k]; k++) pathText.push(`\`[${localPath[k].versions[localPath[k].versions.length - 1]}+]\` ${localPath[k].path}`)
     }
 
     let path = texturePath[0].path
     let editions = uses[0].editions
 
-    let contrib32 = await texture.lastContribution('c32')
+    let contrib32   = await texture.lastContribution('c32')
     let timestamp32 = contrib32 ? contrib32.date : undefined
-    let author32 = contrib32 ? contrib32.contributors : undefined
+    let author32    = contrib32 ? contrib32.contributors : undefined
 
-    let contrib64 = await texture.lastContribution('c64')
+    let contrib64   = await texture.lastContribution('c64')
     let timestamp64 = contrib64 ? contrib64.date : undefined
-    let author64 = contrib64 ? contrib64.contributors : undefined
+    let author64    = contrib64 ? contrib64.contributors : undefined
 
     const paths = {}
+    const pathVersion = texturePath[0].versions[0]
     if (editions.includes('java')) {
-      paths.c16 = settings.DEFAULT_MC_JAVA_TEXTURE + path;
-      paths.c32 = `https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-32x/Jappa-1.17/assets/${path}`
-      paths.c64 = `https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-64x/Jappa-1.17/assets/${path}`
+      paths.c16 = settings.DEFAULT_MC_JAVA_REPOSITORY + pathVersion + '/' + path
+      paths.c32 = settings.COMPLIANCE_32X_JAVA_REPOSITORY_JAPPA + pathVersion + '/' + path
+      paths.c64 = settings.COMPLIANCE_64X_JAVA_REPOSITORY_JAPPA + pathVersion + '/' + path
     } 
     else {
-      paths.c16 = settings.DEFAULT_MC_BEDROCK_TEXTURE + path;
-      paths.c32 = `https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Bedrock-32x/Jappa-1.16.210/${path}`
-      paths.c64 = `https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Bedrock-64x/Jappa-1.16.210/${path}`
+      paths.c16 = settings.DEFAULT_MC_BEDROCK_REPOSITORY + pathVersion + '/' + path
+      paths.c32 = settings.COMPLIANCE_32X_BEDROCK_REPOSITORY_JAPPA + pathVersion + '/' + path
+      paths.c64 = settings.COMPLIANCE_64X_BEDROCK_REPOSITORY_JAPPA + pathVersion + '/' + path
     }
 
     /** @type {import('../helpers/firestorm/users').User} */
@@ -93,26 +94,11 @@ async function textureIDQuote(message) {
       .addFields(
         { name: '32x', value: author[0] != undefined && author[0].length ? `<@!${author[0].join('> <@!')}> - ${timestampConverter(timestamp[0])}` : `Contribution not found` },
         { name: '64x', value: author[1] != undefined && author[1].length ? `<@!${author[1].join('> <@!')}> - ${timestampConverter(timestamp[1])}` : `Contribution not found` },
-        { name: 'Paths', value: pathText.join('\n') }
+        { name: '\u200B', value: pathText, inline: false }
       )
 
     const embedMessage = await message.inlineReply(embed)
-		if (message.channel.type !== 'dm') await embedMessage.react('🗑️')
-
-		const filter = (reaction, user) => {
-			return ['🗑️'].includes(reaction.emoji.name) && user.id === message.author.id
-		}
-
-		embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
-			.then(async collected => {
-				const reaction = collected.first()
-				if (reaction.emoji.name === '🗑️') {
-					await embedMessage.delete()
-				}
-			})
-			.catch(async () => {
-				if (!embedMessage.deleted && message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🗑️').remove()
-			})
+		addDeleteReact(embedMessage, message)
   }
 
 }

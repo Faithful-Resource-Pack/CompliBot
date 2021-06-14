@@ -17,8 +17,7 @@ module.exports = {
 	syntax: `${prefix}unmute <@user> <reason>`,
 	example: `${prefix}unmute @Domi#5813 not posting memes in #general`,
 	async execute(client, message, args) {
-
-		if (!message.member.hasPermission('BAN_MEMBERS')) return await warnUser(message, strings.COMMAND_NO_PERMISSION);
+		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("Moderator") || role.name.includes("God"))) return warnUser(message, strings.COMMAND_NO_PERMISSION)
 		if (!args.length) return warnUser(message, strings.COMMAND_NO_ARGUMENTS_GIVEN);
 
 		let userID = undefined
@@ -44,23 +43,7 @@ module.exports = {
 			.setColor(colors.BLACK)
 			.setTimestamp();
 
-		const embedMessage = await message.inlineReply(embed);
-		await embedMessage.react('🗑️');
-		const filter = (reaction, user) => {
-			return ['🗑️'].includes(reaction.emoji.name) && user.id === message.author.id;
-		};
-
-		embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
-			.then(async collected => {
-				const reaction = collected.first();
-				if (reaction.emoji.name === '🗑️') {
-					await embedMessage.delete();
-					if (!message.deleted) await message.delete();
-				}
-			})
-			.catch(async () => {
-				await embedMessage.reactions.cache.get('🗑️').remove();
-			});
+		await message.inlineReply(embed);
 
 		modLog(client, message, userID, reason, 0, 'unmuted')
 	}

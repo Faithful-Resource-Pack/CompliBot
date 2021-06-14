@@ -73,18 +73,18 @@ module.exports = {
 		for (var i = 0; i < textures.length; i++) {
 			if (textures[i].c32.author != undefined && textures[i].c32.author.includes(userID)) {
 				if (maxj32 <= MAX) {
-					javac32.push(textures[i].version[strings.LATEST_MC_JE_VERSION].replace('minecraft/textures/',''));
+					javac32.push(textures[i].version[settings.LATEST_MC_JE_VERSION].replace('minecraft/textures/',''));
 					maxj32++;
 				}
 				countJava32++;
 			}
 			if (textures[i].c64.author != undefined && textures[i].c64.author.includes(userID)) {
 				if (maxj64 <= MAX) {
-					javac64.push(textures[i].version[strings.LATEST_MC_JE_VERSION].replace('minecraft/textures/',''));
+					javac64.push(textures[i].version[settings.LATEST_MC_JE_VERSION].replace('minecraft/textures/',''));
 					maxj64++;
 				}
 				countJava64++;
-				//console.log(textures[i].version[strings.LATEST_MC_JE_VERSION]);
+				//console.log(textures[i].version[settings.LATEST_MC_JE_VERSION]);
 			}
 		}
 
@@ -93,14 +93,14 @@ module.exports = {
 		for (var i = 0; i < texturesBedrock.length; i++) {
 			if (texturesBedrock[i].c32.author != undefined && texturesBedrock[i].c32.author.includes(userID)) {
 				if (maxb32 <= MAX) {
-					bedrockc32.push(texturesBedrock[i].version[strings.LATEST_MC_BE_VERSION].replace('textures/',''));
+					bedrockc32.push(texturesBedrock[i].version[settings.LATEST_MC_BE_VERSION].replace('textures/',''));
 					maxb32++;
 				}
 				countBedrock32++;
 			}
 			if (texturesBedrock[i].c64.author != undefined && texturesBedrock[i].c64.author.includes(userID)) {
 				if (maxb64 <= MAX) {
-					bedrockc64.push(texturesBedrock[i].version[strings.LATEST_MC_BE_VERSION].replace('textures/',''));
+					bedrockc64.push(texturesBedrock[i].version[settings.LATEST_MC_BE_VERSION].replace('textures/',''));
 					maxb64++;
 				}
 				countBedrock64++;
@@ -137,6 +137,9 @@ async function loop (embedMessage, message, embed, embedJava, embedBedrock) {
   await embedMessage.react('1️⃣')
   await embedMessage.react('2️⃣')
 
+	/**
+	 * TODO: use addDeleteReact() instead
+	 */
   const filter = (reaction, user) => {
     return ['🗑️', '1️⃣', '2️⃣'].includes(reaction.emoji.name) && user.id === message.author.id
   }

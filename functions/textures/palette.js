@@ -1,9 +1,11 @@
-const Canvas  = require('canvas')
-const Discord = require('discord.js')
-const colors2 = require('../../ressources/colors')
+const Canvas   = require('canvas')
+const Discord  = require('discord.js')
+const colors2  = require('../../ressources/colors')
+const settings = require('../../ressources/settings')
 
 const { getMeta }  = require('../../helpers/getMeta')
 const { warnUser } = require('../../helpers/warnUser')
+const { addDeleteReact } = require('../../helpers/addDeleteReact')
 
 const COLORS_PER_PALETTE      = 9
 const COLORS_PER_PALETTE_LINE = 3
@@ -22,9 +24,17 @@ const GRADIENT_HEIGHT        = 50
  * @author Juknum
  * @param {Discord.Message} message 
  * @param {String} url - Image URL
+ * @param {DiscordUserID} gotocomplichannel if set, the message is send to the corresponding #complibot
  * @returns Send an embed message with the color palette of the given URL
  */
-async function palette(message, url) {
+async function palette(message, url, gotocomplichannel = undefined) {
+
+	let complichannel
+	if (gotocomplichannel) {
+		if (message.guild.id == settings.C32_ID) complichannel = message.guild.channels.cache.get(settings.C32_COMPLICHANNEL) // C32x discord
+		if (message.guild.id == settings.C64_ID) complichannel = message.guild.channels.cache.get(settings.C64_COMPLICHANNEL) // C64x discord
+	}
+
 	getMeta(url).then(async function(dimension) {
 		var sizeOrigin = dimension.width * dimension.height
 
@@ -166,28 +176,30 @@ async function palette(message, url) {
 		// create the attachement
 		const colorImageAttachment = new Discord.MessageAttachment(colorCanvas.toBuffer(), 'colors.png');
 
-		const embedMessage = await message.inlineReply({
-			embed: embed,
-			files: [colorImageAttachment]
-		})
-
-		if (message.channel.type !== 'dm') await embedMessage.react('🗑️')
-
-		const filter = (reaction, user) => {
-			return ['🗑️'].includes(reaction.emoji.name) && user.id === message.author.id
+		let embedMessage
+		if (gotocomplichannel) {
+			try {
+				const member = await message.guild.members.cache.get(gotocomplichannel)
+				embedMessage = await member.send({
+					embed: embed,
+					files: [colorImageAttachment]
+				})
+			} catch(e) {
+				embedMessage = await complichannel.send({
+					content: `<@!${gotocomplichannel}>`,
+					embed: embed,
+					files: [colorImageAttachment]
+				})
+			}
+		}
+		else {
+			embedMessage = await message.inlineReply({
+				embed: embed,
+				files: [colorImageAttachment]
+			})
 		}
 
-		embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
-			.then(async collected => {
-				const reaction = collected.first()
-				if (reaction.emoji.name === '🗑️') {
-					await embedMessage.delete()
-					if (!message.deleted && message.channel.type !== 'dm') await message.delete()
-				}
-			})
-			.catch(async () => {
-				if (!embedMessage.deleted && message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🗑️').remove()
-			})
+		addDeleteReact(embedMessage, message, true)
 	})
 }
 

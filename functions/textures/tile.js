@@ -1,9 +1,12 @@
-const Canvas  = require('canvas')
-const Discord = require('discord.js')
+const Canvas   = require('canvas')
+const Discord  = require('discord.js')
+const emojis   = require('../../ressources/emojis')
+const settings = require('../../ressources/settings')
 
+const { addDeleteReact } = require('../../helpers/addDeleteReact')
 const { getMeta }  = require('../../helpers/getMeta')
 const { warnUser } = require('../../helpers/warnUser')
-const { magnify }  = require('./magnify');
+const { magnify }  = require('./magnify')
 
 /**
  * Tile an image
@@ -13,7 +16,14 @@ const { magnify }  = require('./magnify');
  * @param {String} type Type of tiling, could be: grid, horizontal, round or plus
  * @returns Send an embed message with the tiled image
  */
-function tile(message, url, type) {
+function tile(message, url, type, gotocomplichannel = undefined) {
+
+	let complichannel
+	if (gotocomplichannel) {
+		if (message.guild.id == settings.C32_ID) complichannel = message.guild.channels.cache.get(settings.C32_COMPLICHANNEL) // C32x discord
+		if (message.guild.id == settings.C64_ID) complichannel = message.guild.channels.cache.get(settings.C64_COMPLICHANNEL) // C64x discord
+	}
+
 	getMeta(url).then(async function(dimension) {
 		// aliases of type
 		if (type == undefined || type == 'g') type = 'grid'
@@ -124,33 +134,41 @@ function tile(message, url, type) {
 			canvasContext.clearRect(0, dimension.height * 2, dimension.width, dimension.height) // bottom left
 		}
 
-		const attachment   = new Discord.MessageAttachment(canvas.toBuffer(), 'tiled.png')
-		const embedMessage = await message.inlineReply(attachment)
-
-    if (message.channel.type !== 'dm') await embedMessage.react('🗑️')
-		if (dimension.width <= 512 && dimension.height <= 512) {
-		embedMessage.react('🔎');
+		const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'tiled.png')
+		let embedMessage
+		if (gotocomplichannel) {
+			try {
+				const member = await message.guild.members.cache.get(gotocomplichannel)
+				embedMessage = await member.send(attachment)
+			} catch (e) {
+				embedMessage = await complichannel.send(attachment)
+			}
 		}
-
-		const filter = (reaction, user) => {
-			return ['🗑️', '🔎'].includes(reaction.emoji.name) && user.id === message.author.id
+		else {
+			embedMessage = await message.inlineReply(attachment)
 		}
+		addDeleteReact(embedMessage, message, true)
 
-		embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
-			.then(async collected => {
-				const reaction = collected.first()
-				if (reaction.emoji.name === '🗑️') {
-					await embedMessage.delete()
-					if (!message.deleted && message.channel.type !== 'dm') await message.delete()
-				}
-				if (reaction.emoji.name === '🔎') {
-					return magnify(embedMessage, embedMessage.attachments.first().url)
-				}
-			})
-			.catch(async () => {
-				if (!embedMessage.deleted && message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🗑️').remove()
-				if (!embedMessage.deleted && message.channel.type !== 'dm') await embedMessage.reactions.cache.get('🔎').remove()
-			})
+		if (dimension.width <= 512 && dimension.height <= 512 && message.channel.type !== 'dm') {
+			embedMessage.react(emojis.MAGNIFY);
+
+			const filter = (reaction, user) => {
+				return [emojis.MAGNIFY].includes(reaction.emoji.id) && user.id === message.author.id
+			}
+
+			embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
+				.then(async collected => {
+					const reaction = collected.first()
+					if (reaction.emoji.id === emojis.MAGNIFY) {
+						return magnify(embedMessage, embedMessage.attachments.first().url)
+					}
+				})
+				.catch(async () => {
+					try {
+						await embedMessage.reactions.cache.get(emojis.MAGNIFY).remove()
+					} catch (err) { /* Message already deleted */ }
+				})
+		}
 	})
 }
 

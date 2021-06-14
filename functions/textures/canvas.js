@@ -5,10 +5,10 @@ class CanvasDrawer {
    * @param {canvasOptions} canvasOptions Drawing canvas options
    */
   constructor () {
-    this.urls = []
-    this.scale = 1
+    this.urls   = new Array()
+    this.scale  = 1
     this.images = undefined
-    this.order = undefined
+    this.order  = undefined
   }
 
   loadImages () {

@@ -14,8 +14,8 @@ module.exports = {
 	syntax: `${prefix}clear <amount>`,
 	example: `${prefix}clear 10`,
 	async execute(client, message, args) {
+		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("God"))) return warnUser(message, strings.COMMAND_NO_PERMISSION)
 
-		if (!message.member.hasPermission('ADMINISTRATOR')) return warnUser(message, strings.COMMAND_NO_PERMISSION);
 		if (!args.length) return warnUser(message, strings.COMMAND_NO_ARGUMENTS_GIVEN);
 		if (isNaN(args)) return await message.reply(strings.COMMAND_NOT_A_NUMBER);
 		if (args > 200) return await message.reply(strings.CLEAR_TOO_MUCH);
@@ -24,7 +24,7 @@ module.exports = {
 		var amount = parseInt(args, 10) + 1
 		const messages = await message.channel.messages.fetch({ limit: amount });
 		await message.channel.bulkDelete(messages);
-    var embed = new Discord.MessageEmbed()
+		var embed = new Discord.MessageEmbed()
 			.setAuthor(`${message.author.tag} bulk deleted ${args} messages!`)
 			.setColor(colors.RED)
 			.setThumbnail(message.author.displayAvatarURL())

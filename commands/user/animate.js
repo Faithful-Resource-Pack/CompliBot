@@ -55,7 +55,7 @@ module.exports = {
 			console.log(valMCMETA);
 
 			for (const i in textures) {
-				if (textures[i].version[strings.LATEST_MC_JE_VERSION].includes(valMCMETA)) {
+				if (textures[i].version[settings.LATEST_MC_JE_VERSION].includes(valMCMETA)) {
 					index = i;
 					break;
 				}
@@ -69,7 +69,7 @@ module.exports = {
 				textures   = await fileHandle.read();
 
 				for (const i in textures) {
-					if (textures[i].version[strings.LATEST_MC_BE_VERSION].includes(valMCMETA)) {
+					if (textures[i].version[settings.LATEST_MC_BE_VERSION].includes(valMCMETA)) {
 						index = i;
 						break;
 					}

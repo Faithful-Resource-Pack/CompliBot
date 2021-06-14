@@ -78,7 +78,7 @@ class Collection {
   __extract_data(request) {
     return new Promise((resolve, reject) => {
       request.then(res => {
-        if('data' in res) return resolve(res.data)
+        if ('data' in res) return resolve(res.data)
         return resolve(res)
       })
       .catch(err => reject(err))
@@ -225,7 +225,13 @@ class Collection {
    * @returns {Promise<any>}
    */
   add(value) {
-    return this.__extract_data(axios.post(writeAddress(), this.__write_data('add', value)))
+    return new Promise((resolve, reject) => {
+      this.__extract_data(axios.post(writeAddress(), this.__write_data('add', value)))
+        .then(res => {
+          resolve(res.id)
+        })
+        .catch(reject)
+    })
   }
 
   /**

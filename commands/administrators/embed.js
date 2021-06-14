@@ -11,14 +11,11 @@ module.exports = {
 	aliases: ['embeds'],
 	description: strings.HELP_DESC_EMBED,
 	guildOnly: false,
-	uses: strings.COMMAND_USES_MODS,
+	uses: strings.COMMAND_USES_ADMINS,
 	syntax: `${prefix}embed <id> <colors> <black/blue/green/red/yellow/crimson>\n\n${prefix}embed <id> <description> <set/add/remove> <value>\n\n${prefix}embed <id> <fields> <modify> <pos> <value>\n${prefix}embed <id> <fields> <add> <title> <value> [inline: true/false]\n${prefix}embed <id> <fields> <remove> <pos>`,
 	async execute(client, message, args) {
-
-		if (!message.member.hasPermission('ADMINISTRATOR')) return warnUser(message, strings.COMMAND_NO_PERMISSION);
-
+		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("God"))) return warnUser(message, strings.COMMAND_NO_PERMISSION)
 		if (!args.length) return warnUser(message, strings.COMMAND_NO_ARGUMENTS_GIVEN);
-				
 		if (isNaN(args[0])) return warnUser(message, 'You have to specify an ID first');
 
 		try {
@@ -67,7 +64,7 @@ module.exports = {
 				if (args[3] == 'all' || args[3] == 'everything') embed.fields = [];
 				else if (isNaN(args[3]) || args[3] < 0 || args[3] > embedMessage.embeds[0].fields.length) return warnUser(message, 'The position must be an integer!');
 				else {
-					for (var i = 0; i < embedMessage.embeds[0].fields.length; i++) {
+					for (let i = 0; i < embedMessage.embeds[0].fields.length; i++) {
 						if (i == args[3]) {
 							embed.fields.splice(i, 1); 
 						}
