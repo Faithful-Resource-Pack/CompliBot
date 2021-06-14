@@ -16,7 +16,12 @@ async function warnUser(message, text) {
 		.setDescription(text)
 		.setFooter('Type /help to get more information about commands', settings.BOT_IMG)
 
-	const embedMessage = await message.inlineReply(embed)
+	let embedMessage
+	if(message.deleted)
+		embedMessage = await message.channel.send(embed)
+	else
+		embedMessage = await message.inlineReply(embed)
+	
 	if (message.channel.type !== 'dm') await embedMessage.react('🗑️')
 
 	const filter = (reaction, user) => {
