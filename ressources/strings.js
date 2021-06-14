@@ -29,6 +29,7 @@ const COMMAND_URL_ONLY_SAME_CHANNEL      = 'The message URL needs to be from the
 const HELP_DESC_HOTFIX   = 'Fix something, may change at anytime'
 const HELP_DESC_PING     = 'Pong!'
 const HELP_DESC_RELOAD   = 'Reloads a command'
+const HELP_DESC_RESTART  = 'Pulls modifications and restart the bot'
 const HELP_DESC_SHUTDOWN = 'Stops the bot'
 const HELP_DESC_STATUS   = 'Changes the bot\'s status: \n**Activity**:\nPLAYING, STREAMING, LISTENING, WATCHING, COMPETING, CUSTOM_STATUS (does not work)\n**Presence**:\nonline, idle, dnd'
 
@@ -201,6 +202,7 @@ module.exports = {
 	HELP_DESC_HOTFIX,
 	HELP_DESC_PING,
 	HELP_DESC_RELOAD,
+	HELP_DESC_RESTART,
 	HELP_DESC_SHUTDOWN,
 	HELP_DESC_STATUS,
 	HELP_DESC_FEEDBACK,
