@@ -143,7 +143,7 @@ module.exports = {
           return spawnPromise(string_command, [])
         }
         else {
-          string_command = `./start.sh`
+          string_command = `./start.sh ${ process.pid }`
           console.log("restarting ...", string_command)
           return execPromise(string_command)
         }

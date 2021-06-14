@@ -1,2 +1,2 @@
 #!/bin/sh
-pkill -9 -e -f node ; node --use_strict --trace-warnings index.js
+kill -9 $1 ; node --use_strict --trace-warnings index.js
