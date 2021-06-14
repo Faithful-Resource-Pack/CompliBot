@@ -12,7 +12,7 @@ const strings = require('../../ressources/strings')
 const { warnUser } = require('../../helpers/warnUser')
 
 const Discord = require('discord.js')
-const { writeFile } = require('fs/promises')
+const { writeFile } = require('fs').promises
 const { exec } = require('child_process')
 const { join } = require('path')
 const spawn = require('cross-spawn')

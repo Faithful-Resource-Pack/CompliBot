@@ -1,4 +1,4 @@
-const { readFile, writeFile } = require('fs/promises')
+const { readFile, writeFile } = require('fs').promises
 const { join } = require('path')
 
 function sleep(ms) {
