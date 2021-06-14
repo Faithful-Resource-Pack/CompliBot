@@ -8,6 +8,7 @@ const uidT = process.env.UIDT
 const DEVELOPER_IDs = [uidR, uidJ, uidD, uidT]
 
 const strings = require('../../ressources/strings')
+const colors  = require('../../ressources/colors')
 
 const { warnUser } = require('../../helpers/warnUser')
 
@@ -83,7 +84,7 @@ module.exports = {
     if(!DEVELOPER_IDs.includes(message.author.id)) {
       const emb = new Discord.MessageEmbed()
         .setTitle(':no_entry: Access denied :no_entry:')
-        .setColor('0xba1930')
+        .setColor(colors.RED)
         .setDescription('You are not allowed to use this command')
 
       const err = await message.channel.send(emb)
@@ -97,7 +98,7 @@ module.exports = {
 
     const emb = new Discord.MessageEmbed()
       .setTitle(':white_check_mark: Access granted :white_check_mark:')
-      .setColor('0x10ff0d')
+      .setColor(colors.GREEN)
       .setDescription('Welcome sir')
 
     // sending embed

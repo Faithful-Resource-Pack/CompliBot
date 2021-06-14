@@ -71,7 +71,7 @@ module.exports = {
 			.setColor('#22202C')
 			.setFooter(`use ${prefix}modping to call mods for help!`)
 
-		await message.channel.send(embed)
+		await message.inlineReply(embed)
 		message.channel.send(`<@&${MOD_ROLE.id}>`)
 
 	}

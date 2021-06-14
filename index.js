@@ -60,7 +60,7 @@ const strings = require('./ressources/strings')
 // Import settings & commands handler:
 const commandFiles = walkSync('./commands').filter(file => file.endsWith('.js'))
 const settings     = require('./ressources/settings')
-const { addDeleteReact } = require('./helpers/addDeleteReact')
+const { addDeleteReact }     = require('./helpers/addDeleteReact')
 const { restartAutoDestroy } = require('./functions/restartAutoDestroy')
 
 /**
@@ -223,10 +223,11 @@ client.on('message', async message => {
 		const embed = new Discord.MessageEmbed()
 			.setColor(colors.RED)
 			.setTitle(strings.BOT_ERROR)
-			.setDescription(`${strings.COMMAND_ERROR}\nError:\n${error}`)
+			.setDescription(`${strings.COMMAND_ERROR}\nError for the developers:\n${error}`)
 
 		await message.inlineReply(embed)
 		await message.react('❌')
+		return addDeleteReact(msgEmbed, message, true)
 	})
 })
 
@@ -279,10 +280,10 @@ client.on('message', async message => {
 	}
 
 	if (message.content.toLowerCase() === 'band') {
-		return ['🎶', '🎤', '🎸', '🥁', '🪘', '🎺', '🎷', '🎹', '🪗', '🎻', '🎵'].forEach(async emoji => { await message.react(emoji) })
+		return ['🎤', '🎸', '🥁', '🪘', '🎺', '🎷', '🎹', '🪗', '🎻'].forEach(async emoji => { await message.react(emoji) })
 	}
 
-	if (message.content === 'monke Bob') {
+	if (message.content.toLowerCase() === 'monke') {
 		return ['🎷','🐒'].forEach(async emoji => { await message.react(emoji) })
 	}
 

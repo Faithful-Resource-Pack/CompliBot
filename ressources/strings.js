@@ -3,7 +3,7 @@ const BOT_ERROR = 'Action Failed'
 
 // command stuff
 const COMMAND_DISABLED                   = 'This command is currently disabled.'
-const COMMAND_ERROR                      = 'One of my developers made an error while coding this command! Don\'t worry, the error is not on your side. Please contact @Juknum, @Robert, @Domi or @TheRolf'
+const COMMAND_ERROR                      = 'One of my developers made an error while coding this command! Don\'t worry, the error is not on your side. Please contact <@207471947662098432>, <@473860522710794250> or <@173336582265241601>'
 const COMMAND_MAINTENANCE                = 'I\'m currently in maintenance, please try again later.'
 const COMMAND_NO_ARGUMENTS_GIVEN         = 'You did not provide any arguments.'
 const COMMAND_NOT_ENOUGH_ARGUMENTS_GIVEN = 'You did not provide enough arguments.'
