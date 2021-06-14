@@ -61,6 +61,7 @@ const strings = require('./ressources/strings')
 const commandFiles = walkSync('./commands').filter(file => file.endsWith('.js'))
 const settings     = require('./ressources/settings')
 const { addDeleteReact } = require('./helpers/addDeleteReact')
+const { restartAutoDestroy } = require('./functions/restartAutoDestroy')
 
 /**
  * SCHEDULED FUNCTIONS : Texture Submission
@@ -129,6 +130,8 @@ client.on('ready', async () => {
 
 	if (MAINTENANCE) client.user.setPresence({ activity: { name: 'maintenance' }, status: 'dnd' })
 	else client.user.setActivity(`${prefix}help`, {type: 'LISTENING'})
+
+	await restartAutoDestroy(client)
 
 	/**
 	 * START TEXTURE SUBMISSION PROCESS

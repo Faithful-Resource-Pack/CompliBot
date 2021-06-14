@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node --use_strict --trace-warnings index.js",
+    "restart": "npm i --save ; npm start",
     "test": "echo \"Error: no test specified\" && exit 0"
   },
   "repository": {

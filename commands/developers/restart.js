@@ -13,7 +13,7 @@ const { warnUser } = require('../../helpers/warnUser')
 
 const Discord = require('discord.js')
 const { writeFile } = require('fs/promises')
-const child_process = require('child_process')
+const { exec } = require('child_process')
 const { join } = require('path')
 const spawn = require('cross-spawn')
 
@@ -25,7 +25,11 @@ const spawn = require('cross-spawn')
  */
 const spawnPromise = function(command, args) {
   return new Promise((resolve, reject) => {
-    const cmd = spawn(command, args)
+    const cmd = spawn(command, args, {
+      detached: true
+    })
+
+    cmd.unref()
 
     const out = []
     const err = []
@@ -49,6 +53,17 @@ const spawnPromise = function(command, args) {
   })
 }
 
+function execPromise(cmd) {
+  return new Promise((resolve) => {
+   exec(cmd, (error, stdout, stderr) => {
+    if (error) {
+     console.warn(error);
+    }
+    resolve(stdout? stdout : stderr);
+   });
+  });
+ }
+
 module.exports = {
 	name: 'restart',
 	description: strings.HELP_DESC_RESTART,
@@ -61,8 +76,9 @@ module.exports = {
    * Pulls, and reloads the bot
    * @param {Discord.Client} client Discord Client receiving the message
    * @param {Discord.Message} message Incomming message
-   * @param {String[]} args command args
+   * @param {String[]} _args command args
    */
+	// eslint-disable-next-line no-unused-vars
 	async execute(client, message, args) {
     if(!DEVELOPER_IDs.includes(message.author.id)) {
       const emb = new Discord.MessageEmbed()
@@ -87,9 +103,11 @@ module.exports = {
     // sending embed
     // deleting our message
     // changing status 
-    const results = await Promise.all([message.channel.send(emb), client.user.setPresence({ status: 'idle' })])
+    const results = await Promise.all([message.channel.send(emb), client.user.setPresence({ activity: { name: 'Updating...' }, status: 'idle' })])
 
     const result = results[0]
+
+    console.warn(process.pid)
 
     writeFile(join(process.cwd(), 'json', 'restart_message.txt'), [result.channel.guild.id, result.channel.id, result.id].join('\n'))
       .then(() => {
@@ -100,17 +118,41 @@ module.exports = {
         return spawnPromise('git', ['pull'])
       })
       .then(() => {
+        emb.addField('NPM', 'Installing dependencies...', false)
+        return result.edit(emb)
+      })
+      .then(async () => {
+        await execPromise('npm i --save')
+
+        return Promise.resolve()
+      })
+      .then(() => {
+        console.log('deleting message');
         return message.delete()
       })
       .then(() => {
+        console.log('restart message');
         emb.addField('Restart', 'Restarting bot...', false)
         return result.edit(emb)
       })
       .then(() => {
-        return spawnPromise(process.argv[0], process.argv.slice(1))
+        let string_command
+        if(process.platform == 'win32') {
+          string_command = `start.bat` // windows 
+          console.log("restarting ...", string_command)
+          return spawnPromise(string_command, [])
+        }
+        else {
+          string_command = `./start.sh`
+          console.log("restarting ...", string_command)
+          return execPromise(string_command)
+        }
+      })
+      .then(out => {
+        console.log(out)
       })
       .catch(async (err) => {
-        console.error('error in restart command', err)
+        console.trace('error in restart command"', err, '"')
         await warnUser(message, err.toString())
         return await result.delete()
       })
