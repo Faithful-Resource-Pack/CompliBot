@@ -39,6 +39,6 @@
     "simple-git": "^2.39.0"
   },
   "devDependencies": {
-    "eslint": "^7.26.0"
+    "eslint": "^7.28.0"
   }
 }
