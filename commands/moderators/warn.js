@@ -59,10 +59,10 @@ module.exports = {
 		user[0].warns = warns
 		users.set(userID, user[0])
 
-		// mute the user if warns >= 3
+		// mute the user if warns % 3 == 0 (each 3 warns)
 		let time = 0
-		if (warns.length >= 3) {
-			time = 86400 * 10 * ((warns.length) - 2) // 10 days * number of warn
+		if (warns.length % 3 == 0) {
+			time = 86400 * 5 // 5 days of mute
 
 			var mutedEmbed = new Discord.MessageEmbed()
 				.setAuthor(message.author.tag, message.author.displayAvatarURL())
