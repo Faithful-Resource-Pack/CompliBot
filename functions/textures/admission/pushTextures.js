@@ -46,8 +46,6 @@ async function pushTextures(COMMIT_MESSAGE = `Autopush passed textures from ${da
 		}
 	}
 	
-	await pushToGitHub('Compliance-Resource-Pack', 'JSON', 'main', `Daily backup ${date()}`, './json/')
-	if (DEBUG) console.log(`PUSHED TO GITHUB: JSON`)
 }
 
 /**

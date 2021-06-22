@@ -1,5 +1,5 @@
 const fs = require('fs')
-const allCollection  = require('../helpers/firestorm/all')
+const allCollection = require('../helpers/firestorm/all')
 
 const { pushToGitHub } = require('../functions/pushToGitHub')
 const { join } = require('path')
@@ -27,7 +27,7 @@ async function saveDB(commitMessage) {
       { flag: 'w+', encoding: 'utf-8' }
     )
   }
-  
+
   pushToGitHub('Compliance-Resource-Pack', 'JSON', 'main', commitMessage, './json/')
 }
 

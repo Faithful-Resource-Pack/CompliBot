@@ -52,6 +52,7 @@ const { inviteDetection } = require('./functions/moderation/inviteDetection')
 
 const { submitTexture }  = require('./functions/textures/submission/submitTexture')
 const { editSubmission } = require('./functions/textures/submission/editSubmission')
+const { saveDB } = require('./functions/saveDB')
 
 // Resources:
 const colors  = require('./ressources/colors')
@@ -86,6 +87,7 @@ const downloadToBot = new cron.CronJob('15 0 * * *', async () => {
 })
 let pushToGithub = new cron.CronJob('30 0 * * *', async () => {
 	await pushTextures()
+	await saveDB(`Daily Backup`)
 })
 
 function doMCUpdateCheck () {
@@ -225,7 +227,7 @@ client.on('message', async message => {
 			.setTitle(strings.BOT_ERROR)
 			.setDescription(`${strings.COMMAND_ERROR}\nError for the developers:\n${error}`)
 
-		await message.inlineReply(embed)
+		let msgEmbed = await message.inlineReply(embed)
 		await message.react('❌')
 		return addDeleteReact(msgEmbed, message, true)
 	})
