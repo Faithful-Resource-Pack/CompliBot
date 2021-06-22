@@ -10,6 +10,7 @@ const strings = require('../../../ressources/strings')
 const { warnUser } = require('../../../helpers/warnUser')
 
 const { setUse, addUse, getUse, deleteUse } = require('./use')
+const { setUser, addUser, getUser, deleteUser } = require('./user')
 const { setTexture, addTexture, getTexture, deleteTexture } = require('./texture')
 const { setPath, addPath, getPath, deletePath } = require('./path')
 const { errorEmbed } = require('./errorEmbed')
@@ -24,6 +25,10 @@ module.exports = {
   syntax: `${prefix}db [texture|use|path] <get|set|add|delete/remove> <id> <parameters (see examples)>`,
   args: true,
   example: `
+${prefix}db user get <user id>
+${prefix}db user set <user id> type <type name>
+${prefix}db user add <user id> type <type name>
+
 ${prefix}db texture get <texture id>
 ${prefix}db texture set <texture id> name <name>
 ${prefix}db texture add <name>
@@ -52,6 +57,22 @@ ${prefix}db path remove|delete <path id>`,
       let embed
 
       switch (type) {
+        case "user":
+        case "users":
+          switch (operation) {
+            case "get":
+              embed = await getUser(id)
+              break
+            case "set":
+              embed = await setUser(id, args.slice(3))
+              break
+          
+            default:
+              embed = await errorEmbed(`\`${type} > ${operation}\` does not exist.`)
+              break
+          }
+          break
+
         case "texture":
           switch (operation) {
             case "get":
