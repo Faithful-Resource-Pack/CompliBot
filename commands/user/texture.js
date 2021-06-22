@@ -279,6 +279,6 @@ async function getTexture(message, res, texture) {
 
     })
   }).catch((error) => {
-    return warnUser(message, strings.TEXTURE_FAILED_LOADING + '\n' + error + `: [link](${imgURL})`)
+    return warnUser(message, strings.TEXTURE_FAILED_LOADING)
   })
 }

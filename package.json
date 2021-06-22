@@ -32,13 +32,13 @@
     "fs-extra": "^10.0.0",
     "getopts": "^2.3.0",
     "gif-encoder-2": "^1.0.5",
-    "globby": "^11.0.3",
+    "globby": "^11.0.4",
     "http": "0.0.1-security",
     "image-size": "^1.0.0",
     "node-fetch": "^2.6.1",
     "simple-git": "^2.39.0"
   },
   "devDependencies": {
-    "eslint": "^7.28.0"
+    "eslint": "^7.29.0"
   }
 }
