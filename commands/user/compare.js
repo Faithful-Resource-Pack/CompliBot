@@ -121,7 +121,7 @@ module.exports = {
       .catch(err => {
         if (process.env.DEBUG) console.error(err)
       })
-
+      
     // if you don't get results error
     if (!results || results.length === 0) {
       await warnUser(message, `${strings.TEXTURE_DOESNT_EXIST}\nCouldn't find any match for search : ${search}`)
@@ -154,8 +154,8 @@ module.exports = {
     }
 
     // determine respecitve java and bedrock paths
-    const javaTexturePath = java ? finalResult.path : undefined
-    const bedrockTexturePath = (java && bedrock) ? finalResult.bedrockPath : finalResult.path
+    const javaTexturePath = java ? 'assets/' + finalResult.path : undefined
+    const bedrockTexturePath = (java && bedrock) ? finalResult.bedrockPath : 'assets/' + finalResult.path
 
     // reject if wanted bedrock and java so if foind bedrock path
     if (java && bedrock && !finalResult.bedrockPath) {
