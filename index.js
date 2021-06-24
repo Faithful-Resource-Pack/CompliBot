@@ -355,5 +355,17 @@ client.on('message', async message => {
 
 })
 
+// eslint-disable-next-line no-unused-vars
+process.on('unhandledRejection', (reason, promise) => {
+	const errorChannel = client.channels.cache.find(channel => channel.id == "853547435782701076")
+	const errorEmbed = new Discord.MessageEmbed()
+		.setTitle('Unhandled Rejection:')
+		.setDescription("```fix\n" + (reason.stack || reason) +"```")
+		.setColor(colors.RED)
+		.setTimestamp()
+
+	errorChannel.send(errorEmbed)
+})
+
 // Login the bot
 client.login(process.env.CLIENT_TOKEN).catch(console.error)
