@@ -33,28 +33,14 @@ function magnify(message, url, gotocomplichannel = undefined) {
 		if (sizeOrigin > 65636)  factor = 2
 		if (sizeOrigin > 262144) return warnUser(message, 'The input picture is too big!')
 
-		var canvasStart = Canvas.createCanvas(dimension.width, dimension.height).getContext('2d')
-		var canvasResult = Canvas.createCanvas(dimension.width * factor, dimension.height * factor)
+		var width  = dimension.width * factor
+		var height = dimension.height * factor
+		var canvasResult = Canvas.createCanvas(width, height)
 		var canvasResultCTX = canvasResult.getContext('2d')
 
 		const temp = await Canvas.loadImage(url)
-		canvasStart.drawImage(temp, 0, 0)
-
-		var image = canvasStart.getImageData(0, 0, dimension.width, dimension.height).data
-
-		let index, r, g, b, a
-
-		for (var x = 0; x < dimension.width; x++) {
-			for (var y = 0; y < dimension.height; y++) {
-				index = (y * dimension.width + x) * 4
-				r = image[index];
-				g = image[index + 1]
-				b = image[index + 2]
-				a = image[index + 3] / 255
-				canvasResultCTX.fillStyle = `rgba(${r},${g},${b},${a})`
-				canvasResultCTX.fillRect(x * factor, y * factor, factor, factor)
-			}
-		}
+		canvasResultCTX.imageSmoothingEnabled = false
+		canvasResultCTX.drawImage(temp, 0, 0, width, height)
 
 		const attachment = new Discord.MessageAttachment(canvasResult.toBuffer(), 'magnified.png');
 
