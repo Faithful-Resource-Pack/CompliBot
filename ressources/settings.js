@@ -44,6 +44,7 @@ const C64_COMPLICHANNEL   = '798208196405362708'
 
 // Compliance Extras
 const CADDONS_IMG   = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Discord-Bot/master/ressources/images/Logos/Compliance%20Addons.png'
+const CEXTRAS_IMG   = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Branding/main/no%20background/512/Compliance%20Extras.png'
 const CEXTRAS_ID    = '614160586032414845'
 const CEXTRAS_ROLES = '860457051700199424'
 
@@ -103,6 +104,7 @@ module.exports = {
 	C64_COMPLICHANNEL,
 
 	CADDONS_IMG,
+	CEXTRAS_IMG,
 	CEXTRAS_ID,
 	CEXTRAS_ROLES,
 

@@ -82,12 +82,15 @@ module.exports = {
 		switch (message.guild.id) {
 			case settings.C32_ID:
 				color = colors.C32
+				thumbnail = settings.C32_IMG;
 				break
 			case settings.C64_ID:
 				color = colors.C32
+				thumbnail = settings.C64_IMG;
 				break
 			case settings.CEXTRAS_ID:
-				color = colors.CADDONS
+				color = colors.C32
+				thumbnail = settings.CEXTRAS_IMG;
 				break
 			case settings.CMODS_ID:
 				color = colors.CMODS
