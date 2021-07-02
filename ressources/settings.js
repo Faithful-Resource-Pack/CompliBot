@@ -42,9 +42,10 @@ const C64_SUBMIT_REVOTE   = '797649484259524648' // #texture-revote
 const C64_RESULTS         = '797648495804678154' // #texture-results
 const C64_COMPLICHANNEL   = '798208196405362708'
 
-// Compliance Addons
-const CADDONS_IMG          = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Discord-Bot/master/ressources/images/Logos/Compliance%20Addons.png'
-const CADDONS_ID           = '614160586032414845'
+// Compliance Extras
+const CADDONS_IMG   = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Discord-Bot/master/ressources/images/Logos/Compliance%20Addons.png'
+const CADDONS_ID    = '614160586032414845'
+const CEXTRAS_ROLES = '860457051700199424'
 
 // Compliance Tweaks
 const CTWEAKS_IMG          = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Discord-Bot/master/ressources/images/Logos/Compliance%20Tweaks.png'
@@ -103,6 +104,7 @@ module.exports = {
 
 	CADDONS_IMG,
 	CADDONS_ID,
+	CEXTRAS_ROLES,
 
 	CTWEAKS_IMG,
 	CTWEAKS_ID,

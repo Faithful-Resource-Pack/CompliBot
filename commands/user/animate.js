@@ -1,13 +1,14 @@
 const prefix = process.env.PREFIX
 
-const Discord    = require('discord.js')
+//const Discord    = require('discord.js')
 const strings    = require('../../ressources/strings')
-const colors     = require('../../ressources/colors')
-const asyncTools = require('../../helpers/asyncTools')
+//const colors     = require('../../ressources/colors')
+const settings   = require('../../ressources/settings')
+//const asyncTools = require('../../helpers/asyncTools')
 
 const { animate }   = require('../../functions/textures/animate')
 const { warnUser }  = require('../../helpers/warnUser')
-const { parseArgs } = require('../../helpers/parseArgs')
+//const { parseArgs } = require('../../helpers/parseArgs')
 const { jsonContributionsJava, jsonContributionsBedrock } = require('../../helpers/fileHandler')
 
 module.exports = {
@@ -22,18 +23,21 @@ module.exports = {
 	async execute(client, message, args) {
 
 		let valURL;
+		let mcmeta = {};
 		if (message.attachments.size > 0) valURL = message.attachments.first().url;
 
-		args = parseArgs(message, args);
+		else if(valURL) return animate(message, mcmeta, valURL);
+		else return previousImage(message, mcmeta);
 
-		let haveMCMETA = false;
-		let haveCustom = false;
-		let valMCMETA;
-		let valCustom;
-		let mcmetaMessage;
-		let mcmeta = {};
+		//args = parseArgs(message, args);
+
+		//let haveMCMETA = false;
+		//let haveCustom = false;
+		//let valMCMETA;
+		//let valCustom;
+		//let mcmetaMessage;
 		
-		for (var i in args) {
+		/*for (var i in args) {
 			if (args[i].startsWith('-c=') || args[i].startsWith('--custom=')) {
 				valCustom = args[i].replace('-c=', '').replace('--custom=', '');
 				if (typeof valCustom === 'string' && valCustom.toLowerCase() == 'true') haveCustom = true;
@@ -44,7 +48,7 @@ module.exports = {
 			}
 		}
 
-		if (haveMCMETA && !haveCustom) {
+		if (args[0]) {
 			let index  = -1;
 			let textures;
 			let fileHandle;
@@ -82,15 +86,15 @@ module.exports = {
 				else return previousImage(message, textures[index].mcmeta);
 			}
 			else if (index == -1) return warnUser(message, 'Texture not found.');
-			else if (!textures[index].animated) return warnUser(message, 'This texture is not animated by default, please use -c=true instead and provide a MCMETA config.');
+			else if (!textures[index].animated) return warnUser(message, 'This texture is not animated by default, please use `-c=true` instead and provide a MCMETA config.');
 
-		}
-		else if (haveCustom && !haveMCMETA) {
+		}*/
+		/*else if (haveCustom && !haveMCMETA) {
 			let embed = new Discord.MessageEmbed()
 				.setColor(colors.BLUE)
 				.setTitle('Waiting for MCMETA config:')
 				.setDescription('Please, send a message following this example:\n\\`\\`\\`json //mcmeta file content here \\`\\`\\`\nYou should obtain something like this: ```//mcmeta file content here```')
-				.setFooter('The bot stop searching for message if 🚫 is added to this message.');
+				.setFooter('The bot will stop searching for message if 🚫 is added to this message.');
 
 			const embedMessage = await message.inlineReply(embed);
 
@@ -131,9 +135,8 @@ module.exports = {
 		}
 		else if (haveCustom && haveMCMETA) {
 			return warnUser(message, 'You can\'t specify both args at once.');
-		}
-		else if(valURL) return animate(message, mcmeta, valURL);
-		else return previousImage(message, mcmeta);
+		}*/
+		
 	}
 }
 

@@ -19,6 +19,8 @@ const { revoteSubmission }   = require('../../functions/textures/submission/revo
 const { downloadResults }    = require('../../functions/textures/admission/downloadResults')
 const { pushTextures }       = require('../../functions/textures/admission/pushTextures')
 
+const reactionRoles = require('../../functions/reactionRoles')
+
 module.exports = {
 	name: 'hotfix',
 	aliases: ['fix'],
@@ -30,7 +32,8 @@ module.exports = {
 	async execute(client, message, args) {
 		if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD || message.author.id === uidT) {
 			
-			/* Nothing */
+			reactionRoles.sendReactionMsg(message)
+
 
 		} else return
 	}

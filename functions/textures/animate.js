@@ -159,7 +159,7 @@ async function animate(message, valMCMETA, valURL) {
  * @returns a sized up Canvas Context
  */
 async function sizeUP(valURL, dimension) {
-	let contextIN  = Canvas.createCanvas(dimension.width, dimension.height).getContext('2d')
+	/*let contextIN  = Canvas.createCanvas(dimension.width, dimension.height).getContext('2d')
 	let canvasOUT  = Canvas.createCanvas(dimension.width * FACTOR, dimension.height * FACTOR)
 	let contextOUT = canvasOUT.getContext('2d')
 
@@ -180,7 +180,16 @@ async function sizeUP(valURL, dimension) {
 			contextOUT.fillStyle = `rgba(${r},${g},${b},${a})`
 			contextOUT.fillRect(x * FACTOR, y * FACTOR, FACTOR, FACTOR)
 		}
-	}
+	}*/
+
+	var width  = dimension.width * FACTOR
+	var height = dimension.height * FACTOR
+	var canvasOUT = Canvas.createCanvas(width, height)
+	var contextOUT = canvasOUT.getContext('2d')
+
+	let temp = await Canvas.loadImage(valURL)
+	contextOUT.imageSmoothingEnabled = false
+	contextOUT.drawImage(temp, 0, 0, width, height)
 
 	return canvasOUT
 }
