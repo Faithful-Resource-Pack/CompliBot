@@ -66,7 +66,7 @@ module.exports = {
 						colors.CTWEAKS
 				);
 				//Compliance Addons
-				} else if (message.guild.id === settings.CADDONS_ID) {
+				} else if (message.guild.id === settings.CEXTRAS_ID) {
 					websiteEmbed(
 						'Compliance Addons',
 						'https://compliancepack.net/addons',

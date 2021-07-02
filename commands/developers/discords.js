@@ -27,7 +27,7 @@ module.exports = {
 				await message.channel.send('> Compliance 32x for Minecraft Java Mods: \nhttps://discord.gg/QF2CAX7');
 				await message.channel.send('> Compliance Mod for Minecraft Dungeons: \nhttps://discord.gg/eeVpygu');
 				await message.channel.send('> This Server: \nhttps://discord.gg/6psYdRF');
-			} else if (message.guild.id === settings.C32_ID || message.guild.id === settings.CADDONS_ID || message.guild.id === settings.CMODS_ID || args[0] === 'default') {
+			} else if (message.guild.id === settings.C32_ID || message.guild.id === settings.CEXTRAS_ID || message.guild.id === settings.CMODS_ID || args[0] === 'default') {
 				await message.channel.send('Compliance 32x: \n> https://discord.gg/sN9YRQbBv7');
 				await message.channel.send('Compliance 64x: \n> https://discord.gg/Tqtwtgh');
 				await message.channel.send('Compliance Tweaks: \n> https://discord.gg/6psYdRF');

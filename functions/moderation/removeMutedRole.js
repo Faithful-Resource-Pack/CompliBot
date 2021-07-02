@@ -11,7 +11,7 @@ async function removeMutedRole(client, userID) {
 		settings.CDUNGEONS_ID, 
 		settings.CMODS_ID, 
 		settings.CTWEAKS_ID,
-		settings.CADDONS_ID, 
+		settings.CEXTRAS_ID, 
 		settings.C64_ID, 
 		settings.C32_ID, 
 		'720677267424018526' // Bot dev discord

@@ -82,7 +82,7 @@ module.exports = {
 			case settings.C64_ID:
 				color = colors.C32
 				break
-			case settings.CADDONS_ID:
+			case settings.CEXTRAS_ID:
 				color = colors.CADDONS
 				break
 			case settings.CMODS_ID:

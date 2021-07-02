@@ -37,8 +37,6 @@ const { updateMembers } = require('./functions/moderation/updateMembers')
 const { textureIDQuote } = require('./functions/textures/textureIDQuote')
 const { quote }          = require('./functions/quote')
 
-const reactionRoles = require('./functions/reactionRoles')
-
 const jiraJE    = require('./functions/minecraftUpdates/jira-je')
 const jiraBE    = require('./functions/minecraftUpdates/jira-be')
 const minecraft = require('./functions/minecraftUpdates/minecraft')
@@ -55,6 +53,8 @@ const { inviteDetection } = require('./functions/moderation/inviteDetection')
 const { submitTexture }  = require('./functions/textures/submission/submitTexture')
 const { editSubmission } = require('./functions/textures/submission/editSubmission')
 const { saveDB } = require('./functions/saveDB')
+
+const { manageExtraRoles } = require('./functions/manageExtraRoles')
 
 // Resources:
 const colors  = require('./ressources/colors')
@@ -256,10 +256,10 @@ client.on('messageReactionAdd', async (reaction, user) => {
 		reaction.message.channel.id === settings.C64_SUBMIT_REVOTE   ||
 		reaction.message.channel.id === settings.C64_RESULTS         ||
 
-		reaction.message.channel.id === settings.CDUNGEONS_SUBMIT // dungeons server
+		reaction.message.channel.id === settings.CDUNGEONS_SUBMIT // dungeons server REMOVE THIS ASAP
 		) editSubmission(client, reaction, user)
 	
-	if (reaction.message.channel.id === settings.CEXTRAS_ROLES) reactionRoles.listenReaction(reaction, user.id)
+	if (reaction.message.channel.id === settings.CEXTRAS_ROLES) manageExtraRoles(client, reaction, user)
 })
 
 /**
