@@ -16,22 +16,24 @@ module.exports = {
 	syntax: `${prefix}skin [minecraft username]`,
 	example: `${prefix}skin Pomik108`,
 	async execute(client, message, args) {
-			if (!args.length) return await warnUser(message, strings.COMMAND_NO_ARGUMENTS_GIVEN);
+		return warnUser(message,strings.COMMAND_DISABLED);
 
-			axios.get(`https://api.mojang.com/users/profiles/minecraft/${args[0]}`)
-			.then(async function (response) {
-				if (response.data.id == undefined) return await warnUser(message, 'That player doesn\'t exist!');
+		if (!args.length) return await warnUser(message, strings.COMMAND_NO_ARGUMENTS_GIVEN);
 
-				var embed = new Discord.MessageEmbed()
-					.setAuthor('This command is still experimental, skins may not load!')
-					.setTitle(`${args[0]}'s Skin`)
-					.setColor(colors.BLUE)
-					.setDescription(`UUID: ${response.data.id}`)
-					.setImage(`https://visage.surgeplay.com/full/512/${response.data.id}`)
-					.setThumbnail(`https://visage.surgeplay.com/skin/512/${response.data.id}`)
-					.setFooter('Powered by visage.surgeplay.com', 'https://visage.surgeplay.com/steve.png')
+		axios.get(`https://api.mojang.com/users/profiles/minecraft/${args[0]}`)
+		.then(async function (response) {
+			if (response.data.id == undefined) return await warnUser(message, 'That player doesn\'t exist!');
 
-				const embedMessage = await message.inlineReply(embed);
+			var embed = new Discord.MessageEmbed()
+				.setAuthor('This command is still experimental, skins may not load!')
+				.setTitle(`${args[0]}'s Skin`)
+				.setColor(colors.BLUE)
+				.setDescription(`UUID: ${response.data.id}`)
+				.setImage(`https://visage.surgeplay.com/full/512/${response.data.id}`)
+				.setThumbnail(`https://visage.surgeplay.com/skin/512/${response.data.id}`)
+				.setFooter('Powered by visage.surgeplay.com', 'https://visage.surgeplay.com/steve.png')
+
+			const embedMessage = await message.inlineReply(embed);
 				addDeleteReact(embedMessage, message, true)
 			})
 			.catch(async function () {

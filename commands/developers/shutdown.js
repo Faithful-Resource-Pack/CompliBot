@@ -12,7 +12,7 @@ const settings = require('../../ressources/settings');
 
 module.exports = {
 	name: 'shutdown',
-	aliases: ['logout'],
+	aliases: ['logout', 'die'],
 	description: strings.HELP_DESC_SHUTDOWN,
 	guildOnly: false,
 	uses: strings.COMMAND_USES_DEVS,
@@ -25,7 +25,7 @@ module.exports = {
     else {
 			var embed = new Discord.MessageEmbed()
 				.setAuthor(message.client.user.username, settings.BOT_IMG)
-				.setDescription(`Banned <@${message.author.id}> \nReason: trying to stop me`)
+				.setDescription(`Banned <@${message.author.id}> \nReason: trying to stop me lmao`)
 				.setColor(colors.BLUE)
 				.setTimestamp();
 			await message.inlineReply(embed);
