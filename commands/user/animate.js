@@ -3,13 +3,13 @@ const prefix = process.env.PREFIX
 //const Discord    = require('discord.js')
 const strings    = require('../../ressources/strings')
 //const colors     = require('../../ressources/colors')
-const settings   = require('../../ressources/settings')
+//const settings   = require('../../ressources/settings')
 //const asyncTools = require('../../helpers/asyncTools')
 
 const { animate }   = require('../../functions/textures/animate')
 const { warnUser }  = require('../../helpers/warnUser')
 //const { parseArgs } = require('../../helpers/parseArgs')
-const { jsonContributionsJava, jsonContributionsBedrock } = require('../../helpers/fileHandler')
+//const { jsonContributionsJava, jsonContributionsBedrock } = require('../../helpers/fileHandler')
 
 module.exports = {
 	name: 'animate',
@@ -17,17 +17,23 @@ module.exports = {
 	description: strings.HELP_DESC_ANIMATE,
 	guildOnly: false,
 	uses: strings.COMMAND_USES_ANYONE,
-	syntax: `${prefix}animate [-c | -m] [-u | file attached]`,
-	flags: '-c | --custom : Boolean, set to false by default, set true if you want to give custom mcmeta settings.\n-m | --mcmeta : String, give texture name to find mcmeta, if none exist, default settings will be applied.',
-	example: `${prefix}animate + file attached\n${prefix}animate --mcmeta=true + file attached\n${prefix}play -u=https://discord.com/channels/.../.../...`,
+	//syntax: `${prefix}animate [-c | -m] [-u | file attached]`,
+	//flags: '-c | --custom : Boolean, set to false by default, set true if you want to give custom mcmeta settings.\n-m | --mcmeta : String, give texture name to find mcmeta, if none exist, default settings will be applied.',
+	//example: `${prefix}animate + file attached\n${prefix}animate --mcmeta=true + file attached\n${prefix}play -u=https://discord.com/channels/.../.../...`,
+	syntax: `${prefix}animate [file attached]`,
+	example: `${prefix}animate + file attached`,
 	async execute(client, message, args) {
+
+		message.channel.startTyping();
 
 		let valURL;
 		let mcmeta = {};
 		if (message.attachments.size > 0) valURL = message.attachments.first().url;
 
-		else if(valURL) return animate(message, mcmeta, valURL);
-		else return previousImage(message, mcmeta);
+		if(valURL) animate(message, mcmeta, valURL);
+		else previousImage(message, mcmeta);
+
+		message.channel.stopTyping(true);
 
 		//args = parseArgs(message, args);
 

@@ -1,5 +1,10 @@
 const prefix    = process.env.PREFIX;
 
+const uidR = process.env.UIDR
+const uidJ = process.env.UIDJ
+const uidD = process.env.UIDD
+const uidT = process.env.UIDT
+
 const Discord   = require("discord.js");
 const client    = new Discord.Client();
 client.commands = new Discord.Collection();
@@ -11,7 +16,7 @@ const { warnUser } = require('../../helpers/warnUser');
 const { addDeleteReact } = require("../../helpers/addDeleteReact");
 
 const BLACKLIST = [
-  'shutdown', 'say', 'behave', 'hotfix', 'bean'
+  'shutdown', 'say', 'behave', 'hotfix'
 ]
 
 module.exports = {
@@ -110,12 +115,15 @@ module.exports = {
 			.setFooter(message.client.user.username, settings.BOT_IMG)
 			.addFields(
 				{ name: "\u200B", value: commands_anyone[0] === undefined ? "None" : commands_anyone.join('\n') },
-				{ name: "Moderators", value: commands_mods[0] === undefined ? "None" : commands_mods.join('\n') },
-				{ name: "Administrators", value: commands_admins[0] === undefined ? "None" : commands_admins.join('\n') },
-				{ name: "Developers", value: commands_devs[0] === undefined ? "None" : commands_devs.join('\n') },
+				//{ name: "Moderators", value: commands_mods[0] === undefined ? "None" : commands_mods.join('\n') },
+				//{ name: "Administrators", value: commands_admins[0] === undefined ? "None" : commands_admins.join('\n') },
+				//{ name: "Developers", value: commands_devs[0] === undefined ? "None" : commands_devs.join('\n') },
 				{ name: "Others", value: commands_others[0] === undefined ? "None" : commands_others.join('\n') },
 				{ name: "Disabled", value: commands_disabled[0] === undefined ? "None" : commands_disabled.join('\n') }
 			)
+			if (message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("Moderator") || role.name.includes("God"))) embed.addField("Moderators", commands_mods[0] === undefined ? "None" : commands_mods.join('\n') )
+			if (message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("God"))) embed.addField("Administrators", commands_admins[0] === undefined ? "None" : commands_admins.join('\n') )
+			if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD || message.author.id === uidT) embed.addField("Developers", commands_devs[0] === undefined ? "None" : commands_devs.join('\n') )
 		}
 
 		const embedMessage = await message.inlineReply(embed);
