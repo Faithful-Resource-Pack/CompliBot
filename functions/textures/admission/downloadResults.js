@@ -1,6 +1,7 @@
 const { getMessages } = require('../../../helpers/getMessages')
 
 const settings = require('../../../ressources/settings')
+const emojis = require('../../../ressources/emojis')
 
 const texturesCollection      = require('../../../helpers/firestorm/texture')
 const contributionsCollection = require('../../../helpers/firestorm/contributions')
@@ -20,16 +21,28 @@ async function downloadResults(client, channelInID) {
 	let res = 'c32'
 	if (channelInID == settings.C64_RESULTS) res = 'c64'
 
-	// select good messages
+	// select non already processed messages
 	messages = messages
 		.filter(message => message.embeds.length > 0)
 		.filter(message => message.embeds[0] && message.embeds[0].fields && message.embeds[0].fields[1] && !message.embeds[0].fields[1].value.includes('[CHECKED]'))
-
+	
+	// specify them as "processed"
 	messages.forEach(message => {
 		try {
 			editEmbed(message) // modify the message to tell that we already checked that texture
 		} catch (err) { /* Nothing */ }
 	})
+
+	// keep good textures 
+	messages = messages
+		.filter(message => {
+			message.embeds[0].fields[1] !== undefined 
+			&& (
+				message.embeds[0].fields[1].value.includes(`<:upvote:${emojis.UPVOTE}>`) 
+				|| 
+				message.embeds[0].fields[1].value.includes(`<:upvote:${emojis.INSTAPASS}>`)
+			)
+		})
 
 	// map the array for easier management
 	let textures = messages.map(message => {
@@ -115,7 +128,6 @@ async function downloadResults(client, channelInID) {
 		})
 	}
 
-	console.log(allContribution)
 	let result = await contributionsCollection.addBulk(allContribution)
 	if (process.DEBUG) console.log('ADDED CONTRIBUTIONS: ' + result.join(' '))
 }
