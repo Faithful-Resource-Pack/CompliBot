@@ -31,6 +31,7 @@ module.exports = {
 		if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD || message.author.id === uidT) {
 			
 			/* Nothing */
+			await downloadResults(client, '780507804317384744')
 
 		} else return
 	}
