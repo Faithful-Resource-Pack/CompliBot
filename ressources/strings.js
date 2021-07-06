@@ -96,7 +96,7 @@ const BAN_BOT_NO_PERMISSION = 'I don\'t have enough permissions to ban users! Pl
 const BAN_NOT_BANNABLE      = 'This user is not able to be banned!'
 
 // Clear command
-const CLEAR_TOO_MUCH   = 'You can\'t delete more than 200 messages at once.'
+const CLEAR_TOO_MUCH   = 'You can\'t delete more than 100 messages at once.'
 const CLEAR_NOT_ENOUGH = 'You have to delete at least 1 message.'
 
 // Mute command

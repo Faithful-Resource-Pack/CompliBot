@@ -18,10 +18,10 @@ module.exports = {
 
 		if (!args.length) return warnUser(message, strings.COMMAND_NO_ARGUMENTS_GIVEN);
 		if (isNaN(args)) return await message.reply(strings.COMMAND_NOT_A_NUMBER);
-		if (args > 200) return await message.reply(strings.CLEAR_TOO_MUCH);
+		if (args > 100) return await message.reply(strings.CLEAR_TOO_MUCH);
 		if (args < 1) return await message.reply(strings.CLEAR_NOT_ENOUGH);
 
-		var amount = parseInt(args, 10) + 1
+		var amount = (parseInt(args, 10) + 1) > 100 ? 100 : parseInt(args, 10) + 1
 		const messages = await message.channel.messages.fetch({ limit: amount });
 		await message.channel.bulkDelete(messages);
 		var embed = new Discord.MessageEmbed()

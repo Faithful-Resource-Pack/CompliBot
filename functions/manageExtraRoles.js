@@ -1,4 +1,3 @@
-const Discord = require('discord.js')
 const settings = require('../ressources/settings')
 
 /**
