@@ -14,7 +14,7 @@ async function removeMutedRole(client, userID) {
 		settings.CEXTRAS_ID, 
 		settings.C64_ID, 
 		settings.C32_ID, 
-		'720677267424018526' // Bot dev discord
+		// '720677267424018526' // Bot dev discord
 	]
 	
 	for (var i = 0; i < servers.length; i++) {

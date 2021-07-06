@@ -31,13 +31,13 @@ async function submitTexture(client, message) {
   }
 
   // same if no file is attached
-  if (message.attachments.size == 0) return invalidSubmission(message, 'You did not attached a texture to your submission!')
+  if (message.attachments.size == 0) return invalidSubmission(message, strings.PUSH_NOT_ATTACHED)
   // same if it's not a PNG
   if (
     message.attachments.first().url.endsWith('.zip')  ||
     message.attachments.first().url.endsWith('.rar')  ||
     message.attachments.first().url.endsWith('.7zip')
-  ) return invalidSubmission(message, 'Please provide a PNG, `.zip`, `.rar` & `.7zip` are not supported')
+  ) return invalidSubmission(message, strings.PUSH_INVALID_FORMAT)
 
   // if no name are given, take the image url and get it's name
   if (!search) search = message.attachments.first().url.split('/').slice(-1)[0].replace('.png', '')
@@ -51,13 +51,13 @@ async function submitTexture(client, message) {
   
   // priority to ids -> faster
   if (id) {
-    let texture = await textures.get(id).catch(err => invalidSubmission(message, 'It seems that this ID does not exist\n' + err))
+    let texture = await textures.get(id).catch(err => invalidSubmission(message, strings.PUSH_UNKNOWN_ID + err))
     await makeEmbed(client, message, texture, param)
   }
   // no id given, search texture
   else if (!id && search) {
     var waitEmbed = new Discord.MessageEmbed()
-      .setTitle(`Searching for your texture, please wait...`)
+      .setTitle(strings.COMMAND_SEARCHING_FOR_TEXTURE)
       .setColor(colors.BLUE)
     const waitEmbedMessage = await message.inlineReply(waitEmbed);
 

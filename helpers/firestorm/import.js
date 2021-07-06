@@ -1,5 +1,4 @@
 /* eslint-disable no-unreachable */
-/* global process */
 /* eslint-disable no-unexpected-multiline */
 /* eslint-disable no-constant-condition */
 require('dotenv').config()

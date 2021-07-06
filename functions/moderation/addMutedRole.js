@@ -9,7 +9,7 @@ async function addMutedRole(client, userID, seconds) {
 		settings.CEXTRAS_ID, 
 		settings.C64_ID, 
 		settings.C32_ID, 
-		'720677267424018526' // Bot dev discord
+		// '720677267424018526' // Bot dev discord
 	]
 	
 	// add roles to the discord user

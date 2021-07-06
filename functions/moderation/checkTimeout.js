@@ -1,5 +1,4 @@
-const usersCollection = require('../../helpers/firestorm/users')
-
+const usersCollection     = require('../../helpers/firestorm/users')
 const { removeMutedRole } = require('../moderation/removeMutedRole')
 
 async function checkTimeout(client) {

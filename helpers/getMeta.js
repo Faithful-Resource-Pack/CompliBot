@@ -15,6 +15,7 @@ function getMeta(imageURL) {
 				chunks.push(chunk)
 			}).on('end', function() {
 				try {
+					var Buffer = require('buffer').Buffer
 					resolve(sizeOf(Buffer.concat(chunks)))
 				} catch(err) {
 					return console.error(err)

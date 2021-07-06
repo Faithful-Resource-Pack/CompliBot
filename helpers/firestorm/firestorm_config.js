@@ -1,4 +1,3 @@
-/* global process */
 require('dotenv').config()
 const firestorm = require('./index')
 

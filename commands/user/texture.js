@@ -51,7 +51,7 @@ module.exports = {
     if (args[0].includes('64')) res = '64'
 
 		var waitEmbed = new Discord.MessageEmbed()
-        .setTitle(`Searching for your texture, please wait...`)
+        .setTitle(strings.COMMAND_SEARCHING_FOR_TEXTURE)
         .setColor(colors.BLUE)
 		const waitEmbedMessage = await message.inlineReply(waitEmbed);
 
@@ -279,6 +279,6 @@ async function getTexture(message, res, texture) {
 
     })
   }).catch((error) => {
-    return warnUser(message, strings.TEXTURE_FAILED_LOADING)
+    return warnUser(message, strings.TEXTURE_FAILED_LOADING + '\n' +  error)
   })
 }

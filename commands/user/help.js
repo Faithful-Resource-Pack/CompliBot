@@ -115,9 +115,6 @@ module.exports = {
 			.setFooter(message.client.user.username, settings.BOT_IMG)
 			.addFields(
 				{ name: "\u200B", value: commands_anyone[0] === undefined ? "None" : commands_anyone.join('\n') },
-				//{ name: "Moderators", value: commands_mods[0] === undefined ? "None" : commands_mods.join('\n') },
-				//{ name: "Administrators", value: commands_admins[0] === undefined ? "None" : commands_admins.join('\n') },
-				//{ name: "Developers", value: commands_devs[0] === undefined ? "None" : commands_devs.join('\n') },
 				{ name: "Others", value: commands_others[0] === undefined ? "None" : commands_others.join('\n') },
 				{ name: "Disabled", value: commands_disabled[0] === undefined ? "None" : commands_disabled.join('\n') }
 			)

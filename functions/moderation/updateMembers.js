@@ -12,9 +12,8 @@ async function updateMembers(client, serverID, channelID) {
 		return // return if channel can't be fetched
 	}
 
-	if(guild === undefined && guild.channels === undefined) return
+	if (guild === undefined && guild.channels === undefined) return
 	if (memberChannel.type === 'voice') await memberChannel.setName('Members: ' + guild.memberCount);
-
 	else await memberChannel.setName('members-' + guild.memberCount);
 }
 

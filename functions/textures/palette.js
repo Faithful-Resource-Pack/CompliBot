@@ -2,6 +2,7 @@ const Canvas   = require('canvas')
 const Discord  = require('discord.js')
 const colors2  = require('../../ressources/colors')
 const settings = require('../../ressources/settings')
+const strings  = require('../../ressources/strings')
 
 const { getMeta }  = require('../../helpers/getMeta')
 const { warnUser } = require('../../helpers/warnUser')
@@ -38,7 +39,7 @@ async function palette(message, url, gotocomplichannel = undefined) {
 	getMeta(url).then(async function(dimension) {
 		var sizeOrigin = dimension.width * dimension.height
 
-		if (sizeOrigin > 65536) return warnUser(message, 'The input picture is too big!')
+		if (sizeOrigin > 65536) return warnUser(message, strings.INPUT_TOO_BIG)
 
 		var canvas = Canvas.createCanvas(dimension.width, dimension.height).getContext('2d')
 		const allColors = {}

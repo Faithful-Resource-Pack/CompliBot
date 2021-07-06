@@ -1,4 +1,5 @@
 const { warnUser } = require('./warnUser')
+const strings = require('../ressources/strings')
 
 /**
  * 
@@ -21,7 +22,7 @@ function parseArgs(message, args) {
 		}
 
 		else if (args[i] != '') {
-			warnUser(message, 'You need to add a [-f= | --flag=] at the begining of an argument!')
+			warnUser(message, strings.PARSE_ARGS)
 		}
 	}
 

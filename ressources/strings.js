@@ -3,6 +3,7 @@ const BOT_ERROR = 'Action Failed'
 
 // command stuff
 const COMMAND_DISABLED                   = 'This command is currently disabled.'
+const COMMAND_DISABLED_FOR_TEST          = 'This command is currently disabled for testing!'
 const COMMAND_ERROR                      = 'One of my developers made an error while coding this command! Don\'t worry, the error is not on your side. Please contact <@207471947662098432>, <@473860522710794250> or <@173336582265241601>'
 const COMMAND_MAINTENANCE                = 'I\'m currently in maintenance, please try again later.'
 const COMMAND_NO_ARGUMENTS_GIVEN         = 'You did not provide any arguments.'
@@ -20,6 +21,7 @@ const COMMAND_MESSAGE_IMAGE_NOT_ATTACHED = 'This message does not have any image
 const COMMAND_ID_IMAGE_NOT_ATTACHED      = 'This ID does not have any image attached.'
 const COMMAND_INVALID_EXTENSION          = 'Image extension is not supported'
 const COMMAND_URL_ONLY_SAME_CHANNEL      = 'The message URL needs to be from the same channel. Don\'t ask why, I don\'t know myself.'
+const COMMAND_SEARCHING_FOR_TEXTURE      = 'Searching for your texture, please wait...'
 
 // Help descriptions
 const HELP_DESC_HOTFIX   = 'Fix something, may change at anytime'
@@ -71,6 +73,10 @@ const HELP_DESC_WEBSITE   = 'Displays the website of the discord.'
 
 const HELP_DESC_COMPARE   = 'Allows vanilla / pack comparaison side by side'
 
+const INPUT_TOO_BIG  = 'The input picture is too big!'
+const INPUT_TOO_WIDE = 'The input picture is too wide!'
+const CANT_ANIMATE   = 'This texture can\'t be animated.'
+
 // Command uses
 const COMMAND_USES_ANYONE          = 'Anyone'
 const COMMAND_USES_ANYONE_DUNGEONS = 'Anyone on Compliance Dungeons Discord'
@@ -117,11 +123,6 @@ const WARN_CANT_WARN_SELF = 'You can\'t warn yourself!'
 
 // contributors command
 const CONTRIBUTORS_NOT_ENOUGH_ARGS     = 'The `/contributors` command requires 5 arguments to be specified.'
-const CONTRIBUTORS_ARG1_INVALID        = 'Invalid first argument. Available options: `update`, `add`, `remove`'
-// idk where the 2nd argument is       = 'just putting this here for consistency lol' // double comment be like
-const CONTRIBUTORS_ARG3_INVALID        = 'Invalid third argument. Available options: `java`, `bedrock`'
-const CONTRIBUTORs_ARG4_INVALID        = 'Invalid fourth argument. Available options: `c32`, `c64`'
-const CONTRIBUTORS_ARG5_INVALID        = 'The author name must be a Discord Tag, ex.: `Name#1234`'
 const CONTRIBUTORS_UNKNOWN_TEXTURE     = 'Unknown texture, please check your spelling.'
 const CONTRIBUTORS_TEXTURE_NO_AUTHOR   = 'This texture doesn\'t have an author.'
 const CONTRIBUTORS_AUTHOR_DOESNT_EXIST = 'This author doesn\'t exist.'
@@ -136,7 +137,9 @@ const PUSH_ARG2_INVALID      = 'No texture path given! '
 const PUSH_ARG3_INVALID      = 'No repository given! '
 const PUSH_NOT_ATTACHED      = 'You did not attached the texture! '
 const PUSH_INVALID_REPO      = 'This repository does not exist or is not supported'
+const PUSH_INVALID_FORMAT    = 'Please provide a PNG, `.zip`, `.rar` & `.7zip` are not supported'
 const PUSH_USER_NOT_FOUND    = 'User not found in cache'
+const PUSH_UNKNOWN_ID        = 'It seems that this ID does not exist\n'
 const PUSH_TEXTURE_NOT_FOUND = 'Can\'t find this textures!'
 
 // Texture command
@@ -145,6 +148,8 @@ const TEXTURE_DOESNT_EXIST       = 'The specified texture/folder doesn\'t exist!
 const TEXTURE_NOT_CHOSEN				 = 'Texture was not chosen fast enough'
 const TEXTURE_FAILED_LOADING     = 'This texture has not yet been made or is not present on GitHub!'
 const TEXTURE_SEARCH_DESCRIPTION = 'Choose one texture using emoji reactions.\nIf you don\'t see what you\'re looking for, be more specific.\n'
+
+const TRANSLATE_NO_MESSAGES = 'I didn\'t find any message to translate!'
 
 // Feedback command
 const FEEDBACK_NO_ARGS_GIVEN = 'Please write some feedback and don\'t just leave it empty!'
@@ -171,6 +176,10 @@ const SUBMIT_AUTOREACT_ERROR_FOOTER       = 'Submission will be removed in 30 se
 const AUTOPUSH_ERROR_TYPE     = 'No texture type set up (java or bedrock)'
 const AUTOPUSH_ERROR_SPELLING = 'Texture not found, check spelling or folder'
 
+// parseArgs
+const PARSE_ARGS = 'You need to add a [-f= | --flag=] at the begining of an argument!'
+
+
 module.exports = {
 	BOT_ERROR,
 
@@ -181,6 +190,7 @@ module.exports = {
 	COMMAND_PROVIDE_VALID_TAG,
 	COMMAND_PROVIDE_A_NUMBER,
 	COMMAND_DISABLED,
+	COMMAND_DISABLED_FOR_TEST,
 	COMMAND_MAINTENANCE,
 	COMMAND_ERROR,
 	CANT_EXECUTE_IN_DMS,
@@ -192,6 +202,7 @@ module.exports = {
 	COMMAND_ID_IMAGE_NOT_ATTACHED,
 	COMMAND_INVALID_EXTENSION,
 	COMMAND_URL_ONLY_SAME_CHANNEL,
+	COMMAND_SEARCHING_FOR_TEXTURE,
 
 	HELP_DESC_HOTFIX,
 	HELP_DESC_PING,
@@ -276,10 +287,6 @@ module.exports = {
 	WARN_CANT_WARN_SELF,
 
 	CONTRIBUTORS_NOT_ENOUGH_ARGS,
-	CONTRIBUTORS_ARG1_INVALID,
-	CONTRIBUTORS_ARG3_INVALID,
-	CONTRIBUTORs_ARG4_INVALID,
-	CONTRIBUTORS_ARG5_INVALID,
 	CONTRIBUTORS_UNKNOWN_TEXTURE,
 	CONTRIBUTORS_TEXTURE_NO_AUTHOR,
 	CONTRIBUTORS_AUTHOR_DOESNT_EXIST,
@@ -292,13 +299,17 @@ module.exports = {
 	PUSH_ARG3_INVALID,
 	PUSH_NOT_ATTACHED,
 	PUSH_INVALID_REPO,
+	PUSH_INVALID_FORMAT,
 	PUSH_USER_NOT_FOUND,
+	PUSH_UNKNOWN_ID,
 	PUSH_TEXTURE_NOT_FOUND,
 
 	TEXTURE_DOESNT_EXIST,
 	TEXTURE_NOT_CHOSEN,
 	TEXTURE_FAILED_LOADING,
 	TEXTURE_SEARCH_DESCRIPTION,
+
+	TRANSLATE_NO_MESSAGES,
 
 	FEEDBACK_NO_ARGS_GIVEN,
 	FEEDBACK_SUCCESS_DESCRPTION,
@@ -318,5 +329,10 @@ module.exports = {
 	SUBMIT_AUTOREACT_ERROR_FOOTER,
 
 	AUTOPUSH_ERROR_TYPE,
-	AUTOPUSH_ERROR_SPELLING
+	AUTOPUSH_ERROR_SPELLING,
+
+	PARSE_ARGS,
+	INPUT_TOO_BIG,
+	INPUT_TOO_WIDE,
+	CANT_ANIMATE
 }
