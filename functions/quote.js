@@ -45,11 +45,11 @@ async function quote(msg) {
 			if (message.embeds[0].url != undefined) embed.setURL(message.embeds[0].url)
 			
 			if (message.embeds[0].author != undefined && !message.embeds[0].author.name.startsWith('Embed posted by')) {
-				embed.setThumbnail(message.embeds[0].author.iconURL)
-				embed.setAuthor(`Embed sent by ${message.author.tag} (${message.embeds[0].author.name})`, settings.QUOTE_IMG)
+				embed.setThumbnail(settings.QUOTE_IMG)
+				embed.setAuthor(`Embed sent by ${message.author.tag} (${message.embeds[0].author.name})`, message.embeds[0].author.iconURL)
 			} else {
-				embed.setThumbnail(message.author.displayAvatarURL())
-				embed.setAuthor(`Embed sent by ${message.author.tag}`, settings.QUOTE_IMG)
+				embed.setThumbnail(settings.QUOTE_IMG)
+				embed.setAuthor(`Embed sent by ${message.author.tag}`, message.author.displayAvatarURL())
 			}
 
 			if (message.embeds[0].fields != undefined) {

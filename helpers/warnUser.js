@@ -14,6 +14,7 @@ const { addDeleteReact } = require('./addDeleteReact')
 async function warnUser(message, text) {
 	var embed = new Discord.MessageEmbed()
 		.setColor(colors.RED)
+		.setThumbnail(settings.WARNING_IMG)
 		.setTitle(strings.BOT_ERROR)
 		.setDescription(text)
 		.setFooter('Type /help to get more information about commands', settings.BOT_IMG)
