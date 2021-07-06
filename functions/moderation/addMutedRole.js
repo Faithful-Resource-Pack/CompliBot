@@ -29,7 +29,7 @@ async function addMutedRole(client, userID, seconds) {
 	endAt.setSeconds(endAt.getSeconds() + seconds)
 
 	// if infinite mute:
-	if (seconds < 0) endAt = 0
+	if (seconds < 0) endAt = 0 // beware this is not a date
 
 	// get the user from the db
 	let user = await users.searchKeys([ userID ])
@@ -47,7 +47,7 @@ async function addMutedRole(client, userID, seconds) {
 	// set start & end timestamp
 	user[0].muted = {
 		start: startAt.getTime(),
-		end: endAt.getTime()
+		end: typeof(endAt) === 'object' && 'getTime' in endAt ? endAt.getTime() : endAt.toString() // fix for getTime is not a function
 	}
 	users.set(userID, user[0])
 }

@@ -27,6 +27,9 @@ async function removeMutedRole(client, userID) {
 	// get the user from the db
 	let user = await users.searchKeys([userID])
 
+	// you guys are supposing you found the user, maybe he doesn't exist
+	if(user === undefined) user = [{}] // FIX for proprerty muted of undefined
+
 	// replace it's muted obj with an empty one
 	user[0].muted = new Object()
 	users.set(userID, user[0])

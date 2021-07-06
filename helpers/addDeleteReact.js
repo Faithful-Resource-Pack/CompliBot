@@ -23,7 +23,10 @@ async function addDeleteReact(sentMessage, authorMessage, deleteAuthorMessage = 
     }
   })
   .catch(async () => {
-    if (!sentMessage.deleted) await sentMessage.reactions.cache.get(emojis.DELETE).remove()
+    if (!sentMessage.deleted) {
+      const deleteReaction = sentMessage.reactions.cache.get(emojis.DELETE)
+      if(deleteReaction !== undefined) deleteReaction.remove() // FIX for undefined delete reaction remove
+    }
   })
 }
 
