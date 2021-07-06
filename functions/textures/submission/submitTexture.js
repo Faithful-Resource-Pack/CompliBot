@@ -57,7 +57,8 @@ async function submitTexture(client, message) {
   // no id given, search texture
   else if (!id && search) {
     var waitEmbed = new Discord.MessageEmbed()
-      .setTitle(strings.COMMAND_SEARCHING_FOR_TEXTURE)
+      .setTitle('Loading')
+      .setDescription(strings.COMMAND_SEARCHING_FOR_TEXTURE)
       .setColor(colors.BLUE)
     const waitEmbedMessage = await message.inlineReply(waitEmbed);
 

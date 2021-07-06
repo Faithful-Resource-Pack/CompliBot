@@ -4,6 +4,7 @@ const VANILLA_IMG       = 'https://raw.githubusercontent.com/Compliance-Resource
 const QUOTE_IMG         = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Discord-Bot/master/ressources/images/quote.png'
 const QUESTION_MARK_IMG = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Discord-Bot/master/ressources/images/question_mark.png'
 const WARNING_IMG       = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Discord-Bot/master/ressources/images/warning.png'
+const LOADING_IMG       = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Discord-Bot/master/ressources/images/loading.gif'
 
 // Default texture repo for java
 const DEFAULT_MC_JAVA_REPOSITORY    = 'https://raw.githubusercontent.com/CompliBot/Default-Java/'
@@ -70,6 +71,7 @@ module.exports = {
 	QUOTE_IMG,
 	QUESTION_MARK_IMG,
 	WARNING_IMG,
+	LOADING_IMG,
 
 	DEFAULT_MC_JAVA_REPOSITORY,
 	DEFAULT_MC_BEDROCK_REPOSITORY,
