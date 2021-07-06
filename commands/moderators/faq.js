@@ -38,7 +38,7 @@ const FAQS = [
 	},
 	{
 		title: 'Is Compliance available for [Minecraft version]?',
-		description: 'Currently, we only officially support the 1.16 versions of the packs. We\'re planning to add support for many other Minecraft: Java Edition versions when the pack fully releases; if 1.17 releases before the pack fully releases, we will switch development to 1.17 and make that our only supported version for the time being. If you\'re living on the edge, you can also try using the packs on the different version branches of our GitHub, but be aware that they might be broken.',
+		description: 'Currently, we only officially support the 1.17 versions of the packs. We\'re planning to add support for many other Minecraft: Java Edition versions when the pack fully releases. If you\'re living on the edge, you can also try using the packs on the different version branches of our GitHub, but be aware that they might be broken.',
 		keywords: [
 			'minecraft version'
 		]
@@ -73,7 +73,7 @@ const FAQS = [
 	},
 	{
 		title: 'Does Compliance support mods?',
-		description: 'Yes, you can find mod support for the 32x version of the pack at https://compliancepack.net/mods or https://compliancepack.net/modpacks. Please note that the textures may be outdated and that development is not very active at the moment though, and that 64x is not supported at all right now. \nIf you want to contribute to Compliance Mods, join our sister discord server, linked in <#774391640306745374>',
+		description: 'Yes, you can find mod support for the 32x version of the pack at https://compliancepack.net/mods or https://compliancepack.net/modpacks. Please note that the textures may be outdated and that development is not very active at the moment though, and that 64x is not supported at all right now. \nIf you want to contribute to Compliance Mods, join our extras discord server, linked in <#774391640306745374>',
 		keywords: [
 			'mod support', 'mods', 'mod'
 		]
