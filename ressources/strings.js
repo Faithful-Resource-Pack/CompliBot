@@ -22,6 +22,7 @@ const COMMAND_ID_IMAGE_NOT_ATTACHED      = 'This ID does not have any image atta
 const COMMAND_INVALID_EXTENSION          = 'Image extension is not supported'
 const COMMAND_URL_ONLY_SAME_CHANNEL      = 'The message URL needs to be from the same channel. Don\'t ask why, I don\'t know myself.'
 const COMMAND_SEARCHING_FOR_TEXTURE      = 'Searching for your texture, please wait...'
+const COMMAND_TOO_MUCH_ARGS_GIVEN        = 'Too much arguments were given!'
 
 // Help descriptions
 const HELP_DESC_HOTFIX   = 'Fix something, may change at anytime'
@@ -53,6 +54,7 @@ const HELP_DESC_CONTRIBUTORS = 'Use this command to manage contributors.'
 const HELP_DESC_INSTAPASS    = 'Use this command to by-pass council process.'
 const HELP_DESC_MAGNIFY      = 'Resize an image,\nImage URL needs to end with ``.png``, ``.jpeg/jpg`` or ``.gif``,\nMessage ID needs to be from the same channel.\nMagnify only the first frame of a GIF'
 const HELP_DESC_PALETTE      = 'Get the colours of an image,\nImage URL needs to end with ``.png``, ``.jpeg/jpg`` or ``.gif``,\nMessage ID needs to be from the same channel.\nGIF: Return the palette of the first frame only'
+const HELP_DESC_COLOR        = 'WIP'
 const HELP_DESC_PUSH         = 'Push file to GitHub & update the contributor list.'
 const HELP_DESC_TEXTURE      = 'Displays a specified texture from either vanilla Minecraft or Compliance.\nYou can search for a texture name, or use ``_`` at the beginning to search for non-complete names (such as _sword).\nYou can also use ``/`` at the begining to specify a folder instead of a texture name.'
 const HELP_DESC_TILE         = 'Tile an image, if no arguments are given, a grid shape is selected by default. The bot searches the last 10 messages for an image.\nGIF: only works with the first frame.'
@@ -203,7 +205,8 @@ module.exports = {
 	COMMAND_INVALID_EXTENSION,
 	COMMAND_URL_ONLY_SAME_CHANNEL,
 	COMMAND_SEARCHING_FOR_TEXTURE,
-
+	COMMAND_TOO_MUCH_ARGS_GIVEN,
+	
 	HELP_DESC_HOTFIX,
 	HELP_DESC_PING,
 	HELP_DESC_RELOAD,
@@ -233,6 +236,7 @@ module.exports = {
 	HELP_DESC_INSTAPASS,
 	HELP_DESC_MAGNIFY,
 	HELP_DESC_PALETTE,
+	HELP_DESC_COLOR,
 	HELP_DESC_PUSH,
 	HELP_DESC_TEXTURE,
 	HELP_DESC_TILE,
