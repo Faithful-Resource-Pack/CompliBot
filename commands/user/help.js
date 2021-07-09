@@ -8,9 +8,9 @@ const uidT = process.env.UIDT
 const Discord   = require("discord.js");
 const client    = new Discord.Client();
 client.commands = new Discord.Collection();
-const strings   = require('../../ressources/strings');
-const settings  = require('../../ressources/settings');
-const colors    = require('../../ressources/colors');
+const strings   = require('../../resources/strings');
+const settings  = require('../../resources/settings');
+const colors    = require('../../resources/colors');
 
 const { warnUser } = require('../../helpers/warnUser');
 const { addDeleteReact } = require("../../helpers/addDeleteReact");

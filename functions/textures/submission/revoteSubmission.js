@@ -1,5 +1,5 @@
-const emojis = require('../../../ressources/emojis')
-const colors = require('../../../ressources/colors')
+const emojis = require('../../../resources/emojis')
+const colors = require('../../../resources/colors')
 
 const { getMessages } = require('../../../helpers/getMessages')
 

@@ -1,6 +1,6 @@
 const prefix   = process.env.PREFIX
 const Discord  = require("discord.js")
-const strings  = require('../../ressources/strings')
+const strings  = require('../../resources/strings')
 const { warnUser } = require('../../helpers/warnUser')
 
 module.exports = {

@@ -1,7 +1,7 @@
 const prefix = process.env.PREFIX;
 
 const { addDeleteReact } = require('../../helpers/addDeleteReact');
-const strings = require('../../ressources/strings');
+const strings = require('../../resources/strings');
 
 module.exports = {
 	name: 'guidelines',

@@ -3,10 +3,10 @@ const prefix = process.env.PREFIX
 
 const Discord     = require('discord.js')
 const axios       = require('axios').default
-const strings     = require('../../ressources/strings')
-const colors      = require('../../ressources/colors')
-const settings    = require('../../ressources/settings')
-const emojis      = require('../../ressources/emojis')
+const strings     = require('../../resources/strings')
+const colors      = require('../../resources/colors')
+const settings    = require('../../resources/settings')
+const emojis      = require('../../resources/emojis')
 const choiceEmbed = require('../../helpers/choiceEmbed')
 
 const { magnify }  = require('../../functions/textures/magnify')

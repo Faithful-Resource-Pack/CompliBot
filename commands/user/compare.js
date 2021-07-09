@@ -4,7 +4,7 @@ const prefix = process.env.PREFIX
 require('dotenv').config()
 const Discord     = require('discord.js')
 const getops      = require('getopts')
-const strings     = require('../../ressources/strings')
+const strings     = require('../../resources/strings')
 const FindTexture = require('../../functions/textures/findTexture')
 const choiceEmbed = require('../../helpers/choiceEmbed')
 

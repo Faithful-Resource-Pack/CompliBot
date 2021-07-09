@@ -1,6 +1,6 @@
 const Discord  = require('discord.js')
-const settings = require('../ressources/settings')
-const colors   = require('../ressources/colors')
+const settings = require('../resources/settings')
+const colors   = require('../resources/colors')
 const { addDeleteReact } = require('../helpers/addDeleteReact')
 
 /**

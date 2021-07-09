@@ -4,9 +4,9 @@ const Discord   = require("discord.js");
 const client    = new Discord.Client();
 client.commands = new Discord.Collection();
 
-const settings = require('../../ressources/settings');
-const colors   = require('../../ressources/colors');
-const strings  = require('../../ressources/strings');
+const settings = require('../../resources/settings');
+const colors   = require('../../resources/colors');
+const strings  = require('../../resources/strings');
 
 const { warnUser } = require('../../helpers/warnUser');
 

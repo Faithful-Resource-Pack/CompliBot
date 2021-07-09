@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
 /* global Buffer */
 
-const strings  = require('../../ressources/strings')
-const settings = require('../../ressources/settings')
+const strings  = require('../../resources/strings')
+const settings = require('../../resources/settings')
 const https    = require('https')
 
 const { FileHandler, jsonContributionsJava, jsonContributionsBedrock } = require('../../helpers/fileHandler')

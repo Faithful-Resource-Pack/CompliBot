@@ -1,6 +1,6 @@
 const Discord  = require("discord.js");
-const colors   = require('../../ressources/colors');
-const settings = require('../../ressources/settings');
+const colors   = require('../../resources/colors');
+const settings = require('../../resources/settings');
 const fetch    = require('node-fetch');
 const { timestampConverter } = require('../../helpers/timestampConverter');
 const { addDeleteReact } = require("../../helpers/addDeleteReact");

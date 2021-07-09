@@ -1,9 +1,9 @@
 const prefix = process.env.PREFIX
 
 //const Discord    = require('discord.js')
-const strings    = require('../../ressources/strings')
-//const colors     = require('../../ressources/colors')
-//const settings   = require('../../ressources/settings')
+const strings    = require('../../resources/strings')
+//const colors     = require('../../resources/colors')
+//const settings   = require('../../resources/settings')
 //const asyncTools = require('../../helpers/asyncTools')
 
 const { animate }   = require('../../functions/textures/animate')

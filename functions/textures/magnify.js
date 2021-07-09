@@ -1,7 +1,7 @@
 const Canvas   = require('canvas')
 const Discord  = require('discord.js')
-const settings = require('../../ressources/settings')
-const strings  = require('../../ressources/strings')
+const settings = require('../../resources/settings')
+const strings  = require('../../resources/strings')
 
 const { addDeleteReact } = require('../../helpers/addDeleteReact')
 const { getMeta }  = require('../../helpers/getMeta')

@@ -1,6 +1,6 @@
 const prefix  = process.env.PREFIX;
 
-const strings = require('../../ressources/strings');
+const strings = require('../../resources/strings');
 
 module.exports = {
 	name: 'order',

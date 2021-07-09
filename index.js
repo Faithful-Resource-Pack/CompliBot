@@ -57,12 +57,12 @@ const { saveDB } = require('./functions/saveDB')
 const { manageExtraRoles } = require('./functions/manageExtraRoles')
 
 // Resources:
-const colors  = require('./ressources/colors')
-const strings = require('./ressources/strings')
+const colors  = require('./resources/colors')
+const strings = require('./resources/strings')
 
 // Import settings & commands handler:
 const commandFiles = walkSync('./commands').filter(file => file.endsWith('.js'))
-const settings     = require('./ressources/settings')
+const settings     = require('./resources/settings')
 const { addDeleteReact }     = require('./helpers/addDeleteReact')
 const { restartAutoDestroy } = require('./functions/restartAutoDestroy')
 

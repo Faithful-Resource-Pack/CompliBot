@@ -1,6 +1,6 @@
 const prefix  = process.env.PREFIX;
 
-const strings = require('../../ressources/strings');
+const strings = require('../../resources/strings');
 
 const { magnify }  = require('../../functions/textures/magnify');
 const { warnUser } = require('../../helpers/warnUser');

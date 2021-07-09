@@ -1,4 +1,4 @@
-const emojis = require('../ressources/emojis')
+const emojis = require('../resources/emojis')
 
 /**
  * Add a trash can emote and await it, if used, the authorMessage is deleted, does nothing if sentMessage is in DM

@@ -2,7 +2,7 @@ const prefix  = process.env.PREFIX;
 
 const fs      = require('fs');
 const fetch   = require('node-fetch');
-const strings = require('../../ressources/strings');
+const strings = require('../../resources/strings');
 
 const REPOSITORIES = [
 	'Compliance-Java-32x',

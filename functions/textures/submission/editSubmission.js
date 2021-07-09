@@ -1,8 +1,8 @@
 const Discord  = require('discord.js')
-const emojis   = require('../../../ressources/emojis')
-const settings = require('../../../ressources/settings')
-const strings  = require('../../../ressources/strings')
-const colors   = require('../../../ressources/colors')
+const emojis   = require('../../../resources/emojis')
+const settings = require('../../../resources/settings')
+const strings  = require('../../../resources/strings')
+const colors   = require('../../../resources/colors')
 const fetch    = require('node-fetch')
 
 const { addDeleteReact } = require('../../../helpers/addDeleteReact')

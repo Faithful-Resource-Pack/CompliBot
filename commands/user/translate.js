@@ -4,7 +4,7 @@ const uidR = process.env.UIDR;
 const uidJ = process.env.UIDJ;
 const uidD = process.env.UIDD;
 
-const strings = require('../../ressources/strings');
+const strings = require('../../resources/strings');
 
 const { translate } = require('../../functions/translate');
 const { warnUser }  = require('../../helpers/warnUser');

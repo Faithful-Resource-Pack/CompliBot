@@ -1,4 +1,4 @@
-const settings = require('../ressources/settings')
+const settings = require('../resources/settings')
 
 const URL_START = {
   java: {

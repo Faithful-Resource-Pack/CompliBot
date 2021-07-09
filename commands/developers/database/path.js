@@ -1,5 +1,5 @@
 const Discord        = require('discord.js')
-const colors         = require('../../../ressources/colors')
+const colors         = require('../../../resources/colors')
 const { errorEmbed } = require('./errorEmbed')
 const allCollection  = require('../../../helpers/firestorm/all')
 

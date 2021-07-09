@@ -1,6 +1,6 @@
 const Discord = require('discord.js')
 const prefix  = process.env.PREFIX;
-const strings = require('../../ressources/strings');
+const strings = require('../../resources/strings');
 const Canvas  = require('canvas')
 
 const { warnUser }       = require('../../helpers/warnUser');
@@ -42,8 +42,8 @@ ${prefix}color cmyk(0,50,85,0)`,
     if (args.startsWith('rgb(')) {
       rgb = args.slice(4).slice(0, -1).split(',').map(c => c | 0) // remove formating, remove ), split & convert to int
 
-      if (rgb.length < 3 || rgb.length > 3) return warnUser(message, 'RGB: you must specify 3 values')
-      for (let i = 0; i < 3; i++) if (rgb[i] > 255 || rgb[i] < 0) return warnUser(message, 'RGB: Values must be between 0 & 255')
+      if (rgb.length < 3 || rgb.length > 3) return warnUser(message, strings.COLOR_RGB_NO_VALUES)
+      for (let i = 0; i < 3; i++) if (rgb[i] > 255 || rgb[i] < 0) return warnUser(message, strings.COLOR_RGB_WRONG_VALUES)
 
       hex  = RGBtoHEX(rgb[0], rgb[1], rgb[2])
       hsl  = RGBtoHSL(rgb[0], rgb[1], rgb[2])
@@ -53,13 +53,13 @@ ${prefix}color cmyk(0,50,85,0)`,
     else if (args.startsWith('rgba(')) {
       rgb = args.slice(5).slice(0, -1).split(',')
 
-      if (rgb.length < 4 || rgb.length > 4) return warnUser(message, 'RGBa: you must specify 4 values')
+      if (rgb.length < 4 || rgb.length > 4) return warnUser(message, strings.COLOR_RGBA_NO_VALUES)
 
       for (let i = 0; i < 3; i++) {
-        if (rgb[i] > 255 || rgb[i] < 0) return warnUser(message, 'RGBa: Values must be between 0 & 255.')
+        if (rgb[i] > 255 || rgb[i] < 0) return warnUser(message, strings.COLOR_RGBA_WRONG_VALUES)
         else rgb[i] = rgb[i] | 0
       }
-      if (rgb[3] && (rgb[3] > 1 || rgb[3] < 0)) return warnUser(message, 'RGBa: The alpha value must be a float between 0 & 1.')
+      if (rgb[3] && (rgb[3] > 1 || rgb[3] < 0)) return warnUser(message, strings.COLOR_RGBA_ALPHA_VALUE)
       else rgb[3] = parseFloat(rgb[3]).toFixed(2)
 
       hex = RGBAtoHEXA(rgb[0], rgb[1], rgb[2], rgb[3])
@@ -76,9 +76,9 @@ ${prefix}color cmyk(0,50,85,0)`,
     else if (args.startsWith('hsl(')) {
       hsl = args.slice(4).slice(0, -1).split(',').map(c => c | 0)
       
-      if (hsl.length < 3 || hsl.length > 3) return warnUser(message, 'HSL: you must specify 3 values')
-      if (hsl[0] > 360 || hsl[0] < 0) return warnUser(message, 'HSL: Degree value must be between 0 & 360')
-      if (hsl[1] > 100 || hsl[1] < 0 || hsl[2] > 100 || hsl[2] < 0) return warnUser(message, 'HSL: S & L values must be between 0 & 100')
+      if (hsl.length < 3 || hsl.length > 3) return warnUser(message, strings.COLOR_HSL_NO_VALUES)
+      if (hsl[0] > 360 || hsl[0] < 0) return warnUser(message, strings.COLOR_HSL_DEGREE_VALUE)
+      if (hsl[1] > 100 || hsl[1] < 0 || hsl[2] > 100 || hsl[2] < 0) return warnUser(message, strings.COLOR_HSL_SL_VALUES)
 
       rgb = HSLtoRGB(hsl[0], hsl[1], hsl[2])
       hex = RGBtoHEX(rgb[0], rgb[1], rgb[2])
@@ -88,9 +88,9 @@ ${prefix}color cmyk(0,50,85,0)`,
     else if (args.startsWith('hsv(')) {
       hsv = args.slice(4).slice(0, -1).split(',').map(c => c | 0)
 
-      if (hsv.length < 3 || hsv.length > 3) return warnUser(message, 'HSV: you must specify 3 values')
-      if (hsv[0] > 360 || hsv[0] < 0) return warnUser(message, 'HSV: Degree value must be between 0 & 360')
-      if (hsv[1] > 100 || hsv[1] < 0 || hsv[2] > 100 || hsv[2] < 0) return warnUser(message, 'HSV: S & V values must be between 0 & 100')
+      if (hsv.length < 3 || hsv.length > 3) return warnUser(message, strings.COLOR_HSV_NO_VALUES)
+      if (hsv[0] > 360 || hsv[0] < 0) return warnUser(message, strings.COLOR_HSV_DEGREE_VALUE)
+      if (hsv[1] > 100 || hsv[1] < 0 || hsv[2] > 100 || hsv[2] < 0) return warnUser(message, strings.COLOR_HSV_SV_VALUES)
 
       rgb = HSVtoRGB(hsv[0], hsv[1], hsv[2])
       hex = RGBtoHEX(rgb[0], rgb[1], rgb[2])
@@ -100,8 +100,8 @@ ${prefix}color cmyk(0,50,85,0)`,
     else if (args.startsWith('cmyk(')) {
       cmyk = args.slice(5).slice(0, -1).split(',').map(c => c | 0)
 
-      if (cmyk.length < 4 || hsl.length > 4) return warnUser(message, 'CMYK: you must specify 4 values')
-      for (let i = 0; i < 3; i++) if (rgb[i] > 100 || rgb[i] < 0) return warnUser(message, 'CMYK: Values must be between 0 & 100')
+      if (cmyk.length < 4 || hsl.length > 4) return warnUser(message, strings.COLOR_CMYK_NO_VALUES)
+      for (let i = 0; i < 3; i++) if (rgb[i] > 100 || rgb[i] < 0) return warnUser(message, strings.COLOR_CMYK_WRONG_VALUES)
       rgb = CMYKtoRGB(cmyk[0], cmyk[1], cmyk[2], cmyk[3])
       hex = RGBtoHEX(rgb[0], rgb[1], rgb[2])
       hsl = RGBtoHSL(rgb[0], rgb[1], rgb[2])
@@ -110,7 +110,7 @@ ${prefix}color cmyk(0,50,85,0)`,
     else if (args.startsWith('#')) {
 
       hex = args
-      if (parseInt(hex.slice(1), 16).toString(16) != hex.slice(1).toLowerCase()) return warnUser(message, 'HEX: Invalid hexadecimal value, accepted characters are: 0 - 9 & A - F')
+      if (parseInt(hex.slice(1), 16).toString(16) != hex.slice(1).toLowerCase()) return warnUser(message, strings.COLOR_HEX_WRONG_VALUE)
 
       switch (hex.length) {
         case 4:
@@ -124,7 +124,7 @@ ${prefix}color cmyk(0,50,85,0)`,
           hex   = hex.slice(0, 7)
           break
         default:
-          return warnUser(message, 'HEX: You must specify 3 **or** 6 **or** 8 digits')
+          return warnUser(message, strings.COLOR_HEX_WRONG_DIGITS)
       }
 
       if (alpha) rgb = HEXAtoRGBA(`${hex}${alpha}`)

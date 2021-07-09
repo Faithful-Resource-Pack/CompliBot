@@ -1,7 +1,7 @@
 const Discord    = require('discord.js')
 const asyncTools = require('./asyncTools')
-const settings   = require('../ressources/settings')
-const colors     = require('../ressources/colors')
+const settings   = require('../resources/settings')
+const colors     = require('../resources/colors')
 
 /**
  * 

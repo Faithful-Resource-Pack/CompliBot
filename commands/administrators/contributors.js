@@ -1,6 +1,6 @@
 const prefix  = process.env.PREFIX;
 
-const strings = require('../../ressources/strings');
+const strings = require('../../resources/strings');
 
 const { parseArgs }    = require('../../helpers/parseArgs');
 const { pushToGitHub } = require('../../functions/pushToGitHub');

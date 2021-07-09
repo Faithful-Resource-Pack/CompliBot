@@ -1,12 +1,58 @@
 const prefix = process.env.PREFIX;
 
-const Discord  = require('discord.js');
-const settings = require('../../ressources/settings');
-const strings  = require('../../ressources/strings');
-const colors   = require('../../ressources/colors');
+const Discord = require('discord.js');
+const settings = require('../../resources/settings');
+const emojis = require('../../resources/emojis');
+const strings = require('../../resources/strings');
+const colors = require('../../resources/colors');
 
 const { warnUser } = require('../../helpers/warnUser');
 const { addDeleteReact } = require('../../helpers/addDeleteReact');
+
+const DATA = [
+	{
+		image: settings.C32_IMG,
+		color: colors.C32,
+		keywords: [ 'compliance32', 'c32', '32x', '32' ],
+		name: `Compliance 32x`,
+		value: `[<:c32:${emojis.C32}> Website](https://compliancepack.net/#compliance-32x)\n[<:curseforge:${emojis.CURSEFORGE}> CurseForge](https://www.curseforge.com/minecraft/texture-packs/compliance-32x)\n[<:pmc:${emojis.PMC}> <:pmc:${emojis.PMC}> ](https://www.planetminecraft.com/texture-pack/compliance-32x/)`
+	},
+	{
+		image: settings.C64_IMG, 
+		color: colors.C64,
+		keywords: [ 'compliance64', 'c64', '64x', '64' ],
+		name: 'Compliance 64x',
+		value: `[<:c64:${emojis.C64}> Website](https://compliancepack.net/#compliance-64x)\n[<:curseforge:${emojis.CURSEFORGE}> CurseForge](https://www.curseforge.com/minecraft/texture-packs/compliance-64x)\n[<:pmc:${emojis.PMC}> Planet Minecraft](https://www.planetminecraft.com/texture-pack/compliance-64x/)`
+	},
+	{
+		image: settings.CDUNGEONS_IMG,
+		color: colors.CDUNGEONS,
+		keywords: [ 'dungeons' ],
+		name: 'Compliance Dungeons 32x',
+		value: `[<:cdungeons:${emojis.CDUNGEONS}> Website](https://compliancepack.net/#compliance-dungeons)\n[<:curseforge:${emojis.CURSEFORGE}> CurseForge](https://www.curseforge.com/minecraft-dungeons/mods/compliance-dungeons)`
+	},
+	{
+		image: settings.CMODS_IMG,
+		color: colors.CMODS,
+		keywords: [ 'mods' ],
+		name: 'Compliance Mods 32x',
+		value: `[<:cmods:${emojis.CMODS}> Mods Resource Pack picker](https://compliancepack.net/mods)\n[<:cmods:${emojis.CMODS}> Modpacks Resource Pack pressets](https://compliancepack.net/modpacks)`
+	},
+	{
+		image: settings.CTWEAKS_IMG,
+		color: colors.CTWEAKS,
+		keywords: [ 'tweaks' ],
+		name: 'Compliance Tweaks',
+		value: `[<:ctweaks:${emojis.CTWEAKS}> Website](https://compliancepack.net/tweaks)`
+	},
+	{
+		image: settings.CADDONS_IMG,
+		color: colors.CADDONS,
+		keywords: [ 'addons' ],
+		name: 'Compliance Addons',
+		value: `[<:caddons:${emojis.CADDONS}> All resolutions](https://compliancepack.net/addons)`
+	}
+]
 
 module.exports = {
 	name: 'website',
@@ -15,151 +61,39 @@ module.exports = {
 	guildOnly: false,
 	uses: strings.COMMAND_USES_ANYONE,
 	syntax: `${prefix}website [type]`,
+	example: `${prefix}website 32x\n${prefix}website 64\n${prefix}website dungeons\n${prefix}website mods\n${prefix}website tweaks\n${prefix}website addons`,
 	async execute(client, message, args) {
 
-		async function websiteEmbed (title, website, curseforge, planetminecraft, img, color) {
-			const embed = new Discord.MessageEmbed()
-				.setTitle(title + ' sites:')
-				.addFields(
-					{ name: 'Website:', value: website},
-					{ name: 'CurseForge:', value: curseforge},
-					{ name: 'Planet Minecraft:', value: planetminecraft},
-				)
-				.setThumbnail(img)
-				.setColor(color)
-				.setFooter(title, img);
+		let embed = new Discord.MessageEmbed()
 
-			const embedMessage = await message.inlineReply(embed);
-			addDeleteReact(embedMessage, message, true)
+		if (!args[0]) {
+			if (message.channel.type !== 'dm') return warnUser(message, strings.WEBSITE_PROVIDE_VALID_ARGUMENT)
+
+			embed
+				.setTitle('Websites:')
+				.setColor(colors.C32)
+
+			for (let i = 0; i < DATA.length; i++) embed.addField(DATA[i].name, DATA[i].value)
+			
+			let embedMessage = await message.inlineReply(embed)
+			return addDeleteReact(embedMessage, message, true)
 		}
 
-		if (!args.length) {
-			if (message.channel.type !== 'dm') {
-				//Compliance Dungeons
-				if (message.guild.id === settings.CDUNGEONS__ID) {
-					websiteEmbed(
-						'Compliance Dungeons',
-						'https://compliancepack.net/#compliance-dungeons',
-						'soon™',
-						'https://www.planetminecraft.com/member/faithful_dungeons/',
-						settings.CDUNGEONS_IMG,
-						colors.CDUNGEONS
-					);
-				//Compliance Mods
-				} else if (message.guild.id === settings.CMODS__ID) {
-					websiteEmbed(
-						'Compliance Mods',
-						'https://compliancepack.net/mods',
-						'none',
-						'https://www.planetminecraft.com/member/faithful_mods/',
-						settings.CMODS_IMG,
-						colors.CMODS
-					);
-				//Compliance Tweaks
-				} else if (message.guild.id === settings.CTWEAKS_ID) {
-					websiteEmbed(
-						'Compliance Tweaks',
-						'https://faithfultweaks.com/',
-						'none',
-						'none',
-						settings.CTWEAKS_IMG,
-						colors.CTWEAKS
-				);
-				//Compliance Addons
-				} else if (message.guild.id === settings.CEXTRAS_ID) {
-					websiteEmbed(
-						'Compliance Addons',
-						'https://compliancepack.net/addons',
-						'none',
-						'none',
-						settings.CADDONS_IMG,
-						colors.CADDONS
-					);
-				//Compliance 32x
-				} else if (message.guild.id === settings.C32_ID) {
-					websiteEmbed(
-						'Compliance 32x',
-						'https://compliancepack.net/',
-						'https://www.curseforge.com/minecraft/texture-packs/compliance-32x',
-						'https://www.planetminecraft.com/texture-pack/compliance-32x/',
-						settings.C32_IMG,
-						colors.C32
-					);
-				//Compliance 64x
-				} else if (message.guild.id === settings.C64_ID) {
-					websiteEmbed(
-						'Compliance 64x',
-						'https://compliancepack.net/#compliance-64x',
-						'https://www.curseforge.com/minecraft/texture-packs/compliance-64x',
-						'https://www.planetminecraft.com/texture-pack/compliance-64x/',
-						settings.C64_IMG,
-						colors.C32
-					);
-				//Other servers
-				} else return warnUser(message, strings.WEBSITE_NO_SITE_REGISTERED);
-				} else return warnUser(message, strings.WEBSITE_PROVIDE_VALID_ARGUMENT);
-			}
+		for (let i = 0; i < DATA.length; i++) {
+			if (DATA[i].keywords.includes(args[0].toLowerCase())) {
 
-		//Compliance Dungeons
-		else if (args[0] === 'dungeons') {
-			websiteEmbed(
-				'Compliance Dungeons',
-				'https://compliancepack.net/#compliance-dungeons',
-				'soon™',
-				'https://www.planetminecraft.com/member/faithful_dungeons/',
-				settings.CDUNGEONS_IMG,
-				colors.CDUNGEONS
-			);
-		//Compliance Mods
-		} else if (args[0] === 'mods') {
-			websiteEmbed(
-				'Compliance Mods',
-				'https://compliancepack.net/mods',
-				'none',
-				'https://www.planetminecraft.com/member/faithful_mods/',
-				settings.CMODS_IMG,
-				colors.CMODS
-			);
-		//Compliance Tweaks
-		} else if (args[0] === 'tweaks') {
-			websiteEmbed(
-				'Compliance Tweaks',
-				'https://faithfultweaks.com/',
-				'none',
-				'none',
-				settings.CTWEAKS_IMG,
-				colors.CTWEAKS
-			);
-		//Compliance Addons
-		} else if (args[0] === 'addons') {
-			websiteEmbed(
-				'Compliance Addons',
-				'https://compliancepack.net/addons',
-				'none',
-				'none',
-				settings.CADDONS_IMG,
-				colors.CADDONS
-			);
-		//Compliance 32x
-		} else if (args[0] === '32'  || args[0] === '32x') {
-			websiteEmbed(
-				'Compliance 32x',
-				'https://compliancepack.net/',
-				'https://www.curseforge.com/minecraft/texture-packs/compliance-32x',
-				'https://www.planetminecraft.com/texture-pack/compliance-32x/',
-				settings.C32_IMG,
-				colors.C32
-			);
-		//Compliance 64x
-		} else if (args[0] === '64'  || args[0] === '64x') {
-			websiteEmbed(
-				'Compliance 64x',
-				'https://compliancepack.net/#compliance-64x',
-				'https://www.curseforge.com/minecraft/texture-packs/compliance-64x', 'https://www.planetminecraft.com/texture-pack/compliance-64x/',
-				settings.C64_IMG,
-				colors.C32
-			);
-		//Other servers
-		} else return warnUser(message, strings.WEBSITE_PROVIDE_VALID_ARGUMENT);
+				embed
+					.setTitle(`${DATA[i].name} websites:`)
+					.setDescription(`${DATA[i].value}`)
+					.setColor(DATA[i].color)
+					.setFooter(`Keywords: ${DATA[i].keywords.join(' | ')}`)
+					.setThumbnail(DATA[i].image)
+
+				let embedMessage = await message.inlineReply(embed)
+				return addDeleteReact(embedMessage, message, true)
+			}
+		}
+
+		return warnUser(message, strings.WEBSITE_PROVIDE_VALID_ARGUMENT)
 	}
-};
+}

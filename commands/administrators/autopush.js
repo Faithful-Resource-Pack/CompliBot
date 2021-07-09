@@ -1,7 +1,7 @@
 const prefix   = process.env.PREFIX;
 
-const settings = require('../../ressources/settings');
-const strings  = require('../../ressources/strings');
+const settings = require('../../resources/settings');
+const strings  = require('../../resources/strings');
 
 const { date }            = require('../../helpers/date')
 const { pushTextures }    = require('../../functions/textures/admission/pushTextures')

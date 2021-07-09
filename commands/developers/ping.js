@@ -1,9 +1,9 @@
 const prefix  = process.env.PREFIX
 const Discord = require('discord.js')
 
-const settings = require('../../ressources/settings')
-const colors   = require('../../ressources/colors')
-const strings  = require('../../ressources/strings')
+const settings = require('../../resources/settings')
+const colors   = require('../../resources/colors')
+const strings  = require('../../resources/strings')
 const { addDeleteReact } = require('../../helpers/addDeleteReact')
 
 module.exports = {

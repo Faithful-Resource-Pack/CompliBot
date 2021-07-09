@@ -1,8 +1,8 @@
 const Discord    = require('discord.js')
 const translate2 = require('@vitalets/google-translate-api')
 
-const colors   = require('../ressources/colors')
-const settings = require('../ressources/settings')
+const colors   = require('../resources/colors')
+const settings = require('../resources/settings')
 
 const { addDeleteReact } = require('../helpers/addDeleteReact')
 

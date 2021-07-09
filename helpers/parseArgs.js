@@ -1,5 +1,5 @@
 const { warnUser } = require('./warnUser')
-const strings = require('../ressources/strings')
+const strings = require('../resources/strings')
 
 /**
  * 

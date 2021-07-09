@@ -5,7 +5,7 @@ const uidJ = process.env.UIDJ;
 const uidD = process.env.UIDD;
 const uidT = process.env.UIDT;
 
-const strings = require('../../ressources/strings');
+const strings = require('../../resources/strings');
 
 const { warnUser } = require('../../helpers/warnUser');
 

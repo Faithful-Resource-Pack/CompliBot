@@ -1,4 +1,4 @@
-const settings = require('../ressources/settings')
+const settings = require('../resources/settings')
 
 /**
  * Manage roles using reactions in the Extra Compliance Server
