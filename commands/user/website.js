@@ -15,7 +15,7 @@ const DATA = [
 		color: colors.C32,
 		keywords: [ 'compliance32', 'c32', '32x', '32' ],
 		name: `Compliance 32x`,
-		value: `[<:c32:${emojis.C32}> Website](https://compliancepack.net/#compliance-32x)\n[<:curseforge:${emojis.CURSEFORGE}> CurseForge](https://www.curseforge.com/minecraft/texture-packs/compliance-32x)\n[<:pmc:${emojis.PMC}> <:pmc:${emojis.PMC}> ](https://www.planetminecraft.com/texture-pack/compliance-32x/)`
+		value: `[<:c32:${emojis.C32}> Website](https://compliancepack.net/#compliance-32x)\n[<:curseforge:${emojis.CURSEFORGE}> CurseForge](https://www.curseforge.com/minecraft/texture-packs/compliance-32x)\n[<:pmc:${emojis.PMC}> Planet Minecraft](https://www.planetminecraft.com/texture-pack/compliance-32x/)`
 	},
 	{
 		image: settings.C64_IMG, 
