@@ -127,7 +127,7 @@ if (DEBUG) console.table(commands)
 client.on('ready', async () => {
 	console.log(`┌─────────────────────────────────────────────────────────────┐`)
 	console.log(`│                                                             │`)
-	console.log(`│  ─=≡Σ((( つ◕ل͜◕)つ                                           │`)
+	console.log(`│  ─=≡Σ((( つ◕ل͜◕)つ                                         │`)
 	console.log(`│ JavaScript is a pain, but I'm fine, I hope...               │`)
 	console.log(`│                                                             │`)
 	console.log(`└─────────────────────────────────────────────────────────────┘\n\n`)
@@ -227,6 +227,7 @@ client.on('message', async message => {
 		const embed = new Discord.MessageEmbed()
 			.setColor(colors.RED)
 			.setTitle(strings.BOT_ERROR)
+			.setThumbnail(settings.ERROR_IMG)
 			.setDescription(`${strings.COMMAND_ERROR}\nError for the developers:\n${error}`)
 
 		let msgEmbed = await message.inlineReply(embed)
