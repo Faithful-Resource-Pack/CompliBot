@@ -60,8 +60,8 @@ module.exports = {
 	description: strings.HELP_DESC_WEBSITE,
 	guildOnly: false,
 	uses: strings.COMMAND_USES_ANYONE,
-	syntax: `${prefix}website [type]`,
-	example: `${prefix}website 32x\n${prefix}website 64\n${prefix}website dungeons\n${prefix}website mods\n${prefix}website tweaks\n${prefix}website addons`,
+	syntax: `${prefix}website [keyword]`,
+	example: `${prefix}website : only in DM\n${prefix}website compliance32|32x|32\n${prefix}website compliance64|64x|64\n${prefix}website dungeons\n${prefix}website mods\n${prefix}website tweaks\n${prefix}website addons`,
 	async execute(client, message, args) {
 
 		let embed = new Discord.MessageEmbed()

@@ -66,7 +66,7 @@ const HELP_DESC_SKIN = 'Get the skin of a Minecraft Player.'
 const HELP_DESC_STATS = 'Displays various stats of the bot in your DMs.'
 const HELP_DESC_RULES = 'Creates rules embed.'
 const HELP_DESC_TRANSLATE = 'Translates messages to the selected language.'
-const HELP_DESC_WEBSITE = 'Displays the website of the discord.'
+const HELP_DESC_WEBSITE = 'Displays website for the given keyword, see examples for keywords.'
 const HELP_DESC_COMPARE = 'Allows vanilla / pack comparaison side by side'
 
 // animate function
