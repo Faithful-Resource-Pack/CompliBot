@@ -3,7 +3,8 @@ const prefix  = process.env.PREFIX;
 const strings = require('../../ressources/strings');
 const Canvas  = require('canvas')
 
-const { warnUser } = require('../../helpers/warnUser');
+const { warnUser }       = require('../../helpers/warnUser');
+const { addDeleteReact } = require('../../helpers/addDeleteReact')
 
 function isInt(n) {
   return typeof n === 'number' && Math.round(n) == n
@@ -132,7 +133,8 @@ ${prefix}color cmyk(0,50,85,0)`,
       .attachFiles(attachment)
       .setThumbnail('attachment://color.png')
     
-    message.inlineReply(embed)
+    const embedMessage = await message.inlineReply(embed)
+		addDeleteReact(embedMessage, message, true)
   }
 }
 
