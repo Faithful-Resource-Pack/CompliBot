@@ -6,13 +6,6 @@ const Canvas  = require('canvas')
 const { warnUser }       = require('../../helpers/warnUser');
 const { addDeleteReact } = require('../../helpers/addDeleteReact')
 
-function isInt(n) {
-  return typeof n === 'number' && Math.round(n) == n
-}
-function isFloat(f) {
-  return typeof f === 'number' && !isInt(f)
-}
-
 module.exports = {
   name: 'color',
   aliases: ['colors', 'color', 'colormap', 'colours', 'colour', 'c'],
@@ -22,6 +15,7 @@ module.exports = {
   syntax: `
 ${prefix}color #123456
 ${prefix}color rgb([0-255],[0-255],[0-255])
+${prefix}color rgba([0-255],[0-255],[0-255],[0-1])
 ${prefix}color hsl([0-360],[0-100],[0-100])
 ${prefix}color hsv([0-360],[0-100],[0-100])
 ${prefix}color cmyk([0-100],[0-100],[0-100],[0-100])`,
@@ -29,6 +23,7 @@ ${prefix}color cmyk([0-100],[0-100],[0-100],[0-100])`,
 ${prefix}color #fff
 ${prefix}color #ff8025
 ${prefix}color rgb(255,128,37)
+${prefix}color rgba(255,128,37,1)
 ${prefix}color hsl(25,100,57)
 ${prefix}color hsv(25,85,100)
 ${prefix}color cmyk(0,50,85,0)`,
@@ -42,10 +37,12 @@ ${prefix}color cmyk(0,50,85,0)`,
     let hsl  = new Array()
     let hsv  = new Array()
     let hex  = null
+    let alpha= null
 
     if (args.startsWith('rgb(')) {
       rgb = args.slice(4).slice(0, -1).split(',').map(c => c | 0) // remove formating, remove ), split & convert to int
 
+      if (rgb.length < 3 || rgb.length > 3) return warnUser(message, 'RGB: you must specify 3 values')
       for (let i = 0; i < 3; i++) if (rgb[i] > 255 || rgb[i] < 0) return warnUser(message, 'RGB: Values must be between 0 & 255')
 
       hex  = RGBtoHEX(rgb[0], rgb[1], rgb[2])
@@ -53,9 +50,33 @@ ${prefix}color cmyk(0,50,85,0)`,
       hsv  = RGBtoHSV(rgb[0], rgb[1], rgb[2])
       cmyk = RGBtoCMYK(rgb[0], rgb[1], rgb[2])
     }
+    else if (args.startsWith('rgba(')) {
+      rgb = args.slice(5).slice(0, -1).split(',')
+
+      if (rgb.length < 4 || rgb.length > 4) return warnUser(message, 'RGBa: you must specify 4 values')
+
+      for (let i = 0; i < 3; i++) {
+        if (rgb[i] > 255 || rgb[i] < 0) return warnUser(message, 'RGBa: Values must be between 0 & 255.')
+        else rgb[i] = rgb[i] | 0
+      }
+      if (rgb[3] && (rgb[3] > 1 || rgb[3] < 0)) return warnUser(message, 'RGBa: The alpha value must be a float between 0 & 1.')
+      else rgb[3] = parseFloat(rgb[3]).toFixed(2)
+
+      hex = RGBAtoHEXA(rgb[0], rgb[1], rgb[2], rgb[3])
+
+      if (hex.length > 7) {
+        alpha = hex.slice(7)
+        hex = hex.slice(0, 7)
+      }
+
+      hsl = RGBtoHSL(rgb[0], rgb[1], rgb[2])
+      hsv = RGBtoHSV(rgb[0], rgb[1], rgb[2])
+      cmyk = RGBtoCMYK(rgb[0], rgb[1], rgb[2])
+    }
     else if (args.startsWith('hsl(')) {
       hsl = args.slice(4).slice(0, -1).split(',').map(c => c | 0)
-
+      
+      if (hsl.length < 3 || hsl.length > 3) return warnUser(message, 'HSL: you must specify 3 values')
       if (hsl[0] > 360 || hsl[0] < 0) return warnUser(message, 'HSL: Degree value must be between 0 & 360')
       if (hsl[1] > 100 || hsl[1] < 0 || hsl[2] > 100 || hsl[2] < 0) return warnUser(message, 'HSL: S & L values must be between 0 & 100')
 
@@ -67,6 +88,7 @@ ${prefix}color cmyk(0,50,85,0)`,
     else if (args.startsWith('hsv(')) {
       hsv = args.slice(4).slice(0, -1).split(',').map(c => c | 0)
 
+      if (hsv.length < 3 || hsv.length > 3) return warnUser(message, 'HSV: you must specify 3 values')
       if (hsv[0] > 360 || hsv[0] < 0) return warnUser(message, 'HSV: Degree value must be between 0 & 360')
       if (hsv[1] > 100 || hsv[1] < 0 || hsv[2] > 100 || hsv[2] < 0) return warnUser(message, 'HSV: S & V values must be between 0 & 100')
 
@@ -78,6 +100,7 @@ ${prefix}color cmyk(0,50,85,0)`,
     else if (args.startsWith('cmyk(')) {
       cmyk = args.slice(5).slice(0, -1).split(',').map(c => c | 0)
 
+      if (cmyk.length < 4 || hsl.length > 4) return warnUser(message, 'CMYK: you must specify 4 values')
       for (let i = 0; i < 3; i++) if (rgb[i] > 100 || rgb[i] < 0) return warnUser(message, 'CMYK: Values must be between 0 & 100')
       rgb = CMYKtoRGB(cmyk[0], cmyk[1], cmyk[2], cmyk[3])
       hex = RGBtoHEX(rgb[0], rgb[1], rgb[2])
@@ -89,11 +112,23 @@ ${prefix}color cmyk(0,50,85,0)`,
       hex = args
       if (parseInt(hex.slice(1), 16).toString(16) != hex.slice(1).toLowerCase()) return warnUser(message, 'HEX: Invalid hexadecimal value, accepted characters are: 0 - 9 & A - F')
 
-      // if #f3f -> double each digit: #ff33ff
-      if (hex.length == 4) hex = `#${hex[1]}${hex[1]}${hex[2]}${hex[2]}${hex[3]}${hex[3]}`
-      else if (hex.length != 7) return warnUser(message, 'HEX: You must specify 3 **or** 6 digits\n(transparency is not implemented)')
+      switch (hex.length) {
+        case 4:
+          // if #f3f -> double each digit: #ff33ff
+          hex = `#${hex[1]}${hex[1]}${hex[2]}${hex[2]}${hex[3]}${hex[3]}`
+          break
+        case 7:
+          break
+        case 9:
+          alpha = hex.slice(7)
+          hex   = hex.slice(0, 7)
+          break
+        default:
+          return warnUser(message, 'HEX: You must specify 3 **or** 6 **or** 8 digits')
+      }
 
-      rgb = HEXtoRGB(hex)
+      if (alpha) rgb = HEXAtoRGBA(`${hex}${alpha}`)
+      else rgb = HEXtoRGB(hex)
 
       hsl  = RGBtoHSL(rgb[0], rgb[1], rgb[2])
       hsv  = RGBtoHSV(rgb[0], rgb[1], rgb[2])
@@ -101,13 +136,13 @@ ${prefix}color cmyk(0,50,85,0)`,
     }
     else return warnUser(message, `There is no format for this argument, type \`${prefix}help color\` to see how formating works.`)
 
-    const hslDegree = [
+    hsl = [
       (hsl[0] * 360).toFixed(0),
       (hsl[1] * 100).toFixed(0),
       (hsl[2] * 100).toFixed(0)
     ]
 
-    const hsvDegree = [
+    hsv = [
       (hsv[0] * 360).toFixed(0),
       (hsv[1] * 100).toFixed(0),
       (hsv[2] * 100).toFixed(0)
@@ -116,7 +151,7 @@ ${prefix}color cmyk(0,50,85,0)`,
     let canvas = Canvas.createCanvas(128, 128)
     let canvasCTX = canvas.getContext('2d')
 
-    canvasCTX.fillStyle = hex
+    canvasCTX.fillStyle = alpha ? `${hex}${alpha}` : hex
     canvasCTX.fillRect(0, 0, 128, 128)
     const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'color.png')
 
@@ -124,10 +159,10 @@ ${prefix}color cmyk(0,50,85,0)`,
       .setTitle('Color Preview')
       .setColor(hex)
       .addFields(
-        { name: 'HEX', value: `\`${hex}\``, inline: true },
-        { name: 'RGB', value: `\`${rgb.join(', ')}\``, inline: true },
-        { name: 'HSL', value: `\`${hslDegree[0]}°, ${hslDegree[1]}%, ${hslDegree[2]}%\``, inline: true },
-        { name: 'HSV', value: `\`${hsvDegree[0]}°, ${hsvDegree[1]}%, ${hsvDegree[2]}%\``, inline: true },
+        { name: `HEX${alpha ? 'a' : ''}`, value: `\`${hex}${alpha ? alpha : ''}\``, inline: true },
+        { name: `RGB${alpha ? 'a' : ''}`, value: `\`${rgb.join(', ')}\``, inline: true },
+        { name: 'HSL', value: `\`${hsl[0]}°, ${hsl[1]}%, ${hsl[2]}%\``, inline: true },
+        { name: 'HSV', value: `\`${hsv[0]}°, ${hsv[1]}%, ${hsv[2]}%\``, inline: true },
         { name: 'CMYK', value: `\`${cmyk.join('%, ')}%\``, inline: true }
       )
       .attachFiles(attachment)
@@ -153,6 +188,17 @@ function CMYKtoRGB(c, m, y, k) {
     Math.round((1 - m) * 255),
     Math.round((1 - y) * 255)
   ]
+}
+
+function HEXAtoRGBA(hexa) {
+  let res = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hexa)
+
+  return res ? [
+    parseInt(res[1], 16),
+    parseInt(res[2], 16),
+    parseInt(res[3], 16),
+    (parseInt(res[4], 16) / 255).toFixed(2)
+  ] : [0, 0, 0, 0]
 }
 
 function HEXtoRGB(hex) {
@@ -302,6 +348,10 @@ function RGBtoHSL(r, g, b) {
 
 function RGBtoHEX(r, g, b) {
   return `#${componentToHex(r)}${componentToHex(g)}${componentToHex(b)}`
+}
+
+function RGBAtoHEXA(r, g, b, a) {
+  return `#${componentToHex(r)}${componentToHex(g)}${componentToHex(b)}${componentToHex((a * 255).toFixed(0))}`
 }
 
 function componentToHex(c) {
