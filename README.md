@@ -12,10 +12,7 @@ ___
 ### Online on:
 - [Compliance 32x](https://discord.gg/sN9YRQbBv7)
 - [Compliance 64x](https://discord.gg/Tqtwtgh)
-- [Compliance Addons](https://discord.gg/qVeDfZw)
-- [Compliance Tweaks](https://discord.gg/6psYdRF)
-- [Compliance Dungeons](https://discord.gg/eeVpygu)
-- [Compliance Mods](https://discord.gg/QF2CAX7)
+- [Compliance Extras](https://discord.gg/qVeDfZw)
 
 ___
 ### Installation and launching:
@@ -50,7 +47,8 @@ ___
 |PREFIX|"/"|This is the character used to execute commands.|
 |UIDR, UIDJ, UIDD, UIDT|"123456789123456789"|The user id's of the four bot maintainers.|
 |MAINTENANCE|"false"|Makes all commands maintainer-only, sets status to dnd.|
-|DEBUG|"false"|Shows advanced console logs|
+|DEBUG|"false"|Shows advanced console logs.|
+|DEV|"true"|Disables certain features that are only necessary for the production bot.|
 |COMPLIBOT_GIT_USERNAME|"CompliBot"|Git username for the CompliBot account.|
 |COMPLIBOT_GIT_EMAIL|"CompliBot@users.noreply.github.com"|Git email for the CompliBot account.|
 |COMPLIBOT_GIT_JSON_REPO|"/Compliance-Resource-Pack/JSON/"|Github repository to push/pull json files.|
@@ -59,6 +57,6 @@ ___
 
 #### Other configs:
 
-- `res/colors.js` for embed colors
-- `res/strings.js` for embed or message texts
-- `settings.js` for role and channel id's
+- `resources/colors.js` for embed colors
+- `resources/strings.js` for embed or message texts
+- `resources/settings.js` for role and channel id's

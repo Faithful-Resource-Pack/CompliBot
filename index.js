@@ -26,6 +26,7 @@ const UIDA = [
 const prefix      = process.env.PREFIX
 const DEBUG       = (process.env.DEBUG.toLowerCase() == 'true')
 const MAINTENANCE = (process.env.MAINTENANCE.toLowerCase() == 'true')
+const DEV         = (process.env.DEV.toLowerCase() == 'true')
 
 // Helpers:
 const { warnUser } = require('./helpers/warnUser')
@@ -52,7 +53,7 @@ const { inviteDetection } = require('./functions/moderation/inviteDetection')
 
 const { submitTexture }  = require('./functions/textures/submission/submitTexture')
 const { editSubmission } = require('./functions/textures/submission/editSubmission')
-const { saveDB } = require('./functions/saveDB')
+const { saveDB }         = require('./functions/saveDB')
 
 const { manageExtraRoles } = require('./functions/manageExtraRoles')
 
@@ -102,10 +103,12 @@ function doMCUpdateCheck () {
  * BOT HEARTBEAT:
  * Keep the bot alive on repl.it
  */
-http.createServer((req, res) => {
-  res.write("h");
-  res.end();
-}).listen(PORT, () => console.log(`listening at http://localhost:${PORT}`));
+if (!DEV) {
+	http.createServer((req, res) => {
+		res.write("h");
+		res.end();
+	}).listen(PORT, () => console.log(`listening at http://localhost:${PORT}`));
+}
 
 /**
  * COMMAND HANDLER
@@ -136,6 +139,8 @@ client.on('ready', async () => {
 	else client.user.setActivity(`${prefix}help`, {type: 'LISTENING'})
 
 	await restartAutoDestroy(client)
+
+	if (DEV) return
 
 	/**
 	 * START TEXTURE SUBMISSION PROCESS
@@ -173,6 +178,7 @@ client.on('ready', async () => {
  * MEMBER JOIN
  */
 client.on('guildMemberAdd', async () =>{
+	if (DEV) return
 	updateMembers(client, settings.CTWEAKS_ID, settings.CTWEAKS_COUNTER)
 	updateMembers(client, settings.C32_ID, settings.C32_COUNTER)
 })
@@ -181,6 +187,7 @@ client.on('guildMemberAdd', async () =>{
  * MEMBER LEFT
  */
 client.on('guildMemberRemove', async () => {
+	if (DEV) return
 	updateMembers(client, settings.CTWEAKS_ID, settings.CTWEAKS_COUNTER)
 	updateMembers(client, settings.C32_ID, settings.C32_COUNTER)
 })
@@ -189,6 +196,7 @@ client.on('guildMemberRemove', async () => {
  * BOT ADD OR REMOVE
  */
 client.on('guildCreate', async guild =>{
+	if (DEV) return
 	var embed = new Discord.MessageEmbed()
 		.setTitle(`Thanks for adding me to ${guild.name}!`)
 		.addFields(

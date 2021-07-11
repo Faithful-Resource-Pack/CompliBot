@@ -19,11 +19,11 @@ module.exports = {
 
 		let embed = new Discord.MessageEmbed()
 		if (args.includes('urgent') || args.includes('important') || args.includes('urgents')) {
-      embed.setAuthor(message.author.tag, message.author.displayAvatarURL())
-				.setTitle('Moderators:')
-				.setDescription('You demanded that all moderators be present. You must have a good reason or penalties may be taken.')
-				.setColor('#22202C')
-				.setFooter(`use ${prefix}modping to call mods for help!`)
+			embed.setAuthor(message.author.tag, message.author.displayAvatarURL())
+			.setTitle('Moderators:')
+			.setDescription('You demanded that all moderators be present. You must have a good reason or penalties may be taken.')
+			.setColor('#22202C')
+			.setFooter(`use ${prefix}modping to call mods for help!`)
 
 			await message.inlineReply(embed)
 			return message.channel.send(`<@&${MOD_ROLE.id}>`)
