@@ -64,6 +64,7 @@ const strings = require('./resources/strings')
 // Import settings & commands handler:
 const commandFiles = walkSync('./commands').filter(file => file.endsWith('.js'))
 const settings     = require('./resources/settings')
+
 const { addDeleteReact }     = require('./helpers/addDeleteReact')
 const { restartAutoDestroy } = require('./functions/restartAutoDestroy')
 
@@ -248,6 +249,7 @@ client.on('message', async message => {
  * REACTION EVENT LISTENER
  */
 client.on('messageReactionAdd', async (reaction, user) => {
+	if (DEV) return
 	if (user.bot) return
 	if (reaction.message.partial) await reaction.message.fetch() // dark magic to fetch message that are sent before the start of the bot
 	
@@ -275,6 +277,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
  * EASTER EGGS & CUSTOM COMMANDS:
  */
 client.on('message', async message => {
+	if (DEV) return
 	// Avoid message WITH prefix & bot messages
 	if (message.content.startsWith(prefix) || message.author.bot) return
 
