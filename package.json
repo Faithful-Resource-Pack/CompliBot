@@ -36,7 +36,7 @@
     "http": "0.0.1-security",
     "image-size": "^1.0.0",
     "node-fetch": "^2.6.1",
-    "simple-git": "^2.39.0"
+    "simple-git": "^2.41.1"
   },
   "devDependencies": {
     "eslint": "^7.30.0"
