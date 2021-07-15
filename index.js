@@ -60,6 +60,7 @@ const { manageExtraRoles } = require('./functions/manageExtraRoles')
 // Resources:
 const colors  = require('./resources/colors')
 const strings = require('./resources/strings')
+const emojis  = require('./resources/emojis')
 
 // Import settings & commands handler:
 const commandFiles = walkSync('./commands').filter(file => file.endsWith('.js'))
@@ -171,7 +172,6 @@ client.on('ready', async () => {
 	/**
 	 * UPDATE MEMBERS
 	 */
-	updateMembers(client, settings.CTWEAKS_ID, settings.CTWEAKS_COUNTER)
 	updateMembers(client, settings.C32_ID, settings.C32_COUNTER)
 })
 
@@ -180,7 +180,6 @@ client.on('ready', async () => {
  */
 client.on('guildMemberAdd', async () =>{
 	if (DEV) return
-	updateMembers(client, settings.CTWEAKS_ID, settings.CTWEAKS_COUNTER)
 	updateMembers(client, settings.C32_ID, settings.C32_COUNTER)
 })
 
@@ -189,7 +188,6 @@ client.on('guildMemberAdd', async () =>{
  */
 client.on('guildMemberRemove', async () => {
 	if (DEV) return
-	updateMembers(client, settings.CTWEAKS_ID, settings.CTWEAKS_COUNTER)
 	updateMembers(client, settings.C32_ID, settings.C32_COUNTER)
 })
 
@@ -364,8 +362,8 @@ client.on('message', async message => {
 			if (!msg.deleted) await msg.delete({timeout: 30000})
 			if (!message.deleted) await message.delete({timeout: 10})
 		} else {
-			await message.react('814569395493011477')
-			await message.react('814569427546144812')
+			await message.react(emojis.UPVOTE)
+			await message.react(emojis.DOWNVOTE)
 		}
 	}
 
