@@ -8,59 +8,79 @@ const colors   = require('../../resources/colors');
 const { warnUser } = require('../../helpers/warnUser');
 
 const EDIT = {
-	date: '31/05/2021',
-	description: 'Fixed typo.',
+	date: '15/07/2021',
+	description: 'General update. Added specification about username.',
 	enabled: true
 }
 
+const NUMBER = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟']
+
+// NOTE : you can't use markdown inside title field
 const RULES = [
 	{
-		emoji: '1️⃣',
-		sentence: '**Follow [Discord TOS and Guidelines](https://discord.com/terms).**'
+		title: `**Read & Follow Discord Terms Of Service and Community Guidelines.**`,
+		description: `• TOS : https://discord.com/terms
+		• Guidelines : https://discord.com/guidelines`
 	},
 	{
-		emoji: '2️⃣',
-		sentence: '**Be respectful of others.**\nThis is your standard "don\'t be a dick" rule. Just be polite to others and you\'ll be fine.\n\n__Examples of unacceptable behaviour:__\n• Mocking and/or making fun of people, especially after being told to stop.\n• Being unable to accept civil feedback from others. If others can provide constructive criticism for your creation, you can be civil about it too!\n\nThese are just examples, and other behaviour not listed here may be considered unacceptable as well.\n\n__The following behaviour does NOT fall under this rule:__\n• Obvious jokes. Harmless funny teasing is fine, just don\'t let it go too far.\n• Feedback on creations, as long as it\'s civil and constructive.'
-	},
-	{ 
-		emoji: '3️⃣',
-		sentence: '**No advertising.**\nThis means no advertising of products or other Discord servers unless another user asks.'
-	},
-	{
-		emoji: '4️⃣',
-		sentence: '**No NSFW content, including, but not limited to explicit photographs or graphic stories.**\nIf you think something is NSFW, it is NSFW. Don\'t post it. (or DM a moderator to approve the image)'
-	},
-	{
-		emoji: '5️⃣',
-		sentence: '**Provide constructive criticism.**\nNever say just "that\'s bad" when giving your opinion on something. Always elaborate on your view, and remember to stay polite!'
+		title: `**Be respectful**`,
+		description: `This is your standard "don't be an asshole" rule. Just be polite to others and you'll be fine.
+
+		__Examples of unacceptable behaviour:__
+		• Mocking and/or making fun of people, this applies to any kind of mocking.
+		• Being unable to accept civil feedback from others. If others can provide constructive criticism for your creation, you must be civil about it too!
+		• Renaming yourself to harm someone, a third party or a competitor is not acceptable. Renaming yourself is a right, not a funny feature.
+
+		> These are just examples, and other behaviour not listed here may be considered unacceptable as well.`
 	},
 	{
-		emoji: '6️⃣',
-		sentence: '**No spamming.**\nThat includes walls of text as well as excessively long chains of similar/identical messages.'
+		title: `**No spamming or hate speech**`,
+		description: `
+		__Spamming:__
+		This means no random garbage that does not contribute anything to real discussions.
+		> That includes walls of text as well as excessively long chains of similar/identical messages.
+		
+		__Hate speech:__
+		That includes, but _is not limited to_: general derogatory names, racial slurs, homophobia, transphobia and other slurs related to sexual orientation/sex/gender...`
 	},
 	{
-		emoji: '7️⃣',
-		sentence: '**Absolutely no politics.**\nThis is a Minecraft resource pack server. Take your political discussions somewhere else. That includes talking about recent political events.'
+		title: `**Be civilized**`,
+		description: `__Don't ask to ask:__
+		Don't just go in a channel and say "can anybody help me?" – Ask your question directly instead. Also, remember to read our #FAQ.
+		
+		__Stay on topic:__
+		There are multiple channels with different purposes for a reason.
+
+		__Provide constructive criticism:__
+		Never say just "that's bad" when giving your opinion on something. Always elaborate on your view, and remember to stay polite!
+
+		__Privacy:__
+		Leaking any private information from staff without permission is strictly prohibited.
+		> This applies to channel names, as well as all content shared in these private channels.`
 	},
 	{
-		emoji: '8️⃣',
-		sentence: '**No hate speech.**\nThat includes, but is not limited to: racial slurs, homophobia, transphobia and other slurs related to sexual orientation/sex/gender, general derogatory names etc.'
+		title: `**No NSFW/Prohibited content**`,
+		description: `The following is **NOT** allowed at any time, including but not limited to:
+		
+		• Offensive content
+		• Questionable and NSFW content
+		• Politics, religion and any contreversial issues.
+		• Jokes, memes, and misinformation about past or on-going tragic events.
+		• Potentially seizure-inducing animated images/videos.
+		• Excessively loud audio/videos.
+
+		> If you think something is NSFW, it is NSFW. Don't post it or DM a Moderator to approve the content you want to post.`
 	},
 	{
-		emoji: '9️⃣',
-		sentence: '**Don\'t ask to ask.**\nDon\'t just go in a channel and say "can anybody help me?" – Ask your question directly instead. Also, remember to read our FAQ.'
+		title: `**No promoting or advertising.**`,
+		description: `Unsolicited server invites, referral links, and any/all other unwanted promotional content is not allowed.
+		Resource Packs and anything related to Compliance are allowed, within reason.`
 	},
 	{
-		emoji: '🔟',
-		sentence: '**Stay on topic.**\nThere are multiple channels with different purposes for a reason.'
-	},
-	{
-		emoji: '1️⃣1️⃣',
-		sentence: '**Leaking private information from staff without permission is strictly prohibited.**\nThis applies to channel names, as well as all content shared in these private channels.'
-	},
-	{
-		emoji: '1️⃣2️⃣',
-		sentence: '**Ignoring, not knowing and/or bypassing the rules, as well as not listening to the moderators is not an excuse for misbehaving.**\nRemember, by talking in this server you\'re agreeing to follow these rules.'
+		title: `**Speak english**`,
+		description: `This is an English-speaking server. If you cannot fluently write in English, please use a [translator](https://translate.google.com/)
+		
+		> Developers are currently working on a translate command but there is currently no ETA when it would be released.`
 	}
 ]
 
@@ -117,54 +137,47 @@ module.exports = {
 
 		if (rule <= RULES.length && rule > 0) {
 			const embed = new Discord.MessageEmbed()
-				.setTitle(`Rule ${rule}`)
+				.setTitle(RULES[rule-1].title)
 				.setColor(color)
 				.setThumbnail(thumbnail)
-				.setDescription(RULES[rule-1].sentence);
+				.setDescription(RULES[rule-1].description);
 
 			return await message.inlineReply(embed);
 		}
 
 		else if (rule == -1) {
 			
-			var embed = new Discord.MessageEmbed()
+			let embed = new Discord.MessageEmbed()
 				.setTitle(`Rules of the Compliance Discord's Servers`)
 				.setColor(color)
 				.setThumbnail(thumbnail)
-				.setFooter(`The rules are subject to change, last edited: ${EDIT.date}`, thumbnail);
+				.setDescription(`**Ignoring, not knowing and/or bypassing the rules, as well as not listening to the moderators is not an excuse for misbehaving.**\nRemember, by talking in this server you're agreeing to follow these rules.`)
+			await message.channel.send(embed)
+			
+			for (let i = 0; i < RULES.length; i++) {
+				let embedRule = new Discord.MessageEmbed()
+					.setColor(color)
+					.setTitle(`${NUMBER[i]} ${RULES[i].title}`)
+					.setDescription(RULES[i].description)
 
-			if (message.guild.id === "720677267424018526") {
-				embed.addFields({
-					name: '1️⃣',
-					value: 'No rules.'
-				})
+				await message.channel.send(embedRule);
 			}
-			else {
-				for (let i = 0; i < RULES.length; i++) {
-					embed.addFields({
-						name:  RULES[i].emoji,
-						value: RULES[i].sentence
-					});
-				}
-			}
-			embed.addField('\u200B', 'Please understand that failing to comply to these rules will result in an adequate punishment.')
 
-			await message.channel.send(embed);
-
-			if (EDIT.enabled && message.guild.id !== "720677267424018526") {
+			if (EDIT.enabled) {
 				const embedChanges = new Discord.MessageEmbed()
 					.setTitle(`Latest changes as of the ${EDIT.date}`)
 					.setColor(color)
-					.setDescription(EDIT.description);
+					.setDescription(EDIT.description + '\n> Please understand that failing to comply to these rules will result in an adequate punishment.')
+					.setFooter(`The rules are subject to change.`, thumbnail)
 
-				await message.channel.send(embedChanges);
+				await message.channel.send(embedChanges)
 			}
 
 			if (!message.deleted) await message.delete();
 		}
 
 		// number is out of range
-		else return warnUser(message, `You have to specify a number between 1 and ${RULES.length} included.`);
+		else return warnUser(message, `You have to specify a number between 1 and ${RULES.length} included.`)
 
 	}
 }
