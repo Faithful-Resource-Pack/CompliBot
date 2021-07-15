@@ -74,7 +74,7 @@ const RULES = [
 	{
 		title: `**No promoting or advertising.**`,
 		description: `Unsolicited server invites, referral links, and any/all other unwanted promotional content is not allowed.
-		Resource Packs and anything related to Compliance are allowed, within reason.`
+		> Resource Packs and anything related to Compliance are allowed, within reason.`
 	},
 	{
 		title: `**Speak english**`,
