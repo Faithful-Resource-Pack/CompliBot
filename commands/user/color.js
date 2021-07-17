@@ -8,7 +8,7 @@ const { addDeleteReact } = require('../../helpers/addDeleteReact')
 
 module.exports = {
   name: 'color',
-  aliases: ['colors', 'color', 'colormap', 'colours', 'colour', 'c'],
+  aliases: ['color', 'colour', 'c' ],
   description: strings.HELP_DESC_COLOR,
   guildOnly: false,
   uses: strings.COMMAND_USES_ANYONE,
