@@ -1,6 +1,7 @@
 const Discord  = require('discord.js')
 const settings = require('../resources/settings')
 const colors   = require('../resources/colors')
+
 const { addDeleteReact } = require('../helpers/addDeleteReact')
 
 /**
@@ -15,6 +16,13 @@ async function quote(msg) {
 
 	// no private messages
 	if (msg.channel.type === 'dm') return
+
+	// cancel if quote is in texture submission channel
+	if (
+		msg.channel.id === settings.C32_SUBMIT_TEXTURES ||
+		msg.channel.id === settings.C64_SUBMIT_TEXTURES ||
+		msg.channel.id === settings.CDUNGEONS_SUBMIT
+	) return
 
 	// do not quote behave command
 	if(args[0].startsWith(process.env.PREFIX + 'behave')) return

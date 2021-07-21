@@ -320,7 +320,7 @@ client.on('message', async message => {
 		message.content.includes('https://canary.discord.com/channels/') || 
 		message.content.includes('https://discord.com/channels/')        || 
 		message.content.includes('https://discordapp.com/channels')
-	)	quote(message)
+	) quote(message)
 
 	/**
 	 * TEXTURE ID QUOTE
