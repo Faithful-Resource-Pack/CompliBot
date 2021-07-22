@@ -68,7 +68,7 @@ module.exports = {
 async function showProfile(message, user = undefined, memberID = 'None') {
 	let username  = user.username ? user.username : 'None'
 	let uuid      = user.uuid == null ? 'None' : user.uuid
-	let	type      = (user.type && Array.isArray(user.type) && user.type.length > 0) ? user.type.join(', ') + '' : 'member'
+	let	type      = (user.type && Array.isArray(user.type) && user.type.length > 0) ? user.type.join(', ') + '' : 'Member'
 	let warns     = (user.warns && Array.isArray(user.warns) && user.warns.length > 0) ? user.warns.map(el => '- ' + el).join('\n') + '' : 'None'
 	let discordID = user.id ? user.id : memberID
 	let discordname
@@ -88,7 +88,7 @@ async function showProfile(message, user = undefined, memberID = 'None') {
 			{ name: 'Website Username', value: username  },
 			{ name: 'Minecraft UUID',   value: uuid      },
 			{ name: 'Discord ID',       value: discordID },
-			{ name: 'Type',             value: type      },
+			{ name: 'Roles',            value: type      },
 			{ name: `Warns ${warns == 'None' ? '' : '(' + user.warns.length + ')'}`, value: warns }
 		)
 		.setColor(colors.BLUE)
