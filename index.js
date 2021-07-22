@@ -34,6 +34,7 @@ const { walkSync } = require('./helpers/walkSync')
 
 // Functions:
 const { updateMembers } = require('./functions/moderation/updateMembers')
+const { syncMembers } = require('./functions/moderation/syncMembers')
 
 const { textureIDQuote } = require('./functions/textures/textureIDQuote')
 const { quote }          = require('./functions/quote')
@@ -142,6 +143,8 @@ client.on('ready', async () => {
 
 	await restartAutoDestroy(client)
 
+	if (DEV) syncMembers(client, ['720677267424018526'])
+
 	if (DEV) return
 
 	/**
@@ -173,6 +176,12 @@ client.on('ready', async () => {
 	 * UPDATE MEMBERS
 	 */
 	updateMembers(client, settings.C32_ID, settings.C32_COUNTER)
+	
+	/**
+	 * FETCH MEMBERS DATA
+	 */
+	syncMembers(client, [settings.C32_ID, settings.C64_ID, settings.CEXTRAS_ID])
+
 })
 
 /**
