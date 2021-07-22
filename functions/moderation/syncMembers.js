@@ -24,7 +24,6 @@ const VALID_ROLES = [
 async function syncMembers(client, serversID) {
 
 	let users = await usersCollection.read_raw()
-	console.log(users)
 
 	// for each given guilds
 	const serversPromises = serversID.map(id => client.guilds.fetch(id))
@@ -51,6 +50,8 @@ async function syncMembers(client, serversID) {
 
 				// if already in db
 				if (users[user.id]) {
+					if (!users[user.id].type) users[user.id].type = new Array()
+
 					// add roles to the type value of the user
 					roles.forEach(role => {
 						if (!users[user.id].type.includes(role)) users[user.id].type.push(role)
