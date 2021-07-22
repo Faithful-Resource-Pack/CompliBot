@@ -66,16 +66,7 @@ async function syncMembers(client, serversID) {
 						type: roles,
 						uuid: null
 					}
-
 				}
-
-				// to be removed afterwards
-				users[user.id].type = users[user.id].type.map(el => {
-					if (el === 'deleted') return 'Deleted'
-					else if (el === 'Addon Maker') return 'Add-on Maker'
-					else if (el === 'Mod Contributor') return 'Mods Contributor'
-					else return el
-				})
 			}
 		})
 	})
