@@ -143,8 +143,6 @@ client.on('ready', async () => {
 
 	await restartAutoDestroy(client)
 
-	if (DEV) syncMembers(client, ['720677267424018526'])
-
 	if (DEV) return
 
 	/**
@@ -380,6 +378,8 @@ client.on('message', async message => {
 
 // eslint-disable-next-line no-unused-vars
 process.on('unhandledRejection', (reason, promise) => {
+	if (DEV) return console.trace(reason.stack || reason)
+
 	const errorChannel = client.channels.cache.find(channel => channel.id == "853547435782701076")
 	const errorEmbed = new Discord.MessageEmbed()
 		.setTitle('Unhandled Rejection:')
