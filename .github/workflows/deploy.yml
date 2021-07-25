@@ -1,32 +1,38 @@
 name: Deploy
 on:
   push:
-    branches:
-      - master
+    branches: [ master ]
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
-    
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2.3.4
-    
-    - name: Copy repository content via scp
-      uses: Compliance-Resource-Pack/Discord-Bot@master
-      env:
-        HOST: ${{ secrets.HOST }}
-        USERNAME: ${{ secrets.USERNAME }}
-        PORT: ${{ secrets.PORT }}
-        KEY: ${{ secrets.SSHKEY }}
-      with:
-        sources: "."
-        
-    - name: Executing remote command
-      uses: Compliance-Resource-Pack/Discord-Bot@master
+    - uses: actions/checkout@v2
+    - name: Push to server
+      uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.HOST }}
-        USERNAME: ${{ secrets.USERNAME }}
-        PORT: ${{ secrets.PORT }}
-        KEY: ${{ secrets.SSHKEY }}
-        script: ls
+        username: ${{ secrets.USERNAME }}
+        port: ${{ secrets.PORT }}
+        key: ${{ secrets.SSHKEY }}
+        script: git pull
+
+
+    # - name: 1) Copy repository content via scp
+    #   uses: Compliance-Resource-Pack/Discord-Bot@master
+    #   env:
+    #     HOST: ${{ secrets.HOST }}
+    #     USERNAME: ${{ secrets.USERNAME }}
+    #     PORT: ${{ secrets.PORT }}
+    #     KEY: ${{ secrets.SSHKEY }}
+    #   with:
+    #     sources: "."
+        
+    # - name: 2) Executing remote command
+    #   uses: Compliance-Resource-Pack/Discord-Bot@master
+    #   with:
+    #     HOST: ${{ secrets.HOST }}
+    #     USERNAME: ${{ secrets.USERNAME }}
+    #     PORT: ${{ secrets.PORT }}
+    #     KEY: ${{ secrets.SSHKEY }}
+    #     script: ls
