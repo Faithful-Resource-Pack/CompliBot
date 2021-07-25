@@ -9,7 +9,7 @@ jobs:
     - uses: actions/checkout@v1
     
     - name: Copy repository content via scp
-      uses: CompliBot@master
+      uses: Compliance-Resource-Pack/Discord-Bot@master
       env:
         HOST: ${{ secrets.HOST }}
         USERNAME: ${{ secrets.USERNAME }}
@@ -19,7 +19,7 @@ jobs:
         sources: "."
         
     - name: Executing remote command
-      uses: CompliBot@master
+      uses: Compliance-Resource-Pack/Discord-Bot@master
       with:
         host: ${{ secrets.HOST }}
         USERNAME: ${{ secrets.USERNAME }}
