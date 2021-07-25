@@ -25,5 +25,5 @@ jobs:
           cd ./CompliBot
           git pull
           npm install
-          pm2 stop "BOT"
+          pm2 delete "BOT"
           pm2 start "node --use_strict --trace-warnings index.js" --name "BOT"
