@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v1
+    - uses: Compliance-Resource-Pack/Discord-Bot@master
     
     - name: Copy repository content via scp
       uses: Compliance-Resource-Pack/Discord-Bot@master
