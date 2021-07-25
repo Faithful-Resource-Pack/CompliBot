@@ -1,12 +1,15 @@
 name: Deploy
-on: [push]
+on:
+  push:
+    branches:
+      - master
 
 jobs:
   build:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: Compliance-Resource-Pack/Discord-Bot@master
+    - uses: actions/checkout@v1
     
     - name: Copy repository content via scp
       uses: Compliance-Resource-Pack/Discord-Bot@master
