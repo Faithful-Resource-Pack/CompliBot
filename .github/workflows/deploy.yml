@@ -15,7 +15,7 @@ jobs:
         username: ${{ secrets.USERNAME }}
         port: ${{ secrets.PORT }}
         key: ${{ secrets.SSHKEY }}
-        script: git pull
+        script: cd ${{ secrets.REPOSITORY_PATH }} git pull
 
 
     # - name: 1) Copy repository content via scp
