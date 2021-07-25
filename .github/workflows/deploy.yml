@@ -18,7 +18,7 @@ jobs:
         PORT: ${{ secrets.PORT }}
         KEY: ${{ secrets.SSH }}
       with:
-        source: "."
+        source: "./CompliBot"
 
     - name: Executing remote command
       uses: appleboy/ssh-action@master
