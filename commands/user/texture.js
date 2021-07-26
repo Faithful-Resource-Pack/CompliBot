@@ -11,6 +11,7 @@ const choiceEmbed = require('../../helpers/choiceEmbed')
 
 const { magnify }  = require('../../functions/textures/magnify')
 const { palette }  = require('../../functions/textures/palette')
+const { tile }     = require('../../functions/textures/tile');
 const { getMeta }  = require('../../helpers/getMeta')
 const { warnUser } = require('../../helpers/warnUser')
 const { timestampConverter } = require ('../../helpers/timestampConverter')
@@ -245,13 +246,15 @@ async function getTexture(message, res, texture) {
 			const embedMessage = await message.inlineReply(embed);
 			addDeleteReact(embedMessage, message, true)
 
-			if (dimension.width <= 128 && dimension.height <= 128)
+			if (dimension.width <= 512 && dimension.height <= 512)
 				await embedMessage.react(emojis.MAGNIFY);
 			await embedMessage.react(emojis.NEXT_RES);
 			await embedMessage.react(emojis.PALETTE);
+			if (dimension.width <= 512 && dimension.height <= 512)
+				await embedMessage.react(emojis.TILE);
 
 			const filter = (reaction, user) => {
-				return [emojis.MAGNIFY, emojis.NEXT_RES, emojis.PALETTE].includes(reaction.emoji.id) && user.id === message.author.id;
+				return [emojis.MAGNIFY, emojis.NEXT_RES, emojis.PALETTE, emojis.TILE].includes(reaction.emoji.id) && user.id === message.author.id;
 			};
 
 			embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
@@ -266,6 +269,9 @@ async function getTexture(message, res, texture) {
 				if (reaction.emoji.id === emojis.NEXT_RES && used.includes(res)) {
 					if (!embedMessage.deleted) await embedMessage.delete()
 					return getTexture(message, used[(used.indexOf(res) + 1) % used.length], texture)
+				}
+				if (reaction.emoji.id === emojis.TILE) {
+					return tile(embedMessage, embedMessage.embeds[0].image.url, 'grid')
 				}
 			})
 			.catch(async () => {
