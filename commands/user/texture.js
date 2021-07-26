@@ -50,12 +50,12 @@ module.exports = {
 		if (args[0].includes('32')) res = '32'
 		if (args[0].includes('64')) res = '64'
 
-		var waitEmbed = new Discord.MessageEmbed()
+		/*var waitEmbed = new Discord.MessageEmbed()
 			.setTitle('Loading')
 			.setDescription(strings.COMMAND_SEARCHING_FOR_TEXTURE)
 			.setThumbnail(settings.LOADING_IMG)
 			.setColor(colors.BLUE)
-		const waitEmbedMessage = await message.inlineReply(waitEmbed);
+		const waitEmbedMessage = await message.inlineReply(waitEmbed);*/
 
 		// partial texture name (_sword, _axe -> diamond_sword, diamond_axe...)
 		if (search.startsWith('_') || search.endsWith('_')) {
@@ -135,7 +135,7 @@ module.exports = {
 				)
 			}
 
-			if (!waitEmbedMessage.deleted) await waitEmbedMessage.delete();
+			//if (!waitEmbedMessage.deleted) await waitEmbedMessage.delete();
 			choiceEmbed(message, {
 				title: `${results.length} results, react to choose one!`,
 				description: strings.TEXTURE_SEARCH_DESCRIPTION,
@@ -151,11 +151,11 @@ module.exports = {
 		}
 		else if (results.length == 1) {
 			await getTexture(message, res, results[0])
-			if (!waitEmbedMessage.deleted) await waitEmbedMessage.delete();
+			//if (!waitEmbedMessage.deleted) await waitEmbedMessage.delete();
 		}
 		else {
 			await warnUser(message, strings.TEXTURE_DOESNT_EXIST)
-			if (!waitEmbedMessage.deleted) await waitEmbedMessage.delete();
+			//if (!waitEmbedMessage.deleted) await waitEmbedMessage.delete();
 		}
 	}
 }
