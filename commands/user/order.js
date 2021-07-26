@@ -18,5 +18,9 @@ module.exports = {
 		}
 		else if (args == 'ice') return await message.channel.send('https://london.frenchmorning.com/wp-content/uploads/sites/10/2019/02/glacons-boissons-choses-enervent-francais-londres.gif');
 		else if (args == 'fire') return await message.channel.send('https://i.giphy.com/media/Qre4feuyNhiYIzD7hC/200.gif')
+		else if (args == 'soup') {
+			await message.inlineReply('Guten Appetit')
+			return await message.channel.send('https://tenor.com/view/sopita-de-fideo-noodle-soup-mexican-noodles-gif-15167113');
+		}
 	}
 };
