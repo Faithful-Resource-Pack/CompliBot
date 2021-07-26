@@ -1,6 +1,7 @@
 const prefix = process.env.PREFIX;
 
 const Discord  = require("discord.js");
+const os       = require('os');
 const settings = require('../../resources/settings');
 const colors   = require('../../resources/colors');
 const strings  = require('../../resources/strings');
@@ -40,10 +41,11 @@ module.exports = {
 			.setColor(colors.BLUE)
 			.addFields(
 				{ name: 'Uptime', value: `${days} ${tdays}, ${hours} ${thours}, ${minutes} ${tminutes}, ${seconds} ${tseconds}`},
-				{ name: 'RAM Usage', value: `${((process.memoryUsage().heapUsed / 1024) / 1024).toFixed(2)} MB`},
-				{ name: 'Discord Library', value: `discord.js ${Discord.version}`},
+				{ name: 'RAM usage', value: `${((process.memoryUsage().heapUsed / 1024) / 1024).toFixed(2)} MB`},
+				{ name: 'Operating system', value: os.version() + ' ' + os.release()},
+				{ name: 'Discord library', value: `discord.js ${Discord.version}`},
 				{ name: 'Node.js', value: `Version ${process.version}`},
-				{ name: 'In Guilds', value: client.guilds.cache.size},
+				{ name: 'In guilds', value: client.guilds.cache.size},
 			)
 
 		if (message.channel.type !== 'dm') await message.author.send(embed);

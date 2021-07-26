@@ -20,18 +20,22 @@ exports.loadJiraVersions = async () =>  {
 }
 
 exports.updateJiraVersions = async (client) => {
-	const { status, data: versions } = await axios.get('https://bugs.mojang.com/rest/api/latest/project/MC/versions')
-  
-	if (versions === '' || status !== 200) {
+	try {
+		const { status, data: versions } = await axios.get('https://bugs.mojang.com/rest/api/latest/project/MC/versions')
+
+		if (versions === '' || status !== 200) {
+			return
+		}
+
+		versions.forEach(version => {
+			if (!jiraVersionsCache.includes(version.name)) {
+				jiraVersionsCache.push(version.name)
+				if (!version.name.includes('Future Version')) {
+					client.channels.cache.get('773983707299184703').send(`A new Java version has been added to the Minecraft issue tracker: \`${version.name}\``)
+				}
+			}
+		})
+	} catch (e) {
 		return
 	}
-
-	versions.forEach(version => {
-		if (!jiraVersionsCache.includes(version.name)) {
-			jiraVersionsCache.push(version.name)
-			if (!version.name.includes('Future Version')) {
-				client.channels.cache.get('773983707299184703').send(`A new Java version has been added to the Minecraft issue tracker: \`${version.name}\``)
-			}
-		}
-	})
 }
