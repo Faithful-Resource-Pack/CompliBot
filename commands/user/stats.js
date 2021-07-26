@@ -42,7 +42,7 @@ module.exports = {
 			.addFields(
 				{ name: 'Uptime', value: `${days} ${tdays}, ${hours} ${thours}, ${minutes} ${tminutes}, ${seconds} ${tseconds}`},
 				{ name: 'RAM usage', value: `${((process.memoryUsage().heapUsed / 1024) / 1024).toFixed(2)} MB`},
-				{ name: 'Operating system', value: os.version() + ' ' + os.release()},
+				{ name: 'Operating system', value: os.version()},
 				{ name: 'Discord library', value: `discord.js ${Discord.version}`},
 				{ name: 'Node.js', value: `Version ${process.version}`},
 				{ name: 'In guilds', value: client.guilds.cache.size},
