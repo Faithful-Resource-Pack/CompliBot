@@ -58,7 +58,9 @@ async function syncMembers(client, serversID) {
 						if (!users[user.id].type.includes(role)) users[user.id].type.push(role)
 					})
 
-					roles = [ ...new Set(roles) ]
+					// remove duplicates
+					users[user.id].type = [...new Set(users[user.id].type) ]
+
 				}
 
 				// elsewhere
