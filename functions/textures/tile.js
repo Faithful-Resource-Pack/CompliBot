@@ -16,7 +16,7 @@ const { magnify }  = require('./magnify')
  * @param {String} type Type of tiling, could be: grid, horizontal, round or plus
  * @returns Send an embed message with the tiled image
  */
-function tile(message, url, type, gotocomplichannel = undefined) {
+function tile(message, url, type, gotocomplichannel = undefined, redirectMessage = undefined) {
 
 	let complichannel
 	if (gotocomplichannel) {
@@ -149,11 +149,16 @@ function tile(message, url, type, gotocomplichannel = undefined) {
 		}
 		addDeleteReact(embedMessage, message, true)
 
-		if (dimension.width <= 512 && dimension.height <= 512 && message.channel.type !== 'dm') {
+		if (dimension.width <= 512 && dimension.height <= 512) {
+			// avoid an issue that also makes the bot magnify its own image in dm's
+			// probably unfixable due to the texture submission reactions
+			if (embedMessage.channel.type === 'dm') return
+
 			embedMessage.react(emojis.MAGNIFY);
 
 			const filter = (reaction, user) => {
-				return [emojis.MAGNIFY].includes(reaction.emoji.id) && user.id === message.author.id
+				if (redirectMessage) return [emojis.MAGNIFY].includes(reaction.emoji.id) && user.id === redirectMessage.author.id
+				else return [emojis.MAGNIFY].includes(reaction.emoji.id) && user.id === message.author.id
 			}
 
 			embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })

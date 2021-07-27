@@ -271,7 +271,7 @@ async function getTexture(message, res, texture) {
 					return getTexture(message, used[(used.indexOf(res) + 1) % used.length], texture)
 				}
 				if (reaction.emoji.id === emojis.TILE) {
-					return tile(embedMessage, embedMessage.embeds[0].image.url, 'grid')
+					return tile(embedMessage, embedMessage.embeds[0].image.url, 'grid', undefined, message)
 				}
 			})
 			.catch(async () => {
