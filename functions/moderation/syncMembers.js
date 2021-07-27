@@ -37,7 +37,7 @@ async function syncMembers(client, serversID) {
 	membersResults.forEach(members => {
 		members.forEach(member => {
 			const user = member.user
-			const roles = []
+			let roles = []
 
 			// do not process bot
 			if (user.bot === false) {
@@ -57,6 +57,8 @@ async function syncMembers(client, serversID) {
 					roles.forEach(role => {
 						if (!users[user.id].type.includes(role)) users[user.id].type.push(role)
 					})
+
+					roles = [ ...new Set(roles) ]
 				}
 
 				// elsewhere
