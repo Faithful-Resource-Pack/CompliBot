@@ -31,6 +31,7 @@ module.exports = {
 		if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD || message.author.id === uidT) {
 			
 			/* Nothing */
+			pushTextures()
 
 		} else return
 	}
