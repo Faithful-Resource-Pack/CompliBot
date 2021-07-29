@@ -27,6 +27,6 @@ module.exports = {
 			)
 			.setFooter('Compliance Dungeons', settings.CDUNGEONS_IMG);
 
-		await message.inlineReply(embed);
+		await message.reply({embeds: [embed]});
 	}
 };

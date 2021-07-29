@@ -97,7 +97,7 @@ async function textureIDQuote(message) {
         { name: '\u200B', value: pathText, inline: false }
       )
 
-    const embedMessage = await message.inlineReply(embed)
+    const embedMessage = await message.reply({embeds: [embed]})
 		addDeleteReact(embedMessage, message)
   }
 

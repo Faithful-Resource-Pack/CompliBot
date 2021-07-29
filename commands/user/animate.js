@@ -102,7 +102,7 @@ module.exports = {
 				.setDescription('Please, send a message following this example:\n\\`\\`\\`json //mcmeta file content here \\`\\`\\`\nYou should obtain something like this: ```//mcmeta file content here```')
 				.setFooter('The bot will stop searching for message if 🚫 is added to this message.');
 
-			const embedMessage = await message.inlineReply(embed);
+			const embedMessage = await message.reply({embeds: [embed]});
 
 			const msgFilter = m => m.author.id === message.author.id;
 

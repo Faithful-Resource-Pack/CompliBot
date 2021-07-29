@@ -56,7 +56,7 @@ module.exports = {
 			.setDescription(strings.COMMAND_SEARCHING_FOR_TEXTURE)
 			.setThumbnail(settings.LOADING_IMG)
 			.setColor(colors.BLUE)
-		const waitEmbedMessage = await message.inlineReply(waitEmbed);*/
+		const waitEmbedMessage = await message.reply({embeds: [waitEmbed]});*/
 
 		// partial texture name (_sword, _axe -> diamond_sword, diamond_axe...)
 		if (search.startsWith('_') || search.endsWith('_')) {
@@ -243,7 +243,7 @@ async function getTexture(message, res, texture) {
 			*/
 			embed.addField('Paths', pathsText.join('\n'), false)
 
-			const embedMessage = await message.inlineReply(embed);
+			const embedMessage = await message.reply({embeds: [embed]});
 			addDeleteReact(embedMessage, message, true)
 
 			if (dimension.width <= 512 && dimension.height <= 512)

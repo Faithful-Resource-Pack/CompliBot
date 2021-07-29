@@ -25,8 +25,8 @@ module.exports = {
 			.setColor('#22202C')
 			.setFooter(`use ${prefix}modping to call mods for help!`)
 
-			await message.inlineReply(embed)
-			return message.channel.send(`<@&${MOD_ROLE.id}>`)
+			await message.reply({embeds: [embed]})
+			return message.channel.send({content: `<@&${MOD_ROLE.id}>`})
 		}
 		
 		let MODERATORS_DND    = new Array()
@@ -47,9 +47,9 @@ module.exports = {
 				.setColor('#22202C')
 				.setFooter(`use ${prefix}modping to call mods for help!`)
 
-			await message.inlineReply(embed)
+			await message.reply({embeds: [embed]})
 
-			return message.channel.send(MODERATORS_ONLINE.join(', '))
+			return message.channel.send({content: MODERATORS_ONLINE.join(', ')})
 		}
 
 		if (MODERATORS_DND.length > 0) {
@@ -59,9 +59,9 @@ module.exports = {
 				.setColor('#22202C')
 				.setFooter(`use ${prefix}modping to call mods for help!`)
 
-			await message.inlineReply(embed)
+			await message.reply({embeds: [embed]})
 
-			return message.channel.send(MODERATORS_DND.join(', '))
+			return message.channel.send({content: MODERATORS_DND.join(', ')})
 		}
 
 		// No moderators online
@@ -71,8 +71,8 @@ module.exports = {
 			.setColor('#22202C')
 			.setFooter(`use ${prefix}modping to call mods for help!`)
 
-		await message.inlineReply(embed)
-		message.channel.send(`<@&${MOD_ROLE.id}>`)
+		await message.reply({embeds: [embed]})
+		message.channel.send({content: `<@&${MOD_ROLE.id}>`})
 
 	}
 }

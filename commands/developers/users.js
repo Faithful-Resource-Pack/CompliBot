@@ -48,7 +48,7 @@ module.exports = {
         users.remove(id)
 
         embed.setDescription(`Successfully removed <@!${id}> from the users collection.`)
-        message.inlineReply(embed)
+        message.reply({embeds: [embed]})
       }
 
       // add a new user to the users collection
@@ -70,7 +70,7 @@ module.exports = {
         })
 
         embed.setDescription(`Successfully added <@!${id}> to the users collection.`)
-        message.inlineReply(embed)
+        message.reply({embeds: [embed]})
       }
 
       if (type == "set") {
@@ -87,7 +87,7 @@ module.exports = {
           users.set(id, user)
 
           embed.setDescription(`Successfully changed the name of <@!${id}>.`)
-          message.inlineReply(embed)
+          message.reply({embeds: [embed]})
         } else if (field == "name" && options1 === undefined) return warnUser(message, "Please, specify a name")
 
         if (field == "type" && options1 !== undefined) {
@@ -105,7 +105,7 @@ module.exports = {
           users.set(id, user)
 
           embed.setDescription(`Successfully set type of <@!${id}>.`)
-          message.inlineReply(embed)
+          message.reply({embeds: [embed]})
 
         } else if (field == "type" && options1 === undefined) return warnUser(message, `Please use a JSON Array:\n\`${prefix}users set type <id> [ "member" , ...]\``)
 
@@ -125,7 +125,7 @@ module.exports = {
           users.set(id, user)
 
           embed.setDescription(`Successfully set warns of <@!${id}>.`)
-          message.inlineReply(embed)
+          message.reply({embeds: [embed]})
           
         } else if (field == "warns" && options1 === undefined) return warnUser(message, `Please use a JSON Array:\n\`${prefix}users set warns <id> [ "warn example 1" , ...]\``)
 
@@ -146,7 +146,7 @@ module.exports = {
           users.set(id, user)
 
           embed.setDescription(`Successfully set mute parameters of <@!${id}>.`)
-          message.inlineReply(embed)
+          message.reply({embeds: [embed]})
 
         } else if (field == "warns" && options1 === undefined) return warnUser(message, `Please use a JSON Object:\n\`${prefix}users set muted <id> { "start": 0, "end": 0 }\``)
 

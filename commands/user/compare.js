@@ -193,7 +193,7 @@ module.exports = {
       throw err
     })
     const attachment = new Discord.MessageAttachment(bufferResult, 'output.png')
-    const embedMessage = await message.inlineReply(attachment)
+    const embedMessage = await message.reply({files: [attachment]})
     addDeleteReact(embedMessage, message, true)
   }
 }

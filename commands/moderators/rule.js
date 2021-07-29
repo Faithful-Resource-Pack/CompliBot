@@ -142,7 +142,7 @@ module.exports = {
 				.setThumbnail(thumbnail)
 				.setDescription(RULES[rule-1].description);
 
-			return await message.inlineReply(embed);
+			return await message.reply({embeds: [embed]});
 		}
 
 		else if (rule == -1) {

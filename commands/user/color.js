@@ -168,7 +168,7 @@ ${prefix}color cmyk(0,50,85,0)`,
       .attachFiles(attachment)
       .setThumbnail('attachment://color.png')
     
-    const embedMessage = await message.inlineReply(embed)
+    const embedMessage = await message.reply({embeds: [embed]})
 		addDeleteReact(embedMessage, message, true)
   }
 }

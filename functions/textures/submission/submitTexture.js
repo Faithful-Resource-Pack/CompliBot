@@ -56,11 +56,11 @@ async function submitTexture(client, message) {
   }
   // no id given, search texture
   else if (!id && search) {
-    var waitEmbed = new Discord.MessageEmbed()
+    /*var waitEmbed = new Discord.MessageEmbed()
       .setTitle('Loading')
       .setDescription(strings.COMMAND_SEARCHING_FOR_TEXTURE)
       .setColor(colors.BLUE)
-    const waitEmbedMessage = await message.inlineReply(waitEmbed);
+    const waitEmbedMessage = await message.reply({embeds: [waitEmbed]});*/
 
     // partial texture name (_sword, _axe -> diamond_sword, diamond_axe...)
     if (search.startsWith('_') || search.endsWith('_')) {
@@ -112,7 +112,7 @@ async function submitTexture(client, message) {
         choice.push(`\`[#${results[i].id}]\` ${results[i].name.replace(search, `**${search}**`).replace(/_/g, '\\_')} — ${paths[0].path.replace(search, `**${search}**`).replace(/_/g, '\\_')}`)
       }
 
-      if (!waitEmbedMessage.deleted) await waitEmbedMessage.delete();
+      //if (!waitEmbedMessage.deleted) await waitEmbedMessage.delete();
       choiceEmbed(message, {
         title: `${results.length} results, react to choose one!`,
         description: strings.TEXTURE_SEARCH_DESCRIPTION,
@@ -128,10 +128,10 @@ async function submitTexture(client, message) {
     }
     else if (results.length == 1) {
       await makeEmbed(client, message, results[0], param)
-      if (!waitEmbedMessage.deleted) await waitEmbedMessage.delete()
+      //if (!waitEmbedMessage.deleted) await waitEmbedMessage.delete()
     }
     else {
-      if (!waitEmbedMessage.deleted) await waitEmbedMessage.delete()
+      //if (!waitEmbedMessage.deleted) await waitEmbedMessage.delete()
       await invalidSubmission(message, strings.TEXTURE_DOESNT_EXIST + '\n' + search)
     }
   }
@@ -192,7 +192,7 @@ async function invalidSubmission(message, error = 'Not given') {
       .setFooter(strings.SUBMIT_AUTOREACT_ERROR_FOOTER, settings.BOT_IMG)
       .setDescription(error)
 
-    const msg = await message.inlineReply(embed);
+    const msg = await message.reply({embeds: [embed]});
     if (!msg.deleted) await msg.delete({ timeout: 30000 })
     if (!message.deleted) await message.delete({ timeout: 10 })
   } catch (error) {

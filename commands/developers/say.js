@@ -21,7 +21,7 @@ module.exports = {
 			if (!args.length) return warnUser(message, strings.COMMAND_NO_ARGUMENTS_GIVEN);
 
 			else {
-				if (message.attachments.size > 0) await message.channel.send(args.join(" "), {files: [message.attachments.first().url]})
+				if (message.attachments.size > 0) await message.channel.send({content: args.join(" "), files: [message.attachments.first().url]})
 				else await message.channel.send(args.join(" "));
 				
 				await message.delete().catch();

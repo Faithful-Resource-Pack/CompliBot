@@ -161,7 +161,7 @@ module.exports = {
 						.setColor(colors.BLUE)
 						.setDescription(FAQS[i].description)
 						.setFooter(`Keywords: ${FAQS[i].keywords.join(' | ')}`)
-					await message.inlineReply(embed)
+					await message.reply({embeds: [embed]})
 				}
 			}
 

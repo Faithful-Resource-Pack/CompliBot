@@ -19,7 +19,7 @@ module.exports = {
 	syntax: `${prefix}shutdown`,
 	async execute(client, message, args) {
 		if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD || message.author.id === uidT) {
-			await message.inlineReply('Shutting down...');
+			await message.reply({content: 'Shutting down...'});
 			await process.exit();
 		}
     else {
@@ -28,7 +28,7 @@ module.exports = {
 				.setDescription(`Banned <@${message.author.id}> \nReason: trying to stop me lmao`)
 				.setColor(colors.BLUE)
 				.setTimestamp();
-			await message.inlineReply(embed);
+			await message.reply({embeds: [embed]});
 		}
 	}
 };

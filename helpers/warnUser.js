@@ -21,7 +21,7 @@ async function warnUser(message, text) {
 		
 	let embedMessage
 	if (message.deleted) embedMessage = await message.channel.send(embed)
-	else embedMessage = await message.inlineReply(embed)
+	else embedMessage = await message.reply({embeds: [embed]})
 	
 	addDeleteReact(embedMessage, message, true)
 }

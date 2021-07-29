@@ -54,7 +54,7 @@ function magnify(message, url, gotocomplichannel = undefined) {
 				embedMessage = await complichannel.send(`<@!${gotocomplichannel}>`, attachment);
 			}
 		}
-		else embedMessage = await message.inlineReply(attachment);
+		else embedMessage = await message.reply({files: [attachment]});
 		addDeleteReact(embedMessage, message, true)
 
 		return attachment;

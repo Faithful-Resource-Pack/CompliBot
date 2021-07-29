@@ -38,6 +38,6 @@ module.exports = {
 			.setColor(colors.BLUE)
 			.setTimestamp()
 
-		await message.inlineReply(embed)
+		await message.reply({embeds: [embed]})
 	}
 }

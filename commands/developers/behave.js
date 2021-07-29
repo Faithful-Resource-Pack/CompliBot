@@ -33,7 +33,7 @@ module.exports = {
 				else if (link.startsWith('https://discordapp.com/channels/'))
 					ids = url.replace('/channels/','').split('/')
 				else
-					return await message.inlineReply(strings.BEHAVE_ANSWER)
+					return await message.reply({content: strings.BEHAVE_ANSWER})
 				
 				/** @type {Discord.TextChannel} */
 				const channel = message.guild.channels.cache.get(ids[1])
@@ -43,10 +43,10 @@ module.exports = {
 				await message.delete();
 
 				// reply to link message
-				return await messageToBehave.inlineReply(strings.BEHAVE_ANSWER)
+				return await messageToBehave.reply({content: strings.BEHAVE_ANSWER})
 			}
 			
-			return await message.inlineReply(strings.BEHAVE_ANSWER)
-		} else return await message.inlineReply('lol no');
+			return await message.reply({content: strings.BEHAVE_ANSWER})
+		} else return await message.reply({content: 'lol no'});
 	}
 };

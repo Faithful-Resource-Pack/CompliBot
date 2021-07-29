@@ -85,7 +85,7 @@ module.exports = {
 			.setDescription(`**User:** <@!${userID}>\n**Reason:** \`${reason}\``)
 			.setColor(colors.BLACK)
 			.setTimestamp()
-		await message.inlineReply(embed)
+		await message.reply({embeds: [embed]})
 
 		if (mutedEmbed) await message.channel.send(mutedEmbed) // send it after the warn message
 		modLog(client, message, userID, reason, time, 'warned')

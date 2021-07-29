@@ -88,7 +88,7 @@ module.exports = function(message, params) {
     // reply to the sent message
     /** @type {Discord.Message} */
     let embedMessage
-    message.inlineReply(embed)
+    message.reply({embeds: [embed]})
     .then(async function(embed_message) {
       embedMessage = embed_message
       return asyncTools.react(embedMessage, emojis)

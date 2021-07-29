@@ -9,10 +9,14 @@
 require('dotenv').config()
 const Discord   = require('discord.js')
 const cron      = require('cron')
-const client    = new Discord.Client({ disableMentions: 'everyone', restTimeOffset: 0, partials: Object.values(Discord.Constants.PartialTypes) })
+const { Client, Intents } = require('discord.js');
+const client    = new Client({
+	allowedMentions: { parse: ['users', 'roles'], repliedUser: false },
+	restTimeOffset: 0,
+	partials: Object.values(Discord.Constants.PartialTypes),
+	intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_BANS, Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_MESSAGE_TYPING, Intents.FLAGS.DIRECT_MESSAGES, Intents.FLAGS.DIRECT_MESSAGE_REACTIONS, Intents.FLAGS.DIRECT_MESSAGE_TYPING] 
+})
 client.commands = new Discord.Collection()
-const PORT      = 3000
-require("./modified_libraries/ExtendedMessage")
 
 // Admins & settings:
 const UIDA = [
@@ -209,11 +213,11 @@ client.on('guildCreate', async guild =>{
 /**
  * COMMAND HANDLER
  */
-client.on('message', async message => {
+client.on('messageCreate', async message => {
 	if (!message.content.startsWith(prefix) || message.author.bot) return // Avoid messages WITHOUT prefix & bot messages
 
 	if (MAINTENANCE && !UIDA.includes(message.author.id)) {
-		const msg = await message.inlineReply(strings.COMMAND_MAINTENANCE)
+		const msg = await message.reply({content: strings.COMMAND_MAINTENANCE})
 		await message.react('❌')
 		if (!message.deleted) await msg.delete({timeout: 30000})
 	}
@@ -232,7 +236,7 @@ client.on('message', async message => {
 			.setThumbnail(settings.ERROR_IMG)
 			.setDescription(`${strings.COMMAND_ERROR}\nError for the developers:\n${error}`)
 
-		let msgEmbed = await message.inlineReply(embed)
+		let msgEmbed = await message.reply({embeds: [embed]})
 		await message.react('❌')
 		return addDeleteReact(msgEmbed, message, true)
 	})
@@ -269,7 +273,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
 /**
  * EASTER EGGS & CUSTOM COMMANDS:
  */
-client.on('message', async message => {
+client.on('messageCreate', async message => {
 	if (DEV) return
 	// Avoid message WITH prefix & bot messages
 	if (message.content.startsWith(prefix) || message.author.bot) return
@@ -277,7 +281,7 @@ client.on('message', async message => {
 	/**
 	 * EASTER EGGS
 	 */
-	if (message.content.includes('(╯°□°）╯︵ ┻━┻')) return await message.inlineReply('┬─┬ ノ( ゜-゜ノ) calm down bro')
+	if (message.content.includes('(╯°□°）╯︵ ┻━┻')) return await message.reply({content: '┬─┬ ノ( ゜-゜ノ) calm down bro'})
 	if (message.content.toLowerCase().includes('engineer gaming')) return await message.react('👷‍♂️')
 	if (message.content === 'F') return await message.react('🇫')
 
@@ -286,7 +290,7 @@ client.on('message', async message => {
 			.setDescription('```Uh-oh moment```')
 			.setColor(colors.BLUE)
 			.setFooter('Swahili → English', settings.BOT_IMG)
-		let msgEmbed = await message.inlineReply(embed)
+		let msgEmbed = await message.reply({embeds: [embed]})
 		return addDeleteReact(msgEmbed, message)
 	}
 
@@ -300,8 +304,8 @@ client.on('message', async message => {
 
 	if (message.content.toLowerCase() === 'hello there') {
 		let msgEmbed
-		if (Math.floor(Math.random() * Math.floor(5)) != 1) msgEmbed = await message.inlineReply('https://media1.tenor.com/images/8dc53503f5a5bb23ef12b2c83a0e1d4d/tenor.gif')
-		else msgEmbed = await message.inlineReply('https://preview.redd.it/6n6zu25c66211.png?width=960&crop=smart&auto=webp&s=62024911a6d6dd85f83a2eb305df6082f118c8d1')
+		if (Math.floor(Math.random() * Math.floor(5)) != 1) msgEmbed = await message.reply({content: 'https://media1.tenor.com/images/8dc53503f5a5bb23ef12b2c83a0e1d4d/tenor.gif'})
+		else msgEmbed = await message.reply({content: 'https://preview.redd.it/6n6zu25c66211.png?width=960&crop=smart&auto=webp&s=62024911a6d6dd85f83a2eb305df6082f118c8d1'})
 
 		return addDeleteReact(msgEmbed, message)
 	}
@@ -353,7 +357,7 @@ client.on('message', async message => {
 				.setDescription(strings.SUBMIT_NO_FILE_ATTACHED)
 				.setFooter('Submission will be removed in 30 seconds, please re-submit', settings.BOT_IMG)
 
-			const msg = await message.inlineReply(embed)
+			const msg = await message.reply({embeds: [embed]})
 			if (!msg.deleted) await msg.delete({timeout: 30000})
 			if (!message.deleted) await message.delete({timeout: 10})
 		} else {

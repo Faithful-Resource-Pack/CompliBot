@@ -37,7 +37,7 @@ module.exports = {
 			.setDescription(strings.FEEDBACK_SUCCESS_DESCRPTION)
 			.setTimestamp()
 
-		await channel.send(embed);
-		await message.inlineReply(embed2);
+		await channel.send({embeds: [embed]});
+		await message.reply({embeds: [embed2]});
 	}
 };

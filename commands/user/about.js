@@ -127,7 +127,7 @@ module.exports = {
 		}*/
 	/*
 		embed.setDescription(`${embed.description}\n\n1️⃣ To see the Compliance Java texture list\n2️⃣ To see the Compliance Bedrock texture list`)
-		var embedMessage = await message.inlineReply(embed);
+		var embedMessage = await message.reply({embeds: [embed]});
 		loop(embedMessage, message, embed, embedJava, embedBedrock);*/
 	}
 }

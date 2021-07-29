@@ -1,8 +1,6 @@
 const prefix = process.env.PREFIX;
 
 const Discord   = require("discord.js");
-const client    = new Discord.Client();
-client.commands = new Discord.Collection();
 
 const settings = require('../../resources/settings');
 const colors   = require('../../resources/colors');
@@ -21,7 +19,7 @@ module.exports = {
 	 * @param {Discord.Message} message Discord origin message
 	 * @param {String[]} args Command arguments
 	 */
-	async execute(_client, message, args) {
+	async execute(client, message, args) {
 		// get users location
 		const usersCollection = require('../../helpers/firestorm/users')
 
@@ -94,5 +92,5 @@ async function showProfile(message, user = undefined, memberID = 'None') {
 		.setColor(colors.BLUE)
 		.setFooter(message.client.user.username, settings.BOT_IMG);
 
-	return message.inlineReply(embed);
+	return message.reply({embeds: [embed]});
 }

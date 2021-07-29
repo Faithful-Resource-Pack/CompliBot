@@ -30,7 +30,7 @@ module.exports = {
 				.setDescription(`Beaned ${member} \nReason: ${reason}`)
 				.setColor(colors.BLUE)
 				.setTimestamp()
-			await message.inlineReply(embed)
+			await message.reply({embeds: [embed]})
 		}
 	}
 }

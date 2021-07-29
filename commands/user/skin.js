@@ -33,7 +33,7 @@ module.exports = {
 				.setThumbnail(`https://visage.surgeplay.com/skin/512/${response.data.id}`)
 				.setFooter('Powered by visage.surgeplay.com', 'https://visage.surgeplay.com/steve.png')
 
-			const embedMessage = await message.inlineReply(embed);
+			const embedMessage = await message.reply({embeds: [embed]});
 				addDeleteReact(embedMessage, message, true)
 			})
 			.catch(async function () {

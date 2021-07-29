@@ -43,7 +43,7 @@ module.exports = {
 			.setColor(colors.BLACK)
 			.setTimestamp();
 
-		await message.inlineReply(embed);
+		await message.reply({embeds: [embed]});
 
 		modLog(client, message, userID, reason, 0, 'unmuted')
 	}

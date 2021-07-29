@@ -145,7 +145,7 @@ function tile(message, url, type, gotocomplichannel = undefined, redirectMessage
 			}
 		}
 		else {
-			embedMessage = await message.inlineReply(attachment)
+			embedMessage = await message.reply({files: [attachment]})
 		}
 		addDeleteReact(embedMessage, message, true)
 
