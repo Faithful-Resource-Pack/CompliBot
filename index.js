@@ -130,7 +130,7 @@ client.on('ready', async () => {
 	console.log(`│                                                             │`)
 	console.log(`└─────────────────────────────────────────────────────────────┘\n\n`)
 
-	if (MAINTENANCE) client.user.setPresence({ activity: { name: 'maintenance' }, status: 'dnd' })
+	if (MAINTENANCE) client.user.setPresence({ activities: [{ name: 'maintenance' }], status: 'dnd' })
 	else client.user.setActivity(`${prefix}help`, {type: 'LISTENING'})
 
 	await restartAutoDestroy(client)

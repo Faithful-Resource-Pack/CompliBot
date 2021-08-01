@@ -152,7 +152,7 @@ function tile(message, url, type, gotocomplichannel = undefined, redirectMessage
 		if (dimension.width <= 512 && dimension.height <= 512) {
 			// avoid an issue that also makes the bot magnify its own image in dm's
 			// probably unfixable due to the texture submission reactions
-			if (embedMessage.channel.type === 'dm') return
+			if (embedMessage.channel.type === 'DM') return
 
 			embedMessage.react(emojis.MAGNIFY);
 
