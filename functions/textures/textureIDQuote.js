@@ -89,7 +89,6 @@ async function textureIDQuote(message) {
     var embed = new Discord.MessageEmbed()
       .setTitle(`[#${id}] - ${name}`)
       .setColor(colors.BLUE)
-      .attachFiles(attachment)
       .setImage('attachment://output.png')
       .addFields(
         { name: '32x', value: author[0] != undefined && author[0].length ? `<@!${author[0].join('> <@!')}> - ${timestampConverter(timestamp[0])}` : `Contribution not found` },
@@ -97,7 +96,7 @@ async function textureIDQuote(message) {
         { name: '\u200B', value: pathText, inline: false }
       )
 
-    const embedMessage = await message.reply({embeds: [embed]})
+    const embedMessage = await message.reply({embeds: [embed], files: [attachment]})
 		addDeleteReact(embedMessage, message)
   }
 

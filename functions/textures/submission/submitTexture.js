@@ -165,7 +165,7 @@ async function makeEmbed(client, message, texture, param = new Object()) {
   
   // re-upload the image to the new message, avoid broken link (rename it in the same time)
   const attachment = new Discord.MessageAttachment(message.attachments.first().url, texture.name + '.png')
-  embed.attachFiles(attachment).setImage(`attachment://${texture.name}.png`)
+  embed.setImage(`attachment://${texture.name}.png`)
 
   // add, if provided, the description
   if (param.description) embed.setDescription(param.description)
@@ -173,7 +173,7 @@ async function makeEmbed(client, message, texture, param = new Object()) {
   if (param.authors.length > 1) embed.fields[0].name = 'Authors'
 
   // send the embed
-  const msg = await message.channel.send({embeds: [embed]});
+  const msg = await message.channel.send({embeds: [embed], files: [attachment]});
   if (!message.deleted) setTimeout(() => message.delete(), 10);
 
   // add reactions to the embed
