@@ -206,7 +206,7 @@ client.on('guildCreate', async guild =>{
 		.setThumbnail(settings.BOT_IMG)
 		.setFooter(client.user.username, settings.BOT_IMG);
 
-	var channel = guild.channels.cache.find(channel => channel.type === 'text' && channel.permissionsFor(guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES']))
+	var channel = guild.channels.cache.find(channel => channel.type === 'GUILD_TEXT' && channel.permissionsFor(guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES']))
 	await channel.send({embeds: [embed]})
 })
 
@@ -227,7 +227,7 @@ client.on('messageCreate', async message => {
 	const command     = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName))
 
 	if (!command) return
-	if (command.guildOnly && message.channel.type === 'dm') return warnUser(message, strings.CANT_EXECUTE_IN_DMS)
+	if (command.guildOnly && message.channel.type === 'DM') return warnUser(message, strings.CANT_EXECUTE_IN_DMS)
 
 	command.execute(client, message, args).catch(async error => {
 		const embed = new Discord.MessageEmbed()

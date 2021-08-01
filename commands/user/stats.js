@@ -14,7 +14,7 @@ module.exports = {
 	uses: strings.COMMAND_USES_ANYONE,
 	syntax: `${prefix}stats`,
 	async execute(client, message, args) {
-		if (message.channel.type !== 'dm') await message.reply({content: 'Please check your dm\'s!'});
+		if (message.channel.type !== 'DM') await message.reply({content: 'Please check your dm\'s!'});
 
 		let seconds = Math.floor(message.client.uptime / 1000);
 		let minutes = Math.floor(seconds / 60);
@@ -48,7 +48,7 @@ module.exports = {
 				{ name: 'In guilds', value: client.guilds.cache.size},
 			)
 
-		if (message.channel.type !== 'dm') await message.author.send({embeds: [embed]});
+		if (message.channel.type !== 'DM') await message.author.send({embeds: [embed]});
 		else await message.reply({embeds: [embed]});
 	}
 };

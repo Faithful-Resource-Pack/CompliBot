@@ -15,7 +15,7 @@ async function quote(msg) {
 	let i, ids, embed, file
 
 	// no private messages
-	if (msg.channel.type === 'dm') return
+	if (msg.channel.type === 'DM') return
 
 	// cancel if quote is in texture submission channel
 	if (

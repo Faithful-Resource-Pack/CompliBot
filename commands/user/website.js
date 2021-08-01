@@ -67,7 +67,7 @@ module.exports = {
 		let embed = new Discord.MessageEmbed()
 
 		if (!args[0]) {
-			if (message.channel.type !== 'dm') return warnUser(message, strings.WEBSITE_PROVIDE_VALID_ARGUMENT)
+			if (message.channel.type !== 'DM') return warnUser(message, strings.WEBSITE_PROVIDE_VALID_ARGUMENT)
 
 			embed
 				.setTitle('Websites:')

@@ -276,13 +276,13 @@ async function getTexture(message, res, texture) {
 			})
 			.catch(async () => {
 				try {
-					if (message.channel.type !== 'dm' && (dimension.width <= 512 && dimension.height <= 512))
+					if (message.channel.type !== 'DM' && (dimension.width <= 512 && dimension.height <= 512))
 						await embedMessage.reactions.cache.get(emojis.MAGNIFY).remove()
-					if (message.channel.type !== 'dm')
+					if (message.channel.type !== 'DM')
 						await embedMessage.reactions.cache.get(emojis.NEXT_RES).remove()
-					if (message.channel.type !== 'dm')
+					if (message.channel.type !== 'DM')
 						await embedMessage.reactions.cache.get(emojis.PALETTE).remove()
-					if (message.channel.type !== 'dm' && (dimension.width <= 512 && dimension.height <= 512))
+					if (message.channel.type !== 'DM' && (dimension.width <= 512 && dimension.height <= 512))
 						await embedMessage.reactions.cache.get(emojis.TILE).remove()
 				} catch (err) { /* Message deleted */ }
 			})
