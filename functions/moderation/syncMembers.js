@@ -19,8 +19,8 @@ const VALID_ROLES = [
 /**
  * Update member count of a server
  * @param {DiscordClient} client 
- * @param {String} serverID server from where the count is established
- * @param {String} channelID use to set the count
+ * @param {String} serverId server from where the count is established
+ * @param {String} channelId use to set the count
  */
 async function syncMembers(client, serversID) {
 

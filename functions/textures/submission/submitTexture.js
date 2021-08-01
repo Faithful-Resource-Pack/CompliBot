@@ -7,6 +7,8 @@ const choiceEmbed = require('../../../helpers/choiceEmbed')
 const textures    = require('../../../helpers/firestorm/texture')
 const paths       = require('../../../helpers/firestorm/texture_paths')
 
+const { Permissions } = require('discord.js');
+
 /**
  * Check if the given texture exist, and embed it if true
  * @author Juknum
@@ -182,7 +184,7 @@ async function makeEmbed(client, message, texture, param = new Object()) {
 }
 
 async function invalidSubmission(message, error = 'Not given') {
-  if (message.member.hasPermission('ADMINISTRATOR')) return // allow admins to talk in submit channels
+  if (message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) return // allow admins to talk in submit channels
   
   try {
     var embed = new Discord.MessageEmbed()

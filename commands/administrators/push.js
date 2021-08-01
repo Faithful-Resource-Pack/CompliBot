@@ -14,6 +14,7 @@ const REPOSITORIES = [
 const BE_BRANCHES = [ '1.16.210' ];
 const JE_BRANCHES = [ '1.12.2', '1.13.2', '1.14.4', '1.15.2', '1.16.5', '1.17' ];
 
+const { Permissions }  = require('discord.js');
 const { parseArgs }    = require('../../helpers/parseArgs');
 const { date }         = require('../../helpers/date');
 const { warnUser }     = require('../../helpers/warnUser');
@@ -34,7 +35,7 @@ module.exports = {
 
 		return warnUser(message, 'NOT UPDATED TO THE NEW DATABASE SYSTEM')
 		/*
-		if(!message.member.hasPermission('ADMINISTRATOR')) return warnUser(message, strings.COMMAND_NO_PERMISSION);
+		if(!message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) return warnUser(message, strings.COMMAND_NO_PERMISSION);
 
 		args = parseArgs(message, args);
 		//console.log(args)

@@ -5,10 +5,11 @@ const strings  = require('../../../resources/strings')
 const colors   = require('../../../resources/colors')
 const fetch    = require('node-fetch')
 
+const { Permissions }    = require('discord.js');
 const { addDeleteReact } = require('../../../helpers/addDeleteReact')
-const { magnify } = require('../../../functions/textures/magnify')
-const { palette } = require('../../../functions/textures/palette')
-const { tile }    = require('../tile')
+const { magnify }        = require('../../../functions/textures/magnify')
+const { palette }        = require('../../../functions/textures/palette')
+const { tile }           = require('../tile')
 
 const textures = require('../../../helpers/firestorm/texture')
 
@@ -143,18 +144,18 @@ async function editSubmission(client, reaction, user) {
       /**
        * TODO: for instapass & flush reacts, check if the user who reacted have the Council role, and not admin perms
        */
-      if (REACTION.emoji.id === emojis.INSTAPASS && member.hasPermission('ADMINISTRATOR')) {
+      if (REACTION.emoji.id === emojis.INSTAPASS && member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
         removeReact(message, [emojis.UPVOTE, emojis.DOWNVOTE])
         changeStatus(message, `<:instapass:${emojis.INSTAPASS}> Instapassed`)
         instapass(client, message)
       }
-      if (REACTION.emoji.id === emojis.INVALID && member.hasPermission('ADMINISTRATOR')) {
+      if (REACTION.emoji.id === emojis.INVALID && member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
         removeReact(message, [emojis.UPVOTE, emojis.DOWNVOTE])
         changeStatus(message, `<:invalid:${emojis.INVALID}> Invalid`)
       }
 
       // delete message only if the first author of the field 0 is the discord user who reacted, or if the user who react is admin
-      if (REACTION.emoji.id === emojis.DELETE && (USER_ID === authorID || member.hasPermission('ADMINISTRATOR'))) return await message.delete()
+      if (REACTION.emoji.id === emojis.DELETE && (USER_ID === authorID || member.permissions.has(Permissions.FLAGS.ADMINISTRATOR))) return await message.delete()
 
       removeReact(message, EMOJIS)
       await message.react(client.emojis.cache.get(emojis.SEE_MORE))

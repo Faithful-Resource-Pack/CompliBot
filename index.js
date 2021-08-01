@@ -9,7 +9,7 @@
 require('dotenv').config()
 const Discord   = require('discord.js')
 const cron      = require('cron')
-const { Client, Intents } = require('discord.js');
+const { Client, Intents, Permissions } = require('discord.js');
 const client    = new Client({
 	allowedMentions: { parse: ['users', 'roles'], repliedUser: false },
 	restTimeOffset: 0,
@@ -350,7 +350,7 @@ client.on('messageCreate', async message => {
 	 */
 	if (message.channel.id === '814209343502286899' || message.channel.id === '814201529032114226') {
 		if (!message.attachments.size) {
-			if (message.member.hasPermission('ADMINISTRATOR')) return
+			if (message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) return
 			var embed = new Discord.MessageEmbed()
 				.setColor(colors.RED)
 				.setTitle(strings.SUBMIT_AUTOREACT_ERROR_TITLE)
