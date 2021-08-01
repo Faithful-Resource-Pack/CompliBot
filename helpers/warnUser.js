@@ -20,7 +20,7 @@ async function warnUser(message, text) {
 		.setFooter('Type /help to get more information about commands', settings.BOT_IMG)
 		
 	let embedMessage
-	if (message.deleted) embedMessage = await message.channel.send(embed)
+	if (message.deleted) embedMessage = await message.channel.send({embeds: [embed]})
 	else embedMessage = await message.reply({embeds: [embed]})
 	
 	addDeleteReact(embedMessage, message, true)

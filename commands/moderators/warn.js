@@ -35,7 +35,7 @@ module.exports = {
 
 		if (!userID) return await warnUser(message, strings.WARN_SPECIFY_USER)
 		if (userID === message.author.id) return await warnUser(message, strings.WARN_CANT_WARN_SELF)
-		if (userID === client.user.id) return await message.channel.send(strings.COMMAND_NOIDONTTHINKIWILL_LMAO)
+		if (userID === client.user.id) return await message.channel.send({embeds: strings.COMMAND_NOIDONTTHINKIWILL_LMAO})
 
 		// get the user from the db
 		let user = await users.searchKeys([userID])
@@ -87,7 +87,7 @@ module.exports = {
 			.setTimestamp()
 		await message.reply({embeds: [embed]})
 
-		if (mutedEmbed) await message.channel.send(mutedEmbed) // send it after the warn message
+		if (mutedEmbed) await message.channel.send({embeds: [mutedEmbed]}) // send it after the warn message
 		modLog(client, message, userID, reason, time, 'warned')
 	}
 };

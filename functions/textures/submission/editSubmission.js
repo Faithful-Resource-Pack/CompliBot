@@ -124,18 +124,18 @@ async function editSubmission(client, reaction, user) {
 					
 					try {
 						const member = await message.guild.members.cache.get(user.id)
-						embedMessage = await member.send(attachment)
+						embedMessage = await member.send({files: [attachment]})
 					} catch (e) {
-						embedMessage = await complichannel.send(attachment)
+						embedMessage = await complichannel.send({content: `<@!${user.id}>`, files: [attachment]})
 					}
 					addDeleteReact(embedMessage, message)
 				}
 				else {
 					try {
 						const member = await message.guild.members.cache.get(user.id)
-						embedMessage = await member.send(`Can't find any results to compare for \`${message.embeds[0].image.url.split('/').pop().replace('.png', '')}\``)
+						embedMessage = await member.send({content: `Can't find any results to compare for \`${message.embeds[0].image.url.split('/').pop().replace('.png', '')}\``})
 					} catch (e) {
-						embedMessage = await complichannel.send(`Can't find any results to compare for \`${message.embeds[0].image.url.split('/').pop().replace('.png', '')}\``)
+						embedMessage = await complichannel.send({content: `<@!${user.id}> Can't find any results to compare for \`${message.embeds[0].image.url.split('/').pop().replace('.png', '')}\``})
 					}
 				}
       }

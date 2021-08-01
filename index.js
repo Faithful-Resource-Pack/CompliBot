@@ -207,7 +207,7 @@ client.on('guildCreate', async guild =>{
 		.setFooter(client.user.username, settings.BOT_IMG);
 
 	var channel = guild.channels.cache.find(channel => channel.type === 'text' && channel.permissionsFor(guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES']))
-	await channel.send(embed)
+	await channel.send({embeds: [embed]})
 })
 
 /**
@@ -379,7 +379,7 @@ process.on('unhandledRejection', (reason, promise) => {
 		.setColor(colors.RED)
 		.setTimestamp()
 
-	errorChannel.send(errorEmbed)
+	errorChannel.send({embeds: [errorEmbed]})
 })
 
 // Login the bot

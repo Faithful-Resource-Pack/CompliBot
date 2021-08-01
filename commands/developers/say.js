@@ -22,7 +22,7 @@ module.exports = {
 
 			else {
 				if (message.attachments.size > 0) await message.channel.send({content: args.join(" "), files: [message.attachments.first().url]})
-				else await message.channel.send(args.join(" "));
+				else await message.channel.send({content: args.join(" ")});
 				
 				await message.delete().catch();
 			}

@@ -31,6 +31,6 @@ module.exports = {
 			.setDescription(`[Jump to location](${message.url})\n\n**Server**: ${message.guild}\n\n**Channel**: <#${message.channel.id}>`)
 			.setTimestamp()
 
-		await client.channels.cache.get('798676864599195655').send(embed);
+		await client.channels.cache.get('798676864599195655').send({embeds: [embed]});
 	}
 };

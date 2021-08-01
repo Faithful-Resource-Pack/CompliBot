@@ -25,7 +25,7 @@ module.exports = {
 		if (!args.length) return warnUser(message, strings.COMMAND_NO_ARGUMENTS_GIVEN)
 		if (!member) return await warnUser(message, strings.BAN_SPECIFY_USER)
 		if (member.id === message.author.id) return await warnUser(message, strings.BAN_CANT_BAN_SELF)
-		if (member.id === client.user.id) return await message.channel.send(strings.COMMAND_NOIDONTTHINKIWILL_LMAO)
+		if (member.id === client.user.id) return await message.channel.send({content: strings.COMMAND_NOIDONTTHINKIWILL_LMAO})
 		if (!member.bannable) return await warnUser(message, strings.BAN_NOT_BANNABLE)
 
 		message.guild.members.cache.get(member.id).ban({reason: reason})

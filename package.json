@@ -27,7 +27,7 @@
     "canvas": "^2.8.0",
     "cron": "^1.8.2",
     "cross-spawn": "^7.0.3",
-    "discord.js": "^13.0.0-dev.d310e4f.1627560163",
+    "discord.js": "^13.0.0-dev.t1627778678.74fc23b",
     "dotenv": "^10.0.0",
     "fs-extra": "^10.0.0",
     "getopts": "^2.3.0",

@@ -146,7 +146,7 @@ module.exports = {
 						.setColor(color)
 						.setDescription(FAQS[i].description)
 						.setFooter(`Keywords: ${FAQS[i].keywords.join(' | ')}`)
-					await message.channel.send(embed)
+					await message.channel.send({embeds: [embed]})
 				}
 				if (!message.deleted) await message.delete()
 

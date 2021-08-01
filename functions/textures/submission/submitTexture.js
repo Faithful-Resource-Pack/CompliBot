@@ -171,7 +171,7 @@ async function makeEmbed(client, message, texture, param = new Object()) {
   if (param.authors.length > 1) embed.fields[0].name = 'Authors'
 
   // send the embed
-  const msg = await message.channel.send(embed);
+  const msg = await message.channel.send({embeds: [embed]});
   if (!message.deleted) await message.delete({ timeout: 10 })
 
   // add reactions to the embed

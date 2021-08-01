@@ -30,7 +30,7 @@ exports.updateMCVersions = async (client) => {
 		versions.versions.forEach(version => {
 			if (!minecraftVersionsCache.includes(version.id)) {
 				minecraftVersionsCache.push(version.id)
-				client.channels.cache.get('773983707299184703').send(`A new ${version.type} version of Minecraft Java was just released: \`${version.id}\``)
+				client.channels.cache.get('773983707299184703').send({content: `A new ${version.type} version of Minecraft Java was just released: \`${version.id}\``})
 			}
 		})
 	} catch (e) {

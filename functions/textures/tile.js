@@ -139,9 +139,9 @@ function tile(message, url, type, gotocomplichannel = undefined, redirectMessage
 		if (gotocomplichannel) {
 			try {
 				const member = await message.guild.members.cache.get(gotocomplichannel)
-				embedMessage = await member.send(attachment)
+				embedMessage = await member.send({files: [attachment]})
 			} catch (e) {
-				embedMessage = await complichannel.send(attachment)
+				embedMessage = await complichannel.send({content: `<@!${gotocomplichannel}>`, files: [attachment]})
 			}
 		}
 		else {
