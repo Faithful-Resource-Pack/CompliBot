@@ -219,7 +219,7 @@ client.on('messageCreate', async message => {
 	if (MAINTENANCE && !UIDA.includes(message.author.id)) {
 		const msg = await message.reply({content: strings.COMMAND_MAINTENANCE})
 		await message.react('❌')
-		if (!message.deleted) await msg.delete({timeout: 30000})
+		if (!message.deleted) setTimeout(() => msg.delete(), 30000);
 	}
 	
 	const args        = message.content.slice(prefix.length).trim().split(/ +/)
@@ -358,8 +358,8 @@ client.on('messageCreate', async message => {
 				.setFooter('Submission will be removed in 30 seconds, please re-submit', settings.BOT_IMG)
 
 			const msg = await message.reply({embeds: [embed]})
-			if (!msg.deleted) await msg.delete({timeout: 30000})
-			if (!message.deleted) await message.delete({timeout: 10})
+			if (!msg.deleted) setTimeout(() => msg.delete(), 30000);
+			if (!message.deleted) setTimeout(() => message.delete(), 10);
 		} else {
 			await message.react(emojis.UPVOTE)
 			await message.react(emojis.DOWNVOTE)

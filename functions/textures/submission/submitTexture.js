@@ -172,7 +172,7 @@ async function makeEmbed(client, message, texture, param = new Object()) {
 
   // send the embed
   const msg = await message.channel.send({embeds: [embed]});
-  if (!message.deleted) await message.delete({ timeout: 10 })
+  if (!message.deleted) setTimeout(() => message.delete(), 10);
 
   // add reactions to the embed
   for (const emojiID of EMOJIS) {
@@ -193,8 +193,8 @@ async function invalidSubmission(message, error = 'Not given') {
       .setDescription(error)
 
     const msg = await message.reply({embeds: [embed]});
-    if (!msg.deleted) await msg.delete({ timeout: 30000 })
-    if (!message.deleted) await message.delete({ timeout: 10 })
+    if (!msg.deleted) setTimeout(() => msg.delete(), 30000);
+    if (!message.deleted) setTimeout(() => message.delete(), 10);
   } catch (error) {
     console.error(error)
   }
