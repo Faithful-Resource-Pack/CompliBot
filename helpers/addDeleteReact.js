@@ -14,7 +14,7 @@ async function addDeleteReact(sentMessage, authorMessage, deleteAuthorMessage = 
     return [emojis.DELETE].includes(reaction.emoji.id) && user.id === authorMessage.author.id
   }
 
-  sentMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
+  sentMessage.awaitReactions({filter, max: 1, time: 60000, errors: ['time'] })
   .then(async collected => {
     const reaction = collected.first()
     if (reaction.emoji.id === emojis.DELETE) {

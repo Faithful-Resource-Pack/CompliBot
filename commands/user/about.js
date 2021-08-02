@@ -144,7 +144,7 @@ async function loop (embedMessage, message, embed, embedJava, embedBedrock) {
     return ['🗑️', '1️⃣', '2️⃣'].includes(reaction.emoji.name) && user.id === message.author.id
   }
 
-  embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
+  embedMessage.awaitReactions({filter, max: 1, time: 60000, errors: ['time'] })
     .then(async collected => {
       const reaction = collected.first()
 

@@ -161,7 +161,7 @@ function tile(message, url, type, gotocomplichannel = undefined, redirectMessage
 				else return [emojis.MAGNIFY].includes(reaction.emoji.id) && user.id === message.author.id
 			}
 
-			embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
+			embedMessage.awaitReactions({filter, max: 1, time: 60000, errors: ['time'] })
 				.then(async collected => {
 					const reaction = collected.first()
 					if (reaction.emoji.id === emojis.MAGNIFY) {

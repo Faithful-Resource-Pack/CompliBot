@@ -98,7 +98,7 @@ module.exports = function(message, params) {
         return emojis.includes(reaction.emoji.name) && user.id === message.author.id;
       }
 
-      return embedMessage.awaitReactions(filter_num, { max: params.max, time: params.timeout, errors: ['time'] })
+      return embedMessage.awaitReactions({filter_num, max: params.max, time: params.timeout, errors: ['time'] })
     })
     .then(collected => {
       /** @type {Discord.MessageReaction} */

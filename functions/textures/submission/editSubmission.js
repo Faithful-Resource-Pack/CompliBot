@@ -53,7 +53,7 @@ async function editSubmission(client, reaction, user) {
     }
 
     // await reaction from the user
-    message.awaitReactions(filter, { max: 1, time: 30000, errors: [ 'time' ] })
+    message.awaitReactions({filter, max: 1, time: 30000, errors: [ 'time' ] })
     .then(async collected => {
       const REACTION = collected.first()
       const USER_ID  = collected.first().users.cache.array().filter(user => user.bot === false).map(user => user.id)[0]
