@@ -45,7 +45,7 @@ module.exports = {
 				{ name: 'Operating system', value: os.version()},
 				{ name: 'Discord library', value: `discord.js ${Discord.version}`},
 				{ name: 'Node.js', value: `Version ${process.version}`},
-				{ name: 'In guilds', value: client.guilds.cache.size},
+				{ name: 'In guilds', value: client.guilds.cache.size.toString()},
 			)
 
 		if (message.channel.type !== 'DM') await message.author.send({embeds: [embed]});

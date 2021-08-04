@@ -24,7 +24,7 @@ module.exports = {
 	example: `${prefix}animate + file attached`,
 	async execute(client, message, args) {
 
-		message.channel.startTyping();
+		message.channel.sendTyping();
 
 		let valURL;
 		let mcmeta = {};
@@ -33,7 +33,6 @@ module.exports = {
 		if(valURL) animate(message, mcmeta, valURL);
 		else previousImage(message, mcmeta);
 
-		message.channel.stopTyping(true);
 
 		//args = parseArgs(message, args);
 
