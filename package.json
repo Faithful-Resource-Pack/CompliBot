@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/Compliance-Resource-Pack/Discord-Bot#readme",
   "dependencies": {
-    "@octokit/rest": "^18.7.0",
+    "@octokit/rest": "^18.9.0",
     "@vitalets/google-translate-api": "^7.0.0",
     "async-mutex": "^0.3.1",
     "axios": "^0.21.1",
