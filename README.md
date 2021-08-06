@@ -16,7 +16,7 @@ ___
 
 ___
 ### Installation and launching:
-- Install **[Node.js](https://nodejs.org/)** on your machine. **Version 14.0.0 or newer is required!**
+- Install **[Node.js](https://nodejs.org/)** on your machine. **Version 16.6.0 or newer is required!**
 - Clone the repository on your machine.
 - Open your console in the cloned repository.
 - To complete the installation, write the following command in the console:
