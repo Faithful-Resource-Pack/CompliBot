@@ -15,6 +15,8 @@ module.exports = {
 	example: `${prefix}poll 3600 | Add more beans to the bot? | Yes | No`,
 	async execute(client, message, args) {
 
+		return warnUser(message,strings.COMMAND_DISABLED);
+
 		if (message.content.includes(" | ")) {
 			args = message.content.slice(prefix.length).trim().split(" | ");
 			args[0] = args[0].replace('poll ','');
