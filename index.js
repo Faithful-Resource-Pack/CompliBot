@@ -230,6 +230,8 @@ client.on('messageCreate', async message => {
 	if (command.guildOnly && message.channel.type === 'DM') return warnUser(message, strings.CANT_EXECUTE_IN_DMS)
 
 	command.execute(client, message, args).catch(async error => {
+		if (DEV) console.trace(error.stack || error)
+
 		const embed = new Discord.MessageEmbed()
 			.setColor(colors.RED)
 			.setTitle(strings.BOT_ERROR)
