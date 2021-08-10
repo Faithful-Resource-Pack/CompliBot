@@ -109,9 +109,12 @@ function doMCUpdateCheck () {
 let commands = []
 for (const file of commandFiles) {
 	const command = require(file)
-	client.commands.set(command.name, command)
 
-	if (DEBUG) commands.push(command.name)
+	if('name' in command && typeof(command.name) === 'string') {
+		client.commands.set(command.name, command)
+	
+		if (DEBUG) commands.push(command.name)
+	}
 }
 if (DEBUG) console.table(commands)
 
