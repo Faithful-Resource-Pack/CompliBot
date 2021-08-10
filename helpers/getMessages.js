@@ -1,29 +1,33 @@
 /**
  * Fetched messages from a Discord Channel
  * @author Juknum
- * @param {DiscordClient} client 
+ * @param {import('discord.js').Client} client 
  * @param {String} id Channel from where messages are fetched
  * @param {Integer} limit Max amount of message fetch
  * @returns Returns an Array of all fetched messages
  */
 async function getMessages(client, id, limit = 100) {
+	if(typeof(limit) !== 'number')
+		return new Array()
+	
 	let channel
 	try {
 		channel = await client.channels.cache.get(id)
-	} catch (err) { return new Array() }
+	} catch (_err) { return new Array() }
+	
+	let fetchLimit = Math.min(100, Math.max(0, limit)) // clamps values in [0, 100]
 
 	const sum_messages = new Array()
-	let last_id
-	let done = false
+
+	let last_id // = undefined
+	let options
+	let messages
 	
-	let fetchLimit = limit
-	if (fetchLimit > 100) fetchLimit = 100
-
+	let done = false
 	while (!done) {
-		const options = { limit: fetchLimit }
-		if (last_id) options.before = last_id
+		options = { limit: fetchLimit }
+		if (last_id !== undefined) options.before = last_id
 
-		let messages
 		try {
 			messages = await channel.messages.fetch(options)
 		} catch (err) { console.log(err) }
