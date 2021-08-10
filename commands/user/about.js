@@ -1,174 +1,160 @@
-/* eslint no-multi-spaces: "off" */
-/* eslint brace-style: "off" */
 const prefix = process.env.PREFIX
 
-const Discord = require('discord.js')
 const strings = require('../../resources/strings')
-const colors  = require('../../resources/colors')
 
 const { warnUser } = require('../../helpers/warnUser')
-const { jsonContributionsJava, jsonContributionsBedrock } = require('../../helpers/fileHandler')
+const firestorm = require('../../helpers/firestorm/index')
+const { contributions, texture } = require('../../helpers/firestorm/all')
+const asyncTools = require('../../helpers/asyncTools')
+const { MessageEmbed } = require('discord.js')
+const { BLUE } = require('../../resources/colors')
+const { BOT_IMG } = require('../../resources/settings')
+const { addDeleteReact } = require('../../helpers/addDeleteReact')
+
+const NAME_REGEX = /(.+)#([0-9]{4})/
+const CHOICE_EMOJIS = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟', '🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮', '🇯']
+const PACKS_EMOJIS = {} // { c32: ':C32~1:', c64: ':C64:'}
+
+const MAX_EDITIONS = CHOICE_EMOJIS.length + Object.keys(PACKS_EMOJIS).length
 
 module.exports = {
 	name: 'about',
 	description: strings.HELP_DESC_ABOUT,
 	guildOnly: true,
 	uses: strings.COMMAND_USES_ANYONE,
-	syntax: `${prefix}about me\n${prefix}about <userTag>\n`,
+	syntax: `${prefix}about\n${prefix}about me\n${prefix}about <userTag>\n`,
 	example: `${prefix}about Hozz#0889`,
+	/**
+	 * @param {import('discord.js').Client} client
+	 * @param {import('discord.js').Message} message
+	 * @param {Array<string>} args
+	 * @author TheRolf
+	 */
 	async execute(client, message, args) {
+		if(args.length === 0) args = ['me'] // no args come back to message author
 
-		return warnUser(message,strings.COMMAND_DISABLED);
+		// parse user id
 
-		/*
-		var textures        = await jsonContributionsJava.read(false);
-		var texturesBedrock = await jsonContributionsBedrock.read(false);
-		var embed           = new Discord.MessageEmbed();
+		const who = args[0]
+		let name_match
+		if(who !== 'me' && !(name_match = who.match(NAME_REGEX))) return warnUser(message, strings.COMMAND_WRONG_ARGUMENTS_GIVEN)
 
-		var javac32    = [];
-		var javac64    = [];
-		var bedrockc32 = [];
-		var bedrockc64 = [];
-
-		var userTag        = undefined;
-		var countJava32    = 0;
-		var countJava64    = 0;
-		var countBedrock32 = 0;
-		var countBedrock64 = 0;
-
-		const MAX  = 20;
-		var maxj32 = 0;
-		var maxj64 = 0;
-		var maxb32 = 0;
-		var maxb64 = 0;
-
-		if (args[0] == 'me' || args[0] == undefined) {
-			embed.setDescription(`About <@${client.users.cache.find(u => u.tag === message.author.tag).id}>'s contributions:`)
-				.setColor(colors.BLUE)
-				.setAuthor(message.author.tag, message.author.displayAvatarURL());
-			userID  = client.users.cache.find(u => u.tag === message.author.tag).id;
-			userTag = message.author.tag;
-		}
-
+		let target // undefined
+		let target_id // undefined
+		if(who === 'me') target = message.member
 		else {
-			
-			// allow people with space inside their tag name;
-			//args[0] = args.join(' ');
+			target = client.users.cache.array().filter(u => u.discriminator == name_match[2] && u.username == name_match[1])[0]
+		}
+		if(target === undefined) return warnUser(message, strings.COMMAND_USER_DOESNT_EXIST)
+		target_id = target.id
 
-			try {
-				client.users.cache.find(u => u.tag === args[0]).id
-			} catch(error) {
-				return warnUser(message, strings.COMMAND_USER_DOESNT_EXIST);
-			}
-			
-			embed.setDescription(`About <@${client.users.cache.find(u => u.tag === args[0]).id}> contributions:`)
-				.setColor(colors.BLUE)
-				.setAuthor(message.author.tag, message.author.displayAvatarURL());
-			userID  = client.users.cache.find(u => u.tag === args[0]).id;
-			userTag = args[0];
+		// add waiting emoji
+		await asyncTools.react('⌛')
+
+		// search texture
+
+		const search_results = await contributions.search([{
+			field: 'contributors',
+			criteria: 'array-contains',
+			value: target_id
+		}]).finally(async () => {
+			await asyncTools.react('⌛')
+		}).catch(err => { throw err })
+
+		if(!Array.isArray(search_results)) return warnUser(message, strings.found)
+
+		// no contributions result
+
+		if(search_results.length === 0) {
+			if(who === 'me') return warnUser(message, 'You don\'t have any contributions!')
+			return warnUser(message, 'The specified user doesn\'t have any contributions!')
 		}
 
-		/** JAVA *******************************/
-		/*
-		for (var i = 0; i < textures.length; i++) {
-			if (textures[i].c32.author != undefined && textures[i].c32.author.includes(userID)) {
-				if (maxj32 <= MAX) {
-					javac32.push(textures[i].version[settings.LATEST_MC_JE_VERSION].replace('minecraft/textures/',''));
-					maxj32++;
-				}
-				countJava32++;
-			}
-			if (textures[i].c64.author != undefined && textures[i].c64.author.includes(userID)) {
-				if (maxj64 <= MAX) {
-					javac64.push(textures[i].version[settings.LATEST_MC_JE_VERSION].replace('minecraft/textures/',''));
-					maxj64++;
-				}
-				countJava64++;
-				//console.log(textures[i].version[settings.LATEST_MC_JE_VERSION]);
-			}
-		}
+		// sort contributions by res
 
-		/** BEDROCK ****************************/
-		/*
-		for (var i = 0; i < texturesBedrock.length; i++) {
-			if (texturesBedrock[i].c32.author != undefined && texturesBedrock[i].c32.author.includes(userID)) {
-				if (maxb32 <= MAX) {
-					bedrockc32.push(texturesBedrock[i].version[settings.LATEST_MC_BE_VERSION].replace('textures/',''));
-					maxb32++;
-				}
-				countBedrock32++;
-			}
-			if (texturesBedrock[i].c64.author != undefined && texturesBedrock[i].c64.author.includes(userID)) {
-				if (maxb64 <= MAX) {
-					bedrockc64.push(texturesBedrock[i].version[settings.LATEST_MC_BE_VERSION].replace('textures/',''));
-					maxb64++;
-				}
-				countBedrock64++;
-			}
-		}
+		let big_total = 0
+		const contri_sorted_by_res = search_results.reduce((acc, curr) => {
+			if(!(curr.res in acc)) acc[curr.res] = []
+			acc[curr.res].push(curr)
+			++big_total
+			return acc
+		}, {})
 
-		var embedJava = new Discord.MessageEmbed();
-		var embedBedrock = new Discord.MessageEmbed();
+		// get textures names per res
 
-		if (countJava32 > 0)    embed.addField('Java 32x:', countJava32, true);
-		if (countJava64 > 0)    embed.addField('Java 64x:', countJava64, true);
-		if (countBedrock32 > 0) embed.addField('Bedrock 32x:', countBedrock32, true);
-		if (countBedrock64 > 0) embed.addField('Bedrock 64x:', countBedrock64, true);
-		if (countJava32+countJava64+countBedrock32+countBedrock64 > 0) embed.addField('Total:', countJava32+countJava64+countBedrock32+countBedrock64, true);
+		// 1. get all texture ids
+		let texture_ids = search_results.map(contri => contri.textureID)
+		texture_ids = texture_ids.filter((el, index) => index === texture_ids.indexOf(el)) // delete doublons
 
-		if (countJava32 > 0 && javac32[0] != undefined)       embedJava.addField('Java 32x:', javac32, true);
-		if (countJava64 > 0 && javac64[0] != undefined)       embedJava.addField('Java 64x:', javac64, true);
-		if (countBedrock32 > 0 && bedrockc32[0] != undefined) embedBedrock.addField('Bedrock 32x:', bedrockc32, true);
-		if (countBedrock64 > 0 && bedrockc64[0] != undefined) embedBedrock.addField('Bedrock 64x:', bedrockc64, true);
+		// 2. get the textures corresponding
+		// 3. reduce them to a list of ids
+		let texture_results = await (await texture.searchKeys(texture_ids)).reduce((acc, curr) => {
+			acc[curr[firestorm.ID_FIELD]] = `[#${curr[firestorm.ID_FIELD]}] ${curr.name}`
+			return acc
+		}, {})
 
-		/*else {
-			if (args[0] == 'me' || args[0] == undefined) return await warnUser(message, 'You don\'t have any contributions!');
-			else return await warnUser(message, 'The specified user doesn\'t have any contributions!');
-		}*/
-	/*
-		embed.setDescription(`${embed.description}\n\n1️⃣ To see the Compliance Java texture list\n2️⃣ To see the Compliance Bedrock texture list`)
-		var embedMessage = await message.inlineReply(embed);
-		loop(embedMessage, message, embed, embedJava, embedBedrock);*/
+		// 3. reduce to names
+		let contri_embeds = Object.keys(contri_sorted_by_res).reduce((acc, res) => {
+			acc[res] = new MessageEmbed()
+				.addField(`${res} contributions - First 10 displayed` , contri_sorted_by_res[res].slice(0, 10).map(contri => texture_results[contri.textureID]).join('\n'))
+				.addField(`Want to see more contributions?`, `Check the webapp for more!`)
+			return acc
+		}, {})
+
+		// create description for embed
+		let desc = Object.keys(contri_sorted_by_res).slice(0, MAX_EDITIONS).map((res, index) => `${res in PACKS_EMOJIS ? PACKS_EMOJIS[res] : CHOICE_EMOJIS[index] } To see the ${res} texture list`).join('\n')
+
+		// final embed
+		const finalEmbed = new MessageEmbed()
+			.setTitle(`Found in total ${big_total} contributions`)
+			.setAuthor(message.author.tag, message.author.avatarURL())
+			.setColor(BLUE)
+			.setFooter(message.client.user.username, BOT_IMG)
+			.setDescription(desc)
+
+		Object.keys(contri_sorted_by_res).forEach(res => {
+			finalEmbed.addField(res, `${contri_sorted_by_res[res].length} contribution(s)`, false)
+		})
+
+		// send message
+		const embedMessage = await message.reply({embed: finalEmbed, embeds: [finalEmbed]})
+		await addDeleteReact(embedMessage, message, true)
+		
+		loop(embedMessage, message, finalEmbed, contri_embeds)
 	}
 }
 
-async function loop (embedMessage, message, embed, embedJava, embedBedrock) {
-  await embedMessage.react('🗑️')
-  await embedMessage.react('1️⃣')
-  await embedMessage.react('2️⃣')
-
-	/**
-	 * TODO: use addDeleteReact() instead
-	 */
+/**
+ * @param {import('discord.js').Message} embedMessage // embed message to work with
+ * @param {import('discord.js').Message} message // original message received
+ * @param {import('discord.js').MessageEmbed} embed // embed published in embedMessage
+ * @param {Map<String, import('discord.js').MessageEmbed>} contri_embeds Object with res as keys of the embeds created for the occasion
+ */
+async function loop (embedMessage, message, embed, contri_embeds) {
+	let emojisToAdd = Object.keys(contri_embeds).map((res, index) => res in PACKS_EMOJIS ? PACKS_EMOJIS[res] : CHOICE_EMOJIS[index])
+	
+	await Promise.all(emojisToAdd.map(async (emo) => embedMessage.react(emo)))
+	
   const filter = (reaction, user) => {
-    return ['🗑️', '1️⃣', '2️⃣'].includes(reaction.emoji.name) && user.id === message.author.id
+    return emojisToAdd.includes(reaction.emoji.name) && user.id === message.author.id
   }
 
   embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
     .then(async collected => {
       const reaction = collected.first()
 
-      if (reaction.emoji.name === '🗑️') {
-        await embedMessage.delete()
-        if (!message.deleted) await message.delete()
-      }
-
-      if (reaction.emoji.name === '1️⃣') {
-        embed.fields = embedJava.fields
-      }
-      if (reaction.emoji.name === '2️⃣') {
-        embed.fields = embedBedrock.fields
-      }
+			embed.fields = 
+				reaction.emoji.name in Object.values(PACKS_EMOJIS) ? 
+					contri_embeds[Object.keys(PACKS_EMOJIS)[Object.values(PACKS_EMOJIS).indexOf(reaction.emoji.name)]] : 
+					(contri_embeds[Object.keys(contri_embeds)[CHOICE_EMOJIS.indexOf(reaction.emoji.name)]].fields || [])
 
       if (reaction.emoji.name === '1️⃣' || reaction.emoji.name === '2️⃣') {
-        await embedMessage.reactions.cache.get('🗑️').remove()
         await embedMessage.reactions.cache.get('1️⃣').remove()
         await embedMessage.reactions.cache.get('2️⃣').remove()
         await embedMessage.edit(embed)
-        await loop(embedMessage, message, embed, embedJava, embedBedrock)
+        await loop(embedMessage, message, embed, contri_embeds)
       }
     }).catch(async () => {
-      await embedMessage.reactions.cache.get('🗑️').remove()
       await embedMessage.reactions.cache.get('1️⃣').remove()
       await embedMessage.reactions.cache.get('2️⃣').remove()
     })
