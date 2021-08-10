@@ -19,6 +19,8 @@ async function textureIDQuote(message) {
   let ids = args.filter(el => el.charAt(0) === '[' && el.charAt(1) === '#' && el.slice(-1) == "]").map(el => el.slice(2, el.length - 1)) // filter textures ids and slice '#'
   ids = ids.filter(el => el != '').filter((el, index) => ids.indexOf(el) === index && el >= 0) // avoid doublon, empty and wrong id
 
+  if(ids.length === 0) return
+
   const texturesCollection = require('../../helpers/firestorm/texture')
   const promiseEvery = require('../../helpers/promiseEvery')
   const promiseArray = ids.map(id => texturesCollection.get(id))
@@ -93,7 +95,7 @@ async function textureIDQuote(message) {
       .addFields(
         { name: '32x', value: author[0] != undefined && author[0].length ? `<@!${author[0].join('> <@!')}> - ${timestampConverter(timestamp[0])}` : `Contribution not found` },
         { name: '64x', value: author[1] != undefined && author[1].length ? `<@!${author[1].join('> <@!')}> - ${timestampConverter(timestamp[1])}` : `Contribution not found` },
-        { name: '\u200B', value: pathText, inline: false }
+        // \u200B empty character not inline field is not working in v13, generating empty field error
       )
 
     const embedMessage = await message.reply({embeds: [embed], files: [attachment]})
