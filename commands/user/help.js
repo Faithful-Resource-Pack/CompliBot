@@ -118,8 +118,9 @@ module.exports = {
 				{ name: "Others", value: commands_others[0] === undefined ? "None" : commands_others.join('\n') },
 				{ name: "Disabled", value: commands_disabled[0] === undefined ? "None" : commands_disabled.join('\n') }
 			)
-			if (message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("Moderator") || role.name.includes("God"))) embed.addField("Moderators", commands_mods[0] === undefined ? "None" : commands_mods.join('\n') )
-			if (message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("God"))) embed.addField("Administrators", commands_admins[0] === undefined ? "None" : commands_admins.join('\n') )
+			// roles don't exist in DM
+			if (message.guild !== null && message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("Moderator") || role.name.includes("God"))) embed.addField("Moderators", commands_mods[0] === undefined ? "None" : commands_mods.join('\n') )
+			if (message.guild !== null && message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("God"))) embed.addField("Administrators", commands_admins[0] === undefined ? "None" : commands_admins.join('\n') )
 			if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD || message.author.id === uidT) embed.addField("Developers", commands_devs[0] === undefined ? "None" : commands_devs.join('\n') )
 		}
 
