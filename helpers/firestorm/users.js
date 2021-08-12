@@ -9,6 +9,9 @@ require('./firestorm_config')()
  * @property {String?} username Minecraft userbame
  * @property {String[]} type User type on server
  * @property {String} uuid User minecraft id
+ * @property {Object[]} media Array of all media linked to that user
+ * @property {String} media.type Name of the media
+ * @property {String} media.link URL of the media
  * @property {Object} muted Object if user muted on server
  * @property {Number?} muted.start timestamp of the beginning of mute
  * @property {Number?} muted.end timestamp of the end of mute
