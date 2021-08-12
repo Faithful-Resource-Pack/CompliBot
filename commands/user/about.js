@@ -141,6 +141,7 @@ async function loop (embedMessage, message, embed, contri_embeds) {
 
   embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
     .then(async collected => {
+			// if sometihng was collected then we are sure the message exists
       const reaction = collected.first()
 
 			embed.fields = 
@@ -149,13 +150,32 @@ async function loop (embedMessage, message, embed, contri_embeds) {
 					(contri_embeds[Object.keys(contri_embeds)[CHOICE_EMOJIS.indexOf(reaction.emoji.name)]].fields || [])
 
       if (reaction.emoji.name === '1️⃣' || reaction.emoji.name === '2️⃣') {
-        await embedMessage.reactions.cache.get('1️⃣').remove()
-        await embedMessage.reactions.cache.get('2️⃣').remove()
-        await embedMessage.edit(embed)
+				// we cannot assume both reactions are here
+				const c32_emoji = embedMessage.reactions.cache.get('1️⃣')
+				if(c32_emoji) await c32_emoji.remove()
+
+				const c64_emoji = embedMessage.reactions.cache.get('2️⃣')
+				if(c64_emoji) await c64_emoji.remove()
+
+        embedMessage = await embedMessage.edit(embed)
         await loop(embedMessage, message, embed, contri_embeds)
       }
     }).catch(async () => {
-      await embedMessage.reactions.cache.get('1️⃣').remove()
-      await embedMessage.reactions.cache.get('2️⃣').remove()
+			// in this case, the message might have been deleted
+			try {
+				// we need to make sure we get the message
+				embedMessage = await embedMessage.fetch()
+
+				// if the code reaches this part, it means the message is not deleted
+				
+				// we cannot assume both reactions are here
+				const c32_emoji = embedMessage.reactions.cache.get('1️⃣')
+				if(c32_emoji) await c32_emoji.remove()
+
+				const c64_emoji = embedMessage.reactions.cache.get('2️⃣')
+				if(c64_emoji) await c64_emoji.remove()
+			} catch (_error) {
+				// Unknown error message, it was deleted
+			}
     })
 }
