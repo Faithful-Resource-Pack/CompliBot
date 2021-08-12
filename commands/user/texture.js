@@ -28,6 +28,12 @@ module.exports = {
 	uses: strings.COMMAND_USES_ANYONE,
 	syntax: `${prefix}texture <16/32/64> <texture_name>\n${prefix}texture <16/32/64> <_name>\n${prefix}texture <16/32/64> </folder/>`,
 	example: `${prefix}texture 16 dirt`,
+
+	/**
+	 * @param {Discord.Client} _client The discord boi client
+	 * @param {Discord.Message} message The incoming message to respond to
+	 * @param {Array<string>} args All words following the command
+	 */
 	async execute(_client, message, args) {
 
 		let results    = []
@@ -243,7 +249,7 @@ async function getTexture(message, res, texture) {
 			*/
 			embed.addField('Paths', pathsText.join('\n'), false)
 
-			const embedMessage = await message.inlineReply(embed);
+			const embedMessage = await message.reply({ embed: embed, embeds: [embed] });
 			addDeleteReact(embedMessage, message, true)
 
 			if (dimension.width <= 512 && dimension.height <= 512)
@@ -257,7 +263,7 @@ async function getTexture(message, res, texture) {
 				return [emojis.MAGNIFY, emojis.NEXT_RES, emojis.PALETTE, emojis.TILE].includes(reaction.emoji.id) && user.id === message.author.id;
 			};
 
-			embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
+			embedMessage.awaitReactions(filter, { time: 60000, errors: ['time'] })
 			.then(async collected => {
 				const reaction = collected.first()
 				if (reaction.emoji.id === emojis.PALETTE) {
