@@ -263,7 +263,7 @@ async function getTexture(message, res, texture) {
 				return [emojis.MAGNIFY, emojis.NEXT_RES, emojis.PALETTE, emojis.TILE].includes(reaction.emoji.id) && user.id === message.author.id;
 			};
 
-			embedMessage.awaitReactions(filter, { time: 60000, errors: ['time'] })
+			embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
 			.then(async collected => {
 				const reaction = collected.first()
 				if (reaction.emoji.id === emojis.PALETTE) {
