@@ -1,7 +1,6 @@
 const { getMessages } = require('../../../helpers/getMessages')
 
 const settings = require('../../../resources/settings')
-const emojis = require('../../../resources/emojis')
 
 const texturesCollection      = require('../../../helpers/firestorm/texture')
 const contributionsCollection = require('../../../helpers/firestorm/contributions')
