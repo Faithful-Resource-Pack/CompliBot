@@ -28,6 +28,12 @@ module.exports = {
 	uses: strings.COMMAND_USES_ANYONE,
 	syntax: `${prefix}texture <16/32/64> <texture_name>\n${prefix}texture <16/32/64> <_name>\n${prefix}texture <16/32/64> </folder/>`,
 	example: `${prefix}texture 16 dirt`,
+
+	/**
+	 * @param {Discord.Client} _client The discord boi client
+	 * @param {Discord.Message} message The incoming message to respond to
+	 * @param {Array<string>} args All words following the command
+	 */
 	async execute(_client, message, args) {
 
 		let results    = []

@@ -24,7 +24,7 @@ const FAQS = [
 	},
 	{
 		title: 'Where can I download Compliance?',
-		description: 'You can always find the latest release of our pack by clicking this link: \nhttps://compliancepack.net/article/compliance32x/latest',
+		description: 'You can always find the latest release of our pack by clicking this link: \nhttps://www.compliancepack.net/article/compliance32x/latest',
 		keywords: [
 			'downloads', 'download'
 		]
@@ -73,7 +73,7 @@ const FAQS = [
 	},
 	{
 		title: 'Does Compliance support mods?',
-		description: 'Yes, you can find mod support for the 32x version of the pack at https://compliancepack.net/mods or https://compliancepack.net/modpacks. Please note that the textures may be outdated and that development is not very active at the moment though, and that 64x is not supported at all right now. \nIf you want to contribute to Compliance Mods, join our extras discord server, linked in <#774391640306745374>',
+		description: 'Yes, you can find mod support for the 32x version of the pack at https://www.compliancepack.net/mods or https://www.compliancepack.net/modpacks. Please note that the textures may be outdated and that development is not very active at the moment though, and that 64x is not supported at all right now. \nIf you want to contribute to Compliance Mods, join our extras discord server, linked in <#774391640306745374>',
 		keywords: [
 			'mod support', 'mods', 'mod'
 		]

@@ -30,6 +30,7 @@ const prefix      = process.env.PREFIX
 const DEBUG       = (process.env.DEBUG.toLowerCase() == 'true')
 const MAINTENANCE = (process.env.MAINTENANCE.toLowerCase() == 'true')
 const DEV         = (process.env.DEV.toLowerCase() == 'true')
+const LOG_DEV     = ((process.env.LOG_DEV || 'false').toLowerCase() == 'true')
 
 // Helpers:
 const { warnUser } = require('./helpers/warnUser')
@@ -113,9 +114,12 @@ function doMCUpdateCheck () {
 let commands = []
 for (const file of commandFiles) {
 	const command = require(file)
-	client.commands.set(command.name, command)
 
-	if (DEBUG) commands.push(command.name)
+	if('name' in command && typeof(command.name) === 'string') {
+		client.commands.set(command.name, command)
+	
+		if (DEBUG) commands.push(command.name)
+	}
 }
 if (DEBUG) console.table(commands)
 
@@ -374,10 +378,11 @@ client.on('messageCreate', async message => {
 process.on('unhandledRejection', (reason, promise) => {
 	if (DEV) return console.trace(reason.stack || reason)
 
-	const errorChannel = client.channels.cache.find(channel => channel.id == "853547435782701076")
+	const errorChannelId = LOG_DEV ? '875301873316413440' : '853547435782701076'
+	const errorChannel = client.channels.cache.get(errorChannelId)
 	const errorEmbed = new Discord.MessageEmbed()
 		.setTitle('Unhandled Rejection:')
-		.setDescription("```fix\n" + (reason.stack || reason) +"```")
+		.setDescription("```fix\n" + (reason.stack || JSON.stringify(reason)) +"```")
 		.setColor(colors.RED)
 		.setTimestamp()
 
