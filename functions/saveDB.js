@@ -20,7 +20,7 @@ async function saveDB(commitMessage) {
   )
 
   for (const [key, collection] of Object.entries(allCollection)) {
-    let text = JSON.stringify(await collection.read_raw(), null, 2)
+    let text = JSON.stringify(await collection.read_raw(), null, 0)
     fs.writeFileSync(
       join(folderPath, key + '.json'),
       text,
