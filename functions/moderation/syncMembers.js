@@ -31,6 +31,9 @@ async function syncMembers(client, serversID) {
 	const serversPromises = serversID.map(id => client.guilds.fetch(id))
 	const serversResults = await promiseEvery(serversPromises).catch(() => { return }) // if catches, it means that I have no access at all
 
+	// so if undefined, it's useless to sync members
+	if(serversResults === undefined) return
+
 	// so the results may not be full, just try with the ones with not undefined results
 	const serversAvailable = serversResults.results.filter(server => server !== undefined)
 
