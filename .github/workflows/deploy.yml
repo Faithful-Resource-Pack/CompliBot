@@ -22,6 +22,7 @@ jobs:
         KEY: ${{ secrets.SSH }}
         script: |
           cd ./CompliBot
+          git stash
           git pull
           npm install
           pm2 delete "BOT"
