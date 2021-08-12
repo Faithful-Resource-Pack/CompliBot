@@ -1,5 +1,6 @@
 
 const usersCollection = require('../../helpers/firestorm/users')
+const promiseEvery = require('../../helpers/promiseEvery')
 const VALID_ROLES = [
 	"Administrator",
 	"Moderator",
@@ -28,10 +29,13 @@ async function syncMembers(client, serversID) {
 
 	// for each given guilds
 	const serversPromises = serversID.map(id => client.guilds.fetch(id))
-	const serversResults = await Promise.all(serversPromises)
+	const serversResults = await promiseEvery(serversPromises).catch(() => { return }) // if catches, it means that I have no access at all
+
+	// so the results may not be full, just try with the ones with not undefined results
+	const serversAvailable = serversResults.results.filter(server => server !== undefined)
 
 	// fetch members of each guilds
-	const membersPromises = serversResults.map(guild => guild.members.fetch())
+	const membersPromises = serversAvailable.map(guild => guild.members.fetch())
 	const membersResults = await Promise.all(membersPromises)
 
 	membersResults.forEach(members => {
