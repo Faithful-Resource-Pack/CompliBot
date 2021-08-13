@@ -154,7 +154,7 @@ async function previousImage(message, mcmeta) {
 	var found = false;
 	//var messages = [];
 	var list_messages = await message.channel.messages.fetch({ limit: 10 });
-	var lastMsg = list_messages.sort((a, b) => b.createdTimestamp - a.createdTimestamp).filter((m) => m.attachments.size > 0).first();
+	var lastMsg = list_messages.sort((a, b) => b.createdTimestamp - a.createdTimestamp).filter((m) => m.attachments.size > 0 || m.embeds[0] != undefined).first();
 	//messages.push(...list_messages.array());
 
 	//for (var i in messages) {
