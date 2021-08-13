@@ -22,6 +22,7 @@ module.exports = {
 		}
 		else if (args == 'ice') return await message.channel.send({content: 'https://london.frenchmorning.com/wp-content/uploads/sites/10/2019/02/glacons-boissons-choses-enervent-francais-londres.gif'});
 		else if (args == 'fire') return await message.channel.send({content: 'https://i.giphy.com/media/Qre4feuyNhiYIzD7hC/200.gif'})
+		else if (args == 'burger') return await message.channel.send({content: 'https://c.tenor.com/tdFqDJemKpUAAAAC/mcdonalds-big-mac.gif'})
 		
 	}
 };
