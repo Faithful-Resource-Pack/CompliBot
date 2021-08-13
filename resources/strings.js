@@ -68,6 +68,7 @@ const HELP_DESC_RULES = 'Creates rules embed.'
 const HELP_DESC_TRANSLATE = 'Translates messages to the selected language.'
 const HELP_DESC_WEBSITE = 'Displays website for the given keyword, see examples for keywords.'
 const HELP_DESC_COMPARE = 'Allows vanilla / pack comparaison side by side'
+const HELP_DESC_MISSING = 'Shows tree view of missing textures for a particular edition'
 
 // animate function
 const INPUT_TOO_BIG = 'The input picture is too big!'
@@ -257,6 +258,7 @@ module.exports = {
 	HELP_DESC_TRANSLATE,
 	HELP_DESC_WEBSITE,
 	HELP_DESC_COMPARE,
+	HELP_DESC_MISSING,
 
 	COMMAND_USES_ANYONE,
 	COMMAND_USES_ANYONE_DUNGEONS,

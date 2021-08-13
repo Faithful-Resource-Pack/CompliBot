@@ -17,7 +17,7 @@ const COMPLIANCE_64X_JAVA_REPOSITORY_JAPPA = 'https://raw.githubusercontent.com/
 const COMPLIANCE_32X_BEDROCK_REPOSITORY_JAPPA = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Bedrock-32x/Jappa-'
 const COMPLIANCE_64X_BEDROCK_REPOSITORY_JAPPA = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Bedrock-64x/Jappa-'
 
-const LATEST_MC_JE_VERSION = '1.17'
+const LATEST_MC_JE_VERSION = '1.17.1'
 const LATEST_MC_BE_VERSION = '1.17.0'
 
 // Compliance 32x
