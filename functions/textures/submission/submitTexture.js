@@ -7,6 +7,8 @@ const choiceEmbed = require('../../../helpers/choiceEmbed')
 const textures    = require('../../../helpers/firestorm/texture')
 const paths       = require('../../../helpers/firestorm/texture_paths')
 
+const { Permissions } = require('discord.js');
+
 /**
  * Check if the given texture exist, and embed it if true
  * @author Juknum
@@ -56,11 +58,11 @@ async function submitTexture(client, message) {
   }
   // no id given, search texture
   else if (!id && search) {
-    var waitEmbed = new Discord.MessageEmbed()
+    /*var waitEmbed = new Discord.MessageEmbed()
       .setTitle('Loading')
       .setDescription(strings.COMMAND_SEARCHING_FOR_TEXTURE)
       .setColor(colors.BLUE)
-    const waitEmbedMessage = await message.inlineReply(waitEmbed);
+    const waitEmbedMessage = await message.reply({embeds: [waitEmbed]});*/
 
     // partial texture name (_sword, _axe -> diamond_sword, diamond_axe...)
     if (search.startsWith('_') || search.endsWith('_')) {
@@ -112,7 +114,7 @@ async function submitTexture(client, message) {
         choice.push(`\`[#${results[i].id}]\` ${results[i].name.replace(search, `**${search}**`).replace(/_/g, '\\_')} — ${paths[0].path.replace(search, `**${search}**`).replace(/_/g, '\\_')}`)
       }
 
-      if (!waitEmbedMessage.deleted) await waitEmbedMessage.delete();
+      //if (!waitEmbedMessage.deleted) await waitEmbedMessage.delete();
       choiceEmbed(message, {
         title: `${results.length} results, react to choose one!`,
         description: strings.TEXTURE_SEARCH_DESCRIPTION,
@@ -128,10 +130,10 @@ async function submitTexture(client, message) {
     }
     else if (results.length == 1) {
       await makeEmbed(client, message, results[0], param)
-      if (!waitEmbedMessage.deleted) await waitEmbedMessage.delete()
+      //if (!waitEmbedMessage.deleted) await waitEmbedMessage.delete()
     }
     else {
-      if (!waitEmbedMessage.deleted) await waitEmbedMessage.delete()
+      //if (!waitEmbedMessage.deleted) await waitEmbedMessage.delete()
       await invalidSubmission(message, strings.TEXTURE_DOESNT_EXIST + '\n' + search)
     }
   }
@@ -146,8 +148,8 @@ async function makeEmbed(client, message, texture, param = new Object()) {
 
   for (let i = 0; uses[i]; i++) {
     let localPath = await uses[i].paths()
-    pathText.push(`**${uses[i].editions[0].charAt(0).toUpperCase() + uses[i].editions[0].slice(1)}**`)
-    for (let k = 0; localPath[k]; k++) pathText.push(`\`[${localPath[k].versions[localPath[k].versions.length - 1]}+]\` ${localPath[k].path}`)
+    pathText.push(`**${uses[i].editions[0].charAt(0).toUpperCase() + uses[i].editions[0].slice(1)}**\n`)
+    for (let k = 0; localPath[k]; k++) pathText.push(`\`[${localPath[k].versions[localPath[k].versions.length - 1]}+]\` ${localPath[k].path} \n`)
   }
 
   let embed = new Discord.MessageEmbed()
@@ -156,14 +158,14 @@ async function makeEmbed(client, message, texture, param = new Object()) {
   .setTitle(`[#${texture.id}] ${texture.name}`)
   //.setImage(message.attachments.first().url)
   .addFields(
-    { name: 'Author', value: `<@!${param.authors.join('>\n<@!')}>`, inline: true },
+    { name: 'Author', value: `<@!${param.authors.join('>\n<@!').toString()}>`, inline: true },
     { name: 'Status', value: '⏳ Pending...', inline: true },
-    { name: '\u200B', value: pathText, inline: false }
+    { name: '\u200B', value: pathText.toString().replace(/,/g,''), inline: false }
   )
   
   // re-upload the image to the new message, avoid broken link (rename it in the same time)
   const attachment = new Discord.MessageAttachment(message.attachments.first().url, texture.name + '.png')
-  embed.attachFiles(attachment).setImage(`attachment://${texture.name}.png`)
+  embed.setImage(`attachment://${texture.name}.png`)
 
   // add, if provided, the description
   if (param.description) embed.setDescription(param.description)
@@ -171,8 +173,8 @@ async function makeEmbed(client, message, texture, param = new Object()) {
   if (param.authors.length > 1) embed.fields[0].name = 'Authors'
 
   // send the embed
-  const msg = await message.channel.send(embed);
-  if (!message.deleted) await message.delete({ timeout: 10 })
+  const msg = await message.channel.send({embeds: [embed], files: [attachment]});
+  if (!message.deleted) setTimeout(() => message.delete(), 10);
 
   // add reactions to the embed
   for (const emojiID of EMOJIS) {
@@ -182,7 +184,7 @@ async function makeEmbed(client, message, texture, param = new Object()) {
 }
 
 async function invalidSubmission(message, error = 'Not given') {
-  if (message.member.hasPermission('ADMINISTRATOR')) return // allow admins to talk in submit channels
+  if (message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) return // allow admins to talk in submit channels
   
   try {
     var embed = new Discord.MessageEmbed()
@@ -192,9 +194,9 @@ async function invalidSubmission(message, error = 'Not given') {
       .setFooter(strings.SUBMIT_AUTOREACT_ERROR_FOOTER, settings.BOT_IMG)
       .setDescription(error)
 
-    const msg = await message.inlineReply(embed);
-    if (!msg.deleted) await msg.delete({ timeout: 30000 })
-    if (!message.deleted) await message.delete({ timeout: 10 })
+    const msg = await message.reply({embeds: [embed]});
+    if (!msg.deleted) setTimeout(() => msg.delete(), 30000);
+    if (!message.deleted) setTimeout(() => message.delete(), 10);
   } catch (error) {
     console.error(error)
   }

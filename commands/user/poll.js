@@ -15,6 +15,8 @@ module.exports = {
 	example: `${prefix}poll 3600 | Add more beans to the bot? | Yes | No`,
 	async execute(client, message, args) {
 
+		return warnUser(message,strings.COMMAND_DISABLED);
+
 		if (message.content.includes(" | ")) {
 			args = message.content.slice(prefix.length).trim().split(" | ");
 			args[0] = args[0].replace('poll ','');
@@ -64,7 +66,7 @@ const pollEmbed = async (msg, title, options, timeout = 30, emojiList = defEmoji
 	const usedEmojis = Object.keys(emojiInfo);
 	usedEmojis.push(forceEndPollEmoji);
 
-	const poll = await msg.channel.send(embedBuilder(title, msg.author.tag).setDescription(text));
+	const poll = await msg.channel.send({embeds: [embedBuilder(title, msg.author.tag).setDescription(text)]});
 	for (const emoji of usedEmojis) await poll.react(emoji);
 
 	const reactionCollector = poll.createReactionCollector(
@@ -99,7 +101,7 @@ const pollEmbed = async (msg, title, options, timeout = 30, emojiList = defEmoji
 		text = 'Time\'s up! The results are:\n\n';
 		for (const emoji in emojiInfo) text += `\`${emojiInfo[emoji].option}\` - \`${emojiInfo[emoji].votes}\`\n\n`;
 		poll.delete();
-		msg.channel.send(embedBuilder(title, msg.author.tag).setDescription(text));
+		msg.channel.send({embeds: [embedBuilder(title, msg.author.tag).setDescription(text)]});
 	});
 };
 

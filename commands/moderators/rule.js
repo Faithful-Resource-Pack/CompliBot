@@ -142,7 +142,7 @@ module.exports = {
 				.setThumbnail(thumbnail)
 				.setDescription(RULES[rule-1].description);
 
-			return await message.inlineReply(embed);
+			return await message.reply({embeds: [embed]});
 		}
 
 		else if (rule == -1) {
@@ -152,7 +152,7 @@ module.exports = {
 				.setColor(color)
 				.setThumbnail(thumbnail)
 				.setDescription(`**Ignoring, not knowing and/or bypassing the rules, as well as not listening to the moderators is not an excuse for misbehaving.**\nRemember, by talking in this server you're agreeing to follow these rules.`)
-			await message.channel.send(embed)
+			await message.channel.send({embeds: [embed]})
 			
 			for (let i = 0; i < RULES.length; i++) {
 				let embedRule = new Discord.MessageEmbed()
@@ -160,7 +160,7 @@ module.exports = {
 					.setTitle(`${NUMBER[i]} ${RULES[i].title}`)
 					.setDescription(RULES[i].description)
 
-				await message.channel.send(embedRule);
+				await message.channel.send({embeds: [embedRule]});
 			}
 
 			if (EDIT.enabled) {
@@ -170,7 +170,7 @@ module.exports = {
 					.setDescription(EDIT.description + '\n> Please understand that failing to comply to these rules will result in an adequate punishment.')
 					.setFooter(`The rules are subject to change.`, thumbnail)
 
-				await message.channel.send(embedChanges)
+				await message.channel.send({embeds: [embedChanges]})
 			}
 
 			if (!message.deleted) await message.delete();

@@ -10,6 +10,11 @@ module.exports = {
 	guildOnly: true,
 	uses: strings.COMMAND_USES_ANYONE,
 	syntax: `${prefix}modping`,
+	/**
+	 * @param {Discord.Client} client 
+	 * @param {Discord.Message} message 
+	 * @param {Array<string>} args
+	 */
 	async execute(client, message, args) {
 
 		const MOD_ROLE = message.guild.roles.cache.find(role => role.name.includes("Moderator"))
@@ -25,19 +30,22 @@ module.exports = {
 			.setColor('#22202C')
 			.setFooter(`use ${prefix}modping to call mods for help!`)
 
-			await message.inlineReply(embed)
-			return message.channel.send(`<@&${MOD_ROLE.id}>`)
+			await message.reply({embeds: [embed]})
+			return message.channel.send({content: `<@&${MOD_ROLE.id}>`})
 		}
 		
 		let MODERATORS_DND    = new Array()
 		let MODERATORS_ONLINE = new Array()
 
-		for (let i = 0; MODERATORS_ID[i]; i++) {
-			if (message.guild.members.cache.get(MODERATORS_ID[i]).presence.status === 'dnd' || message.guild.members.cache.get(MODERATORS_ID[i]).presence.status === 'idle')
-				MODERATORS_DND.push(`<@${MODERATORS_ID[i]}>`)
-			
-			if (message.guild.members.cache.get(MODERATORS_ID[i]).presence.status === 'online')
+		for (let i = 0; i < MODERATORS_ID.length; i++) {
+			const mod = message.guild.members.cache.get(MODERATORS_ID[i])
+			const mod_pres = mod.presence // offline members seems to have null as presence in discord.js v13
+			const mod_status = mod_pres !== null ? mod_pres.status : 'offline'
+
+			if (mod_status === 'online')
 				MODERATORS_ONLINE.push(`<@${MODERATORS_ID[i]}>`)
+			else if (mod_status && mod_status !== 'offline')
+				MODERATORS_DND.push(`<@${MODERATORS_ID[i]}>`)
 		}
 
 		if (MODERATORS_ONLINE.length > 0) {
@@ -47,21 +55,21 @@ module.exports = {
 				.setColor('#22202C')
 				.setFooter(`use ${prefix}modping to call mods for help!`)
 
-			await message.inlineReply(embed)
+			await message.reply({embeds: [embed]})
 
-			return message.channel.send(MODERATORS_ONLINE.join(', '))
+			return message.channel.send({content: MODERATORS_ONLINE.join(', ')})
 		}
 
 		if (MODERATORS_DND.length > 0) {
 			embed.setAuthor(message.author.tag, message.author.displayAvatarURL())
 				.setTitle('Moderators:')
-				.setDescription(`There ${MODERATORS_DND.length > 1 ? "are" : "is" } **${MODERATORS_DND.length} Moderators in do no disturb / AFK**, they may not respond.`)
+				.setDescription(`There ${MODERATORS_DND.length > 1 ? "are" : "is" } **${MODERATORS_DND.length} Moderators in do not disturb / AFK **, they may not respond.`)
 				.setColor('#22202C')
 				.setFooter(`use ${prefix}modping to call mods for help!`)
 
-			await message.inlineReply(embed)
+			await message.reply({embeds: [embed]})
 
-			return message.channel.send(MODERATORS_DND.join(', '))
+			return message.channel.send({content: MODERATORS_DND.join(', ')})
 		}
 
 		// No moderators online
@@ -71,8 +79,8 @@ module.exports = {
 			.setColor('#22202C')
 			.setFooter(`use ${prefix}modping to call mods for help!`)
 
-		await message.inlineReply(embed)
-		message.channel.send(`<@&${MOD_ROLE.id}>`)
+		await message.reply({embeds: [embed]})
+		message.channel.send({content: `<@&${MOD_ROLE.id}>`})
 
 	}
 }

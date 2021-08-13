@@ -87,7 +87,7 @@ module.exports = {
         .setColor(colors.RED)
         .setDescription('You are not allowed to use this command')
 
-      const err = await message.channel.send(emb)
+      const err = await message.channel.send({embeds: [emb]})
 
       setTimeout(() => {
         message.delete()
@@ -104,7 +104,7 @@ module.exports = {
     // sending embed
     // deleting our message
     // changing status 
-    const results = await Promise.all([message.channel.send(emb), client.user.setPresence({ activity: { name: 'Updating...' }, status: 'idle' })])
+    const results = await Promise.all([message.channel.send({embeds: [emb]}), client.user.setPresence({ activity: { name: 'Updating...' }, status: 'idle' })])
 
     const result = results[0]
 

@@ -139,7 +139,7 @@ async function loop (embedMessage, message, embed, contri_embeds) {
     return emojisToAdd.includes(reaction.emoji.name) && user.id === message.author.id
   }
 
-  embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
+  embedMessage.awaitReactions({filter, max: 1, time: 60000, errors: ['time'] })
     .then(async collected => {
 			// if sometihng was collected then we are sure the message exists
       const reaction = collected.first()

@@ -17,7 +17,7 @@ async function translate(message, content, args) {
 		.setColor(colors.BLUE)
 		.setFooter(`${result.from.language.iso} → ${langTo}`, settings.BOT_IMG)
 
-	const messageEmbed = await message.inlineReply(embed)
+	const messageEmbed = await message.reply({embeds: [embed]})
 	addDeleteReact(messageEmbed, message, true)
 }
 

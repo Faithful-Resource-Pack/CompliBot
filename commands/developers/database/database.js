@@ -149,7 +149,7 @@ ${prefix}db path remove|delete <path id>`,
       }
       
       if (embed === undefined) embed = await errorEmbed('AN ERROR OCCURED')
-      message.inlineReply(embed)
+      message.reply({embeds: [embed]})
 
     } else return warnUser(message, strings.COMMAND_NO_PERMISSION)
   }

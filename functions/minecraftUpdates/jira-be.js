@@ -31,7 +31,7 @@ exports.updateJiraVersions = async (client) => {
 			if (!jiraVersionsCache.includes(version.name)) {
 				jiraVersionsCache.push(version.name)
 				if (!version.name.includes('Future Version')) {
-					client.channels.cache.get('773983707299184703').send(`A new Bedrock version has been added to the Minecraft issue tracker: \`${version.name}\``)
+					client.channels.cache.get('773983707299184703').send({content: `A new Bedrock version has been added to the Minecraft issue tracker: \`${version.name}\``})
 				}
 			}
 		})

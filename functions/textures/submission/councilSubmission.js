@@ -50,10 +50,7 @@ async function councilSubmission(client, channelFromID, channelOutID, channelOut
   // change status message
   messagesDownvoted.forEach(message => {
     
-    channelOutInvalid.send(
-      message.embed
-        .setColor(colors.RED)
-    )
+    channelOutInvalid.send({embeds: [message.embed.setColor(colors.RED)]})
       .then(async sentMessage => {
         for (const emojiID of [emojis.UPVOTE, emojis.DOWNVOTE, emojis.SEE_MORE]) await sentMessage.react(client.emojis.cache.get(emojiID))
       })
@@ -69,7 +66,7 @@ async function councilSubmission(client, channelFromID, channelOutID, channelOut
     embed.setColor(colors.GREEN)
     embed.fields[1].value = `<:upvote:${emojis.UPVOTE}> Will be added in a future version!`
 
-    channelOut.send(embed)
+    channelOut.send({embeds: [embed]})
       .then(async sentMessage => {
         for (const emojiID of EMOJIS) await sentMessage.react(client.emojis.cache.get(emojiID))
       })

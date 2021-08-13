@@ -46,7 +46,7 @@ module.exports = {
 
 		if (!userID) return await warnUser(message, strings.MUTE_SPECIFY_USER)
 		if (userID === message.author.id) return await warnUser(message, strings.MUTE_CANT_MUTE_SELF)
-		if (userID === client.user.id) return await message.channel.send(strings.COMMAND_NOIDONTTHINKIWILL_LMAO)
+		if (userID === client.user.id) return await message.channel.send({content: strings.COMMAND_NOIDONTTHINKIWILL_LMAO})
 
 		if (isNaN(time)) return await warnUser(message, strings.MUTE_SPECIFY_INTEGER)		
 		else {
@@ -68,7 +68,7 @@ module.exports = {
 				.setColor(colors.BLACK)
 				.setTimestamp()
 
-			await message.inlineReply(embed)
+			await message.reply({embeds: [embed]})
 
 			modLog(client, message, userID, reason, time, 'muted')
 		}

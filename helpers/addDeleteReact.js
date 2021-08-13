@@ -5,21 +5,26 @@ const emojis = require('../resources/emojis')
  * @param {DiscordMessage} sentMessage message sent by the bot
  * @param {DiscordMessage} authorMessage message the bot has respond to
  */
-async function addDeleteReact(sentMessage, authorMessage, deleteAuthorMessage = false) {
-  if (sentMessage.channel.type === 'dm') return
+async function addDeleteReact(sentMessage, authorMessage, deleteAuthorMessage = false, redirectMessage = undefined) {
+  if (sentMessage.channel.type === 'DM') return
 
   await sentMessage.react(emojis.DELETE)
 
   const filter = (reaction, user) => {
-    return [emojis.DELETE].includes(reaction.emoji.id) && user.id === authorMessage.author.id
+    if (redirectMessage) return [emojis.DELETE].includes(reaction.emoji.id) && user.id === redirectMessage.author.id
+    else return [emojis.DELETE].includes(reaction.emoji.id) && user.id === authorMessage.author.id
   }
 
-  sentMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
+  sentMessage.awaitReactions({filter, max: 1, time: 60000, errors: ['time'] })
   .then(async collected => {
     const reaction = collected.first()
     if (reaction.emoji.id === emojis.DELETE) {
       await sentMessage.delete()
-      if (deleteAuthorMessage == true && !authorMessage.deleted) await authorMessage.delete()
+      if (redirectMessage) {
+        if (deleteAuthorMessage == true && !redirectMessage.deleted) await redirectMessage.delete()
+      } else {
+        if (deleteAuthorMessage == true && !authorMessage.deleted) await authorMessage.delete()
+      }
     }
   })
   .catch(async () => {

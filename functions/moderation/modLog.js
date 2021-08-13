@@ -24,7 +24,7 @@ async function modLog(client, message, memberID, reason, time, type) {
 		.setDescription(`[Jump to message](${message.url})\n\n**Channel**: <#${message.channel.id}>\n**${type} user**: <@!${memberID}>\n**Reason**: \`${reason}\`\n**Time**: \`${time}s\`\n**Date**: \`${message.createdAt.toLocaleString()}\``)
 		.setTimestamp()
 
-	await logChannel.send(embed)
+	await logChannel.send({embeds: [embed]})
 }
 
 exports.modLog = modLog 

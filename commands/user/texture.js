@@ -30,11 +30,11 @@ module.exports = {
 	example: `${prefix}texture 16 dirt`,
 
 	/**
-	 * @param {Discord.Client} _client The discord boi client
+	 * @param {Discord.Client} client The discord boi client
 	 * @param {Discord.Message} message The incoming message to respond to
 	 * @param {Array<string>} args All words following the command
 	 */
-	async execute(_client, message, args) {
+	async execute(client, message, args) {
 
 		let results    = []
 		const textures = require('../../helpers/firestorm/texture')
@@ -62,7 +62,7 @@ module.exports = {
 			.setDescription(strings.COMMAND_SEARCHING_FOR_TEXTURE)
 			.setThumbnail(settings.LOADING_IMG)
 			.setColor(colors.BLUE)
-		const waitEmbedMessage = await message.inlineReply(waitEmbed);*/
+		const waitEmbedMessage = await message.reply({embeds: [waitEmbed]});*/
 
 		// partial texture name (_sword, _axe -> diamond_sword, diamond_axe...)
 		if (search.startsWith('_') || search.endsWith('_')) {
@@ -249,7 +249,7 @@ async function getTexture(message, res, texture) {
 			*/
 			embed.addField('Paths', pathsText.join('\n'), false)
 
-			const embedMessage = await message.reply({ embed: embed, embeds: [embed] });
+			const embedMessage = await message.reply({embeds: [embed]});
 			addDeleteReact(embedMessage, message, true)
 
 			if (dimension.width <= 512 && dimension.height <= 512)
@@ -263,14 +263,14 @@ async function getTexture(message, res, texture) {
 				return [emojis.MAGNIFY, emojis.NEXT_RES, emojis.PALETTE, emojis.TILE].includes(reaction.emoji.id) && user.id === message.author.id;
 			};
 
-			embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
+			embedMessage.awaitReactions({filter, max: 1, time: 60000, errors: ['time'] })
 			.then(async collected => {
 				const reaction = collected.first()
 				if (reaction.emoji.id === emojis.PALETTE) {
-					return palette(embedMessage, embedMessage.embeds[0].image.url)
+					return palette(embedMessage, embedMessage.embeds[0].image.url, undefined, message)
 				}
 				if (reaction.emoji.id === emojis.MAGNIFY) {
-					return magnify(embedMessage, embedMessage.embeds[0].image.url)
+					return magnify(embedMessage, embedMessage.embeds[0].image.url, undefined, message)
 				}
 				if (reaction.emoji.id === emojis.NEXT_RES && used.includes(res)) {
 					if (!embedMessage.deleted) await embedMessage.delete()
@@ -282,13 +282,13 @@ async function getTexture(message, res, texture) {
 			})
 			.catch(async () => {
 				try {
-					if (message.channel.type !== 'dm' && (dimension.width <= 512 && dimension.height <= 512))
+					if (message.channel.type !== 'DM' && (dimension.width <= 512 && dimension.height <= 512))
 						await embedMessage.reactions.cache.get(emojis.MAGNIFY).remove()
-					if (message.channel.type !== 'dm')
+					if (message.channel.type !== 'DM')
 						await embedMessage.reactions.cache.get(emojis.NEXT_RES).remove()
-					if (message.channel.type !== 'dm')
+					if (message.channel.type !== 'DM')
 						await embedMessage.reactions.cache.get(emojis.PALETTE).remove()
-					if (message.channel.type !== 'dm' && (dimension.width <= 512 && dimension.height <= 512))
+					if (message.channel.type !== 'DM' && (dimension.width <= 512 && dimension.height <= 512))
 						await embedMessage.reactions.cache.get(emojis.TILE).remove()
 				} catch (err) { /* Message deleted */ }
 			})

@@ -26,10 +26,10 @@ module.exports = {
 
 			if(activity.includes(args[0]) && presence.includes(args[1])) {
 				client.user.setPresence({
-						activity: {
+						activities: [{
 							name: args.join(" ").replace(args[0],'').replace(args[1], ''),
 							type: args[0]
-						},
+						}],
 						status: args[1]
 				});
 			}
