@@ -147,7 +147,7 @@ function tile(message, url, type, gotocomplichannel = undefined, redirectMessage
 		else {
 			embedMessage = await message.reply({files: [attachment]})
 		}
-		addDeleteReact(embedMessage, message, true)
+		addDeleteReact(embedMessage, message, true, redirectMessage)
 
 		if (dimension.width <= 512 && dimension.height <= 512) {
 			// avoid an issue that also makes the bot magnify its own image in dm's
@@ -165,7 +165,8 @@ function tile(message, url, type, gotocomplichannel = undefined, redirectMessage
 				.then(async collected => {
 					const reaction = collected.first()
 					if (reaction.emoji.id === emojis.MAGNIFY) {
-						return magnify(embedMessage, embedMessage.attachments.first().url)
+						if (redirectMessage) return magnify(embedMessage, embedMessage.attachments.first().url, undefined, redirectMessage)
+						else return magnify(embedMessage, embedMessage.attachments.first().url)
 					}
 				})
 				.catch(async () => {
