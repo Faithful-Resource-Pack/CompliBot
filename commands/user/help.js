@@ -6,8 +6,6 @@ const uidD = process.env.UIDD
 const uidT = process.env.UIDT
 
 const Discord   = require("discord.js");
-const client    = new Discord.Client();
-client.commands = new Discord.Collection();
 const strings   = require('../../resources/strings');
 const settings  = require('../../resources/settings');
 const colors    = require('../../resources/colors');
@@ -124,7 +122,7 @@ module.exports = {
 			if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD || message.author.id === uidT) embed.addField("Developers", commands_devs[0] === undefined ? "None" : commands_devs.join('\n') )
 		}
 
-		const embedMessage = await message.inlineReply(embed);
+		const embedMessage = await message.reply({embeds: [embed]});
 		addDeleteReact(embedMessage, message, true)
 	}
 }

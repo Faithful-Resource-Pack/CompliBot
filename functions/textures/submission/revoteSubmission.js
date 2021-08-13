@@ -55,7 +55,7 @@ async function revoteSubmission(client, channelFromID, channelOutID, delay) {
     embed.setColor(colors.RED)
     embed.fields[1].value = `<:upvote:${emojis.DOWNVOTE}> After a revote, this texture won't be added!\n(${message.percentage}% < 66.66%)`
 
-    channelOut.send(embed)
+    channelOut.send({embeds: [embed]})
       .then(async sentMessage => {
         for (const emojiID of EMOJIS) await sentMessage.react(client.emojis.cache.get(emojiID))
       })
@@ -69,7 +69,7 @@ async function revoteSubmission(client, channelFromID, channelOutID, delay) {
     embed.setColor(colors.GREEN)
     embed.fields[1].value = `<:upvote:${emojis.UPVOTE}> After a revote, this texture will be added in a future version!\n(${message.percentage}% > 66.66%)`
 
-    channelOut.send(embed)
+    channelOut.send({embeds: [embed]})
       .then(async sentMessage => {
         for (const emojiID of EMOJIS) await sentMessage.react(client.emojis.cache.get(emojiID))
       })

@@ -5,10 +5,11 @@ const strings  = require('../../../resources/strings')
 const colors   = require('../../../resources/colors')
 const fetch    = require('node-fetch')
 
+const { Permissions }    = require('discord.js');
 const { addDeleteReact } = require('../../../helpers/addDeleteReact')
-const { magnify } = require('../../../functions/textures/magnify')
-const { palette } = require('../../../functions/textures/palette')
-const { tile }    = require('../tile')
+const { magnify }        = require('../../../functions/textures/magnify')
+const { palette }        = require('../../../functions/textures/palette')
+const { tile }           = require('../tile')
 
 const textures = require('../../../helpers/firestorm/texture')
 
@@ -52,7 +53,7 @@ async function editSubmission(client, reaction, user) {
     }
 
     // await reaction from the user
-    message.awaitReactions(filter, { max: 1, time: 30000, errors: [ 'time' ] })
+    message.awaitReactions({filter, max: 1, time: 30000, errors: [ 'time' ] })
     .then(async collected => {
       const REACTION = collected.first()
       const USER_ID  = collected.first().users.cache.array().filter(user => user.bot === false).map(user => user.id)[0]
@@ -124,18 +125,18 @@ async function editSubmission(client, reaction, user) {
 					
 					try {
 						const member = await message.guild.members.cache.get(user.id)
-						embedMessage = await member.send(attachment)
+						embedMessage = await member.send({files: [attachment]})
 					} catch (e) {
-						embedMessage = await complichannel.send(attachment)
+						embedMessage = await complichannel.send({content: `<@!${user.id}>`, files: [attachment]})
 					}
 					addDeleteReact(embedMessage, message)
 				}
 				else {
 					try {
 						const member = await message.guild.members.cache.get(user.id)
-						embedMessage = await member.send(`Can't find any results to compare for \`${message.embeds[0].image.url.split('/').pop().replace('.png', '')}\``)
+						embedMessage = await member.send({content: `Can't find any results to compare for \`${message.embeds[0].image.url.split('/').pop().replace('.png', '')}\``})
 					} catch (e) {
-						embedMessage = await complichannel.send(`Can't find any results to compare for \`${message.embeds[0].image.url.split('/').pop().replace('.png', '')}\``)
+						embedMessage = await complichannel.send({content: `<@!${user.id}> Can't find any results to compare for \`${message.embeds[0].image.url.split('/').pop().replace('.png', '')}\``})
 					}
 				}
       }
@@ -143,18 +144,18 @@ async function editSubmission(client, reaction, user) {
       /**
        * TODO: for instapass & flush reacts, check if the user who reacted have the Council role, and not admin perms
        */
-      if (REACTION.emoji.id === emojis.INSTAPASS && member.hasPermission('ADMINISTRATOR')) {
+      if (REACTION.emoji.id === emojis.INSTAPASS && member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
         removeReact(message, [emojis.UPVOTE, emojis.DOWNVOTE])
         changeStatus(message, `<:instapass:${emojis.INSTAPASS}> Instapassed`)
         instapass(client, message)
       }
-      if (REACTION.emoji.id === emojis.INVALID && member.hasPermission('ADMINISTRATOR')) {
+      if (REACTION.emoji.id === emojis.INVALID && member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
         removeReact(message, [emojis.UPVOTE, emojis.DOWNVOTE])
         changeStatus(message, `<:invalid:${emojis.INVALID}> Invalid`)
       }
 
       // delete message only if the first author of the field 0 is the discord user who reacted, or if the user who react is admin
-      if (REACTION.emoji.id === emojis.DELETE && (USER_ID === authorID || member.hasPermission('ADMINISTRATOR'))) return await message.delete()
+      if (REACTION.emoji.id === emojis.DELETE && (USER_ID === authorID || member.permissions.has(Permissions.FLAGS.ADMINISTRATOR))) return await message.delete()
 
       removeReact(message, EMOJIS)
       await message.react(client.emojis.cache.get(emojis.SEE_MORE))

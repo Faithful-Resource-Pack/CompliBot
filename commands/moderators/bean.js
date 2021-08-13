@@ -22,7 +22,7 @@ module.exports = {
 
 		if (!member) return warnUser(message, strings.BEAN_SPECIFY_USER)
 		if (member.id === message.author.id) return warnUser(message, strings.BEAN_CANT_BEAN_SELF)
-		if (member.id === client.user.id) return await message.channel.send(strings.COMMAND_NOIDONTTHINKIWILL_LMAO)
+		if (member.id === client.user.id) return await message.channel.send({content: strings.COMMAND_NOIDONTTHINKIWILL_LMAO})
 
 		else {
 			const embed = new Discord.MessageEmbed()
@@ -30,7 +30,7 @@ module.exports = {
 				.setDescription(`Beaned ${member} \nReason: ${reason}`)
 				.setColor(colors.BLUE)
 				.setTimestamp()
-			await message.inlineReply(embed)
+			await message.reply({embeds: [embed]})
 		}
 	}
 }

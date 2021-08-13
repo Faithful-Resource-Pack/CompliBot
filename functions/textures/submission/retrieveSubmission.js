@@ -55,11 +55,11 @@ async function retrieveSubmission(client, channelFromID, channelOutID, delay) {
 	// send message to the output channel & change status
 	const EMOJIS = [emojis.UPVOTE, emojis.DOWNVOTE, emojis.SEE_MORE]
 	messagesUpvoted.forEach(message => {
-		channelOut.send(
+		channelOut.send({embeds: [
 			message.embed
 				.setColor(colors.COUNCIL)
 				.setDescription(`[Original Post](${message.message.url})\n${message.embed.description ? message.embed.description : ''}`)
-		)
+		]})
 			.then(async sentMessage => {
 				for (const emojiID of EMOJIS) await sentMessage.react(client.emojis.cache.get(emojiID))
 			})

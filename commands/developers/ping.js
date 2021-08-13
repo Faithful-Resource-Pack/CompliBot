@@ -15,14 +15,14 @@ module.exports = {
 	async execute(client, message, args) {
 		const m = new Discord.MessageEmbed().setTitle('Ping?')
 
-		message.inlineReply(m).then(async m => {
+		message.reply({embeds: [m]}).then(async m => {
 			const embed = new Discord.MessageEmbed()
 				.setTitle('Pong!')
 				.setColor(colors.BLUE)
 				.setDescription(`Latency: ${m.createdTimestamp - message.createdTimestamp}ms \nAPI Latency: ${Math.round(client.ws.ping)}ms`)
 				.setFooter(message.client.user.username, settings.BOT_IMG)
 				
-			await m.edit(embed)
+			await m.edit({embeds: [embed]})
 			addDeleteReact(m, message, true)
 		})
 	}

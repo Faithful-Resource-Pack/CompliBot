@@ -139,20 +139,20 @@ function tile(message, url, type, gotocomplichannel = undefined, redirectMessage
 		if (gotocomplichannel) {
 			try {
 				const member = await message.guild.members.cache.get(gotocomplichannel)
-				embedMessage = await member.send(attachment)
+				embedMessage = await member.send({files: [attachment]})
 			} catch (e) {
-				embedMessage = await complichannel.send(attachment)
+				embedMessage = await complichannel.send({content: `<@!${gotocomplichannel}>`, files: [attachment]})
 			}
 		}
 		else {
-			embedMessage = await message.inlineReply(attachment)
+			embedMessage = await message.reply({files: [attachment]})
 		}
 		addDeleteReact(embedMessage, message, true)
 
 		if (dimension.width <= 512 && dimension.height <= 512) {
 			// avoid an issue that also makes the bot magnify its own image in dm's
 			// probably unfixable due to the texture submission reactions
-			if (embedMessage.channel.type === 'dm') return
+			if (embedMessage.channel.type === 'DM') return
 
 			embedMessage.react(emojis.MAGNIFY);
 
@@ -161,7 +161,7 @@ function tile(message, url, type, gotocomplichannel = undefined, redirectMessage
 				else return [emojis.MAGNIFY].includes(reaction.emoji.id) && user.id === message.author.id
 			}
 
-			embedMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
+			embedMessage.awaitReactions({filter, max: 1, time: 60000, errors: ['time'] })
 				.then(async collected => {
 					const reaction = collected.first()
 					if (reaction.emoji.id === emojis.MAGNIFY) {

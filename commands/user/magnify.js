@@ -63,36 +63,42 @@ module.exports = {
 			}
 
 		async function PreviousImage() {
-			var found = false;
-			var messages = [];
-			var list_messages = await message.channel.messages.fetch({ limit: 10 });
-			messages.push(...list_messages.array());
+			/**
+			 * DO NOT DELETE THE COMMENTS IN THIS FUNCTION!
+			 * Right now this function is using a workaround for something that was broken by discord.js v13 and may possibly work again in the future.
+			 */
 
-			for (var i in messages) {
-				var msg = messages[i]
+			var found = false;
+			//var messages = [];
+			var list_messages = await message.channel.messages.fetch({ limit: 10 });
+			var lastMsg = list_messages.sort((a, b) => b.createdTimestamp - a.createdTimestamp).filter((m) => m.attachments.size > 0).first();
+			//messages.push(...list_messages.array());
+
+			//for (var i in messages) {
+				//var msg = messages
 				var url = '';
 				try {
-					if (msg.attachments.size > 0) {
+					if (lastMsg.attachments.size > 0) {
 						found = true;
-						url = msg.attachments.first().url;
-						break;
+						url = lastMsg.attachments.first().url;
+						//break;
 					}
-					else if (msg.embeds[0] != undefined && msg.embeds[0] != null && msg.embeds[0].image) {
+					else if (lastMsg.embeds[0] != undefined && lastMsg.embeds[0] != null && lastMsg.embeds[0].image) {
 						found = true;
-						url = msg.embeds[0].image.url;
-						break;
+						url = lastMsg.embeds[0].image.url;
+						//break;
 					}
-					else if (msg.content.startsWith('https://') || msg.content.startsWith('http://')) {
-						if (msg.content.endsWith('.png') || msg.content.endsWith('.jpeg') || msg.content.endsWith('.jpg') || msg.content.endsWith('.gif')) {
+					else if (lastMsg.content.startsWith('https://') || lastMsg.content.startsWith('http://')) {
+						if (lastMsg.content.endsWith('.png') || lastMsg.content.endsWith('.jpeg') || lastMsg.content.endsWith('.jpg') || lastMsg.content.endsWith('.gif')) {
 							found = true;
-							url = msg.content;
-							break;
+							url = lastMsg.content;
+							//break;
 						}
 					}
 				} catch(e) {
-					return warnUser(message, e + strings.COMMAND_NO_IMAGE_FOUND);
+					return warnUser(message, strings.COMMAND_NO_IMAGE_FOUND);
 				}
-			}
+			//}
 
 			if (found) await magnify(message, url);
 			else return warnUser(message, strings.COMMAND_NO_IMAGE_FOUND);

@@ -165,10 +165,9 @@ ${prefix}color cmyk(0,50,85,0)`,
         { name: 'HSV', value: `\`${hsv[0]}°, ${hsv[1]}%, ${hsv[2]}%\``, inline: true },
         { name: 'CMYK', value: `\`${cmyk.join('%, ')}%\``, inline: true }
       )
-      .attachFiles(attachment)
       .setThumbnail('attachment://color.png')
     
-    const embedMessage = await message.inlineReply(embed)
+    const embedMessage = await message.reply({embeds: [embed], files: [attachment]})
 		addDeleteReact(embedMessage, message, true)
   }
 }

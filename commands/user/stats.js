@@ -14,7 +14,7 @@ module.exports = {
 	uses: strings.COMMAND_USES_ANYONE,
 	syntax: `${prefix}stats`,
 	async execute(client, message, args) {
-		if (message.channel.type !== 'dm') await message.inlineReply('Please check your dm\'s!');
+		if (message.channel.type !== 'DM') await message.reply({content: 'Please check your dm\'s!'});
 
 		let seconds = Math.floor(message.client.uptime / 1000);
 		let minutes = Math.floor(seconds / 60);
@@ -45,10 +45,10 @@ module.exports = {
 				{ name: 'Operating system', value: os.version()},
 				{ name: 'Discord library', value: `discord.js ${Discord.version}`},
 				{ name: 'Node.js', value: `Version ${process.version}`},
-				{ name: 'In guilds', value: client.guilds.cache.size},
+				{ name: 'In guilds', value: client.guilds.cache.size.toString()},
 			)
 
-		if (message.channel.type !== 'dm') await message.author.send(embed);
-		else await message.inlineReply(embed);
+		if (message.channel.type !== 'DM') await message.author.send({embeds: [embed]});
+		else await message.reply({embeds: [embed]});
 	}
 };

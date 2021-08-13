@@ -49,12 +49,12 @@ function magnify(message, url, gotocomplichannel = undefined) {
 		if (gotocomplichannel) {
 			try {
 				const member = await message.guild.members.cache.get(gotocomplichannel)
-				embedMessage = await member.send(attachment);
+				embedMessage = await member.send({files: [attachment]});
 			} catch(e) {
-				embedMessage = await complichannel.send(`<@!${gotocomplichannel}>`, attachment);
+				embedMessage = await complichannel.send({content: `<@!${gotocomplichannel}>`, files: [attachment]});
 			}
 		}
-		else embedMessage = await message.inlineReply(attachment);
+		else embedMessage = await message.reply({files: [attachment]});
 		addDeleteReact(embedMessage, message, true)
 
 		return attachment;

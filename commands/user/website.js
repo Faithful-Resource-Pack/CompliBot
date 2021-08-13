@@ -67,7 +67,7 @@ module.exports = {
 		let embed = new Discord.MessageEmbed()
 
 		if (!args[0]) {
-			if (message.channel.type !== 'dm') return warnUser(message, strings.WEBSITE_PROVIDE_VALID_ARGUMENT)
+			if (message.channel.type !== 'DM') return warnUser(message, strings.WEBSITE_PROVIDE_VALID_ARGUMENT)
 
 			embed
 				.setTitle('Websites:')
@@ -75,7 +75,7 @@ module.exports = {
 
 			for (let i = 0; i < DATA.length; i++) embed.addField(DATA[i].name, DATA[i].value)
 			
-			let embedMessage = await message.inlineReply(embed)
+			let embedMessage = await message.reply({embeds: [embed]})
 			return addDeleteReact(embedMessage, message, true)
 		}
 
@@ -89,7 +89,7 @@ module.exports = {
 					.setFooter(`Keywords: ${DATA[i].keywords.join(' | ')}`)
 					.setThumbnail(DATA[i].image)
 
-				let embedMessage = await message.inlineReply(embed)
+				let embedMessage = await message.reply({embeds: [embed]})
 				return addDeleteReact(embedMessage, message, true)
 			}
 		}

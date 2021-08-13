@@ -15,7 +15,7 @@ async function quote(msg) {
 	let i, ids, embed, file
 
 	// no private messages
-	if (msg.channel.type === 'dm') return
+	if (msg.channel.type === 'DM') return
 
 	// cancel if quote is in texture submission channel
 	if (
@@ -75,7 +75,7 @@ async function quote(msg) {
 				if (file.endsWith('.png') || file.endsWith('.jpg') || file.endsWith('jpeg')) embed.setImage(file)
 			}
 		
-			return await msg.inlineReply(embed)
+			return await msg.reply({embeds: [embed]})
 		}
 
 		else {
@@ -101,7 +101,7 @@ async function quote(msg) {
 				}
 			}
 
-			const embedMessage = await msg.inlineReply(embed)
+			const embedMessage = await msg.reply({embeds: [embed]})
 			addDeleteReact(embedMessage, msg)
 		}
 	}
