@@ -182,13 +182,13 @@ async function palette(message, url, gotocomplichannel = undefined, redirectMess
 			try {
 				const member = await message.guild.members.cache.get(gotocomplichannel)
 				embedMessage = await member.send({
-					embeds: embed,
+					embeds: [embed],
 					files: [colorImageAttachment]
 				})
 			} catch(e) {
 				embedMessage = await complichannel.send({
 					content: `<@!${gotocomplichannel}>`,
-					embeds: embed,
+					embeds: [embed],
 					files: [colorImageAttachment]
 				})
 			}

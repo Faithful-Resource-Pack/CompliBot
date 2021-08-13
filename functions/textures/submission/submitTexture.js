@@ -148,8 +148,8 @@ async function makeEmbed(client, message, texture, param = new Object()) {
 
   for (let i = 0; uses[i]; i++) {
     let localPath = await uses[i].paths()
-    pathText.push(`**${uses[i].editions[0].charAt(0).toUpperCase() + uses[i].editions[0].slice(1)}**`)
-    for (let k = 0; localPath[k]; k++) pathText.push(`\`[${localPath[k].versions[localPath[k].versions.length - 1]}+]\` ${localPath[k].path}`)
+    pathText.push(`**${uses[i].editions[0].charAt(0).toUpperCase() + uses[i].editions[0].slice(1)}**\n`)
+    for (let k = 0; localPath[k]; k++) pathText.push(`\`[${localPath[k].versions[localPath[k].versions.length - 1]}+]\` ${localPath[k].path} \n`)
   }
 
   let embed = new Discord.MessageEmbed()
@@ -158,9 +158,9 @@ async function makeEmbed(client, message, texture, param = new Object()) {
   .setTitle(`[#${texture.id}] ${texture.name}`)
   //.setImage(message.attachments.first().url)
   .addFields(
-    { name: 'Author', value: `<@!${param.authors.join('>\n<@!')}>`, inline: true },
+    { name: 'Author', value: `<@!${param.authors.join('>\n<@!').toString()}>`, inline: true },
     { name: 'Status', value: '⏳ Pending...', inline: true },
-    { name: '\u200B', value: pathText, inline: false }
+    { name: '\u200B', value: pathText.toString().replace(/,/g,''), inline: false }
   )
   
   // re-upload the image to the new message, avoid broken link (rename it in the same time)
