@@ -56,7 +56,7 @@ async function editSubmission(client, reaction, user) {
     message.awaitReactions({filter, max: 1, time: 30000, errors: [ 'time' ] })
     .then(async collected => {
       const REACTION = collected.first()
-      const USER_ID  = collected.first().users.cache.array().filter(user => user.bot === false).map(user => user.id)[0]
+      const USER_ID  = [...collected.first().users.cache.values()].filter(user => user.bot === false).map(user => user.id)[0]
 			
       if (REACTION.emoji.id === emojis.PALETTE)      palette(message, message.embeds[0].image.url, user.id)
       else if (REACTION.emoji.id === emojis.MAGNIFY) magnify(message, message.embeds[0].image.url, user.id)
