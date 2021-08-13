@@ -20,7 +20,11 @@ async function addDeleteReact(sentMessage, authorMessage, deleteAuthorMessage = 
     const reaction = collected.first()
     if (reaction.emoji.id === emojis.DELETE) {
       await sentMessage.delete()
-      if (deleteAuthorMessage == true && !authorMessage.deleted) await authorMessage.delete()
+      if (redirectMessage) {
+        if (deleteAuthorMessage == true && !redirectMessage.deleted) await redirectMessage.delete()
+      } else {
+        if (deleteAuthorMessage == true && !authorMessage.deleted) await authorMessage.delete()
+      }
     }
   })
   .catch(async () => {
