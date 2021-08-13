@@ -267,7 +267,7 @@ async function getTexture(message, res, texture) {
 			.then(async collected => {
 				const reaction = collected.first()
 				if (reaction.emoji.id === emojis.PALETTE) {
-					return palette(embedMessage, embedMessage.embeds[0].image.url)
+					return palette(embedMessage, embedMessage.embeds[0].image.url, undefined, message)
 				}
 				if (reaction.emoji.id === emojis.MAGNIFY) {
 					return magnify(embedMessage, embedMessage.embeds[0].image.url)

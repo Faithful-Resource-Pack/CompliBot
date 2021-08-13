@@ -28,7 +28,7 @@ const GRADIENT_HEIGHT        = 50
  * @param {DiscordUserID} gotocomplichannel if set, the message is send to the corresponding #complibot
  * @returns Send an embed message with the color palette of the given URL
  */
-async function palette(message, url, gotocomplichannel = undefined) {
+async function palette(message, url, gotocomplichannel = undefined, redirectMessage = undefined) {
 
 	let complichannel
 	if (gotocomplichannel) {
@@ -200,7 +200,8 @@ async function palette(message, url, gotocomplichannel = undefined) {
 			})
 		}
 
-		addDeleteReact(embedMessage, message, true)
+		if (redirectMessage) addDeleteReact(embedMessage, redirectMessage, true)
+		else addDeleteReact(embedMessage, message, true)
 	})
 }
 
