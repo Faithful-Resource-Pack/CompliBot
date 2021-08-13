@@ -15,7 +15,7 @@ const { warnUser } = require('../../helpers/warnUser')
  * @param {DiscordUserID} gotocomplichannel if set, the message is send to the corresponding #complibot
  * @returns Send a message with the magnified image
  */
-function magnify(message, url, gotocomplichannel = undefined) {
+function magnify(message, url, gotocomplichannel = undefined, redirectMessage = undefined) {
 
 	let complichannel
 	if (gotocomplichannel) {
@@ -55,7 +55,9 @@ function magnify(message, url, gotocomplichannel = undefined) {
 			}
 		}
 		else embedMessage = await message.reply({files: [attachment]});
-		addDeleteReact(embedMessage, message, true)
+
+		if (redirectMessage) addDeleteReact(embedMessage, redirectMessage, true)
+		else addDeleteReact(embedMessage, message, true)
 
 		return attachment;
 	});

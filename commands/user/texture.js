@@ -270,7 +270,7 @@ async function getTexture(message, res, texture) {
 					return palette(embedMessage, embedMessage.embeds[0].image.url, undefined, message)
 				}
 				if (reaction.emoji.id === emojis.MAGNIFY) {
-					return magnify(embedMessage, embedMessage.embeds[0].image.url)
+					return magnify(embedMessage, embedMessage.embeds[0].image.url, undefined, message)
 				}
 				if (reaction.emoji.id === emojis.NEXT_RES && used.includes(res)) {
 					if (!embedMessage.deleted) await embedMessage.delete()
