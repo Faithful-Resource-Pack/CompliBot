@@ -30,11 +30,11 @@ module.exports = {
 	example: `${prefix}texture 16 dirt`,
 
 	/**
-	 * @param {Discord.Client} _client The discord boi client
+	 * @param {Discord.Client} client The discord boi client
 	 * @param {Discord.Message} message The incoming message to respond to
 	 * @param {Array<string>} args All words following the command
 	 */
-	async execute(_client, message, args) {
+	async execute(client, message, args) {
 
 		let results    = []
 		const textures = require('../../helpers/firestorm/texture')
