@@ -43,7 +43,7 @@ module.exports = {
 		let target_id // undefined
 		if(who === 'me') target = message.member
 		else {
-			target = client.users.cache.array().filter(u => u.discriminator == name_match[2] && u.username == name_match[1])[0]
+			target = [...client.users.cache.values()].filter(u => u.discriminator == name_match[2] && u.username == name_match[1])[0]
 		}
 		if(target === undefined) return warnUser(message, strings.COMMAND_USER_DOESNT_EXIST)
 		target_id = target.id
