@@ -18,6 +18,7 @@ const { councilSubmission }  = require('../../functions/textures/submission/coun
 const { revoteSubmission }   = require('../../functions/textures/submission/revoteSubmission')
 const { downloadResults }    = require('../../functions/textures/admission/downloadResults')
 const { pushTextures }       = require('../../functions/textures/admission/pushTextures')
+const { saveDB }             = require('../../functions/saveDB')
 
 module.exports = {
 	name: 'hotfix',
@@ -30,7 +31,20 @@ module.exports = {
 	async execute(client, message, args) {
 		if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD || message.author.id === uidT) {
 			
-			/* Nothing */
+			await retrieveSubmission(client, settings.C32_SUBMIT_TEXTURES, settings.C32_SUBMIT_COUNCIL, 3)
+			await councilSubmission(client, settings.C32_SUBMIT_COUNCIL, settings.C32_RESULTS, settings.C32_SUBMIT_REVOTE, 1)
+			await revoteSubmission(client, settings.C32_SUBMIT_REVOTE, settings.C32_RESULTS, 3)
+			
+			// Compliance 64x
+			await retrieveSubmission(client, settings.C64_SUBMIT_TEXTURES, settings.C64_SUBMIT_COUNCIL, 3)
+			await councilSubmission(client, settings.C64_SUBMIT_COUNCIL, settings.C64_RESULTS, settings.C64_SUBMIT_REVOTE, 1)
+			await revoteSubmission(client, settings.C64_SUBMIT_REVOTE, settings.C64_RESULTS, 3)
+
+			await downloadResults(client, settings.C32_RESULTS)
+			await downloadResults(client, settings.C64_RESULTS)
+
+			await pushTextures()
+			await saveDB(`Daily Backup`)
 
 		} else return
 	}

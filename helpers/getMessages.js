@@ -31,7 +31,7 @@ async function getMessages(client, id, limit = 100) {
 		try {
 			messages = await channel.messages.fetch(options)
 		} catch (err) { console.log(err) }
-		sum_messages.push(...messages.array())
+		sum_messages.push(...messages.values())
 		last_id = messages.last().id
 
 		if (messages.size != 100 || sum_messages.length >= limit) done = true
