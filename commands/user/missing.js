@@ -254,8 +254,8 @@ module.exports = {
 		const compliance_repo = _rawToRepoURL(COMPLIANCE_REPOS[edition][res])
 
 		let embed = new Discord.MessageEmbed()
-			.setTitle('Executing missing command...')
-			.setDescription('This command is long to execute so please be patient...')
+			.setTitle('Searching for missing textures...')
+			.setDescription('This takes some time, please wait...')
 			.setThumbnail(settings.LOADING_IMG)
 			.setColor(BLUE)
 			.setFooter(message.client.user.username, settings.BOT_IMG)
