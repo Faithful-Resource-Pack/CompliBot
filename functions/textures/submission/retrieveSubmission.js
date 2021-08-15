@@ -76,7 +76,7 @@ async function editEmbed(message, string) {
 	embed.setColor(colors.BLUE)
 	if (embed.description !== null) embed.setDescription(message.embeds[0].description.replace(`[Original Post](${message.url})\n`, ''))
 
-	await message.edit(embed)
+	await message.edit({embeds: [embed]})
 }
 
 exports.retrieveSubmission = retrieveSubmission

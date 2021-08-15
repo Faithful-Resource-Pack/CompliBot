@@ -73,7 +73,7 @@ module.exports = {
 			}	else return warnUser(message, `You should use add/remove/modify, not ${args[2]}`);
 		} else return warnUser(message, `You should use fields/description/color, not ${args[1]}`);
 				
-		await embedMessage.edit(embed);
+		await embedMessage.edit({embeds: [embed]});
 		await message.delete();
 	}
 }

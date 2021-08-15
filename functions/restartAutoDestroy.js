@@ -37,7 +37,7 @@ exports.restartAutoDestroy = async function (client) {
         } else {
           emb.addField(name, value, false)
         }
-        await msg.edit(emb)
+        await msg.edit({embeds: [emb]})
         await sleep(1000)
       }
 

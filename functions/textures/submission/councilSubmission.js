@@ -82,7 +82,7 @@ async function editEmbed(message, string) {
   // fix the weird bug that also apply changes to the old embed (wtf)
   embed.setColor(colors.COUNCIL)
 
-  await message.edit(embed)
+  await message.edit({embeds: [embed]})
 }
 
 exports.councilSubmission = councilSubmission

@@ -157,7 +157,7 @@ async function loop (embedMessage, message, embed, contri_embeds) {
 				const c64_emoji = embedMessage.reactions.cache.get('2️⃣')
 				if(c64_emoji) await c64_emoji.remove()
 
-        embedMessage = await embedMessage.edit(embed)
+        embedMessage = await embedMessage.edit({embeds: [embed]})
         await loop(embedMessage, message, embed, contri_embeds)
       }
     }).catch(async () => {
