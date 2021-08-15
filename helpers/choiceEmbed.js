@@ -93,16 +93,15 @@ module.exports = function(message, params) {
       embedMessage = embed_message
       return asyncTools.react(embedMessage, emojis)
     })
-    .then(() => {
-      const filter_num = (reaction, user) => {
-        return emojis.includes(reaction.emoji.name) && user.id === message.author.id;
-      }
+    .then(async () => {
+      const filter_num = (reaction, user) => user.id === message.author.id && emojis.includes(reaction.emoji.name)
 
-      return embedMessage.awaitReactions({filter_num, max: params.max, time: params.timeout, errors: ['time'] })
+      return awaitReactionTweaked(embedMessage, {filter_num, max: params.max, time: params.timeout, errors: ['time'] }, embedMessage.author.id) // the bot sent the embed message
     })
     .then(collected => {
       /** @type {Discord.MessageReaction} */
       const reaction = collected.first()
+      console.log(reaction.users.cache)
       if (emojis.includes(reaction.emoji.name)) {
         embedMessage.delete()
 
@@ -117,5 +116,27 @@ module.exports = function(message, params) {
     }).catch(error => {
       reject(error, embedMessage)
     })
+  })
+}
+
+/**
+ * @param {Discord.Message} messageToReact Message to react to
+ * @param {import("discord.js").AwaitReactionsOptions} options Await reactions options
+ * @param {String} botId bot ID to filter reactions from 
+ * @returns {Promise<Discord.Collection<string, Discord.MessageReaction>>}
+ */
+function awaitReactionTweaked (messageToReact, options, botId) {
+  return new Promise((resolve, reject) => {
+    messageToReact.awaitReactions(options)
+    .then(collected => {
+      const filtered = collected.filter(reac => reac.users.cache.size != 1 || reac.users.cache.first().id !== botId)
+      if(filtered.size != 0) resolve(collected)
+      else {
+        awaitReactionTweaked(messageToReact, options, botId)
+        .then(resolve)
+        .catch(reject)
+      }
+    })
+    .catch(error => reject(error))
   })
 }
