@@ -196,7 +196,7 @@ async function invalidSubmission(message, error = 'Not given') {
 
     const msg = await message.reply({embeds: [embed]});
     if (!msg.deleted) setTimeout(() => msg.delete(), 30000);
-    if (!message.deleted) setTimeout(() => message.delete(), 10);
+    if (!message.deleted) setTimeout(() => message.delete(), 30010);
   } catch (error) {
     console.error(error)
   }
