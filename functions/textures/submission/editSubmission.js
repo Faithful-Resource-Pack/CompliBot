@@ -203,13 +203,13 @@ async function editEmbed(message) {
 
   if (embed.description !== null) embed.setDescription(message.embeds[0].description.replace(`[Original Post](${message.url})\n`, ''))
 
-  await message.edit(embed)
+  await message.edit({embeds: [embed]})
 }
 
 async function changeStatus(message, string) {
   let embed = message.embeds[0]
   embed.fields[1].value = string
-  await message.edit(embed)
+  await message.edit({embeds: [embed]})
 }
 
 async function removeReact(message, emojis) {
