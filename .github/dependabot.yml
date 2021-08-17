@@ -3,29 +3,5 @@ updates:
 - package-ecosystem: npm
   directory: "/"
   schedule:
-    interval: daily
+    interval: weekly
   open-pull-requests-limit: 10
-  ignore:
-  - dependency-name: "@octokit/rest"
-    versions:
-    - 18.0.15
-    - 18.3.1
-    - 18.3.2
-    - 18.3.4
-    - 18.5.3
-  - dependency-name: discord.js
-    versions:
-    - 12.5.3
-  - dependency-name: globby
-    versions:
-    - 11.0.3
-  - dependency-name: image-size
-    versions:
-    - 0.9.4
-    - 0.9.7
-  - dependency-name: simple-git
-    versions:
-    - 2.37.0
-  - dependency-name: eslint
-    versions:
-    - 7.19.0
