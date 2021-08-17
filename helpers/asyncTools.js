@@ -22,15 +22,11 @@ module.exports = {
       ++i
     }
     
-    let hasBeenDeleted = false
+    let hasBeenDeleted
     for (const reaction of reactions) {
-      if (!hasBeenDeleted) {
-        await message.react(reaction).catch(() => {
-          hasBeenDeleted = true
-        })
-      } else {
-        return
-      }
+      hasBeenDeleted = await (message.react(reaction).then(() => { return false }).catch(() => { return true }))
+
+      if(hasBeenDeleted) return
     }
   }
 }
