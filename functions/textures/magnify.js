@@ -39,7 +39,7 @@ function magnify(message, url, gotocomplichannel = undefined, redirectMessage = 
 		var canvasResult = Canvas.createCanvas(width, height)
 		var canvasResultCTX = canvasResult.getContext('2d')
 
-		const temp = await Canvas.loadImage(url)
+		const temp = await Canvas.loadImage(url).catch(error => { console.trace(error); return Promise.reject(error); })
 		canvasResultCTX.imageSmoothingEnabled = false
 		canvasResultCTX.drawImage(temp, 0, 0, width, height)
 

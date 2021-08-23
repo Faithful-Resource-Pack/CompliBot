@@ -1,5 +1,6 @@
-const https  = require('https')
+const axios = require('axios')
 const sizeOf = require('image-size')
+const { Buffer } = require('buffer')
 
 /**
  * Get Meta of an image
@@ -8,22 +9,15 @@ const sizeOf = require('image-size')
  * @returns Promise (resolve)
  */
 function getMeta(imageURL) {
-	return new Promise(function(resolve) {
-		https.get(imageURL, function(response) {
-			var chunks = []
-			response.on('data', function(chunk) {
-				chunks.push(chunk)
-			}).on('end', function() {
-				try {
-					var Buffer = require('buffer').Buffer
-					resolve(sizeOf(Buffer.concat(chunks)))
-				} catch(err) {
-					return console.error(err)
-				}
+	return new Promise(function(resolve, reject) {
+		axios.get(imageURL, { responseType: "arraybuffer" })
+			.then(response => {
+				const data = response.data
+				const buf = Buffer.from(data, "base64")
+				const size = sizeOf(buf)
+				resolve(size)
 			})
-		}).on('error', function(error) {
-			console.error(error)
-		})
+			.catch(reject)
 	})
 }
 
