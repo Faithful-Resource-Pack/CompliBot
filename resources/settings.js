@@ -7,6 +7,13 @@ const WARNING_IMG       = 'https://raw.githubusercontent.com/Compliance-Resource
 const ERROR_IMG         = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Discord-Bot/master/resources/images/error.png'
 const LOADING_IMG       = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Discord-Bot/master/resources/images/loading.gif'
 
+const REPO_JAVA_NAMES    = [ 'Compliance-Java-32x', 'Compliance-Java-64x' ]
+const REPO_BEDROCK_NAMES = ['Compliance-Bedrock-32x', 'Compliance-Bedrock-64x' ]
+const REPO_NAMES = [...REPO_JAVA_NAMES, ...REPO_BEDROCK_NAMES]
+
+const REPO_JAVA_BRANCHES    = [ '1.17.1', '1.16.5', '1.15.2', '1.14.4', '1.13.2', '1.12.2' ]
+const REPO_BEDROCK_BRANCHES = [ '1.17.0', '1.16.220' ]
+
 // Default texture repo for java
 const DEFAULT_MC_JAVA_REPOSITORY    = 'https://raw.githubusercontent.com/CompliBot/Default-Java/'
 const DEFAULT_MC_BEDROCK_REPOSITORY = 'https://raw.githubusercontent.com/CompliBot/Default-Bedrock/'
@@ -74,6 +81,12 @@ module.exports = {
 	WARNING_IMG,
 	ERROR_IMG,
 	LOADING_IMG,
+
+	REPO_JAVA_NAMES,
+	REPO_BEDROCK_NAMES,
+	REPO_NAMES,
+	REPO_JAVA_BRANCHES,
+	REPO_BEDROCK_BRANCHES,
 
 	DEFAULT_MC_JAVA_REPOSITORY,
 	DEFAULT_MC_BEDROCK_REPOSITORY,
