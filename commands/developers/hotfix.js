@@ -33,6 +33,11 @@ module.exports = {
 			
 			await councilSubmission(client, settings.C32_SUBMIT_COUNCIL, settings.C32_RESULTS, settings.C32_SUBMIT_REVOTE, 4)
 
+			await downloadResults(client, settings.C32_RESULTS)
+
+			await pushTextures()
+			await saveDB(`Daily Backup`)
+
 		} else return
 	}
 }
