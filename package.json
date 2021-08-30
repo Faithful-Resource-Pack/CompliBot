@@ -37,7 +37,7 @@
     "image-size": "^1.0.0",
     "lodash": "^4.17.21",
     "node-fetch": "^2.6.1",
-    "simple-git": "^2.43.0"
+    "simple-git": "^2.45.0"
   },
   "devDependencies": {
     "eslint": "^7.32.0",
