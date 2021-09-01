@@ -14,14 +14,14 @@ const settings = require('../../resources/settings')
 async function modLog(client, message, memberID, reason, time, type) {
 	var logChannel = undefined
 
-	if (message.guild.id == settings.C32_ID) logChannel = client.channels.cache.get(settings.C32_MOD_LOGS)
+	if (message.guild.id == settings.C32_ID || message.guild.id == settings.C64_ID || message.guild.id == settings.CEXTRAS_ID) logChannel = client.channels.cache.get(settings.C32_MOD_LOGS)
 	if (logChannel == undefined) return
 
 	var embed = new Discord.MessageEmbed()
 		.setAuthor(`${message.author.tag} ${type} someone`)
 		.setColor(colors.YELLOW)
 		.setThumbnail(message.author.displayAvatarURL())
-		.setDescription(`[Jump to message](${message.url})\n\n**Channel**: <#${message.channel.id}>\n**${type} user**: <@!${memberID}>\n**Reason**: \`${reason}\`\n**Time**: \`${time}s\`\n**Date**: \`${message.createdAt.toLocaleString()}\``)
+		.setDescription(`[Jump to message](${message.url})\n\n**Channel**: <#${message.channel.id}>\n**${type} user**: <@!${memberID}>\n**Reason**: \`${reason}\`\n**Time**: \`${time}\`\n**Date**: \`${message.createdAt.toLocaleString()}\``)
 		.setTimestamp()
 
 	await logChannel.send({embeds: [embed]})

@@ -53,7 +53,7 @@ async function revoteSubmission(client, channelFromID, channelOutID, delay) {
   messagesDownvoted.forEach(message => {
     let embed = message.embed
     embed.setColor(colors.RED)
-    embed.fields[1].value = `<:upvote:${emojis.DOWNVOTE}> After a revote, this texture won't be added!\n(${message.percentage}% < 66.66%)`
+    embed.fields[1].value = `<:downvote:${emojis.DOWNVOTE}> After a revote, this texture is not going to be added!\n(${message.percentage}% < 66.66%)`
 
     channelOut.send({embeds: [embed]})
       .then(async sentMessage => {

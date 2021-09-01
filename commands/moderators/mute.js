@@ -32,15 +32,39 @@ module.exports = {
 
 		const reason = args.slice(2).join(' ') || 'Not Specified'
 		let time = args[1] || -100
+		let timeOr = args[1] || -100
+		let timeDur = 'undefined'
 
 		if (typeof time === 'string') {
-			if (time.includes('s') || time.includes('seconds'))        time = parseInt(time, 10)
-			else if (time.includes('min') || time.includes('minutes')) time = 60 * parseInt(time, 10)
-			else if (time.includes('h') || time.includes('hour'))      time = 3600 * parseInt(time, 10)
-			else if (time.includes('d') || time.includes('day'))       time = 86400 * parseInt(time, 10)
-			else if (time.includes('w') || time.includes('week'))      time = 604800 * parseInt(time, 10)
-			else if (time.includes('m') || time.includes('month'))     time = 2592000 * parseInt(time, 10)
-			else if (time.includes('y') || time.includes('year'))      time = 31536000 * parseInt(time, 10)
+			if (time.includes('s') || time.includes('second')) {
+				time = parseInt(time, 10)
+				if (parseInt(timeOr, 10) == 1) timeDur = 'second'
+				else timeDur = 'seconds'
+			} else if (time.includes('min') || time.includes('minute')) {
+				time = 60 * parseInt(time, 10)
+				if (parseInt(timeOr, 10) == 1) timeDur = 'minute'
+				else timeDur = 'minutes'
+			} else if (time.includes('h') || time.includes('hour')) {
+				time = 3600 * parseInt(time, 10)
+				if (parseInt(timeOr, 10) == 1) timeDur = 'hour'
+				else timeDur = 'hours'
+			} else if (time.includes('d') || time.includes('day')) {
+				time = 86400 * parseInt(time, 10)
+				if (parseInt(timeOr, 10) == 1) timeDur = 'day'
+				else timeDur = 'days'
+			} else if (time.includes('w') || time.includes('week')) {
+				time = 604800 * parseInt(time, 10)
+				if (parseInt(timeOr, 10) == 1) timeDur = 'week'
+				else timeDur = 'weeks'
+			} else if (time.includes('m') || time.includes('month')) {
+				time = 2592000 * parseInt(time, 10)
+				if (parseInt(timeOr, 10) == 1) timeDur = 'month'
+				else timeDur = 'months'
+			} else if (time.includes('y') || time.includes('year')) {
+				time = 31536000 * parseInt(time, 10)
+				if (parseInt(timeOr, 10) == 1) timeDur = 'year'
+				else timeDur = 'years'
+			}
 			else return await warnUser(message, strings.MUTE_NOT_VALID_TIME)
 		}
 
@@ -64,13 +88,13 @@ module.exports = {
 			var embed = new Discord.MessageEmbed()
 				.setAuthor(message.author.tag, message.author.displayAvatarURL())
 				.setTitle(`Muted someone:`)
-				.setDescription(`**User:** <@!${userID}>\n**Reason:** \`${reason}\`\n**Time:** \`${timeout != 'Unlimited' ? timeout + ' seconds' : 'Unlimited'}\`\n**Ends at:** \`${endsAt}\``)
+				.setDescription(`**User:** <@!${userID}>\n**Reason:** \`${reason}\`\n**Time:** \`${timeout != 'Unlimited' ? parseInt(timeOr, 10) + ` ${timeDur}` : 'Unlimited'}\`\n**Ends at:** \`${endsAt}\``)
 				.setColor(colors.BLACK)
 				.setTimestamp()
 
 			await message.reply({embeds: [embed]})
 
-			modLog(client, message, userID, reason, time, 'muted')
+			modLog(client, message, userID, reason, `${parseInt(timeOr, 10)} ${timeDur}`, 'muted')
 		}
 	}
 };

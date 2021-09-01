@@ -8,8 +8,8 @@ const colors   = require('../../resources/colors');
 const { warnUser } = require('../../helpers/warnUser');
 
 const EDIT = {
-	date: '15/07/2021',
-	description: 'General update. Added specification about username.',
+	date: '27/08/2021',
+	description: 'Added rule 8 and improved the wording on rule 7. Also changed the translator link on rule 7 to DeepL instead of Google Translate.',
 	enabled: true
 }
 
@@ -78,9 +78,13 @@ const RULES = [
 	},
 	{
 		title: `**Speak english**`,
-		description: `This is an English-speaking server. If you cannot fluently write in English, please use a [translator](https://translate.google.com/)
+		description: `This is an English-speaking server. If you cannot fluently write in English, please use a [translator](https://www.deepl.com/translator).
 		
-		> Developers are currently working on a translate command but there is currently no ETA when it would be released.`
+		> Developers are currently working on a translation command, but there is currently no ETA when it will be released.`
+	},
+	{
+		title: `**No brigading and/or raiding on other servers in Compliance's name.**`,
+		description: `We strictly prohibit this behaviour, as not only it makes the Compliance project look bad, but is uncivil, unfair and against Discord TOS. Any offenders of this rule will suffer harsh punishments.`
 	}
 ]
 
@@ -167,7 +171,7 @@ module.exports = {
 				const embedChanges = new Discord.MessageEmbed()
 					.setTitle(`Latest changes as of the ${EDIT.date}`)
 					.setColor(color)
-					.setDescription(EDIT.description + '\n> Please understand that failing to comply to these rules will result in an adequate punishment.')
+					.setDescription(EDIT.description + '\n\n> Please understand that failing to comply to these rules will result in an adequate punishment.')
 					.setFooter(`The rules are subject to change.`, thumbnail)
 
 				await message.channel.send({embeds: [embedChanges]})
