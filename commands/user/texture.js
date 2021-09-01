@@ -171,7 +171,7 @@ module.exports = {
  * TODO: make this function in it's own file?
  * Show the asked texture
  * @param {String} res texture resolution
- * @param {Object} texture
+ * @param {import('../../helpers/firestorm/texture').Texture} texture
  */
 async function getTexture(message, res, texture) {
 	var imgURL = undefined;
@@ -232,41 +232,50 @@ async function getTexture(message, res, texture) {
 			if (res === '16') embed.setFooter('Vanilla Texture', settings.VANILLA_IMG);
 			if (res === '32') embed.setFooter('Compliance 32x', settings.C32_IMG)
 			if (res === '64') embed.setFooter('Compliance 64x', settings.C64_IMG)
-
-			let lastContribution = await texture.lastContribution((res == '32' || res == '64') ? `c${res}` : undefined);
 			
 			/*
 			TODO: Get missing contributors from #results and add them to the contribution collection first
-			let contributors = lastContribution ? lastContribution.contributors.map(contributor => { return `<@!${contributor}>` }) : 'None'
-			let date = lastContribution ? timestampConverter(lastContribution.date) : 'None'
-
-			if (res != '16') {
-				embed.addFields(
-					{ name: 'Author(s)', value: contributors, inline: true },
-					{ name: 'Added', value: date, inline: true },
-				)
-			}
 			*/
+
+			if (res !== '16') {
+				const lastContribution = await texture.lastContribution((res == '32' || res == '64') ? `c${res}` : undefined).catch(() => Promise.resolve(undefined))
+
+				if(lastContribution) {
+					const contributors = lastContribution.contributors.map(contributor => { return `<@!${contributor}>` }).join(', ')
+					embed.addField('Author(s)', contributors, true)
+
+					try {
+						const date = timestampConverter(lastContribution.date)
+						embed.addField('Modified', date, true)
+					// eslint-disable-next-line no-empty
+					} catch (_error) {}
+				}
+			}
 			embed.addField('Paths', pathsText.join('\n'), false)
 
 			const embedMessage = await message.reply({embeds: [embed]});
 			addDeleteReact(embedMessage, message, true)
 
-			if (dimension.width <= 512 && dimension.height <= 512)
+			const imageSmallEnough = dimension.width <= 512 && dimension.height <= 512
+			if (imageSmallEnough)
 				await embedMessage.react(emojis.MAGNIFY);
 			await embedMessage.react(emojis.NEXT_RES);
 			await embedMessage.react(emojis.PALETTE);
-			if (dimension.width <= 512 && dimension.height <= 512)
+			if (imageSmallEnough)
 				await embedMessage.react(emojis.TILE);
 
+			/**
+			 * @param {Discord.MessageReaction} reaction incoming reaction
+			 * @param {Discord.User} user Incoming reaction user
+			 */
 			const filter = (reaction, user) => {
-				return [emojis.MAGNIFY, emojis.NEXT_RES, emojis.PALETTE, emojis.TILE].includes(reaction.emoji.id) && user.id === message.author.id;
+				return !user.bot && [emojis.MAGNIFY, emojis.NEXT_RES, emojis.PALETTE, emojis.TILE].includes(reaction.emoji.id) && user.id === message.author.id;
 			};
 
 			embedMessage.awaitReactions({filter, max: 1, time: 60000, errors: ['time'] })
 			.then(async collected => {
 				const reaction = collected.first()
-				if (reaction.emoji.id === emojis.PALETTE) {
+				if (reaction.emoji.id === emojis.PALETTE && imageSmallEnough) {
 					return palette(embedMessage, embedMessage.embeds[0].image.url, undefined, message)
 				}
 				if (reaction.emoji.id === emojis.MAGNIFY) {
@@ -276,19 +285,19 @@ async function getTexture(message, res, texture) {
 					if (!embedMessage.deleted) await embedMessage.delete()
 					return getTexture(message, used[(used.indexOf(res) + 1) % used.length], texture)
 				}
-				if (reaction.emoji.id === emojis.TILE) {
+				if (reaction.emoji.id === emojis.TILE && imageSmallEnough) {
 					return tile(embedMessage, embedMessage.embeds[0].image.url, 'grid', undefined, message)
 				}
 			})
 			.catch(async () => {
 				try {
-					if (message.channel.type !== 'DM' && (dimension.width <= 512 && dimension.height <= 512))
+					if (message.channel.type !== 'DM' && (imageSmallEnough))
 						await embedMessage.reactions.cache.get(emojis.MAGNIFY).remove()
 					if (message.channel.type !== 'DM')
 						await embedMessage.reactions.cache.get(emojis.NEXT_RES).remove()
 					if (message.channel.type !== 'DM')
 						await embedMessage.reactions.cache.get(emojis.PALETTE).remove()
-					if (message.channel.type !== 'DM' && (dimension.width <= 512 && dimension.height <= 512))
+					if (message.channel.type !== 'DM' && (imageSmallEnough))
 						await embedMessage.reactions.cache.get(emojis.TILE).remove()
 				} catch (err) { /* Message deleted */ }
 			})

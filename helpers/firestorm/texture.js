@@ -4,9 +4,9 @@ require('./firestorm_config')()
 /**
  * @typedef {Object} Texture
  * @property {String} name Texture friendly name
- * @property {Function} uses All texture uses
- * @property {Function} contributions All contributions for this texture
- * @property {Function} lastContribution Last contribution for this texture
+ * @property {() => Promise<import('./texture_use').TextureUse[]} uses All texture uses
+ * @property {(res: String?) => Promise<import('./contributions').Contribution[]} contributions All contributions for this texture
+ * @property {(String) => Promise<import('./contributions').Contribution>} lastContribution Last contribution for this texture
  */
 
 module.exports = firestorm.collection('textures', el => {
