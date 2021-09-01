@@ -76,7 +76,7 @@ async function councilSubmission(client, channelFromID, channelResultsID, channe
   messagesDownvoted.forEach(message => {
     let embed = message.embed
     embed.setColor(colors.RED)
-    embed.fields[1].value = `<:downvote:${emojis.DOWNVOTE}> After the council decision, this texture won't be added!\nAsk them if you wan't to know more about that reason.`
+    embed.fields[1].value = `<:downvote:${emojis.DOWNVOTE}> After a council decision, this texture is not going to be added, ask them if you want to know more about it.`
 
     channelResults.send({embeds: [embed]})
       .then(async sentMessage => {
