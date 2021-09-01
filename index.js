@@ -37,7 +37,6 @@ const client = new Client({
 module.exports.Client = client
 
 // Environment vars
-const DEBUG = (process.env.DEBUG.toLowerCase() == 'true')
 const DEV = (process.env.DEV.toLowerCase() == 'true')
 const LOG_DEV = ((process.env.LOG_DEV.toLowerCase() || 'false') == 'true')
 
