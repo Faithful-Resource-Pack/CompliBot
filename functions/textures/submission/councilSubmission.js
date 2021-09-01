@@ -7,14 +7,14 @@ const { getMessages } = require('../../../helpers/getMessages')
  * @author Juknum
  * @param {DiscordClient} client
  * @param {String} channelFromID text-channel from where submission are retrieved
- * @param {String} channelOutID text-channel where submission are sent
- * @param {String} channelOutID text-channel where submission are sent if downvote >= upvote
+ * @param {String} channelResultsID text-channel where submission are sent (if upvote < downvote || upvote > downvote)
+ * @param {String} channelRevotesID text-channel where submission are sent if downvote == upvote
  * @param {Integer} delay delay in day from today
  */
-async function councilSubmission(client, channelFromID, channelOutID, channelOutInvalidID, delay) {
+async function councilSubmission(client, channelFromID, channelResultsID, channelRevotesID, delay) {
   let messages = await getMessages(client, channelFromID)
-  let channelOut = client.channels.cache.get(channelOutID)
-  let channelOutInvalid = client.channels.cache.get(channelOutInvalidID)
+  let channelResults = client.channels.cache.get(channelResultsID)
+  let channelRevotes = client.channels.cache.get(channelRevotesID)
 
   let delayedDate = new Date()
   delayedDate.setDate(delayedDate.getDate() - delay)
@@ -44,13 +44,13 @@ async function councilSubmission(client, channelFromID, channelOutID, channelOut
 
   // split messages following their up/down votes (upvote > downvote)
   let messagesUpvoted = messages.filter(message => message.upvote > message.downvote)
-  let messagesDownvoted = messages.filter(message => message.upvote <= message.downvote)
+  let messagesTied = messages.filter(message => message.upvote == message.downvote)
+  let messagesDownvoted = messages.filter(message => message.upvote < message.downvote)
 
-
-  // change status message
-  messagesDownvoted.forEach(message => {
+  // send tied message to #revotes (tied)
+  messagesTied.forEach(message => {
     
-    channelOutInvalid.send({embeds: [message.embed.setColor(colors.RED)]})
+    channelRevotes.send({embeds: [message.embed.setColor(colors.RED)]})
       .then(async sentMessage => {
         for (const emojiID of [emojis.UPVOTE, emojis.DOWNVOTE, emojis.SEE_MORE]) await sentMessage.react(client.emojis.cache.get(emojiID))
       })
@@ -58,17 +58,29 @@ async function councilSubmission(client, channelFromID, channelOutID, channelOut
     editEmbed(message.message, `<:downvote:${emojis.DOWNVOTE}> Sent to revote!`)
   })
 
-  const EMOJIS = [emojis.SEE_MORE]
-  // send message to the output channel & change status
+  // send upvoted messages to #results (accepted)
   messagesUpvoted.forEach(message => {
-
     let embed = message.embed
     embed.setColor(colors.GREEN)
     embed.fields[1].value = `<:upvote:${emojis.UPVOTE}> Will be added in a future version!`
 
-    channelOut.send({embeds: [embed]})
+    channelResults.send({embeds: [embed]})
       .then(async sentMessage => {
-        for (const emojiID of EMOJIS) await sentMessage.react(client.emojis.cache.get(emojiID))
+        for (const emojiID of [emojis.SEE_MORE]) await sentMessage.react(client.emojis.cache.get(emojiID))
+      })
+
+    editEmbed(message.message, `<:upvote:${emojis.UPVOTE}> Sent to results!`)
+  })
+
+  // send upvoted messages to #results (denied)
+  messagesDownvoted.forEach(message => {
+    let embed = message.embed
+    embed.setColor(colors.RED)
+    embed.fields[1].value = `<:downvote:${emojis.DOWNVOTE}> After the council decision, this texture won't be added!\nAsk them if you wan't to know more about that reason.`
+
+    channelResults.send({embeds: [embed]})
+      .then(async sentMessage => {
+        for (const emojiID of [emojis.SEE_MORE]) await sentMessage.react(client.emojis.cache.get(emojiID))
       })
 
     editEmbed(message.message, `<:upvote:${emojis.UPVOTE}> Sent to results!`)
