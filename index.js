@@ -1,393 +1,83 @@
-/*eslint-env node*/
+/* eslint-env node */
 
 /**
- * COMPLIBOT MAIN FILE:
- * Developped by and for the Compliance Community.
+ * COMPLIBOT INDEX FILE:
+ * - Developped by and for the Compliance Community.
+ * - Please read our License first.
+ * - If you find any bugs, please use our bug tracker
  */
 
-// Libs:
+// Libraries
+const fs = require('fs')
+const Discord = require('discord.js')
+const { walkSync } = require('./helpers/walkSync')
 require('dotenv').config()
-const Discord   = require('discord.js')
-const cron      = require('cron')
-const { Client, Intents, Permissions } = require('discord.js');
-const client    = new Client({
-	allowedMentions: { parse: ['users', 'roles'], repliedUser: false },
+
+// eslint-disable-next-line no-unused-vars
+const { Client, Intents, Permissions } = require('discord.js')
+const client = new Client({
+	allowedMentions: { parse: [ 'users', 'roles' ], repliedUser: false },
 	restTimeOffset: 0,
 	partials: Object.values(Discord.Constants.PartialTypes),
-	intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_BANS, Intents.FLAGS.GUILD_INTEGRATIONS, Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_MESSAGE_TYPING, Intents.FLAGS.DIRECT_MESSAGES, Intents.FLAGS.DIRECT_MESSAGE_REACTIONS, Intents.FLAGS.DIRECT_MESSAGE_TYPING] 
+	intents: [
+		Intents.FLAGS.GUILDS,
+		Intents.FLAGS.GUILD_MEMBERS,
+		Intents.FLAGS.GUILD_BANS,
+		Intents.FLAGS.GUILD_INTEGRATIONS,
+		Intents.FLAGS.GUILD_PRESENCES,
+		Intents.FLAGS.GUILD_MESSAGES, 
+		Intents.FLAGS.GUILD_MESSAGE_REACTIONS, 
+		Intents.FLAGS.GUILD_MESSAGE_TYPING, 
+		Intents.FLAGS.DIRECT_MESSAGES, 
+		Intents.FLAGS.DIRECT_MESSAGE_REACTIONS, 
+		Intents.FLAGS.DIRECT_MESSAGE_TYPING
+	]
 })
+
+module.exports.Client = client
+
+// Environment vars
+const DEBUG = (process.env.DEBUG.toLowerCase() == 'true')
+const DEV = (process.env.DEV.toLowerCase() == 'true')
+const LOG_DEV = ((process.env.LOG_DEV.toLowerCase() || 'false') == 'true')
+
+// Resources: 
+const colors = require('./resources/colors')
+
+/**
+ * (Deprecated) COMMANDS HANDLER
+ */
+const commandFiles = walkSync('./commands').filter(f => f.endsWith('.js'))
 client.commands = new Discord.Collection()
-
-// Admins & settings:
-const UIDA = [
-	process.env.UIDR,
-	process.env.UIDD,
-	process.env.UIDT,
-	process.env.UIDJ
-]
-
-const prefix      = process.env.PREFIX
-const DEBUG       = (process.env.DEBUG.toLowerCase() == 'true')
-const MAINTENANCE = (process.env.MAINTENANCE.toLowerCase() == 'true')
-const DEV         = (process.env.DEV.toLowerCase() == 'true')
-const LOG_DEV     = ((process.env.LOG_DEV || 'false').toLowerCase() == 'true')
-
-// Helpers:
-const { warnUser } = require('./helpers/warnUser')
-const { walkSync } = require('./helpers/walkSync')
-
-// Functions:
-const { updateMembers } = require('./functions/moderation/updateMembers')
-const { syncMembers } = require('./functions/moderation/syncMembers')
-
-const { textureIDQuote } = require('./functions/textures/textureIDQuote')
-const { quote }          = require('./functions/quote')
-
-const jiraJE    = require('./functions/minecraftUpdates/jira-je')
-const jiraBE    = require('./functions/minecraftUpdates/jira-be')
-const minecraft = require('./functions/minecraftUpdates/minecraft')
-
-const { retrieveSubmission } = require('./functions/textures/submission/retrieveSubmission')
-const { councilSubmission }  = require('./functions/textures/submission/councilSubmission')
-const { revoteSubmission }   = require('./functions/textures/submission/revoteSubmission')
-const { downloadResults }    = require('./functions/textures/admission/downloadResults')
-const { pushTextures }       = require('./functions/textures/admission/pushTextures')
-
-const { checkTimeout }    = require('./functions/moderation/checkTimeout')
-const { inviteDetection } = require('./functions/moderation/inviteDetection')
-
-const { submitTexture }  = require('./functions/textures/submission/submitTexture')
-const { editSubmission } = require('./functions/textures/submission/editSubmission')
-const { saveDB }         = require('./functions/saveDB')
-
-const { manageExtraRoles } = require('./functions/manageExtraRoles')
-
-// Resources:
-const colors  = require('./resources/colors')
-const strings = require('./resources/strings')
-const emojis  = require('./resources/emojis')
-
-// Import settings & commands handler:
-const commandFiles = walkSync('./commands').filter(file => file.endsWith('.js'))
-const settings     = require('./resources/settings')
-
-const { addDeleteReact }     = require('./helpers/addDeleteReact')
-const { restartAutoDestroy } = require('./functions/restartAutoDestroy')
-
-/**
- * SCHEDULED FUNCTIONS : Texture Submission
- * - Global process (each day at 00:00 GMT)         : @function submissionProcess
- * - Download process (each day at 00:10 GMT)       : @function downloadToBot
- * - Push to GitHub process (each day at 00:15 GMT) : @function pushToGithub
- */
-const submissionProcess = new cron.CronJob('0 0 * * *', async () => {
-	// Compliance 32x
-	await retrieveSubmission(client, settings.C32_SUBMIT_TEXTURES, settings.C32_SUBMIT_COUNCIL, 3)
-	await councilSubmission(client, settings.C32_SUBMIT_COUNCIL, settings.C32_RESULTS, settings.C32_SUBMIT_REVOTE, 1)
-	await revoteSubmission(client, settings.C32_SUBMIT_REVOTE, settings.C32_RESULTS, 3)
-	
-	// Compliance 64x
-	await retrieveSubmission(client, settings.C64_SUBMIT_TEXTURES, settings.C64_SUBMIT_COUNCIL, 3)
-	await councilSubmission(client, settings.C64_SUBMIT_COUNCIL, settings.C64_RESULTS, settings.C64_SUBMIT_REVOTE, 1)
-	await revoteSubmission(client, settings.C64_SUBMIT_REVOTE, settings.C64_RESULTS, 3)
-})
-const downloadToBot = new cron.CronJob('15 0 * * *', async () => {
-	await downloadResults(client, settings.C32_RESULTS)
-	await downloadResults(client, settings.C64_RESULTS)
-})
-let pushToGithub = new cron.CronJob('30 0 * * *', async () => {
-	await pushTextures()
-	await saveDB(`Daily Backup`)
-})
-
-function doMCUpdateCheck () {
-	jiraJE.updateJiraVersions(client)
-	jiraBE.updateJiraVersions(client)
-	minecraft.updateMCVersions(client)
-}
-
-/**
- * COMMAND HANDLER
- * - Automated: /commands & below
- * - Easter Eggs & others: below
- */
-let commands = []
 for (const file of commandFiles) {
 	const command = require(file)
-
-	if('name' in command && typeof(command.name) === 'string') {
+	if ('name' in command && typeof(command.name) === 'string')
 		client.commands.set(command.name, command)
-	
-		if (DEBUG) commands.push(command.name)
-	}
 }
-if (DEBUG) console.table(commands)
 
 /**
- * BOT STATUS:
+ * EVENTS HANDLER
+ * - See the /events folder
  */
-client.on('ready', async () => {
-	console.log(`┌─────────────────────────────────────────────────────────────┐`)
-	console.log(`│                                                             │`)
-	console.log(`│  ─=≡Σ((( つ◕ل͜◕)つ                                         │`)
-	console.log(`│ JavaScript is a pain, but I'm fine, I hope...               │`)
-	console.log(`│                                                             │`)
-	console.log(`└─────────────────────────────────────────────────────────────┘\n\n`)
-
-	if (MAINTENANCE) client.user.setPresence({ activities: [{ name: 'maintenance' }], status: 'dnd' })
-	else client.user.setActivity(`${prefix}help`, {type: 'LISTENING'})
-
-	await restartAutoDestroy(client)
-
-	if (DEV) return
-
-	/**
-	 * START TEXTURE SUBMISSION PROCESS
-	 * @see submissionProcess
-	 * @see downloadToBot
-	 * @see pushToGithub
-	 */
-	submissionProcess.start()
-	downloadToBot.start()
-	pushToGithub.start()
-
-	/**
-	 * MINECRAFT UPDATE DETECTION INTERVAL
-	 * @param {int} TIME : in milliseconds
-	 */
-	await jiraJE.loadJiraVersions()
-	await jiraBE.loadJiraVersions()
-	await minecraft.loadMCVersions()
-	setInterval(() => doMCUpdateCheck(), 60000)
-
-	/**
-	 * MODERATION MUTE SYSTEM UPDATE INTERVAL
-	 * @param {int} TIME : in milliseconds
-	 */
-	setInterval(function () { checkTimeout(client) }, 30000)
-
-	/**
-	 * UPDATE MEMBERS
-	 */
-	updateMembers(client, settings.C32_ID, settings.C32_COUNTER)
-	
-	/**
-	 * FETCH MEMBERS DATA
-	 */
-	syncMembers(client, [settings.C32_ID, settings.C64_ID, settings.CEXTRAS_ID])
-
-})
-
-/**
- * MEMBER JOIN
- */
-client.on('guildMemberAdd', async () =>{
-	if (DEV) return
-	updateMembers(client, settings.C32_ID, settings.C32_COUNTER)
-})
-
-/**
- * MEMBER LEFT
- */
-client.on('guildMemberRemove', async () => {
-	if (DEV) return
-	updateMembers(client, settings.C32_ID, settings.C32_COUNTER)
-})
-
-/**
- * BOT ADD OR REMOVE
- */
-client.on('guildCreate', async guild =>{
-	if (DEV) return
-	var embed = new Discord.MessageEmbed()
-		.setTitle(`Thanks for adding me to ${guild.name}!`)
-		.addFields(
-			{ name: 'Commands', value: `My prefix is: \`${prefix}\` \nUse \`${prefix}help\` to see a list of all my commands!`},
-			{ name: 'Feedback', value: `If you have a suggestion or want to report a bug, then please use the command \`${prefix}feedback [your message]\``},
-			{ name: 'Personalisation', value: 'soon:tm:'},
-		)
-		.setColor(colors.BLUE)
-		.setThumbnail(settings.BOT_IMG)
-		.setFooter(client.user.username, settings.BOT_IMG);
-
-	var channel = guild.channels.cache.find(channel => channel.type === 'GUILD_TEXT' && channel.permissionsFor(guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES']))
-	await channel.send({embeds: [embed]})
-})
-
-/**
- * COMMAND HANDLER
- */
-client.on('messageCreate', async message => {
-	if (!message.content.startsWith(prefix) || message.author.bot) return // Avoid messages WITHOUT prefix & bot messages
-
-	if (MAINTENANCE && !UIDA.includes(message.author.id)) {
-		const msg = await message.reply({content: strings.COMMAND_MAINTENANCE})
-		await message.react('❌')
-		if (!message.deleted) setTimeout(() => msg.delete(), 30000);
-	}
-	
-	const args        = message.content.slice(prefix.length).trim().split(/ +/)
-	const commandName = args.shift().toLowerCase()
-	const command     = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName))
-
-	if (!command) return
-	if (command.guildOnly && message.channel.type === 'DM') return warnUser(message, strings.CANT_EXECUTE_IN_DMS)
-
-	command.execute(client, message, args).catch(async error => {
-		if (DEV) console.trace(error.stack || error)
-
-		const embed = new Discord.MessageEmbed()
-			.setColor(colors.RED)
-			.setTitle(strings.BOT_ERROR)
-			.setThumbnail(settings.ERROR_IMG)
-			.setDescription(`${strings.COMMAND_ERROR}\nError for the developers:\n${error}`)
-
-		let msgEmbed = await message.reply({embeds: [embed]})
-		await message.react('❌')
-		return addDeleteReact(msgEmbed, message, true)
-	})
-})
-
-/**
- * REACTION EVENT LISTENER
- */
-client.on('messageReactionAdd', async (reaction, user) => {
-	if (DEV) return
-	if (user.bot) return
-	if (reaction.message.partial) await reaction.message.fetch() // dark magic to fetch message that are sent before the start of the bot
-	
-	/**
-	 * NEW TEXTURE SUBMISSION
-	 */
-	if (
-		reaction.message.channel.id === settings.C32_SUBMIT_TEXTURES || // c32x server
-		reaction.message.channel.id === settings.C32_SUBMIT_COUNCIL  || 
-		reaction.message.channel.id === settings.C32_SUBMIT_REVOTE   || 
-		reaction.message.channel.id === settings.C32_RESULTS         ||
-
-		reaction.message.channel.id === settings.C64_SUBMIT_TEXTURES || // c64x server
-		reaction.message.channel.id === settings.C64_SUBMIT_COUNCIL  ||
-		reaction.message.channel.id === settings.C64_SUBMIT_REVOTE   ||
-		reaction.message.channel.id === settings.C64_RESULTS         ||
-
-		reaction.message.channel.id === settings.CDUNGEONS_SUBMIT // dungeons server REMOVE THIS ASAP
-		) editSubmission(client, reaction, user)
-	
-	if (reaction.message.channel.id === settings.CEXTRAS_ROLES) manageExtraRoles(client, reaction, user)
-})
-
-/**
- * EASTER EGGS & CUSTOM COMMANDS:
- */
-client.on('messageCreate', async message => {
-	if (DEV) return
-	// Avoid message WITH prefix & bot messages
-	if (message.content.startsWith(prefix) || message.author.bot) return
-
-	/**
-	 * EASTER EGGS
-	 */
-	if (message.content.includes('(╯°□°）╯︵ ┻━┻')) return await message.reply({content: '┬─┬ ノ( ゜-゜ノ) calm down bro'})
-	if (message.content.toLowerCase().includes('engineer gaming')) return await message.react('👷‍♂️')
-	if (message.content === 'F') return await message.react('🇫')
-
-	if (message.content.toLowerCase() === 'mhhh') {
-		const embed = new Discord.MessageEmbed()
-			.setDescription('```Uh-oh moment```')
-			.setColor(colors.BLUE)
-			.setFooter('Swahili → English', settings.BOT_IMG)
-		let msgEmbed = await message.reply({embeds: [embed]})
-		return addDeleteReact(msgEmbed, message)
-	}
-
-	if (message.content.toLowerCase() === 'band') {
-		return ['🎤', '🎸', '🥁', '🪘', '🎺', '🎷', '🎹', '🪗', '🎻'].forEach(async emoji => { await message.react(emoji) })
-	}
-
-	if (message.content.toLowerCase() === 'monke') {
-		return ['🎷','🐒'].forEach(async emoji => { await message.react(emoji) })
-	}
-
-	if (message.content.toLowerCase() === 'hello there') {
-		let msgEmbed
-		if (Math.floor(Math.random() * Math.floor(5)) != 1) msgEmbed = await message.reply({content: 'https://media1.tenor.com/images/8dc53503f5a5bb23ef12b2c83a0e1d4d/tenor.gif'})
-		else msgEmbed = await message.reply({content: 'https://preview.redd.it/6n6zu25c66211.png?width=960&crop=smart&auto=webp&s=62024911a6d6dd85f83a2eb305df6082f118c8d1'})
-
-		return addDeleteReact(msgEmbed, message)
-	}
-
-	/**
-	 * MESSAGE URL QUOTE
-	 * when someone send a message with https://discord.com/channels/<server ID>/<channel ID>/<message ID>
-	 * @author Juknum
-	 */
-	if (
-		message.content.includes('https://canary.discord.com/channels/') || 
-		message.content.includes('https://discord.com/channels/')        || 
-		message.content.includes('https://discordapp.com/channels')
-	) quote(message)
-
-	/**
-	 * TEXTURE ID QUOTE
-	 * when someone type [#1234], send an embed with the given texture id
-	 * @author Juknum
-	 */
-	textureIDQuote(message)
-
-	/**
-	 * DISCORD SERVER INVITE DETECTION
-	 * @warn I hope there is no other use of this link type on Discord
-	 * Found more information here: https://youtu.be/-51AfyMqnpI
-	 * @author RobertR11
-	 */
-	if (message.content.includes('https://discord.gg/') && message.guild.id != '814198513847631944') inviteDetection(client, message)
-
-	/**
-	 * TEXTURE SUBMISSION
-	 */
-	if (
-		message.channel.id === settings.C32_SUBMIT_TEXTURES ||
-		message.channel.id === settings.C64_SUBMIT_TEXTURES ||
-		message.channel.id === settings.CDUNGEONS_SUBMIT
-	) return submitTexture(client, message)
-
-	/**
-	 * EMULATED VATTIC TEXTURES BASIC AUTOREACT (FHLX's server)
-	 */
-	if (message.channel.id === '814209343502286899' || message.channel.id === '814201529032114226') {
-		if (!message.attachments.size) {
-			if (message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) return
-			var embed = new Discord.MessageEmbed()
-				.setColor(colors.RED)
-				.setTitle(strings.SUBMIT_AUTOREACT_ERROR_TITLE)
-				.setDescription(strings.SUBMIT_NO_FILE_ATTACHED)
-				.setFooter('Submission will be removed in 30 seconds, please re-submit', settings.BOT_IMG)
-
-			const msg = await message.reply({embeds: [embed]})
-			if (!msg.deleted) setTimeout(() => msg.delete(), 30000);
-			if (!message.deleted) setTimeout(() => message.delete(), 30010);
-		} else {
-			await message.react(emojis.UPVOTE)
-			await message.react(emojis.DOWNVOTE)
-		}
-	}
-
-})
+const eventsFiles = fs.readdirSync('./events').filter(f => f.endsWith('.js'))
+for (const file of eventsFiles) {
+	const event = require(`./events/${file}`)
+	if (event.once) client.once(event.name, (...args) => event.execute(...args))
+	else client.on(event.name, (...args) => event.execute(...args))
+}
 
 // eslint-disable-next-line no-unused-vars
 process.on('unhandledRejection', (reason, promise) => {
 	if (DEV) return console.trace(reason.stack || reason)
 
-	const errorChannelId = LOG_DEV ? '875301873316413440' : '853547435782701076'
-	const errorChannel = client.channels.cache.get(errorChannelId)
-	const errorEmbed = new Discord.MessageEmbed()
-		.setTitle('Unhandled Rejection:')
-		.setDescription("```fix\n" + (reason.stack || JSON.stringify(reason)) +"```")
+	const channel = client.channels.cache.get(LOG_DEV ? '875301873316413440' : '853547435782701076')
+	const embed = new Discord.MessageEmbed()
+		.setTitle('Unhandled Rejection')
+		.setDescription(`\`\`\`fix\n${reason.stack || JSON.stringify(reason)}\`\`\``)
 		.setColor(colors.RED)
 		.setTimestamp()
-
-	errorChannel.send({embeds: [errorEmbed]})
+	
+	channel.send({ embeds: [embed] })
 })
 
-// Login the bot
 client.login(process.env.CLIENT_TOKEN).catch(console.error)
