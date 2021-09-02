@@ -6,12 +6,13 @@ const settings = require('../../resources/settings');
 const colors   = require('../../resources/colors');
 const strings  = require('../../resources/strings');
 
-const { warnUser } = require('../../helpers/warnUser');
+const { warnUser }  = require('../../helpers/warnUser');
+const { getMember } = require("../../helpers/getMember");
 
 module.exports = {
 	name: 'profile',
 	uses: strings.COMMAND_USES_ANYONE,
-	syntax: `${prefix}profile username <Your Name>\n${prefix}profile uuid <Your MC uuid (full uuid)>\n${prefix}profile show -> Display what the bot knows about you\n\nModerators only:\n${prefix}profile <@someone>`,
+	syntax: `${prefix}profile username <Your Name>\n${prefix}profile uuid <Your MC uuid (full uuid)>\n${prefix}profile show -> Display what the bot knows about you\n\nModerators only:\n${prefix}profile [@someone/username/nickname/id]`,
 	description: strings.HELP_DESC_PROFILE,
 	guildOnly: false,
 	/**
@@ -29,27 +30,24 @@ module.exports = {
 		if (!user) user = new Object()
 		if (!args.length) return showProfile(message, user)
 
-		// what we want
-		if (args[0].startsWith('<@') && message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("Moderator") || role.name.includes("God"))) {
-
-			let userID = args[0].replace('<@', '').replace('>', '').replace('!', '')
-
-			try {
-				user = await usersCollection.get(userID)
-			}
-			catch (err) {
-				user = {}
-			}
-
-			return showProfile(message, user, userID)
-		}
-		else if (args[0].startsWith('<@') && !message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("Moderator") || role.name.includes("God")))
-			return warnUser(message, strings.COMMAND_NO_PERMISSION)
-		else if (args[0] !== 'username' && args[0] !== 'uuid' && args[0] !== 'show')
+		if (args[0] !== 'username' && args[0] !== 'uuid' && args[0] !== 'show' && !message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("Moderator") || role.name.includes("God")))
 			return warnUser(message, strings.COMMAND_WRONG_ARGUMENTS_GIVEN)
 
 		if (args[0] === 'show')
 			return showProfile(message, user)
+
+		if (args[0] !== 'username' && args[0] !== 'uuid' && args[0] !== 'show') {
+			let MemberID = await getMember(message, args[0])
+
+			try {
+				user = await usersCollection.get(MemberID)
+			}
+			catch (err) {
+				user = {}
+			}
+	
+			return showProfile(message, user, MemberID)
+		}
 		
 		// value is the rest of arguments concatenated
 		const argumentsLeft = args.slice(1).join(' ')
