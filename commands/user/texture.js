@@ -30,7 +30,7 @@ module.exports = {
 	example: `${prefix}texture 16 dirt`,
 
 	/**
-	 * @param {Discord.Client} client The discord boi client
+	 * @param {Discord.Client} client The Discord bot client
 	 * @param {Discord.Message} message The incoming message to respond to
 	 * @param {Array<string>} args All words following the command
 	 */
@@ -42,6 +42,9 @@ module.exports = {
 
 		// no args given
 		if (args == '') return warnUser(message, strings.COMMAND_NO_ARGUMENTS_GIVEN)
+
+		// texture name too short
+		if (args[1].length < 3) return warnUser(message, strings.TEXTURE_TOO_SHORT)
 
 		let res    = args[0]
 		let search = args[1]

@@ -160,6 +160,7 @@ const PUSH_TEXTURE_NOT_FOUND = 'Can\'t find this textures!'
 // texture command
 //const TEXTURE_DOESNT_EXIST = '**Note: this command isn\'t updated for 21w19a yet, if you\'re currently looking for a 21w19a texture**\nThe specified texture/folder doesn\'t exist!'
 const TEXTURE_DOESNT_EXIST = 'The specified texture/folder doesn\'t exist!'
+const TEXTURE_TOO_SHORT = 'The texture name is too short!'
 const TEXTURE_NOT_CHOSEN = 'Texture was not chosen fast enough'
 const TEXTURE_FAILED_LOADING = 'This texture has not yet been made or is not present on GitHub!'
 const TEXTURE_SEARCH_DESCRIPTION = 'Choose one texture using emoji reactions.\nIf you don\'t see what you\'re looking for, be more specific.\n'
@@ -329,6 +330,7 @@ module.exports = {
 	PUSH_TEXTURE_NOT_FOUND,
 
 	TEXTURE_DOESNT_EXIST,
+	TEXTURE_TOO_SHORT,
 	TEXTURE_NOT_CHOSEN,
 	TEXTURE_FAILED_LOADING,
 	TEXTURE_SEARCH_DESCRIPTION,
