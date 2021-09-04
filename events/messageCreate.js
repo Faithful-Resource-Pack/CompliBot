@@ -1,5 +1,6 @@
 const client  = require('../index').Client
 const Discord = require('discord.js')
+const meant   = require('meant')
 
 const DEV         = (process.env.DEV.toLowerCase() == 'true')
 const MAINTENANCE = (process.env.MAINTENANCE.toLowerCase() == 'true')
@@ -28,9 +29,9 @@ module.exports = {
   name: 'messageCreate',
   // eslint-disable-next-line no-unused-vars
   async execute(message) {
+    // Ignore bot messages
     if (message.author.bot) return
 
-    // Avoid message WITH prefix & bot messages
     if (message.content.startsWith(PREFIX)) {
       if (MAINTENANCE && !UIDA.includes(message.author.id)) {
         const msg = await message.reply({ content: strings.COMMAND_MAINTENANCE })
@@ -42,7 +43,19 @@ module.exports = {
       const commandName = args.shift().toLowerCase()
       const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName))
 
-      if (!command) return
+      if (!command) {
+        // Suggest commands if not found in command list
+        let commandList = new Array()
+        client.commands.forEach(command => {
+          commandList.push(command.name)
+        })
+
+        const meantCmd = await meant(commandName, commandList)
+
+        if (meantCmd?.length == 0) return
+        else if (meantCmd?.length > 1) return await message.reply({content: `Did you mean \`${PREFIX}${meantCmd.join(` or ${PREFIX}`)}\`?`})
+        else return await message.reply({content: `Did you mean \`${PREFIX}${meantCmd[0]}\`?`})
+      }
       if (command.guildOnly && message.channel.type === 'DM') return warnUser(message, strings.CANT_EXECUTE_IN_DMS)
 
       command.execute(client, message, args).catch(async error => {

@@ -44,7 +44,7 @@ const LOG_DEV = ((process.env.LOG_DEV.toLowerCase() || 'false') == 'true')
 const colors = require('./resources/colors')
 
 /**
- * (Deprecated) COMMANDS HANDLER
+ * (Deprecated) COMMAND HANDLER
  */
 const commandFiles = walkSync('./commands').filter(f => f.endsWith('.js'))
 client.commands = new Discord.Collection()
@@ -55,7 +55,7 @@ for (const file of commandFiles) {
 }
 
 /**
- * EVENTS HANDLER
+ * EVENT HANDLER
  * - See the /events folder
  */
 const eventsFiles = fs.readdirSync('./events').filter(f => f.endsWith('.js'))
