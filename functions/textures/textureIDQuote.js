@@ -4,6 +4,9 @@ const settings = require('../../resources/settings');
 const fetch    = require('node-fetch');
 const { timestampConverter } = require('../../helpers/timestampConverter');
 const { addDeleteReact } = require("../../helpers/addDeleteReact");
+const { ID_FIELD } = require("../../helpers/firestorm");
+
+require('../../helpers/jsExtension');
 
 const CANVAS_FUNCTION_PATH = '../../functions/textures/canvas'
 function nocache(module) { require('fs').watchFile(require('path').resolve(module), () => { delete require.cache[require.resolve(module)] }) }
@@ -38,19 +41,38 @@ async function textureIDQuote(message) {
 
     /** @type {import("../../helpers/firestorm/texture_use.js").TextureUse[]} */
     let uses = await texture.uses()
+    
+    let texturePath = undefined
+    let path = undefined
+    let textureFirstEdition = '' // get the edition // TODO: Support BEDROCK AND JAVA for texture id (here we only take the fist use edition)
+    
+    const pathObject = {}
+    const pathTitleObject = {}
+    if(uses !== undefined && Array.isArray(uses) && uses.length > 0) {
+      /** @type {import("../../helpers/firestorm/texture_paths.js").TexturePath[]} */
+      texturePath = await uses[0].paths()
 
-    /** @type {import("../../helpers/firestorm/texture_paths.js").TexturePath[]} */
-    let texturePath = await uses[0].paths()
+      for (let i = 0; i < uses.length; i++) {
+        const useEdition = Array.isArray(uses[i].editions) && uses[i].editions.length > 0 ? uses[i].editions[0] : '' + uses[0].editions
+        const useEditionLc = useEdition.toLowerCase()
 
-    let pathText = []
-    for (let i = 0; uses[i]; i++) {
-      let localPath = await uses[i].paths()
-      pathText.push(`**${uses[i].editions[0].charAt(0).toUpperCase() + uses[i].editions[0].slice(1)}**`)
-      for (let k = 0; localPath[k]; k++) pathText.push(`\`[${localPath[k].versions[localPath[k].versions.length - 1]}+]\` ${localPath[k].path}`)
+        if(pathObject[useEditionLc] === undefined) {
+          pathObject[useEditionLc] = []
+          pathTitleObject[useEditionLc] = useEdition.capitalize()
+        }
+
+        let localPath = await uses[i].paths()
+        for (let k = 0; k < localPath.length; k++) {
+          const useVersionsSorted = localPath[k].versions.sort()
+          const versionPrefix = `\`[${useVersionsSorted[0]}${useVersionsSorted.length > 1 ? ` — ${useVersionsSorted[useVersionsSorted.length - 1]}` : ''}]\``
+          pathObject[useEditionLc].push(`${versionPrefix} ${localPath[k].path}`)
+        }
+        if(localPath.length === 0) pathObject[useEditionLc].push('No texture path for the use ' + uses[i][ID_FIELD])
+      }
+  
+      path = texturePath[0].path
+      textureFirstEdition = Array.isArray(uses[0].editions) && uses[0].editions.length > 0 ? uses[0].editions[0] : '' + uses[0].editions
     }
-
-    let path = texturePath[0].path
-    let editions = uses[0].editions
 
     let contrib32   = await texture.lastContribution('c32')
     let timestamp32 = contrib32 ? contrib32.date : undefined
@@ -62,7 +84,7 @@ async function textureIDQuote(message) {
 
     const paths = {}
     const pathVersion = texturePath[0].versions[0]
-    if (editions.includes('java')) {
+    if (textureFirstEdition.includes('java')) {
       paths.c16 = settings.DEFAULT_MC_JAVA_REPOSITORY + pathVersion + '/' + path
       paths.c32 = settings.COMPLIANCE_32X_JAVA_REPOSITORY_JAPPA + pathVersion + '/' + path
       paths.c64 = settings.COMPLIANCE_64X_JAVA_REPOSITORY_JAPPA + pathVersion + '/' + path
@@ -88,10 +110,13 @@ async function textureIDQuote(message) {
     const bufferResult = await drawer.draw().catch(err => { throw err })
     const attachment = new Discord.MessageAttachment(bufferResult, 'output.png')
 
+    let pathValue = Object.keys(pathTitleObject).map(editionLc => `**__${pathTitleObject[editionLc]}__**\n${pathObject[editionLc].join('\n')}`).join('\n').substr(0, 2048)
+
     var embed = new Discord.MessageEmbed()
-      .setTitle(`[#${id}] - ${name}`)
+      .setTitle(`[#${id}] ${name}`)
       .setColor(colors.BLUE)
       .setImage('attachment://output.png')
+      .addField('Paths', pathValue, false)
       .addFields(
         { name: '32x', value: author[0] != undefined && author[0].length ? `<@!${author[0].join('> <@!')}> - ${timestampConverter(timestamp[0])}` : `Contribution not found` },
         { name: '64x', value: author[1] != undefined && author[1].length ? `<@!${author[1].join('> <@!')}> - ${timestampConverter(timestamp[1])}` : `Contribution not found` },
