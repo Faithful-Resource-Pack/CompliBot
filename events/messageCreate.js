@@ -2,6 +2,8 @@ const client  = require('../index').Client
 const Discord = require('discord.js')
 const meant   = require('meant')
 
+const { Permissions } = require('discord.js')
+
 const DEV         = (process.env.DEV.toLowerCase() == 'true')
 const MAINTENANCE = (process.env.MAINTENANCE.toLowerCase() == 'true')
 const PREFIX      = process.env.PREFIX

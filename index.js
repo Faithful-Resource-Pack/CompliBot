@@ -14,7 +14,7 @@ const { walkSync } = require('./helpers/walkSync')
 require('dotenv').config()
 
 // eslint-disable-next-line no-unused-vars
-const { Client, Intents, Permissions } = require('discord.js')
+const { Client, Intents } = require('discord.js')
 const client = new Client({
 	allowedMentions: { parse: [ 'users', 'roles' ], repliedUser: false },
 	restTimeOffset: 0,
