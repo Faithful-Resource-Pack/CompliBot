@@ -6,7 +6,7 @@
  * 
  */
 
-const glob = (...args) => import('globby').then(({default: glob}) => glob(...args));
+const glob = require('globby')
 const path = require('path')
 
 const { Octokit }  = require('@octokit/rest')
