@@ -14,8 +14,7 @@ nocache(CANVAS_FUNCTION_PATH)
 
 /**
  * Quote when a user specify a list of valids texture id's
- * @param {DiscordMessage} message Discord message
- * @param {String} content message content 
+ * @param {Discord.Message} message Discord message
  */
 async function textureIDQuote(message) {
   const args = message.content.split(' ') // get all words in the message content
@@ -123,10 +122,12 @@ async function textureIDQuote(message) {
         // \u200B empty character not inline field is not working in v13, generating empty field error
       )
 
-    const embedMessage = await message.reply({embeds: [embed], files: [attachment]})
-		addDeleteReact(embedMessage, message)
+    message.reply({embeds: [embed], files: [attachment]})
+      .catch(() => {}) // avoids crashes if unknown message
+      .then(embedMessage => {
+        return addDeleteReact(embedMessage, message)
+      })
   }
-
 }
 
 exports.textureIDQuote = textureIDQuote
