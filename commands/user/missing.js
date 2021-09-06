@@ -243,7 +243,7 @@ module.exports = {
    * @author TheRolf
    */
 	async execute(_client, message, args) {
-		if (args.length < 2) return warnUser(message, strings.FEEDBACK_NO_ARGS_GIVEN);
+    if (args.length < 2) return warnUser(message, strings.COMMAND_NO_ARGUMENTS_GIVEN)
 
 		const res = args[0].trim().toLowerCase()
     const edition = args[1].trim().toLowerCase()
