@@ -105,16 +105,8 @@ module.exports = {
     // replace default value to scale else limit it
     if (!parsedArguments.scale || typeof (parsedArguments.scale) !== 'number') { parsedArguments.scale = 1 } else { parsedArguments.scale = Math.min(Math.max(Math.round(parsedArguments.scale), 1), 10) }
 
-    // if we have java and bedrock resolutions, we search in java and after we will check if there is a bedrock url
-    const searchInJava = !!java
-
     // search in correct file
-    let findPromise
-    if (searchInJava) {
-      findPromise = FindTexture.findJava(search)
-    } else {
-      findPromise = FindTexture.findBedrock(search)
-    }
+    let findPromise = FindTexture.find(search)
 
     // determine if error
     const results = await findPromise
@@ -129,7 +121,6 @@ module.exports = {
     }
 
     // choose if multiple result
-    /** @type {FindTexture.SearchResult} */
     let finalResult
     if (results.length > 1) {
       finalResult = await choiceEmbed(message, {
@@ -153,12 +144,21 @@ module.exports = {
       return
     }
 
+    const uses = await finalResult.uses().catch(err => { return warnUser(message, err.message) })
+
+    // sort uses by edition
+    const usesPerEdition = uses.reduce((acc, cur) => {
+      const edi = Array.isArray(cur.editions) ? cur.editions[0] : cur.editions
+      if(acc[edi] === undefined) acc[edi] = cur
+      return acc
+    }, {})
+
     // determine respecitve java and bedrock paths
-    const javaTexturePath = java ? 'assets/' + finalResult.path : undefined
-    const bedrockTexturePath = (java && bedrock) ? finalResult.bedrockPath : 'assets/' + finalResult.path
+    const javaTexturePath = java ? (await usesPerEdition.java.paths())[0].path : undefined
+    const bedrockTexturePath = (bedrock && usesPerEdition.bedrock) ? (await usesPerEdition.bedrock.paths())[0].path : undefined
 
     // reject if wanted bedrock and java so if foind bedrock path
-    if (java && bedrock && !finalResult.bedrockPath) {
+    if (java && bedrock && !usesPerEdition.bedrock) {
       await warnUser(message, 'Texture doesn\'t have a bedrock version')
       return
     }

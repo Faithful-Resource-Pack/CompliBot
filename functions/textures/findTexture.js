@@ -5,151 +5,67 @@ const strings  = require('../../resources/strings')
 const settings = require('../../resources/settings')
 const https    = require('https')
 
-const { FileHandler, jsonContributionsJava, jsonContributionsBedrock } = require('../../helpers/fileHandler')
-
-/**
- * @typedef {Object} SearchResult
- * @property {Number} index Content index in JSON
- * @property {Object} raw Raw content of element in JSON
- * @property {String} path Full texture path
- * @property {String?} bedrockPath Full texture path
- * @property {String} criteria Context criteria chosen
- */
-
-/**
- * @typedef {Object} AllResults
- * @property {SearchResult[]} java
- * @property {SearchResult[]} bedrock
- */
+const textures = require('../../helpers/firestorm/texture')
+const paths = require('../../helpers/firestorm/texture_paths')
 
 module.exports =  {
   /**
    * 
    * @param {String} search Search string
-   * @returns {Promise<AllResults>} Results found
+   * @returns {Promise} Results found
    */
   find: function(search) {
-    return new Promise((resolve, reject) => {
-      /** @type {AllResults} */
-      let res = {}
-      let finished = 0
-
-      this.findJava(search)
-      .then(results => {
-        res.java = results
-      })
-      .catch(() => {
-        res.java = []
-      })
-      .finally(() => {
-        ++finished
-        if(finished == 2) {
-          if(res.length) resolve(res)
-          reject()
-        }
-      })
-
-      this.findBedrock(search)
-      .then(results => {
-        res.bedrock = results
-      })
-      .catch(() => {
-        res.bedrock = []
-      })
-      .finally(() => {
-        ++finished
-        if(finished == 2) {
-          if(res.length) resolve(res)
-          reject()
-        }
-      })
-    })
-  },
-
-  /**
-   * 
-   * @param {Object} content File content to search
-   * @param {Function} path Path indice
-   * @param {Function} criteria Arrow function to get criteria
-   * @param {String} search Search term you are comparing
-   * @param {Boolean?} [start = False] Filter with StartWith
-   * @return {Promise<Array<SearchResult>>}
-   */
-  beginSearch: function(content, path, criteria, search, start = false) {
-    /** @type {Array<SearchResult>} */
-    const searchItems = content.map((el, index) => {
-      /** @type {SearchResult} */
-      const res = {
-        index: index,
-        raw: el,
-        path: '',
-        criteria: ''
+    return new Promise(function(resolve, reject) {
+      const result = undefined
+      let prom = undefined
+      if (search.startsWith('_') || search.endsWith('_')) {
+        prom = textures.search([{
+          field: "name",
+          criteria: "includes",
+          value: search
+        }])
+      }
+      // looking for path + texture (block/stone -> stone)
+      else if (search.startsWith('/') || search.endsWith('/')) {
+        prom = paths.search([{
+          field: "path",
+          criteria: "includes",
+          value: search
+        }])
+        .then(async (results) => {
+          // transform paths results into textures
+          let output = new Array()
+          for (let i = 0; results[i]; i++) {
+            let texture
+            try {
+              let use = await results[i].use()
+              texture = await textures.get(use.textureID)
+            } catch (err) { return reject(err) }
+            output.push(texture)
+          }
+          
+          return Promise.resolve(output)
+        })
+      }
+      // looking for all exact matches (stone -> stone.png)
+      else {
+        prom = textures.search([{
+          field: "name",
+          criteria: "==",
+          value: search
+        }])
+        .then(results => {
+          if(results.length !== 0) return Promise.resolve(results)
+          else return textures.search([{
+            field: "name",
+            criteria: 'includes',
+            value: search
+          }])
+        })
       }
 
-      // added bedrock path to search
-      if(el.isBedrock) {
-        res.bedrockPath = el.bedrock[settings.LATEST_MC_BE_VERSION]
-      }
-
-      try {
-        res.path = path(el)
-        res.criteria = criteria(res.path)
-      // eslint-disable-next-line no-empty
-      } catch (_error) {}
-
-      return res
-    }).filter(item => item.path)
-
-    const results = start ? searchItems.filter(item => item.criteria.startsWith(search)) : searchItems.filter(item => item.criteria.includes(search))
-
-    return (results && results.length) ? results : []
-  },
-
-  /**
-   * 
-   * @param {String} search Search string
-   * @returns {Promise<SearchResult[]>} Results found
-   */
-  findJava: function(search) {
-    return new Promise((resolve, reject) => {
-      jsonContributionsJava.read(false)
-      .then(content => {
-        let res = []
-        if(search.startsWith('_'))
-          res = [ ...res, ...this.beginSearch(content, tex => tex.version[settings.LATEST_MC_JE_VERSION], path => path.split("/").pop(), search)]
-        else if(search.endsWith('/'))
-          res = [ ...res, ...this.beginSearch(content, tex => tex.version[settings.LATEST_MC_JE_VERSION], path => path, search)]
-        else
-          res = [ ...res, ...this.beginSearch(content, tex => tex.version[settings.LATEST_MC_JE_VERSION], path => path.split("/").pop(), search, true)]
-
-        if(res.length)
-          resolve(res)
-        reject(new Error(strings.TEXTURE_DOESNT_EXIST))
-      })
-      .catch(err => reject(err))
-    })
-  },
-
-  /**
-   * 
-   * @param {String} search Search string
-   * @returns {Promise<SearchResult[]>} Results found
-   */
-  findBedrock: function(search) {
-    return new Promise((resolve, reject) => {
-      jsonContributionsBedrock.read(false)
-      .then(content => {
-        let res = []
-        if(search.startsWith('_'))
-          res = [ ...res, ...this.beginSearch(content, tex => tex.version[settings.LATEST_MC_BE_VERSION], path => path.split("/").pop(), search)]
-        else if(search.endsWith('/'))
-          res = [ ...res, ...this.beginSearch(content, tex => tex.version[settings.LATEST_MC_BE_VERSION], path => path, search)]
-        else
-          res = [ ...res, ...this.beginSearch(content, tex => tex.version[settings.LATEST_MC_BE_VERSION], path => path.split("/").pop(), search, true)]
-
-        if(res.length)
-          resolve(res)
-        reject(new Error(strings.TEXTURE_DOESNT_EXIST))
+      prom.then(results => {
+        resolve(results)
       })
       .catch(err => reject(err))
     })

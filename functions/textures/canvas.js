@@ -1,4 +1,5 @@
 const Canvas = require('canvas')
+const PromiseEvery = require('../../helpers/promiseEvery')
 
 class CanvasDrawer {
   /**
@@ -14,12 +15,14 @@ class CanvasDrawer {
   loadImages () {
     return new Promise((resolve, reject) => {
       // load all urls
-      Promise.all(this.urls.map(url => Canvas.loadImage(url)))
-        .then(canvasImages => {
-          this.images = canvasImages
+      PromiseEvery(this.urls.map(url => Canvas.loadImage(url)))
+        .then(pe => {
+          this.images = pe.results.filter(res => res !== undefined)
           resolve(this.images)
         })
-        .catch(reject)
+        .catch(pe => {
+          reject(new Error('No image loaded from urls :' + JSON.stringify(this.urls) + ' : ' + JSON.stringify(pe.errors.map(e => e.message)) + ''))
+        })
     })
   }
 
@@ -64,7 +67,7 @@ class CanvasDrawer {
         })
         .then(imageAndDatas => {
           // return default order if no or incorrect parameters
-          if (this.order === undefined || !Array.isArray(this.sort) || this.sort.length !== imageAndDatas.length) {
+          if (this.order === undefined || !Array.isArray(this.order) || this.order.length !== imageAndDatas.length) {
             return imageAndDatas
           }
 
@@ -74,8 +77,8 @@ class CanvasDrawer {
               el: el,
               index: index
             }
-          }).sort((a, b) => this.sort.indexOf(a.index) - this.sort.indexOf(b.index)).map(obj => obj.el)
-          resolve(this.images)
+          }).sort((a, b) => this.order.indexOf(a.index) - this.order.indexOf(b.index)).map(obj => obj.el)
+          return this.images
         })
         .then(imageAndDatas => {
           const canvasResult = Canvas.createCanvas(canvasWidth, canvasHeight)
