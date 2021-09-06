@@ -1,7 +1,7 @@
 const Discord  = require("discord.js");
 const colors   = require('../../resources/colors');
 const settings = require('../../resources/settings');
-const fetch    = require('node-fetch');
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 const { timestampConverter } = require('../../helpers/timestampConverter');
 const { addDeleteReact } = require("../../helpers/addDeleteReact");
 const { ID_FIELD } = require("../../helpers/firestorm");
