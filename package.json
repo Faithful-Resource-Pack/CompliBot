@@ -20,10 +20,10 @@
   },
   "homepage": "https://github.com/Compliance-Resource-Pack/Discord-Bot#readme",
   "dependencies": {
-    "@octokit/rest": "^18.9.1",
+    "@octokit/rest": "^18.10.0",
     "@vitalets/google-translate-api": "^7.0.0",
-    "async-mutex": "^0.3.1",
-    "axios": "^0.21.1",
+    "async-mutex": "^0.3.2",
+    "axios": "^0.21.3",
     "canvas": "^2.8.0",
     "cron": "^1.8.2",
     "cross-spawn": "^7.0.3",
@@ -32,16 +32,15 @@
     "fs-extra": "^10.0.0",
     "getopts": "^2.3.0",
     "gif-encoder-2": "^1.0.5",
-    "globby": "^11.0.4",
+    "globby": "^12.0.2",
     "http": "0.0.1-security",
     "image-size": "^1.0.0",
     "lodash": "^4.17.21",
     "meant": "^2.0.1",
-    "node-fetch": "^2.6.1",
-    "simple-git": "^2.45.0"
+    "node-fetch": "^3.0.0",
+    "simple-git": "^2.45.1"
   },
   "devDependencies": {
-    "eslint": "^7.32.0",
-    "npm-check-updates": "^11.8.3"
+    "eslint": "^7.32.0"
   }
 }

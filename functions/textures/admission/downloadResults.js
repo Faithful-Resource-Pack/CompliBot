@@ -6,7 +6,7 @@ const texturesCollection      = require('../../../helpers/firestorm/texture')
 const contributionsCollection = require('../../../helpers/firestorm/contributions')
 
 const fs = require('fs')
-const fetch  = require('node-fetch')
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
 /**
  * Download textures from the given text channel

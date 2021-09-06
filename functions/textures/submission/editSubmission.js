@@ -3,7 +3,7 @@ const emojis   = require('../../../resources/emojis')
 const settings = require('../../../resources/settings')
 const strings  = require('../../../resources/strings')
 const colors   = require('../../../resources/colors')
-const fetch    = require('node-fetch')
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
 const { Permissions }    = require('discord.js');
 const { addDeleteReact } = require('../../../helpers/addDeleteReact')
