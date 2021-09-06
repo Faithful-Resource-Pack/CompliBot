@@ -75,7 +75,7 @@ module.exports = {
       })
     }
 
-    //if (DEV) return
+    if (DEV) return
 
     /**
      * EASTER EGGS
