@@ -30,8 +30,8 @@ const LATEST_MC_BE_VERSION = '1.17.0'
 // Compliance 32x
 const C32_IMG           = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Discord-Bot/master/resources/images/Logos/Compliance%2032x.png'
 const C32_ID            = '773983706582482946'
-const C32_LOGS          = '798893497204998161' // #logs channel
-const C32_MOD_LOGS      = '776145239358046248' // #mod-log channel
+const C32_LOGS          = '829047608781176853' // #auto-report channel
+const C32_MOD_LOGS      = '776145239358046248' // #warn-and-mute channel
 const C32_COUNCIL_ID    = '775636065338785813' // Council role
 
 const C32_SUBMIT_TEXTURES = '773987409993793546' // #submit-textures

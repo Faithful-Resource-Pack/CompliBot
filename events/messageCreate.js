@@ -133,7 +133,7 @@ module.exports = {
      * Found more information here: https://youtu.be/-51AfyMqnpI
      * @author RobertR11
      */
-    if (message.content.includes('https://discord.gg/') && message.guild.id != '814198513847631944') inviteDetection(client, message)
+    inviteDetection(client, message)
 
     /**
      * TEXTURE SUBMISSION
