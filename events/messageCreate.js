@@ -55,7 +55,7 @@ module.exports = {
         const meantCmd = await meant(commandName, commandList)
 
         if (meantCmd?.length == 0) return
-        else if (meantCmd?.length > 1) return await message.reply({content: `Did you mean \`${PREFIX}${meantCmd.join(` or ${PREFIX}`)}\`?`})
+        else if (meantCmd?.length > 1) return await message.reply({ content: `Did you mean ${meantCmd.map(cmd => `\`${ PREFIX }${ cmd }\``).join(' or ')}?` })
         else return await message.reply({content: `Did you mean \`${PREFIX}${meantCmd[0]}\`?`})
       }
       if (command.guildOnly && message.channel.type === 'DM') return warnUser(message, strings.CANT_EXECUTE_IN_DMS)
