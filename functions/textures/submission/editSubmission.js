@@ -178,11 +178,12 @@ async function instapass(client, message) {
   if (message.channel.id == settings.C32_SUBMIT_TEXTURES)      channelOut = client.channels.cache.get(settings.C32_RESULTS)
   else if (message.channel.id == settings.C64_SUBMIT_TEXTURES) channelOut = client.channels.cache.get(settings.C64_RESULTS)
 
-  channelOut.send(
-    message.embeds[0]
+  channelOut.send({ embeds:
+    [message.embeds[0]
       .setColor(colors.GREEN)
       .setDescription(`[Original Post](${message.url})\n${message.embeds[0].description ? message.embeds[0].description : ''}`)
-  )
+    ]
+  })
   .then(async sentMessage => {
       for (const emojiID of [emojis.SEE_MORE]) await sentMessage.react(client.emojis.cache.get(emojiID))
     })
