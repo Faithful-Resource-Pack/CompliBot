@@ -189,8 +189,8 @@ async function getTexture(message, res, texture) {
 		let paths = await uses[x].paths()
 		pathsText.push(`**__${uses[x].editions.join(', ')}__**`)
 		for (let i = 0; paths[i]; i++) {
-			if (paths[i].versions.length > 1) pathsText.push(`\`[${paths[i].versions[paths[i].versions.length - 1]} — ${paths[i].versions[0]}]\` ${paths[i].path}`)
-			else pathsText.push(`\`[${paths[i].versions[0]}]\` ${paths[i].path}`)
+			if (paths[i].versions.length > 1) pathsText.push(`\`[${paths[i].versions[paths[i].versions.length - 1]} — ${paths[i].versions[0]}]\` ${paths[i].path.replace('assets/minecraft/','').replace('textures/','')}`)
+			else pathsText.push(`\`[${paths[i].versions[0]}]\` ${paths[i].path.replace('assets/minecraft/','').replace('textures/','')}`)
 		}
 	}
 
