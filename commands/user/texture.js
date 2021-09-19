@@ -261,11 +261,11 @@ async function getTexture(message, res, texture) {
 
 			const imageSmallEnough = dimension.width <= 512 && dimension.height <= 512
 			if (imageSmallEnough)
-				await embedMessage.react(emojis.MAGNIFY);
-			await embedMessage.react(emojis.NEXT_RES);
-			await embedMessage.react(emojis.PALETTE);
+				await embedMessage.react(emojis.MAGNIFY).catch(() => {}); // avoids "Unknown message" error id reacting to a deleted message
+			await embedMessage.react(emojis.NEXT_RES).catch(() => {}); // avoids "Unknown message" error id reacting to a deleted message
+			await embedMessage.react(emojis.PALETTE).catch(() => {}); // avoids "Unknown message" error id reacting to a deleted message
 			if (imageSmallEnough)
-				await embedMessage.react(emojis.TILE);
+				await embedMessage.react(emojis.TILE).catch(() => {}); // avoids "Unknown message" error id reacting to a deleted message
 
 			/**
 			 * @param {Discord.MessageReaction} reaction incoming reaction

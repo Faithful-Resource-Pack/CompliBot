@@ -47,7 +47,9 @@ async function quote(msg) {
 		if (message.embeds[0] !== undefined) {
 			embed = new Discord.MessageEmbed()
 				.setColor(colors.BLUE)
-				.setDescription(message.embeds[0].description)
+
+			if(message.embeds[0].description && typeof(message.embeds[0].description) === 'string') // fixes bug "MessageEmbed description must be a string."
+				embed.setDescription(message.embeds[0].description)
 
 			if (message.embeds[0].title != undefined) embed.setTitle(message.embeds[0].title)
 			if (message.embeds[0].url != undefined) embed.setURL(message.embeds[0].url)
