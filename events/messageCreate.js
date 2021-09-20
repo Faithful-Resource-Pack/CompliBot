@@ -75,7 +75,9 @@ module.exports = {
       })
     }
 
-    if (DEV) return
+    else {
+
+      if (DEV) return
 
     /**
      * EASTER EGGS
@@ -163,6 +165,8 @@ module.exports = {
         await message.react(emojis.UPVOTE)
         await message.react(emojis.DOWNVOTE)
       }
+    }
+
     }
 
   }

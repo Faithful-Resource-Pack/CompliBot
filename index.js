@@ -16,7 +16,7 @@ require('dotenv').config()
 // eslint-disable-next-line no-unused-vars
 const { Client, Intents } = require('discord.js')
 const client = new Client({
-	allowedMentions: { parse: [ 'users', 'roles' ], repliedUser: false },
+	allowedMentions: { parse: [ 'users', 'roles' ], repliedUser: false }, // remove this line to die instantly ~JackDotJS 2021
 	restTimeOffset: 0,
 	partials: Object.values(Discord.Constants.PartialTypes),
 	intents: [
