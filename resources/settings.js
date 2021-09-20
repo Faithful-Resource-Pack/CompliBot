@@ -11,7 +11,7 @@ const REPO_JAVA_NAMES    = [ 'Compliance-Java-32x', 'Compliance-Java-64x' ]
 const REPO_BEDROCK_NAMES = ['Compliance-Bedrock-32x', 'Compliance-Bedrock-64x' ]
 const REPO_NAMES = [...REPO_JAVA_NAMES, ...REPO_BEDROCK_NAMES]
 
-const REPO_JAVA_BRANCHES    = [ '1.17.1', '1.16.5', '1.15.2', '1.14.4', '1.13.2', '1.12.2' ]
+const REPO_JAVA_BRANCHES    = [ '1.18', '1.17.1', '1.16.5', '1.15.2', '1.14.4', '1.13.2', '1.12.2' ]
 const REPO_BEDROCK_BRANCHES = [ '1.17.0', '1.16.220' ]
 
 // Default texture repo for java
@@ -24,7 +24,7 @@ const COMPLIANCE_64X_JAVA_REPOSITORY_JAPPA = 'https://raw.githubusercontent.com/
 const COMPLIANCE_32X_BEDROCK_REPOSITORY_JAPPA = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Bedrock-32x/Jappa-'
 const COMPLIANCE_64X_BEDROCK_REPOSITORY_JAPPA = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Bedrock-64x/Jappa-'
 
-const LATEST_MC_JE_VERSION = '1.17.1'
+const LATEST_MC_JE_VERSION = '1.18'
 const LATEST_MC_BE_VERSION = '1.17.0'
 
 // Compliance 32x
