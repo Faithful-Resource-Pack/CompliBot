@@ -20,6 +20,25 @@ const { addDeleteReact } = require('../../helpers/addDeleteReact')
 const allowed = ['vanilla', '16', '32', '64'];
 const used = ['16', '32', '64'];
 
+const MinecraftSorter = (a, b) => {
+	const aSplit = a.split('.').map(s => parseInt(s))
+	const bSplit = b.split('.').map(s => parseInt(s))
+
+	const upper = Math.min(aSplit.length, bSplit.length)
+	let i = 0
+	let result = 0
+	while(i < upper && result == 0) {
+		result = (aSplit[i] == bSplit[i]) ? 0 : (aSplit[i] < bSplit[i] ? -1 : 1) // each number
+		++i
+	}
+
+	if(result != 0) return result
+
+	result = (aSplit.length == bSplit.length) ? 0 : (aSplit.length < bSplit.length ? -1 : 1) // longer length wins
+
+	return result
+}
+
 module.exports = {
 	name: 'texture',
 	aliases: ['textures'],
@@ -134,8 +153,9 @@ module.exports = {
 				for (let j = 0; uses[j]; j++) {
 					let paths = await uses[j].paths()
 					for (let k = 0; paths[k]; k++) {
-						if (paths[k].versions.length > 1) stringBuilder.push(`\`[${paths[k].versions[paths[k].versions.length - 1]}+]\`\t${paths[k].path.replace(search, `**${search}**`).replace(/_/g, '\\_')}`)
-						else stringBuilder.push(`\`[${paths[k].versions[0]}]\`\t${paths[k].path.replace(search, `**${search}**`).replace(/_/g, '\\_')}`)
+						let versions = paths[k].versions.sort(MinecraftSorter)
+						if (versions.length > 1) stringBuilder.push(`\`[${versions[0]}+]\`\t${paths[k].path.replace(search, `**${search}**`).replace(/_/g, '\\_')}`)
+						else stringBuilder.push(`\`[${versions[0]}]\`\t${paths[k].path.replace(search, `**${search}**`).replace(/_/g, '\\_')}`)
 					}
 				}
 
@@ -189,8 +209,9 @@ async function getTexture(message, res, texture) {
 		let paths = await uses[x].paths()
 		pathsText.push(`**__${uses[x].editions.join(', ')}__**`)
 		for (let i = 0; paths[i]; i++) {
-			if (paths[i].versions.length > 1) pathsText.push(`\`[${paths[i].versions[paths[i].versions.length - 1]} — ${paths[i].versions[0]}]\` ${paths[i].path.replace('assets/minecraft/','').replace('textures/','')}`)
-			else pathsText.push(`\`[${paths[i].versions[0]}]\` ${paths[i].path.replace('assets/minecraft/','').replace('textures/','')}`)
+			let versions = paths[i].versions.sort(MinecraftSorter)
+			if (versions.length > 1) pathsText.push(`\`[${versions[0]} — ${versions[versions.length - 1]}]\` ${paths[i].path.replace('assets/minecraft/','').replace('textures/','')}`)
+			else pathsText.push(`\`[${versions[0]}]\` ${paths[i].path.replace('assets/minecraft/','').replace('textures/','')}`)
 		}
 	}
 

@@ -9,6 +9,25 @@ const paths       = require('../../../helpers/firestorm/texture_paths')
 
 const { Permissions } = require('discord.js');
 
+const MinecraftSorter = (a, b) => {
+	const aSplit = a.split('.').map(s => parseInt(s))
+	const bSplit = b.split('.').map(s => parseInt(s))
+
+	const upper = Math.min(aSplit.length, bSplit.length)
+	let i = 0
+	let result = 0
+	while(i < upper && result == 0) {
+		result = (aSplit[i] == bSplit[i]) ? 0 : (aSplit[i] < bSplit[i] ? -1 : 1) // each number
+		++i
+	}
+
+	if(result != 0) return result
+
+	result = (aSplit.length == bSplit.length) ? 0 : (aSplit.length < bSplit.length ? -1 : 1) // longer length wins
+
+	return result
+}
+
 /**
  * Check if the given texture exist, and embed it if true
  * @author Juknum
@@ -149,7 +168,10 @@ async function makeEmbed(client, message, texture, param = new Object()) {
   for (let i = 0; uses[i]; i++) {
     let localPath = await uses[i].paths()
     pathText.push(`**${uses[i].editions[0].charAt(0).toUpperCase() + uses[i].editions[0].slice(1)}**\n`)
-    for (let k = 0; localPath[k]; k++) pathText.push(`\`[${localPath[k].versions[localPath[k].versions.length - 1]}+]\` ${localPath[k].path} \n`)
+    for (let k = 0; localPath[k]; k++) {
+      let versions = localPath[k].versions.sort(MinecraftSorter)
+      pathText.push(`\`[${versions[0]}+]\` ${localPath[k].path} \n`)
+    }
   }
 
   let embed = new Discord.MessageEmbed()
