@@ -105,7 +105,7 @@ module.exports = {
 	name: 'faq',
 	description: 'none',
 	guildOnly: true,
-	uses: strings.COMMAND_USES_MODS,
+	uses: strings.COMMAND_USES_ANYONE,
 	syntax: `${prefix}faq <keyword>`,
 	flags: '',
 	example: `${prefix}faq bot offline\n${prefix}faq submit\n\nADMINS ONLY:\n${prefix}faq all`,
