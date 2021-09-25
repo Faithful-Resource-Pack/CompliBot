@@ -61,8 +61,8 @@ const CEXTRAS_ROLES = '860457051700199424'
 
 // Compliance Tweaks
 const CTWEAKS_IMG          = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Discord-Bot/master/resources/images/Logos/Compliance%20Tweaks.png'
-const CTWEAKS_ID           = '720966967325884426'
-const CTWEAKS_COUNTER      = '750638888296382504' // Member counter channel
+const CTWEAKS_ID           = '720966967325884426' // deprecated
+const CTWEAKS_COUNTER      = '750638888296382504' // Member counter channel // deprecated
 
 // Compliance Mods
 const CMODS_IMG          = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Discord-Bot/master/resources/images/Logos/Compliance%20Mods.png'
@@ -70,8 +70,14 @@ const CMODS_ID           = '748264625962877019'
 
 // Compliance Dungeons
 const CDUNGEONS_IMG          = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Discord-Bot/master/resources/images/Logos/Compliance%20Dungeons.png'
-const CDUNGEONS_ID           = '714910830272970834'
-const CDUNGEONS_SUBMIT       = '715236892945285181'
+const CDUNGEONS_ID           = '714910830272970834' // deprecated
+const CDUNGEONS_SUBMIT       = '715236892945285181'	// deprecated
+
+const CDEVS_ID = '720677267424018526'
+
+const COMPLIANCE_SERVERS_IDS = [
+	C32_ID, C64_ID, CEXTRAS_ID, CDEVS_ID
+]
 
 module.exports = {
 	BOT_IMG,
@@ -138,5 +144,8 @@ module.exports = {
 
 	CDUNGEONS_IMG,
 	CDUNGEONS_ID,
-	CDUNGEONS_SUBMIT
+	CDUNGEONS_SUBMIT,
+
+	CDEVS_ID,
+	COMPLIANCE_SERVERS_IDS
 }
