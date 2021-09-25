@@ -27,7 +27,12 @@ async function inviteDetection(client, message) {
 		'discord.gg/sN9YRQbBv7',
 		'discord.gg/Tqtwtgh',
 		'discord.gg/qVeDfZw',
-		'discord.gg/rFBbYJYC2N'
+		'discord.gg/rFBbYJYC2N',
+		'discord.gg/KSEhCVtg4J',
+		'discord.gg/rpCyfKV',
+		'discord.gg/minecraft',
+		'discord.gg/minecraftdungeons',
+		'discord.gg/OptiFine'
 	]
 
 	if (advertising.some(a => message.content.includes(a))) isAd = true;
