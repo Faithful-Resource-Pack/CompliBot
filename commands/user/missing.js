@@ -291,7 +291,7 @@ module.exports = {
 			})
 		}
 
-		const last_version = edition === 'bedrock' ? settings.LATEST_MC_BE_VERSION : settings.LATEST_MC_JE_VERSION
+		const last_version = edition === 'bedrock' ? settings.LATEST_MC_BE_VERSION : '1.17.1' // settings.LATEST_MC_JE_VERSION (uncomment when we switch compliance texture pack support to 1.18)
 
 		steps.push('Updating repos with latest version known...')
 		embed.fields[0].value = steps.join('\n')
