@@ -175,8 +175,8 @@ async function editSubmission(client, reaction, user) {
 
 async function instapass(client, message) {
   let channelOut
-  if (message.channel.id == settings.C32_SUBMIT_TEXTURES)      channelOut = client.channels.cache.get(settings.C32_RESULTS)
-  else if (message.channel.id == settings.C64_SUBMIT_TEXTURES) channelOut = client.channels.cache.get(settings.C64_RESULTS)
+  if (message.channel.id == settings.C32_SUBMIT_TEXTURES)      channelOut = await client.channels.fetch(settings.C32_RESULTS) // obtains the channel or returns the one from cache
+  else if (message.channel.id == settings.C64_SUBMIT_TEXTURES) channelOut = await client.channels.fetch(settings.C64_RESULTS) // obtains the channel or returns the one from cache
 
   channelOut.send({ embeds:
     [message.embeds[0]
