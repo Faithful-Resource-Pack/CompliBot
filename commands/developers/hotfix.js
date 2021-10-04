@@ -34,7 +34,7 @@ module.exports = {
 			let msg = await client.channels.cache.get('774220983044669450').messages.fetch('894343057514840138')
 
 			let channelResults = client.channels.cache.get('780507804317384744')
-			let embed = msg.embed
+			let embed = msg.embeds[0]
 			embed.setColor(colors.GREEN)
 			embed.fields[1].value = `<:upvote:${emojis.UPVOTE}> Will be added in a future version!`
 
