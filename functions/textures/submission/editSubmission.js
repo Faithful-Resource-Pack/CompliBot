@@ -198,7 +198,7 @@ async function editEmbed(message) {
   else if (message.channel.id == settings.C32_SUBMIT_TEXTURES || message.channel.id == settings.C64_SUBMIT_TEXTURES) 
 		embed.setColor(colors.BLUE)
 	else if (message.channel.id == settings.C32_SUBMIT_COUNCIL || message.channel.id == settings.C64_SUBMIT_COUNCIL) 
-		embed.setColor(colors.COUNCIl)
+		embed.setColor(colors.COUNCIL)
 	else if (message.channel.id == settings.C32_SUBMIT_REVOTE || message.channel.id == settings.C64_SUBMIT_REVOTE) 
 		embed.setColor(colors.RED)
 

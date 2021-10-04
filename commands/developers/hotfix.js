@@ -31,8 +31,17 @@ module.exports = {
 	async execute(client, message, args) {
 		if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD || message.author.id === uidT) {
 
-			await pushTextures()
-			await saveDB(`Daily Backup`)
+			let msg = await client.channels.cache.get('774220983044669450').messages.fetch('894343057514840138')
+
+			let channelResults = client.channels.cache.get('780507804317384744')
+			let embed = msg.embed
+			embed.setColor(colors.GREEN)
+			embed.fields[1].value = `<:upvote:${emojis.UPVOTE}> Will be added in a future version!`
+
+			channelResults.send({embeds: [embed]})
+			.then(async sentMessage => {
+				for (const emojiID of [emojis.SEE_MORE]) await sentMessage.react(client.emojis.cache.get(emojiID))
+			})
 
 		} else return
 	}

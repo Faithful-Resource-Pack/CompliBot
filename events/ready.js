@@ -68,12 +68,15 @@ module.exports = {
     console.log(`│                                                             │`)
     console.log(`└─────────────────────────────────────────────────────────────┘\n\n`)
 
-    if (MAINTENANCE) client.user.setPresence({ activities: [{ name: 'maintenance' }], status: 'dnd' })
-    else client.user.setActivity(`${PREFIX}help`, { type: 'LISTENING' })
+    client.user.setPresence({ activities: [{ name: 'starting...' }], status: 'idle' })
 
     await restartAutoDestroy(client)
 
-    if (DEV) return
+    if (DEV) {
+      client.user.setActivity(`${PREFIX}help`, { type: 'LISTENING' })
+      client.user.setStatus('online');
+      return
+    }
 
     /**
      * START TEXTURE SUBMISSION PROCESS
@@ -110,5 +113,11 @@ module.exports = {
      * FETCH MEMBERS DATA
      */
     syncMembers(client, [settings.C32_ID, settings.C64_ID, settings.CEXTRAS_ID])
+
+    if (MAINTENANCE) client.user.setPresence({ activities: [{ name: 'maintenance' }], status: 'dnd' })
+    else {
+      client.user.setActivity(`${PREFIX}help`, { type: 'LISTENING' })
+      client.user.setStatus('online');
+    }
   }
 }
