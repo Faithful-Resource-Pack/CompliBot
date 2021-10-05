@@ -65,7 +65,7 @@ module.exports = {
 				await confirmEmbedMsg.edit({embeds: [embed2]});
 				await confirmEmbedMsg.reactions.cache.get(emojis.UPVOTE).remove()
 
-				//await feedbackMsg.react(emojis.UPVOTE).catch(() => {});
+				//await feedbackMsg.react(emojis.UPVOTE).catch(() => {}); 
 				//await feedbackMsg.react(emojis.DOWNVOTE).catch(() => {});
 			}
 		})
