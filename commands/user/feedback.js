@@ -16,7 +16,7 @@ module.exports = {
 	example: `${prefix}feedback Give the bot more beans`,
 	async execute(client, message, args) {
 		//const channel = client.channels.cache.get('821793794738749462');
-		const channel = client.channels.cache.get('867499014085148682');
+		const channel = client.channels.cache.get('821793794738749462');
 		let file
 
 		if (!args[0]) return warnUser(message, strings.FEEDBACK_NO_ARGS_GIVEN);
