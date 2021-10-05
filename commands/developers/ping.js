@@ -17,7 +17,19 @@ const quotes = [
 	"<@468582311370162176> has your IP address",
 	"Open your mind. ~Mr. Valve",
 	"Open your eyes. ~Mr. Valve",
-	"Yeah it's sour cream mmm I love drinking sour cream out of a bowl"
+	"Yeah it's sour cream mmm I love drinking sour cream out of a bowl",
+    "\*elevator music*",
+    "Long-range nuclear missiles engaged and inbound to your location. Brace for impact in approximately `5` minutes.",
+    "Have I been that much of a burden?",
+    "STAHP",
+    "Rise and shine… bot, rise and shine",
+    "Networking the circuit…\nBypassing the back-end XML transistor…\nEncoding the DHCP pixel…",
+    "\*Windows XP start-up jingle*",
+    "Do not look behind you",
+    "9+10=",
+    "Does anybody even read these?",
+    "Rule of thumb: Blame Discord API.",
+    "<#852223879535657010> my beloved"
 ]
 
 module.exports = {
