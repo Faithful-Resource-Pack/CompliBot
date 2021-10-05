@@ -65,8 +65,8 @@ module.exports = {
         let member = server === undefined ? undefined : await server.members.cache.get(memberAfter.id) || undefined
         let role = member === undefined ? undefined : await server.roles.cache.find(r => r.name === (oldRole ? oldRole.name : newRole.name))
 
-        if ((oldRole && !newRole) && role) await member.roles.remove(role)
-        else if ((newRole && !oldRole) && role) await member.roles.add(role)
+        if ((oldRole && !newRole) && role) await member.roles.remove(role).catch(() => {})
+        else if ((newRole && !oldRole) && role) await member.roles.add(role).catch(() => {})
       }
     }
 
