@@ -29,7 +29,15 @@ const quotes = [
 	"9+10=",
 	"Does anybody even read these?",
 	"Rule of thumb: Blame Discord API.",
-	"<#852223879535657010> my beloved"
+	"<#852223879535657010> my beloved",
+	"comply about it",
+	"aquire reality",
+	"familiarize yourself",
+	"get realism",
+	"stupid baby",
+	"Here's your ping. Now let me go back to sleep.",
+	"Fun fact: the this is your ping",
+	"Enhance..."
 ]
 
 module.exports = {
