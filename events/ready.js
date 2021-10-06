@@ -73,11 +73,7 @@ module.exports = {
 
     await restartAutoDestroy(client)
 
-    if (DEV) {
-      client.user.setActivity(`${PREFIX}help`, { type: 'LISTENING' })
-      client.user.setStatus('online');
-      return
-    }
+    if (DEV) return
 
     /**
      * START TEXTURE SUBMISSION PROCESS
