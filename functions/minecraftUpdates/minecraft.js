@@ -64,6 +64,7 @@ exports.updateMCArticles = async (client) => {
 		}
   
 		article_grid.article_grid.forEach(article => {
+			if (!article.default_tile.title.includes("Minecraft Snapshot")) return
 			if (!minecraftArticlesCache.includes(article.default_tile.title)) {
 				minecraftArticlesCache.push(article.default_tile.title)
 				client.channels.cache.get('773983707299184703').send({content: `https://www.minecraft.net/en-us/article/${article.default_tile.title.replace(/ /g,"-").toLowerCase()}`})
