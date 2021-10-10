@@ -139,7 +139,7 @@ module.exports = {
 
 		let embed
 		if (args[0] == 'all') {
-			if (message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("God"))) {
+			if (message.member.roles.cache.some(role => role.name.includes("Administrator") || role.id === '747839021421428776')) {
 				for (let i = 0; i < FAQS.length; i++) {
 					embed = new Discord.MessageEmbed()
 						.setTitle(FAQS[i].title)

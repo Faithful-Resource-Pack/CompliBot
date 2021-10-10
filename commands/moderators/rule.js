@@ -8,8 +8,11 @@ const colors   = require('../../resources/colors');
 const { warnUser } = require('../../helpers/warnUser');
 
 const EDIT = {
-	date: '27/08/2021',
-	description: 'Added rule 8 and improved the wording on rule 7. Also changed the translator link on rule 7 to DeepL instead of Google Translate.',
+	date: '10/10/2021',
+	description: `• Updated rule 1 with a note to message loggers.
+	• Added an additional punishable offense to rule 2.
+	• Prohibited discussion of illegal actions in rule 5.
+	• Fixed a typo in rule 5.`,
 	enabled: true
 }
 
@@ -20,14 +23,15 @@ const RULES = [
 	{
 		title: `**Read & Follow Discord Terms Of Service and Community Guidelines.**`,
 		description: `• TOS : https://discord.com/terms
-		• Guidelines : https://discord.com/guidelines`
+		• Guidelines : https://discord.com/guidelines
+		> This applies to any kind of message logger plug-ins as well. If you’re using one, please disable it to avoid punishment.`
 	},
 	{
 		title: `**Be respectful**`,
 		description: `This is your standard "don't be an asshole" rule. Just be polite to others and you'll be fine.
 
 		__Examples of unacceptable behaviour:__
-		• Mocking and/or making fun of people, this applies to any kind of mocking.
+		• Mocking and/or making fun of people, under any circumstances. This also applies to jokes – snarky comments that make fun of anybody in any way will not be tolerated.
 		• Being unable to accept civil feedback from others. If others can provide constructive criticism for your creation, you must be civil about it too!
 		• Renaming yourself to harm someone, a third party or a competitor is not acceptable. Renaming yourself is a right, not a funny feature.
 
@@ -64,10 +68,11 @@ const RULES = [
 		
 		• Offensive content
 		• Questionable and NSFW content
-		• Politics, religion and any contreversial issues.
+		• Politics, religion and any controversial issues.
 		• Jokes, memes, and misinformation about past or on-going tragic events.
 		• Potentially seizure-inducing animated images/videos.
 		• Excessively loud audio/videos.
+		• Discussion of illegal actions.
 
 		> If you think something is NSFW, it is NSFW. Don't post it or DM a Moderator to approve the content you want to post.`
 	},
@@ -98,7 +103,7 @@ module.exports = {
 	flags: '',
 	example: `${prefix}rule 1`,
 	async execute(client, message, args) {
-		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("Moderator") || role.name.includes("God"))) return warnUser(message, strings.COMMAND_NO_PERMISSION)
+		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("Moderator") || role.id === '747839021421428776')) return warnUser(message, strings.COMMAND_NO_PERMISSION)
 
 		let thumbnail = settings.BOT_IMG
 		let color     = colors.COUNCIL
@@ -133,7 +138,7 @@ module.exports = {
 
 		let rule;
 
-		if (message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("God"))) {
+		if (message.member.roles.cache.some(role => role.name.includes("Administrator") || role.id === '747839021421428776')) {
 			if (args[0] == 'all') rule = -1;
 		} else warnUser(message, "Only Administrators can do that!")
 

@@ -14,7 +14,7 @@ module.exports = {
 	syntax: `${prefix}clear <amount>`,
 	example: `${prefix}clear 10`,
 	async execute(client, message, args) {
-		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("God"))) return warnUser(message, strings.COMMAND_NO_PERMISSION)
+		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.id === '747839021421428776')) return warnUser(message, strings.COMMAND_NO_PERMISSION)
 
 		if (!args.length) return warnUser(message, strings.COMMAND_NO_ARGUMENTS_GIVEN);
 		if (isNaN(args)) return await message.reply({content: strings.COMMAND_NOT_A_NUMBER});

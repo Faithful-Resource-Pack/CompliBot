@@ -14,7 +14,7 @@ module.exports = {
 	syntax: `${prefix}bean <@user> <reason>`,
 	example: `${prefix}bean @Sei#0721 spilling the beans`,
 	async execute(client, message, args) {
-		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("Moderator") || role.name.includes("God"))) return warnUser(message, strings.COMMAND_NO_PERMISSION)
+		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("Moderator") || role.id === '747839021421428776')) return warnUser(message, strings.COMMAND_NO_PERMISSION)
 		if (!args.length) return warnUser(message, strings.COMMAND_NO_ARGUMENTS_GIVEN)
 
 		const member = message.mentions.members.first() || message.guild.members.cache.get(args[0])

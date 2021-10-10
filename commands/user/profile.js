@@ -30,7 +30,7 @@ module.exports = {
 		if (!user) user = new Object()
 		if (!args.length) return showProfile(message, user)
 
-		if (args[0] !== 'username' && args[0] !== 'uuid' && args[0] !== 'show' && !message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("Moderator") || role.name.includes("God")))
+		if (args[0] !== 'username' && args[0] !== 'uuid' && args[0] !== 'show' && !message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("Moderator") || role.id === '747839021421428776'))
 			return warnUser(message, strings.COMMAND_WRONG_ARGUMENTS_GIVEN)
 
 		if (args[0] === 'show')

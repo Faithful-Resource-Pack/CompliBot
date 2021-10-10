@@ -16,7 +16,7 @@ module.exports = {
 	syntax: `${prefix}ban <@user> <reason>`,
 	example: `${prefix}ban @RobertR11#7841 breaking rule 69`,
 	async execute(client, message, args) {
-		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("God"))) return warnUser(message, strings.COMMAND_NO_PERMISSION)
+		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.id === '747839021421428776')) return warnUser(message, strings.COMMAND_NO_PERMISSION)
 
 		const member = message.mentions.members.first() || message.guild.members.cache.get(args[0])
 		const reason = args.slice(1).join(' ') || 'Not Specified'

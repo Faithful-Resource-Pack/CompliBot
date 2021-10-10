@@ -16,7 +16,7 @@ module.exports = {
 	syntax: `${prefix}mute <@user> <time> <reason>`,
 	example: `${prefix}mute @Domi#5813 3h posting memes in #general`,
 	async execute(client, message, args) {
-		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("Moderator") || role.name.includes("God"))) return warnUser(message, strings.COMMAND_NO_PERMISSION)
+		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("Moderator") || role.id === '747839021421428776')) return warnUser(message, strings.COMMAND_NO_PERMISSION)
 		if (!args.length) return warnUser(message, strings.COMMAND_NO_ARGUMENTS_GIVEN);
 
 		let userID = undefined

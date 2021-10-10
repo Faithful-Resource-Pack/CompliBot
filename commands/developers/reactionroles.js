@@ -16,7 +16,7 @@ module.exports = {
 	flags: '',
 	example: `${prefix}reactionroles`,
 	async execute(client, message, args) {
-		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("God"))) return warnUser(message, strings.COMMAND_NO_PERMISSION)
+		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.id === '747839021421428776')) return warnUser(message, strings.COMMAND_NO_PERMISSION)
 
 		var embed = new Discord.MessageEmbed()
 			.setTitle('React with the appropriate emote to receive access to a project channel category.')
