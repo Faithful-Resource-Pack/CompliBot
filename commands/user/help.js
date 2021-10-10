@@ -5,16 +5,16 @@ const uidJ = process.env.UIDJ
 const uidD = process.env.UIDD
 const uidT = process.env.UIDT
 
-const Discord   = require("discord.js");
-const strings   = require('../../resources/strings');
-const settings  = require('../../resources/settings');
-const colors    = require('../../resources/colors');
+const Discord  = require("discord.js");
+const strings  = require('../../resources/strings');
+const settings = require('../../resources/settings');
+const colors   = require('../../resources/colors');
 
-const { warnUser } = require('../../helpers/warnUser');
+const { warnUser }       = require('../../helpers/warnUser');
 const { addDeleteReact } = require("../../helpers/addDeleteReact");
 
 const BLACKLIST = [
-  'shutdown', 'say', 'behave', 'hotfix'
+  'shutdown', 'say', 'behave', 'hotfix', 'infoembed', 'reactionroles'
 ]
 
 module.exports = {

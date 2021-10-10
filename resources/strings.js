@@ -25,50 +25,51 @@ const COMMAND_SEARCHING_FOR_TEXTURE = 'Searching for your texture, please wait..
 const COMMAND_TOO_MUCH_ARGS_GIVEN = 'Too much arguments were given!'
 
 // Help descriptions for commands
-const HELP_DESC_HOTFIX = 'Fix something, may change at anytime'
-const HELP_DESC_PING = 'Pong!'
-const HELP_DESC_RELOAD = 'Reloads a command'
-const HELP_DESC_RESTART = 'Pulls modifications and restart the bot'
-const HELP_DESC_SHUTDOWN = 'Stops the bot'
-const HELP_DESC_STATUS = 'Changes the bot\'s status: \n**Activity**:\nPLAYING, STREAMING, LISTENING, WATCHING, COMPETING, CUSTOM_STATUS (does not work)\n**Presence**:\nonline, idle, dnd'
-const HELP_DESC_BEAN = 'get B E A N E D'
-const HELP_DESC_BEHAVE = '(⌯˃̶᷄ ﹏ ˂̶᷄⌯)'
-const HELP_DESC_ORDER = 'Order something'
-const HELP_DESC_SAY = 'Make the bot send any message you specify'
+const HELP_DESC_AUTOPUSH = 'Use this command to push textures from #results to GitHub.'
 const HELP_DESC_BAN = 'Ban a user from the current Discord server'
 const HELP_DESC_CLEAR = 'Clear messages in a channel'
 const HELP_DESC_EMBED = 'Modify an embed'
+const HELP_DESC_PUSH = 'Push file to GitHub & update the contributor list.'
+
+const HELP_DESC_BEHAVE = '(⌯˃̶᷄ ﹏ ˂̶᷄⌯)'
+const HELP_DESC_HOTFIX = 'Fix something, may change at anytime'
+const HELP_DESC_INFOEMBED = 'Posts specific embeds for the info channel categories on the Compliance servers.'
+const HELP_DESC_PING = 'Pong!'
+const HELP_DESC_RELOAD = 'Reloads a command'
+const HELP_DESC_RESTART = 'Pulls modifications and restart the bot'
+const HELP_DESC_SAY = 'Make the bot send any message you specify'
+const HELP_DESC_SHUTDOWN = 'Stops the bot'
+const HELP_DESC_STATUS = 'Changes the bot\'s status: \n**Activity**:\nPLAYING, STREAMING, LISTENING, WATCHING, COMPETING, CUSTOM_STATUS (does not work)\n**Presence**:\nonline, idle, dnd'
+
+const HELP_DESC_BEAN = 'get B E A N E D'
 const HELP_DESC_MUTE = 'Mute someone'
+const HELP_DESC_RULES = 'Creates rules embed.'
 const HELP_DESC_SLOWMODE = 'Enable or disable the slowmode in a channel'
 const HELP_DESC_UNMUTE = 'Unmute someone'
 const HELP_DESC_WARN = 'Warn someone'
-const HELP_DESC_GUIDELINES = 'Shows the texturing guidelines of Compliance 32x.'
+
 const HELP_DESC_ABOUT = 'Displays a texture that you or someone else made'
 const HELP_DESC_ANIMATE = 'Animates a texture.'
-const HELP_DESC_AUTOPUSH = 'Use this command to push textures from #results to GitHub.'
-const HELP_DESC_CONTRIBUTORS = 'Use this command to manage contributors.'
-const HELP_DESC_INSTAPASS = 'Use this command to by-pass council process.'
-const HELP_DESC_MAGNIFY = 'Resize an image,\nImage URL needs to end with ``.png``, ``.jpeg/jpg`` or ``.gif``,\nMessage ID needs to be from the same channel.\nMagnify only the first frame of a GIF'
-const HELP_DESC_PALETTE = 'Get the colours of an image,\nImage URL needs to end with ``.png``, ``.jpeg/jpg`` or ``.gif``,\nMessage ID needs to be from the same channel.\nGIF: Return the palette of the first frame only'
 const HELP_DESC_COLOR = 'Use this command to show information about a color.'
-const HELP_DESC_PUSH = 'Push file to GitHub & update the contributor list.'
-const HELP_DESC_TEXTURE = 'Displays a specified texture from either vanilla Minecraft or Compliance.\nYou can search for a texture name, or use ``_`` at the beginning to search for non-complete names (such as _sword).\nYou can also use ``/`` at the begining to specify a folder instead of a texture name.'
-const HELP_DESC_TILE = 'Tile an image, if no arguments are given, a grid shape is selected by default. The bot searches the last 10 messages for an image.\nGIF: only works with the first frame.'
-const HELP_DESC_DISCORDS = 'Posts a list of specified discord servers.'
+const HELP_DESC_COMPARE = 'Allows vanilla / pack comparaison side by side'
 const HELP_DESC_FEEDBACK = 'Suggest things or report bugs directly to the bot devs.'
+const HELP_DESC_GUIDELINES = 'Shows the texturing guidelines of Compliance 32x.'
 const HELP_DESC_HELP = 'Show help for a specified command.'
 const HELP_DESC_INFO = 'Displays some info about the bot in your DMs.'
+const HELP_DESC_MAGNIFY = 'Resize an image,\nImage URL needs to end with ``.png``, ``.jpeg/jpg`` or ``.gif``,\nMessage ID needs to be from the same channel.\nMagnify only the first frame of a GIF'
+const HELP_DESC_MISSING = 'Shows tree view of missing textures for a particular edition'
 const HELP_DESC_MODPING = 'Tag online mods to call for help.'
 const HELP_DESC_MODTOOLS = 'Displays tools for Minecraft Dungeons modding.'
+const HELP_DESC_ORDER = 'Order something'
+const HELP_DESC_PALETTE = 'Get the colours of an image,\nImage URL needs to end with ``.png``, ``.jpeg/jpg`` or ``.gif``,\nMessage ID needs to be from the same channel.\nGIF: Return the palette of the first frame only'
 const HELP_DESC_POLL = 'Make a poll to ask people!'
 const HELP_DESC_PROFILE = 'Add personal information for the Compliance Website Gallery.'
 const HELP_DESC_SKIN = 'Get the skin of a Minecraft Player.'
 const HELP_DESC_STATS = 'Displays various stats of the bot in your DMs.'
-const HELP_DESC_RULES = 'Creates rules embed.'
+const HELP_DESC_TEXTURE = 'Displays a specified texture from either vanilla Minecraft or Compliance.\nYou can search for a texture name, or use ``_`` at the beginning to search for non-complete names (such as _sword).\nYou can also use ``/`` at the begining to specify a folder instead of a texture name.'
+const HELP_DESC_TILE = 'Tile an image, if no arguments are given, a grid shape is selected by default. The bot searches the last 10 messages for an image.\nGIF: only works with the first frame.'
 const HELP_DESC_TRANSLATE = 'Translates messages to the selected language.'
 const HELP_DESC_WEBSITE = 'Displays website for the given keyword, see examples for keywords.'
-const HELP_DESC_COMPARE = 'Allows vanilla / pack comparaison side by side'
-const HELP_DESC_MISSING = 'Shows tree view of missing textures for a particular edition'
 
 // animate function
 const INPUT_TOO_BIG = 'The input picture is too big!'
@@ -216,50 +217,51 @@ module.exports = {
 	COMMAND_SEARCHING_FOR_TEXTURE,
 	COMMAND_TOO_MUCH_ARGS_GIVEN,
 
-	HELP_DESC_HOTFIX,
-	HELP_DESC_PING,
-	HELP_DESC_RELOAD,
-	HELP_DESC_RESTART,
-	HELP_DESC_SHUTDOWN,
-	HELP_DESC_STATUS,
-	HELP_DESC_FEEDBACK,
-	HELP_DESC_BEAN,
-	HELP_DESC_BEHAVE,
-	HELP_DESC_ORDER,
-	HELP_DESC_SAY,
+	HELP_DESC_AUTOPUSH,
 	HELP_DESC_BAN,
 	HELP_DESC_CLEAR,
 	HELP_DESC_EMBED,
+	HELP_DESC_PUSH,
+
+	HELP_DESC_BEHAVE,
+	HELP_DESC_HOTFIX,
+	HELP_DESC_INFOEMBED,
+	HELP_DESC_PING,
+	HELP_DESC_RELOAD,
+	HELP_DESC_RESTART,
+	HELP_DESC_SAY,
+	HELP_DESC_SHUTDOWN,
+	HELP_DESC_STATUS,
+
+	HELP_DESC_BEAN,
 	HELP_DESC_MUTE,
+	HELP_DESC_RULES,
 	HELP_DESC_SLOWMODE,
 	HELP_DESC_UNMUTE,
 	HELP_DESC_WARN,
-	HELP_DESC_GUIDELINES,
+
 	HELP_DESC_ABOUT,
 	HELP_DESC_ANIMATE,
-	HELP_DESC_AUTOPUSH,
-	HELP_DESC_CONTRIBUTORS,
-	HELP_DESC_INSTAPASS,
-	HELP_DESC_MAGNIFY,
-	HELP_DESC_PALETTE,
 	HELP_DESC_COLOR,
-	HELP_DESC_PUSH,
-	HELP_DESC_TEXTURE,
-	HELP_DESC_TILE,
-	HELP_DESC_DISCORDS,
+	HELP_DESC_COMPARE,
+	HELP_DESC_FEEDBACK,
+	HELP_DESC_GUIDELINES,
 	HELP_DESC_HELP,
 	HELP_DESC_INFO,
+	HELP_DESC_MAGNIFY,
+	HELP_DESC_MISSING,
 	HELP_DESC_MODPING,
 	HELP_DESC_MODTOOLS,
+	HELP_DESC_ORDER,
+	HELP_DESC_PALETTE,
 	HELP_DESC_POLL,
 	HELP_DESC_PROFILE,
 	HELP_DESC_SKIN,
 	HELP_DESC_STATS,
-	HELP_DESC_RULES,
+	HELP_DESC_TEXTURE,
+	HELP_DESC_TILE,
 	HELP_DESC_TRANSLATE,
 	HELP_DESC_WEBSITE,
-	HELP_DESC_COMPARE,
-	HELP_DESC_MISSING,
 
 	COMMAND_USES_ANYONE,
 	COMMAND_USES_ANYONE_DUNGEONS,
