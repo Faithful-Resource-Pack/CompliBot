@@ -32,16 +32,12 @@ async function showSkin(message, args = undefined, user = undefined) {
 	let response
 
 	if (args) {
-		response = await axios.get(`https://api.mojang.com/users/profiles/minecraft/${args[0]}`, {
-			headers: { 'User-Agent':'Mozilla/5.0 (compatible; complibot-discord-bot/1.0; +https://github.com/Compliance-Resource-Pack/Discord-Bot)' }
-		})
+		response = await axios.get(`https://api.mojang.com/users/profiles/minecraft/${args[0]}`)
 		if (response.data.id == undefined) return await warnUser(message, 'That player doesn\'t exist!');
 		else response = response.data.id
 	} else response = user.uuid
 
-	const mojangProfile = await axios.get(`https://sessionserver.mojang.com/session/minecraft/profile/${response}`, {
-		headers: { 'User-Agent':'Mozilla/5.0 (compatible; complibot-discord-bot/1.0; +https://github.com/Compliance-Resource-Pack/Discord-Bot)' }
-	})
+	const mojangProfile = await axios.get(`https://sessionserver.mojang.com/session/minecraft/profile/${response}`)
 
 	const mojangTextures = Buffer.from(mojangProfile.data.properties[0].value, 'base64').toString('utf-8')
 	const skinJson = JSON.parse(mojangTextures);

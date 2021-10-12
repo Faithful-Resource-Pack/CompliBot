@@ -5,9 +5,7 @@ const axios = require('axios')
 const jiraVersionsCache = []
 
 exports.loadJiraVersions = async () =>  {
-	const { status, data: versions } = await axios.get('https://bugs.mojang.com/rest/api/latest/project/MC/versions', {
-		headers: { 'User-Agent':'Mozilla/5.0 (compatible; complibot-discord-bot/1.0; +https://github.com/Compliance-Resource-Pack/Discord-Bot)' }
-	})
+	const { status, data: versions } = await axios.get('https://bugs.mojang.com/rest/api/latest/project/MC/versions')
 
 	if (versions === '' || status !== 200) {
 		console.log('Failed to load Java jira versions')
@@ -23,9 +21,7 @@ exports.loadJiraVersions = async () =>  {
 
 exports.updateJiraVersions = async (client) => {
 	try {
-		const { status, data: versions } = await axios.get('https://bugs.mojang.com/rest/api/latest/project/MC/versions', {
-			headers: { 'User-Agent':'Mozilla/5.0 (compatible; complibot-discord-bot/1.0; +https://github.com/Compliance-Resource-Pack/Discord-Bot)' }
-		})
+		const { status, data: versions } = await axios.get('https://bugs.mojang.com/rest/api/latest/project/MC/versions')
 
 		if (versions === '' || status !== 200) {
 			return

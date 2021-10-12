@@ -6,9 +6,7 @@ const minecraftVersionsCache = []
 const minecraftArticlesCache = []
 
 exports.loadMCVersions = async () =>  {
-	const { status, data: versions } = await axios.get('https://launchermeta.mojang.com/mc/game/version_manifest.json', {
-		headers: { 'User-Agent':'Mozilla/5.0 (compatible; complibot-discord-bot/1.0; +https://github.com/Compliance-Resource-Pack/Discord-Bot)' }
-	})
+	const { status, data: versions } = await axios.get('https://launchermeta.mojang.com/mc/game/version_manifest.json')
 
 	if (versions === '' || status !== 200) {
 		console.log('Failed to load Java Minecraft versions')
@@ -24,9 +22,7 @@ exports.loadMCVersions = async () =>  {
 
 exports.updateMCVersions = async (client) => {
 	try {
-		const { status, data: versions } = await axios.get('https://launchermeta.mojang.com/mc/game/version_manifest.json', {
-			headers: { 'User-Agent':'Mozilla/5.0 (compatible; complibot-discord-bot/1.0; +https://github.com/Compliance-Resource-Pack/Discord-Bot)' }
-		})
+		const { status, data: versions } = await axios.get('https://launchermeta.mojang.com/mc/game/version_manifest.json')
 
 		if (versions === '' || status !== 200) {
 			return
