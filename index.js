@@ -75,7 +75,7 @@ process.on('unhandledRejection', (reason, promise) => {
 		.setDescription(`\`\`\`fix\n${reason.stack || JSON.stringify(reason)}\`\`\``)
 		.setColor(colors.RED)
 		.setTimestamp()
-	
+
 	channel.send({ embeds: [embed] })
 })
 

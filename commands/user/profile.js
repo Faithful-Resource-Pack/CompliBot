@@ -1,6 +1,6 @@
 const prefix = process.env.PREFIX;
 
-const Discord   = require("discord.js");
+const Discord = require("discord.js");
 
 const settings = require('../../resources/settings');
 const colors   = require('../../resources/colors');
