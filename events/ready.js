@@ -53,7 +53,7 @@ function doMCUpdateCheck() {
   jiraJE.updateJiraVersions(client)
   jiraBE.updateJiraVersions(client)
   minecraft.updateMCVersions(client)
-  minecraft.updateMCArticles(client)
+  //minecraft.updateMCArticles(client)
 }
 
 module.exports = {
@@ -89,10 +89,10 @@ module.exports = {
      * MINECRAFT UPDATE DETECTION INTERVAL
      * @param {int} TIME : in milliseconds
      */
-    await jiraJE.loadJiraVersions(client)
+    await jiraJE.loadJiraVersions()
     await jiraBE.loadJiraVersions()
     await minecraft.loadMCVersions()
-    await minecraft.loadMCArticles(client)
+    //await minecraft.loadMCArticles()
     setInterval(() => doMCUpdateCheck(), 60000)
 
     /**
