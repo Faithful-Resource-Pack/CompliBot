@@ -23,7 +23,7 @@
     "@octokit/rest": "^18.12.0",
     "@vitalets/google-translate-api": "^7.0.0",
     "async-mutex": "^0.3.2",
-    "axios": "^0.22.0",
+    "axios": "^0.23.0",
     "canvas": "^2.8.0",
     "cron": "^1.8.2",
     "cross-spawn": "^7.0.3",
@@ -41,6 +41,6 @@
     "simple-git": "^2.46.0"
   },
   "devDependencies": {
-    "eslint": "^8.0.0"
+    "eslint": "^8.0.1"
   }
 }

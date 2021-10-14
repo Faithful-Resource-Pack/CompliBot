@@ -17,10 +17,15 @@ module.exports = {
 	syntax: `${prefix}skin [minecraft username]`,
 	example: `${prefix}skin Pomi108`,
 	async execute(client, message, args) {
-		return warnUser(message,strings.COMMAND_DISABLED);
 
 		const usersCollection = require('../../helpers/firestorm/users')
-		let user = await usersCollection.get(message.author.id).catch(err => console.error(err))
+		let user
+		try {
+			user = await usersCollection.get(message.author.id)
+		}
+		catch (err) {
+			return warnUser(message, 'You haven\'t specified any username!')
+		}
 
 		if (args[0]) return showSkin(message, args)
 		else showSkin(message, undefined, user)
@@ -30,6 +35,8 @@ module.exports = {
 
 async function showSkin(message, args = undefined, user = undefined) {
 	let response
+
+	if (user && !user.uuid) return warnUser(message, 'You haven\'t added a UUID to your profile!');
 
 	if (args) {
 		response = await axios.get(`https://api.mojang.com/users/profiles/minecraft/${args[0]}`)
@@ -42,7 +49,7 @@ async function showSkin(message, args = undefined, user = undefined) {
 	const mojangTextures = Buffer.from(mojangProfile.data.properties[0].value, 'base64').toString('utf-8')
 	const skinJson = JSON.parse(mojangTextures);
 
-	const skinRender = await axios.get(`https://mc-heads.net/body/${response}`,  { responseType: 'arraybuffer' })
+	const skinRender = await axios.get(`https://visage.surgeplay.com/full/512/${response}`,  { responseType: 'arraybuffer' })
 	const attachment = new Discord.MessageAttachment(Buffer.from(skinRender.data, "utf-8"), 'skin.png');
 
 	var embed = new Discord.MessageEmbed()
@@ -56,4 +63,6 @@ async function showSkin(message, args = undefined, user = undefined) {
 
 	const embedMessage = await message.reply({embeds: [embed], files: [attachment]});
 	addDeleteReact(embedMessage, message, true)
+
+	setTimeout(() => embedMessage.edit({embeds: [embed], files: [attachment]}), 1000);
 }
