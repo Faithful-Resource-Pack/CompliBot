@@ -72,6 +72,7 @@ HELP_DESC_TEXTURE: 'Displays a specified texture from either vanilla Minecraft o
 HELP_DESC_TILE: 'Tile an image, if no arguments are given, a grid shape is selected by default. The bot searches the last 10 messages for an image.\nGIF: only works with the first frame.',
 HELP_DESC_TRANSLATE: 'Translates messages to the selected language.',
 HELP_DESC_WEBSITE: 'Displays website for the given keyword, see examples for keywords.',
+HELP_DESC_MCWIKI: 'Searches official Minecraft wiki',
 
 // animate function
 INPUT_TOO_BIG: 'The input picture is too big!',
@@ -148,6 +149,9 @@ COLOR_HEX_WRONG_DIGITS: '**HEX**: You must specify **3 __or__ 6 __or__ 8** digit
 // magnify command
 MAGNIFY_FACTOR_TOO_SMALL: 'The factor must be greater than 1.',
 MAGNIFY_NO_ARGS_GIVEN: 'You did not provide any arguments.',
+
+MCWIKI_EMBED_LINK_TEXT: `Click here for Wiki page`,
+MCWIKI_NO_RESULTS_FOUND: 'No Wiki page found.\n Could not find any matching result for the term ``%term%``',
 
 // push command
 PUSH_ARG1_INVALID: 'No author given! ',
