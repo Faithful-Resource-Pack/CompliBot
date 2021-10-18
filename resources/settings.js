@@ -53,6 +53,8 @@ const C64_SUBMIT_REVOTE   = '797649484259524648' // #texture-revote
 const C64_RESULTS         = '797648495804678154' // #texture-results
 const C64_COMPLICHANNEL   = '798208196405362708'
 
+const DEV_SUBMIT_COUNCIL = '849267113594978374' // #council-vote
+
 // Compliance Extras
 const CADDONS_IMG   = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Discord-Bot/master/resources/images/Logos/Compliance%20Addons.png'
 const CEXTRAS_IMG   = 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Branding/main/no%20background/512/Compliance%20Extras.png'
@@ -129,6 +131,8 @@ module.exports = {
 	C64_SUBMIT_REVOTE,
 	C64_RESULTS,
 	C64_COMPLICHANNEL,
+
+	DEV_SUBMIT_COUNCIL,
 
 	CADDONS_IMG,
 	CEXTRAS_IMG,

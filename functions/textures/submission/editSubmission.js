@@ -1,17 +1,12 @@
-const Discord  = require('discord.js')
 const emojis   = require('../../../resources/emojis')
 const settings = require('../../../resources/settings')
-const strings  = require('../../../resources/strings')
 const colors   = require('../../../resources/colors')
-const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
 const { Permissions }    = require('discord.js');
-const { addDeleteReact } = require('../../../helpers/addDeleteReact')
 const { magnify }        = require('../../../functions/textures/magnify')
 const { palette }        = require('../../../functions/textures/palette')
 const { tile }           = require('../tile')
-
-const textures = require('../../../helpers/firestorm/texture')
+const compareCommand = require('../../../commands/user/compare')
 
 const CANVAS_FUNCTION_PATH = '../../../functions/textures/canvas'
 function nocache(module) { require('fs').watchFile(require('path').resolve(module), () => { delete require.cache[require.resolve(module)] }) }
@@ -66,79 +61,24 @@ async function editSubmission(client, reaction, user) {
 			 * TODO: find why you can't have 2 textures of the same resolution in the drawer.urls (the texture isn't processed??)
 			 */
 			else if (REACTION.emoji.id === emojis.COMPARE) {
-        let results = new Array()
-        try {
-          results = await textures.search([{
-            field: "name",
-            criteria: "==",
-            value: message.embeds[0].image.url.split('/').pop().replace('.png', '')
-          }])
-        } catch (err) { /* Avoid crash */ }
+        const member = await message.guild.members.cache.get(user.id)
+        const embed = message.embeds[0]
+        
+        const textureTitle = embed.title
+        const textureName = textureTitle.substring(textureTitle.indexOf(']') + 1).trim()
 
-				let complichannel
-				if (message.guild.id == settings.C32_ID) complichannel = message.guild.channels.cache.get(settings.C32_COMPLICHANNEL)
-				if (message.guild.id == settings.C64_ID) complichannel = message.guild.channels.cache.get(settings.C64_COMPLICHANNEL)
-
-				if (results.length > 0) {
-					let texture = results[0]
-					let uses    = await texture.uses()
-					let path    = (await uses[0].paths())[0].path
-
-					let pathVersion = (await uses[0].paths())[0].versions[0]
-					let pathUseType = uses[0].editions[0]
-
-					let paths = new Object()
-					if (pathVersion === '1.17') pathVersion = strings.SNAPSHOT_MC_JE_VERSION
-
-					if (pathUseType == "java") {
-						paths = {
-							c16: settings.DEFAULT_MC_JAVA_REPOSITORY + pathVersion + '/assets/' + path,
-							c32: 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-32x/Jappa-' + pathVersion + '/assets/' + path,
-							c64: 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Java-64x/Jappa-' + pathVersion + '/assets/' + path
-						}
-					}
-					else {
-						paths = {
-							c16: settings.DEFAULT_MC_BEDROCK_REPOSITORY + path,
-							c32: 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Bedrock-32x/Jappa-' + pathVersion + '/' + path,
-							c64: 'https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-Bedrock-64x/Jappa-' + pathVersion + '/' + path
-						}
-					}
-
-					const CanvasDrawer = require(CANVAS_FUNCTION_PATH)
-					const drawer = new CanvasDrawer()
-
-					drawer.urls = [
-						message.embeds[0].image.url,
-						paths.c16,
-						paths.c32,
-						paths.c64
-					]
-
-					let resultsPromises = await Promise.all(drawer.urls.map(url => fetch(url))).catch(() => drawer.urls = [])
-					drawer.urls = drawer.urls.filter((__el, index) => resultsPromises[index].ok && resultsPromises[index].status === 200)
-
-					const bufferResult = await drawer.draw().catch(err => { throw err })
-					const attachment = new Discord.MessageAttachment(bufferResult, 'output.png')
-
-					let embedMessage
-					
-					try {
-						const member = await message.guild.members.cache.get(user.id)
-						embedMessage = await member.send({files: [attachment]})
-					} catch (e) {
-						embedMessage = await complichannel.send({content: `<@!${user.id}>`, files: [attachment]})
-					}
-					addDeleteReact(embedMessage, message)
-				}
-				else {
-					try {
-						const member = await message.guild.members.cache.get(user.id)
-						embedMessage = await member.send({content: `Can't find any results to compare for \`${message.embeds[0].image.url.split('/').pop().replace('.png', '')}\``})
-					} catch (e) {
-						embedMessage = await complichannel.send({content: `<@!${user.id}> Can't find any results to compare for \`${message.embeds[0].image.url.split('/').pop().replace('.png', '')}\``})
-					}
-				}
+        let editions_letters = embed.fields.filter(f => f.inline !== undefined && f.inline === false)
+        editions_letters = editions_letters.map(e => e.value.charAt(2).toLowerCase())
+        editions_letters = editions_letters.filter((e, i) => editions_letters.indexOf(e) === i)
+        const command_arguments = [textureName, '-r']
+        const res = ['16', '32', '64']
+        res.forEach(r => {
+          editions_letters.forEach(e => {
+            command_arguments.push(r + e)
+          })
+        })
+				const	baseMessage = await member.send("Launching compare for: ``" + textureTitle + "``...")
+        await compareCommand.execute(client, baseMessage, command_arguments)
       }
 
       /**

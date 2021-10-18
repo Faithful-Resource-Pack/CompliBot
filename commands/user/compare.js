@@ -59,7 +59,7 @@ module.exports = {
     } else {
       parsedArguments._.forEach(el => {
         if (RES_ALLOWED.includes(el)) {
-          if(typeof parsedArguments.resolution !== 'string' && !Array.isArray(typeof parsedArguments.resolution)) {
+          if(typeof parsedArguments.resolution !== 'string' && !Array.isArray(parsedArguments.resolution)) {
             return warnUser(message, strings.COMMAND_WRONG_ARGUMENTS_GIVEN)
           } else {
             if(typeof parsedArguments.resolution === 'string') parsedArguments.resolution = [parsedArguments.resolution]
