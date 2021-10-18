@@ -28,7 +28,7 @@ module.exports = {
   guildOnly: false,
   uses: strings.COMMAND_USES_ANYONE,
   syntax: `${prefix}compare <search> <--resolution|--res|--r>=<${RES_ALLOWED.join('|')}> [<--scale|--s>=<1..10>]`,
-  example: `${prefix}compare bucket --resolution 16j 32j 64j --s=2\n${prefix}cmp bucket -resolution 16j 32j -s 2\n${prefix}cmp bucket -r 16j 32j 64j -s 10\n${prefix}cmp bucket 16j 32j 64j -s 2`,
+  example: `${prefix}compare bucket --resolution 16j 32j 64j --s=2\n${prefix}cmp bucket -r 16j 32j 64j -s 10\n${prefix}cmp bucket 16j 32j 64j -s 2`,
 
   /**
    *
@@ -59,7 +59,12 @@ module.exports = {
     } else {
       parsedArguments._.forEach(el => {
         if (RES_ALLOWED.includes(el)) {
-          parsedArguments.resolution.push(el)
+          if(typeof parsedArguments.resolution !== 'string' && !Array.isArray(typeof parsedArguments.resolution)) {
+            return warnUser(message, strings.COMMAND_WRONG_ARGUMENTS_GIVEN)
+          } else {
+            if(typeof parsedArguments.resolution === 'string') parsedArguments.resolution = [parsedArguments.resolution]
+            parsedArguments.resolution.push(el)
+          }
         } else {
           searchTerms.push(el)
         }
