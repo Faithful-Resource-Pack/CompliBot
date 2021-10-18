@@ -22,6 +22,7 @@ module.exports = {
       case settings.C64_SUBMIT_COUNCIL:
       case settings.C64_SUBMIT_REVOTE:
       case settings.C64_RESULTS:
+      case settings.DEV_SUBMIT_COUNCIL:
         editSubmission(client, reaction, user)
         break;
       
