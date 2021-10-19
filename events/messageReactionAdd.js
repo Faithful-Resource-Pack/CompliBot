@@ -1,5 +1,6 @@
 const client = require('../index').Client
 const DEV = (process.env.DEV.toLowerCase() == 'true')
+const DEV_REACTION = (process.env.DEV_REACTION || false) == 'true'
 const settings = require('../resources/settings')
 
 const { editSubmission }   = require('../functions/textures/submission/editSubmission')
@@ -23,6 +24,7 @@ module.exports = {
       case settings.C64_SUBMIT_REVOTE:
       case settings.C64_RESULTS:
       case settings.DEV_SUBMIT_COUNCIL:
+        if(reaction.message.channel.id === settings.DEV_SUBMIT_COUNCIL && !DEV_REACTION) return
         editSubmission(client, reaction, user)
         break;
       

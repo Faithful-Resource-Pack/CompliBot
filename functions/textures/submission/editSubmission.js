@@ -65,12 +65,12 @@ async function editSubmission(client, reaction, user) {
         const embed = message.embeds[0]
         
         const textureTitle = embed.title
-        const textureName = textureTitle.substring(textureTitle.indexOf(']') + 1).trim()
+        const textureId = textureTitle.substring(textureTitle.indexOf('#') + 1, textureTitle.indexOf(']')).trim()
 
         let editions_letters = embed.fields.filter(f => f.inline !== undefined && f.inline === false)
         editions_letters = editions_letters.map(e => e.value.charAt(2).toLowerCase())
         editions_letters = editions_letters.filter((e, i) => editions_letters.indexOf(e) === i)
-        const command_arguments = [textureName, '-r']
+        const command_arguments = ['--id', textureId, '-r']
         const res = ['16', '32', '64']
         res.forEach(r => {
           editions_letters.forEach(e => {
@@ -155,8 +155,9 @@ async function changeStatus(message, string) {
 
 async function removeReact(message, emojis) {
   for (let i = 0; emojis[i]; i++) {
-    await message.reactions.cache.get(emojis[i]).remove()
-    .catch(err => { if (process.DEBUG) console.error(`Can't remove emoji: ${emojis[i]}\n${err}`) })
+    await message.reactions.cache.get(emojis[i]).remove().catch(err => {
+      if (process.DEBUG) console.error(`Can't remove emoji: ${emojis[i]}\n${err}`)
+    })
   }
 }
 

@@ -5,6 +5,7 @@ require('dotenv').config()
 const Discord     = require('discord.js')
 const getops      = require('getopts')
 const strings     = require('../../resources/strings')
+const textures = require('../../helpers/firestorm/texture')
 const FindTexture = require('../../functions/textures/findTexture')
 const choiceEmbed = require('../../helpers/choiceEmbed')
 
@@ -21,6 +22,25 @@ const CANVAS_FUNCTION_PATH = '../../functions/textures/canvas'
 function nocache (module) { require('fs').watchFile(require('path').resolve(module), () => { delete require.cache[require.resolve(module)] }) }
 nocache(CANVAS_FUNCTION_PATH)
 
+const MinecraftSorter = (a, b) => {
+	const aSplit = a.split('.').map(s => parseInt(s))
+	const bSplit = b.split('.').map(s => parseInt(s))
+
+	const upper = Math.min(aSplit.length, bSplit.length)
+	let i = 0
+	let result = 0
+	while(i < upper && result == 0) {
+		result = (aSplit[i] == bSplit[i]) ? 0 : (aSplit[i] < bSplit[i] ? -1 : 1) // each number
+		++i
+	}
+
+	if(result != 0) return result
+
+	result = (aSplit.length == bSplit.length) ? 0 : (aSplit.length < bSplit.length ? -1 : 1) // longer length wins
+
+	return result
+}
+
 module.exports = {
   name: 'compare',
   aliases: ['cmp'],
@@ -28,7 +48,7 @@ module.exports = {
   guildOnly: false,
   uses: strings.COMMAND_USES_ANYONE,
   syntax: `${prefix}compare <search> <--resolution|--res|--r>=<${RES_ALLOWED.join('|')}> [<--scale|--s>=<1..10>]`,
-  example: `${prefix}compare bucket --resolution 16j 32j 64j --s=2\n${prefix}cmp bucket -r 16j 32j 64j -s 10\n${prefix}cmp bucket 16j 32j 64j -s 2`,
+  example: `${prefix}compare bucket --resolution 16j 32j 64j --s=2\n${prefix}cmp bucket -r 16j 32j 64j -s 10\n${prefix}cmp bucket 16j 32j 64j -s 2\n${prefix}cmp --id 1208 16j 32j 64j -s 2`,
 
   /**
    *
@@ -40,6 +60,7 @@ module.exports = {
   async execute (client, message, args) {
     const parsedArguments = getops(args, {
       alias: {
+        id: 'id',
         resolution: ['res', 'r'],
         scale: ['s']
       }
@@ -52,25 +73,33 @@ module.exports = {
     else if (typeof (parsedArguments.resolution) === 'string') { parsedArguments.resolution = [parsedArguments.resolution] }
 
     if (!parsedArguments._) { parsedArguments._ = '' }
-    let search
-    const searchTerms = []
-    if (typeof (parsedArguments._) === 'string') {
-      search = parsedArguments._
-    } else {
-      parsedArguments._.forEach(el => {
-        if (RES_ALLOWED.includes(el)) {
-          if(typeof parsedArguments.resolution !== 'string' && !Array.isArray(parsedArguments.resolution)) {
-            return warnUser(message, strings.COMMAND_WRONG_ARGUMENTS_GIVEN)
-          } else {
-            if(typeof parsedArguments.resolution === 'string') parsedArguments.resolution = [parsedArguments.resolution]
-            parsedArguments.resolution.push(el)
-          }
-        } else {
-          searchTerms.push(el)
-        }
-      })
 
-      search = searchTerms.join(' ')
+    const idSearch = !!parsedArguments.id
+    let search, id
+    if(idSearch) {
+      id = parseInt(parsedArguments.id)
+      if(isNaN(id)) return warnUser(message, `${strings.COMMAND_WRONG_ARGUMENTS_GIVEN}\n Texture id is not an integer.`)
+      parsedArguments.resolution.push(...parsedArguments._)
+    } else {
+      const searchTerms = []
+      if (typeof (parsedArguments._) === 'string') {
+        search = parsedArguments._
+      } else {
+        parsedArguments._.forEach(el => {
+          if (RES_ALLOWED.includes(el)) {
+            if(typeof parsedArguments.resolution !== 'string' && !Array.isArray(parsedArguments.resolution)) {
+              return warnUser(message, strings.COMMAND_WRONG_ARGUMENTS_GIVEN)
+            } else {
+              if(typeof parsedArguments.resolution === 'string') parsedArguments.resolution = [parsedArguments.resolution]
+              parsedArguments.resolution.push(el)
+            }
+          } else {
+            searchTerms.push(el)
+          }
+        })
+  
+        search = searchTerms.join(' ')
+      }
     }
 
     // Check correct args
@@ -111,27 +140,48 @@ module.exports = {
     if (!parsedArguments.scale || typeof (parsedArguments.scale) !== 'number') { parsedArguments.scale = 1 } else { parsedArguments.scale = Math.min(Math.max(Math.round(parsedArguments.scale), 1), 10) }
 
     // search in correct file
-    let findPromise = FindTexture.find(search)
+    let findPromise = idSearch ? textures.get(id) : FindTexture.find(search)
 
     // determine if error
-    const results = await findPromise
+    let results = await findPromise
       .catch(err => {
         if (process.env.DEBUG) console.error(err)
       })
       
     // if you don't get results error
+    // if it is an idSearch it will return undefined
     if (!results || results.length === 0) {
-      await warnUser(message, `${strings.TEXTURE_DOESNT_EXIST}\nCouldn't find any match for search : ${search}`)
+      await warnUser(message, `${strings.TEXTURE_DOESNT_EXIST}\nCouldn't find any match for ${ idSearch ? `id ${id}` : `search : ${search}`}`)
       return
     }
 
     // choose if multiple result
     let finalResult
     if (results.length > 1) {
+      // get all the paths for the texture
+      const uses = await Promise.all(results.map(tex => tex.uses()))
+      const paths = await Promise.all(uses.map(u => u.length > 0 ? u[0].paths(): Promise.resolve([])))
+      const latestPaths = paths.map(p => {
+        // for all paths, sort them b
+        let latestVersion = undefined
+        let latestPath = undefined
+        let bestVersion
+        p.forEach((a) => {
+          bestVersion = a.versions.sort(MinecraftSorter).reverse()[0]
+          if(latestVersion === undefined || MinecraftSorter(latestVersion, bestVersion) <= 0) {
+            latestVersion = bestVersion
+            latestPath = a
+          }
+
+          return latestPath
+        })
+
+        return latestPath
+      }).map(p => p.path)
       finalResult = await choiceEmbed(message, {
         title: `Select texture for search: '${search}'`,
         footer: `${message.client.user.username}`,
-        propositions: results.map(searchItem => searchItem.path)
+        propositions: latestPaths
       })
         .then(choice => {
           return results[choice.index]
