@@ -1,14 +1,14 @@
 const Discord = require('discord.js')
-const prefix  = process.env.PREFIX;
+const prefix = process.env.PREFIX;
 const strings = require('../../resources/strings');
-const Canvas  = require('canvas')
+const Canvas = require('canvas')
 
-const { warnUser }       = require('../../helpers/warnUser');
+const { warnUser } = require('../../helpers/warnUser');
 const { addDeleteReact } = require('../../helpers/addDeleteReact')
 
 module.exports = {
   name: 'color',
-  aliases: ['color', 'colour', 'c' ],
+  aliases: ['color', 'colour', 'c'],
   description: strings.HELP_DESC_COLOR,
   guildOnly: false,
   uses: strings.COMMAND_USES_ANYONE,
@@ -32,12 +32,12 @@ ${prefix}color cmyk(0,50,85,0)`,
 
     args = args[0]
 
-    let rgb  = new Array()
+    let rgb = new Array()
     let cmyk = new Array()
-    let hsl  = new Array()
-    let hsv  = new Array()
-    let hex  = null
-    let alpha= null
+    let hsl = new Array()
+    let hsv = new Array()
+    let hex = null
+    let alpha = null
 
     if (args.startsWith('rgb(')) {
       rgb = args.slice(4).slice(0, -1).split(',').map(c => c | 0) // remove formating, remove ), split & convert to int
@@ -45,9 +45,9 @@ ${prefix}color cmyk(0,50,85,0)`,
       if (rgb.length < 3 || rgb.length > 3) return warnUser(message, strings.COLOR_RGB_NO_VALUES)
       for (let i = 0; i < 3; i++) if (rgb[i] > 255 || rgb[i] < 0) return warnUser(message, strings.COLOR_RGB_WRONG_VALUES)
 
-      hex  = RGBtoHEX(rgb[0], rgb[1], rgb[2])
-      hsl  = RGBtoHSL(rgb[0], rgb[1], rgb[2])
-      hsv  = RGBtoHSV(rgb[0], rgb[1], rgb[2])
+      hex = RGBtoHEX(rgb[0], rgb[1], rgb[2])
+      hsl = RGBtoHSL(rgb[0], rgb[1], rgb[2])
+      hsv = RGBtoHSV(rgb[0], rgb[1], rgb[2])
       cmyk = RGBtoCMYK(rgb[0], rgb[1], rgb[2])
     }
     else if (args.startsWith('rgba(')) {
@@ -75,7 +75,7 @@ ${prefix}color cmyk(0,50,85,0)`,
     }
     else if (args.startsWith('hsl(')) {
       hsl = args.slice(4).slice(0, -1).split(',').map(c => c | 0)
-      
+
       if (hsl.length < 3 || hsl.length > 3) return warnUser(message, strings.COLOR_HSL_NO_VALUES)
       if (hsl[0] > 360 || hsl[0] < 0) return warnUser(message, strings.COLOR_HSL_DEGREE_VALUE)
       if (hsl[1] > 100 || hsl[1] < 0 || hsl[2] > 100 || hsl[2] < 0) return warnUser(message, strings.COLOR_HSL_SL_VALUES)
@@ -110,7 +110,7 @@ ${prefix}color cmyk(0,50,85,0)`,
     else if (args.startsWith('#')) {
 
       hex = args
-      if (parseInt(hex.slice(1), 16).toString(16) != hex.slice(1).toLowerCase()) return warnUser(message, strings.COLOR_HEX_WRONG_VALUE)
+      if (/(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)|(^#[0-9A-F]{8}$)/i.test(args) == false) return warnUser(message, strings.COLOR_HEX_WRONG_VALUE + '\n' + strings.COLOR_HEX_WRONG_DIGITS)
 
       switch (hex.length) {
         case 4:
@@ -121,17 +121,17 @@ ${prefix}color cmyk(0,50,85,0)`,
           break
         case 9:
           alpha = hex.slice(7)
-          hex   = hex.slice(0, 7)
+          hex = hex.slice(0, 7)
           break
         default:
-          return warnUser(message, strings.COLOR_HEX_WRONG_DIGITS)
+          break
       }
 
       if (alpha) rgb = HEXAtoRGBA(`${hex}${alpha}`)
       else rgb = HEXtoRGB(hex)
 
-      hsl  = RGBtoHSL(rgb[0], rgb[1], rgb[2])
-      hsv  = RGBtoHSV(rgb[0], rgb[1], rgb[2])
+      hsl = RGBtoHSL(rgb[0], rgb[1], rgb[2])
+      hsv = RGBtoHSV(rgb[0], rgb[1], rgb[2])
       cmyk = RGBtoCMYK(rgb[0], rgb[1], rgb[2])
     }
     else return warnUser(message, `There is no format for this argument, type \`${prefix}help color\` to see how formating works.`)
@@ -166,9 +166,9 @@ ${prefix}color cmyk(0,50,85,0)`,
         { name: 'CMYK', value: `\`${cmyk.join('%, ')}%\``, inline: true }
       )
       .setThumbnail('attachment://color.png')
-    
-    const embedMessage = await message.reply({embeds: [embed], files: [attachment]})
-		addDeleteReact(embedMessage, message, true)
+
+    const embedMessage = await message.reply({ embeds: [embed], files: [attachment] })
+    addDeleteReact(embedMessage, message, true)
   }
 }
 
@@ -219,22 +219,22 @@ function HSVtoRGB(h, s, v) {
   let t = v * (1 - (1 - f) * s)
 
   switch (i % 6) {
-    case 0: 
+    case 0:
       r = v, g = t, b = p
       break
-    case 1: 
+    case 1:
       r = q, g = v, b = p
       break
-    case 2: 
+    case 2:
       r = p, g = v, b = t
       break
-    case 3: 
+    case 3:
       r = p, g = q, b = v
       break
-    case 4: 
+    case 4:
       r = t, g = p, b = v
       break
-    case 5: 
+    case 5:
       r = v, g = p, b = q
       break
   }
@@ -254,9 +254,9 @@ function HSLtoRGB(h, s, l) {
     let q = l < .5 ? l * (1 + s) : l + s - l * s
     let p = 2 * l - q
 
-    r = HUEtoRGB(p, q, h + 1/3)
+    r = HUEtoRGB(p, q, h + 1 / 3)
     g = HUEtoRGB(p, q, h)
-    b = HUEtoRGB(p, q, h - 1/3)
+    b = HUEtoRGB(p, q, h - 1 / 3)
   }
 
   return [
@@ -269,9 +269,9 @@ function HSLtoRGB(h, s, l) {
 function HUEtoRGB(p, q, t) {
   if (t < 0) t += 1
   if (t > 1) t -= 1
-  if (t < 1/6) return p + (q - p) * 6 * t
-  if (t < 1/2) return q
-  if (t < 2/3) return p + (q - p) * (2/3 - t) * 6
+  if (t < 1 / 6) return p + (q - p) * 6 * t
+  if (t < 1 / 2) return q
+  if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6
 
   return q
 }
