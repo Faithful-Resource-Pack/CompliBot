@@ -147,6 +147,8 @@ module.exports = {
       .catch(err => {
         if (process.env.DEBUG) console.error(err)
       })
+
+    if(idSearch) results = results !== undefined ? [results] : []
       
     // if you don't get results error
     // if it is an idSearch it will return undefined
@@ -209,13 +211,20 @@ module.exports = {
     }, {})
 
     // determine respecitve java and bedrock paths
-    const javaTexturePath = java ? (await usesPerEdition.java.paths())[0].path : undefined
+    const javaTexturePath = (java && usesPerEdition.java) ? (await usesPerEdition.java.paths())[0].path : undefined
     const bedrockTexturePath = (bedrock && usesPerEdition.bedrock) ? (await usesPerEdition.bedrock.paths())[0].path : undefined
 
     // reject if wanted bedrock and java so if foind bedrock path
-    if (java && bedrock && !usesPerEdition.bedrock) {
-      await warnUser(message, 'Texture doesn\'t have a bedrock version')
-      return
+    if(java) {
+      if (bedrock && !usesPerEdition.bedrock) {
+        await warnUser(message, 'Texture doesn\'t have a bedrock version')
+        return
+      }
+
+      // reject if is bedcrock only texture and only java res arguments
+      if(!bedrock && !usesPerEdition.java) {
+        return warnUser(message, `${strings.TEXTURE_DOESNT_EXIST}\nTexture has no java version`)
+      }
     }
 
     // doing a dynamic import to reload canvas function
