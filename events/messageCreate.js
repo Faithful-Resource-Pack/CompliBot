@@ -23,6 +23,7 @@ const { quote }           = require('../functions/quote')
 const { textureIDQuote }  = require('../functions/textures/textureIDQuote')
 const { submitTexture }   = require('../functions/textures/submission/submitTexture')
 const { inviteDetection } = require('../functions/moderation/inviteDetection')
+const { increase: increaseCommandProcessed } = require('../functions/commandProcess')
 
 const { addDeleteReact } = require('../helpers/addDeleteReact')
 const { warnUser }       = require('../helpers/warnUser')
@@ -60,7 +61,9 @@ module.exports = {
       }
       if (command.guildOnly && message.channel.type === 'DM') return warnUser(message, strings.CANT_EXECUTE_IN_DMS)
 
-      command.execute(client, message, args).catch(async error => {
+      command.execute(client, message, args).then(async () => {
+        return increaseCommandProcessed()
+      }).catch(async error => {
         console.trace(error)
 
         const embed = new Discord.MessageEmbed()

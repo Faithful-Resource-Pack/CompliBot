@@ -2,9 +2,11 @@ const prefix = process.env.PREFIX;
 
 const Discord  = require("discord.js");
 const os       = require('os');
+const moment   = require('moment');
 const settings = require('../../resources/settings');
 const colors   = require('../../resources/colors');
 const strings  = require('../../resources/strings');
+const { get: getCommandProcessed } = require("../../functions/commandProcess");
 
 module.exports = {
 	name: 'stats',
@@ -13,42 +15,41 @@ module.exports = {
 	guildOnly: false,
 	uses: strings.COMMAND_USES_ANYONE,
 	syntax: `${prefix}stats`,
-	async execute(client, message, args) {
-		if (message.channel.type !== 'DM') await message.reply({content: 'Please check your dm\'s!'});
+	/**
+	 * @param {Discord.Client} client 
+	 * @param {Discord.Message} message
+	 */
+	async execute(client, message) {
 
-		let seconds = Math.floor(message.client.uptime / 1000);
-		let minutes = Math.floor(seconds / 60);
-		let hours   = Math.floor(minutes / 60);
-		let days    = Math.floor(hours / 24);
+		let sumMembers = 0
+		
+		client.guilds.cache.each(guild => {
+			sumMembers += guild.memberCount
+		})
 
-		let tseconds = 'seconds';
-		let tminutes = 'minutes';
-		let thours   = 'hours';
-		let tdays    = 'days';
-
-		seconds %= 60;
-		minutes %= 60;
-		hours   %= 24;
-
-		if (seconds == 1) tseconds = 'second';
-		if (minutes == 1) tminutes = 'minute';
-		if (hours == 1)   thours = 'hour';
-		if (days == 1)    thours = 'day';
+		const number = await getCommandProcessed()
 
 		const embed = new Discord.MessageEmbed()
-			.setTitle(`${message.client.user.username} Stats:`)
+			.setTitle(`${message.client.user.username} Stats`)
 			.setThumbnail(settings.BOT_IMG)
 			.setColor(colors.BLUE)
 			.addFields(
-				{ name: 'Uptime', value: `${days} ${tdays}, ${hours} ${thours}, ${minutes} ${tminutes}, ${seconds} ${tseconds}`},
-				{ name: 'RAM usage', value: `${((process.memoryUsage().heapUsed / 1024) / 1024).toFixed(2)} MB`},
-				{ name: 'Operating system', value: os.version()},
-				{ name: 'Discord library', value: `discord.js ${Discord.version}`},
-				{ name: 'Node.js', value: `Version ${process.version}`},
-				{ name: 'In guilds', value: client.guilds.cache.size.toString()},
-			)
+				{ name: 'Prefix', value: prefix, inline: true },
+				{ name: 'Uptime', value: moment.duration(message.client.uptime).humanize(), inline: true },
+				{ name: 'Guild Count', value: client.guilds.cache.size.toString(), inline: true },
 
-		if (message.channel.type !== 'DM') await message.author.send({embeds: [embed]});
-		else await message.reply({embeds: [embed]});
+				{ name: 'RAM', value: `${((process.memoryUsage().heapUsed / 1024) / 1024).toFixed(2)} MB`, inline: true},
+				{ name: 'Discord Library', value: `discord.js ${Discord.version}`, inline: true},
+				{ name: 'Node.js', value: `${process.version}`, inline: true },
+
+				{ name: "Total\nCommands", value: '' + client.commands.size, inline: true},
+				{ name: "Commands\nProcessed", value: '' + number, inline: true},
+				{ name: "Members\nAcross Guilds", value: '' + sumMembers, inline: true},
+
+				{ name: 'Operating System', value: os.version()},
+			)
+			.setFooter('Bot made with love', 'https://static.wikia.nocookie.net/minecraft_gamepedia/images/0/06/Heart_(icon).png')
+
+		return message.reply({embeds: [embed]});
 	}
 };
