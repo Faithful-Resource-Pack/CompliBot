@@ -44,7 +44,7 @@ module.exports = {
 				{ name: 'Node.js', value: `${process.version}`, inline: true },
 
 				{ name: "Total\nCommands", value: '' + client.commands.size, inline: true},
-				{ name: "Messages\nSent", value: '' + number, inline: true},
+				{ name: "Commands\nProcessed", value: '' + number, inline: true},
 				{ name: "Members\nAcross Guilds", value: '' + sumMembers, inline: true},
 
 				{ name: 'Operating System', value: os.version()},
