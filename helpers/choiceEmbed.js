@@ -42,9 +42,10 @@ const DEFAULT_EMOJIS = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '
  * @author TheRolf
  * @param {Discord.Message} message Received message
  * @param {ChoiceParameter} params Settings
+ * @param {Discord.User} user User to send message to
  * @return {Promise<ChoiceResponse>}
  */
-module.exports = function(message, params) {
+module.exports = function(message, params, user) {
   return new Promise((resolve, reject) => {
     params = Object.assign({}, DEFAULT, params)
 
@@ -85,10 +86,12 @@ module.exports = function(message, params) {
 
     embed.setDescription(description)
 
+    const sendMethod = message !== undefined ? message.reply : user.send
+
     // reply to the sent message
     /** @type {Discord.Message} */
     let embedMessage
-    message.reply({embeds: [embed]})
+    sendMethod({embeds: [embed]})
     .then(async function(embed_message) {
       embedMessage = embed_message
       return asyncTools.react(embedMessage, emojis)
