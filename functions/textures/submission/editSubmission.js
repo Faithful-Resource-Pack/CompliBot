@@ -6,7 +6,7 @@ const { Permissions }    = require('discord.js');
 const { magnify }        = require('../../../functions/textures/magnify')
 const { palette }        = require('../../../functions/textures/palette')
 const { tile }           = require('../tile')
-const compareFunction    = require('../compare')
+const compareCommand = require('../../../commands/Minecraft/compare')
 
 const CANVAS_FUNCTION_PATH = '../../../functions/textures/canvas'
 function nocache(module) { require('fs').watchFile(require('path').resolve(module), () => { delete require.cache[require.resolve(module)] }) }
@@ -61,21 +61,24 @@ async function editSubmission(client, reaction, user) {
 			 * TODO: find why you can't have 2 textures of the same resolution in the drawer.urls (the texture isn't processed??)
 			 */
 			else if (REACTION.emoji.id === emojis.COMPARE) {
-        /** @type {MessageEmbed} */
+        const member = await message.guild.members.cache.get(user.id)
         const embed = message.embeds[0]
         
-        const currentSubmissionUrl = embed.image.url
         const textureTitle = embed.title
         const textureId = textureTitle.substring(textureTitle.indexOf('#') + 1, textureTitle.indexOf(']')).trim()
 
-        /** @type {import('../compare').CompareOption} */
-        const options = {
-          id: textureId,
-          user: user,
-          images: [currentSubmissionUrl]
-        }
-        
-        await compareFunction(options)
+        let editions_letters = embed.fields.filter(f => f.inline !== undefined && f.inline === false)
+        editions_letters = editions_letters.map(e => e.value.charAt(2).toLowerCase())
+        editions_letters = editions_letters.filter((e, i) => editions_letters.indexOf(e) === i)
+        const command_arguments = ['--id', textureId, '-r']
+        const res = ['16', '32', '64']
+        res.forEach(r => {
+          editions_letters.forEach(e => {
+            command_arguments.push(r + e)
+          })
+        })
+				const	baseMessage = await member.send("Launching compare for: ``" + textureTitle + "``...")
+        await compareCommand.execute(client, baseMessage, command_arguments)
       }
 
       /**
