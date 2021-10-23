@@ -6,7 +6,7 @@ const { Permissions }    = require('discord.js');
 const { magnify }        = require('../../../functions/textures/magnify')
 const { palette }        = require('../../../functions/textures/palette')
 const { tile }           = require('../tile')
-const compareCommand = require('../../../commands/minecraft/compare')
+const compareCommand = require('../../../commands/Minecraft/compare')
 
 const CANVAS_FUNCTION_PATH = '../../../functions/textures/canvas'
 function nocache(module) { require('fs').watchFile(require('path').resolve(module), () => { delete require.cache[require.resolve(module)] }) }
