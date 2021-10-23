@@ -67,7 +67,7 @@ HELP_DESC_PALETTE: 'Get the colours of an image,\nImage URL needs to end with ``
 HELP_DESC_POLL: 'Make a poll to ask people!',
 HELP_DESC_PROFILE: 'Add personal information for the Compliance Website Gallery.',
 HELP_DESC_SKIN: 'Get the skin of a Minecraft Player.',
-HELP_DESC_STATS: 'Displays various stats of the bot in your DMs.',
+HELP_DESC_STATS: 'Displays various stats of the bot.',
 HELP_DESC_TEXTURE: 'Displays a specified texture from either vanilla Minecraft or Compliance.\nYou can search for a texture name, or use ``_`` at the beginning to search for non-complete names (such as _sword).\nYou can also use ``/`` at the begining to specify a folder instead of a texture name.',
 HELP_DESC_TILE: 'Tile an image, if no arguments are given, a grid shape is selected by default. The bot searches the last 10 messages for an image.\nGIF: only works with the first frame.',
 HELP_DESC_TRANSLATE: 'Translates messages to the selected language.',

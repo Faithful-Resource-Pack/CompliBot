@@ -1,5 +1,5 @@
-const path    = require('path')
-const fs      = require('fs/promises')
+const path = require('path')
+const fs   = require('fs/promises')
 
 // eslint-disable-next-line no-undef
 const COUNTER_FILE_PATH = path.resolve(__dirname, '..', 'json', 'commandsProcessed.txt')

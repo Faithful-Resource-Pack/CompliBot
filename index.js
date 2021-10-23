@@ -44,7 +44,7 @@ const LOG_DEV = ((process.env.LOG_DEV.toLowerCase() || 'false') == 'true')
 const colors = require('./resources/colors')
 
 /**
- * (Deprecated) COMMAND HANDLER
+ * COMMAND HANDLER
  */
 const commandFiles = walkSync('./commands').filter(f => f.endsWith('.js'))
 client.commands = new Discord.Collection()
