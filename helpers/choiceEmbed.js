@@ -86,13 +86,13 @@ module.exports = function(message, params, user) {
 
     embed.setDescription(description)
 
-    const sendMethod = message !== undefined ? message.reply : user.send
+    const args = {embeds: [embed]}
+    const sendPromise = message !== undefined ? message.reply(args) : user.send(args)
 
     // reply to the sent message
     /** @type {Discord.Message} */
     let embedMessage
-    sendMethod({embeds: [embed]})
-    .then(async function(embed_message) {
+    sendPromise.then(async function(embed_message) {
       embedMessage = embed_message
       return asyncTools.react(embedMessage, emojis)
     })
@@ -104,7 +104,6 @@ module.exports = function(message, params, user) {
     .then(collected => {
       /** @type {Discord.MessageReaction} */
       const reaction = collected.first()
-      console.log(reaction.users.cache)
       if (emojis.includes(reaction.emoji.name)) {
         embedMessage.delete()
 

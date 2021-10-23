@@ -220,6 +220,7 @@ module.exports = function(compareOptions) {
           footer: `ChoiceEmbed`,
           propositions: latestPaths
         }, compareOptions.user)
+        .then(res => res.index)
       }
       return Promise.resolve(0) // choose first one
     })
