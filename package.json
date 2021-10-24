@@ -41,7 +41,8 @@
     "meant": "^2.0.1",
     "moment": "^2.29.1",
     "node-fetch": "^3.0.0",
-    "simple-git": "^2.47.0"
+    "simple-git": "^2.47.0",
+    "spongebobify": "^0.3.8"
   },
   "devDependencies": {
     "eslint": "^8.1.0"

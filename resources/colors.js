@@ -3,7 +3,7 @@ module.exports = {
 RED: '#f44336', //negative
 YELLOW: '#FFEB3B', //warning
 BLUE: '#919AB1',
-//BLUE: '#7289DA', //for Project Blurple
+BLUED: '#7289DA', //for Project Blurple
 BLACK: '#000000', //muted
 COUNCIL: '#9c3848', //crimson
 GREEN: '#4CAF50', //positive
