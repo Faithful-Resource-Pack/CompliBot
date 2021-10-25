@@ -7,7 +7,6 @@ const { join } = require('path')
  * @author Juknum
  */
 async function doCheckLang() {
-  console.log('updated lang file')
   const path = join(process.cwd(), 'json/database/')
 
   fs.mkdirSync(path, { recursive: true })

@@ -1,7 +1,11 @@
-const strings = require('../json/database/langs.json') || { bot: { en_US: {} } }
+
+strings = { bot: { en_US: {} } }
+try {
+  strings = require('../json/database/langs.json')
+} catch (err) { }
 
 /**
- * TO ADD/MODIFY DELETE USE THE /LANG COMMAND
+ * TO ADD/MODIFY DELETE USE THE /LANG COMMAND (soon the webapp)
  * > this allow us to manage strings without making a commit nor restarting the bot :)
  * @author Juknum
  */

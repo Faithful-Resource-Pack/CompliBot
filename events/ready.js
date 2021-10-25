@@ -74,6 +74,9 @@ module.exports = {
 
     await restartAutoDestroy(client)
 
+    // fetch lang file at start (then every 60 seconds (see below))
+    doCheckLang()
+
     if (DEV) {
       setInterval(() => {
         doCheckLang()
