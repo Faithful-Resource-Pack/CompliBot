@@ -11,10 +11,6 @@ async function doCheckLang() {
 
   fs.mkdirSync(path, { recursive: true })
 
-  try {
-    fs.unlinkSync(path + 'langs.json')
-  } catch (err) { /* do nothing */ }
-
   let text = JSON.stringify(await langs.read_raw(), null, 0)
   fs.writeFileSync(
     join(path, 'langs.json'),

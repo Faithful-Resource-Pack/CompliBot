@@ -1,8 +1,6 @@
-
-strings = { bot: { en_US: {} } }
 try {
   strings = require('../json/database/langs.json')
-} catch (err) { }
+} catch (err) { console.error(err); }
 
 /**
  * TO ADD/MODIFY DELETE USE THE /LANG COMMAND (soon the webapp)
@@ -17,7 +15,7 @@ module.exports = {
    * @returns {String} string
    */
   string: (key) => {
-    return strings.bot.en_US[key] == undefined ? '?? string not found ??' : strings.bot.en_US[key]
+    return strings?.bot?.en_US[key] == undefined ? '?? string not found ??' : strings?.bot?.en_US[key]
   },
   /**
    * Get all strings starting with the given string key
@@ -28,7 +26,7 @@ module.exports = {
     const res = []
 
     for (const key in strings.bot.en_US) {
-      if (key.startsWith(str)) res.push(strings.bot.en_US[key])
+      if (key.startsWith(str)) res.push(strings?.bot?.en_US[key])
     }
 
     return res.length < 1 ? ['??? strings not found ???'] : res
