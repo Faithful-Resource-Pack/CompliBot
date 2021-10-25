@@ -1,14 +1,12 @@
 /* eslint-disable no-irregular-whitespace */
-const prefix  = process.env.PREFIX
+const prefix = process.env.PREFIX
 
 const uidR = process.env.UIDR
 const uidJ = process.env.UIDJ
-const uidD = process.env.UIDD
 const uidT = process.env.UIDT
 
-const strings = require('../../../resources/strings')
 const { warnUser } = require('../../../helpers/warnUser')
-
+const { string } = require('../../../resources/strings')
 const { setUse, addUse, getUse, deleteUse } = require('./use')
 const { setUser, addUser, getUser, deleteUser } = require('./user')
 const { setTexture, addTexture, getTexture, deleteTexture } = require('./texture')
@@ -21,7 +19,7 @@ module.exports = {
   aliases: ['db'],
   description: 'Fix or modify database textures directly from the bot',
   guildOnly: false,
-  uses: strings.COMMAND_USES_DEVS,
+  uses: string('command.use.devs'),
   syntax: `${prefix}db [texture|use|path] <get|set|add|delete/remove> <id> <parameters (see examples)>`,
   args: true,
   example: `
@@ -49,8 +47,8 @@ ${prefix}db path set <path id> editions <[ "1.17", "1.16.5" ]>
 ${prefix}db path add <useID> <{path: String, versions: String[]}>
 ${prefix}db path remove|delete <path id>`,
   async execute(_client, message, args) {
-    if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD || message.author.id === uidT) {
-      
+    if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidT) {
+
       const type = args[0]
       const operation = args[1]
       const id = args[2]
@@ -66,7 +64,7 @@ ${prefix}db path remove|delete <path id>`,
             case "set":
               embed = await setUser(id, args.slice(3))
               break
-          
+
             default:
               embed = await errorEmbed(`\`${type} > ${operation}\` does not exist.`)
               break
@@ -147,10 +145,10 @@ ${prefix}db path remove|delete <path id>`,
           embed = await errorEmbed(`\`${type}\` does not exist`)
           break
       }
-      
-      if (embed === undefined) embed = await errorEmbed('AN ERROR OCCURED')
-      message.reply({embeds: [embed]})
 
-    } else return warnUser(message, strings.COMMAND_NO_PERMISSION)
+      if (embed === undefined) embed = await errorEmbed('AN ERROR OCCURED')
+      message.reply({ embeds: [embed] })
+
+    } else return warnUser(message, string('command.no_permission'))
   }
 }

@@ -1,20 +1,20 @@
 /*eslint-env node*/
 const prefix = process.env.PREFIX
 
-const Discord     = require('discord.js')
-const axios       = require('axios').default
-const strings     = require('../../resources/strings')
-const colors      = require('../../resources/colors')
-const settings    = require('../../resources/settings')
-const emojis      = require('../../resources/emojis')
+const Discord = require('discord.js')
+const axios = require('axios').default
+const { string } = require('../../resources/strings')
+const colors = require('../../resources/colors')
+const settings = require('../../resources/settings')
+const emojis = require('../../resources/emojis')
 const choiceEmbed = require('../../helpers/choiceEmbed')
 
-const { magnify }  = require('../../functions/textures/magnify')
-const { palette }  = require('../../functions/textures/palette')
-const { tile }     = require('../../functions/textures/tile');
-const { getMeta }  = require('../../helpers/getMeta')
+const { magnify } = require('../../functions/textures/magnify')
+const { palette } = require('../../functions/textures/palette')
+const { tile } = require('../../functions/textures/tile');
+const { getMeta } = require('../../helpers/getMeta')
 const { warnUser } = require('../../helpers/warnUser')
-const { timestampConverter } = require ('../../helpers/timestampConverter')
+const { timestampConverter } = require('../../helpers/timestampConverter')
 const { addDeleteReact } = require('../../helpers/addDeleteReact')
 
 const allowed = ['vanilla', '16', '32', '64'];
@@ -27,12 +27,12 @@ const MinecraftSorter = (a, b) => {
 	const upper = Math.min(aSplit.length, bSplit.length)
 	let i = 0
 	let result = 0
-	while(i < upper && result == 0) {
+	while (i < upper && result == 0) {
 		result = (aSplit[i] == bSplit[i]) ? 0 : (aSplit[i] < bSplit[i] ? -1 : 1) // each number
 		++i
 	}
 
-	if(result != 0) return result
+	if (result != 0) return result
 
 	result = (aSplit.length == bSplit.length) ? 0 : (aSplit.length < bSplit.length ? -1 : 1) // longer length wins
 
@@ -42,9 +42,9 @@ const MinecraftSorter = (a, b) => {
 module.exports = {
 	name: 'texture',
 	aliases: ['textures'],
-	description: strings.HELP_DESC_TEXTURE,
+	description: string('command.description.texture'),
 	guildOnly: false,
-	uses: strings.COMMAND_USES_ANYONE,
+	uses: string('command.use.anyone'),
 	category: 'Minecraft',
 	syntax: `${prefix}texture <16/32/64> <texture_name>\n${prefix}texture <16/32/64> <_name>\n${prefix}texture <16/32/64> </folder/>`,
 	example: `${prefix}texture 16 dirt`,
@@ -56,24 +56,24 @@ module.exports = {
 	 */
 	async execute(client, message, args) {
 
-		let results    = []
+		let results = []
 		const textures = require('../../helpers/firestorm/texture')
-		const paths    = require('../../helpers/firestorm/texture_paths')
+		const paths = require('../../helpers/firestorm/texture_paths')
 
 		// no args given
-		if (args == '') return warnUser(message, strings.COMMAND_NO_ARGUMENTS_GIVEN)
+		if (args == '') return warnUser(message, string('command.args.none_given'))
 
-		let res    = args[0]
+		let res = args[0]
 		let search = args[1]
 
 		// no valids args given
-		if (!allowed.includes(args[0])) return warnUser(message, strings.COMMAND_WRONG_ARGUMENTS_GIVEN)
+		if (!allowed.includes(args[0])) return warnUser(message, string('command.args.invalid.generic'))
 		// no search field given
-		if (!args[1]) return warnUser(message, strings.COMMAND_NOT_ENOUGH_ARGUMENTS_GIVEN)
+		if (!args[1]) return warnUser(message, string('command.args.not_enough_given'))
 		else args[1] = String(args[1])
 
 		// texture name too short
-		if (args[1].length < 3) return warnUser(message, strings.TEXTURE_TOO_SHORT)
+		if (args[1].length < 3) return warnUser(message, string('command.texture.too_short'))
 
 		// universal args
 		if (args[0].includes('16') || args[0] === 'vanilla') res = '16'
@@ -82,7 +82,7 @@ module.exports = {
 
 		/*var waitEmbed = new Discord.MessageEmbed()
 			.setTitle('Loading')
-			.setDescription(strings.COMMAND_SEARCHING_FOR_TEXTURE)
+			.setDescription(strings.COMMAND_SEARCHING_FOR_TEXTURE) // strings is outdated
 			.setThumbnail(settings.LOADING_IMG)
 			.setColor(colors.BLUE)
 		const waitEmbedMessage = await message.reply({embeds: [waitEmbed]});*/
@@ -146,7 +146,7 @@ module.exports = {
 		if (results.length > 1) {
 
 			let choice = [];
-			
+
 			for (let i = 0; results[i]; i++) {
 				let uses = await results[i].uses()
 				let stringBuilder = []
@@ -169,23 +169,23 @@ module.exports = {
 			//if (!waitEmbedMessage.deleted) await waitEmbedMessage.delete();
 			choiceEmbed(message, {
 				title: `${results.length} results, react to choose one!`,
-				description: strings.TEXTURE_SEARCH_DESCRIPTION,
+				description: string('command.texture.search_description'),
 				footer: `${message.client.user.username}`,
 				propositions: choice
 			})
-			.then(choice => {
-				return getTexture(message, res, results[choice.index])
-			})
-			.catch((message, error) => {
-				if (process.env.DEBUG) console.error(message, error)
-			})
+				.then(choice => {
+					return getTexture(message, res, results[choice.index])
+				})
+				.catch((message, error) => {
+					if (process.env.DEBUG) console.error(message, error)
+				})
 		}
 		else if (results.length == 1) {
 			await getTexture(message, res, results[0])
 			//if (!waitEmbedMessage.deleted) await waitEmbedMessage.delete();
 		}
 		else {
-			await warnUser(message, strings.TEXTURE_DOESNT_EXIST)
+			await warnUser(message, string('command.texture.does_not_exist'))
 			//if (!waitEmbedMessage.deleted) await waitEmbedMessage.delete();
 		}
 	}
@@ -202,7 +202,7 @@ async function getTexture(message, res, texture) {
 
 	const uses = await texture.uses()
 	const path = (await uses[0].paths())[0].path
-	const pathSort    = (await uses[0].paths())[0].versions.sort(MinecraftSorter).reverse()
+	const pathSort = (await uses[0].paths())[0].versions.sort(MinecraftSorter).reverse()
 	const pathVersion = pathSort[0]
 	const pathUseType = uses[0].editions[0]
 
@@ -212,8 +212,8 @@ async function getTexture(message, res, texture) {
 		pathsText.push(`**__${uses[x].editions.join(', ')}__**`)
 		for (let i = 0; paths[i]; i++) {
 			let versions = paths[i].versions.sort(MinecraftSorter)
-			if (versions.length > 1) pathsText.push(`\`[${versions[0]} — ${versions[versions.length - 1]}]\` ${paths[i].path.replace('assets/minecraft/','').replace('textures/','')}`)
-			else pathsText.push(`\`[${versions[0]}]\` ${paths[i].path.replace('assets/minecraft/','').replace('textures/','')}`)
+			if (versions.length > 1) pathsText.push(`\`[${versions[0]} — ${versions[versions.length - 1]}]\` ${paths[i].path.replace('assets/minecraft/', '').replace('textures/', '')}`)
+			else pathsText.push(`\`[${versions[0]}]\` ${paths[i].path.replace('assets/minecraft/', '').replace('textures/', '')}`)
 		}
 	}
 
@@ -253,12 +253,12 @@ async function getTexture(message, res, texture) {
 				.setColor(colors.BLUE)
 				//.setURL(imgURL) TODO: add a link to the website gallery where more information could be found about the texture
 				.setImage(imgURL)
-				.addField('Resolution:', size,true)
+				.addField('Resolution:', size, true)
 
 			if (res === '16') embed.setFooter('Vanilla Texture', settings.VANILLA_IMG);
 			if (res === '32') embed.setFooter('Compliance 32x', settings.C32_IMG)
 			if (res === '64') embed.setFooter('Compliance 64x', settings.C64_IMG)
-			
+
 			/*
 			TODO: Get missing contributors from #results and add them to the contribution collection first
 			*/
@@ -266,29 +266,29 @@ async function getTexture(message, res, texture) {
 			if (res !== '16') {
 				const lastContribution = await texture.lastContribution((res == '32' || res == '64') ? `c${res}` : undefined).catch(() => Promise.resolve(undefined))
 
-				if(lastContribution) {
+				if (lastContribution) {
 					const contributors = lastContribution.contributors.map(contributor => { return `<@!${contributor}>` }).join(', ')
 					embed.addField('Author(s)', contributors, true)
 
 					try {
 						const date = timestampConverter(lastContribution.date)
 						embed.addField('Modified', date, true)
-					// eslint-disable-next-line no-empty
-					} catch (_error) {}
+						// eslint-disable-next-line no-empty
+					} catch (_error) { }
 				}
 			}
 			embed.addField('Paths', pathsText.join('\n'), false)
 
-			const embedMessage = await message.reply({embeds: [embed]});
+			const embedMessage = await message.reply({ embeds: [embed] });
 			addDeleteReact(embedMessage, message, true)
 
 			const imageSmallEnough = dimension.width <= 512 && dimension.height <= 512
 			if (imageSmallEnough)
-				await embedMessage.react(emojis.MAGNIFY).catch(() => {}); // avoids "Unknown message" error id reacting to a deleted message
-			await embedMessage.react(emojis.NEXT_RES).catch(() => {}); // avoids "Unknown message" error id reacting to a deleted message
-			await embedMessage.react(emojis.PALETTE).catch(() => {}); // avoids "Unknown message" error id reacting to a deleted message
+				await embedMessage.react(emojis.MAGNIFY).catch(() => { }); // avoids "Unknown message" error id reacting to a deleted message
+			await embedMessage.react(emojis.NEXT_RES).catch(() => { }); // avoids "Unknown message" error id reacting to a deleted message
+			await embedMessage.react(emojis.PALETTE).catch(() => { }); // avoids "Unknown message" error id reacting to a deleted message
 			if (imageSmallEnough)
-				await embedMessage.react(emojis.TILE).catch(() => {}); // avoids "Unknown message" error id reacting to a deleted message
+				await embedMessage.react(emojis.TILE).catch(() => { }); // avoids "Unknown message" error id reacting to a deleted message
 
 			/**
 			 * @param {Discord.MessageReaction} reaction incoming reaction
@@ -298,38 +298,38 @@ async function getTexture(message, res, texture) {
 				return !user.bot && [emojis.MAGNIFY, emojis.NEXT_RES, emojis.PALETTE, emojis.TILE].includes(reaction.emoji.id) && user.id === message.author.id;
 			};
 
-			embedMessage.awaitReactions({filter, max: 1, time: 60000, errors: ['time'] })
-			.then(async collected => {
-				const reaction = collected.first()
-				if (reaction.emoji.id === emojis.PALETTE && imageSmallEnough) {
-					return palette(embedMessage, embedMessage.embeds[0].image.url, undefined, message)
-				}
-				if (reaction.emoji.id === emojis.MAGNIFY) {
-					return magnify(embedMessage, embedMessage.embeds[0].image.url, undefined, message)
-				}
-				if (reaction.emoji.id === emojis.NEXT_RES && used.includes(res)) {
-					if (!embedMessage.deleted) await embedMessage.delete()
-					return getTexture(message, used[(used.indexOf(res) + 1) % used.length], texture)
-				}
-				if (reaction.emoji.id === emojis.TILE && imageSmallEnough) {
-					return tile(embedMessage, embedMessage.embeds[0].image.url, 'grid', undefined, message)
-				}
-			})
-			.catch(async () => {
-				try {
-					if (message.channel.type !== 'DM' && (imageSmallEnough))
-						await embedMessage.reactions.cache.get(emojis.MAGNIFY).remove()
-					if (message.channel.type !== 'DM')
-						await embedMessage.reactions.cache.get(emojis.NEXT_RES).remove()
-					if (message.channel.type !== 'DM')
-						await embedMessage.reactions.cache.get(emojis.PALETTE).remove()
-					if (message.channel.type !== 'DM' && (imageSmallEnough))
-						await embedMessage.reactions.cache.get(emojis.TILE).remove()
-				} catch (err) { /* Message deleted */ }
-			})
+			embedMessage.awaitReactions({ filter, max: 1, time: 60000, errors: ['time'] })
+				.then(async collected => {
+					const reaction = collected.first()
+					if (reaction.emoji.id === emojis.PALETTE && imageSmallEnough) {
+						return palette(embedMessage, embedMessage.embeds[0].image.url, undefined, message)
+					}
+					if (reaction.emoji.id === emojis.MAGNIFY) {
+						return magnify(embedMessage, embedMessage.embeds[0].image.url, undefined, message)
+					}
+					if (reaction.emoji.id === emojis.NEXT_RES && used.includes(res)) {
+						if (!embedMessage.deleted) await embedMessage.delete()
+						return getTexture(message, used[(used.indexOf(res) + 1) % used.length], texture)
+					}
+					if (reaction.emoji.id === emojis.TILE && imageSmallEnough) {
+						return tile(embedMessage, embedMessage.embeds[0].image.url, 'grid', undefined, message)
+					}
+				})
+				.catch(async () => {
+					try {
+						if (message.channel.type !== 'DM' && (imageSmallEnough))
+							await embedMessage.reactions.cache.get(emojis.MAGNIFY).remove()
+						if (message.channel.type !== 'DM')
+							await embedMessage.reactions.cache.get(emojis.NEXT_RES).remove()
+						if (message.channel.type !== 'DM')
+							await embedMessage.reactions.cache.get(emojis.PALETTE).remove()
+						if (message.channel.type !== 'DM' && (imageSmallEnough))
+							await embedMessage.reactions.cache.get(emojis.TILE).remove()
+					} catch (err) { /* Message deleted */ }
+				})
 
 		})
 	}).catch((error) => {
-		return warnUser(message, strings.TEXTURE_FAILED_LOADING + '\n' +  error)
+		return warnUser(message, string('command.texture.loading_failed') + '\n' + error)
 	})
 }

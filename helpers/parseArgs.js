@@ -1,5 +1,5 @@
 const { warnUser } = require('./warnUser')
-const strings = require('../resources/strings')
+const { string } = require('../resources/strings')
 
 /**
  * 
@@ -10,9 +10,9 @@ const strings = require('../resources/strings')
 function parseArgs(message, args) {
 
 	for (var i = 0; i < args.length; i++) {
-		
+
 		if (args[i].startsWith('-')) {
-			for (var j = i+1; j < args.length; j++) {
+			for (var j = i + 1; j < args.length; j++) {
 				if (args[j].startsWith('-')) break
 				else {
 					args[i] += ` ${args[j]}`
@@ -22,7 +22,7 @@ function parseArgs(message, args) {
 		}
 
 		else if (args[i] != '') {
-			warnUser(message, strings.PARSE_ARGS)
+			warnUser(message, string('command.parse_args'))
 		}
 	}
 

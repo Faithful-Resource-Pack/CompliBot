@@ -7,14 +7,14 @@
  * @returns Returns an Array of all fetched messages
  */
 async function getMessages(client, id, limit = 130) {
-	if(typeof(limit) !== 'number')
+	if (typeof (limit) !== 'number')
 		return new Array()
-	
+
 	let channel
 	try {
 		channel = await client.channels.cache.get(id)
 	} catch (_err) { return new Array() }
-	
+
 	let fetchLimit = Math.min(100, Math.max(0, limit)) // clamps values in [0, 100]
 
 	const sum_messages = new Array()
@@ -22,7 +22,7 @@ async function getMessages(client, id, limit = 130) {
 	let last_id // = undefined
 	let options
 	let messages
-	
+
 	let done = false
 	while (!done) {
 		options = { limit: fetchLimit }

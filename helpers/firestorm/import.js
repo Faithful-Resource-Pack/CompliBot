@@ -102,23 +102,23 @@ let wasBuilt = false
 // Create a new client
 const all = require('./all')
 
-const save = function() {
+const save = function () {
   return new Promise((resolve, reject) => {
     all.users.write_raw({})
-    .then(() => 
-    all.users.setBulk(Object.keys(all_users), Object.values(all_users)))
-    .then(console.log)
-    .catch(err => {
-      console.error(err.response.data)
-    })
+      .then(() =>
+        all.users.setBulk(Object.keys(all_users), Object.values(all_users)))
+      .then(console.log)
+      .catch(err => {
+        console.error(err.response.data)
+      })
   })
 }
 
-const build_from_files = async function() {
-  if(wasBuilt)
+const build_from_files = async function () {
+  if (wasBuilt)
     return module.exports
 
-  if(process.env.DEBUG) console.log('Started build of database')
+  if (process.env.DEBUG) console.log('Started build of database')
 
   const old_profiles = await jsonProfiles.read(false, false)
   // getting contributors done
@@ -128,10 +128,10 @@ const build_from_files = async function() {
 
     const u = {
       username: p.username,
-      type: (Array.isArray(p.type)) ? p.type : ((typeof(p.type) === 'string') ? [p.type] : ['Member']),
+      type: (Array.isArray(p.type)) ? p.type : ((typeof (p.type) === 'string') ? [p.type] : ['Member']),
     }
 
-    if(p.uuid)
+    if (p.uuid)
       u.uuid = p.uuid
 
     all_users["" + userID] = u
@@ -141,18 +141,18 @@ const build_from_files = async function() {
   old_moderation.forEach(m => {
     let u = all_users[m.user]
 
-    if(!u) {
+    if (!u) {
       u = {}
     }
-    
-    if(m.timeout)
+
+    if (m.timeout)
       u.timeout = m.timeout
-    if(m.muted)
+    if (m.muted)
       u.muted = m.muted
-    if(m.warn)
+    if (m.warn)
       u.warns = m.warn
 
-    if(Object.keys(u).length)
+    if (Object.keys(u).length)
       all_users[m.user] = u
   })
 
@@ -161,7 +161,7 @@ const build_from_files = async function() {
     let lastPath = undefined
 
     Object.keys(contrib.version).forEach(v => {
-      if(contrib.version[v] !== lastPath) {
+      if (contrib.version[v] !== lastPath) {
         /** @type {TexturePath} */
         const tp = {
           useID: textureUSEID,
@@ -181,14 +181,14 @@ const build_from_files = async function() {
     // add texture contributions
     const resss = ['c32', 'c64']
     resss.forEach(res => {
-      if(!contrib[res] || !contrib[res].author)
+      if (!contrib[res] || !contrib[res].author)
         return
-      
+
       // add contributions
       contrib[res].author.forEach(id => {
         /** @type {Contribution} */
         const myDate = (contrib[res].date || '01/01/2021').split('/')
-        const time = new Date( myDate[2] || '1970', (myDate[1] - 1) || '0', (myDate[0] || '1')).getTime()
+        const time = new Date(myDate[2] || '1970', (myDate[1] - 1) || '0', (myDate[0] || '1')).getTime()
 
         const cb = {
           contributorID: id,
@@ -201,11 +201,11 @@ const build_from_files = async function() {
     })
 
     // add bedrock texture
-    if(contrib.isBedrock && contrib.bedrock) {
+    if (contrib.isBedrock && contrib.bedrock) {
       let lastPath = undefined
-      
+
       Object.keys(contrib.bedrock).forEach(v => {
-        if(contrib.version[v] !== lastPath) {
+        if (contrib.version[v] !== lastPath) {
           /** @type {TexturePath} */
           const tp = {
             useID: textureUSEID,
@@ -213,14 +213,14 @@ const build_from_files = async function() {
             path: contrib.version[v],
             versions: [v]
           }
-  
+
           lastPath = tp.path
-  
+
           all_paths.push(tp)
         } else {
           all_paths[all_paths.length - 1].versions.push(v)
         }
-      })  
+      })
     }
 
     /** @type {TextureUse} */
@@ -229,13 +229,13 @@ const build_from_files = async function() {
       textureUseName: "",
     }
     all_texture_uses["" + textureUSEID] = tu
-    
+
     /** @type {Texture} */
     const tex = {
       name: ""
     }
 
-    if(contrib.animated) {
+    if (contrib.animated) {
       /** @type {TextureAnimation} */
       const anim = {
         mcmeta: contrib.mcmeta || {},
@@ -246,7 +246,7 @@ const build_from_files = async function() {
     }
 
     all_minecraft['' + textureID] = tex
-    
+
     textureID++
     textureUSEID++
   })
@@ -256,7 +256,7 @@ const build_from_files = async function() {
     let lastPath = undefined
 
     Object.keys(contrib.version).forEach(v => {
-      if(contrib.version[v] !== lastPath) {
+      if (contrib.version[v] !== lastPath) {
         /** @type {TexturePath} */
         const tp = {
           useID: textureUSEID,
@@ -276,14 +276,14 @@ const build_from_files = async function() {
     // add texture contributions
     const resss = ['c32', 'c64']
     resss.forEach(res => {
-      if(!contrib[res] || !contrib[res].author)
+      if (!contrib[res] || !contrib[res].author)
         return
-      
+
       // add contributions
       contrib[res].author.forEach(id => {
         /** @type {Contribution} */
         const myDate = (contrib[res].date || '01/01/2021').split('/')
-        const time = new Date( myDate[2] || '1970', (myDate[1] - 1) || '0', (myDate[0] || '1')).getTime()
+        const time = new Date(myDate[2] || '1970', (myDate[1] - 1) || '0', (myDate[0] || '1')).getTime()
 
         const cb = {
           contributorID: id,
@@ -301,7 +301,7 @@ const build_from_files = async function() {
       textureUseName: "",
     }
     all_texture_uses['' + textureUSEID] = tu
-    
+
     /** @type {Texture} */
     const tex = {
       name: ''
@@ -309,17 +309,17 @@ const build_from_files = async function() {
 
     all_minecraft['' + textureID] = tex
 
-    if(contrib.animated) {
+    if (contrib.animated) {
       /** @type {TextureAnimation} */
       const anim = {
         mcmeta: contrib.mcmeta || {},
         edition: "bedrock"
       }
-      all_animations['' . textureUSEID] = anim
+      all_animations[''.textureUSEID] = anim
     }
 
-    all_minecraft['' . textureID] = tex
-    
+    all_minecraft[''.textureID] = tex
+
     textureID++
     textureUSEID++
   })
@@ -328,7 +328,7 @@ const build_from_files = async function() {
   // if(process.env.DEBUG) console.log(module.exports)
   const res = await save()
   console.log(module.exports)
-  if(process.env.DEBUG) console.log('Ended build of database')
+  if (process.env.DEBUG) console.log('Ended build of database')
 }
 
 build_from_files()

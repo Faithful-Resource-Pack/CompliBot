@@ -32,7 +32,7 @@ async function syncMembers(client, serversID) {
 	const serversResults = await promiseEvery(serversPromises).catch(() => { return }) // if catches, it means that I have no access at all
 
 	// so if undefined, it's useless to sync members
-	if(serversResults === undefined) return
+	if (serversResults === undefined) return
 
 	// so the results may not be full, just try with the ones with not undefined results
 	const serversAvailable = serversResults.results.filter(server => server !== undefined)
@@ -66,7 +66,7 @@ async function syncMembers(client, serversID) {
 					})
 
 					// remove duplicates
-					users[user.id].type = [...new Set(users[user.id].type) ]
+					users[user.id].type = [...new Set(users[user.id].type)]
 
 				}
 

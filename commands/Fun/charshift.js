@@ -1,23 +1,23 @@
 const prefix = process.env.PREFIX
 const Discord = require('discord.js')
 
-const strings = require('../../resources/strings')
+const { string } = require('../../resources/strings')
 const colors = require('../../resources/colors')
 
 const { warnUser } = require('../../helpers/warnUser')
 
 module.exports = {
   name: 'charshift',
-  description: strings.HELP_DESC_CHARSHIFT,
+  description: string('command.description.charshift'),
   guildOnly: false,
-  uses: strings.COMMAND_USES_ANYONE,
+  uses: string('command.use.anyone'),
   category: 'Fun',
   syntax: `${prefix}charshift <offset> <text>`,
   example: `${prefix}charshift 5 Devs are awesome`,
   async execute(_client, message, args) {
-    if (!args.length || args.length < 2) return warnUser(message, strings.COMMAND_NO_ARGUMENTS_GIVEN)
+    if (!args.length || args.length < 2) return warnUser(message, string('command.args.none_given'))
     let offset = parseInt(args.shift())
-    if (isNaN(offset)) return warnUser(message, `${strings.COMMAND_WRONG_ARGUMENTS_GIVEN}\nFirst argument must be a number`)
+    if (isNaN(offset)) return warnUser(message, `${string('command.args.invalid.generic')}\nFirst argument must be a number`)
     if (offset < 0) offset += 26
 
     const str = args.join(' ')
@@ -36,7 +36,7 @@ module.exports = {
     const embed = new Discord.MessageEmbed()
       .setTitle('**' + output + '**')
       .setColor(colors.BLUED)
-    
+
     return message.reply({ embeds: [embed] })
   }
 }

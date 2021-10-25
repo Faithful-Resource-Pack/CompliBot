@@ -1,4 +1,4 @@
-const firestorm   = require('.')
+const firestorm = require('.')
 const texture_use = require('./texture_use')
 
 require('./firestorm_config')()
@@ -12,7 +12,7 @@ require('./firestorm_config')()
 
 module.exports = firestorm.collection('animation', el => {
   /** @returns {Promise<import('./texture_use').TextureUse>} */
-  el.use = function() {
+  el.use = function () {
     return texture_use.get(el.useID)
   }
   return el

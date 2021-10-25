@@ -1,5 +1,5 @@
-const Discord  = require('discord.js')
-const colors   = require('../../resources/colors')
+const Discord = require('discord.js')
+const colors = require('../../resources/colors')
 const settings = require('../../resources/settings')
 
 /**
@@ -8,9 +8,9 @@ const settings = require('../../resources/settings')
  * @param {Discord} message Discord Message
  */
 async function inviteDetection(client, message) {
-    if (!message.member) return
-    if (message.member.permissions.has("MANAGE_MESSAGES")) return
-    if (!message.content) return
+	if (!message.member) return
+	if (message.member.permissions.has("MANAGE_MESSAGES")) return
+	if (!message.content) return
 
 	// ignore EM server
 	if (message.guild.id === '814198513847631944') return
@@ -19,8 +19,8 @@ async function inviteDetection(client, message) {
 
 	// currently only discord servers, can be expanded with more links later
 	const advertising = [
-        'discord.gg'
-    ]
+		'discord.gg'
+	]
 
 	const whitelist = [
 		'discord.gg/compliance32x',
@@ -39,13 +39,13 @@ async function inviteDetection(client, message) {
 
 	if (isAd && !whitelist.some(w => message.content.includes(w))) {
 		var embed = new Discord.MessageEmbed()
-		.setAuthor(`${message.author.tag} may have advertised a discord server`, message.author.displayAvatarURL())
-		.setColor(colors.RED)
-		.setDescription(`[Jump to message](${message.url})\n\n**Channel**: <#${message.channel.id}>\n**Server**: \`${message.guild}\`\n**User ID**: \`${message.author.id}\`\n**Date**: \`${message.createdAt.toLocaleString()}\`\n\n\`\`\`${message.content}\`\`\``)
-		.setTimestamp()
+			.setAuthor(`${message.author.tag} may have advertised a discord server`, message.author.displayAvatarURL())
+			.setColor(colors.RED)
+			.setDescription(`[Jump to message](${message.url})\n\n**Channel**: <#${message.channel.id}>\n**Server**: \`${message.guild}\`\n**User ID**: \`${message.author.id}\`\n**Date**: \`${message.createdAt.toLocaleString()}\`\n\n\`\`\`${message.content}\`\`\``)
+			.setTimestamp()
 
-		client.channels.cache.get(settings.C32_LOGS).send({embeds: [embed]})
-    }
+		client.channels.cache.get(settings.C32_LOGS).send({ embeds: [embed] })
+	}
 }
 
 exports.inviteDetection = inviteDetection

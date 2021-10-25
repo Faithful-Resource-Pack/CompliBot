@@ -1,14 +1,15 @@
 const prefix = process.env.PREFIX
 const Discord = require('discord.js')
 
-const strings = require('../../resources/strings')
+const { string } = require('../../resources/strings')
 const colors = require('../../resources/colors')
 
 module.exports = {
   name: 'coin',
-  description: strings.HELP_DESC_COIN,
+  aliases: ['coinflip'],
+  description: string('command.description.coin'),
   guildOnly: false,
-  uses: strings.COMMAND_USES_ANYONE,
+  uses: string('command.use.anyone'),
   category: 'Fun',
   syntax: `${prefix}coin`,
   async execute(_client, message) {

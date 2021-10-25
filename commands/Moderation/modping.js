@@ -1,14 +1,14 @@
-const prefix   = process.env.PREFIX
-const Discord  = require("discord.js")
-const strings  = require('../../resources/strings')
+const prefix = process.env.PREFIX
+const Discord = require("discord.js")
+const { string } = require('../../resources/strings')
 const { warnUser } = require('../../helpers/warnUser')
 
 module.exports = {
 	name: 'modping',
 	aliases: ['moderators', 'pingmods'],
-	description: strings.HELP_DESC_MODPING,
+	description: string('command.description.modping'),
 	guildOnly: true,
-	uses: strings.COMMAND_USES_ANYONE,
+	uses: string('command.use.anyone'),
 	category: 'Moderation',
 	syntax: `${prefix}modping`,
 	/**
@@ -26,16 +26,16 @@ module.exports = {
 		let embed = new Discord.MessageEmbed()
 		if (args.includes('urgent') || args.includes('important') || args.includes('urgents')) {
 			embed.setAuthor(message.author.tag, message.author.displayAvatarURL())
-			.setTitle('Moderators:')
-			.setDescription('You demanded that all moderators be present. You must have a good reason or penalties may be taken.')
-			.setColor('#22202C')
-			.setFooter(`use ${prefix}modping to call mods for help!`)
+				.setTitle('Moderators:')
+				.setDescription('You demanded that all moderators be present. You must have a good reason or penalties may be taken.')
+				.setColor('#22202C')
+				.setFooter(`use ${prefix}modping to call mods for help!`)
 
-			await message.reply({embeds: [embed]})
-			return message.channel.send({content: `<@&${MOD_ROLE.id}>`})
+			await message.reply({ embeds: [embed] })
+			return message.channel.send({ content: `<@&${MOD_ROLE.id}>` })
 		}
-		
-		let MODERATORS_DND    = new Array()
+
+		let MODERATORS_DND = new Array()
 		let MODERATORS_ONLINE = new Array()
 
 		for (let i = 0; i < MODERATORS_ID.length; i++) {
@@ -56,21 +56,21 @@ module.exports = {
 				.setColor('#22202C')
 				.setFooter(`use ${prefix}modping to call mods for help!`)
 
-			await message.reply({embeds: [embed]})
+			await message.reply({ embeds: [embed] })
 
-			return message.channel.send({content: MODERATORS_ONLINE.join(', ')})
+			return message.channel.send({ content: MODERATORS_ONLINE.join(', ') })
 		}
 
 		if (MODERATORS_DND.length > 0) {
 			embed.setAuthor(message.author.tag, message.author.displayAvatarURL())
 				.setTitle('Moderators:')
-				.setDescription(`There ${MODERATORS_DND.length > 1 ? "are" : "is" } **${MODERATORS_DND.length} Moderators in do not disturb / AFK **, they may not respond.`)
+				.setDescription(`There ${MODERATORS_DND.length > 1 ? "are" : "is"} **${MODERATORS_DND.length} Moderators in do not disturb / AFK **, they may not respond.`)
 				.setColor('#22202C')
 				.setFooter(`use ${prefix}modping to call mods for help!`)
 
-			await message.reply({embeds: [embed]})
+			await message.reply({ embeds: [embed] })
 
-			return message.channel.send({content: MODERATORS_DND.join(', ')})
+			return message.channel.send({ content: MODERATORS_DND.join(', ') })
 		}
 
 		// No moderators online
@@ -80,8 +80,8 @@ module.exports = {
 			.setColor('#22202C')
 			.setFooter(`use ${prefix}modping to call mods for help!`)
 
-		await message.reply({embeds: [embed]})
-		message.channel.send({content: `<@&${MOD_ROLE.id}>`})
+		await message.reply({ embeds: [embed] })
+		message.channel.send({ content: `<@&${MOD_ROLE.id}>` })
 
 	}
 }

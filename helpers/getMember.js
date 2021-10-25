@@ -7,23 +7,23 @@
  * @returns Returns the id of the user
  */
 async function getMember(message, arg) {
-    let member
-    try {
-        const id = arg.replace(/\D+/g, "")
-        if(id === "") {
-            throw Error
-        } else {
-            member = await message.guild.members.fetch(id)
-        }
-    } catch {
-        try {
-            member = (await message.guild.members.search({
-                query: arg,
-                cache: false
-            })).first()
-        } catch(err) {console.log(err)}
-    }
-    return member.id
+	let member
+	try {
+		const id = arg.replace(/\D+/g, "")
+		if (id === "") {
+			throw Error
+		} else {
+			member = await message.guild.members.fetch(id)
+		}
+	} catch {
+		try {
+			member = (await message.guild.members.search({
+				query: arg,
+				cache: false
+			})).first()
+		} catch (err) { console.log(err) }
+	}
+	return member.id
 }
 
 exports.getMember = getMember

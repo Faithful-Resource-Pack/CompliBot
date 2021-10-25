@@ -1,4 +1,4 @@
-const prefix  = process.env.PREFIX
+const prefix = process.env.PREFIX
 
 const uidR = process.env.UIDR
 const uidJ = process.env.UIDJ
@@ -7,8 +7,8 @@ const uidT = process.env.UIDT
 
 const DEVELOPER_IDs = [uidR, uidJ, uidD, uidT]
 
-const strings = require('../../resources/strings')
-const colors  = require('../../resources/colors')
+const { string } = require('../../resources/strings')
+const colors = require('../../resources/colors')
 
 const { warnUser } = require('../../helpers/warnUser')
 
@@ -24,7 +24,7 @@ const spawn = require('cross-spawn')
  * @param {child_process.SpawnOptionsWithStdioTuple} options STDIO options
  * @returns {Promise} Whether command went well or not
  */
-const spawnPromise = function(command, args) {
+const spawnPromise = function (command, args) {
   return new Promise((resolve, reject) => {
     const cmd = spawn(command, args, {
       detached: true
@@ -39,14 +39,14 @@ const spawnPromise = function(command, args) {
       out.push(data)
       console.log(`stdout: ${data}`);
     })
-    
+
     cmd.stderr.on('data', data => {
       err.push(data)
       console.error(`stderr: ${data}`)
     })
 
     cmd.on('close', code => {
-      if(code == 0)
+      if (code == 0)
         resolve(out.join('\n'))
       else
         reject(err.join('\n'))
@@ -56,39 +56,39 @@ const spawnPromise = function(command, args) {
 
 function execPromise(cmd) {
   return new Promise((resolve) => {
-   exec(cmd, (error, stdout, stderr) => {
-    if (error) {
-     console.warn(error);
-    }
-    resolve(stdout? stdout : stderr);
-   });
+    exec(cmd, (error, stdout, stderr) => {
+      if (error) {
+        console.warn(error);
+      }
+      resolve(stdout ? stdout : stderr);
+    });
   });
- }
+}
 
 module.exports = {
-	name: 'restart',
-	description: strings.HELP_DESC_RESTART,
-	guildOnly: false,
-	uses: strings.COMMAND_USES_DEVS,
+  name: 'restart',
+  description: string('command.description.restart'),
+  guildOnly: false,
+  uses: string('command.use.devs'),
   category: 'Developer exclusive',
-	syntax: `${prefix}restart`,
-	example: `${prefix}restart`,
-	args: true,
+  syntax: `${prefix}restart`,
+  example: `${prefix}restart`,
+  args: true,
   /**
    * Pulls, and reloads the bot
    * @param {Discord.Client} client Discord Client receiving the message
    * @param {Discord.Message} message Incomming message
    * @param {String[]} _args command args
    */
-	// eslint-disable-next-line no-unused-vars
-	async execute(client, message, args) {
-    if(!DEVELOPER_IDs.includes(message.author.id)) {
+  // eslint-disable-next-line no-unused-vars
+  async execute(client, message, args) {
+    if (!DEVELOPER_IDs.includes(message.author.id)) {
       const emb = new Discord.MessageEmbed()
         .setTitle(':no_entry: Access denied :no_entry:')
         .setColor(colors.RED)
         .setDescription('You are not allowed to use this command')
 
-      const err = await message.channel.send({embeds: [emb]})
+      const err = await message.channel.send({ embeds: [emb] })
 
       setTimeout(() => {
         message.delete()
@@ -105,7 +105,7 @@ module.exports = {
     // sending embed
     // deleting our message
     // changing status 
-    const results = await Promise.all([message.channel.send({embeds: [emb]}), client.user.setPresence({ activity: { name: 'Updating...' }, status: 'idle' })])
+    const results = await Promise.all([message.channel.send({ embeds: [emb] }), client.user.setPresence({ activity: { name: 'Updating...' }, status: 'idle' })])
 
     const result = results[0]
 
@@ -139,13 +139,13 @@ module.exports = {
       })
       .then(() => {
         let string_command
-        if(process.platform == 'win32') {
+        if (process.platform == 'win32') {
           string_command = `start.bat` // windows 
           console.log("restarting ...", string_command)
           return spawnPromise(string_command, [])
         }
         else {
-          string_command = `./start.sh ${ process.pid }`
+          string_command = `./start.sh ${process.pid}`
           console.log("restarting ...", string_command)
           return execPromise(string_command)
         }

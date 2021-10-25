@@ -1,9 +1,9 @@
 const prefix = process.env.PREFIX;
 
-const Discord  = require("discord.js");
+const Discord = require("discord.js");
 const settings = require('../../resources/settings')
-const colors   = require('../../resources/colors')
-const strings  = require('../../resources/strings')
+const colors = require('../../resources/colors')
+const { string } = require('../../resources/strings')
 const { warnUser } = require('../../helpers/warnUser')
 const { default: axios } = require("axios")
 const cheerio = require('cheerio')
@@ -18,69 +18,68 @@ const HEADERS = {
 }
 
 module.exports = {
-	name: 'mcwiki',
-	aliases: ['wiki'],
-	description: strings.HELP_DESC_MCWIKI,
-	guildOnly: false,
-	uses: strings.COMMAND_USES_ANYONE,
-  category: 'Minecraft',
-	syntax: `${prefix}mcwiki <searchTerms>`,
-	example: `${prefix}mcwiki dog\n${prefix}mcwiki Java Edition 1.17.0`,
+  name: 'mcwiki',
+  aliases: ['wiki'],
+  description: string('command.description.mcwiki'),
+  guildOnly: false,
+  uses: string('command.use.anyone'),
+  syntax: `${prefix}mcwiki <searchTerms>`,
+  example: `${prefix}mcwiki dog\n${prefix}mcwiki Java Edition 1.17.0`,
   /**
    * 
    * @param {Discord.Client} client 
    * @param {Discord.Message} message 
    * @param {String[]} args 
    */
-	async execute(_client, message, args) {
+  async execute(_client, message, args) {
     const search = args.join(' ')
     const searchTerm = encodeURI(search)
-    
+
     const wikiURL = `${MC_WIKI_PAGE_PREFIX}${searchTerm}`
     axios.get(wikiURL, HEADERS)
-    .then(res => {
-      const $ = cheerio.load(res.data)
+      .then(res => {
+        const $ = cheerio.load(res.data)
 
-      const results = $('.unified-search__results .unified-search__result article h1 a').toArray().map(e => e.attribs.href).filter(e => e != undefined).filter(e => e !== '')
+        const results = $('.unified-search__results .unified-search__result article h1 a').toArray().map(e => e.attribs.href).filter(e => e != undefined).filter(e => e !== '')
 
-      if(results.length === 0) {
-        const error = new Error('No matching result')
-        error.res = {
-          status: 404
+        if (results.length === 0) {
+          const error = new Error('No matching result')
+          error.res = {
+            status: 404
+          }
+          return Promise.reject(error)
         }
-        return Promise.reject(error)
-      }
-      else {
-        return axios.get(results.shift(), HEADERS)
-      }
+        else {
+          return axios.get(results.shift(), HEADERS)
+        }
 
-    }).then(res => {
-      const $ = cheerio.load(res.data)
+      }).then(res => {
+        const $ = cheerio.load(res.data)
 
-      const wikiPage = $('link[rel="canonical"]').attr("href") || ''
-      const title = ($('meta[property="og:title"]').attr('content') || '').substring(0, 256)
-      const imageURL  = $('meta[property="og:image"]').last().attr('content') || ''
+        const wikiPage = $('link[rel="canonical"]').attr("href") || ''
+        const title = ($('meta[property="og:title"]').attr('content') || '').substring(0, 256)
+        const imageURL = $('meta[property="og:image"]').last().attr('content') || ''
 
-      // super useful to convert &lt; to < and &gt; to > // try with Java Edition 1.17.1
-      const description  = html2text.convert($('meta[name="description"]').attr('content') || '', {
-        wordwrap: false
-      }).substring(0, 4096)
+        // super useful to convert &lt; to < and &gt; to > // try with Java Edition 1.17.1
+        const description = html2text.convert($('meta[name="description"]').attr('content') || '', {
+          wordwrap: false
+        }).substring(0, 4096)
 
-      const embed = new Discord.MessageEmbed()
-        .setAuthor(strings.MCWIKI_EMBED_LINK_TEXT, settings.VANILLA_IMG, wikiPage)
-        .setTitle(title)
-        .setThumbnail(imageURL)
-        .setColor(colors.BLUE)
-        .setDescription(description)
-  
-      message.reply({embeds: [embed]})
-    })
-    .catch(err => {
-      if(err.res && err.res.status == 404) {
-        return warnUser(message, strings.MCWIKI_NO_RESULTS_FOUND.replace('%term%', search))
-      } else {
-        return Promise.reject(err)
-      }
-    })
-	}
+        const embed = new Discord.MessageEmbed()
+          .setAuthor(string('command.mcwiki.embed_link_text'), settings.VANILLA_IMG, wikiPage)
+          .setTitle(title)
+          .setThumbnail(imageURL)
+          .setColor(colors.BLUE)
+          .setDescription(description)
+
+        message.reply({ embeds: [embed] })
+      })
+      .catch(err => {
+        if (err.res && err.res.status == 404) {
+          return warnUser(message, string('command.mcwiki.no_result_found').replace('%term%', search))
+        } else {
+          return Promise.reject(err)
+        }
+      })
+  }
 };

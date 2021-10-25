@@ -2,11 +2,11 @@ const { getMessages } = require('../../../helpers/getMessages')
 
 const settings = require('../../../resources/settings')
 
-const texturesCollection      = require('../../../helpers/firestorm/texture')
+const texturesCollection = require('../../../helpers/firestorm/texture')
 const contributionsCollection = require('../../../helpers/firestorm/contributions')
 
 const fs = require('fs')
-const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 
 /**
  * Download textures from the given text channel
@@ -59,12 +59,11 @@ async function downloadResults(client, channelInID) {
 		let textureAuthors = textures[i].authors
 
 		let texture = await texturesCollection.get(textureID)
-		let uses    = await texture.uses()
+		let uses = await texture.uses()
 
 		let allPaths = new Array()
 		// get all paths of the texture
 		for (let j = 0; uses[j]; j++) {
-			
 			let localPath = 'undef'
 			switch (uses[j].editions[0].toLowerCase()) {
 				case "java":
@@ -99,7 +98,7 @@ async function downloadResults(client, channelInID) {
 		}
 
 		const response = await fetch(textureURL)
-		const buffer   = await response.buffer()
+		const buffer = await response.buffer()
 
 		// download the texture to all it's paths
 		for (let j = 0; allPaths[j]; j++) {

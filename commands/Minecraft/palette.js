@@ -1,16 +1,16 @@
 const prefix = process.env.PREFIX;
 
-const strings = require('../../resources/strings');
+const { string } = require('../../resources/strings');
 
-const { palette }  = require('../../functions/textures/palette');
+const { palette } = require('../../functions/textures/palette');
 const { warnUser } = require('../../helpers/warnUser');
 
 module.exports = {
 	name: 'palette',
 	aliases: ['p', 'colors', 'colormap', 'colours'],
-	description: strings.HELP_DESC_PALETTE,
+	description: string('command.description.palette'),
 	guildOnly: false,
-	uses: strings.COMMAND_USES_ANYONE,
+	uses: string('command.use.anyone'),
 	category: 'Minecraft',
 	syntax: `${prefix}palette attach an image\n${prefix}palette <Discord message url>\n${prefix}palette <image URL>\n${prefix}palette <message ID>\n${prefix}palette [up/^/last]`,
 	async execute(client, message, args) {
@@ -24,7 +24,7 @@ module.exports = {
 		}
 
 		// previous image
-		else if ((args[0] == undefined || args[0] == '' || args[0] == 'up' || args[0] == '^' ||  args[0] == 'last') && message.attachments.size == 0) {
+		else if ((args[0] == undefined || args[0] == '' || args[0] == 'up' || args[0] == '^' || args[0] == 'last') && message.attachments.size == 0) {
 			return PreviousImage();
 		}
 
@@ -35,8 +35,8 @@ module.exports = {
 					DATA = msg.attachments.first().url;
 					return palette(message, DATA);
 				}
-				else return warnUser(message, strings.COMMAND_MESSAGE_IMAGE_NOT_ATTACHED);
-			}).catch(() => { return warnUser(message, strings.COMMAND_URL_ONLY_SAME_CHANNEL) });
+				else return warnUser(message, string('command.image.not_attached.message'));
+			}).catch(() => { return warnUser(message, string('command.url.same_channel_only')) });
 		}
 
 		// Image URL
@@ -44,7 +44,7 @@ module.exports = {
 			if (args[0].endsWith('.png') || args[0].endsWith('.jpeg') || args[0].endsWith('.jpg') || args[0].endsWith('.gif')) {
 				DATA = args[0];
 				return palette(message, DATA);
-			} else return warnUser(message, strings.COMMAND_INVALID_EXTENSION)
+			} else return warnUser(message, string('command.image.invalid_extension'))
 		}
 
 		// Discord message ID
@@ -54,12 +54,12 @@ module.exports = {
 					DATA = msg.attachments.first().url;
 					return palette(message, DATA);
 				}
-				else return warnUser(message, strings.COMMAND_ID_IMAGE_NOT_ATTACHED);
+				else return warnUser(message, string('command.image.not_attached.id'));
 			}).catch(error => {
 				return warnUser(message, error);
 			})
 		}
-	
+
 		async function PreviousImage() {
 			/**
 			 * DO NOT DELETE THE COMMENTS IN THIS FUNCTION!
@@ -73,33 +73,33 @@ module.exports = {
 			//messages.push(...list_messages.array());
 
 			//for (var i in messages) {
-				//var msg = messages[i]
-				var url = '';
-				try {
-					if (lastMsg.attachments.size > 0) {
-						found = true;
-						url = lastMsg.attachments.first().url;
-						//break;
-					}
-					else if (lastMsg.embeds[0] != undefined && lastMsg.embeds[0] != null && lastMsg.embeds[0].image) {
-						found = true;
-						url = lastMsg.embeds[0].image.url;
-						//break;
-					}
-					else if (lastMsg.content.startsWith('https://') || lastMsg.content.startsWith('http://')) {
-						if (lastMsg.content.endsWith('.png') || lastMsg.content.endsWith('.jpeg') || lastMsg.content.endsWith('.jpg') || lastMsg.content.endsWith('.gif')) {
-							found = true;
-							url = lastMsg.content;
-							//break;
-						}
-					}
-				} catch(e) {
-					return warnUser(message, strings.COMMAND_NO_IMAGE_FOUND);
+			//var msg = messages[i]
+			var url = '';
+			try {
+				if (lastMsg.attachments.size > 0) {
+					found = true;
+					url = lastMsg.attachments.first().url;
+					//break;
 				}
+				else if (lastMsg.embeds[0] != undefined && lastMsg.embeds[0] != null && lastMsg.embeds[0].image) {
+					found = true;
+					url = lastMsg.embeds[0].image.url;
+					//break;
+				}
+				else if (lastMsg.content.startsWith('https://') || lastMsg.content.startsWith('http://')) {
+					if (lastMsg.content.endsWith('.png') || lastMsg.content.endsWith('.jpeg') || lastMsg.content.endsWith('.jpg') || lastMsg.content.endsWith('.gif')) {
+						found = true;
+						url = lastMsg.content;
+						//break;
+					}
+				}
+			} catch (e) {
+				return warnUser(message, string('command.image.not_found_in_10_last'))
+			}
 			//}
 
 			if (found) await palette(message, url);
-			else return warnUser(message, strings.COMMAND_NO_IMAGE_FOUND);
+			else return warnUser(message, string('command.image.not_found_in_10_last'))
 		}
 	}
 }

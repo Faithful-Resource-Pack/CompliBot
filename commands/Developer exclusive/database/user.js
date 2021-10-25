@@ -1,7 +1,7 @@
-const Discord        = require('discord.js')
-const colors         = require('../../../resources/colors')
+const Discord = require('discord.js')
+const colors = require('../../../resources/colors')
 const { errorEmbed } = require('./errorEmbed')
-const allCollection  = require('../../../helpers/firestorm/all')
+const allCollection = require('../../../helpers/firestorm/all')
 
 async function setUser(id, args) {
   const parameter = args[0]
@@ -35,7 +35,7 @@ async function setUser(id, args) {
   }
 }
 
-async function addUser() {}
+async function addUser() { }
 
 /**
  * Found & display the user inside an embed
@@ -53,16 +53,16 @@ async function getUser(id) {
 
   embed.addFields(
     { name: 'username:', value: user.username ? user.username : 'None' },
-    { name: 'uuid:',     value: user.uuid },
-    { name: 'type:',     value: user.type.length > 0 ? user.type.join(',\n') : 'None' },
-    { name: 'id:',       value: user.id },
+    { name: 'uuid:', value: user.uuid },
+    { name: 'type:', value: user.type.length > 0 ? user.type.join(',\n') : 'None' },
+    { name: 'id:', value: user.id },
     { name: 'contributions', value: 'Do `/db user get <user ID> contributions` to see all contributions of that user! (WIP)' }
   )
 
   return embed
 }
 
-async function deleteUser() {}
+async function deleteUser() { }
 
 module.exports = {
   setUser,

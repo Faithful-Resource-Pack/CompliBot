@@ -1,32 +1,33 @@
 const prefix = process.env.PREFIX;
 
-const strings = require('../../resources/strings');
-const colors  = require('../../resources/colors');
+const { string } = require('../../resources/strings');
+const colors = require('../../resources/colors');
 
 const { MessageEmbed } = require('discord.js');
-const { warnUser }     = require('../../helpers/warnUser');
+const { warnUser } = require('../../helpers/warnUser');
 
 module.exports = {
 	name: 'poll',
-	description: strings.HELP_DESC_POLL,
+	description: string('command.description.poll'),
 	guildOnly: true,
-	uses: strings.COMMAND_USES_DISABLED,
+	uses: string('command.use.disabled'),
 	category: 'Server',
 	syntax: `${prefix}poll <time in seconds> | <title> | <option1> | <option2> | ...`,
 	example: `${prefix}poll 3600 | Add more beans to the bot? | Yes | No`,
 	async execute(client, message, args) {
 
-		return warnUser(message,strings.COMMAND_DISABLED);
+		return warnUser(message, string('command.disabled'));
+		// be aware that old strings below aren't converted to the new format
 
 		if (message.content.includes(" | ")) {
 			args = message.content.slice(prefix.length).trim().split(" | ");
-			args[0] = args[0].replace('poll ','');
+			args[0] = args[0].replace('poll ', '');
 
 			if (isNaN(args[0]) || args[0] < 0 || args[0] > 3601) return warnUser(message, 'Time must be an integer between 0 & 3600 seconds!');
 
 			let options = []
 			for (var i = 2; i < args.length; i++) {
-				options[i-2] = args[i];
+				options[i - 2] = args[i];
 			}
 
 
@@ -43,7 +44,7 @@ module.exports = {
  * THIS PART COMES FROM : https://github.com/saanuregh/discord.js-poll-embed/blob/master/index.js
  * Thanks to him!
 */
-const defEmojiList = ['1️⃣','2️⃣','3️⃣','4️⃣','5️⃣','6️⃣','7️⃣','8️⃣','9️⃣','🔟','🇦','🇧','🇨','🇩','🇪','🇫','🇬','🇭','🇮'];
+const defEmojiList = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟', '🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮'];
 
 const pollEmbed = async (msg, title, options, timeout = 30, emojiList = defEmojiList.slice(), forceEndPollEmoji = '🛑') => {
 	if (!msg && !msg.channel) return warnUser(msg, 'The channel is inaccessible!');
@@ -54,10 +55,10 @@ const pollEmbed = async (msg, title, options, timeout = 30, emojiList = defEmoji
 
 	let time = `${timeout} seconds`;
 	if (timeout > 60 && timeout < 3600) time = `${timeout / 60} minutes`;
-	if (timeout == 3600) time = `${timeout/3600} hour`;
+	if (timeout == 3600) time = `${timeout / 3600} hour`;
 
-	let	text = `To vote, react using the correspoding emoji.\nThe voting will end in **${time}**.\nThe poll creator can end the poll **forcefully** by reacting with ${forceEndPollEmoji}\n\n`;
-	
+	let text = `To vote, react using the correspoding emoji.\nThe voting will end in **${time}**.\nThe poll creator can end the poll **forcefully** by reacting with ${forceEndPollEmoji}\n\n`;
+
 	const emojiInfo = {};
 	for (const option of options) {
 		const emoji = emojiList.splice(0, 1);
@@ -67,7 +68,7 @@ const pollEmbed = async (msg, title, options, timeout = 30, emojiList = defEmoji
 	const usedEmojis = Object.keys(emojiInfo);
 	usedEmojis.push(forceEndPollEmoji);
 
-	const poll = await msg.channel.send({embeds: [embedBuilder(title, msg.author.tag).setDescription(text)]});
+	const poll = await msg.channel.send({ embeds: [embedBuilder(title, msg.author.tag).setDescription(text)] });
 	for (const emoji of usedEmojis) await poll.react(emoji);
 
 	const reactionCollector = poll.createReactionCollector(
@@ -102,7 +103,7 @@ const pollEmbed = async (msg, title, options, timeout = 30, emojiList = defEmoji
 		text = 'Time\'s up! The results are:\n\n';
 		for (const emoji in emojiInfo) text += `\`${emojiInfo[emoji].option}\` - \`${emojiInfo[emoji].votes}\`\n\n`;
 		poll.delete();
-		msg.channel.send({embeds: [embedBuilder(title, msg.author.tag).setDescription(text)]});
+		msg.channel.send({ embeds: [embedBuilder(title, msg.author.tag).setDescription(text)] });
 	});
 };
 

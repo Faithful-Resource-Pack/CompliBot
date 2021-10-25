@@ -17,7 +17,7 @@ exports.restartAutoDestroy = async function (client) {
   readFile(join(process.cwd(), 'json', 'restart_message.txt'))
     .then((buffer) => {
       const res = buffer.toString('utf-8')
-      
+
       return Promise.resolve(res.split('\n'))
     })
     .then(async (ids) => {
@@ -27,17 +27,17 @@ exports.restartAutoDestroy = async function (client) {
       const channel = await client.channels.fetch(channel_id);
       const msg = await channel.messages.fetch(msg_id)
       const emb = msg.embeds[0]
-      
-      for(let i = 5; i > 0; --i) {
+
+      for (let i = 5; i > 0; --i) {
         const name = "Reboot successful"
         const value = "This message will self-destruct in " + String(i) + " second" + ((i > 1) ? "s" : "")
         const index = emb.fields.map(fi => fi.name).indexOf(name)
-        if(index != -1) {
-          emb.spliceFields(index, 1, {name: name, value: value, inline: false })
+        if (index != -1) {
+          emb.spliceFields(index, 1, { name: name, value: value, inline: false })
         } else {
           emb.addField(name, value, false)
         }
-        await msg.edit({embeds: [emb]})
+        await msg.edit({ embeds: [emb] })
         await sleep(1000)
       }
 

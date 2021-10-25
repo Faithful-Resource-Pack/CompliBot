@@ -1,8 +1,8 @@
-const client  = require('../index').Client
+const client = require('../index').Client
 const Discord = require('discord.js')
 
 const PREFIX = process.env.PREFIX
-const DEV    = (process.env.DEV.toLowerCase() == 'true')
+const DEV = (process.env.DEV.toLowerCase() == 'true')
 
 const colors = require('../resources/colors')
 const settings = require('../resources/settings')
