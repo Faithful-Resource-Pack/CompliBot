@@ -1,9 +1,9 @@
 /* global Buffer */
-const prefix  = process.env.PREFIX;
+const prefix = process.env.PREFIX;
 
 // eslint-disable-next-line no-unused-vars
 const Discord = require("discord.js");
-const strings = require('../../resources/strings');
+const { string } = require('../../resources/strings');
 const settings = require('../../resources/settings');
 const { mkdir } = require('fs/promises');
 const filesystem = require("fs");
@@ -16,14 +16,14 @@ const { warnUser } = require('../../helpers/warnUser');
 const { BLUE } = require("../../resources/colors");
 
 const COMPLIANCE_REPOS = {
-	java: {
-		'32': settings.COMPLIANCE_32X_JAVA_REPOSITORY_JAPPA,
-		'64': settings.COMPLIANCE_64X_JAVA_REPOSITORY_JAPPA
-	},
-	bedrock: {
-		'32': settings.COMPLIANCE_32X_BEDROCK_REPOSITORY_JAPPA,
-		'64': settings.COMPLIANCE_64X_BEDROCK_REPOSITORY_JAPPA
-	}
+  java: {
+    '32': settings.COMPLIANCE_32X_JAVA_REPOSITORY_JAPPA,
+    '64': settings.COMPLIANCE_64X_JAVA_REPOSITORY_JAPPA
+  },
+  bedrock: {
+    '32': settings.COMPLIANCE_32X_BEDROCK_REPOSITORY_JAPPA,
+    '64': settings.COMPLIANCE_64X_BEDROCK_REPOSITORY_JAPPA
+  }
 }
 
 const BEDROCK_UI = [
@@ -173,173 +173,173 @@ const BEDROCK_UI = [
 ]
 
 const VANILLA_REPOS = {
-	java: settings.DEFAULT_MC_JAVA_REPOSITORY,
-	bedrock: settings.DEFAULT_MC_BEDROCK_REPOSITORY
+  java: settings.DEFAULT_MC_JAVA_REPOSITORY,
+  bedrock: settings.DEFAULT_MC_BEDROCK_REPOSITORY
 }
 
 const REPLACE_URLS = [
-	['raw.githubusercontent.com', 'github.com'],
-	['Jappa-', '']
+  ['raw.githubusercontent.com', 'github.com'],
+  ['Jappa-', '']
 ]
 
-const _rawToRepoURL = function(val) {
-	let result = val
-	REPLACE_URLS.forEach(pair => {
-		result = result.replace(pair[0], pair[1])
-	})
-	return result
+const _rawToRepoURL = function (val) {
+  let result = val
+  REPLACE_URLS.forEach(pair => {
+    result = result.replace(pair[0], pair[1])
+  })
+  return result
 }
 
 const FOLDERS_NAMES = {
-	vanilla: 'vanilla',
-	compliance: 'compliance'
+  vanilla: 'vanilla',
+  compliance: 'compliance'
 }
 
 const normalizeArray = (arr) => arr.map(e => normalize(e))
 
-const includesNone = function(arr, val) {
-	let result = true
+const includesNone = function (arr, val) {
+  let result = true
 
-	let i = 0
-	while(i < arr.length && result) {
-		result = !val.includes(arr[i])
-		++i
-	}
+  let i = 0
+  while (i < arr.length && result) {
+    result = !val.includes(arr[i])
+    ++i
+  }
 
-	return result
+  return result
 }
 
-const _getAllFilesFromFolder = function(dir, filter = []) {
-	let results = []
+const _getAllFilesFromFolder = function (dir, filter = []) {
+  let results = []
 
-	filesystem.readdirSync(dir).forEach(function(file) {
-		file = normalize(join(dir, file))
-		const stat = filesystem.statSync(file)
+  filesystem.readdirSync(dir).forEach(function (file) {
+    file = normalize(join(dir, file))
+    const stat = filesystem.statSync(file)
 
-		if(!file.includes('.git')) {
-			if (stat && stat.isDirectory()) {
-					results = results.concat(_getAllFilesFromFolder(file, filter))
-			} else {
-				if(file.endsWith('.png') && includesNone(filter, file)) {
-					results.push(file)
-				}
-			}
-		}
-	})
-	return results
+    if (!file.includes('.git')) {
+      if (stat && stat.isDirectory()) {
+        results = results.concat(_getAllFilesFromFolder(file, filter))
+      } else {
+        if (file.endsWith('.png') && includesNone(filter, file)) {
+          results.push(file)
+        }
+      }
+    }
+  })
+  return results
 };
 
 module.exports = {
-	name: 'missing',
-	description: strings.HELP_DESC_MISSING,
-	guildOnly: false,
-	uses: strings.COMMAND_USES_ANYONE,
+  name: 'missing',
+  description: string('command.description.missing'),
+  guildOnly: false,
+  uses: string('command.use.anyone'),
   category: 'Compliance exclusive',
-	syntax: `${prefix}missing <32|64> <java|bedrock>`,
-	example: `${prefix}missing 32 java`,
+  syntax: `${prefix}missing <32|64> <java|bedrock>`,
+  example: `${prefix}missing 32 java`,
   /**
    * @param {Discord.Client} client Discord client using this command
    * @param {Discord.Message} message Incoming message matching
    * @param {Array<string>} args Arguments after the command
    * @author TheRolf
    */
-	async execute(_client, message, args) {
-    if (args.length < 2) return warnUser(message, strings.COMMAND_NO_ARGUMENTS_GIVEN)
+  async execute(_client, message, args) {
+    if (args.length < 2) return warnUser(message, string('command.args.none_given'))
 
-		const res = args[0].trim().toLowerCase()
+    const res = args[0].trim().toLowerCase()
     const edition = args[1].trim().toLowerCase()
 
-    if((edition !== 'java' && edition !== 'bedrock') || (res !== '32' && res !== '64')) return warnUser(message, strings.COMMAND_WRONG_ARGUMENTS_GIVEN)
+    if ((edition !== 'java' && edition !== 'bedrock') || (res !== '32' && res !== '64')) return warnUser(message, string('command.args.invalid.generic'))
 
     const vanilla_repo = _rawToRepoURL(VANILLA_REPOS[edition])
-		const compliance_repo = _rawToRepoURL(COMPLIANCE_REPOS[edition][res])
+    const compliance_repo = _rawToRepoURL(COMPLIANCE_REPOS[edition][res])
 
-		let embed = new Discord.MessageEmbed()
-			.setTitle('Searching for missing textures...')
-			.setDescription('This takes some time, please wait...')
-			.setThumbnail(settings.LOADING_IMG)
-			.setColor(BLUE)
-			.setFooter(message.client.user.username, settings.BOT_IMG)
-			.addField('Steps', 'Steps will be listed here')
+    let embed = new Discord.MessageEmbed()
+      .setTitle('Searching for missing textures...')
+      .setDescription('This takes some time, please wait...')
+      .setThumbnail(settings.LOADING_IMG)
+      .setColor(BLUE)
+      .setFooter(message.client.user.username, settings.BOT_IMG)
+      .addField('Steps', 'Steps will be listed here')
 
-		let embedMessage = await message.reply({ embeds: [embed]})
+    let embedMessage = await message.reply({ embeds: [embed] })
 
-		let steps = []
+    let steps = []
 
-		let tmp_filepath = normalize(os.tmpdir())
-		let vanilla_tmp_path, compliance_tmp_path
+    let tmp_filepath = normalize(os.tmpdir())
+    let vanilla_tmp_path, compliance_tmp_path
 
-		vanilla_tmp_path = join(tmp_filepath, 'missing-' + FOLDERS_NAMES.vanilla + '-' + edition)
-		compliance_tmp_path = join(tmp_filepath, 'missing-' + FOLDERS_NAMES.compliance + '-' + edition + '-' + res)
+    vanilla_tmp_path = join(tmp_filepath, 'missing-' + FOLDERS_NAMES.vanilla + '-' + edition)
+    compliance_tmp_path = join(tmp_filepath, 'missing-' + FOLDERS_NAMES.compliance + '-' + edition + '-' + res)
 
-		let exists = filesystem.existsSync(vanilla_tmp_path)
-		if(!exists) {
-			steps.push(`Cloning vanilla ${edition} repo...`)
-			await embedMessage.edit({ embeds: [embed] })
-			await mkdir(vanilla_tmp_path)
-			await exec(`git clone ${ vanilla_repo } .`, {
-				cwd: vanilla_tmp_path
-			})
-		}
-		exists = filesystem.existsSync(compliance_tmp_path)
-		if(!exists) {
-			steps.push(`Cloning Compliance ${edition} ${res} repo...`)
-			await embedMessage.edit({ embeds: [embed] })
+    let exists = filesystem.existsSync(vanilla_tmp_path)
+    if (!exists) {
+      steps.push(`Cloning vanilla ${edition} repo...`)
+      await embedMessage.edit({ embeds: [embed] })
+      await mkdir(vanilla_tmp_path)
+      await exec(`git clone ${vanilla_repo} .`, {
+        cwd: vanilla_tmp_path
+      })
+    }
+    exists = filesystem.existsSync(compliance_tmp_path)
+    if (!exists) {
+      steps.push(`Cloning Compliance ${edition} ${res} repo...`)
+      await embedMessage.edit({ embeds: [embed] })
 
-			await mkdir(compliance_tmp_path)
-			await exec(`git clone ${ compliance_repo } .`, {
-				cwd: compliance_tmp_path
-			})
-		}
+      await mkdir(compliance_tmp_path)
+      await exec(`git clone ${compliance_repo} .`, {
+        cwd: compliance_tmp_path
+      })
+    }
 
-		const last_version = edition === 'bedrock' ? settings.LATEST_MC_BE_VERSION : '1.17.1' // settings.LATEST_MC_JE_VERSION (uncomment when we switch compliance texture pack support to 1.18)
+    const last_version = edition === 'bedrock' ? settings.LATEST_MC_BE_VERSION : '1.17.1' // settings.LATEST_MC_JE_VERSION (uncomment when we switch compliance texture pack support to 1.18)
 
-		steps.push('Updating repos with latest version known...')
-		embed.fields[0].value = steps.join('\n')
-		await embedMessage.edit({ embeds: [embed] })
+    steps.push('Updating repos with latest version known...')
+    embed.fields[0].value = steps.join('\n')
+    await embedMessage.edit({ embeds: [embed] })
 
-		// anyway stash
-		// checkout latest branch
-		// pull
-		await Promise.all([
-			series([
-				'git stash',
-				`git checkout ${last_version}`,
-				`git pull`
-			], {
-				cwd: vanilla_tmp_path
-			}),
-			series([
-				'git stash',
-				`git checkout Jappa-${last_version}`,
-				`git pull`
-			], {
-				cwd: compliance_tmp_path
-			})
-		])
+    // anyway stash
+    // checkout latest branch
+    // pull
+    await Promise.all([
+      series([
+        'git stash',
+        `git checkout ${last_version}`,
+        `git pull`
+      ], {
+        cwd: vanilla_tmp_path
+      }),
+      series([
+        'git stash',
+        `git checkout Jappa-${last_version}`,
+        `git pull`
+      ], {
+        cwd: compliance_tmp_path
+      })
+    ])
 
-		// diff
-		steps.push(`Creating diff...`)
-		embed.fields[0].value = steps.join('\n')
-		await embedMessage.edit({ embeds: [embed] })
+    // diff
+    steps.push(`Creating diff...`)
+    embed.fields[0].value = steps.join('\n')
+    await embedMessage.edit({ embeds: [embed] })
 
-		const edition_filter = edition === 'java' ? normalizeArray(['font/', 'colormap/', 'misc/shadow', 'presets/isles', 'realms/inspiration', 'realms/new_world', 'realms/survival_spawn', 'realms/upload', 'realms/adventure', 'realms/experience', 'environment/clouds', 'misc/nausea', 'misc/vignette', 'realms/darken', 'realms/plus_icon', 'models/armor/piglin_leather_layer_1', 'entity/phantom_eyes.png', 'misc/white.png', 'block/lightning_rod_on.png'
-			, 'gui/title/background/panorama_overlay.png']) : normalizeArray([...BEDROCK_UI, 'font/', 'colormap/', '/gui/', 'environments/clouds', 'persona_thumbnails/', 'environment/end_portal_colors', 'textures/flame_atlas', 'textures/forcefield_atlas', 'blocks/bed_feet_', 'blocks/bed_head_', 'blocks/flower_paeonia', 'blocks/flower_rose_blue', 'blocks/structure_air', 'map/player_icon_background', 'misc/missing_texture', 'items/boat', 'items/egg_agent', 'items/quiver', 'items/ruby', 'entity/agent.png', 'entity/cape_invisible.png', 'entity/char.png', 'entity/horse/', 'entity/lead_rope.png', 'entity/loyalty_rope.png', 'entity/pig/pigzombie.png', 'entity/villager/', 'entity\\wither_boss\\wither_armor_blue.png', 'entity/zombie_villager/'])
+    const edition_filter = edition === 'java' ? normalizeArray(['font/', 'colormap/', 'misc/shadow', 'presets/isles', 'realms/inspiration', 'realms/new_world', 'realms/survival_spawn', 'realms/upload', 'realms/adventure', 'realms/experience', 'environment/clouds', 'misc/nausea', 'misc/vignette', 'realms/darken', 'realms/plus_icon', 'models/armor/piglin_leather_layer_1', 'entity/phantom_eyes.png', 'misc/white.png', 'block/lightning_rod_on.png'
+      , 'gui/title/background/panorama_overlay.png']) : normalizeArray([...BEDROCK_UI, 'font/', 'colormap/', '/gui/', 'environments/clouds', 'persona_thumbnails/', 'environment/end_portal_colors', 'textures/flame_atlas', 'textures/forcefield_atlas', 'blocks/bed_feet_', 'blocks/bed_head_', 'blocks/flower_paeonia', 'blocks/flower_rose_blue', 'blocks/structure_air', 'map/player_icon_background', 'misc/missing_texture', 'items/boat', 'items/egg_agent', 'items/quiver', 'items/ruby', 'entity/agent.png', 'entity/cape_invisible.png', 'entity/char.png', 'entity/horse/', 'entity/lead_rope.png', 'entity/loyalty_rope.png', 'entity/pig/pigzombie.png', 'entity/villager/', 'entity\\wither_boss\\wither_armor_blue.png', 'entity/zombie_villager/'])
 
-		const vanilla_textures = _getAllFilesFromFolder(vanilla_tmp_path, edition_filter).map(f => normalize(f).replace(vanilla_tmp_path, ''))
-		const compliance_textures = _getAllFilesFromFolder(compliance_tmp_path).map(f => normalize(f).replace(compliance_tmp_path, ''))
+    const vanilla_textures = _getAllFilesFromFolder(vanilla_tmp_path, edition_filter).map(f => normalize(f).replace(vanilla_tmp_path, ''))
+    const compliance_textures = _getAllFilesFromFolder(compliance_tmp_path).map(f => normalize(f).replace(compliance_tmp_path, ''))
 
-		const diff_result = difference(vanilla_textures, compliance_textures).sort()
+    const diff_result = difference(vanilla_textures, compliance_textures).sort()
 
-		embed.fields[0].value = steps.join('\n')
-		await embedMessage.edit({ embeds: [embed] })
+    embed.fields[0].value = steps.join('\n')
+    await embedMessage.edit({ embeds: [embed] })
 
-		embed.addField('Results', Math.round(10000 - diff_result.length / vanilla_textures.length * 10000)/100 + `% complete\n ${ diff_result.length } textures missing`)
-		.setThumbnail(settings.BOT_IMG)
-		await embedMessage.edit({ embeds: [embed] })
+    embed.addField('Results', Math.round(10000 - diff_result.length / vanilla_textures.length * 10000) / 100 + `% complete\n ${diff_result.length} textures missing`)
+      .setThumbnail(settings.BOT_IMG)
+    await embedMessage.edit({ embeds: [embed] })
 
-		const result_file = new Discord.MessageAttachment(Buffer.from(diff_result.join('\n'), 'utf8'), `missing-${edition}-${res}.txt`)
+    const result_file = new Discord.MessageAttachment(Buffer.from(diff_result.join('\n'), 'utf8'), `missing-${edition}-${res}.txt`)
 
-		await embedMessage.reply({ files: [result_file] })
-	}
+    await embedMessage.reply({ files: [result_file] })
+  }
 };

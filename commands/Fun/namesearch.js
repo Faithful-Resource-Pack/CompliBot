@@ -1,21 +1,21 @@
 const prefix = process.env.PREFIX
 const Discord = require('discord.js')
 
-const strings = require('../../resources/strings')
+const { string } = require('../../resources/strings')
 const colors = require('../../resources/colors')
 
 const { warnUser } = require('../../helpers/warnUser')
 
 module.exports = {
   name: 'namesearch',
-  description: strings.HELP_DESC_NAMESEARCH,
+  description: string('command.description.namesearch'),
   guildOnly: true,
-  uses: strings.COMMAND_USES_ANYONE,
+  uses: string('command.use.anyone'),
   category: 'Fun',
   syntax: `${prefix}namesearch juk`,
   /** @param {Discord.Message} message */
   async execute(_client, message, args) {
-    if (!args.length) return warnUser(message, strings.COMMAND_NO_ARGUMENTS_GIVEN)
+    if (!args.length) return warnUser(message, string('command.args.none_given'))
 
     const search = args.join(' ').toLowerCase()
 

@@ -2,14 +2,14 @@ const prefix = process.env.PREFIX
 const Discord = require('discord.js')
 const axios = require('axios').default
 
-const strings = require('../../resources/strings')
+const { string } = require('../../resources/strings')
 const colors = require('../../resources/colors')
 
 module.exports = {
   name: 'quote',
-  description: strings.HELP_DESC_QUOTE,
+  description: string('command.description.quote'),
   guildOnly: false,
-  uses: strings.COMMAND_USES_ANYONE,
+  uses: string('command.use.anyone'),
   category: 'Fun',
   syntax: `${prefix}quote`,
   async execute(_client, message) {

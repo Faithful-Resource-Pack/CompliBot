@@ -1,23 +1,23 @@
 /* eslint-disable no-unreachable */
 
-const fs      = require('fs');
-const strings = require('../../resources/strings');
+const fs = require('fs');
+const { string } = require('../../resources/strings');
 const { REPO_NAMES: REPOSITORIES } = require('../../resources/settings');
 
-const { Permissions }  = require('discord.js');
-const { parseArgs }    = require('../../helpers/parseArgs');
-const { warnUser }     = require('../../helpers/warnUser');
+const { Permissions } = require('discord.js');
+const { parseArgs } = require('../../helpers/parseArgs');
+const { warnUser } = require('../../helpers/warnUser');
 const { pushTextures } = require('../../functions/textures/admission/pushTextures');
 const texture_path = require('../../helpers/firestorm/texture_paths');
 const contributions = require('../../helpers/firestorm/contributions');
 
 module.exports = {
 	name: 'push',
-	description: strings.HELP_DESC_ADMINS,
+	description: string('command.description.push'),
 	guildOnly: false,
-	uses: strings.COMMAND_DISABLED,
+	uses: string('command.disabled'),
 	category: 'Compliance exclusive',
-	//uses: strings.COMMAND_USES_MODS,
+	//uses: string('command.use.mods'),
 	syntax: `${process.env.PREFIX}push -r -n -a + file attached`,
 	flags: '-r | --repo :\n\tCompliance-[Java|Bedrock]-[32x-64x]\n\
 					-n | --path :\n\tTexture path \n\
@@ -31,10 +31,10 @@ module.exports = {
 	 */
 	async execute(client, message, args) {
 		return warnUser(message, 'NOT UPDATED TO THE NEW DATABASE SYSTEM')
-		
-		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.id === '747839021421428776')) return warnUser(message, strings.COMMAND_NO_PERMISSION)
 
-		if(!message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) return warnUser(message, strings.COMMAND_NO_PERMISSION);
+		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.id === '747839021421428776')) return warnUser(message, string('command.no_permission'))
+
+		if (!message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) return warnUser(message, string('command.no_permission'));
 
 		args = parseArgs(message, args);
 
@@ -51,11 +51,11 @@ module.exports = {
 		// Check args:
 		for (var i in args) {
 			if (args[i].startsWith('-a=') || args[i].startsWith('--author=')) {
-				haveAuth = true; 
+				haveAuth = true;
 				authorID = args[i].replace('-a=', '').replace('--author=', '');
 			}
 			if (args[i].startsWith('-p=') || args[i].startsWith('--path=')) {
-				havePath = true; 
+				havePath = true;
 				texturePath = args[i].replace('-p=', '').replace('--path=', '');
 			}
 			if (args[i].startsWith('-r=') || args[i].startsWith('--repo=')) {
@@ -65,25 +65,25 @@ module.exports = {
 		}
 
 		var warnMessage = '';
-		if (!haveAuth) warnMessage += strings.PUSH_ARG1_INVALID;
-		if (!havePath) warnMessage += strings.PUSH_ARG2_INVALID;
-		if (!haveRepo) warnMessage += strings.PUSH_ARG3_INVALID;
-		if (message.attachments.size == 0) warnMessage += strings.PUSH_NOT_ATTACHED;
+		// if (!haveAuth) warnMessage += strings.PUSH_ARG1_INVALID;
+		// if (!havePath) warnMessage += strings.PUSH_ARG2_INVALID;
+		// if (!haveRepo) warnMessage += strings.PUSH_ARG3_INVALID;
+		// if (message.attachments.size == 0) warnMessage += strings.PUSH_NOT_ATTACHED;
 		if (warnMessage != '') return warnUser(message, warnMessage);
 
 		// Check repository:
-		if (!REPOSITORIES.includes(repositoryName)) return warnUser(message, strings.PUSH_INVALID_REPO);
+		// if (!REPOSITORIES.includes(repositoryName)) return warnUser(message, strings.PUSH_INVALID_REPO);
 		if (REPOSITORIES.indexOf(repositoryName) % 2 === 0) textureResolution = 32;
 		else textureResolution = 64;
 
 		// fetch author ID:
 		try {
 			authorID = client.users.cache.find(u => u.tag === authorID).id;
-		} catch(error) {
+		} catch (error) {
 			console.log('\n\n -------------- USER NOT FOUND IN CACHE --------------\n');
 			console.error(error);
 			console.log('\n -----------------------------------------------------');
-			return warnUser(message, strings.PUSH_USER_NOT_FOUND);
+			// return warnUser(message, strings.PUSH_USER_NOT_FOUND);
 		}
 
 		let versions
@@ -94,55 +94,55 @@ module.exports = {
 				criteria: '==',
 				value: texturePath
 			}])
-			.catch(err => {
-				console.error(err)
-				reject(err)
-			})
-			.then(search_results => {
-				// no results
-				if(search_results.length === 0) {
-					resolve(warnUser(message, strings.PUSH_TEXTURE_NOT_FOUND))
-					return
-				}
+				.catch(err => {
+					console.error(err)
+					reject(err)
+				})
+				.then(search_results => {
+					// no results
+					if (search_results.length === 0) {
+						// resolve(warnUser(message, strings.PUSH_TEXTURE_NOT_FOUND))
+						return
+					}
 
-				/** @type {import('../../helpers/firestorm/texture_paths').TexturePath} */
-				const result = search_results[0]
+					/** @type {import('../../helpers/firestorm/texture_paths').TexturePath} */
+					const result = search_results[0]
 
-				versions = result.versions
+					versions = result.versions
 
-				return result.use()
-			})
-			
-			.then(use => {
-				packEdition = Array.isArray(use.editions) ? use.editions[0] : '' + use.editions // to be more flexible if editions become string
-
-				// I need to add a contribution with the author
-				return Promise.all([
-					contributions.add({
-						date: (new Date()).getTime(),
-						res: 'c' + textureResolution,
-						textureID: parseInt(use.textureID, 10),
-						contributors: [authorID]
-					}),
-					downloadAsBuffer(message.attachments.first().url)
-				])
-			})
-			.then(async (results) => {
-				const contributionID = results[0]
-				const imageBuffer = results[1]
-
-				console.log('Added contribution #' + contributionID)
-
-				console.log(message, packEdition, repositoryName, textureResolution, versions);
-
-				versions.forEach(async(version) => {
-					await writeResource(repositoryName, version, packEdition, imageBuffer);
+					return result.use()
 				})
 
-				await pushTextures(`Manual Push for ${texturePath.split('/').pop()} executed by: ${message.author.username}`)
-				await message.react('✅')
-			})
-			.catch(reject)
+				.then(use => {
+					packEdition = Array.isArray(use.editions) ? use.editions[0] : '' + use.editions // to be more flexible if editions become string
+
+					// I need to add a contribution with the author
+					return Promise.all([
+						contributions.add({
+							date: (new Date()).getTime(),
+							res: 'c' + textureResolution,
+							textureID: parseInt(use.textureID, 10),
+							contributors: [authorID]
+						}),
+						downloadAsBuffer(message.attachments.first().url)
+					])
+				})
+				.then(async (results) => {
+					const contributionID = results[0]
+					const imageBuffer = results[1]
+
+					console.log('Added contribution #' + contributionID)
+
+					console.log(message, packEdition, repositoryName, textureResolution, versions);
+
+					versions.forEach(async (version) => {
+						await writeResource(repositoryName, version, packEdition, imageBuffer);
+					})
+
+					await pushTextures(`Manual Push for ${texturePath.split('/').pop()} executed by: ${message.author.username}`)
+					await message.react('✅')
+				})
+				.catch(reject)
 		})
 	}
 }
@@ -153,7 +153,7 @@ module.exports = {
  */
 function downloadAsBuffer(url) {
 	return fetch(url)
-	.then(response => response.buffer())
+		.then(response => response.buffer())
 }
 
 /**
@@ -172,12 +172,12 @@ async function writeResource(repoName, branchFolderName, packEdition, texturePat
 	let valPathLocal = `./texturesPush/${repoName}/${branchFolderName}/${packEdition === 'java' ? 'assets/' : ''}${texturePath}`
 
 	// create folder and write file
-	return fs.promises.mkdir(valPathLocal.substr(0, valPathLocal.lastIndexOf('/')), {recursive: true})
-	.then(() => {
-		return fs.promises.writeFile(valPathLocal, resourceBuffer)
-	})
-	.then(() => {
-		console.log(`ADDED: ${texturePath.split('/').pop()} TO: ${valPathLocal}\n`)
-		return Promise.resolve()
-	})
+	return fs.promises.mkdir(valPathLocal.substr(0, valPathLocal.lastIndexOf('/')), { recursive: true })
+		.then(() => {
+			return fs.promises.writeFile(valPathLocal, resourceBuffer)
+		})
+		.then(() => {
+			console.log(`ADDED: ${texturePath.split('/').pop()} TO: ${valPathLocal}\n`)
+			return Promise.resolve()
+		})
 }

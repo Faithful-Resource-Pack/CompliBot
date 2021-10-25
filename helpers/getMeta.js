@@ -9,7 +9,7 @@ const { Buffer } = require('buffer')
  * @returns Promise (resolve)
  */
 function getMeta(imageURL) {
-	return new Promise(function(resolve, reject) {
+	return new Promise(function (resolve, reject) {
 		axios.get(imageURL, { responseType: "arraybuffer" })
 			.then(response => {
 				const data = response.data

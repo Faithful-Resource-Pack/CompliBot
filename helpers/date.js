@@ -1,6 +1,6 @@
 /**
  * Get today's date as a string
- * @returns String: dd/mm/yyyy
+ * @returns {String} dd/mm/yyyy
  */
 function date() {
 	var today = new Date()

@@ -1,9 +1,9 @@
-const Discord        = require('discord.js')
-const colors         = require('../../../resources/colors')
+const Discord = require('discord.js')
+const colors = require('../../../resources/colors')
 const { errorEmbed } = require('./errorEmbed')
-const allCollection  = require('../../../helpers/firestorm/all')
+const allCollection = require('../../../helpers/firestorm/all')
 
-const prefix   = process.env.PREFIX
+const prefix = process.env.PREFIX
 const EDITIONS = ["bedrock", "java"]
 
 /**

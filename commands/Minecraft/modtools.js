@@ -1,17 +1,17 @@
 const prefix = process.env.PREFIX;
 
-const Discord  = require("discord.js");
+const Discord = require("discord.js");
 const settings = require('../../resources/settings');
-const strings  = require('../../resources/strings');
-const colors   = require('../../resources/colors');
+const { string } = require('../../resources/strings');
+const colors = require('../../resources/colors');
 
 const { warnUser } = require('../../helpers/warnUser');
 
 module.exports = {
 	name: 'modtools',
-	description: strings.HELP_DESC_MODTOOLS,
+	description: string('command.description.modtools'),
 	guildOnly: true,
-	uses: strings.COMMAND_USES_ANYONE_DUNGEONS,
+	uses: string('command.use.anyone'),
 	category: 'Minecraft',
 	syntax: `${prefix}modtools`,
 	async execute(client, message, args) {
@@ -28,6 +28,6 @@ module.exports = {
 			)
 			.setFooter('Compliance Dungeons', settings.CDUNGEONS_IMG);
 
-		await message.reply({embeds: [embed]});
+		await message.reply({ embeds: [embed] });
 	}
 };

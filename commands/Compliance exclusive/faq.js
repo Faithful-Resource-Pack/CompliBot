@@ -1,11 +1,10 @@
-const prefix   = process.env.PREFIX;
+const prefix = process.env.PREFIX
 
-const Discord  = require("discord.js");
-const settings = require('../../resources/settings');
-const strings  = require('../../resources/strings');
-const colors   = require('../../resources/colors');
-
-const { warnUser } = require('../../helpers/warnUser');
+const Discord = require("discord.js")
+const settings = require('../../resources/settings')
+const colors = require('../../resources/colors')
+const { string } = require('../../resources/strings')
+const { warnUser } = require('../../helpers/warnUser')
 
 const FAQS = [
 	{
@@ -66,7 +65,7 @@ const FAQS = [
 	},
 	{
 		title: 'How can I submit a texture to the pack? How does the approval process work?',
-		description: 'If you\'ve made a texture for Compliance, we recommend posting it in <#773987767989305385> first of all to get feedback from others. If you\'ve done that or feel like you don\'t require feedback, post your texture as a __plain PNG image__ in <#773987409993793546>, and title it in this format: `<texture_name> (<optional comment>)` + tag co-authors. In these channels your texture will undergo a 3-day public voting period. If it receieves more upvote reactions than downvote reactions, your texture gets passed on to the Texture Supervision Council that will vote on your texture depending on if it fits the general stylistic direction of our pack. The council has a voting period of 1 day. \nAfter that, if your texture is accepted, it will be posted in <#780507804317384744> and added to the WIP pack on GitHub; your texture will then be released included in the pack in the first release after your texture has passed. \nIf your texture is rejected by the council, it gets revoted on by pack contributors in <#780507681987100682> with a voting period of 3 more days. This is the final vote your texture can undergo, and it determines whether it will be accepted or rejected in the same way as other votes. \nYou will be assigned the Contributor role if at least one of your submitted textures ever passes voting. The role should be assigned automatically, but if it isn\'t please alert the moderators using `/modping` so they can take a look at it.',
+		description: 'If you\'ve made a texture for Compliance, we recommend posting it in <#773987767989305385> first of all to get feedback from others. If you\'ve done that or feel like you don\'t require feedback, post your texture as a __plain PNG image__ in <#773987409993793546>, and title it in this format: `<texture_name> (<optional comment>)` + tag co-authors. In these channels your texture will undergo a 3-day public voting period. If it receieves more upvote reactions than downvote reactions, your texture gets passed on to the Texture Supervision Council that will vote on your texture depending on if it fits the general stylistic direction of our pack. The council has a voting period of 1 day. \nAfter that, if your texture is accepted, it will be posted in <#780507804317384744> and added to the WIP pack on GitHub your texture will then be released included in the pack in the first release after your texture has passed. \nIf your texture is rejected by the council, it gets revoted on by pack contributors in <#780507681987100682> with a voting period of 3 more days. This is the final vote your texture can undergo, and it determines whether it will be accepted or rejected in the same way as other votes. \nYou will be assigned the Contributor role if at least one of your submitted textures ever passes voting. The role should be assigned automatically, but if it isn\'t please alert the moderators using `/modping` so they can take a look at it.',
 		keywords: [
 			'submit', 'approval'
 		]
@@ -103,15 +102,15 @@ const FAQS = [
 
 module.exports = {
 	name: 'faq',
-	description: 'none',
+	description: string('command.description.faq'),
 	guildOnly: true,
-	uses: strings.COMMAND_USES_ANYONE,
+	uses: string('command.use.anyone'),
 	category: 'Compliance exclusive',
 	syntax: `${prefix}faq <keyword>`,
 	flags: '',
 	example: `${prefix}faq bot offline\n${prefix}faq submit\n\nADMINS ONLY:\n${prefix}faq all`,
 	async execute(client, message, args) {
-		let color = colors.COUNCIL;
+		let color = colors.COUNCIL
 
 		switch (message.guild.id) {
 			case settings.C32_ID:
@@ -125,7 +124,7 @@ module.exports = {
 				break
 			case settings.CMODS_ID:
 				color = colors.CMODS
-				break;
+				break
 			case settings.CTWEAKS_ID:
 				color = colors.CTWEAKS
 				break
@@ -147,7 +146,7 @@ module.exports = {
 						.setColor(color)
 						.setDescription(FAQS[i].description)
 						.setFooter(`Keywords: ${FAQS[i].keywords.join(' | ')}`)
-					await message.channel.send({embeds: [embed]})
+					await message.channel.send({ embeds: [embed] })
 				}
 				if (!message.deleted) await message.delete()
 
@@ -162,7 +161,7 @@ module.exports = {
 						.setColor(colors.BLUE)
 						.setDescription(FAQS[i].description)
 						.setFooter(`Keywords: ${FAQS[i].keywords.join(' | ')}`)
-					await message.reply({embeds: [embed]})
+					await message.reply({ embeds: [embed] })
 				}
 			}
 

@@ -45,31 +45,31 @@ const COMPARE_DEFAULT = {
  * @param {CompareOption} compareOptions Select options
  * @return {Promise<void>} Sends result to target
  */
-module.exports = function(compareOptions) {
+module.exports = function (compareOptions) {
   // applying default options
   compareOptions = Object.assign({}, COMPARE_DEFAULT, compareOptions)
 
   // PANIC if both search and id
-  if(compareOptions.search !== undefined && compareOptions.id !== undefined)
-    return Promise.reject(new Error(`${strings.COMMAND_WRONG_ARGUMENTS_GIVEN}\nYou can't compare an Id and a search term`))
+  if (compareOptions.search !== undefined && compareOptions.id !== undefined)
+    return Promise.reject(new Error(`${string('command.args.invalid.generic')}\nYou can't compare an Id and a search term`))
 
   // search check
-  if(compareOptions.search !== undefined) {
-    if(typeof compareOptions.search !== 'string') {
-      return Promise.reject(new Error(`${strings.COMMAND_WRONG_ARGUMENTS_GIVEN}\nSearch term must be a string`))
+  if (compareOptions.search !== undefined) {
+    if (typeof compareOptions.search !== 'string') {
+      return Promise.reject(new Error(`${string('command.args.invalid.generic')}\nSearch term must be a string`))
     } else {
       compareOptions.search = compareOptions.search.trim()
     }
   }
-  
-  if(compareOptions.id !== undefined) {
-    if(typeof compareOptions.id !== 'string' && typeof compareOptions.id !== 'number')
-      return Promise.reject(new Error(`${strings.COMMAND_WRONG_ARGUMENTS_GIVEN}\nID must be a string or a number`))
 
-    if(typeof compareOptions.id === 'string') {
+  if (compareOptions.id !== undefined) {
+    if (typeof compareOptions.id !== 'string' && typeof compareOptions.id !== 'number')
+      return Promise.reject(new Error(`${string('command.args.invalid.generic')}\nID must be a string or a number`))
+
+    if (typeof compareOptions.id === 'string') {
       // clean string
       compareOptions.id = compareOptions.id.trim()
-      if(compareOptions.id.length >= 3 && compareOptions.id[0] === "[" && compareOptions.id[1] === "#" && compareOptions.id[compareOptions.length - 1] === "]") {
+      if (compareOptions.id.length >= 3 && compareOptions.id[0] === "[" && compareOptions.id[1] === "#" && compareOptions.id[compareOptions.length - 1] === "]") {
         compareOptions.id = compareOptions.id.substring(2, compareOptions.id.length - 1)
       }
 
@@ -77,8 +77,8 @@ module.exports = function(compareOptions) {
       compareOptions.id = parseInt(compareOptions.id)
 
       // PANIC if not a number
-      if(isNaN(compareOptions.id)) {
-        return Promise.reject(new Error(`${strings.COMMAND_WRONG_ARGUMENTS_GIVEN}\nID string must be a correct id or a number`))
+      if (isNaN(compareOptions.id)) {
+        return Promise.reject(new Error(`${string('command.args.invalid.generic')}\nID string must be a correct id or a number`))
       }
     }
   }
@@ -89,7 +89,7 @@ module.exports = function(compareOptions) {
   let incorrectRes
   let askedForJava = false
   let askedForBedrock = false
-  if(compareOptions.resolutions === undefined) {
+  if (compareOptions.resolutions === undefined) {
     compareOptions.resolutions = RES_ALLOWED
     askedForJava = true
     askedForBedrock = true
@@ -101,18 +101,18 @@ module.exports = function(compareOptions) {
         correctRes = false
         incorrectRes = compareOptions.resolutions[resIndex]
       } else {
-        if(possibleRes.endsWith(RES_JAVA)) askedForJava = true
-        if(possibleRes.endsWith(RES_BEDROCK)) askedForBedrock = true
+        if (possibleRes.endsWith(RES_JAVA)) askedForJava = true
+        if (possibleRes.endsWith(RES_BEDROCK)) askedForBedrock = true
       }
       ++resIndex
     }
   }
   // reject if so
   if (!correctRes) {
-    return Promise.reject(new Error(`${strings.COMMAND_WRONG_ARGUMENTS_GIVEN}\nIncorrect resolution : ${incorrectRes}`))
+    return Promise.reject(new Error(`${string('command.args.invalid.generic')}\nIncorrect resolution : ${incorrectRes}`))
   }
 
-  if(!askedForJava && !askedForBedrock) {
+  if (!askedForJava && !askedForBedrock) {
     // do not panic and say "You should at least ask for java or bedrock"
     // select both
     askedForBedrock = true
@@ -127,41 +127,41 @@ module.exports = function(compareOptions) {
   }
 
   // check additional images order
-  if(compareOptions.images !== undefined && Array.isArray(compareOptions.images)) {
+  if (compareOptions.images !== undefined && Array.isArray(compareOptions.images)) {
     let correctType = true
     let imageIndex = 0
-    while(imageIndex < compareOptions.images.length && correctType) {
+    while (imageIndex < compareOptions.images.length && correctType) {
       correctType = typeof compareOptions.images[imageIndex] === 'string'
       ++imageIndex
     }
 
-    if(!correctType) {
-      return Promise.reject(new Error(`${strings.COMMAND_WRONG_ARGUMENTS_GIVEN}\n Images must be a string array`))
+    if (!correctType) {
+      return Promise.reject(new Error(`${string('command.args.invalid.generic')}\n Images must be a string array`))
     }
   } else {
-    return Promise.reject(new Error(`${strings.COMMAND_WRONG_ARGUMENTS_GIVEN}\n Images must an array`))
+    return Promise.reject(new Error(`${string('command.args.invalid.generic')}\n Images must an array`))
   }
 
   // using ! to check for null-like value
-  if(!compareOptions.response && !compareOptions.user) {
-    return Promise.reject(new Error(`${strings.COMMAND_WRONG_ARGUMENTS_GIVEN}\n You must provide a user or a message to respond to`))
+  if (!compareOptions.response && !compareOptions.user) {
+    return Promise.reject(new Error(`${string('command.args.invalid.generic')}\n You must provide a user or a message to respond to`))
   }
 
   // user not null-like
-  if(!compareOptions.response) {
+  if (!compareOptions.response) {
     // we have a user
     // now check if method available
     // https://discord.js.org/#/docs/main/stable/class/User?scrollTo=send
-    if(compareOptions.user.send === undefined) {
-      return Promise.reject(new Error(`${strings.COMMAND_WRONG_ARGUMENTS_GIVEN}\n user must be a User`))
+    if (compareOptions.user.send === undefined) {
+      return Promise.reject(new Error(`${string('command.args.invalid.generic')}\n user must be a User`))
     }
     compareOptions.response = undefined // ease for next use
   } else {
     // we have a message
     // now check if method available
     // https://discord.js.org/#/docs/main/stable/class/Message?scrollTo=reply
-    if(compareOptions.response.reply === undefined) {
-      return Promise.reject(new Error(`${strings.COMMAND_WRONG_ARGUMENTS_GIVEN}\n response must be a Message`))
+    if (compareOptions.response.reply === undefined) {
+      return Promise.reject(new Error(`${string('command.args.invalid.generic')}\n response must be a Message`))
     }
     compareOptions.user = undefined // ease for next use
   }
@@ -183,21 +183,21 @@ module.exports = function(compareOptions) {
     })
     .then(results => {
       // put as array
-      if(idSearch) results = results !== undefined ? [results] : []
+      if (idSearch) results = results !== undefined ? [results] : []
 
       // check no results
       if (results === undefined || results.length === 0) {
-        return Promise.reject(new Error(`${strings.TEXTURE_DOESNT_EXIST}\nCouldn't find results`))
+        return Promise.reject(new Error(`${string('command.texture.does_not_exist')}\nCouldn't find results`))
       }
 
       return Promise.resolve(results)
     })
     .then(async (results) => {
       resultsFound = results
-      if(resultsFound.length > 1) {
+      if (resultsFound.length > 1) {
         // get all the paths for the texture
         const uses = await Promise.all(results.map(tex => tex.uses()))
-        const paths = await Promise.all(uses.map(u => u.length > 0 ? u[0].paths(): Promise.resolve([])))
+        const paths = await Promise.all(uses.map(u => u.length > 0 ? u[0].paths() : Promise.resolve([])))
         const latestPaths = paths.map(p => {
           // for all paths, sort them b
           let latestVersion = undefined
@@ -205,14 +205,14 @@ module.exports = function(compareOptions) {
           let bestVersion
           p.forEach((a) => {
             bestVersion = a.versions.sort(MinecraftSorter).reverse()[0]
-            if(latestVersion === undefined || MinecraftSorter(latestVersion, bestVersion) <= 0) {
+            if (latestVersion === undefined || MinecraftSorter(latestVersion, bestVersion) <= 0) {
               latestVersion = bestVersion
               latestPath = a
             }
-  
+
             return latestPath
           })
-  
+
           return latestPath
         }).map(p => p.path)
         return choiceEmbed(compareOptions.response, {
@@ -220,13 +220,13 @@ module.exports = function(compareOptions) {
           footer: `ChoiceEmbed`,
           propositions: latestPaths
         }, compareOptions.user)
-        .then(res => res.index)
+          .then(res => res.index)
       }
       return Promise.resolve(0) // choose first one
     })
     .then(choiceIndex => {
-      if(choiceIndex === undefined || (typeof choiceIndex !== 'string' && typeof choiceIndex !== 'number')) {
-        return Promise.reject(new Error(`${strings.COMMAND_WRONG_ARGUMENTS_GIVEN}\nIncorrect idnex : ${choiceIndex}`))
+      if (choiceIndex === undefined || (typeof choiceIndex !== 'string' && typeof choiceIndex !== 'number')) {
+        return Promise.reject(new Error(`${string('command.args.invalid.generic')}\nIncorrect idnex : ${choiceIndex}`))
       }
 
       /** @type {textures.Texture} */
@@ -239,10 +239,10 @@ module.exports = function(compareOptions) {
       let javaUse = undefined
       let bedrockUse = undefined
       let useIndex = 0
-      while(useIndex < uses.length && (askedForJava && javaUse === undefined || askedForBedrock && bedrockUse === undefined)) {
+      while (useIndex < uses.length && (askedForJava && javaUse === undefined || askedForBedrock && bedrockUse === undefined)) {
         const use = uses[useIndex]
-        if(askedForJava && javaUse === undefined && use.editions.includes('java')) javaUse = use
-        else if(askedForBedrock && bedrockUse === undefined && use.editions.includes('bedrock')) bedrockUse = use
+        if (askedForJava && javaUse === undefined && use.editions.includes('java')) javaUse = use
+        else if (askedForBedrock && bedrockUse === undefined && use.editions.includes('bedrock')) bedrockUse = use
         ++useIndex
       }
 
@@ -258,8 +258,8 @@ module.exports = function(compareOptions) {
       const javaPaths = ppaths[0]
       const bedrockPaths = ppaths[1]
 
-      if(javaPaths !== undefined) urls = [ ...urls, ...compareOptions.resolutions.filter(res => res.endsWith(RES_JAVA)).map(res => FindTexture.pathToTextureURL(javaPaths[0].path, 'java', parseInt(res)))]
-      if(bedrockPaths !== undefined) urls = [ ...urls, ...compareOptions.resolutions.filter(res => res.endsWith(RES_BEDROCK)).map(res => FindTexture.pathToTextureURL(bedrockPaths[0].path, 'bedrock', parseInt(res)))]
+      if (javaPaths !== undefined) urls = [...urls, ...compareOptions.resolutions.filter(res => res.endsWith(RES_JAVA)).map(res => FindTexture.pathToTextureURL(javaPaths[0].path, 'java', parseInt(res)))]
+      if (bedrockPaths !== undefined) urls = [...urls, ...compareOptions.resolutions.filter(res => res.endsWith(RES_BEDROCK)).map(res => FindTexture.pathToTextureURL(bedrockPaths[0].path, 'bedrock', parseInt(res)))]
 
       return Promise.resolve(urls)
     })
@@ -289,7 +289,7 @@ module.exports = function(compareOptions) {
     })
     .then(bufferResult => {
       const attachment = new Discord.MessageAttachment(bufferResult, 'output.png')
-      const messageOptions = {files: [attachment]}
+      const messageOptions = { files: [attachment] }
       const messageTitle = `\`\`[#${finalTextureChosen[ID_FIELD]}]\`\` ${finalTextureChosen.name}`
       const sendPromise = compareOptions.response !== undefined ? compareOptions.response.reply(messageTitle) : compareOptions.user.send(messageTitle)
       const resultPromise = sendPromise.then(embedMessage => {
@@ -305,20 +305,20 @@ module.exports = function(compareOptions) {
 
 // eslint-disable-next-line no-unused-vars
 const MinecraftSorter = (a, b) => {
-	const aSplit = a.split('.').map(s => parseInt(s))
-	const bSplit = b.split('.').map(s => parseInt(s))
+  const aSplit = a.split('.').map(s => parseInt(s))
+  const bSplit = b.split('.').map(s => parseInt(s))
 
-	const upper = Math.min(aSplit.length, bSplit.length)
-	let i = 0
-	let result = 0
-	while(i < upper && result == 0) {
-		result = (aSplit[i] == bSplit[i]) ? 0 : (aSplit[i] < bSplit[i] ? -1 : 1) // each number
-		++i
-	}
+  const upper = Math.min(aSplit.length, bSplit.length)
+  let i = 0
+  let result = 0
+  while (i < upper && result == 0) {
+    result = (aSplit[i] == bSplit[i]) ? 0 : (aSplit[i] < bSplit[i] ? -1 : 1) // each number
+    ++i
+  }
 
-	if(result != 0) return result
+  if (result != 0) return result
 
-	result = (aSplit.length == bSplit.length) ? 0 : (aSplit.length < bSplit.length ? -1 : 1) // longer length wins
+  result = (aSplit.length == bSplit.length) ? 0 : (aSplit.length < bSplit.length ? -1 : 1) // longer length wins
 
-	return result
+  return result
 }

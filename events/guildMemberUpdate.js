@@ -12,7 +12,7 @@ module.exports = {
     if (DEV) return
 
     // if the member isn't on a compliance server, return
-    if (!settings.COMPLIANCE_SERVERS_IDS.includes(memberBefore.guild.id)) return 
+    if (!settings.COMPLIANCE_SERVERS_IDS.includes(memberBefore.guild.id)) return
 
     console.log(memberBefore)
     const newRole = memberAfter.roles.cache.filter(r => !memberBefore.roles.cache.has(r.id)).first()
@@ -20,7 +20,7 @@ module.exports = {
 
     let user
     try {
-      user = await users.searchKeys([ memberAfter.id ])
+      user = await users.searchKeys([memberAfter.id])
       user = user[0]
     } catch (err) { console.error(err) }
 
@@ -65,8 +65,8 @@ module.exports = {
         let member = server === undefined ? undefined : await server.members.cache.get(memberAfter.id) || undefined
         let role = member === undefined ? undefined : await server.roles.cache.find(r => r.name === (oldRole ? oldRole.name : newRole.name))
 
-        if ((oldRole && !newRole) && role) await member.roles.remove(role).catch(() => {})
-        else if ((newRole && !oldRole) && role) await member.roles.add(role).catch(() => {})
+        if ((oldRole && !newRole) && role) await member.roles.remove(role).catch(() => { })
+        else if ((newRole && !oldRole) && role) await member.roles.add(role).catch(() => { })
       }
     }
 

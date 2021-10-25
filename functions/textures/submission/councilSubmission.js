@@ -49,8 +49,8 @@ async function councilSubmission(client, channelFromID, channelResultsID, channe
 
   // send tied message to #revotes (tied)
   messagesTied.forEach(message => {
-    
-    channelRevotes.send({embeds: [message.embed.setColor(colors.RED)]})
+
+    channelRevotes.send({ embeds: [message.embed.setColor(colors.RED)] })
       .then(async sentMessage => {
         for (const emojiID of [emojis.UPVOTE, emojis.DOWNVOTE, emojis.SEE_MORE]) await sentMessage.react(client.emojis.cache.get(emojiID))
       })
@@ -64,7 +64,7 @@ async function councilSubmission(client, channelFromID, channelResultsID, channe
     embed.setColor(colors.GREEN)
     embed.fields[1].value = `<:upvote:${emojis.UPVOTE}> Will be added in a future version!`
 
-    channelResults.send({embeds: [embed]})
+    channelResults.send({ embeds: [embed] })
       .then(async sentMessage => {
         for (const emojiID of [emojis.SEE_MORE]) await sentMessage.react(client.emojis.cache.get(emojiID))
       })
@@ -78,7 +78,7 @@ async function councilSubmission(client, channelFromID, channelResultsID, channe
     embed.setColor(colors.RED)
     embed.fields[1].value = `<:downvote:${emojis.DOWNVOTE}> After a council decision, this texture is not going to be added, ask them if you want to know more about it.`
 
-    channelResults.send({embeds: [embed]})
+    channelResults.send({ embeds: [embed] })
       .then(async sentMessage => {
         for (const emojiID of [emojis.SEE_MORE]) await sentMessage.react(client.emojis.cache.get(emojiID))
       })
@@ -94,7 +94,7 @@ async function editEmbed(message, string) {
   // fix the weird bug that also apply changes to the old embed (wtf)
   embed.setColor(colors.COUNCIL)
 
-  await message.edit({embeds: [embed]})
+  await message.edit({ embeds: [embed] })
 }
 
 exports.councilSubmission = councilSubmission
