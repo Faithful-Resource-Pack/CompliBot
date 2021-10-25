@@ -3,7 +3,7 @@ const prefix = process.env.PREFIX
 
 require('dotenv').config()
 const getops = require('getopts')
-const { string } = require('../../resources/strings')
+const strings = require('../../resources/strings')
 const { warnUser } = require('../../helpers/warnUser')
 const compareFunction = require('../../functions/textures/compare')
 
@@ -16,9 +16,9 @@ const RES_ALLOWED = EDITIONS_ALLOWED.map(e => RES_SIDE.map(el => el + e)).flat()
 module.exports = {
   name: 'compare',
   aliases: ['cmp'],
-  description: string('command.description.compare'),
+  description: strings.HELP_DESC_COMPARE,
   guildOnly: false,
-  uses: string('command.use.anyone'),
+  uses: strings.COMMAND_USES_ANYONE,
   category: 'Minecraft',
   syntax: `${prefix}compare <search> <--resolution|--res|--r>=<${RES_ALLOWED.join('|')}> [<--scale|--s>=<1..10>]`,
   example: `${prefix}compare bucket --resolution 16j 32j 64j --s=2\n
@@ -31,7 +31,7 @@ ${prefix}cmp --id 1208 16j 32j 64j -s 2`,
    * @param {import('discord.js').Message} message Incomming command
    * @param {Array<String>} args Argument array after the command
    */
-  async execute(_client, message, args) {
+  async execute (_client, message, args) {
     const parsedArguments = getops(args, {
       alias: {
         id: 'id',
@@ -50,7 +50,7 @@ ${prefix}cmp --id 1208 16j 32j 64j -s 2`,
 
     const idSearch = !!parsedArguments.id
     let search, id
-    if (idSearch) {
+    if(idSearch) {
       id = parsedArguments.id
       parsedArguments.resolution.push(...parsedArguments._)
     } else {
@@ -60,17 +60,17 @@ ${prefix}cmp --id 1208 16j 32j 64j -s 2`,
       } else {
         parsedArguments._.forEach(el => {
           if (RES_ALLOWED.includes(el)) {
-            if (typeof parsedArguments.resolution !== 'string' && !Array.isArray(parsedArguments.resolution)) {
-              return warnUser(message, string('command.args.invalid.generic'))
+            if(typeof parsedArguments.resolution !== 'string' && !Array.isArray(parsedArguments.resolution)) {
+              return warnUser(message, strings.COMMAND_WRONG_ARGUMENTS_GIVEN)
             } else {
-              if (typeof parsedArguments.resolution === 'string') parsedArguments.resolution = [parsedArguments.resolution]
+              if(typeof parsedArguments.resolution === 'string') parsedArguments.resolution = [parsedArguments.resolution]
               parsedArguments.resolution.push(el)
             }
           } else {
             searchTerms.push(el)
           }
         })
-
+  
         search = searchTerms.join(' ')
       }
     }
@@ -81,17 +81,17 @@ ${prefix}cmp --id 1208 16j 32j 64j -s 2`,
       scale: parsedArguments.scale
     }
 
-    if (parsedArguments.resolution && parsedArguments.resolution.length) {
+    if(parsedArguments.resolution && parsedArguments.resolution.length) {
       options.resolutions = parsedArguments.resolution
     }
 
-    if (idSearch) {
+    if(idSearch) {
       options.id = id
     } else {
       options.search = search
     }
 
-    if (message.attachments && message.attachments.size) {
+    if(message.attachments && message.attachments.size) {
       options.images = message.attachments.map(a => a.url)
     }
 

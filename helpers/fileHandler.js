@@ -38,11 +38,11 @@ function __prep() {
 
     // add origin
     execSync("cd json && git remote add origin https://" + process.env.COMPLIBOT_GIT_USERNAME + ":" + process.env.COMPLIBOT_GIT_TOKEN + "@github.com" + process.env.COMPLIBOT_GIT_JSON_REPO)
-
+    
     // set username and email
     execSync(`cd json && git config user.name "${process.env.COMPLIBOT_GIT_USERNAME}"`)
     execSync(`cd json && git config user.name "${process.env.COMPLIBOT_GIT_EMAIL}"`)
-  } catch (__ignored) { }
+  } catch (__ignored) {}
 }
 
 class FileHandler {
@@ -76,23 +76,23 @@ class FileHandler {
 
       let cmd = ""
       cmd += "cd json"
-      cmd += " && git fetch --all"
-      cmd += " && git checkout origin/main -- " + this.filepath.replace('json/', '')
-
+      cmd +=" && git fetch --all"
+      cmd +=" && git checkout origin/main -- " + this.filepath.replace('json/', '')
+      
       exec(cmd, (error, stdout, stderr) => {
-        if (error) {
+        if(error) {
           reject({
             error: error,
             stderr: stderr,
             stdout: stdout
           })
         }
-
+        
         resolve(stdout)
       })
     })
   }
-
+  
   /**
    * !DEPRECATED
    * Add file
@@ -102,10 +102,10 @@ class FileHandler {
     return new Promise((resolve, reject) => {
       let cmd = ""
       cmd += `cd json`
-      cmd += " && git add " + this.filepath.replace('json/', '')
-
+      cmd +=" && git add " + this.filepath.replace('json/', '')
+      
       exec(cmd, (error, stdout, stderr) => {
-        if (error) {
+        if(error) {
           reject({
             error: error,
             stderr: stderr,
@@ -128,12 +128,12 @@ class FileHandler {
     return new Promise((resolve, reject) => {
       let cmd = ""
       cmd += `cd json`
-      cmd += " && git config user.name " + process.env.COMPLIBOT_GIT_USERNAME
-      cmd += " && git config user.email " + process.env.COMPLIBOT_GIT_EMAIL
-      cmd += ` && git commit -m "${message}" 2>${OUT_NULL}`
+      cmd +=" && git config user.name " + process.env.COMPLIBOT_GIT_USERNAME
+      cmd +=" && git config user.email " + process.env.COMPLIBOT_GIT_EMAIL
+      cmd +=` && git commit -m "${ message }" 2>${ OUT_NULL }`
 
       exec(cmd, (error, stdout, stderr) => {
-        if (error) {
+        if(error) {
           reject({
             error: error,
             stderr: stderr,
@@ -155,7 +155,7 @@ class FileHandler {
     return new Promise((resolve, reject) => {
       let cmd = ""
       cmd += "cd json"
-      cmd += " && git remote remove origin"
+      cmd +=" && git remote remove origin"
 
       try {
         execSync(cmd)
@@ -165,11 +165,11 @@ class FileHandler {
 
       cmd = ""
       cmd += `cd json`
-      cmd += " && git remote add origin https://" + process.env.COMPLIBOT_GIT_USERNAME + ":" + process.env.COMPLIBOT_GIT_TOKEN + "@github.com" + process.env.COMPLIBOT_GIT_JSON_REPO
-      cmd += " && git push origin main"
-
+      cmd +=" && git remote add origin https://" + process.env.COMPLIBOT_GIT_USERNAME + ":" + process.env.COMPLIBOT_GIT_TOKEN + "@github.com" + process.env.COMPLIBOT_GIT_JSON_REPO
+      cmd +=" && git push origin main"
+      
       exec(cmd, (error, stdout, stderr) => {
-        if (error) {
+        if(error) {
           reject({
             error: error,
             stderr: stderr,
@@ -183,7 +183,7 @@ class FileHandler {
   }
 
   release() {
-    if (this._release !== undefined) {
+    if(this._release !== undefined) {
       this._release()
       this._release = undefined
     }
@@ -194,17 +194,17 @@ class FileHandler {
    */
   read(lock = true, doThePull = true) {
     return new Promise((resolve, reject) => {
-      if (!lock) {
+      if(!lock) {
         // if no lock, go on, take the file and get out
         try {
           let res = fs.readFileSync(this.filepath)
-
-          if (this.isJson) res = JSON.parse(res)
+          
+          if(this.isJson) res = JSON.parse(res)
 
           resolve(res)
         } catch (error) {
           // if no file found, give default
-          if (error.code === 'ENOENT') {
+          if(error.code === 'ENOENT') {
             resolve(this.defaultValue)
           } else {
             console.error(error)
@@ -223,42 +223,42 @@ class FileHandler {
         real = release
       }).catch((err) => console.error(err))
 
-      if (this.doPull && doThePull) {
+      if(this.doPull && doThePull) {
         promise = promise.then(() => {
           return this.pull()
         })
-          .catch((err) => {
-            console.error(err)
-          })
+        .catch((err) => {
+          console.error(err)
+        })
       }
 
       promise.then(() => {
         // wow you have the lock, now get the file, release and get out
         try {
           let res = fs.readFileSync(this.filepath)
-
-          if (this.isJson) res = JSON.parse(res)
+          
+          if(this.isJson) res = JSON.parse(res)
 
           // yeah yeah store the release function
           this._release = real
           resolve(res)
         } catch (error) {
           // if no file found, give default
-          if (error.code === 'ENOENT') {
+          if(error.code === 'ENOENT') {
             resolve(this.defaultValue)
           } else {
             console.error(error)
 
             // if there is a real error, release it then and reject
             this.release()
-            reject(error)
+            reject(error) 
           }
         }
       })
-        .catch((err) => {
-          // should never, never happend, but we don't know
-          reject(err)
-        })
+      .catch((err) => {
+        // should never, never happend, but we don't know
+        reject(err)
+      })
     })
   }
 
@@ -270,7 +270,7 @@ class FileHandler {
     fs.mkdirSync(dirname(this.filepath), { recursive: true })
 
     // this content is transformed in JSON if needed
-    if (content !== 'string' && this.isJson)
+    if(content !== 'string' && this.isJson)
       content = JSON.stringify(content, JSON_WRITE_REPLACER, JSON_WRITE_SPACES)
 
     return new Promise((resolve, reject) => {
@@ -289,7 +289,7 @@ class FileHandler {
 }
 
 module.exports = {
-  FileHandler: FileHandler,
+  FileHandler : FileHandler,
 
   jsonContributionsBedrock: new FileHandler(JSON_PATH_CONTRIBUTIONS_BEDROCK, JSON_DEFAULT_CONTRIBUTIONS),
   jsonContributionsJava: new FileHandler(JSON_PATH_CONTRIBUTIONS_JAVA, JSON_DEFAULT_CONTRIBUTIONS),

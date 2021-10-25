@@ -1,24 +1,24 @@
-const Canvas = require('canvas')
-const Discord = require('discord.js')
-const colors2 = require('../../resources/colors')
+const Canvas   = require('canvas')
+const Discord  = require('discord.js')
+const colors2  = require('../../resources/colors')
 const settings = require('../../resources/settings')
-const { strings } = require('../../resources/strings')
+const strings  = require('../../resources/strings')
 
-const { getMeta } = require('../../helpers/getMeta')
+const { getMeta }  = require('../../helpers/getMeta')
 const { warnUser } = require('../../helpers/warnUser')
 const { addDeleteReact } = require('../../helpers/addDeleteReact')
 
-const COLORS_PER_PALETTE = 9
+const COLORS_PER_PALETTE      = 9
 const COLORS_PER_PALETTE_LINE = 3
 
 const COLORS_TOP = COLORS_PER_PALETTE * 6
 
-const GRADIENT_TOP = 250
-const GRADIENT_SAT_THRESHOLD = 15 / 100
-const GRADIENT_HUE_DIFF = 13 / 100
-const GRADIENT_WIDTH = 700
-const GRADIENT_BAND_WIDTH = 3
-const GRADIENT_HEIGHT = 50
+const GRADIENT_TOP           = 250
+const GRADIENT_SAT_THRESHOLD = 15/100
+const GRADIENT_HUE_DIFF      = 13/100
+const GRADIENT_WIDTH         = 700
+const GRADIENT_BAND_WIDTH    = 3
+const GRADIENT_HEIGHT        = 50
 
 /**
  * Get an color palette from a image
@@ -36,10 +36,10 @@ async function palette(message, url, gotocomplichannel = undefined, redirectMess
 		if (message.guild.id == settings.C64_ID) complichannel = message.guild.channels.cache.get(settings.C64_COMPLICHANNEL) // C64x discord
 	}
 
-	getMeta(url).then(async function (dimension) {
+	getMeta(url).then(async function(dimension) {
 		var sizeOrigin = dimension.width * dimension.height
 
-		if (sizeOrigin > 65536) return warnUser(message, await strings('command.image.too_big'))
+		if (sizeOrigin > 65536) return warnUser(message, strings.INPUT_TOO_BIG)
 
 		var canvas = Canvas.createCanvas(dimension.width, dimension.height).getContext('2d')
 		const allColors = {}
@@ -61,10 +61,10 @@ async function palette(message, url, gotocomplichannel = undefined, redirectMess
 				a = image[index + 3] / 255
 
 				// avoid transparent colors
-				if (a !== 0) {
-					var hex = rgbToHex(r, g, b)
-					if (!(hex in allColors))
-						allColors[hex] = { hex: hex, opacity: [], rgb: [r, g, b], count: 0 }
+				if(a !== 0) {
+					var hex = rgbToHex(r,g,b)
+					if(!(hex in allColors))
+					allColors[hex] = { hex: hex, opacity: [], rgb:[r, g, b], count: 0}
 					++allColors[hex].count
 					allColors[hex].opacity.push(a)
 				}
@@ -86,13 +86,13 @@ async function palette(message, url, gotocomplichannel = undefined, redirectMess
 		let i
 		for (i = 0; i < colors.length; i++) {
 			// create 9 group
-			if (i % COLORS_PER_PALETTE === 0) {
+			if(i % COLORS_PER_PALETTE === 0) {
 				field_groups.push([])
 				g = 0
 			}
 
 			// each groups has 3 lines
-			if (g % COLORS_PER_PALETTE_LINE === 0) {
+			if(g % COLORS_PER_PALETTE_LINE === 0) {
 				field_groups[field_groups.length - 1].push([])
 			}
 
@@ -101,19 +101,19 @@ async function palette(message, url, gotocomplichannel = undefined, redirectMess
 
 			++g
 		}
-
+		
 		let groupValue
 		field_groups.forEach((group, index) => {
 			groupValue = group.map(line => line.map(color => `[\`${color}\`](https://coolors.co/${color.replace('#', '')})`).join(' ')).join(' ')
-			embed.addFields({ name: "Hex" + ((field_groups.length > 1) ? ` part ${(index + 1)}` : '') + ': ', value: groupValue, inline: true })
+			embed.addFields({ name: "Hex" + ((field_groups.length > 1) ? ` part ${ (index + 1) }` : '') + ': ',  value: groupValue,  inline: true })
 		})
-
+		
 		// create palette links, 9 max per link
 
 		// make arrays of hex arrays
 		const palette_groups = []
-		for (i = 0; i < colors.length; ++i) {
-			if (i % COLORS_PER_PALETTE === 0) {
+		for(i = 0; i < colors.length; ++i) {
+			if(i % COLORS_PER_PALETTE === 0) {
 				palette_groups.push([])
 			}
 			palette_groups[palette_groups.length - 1].push(colors[i].replace('#', ''))
@@ -123,14 +123,14 @@ async function palette(message, url, gotocomplichannel = undefined, redirectMess
 		const COOLORS_URL = 'https://coolors.co/'
 		const palette_urls = []
 		let descriptionLength = embed.description.length
-
+		
 		i = 0
 		let stayInLoop = true
 		let link
-		while (i < palette_groups.length && stayInLoop) {
-			link = `**[Palette${palette_groups.length > 1 ? ' part ' + (i + 1) : ''}](${COOLORS_URL}${palette_groups[i].join('-')})** `
+		while(i < palette_groups.length && stayInLoop) {
+			link = `**[Palette${ palette_groups.length > 1 ? ' part ' + (i+1) : ''}](${COOLORS_URL}${palette_groups[i].join('-')})** `
 
-			if (descriptionLength + link.length + 3 > 1024) {
+			if(descriptionLength + link.length + 3 > 1024) {
 				stayInLoop = false
 			} else {
 				palette_urls.push(link)
@@ -152,15 +152,15 @@ async function palette(message, url, gotocomplichannel = undefined, redirectMess
 			let [ha, sa, la] = rgbToHsl(a.rgb[0], a.rgb[1], a.rgb[2])
 			let [hb, sb, lb] = rgbToHsl(b.rgb[0], b.rgb[1], b.rgb[2])
 
-			if ((sa <= GRADIENT_SAT_THRESHOLD && sb > GRADIENT_SAT_THRESHOLD))
+			if((sa <= GRADIENT_SAT_THRESHOLD && sb > GRADIENT_SAT_THRESHOLD))
 				return -1
-			else if ((sa > GRADIENT_SAT_THRESHOLD && sb <= GRADIENT_SAT_THRESHOLD))
+			else if((sa > GRADIENT_SAT_THRESHOLD && sb <= GRADIENT_SAT_THRESHOLD))
 				return 1
-			else if ((sa <= GRADIENT_SAT_THRESHOLD && sb <= GRADIENT_SAT_THRESHOLD)) {
+			else if((sa <= GRADIENT_SAT_THRESHOLD && sb <= GRADIENT_SAT_THRESHOLD)) {
 				return (la > lb) ? 1 : -(la < lb)
 			}
-			else if (Math.abs(ha - hb) > GRADIENT_HUE_DIFF)
-				return (ha > hb) ? 1 : -(ha < hb)
+			else if(Math.abs(ha - hb) > GRADIENT_HUE_DIFF)
+				return (ha > hb) ? 1 : -(ha < hb)			
 			return (la > lb) ? 1 : -(la < lb)
 		})
 
@@ -170,7 +170,7 @@ async function palette(message, url, gotocomplichannel = undefined, redirectMess
 
 		allColorsSorted.forEach((color, index) => {
 			ctx.fillStyle = color.hex
-			ctx.globalAlpha = color.opacity.reduce((a, v, i) => (a * i + v) / (i + 1)) // average alpha
+			ctx.globalAlpha = color.opacity.reduce((a,v,i)=>(a*i+v)/(i+1)) // average alpha
 			ctx.fillRect(bandWidth * index, 0, bandWidth, GRADIENT_HEIGHT)
 		})
 
@@ -185,7 +185,7 @@ async function palette(message, url, gotocomplichannel = undefined, redirectMess
 					embeds: [embed],
 					files: [colorImageAttachment]
 				})
-			} catch (e) {
+			} catch(e) {
 				embedMessage = await complichannel.send({
 					content: `<@!${gotocomplichannel}>`,
 					embeds: [embed],
@@ -205,7 +205,7 @@ async function palette(message, url, gotocomplichannel = undefined, redirectMess
 	})
 }
 
-function rgbToHex(r, g, b) {
+function rgbToHex(r,g,b) {
 	return '#' + ((r | 1 << 8).toString(16).slice(1) + (g | 1 << 8).toString(16).slice(1) + (b | 1 << 8).toString(16).slice(1))
 }
 
@@ -220,28 +220,28 @@ function rgbToHex(r, g, b) {
  * @param   Number  b       The blue color value
  * @return  Number[]        The HSL representation
  */
-function rgbToHsl(r, g, b) {
-	r /= 255, g /= 255, b /= 255;
+ function rgbToHsl(r, g, b) {
+  r /= 255, g /= 255, b /= 255;
 
-	var max = Math.max(r, g, b), min = Math.min(r, g, b);
-	var h, s, l = (max + min) / 2;
+  var max = Math.max(r, g, b), min = Math.min(r, g, b);
+  var h, s, l = (max + min) / 2;
 
-	if (max == min) {
-		h = s = 0; // achromatic
-	} else {
-		var d = max - min;
-		s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+  if (max == min) {
+    h = s = 0; // achromatic
+  } else {
+    var d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
 
-		switch (max) {
-			case r: h = (g - b) / d + (g < b ? 6 : 0); break;
-			case g: h = (b - r) / d + 2; break;
-			case b: h = (r - g) / d + 4; break;
-		}
+    switch (max) {
+      case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+      case g: h = (b - r) / d + 2; break;
+      case b: h = (r - g) / d + 4; break;
+    }
 
-		h /= 6;
-	}
+    h /= 6;
+  }
 
-	return [h, s, l];
+  return [ h, s, l ];
 }
 
 exports.palette = palette

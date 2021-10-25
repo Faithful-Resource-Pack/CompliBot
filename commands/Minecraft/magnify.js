@@ -1,67 +1,67 @@
-const prefix = process.env.PREFIX;
+const prefix  = process.env.PREFIX;
 
-const { string } = require('../../resources/strings');
+const strings = require('../../resources/strings');
 
-const { magnify } = require('../../functions/textures/magnify');
+const { magnify }  = require('../../functions/textures/magnify');
 const { warnUser } = require('../../helpers/warnUser');
 
 module.exports = {
 	name: 'magnify',
 	aliases: ['zoom', 'z', 'scale', 'mag', 'm'],
-	description: string('command.description.magnify'),
+	description: strings.HELP_DESC_MAGNIFY,
 	guildOnly: false,
-	uses: string('command.use.anyone'),
+	uses: strings.COMMAND_USES_ANYONE,
 	category: 'Minecraft',
 	syntax: `${prefix}magnify (Default: up to 10 images above)\n${prefix}magnify attach an image\n${prefix}magnify <Discord message url>\n${prefix}magnify <image URL>\n${prefix}magnify <message ID>\n${prefix}magnify [up/^/last]`,
 	example: `${prefix}magnify`,
 	async execute(client, message, args) {
 		let DATA;
 
-		if (!isNaN(args[0])) return warnUser(message, 'Magnifying by a factor is not supported anymore. Please just type the command without specifying the factor.')
+			if (!isNaN(args[0])) return warnUser(message, 'Magnifying by a factor is not supported anymore. Please just type the command without specifying the factor.')
 
-		// <data>
-		// image attached
-		if ((args[0] == undefined || args[0] == '') && message.attachments.size > 0) {
-			DATA = message.attachments.first().url;
-			return magnify(message, DATA);
-		}
-
-		// previous image
-		else if ((args[0] == undefined || args[0] == '' || args[0] == 'up' || args[0] == '^' || args[0] == 'last') && message.attachments.size == 0) {
-			return PreviousImage();
-		}
-
-		// Discord message URL
-		else if (args[0].startsWith('https://discord.com/channels')) {
-			message.channel.messages.fetch(args[0].split('/').pop()).then(msg => {
-				if (msg.attachments.size > 0) {
-					DATA = msg.attachments.first().url;
-					return magnify(message, DATA);
-				}
-				else return warnUser(message, string('command.image.not_attached.message'))
-			}).catch(() => { return warnUser(message, strings.COMMAND_URL_ONLY_SAME_CHANNEL) })
-		}
-
-		// Image URL
-		else if (args[0].startsWith('https://') || args[0].startsWith('http://')) {
-			if (args[0].endsWith('.png') || args[0].endsWith('.jpeg') || args[0].endsWith('.jpg') || args[0].endsWith('.gif')) {
-				DATA = args[0];
+			// <data>
+			// image attached
+			if ((args[0] == undefined || args[0] == '') && message.attachments.size > 0) {
+				DATA = message.attachments.first().url;
 				return magnify(message, DATA);
-			} else return warnUser(message, string('command.image.invalid_extension'))
-		}
+			}
 
-		// Discord message ID
-		else if (!isNaN(args[0])) {
-			message.channel.messages.fetch(args[0]).then(msg => {
-				if (msg.attachments.size > 0) {
-					DATA = msg.attachments.first().url;
+			// previous image
+			else if ((args[0] == undefined || args[0] == '' || args[0] == 'up' || args[0] == '^' || args[0] == 'last') && message.attachments.size == 0) {
+				return PreviousImage();
+			}
+
+			// Discord message URL
+			else if (args[0].startsWith('https://discord.com/channels')) {
+				message.channel.messages.fetch(args[0].split('/').pop()).then(msg => {
+					if (msg.attachments.size > 0) {
+						DATA = msg.attachments.first().url;
+						return magnify(message, DATA);
+					}
+					else return warnUser(message, strings.COMMAND_MESSAGE_IMAGE_NOT_ATTACHED);
+				}).catch(() => { return warnUser(message, strings.COMMAND_URL_ONLY_SAME_CHANNEL) });
+			}
+
+			// Image URL
+			else if (args[0].startsWith('https://') || args[0].startsWith('http://')) {
+				if (args[0].endsWith('.png') || args[0].endsWith('.jpeg') || args[0].endsWith('.jpg') || args[0].endsWith('.gif')) {
+					DATA = args[0];
 					return magnify(message, DATA);
-				}
-				else return warnUser(message, string('command.image.not_attached.id'));
-			}).catch(error => {
-				return warnUser(message, error);
-			})
-		}
+				} else return warnUser(message, strings.COMMAND_INVALID_EXTENSION)
+			}
+
+			// Discord message ID
+			else if (!isNaN(args[0])) {
+				message.channel.messages.fetch(args[0]).then(msg => {
+					if (msg.attachments.size > 0) {
+						DATA = msg.attachments.first().url;
+						return magnify(message, DATA);
+					}
+					else return warnUser(message, strings.COMMAND_ID_IMAGE_NOT_ATTACHED);
+				}).catch(error => {
+					return warnUser(message,error);
+				})
+			}
 
 		async function PreviousImage() {
 			/**
@@ -76,33 +76,33 @@ module.exports = {
 			//messages.push(...list_messages.array());
 
 			//for (var i in messages) {
-			//var msg = messages
-			var url = '';
-			try {
-				if (lastMsg.attachments.size > 0) {
-					found = true;
-					url = lastMsg.attachments.first().url;
-					//break;
-				}
-				else if (lastMsg.embeds[0] != undefined && lastMsg.embeds[0] != null && lastMsg.embeds[0].image) {
-					found = true;
-					url = lastMsg.embeds[0].image.url;
-					//break;
-				}
-				else if (lastMsg.content.startsWith('https://') || lastMsg.content.startsWith('http://')) {
-					if (lastMsg.content.endsWith('.png') || lastMsg.content.endsWith('.jpeg') || lastMsg.content.endsWith('.jpg') || lastMsg.content.endsWith('.gif')) {
+				//var msg = messages
+				var url = '';
+				try {
+					if (lastMsg.attachments.size > 0) {
 						found = true;
-						url = lastMsg.content;
+						url = lastMsg.attachments.first().url;
 						//break;
 					}
+					else if (lastMsg.embeds[0] != undefined && lastMsg.embeds[0] != null && lastMsg.embeds[0].image) {
+						found = true;
+						url = lastMsg.embeds[0].image.url;
+						//break;
+					}
+					else if (lastMsg.content.startsWith('https://') || lastMsg.content.startsWith('http://')) {
+						if (lastMsg.content.endsWith('.png') || lastMsg.content.endsWith('.jpeg') || lastMsg.content.endsWith('.jpg') || lastMsg.content.endsWith('.gif')) {
+							found = true;
+							url = lastMsg.content;
+							//break;
+						}
+					}
+				} catch(e) {
+					return warnUser(message, strings.COMMAND_NO_IMAGE_FOUND);
 				}
-			} catch (e) {
-				return warnUser(message, string('command.image.not_found_in_10_last'))
-			}
 			//}
 
 			if (found) await magnify(message, url);
-			else return warnUser(message, string('command.image.not_found_in_10_last'))
+			else return warnUser(message, strings.COMMAND_NO_IMAGE_FOUND);
 		}
 	}
 }

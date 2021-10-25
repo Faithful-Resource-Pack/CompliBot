@@ -1,23 +1,23 @@
-const prefix = process.env.PREFIX;
+const prefix  = process.env.PREFIX;
 
-const { string } = require('../../resources/strings');
+const strings = require('../../resources/strings');
 
-const { tile } = require('../../functions/textures/tile');
+const { tile }     = require('../../functions/textures/tile');
 const { warnUser } = require('../../helpers/warnUser');
 
 module.exports = {
 	name: 'tile',
 	aliases: ['t'],
-	description: string('command.description.tile'),
+	description: strings.HELP_DESC_TILE,
 	guildOnly: false,
-	uses: string('command.use.anyone'),
+	uses: strings.COMMAND_USES_ANYONE,
 	category: 'Minecraft',
 	syntax: `${prefix}tile [vertical/horizontal/grid/round/plus] + attach a file`,
 	async execute(client, message, args) {
 		const tileArgs = ['grid', 'g', 'vertical', 'v', 'horizontal', 'h', 'round', 'r', 'plus', 'p'];
 		var DATA;
 
-		if (!tileArgs.includes(args[0]) && args[0] != undefined) return warnUser(message, string('command.args.invalid.generic'));
+		if (!tileArgs.includes(args[0]) && args[0] != undefined) return warnUser(message, strings.COMMAND_WRONG_ARGUMENTS_GIVEN);
 
 		// <data>
 		// image attached
@@ -65,33 +65,33 @@ module.exports = {
 			//messages.push(...list_messages.array());
 
 			//for (var i in messages) {
-			//var msg = messages[i]
-			var url = '';
-			try {
-				if (lastMsg.attachments.size > 0) {
-					found = true;
-					url = lastMsg.attachments.first().url;
-					//break;
-				}
-				else if (lastMsg.embeds[0] != undefined && lastMsg.embeds[0] != null && lastMsg.embeds[0].image) {
-					found = true;
-					url = lastMsg.embeds[0].image.url;
-					//break;
-				}
-				else if (lastMsg.content.startsWith('https://') || lastMsg.content.startsWith('http://')) {
-					if (lastMsg.content.endsWith('.png') || lastMsg.content.endsWith('.jpeg') || lastMsg.content.endsWith('.jpg') || lastMsg.content.endsWith('.gif')) {
+				//var msg = messages[i]
+				var url = '';
+				try {
+					if (lastMsg.attachments.size > 0) {
 						found = true;
-						url = lastMsg.content;
+						url = lastMsg.attachments.first().url;
 						//break;
 					}
+					else if (lastMsg.embeds[0] != undefined && lastMsg.embeds[0] != null && lastMsg.embeds[0].image) {
+						found = true;
+						url = lastMsg.embeds[0].image.url;
+						//break;
+					}
+					else if (lastMsg.content.startsWith('https://') || lastMsg.content.startsWith('http://')) {
+						if (lastMsg.content.endsWith('.png') || lastMsg.content.endsWith('.jpeg') || lastMsg.content.endsWith('.jpg') || lastMsg.content.endsWith('.gif')) {
+							found = true;
+							url = lastMsg.content;
+							//break;
+						}
+					}
+				} catch (e) {
+					return warnUser(message, strings.COMMAND_NO_IMAGE_FOUND);
 				}
-			} catch (e) {
-				return warnUser(message, string('command.image.not_found_in_10_last'));
-			}
 			//}
 
 			if (found) await tile(message, url, type);
-			else return warnUser(message, string('command.image.not_found_in_10_last'));
+			else return warnUser(message, strings.COMMAND_NO_IMAGE_FOUND);
 		}
 	}
 }

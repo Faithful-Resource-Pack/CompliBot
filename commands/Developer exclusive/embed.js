@@ -1,7 +1,7 @@
-const prefix = process.env.PREFIX;
+const prefix  = process.env.PREFIX;
 
-const colors = require('../../resources/colors');
-const { string } = require('../../resources/strings');
+const colors  = require('../../resources/colors');
+const strings = require('../../resources/strings');
 const Discord = require('discord.js');
 
 const { warnUser } = require('../../helpers/warnUser');
@@ -9,19 +9,19 @@ const { warnUser } = require('../../helpers/warnUser');
 module.exports = {
 	name: 'embed',
 	aliases: ['embeds'],
-	description: string('command.description.embed'),
+	description: strings.HELP_DESC_EMBED,
 	guildOnly: false,
-	uses: string('command.use.admins'),
+	uses: strings.COMMAND_USES_ADMINS,
 	category: 'Developer exclusive',
 	syntax: `${prefix}embed <id> <colors> <black/blue/green/red/yellow/crimson>\n\n${prefix}embed <id> <description> <set/add/remove> <value>\n\n${prefix}embed <id> <fields> <modify> <pos> <value>\n${prefix}embed <id> <fields> <add> <title> <value> [inline: true/false]\n${prefix}embed <id> <fields> <remove> <pos>`,
 	async execute(client, message, args) {
-		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.id === '747839021421428776')) return warnUser(message, string('command.no_permission'))
-		if (!args.length) return warnUser(message, string('command.args.none_given'));
+		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.id === '747839021421428776')) return warnUser(message, strings.COMMAND_NO_PERMISSION)
+		if (!args.length) return warnUser(message, strings.COMMAND_NO_ARGUMENTS_GIVEN);
 		if (isNaN(args[0])) return warnUser(message, 'You have to specify an ID first');
 
 		try {
 			await message.channel.messages.fetch(args[0]);
-		} catch (e) {
+		} catch(e) {
 			return warnUser(message, 'ID should be from the same channel');
 		}
 
@@ -57,8 +57,8 @@ module.exports = {
 			else if (args[2] == 'add') {
 				if (args[3] == undefined) return warnUser(message, 'Title can\'t be empty!');
 				if (args[4] == undefined) return warnUser(message, 'Value can\'t be empty!');
-				if (args[5] == 'true') embed.addFields({ name: args[3], value: args[4], inline: true });
-				else embed.addFields({ name: args[3], value: args[4] });
+				if (args[5] == 'true') embed.addFields({name: args[3], value: args[4], inline: true});
+				else embed.addFields({name: args[3], value: args[4]});
 			}
 
 			else if (args[2] == 'remove') {
@@ -67,14 +67,14 @@ module.exports = {
 				else {
 					for (let i = 0; i < embedMessage.embeds[0].fields.length; i++) {
 						if (i == args[3]) {
-							embed.fields.splice(i, 1);
+							embed.fields.splice(i, 1); 
 						}
 					}
 				}
-			} else return warnUser(message, `You should use add/remove/modify, not ${args[2]}`);
+			}	else return warnUser(message, `You should use add/remove/modify, not ${args[2]}`);
 		} else return warnUser(message, `You should use fields/description/color, not ${args[1]}`);
-
-		await embedMessage.edit({ embeds: [embed] });
+				
+		await embedMessage.edit({embeds: [embed]});
 		await message.delete();
 	}
 }

@@ -1,7 +1,7 @@
-const Discord = require('discord.js')
-const colors = require('../../../resources/colors')
+const Discord        = require('discord.js')
+const colors         = require('../../../resources/colors')
 const { errorEmbed } = require('./errorEmbed')
-const allCollection = require('../../../helpers/firestorm/all')
+const allCollection  = require('../../../helpers/firestorm/all')
 
 const prefix = process.env.PREFIX
 
@@ -70,8 +70,8 @@ async function setTexture(id, args) {
         await allCollection.texture.set(id, {
           name: args.join(' ')
         })
-      } catch (err) { return errorEmbed(err) }
-
+      } catch(err) { return errorEmbed(err) }
+      
       return getTexture(id)
 
     default:

@@ -1,6 +1,6 @@
-const Discord = require('discord.js')
+const Discord  = require('discord.js')
 const settings = require('../resources/settings')
-const colors = require('../resources/colors')
+const colors   = require('../resources/colors')
 
 const { addDeleteReact } = require('../helpers/addDeleteReact')
 
@@ -25,7 +25,7 @@ async function quote(msg) {
 	) return
 
 	// do not quote behave command
-	if (args[0].startsWith(process.env.PREFIX + 'behave')) return
+	if(args[0].startsWith(process.env.PREFIX + 'behave')) return
 
 	// regex tests here https://regex101.com/r/1cIYqf/1/
 	// This fixes bugs with incorrect body messages with no space or incorrect match
@@ -35,10 +35,10 @@ async function quote(msg) {
 	let matches = regex.exec(str)
 
 	// no message match
-	if (matches === null) return
+	if(matches === null) return
 
 	// group 3 for guild, group 4 for channel, group 5 for message
-	ids = [matches[3], matches[4], matches[5]]
+	ids = [matches[3] ,matches[4], matches[5]]
 
 	if (ids[0] != undefined && msg.guild.id == ids[0]) {
 		let channel = msg.guild.channels.cache.get(ids[1])
@@ -48,12 +48,12 @@ async function quote(msg) {
 			embed = new Discord.MessageEmbed()
 				.setColor(colors.BLUE)
 
-			if (message.embeds[0].description && typeof (message.embeds[0].description) === 'string') // fixes bug "MessageEmbed description must be a string."
+			if(message.embeds[0].description && typeof(message.embeds[0].description) === 'string') // fixes bug "MessageEmbed description must be a string."
 				embed.setDescription(message.embeds[0].description)
 
 			if (message.embeds[0].title != undefined) embed.setTitle(message.embeds[0].title)
 			if (message.embeds[0].url != undefined) embed.setURL(message.embeds[0].url)
-
+			
 			if (message.embeds[0].author != undefined && !message.embeds[0].author.name.startsWith('Embed posted by')) {
 				embed.setThumbnail(settings.QUOTE_IMG)
 				embed.setAuthor(`Embed sent by ${message.author.tag} (${message.embeds[0].author.name})`, message.embeds[0].author.iconURL)
@@ -76,8 +76,8 @@ async function quote(msg) {
 				file = message.attachments.first().url
 				if (file.endsWith('.png') || file.endsWith('.jpg') || file.endsWith('jpeg')) embed.setImage(file)
 			}
-
-			return await msg.reply({ embeds: [embed] })
+		
+			return await msg.reply({embeds: [embed]})
 		}
 
 		else {
@@ -91,7 +91,7 @@ async function quote(msg) {
 			if (message.attachments.size > 0) {
 				file = message.attachments.first().url
 				if (file.endsWith('.png') || file.endsWith('.jpg') || file.endsWith('jpeg')) embed.setImage(file)
-			}
+			} 
 			else {
 				const messageArgs = message.content.split(' ')
 				for (i = 0; i < messageArgs.length; i++) {
@@ -103,7 +103,7 @@ async function quote(msg) {
 				}
 			}
 
-			const embedMessage = await msg.reply({ embeds: [embed] })
+			const embedMessage = await msg.reply({embeds: [embed]})
 			addDeleteReact(embedMessage, msg)
 		}
 	}

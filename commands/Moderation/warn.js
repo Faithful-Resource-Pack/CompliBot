@@ -1,25 +1,25 @@
-const prefix = process.env.PREFIX;
+const prefix  = process.env.PREFIX;
 
 const Discord = require('discord.js');
-const { string } = require('../../resources/strings');
-const colors = require('../../resources/colors');
-const users = require('../../helpers/firestorm/users')
+const strings = require('../../resources/strings');
+const colors  = require('../../resources/colors');
+const users   = require('../../helpers/firestorm/users')
 
-const { warnUser } = require('../../helpers/warnUser');
-const { modLog } = require('../../functions/moderation/modLog');
+const { warnUser }     = require('../../helpers/warnUser');
+const { modLog }       = require('../../functions/moderation/modLog');
 const { addMutedRole } = require('../../functions/moderation/addMutedRole');
 
 module.exports = {
 	name: 'warn',
-	description: string('command.description.warn'),
+	description: strings.HELP_DESC_WARN,
 	guildOnly: true,
-	uses: string('command.use.mods'),
+	uses: strings.COMMAND_USES_MODS,
 	category: 'Moderation',
 	syntax: `${prefix}warn <@user> <reason>`,
 	example: `${prefix}warn @Juknum#6148 breaking the bot`,
 	async execute(client, message, args) {
-		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("Moderator") || role.id === '747839021421428776')) return warnUser(message, string('command.no_permission'))
-		if (!args.length) return warnUser(message, string('command.args.none_given'))
+		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("Moderator") || role.id === '747839021421428776')) return warnUser(message, strings.COMMAND_NO_PERMISSION)
+		if (!args.length) return warnUser(message, strings.COMMAND_NO_ARGUMENTS_GIVEN)
 
 		let userID = undefined
 		try {
@@ -34,9 +34,9 @@ module.exports = {
 
 		const reason = args.slice(1).join(' ') || 'Not Specified'
 
-		if (!userID) return await warnUser(message, string('command.warn.specify_user'))
-		if (userID === message.author.id) return await warnUser(message, string('command.warn.cant_warn_self'))
-		if (userID === client.user.id) return await message.channel.send({ embeds: string('command.no_i_dont_think_i_will') })
+		if (!userID) return await warnUser(message, strings.WARN_SPECIFY_USER)
+		if (userID === message.author.id) return await warnUser(message, strings.WARN_CANT_WARN_SELF)
+		if (userID === client.user.id) return await message.channel.send({embeds: strings.COMMAND_NOIDONTTHINKIWILL_LMAO})
 
 		// get the user from the db
 		let user = await users.searchKeys([userID])
@@ -86,9 +86,9 @@ module.exports = {
 			.setDescription(`**User:** <@!${userID}>\n**Reason:** \`${reason}\``)
 			.setColor(colors.BLACK)
 			.setTimestamp()
-		await message.reply({ embeds: [embed] })
+		await message.reply({embeds: [embed]})
 
-		if (mutedEmbed) await message.channel.send({ embeds: [mutedEmbed] }) // send it after the warn message
+		if (mutedEmbed) await message.channel.send({embeds: [mutedEmbed]}) // send it after the warn message
 		modLog(client, message, userID, reason, time, 'warned')
 	}
 };

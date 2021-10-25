@@ -1,7 +1,7 @@
-const Discord = require('discord.js')
+const Discord    = require('discord.js')
 const asyncTools = require('./asyncTools')
-const settings = require('../resources/settings')
-const colors = require('../resources/colors')
+const settings   = require('../resources/settings')
+const colors     = require('../resources/colors')
 
 /**
  * 
@@ -45,26 +45,26 @@ const DEFAULT_EMOJIS = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '
  * @param {Discord.User} user User to send message to
  * @return {Promise<ChoiceResponse>}
  */
-module.exports = function (message, params, user) {
+module.exports = function(message, params, user) {
   return new Promise((resolve, reject) => {
     params = Object.assign({}, DEFAULT, params)
 
-    if (!params.propositions) reject(new Error('No proposition in object'))
+    if(!params.propositions) reject(new Error('No proposition in object'))
 
     let embed = new Discord.MessageEmbed()
       .setTitle(params.title)
       .setColor(params.color)
-
-    if (params.imageURL)
+    
+    if(params.imageURL)
       embed = embed.setFooter(params.footer, params.imageURL)
     else
       embed = embed.setFooter(params.footer)
 
     // popositions object
     let propObj
-    if (Array.isArray(params.propositions)) {
+    if(Array.isArray(params.propositions)) {
       propObj = {}
-      for (let i = 0; i < Math.min(params.propositions.length, DEFAULT_EMOJIS.length); ++i) {
+      for(let i = 0; i < Math.min(params.propositions.length, DEFAULT_EMOJIS.length); ++i) {
         propObj[DEFAULT_EMOJIS[i]] = params.propositions[i]
       }
     } else {
@@ -81,43 +81,43 @@ module.exports = function (message, params, user) {
 
     if (description.length >= 2048) {
       description = description.slice(0, 2048)
-      embed.addField('⚠️ WARNING', 'The amount of textures is too much for Discord to show, further textures cannot be displayed!', true)
+			embed.addField('⚠️ WARNING', 'The amount of textures is too much for Discord to show, further textures cannot be displayed!', true)
     }
 
     embed.setDescription(description)
 
-    const args = { embeds: [embed] }
+    const args = {embeds: [embed]}
     const sendPromise = message !== undefined ? message.reply(args) : user.send(args)
 
     // reply to the sent message
     /** @type {Discord.Message} */
     let embedMessage
-    sendPromise.then(async function (embed_message) {
+    sendPromise.then(async function(embed_message) {
       embedMessage = embed_message
       return asyncTools.react(embedMessage, emojis)
     })
-      .then(async () => {
-        const filter_num = (reaction, user) => user.id === message.author.id && emojis.includes(reaction.emoji.name)
+    .then(async () => {
+      const filter_num = (reaction, user) => user.id === message.author.id && emojis.includes(reaction.emoji.name)
 
-        return awaitReactionTweaked(embedMessage, { filter_num, max: params.max, time: params.timeout, errors: ['time'] }, embedMessage.author.id) // the bot sent the embed message
-      })
-      .then(collected => {
-        /** @type {Discord.MessageReaction} */
-        const reaction = collected.first()
-        if (emojis.includes(reaction.emoji.name)) {
-          embedMessage.delete()
+      return awaitReactionTweaked(embedMessage, {filter_num, max: params.max, time: params.timeout, errors: ['time'] }, embedMessage.author.id) // the bot sent the embed message
+    })
+    .then(collected => {
+      /** @type {Discord.MessageReaction} */
+      const reaction = collected.first()
+      if (emojis.includes(reaction.emoji.name)) {
+        embedMessage.delete()
 
-          /** @type {ChoiceResponse} */
-          resolve({
-            index: emojis.indexOf(reaction.emoji.name),
-            emoji: reaction.emoji.name,
-            proposition: propObj[reaction.emoji.name]
-          })
-          return
-        }
-      }).catch(error => {
-        reject(error, embedMessage)
-      })
+        /** @type {ChoiceResponse} */
+        resolve({
+          index: emojis.indexOf(reaction.emoji.name),
+          emoji: reaction.emoji.name,
+          proposition: propObj[reaction.emoji.name]
+        })
+        return
+      }
+    }).catch(error => {
+      reject(error, embedMessage)
+    })
   })
 }
 
@@ -127,18 +127,18 @@ module.exports = function (message, params, user) {
  * @param {String} botId bot ID to filter reactions from 
  * @returns {Promise<Discord.Collection<string, Discord.MessageReaction>>}
  */
-function awaitReactionTweaked(messageToReact, options, botId) {
+function awaitReactionTweaked (messageToReact, options, botId) {
   return new Promise((resolve, reject) => {
     messageToReact.awaitReactions(options)
-      .then(collected => {
-        const filtered = collected.filter(reac => reac.users.cache.size != 1 || reac.users.cache.first().id !== botId)
-        if (filtered.size != 0) resolve(collected)
-        else {
-          awaitReactionTweaked(messageToReact, options, botId)
-            .then(resolve)
-            .catch(reject)
-        }
-      })
-      .catch(error => reject(error))
+    .then(collected => {
+      const filtered = collected.filter(reac => reac.users.cache.size != 1 || reac.users.cache.first().id !== botId)
+      if(filtered.size != 0) resolve(collected)
+      else {
+        awaitReactionTweaked(messageToReact, options, botId)
+        .then(resolve)
+        .catch(reject)
+      }
+    })
+    .catch(error => reject(error))
   })
 }

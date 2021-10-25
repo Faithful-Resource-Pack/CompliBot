@@ -32,7 +32,7 @@ async function retrieveSubmission(client, channelFromID, channelOutID, delay) {
 	messages = messages.map(message => {
 		let upvotes = message.reactions.cache.get(emojis.UPVOTE).count
 		let downvotes = message.reactions.cache.get(emojis.DOWNVOTE).count
-
+		
 		message = {
 			upvote: upvotes,
 			downvote: downvotes,
@@ -55,13 +55,11 @@ async function retrieveSubmission(client, channelFromID, channelOutID, delay) {
 	// send message to the output channel & change status
 	const EMOJIS = [emojis.UPVOTE, emojis.DOWNVOTE, emojis.SEE_MORE]
 	messagesUpvoted.forEach(message => {
-		channelOut.send({
-			embeds: [
-				message.embed
-					.setColor(colors.COUNCIL)
-					.setDescription(`[Original Post](${message.message.url})\n${message.embed.description ? message.embed.description : ''}`)
-			]
-		})
+		channelOut.send({embeds: [
+			message.embed
+				.setColor(colors.COUNCIL)
+				.setDescription(`[Original Post](${message.message.url})\n${message.embed.description ? message.embed.description : ''}`)
+		]})
 			.then(async sentMessage => {
 				for (const emojiID of EMOJIS) await sentMessage.react(client.emojis.cache.get(emojiID))
 			})
@@ -78,7 +76,7 @@ async function editEmbed(message, string) {
 	embed.setColor(colors.BLUE)
 	if (embed.description !== null) embed.setDescription(message.embeds[0].description.replace(`[Original Post](${message.url})\n`, ''))
 
-	await message.edit({ embeds: [embed] })
+	await message.edit({embeds: [embed]})
 }
 
 exports.retrieveSubmission = retrieveSubmission

@@ -1,9 +1,9 @@
 const prefix = process.env.PREFIX;
 
-const Discord = require("discord.js");
+const Discord  = require("discord.js");
 const settings = require('../../resources/settings');
-const { string } = require('../../resources/strings');
-const colors = require('../../resources/colors');
+const strings  = require('../../resources/strings');
+const colors   = require('../../resources/colors');
 
 const { warnUser } = require('../../helpers/warnUser');
 
@@ -95,19 +95,19 @@ const RULES = [
 
 module.exports = {
 	name: 'rule',
-	aliases: ['rules'],
-	description: string('command.description.rules'),
+	aliases: [ 'rules' ],
+	description: strings.HELP_DESC_RULES,
 	guildOnly: true,
-	uses: string('command.use.mods'),
+	uses: strings.COMMAND_USES_MODS,
 	category: 'Moderation',
 	syntax: `${prefix}rule <n>`,
 	flags: '',
 	example: `${prefix}rule 1`,
 	async execute(client, message, args) {
-		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("Moderator") || role.id === '747839021421428776')) return warnUser(message, string('command.no_permission'))
+		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("Moderator") || role.id === '747839021421428776')) return warnUser(message, strings.COMMAND_NO_PERMISSION)
 
 		let thumbnail = settings.BOT_IMG
-		let color = colors.COUNCIL
+		let color     = colors.COUNCIL
 
 		switch (message.guild.id) {
 			case settings.C32_ID:
@@ -147,30 +147,30 @@ module.exports = {
 
 		if (rule <= RULES.length && rule > 0) {
 			const embed = new Discord.MessageEmbed()
-				.setTitle(RULES[rule - 1].title)
+				.setTitle(RULES[rule-1].title)
 				.setColor(color)
 				.setThumbnail(thumbnail)
-				.setDescription(RULES[rule - 1].description);
+				.setDescription(RULES[rule-1].description);
 
-			return await message.reply({ embeds: [embed] });
+			return await message.reply({embeds: [embed]});
 		}
 
 		else if (rule == -1) {
-
+			
 			let embed = new Discord.MessageEmbed()
 				.setTitle(`Rules of the Compliance Discord's Servers`)
 				.setColor(color)
 				.setThumbnail(thumbnail)
 				.setDescription(`**Ignoring, not knowing and/or bypassing the rules, as well as not listening to the moderators is not an excuse for misbehaving.**\nRemember, by talking in this server you're agreeing to follow these rules.`)
-			await message.channel.send({ embeds: [embed] })
-
+			await message.channel.send({embeds: [embed]})
+			
 			for (let i = 0; i < RULES.length; i++) {
 				let embedRule = new Discord.MessageEmbed()
 					.setColor(color)
 					.setTitle(`${NUMBER[i]} ${RULES[i].title}`)
 					.setDescription(RULES[i].description)
 
-				await message.channel.send({ embeds: [embedRule] });
+				await message.channel.send({embeds: [embedRule]});
 			}
 
 			if (EDIT.enabled) {
@@ -180,7 +180,7 @@ module.exports = {
 					.setDescription(EDIT.description + '\n\n> Please understand that failing to comply to these rules will result in an adequate punishment.')
 					.setFooter(`The rules are subject to change.`, thumbnail)
 
-				await message.channel.send({ embeds: [embedChanges] })
+				await message.channel.send({embeds: [embedChanges]})
 			}
 
 			if (!message.deleted) await message.delete();

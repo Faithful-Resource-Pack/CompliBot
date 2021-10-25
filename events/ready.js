@@ -1,28 +1,27 @@
 const client = require('../index').Client
-const cron = require('cron')
+const cron   = require('cron')
 
-const DEV = (process.env.DEV.toLowerCase() == 'true')
+const DEV         = (process.env.DEV.toLowerCase() == 'true')
 const MAINTENANCE = (process.env.MAINTENANCE.toLowerCase() == 'true')
-const PREFIX = process.env.PREFIX
+const PREFIX      = process.env.PREFIX
 
-const jiraJE = require('../functions/minecraftUpdates/jira-je')
-const jiraBE = require('../functions/minecraftUpdates/jira-be')
+const jiraJE    = require('../functions/minecraftUpdates/jira-je')
+const jiraBE    = require('../functions/minecraftUpdates/jira-be')
 const minecraft = require('../functions/minecraftUpdates/minecraft')
 
 const settings = require('../resources/settings')
 
 const { retrieveSubmission } = require('../functions/textures/submission/retrieveSubmission')
-const { councilSubmission } = require('../functions/textures/submission/councilSubmission')
-const { revoteSubmission } = require('../functions/textures/submission/revoteSubmission')
-const { downloadResults } = require('../functions/textures/admission/downloadResults')
-const { pushTextures } = require('../functions/textures/admission/pushTextures')
+const { councilSubmission }  = require('../functions/textures/submission/councilSubmission')
+const { revoteSubmission }   = require('../functions/textures/submission/revoteSubmission')
+const { downloadResults }    = require('../functions/textures/admission/downloadResults')
+const { pushTextures }       = require('../functions/textures/admission/pushTextures')
 
-const { updateMembers } = require('../functions/moderation/updateMembers')
-const { syncMembers } = require('../functions/moderation/syncMembers')
-const { checkTimeout } = require('../functions/moderation/checkTimeout')
+const { updateMembers }      = require('../functions/moderation/updateMembers')
+const { syncMembers }        = require('../functions/moderation/syncMembers')
+const { checkTimeout }       = require('../functions/moderation/checkTimeout')
 const { restartAutoDestroy } = require('../functions/restartAutoDestroy')
-const { saveDB } = require('../functions/saveDB')
-const { doCheckLang } = require('../functions/strings/doCheckLang')
+const { saveDB }             = require('../functions/saveDB')
 
 /**
  * SCHEDULED FUNCTIONS : Texture Submission
@@ -74,12 +73,6 @@ module.exports = {
 
     await restartAutoDestroy(client)
 
-    if (DEV) {
-      setInterval(() => {
-        doCheckLang()
-      }, 20000); // 20 seconds
-    }
-
     if (DEV) return
 
     /**
@@ -92,29 +85,30 @@ module.exports = {
     downloadToBot.start()
     pushToGithub.start()
 
+    /**
+     * MINECRAFT UPDATE DETECTION INTERVAL
+     * @param {int} TIME : in milliseconds
+     */
     await jiraJE.loadJiraVersions()
     await jiraBE.loadJiraVersions()
     await minecraft.loadMCVersions()
     //await minecraft.loadMCArticles()
+    setInterval(() => doMCUpdateCheck(), 60000)
 
     /**
-     * LOOP EVENTS
-     * @event doMCUpdateCheck() -> each minute | MINECRAFT UPDATE DETECTION INTERVAL
-     * @event doCheckLang()     -> each minute | LANG FILE UPDATE
-     * @event checkTimeout()    -> every 30s   | MODERATION MUTE SYSTEM UPDATE INTERVAL
+     * MODERATION MUTE SYSTEM UPDATE INTERVAL
+     * @param {int} TIME : in milliseconds
      */
-    setInterval(() => {
-      doMCUpdateCheck()
-      doCheckLang()
-    }, 60000);
-    setInterval(() => {
-      checkTimeout(client)
-    }, 30000);
+    setInterval(function () { checkTimeout(client) }, 30000)
 
-    // UPDATE MEMBERS
+    /**
+     * UPDATE MEMBERS
+     */
     updateMembers(client, settings.C32_ID, settings.C32_COUNTER)
 
-    // FETCH MEMBERS DATA
+    /**
+     * FETCH MEMBERS DATA
+     */
     syncMembers(client, [settings.C32_ID, settings.C64_ID, settings.CEXTRAS_ID])
   }
 }

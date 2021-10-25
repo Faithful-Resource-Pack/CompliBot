@@ -1,6 +1,6 @@
-const firestorm = require('.')
-const animations = require('./animations')
-const texture = require('./texture')
+const firestorm     = require('.')
+const animations    = require('./animations')
+const texture       = require('./texture')
 const texture_paths = require('./texture_paths')
 
 require('./firestorm_config')()
@@ -17,12 +17,12 @@ require('./firestorm_config')()
 
 module.exports = firestorm.collection('uses', el => {
   /** @returns {Promise<Texture>} */
-  el.texture = function () {
+  el.texture = function() {
     return texture.get(el.textureID)
   }
 
   /** @returns {Promise<TexturePath[]>} */
-  el.paths = function () {
+  el.paths = function() {
     return texture_paths.search([{
       field: 'useID',
       criteria: '==',
@@ -30,7 +30,7 @@ module.exports = firestorm.collection('uses', el => {
     }])
   }
 
-  el.animation = function () {
+  el.animation = function() {
     return animations.get(el[firestorm.ID_FIELD])
   }
 

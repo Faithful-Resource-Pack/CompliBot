@@ -1,11 +1,11 @@
-const prefix = process.env.PREFIX
+const prefix  = process.env.PREFIX
 
 const uidR = process.env.UIDR
 const uidJ = process.env.UIDJ
 const uidD = process.env.UIDD
 const uidT = process.env.UIDT
 
-const { string } = require('../../resources/strings')
+const strings = require('../../resources/strings')
 
 const { warnUser } = require('../../helpers/warnUser')
 const { walkSync } = require('../../helpers/walkSync')
@@ -13,9 +13,9 @@ const { walkSync } = require('../../helpers/walkSync')
 module.exports = {
 	name: 'reload',
 	aliases: ['r'],
-	description: string('command.description.reload'),
+	description: strings.HELP_DESC_RELOAD,
 	guildOnly: false,
-	uses: string('command.use.devs'),
+	uses: strings.COMMAND_USES_DEVS,
 	category: 'Developer exclusive',
 	syntax: `${prefix}reload <command>`,
 	example: `${prefix}reload magnify`,
@@ -40,6 +40,6 @@ module.exports = {
 				await message.react('❌');
 			}
 		}
-		else return warnUser(message, string('command.no_permission'));
+		else return warnUser(message, strings.COMMAND_NO_PERMISSION);
 	}
 };

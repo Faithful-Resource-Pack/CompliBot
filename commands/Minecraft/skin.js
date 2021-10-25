@@ -1,9 +1,9 @@
 const prefix = process.env.PREFIX;
 
-const axios = require('axios');
+const axios   = require('axios');
 const Discord = require("discord.js");
-const colors = require('../../resources/colors');
-const { string } = require('../../resources/strings');
+const colors  = require('../../resources/colors');
+const strings = require('../../resources/strings');
 
 const { Buffer } = require('buffer');
 const { warnUser } = require('../../helpers/warnUser');
@@ -11,9 +11,9 @@ const { addDeleteReact } = require('../../helpers/addDeleteReact');
 
 module.exports = {
 	name: 'skin',
-	description: string('command.description.skin'),
+	description: strings.HELP_DESC_SKIN,
 	guildOnly: false,
-	uses: string('command.use.anyone'),
+	uses: strings.COMMAND_USES_ANYONE,
 	category: 'Minecraft',
 	syntax: `${prefix}skin [minecraft username]`,
 	example: `${prefix}skin Pomi108`,
@@ -50,7 +50,7 @@ async function showSkin(message, args = undefined, user = undefined) {
 	const mojangTextures = Buffer.from(mojangProfile.data.properties[0].value, 'base64').toString('utf-8')
 	const skinJson = JSON.parse(mojangTextures);
 
-	const skinRender = await axios.get(`https://visage.surgeplay.com/full/512/${response}`, { responseType: 'arraybuffer' })
+	const skinRender = await axios.get(`https://visage.surgeplay.com/full/512/${response}`,  { responseType: 'arraybuffer' })
 	const attachment = new Discord.MessageAttachment(Buffer.from(skinRender.data, "utf-8"), 'skin.png');
 
 	var embed = new Discord.MessageEmbed()
@@ -62,8 +62,8 @@ async function showSkin(message, args = undefined, user = undefined) {
 	if (user) embed.setTitle('Your Skin')
 	else embed.setTitle(`${args[0]}'s Skin`)
 
-	const embedMessage = await message.reply({ embeds: [embed], files: [attachment] });
+	const embedMessage = await message.reply({embeds: [embed], files: [attachment]});
 	addDeleteReact(embedMessage, message, true)
 
-	setTimeout(() => embedMessage.edit({ embeds: [embed], files: [attachment] }), 1000);
+	setTimeout(() => embedMessage.edit({embeds: [embed], files: [attachment]}), 1000);
 }

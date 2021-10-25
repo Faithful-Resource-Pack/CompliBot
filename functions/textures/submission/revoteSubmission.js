@@ -44,8 +44,8 @@ async function revoteSubmission(client, channelFromID, channelOutID, delay) {
   })
 
   // split messages following their up/down votes (upvote >= downvote -> 66.66 % minimum)
-  let messagesUpvoted = messages.filter(message => message.percentage >= 66.66)
-  let messagesDownvoted = messages.filter(message => message.percentage < 66.66)
+  let messagesUpvoted = messages.filter(message => message.percentage >= 66.66 )
+  let messagesDownvoted = messages.filter(message => message.percentage < 66.66 )
 
   const EMOJIS = [emojis.SEE_MORE]
 
@@ -55,7 +55,7 @@ async function revoteSubmission(client, channelFromID, channelOutID, delay) {
     embed.setColor(colors.RED)
     embed.fields[1].value = `<:downvote:${emojis.DOWNVOTE}> After a revote, this texture is not going to be added!\n(${message.percentage}% < 66.66%)`
 
-    channelOut.send({ embeds: [embed] })
+    channelOut.send({embeds: [embed]})
       .then(async sentMessage => {
         for (const emojiID of EMOJIS) await sentMessage.react(client.emojis.cache.get(emojiID))
       })
@@ -69,7 +69,7 @@ async function revoteSubmission(client, channelFromID, channelOutID, delay) {
     embed.setColor(colors.GREEN)
     embed.fields[1].value = `<:upvote:${emojis.UPVOTE}> After a revote, this texture will be added in a future version!\n(${message.percentage}% > 66.66%)`
 
-    channelOut.send({ embeds: [embed] })
+    channelOut.send({embeds: [embed]})
       .then(async sentMessage => {
         for (const emojiID of EMOJIS) await sentMessage.react(client.emojis.cache.get(emojiID))
       })
@@ -85,7 +85,7 @@ async function editEmbed(message, string) {
   // fix the weird bug that also apply changes to the old embed (wtf)
   embed.setColor(colors.RED)
 
-  await message.edit({ embeds: [embed] })
+  await message.edit({embeds: [embed]})
 }
 
 exports.revoteSubmission = revoteSubmission

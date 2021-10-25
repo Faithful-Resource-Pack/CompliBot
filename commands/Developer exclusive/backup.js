@@ -1,19 +1,20 @@
-const prefix = process.env.PREFIX
+const prefix  = process.env.PREFIX
 
 const uidR = process.env.UIDR
 const uidJ = process.env.UIDJ
 const uidD = process.env.UIDD
 const uidT = process.env.UIDT
 
+const strings = require('../../resources/strings')
+
 const { saveDB } = require('../../functions/saveDB')
-const { string } = require('../../resources/strings')
 
 module.exports = {
   name: 'backup',
   aliases: ['bdb'],
   description: 'Backup the database to the [JSON repository](https://github.com/Compliance-Resource-Pack/JSON)',
   guildOnly: false,
-  uses: string('command.use.devs'),
+  uses: strings.COMMAND_USES_DEVS,
   category: 'Developer exclusive',
   syntax: `${prefix}backup`,
   args: true,

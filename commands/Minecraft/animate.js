@@ -1,22 +1,22 @@
 const prefix = process.env.PREFIX
 
 //const Discord    = require('discord.js')
-const { string } = require('../../resources/strings')
+const strings    = require('../../resources/strings')
 //const colors     = require('../../resources/colors')
 //const settings   = require('../../resources/settings')
 //const asyncTools = require('../../helpers/asyncTools')
 
-const { animate } = require('../../functions/textures/animate')
-const { warnUser } = require('../../helpers/warnUser')
+const { animate }   = require('../../functions/textures/animate')
+const { warnUser }  = require('../../helpers/warnUser')
 //const { parseArgs } = require('../../helpers/parseArgs')
 //const { jsonContributionsJava, jsonContributionsBedrock } = require('../../helpers/fileHandler')
 
 module.exports = {
 	name: 'animate',
 	aliases: ['play'],
-	description: string('command.description.animate'),
+	description: strings.HELP_DESC_ANIMATE,
 	guildOnly: false,
-	uses: string('command.use.anyone'),
+	uses: strings.COMMAND_USES_ANYONE,
 	category: 'Minecraft',
 	//syntax: `${prefix}animate [-c | -m] [-u | file attached]`,
 	//flags: '-c | --custom : Boolean, set to false by default, set true if you want to give custom mcmeta settings.\n-m | --mcmeta : String, give texture name to find mcmeta, if none exist, default settings will be applied.',
@@ -31,7 +31,7 @@ module.exports = {
 		let mcmeta = {};
 		if (message.attachments.size > 0) valURL = message.attachments.first().url;
 
-		if (valURL) animate(message, mcmeta, valURL);
+		if(valURL) animate(message, mcmeta, valURL);
 		else previousImage(message, mcmeta);
 
 
@@ -42,7 +42,7 @@ module.exports = {
 		//let valMCMETA;
 		//let valCustom;
 		//let mcmetaMessage;
-
+		
 		/*for (var i in args) {
 			if (args[i].startsWith('-c=') || args[i].startsWith('--custom=')) {
 				valCustom = args[i].replace('-c=', '').replace('--custom=', '');
@@ -142,7 +142,7 @@ module.exports = {
 		else if (haveCustom && haveMCMETA) {
 			return warnUser(message, 'You can\'t specify both args at once.');
 		}*/
-
+		
 	}
 }
 
@@ -159,31 +159,31 @@ async function previousImage(message, mcmeta) {
 	//messages.push(...list_messages.array());
 
 	//for (var i in messages) {
-	//var msg = messages[i]
-	var url = '';
-	try {
-		if (lastMsg.attachments.size > 0) {
-			found = true;
-			url = lastMsg.attachments.first().url;
-			//break;
-		}
-		else if (lastMsg.embeds[0] != undefined && lastMsg.embeds[0] != null && lastMsg.embeds[0].image) {
-			found = true;
-			url = lastMsg.embeds[0].image.url;
-			//break;
-		}
-		else if (lastMsg.content.startsWith('https://') || lastMsg.content.startsWith('http://')) {
-			if (lastMsg.content.endsWith('.png') || lastMsg.content.endsWith('.jpeg') || lastMsg.content.endsWith('.jpg') || lastMsg.content.endsWith('.gif')) {
+		//var msg = messages[i]
+		var url = '';
+		try {
+			if (lastMsg.attachments.size > 0) {
 				found = true;
-				url = lastMsg.content;
+				url = lastMsg.attachments.first().url;
 				//break;
 			}
+			else if (lastMsg.embeds[0] != undefined && lastMsg.embeds[0] != null && lastMsg.embeds[0].image) {
+				found = true;
+				url = lastMsg.embeds[0].image.url;
+				//break;
+			}
+			else if (lastMsg.content.startsWith('https://') || lastMsg.content.startsWith('http://')) {
+				if (lastMsg.content.endsWith('.png') || lastMsg.content.endsWith('.jpeg') || lastMsg.content.endsWith('.jpg') || lastMsg.content.endsWith('.gif')) {
+					found = true;
+					url = lastMsg.content;
+					//break;
+				}
+			}
+		} catch(e) {
+			return warnUser(message, strings.COMMAND_NO_IMAGE_FOUND);
 		}
-	} catch (e) {
-		return warnUser(message, string('command.image.not_found_in_10_last'))
-	}
 	//}
 
 	if (found) await animate(message, mcmeta, url);
-	else return warnUser(message, string('command.image.not_found_in_10_last'))
+	else return warnUser(message, strings.COMMAND_NO_IMAGE_FOUND);
 }

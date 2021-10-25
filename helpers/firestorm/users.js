@@ -1,7 +1,7 @@
-const firestorm = require('.')
+const firestorm     = require('.')
 const contributions = require('./contributions')
 
-require('./firestorm_config')()
+require('./firestorm_config')() 
 
 /**
  * @typedef {Object} User
@@ -20,9 +20,9 @@ require('./firestorm_config')()
  * @property {Function} contributions Gets all contributions of the user
  */
 
-module.exports = firestorm.collection('users', el => {
+ module.exports = firestorm.collection('users', el => {
   /** @returns {Promise<import('./contributions').Contribution[]>} */
-  el.contributions = function () {
+  el.contributions = function() {
     return contributions.search([{
       field: 'contributors',
       criteria: 'array-contains',

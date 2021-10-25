@@ -3,7 +3,7 @@
 const fs = require('fs')
 
 const { pushToGitHub } = require('../../pushToGitHub')
-const { date } = require('../../../helpers/date.js')
+const { date }         = require('../../../helpers/date.js')
 
 const DEBUG = process.DEBUG == "true" ? true : false
 
@@ -14,11 +14,11 @@ const DEBUG = process.DEBUG == "true" ? true : false
  */
 async function pushTextures(COMMIT_MESSAGE = `Autopush passed textures from ${date()}`) {
 
-	const REPO_JAVA = ['Compliance-Java-32x', 'Compliance-Java-64x']
-	const REPO_BEDROCK = ['Compliance-Bedrock-32x', 'Compliance-Bedrock-64x']
+	const REPO_JAVA    = [ 'Compliance-Java-32x', 'Compliance-Java-64x' ]
+	const REPO_BEDROCK = ['Compliance-Bedrock-32x', 'Compliance-Bedrock-64x' ]
 
-	const BRANCHES_JAVA = ['1.18', '1.17.1', '1.16.5', '1.15.2', '1.14.4', '1.13.2', '1.12.2']
-	const BRANCHES_BEDROCK = ['1.17.0', '1.16.220']
+	const BRANCHES_JAVA    = [ '1.18', '1.17.1', '1.16.5', '1.15.2', '1.14.4', '1.13.2', '1.12.2' ]
+	const BRANCHES_BEDROCK = [ '1.17.0', '1.16.220' ]
 
 	for (let i = 0; REPO_JAVA[i]; i++) {
 		for (let j = 0; BRANCHES_JAVA[j]; j++) {
@@ -45,7 +45,7 @@ async function pushTextures(COMMIT_MESSAGE = `Autopush passed textures from ${da
 
 		}
 	}
-
+	
 }
 
 /**

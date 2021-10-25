@@ -1,10 +1,10 @@
-const Canvas = require('canvas')
-const Discord = require('discord.js')
+const Canvas          = require('canvas')
+const Discord         = require('discord.js')
 const GIFEncoderFixed = require('../../modified_libraries/GIFEncoder')
 
-const { strings } = require('../../resources/strings')
+const strings = require('../../resources/strings')
 
-const { getMeta } = require('../../helpers/getMeta')
+const { getMeta }  = require('../../helpers/getMeta')
 const { warnUser } = require('../../helpers/warnUser')
 const { addDeleteReact } = require('../../helpers/addDeleteReact')
 
@@ -21,18 +21,18 @@ async function animate(message, valMCMETA, valURL) {
 
 	let texture = []
 
-	getMeta(valURL).then(async function (dimension) {
-		if (dimension.width == dimension.height) return warnUser(message, await strings('command.image.cant_animate'))
-		if (dimension.width * FACTOR > 4096) return warnUser(message, await strings('command.image.too_wide'))
+	getMeta(valURL).then(async function(dimension) {
+		if (dimension.width == dimension.height) return warnUser(message, strings.CANT_ANIMATE)
+		if (dimension.width * FACTOR > 4096) return warnUser(message, strings.INPUT_TOO_WIDE)
 		if (dimension.width * FACTOR > 1024) FACTOR = 1
 
 		texture.canvas = await sizeUP(valURL, dimension)
-		texture.width = dimension.width * FACTOR
+		texture.width  = dimension.width * FACTOR
 		texture.height = dimension.height * FACTOR
 
 		// NOTE: Width & Height properties from MCMETA aren't supported
 
-		let canvas = Canvas.createCanvas(texture.width, texture.width)
+		let canvas  = Canvas.createCanvas(texture.width, texture.width)
 		let context = canvas.getContext('2d')
 
 		let MCMETA = typeof valMCMETA === 'object' ? valMCMETA : { animation: {} }
@@ -40,7 +40,7 @@ async function animate(message, valMCMETA, valURL) {
 
 		// Initialization:
 		let frametime = MCMETA.animation.frametime || 1
-		let frames = []
+		let frames    = []
 
 		// MCMETA.animation.frames is defined
 		if (Array.isArray(MCMETA.animation.frames) && MCMETA.animation.frames.length > 0) {
@@ -49,7 +49,7 @@ async function animate(message, valMCMETA, valURL) {
 
 				if (typeof frame === 'number') {
 					frames.push({
-						index: frame,
+						index:    frame,
 						duration: frametime
 					})
 				}
@@ -62,7 +62,7 @@ async function animate(message, valMCMETA, valURL) {
 				// If wrong frames support is given
 				else {
 					frames.push({
-						index: i,
+						index:    i,
 						duration: frametime
 					})
 				}
@@ -72,7 +72,7 @@ async function animate(message, valMCMETA, valURL) {
 		else {
 			for (let i = 0; i < texture.height / texture.width; i++) {
 				frames.push({
-					index: i,
+					index:    i,
 					duration: frametime
 				})
 			}
@@ -149,7 +149,7 @@ async function animate(message, valMCMETA, valURL) {
 		// Send result:
 		const attachment = new Discord.MessageAttachment(encoder.out.getData(), 'output.gif')
 
-		const embedMessage = await message.reply({ files: [attachment] })
+		const embedMessage = await message.reply({files: [attachment]})
 		addDeleteReact(embedMessage, message, true)
 	})
 }
@@ -184,7 +184,7 @@ async function sizeUP(valURL, dimension) {
 		}
 	}*/
 
-	var width = dimension.width * FACTOR
+	var width  = dimension.width * FACTOR
 	var height = dimension.height * FACTOR
 	var canvasOUT = Canvas.createCanvas(width, height)
 	var contextOUT = canvasOUT.getContext('2d')

@@ -16,7 +16,7 @@ require('dotenv').config()
 // eslint-disable-next-line no-unused-vars
 const { Client, Intents } = require('discord.js')
 const client = new Client({
-	allowedMentions: { parse: ['users', 'roles'], repliedUser: false }, // remove this line to die instantly ~JackDotJS 2021
+	allowedMentions: { parse: [ 'users', 'roles' ], repliedUser: false }, // remove this line to die instantly ~JackDotJS 2021
 	restTimeOffset: 0,
 	partials: Object.values(Discord.Constants.PartialTypes),
 	intents: [
@@ -25,11 +25,11 @@ const client = new Client({
 		Intents.FLAGS.GUILD_BANS,
 		Intents.FLAGS.GUILD_INTEGRATIONS,
 		Intents.FLAGS.GUILD_PRESENCES,
-		Intents.FLAGS.GUILD_MESSAGES,
-		Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
-		Intents.FLAGS.GUILD_MESSAGE_TYPING,
-		Intents.FLAGS.DIRECT_MESSAGES,
-		Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
+		Intents.FLAGS.GUILD_MESSAGES, 
+		Intents.FLAGS.GUILD_MESSAGE_REACTIONS, 
+		Intents.FLAGS.GUILD_MESSAGE_TYPING, 
+		Intents.FLAGS.DIRECT_MESSAGES, 
+		Intents.FLAGS.DIRECT_MESSAGE_REACTIONS, 
 		Intents.FLAGS.DIRECT_MESSAGE_TYPING
 	]
 })
@@ -50,7 +50,7 @@ const commandFiles = walkSync('./commands').filter(f => f.endsWith('.js'))
 client.commands = new Discord.Collection()
 for (const file of commandFiles) {
 	const command = require(file)
-	if ('name' in command && typeof (command.name) === 'string')
+	if ('name' in command && typeof(command.name) === 'string')
 		client.commands.set(command.name, command)
 }
 

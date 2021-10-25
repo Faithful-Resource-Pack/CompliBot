@@ -10,7 +10,7 @@
  * @param {Promise<any>[]} promises Incoming promises
  * @return {Promise<PromiseEveryResult>} result array
  */
-module.exports = function (promises) {
+module.exports = function(promises) {
   return new Promise((resolve, reject) => {
     /** @type {PromiseEveryResult} */
     const result = {
@@ -27,23 +27,23 @@ module.exports = function (promises) {
       promise.then(res => {
         result.results[index] = res
 
-        if (++sum === promises.length) {
+        if(++sum === promises.length) {
           resolve(result)
         }
       })
-        .catch(err => {
-          ++fails
+      .catch(err => {
+        ++fails
 
-          result.errors[index] = err
+        result.errors[index] = err
 
-          if (++sum === promises.length) {
-            if (fails === promises.length) {
-              reject(result)
-            } else {
-              resolve(result)
-            }
+        if(++sum === promises.length) {
+          if(fails === promises.length) {
+            reject(result)
+          } else {
+            resolve(result)
           }
-        })
+        }
+      })
     })
   })
 }

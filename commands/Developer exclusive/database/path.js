@@ -1,7 +1,7 @@
-const Discord = require('discord.js')
-const colors = require('../../../resources/colors')
+const Discord        = require('discord.js')
+const colors         = require('../../../resources/colors')
 const { errorEmbed } = require('./errorEmbed')
-const allCollection = require('../../../helpers/firestorm/all')
+const allCollection  = require('../../../helpers/firestorm/all')
 
 /**
  * Delete path with the given id
@@ -45,7 +45,7 @@ async function addPath(useID, args) {
       return errorEmbed("versions is not an Array OR the Array is empty, full object:\n { useID: String, path: String, versions: String[] }")
 
     var i = 0
-    while (i < obj.versions.length && typeof (obj.versions[i]) === 'string') { i++ }
+    while (i < obj.versions.length && typeof (obj.versions[i]) === 'string' ) { i++ }
     if (obj.versions.length !== i)
       return errorEmbed("versions is not an Array of String, full object:\n { useID: String, path: String, versions: String[] }")
 
@@ -85,7 +85,7 @@ async function setPath(id, args) {
   } catch (err) { return errorEmbed(err) }
 
   switch (parameter) {
-    case "full":
+    case "full": 
 
       try {
         var obj = JSON.parse(args.join(' '))
@@ -119,7 +119,7 @@ async function setPath(id, args) {
       return getPath(id)
     case "useID":
       path.useID = args[0]
-
+      
       try {
         await allCollection.texture_path.set(id, path)
       } catch (err) { return errorEmbed(err) }
@@ -139,7 +139,7 @@ async function setPath(id, args) {
       try {
         var arr = JSON.parse(args.join(' '))
       } catch (err) { return errorEmbed(err) }
-
+      
       if (!Array.isArray(arr))
         return errorEmbed("You must give a JSON Array, not a JSON Object")
 

@@ -17,34 +17,34 @@ async function addDeleteReact(sentMessage, authorMessage, deleteAuthorMessage = 
     else return !user.bot && [emojis.DELETE].includes(reaction.emoji.id) && user.id === authorMessage.author.id
   }
 
-  sentMessage.awaitReactions({ filter, max: 1, time: 60000, errors: ['time'] })
-    .then(async collected => {
-      const reaction = collected.first()
-      if (reaction.emoji.id !== emojis.DELETE) {
-        return
-      }
+  sentMessage.awaitReactions({filter, max: 1, time: 60000, errors: ['time'] })
+  .then(async collected => {
+    const reaction = collected.first()
+    if (reaction.emoji.id !== emojis.DELETE) {
+      return
+    }
 
-      await sentMessage.delete()
-      if (redirectMessage) {
-        if (deleteAuthorMessage == true) {
-          redirectMessage = await redirectMessage.fetch(true).catch(() => { }) // fix for unknown message
-          if (redirectMessage && !redirectMessage.deleted) await redirectMessage.delete()
-        }
-      } else {
-        if (deleteAuthorMessage == true) {
-          authorMessage = await authorMessage.fetch(true).catch(() => { }) // fix for unknown message
-          if (authorMessage && !authorMessage.deleted) await authorMessage.delete()
-        }
+    await sentMessage.delete()
+    if (redirectMessage) {
+      if (deleteAuthorMessage == true) {
+        redirectMessage = await redirectMessage.fetch(true).catch(() => {}) // fix for unknown message
+        if(redirectMessage && !redirectMessage.deleted) await redirectMessage.delete()
       }
-    })
-    .catch(async () => {
-      // only error cause is timeout, so delete the 
-      sentMessage = await sentMessage.fetch(true).catch(() => { }) // fix for unknown message
-      if (sentMessage && !sentMessage.deleted) {
-        const deleteReaction = sentMessage.reactions.cache.get(emojis.DELETE)
-        if (deleteReaction !== undefined) await deleteReaction.remove().catch(() => { }) // FIX for undefined delete reaction remove
+    } else {
+      if (deleteAuthorMessage == true) {
+        authorMessage = await authorMessage.fetch(true).catch(() => {}) // fix for unknown message
+        if(authorMessage && !authorMessage.deleted) await authorMessage.delete()
       }
-    })
+    }
+  })
+  .catch(async () => {
+    // only error cause is timeout, so delete the 
+    sentMessage = await sentMessage.fetch(true).catch(() => {}) // fix for unknown message
+    if (sentMessage && !sentMessage.deleted) {
+      const deleteReaction = sentMessage.reactions.cache.get(emojis.DELETE)
+      if(deleteReaction !== undefined) await deleteReaction.remove().catch(() => {}) // FIX for undefined delete reaction remove
+    }
+  })
 }
 
 exports.addDeleteReact = addDeleteReact

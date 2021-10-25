@@ -1,9 +1,9 @@
-const prefix = process.env.PREFIX
+const prefix  = process.env.PREFIX
 const Discord = require('discord.js')
 
 const settings = require('../../resources/settings')
-const colors = require('../../resources/colors')
-const { string } = require('../../resources/strings')
+const colors   = require('../../resources/colors')
+const strings  = require('../../resources/strings')
 const { addDeleteReact } = require('../../helpers/addDeleteReact')
 
 const quotes = [
@@ -34,22 +34,22 @@ const quotes = [
 
 module.exports = {
 	name: 'ping',
-	description: string('command.description.ping'),
+	description: strings.HELP_DESC_PING,
 	guildOnly: false,
-	uses: string('command.use.anyone'),
+	uses: strings.COMMAND_USES_ANYONE,
 	category: 'Bot',
 	syntax: `${prefix}ping`,
 	async execute(client, message, args) {
 		const m = new Discord.MessageEmbed().setTitle('Ping?').setColor(colors.BLUE)
 
-		message.reply({ embeds: [m] }).then(async m => {
+		message.reply({embeds: [m]}).then(async m => {
 			const embed = new Discord.MessageEmbed()
 				.setTitle('Pong!')
 				.setColor(colors.BLUE)
 				.setDescription(`_${quotes[Math.floor(Math.random() * quotes.length)]}_\n\n**Bot Latency** \n${m.createdTimestamp - message.createdTimestamp}ms \n**API Latency** \n${Math.round(client.ws.ping)}ms`)
 				.setFooter(message.client.user.username, settings.BOT_IMG)
-
-			await m.edit({ embeds: [embed] })
+				
+			await m.edit({embeds: [embed]})
 			addDeleteReact(m, message, true)
 		})
 	}

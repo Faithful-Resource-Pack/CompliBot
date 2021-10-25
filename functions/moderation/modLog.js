@@ -1,5 +1,5 @@
-const Discord = require('discord.js')
-const colors = require('../../resources/colors')
+const Discord  = require('discord.js')
+const colors   = require('../../resources/colors')
 const settings = require('../../resources/settings')
 
 /**
@@ -24,7 +24,7 @@ async function modLog(client, message, memberID, reason, time, type) {
 		.setDescription(`[Jump to message](${message.url})\n\n**Channel**: <#${message.channel.id}>\n**${type} user**: <@!${memberID}>\n**Reason**: \`${reason}\`\n**Time**: \`${time}\`\n**Date**: \`${message.createdAt.toLocaleString()}\``)
 		.setTimestamp()
 
-	await logChannel.send({ embeds: [embed] })
+	await logChannel.send({embeds: [embed]})
 }
 
-exports.modLog = modLog
+exports.modLog = modLog 

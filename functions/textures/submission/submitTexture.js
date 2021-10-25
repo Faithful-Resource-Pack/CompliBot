@@ -1,31 +1,31 @@
-const Discord = require('discord.js')
-const settings = require('../../../resources/settings')
-const colors = require('../../../resources/colors')
-const { string } = require('../../../resources/strings')
-const emojis = require('../../../resources/emojis')
+const Discord     = require('discord.js')
+const settings    = require('../../../resources/settings')
+const colors      = require('../../../resources/colors')
+const strings     = require('../../../resources/strings')
+const emojis      = require('../../../resources/emojis')
 const choiceEmbed = require('../../../helpers/choiceEmbed')
-const textures = require('../../../helpers/firestorm/texture')
-const paths = require('../../../helpers/firestorm/texture_paths')
+const textures    = require('../../../helpers/firestorm/texture')
+const paths       = require('../../../helpers/firestorm/texture_paths')
 
 const { Permissions } = require('discord.js');
 
 const MinecraftSorter = (a, b) => {
-  const aSplit = a.split('.').map(s => parseInt(s))
-  const bSplit = b.split('.').map(s => parseInt(s))
+	const aSplit = a.split('.').map(s => parseInt(s))
+	const bSplit = b.split('.').map(s => parseInt(s))
 
-  const upper = Math.min(aSplit.length, bSplit.length)
-  let i = 0
-  let result = 0
-  while (i < upper && result == 0) {
-    result = (aSplit[i] == bSplit[i]) ? 0 : (aSplit[i] < bSplit[i] ? -1 : 1) // each number
-    ++i
-  }
+	const upper = Math.min(aSplit.length, bSplit.length)
+	let i = 0
+	let result = 0
+	while(i < upper && result == 0) {
+		result = (aSplit[i] == bSplit[i]) ? 0 : (aSplit[i] < bSplit[i] ? -1 : 1) // each number
+		++i
+	}
 
-  if (result != 0) return result
+	if(result != 0) return result
 
-  result = (aSplit.length == bSplit.length) ? 0 : (aSplit.length < bSplit.length ? -1 : 1) // longer length wins
+	result = (aSplit.length == bSplit.length) ? 0 : (aSplit.length < bSplit.length ? -1 : 1) // longer length wins
 
-  return result
+	return result
 }
 
 /**
@@ -52,34 +52,34 @@ async function submitTexture(client, message) {
   }
 
   // same if no file is attached
-  if (message.attachments.size == 0) return invalidSubmission(message, string('command.push.image_not_attached'))
+  if (message.attachments.size == 0) return invalidSubmission(message, strings.PUSH_NOT_ATTACHED)
   // same if it's not a PNG
   if (
-    message.attachments.first().url.endsWith('.zip') ||
-    message.attachments.first().url.endsWith('.rar') ||
+    message.attachments.first().url.endsWith('.zip')  ||
+    message.attachments.first().url.endsWith('.rar')  ||
     message.attachments.first().url.endsWith('.7zip')
-  ) return invalidSubmission(message, string('command.push.invalid_format'))
+  ) return invalidSubmission(message, strings.PUSH_INVALID_FORMAT)
 
   // if no name are given, take the image url and get it's name
   if (!search) search = message.attachments.first().url.split('/').slice(-1)[0].replace('.png', '')
 
   // detect co-authors as mentions:
-  let mentions = message.mentions.users
-  param.authors = [message.author.id]
+  let mentions  = message.mentions.users
+  param.authors = [ message.author.id ]
   mentions.forEach(mention => { if (!param.authors.includes(mention.id)) param.authors.push(mention.id) })
 
   let results = new Array()
-
+  
   // priority to ids -> faster
   if (id) {
-    let texture = await textures.get(id).catch(err => invalidSubmission(message, string('command.push.unknown_id' + err)))
+    let texture = await textures.get(id).catch(err => invalidSubmission(message, strings.PUSH_UNKNOWN_ID + err))
     await makeEmbed(client, message, texture, param)
   }
   // no id given, search texture
   else if (!id && search) {
     /*var waitEmbed = new Discord.MessageEmbed()
       .setTitle('Loading')
-      .setDescription(string('command.texture.searching'))
+      .setDescription(strings.COMMAND_SEARCHING_FOR_TEXTURE)
       .setColor(colors.BLUE)
     const waitEmbedMessage = await message.reply({embeds: [waitEmbed]});*/
 
@@ -136,7 +136,7 @@ async function submitTexture(client, message) {
       //if (!waitEmbedMessage.deleted) await waitEmbedMessage.delete();
       choiceEmbed(message, {
         title: `${results.length} results, react to choose one!`,
-        description: string('command.texture.search_description'),
+        description: strings.TEXTURE_SEARCH_DESCRIPTION,
         footer: `${message.client.user.username}`,
         propositions: choice
       })
@@ -153,7 +153,7 @@ async function submitTexture(client, message) {
     }
     else {
       //if (!waitEmbedMessage.deleted) await waitEmbedMessage.delete()
-      await invalidSubmission(message, string('command.texture.does_not_exist') + '\n' + search)
+      await invalidSubmission(message, strings.TEXTURE_DOESNT_EXIST + '\n' + search)
     }
   }
 }
@@ -175,16 +175,16 @@ async function makeEmbed(client, message, texture, param = new Object()) {
   }
 
   let embed = new Discord.MessageEmbed()
-    .setAuthor(message.author.tag, message.author.displayAvatarURL()) // TODO: add a Compliance gallery url that match his profile and show us all his recent textures
-    .setColor(colors.BLUE)
-    .setTitle(`[#${texture.id}] ${texture.name}`)
-    //.setImage(message.attachments.first().url)
-    .addFields(
-      { name: 'Author', value: `<@!${param.authors.join('>\n<@!').toString()}>`, inline: true },
-      { name: 'Status', value: '⏳ Pending...', inline: true },
-      { name: '\u200B', value: pathText.toString().replace(/,/g, ''), inline: false }
-    )
-
+  .setAuthor(message.author.tag, message.author.displayAvatarURL()) // TODO: add a Compliance gallery url that match his profile and show us all his recent textures
+  .setColor(colors.BLUE)
+  .setTitle(`[#${texture.id}] ${texture.name}`)
+  //.setImage(message.attachments.first().url)
+  .addFields(
+    { name: 'Author', value: `<@!${param.authors.join('>\n<@!').toString()}>`, inline: true },
+    { name: 'Status', value: '⏳ Pending...', inline: true },
+    { name: '\u200B', value: pathText.toString().replace(/,/g,''), inline: false }
+  )
+  
   // re-upload the image to the new message, avoid broken link (rename it in the same time)
   const attachment = new Discord.MessageAttachment(message.attachments.first().url, texture.name + '.png')
   embed.setImage(`attachment://${texture.name}.png`)
@@ -195,7 +195,7 @@ async function makeEmbed(client, message, texture, param = new Object()) {
   if (param.authors.length > 1) embed.fields[0].name = 'Authors'
 
   // send the embed
-  const msg = await message.channel.send({ embeds: [embed], files: [attachment] });
+  const msg = await message.channel.send({embeds: [embed], files: [attachment]});
   if (!message.deleted) setTimeout(() => message.delete(), 10);
 
   // add reactions to the embed
@@ -207,16 +207,16 @@ async function makeEmbed(client, message, texture, param = new Object()) {
 
 async function invalidSubmission(message, error = 'Not given') {
   if (message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) return // allow admins to talk in submit channels
-
+  
   try {
     var embed = new Discord.MessageEmbed()
       .setAuthor(message.author.tag, message.author.displayAvatarURL())
       .setColor(colors.RED)
-      .setTitle(string('submission.autoreact.error_title'))
-      .setFooter(string('submission.autoreact.error_footer'), settings.BOT_IMG)
+      .setTitle(strings.SUBMIT_AUTOREACT_ERROR_TITLE)
+      .setFooter(strings.SUBMIT_AUTOREACT_ERROR_FOOTER, settings.BOT_IMG)
       .setDescription(error)
 
-    const msg = await message.reply({ embeds: [embed] });
+    const msg = await message.reply({embeds: [embed]});
     if (!msg.deleted) setTimeout(() => msg.delete(), 30000);
     if (!message.deleted) setTimeout(() => message.delete(), 30010);
   } catch (error) {

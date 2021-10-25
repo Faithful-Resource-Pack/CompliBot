@@ -21,20 +21,20 @@ let _token = undefined
 const ID_FIELD_NAME = 'id'
 
 const readAddress = () => {
-  if (!_address)
+  if(!_address)
     throw new Error('Firestorm address was not configured')
-
+  
   return _address + 'get.php'
 }
 const writeAddress = () => {
-  if (!_address)
+  if(!_address)
     throw new Error('Firestorm address was not configured')
-
+  
   return _address + 'post.php'
 }
 
 const writeToken = () => {
-  if (!_token)
+  if(!_token)
     throw new Error('Firestorm token was not configured')
 
   return _token
@@ -57,17 +57,17 @@ class Collection {
   __add_methods(req) {
     return new Promise((resolve, reject) => {
       req
-        .then(el => {
-          if (Array.isArray(el)) {
-            return resolve(el.map(e => this.addMethods(e)))
-          }
+      .then(el => {
+        if(Array.isArray(el)) {
+          return resolve(el.map(e => this.addMethods(e)))
+        }
 
-          el[Object.keys(el)[0]][ID_FIELD_NAME] = Object.keys(el)[0]
-          el = el[Object.keys(el)[0]]
+        el[Object.keys(el)[0]][ID_FIELD_NAME] = Object.keys(el)[0]
+        el = el[Object.keys(el)[0]]
 
-          // else on the object itself
-          return resolve(this.addMethods(el))
-        }).catch(err => reject(err))
+        // else on the object itself
+        return resolve(this.addMethods(el))
+      }).catch(err => reject(err))
     })
   }
 
@@ -81,7 +81,7 @@ class Collection {
         if ('data' in res) return resolve(res.data)
         return resolve(res)
       })
-        .catch(err => reject(err))
+      .catch(err => reject(err))
     })
   }
 
@@ -91,13 +91,11 @@ class Collection {
    * @returns {Promise<T>} Result entry you may be looking for
    */
   get(id) {
-    return this.__add_methods(this.__extract_data(axios.get(readAddress(), {
-      data: {
-        "collection": this.collectionName,
-        "command": "get",
-        "id": id
-      }
-    })))
+    return this.__add_methods(this.__extract_data(axios.get(readAddress(), { data: {
+      "collection": this.collectionName,
+      "command": "get",
+      "id": id
+    }})))
   }
 
   /**
@@ -133,7 +131,7 @@ class Collection {
    * @returns {Promise<T[]>} Search results
    */
   searchKeys(keys) {
-    if (!Array.isArray(keys))
+    if(!Array.isArray(keys))
       return Promise.reject('Incorrect keys')
 
     return new Promise((resolve, reject) => {
@@ -169,15 +167,15 @@ class Collection {
           "command": "read_raw"
         }
       }))
-        .then(data => {
-          Object.keys(data).forEach(key => {
-            data[key][ID_FIELD_NAME] = key
-            this.addMethods(data[key])
-          })
-
-          resolve(data)
+      .then(data => {
+        Object.keys(data).forEach(key => {
+          data[key][ID_FIELD_NAME] = key
+          this.addMethods(data[key])
         })
-        .catch(reject)
+
+        resolve(data)
+      })
+      .catch(reject)
     })
   }
 
@@ -194,16 +192,16 @@ class Collection {
       "collection": this.collectionName,
       "command": command
     }
-    if (multiple === true) {
+    if(multiple === true) {
       value.forEach(v => {
         delete v[ID_FIELD_NAME]
       })
-    } else if (multiple === false) {
+    } else if(multiple === false) {
       delete value[ID_FIELD_NAME]
     }
 
-    if (value) {
-      if (multiple)
+    if(value) {
+      if(multiple)
         obj["values"] = value
       else
         obj["value"] = value
@@ -243,11 +241,11 @@ class Collection {
    */
   addBulk(values) {
     return new Promise((resolve, reject) => {
-      this.__extract_data(axios.post(writeAddress(), this.__write_data('addBulk', values, true)))
-        .then(res => {
-          resolve(res.ids)
-        })
-        .catch(reject)
+    this.__extract_data(axios.post(writeAddress(), this.__write_data('addBulk', values, true)))
+      .then(res => {
+        resolve(res.ids)
+      })
+      .catch(reject)
     })
   }
 
@@ -318,8 +316,8 @@ module.exports = {
   /**
    * @param {String} newValue The new address value
    */
-  address: function (newValue = undefined) {
-    if (newValue) _address = newValue
+  address: function(newValue = undefined) {
+    if(newValue) _address = newValue
 
     return _address
   },
@@ -327,8 +325,8 @@ module.exports = {
   /**
    * @param {String} newValue The new write token
    */
-  token: function (newValue = undefined) {
-    if (newValue) _token = newValue
+  token: function(newValue = undefined) {
+    if(newValue) _token = newValue
 
     return _token
   },
@@ -336,7 +334,7 @@ module.exports = {
    * @param {String} name Collection name to get
    * @param {Function?} addMethods Additional methods and data to add to the objects
    */
-  collection: function (name, addMethods = el => el) {
+  collection: function(name, addMethods = el => el) {
     return new Collection(name, addMethods)
   },
 
@@ -344,7 +342,7 @@ module.exports = {
    * 
    * @param {String} name Table name to get
    */
-  table: function (name) {
+  table: function(name) {
     return this.collection(name)
   },
 

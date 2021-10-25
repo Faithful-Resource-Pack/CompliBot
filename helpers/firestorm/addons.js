@@ -18,4 +18,6 @@ require('./firestorm_config')()
  * @property {Object} downloads download_name: [link1, link2, ...] (how should I explain that?)
  */
 
-module.exports = firestorm.collection('addons')
+module.exports = firestorm.collection('addons', el => {
+  return el
+})
