@@ -1,7 +1,7 @@
 const Canvas = require('canvas')
 const Discord = require('discord.js')
 const settings = require('../../resources/settings')
-const { strings } = require('../../resources/strings')
+const { string } = require('../../resources/strings')
 
 const { addDeleteReact } = require('../../helpers/addDeleteReact')
 const { getMeta } = require('../../helpers/getMeta')
@@ -32,7 +32,7 @@ function magnify(message, url, gotocomplichannel = undefined, redirectMessage = 
 		if (sizeOrigin > 1024) factor = 8
 		if (sizeOrigin > 4096) factor = 4
 		if (sizeOrigin > 65636) factor = 2
-		if (sizeOrigin > 262144) return warnUser(message, strings('command.image.too_big'))
+		if (sizeOrigin > 262144) return warnUser(message, string('command.image.too_big'))
 
 		var width = dimension.width * factor
 		var height = dimension.height * factor
