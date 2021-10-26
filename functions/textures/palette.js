@@ -2,7 +2,7 @@ const Canvas = require('canvas')
 const Discord = require('discord.js')
 const colors2 = require('../../resources/colors')
 const settings = require('../../resources/settings')
-const { strings } = require('../../resources/strings')
+const { string } = require('../../resources/strings')
 
 const { getMeta } = require('../../helpers/getMeta')
 const { warnUser } = require('../../helpers/warnUser')
@@ -39,7 +39,7 @@ async function palette(message, url, gotocomplichannel = undefined, redirectMess
 	getMeta(url).then(async function (dimension) {
 		var sizeOrigin = dimension.width * dimension.height
 
-		if (sizeOrigin > 65536) return warnUser(message, await strings('command.image.too_big'))
+		if (sizeOrigin > 65536) return warnUser(message, await string('command.image.too_big'))
 
 		var canvas = Canvas.createCanvas(dimension.width, dimension.height).getContext('2d')
 		const allColors = {}
