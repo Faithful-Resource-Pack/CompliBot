@@ -80,13 +80,6 @@ module.exports = {
 		if (args[0].includes('32')) res = '32'
 		if (args[0].includes('64')) res = '64'
 
-		/*var waitEmbed = new Discord.MessageEmbed()
-			.setTitle('Loading')
-			.setDescription(strings.COMMAND_SEARCHING_FOR_TEXTURE) // strings is outdated
-			.setThumbnail(settings.LOADING_IMG)
-			.setColor(colors.BLUE)
-		const waitEmbedMessage = await message.reply({embeds: [waitEmbed]});*/
-
 		// partial texture name (_sword, _axe -> diamond_sword, diamond_axe...)
 		if (search.startsWith('_') || search.endsWith('_')) {
 			try {
@@ -166,7 +159,6 @@ module.exports = {
 				)
 			}
 
-			//if (!waitEmbedMessage.deleted) await waitEmbedMessage.delete();
 			choiceEmbed(message, {
 				title: `${results.length} results, react to choose one!`,
 				description: string('command.texture.search_description'),
@@ -180,14 +172,8 @@ module.exports = {
 					if (process.env.DEBUG) console.error(message, error)
 				})
 		}
-		else if (results.length == 1) {
-			await getTexture(message, res, results[0])
-			//if (!waitEmbedMessage.deleted) await waitEmbedMessage.delete();
-		}
-		else {
-			await warnUser(message, string('command.texture.does_not_exist'))
-			//if (!waitEmbedMessage.deleted) await waitEmbedMessage.delete();
-		}
+		else if (results.length == 1) await getTexture(message, res, results[0])
+		else await warnUser(message, string('command.texture.does_not_exist'))
 	}
 }
 
@@ -248,7 +234,6 @@ async function getTexture(message, res, texture) {
 			const size = dimension.width + '×' + dimension.height;
 
 			var embed = new Discord.MessageEmbed()
-				//.setAuthor('Note: this command isn\'t updated for 1.17 Pre-Release 3 yet')
 				.setTitle(`[#${texture.id}] ${texture.name}`)
 				.setColor(colors.BLUE)
 				//.setURL(imgURL) TODO: add a link to the website gallery where more information could be found about the texture

@@ -19,7 +19,7 @@ module.exports = {
 		return warnUser(message, string('command.disabled'));
 		// be aware that old strings below aren't converted to the new format
 
-		if (message.content.includes(" | ")) {
+		/*if (message.content.includes(" | ")) {
 			args = message.content.slice(prefix.length).trim().split(" | ");
 			args[0] = args[0].replace('poll ', '');
 
@@ -35,7 +35,7 @@ module.exports = {
 			else pollEmbed(message, args[1], options, args[0]);
 
 			return await message.delete();
-		} else return warnUser(message, 'You must separate each argument with ``args1 | args2``')
+		} else return warnUser(message, 'You must separate each argument with ``args1 | args2``')*/
 
 	}
 }
@@ -44,7 +44,7 @@ module.exports = {
  * THIS PART COMES FROM : https://github.com/saanuregh/discord.js-poll-embed/blob/master/index.js
  * Thanks to him!
 */
-const defEmojiList = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟', '🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮'];
+/*const defEmojiList = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟', '🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮'];
 
 const pollEmbed = async (msg, title, options, timeout = 30, emojiList = defEmojiList.slice(), forceEndPollEmoji = '🛑') => {
 	if (!msg && !msg.channel) return warnUser(msg, 'The channel is inaccessible!');
@@ -109,7 +109,6 @@ const pollEmbed = async (msg, title, options, timeout = 30, emojiList = defEmoji
 
 const embedBuilder = (title, author) => {
 	return new MessageEmbed()
-		.setColor(colors.BLUE)
 		.setTitle(`Poll: ${title}`)
 		.setFooter(`Poll created by ${author}`);
-};
+};*/

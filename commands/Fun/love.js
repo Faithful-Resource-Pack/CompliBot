@@ -28,7 +28,7 @@ module.exports = {
     const embed = new Discord.MessageEmbed()
       .setTitle(`${member.displayName} :heart: ${member2.displayName}`)
       .setDescription(love_amount + '%')
-      .setColor(colors.BLUED)
+      .setColor(colors.BLUE)
     return message.reply({ embeds: [embed] })
   }
 }

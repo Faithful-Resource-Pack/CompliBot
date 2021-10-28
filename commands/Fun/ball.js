@@ -23,7 +23,7 @@ module.exports = {
     const embed = new Discord.MessageEmbed()
       .setAuthor(message.author.username + ' asked: ' + question, message.author.displayAvatarURL())
       .setTitle('**' + stringsStartsWith('command.ball.responses.')[randomIndex] + '**')
-      .setColor(colors.BLUED)
+      .setColor(colors.BLUE)
     return message.reply({ embeds: [embed] })
   }
 }

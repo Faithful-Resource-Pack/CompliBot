@@ -35,7 +35,7 @@ module.exports = {
 
     const embed = new Discord.MessageEmbed()
       .setTitle('**' + output + '**')
-      .setColor(colors.BLUED)
+      .setColor(colors.BLUE)
 
     return message.reply({ embeds: [embed] })
   }

@@ -47,7 +47,6 @@ module.exports = {
 				.setTitle('Pong!')
 				.setColor(colors.BLUE)
 				.setDescription(`_${quotes[Math.floor(Math.random() * quotes.length)]}_\n\n**Bot Latency** \n${m.createdTimestamp - message.createdTimestamp}ms \n**API Latency** \n${Math.round(client.ws.ping)}ms`)
-				.setFooter(message.client.user.username, settings.BOT_IMG)
 
 			await m.edit({ embeds: [embed] })
 			addDeleteReact(m, message, true)

@@ -17,7 +17,7 @@ module.exports = {
     const embed = new Discord.MessageEmbed()
       .setTitle(isTails ? 'Tails' : 'Heads')
       .setThumbnail(isTails ? 'https://www.cjoint.com/doc/21_10/KJyoaQ8CqnR_euro-tails.png' : 'https://www.cjoint.com/doc/21_10/KJyohzpOqDR_euro-heads.png')
-      .setColor(colors.BLUED)
+      .setColor(colors.BLUE)
     return message.reply({ embeds: [embed] })
   }
 }

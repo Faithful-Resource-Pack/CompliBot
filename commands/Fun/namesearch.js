@@ -29,7 +29,7 @@ module.exports = {
     const embed = new Discord.MessageEmbed()
       .setTitle(`Members with \`\`${search}\`\` in their name`)
       .setDescription(results.size > 0 ? results.map(e => `<@!${e.id}>`).join(' ') : '*No user found*')
-      .setColor(colors.BLUED)
+      .setColor(colors.BLUE)
     return message.reply({ embeds: [embed] })
   }
 }

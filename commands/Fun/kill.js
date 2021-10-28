@@ -30,7 +30,7 @@ module.exports = {
 
 		const embed = new Discord.MessageEmbed()
 			.setDescription(result)
-			.setColor(colors.BLUED)
+			.setColor(colors.BLUE)
 		await message.reply({ embeds: [embed] })
 	}
 }
