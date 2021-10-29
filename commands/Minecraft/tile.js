@@ -26,6 +26,19 @@ module.exports = {
 			return tile(message, DATA, args[0]);
 		}
 
+		// replying to message
+		else if (message.reference) {
+			message.channel.messages.fetch(message.reference.messageId).then(msg => {
+				if (msg.attachments.size > 0) {
+					DATA = msg.attachments.first().url;
+					return tile(message, DATA, args[0]);
+				}
+				else return warnUser(message, string('ccommand.image.no_reply_attachment'));
+			}).catch(error => {
+				return warnUser(message, error);
+			})
+		}
+
 		// previous image with tiling options
 		else if ((args[0] == undefined || tileArgs.includes(args[0])) && message.attachments.size == 0) {
 			return PreviousImage(args[0]);

@@ -12,18 +12,29 @@ module.exports = {
 	guildOnly: false,
 	uses: string('command.use.anyone'),
 	category: 'Minecraft',
-	syntax: `${prefix}magnify (Default: up to 10 images above)\n${prefix}magnify attach an image\n${prefix}magnify <Discord message url>\n${prefix}magnify <image URL>\n${prefix}magnify <message ID>\n${prefix}magnify [up/^/last]`,
+	syntax: `${prefix}magnify (Default: up to 10 images above)\n${prefix}magnify (attach an image)\n${prefix}magnify (reply to a message)\n${prefix}magnify <Discord message url>\n${prefix}magnify <image URL>\n${prefix}magnify <message ID>\n${prefix}magnify [up/^/last]`,
 	example: `${prefix}magnify`,
 	async execute(client, message, args) {
 		let DATA;
-
-		if (!isNaN(args[0])) return warnUser(message, 'Magnifying by a factor is not supported anymore. Please just type the command without specifying the factor.')
 
 		// <data>
 		// image attached
 		if ((args[0] == undefined || args[0] == '') && message.attachments.size > 0) {
 			DATA = message.attachments.first().url;
 			return magnify(message, DATA);
+		}
+
+		// replying to message
+		else if (message.reference) {
+			message.channel.messages.fetch(message.reference.messageId).then(msg => {
+				if (msg.attachments.size > 0) {
+					DATA = msg.attachments.first().url;
+					return magnify(message, DATA);
+				}
+				else return warnUser(message, string('command.image.no_reply_attachment'));
+			}).catch(error => {
+				return warnUser(message, error);
+			})
 		}
 
 		// previous image
@@ -39,7 +50,7 @@ module.exports = {
 					return magnify(message, DATA);
 				}
 				else return warnUser(message, string('command.image.not_attached.message'))
-			}).catch(() => { return warnUser(message, strings.COMMAND_URL_ONLY_SAME_CHANNEL) })
+			}).catch(() => { return warnUser(message, string('command.url.same_channel_only')) })
 		}
 
 		// Image URL

@@ -12,7 +12,7 @@ module.exports = {
 	guildOnly: false,
 	uses: string('command.use.anyone'),
 	category: 'Minecraft',
-	syntax: `${prefix}palette attach an image\n${prefix}palette <Discord message url>\n${prefix}palette <image URL>\n${prefix}palette <message ID>\n${prefix}palette [up/^/last]`,
+	syntax: `${prefix}palette (Default: up to 10 images above)\n${prefix}palette (attach an image)\n${prefix}palette (reply to a message)\n${prefix}palette <Discord message url>\n${prefix}palette <image URL>\n${prefix}palette <message ID>\n${prefix}palette [up/^/last]`,
 	async execute(client, message, args) {
 		var DATA;
 
@@ -21,6 +21,19 @@ module.exports = {
 		if ((args[0] == undefined || args[0] == '') && message.attachments.size > 0) {
 			DATA = message.attachments.first().url;
 			return palette(message, DATA);
+		}
+
+		// replying to message
+		else if (message.reference) {
+			message.channel.messages.fetch(message.reference.messageId).then(msg => {
+				if (msg.attachments.size > 0) {
+					DATA = msg.attachments.first().url;
+					return palette(message, DATA);
+				}
+				else return warnUser(message, string('command.image.no_reply_attachment'));
+			}).catch(error => {
+				return warnUser(message, error);
+			})
 		}
 
 		// previous image
