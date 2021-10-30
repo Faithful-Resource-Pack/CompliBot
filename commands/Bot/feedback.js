@@ -9,6 +9,7 @@ const { warnUser } = require('../../helpers/warnUser');
 
 module.exports = {
 	name: 'feedback',
+	aliases: ['suggest', 'bugreport'],
 	description: string('command.description.feedback'),
 	guildOnly: false,
 	uses: string('command.use.anyone'),
