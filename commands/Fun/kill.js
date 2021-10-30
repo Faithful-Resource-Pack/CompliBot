@@ -1,9 +1,10 @@
 const prefix = process.env.PREFIX;
 const Discord = require('discord.js');
 
-const { string, stringsStartsWith } = require('../../resources/strings');
 const colors = require('../../resources/colors');
 
+const { string, stringsStartsWith } = require('../../resources/strings');
+const { addDeleteReact } = require('../../helpers/addDeleteReact');
 const { warnUser } = require('../../helpers/warnUser');
 
 module.exports = {
@@ -31,6 +32,7 @@ module.exports = {
 		const embed = new Discord.MessageEmbed()
 			.setDescription(result)
 			.setColor(colors.BLUE)
-		await message.reply({ embeds: [embed] })
+		const embedMessage = await message.reply({ embeds: [embed] })
+		await addDeleteReact(embedMessage, message, true);
 	}
 }

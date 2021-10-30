@@ -2,8 +2,10 @@ const prefix = process.env.PREFIX
 const Discord = require('discord.js')
 const axios = require('axios').default
 
-const { string } = require('../../resources/strings')
 const colors = require('../../resources/colors')
+
+const { string } = require('../../resources/strings')
+const { addDeleteReact } = require('../../helpers/addDeleteReact');
 
 module.exports = {
   name: 'quote',
@@ -18,6 +20,7 @@ module.exports = {
     const embed = new Discord.MessageEmbed()
       .setImage(image.data)
       .setColor(colors.BLUE)
-    return message.reply({ embeds: [embed] })
+    const embedMessage = await message.reply({ embeds: [embed] })
+    await addDeleteReact(embedMessage, message, true);
   }
 }

@@ -1,9 +1,10 @@
 const prefix = process.env.PREFIX
 const Discord = require('discord.js')
 
-const { string } = require('../../resources/strings')
 const colors = require('../../resources/colors')
 
+const { string } = require('../../resources/strings')
+const { addDeleteReact } = require('../../helpers/addDeleteReact');
 const { warnUser } = require('../../helpers/warnUser')
 
 module.exports = {
@@ -30,6 +31,7 @@ module.exports = {
       .setTitle(`Members with \`\`${search}\`\` in their name`)
       .setDescription(results.size > 0 ? results.map(e => `<@!${e.id}>`).join(' ') : '*No user found*')
       .setColor(colors.BLUE)
-    return message.reply({ embeds: [embed] })
+    const embedMessage = await message.reply({ embeds: [embed] })
+    await addDeleteReact(embedMessage, message, true);
   }
 }

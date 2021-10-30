@@ -5,6 +5,8 @@ const os = require('os');
 const moment = require('moment');
 const settings = require('../../resources/settings');
 const colors = require('../../resources/colors');
+
+const { addDeleteReact } = require('../../helpers/addDeleteReact');
 const { string } = require('../../resources/strings');
 const { get: getCommandProcessed } = require("../../functions/commandProcess");
 
@@ -51,6 +53,7 @@ module.exports = {
 			)
 			.setFooter('Bot made with love', 'https://static.wikia.nocookie.net/minecraft_gamepedia/images/0/06/Heart_(icon).png')
 
-		return message.reply({ embeds: [embed] });
+		const embedMessage = await message.reply({ embeds: [embed] });
+		await addDeleteReact(embedMessage, message, true);
 	}
 };

@@ -1,9 +1,10 @@
 const prefix = process.env.PREFIX
 const Discord = require('discord.js')
 
-const { string } = require('../../resources/strings')
 const colors = require('../../resources/colors')
 
+const { string } = require('../../resources/strings')
+const { addDeleteReact } = require('../../helpers/addDeleteReact');
 const { warnUser } = require('../../helpers/warnUser')
 
 module.exports = {
@@ -29,6 +30,7 @@ module.exports = {
       .setTitle(`${member.displayName} :heart: ${member2.displayName}`)
       .setDescription(love_amount + '%')
       .setColor(colors.BLUE)
-    return message.reply({ embeds: [embed] })
+    const embedMessage = await message.reply({ embeds: [embed] })
+    await addDeleteReact(embedMessage, message, true);
   }
 }

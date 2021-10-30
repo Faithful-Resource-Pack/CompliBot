@@ -1,8 +1,10 @@
 const prefix = process.env.PREFIX
 const Discord = require('discord.js')
 
-const { string } = require('../../resources/strings')
 const colors = require('../../resources/colors')
+
+const { string } = require('../../resources/strings')
+const { addDeleteReact } = require('../../helpers/addDeleteReact');
 
 module.exports = {
   name: 'coin',
@@ -18,6 +20,7 @@ module.exports = {
       .setTitle(isTails ? 'Tails' : 'Heads')
       .setThumbnail(isTails ? 'https://www.cjoint.com/doc/21_10/KJyoaQ8CqnR_euro-tails.png' : 'https://www.cjoint.com/doc/21_10/KJyohzpOqDR_euro-heads.png')
       .setColor(colors.BLUE)
-    return message.reply({ embeds: [embed] })
+    const embedMessage = await message.reply({ embeds: [embed] })
+    await addDeleteReact(embedMessage, message, true);
   }
 }

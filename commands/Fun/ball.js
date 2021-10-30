@@ -1,10 +1,11 @@
 const prefix = process.env.PREFIX
 const Discord = require('discord.js')
 
-const { string, stringsStartsWith } = require('../../resources/strings')
 const colors = require('../../resources/colors')
 
+const { string, stringsStartsWith } = require('../../resources/strings')
 const { warnUser } = require('../../helpers/warnUser')
+const { addDeleteReact } = require('../../helpers/addDeleteReact');
 
 module.exports = {
   name: 'ball',
@@ -24,6 +25,7 @@ module.exports = {
       .setAuthor(message.author.username + ' asked: ' + question, message.author.displayAvatarURL())
       .setTitle('**' + stringsStartsWith('command.ball.responses.')[randomIndex] + '**')
       .setColor(colors.BLUE)
-    return message.reply({ embeds: [embed] })
+    const embedMessage = await message.reply({ embeds: [embed] })
+    await addDeleteReact(embedMessage, message, true);
   }
 }
