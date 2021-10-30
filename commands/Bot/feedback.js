@@ -17,7 +17,6 @@ module.exports = {
 	syntax: `${prefix}feedback [message]`,
 	example: `${prefix}feedback Give the bot more beans`,
 	async execute(client, message, args) {
-		//const channel = client.channels.cache.get('821793794738749462');
 		const channel = client.channels.cache.get('821793794738749462');
 		let file
 
@@ -26,8 +25,12 @@ module.exports = {
 		var embed = new Discord.MessageEmbed()
 			.setAuthor(`Feedback from ${message.author.tag}`, message.author.displayAvatarURL())
 			.setColor(colors.BLUE)
-			.setDescription(`[Jump to message](${message.url})\n\n\`\`\`${args.join(' ')}\`\`\``)
 			.setTimestamp()
+
+		if (message.channel.type === 'DM')
+			embed.setDescription(`\`\`\`${args.join(' ')}\`\`\``)
+		else
+			embed.setDescription(`[Jump to message](${message.url})\n\n\`\`\`${args.join(' ')}\`\`\``)
 
 		if (message.attachments.size > 0) {
 			file = message.attachments.first().url
@@ -65,7 +68,7 @@ module.exports = {
 
 					await channel.send({ embeds: [embed] });
 					await confirmEmbedMsg.edit({ embeds: [embed2] });
-					await confirmEmbedMsg.reactions.cache.get(emojis.UPVOTE).remove()
+					if (message.channel.type !== 'DM') await confirmEmbedMsg.reactions.cache.get(emojis.UPVOTE).remove()
 
 					//await feedbackMsg.react(emojis.UPVOTE).catch(() => {}); 
 					//await feedbackMsg.react(emojis.DOWNVOTE).catch(() => {});
