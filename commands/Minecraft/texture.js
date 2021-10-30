@@ -43,9 +43,9 @@ module.exports = {
 	name: 'texture',
 	aliases: ['textures'],
 	description: string('command.description.texture'),
+	category: 'Minecraft',
 	guildOnly: false,
 	uses: string('command.use.anyone'),
-	category: 'Minecraft',
 	syntax: `${prefix}texture <16/32/64> <texture_name>\n${prefix}texture <16/32/64> <_name>\n${prefix}texture <16/32/64> </folder/>`,
 	example: `${prefix}texture 16 dirt`,
 

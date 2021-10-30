@@ -14,12 +14,11 @@ module.exports = {
 	name: 'reload',
 	aliases: ['r'],
 	description: string('command.description.reload'),
+	category: 'Developer exclusive',
 	guildOnly: false,
 	uses: string('command.use.devs'),
-	category: 'Developer exclusive',
 	syntax: `${prefix}reload <command>`,
 	example: `${prefix}reload magnify`,
-	args: true,
 	async execute(client, message, args) {
 		if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD || message.author.id === uidT) {
 			const commandName = args[0].toLowerCase();

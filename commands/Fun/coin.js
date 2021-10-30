@@ -10,9 +10,9 @@ module.exports = {
   name: 'coin',
   aliases: ['coinflip'],
   description: string('command.description.coin'),
+  category: 'Fun',
   guildOnly: false,
   uses: string('command.use.anyone'),
-  category: 'Fun',
   syntax: `${prefix}coin`,
   async execute(_client, message) {
     const isTails = Math.random() > 0.5

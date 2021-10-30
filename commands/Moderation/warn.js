@@ -12,9 +12,9 @@ const { addMutedRole } = require('../../functions/moderation/addMutedRole');
 module.exports = {
 	name: 'warn',
 	description: string('command.description.warn'),
+	category: 'Moderation',
 	guildOnly: true,
 	uses: string('command.use.mods'),
-	category: 'Moderation',
 	syntax: `${prefix}warn <@user> <reason>`,
 	example: `${prefix}warn @Juknum#6148 breaking the bot`,
 	async execute(client, message, args) {

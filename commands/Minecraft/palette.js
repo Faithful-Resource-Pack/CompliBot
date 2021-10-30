@@ -9,9 +9,9 @@ module.exports = {
 	name: 'palette',
 	aliases: ['p', 'colors', 'colormap', 'colours'],
 	description: string('command.description.palette'),
+	category: 'Minecraft',
 	guildOnly: false,
 	uses: string('command.use.anyone'),
-	category: 'Minecraft',
 	syntax: `${prefix}palette (Default: up to 10 images above)\n${prefix}palette (attach an image)\n${prefix}palette (reply to a message)\n${prefix}palette <Discord message url>\n${prefix}palette <image URL>\n${prefix}palette <message ID>\n${prefix}palette [up/^/last]`,
 	async execute(client, message, args) {
 		var DATA;

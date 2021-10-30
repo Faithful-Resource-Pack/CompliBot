@@ -16,11 +16,10 @@ module.exports = {
   name: 'users',
   aliases: ['user'],
   description: 'Fix or modify users elements directly from the bot',
+  category: 'Developer exclusive',
   guildOnly: false,
   uses: string('command.use.devs'),
-  category: 'Developer exclusive',
   syntax: `${prefix}users <set> <id> <field> <value>\n${prefix}user <delete> <id>\n${prefix}user <add> <id> [username]`,
-  args: true,
   example: `${prefix}user delete <id>\n${prefix}user add <id> RoBoT\n${prefix}user set <id> username Steve\n${prefix}user set <id> type [ "member", ... ]\n${prefix}user set <id> warns [ "warn1", ... ] -> This doesn't give the muted role !!!\n${prefix}user set <id> muted { "start": <timestamp start>, "end": <timestamp end> } -> This doesn't give the muted role !!!`,
   async execute(_client, message, args) {
     if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD || message.author.id === uidT) {

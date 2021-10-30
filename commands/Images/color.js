@@ -10,9 +10,9 @@ module.exports = {
   name: 'color',
   aliases: ['color', 'colour', 'c'],
   description: string('command.description.color'),
+  category: 'Images',
   guildOnly: false,
   uses: string('command.use.anyone'),
-  category: 'Images',
   syntax: `
 ${prefix}color #123456
 ${prefix}color rgb([0-255],[0-255],[0-255])

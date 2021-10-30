@@ -9,9 +9,9 @@ module.exports = {
 	name: 'tile',
 	aliases: ['t'],
 	description: string('command.description.tile'),
+	category: 'Minecraft',
 	guildOnly: false,
 	uses: string('command.use.anyone'),
-	category: 'Minecraft',
 	syntax: `${prefix}tile [vertical/horizontal/grid/round/plus] + attach a file`,
 	async execute(client, message, args) {
 		const tileArgs = ['grid', 'g', 'vertical', 'v', 'horizontal', 'h', 'round', 'r', 'plus', 'p'];

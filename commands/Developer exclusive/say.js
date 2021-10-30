@@ -12,9 +12,9 @@ const { warnUser } = require('../../helpers/warnUser.js');
 module.exports = {
 	name: 'say',
 	description: string('command.description.say'),
+	category: 'Developer exclusive',
 	guildOnly: true,
 	uses: string('command.use.devs'),
-	category: 'Developer exclusive',
 	syntax: `${prefix}say [message] [attach a file]`,
 	example: `${prefix}say hello there`,
 	async execute(client, message, args) {

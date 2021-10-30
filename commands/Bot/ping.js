@@ -35,9 +35,9 @@ const quotes = [
 module.exports = {
 	name: 'ping',
 	description: string('command.description.ping'),
+	category: 'Bot',
 	guildOnly: false,
 	uses: string('command.use.anyone'),
-	category: 'Bot',
 	syntax: `${prefix}ping`,
 	async execute(client, message, args) {
 		const m = new Discord.MessageEmbed().setTitle('Ping?').setColor(colors.BLUE)

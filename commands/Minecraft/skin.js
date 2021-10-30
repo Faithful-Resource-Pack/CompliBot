@@ -12,9 +12,9 @@ const { addDeleteReact } = require('../../helpers/addDeleteReact');
 module.exports = {
 	name: 'skin',
 	description: string('command.description.skin'),
+	category: 'Minecraft',
 	guildOnly: false,
 	uses: string('command.use.anyone'),
-	category: 'Minecraft',
 	syntax: `${prefix}skin [minecraft username]`,
 	example: `${prefix}skin Pomi108`,
 	async execute(client, message, args) {

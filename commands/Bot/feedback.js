@@ -11,9 +11,9 @@ module.exports = {
 	name: 'feedback',
 	aliases: ['suggest', 'bugreport'],
 	description: string('command.description.feedback'),
+	category: 'Bot',
 	guildOnly: false,
 	uses: string('command.use.anyone'),
-	category: 'Bot',
 	syntax: `${prefix}feedback [message]`,
 	example: `${prefix}feedback Give the bot more beans`,
 	async execute(client, message, args) {

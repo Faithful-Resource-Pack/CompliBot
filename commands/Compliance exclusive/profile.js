@@ -11,11 +11,11 @@ const { getMember } = require("../../helpers/getMember");
 
 module.exports = {
 	name: 'profile',
-	uses: string('command.use.anyone'),
-	category: 'Compliance exclusive',
-	syntax: `${prefix}profile username <Your Name>\n${prefix}profile uuid <Your MC uuid (full uuid)>\n${prefix}profile show -> Display what the bot knows about you\n\nModerators only:\n${prefix}profile [@someone/username/nickname/id]`,
 	description: string('command.description.profile'),
+	category: 'Compliance exclusive',
 	guildOnly: false,
+	uses: string('command.use.anyone'),
+	syntax: `${prefix}profile username <Your Name>\n${prefix}profile uuid <Your MC uuid (full uuid)>\n${prefix}profile show -> Display what the bot knows about you\n\nModerators only:\n${prefix}profile [@someone/username/nickname/id]`,
 	/**
 	 * @param {Discord.Client} _client Discord client handling command
 	 * @param {Discord.Message} message Discord origin message

@@ -68,12 +68,11 @@ function execPromise(cmd) {
 module.exports = {
   name: 'restart',
   description: string('command.description.restart'),
+  category: 'Developer exclusive',
   guildOnly: false,
   uses: string('command.use.devs'),
-  category: 'Developer exclusive',
   syntax: `${prefix}restart`,
   example: `${prefix}restart`,
-  args: true,
   /**
    * Pulls, and reloads the bot
    * @param {Discord.Client} client Discord Client receiving the message

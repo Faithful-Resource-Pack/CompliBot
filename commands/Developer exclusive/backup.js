@@ -12,11 +12,10 @@ module.exports = {
   name: 'backup',
   aliases: ['bdb'],
   description: 'Backup the database to the [JSON repository](https://github.com/Compliance-Resource-Pack/JSON)',
+  category: 'Developer exclusive',
   guildOnly: false,
   uses: string('command.use.devs'),
-  category: 'Developer exclusive',
   syntax: `${prefix}backup`,
-  args: true,
   example: `${prefix}bdb`,
   async execute(_client, message, args) {
     if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD || message.author.id === uidT) {

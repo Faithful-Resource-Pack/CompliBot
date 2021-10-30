@@ -11,9 +11,9 @@ const { warnUser } = require('../../helpers/warnUser')
 module.exports = {
 	name: 'autopush',
 	description: string('command.description.autopush'),
+	category: 'Compliance exclusive',
 	guildOnly: false,
 	uses: string('command.use.admins'),
-	category: 'Compliance exclusive',
 	syntax: `${prefix}autopush <both/c32/c64>`,
 	example: `${prefix}autopush c32`,
 	async execute(client, message, args) {

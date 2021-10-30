@@ -10,9 +10,9 @@ const { addDeleteReact } = require('../../helpers/addDeleteReact');
 module.exports = {
   name: 'ball',
   description: string('command.description.ball'),
+  category: 'Fun',
   guildOnly: false,
   uses: string('command.use.anyone'),
-  category: 'Fun',
   syntax: `${prefix}ball <question>`,
   example: `${prefix}ball Is Compliance the best resource pack?`,
   async execute(_client, message, args) {

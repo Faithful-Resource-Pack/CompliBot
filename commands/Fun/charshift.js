@@ -10,9 +10,9 @@ const { warnUser } = require('../../helpers/warnUser')
 module.exports = {
   name: 'charshift',
   description: string('command.description.charshift'),
+  category: 'Fun',
   guildOnly: false,
   uses: string('command.use.anyone'),
-  category: 'Fun',
   syntax: `${prefix}charshift <offset> <text>`,
   example: `${prefix}charshift 5 Devs are awesome`,
   async execute(_client, message, args) {

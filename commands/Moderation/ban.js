@@ -11,9 +11,9 @@ const { modLog } = require('../../functions/moderation/modLog')
 module.exports = {
 	name: 'ban',
 	description: string('command.description.ban'),
+	category: 'Moderation',
 	guildOnly: true,
 	uses: string('command.use.admins'),
-	category: 'Moderation',
 	syntax: `${prefix}ban <@user> <reason>`,
 	example: `${prefix}ban @RobertR11#7841 breaking rule 2`,
 	async execute(client, message, args) {

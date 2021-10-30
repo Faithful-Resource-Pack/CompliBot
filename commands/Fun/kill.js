@@ -10,9 +10,9 @@ const { warnUser } = require('../../helpers/warnUser');
 module.exports = {
 	name: 'kill',
 	description: string('command.description.kill'),
+	category: 'Fun',
 	guildOnly: true,
 	uses: string('command.use.mods'),
-	category: 'Fun',
 	syntax: `${prefix}kill <@user> [weapon]`,
 	example: `${prefix}kill Sei the beans`,
 	async execute(client, message, args) {

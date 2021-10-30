@@ -12,9 +12,9 @@ const { warnUser } = require('../../helpers/warnUser');
 module.exports = {
 	name: 'translate',
 	description: string('command.description.translate'),
+	category: 'Server',
 	guildOnly: false,
 	uses: string('command.use.devs'),
-	category: 'Server',
 	syntax: `${prefix}translate`,
 	example: `${prefix}translate de Hello world!`,
 	async execute(client, message, args) {

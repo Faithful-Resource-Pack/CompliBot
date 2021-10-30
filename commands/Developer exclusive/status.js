@@ -16,9 +16,9 @@ module.exports = {
 	name: 'status',
 	aliases: ['presence', 'activity'],
 	description: string('command.description.status'),
+	category: 'Developer exclusive',
 	guildOnly: false,
 	uses: string('command.use.devs'),
-	category: 'Developer exclusive',
 	syntax: `${prefix}status <activity> <presence> <status>`,
 	async execute(client, message, args) {
 		if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD || message.author.id === uidT) {

@@ -5,9 +5,9 @@ const { string } = require('../../resources/strings');
 module.exports = {
 	name: 'order',
 	description: string('command.description.order'),
+	category: 'Fun',
 	guildOnly: false,
 	uses: string('command.use.anyone'),
-	category: 'Fun',
 	syntax: `${prefix}order <pizza/66/help/soup>`,
 	example: `${prefix}order pizza`,
 	async execute(client, message, args) {

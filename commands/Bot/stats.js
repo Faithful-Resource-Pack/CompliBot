@@ -14,9 +14,9 @@ module.exports = {
 	name: 'stats',
 	aliases: ['botstats'],
 	description: string('command.description.stats'),
+	category: 'Bot',
 	guildOnly: false,
 	uses: string('command.use.anyone'),
-	category: 'Bot',
 	syntax: `${prefix}stats`,
 	/**
 	 * @param {Discord.Client} client 

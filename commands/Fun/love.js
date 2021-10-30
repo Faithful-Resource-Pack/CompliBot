@@ -10,9 +10,9 @@ const { warnUser } = require('../../helpers/warnUser')
 module.exports = {
   name: 'love',
   description: string('command.description.love'),
+  category: 'Fun',
   guildOnly: true,
   uses: string('command.use.anyone'),
-  category: 'Fun',
   syntax: `${prefix}love <@user1> <@user2>`,
   example: `${prefix}love @Juknum @TheRolf\n${prefix}love Juknum TheRolf`,
   /** @param {Discord.Message} message */

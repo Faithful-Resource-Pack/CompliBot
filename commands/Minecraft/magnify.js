@@ -9,9 +9,9 @@ module.exports = {
 	name: 'magnify',
 	aliases: ['zoom', 'z', 'scale', 'mag', 'm'],
 	description: string('command.description.magnify'),
+	category: 'Minecraft',
 	guildOnly: false,
 	uses: string('command.use.anyone'),
-	category: 'Minecraft',
 	syntax: `${prefix}magnify (Default: up to 10 images above)\n${prefix}magnify (attach an image)\n${prefix}magnify (reply to a message)\n${prefix}magnify <Discord message url>\n${prefix}magnify <image URL>\n${prefix}magnify <message ID>\n${prefix}magnify [up/^/last]`,
 	example: `${prefix}magnify`,
 	async execute(client, message, args) {

@@ -12,9 +12,9 @@ module.exports = {
   name: 'lang',
   aliases: ['dict'],
   description: 'Edit global strings without restarting the bot :)',
+  category: 'Developer exclusive',
   guildOnly: false,
-  use: string('command.use.devs'),
-  args: true,
+  uses: string('command.use.devs'),
   syntax: `
 ${prefix}lang see <collection> <lang> <name>
 ${prefix}lang add|edit <collection> <lang> <name> <string>

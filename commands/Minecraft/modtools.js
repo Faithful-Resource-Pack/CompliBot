@@ -10,9 +10,9 @@ const { warnUser } = require('../../helpers/warnUser');
 module.exports = {
 	name: 'modtools',
 	description: string('command.description.modtools'),
+	category: 'Minecraft',
 	guildOnly: true,
 	uses: string('command.use.anyone'),
-	category: 'Minecraft',
 	syntax: `${prefix}modtools`,
 	async execute(client, message, args) {
 		if (message.guild.id !== settings.CEXTRAS_ID) return warnUser(message, 'This command can only be used in the Compliance Extras server!');

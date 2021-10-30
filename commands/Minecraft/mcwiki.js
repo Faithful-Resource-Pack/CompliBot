@@ -21,6 +21,7 @@ module.exports = {
   name: 'mcwiki',
   aliases: ['wiki'],
   description: string('command.description.mcwiki'),
+  category: 'Minecraft',
   guildOnly: false,
   uses: string('command.use.anyone'),
   syntax: `${prefix}mcwiki <searchTerms>`,

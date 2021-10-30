@@ -10,9 +10,9 @@ const { addDeleteReact } = require('../../helpers/addDeleteReact');
 module.exports = {
   name: 'quote',
   description: string('command.description.quote'),
+  category: 'Fun',
   guildOnly: false,
   uses: string('command.use.anyone'),
-  category: 'Fun',
   syntax: `${prefix}quote`,
   async execute(_client, message) {
     const image = await axios.get('https://inspirobot.me/api?generate=true')

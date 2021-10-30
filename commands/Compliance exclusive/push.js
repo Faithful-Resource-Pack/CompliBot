@@ -14,9 +14,9 @@ const contributions = require('../../helpers/firestorm/contributions');
 module.exports = {
 	name: 'push',
 	description: string('command.description.push'),
+	category: 'Compliance exclusive',
 	guildOnly: false,
 	uses: string('command.disabled'),
-	category: 'Compliance exclusive',
 	//uses: string('command.use.mods'),
 	syntax: `${process.env.PREFIX}push -r -n -a + file attached`,
 	flags: '-r | --repo :\n\tCompliance-[Java|Bedrock]-[32x-64x]\n\

@@ -11,9 +11,9 @@ const uidJ = process.env.UIDJ;
 module.exports = {
 	name: 'infoembed',
 	description: string('command.description.infoembed'),
+	category: 'Compliance exclusive',
 	guildOnly: true,
 	uses: string('command.use.devs'),
-	category: 'Compliance exclusive',
 	syntax: `${prefix}discords`,
 	async execute(client, message, args) {
 		if (message.author.id === uidR || message.author.id === uidJ) {

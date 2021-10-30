@@ -10,9 +10,9 @@ module.exports = {
 	name: 'slowmode',
 	aliases: ['slow'],
 	description: string('command.description.slowmode'),
+	category: 'Moderation',
 	guildOnly: true,
 	uses: string('command.use.mods'),
-	category: 'Moderation',
 	syntax: `${prefix}slowmode <time in seconds/off/disable/stop>`,
 	example: `${prefix}slowmode 10`,
 	async execute(client, message, args) {

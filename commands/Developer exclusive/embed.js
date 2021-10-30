@@ -10,9 +10,9 @@ module.exports = {
 	name: 'embed',
 	aliases: ['embeds'],
 	description: string('command.description.embed'),
+	category: 'Developer exclusive',
 	guildOnly: false,
 	uses: string('command.use.admins'),
-	category: 'Developer exclusive',
 	syntax: `${prefix}embed <id> <colors> <black/blue/green/red/yellow/crimson>\n\n${prefix}embed <id> <description> <set/add/remove> <value>\n\n${prefix}embed <id> <fields> <modify> <pos> <value>\n${prefix}embed <id> <fields> <add> <title> <value> [inline: true/false]\n${prefix}embed <id> <fields> <remove> <pos>`,
 	async execute(client, message, args) {
 		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.id === '747839021421428776')) return warnUser(message, string('command.no_permission'))

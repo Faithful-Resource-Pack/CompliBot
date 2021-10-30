@@ -17,9 +17,9 @@ module.exports = {
   name: 'compare',
   aliases: ['cmp'],
   description: string('command.description.compare'),
+  category: 'Minecraft',
   guildOnly: false,
   uses: string('command.use.anyone'),
-  category: 'Minecraft',
   syntax: `${prefix}compare <search> <--resolution|--res|--r>=<${RES_ALLOWED.join('|')}> [<--scale|--s>=<1..10>]`,
   example: `${prefix}compare bucket --resolution 16j 32j 64j --s=2\n
 ${prefix}cmp bucket -r 16j 32j 64j -s 10\n

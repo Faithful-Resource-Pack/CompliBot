@@ -9,9 +9,9 @@ module.exports = {
 	name: 'info',
 	aliases: ['botinfo'],
 	description: string('command.description.info'),
+	category: 'Bot',
 	guildOnly: false,
 	uses: string('command.use.anyone'),
-	category: 'Bot',
 	syntax: `${prefix}info`,
 	async execute(client, message, args) {
 		if (message.channel.type !== 'DM') await message.reply({ content: 'Please check your dm\'s!' });

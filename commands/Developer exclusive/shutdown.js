@@ -14,9 +14,9 @@ module.exports = {
 	name: 'shutdown',
 	aliases: ['logout', 'die'],
 	description: string('command.description.shutdown'),
+	category: 'Developer exclusive',
 	guildOnly: false,
 	uses: string('command.use.devs'),
-	category: 'Developer exclusive',
 	syntax: `${prefix}shutdown`,
 	async execute(client, message, args) {
 		if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD || message.author.id === uidT) {

@@ -7,9 +7,9 @@ module.exports = {
 	name: 'modping',
 	aliases: ['moderators', 'pingmods'],
 	description: string('command.description.modping'),
+	category: 'Moderation',
 	guildOnly: true,
 	uses: string('command.use.anyone'),
-	category: 'Moderation',
 	syntax: `${prefix}modping`,
 	/**
 	 * @param {Discord.Client} client 

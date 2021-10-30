@@ -232,9 +232,9 @@ const _getAllFilesFromFolder = function (dir, filter = []) {
 module.exports = {
   name: 'missing',
   description: string('command.description.missing'),
+  category: 'Compliance exclusive',
   guildOnly: false,
   uses: string('command.use.anyone'),
-  category: 'Compliance exclusive',
   syntax: `${prefix}missing <32|64> <java|bedrock>`,
   example: `${prefix}missing 32 java`,
   /**

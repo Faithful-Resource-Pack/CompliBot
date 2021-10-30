@@ -25,11 +25,10 @@ module.exports = {
 	name: 'hotfix',
 	aliases: ['fix'],
 	description: string('command.description.hotfix'),
+	category: 'Developer exclusive',
 	guildOnly: false,
 	uses: string('command.use.devs'),
-	category: 'Developer exclusive',
 	syntax: `${prefix}hotfix <something>`,
-	args: true,
 	async execute(client, message, args) {
 		if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD || message.author.id === uidT) {
 

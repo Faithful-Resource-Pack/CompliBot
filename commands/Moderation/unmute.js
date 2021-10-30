@@ -12,9 +12,9 @@ module.exports = {
 	name: 'unmute',
 	aliases: ['pardon'],
 	description: string('command.description.unmute'),
+	category: 'Moderation',
 	guildOnly: true,
 	uses: string('command.use.mods'),
-	category: 'Moderation',
 	syntax: `${prefix}unmute <@user> <reason>`,
 	example: `${prefix}unmute @Domi#5813 not posting memes in #general`,
 	async execute(client, message, args) {

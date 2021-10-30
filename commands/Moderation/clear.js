@@ -8,9 +8,9 @@ const { warnUser } = require('../../helpers/warnUser')
 module.exports = {
 	name: 'clear',
 	description: string('command.description.clear'),
+	category: 'Moderation',
 	guildOnly: true,
 	uses: string('command.use.mods'),
-	category: 'Moderation',
 	syntax: `${prefix}clear <amount>`,
 	example: `${prefix}clear 10`,
 	async execute(client, message, args) {

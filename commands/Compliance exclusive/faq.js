@@ -103,9 +103,9 @@ const FAQS = [
 module.exports = {
 	name: 'faq',
 	description: string('command.description.faq'),
+	category: 'Compliance exclusive',
 	guildOnly: true,
 	uses: string('command.use.anyone'),
-	category: 'Compliance exclusive',
 	syntax: `${prefix}faq <keyword>`,
 	flags: '',
 	example: `${prefix}faq bot offline\n${prefix}faq submit\n\nADMINS ONLY:\n${prefix}faq all`,

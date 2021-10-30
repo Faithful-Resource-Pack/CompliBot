@@ -58,9 +58,9 @@ module.exports = {
 	name: 'website',
 	aliases: ['site', 'sites', 'websites'],
 	description: string('command.description.website'),
+	category: 'Server',
 	guildOnly: false,
 	uses: string('command.use.anyone'),
-	category: 'Server',
 	syntax: `${prefix}website [keyword]`,
 	example: `${prefix}website : only in DM\n${prefix}website compliance32|32x|32\n${prefix}website compliance64|64x|64\n${prefix}website dungeons\n${prefix}website mods\n${prefix}website tweaks\n${prefix}website addons`,
 	async execute(client, message, args) {

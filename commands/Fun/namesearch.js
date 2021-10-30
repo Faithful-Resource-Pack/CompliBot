@@ -10,9 +10,9 @@ const { warnUser } = require('../../helpers/warnUser')
 module.exports = {
   name: 'namesearch',
   description: string('command.description.namesearch'),
+  category: 'Fun',
   guildOnly: true,
   uses: string('command.use.anyone'),
-  category: 'Fun',
   syntax: `${prefix}namesearch juk`,
   /** @param {Discord.Message} message */
   async execute(_client, message, args) {

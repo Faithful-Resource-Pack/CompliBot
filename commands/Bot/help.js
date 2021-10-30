@@ -20,11 +20,11 @@ const BLACKLIST = [
 module.exports = {
 	name: 'help',
 	aliases: ['h', 'commands'],
-	uses: string('command.use.anyone'),
-	category: 'Bot',
-	syntax: `${prefix}help <command>\n${prefix}help <alias>`,
 	description: string('command.description.help'),
+	category: 'Bot',
 	guildOnly: false,
+	uses: string('command.use.anyone'),
+	syntax: `${prefix}help <command>\n${prefix}help <alias>`,
 	example: `${prefix}help modping`,
 	async execute(client, message, args) {
 

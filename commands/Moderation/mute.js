@@ -11,9 +11,9 @@ const { addMutedRole } = require('../../functions/moderation/addMutedRole');
 module.exports = {
 	name: 'mute',
 	description: string('command.description.mute'),
+	category: 'Moderation',
 	guildOnly: true,
 	uses: string('command.use.mods'),
-	category: 'Moderation',
 	syntax: `${prefix}mute <@user> <time> <reason>`,
 	example: `${prefix}mute @Domi#5813 3h posting memes in #general`,
 	async execute(client, message, args) {

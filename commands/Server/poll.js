@@ -9,9 +9,9 @@ const { warnUser } = require('../../helpers/warnUser');
 module.exports = {
 	name: 'poll',
 	description: string('command.description.poll'),
+	category: 'Server',
 	guildOnly: true,
 	uses: string('command.use.disabled'),
-	category: 'Server',
 	syntax: `${prefix}poll <time in seconds> | <title> | <option1> | <option2> | ...`,
 	example: `${prefix}poll 3600 | Add more beans to the bot? | Yes | No`,
 	async execute(client, message, args) {

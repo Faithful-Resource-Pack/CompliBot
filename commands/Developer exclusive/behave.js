@@ -10,9 +10,9 @@ const { string } = require('../../resources/strings');
 module.exports = {
 	name: 'behave',
 	description: string('command.description.behave'),
+	category: 'Developer exclusive',
 	guildOnly: false,
 	uses: string('command.use.devs'),
-	category: 'Developer exclusive',
 	syntax: `${prefix}behave`,
 	/**
 	 * 

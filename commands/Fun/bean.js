@@ -9,9 +9,9 @@ const { warnUser } = require('../../helpers/warnUser');
 module.exports = {
 	name: 'bean',
 	description: string('command.description.bean'),
+	category: 'Fun',
 	guildOnly: true,
 	uses: string('command.use.mods'),
-	category: 'Fun',
 	syntax: `${prefix}bean <@user> <reason>`,
 	example: `${prefix}bean @Sei#0721 spilling the beans`,
 	async execute(client, message, args) {

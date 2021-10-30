@@ -19,9 +19,9 @@ const MAX_EDITIONS = CHOICE_EMOJIS.length + Object.keys(PACKS_EMOJIS).length
 module.exports = {
 	name: 'about',
 	description: string('command.description.about'),
+	category: 'Compliance exclusive',
 	guildOnly: true,
 	uses: string('command.use.anyone'),
-	category: 'Compliance exclusive',
 	syntax: `${prefix}about\n${prefix}about me\n${prefix}about <userTag>\n`,
 	example: `${prefix}about Hozz#0889`,
 	/**
