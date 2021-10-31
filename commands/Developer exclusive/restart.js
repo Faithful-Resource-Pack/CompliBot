@@ -7,8 +7,8 @@ const uidT = process.env.UIDT
 
 const DEVELOPER_IDs = [uidR, uidJ, uidD, uidT]
 
-const { string } = require('../../resources/strings')
-const colors = require('../../resources/colors')
+const strings = require('../../resources/strings.json')
+const settings = require('../../resources/settings.json')
 
 const { warnUser } = require('../../helpers/warnUser')
 
@@ -67,10 +67,10 @@ function execPromise(cmd) {
 
 module.exports = {
   name: 'restart',
-  description: string('command.description.restart'),
+  description: strings.command.description.restart,
   category: 'Developer exclusive',
   guildOnly: false,
-  uses: string('command.use.devs'),
+  uses: strings.command.use.devs,
   syntax: `${prefix}restart`,
   example: `${prefix}restart`,
   /**
@@ -84,7 +84,7 @@ module.exports = {
     if (!DEVELOPER_IDs.includes(message.author.id)) {
       const emb = new Discord.MessageEmbed()
         .setTitle(':no_entry: Access denied :no_entry:')
-        .setColor(colors.RED)
+        .setColor(settings.colors.red)
         .setDescription('You are not allowed to use this command')
 
       const err = await message.channel.send({ embeds: [emb] })
@@ -98,7 +98,7 @@ module.exports = {
 
     const emb = new Discord.MessageEmbed()
       .setTitle(':white_check_mark: Access granted :white_check_mark:')
-      .setColor(colors.GREEN)
+      .setColor(settings.colors.green)
       .setDescription('Welcome sir')
 
     // sending embed

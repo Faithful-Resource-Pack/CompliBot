@@ -5,7 +5,7 @@ const uidJ = process.env.UIDJ;
 const uidD = process.env.UIDD;
 const uidT = process.env.UIDT;
 
-const { string } = require('../../resources/strings');
+const strings = require('../../resources/strings.json');
 
 const { warnUser } = require('../../helpers/warnUser');
 
@@ -15,15 +15,15 @@ const presence = ['online', 'idle', 'dnd'];
 module.exports = {
 	name: 'status',
 	aliases: ['presence', 'activity'],
-	description: string('command.description.status'),
+	description: strings.command.description.status,
 	category: 'Developer exclusive',
 	guildOnly: false,
-	uses: string('command.use.devs'),
+	uses: strings.command.use.devs,
 	syntax: `${prefix}status <activity> <presence> <status>`,
 	async execute(client, message, args) {
 		if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD || message.author.id === uidT) {
 
-			if (!args.length) return warnUser(message, string('command.args.none_given'));
+			if (!args.length) return warnUser(message, strings.command.args.none_given);
 
 			if (activity.includes(args[0]) && presence.includes(args[1])) {
 				client.user.setPresence({
@@ -35,6 +35,6 @@ module.exports = {
 				});
 			}
 			await message.react('✅');
-		} else return warnUser(message, string('command.no_permission'));
+		} else return warnUser(message, strings.command.no_permission);
 	}
 };

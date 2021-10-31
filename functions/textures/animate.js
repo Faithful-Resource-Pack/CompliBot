@@ -2,7 +2,7 @@ const Canvas = require('canvas')
 const Discord = require('discord.js')
 const GIFEncoderFixed = require('../../modified_libraries/GIFEncoder')
 
-const { strings } = require('../../resources/strings')
+const strings = require('../../resources/strings.json')
 
 const { getMeta } = require('../../helpers/getMeta')
 const { warnUser } = require('../../helpers/warnUser')
@@ -21,9 +21,9 @@ async function animate(message, valMCMETA, valURL) {
 
 	let texture = []
 
-	getMeta(valURL).then(async function (dimension) {
-		if (dimension.width == dimension.height) return warnUser(message, await strings('command.image.cant_animate'))
-		if (dimension.width * FACTOR > 4096) return warnUser(message, await strings('command.image.too_wide'))
+	getMeta(valURL).then(async (dimension) => {
+		if (dimension.width == dimension.height) return warnUser(message, strings.command.image.cant_animate)
+		if (dimension.width * FACTOR > 4096) return warnUser(message, strings.command.image.too_wide)
 		if (dimension.width * FACTOR > 1024) FACTOR = 1
 
 		texture.canvas = await sizeUP(valURL, dimension)

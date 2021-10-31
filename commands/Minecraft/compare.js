@@ -3,7 +3,7 @@ const prefix = process.env.PREFIX
 
 require('dotenv').config()
 const getops = require('getopts')
-const { string } = require('../../resources/strings')
+const strings = require('../../resources/strings.json')
 const { warnUser } = require('../../helpers/warnUser')
 const compareFunction = require('../../functions/textures/compare')
 
@@ -16,10 +16,10 @@ const RES_ALLOWED = EDITIONS_ALLOWED.map(e => RES_SIDE.map(el => el + e)).flat()
 module.exports = {
   name: 'compare',
   aliases: ['cmp'],
-  description: string('command.description.compare'),
+  description: strings.command.description.compare,
   category: 'Minecraft',
   guildOnly: false,
-  uses: string('command.use.anyone'),
+  uses: strings.command.use.anyone,
   syntax: `${prefix}compare <search> <--resolution|--res|--r>=<${RES_ALLOWED.join('|')}> [<--scale|--s>=<1..10>]`,
   example: `${prefix}compare bucket --resolution 16j 32j 64j --s=2\n
 ${prefix}cmp bucket -r 16j 32j 64j -s 10\n
@@ -61,7 +61,7 @@ ${prefix}cmp --id 1208 16j 32j 64j -s 2`,
         parsedArguments._.forEach(el => {
           if (RES_ALLOWED.includes(el)) {
             if (typeof parsedArguments.resolution !== 'string' && !Array.isArray(parsedArguments.resolution)) {
-              return warnUser(message, string('command.args.invalid.generic'))
+              return warnUser(message, strings.command.args.invalid.generic)
             } else {
               if (typeof parsedArguments.resolution === 'string') parsedArguments.resolution = [parsedArguments.resolution]
               parsedArguments.resolution.push(el)

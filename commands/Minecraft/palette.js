@@ -1,20 +1,19 @@
-const prefix = process.env.PREFIX;
+const prefix = process.env.PREFIX
+const strings = require('../../resources/strings.json')
 
-const { string } = require('../../resources/strings');
-
-const { palette } = require('../../functions/textures/palette');
-const { warnUser } = require('../../helpers/warnUser');
+const { palette } = require('../../functions/textures/palette')
+const { warnUser } = require('../../helpers/warnUser')
 
 module.exports = {
 	name: 'palette',
 	aliases: ['p', 'colors', 'colormap', 'colours'],
-	description: string('command.description.palette'),
+	description: strings.command.description.palette,
 	category: 'Minecraft',
 	guildOnly: false,
-	uses: string('command.use.anyone'),
+	uses: strings.command.use.anyone,
 	syntax: `${prefix}palette (Default: up to 10 images above)\n${prefix}palette (attach an image)\n${prefix}palette (reply to a message)\n${prefix}palette <Discord message url>\n${prefix}palette <image URL>\n${prefix}palette <message ID>\n${prefix}palette [up/^/last]`,
 	async execute(client, message, args) {
-		var DATA;
+		var DATA
 
 		// <data>
 		// image attached
@@ -30,7 +29,7 @@ module.exports = {
 					DATA = msg.attachments.first().url;
 					return palette(message, DATA);
 				}
-				else return warnUser(message, string('command.image.no_reply_attachment'));
+				else return warnUser(message, strings.command.image.no_reply_attachment);
 			}).catch(error => {
 				return warnUser(message, error);
 			})
@@ -48,8 +47,10 @@ module.exports = {
 					DATA = msg.attachments.first().url;
 					return palette(message, DATA);
 				}
-				else return warnUser(message, string('command.image.not_attached.message'));
-			}).catch(() => { return warnUser(message, string('command.url.same_channel_only')) });
+				else return warnUser(message, strings.command.image.not_attached.message);
+			}).catch(() => {
+				return warnUser(message, strings.command.url.same_channel_only)
+			});
 		}
 
 		// Image URL
@@ -57,7 +58,7 @@ module.exports = {
 			if (args[0].endsWith('.png') || args[0].endsWith('.jpeg') || args[0].endsWith('.jpg') || args[0].endsWith('.gif')) {
 				DATA = args[0];
 				return palette(message, DATA);
-			} else return warnUser(message, string('command.image.invalid_extension'))
+			} else return warnUser(message, strings.command.image.invalid_extension)
 		}
 
 		// Discord message ID
@@ -67,7 +68,7 @@ module.exports = {
 					DATA = msg.attachments.first().url;
 					return palette(message, DATA);
 				}
-				else return warnUser(message, string('command.image.not_attached.id'));
+				else return warnUser(message, strings.command.image.not_attached.id);
 			}).catch(error => {
 				return warnUser(message, error);
 			})
@@ -107,12 +108,12 @@ module.exports = {
 					}
 				}
 			} catch (e) {
-				return warnUser(message, string('command.image.not_found_in_10_last'))
+				return warnUser(message, strings.command.image.not_found_in_10_last)
 			}
 			//}
 
 			if (found) await palette(message, url);
-			else return warnUser(message, string('command.image.not_found_in_10_last'))
+			else return warnUser(message, strings.command.image.not_found_in_10_last)
 		}
 	}
 }

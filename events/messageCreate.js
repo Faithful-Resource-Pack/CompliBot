@@ -14,10 +14,8 @@ const UIDA = [
   process.env.UIDJ
 ]
 
-const colors = require('../resources/colors')
-const { string } = require('../resources/strings')
-const emojis = require('../resources/emojis')
-const settings = require('../resources/settings')
+const strings = require('../resources/strings.json')
+const settings = require('../resources/settings.json')
 
 const { quote } = require('../functions/quote')
 const { textureIDQuote } = require('../functions/textures/textureIDQuote')
@@ -37,7 +35,7 @@ module.exports = {
 
     if (message.content.startsWith(PREFIX)) {
       if (MAINTENANCE && !UIDA.includes(message.author.id)) {
-        const msg = await message.reply({ content: string('command.maintenance') })
+        const msg = await message.reply({ content: strings.command.maintenance })
         await message.react('❌')
         if (!message.deleted) setTimeout(() => msg.delete(), 30000);
       }
@@ -59,7 +57,7 @@ module.exports = {
         else if (meantCmd?.length > 1) return await message.reply({ content: `Did you mean ${meantCmd.map(cmd => `\`${PREFIX}${cmd}\``).join(' or ')}?` })
         else return await message.reply({ content: `Did you mean \`${PREFIX}${meantCmd[0]}\`?` })
       }
-      if (command.guildOnly && message.channel.type === 'DM') return warnUser(message, string('bot.cant_dm'))
+      if (command.guildOnly && message.channel.type === 'DM') return warnUser(message, strings.bot.cant_dm)
 
       command.execute(client, message, args).then(async () => {
         return increaseCommandProcessed()
@@ -67,10 +65,10 @@ module.exports = {
         console.trace(error)
 
         const embed = new Discord.MessageEmbed()
-          .setColor(colors.RED)
-          .setTitle(string('bot.error'))
-          .setThumbnail(settings.ERROR_IMG)
-          .setDescription(`${string('command.error')}\nError for the developers:\n${error}`)
+          .setColor(settings.colors.red)
+          .setTitle(strings.bot.error)
+          .setThumbnail(settings.images.error)
+          .setDescription(`${strings.command.error}\nError for the developers:\n${error}`)
 
         let msgEmbed = await message.reply({ embeds: [embed] })
         await message.react('❌')
@@ -92,8 +90,8 @@ module.exports = {
       if (message.content.toLowerCase() === 'mhhh') {
         const embed = new Discord.MessageEmbed()
           .setDescription('```Uh-oh moment```')
-          .setColor(colors.BLUE)
-          .setFooter('Swahili → English', settings.BOT_IMG)
+          .setColor(settings.colors.blue)
+          .setFooter('Swahili → English', settings.images.bot)
         let msgEmbed = await message.reply({ embeds: [embed] })
         return addDeleteReact(msgEmbed, message)
       }
@@ -144,9 +142,9 @@ module.exports = {
        * TEXTURE SUBMISSION
        */
       if (
-        message.channel.id === settings.C32_SUBMIT_TEXTURES ||
-        message.channel.id === settings.C64_SUBMIT_TEXTURES ||
-        message.channel.id === settings.CDUNGEONS_SUBMIT
+        message.channel.id === settings.channels.submit_textures.c32 ||
+        message.channel.id === settings.channels.submit_textures.c64 ||
+        message.channel.id === settings.channels.submit_textures.cdungeons
       ) return submitTexture(client, message)
 
       /**
@@ -156,17 +154,17 @@ module.exports = {
         if (!message.attachments.size) {
           if (message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) return
           var embed = new Discord.MessageEmbed()
-            .setColor(colors.RED)
-            .setTitle(string('submission.autoreact.error_title'))
-            .setDescription(string('submission.no_file_attached'))
-            .setFooter(string('submission.autoreact.error_footer'), settings.BOT_IMG)
+            .setColor(settings.colors.red)
+            .setTitle(strings.submission.autoreact.error_title)
+            .setDescription(strings.submission.no_file_attached)
+            .setFooter(strings.submission.autoreact.error_footer, settings.images.bot)
 
           const msg = await message.reply({ embeds: [embed] })
           if (!msg.deleted) setTimeout(() => msg.delete(), 30000);
           if (!message.deleted) setTimeout(() => message.delete(), 10);
         } else {
-          await message.react(emojis.UPVOTE)
-          await message.react(emojis.DOWNVOTE)
+          await message.react(settings.emojis.upvote)
+          await message.react(settings.emojis.downvote)
         }
       }
 

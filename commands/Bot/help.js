@@ -1,14 +1,13 @@
-const prefix = process.env.PREFIX;
+const prefix = process.env.PREFIX
 
 const uidR = process.env.UIDR
 const uidJ = process.env.UIDJ
 const uidD = process.env.UIDD
 const uidT = process.env.UIDT
 
-const Discord = require("discord.js");
-const { string } = require('../../resources/strings');
-const settings = require('../../resources/settings');
-const colors = require('../../resources/colors');
+const Discord = require("discord.js")
+const strings = require('../../resources/strings.json')
+const settings = require('../../resources/settings.json')
 
 const { warnUser } = require('../../helpers/warnUser');
 const { addDeleteReact } = require("../../helpers/addDeleteReact");
@@ -20,10 +19,10 @@ const BLACKLIST = [
 module.exports = {
 	name: 'help',
 	aliases: ['h', 'commands'],
-	description: string('command.description.help'),
+	description: strings.command.description.help,
 	category: 'Bot',
 	guildOnly: false,
-	uses: string('command.use.anyone'),
+	uses: strings.command.use.anyone,
 	syntax: `${prefix}help <command>\n${prefix}help <alias>`,
 	example: `${prefix}help modping`,
 	async execute(client, message, args) {
@@ -48,10 +47,10 @@ module.exports = {
 			var example = '```' + (command.example || 'None') + '```'
 
 			embed.setTitle(`Help: ${prefix}${command.name}`)
-				.setThumbnail(settings.BOT_IMG)
-				.setColor(colors.BLUE)
+				.setThumbnail(settings.images.bot)
+				.setColor(settings.colors.blue)
 				.setDescription(`**Description:**\n${command.description || 'No description'}\n**Can be used by:**\n${command.uses || 'Not set'}\n**Syntax:**\n${syntax}\n**Aliases:**\n${aliases}\n**Example:**\n${example}`)
-				.setFooter(message.client.user.username, settings.BOT_IMG)
+				.setFooter(message.client.user.username, settings.images.bot)
 		}
 
 		if (!args[0]) {
@@ -118,10 +117,10 @@ module.exports = {
 
 			embed
 				.setTitle('Commands available')
-				.setThumbnail(settings.BOT_IMG)
-				.setColor(colors.BLUE)
+				.setThumbnail(settings.images.bot)
+				.setColor(settings.colors.blue)
 				.setDescription(`Type \`${prefix}help <command>\` to get more information about the specified command.`)
-				.setFooter(message.client.user.username, settings.BOT_IMG)
+				.setFooter(message.client.user.username, settings.images.bot)
 				.addFields(
 					{ name: "Bot", value: commands_bot[0] === undefined ? "None" : commands_bot.join('\n') },
 					{ name: "Compliance exclusive", value: commands_compliance_exclusive[0] === undefined ? "None" : commands_compliance_exclusive.join('\n') },

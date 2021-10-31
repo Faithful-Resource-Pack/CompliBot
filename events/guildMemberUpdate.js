@@ -1,6 +1,6 @@
 const client = require('../index').Client
 const users = require('../helpers/firestorm/users')
-const settings = require('../resources/settings.js')
+const settings = require('../resources/settings.json')
 const DEV = (process.env.DEV.toLowerCase() == 'true')
 
 /**
@@ -12,7 +12,7 @@ module.exports = {
     if (DEV) return
 
     // if the member isn't on a compliance server, return
-    if (!settings.COMPLIANCE_SERVERS_IDS.includes(memberBefore.guild.id)) return
+    if (![settings.guilds.c32.id, settings.guilds.c64.id, settings.guilds.cextras.id, settings.guilds.cdevs.id].includes(memberBefore.guild.id)) return
 
     console.log(memberBefore)
     const newRole = memberAfter.roles.cache.filter(r => !memberBefore.roles.cache.has(r.id)).first()
@@ -31,22 +31,7 @@ module.exports = {
       }
     }
 
-    const ROLES = [
-      'Administrator',
-      'Moderator',
-      'Trial Moderator',
-      'Previous Staff',
-      'Muted',
-      'Texture Supervision Council',
-      'Developer',
-      'VIP',
-      'Donator',
-      'Contributor',
-      'Mods Contributor',
-      'Add-on Maker',
-      'Translator',
-      'Dungeons Contributor',
-    ]
+    const ROLES = settings.roles.sync_valids
 
     // a role is added to someone
     if (newRole && !oldRole) {

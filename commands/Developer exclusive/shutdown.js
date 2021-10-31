@@ -6,17 +6,16 @@ const uidD = process.env.UIDD;
 const uidT = process.env.UIDT;
 
 const Discord = require('discord.js');
-const { string } = require('../../resources/strings');
-const colors = require('../../resources/colors');
-const settings = require('../../resources/settings');
+const strings = require('../../resources/strings.json');
+const settings = require('../../resources/settings.json')
 
 module.exports = {
 	name: 'shutdown',
 	aliases: ['logout', 'die'],
-	description: string('command.description.shutdown'),
+	description: strings.command.description.shutdown,
 	category: 'Developer exclusive',
 	guildOnly: false,
-	uses: string('command.use.devs'),
+	uses: strings.command.use.devs,
 	syntax: `${prefix}shutdown`,
 	async execute(client, message, args) {
 		if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD || message.author.id === uidT) {
@@ -25,9 +24,9 @@ module.exports = {
 		}
 		else {
 			var embed = new Discord.MessageEmbed()
-				.setAuthor(message.client.user.username, settings.BOT_IMG)
+				.setAuthor(message.client.user.username, settings.images.bot)
 				.setDescription(`Banned <@${message.author.id}> \nReason: trying to stop me lmao`)
-				.setColor(colors.BLUE)
+				.setColor(settings.colors.blue)
 				.setTimestamp();
 			await message.reply({ embeds: [embed] });
 		}

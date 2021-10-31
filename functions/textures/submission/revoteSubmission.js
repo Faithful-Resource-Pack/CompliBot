@@ -1,5 +1,4 @@
-const emojis = require('../../../resources/emojis')
-const colors = require('../../../resources/colors')
+const settings = require('../../../resources/settings.json')
 
 const { getMessages } = require('../../../helpers/getMessages')
 
@@ -31,8 +30,8 @@ async function revoteSubmission(client, channelFromID, channelOutID, delay) {
   // map messages adding reacts count, embed and message (easier management like that)
   messages = messages.map(message => {
     message = {
-      upvote: message.reactions.cache.get(emojis.UPVOTE).count,
-      downvote: message.reactions.cache.get(emojis.DOWNVOTE).count,
+      upvote: message.reactions.cache.get(settings.emojis.upvote).count,
+      downvote: message.reactions.cache.get(settings.emojis.downvote).count,
       percentage: null,
       embed: message.embeds[0],
       message: message
@@ -47,34 +46,34 @@ async function revoteSubmission(client, channelFromID, channelOutID, delay) {
   let messagesUpvoted = messages.filter(message => message.percentage >= 66.66)
   let messagesDownvoted = messages.filter(message => message.percentage < 66.66)
 
-  const EMOJIS = [emojis.SEE_MORE]
+  const EMOJIS = [settings.emojis.see_more]
 
   // change status message
   messagesDownvoted.forEach(message => {
     let embed = message.embed
-    embed.setColor(colors.RED)
-    embed.fields[1].value = `<:downvote:${emojis.DOWNVOTE}> After a revote, this texture is not going to be added!\n(${message.percentage}% < 66.66%)`
+    embed.setColor(settings.colors.red)
+    embed.fields[1].value = `<:downvote:${settings.emojis.downvote}> After a revote, this texture is not going to be added!\n(${message.percentage}% < 66.66%)`
 
     channelOut.send({ embeds: [embed] })
       .then(async sentMessage => {
         for (const emojiID of EMOJIS) await sentMessage.react(client.emojis.cache.get(emojiID))
       })
 
-    editEmbed(message.message, `<:downvote:${emojis.DOWNVOTE}> Not enough upvotes! (${message.percentage}% < 66.66%)`)
+    editEmbed(message.message, `<:downvote:${settings.emojis.downvote}> Not enough upvotes! (${message.percentage}% < 66.66%)`)
   })
 
   // send message to the output channel & change status
   messagesUpvoted.forEach(message => {
     let embed = message.embed
-    embed.setColor(colors.GREEN)
-    embed.fields[1].value = `<:upvote:${emojis.UPVOTE}> After a revote, this texture will be added in a future version!\n(${message.percentage}% > 66.66%)`
+    embed.setColor(settings.colors.green)
+    embed.fields[1].value = `<:upvote:${settings.emojis.upvote}> After a revote, this texture will be added in a future version!\n(${message.percentage}% > 66.66%)`
 
     channelOut.send({ embeds: [embed] })
       .then(async sentMessage => {
         for (const emojiID of EMOJIS) await sentMessage.react(client.emojis.cache.get(emojiID))
       })
 
-    editEmbed(message.message, `<:upvote:${emojis.UPVOTE}> Sent to results! (${message.percentage}% > 66.66%)`)
+    editEmbed(message.message, `<:upvote:${settings.emojis.upvote}> Sent to results! (${message.percentage}% > 66.66%)`)
   })
 }
 
@@ -83,7 +82,7 @@ async function editEmbed(message, string) {
   embed.fields[1].value = string
 
   // fix the weird bug that also apply changes to the old embed (wtf)
-  embed.setColor(colors.RED)
+  embed.setColor(settings.colors.red)
 
   await message.edit({ embeds: [embed] })
 }

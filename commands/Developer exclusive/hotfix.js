@@ -8,9 +8,7 @@ const uidT = process.env.UIDT
 
 const fs = require('fs')
 
-const emojis = require('../../resources/emojis')
-const settings = require('../../resources/settings')
-const colors = require('../../resources/colors')
+const settings = require('../../resources/settings.json')
 const allCollection = require('../../helpers/firestorm/all')
 const { retrieveSubmission } = require('../../functions/textures/submission/retrieveSubmission')
 const { councilSubmission } = require('../../functions/textures/submission/councilSubmission')
@@ -19,15 +17,15 @@ const { downloadResults } = require('../../functions/textures/admission/download
 const { pushTextures } = require('../../functions/textures/admission/pushTextures')
 const { saveDB } = require('../../functions/saveDB')
 
-const { string, stringsStartsWith } = require('../../resources/strings')
+const strings = require('../../resources/strings.json')
 
 module.exports = {
 	name: 'hotfix',
 	aliases: ['fix'],
-	description: string('command.description.hotfix'),
+	description: strings.command.description.hotfix,
 	category: 'Developer exclusive',
 	guildOnly: false,
-	uses: string('command.use.devs'),
+	uses: strings.command.use.devs,
 	syntax: `${prefix}hotfix <something>`,
 	async execute(client, message, args) {
 		if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD || message.author.id === uidT) {

@@ -1,6 +1,5 @@
 const Discord = require('discord.js')
-const settings = require('../resources/settings')
-const colors = require('../resources/colors')
+const settings = require('../resources/settings.json')
 
 const { addDeleteReact } = require('../helpers/addDeleteReact')
 
@@ -19,9 +18,9 @@ async function quote(msg) {
 
 	// cancel if quote is in texture submission channel
 	if (
-		msg.channel.id === settings.C32_SUBMIT_TEXTURES ||
-		msg.channel.id === settings.C64_SUBMIT_TEXTURES ||
-		msg.channel.id === settings.CDUNGEONS_SUBMIT
+		msg.channel.id === settings.channels.submit_textures.c32 ||
+		msg.channel.id === settings.channels.submit_textures.c64 ||
+		msg.channel.id === settings.channels.submit_textures.cdungeons
 	) return
 
 	// do not quote behave command
@@ -46,7 +45,7 @@ async function quote(msg) {
 
 		if (message.embeds[0] !== undefined) {
 			embed = new Discord.MessageEmbed()
-				.setColor(colors.BLUE)
+				.setColor(settings.colors.blue)
 
 			if (message.embeds[0].description && typeof (message.embeds[0].description) === 'string') // fixes bug "MessageEmbed description must be a string."
 				embed.setDescription(message.embeds[0].description)
@@ -55,10 +54,10 @@ async function quote(msg) {
 			if (message.embeds[0].url != undefined) embed.setURL(message.embeds[0].url)
 
 			if (message.embeds[0].author != undefined && !message.embeds[0].author.name.startsWith('Embed posted by')) {
-				embed.setThumbnail(settings.QUOTE_IMG)
+				embed.setThumbnail(settings.images.quote)
 				embed.setAuthor(`Embed sent by ${message.author.tag} (${message.embeds[0].author.name})`, message.embeds[0].author.iconURL)
 			} else {
-				embed.setThumbnail(settings.QUOTE_IMG)
+				embed.setThumbnail(settings.images.quote)
 				embed.setAuthor(`Embed sent by ${message.author.tag}`, message.author.displayAvatarURL())
 			}
 
@@ -82,8 +81,8 @@ async function quote(msg) {
 
 		else {
 			embed = new Discord.MessageEmbed()
-				.setColor(colors.BLUE)
-				.setAuthor(`Message sent by ${message.author.tag}`, settings.QUOTE_IMG)
+				.setColor(settings.colors.blue)
+				.setAuthor(`Message sent by ${message.author.tag}`, settings.images.quote)
 				.setThumbnail(message.author.displayAvatarURL())
 				.setDescription(message.content)
 				.setFooter(`Quoted by ${msg.author.tag}`, msg.author.displayAvatarURL())

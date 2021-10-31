@@ -6,7 +6,7 @@ const uidJ = process.env.UIDJ
 const uidT = process.env.UIDT
 
 const { warnUser } = require('../../../helpers/warnUser')
-const { string } = require('../../../resources/strings')
+const strings = require('../../../resources/strings.json')
 const { setUse, addUse, getUse, deleteUse } = require('./use')
 const { setUser, addUser, getUser, deleteUser } = require('./user')
 const { setTexture, addTexture, getTexture, deleteTexture } = require('./texture')
@@ -19,7 +19,7 @@ module.exports = {
   aliases: ['db'],
   description: 'Fix or modify database textures directly from the bot',
   guildOnly: false,
-  uses: string('command.use.devs'),
+  uses: strings.command.use.devs,
   syntax: `${prefix}db [texture|use|path] <get|set|add|delete/remove> <id> <parameters (see examples)>`,
   args: true,
   example: `
@@ -149,6 +149,6 @@ ${prefix}db path remove|delete <path id>`,
       if (embed === undefined) embed = await errorEmbed('AN ERROR OCCURED')
       message.reply({ embeds: [embed] })
 
-    } else return warnUser(message, string('command.no_permission'))
+    } else return warnUser(message, strings.command.no_permission)
   }
 }

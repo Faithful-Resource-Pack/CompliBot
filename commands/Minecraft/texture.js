@@ -3,10 +3,8 @@ const prefix = process.env.PREFIX
 
 const Discord = require('discord.js')
 const axios = require('axios').default
-const { string } = require('../../resources/strings')
-const colors = require('../../resources/colors')
-const settings = require('../../resources/settings')
-const emojis = require('../../resources/emojis')
+const strings = require('../../resources/strings.json')
+const settings = require('../../resources/settings.json')
 const choiceEmbed = require('../../helpers/choiceEmbed')
 
 const { magnify } = require('../../functions/textures/magnify')
@@ -42,10 +40,10 @@ const MinecraftSorter = (a, b) => {
 module.exports = {
 	name: 'texture',
 	aliases: ['textures'],
-	description: string('command.description.texture'),
+	description: strings.command.description.texture,
 	category: 'Minecraft',
 	guildOnly: false,
-	uses: string('command.use.anyone'),
+	uses: strings.command.use.anyone,
 	syntax: `${prefix}texture <16/32/64> <texture_name>\n${prefix}texture <16/32/64> <_name>\n${prefix}texture <16/32/64> </folder/>`,
 	example: `${prefix}texture 16 dirt`,
 
@@ -61,19 +59,19 @@ module.exports = {
 		const paths = require('../../helpers/firestorm/texture_paths')
 
 		// no args given
-		if (args == '') return warnUser(message, string('command.args.none_given'))
+		if (args == '') return warnUser(message, strings.command.args.none_given)
 
 		let res = args[0]
 		let search = args[1]
 
 		// no valids args given
-		if (!allowed.includes(args[0])) return warnUser(message, string('command.args.invalid.generic'))
+		if (!allowed.includes(args[0])) return warnUser(message, strings.command.args.invalid.generic)
 		// no search field given
-		if (!args[1]) return warnUser(message, string('command.args.not_enough_given'))
+		if (!args[1]) return warnUser(message, strings.command.args.not_enough_given)
 		else args[1] = String(args[1])
 
 		// texture name too short
-		if (args[1].length < 3) return warnUser(message, string('command.texture.too_short'))
+		if (args[1].length < 3) return warnUser(message, strings.command.texture.too_short)
 
 		// universal args
 		if (args[0].includes('16') || args[0] === 'vanilla') res = '16'
@@ -161,7 +159,7 @@ module.exports = {
 
 			choiceEmbed(message, {
 				title: `${results.length} results, react to choose one!`,
-				description: string('command.texture.search_description'),
+				description: strings.command.texture.search_description,
 				footer: `${message.client.user.username}`,
 				propositions: choice
 			})
@@ -173,7 +171,7 @@ module.exports = {
 				})
 		}
 		else if (results.length == 1) await getTexture(message, res, results[0])
-		else await warnUser(message, string('command.texture.does_not_exist'))
+		else await warnUser(message, strings.command.texture.does_not_exist)
 	}
 }
 
@@ -206,26 +204,26 @@ async function getTexture(message, res, texture) {
 	if (pathUseType == "java") {
 		switch (res) {
 			case "16":
-				imgURL = settings.DEFAULT_MC_JAVA_REPOSITORY + pathVersion + '/' + path
+				imgURL = settings.repositories.raw.default.java + pathVersion + '/' + path
 				break
 			case "32":
-				imgURL = settings.COMPLIANCE_32X_JAVA_REPOSITORY_JAPPA + pathVersion + '/' + path
+				imgURL = settings.repositories.raw.c32.java + 'Jappa-' + pathVersion + '/' + path
 				break
 			case "64":
-				imgURL = settings.COMPLIANCE_64X_JAVA_REPOSITORY_JAPPA + pathVersion + '/' + path
+				imgURL = settings.repositories.raw.c64.java + 'Jappa-' + pathVersion + '/' + path
 				break
 		}
 	}
 	else {
 		switch (res) {
 			case "16":
-				imgURL = settings.DEFAULT_MC_BEDROCK_REPOSITORY + pathVersion + '/' + path
+				imgURL = settings.repositories.raw.default.bedrock + pathVersion + '/' + path
 				break
 			case "32":
-				imgURL = settings.COMPLIANCE_32X_BEDROCK_REPOSITORY_JAPPA + pathVersion + '/' + path
+				imgURL = settings.repositories.raw.c32.bedrock + 'Jappa-' + pathVersion + '/' + path
 				break
 			case "64":
-				imgURL = settings.COMPLIANCE_64X_BEDROCK_REPOSITORY_JAPPA + pathVersion + '/' + path
+				imgURL = settings.repositories.raw.c64.bedrock + 'Jappa-' + pathVersion + '/' + path
 		}
 	}
 
@@ -235,14 +233,14 @@ async function getTexture(message, res, texture) {
 
 			var embed = new Discord.MessageEmbed()
 				.setTitle(`[#${texture.id}] ${texture.name}`)
-				.setColor(colors.BLUE)
+				.setColor(settings.colors.blue)
 				//.setURL(imgURL) TODO: add a link to the website gallery where more information could be found about the texture
 				.setImage(imgURL)
 				.addField('Resolution:', size, true)
 
 			if (res === '16') embed.setFooter('Vanilla Texture', settings.VANILLA_IMG);
-			if (res === '32') embed.setFooter('Compliance 32x', settings.C32_IMG)
-			if (res === '64') embed.setFooter('Compliance 64x', settings.C64_IMG)
+			if (res === '32') embed.setFooter('Compliance 32x', settings.images.c32)
+			if (res === '64') embed.setFooter('Compliance 64x', settings.images.c64)
 
 			/*
 			TODO: Get missing contributors from #results and add them to the contribution collection first
@@ -269,52 +267,52 @@ async function getTexture(message, res, texture) {
 
 			const imageSmallEnough = dimension.width <= 512 && dimension.height <= 512
 			if (imageSmallEnough)
-				await embedMessage.react(emojis.MAGNIFY).catch(() => { }); // avoids "Unknown message" error id reacting to a deleted message
-			await embedMessage.react(emojis.NEXT_RES).catch(() => { }); // avoids "Unknown message" error id reacting to a deleted message
-			await embedMessage.react(emojis.PALETTE).catch(() => { }); // avoids "Unknown message" error id reacting to a deleted message
+				await embedMessage.react(settings.emojis.magnify).catch(() => { }); // avoids "Unknown message" error id reacting to a deleted message
+			await embedMessage.react(settings.emojis.next_res).catch(() => { }); // avoids "Unknown message" error id reacting to a deleted message
+			await embedMessage.react(settings.emojis.palette).catch(() => { }); // avoids "Unknown message" error id reacting to a deleted message
 			if (imageSmallEnough)
-				await embedMessage.react(emojis.TILE).catch(() => { }); // avoids "Unknown message" error id reacting to a deleted message
+				await embedMessage.react(settings.emojis.tile).catch(() => { }); // avoids "Unknown message" error id reacting to a deleted message
 
 			/**
 			 * @param {Discord.MessageReaction} reaction incoming reaction
 			 * @param {Discord.User} user Incoming reaction user
 			 */
 			const filter = (reaction, user) => {
-				return !user.bot && [emojis.MAGNIFY, emojis.NEXT_RES, emojis.PALETTE, emojis.TILE].includes(reaction.emoji.id) && user.id === message.author.id;
+				return !user.bot && [settings.emojis.magnify, settings.emojis.next_res, settings.emojis.palette, settings.emojis.tile].includes(reaction.emoji.id) && user.id === message.author.id;
 			};
 
 			embedMessage.awaitReactions({ filter, max: 1, time: 60000, errors: ['time'] })
 				.then(async collected => {
 					const reaction = collected.first()
-					if (reaction.emoji.id === emojis.PALETTE && imageSmallEnough) {
+					if (reaction.emoji.id === settings.emojis.palette && imageSmallEnough) {
 						return palette(embedMessage, embedMessage.embeds[0].image.url, undefined, message)
 					}
-					if (reaction.emoji.id === emojis.MAGNIFY) {
+					if (reaction.emoji.id === settings.emojis.magnify) {
 						return magnify(embedMessage, embedMessage.embeds[0].image.url, undefined, message)
 					}
-					if (reaction.emoji.id === emojis.NEXT_RES && used.includes(res)) {
+					if (reaction.emoji.id === settings.emojis.next_res && used.includes(res)) {
 						if (!embedMessage.deleted) await embedMessage.delete()
 						return getTexture(message, used[(used.indexOf(res) + 1) % used.length], texture)
 					}
-					if (reaction.emoji.id === emojis.TILE && imageSmallEnough) {
+					if (reaction.emoji.id === settings.emojis.tile && imageSmallEnough) {
 						return tile(embedMessage, embedMessage.embeds[0].image.url, 'grid', undefined, message)
 					}
 				})
 				.catch(async () => {
 					try {
 						if (message.channel.type !== 'DM' && (imageSmallEnough))
-							await embedMessage.reactions.cache.get(emojis.MAGNIFY).remove()
+							await embedMessage.reactions.cache.get(settings.emojis.magnify).remove()
 						if (message.channel.type !== 'DM')
-							await embedMessage.reactions.cache.get(emojis.NEXT_RES).remove()
+							await embedMessage.reactions.cache.get(settings.emojis.next_res).remove()
 						if (message.channel.type !== 'DM')
-							await embedMessage.reactions.cache.get(emojis.PALETTE).remove()
+							await embedMessage.reactions.cache.get(settings.emojis.palette).remove()
 						if (message.channel.type !== 'DM' && (imageSmallEnough))
-							await embedMessage.reactions.cache.get(emojis.TILE).remove()
+							await embedMessage.reactions.cache.get(settings.emojis.tile).remove()
 					} catch (err) { /* Message deleted */ }
 				})
 
 		})
 	}).catch((error) => {
-		return warnUser(message, string('command.texture.loading_failed') + '\n' + error)
+		return warnUser(message, strings.command.texture.loading_failed + '\n' + error)
 	})
 }

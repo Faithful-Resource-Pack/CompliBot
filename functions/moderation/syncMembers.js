@@ -1,21 +1,8 @@
 
 const usersCollection = require('../../helpers/firestorm/users')
 const promiseEvery = require('../../helpers/promiseEvery')
-const VALID_ROLES = [
-	"Administrator",
-	"Moderator",
-	"Muted",
-	"Texture Supervision Council",
-	"Developer",
-	"VIP",
-	"Donator",
-	"Contributor",
-	"Prog. Art Contributor",
-	"Mods Contributor",
-	"Dungeons Contributor",
-	"Add-on Maker",
-	"Translator"
-]
+const settings = require('../../resources/settings.json')
+const VALID_ROLES = settings.roles.sync_valids
 
 /**
  * Update member count of a server

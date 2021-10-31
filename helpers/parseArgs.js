@@ -1,5 +1,5 @@
 const { warnUser } = require('./warnUser')
-const { string } = require('../resources/strings')
+const strings = require('../resources/strings.json')
 
 /**
  * 
@@ -22,7 +22,7 @@ function parseArgs(message, args) {
 		}
 
 		else if (args[i] != '') {
-			warnUser(message, string('command.parse_args'))
+			warnUser(message, strings.command.parse_args)
 		}
 	}
 

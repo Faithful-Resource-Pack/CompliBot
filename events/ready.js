@@ -9,7 +9,7 @@ const jiraJE = require('../functions/minecraftUpdates/jira-je')
 const jiraBE = require('../functions/minecraftUpdates/jira-be')
 const minecraft = require('../functions/minecraftUpdates/minecraft')
 
-const settings = require('../resources/settings')
+const settings = require('../resources/settings.json')
 
 const { retrieveSubmission } = require('../functions/textures/submission/retrieveSubmission')
 const { councilSubmission } = require('../functions/textures/submission/councilSubmission')
@@ -23,6 +23,7 @@ const { checkTimeout } = require('../functions/moderation/checkTimeout')
 const { restartAutoDestroy } = require('../functions/restartAutoDestroy')
 const { saveDB } = require('../functions/saveDB')
 const { doCheckLang } = require('../functions/strings/doCheckLang')
+const { doCheckSettings } = require('../functions/settings/doCheckSettings')
 
 /**
  * SCHEDULED FUNCTIONS : Texture Submission
@@ -32,18 +33,18 @@ const { doCheckLang } = require('../functions/strings/doCheckLang')
  */
 const submissionProcess = new cron.CronJob('0 0 * * *', async () => {
   // Compliance 32x
-  await retrieveSubmission(client, settings.C32_SUBMIT_TEXTURES, settings.C32_SUBMIT_COUNCIL, 3)
-  await councilSubmission(client, settings.C32_SUBMIT_COUNCIL, settings.C32_RESULTS, settings.C32_SUBMIT_REVOTE, 1)
-  await revoteSubmission(client, settings.C32_SUBMIT_REVOTE, settings.C32_RESULTS, 3)
+  await retrieveSubmission(client, settings.channels.submit_textures.c32, settings.channels.submit_council.c32, 3)
+  await councilSubmission(client, settings.channels.submit_council.c32, settings.channels.submit_results.c32, settings.channels.submit_revote.c32, 1)
+  await revoteSubmission(client, settings.channels.submit_revote.c32, settings.channels.submit_results.c32, 3)
 
   // Compliance 64x
-  await retrieveSubmission(client, settings.C64_SUBMIT_TEXTURES, settings.C64_SUBMIT_COUNCIL, 3)
-  await councilSubmission(client, settings.C64_SUBMIT_COUNCIL, settings.C64_RESULTS, settings.C64_SUBMIT_REVOTE, 1)
-  await revoteSubmission(client, settings.C64_SUBMIT_REVOTE, settings.C64_RESULTS, 3)
+  await retrieveSubmission(client, settings.channels.submit_textures.c64, settings.channels.submit_council.c64, 3)
+  await councilSubmission(client, settings.channels.submit_council.c64, settings.channels.submit_results.c64, settings.channels.submit_revote.c64, 1)
+  await revoteSubmission(client, settings.channels.submit_revote.c64, settings.channels.submit_results.c64, 3)
 })
 const downloadToBot = new cron.CronJob('15 0 * * *', async () => {
-  await downloadResults(client, settings.C32_RESULTS)
-  await downloadResults(client, settings.C64_RESULTS)
+  await downloadResults(client, settings.channels.submit_results.c32)
+  await downloadResults(client, settings.channels.submit_results.c64)
 })
 let pushToGithub = new cron.CronJob('30 0 * * *', async () => {
   await pushTextures()
@@ -73,12 +74,10 @@ module.exports = {
 
     await restartAutoDestroy(client)
 
-    // fetch lang file at start (then every 60 seconds (see below))
-    doCheckLang()
-
     if (DEV) {
       setInterval(() => {
         doCheckLang()
+        doCheckSettings()
       }, 20000); // 20 seconds
     }
 
@@ -107,15 +106,16 @@ module.exports = {
     setInterval(() => {
       doMCUpdateCheck()
       doCheckLang()
+      doCheckSettings()
     }, 60000);
     setInterval(() => {
       checkTimeout(client)
     }, 30000);
 
     // UPDATE MEMBERS
-    updateMembers(client, settings.C32_ID, settings.C32_COUNTER)
+    updateMembers(client, settings.guilds.c32.id, settings.C32_COUNTER)
 
     // FETCH MEMBERS DATA
-    syncMembers(client, [settings.C32_ID, settings.C64_ID, settings.CEXTRAS_ID])
+    syncMembers(client, [settings.guilds.c32.id, settings.guilds.c64.id, settings.guilds.cextras.id])
   }
 }

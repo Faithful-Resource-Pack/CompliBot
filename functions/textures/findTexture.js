@@ -1,12 +1,13 @@
 /* eslint-disable no-unused-vars */
 /* global Buffer */
 
-const { strings } = require('../../resources/strings')
-const settings = require('../../resources/settings')
+const strings = require('../../resources/strings.json')
+const settings = require('../../resources/settings.json')
 const https = require('https')
 
 const textures = require('../../helpers/firestorm/texture')
 const paths = require('../../helpers/firestorm/texture_paths')
+const { sorterMC } = require('../../helpers/sorterMC')
 
 module.exports = {
   /**
@@ -79,18 +80,17 @@ module.exports = {
    */
   pathToTextureURL: function (path, edition, res, version = undefined) {
     if (edition.toLowerCase() === 'java') {
-      if (res == 16) return settings.DEFAULT_MC_JAVA_REPOSITORY + (version === undefined ? settings.LATEST_MC_JE_VERSION : version) + '/' + path
-      if (res == 32) return settings.COMPLIANCE_32X_JAVA_REPOSITORY_JAPPA + (version === undefined ? settings.LATEST_MC_JE_VERSION : version) + '/' + path
-      if (res == 64) return settings.COMPLIANCE_64X_JAVA_REPOSITORY_JAPPA + (version === undefined ? settings.LATEST_MC_JE_VERSION : version) + '/' + path
+      if (res == 16) return settings.repositories.raw.default.java + (version === undefined ? settings.versions.java.sort(sorterMC)[0] : version) + '/' + path
+      if (res == 32) return settings.repositories.raw.c32.java + 'Jappa-' + (version === undefined ? settings.versions.java.sort(sorterMC)[0] : version) + '/' + path
+      if (res == 64) return settings.repositories.raw.c64.java + 'Jappa-' + (version === undefined ? settings.versions.java.sort(sorterMC)[0] : version) + '/' + path
     }
     else if (edition.toLowerCase() === 'bedrock') {
-      if (res == 16) return settings.DEFAULT_MC_BEDROCK_REPOSITORY + (version === undefined ? settings.LATEST_MC_BE_VERSION : version) + '/' + path
-      if (res == 32) return settings.COMPLIANCE_32X_BEDROCK_REPOSITORY_JAPPA + (version === undefined ? settings.LATEST_MC_BE_VERSION : version) + '/' + path
-      if (res == 64) return settings.COMPLIANCE_64X_BEDROCK_REPOSITORY_JAPPA + (version === undefined ? settings.LATEST_MC_BE_VERSION : version) + '/' + path
+      if (res == 16) return settings.repositories.raw.default.bedrock + (version === undefined ? settings.versions.bedrock[0] : version) + '/' + path
+      if (res == 32) return settings.repositories.raw.c32.bedrock + 'Jappa-' + (version === undefined ? settings.versions.bedrock[0] : version) + '/' + path
+      if (res == 64) return settings.repositories.raw.c64.bedrock + 'Jappa-' + (version === undefined ? settings.versions.bedrock[0] : version) + '/' + path
     }
 
-    strings('command.args.invalid.generic')
-      .then(str => { throw (new Error(str)) })
+    throw new Error(strings.command.args.invalid.generic)
   },
   /**
    * @param {String} imageURL Image url to get buffer

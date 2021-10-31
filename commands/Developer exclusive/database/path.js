@@ -1,5 +1,5 @@
 const Discord = require('discord.js')
-const colors = require('../../../resources/colors')
+const settings = require('../../../resources/settings.json')
 const { errorEmbed } = require('./errorEmbed')
 const allCollection = require('../../../helpers/firestorm/all')
 
@@ -17,7 +17,7 @@ async function deletePath(id) {
     await allCollection.texture_path.remove(id)
   } catch (err) { return errorEmbed(err) }
 
-  return new Discord.MessageEmbed().setColor(colors.BLUE).setDescription(`Successfully deleted path: ${id}`)
+  return new Discord.MessageEmbed().setColor(settings.colors.blue).setDescription(`Successfully deleted path: ${id}`)
 }
 
 /**
@@ -176,7 +176,7 @@ async function getPath(id) {
     path = await allCollection.texture_path.get(id)
   } catch (err) { return errorEmbed(err) }
 
-  let embed = new Discord.MessageEmbed().setColor(colors.BLUE)
+  let embed = new Discord.MessageEmbed().setColor(settings.colors.blue)
   embed.addFields(
     { name: "useID", value: path.useID },
     { name: "path", value: path.path },

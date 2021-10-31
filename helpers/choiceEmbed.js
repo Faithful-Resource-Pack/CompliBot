@@ -1,7 +1,6 @@
 const Discord = require('discord.js')
 const asyncTools = require('./asyncTools')
-const settings = require('../resources/settings')
-const colors = require('../resources/colors')
+const settings = require('../resources/settings.json')
 
 /**
  * 
@@ -29,10 +28,10 @@ const DEFAULT = {
   title: 'Choose proposition',
   description: 'Please choose one result using the associated reaction.\n',
   footer: 'chooseEmbed',
-  color: colors.BLUE,
+  color: settings.colors.blue,
   max: 1,
   separator: ' — ',
-  imageURL: settings.BOT_IMG,
+  imageURL: settings.images.bot,
   timeout: 60000
 }
 

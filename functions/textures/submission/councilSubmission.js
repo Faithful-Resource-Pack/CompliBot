@@ -1,5 +1,4 @@
-const emojis = require('../../../resources/emojis')
-const colors = require('../../../resources/colors')
+const settings = require('../../../resources/settings.json')
 
 const { getMessages } = require('../../../helpers/getMessages')
 
@@ -33,8 +32,8 @@ async function councilSubmission(client, channelFromID, channelResultsID, channe
   // map messages adding reacts count, embed and message (easier management like that)
   messages = messages.map(message => {
     message = {
-      upvote: message.reactions.cache.get(emojis.UPVOTE).count,
-      downvote: message.reactions.cache.get(emojis.DOWNVOTE).count,
+      upvote: message.reactions.cache.get(settings.emojis.upvote).count,
+      downvote: message.reactions.cache.get(settings.emojis.downvote).count,
       embed: message.embeds[0],
       message: message
     }
@@ -50,40 +49,40 @@ async function councilSubmission(client, channelFromID, channelResultsID, channe
   // send tied message to #revotes (tied)
   messagesTied.forEach(message => {
 
-    channelRevotes.send({ embeds: [message.embed.setColor(colors.RED)] })
+    channelRevotes.send({ embeds: [message.embed.setColor(settings.colors.red)] })
       .then(async sentMessage => {
-        for (const emojiID of [emojis.UPVOTE, emojis.DOWNVOTE, emojis.SEE_MORE]) await sentMessage.react(client.emojis.cache.get(emojiID))
+        for (const emojiID of [settings.emojis.upvote, settings.emojis.downvote, settings.emojis.see_more]) await sentMessage.react(client.emojis.cache.get(emojiID))
       })
 
-    editEmbed(message.message, `<:downvote:${emojis.DOWNVOTE}> Sent to revote!`)
+    editEmbed(message.message, `<:downvote:${settings.emojis.downvote}> Sent to revote!`)
   })
 
   // send upvoted messages to #results (accepted)
   messagesUpvoted.forEach(message => {
     let embed = message.embed
-    embed.setColor(colors.GREEN)
-    embed.fields[1].value = `<:upvote:${emojis.UPVOTE}> Will be added in a future version!`
+    embed.setColor(settings.colors.green)
+    embed.fields[1].value = `<:upvote:${settings.emojis.upvote}> Will be added in a future version!`
 
     channelResults.send({ embeds: [embed] })
       .then(async sentMessage => {
-        for (const emojiID of [emojis.SEE_MORE]) await sentMessage.react(client.emojis.cache.get(emojiID))
+        for (const emojiID of [settings.emojis.see_more]) await sentMessage.react(client.emojis.cache.get(emojiID))
       })
 
-    editEmbed(message.message, `<:upvote:${emojis.UPVOTE}> Sent to results!`)
+    editEmbed(message.message, `<:upvote:${settings.emojis.upvote}> Sent to results!`)
   })
 
   // send upvoted messages to #results (denied)
   messagesDownvoted.forEach(message => {
     let embed = message.embed
-    embed.setColor(colors.RED)
-    embed.fields[1].value = `<:downvote:${emojis.DOWNVOTE}> After a council decision, this texture is not going to be added, ask them if you want to know more about it.`
+    embed.setColor(settings.colors.red)
+    embed.fields[1].value = `<:downvote:${settings.emojis.downvote}> After a council decision, this texture is not going to be added, ask them if you want to know more about it.`
 
     channelResults.send({ embeds: [embed] })
       .then(async sentMessage => {
-        for (const emojiID of [emojis.SEE_MORE]) await sentMessage.react(client.emojis.cache.get(emojiID))
+        for (const emojiID of [settings.emojis.see_more]) await sentMessage.react(client.emojis.cache.get(emojiID))
       })
 
-    editEmbed(message.message, `<:upvote:${emojis.UPVOTE}> Sent to results!`)
+    editEmbed(message.message, `<:upvote:${settings.emojis.upvote}> Sent to results!`)
   })
 }
 
@@ -92,7 +91,7 @@ async function editEmbed(message, string) {
   embed.fields[1].value = string
 
   // fix the weird bug that also apply changes to the old embed (wtf)
-  embed.setColor(colors.COUNCIL)
+  embed.setColor(settings.colors.council)
 
   await message.edit({ embeds: [embed] })
 }

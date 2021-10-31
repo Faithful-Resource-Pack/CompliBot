@@ -3,20 +3,19 @@ const prefix = process.env.PREFIX;
 const Discord = require("discord.js");
 const os = require('os');
 const moment = require('moment');
-const settings = require('../../resources/settings');
-const colors = require('../../resources/colors');
+const settings = require('../../resources/settings.json')
+const strings = require('../../resources/strings.json')
 
 const { addDeleteReact } = require('../../helpers/addDeleteReact');
-const { string } = require('../../resources/strings');
 const { get: getCommandProcessed } = require("../../functions/commandProcess");
 
 module.exports = {
 	name: 'stats',
 	aliases: ['botstats'],
-	description: string('command.description.stats'),
+	description: strings.command.description.stats,
 	category: 'Bot',
 	guildOnly: false,
-	uses: string('command.use.anyone'),
+	uses: strings.command.use.anyone,
 	syntax: `${prefix}stats`,
 	/**
 	 * @param {Discord.Client} client 
@@ -34,8 +33,8 @@ module.exports = {
 
 		const embed = new Discord.MessageEmbed()
 			.setTitle(`${message.client.user.username} Stats`)
-			.setThumbnail(settings.BOT_IMG)
-			.setColor(colors.BLUE)
+			.setThumbnail(settings.images.bot)
+			.setColor(settings.colors.blue)
 			.addFields(
 				{ name: 'Prefix', value: prefix, inline: true },
 				{ name: 'Uptime', value: moment.duration(message.client.uptime).humanize(), inline: true },

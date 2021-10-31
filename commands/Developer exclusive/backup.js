@@ -6,7 +6,7 @@ const uidD = process.env.UIDD
 const uidT = process.env.UIDT
 
 const { saveDB } = require('../../functions/saveDB')
-const { string } = require('../../resources/strings')
+const strings = require('../../resources/strings.json')
 
 module.exports = {
   name: 'backup',
@@ -14,7 +14,7 @@ module.exports = {
   description: 'Backup the database to the [JSON repository](https://github.com/Compliance-Resource-Pack/JSON)',
   category: 'Developer exclusive',
   guildOnly: false,
-  uses: string('command.use.devs'),
+  uses: strings.command.use.devs,
   syntax: `${prefix}backup`,
   example: `${prefix}bdb`,
   async execute(_client, message, args) {

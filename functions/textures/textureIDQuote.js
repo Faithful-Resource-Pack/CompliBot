@@ -1,7 +1,6 @@
-const Discord  = require("discord.js");
-const colors   = require('../../resources/colors');
-const settings = require('../../resources/settings');
-const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+const Discord = require("discord.js");
+const settings = require('../../resources/settings.json');
+const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 const { timestampConverter } = require('../../helpers/timestampConverter');
 const { addDeleteReact } = require("../../helpers/addDeleteReact");
 const { ID_FIELD } = require("../../helpers/firestorm");
@@ -21,13 +20,13 @@ async function textureIDQuote(message) {
   let ids = args.filter(el => el.charAt(0) === '[' && el.charAt(1) === '#' && el.slice(-1) == "]").map(el => el.slice(2, el.length - 1)) // filter textures ids and slice '#'
   ids = ids.filter(el => el != '').filter((el, index) => ids.indexOf(el) === index && el >= 0) // avoid doublon, empty and wrong id
 
-  if(ids.length === 0) return
+  if (ids.length === 0) return
 
   const texturesCollection = require('../../helpers/firestorm/texture')
   const promiseEvery = require('../../helpers/promiseEvery')
   const promiseArray = ids.map(id => texturesCollection.get(id))
 
-  let res = await promiseEvery(promiseArray).catch(() => {})
+  let res = await promiseEvery(promiseArray).catch(() => { })
 
   if (!res) return // if nothing is found -> we don't deserve it.
   else res = res.results.filter(el => el !== undefined)
@@ -40,14 +39,14 @@ async function textureIDQuote(message) {
 
     /** @type {import("../../helpers/firestorm/texture_use.js").TextureUse[]} */
     let uses = await texture.uses()
-    
+
     let texturePath = undefined
     let path = undefined
     let textureFirstEdition = '' // get the edition // TODO: Support BEDROCK AND JAVA for texture id (here we only take the fist use edition)
-    
+
     const pathObject = {}
     const pathTitleObject = {}
-    if(uses !== undefined && Array.isArray(uses) && uses.length > 0) {
+    if (uses !== undefined && Array.isArray(uses) && uses.length > 0) {
       /** @type {import("../../helpers/firestorm/texture_paths.js").TexturePath[]} */
       texturePath = await uses[0].paths()
 
@@ -55,7 +54,7 @@ async function textureIDQuote(message) {
         const useEdition = Array.isArray(uses[i].editions) && uses[i].editions.length > 0 ? uses[i].editions[0] : '' + uses[0].editions
         const useEditionLc = useEdition.toLowerCase()
 
-        if(pathObject[useEditionLc] === undefined) {
+        if (pathObject[useEditionLc] === undefined) {
           pathObject[useEditionLc] = []
           pathTitleObject[useEditionLc] = useEdition.capitalize()
         }
@@ -66,42 +65,42 @@ async function textureIDQuote(message) {
           const versionPrefix = `\`[${useVersionsSorted[0]}${useVersionsSorted.length > 1 ? ` — ${useVersionsSorted[useVersionsSorted.length - 1]}` : ''}]\``
           pathObject[useEditionLc].push(`${versionPrefix} ${localPath[k].path}`)
         }
-        if(localPath.length === 0) pathObject[useEditionLc].push('No texture path for the use ' + uses[i][ID_FIELD])
+        if (localPath.length === 0) pathObject[useEditionLc].push('No texture path for the use ' + uses[i][ID_FIELD])
       }
-  
+
       path = texturePath[0].path
       textureFirstEdition = Array.isArray(uses[0].editions) && uses[0].editions.length > 0 ? uses[0].editions[0] : '' + uses[0].editions
     }
 
-    let contrib32   = await texture.lastContribution('c32')
+    let contrib32 = await texture.lastContribution('c32')
     let timestamp32 = contrib32 ? contrib32.date : undefined
-    let author32    = contrib32 ? contrib32.contributors : undefined
+    let author32 = contrib32 ? contrib32.contributors : undefined
 
-    let contrib64   = await texture.lastContribution('c64')
+    let contrib64 = await texture.lastContribution('c64')
     let timestamp64 = contrib64 ? contrib64.date : undefined
-    let author64    = contrib64 ? contrib64.contributors : undefined
+    let author64 = contrib64 ? contrib64.contributors : undefined
 
     const paths = {}
     const pathVersion = texturePath[0].versions[0]
     if (textureFirstEdition.includes('java')) {
-      paths.c16 = settings.DEFAULT_MC_JAVA_REPOSITORY + pathVersion + '/' + path
-      paths.c32 = settings.COMPLIANCE_32X_JAVA_REPOSITORY_JAPPA + pathVersion + '/' + path
-      paths.c64 = settings.COMPLIANCE_64X_JAVA_REPOSITORY_JAPPA + pathVersion + '/' + path
-    } 
+      paths.c16 = settings.repositories.raw.default.java + pathVersion + '/' + path
+      paths.c32 = settings.repositories.raw.c32.java + 'Jappa-' + pathVersion + '/' + path
+      paths.c64 = settings.repositories.raw.c64.java + 'Jappa-' + pathVersion + '/' + path
+    }
     else {
-      paths.c16 = settings.DEFAULT_MC_BEDROCK_REPOSITORY + pathVersion + '/' + path
-      paths.c32 = settings.COMPLIANCE_32X_BEDROCK_REPOSITORY_JAPPA + pathVersion + '/' + path
-      paths.c64 = settings.COMPLIANCE_64X_BEDROCK_REPOSITORY_JAPPA + pathVersion + '/' + path
+      paths.c16 = settings.repositories.raw.default.bedrock + pathVersion + '/' + path
+      paths.c32 = settings.repositories.raw.c32.bedrock + 'Jappa-' + pathVersion + '/' + path
+      paths.c64 = settings.repositories.raw.c64.bedrock + 'Jappa-' + pathVersion + '/' + path
     }
 
     /** @type {import('../helpers/firestorm/users').User} */
 
-    let author = [ author32, author64 ]
-    let timestamp = [ timestamp32, timestamp64 ]
+    let author = [author32, author64]
+    let timestamp = [timestamp32, timestamp64]
 
     const CanvasDrawer = require(CANVAS_FUNCTION_PATH)
     const drawer = new CanvasDrawer()
-    
+
     drawer.urls = [paths.c16, paths.c32, paths.c64]
     let resultsPromises = await Promise.all(drawer.urls.map(url => fetch(url))).catch(() => drawer.urls = [])
     drawer.urls = drawer.urls.filter((__el, index) => resultsPromises[index].ok && resultsPromises[index].status === 200)
@@ -113,7 +112,7 @@ async function textureIDQuote(message) {
 
     var embed = new Discord.MessageEmbed()
       .setTitle(`[#${id}] ${name}`)
-      .setColor(colors.BLUE)
+      .setColor(settings.colors.blue)
       .setImage('attachment://output.png')
       .addField('Paths', pathValue, false)
       .addFields(
@@ -122,8 +121,8 @@ async function textureIDQuote(message) {
         // \u200B empty character not inline field is not working in v13, generating empty field error
       )
 
-    message.reply({embeds: [embed], files: [attachment]})
-      .catch(() => {}) // avoids crashes if unknown message
+    message.reply({ embeds: [embed], files: [attachment] })
+      .catch(() => { }) // avoids crashes if unknown message
       .then(embedMessage => {
         return addDeleteReact(embedMessage, message)
       })

@@ -2,19 +2,18 @@ const prefix = process.env.PREFIX;
 
 const Discord = require("discord.js");
 
-const settings = require('../../resources/settings');
-const colors = require('../../resources/colors');
-const { string } = require('../../resources/strings');
+const settings = require('../../resources/settings.json');
+const strings = require('../../resources/strings.json');
 
 const { warnUser } = require('../../helpers/warnUser');
 const { getMember } = require("../../helpers/getMember");
 
 module.exports = {
 	name: 'profile',
-	description: string('command.description.profile'),
+	description: strings.command.description.profile,
 	category: 'Compliance exclusive',
 	guildOnly: false,
-	uses: string('command.use.anyone'),
+	uses: strings.command.use.anyone,
 	syntax: `${prefix}profile username <Your Name>\n${prefix}profile uuid <Your MC uuid (full uuid)>\n${prefix}profile show -> Display what the bot knows about you\n\nModerators only:\n${prefix}profile [@someone/username/nickname/id]`,
 	/**
 	 * @param {Discord.Client} _client Discord client handling command
@@ -32,7 +31,7 @@ module.exports = {
 		if (!args.length) return showProfile(message, user)
 
 		if (args[0] !== 'username' && args[0] !== 'uuid' && args[0] !== 'show' && !message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("Moderator") || role.id === '747839021421428776'))
-			return warnUser(message, string('command.args.invalid.generic'))
+			return warnUser(message, strings.command.args.invalid.generic)
 
 		if (args[0] === 'show')
 			return showProfile(message, user)
@@ -88,8 +87,8 @@ async function showProfile(message, user = undefined, memberID = 'None') {
 			{ name: 'Roles', value: type },
 			{ name: `Warns ${warns == 'None' ? '' : '(' + user.warns.length + ')'}`, value: warns }
 		)
-		.setColor(colors.BLUE)
-		.setFooter(message.client.user.username, settings.BOT_IMG);
+		.setColor(settings.colors.blue)
+		.setFooter(message.client.user.username, settings.images.bot);
 
 	return message.reply({ embeds: [embed] });
 }

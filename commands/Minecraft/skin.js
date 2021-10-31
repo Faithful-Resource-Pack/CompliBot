@@ -1,20 +1,20 @@
-const prefix = process.env.PREFIX;
+const prefix = process.env.PREFIX
 
-const axios = require('axios');
-const Discord = require("discord.js");
-const colors = require('../../resources/colors');
-const { string } = require('../../resources/strings');
+const axios = require('axios')
+const Discord = require("discord.js")
+const settings = require('../../resources/settings.json')
+const strings = require('../../resources/strings.json')
 
-const { Buffer } = require('buffer');
-const { warnUser } = require('../../helpers/warnUser');
-const { addDeleteReact } = require('../../helpers/addDeleteReact');
+const { Buffer } = require('buffer')
+const { warnUser } = require('../../helpers/warnUser')
+const { addDeleteReact } = require('../../helpers/addDeleteReact')
 
 module.exports = {
 	name: 'skin',
-	description: string('command.description.skin'),
+	description: strings.command.description.skin,
 	category: 'Minecraft',
 	guildOnly: false,
-	uses: string('command.use.anyone'),
+	uses: strings.command.use.anyone,
 	syntax: `${prefix}skin [minecraft username]`,
 	example: `${prefix}skin Pomi108`,
 	async execute(client, message, args) {
@@ -54,7 +54,7 @@ async function showSkin(message, args = undefined, user = undefined) {
 	const attachment = new Discord.MessageAttachment(Buffer.from(skinRender.data, "utf-8"), 'skin.png');
 
 	var embed = new Discord.MessageEmbed()
-		.setColor(colors.BLUE)
+		.setColor(settings.colors.blue)
 		.setImage('attachment://skin.png')
 		.setThumbnail(skinJson.textures.SKIN.url)
 		.setFooter(`UUID: ${response}`)

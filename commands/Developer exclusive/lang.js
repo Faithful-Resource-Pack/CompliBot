@@ -6,7 +6,7 @@ const uidT = process.env.UIDT
 
 const { langs } = require("../../helpers/firestorm/all");
 const { warnUser } = require("../../helpers/warnUser");
-const { string } = require("../../resources/strings");
+const strings = require("../../resources/strings");
 
 module.exports = {
   name: 'lang',
@@ -14,7 +14,7 @@ module.exports = {
   description: 'Edit global strings without restarting the bot :)',
   category: 'Developer exclusive',
   guildOnly: false,
-  uses: string('command.use.devs'),
+  uses: strings.command.use.devs,
   syntax: `
 ${prefix}lang see <collection> <lang> <name>
 ${prefix}lang add|edit <collection> <lang> <name> <string>
@@ -23,7 +23,7 @@ ${prefix}lang delete|remove <collection> <lang> <name>
 lang: en_US, fr_FR, de_DE...
 collection: bot, webapp`,
   async execute(_client, message, args) {
-    if (message.author.id !== uidR && message.author.id !== uidJ && message.author.id !== uidT) return warnUser(message, string('command.no_permission'))
+    if (message.author.id !== uidR && message.author.id !== uidJ && message.author.id !== uidT) return warnUser(message, strings.command.no_permission)
 
     const operation = args[0]
     const collection = args[1]

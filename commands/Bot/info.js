@@ -1,17 +1,16 @@
-const prefix = process.env.PREFIX;
+const prefix = process.env.PREFIX
 
-const Discord = require("discord.js");
-const settings = require('../../resources/settings');
-const colors = require('../../resources/colors');
-const { string } = require('../../resources/strings');
+const Discord = require("discord.js")
+const settings = require('../../resources/settings.json')
+const strings = require('../../resources/strings.json')
 
 module.exports = {
 	name: 'info',
 	aliases: ['botinfo'],
-	description: string('command.description.info'),
+	description: strings.command.description.info,
 	category: 'Bot',
 	guildOnly: false,
-	uses: string('command.use.anyone'),
+	uses: strings.command.use.anyone,
 	syntax: `${prefix}info`,
 	async execute(client, message, args) {
 		if (message.channel.type !== 'DM') await message.reply({ content: 'Please check your dm\'s!' });
@@ -37,8 +36,8 @@ module.exports = {
 
 		const embed = new Discord.MessageEmbed()
 			.setTitle(`${message.client.user.username} Info:`)
-			.setThumbnail(settings.BOT_IMG)
-			.setColor(colors.BLUE)
+			.setThumbnail(settings.images.bot)
+			.setColor(settings.colors.blue)
 			.setDescription('This is the official bot of all Compliance Resource Pack discords, developed by the Compliance Team!')
 			.addFields(
 				{ name: '\u200B', value: '**Features:**' },

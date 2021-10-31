@@ -1,7 +1,7 @@
 const prefix = process.env.PREFIX;
 
-const settings = require('../../resources/settings');
-const { string } = require('../../resources/strings');
+const settings = require('../../resources/settings.json');
+const strings = require('../../resources/strings.json');
 
 const { date } = require('../../helpers/date')
 const { pushTextures } = require('../../functions/textures/admission/pushTextures')
@@ -10,24 +10,24 @@ const { warnUser } = require('../../helpers/warnUser')
 
 module.exports = {
 	name: 'autopush',
-	description: string('command.description.autopush'),
+	description: strings.command.description.autopush,
 	category: 'Compliance exclusive',
 	guildOnly: false,
-	uses: string('command.use.admins'),
+	uses: strings.command.use.admins,
 	syntax: `${prefix}autopush <both/c32/c64>`,
 	example: `${prefix}autopush c32`,
 	async execute(client, message, args) {
-		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.id === '747839021421428776')) return warnUser(message, string('command.no_permission'))
+		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.id === '747839021421428776')) return warnUser(message, strings.command.no_permission)
 
-		if (!args.length) return warnUser(message, string('command.args.invalid.generic'))
+		if (!args.length) return warnUser(message, strings.command.args.invalid.generic)
 
 		if (args[0] == 'both') {
-			await downloadResults(client, settings.C64_RESULTS)
-			await downloadResults(client, settings.C32_RESULTS)
+			await downloadResults(client, settings.channels.submit_results.c64)
+			await downloadResults(client, settings.channels.submit_results.c32)
 		}
-		else if (args[0] == 'c32') await downloadResults(client, settings.C32_RESULTS)
-		else if (args[0] == 'c64') await downloadResults(client, settings.C64_RESULTS)
-		else return warnUser(message, string('command.args.invalid.generic'));
+		else if (args[0] == 'c32') await downloadResults(client, settings.channels.submit_results.c32)
+		else if (args[0] == 'c64') await downloadResults(client, settings.channels.submit_results.c64)
+		else return warnUser(message, strings.command.args.invalid.generic);
 
 		await pushTextures(`Manual push, executed by: ${message.author.username} (${date()})`);	// Push them trough GitHub
 

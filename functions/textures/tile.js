@@ -1,12 +1,11 @@
-const Canvas   = require('canvas')
-const Discord  = require('discord.js')
-const emojis   = require('../../resources/emojis')
-const settings = require('../../resources/settings')
+const Canvas = require('canvas')
+const Discord = require('discord.js')
+const settings = require('../../resources/settings.json')
 
 const { addDeleteReact } = require('../../helpers/addDeleteReact')
-const { getMeta }  = require('../../helpers/getMeta')
+const { getMeta } = require('../../helpers/getMeta')
 const { warnUser } = require('../../helpers/warnUser')
-const { magnify }  = require('./magnify')
+const { magnify } = require('./magnify')
 
 /**
  * Tile an image
@@ -20,25 +19,26 @@ function tile(message, url, type, gotocomplichannel = undefined, redirectMessage
 
 	let complichannel
 	if (gotocomplichannel) {
-		if (message.guild.id == settings.C32_ID) complichannel = message.guild.channels.cache.get(settings.C32_COMPLICHANNEL) // C32x discord
-		if (message.guild.id == settings.C64_ID) complichannel = message.guild.channels.cache.get(settings.C64_COMPLICHANNEL) // C64x discord
+		if (message.guild.id == settings.guilds.c32.id) complichannel = message.guild.channels.cache.get(settings.channels.complibot.c32) // C32x discord
+		if (message.guild.id == settings.guilds.c64.id) complichannel = message.guild.channels.cache.get(settings.channels.complibot.c64) // C64x discord
+		if (message.guild.id == settings.guilds.cextras.id) complichannel = message.guild.channels.cache.get(settings.channels.complibot.cextras) // CExtras discord
 	}
 
-	getMeta(url).then(async function(dimension) {
+	getMeta(url).then(async function (dimension) {
 		// aliases of type
 		if (type == undefined || type == 'g') type = 'grid'
-		if (type =='v') type = 'vertical'
+		if (type == 'v') type = 'vertical'
 		if (type == 'h') type = 'horizontal'
 		if (type == 'r') type = 'round'
 		if (type == 'p') type = 'plus'
 
 		var sizeResult = (dimension.width * dimension.height) * 3
 		if (sizeResult > 262144) return warnUser(message, 'The output picture will be too big!\nMaximum output allowed: 512 x 512 px²\nYours is: ' + dimension.width * 3 + ' x ' + dimension.height * 3 + ' px²')
-		
+
 		let canvas
 		let canvasContext
 		let i, j
-		
+
 		/**
 		 * Follows this pattern:
 		 *  x x x
@@ -139,13 +139,13 @@ function tile(message, url, type, gotocomplichannel = undefined, redirectMessage
 		if (gotocomplichannel) {
 			try {
 				const member = await message.guild.members.cache.get(gotocomplichannel)
-				embedMessage = await member.send({files: [attachment]})
+				embedMessage = await member.send({ files: [attachment] })
 			} catch (e) {
-				embedMessage = await complichannel.send({content: `<@!${gotocomplichannel}>`, files: [attachment]})
+				embedMessage = await complichannel.send({ content: `<@!${gotocomplichannel}>`, files: [attachment] })
 			}
 		}
 		else {
-			embedMessage = await message.reply({files: [attachment]})
+			embedMessage = await message.reply({ files: [attachment] })
 		}
 		addDeleteReact(embedMessage, message, true, redirectMessage)
 
@@ -154,24 +154,24 @@ function tile(message, url, type, gotocomplichannel = undefined, redirectMessage
 			// probably unfixable due to the texture submission reactions
 			if (embedMessage.channel.type === 'DM') return
 
-			embedMessage.react(emojis.MAGNIFY);
+			embedMessage.react(settings.emojis.magnify);
 
 			const filter = (reaction, user) => {
-				if (redirectMessage) return [emojis.MAGNIFY].includes(reaction.emoji.id) && user.id === redirectMessage.author.id
-				else return [emojis.MAGNIFY].includes(reaction.emoji.id) && user.id === message.author.id
+				if (redirectMessage) return [settings.emojis.magnify].includes(reaction.emoji.id) && user.id === redirectMessage.author.id
+				else return [settings.emojis.magnify].includes(reaction.emoji.id) && user.id === message.author.id
 			}
 
-			embedMessage.awaitReactions({filter, max: 1, time: 60000, errors: ['time'] })
+			embedMessage.awaitReactions({ filter, max: 1, time: 60000, errors: ['time'] })
 				.then(async collected => {
 					const reaction = collected.first()
-					if (reaction.emoji.id === emojis.MAGNIFY) {
+					if (reaction.emoji.id === settings.emojis.magnify) {
 						if (redirectMessage) return magnify(embedMessage, embedMessage.attachments.first().url, undefined, redirectMessage)
 						else return magnify(embedMessage, embedMessage.attachments.first().url)
 					}
 				})
 				.catch(async () => {
 					try {
-						await embedMessage.reactions.cache.get(emojis.MAGNIFY).remove()
+						await embedMessage.reactions.cache.get(settings.emojis.magnify).remove()
 					} catch (err) { /* Message already deleted */ }
 				})
 		}

@@ -1,22 +1,21 @@
 const prefix = process.env.PREFIX
 const Discord = require('discord.js')
 
-const colors = require('../../resources/colors')
-
-const { string } = require('../../resources/strings')
+const strings = require('../../resources/strings.json')
+const settings = require('../../resources/settings.json')
 const { addDeleteReact } = require('../../helpers/addDeleteReact');
 const { warnUser } = require('../../helpers/warnUser')
 
 module.exports = {
   name: 'namesearch',
-  description: string('command.description.namesearch'),
+  description: strings.command.description.namesearch,
   category: 'Fun',
   guildOnly: true,
-  uses: string('command.use.anyone'),
+  uses: strings.command.use.anyone,
   syntax: `${prefix}namesearch juk`,
   /** @param {Discord.Message} message */
   async execute(_client, message, args) {
-    if (!args.length) return warnUser(message, string('command.args.none_given'))
+    if (!args.length) return warnUser(message, strings.command.args.none_given)
 
     const search = args.join(' ').toLowerCase()
 
@@ -30,7 +29,7 @@ module.exports = {
     const embed = new Discord.MessageEmbed()
       .setTitle(`Members with \`\`${search}\`\` in their name`)
       .setDescription(results.size > 0 ? results.map(e => `<@!${e.id}>`).join(' ') : '*No user found*')
-      .setColor(colors.BLUE)
+      .setColor(settings.colors.blue)
     const embedMessage = await message.reply({ embeds: [embed] })
     await addDeleteReact(embedMessage, message, true);
   }

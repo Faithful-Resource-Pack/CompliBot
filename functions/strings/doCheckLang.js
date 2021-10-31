@@ -1,20 +1,31 @@
 const fs = require('fs')
-const langs = require('../../helpers/firestorm/langs')
-const { join } = require('path')
+const path = require('path')
+const allCollection = require('../../helpers/firestorm/all')
+const { merge } = require('../../helpers/merge.js')
 
 /**
- * Fetch distant lang file into the local one
+ * Fetch distant bot lang file into a formated local one
  * @author Juknum
  */
-async function doCheckLang() {
-  const path = join(process.cwd(), 'json/database/')
+const doCheckLang = async () => {
 
-  fs.mkdirSync(path, { recursive: true })
+  let data = (await allCollection.langs.get("bot")).en_US
+  let output = {}
 
-  let text = JSON.stringify(await langs.read_raw(), null, 0)
+  // split key into their own objects
+  for (const item in data) {
+    let tempObject = {}
+    let container = tempObject
+    item.split('.').map((k, i, values) => {
+      container = (container[k] = (i == values.length - 1 ? data[item] : {}))
+    })
+
+    output = merge(output, [tempObject])
+  }
+
   fs.writeFileSync(
-    join(path, 'langs.json'),
-    text,
+    path.join(path.join(process.cwd(), 'resources/'), 'strings.json'),
+    JSON.stringify(output, null, 0),
     { flag: 'w', encoding: 'utf-8' }
   )
 }

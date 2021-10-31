@@ -1,7 +1,6 @@
 const Discord = require('discord.js')
-const settings = require('../resources/settings')
-const colors = require('../resources/colors')
-const { string } = require('../resources/strings')
+const settings = require('../resources/settings.json')
+const strings = require('../resources/strings.json')
 
 const { addDeleteReact } = require('./addDeleteReact')
 
@@ -13,11 +12,11 @@ const { addDeleteReact } = require('./addDeleteReact')
  */
 async function warnUser(message, text) {
 	var embed = new Discord.MessageEmbed()
-		.setColor(colors.RED)
-		.setThumbnail(settings.WARNING_IMG)
-		.setTitle(string('bot.error'))
+		.setColor(settings.colors.red)
+		.setThumbnail(settings.images.warning)
+		.setTitle(strings.bot.error)
 		.setDescription(text)
-		.setFooter('Type /help to get more information about commands', settings.BOT_IMG)
+		.setFooter('Type /help to get more information about commands', settings.images.bot)
 
 	let embedMessage
 	if (message.deleted) embedMessage = await message.channel.send({ embeds: [embed] })

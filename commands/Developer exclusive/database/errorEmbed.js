@@ -1,8 +1,8 @@
 const Discord = require('discord.js')
-const colors = require('../../../resources/colors')
+const settings = require('../../../resources/settings.json')
 
 async function errorEmbed(err) {
-  return new Discord.MessageEmbed().setColor(colors.RED).setDescription(err)
+  return new Discord.MessageEmbed().setColor(settings.colors.red).setDescription(err)
 }
 
 module.exports = {

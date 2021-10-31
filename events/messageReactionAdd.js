@@ -1,7 +1,7 @@
 const client = require('../index').Client
 const DEV = (process.env.DEV.toLowerCase() == 'true')
 const DEV_REACTION = (process.env.DEV_REACTION || false) == 'true'
-const settings = require('../resources/settings')
+const settings = require('../resources/settings.json')
 
 const { editSubmission } = require('../functions/textures/submission/editSubmission')
 const { manageExtraRoles } = require('../functions/manageExtraRoles')
@@ -15,21 +15,21 @@ module.exports = {
 
     switch (reaction.message.channel.id) {
       // TEXTURES SUBMISSIONS
-      case settings.C32_SUBMIT_TEXTURES:
-      case settings.C32_SUBMIT_COUNCIL:
-      case settings.C32_SUBMIT_REVOTE:
-      case settings.C32_RESULTS:
-      case settings.C64_SUBMIT_TEXTURES:
-      case settings.C64_SUBMIT_COUNCIL:
-      case settings.C64_SUBMIT_REVOTE:
-      case settings.C64_RESULTS:
-      case settings.DEV_SUBMIT_COUNCIL:
-        if (reaction.message.channel.id === settings.DEV_SUBMIT_COUNCIL && !DEV_REACTION) return
+      case settings.channels.submit_textures.c32:
+      case settings.channels.submit_council.c32:
+      case settings.channels.submit_revote.c32:
+      case settings.channels.submit_results.c32:
+      case settings.channels.submit_textures.c64:
+      case settings.channels.submit_council.c64:
+      case settings.channels.submit_revote.c64:
+      case settings.channels.submit_results.c64:
+      case settings.channels.submit_council.dev:
+        if (reaction.message.channel.id === settings.channels.submit_council.dev && !DEV_REACTION) return
         editSubmission(client, reaction, user)
         break;
 
       // EXTRA ROLES MANAGER
-      case settings.CEXTRAS_ROLES:
+      case settings.channels.cextras_roles:
         manageExtraRoles(client, reaction, user)
         break;
 

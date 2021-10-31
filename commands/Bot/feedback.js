@@ -1,30 +1,29 @@
-const prefix = process.env.PREFIX;
+const prefix = process.env.PREFIX
 
-const Discord = require("discord.js");
-const colors = require('../../resources/colors');
-const { string } = require('../../resources/strings');
-const emojis = require('../../resources/emojis')
+const Discord = require("discord.js")
+const settings = require('../../resources/settings.json')
+const strings = require('../../resources/strings.json')
 
-const { warnUser } = require('../../helpers/warnUser');
+const { warnUser } = require('../../helpers/warnUser')
 
 module.exports = {
 	name: 'feedback',
 	aliases: ['suggest', 'bugreport'],
-	description: string('command.description.feedback'),
+	description: strings.command.description.feedback,
 	category: 'Bot',
 	guildOnly: false,
-	uses: string('command.use.anyone'),
+	uses: strings.command.use.anyone,
 	syntax: `${prefix}feedback [message]`,
 	example: `${prefix}feedback Give the bot more beans`,
 	async execute(client, message, args) {
 		const channel = client.channels.cache.get('821793794738749462');
 		let file
 
-		if (!args[0]) return warnUser(message, string('command.feedback.no_args_given'));
+		if (!args[0]) return warnUser(message, strings.command.feedback.no_args_given);
 
 		var embed = new Discord.MessageEmbed()
 			.setAuthor(`Feedback from ${message.author.tag}`, message.author.displayAvatarURL())
-			.setColor(colors.BLUE)
+			.setColor(settings.colors.blue)
 			.setTimestamp()
 
 		if (message.channel.type === 'DM')
@@ -46,39 +45,39 @@ module.exports = {
 		}
 
 		var confirmEmbed = new Discord.MessageEmbed()
-			.setColor(colors.BLUE)
-			.setTitle(`Please confirm your feedback by reacting with <:upvote:${emojis.UPVOTE}>`)
+			.setColor(settings.colors.blue)
+			.setTitle(`Please confirm your feedback by reacting with <:upvote:${settings.emojis.upvote}>`)
 			.setDescription('**Note:** Feedback that is not related to the bot will be ignored.')
 
 		const confirmEmbedMsg = await message.reply({ embeds: [confirmEmbed] });
-		await confirmEmbedMsg.react(emojis.UPVOTE).catch(() => { });
+		await confirmEmbedMsg.react(settings.emojis.upvote).catch(() => { });
 
 		const filter = (reaction, user) => {
-			return !user.bot && [emojis.UPVOTE].includes(reaction.emoji.id) && user.id === message.author.id;
+			return !user.bot && [settings.emojis.upvote].includes(reaction.emoji.id) && user.id === message.author.id;
 		};
 
 		confirmEmbedMsg.awaitReactions({ filter, max: 1, time: 60000, errors: ['time'] })
 			.then(async collected => {
 				const reaction = collected.first()
-				if (reaction.emoji.id === emojis.UPVOTE) {
+				if (reaction.emoji.id === settings.emojis.upvote) {
 					var embed2 = new Discord.MessageEmbed()
-						.setColor(colors.BLUE)
-						.setTitle(string('command.feedback.success_description'))
+						.setColor(settings.colors.blue)
+						.setTitle(strings.command.feedback.success_description)
 						.setTimestamp()
 
 					await channel.send({ embeds: [embed] });
 					await confirmEmbedMsg.edit({ embeds: [embed2] });
-					if (message.channel.type !== 'DM') await confirmEmbedMsg.reactions.cache.get(emojis.UPVOTE).remove()
+					if (message.channel.type !== 'DM') await confirmEmbedMsg.reactions.cache.get(settings.emojis.upvote).remove()
 
-					//await feedbackMsg.react(emojis.UPVOTE).catch(() => {}); 
-					//await feedbackMsg.react(emojis.DOWNVOTE).catch(() => {});
+					//await feedbackMsg.react(settings.emojis.upvote).catch(() => {}); 
+					//await feedbackMsg.react(settings.emojis.downvote).catch(() => {});
 				}
 			})
 			.catch(async () => {
 				try {
-					if (message.channel.type !== 'DM') await confirmEmbedMsg.reactions.cache.get(emojis.UPVOTE).remove()
+					if (message.channel.type !== 'DM') await confirmEmbedMsg.reactions.cache.get(settings.emojis.upvote).remove()
 					var expiredEmbed = new Discord.MessageEmbed()
-						.setColor(colors.RED)
+						.setColor(settings.colors.red)
 						.setTitle('You didn\'t confirm your feedback in time.')
 						.setDescription('Your feedback has not been sent.')
 

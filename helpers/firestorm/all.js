@@ -6,5 +6,6 @@ module.exports = {
   texture: require('./texture'),
   users: require('./users'),
   addons: require('./addons'),
-  langs: require('./langs')
+  langs: require('./langs'),
+  settings: require('./settings')
 }

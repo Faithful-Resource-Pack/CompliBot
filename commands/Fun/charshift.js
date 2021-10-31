@@ -1,24 +1,23 @@
 const prefix = process.env.PREFIX
 const Discord = require('discord.js')
 
-const colors = require('../../resources/colors')
-
-const { string } = require('../../resources/strings')
+const strings = require('../../resources/strings.json')
+const settings = require('../../resources/settings.json')
 const { addDeleteReact } = require('../../helpers/addDeleteReact');
 const { warnUser } = require('../../helpers/warnUser')
 
 module.exports = {
   name: 'charshift',
-  description: string('command.description.charshift'),
+  description: strings.command.description.charshift,
   category: 'Fun',
   guildOnly: false,
-  uses: string('command.use.anyone'),
+  uses: strings.command.use.anyone,
   syntax: `${prefix}charshift <offset> <text>`,
   example: `${prefix}charshift 5 Devs are awesome`,
   async execute(_client, message, args) {
-    if (!args.length || args.length < 2) return warnUser(message, string('command.args.none_given'))
+    if (!args.length || args.length < 2) return warnUser(message, strings.command.args.none_given)
     let offset = parseInt(args.shift())
-    if (isNaN(offset)) return warnUser(message, `${string('command.args.invalid.generic')}\nFirst argument must be a number`)
+    if (isNaN(offset)) return warnUser(message, `${strings.command.args.invalid.generic}\nFirst argument must be a number`)
     if (offset < 0) offset += 26
 
     const str = args.join(' ')
@@ -36,7 +35,7 @@ module.exports = {
 
     const embed = new Discord.MessageEmbed()
       .setTitle('**' + output + '**')
-      .setColor(colors.BLUE)
+      .setColor(settings.colors.blue)
 
     const embedMessage = await message.reply({ embeds: [embed] })
     await addDeleteReact(embedMessage, message, true);

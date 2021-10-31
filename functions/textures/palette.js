@@ -1,8 +1,7 @@
 const Canvas = require('canvas')
 const Discord = require('discord.js')
-const colors2 = require('../../resources/colors')
-const settings = require('../../resources/settings')
-const { string } = require('../../resources/strings')
+const settings = require('../../resources/settings.json')
+const strings = require('../../resources/strings.json')
 
 const { getMeta } = require('../../helpers/getMeta')
 const { warnUser } = require('../../helpers/warnUser')
@@ -32,14 +31,15 @@ async function palette(message, url, gotocomplichannel = undefined, redirectMess
 
 	let complichannel
 	if (gotocomplichannel) {
-		if (message.guild.id == settings.C32_ID) complichannel = message.guild.channels.cache.get(settings.C32_COMPLICHANNEL) // C32x discord
-		if (message.guild.id == settings.C64_ID) complichannel = message.guild.channels.cache.get(settings.C64_COMPLICHANNEL) // C64x discord
+		if (message.guild.id == settings.guilds.c32.id) complichannel = message.guild.channels.cache.get(settings.channels.complibot.c32) // C32x discord
+		if (message.guild.id == settings.guilds.c64.id) complichannel = message.guild.channels.cache.get(settings.channels.complibot.c64) // C64x discord
+		if (message.guild.id == settings.guilds.cextras.id) complichannel = message.guild.channels.cache.get(settings.channels.complibot.cextras) // CExtras discord
 	}
 
 	getMeta(url).then(async function (dimension) {
 		var sizeOrigin = dimension.width * dimension.height
 
-		if (sizeOrigin > 65536) return warnUser(message, await string('command.image.too_big'))
+		if (sizeOrigin > 65536) return warnUser(message, await strings.command.image.too_big)
 
 		var canvas = Canvas.createCanvas(dimension.width, dimension.height).getContext('2d')
 		const allColors = {}
@@ -78,7 +78,7 @@ async function palette(message, url, gotocomplichannel = undefined, redirectMess
 
 		var embed = new Discord.MessageEmbed()
 			.setTitle('Palette results')
-			.setColor(colors2.BLUE)
+			.setColor(settings.colors.blue)
 			.setDescription(`List of colors:\n`)
 			.setFooter(`Total: ${Object.values(allColors).length}`)
 

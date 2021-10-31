@@ -1,7 +1,7 @@
 const Canvas = require('canvas')
 const Discord = require('discord.js')
-const settings = require('../../resources/settings')
-const { string } = require('../../resources/strings')
+const settings = require('../../resources/settings.json')
+const strings = require('../../resources/strings.json')
 
 const { addDeleteReact } = require('../../helpers/addDeleteReact')
 const { getMeta } = require('../../helpers/getMeta')
@@ -19,8 +19,9 @@ function magnify(message, url, gotocomplichannel = undefined, redirectMessage = 
 
 	let complichannel
 	if (gotocomplichannel) {
-		if (message.guild.id == settings.C32_ID) complichannel = message.guild.channels.cache.get(settings.C32_COMPLICHANNEL) // C32x discord
-		if (message.guild.id == settings.C64_ID) complichannel = message.guild.channels.cache.get(settings.C64_COMPLICHANNEL) // C64x discord
+		if (message.guild.id == settings.guilds.c32.id) complichannel = message.guild.channels.cache.get(settings.channels.complibot.c32) // C32x discord
+		if (message.guild.id == settings.guilds.c64.id) complichannel = message.guild.channels.cache.get(settings.channels.complibot.c64) // C64x discord
+		if (message.guild.id == settings.guilds.cextras.id) complichannel = message.guild.channels.cache.get(settings.channels.complibot.cextras) // CExtras discord
 	}
 
 	getMeta(url).then(async function (dimension) {
@@ -32,7 +33,7 @@ function magnify(message, url, gotocomplichannel = undefined, redirectMessage = 
 		if (sizeOrigin > 1024) factor = 8
 		if (sizeOrigin > 4096) factor = 4
 		if (sizeOrigin > 65636) factor = 2
-		if (sizeOrigin > 262144) return warnUser(message, string('command.image.too_big'))
+		if (sizeOrigin > 262144) return warnUser(message, strings.command.image.too_big)
 
 		var width = dimension.width * factor
 		var height = dimension.height * factor

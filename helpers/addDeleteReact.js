@@ -1,4 +1,4 @@
-const emojis = require('../resources/emojis')
+const settings = require('../resources/settings.json')
 
 /**
  * Add a trash can emote and await it, if used, the authorMessage is deleted, does nothing if sentMessage is in DM
@@ -10,17 +10,17 @@ const emojis = require('../resources/emojis')
 async function addDeleteReact(sentMessage, authorMessage, deleteAuthorMessage = false, redirectMessage = undefined) {
   if (sentMessage.channel.type === 'DM') return
 
-  await sentMessage.react(emojis.DELETE)
+  await sentMessage.react(settings.emojis.delete)
 
   const filter = (reaction, user) => {
-    if (redirectMessage) return !user.bot && [emojis.DELETE].includes(reaction.emoji.id) && user.id === redirectMessage.author.id
-    else return !user.bot && [emojis.DELETE].includes(reaction.emoji.id) && user.id === authorMessage.author.id
+    if (redirectMessage) return !user.bot && [settings.emojis.delete].includes(reaction.emoji.id) && user.id === redirectMessage.author.id
+    else return !user.bot && [settings.emojis.delete].includes(reaction.emoji.id) && user.id === authorMessage.author.id
   }
 
   sentMessage.awaitReactions({ filter, max: 1, time: 60000, errors: ['time'] })
     .then(async collected => {
       const reaction = collected.first()
-      if (reaction.emoji.id !== emojis.DELETE) {
+      if (reaction.emoji.id !== settings.emojis.delete) {
         return
       }
 
@@ -41,7 +41,7 @@ async function addDeleteReact(sentMessage, authorMessage, deleteAuthorMessage = 
       // only error cause is timeout, so delete the 
       sentMessage = await sentMessage.fetch(true).catch(() => { }) // fix for unknown message
       if (sentMessage && !sentMessage.deleted) {
-        const deleteReaction = sentMessage.reactions.cache.get(emojis.DELETE)
+        const deleteReaction = sentMessage.reactions.cache.get(settings.emojis.delete)
         if (deleteReaction !== undefined) await deleteReaction.remove().catch(() => { }) // FIX for undefined delete reaction remove
       }
     })

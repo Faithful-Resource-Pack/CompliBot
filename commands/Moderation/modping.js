@@ -1,15 +1,15 @@
 const prefix = process.env.PREFIX
 const Discord = require("discord.js")
-const { string } = require('../../resources/strings')
+const strings = require('../../resources/strings.json')
 const { warnUser } = require('../../helpers/warnUser')
 
 module.exports = {
 	name: 'modping',
 	aliases: ['moderators', 'pingmods'],
-	description: string('command.description.modping'),
+	description: strings.command.description.modping,
 	category: 'Moderation',
 	guildOnly: true,
-	uses: string('command.use.anyone'),
+	uses: strings.command.use.anyone,
 	syntax: `${prefix}modping`,
 	/**
 	 * @param {Discord.Client} client 

@@ -13,6 +13,12 @@ const Discord = require('discord.js')
 const { walkSync } = require('./helpers/walkSync')
 require('dotenv').config()
 
+// fetch lang & settings file at start
+const { doCheckLang } = require('./functions/strings/doCheckLang')
+const { doCheckSettings } = require('./functions/settings/doCheckSettings')
+doCheckLang()
+doCheckSettings()
+
 // eslint-disable-next-line no-unused-vars
 const { Client, Intents } = require('discord.js')
 const client = new Client({
@@ -41,7 +47,7 @@ const DEV = (process.env.DEV.toLowerCase() == 'true')
 const LOG_DEV = ((process.env.LOG_DEV.toLowerCase() || 'false') == 'true')
 
 // Resources: 
-const colors = require('./resources/colors')
+const settings = require('./resources/settings.json')
 
 /**
  * COMMAND HANDLER
@@ -73,7 +79,7 @@ process.on('unhandledRejection', (reason, promise) => {
 	const embed = new Discord.MessageEmbed()
 		.setTitle('Unhandled Rejection')
 		.setDescription(`\`\`\`fix\n${reason.stack || JSON.stringify(reason)}\`\`\``)
-		.setColor(colors.RED)
+		.setColor(settings.colors.red)
 		.setTimestamp()
 
 	channel.send({ embeds: [embed] })

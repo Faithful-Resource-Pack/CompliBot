@@ -1,16 +1,16 @@
 /* eslint-disable no-irregular-whitespace */
-const prefix = process.env.PREFIX;
+const prefix = process.env.PREFIX
 
-const uidR = process.env.UIDR;
-const uidJ = process.env.UIDJ;
-const uidD = process.env.UIDD;
-const uidT = process.env.UIDT;
+const uidR = process.env.UIDR
+const uidJ = process.env.UIDJ
+const uidD = process.env.UIDD
+const uidT = process.env.UIDT
 
-const Discord = require('discord.js');
-const colors = require('../../resources/colors');
-const { string } = require('../../resources/strings');
+const Discord = require('discord.js')
+const settings = require('../../resources/settings.json')
+const strings = require('../../resources/strings.json')
 
-const { warnUser } = require('../../helpers/warnUser');
+const { warnUser } = require('../../helpers/warnUser')
 
 module.exports = {
   name: 'users',
@@ -18,7 +18,7 @@ module.exports = {
   description: 'Fix or modify users elements directly from the bot',
   category: 'Developer exclusive',
   guildOnly: false,
-  uses: string('command.use.devs'),
+  uses: strings.command.use.devs,
   syntax: `${prefix}users <set> <id> <field> <value>\n${prefix}user <delete> <id>\n${prefix}user <add> <id> [username]`,
   example: `${prefix}user delete <id>\n${prefix}user add <id> RoBoT\n${prefix}user set <id> username Steve\n${prefix}user set <id> type [ "member", ... ]\n${prefix}user set <id> warns [ "warn1", ... ] -> This doesn't give the muted role !!!\n${prefix}user set <id> muted { "start": <timestamp start>, "end": <timestamp end> } -> This doesn't give the muted role !!!`,
   async execute(_client, message, args) {
@@ -32,7 +32,7 @@ module.exports = {
       let options1 = args[3]
       let user = undefined
 
-      var embed = new Discord.MessageEmbed().setColor(colors.BLUE)
+      var embed = new Discord.MessageEmbed().setColor(settings.colors.blue)
 
       if (id === undefined) return warnUser(message, "Please specify a Discord ID")
 

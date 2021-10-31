@@ -5,7 +5,7 @@ const uidJ = process.env.UIDJ
 const uidD = process.env.UIDD
 const uidT = process.env.UIDT
 
-const { string } = require('../../resources/strings')
+const strings = require('../../resources/strings.json')
 
 const { warnUser } = require('../../helpers/warnUser')
 const { walkSync } = require('../../helpers/walkSync')
@@ -13,10 +13,10 @@ const { walkSync } = require('../../helpers/walkSync')
 module.exports = {
 	name: 'reload',
 	aliases: ['r'],
-	description: string('command.description.reload'),
+	description: strings.command.description.reload,
 	category: 'Developer exclusive',
 	guildOnly: false,
-	uses: string('command.use.devs'),
+	uses: strings.command.use.devs,
 	syntax: `${prefix}reload <command>`,
 	example: `${prefix}reload magnify`,
 	async execute(client, message, args) {
@@ -39,6 +39,6 @@ module.exports = {
 				await message.react('❌');
 			}
 		}
-		else return warnUser(message, string('command.no_permission'));
+		else return warnUser(message, strings.command.no_permission);
 	}
 };

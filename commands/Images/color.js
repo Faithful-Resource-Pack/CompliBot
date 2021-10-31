@@ -1,18 +1,18 @@
 const Discord = require('discord.js')
-const prefix = process.env.PREFIX;
-const { string } = require('../../resources/strings');
+const prefix = process.env.PREFIX
+const strings = require('../../resources/strings.json')
 const Canvas = require('canvas')
 
-const { warnUser } = require('../../helpers/warnUser');
+const { warnUser } = require('../../helpers/warnUser')
 const { addDeleteReact } = require('../../helpers/addDeleteReact')
 
 module.exports = {
   name: 'color',
   aliases: ['color', 'colour', 'c'],
-  description: string('command.description.color'),
+  description: strings.command.description.color,
   category: 'Images',
   guildOnly: false,
-  uses: string('command.use.anyone'),
+  uses: strings.command.use.anyone,
   syntax: `
 ${prefix}color #123456
 ${prefix}color rgb([0-255],[0-255],[0-255])
@@ -29,7 +29,7 @@ ${prefix}color hsl(25,100,57)
 ${prefix}color hsv(25,85,100)
 ${prefix}color cmyk(0,50,85,0)`,
   async execute(client, message, args) {
-    if (args.length < 1) return warnUser(message, string('command.args.not_enough_given'))
+    if (args.length < 1) return warnUser(message, strings.command.args.not_enough_given)
 
     args = args[0]
 
@@ -43,8 +43,8 @@ ${prefix}color cmyk(0,50,85,0)`,
     if (args.startsWith('rgb(')) {
       rgb = args.slice(4).slice(0, -1).split(',').map(c => c | 0) // remove formating, remove ), split & convert to int
 
-      if (rgb.length < 3 || rgb.length > 3) return warnUser(message, string('command.color.rgb.no_values'))
-      for (let i = 0; i < 3; i++) if (rgb[i] > 255 || rgb[i] < 0) return warnUser(message, string('command.color.rgb.invalid_values'))
+      if (rgb.length < 3 || rgb.length > 3) return warnUser(message, strings.command.color.rgb.no_values)
+      for (let i = 0; i < 3; i++) if (rgb[i] > 255 || rgb[i] < 0) return warnUser(message, strings.command.color.rgb.invalid_values)
 
       hex = RGBtoHEX(rgb[0], rgb[1], rgb[2])
       hsl = RGBtoHSL(rgb[0], rgb[1], rgb[2])
@@ -54,13 +54,13 @@ ${prefix}color cmyk(0,50,85,0)`,
     else if (args.startsWith('rgba(')) {
       rgb = args.slice(5).slice(0, -1).split(',')
 
-      if (rgb.length < 4 || rgb.length > 4) return warnUser(message, string('command.color.rgba.no_values'))
+      if (rgb.length < 4 || rgb.length > 4) return warnUser(message, strings.command.color.rgba.no_values)
 
       for (let i = 0; i < 3; i++) {
-        if (rgb[i] > 255 || rgb[i] < 0) return warnUser(message, string('command.color.rgba.wrong_values'))
+        if (rgb[i] > 255 || rgb[i] < 0) return warnUser(message, strings.command.color.rgba.wrong_values)
         else rgb[i] = rgb[i] | 0
       }
-      if (rgb[3] && (rgb[3] > 1 || rgb[3] < 0)) return warnUser(message, string('command.color.rgba.alpha_value'))
+      if (rgb[3] && (rgb[3] > 1 || rgb[3] < 0)) return warnUser(message, strings.command.color.rgba.alpha_value)
       else rgb[3] = parseFloat(rgb[3]).toFixed(2)
 
       hex = RGBAtoHEXA(rgb[0], rgb[1], rgb[2], rgb[3])
@@ -77,9 +77,9 @@ ${prefix}color cmyk(0,50,85,0)`,
     else if (args.startsWith('hsl(')) {
       hsl = args.slice(4).slice(0, -1).split(',').map(c => c | 0)
 
-      if (hsl.length < 3 || hsl.length > 3) return warnUser(message, string('command.color.hsl.no_values'))
-      if (hsl[0] > 360 || hsl[0] < 0) return warnUser(message, string('command.color.hsl.degree_value'))
-      if (hsl[1] > 100 || hsl[1] < 0 || hsl[2] > 100 || hsl[2] < 0) return warnUser(message, string('command.color.hsl.sl_values'))
+      if (hsl.length < 3 || hsl.length > 3) return warnUser(message, strings.command.color.hsl.no_values)
+      if (hsl[0] > 360 || hsl[0] < 0) return warnUser(message, strings.command.color.hsl.degree_value)
+      if (hsl[1] > 100 || hsl[1] < 0 || hsl[2] > 100 || hsl[2] < 0) return warnUser(message, strings.command.color.hsl.sl_values)
 
       rgb = HSLtoRGB(hsl[0], hsl[1], hsl[2])
       hex = RGBtoHEX(rgb[0], rgb[1], rgb[2])
@@ -89,9 +89,9 @@ ${prefix}color cmyk(0,50,85,0)`,
     else if (args.startsWith('hsv(')) {
       hsv = args.slice(4).slice(0, -1).split(',').map(c => c | 0)
 
-      if (hsv.length < 3 || hsv.length > 3) return warnUser(message, string('command.color.hsv.no_values'))
-      if (hsv[0] > 360 || hsv[0] < 0) return warnUser(message, string('command.color.hsv.degree_value'))
-      if (hsv[1] > 100 || hsv[1] < 0 || hsv[2] > 100 || hsv[2] < 0) return warnUser(message, string('command.color.hsv.sv_values'))
+      if (hsv.length < 3 || hsv.length > 3) return warnUser(message, strings.command.color.hsv.no_values)
+      if (hsv[0] > 360 || hsv[0] < 0) return warnUser(message, strings.command.color.hsv.degree_value)
+      if (hsv[1] > 100 || hsv[1] < 0 || hsv[2] > 100 || hsv[2] < 0) return warnUser(message, strings.command.color.hsv.sv_values)
 
       rgb = HSVtoRGB(hsv[0], hsv[1], hsv[2])
       hex = RGBtoHEX(rgb[0], rgb[1], rgb[2])
@@ -101,8 +101,8 @@ ${prefix}color cmyk(0,50,85,0)`,
     else if (args.startsWith('cmyk(')) {
       cmyk = args.slice(5).slice(0, -1).split(',').map(c => c | 0)
 
-      if (cmyk.length < 4 || hsl.length > 4) return warnUser(message, string('command.color.cmyk.no_values'))
-      for (let i = 0; i < 3; i++) if (rgb[i] > 100 || rgb[i] < 0) return warnUser(message, string('command.color.cmyk.wrong_values'))
+      if (cmyk.length < 4 || hsl.length > 4) return warnUser(message, strings.command.color.cmyk.no_values)
+      for (let i = 0; i < 3; i++) if (rgb[i] > 100 || rgb[i] < 0) return warnUser(message, strings.command.color.cmyk.wrong_values)
       rgb = CMYKtoRGB(cmyk[0], cmyk[1], cmyk[2], cmyk[3])
       hex = RGBtoHEX(rgb[0], rgb[1], rgb[2])
       hsl = RGBtoHSL(rgb[0], rgb[1], rgb[2])
@@ -111,7 +111,7 @@ ${prefix}color cmyk(0,50,85,0)`,
     else if (args.startsWith('#')) {
 
       hex = args
-      if (/(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)|(^#[0-9A-F]{8}$)/i.test(args) == false) return warnUser(message, string('command.color.hex.wrong_values') + '\n' + string('command.color.hex.wrong_digits'))
+      if (/(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)|(^#[0-9A-F]{8}$)/i.test(args) == false) return warnUser(message, strings.command.color.hex.wrong_values + '\n' + strings.command.color.hex.wrong_digits)
 
       switch (hex.length) {
         case 4:

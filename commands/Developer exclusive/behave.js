@@ -5,14 +5,14 @@ const uidJ = process.env.UIDJ;
 const uidD = process.env.UIDD;
 const uidT = process.env.UIDT;
 
-const { string } = require('../../resources/strings');
+const strings = require('../../resources/strings.json');
 
 module.exports = {
 	name: 'behave',
-	description: string('command.description.behave'),
+	description: strings.command.description.behave,
 	category: 'Developer exclusive',
 	guildOnly: false,
-	uses: string('command.use.devs'),
+	uses: strings.command.use.devs,
 	syntax: `${prefix}behave`,
 	/**
 	 * 
@@ -34,7 +34,7 @@ module.exports = {
 				else if (link.startsWith('https://discordapp.com/channels/'))
 					ids = url.replace('/channels/', '').split('/')
 				else
-					return await message.reply({ content: string('command.behave.answer') })
+					return await message.reply({ content: strings.command.behave.answer })
 
 				/** @type {Discord.TextChannel} */
 				const channel = message.guild.channels.cache.get(ids[1])
@@ -44,10 +44,10 @@ module.exports = {
 				await message.delete();
 
 				// reply to link message
-				return await messageToBehave.reply({ content: string('command.behave.answer') })
+				return await messageToBehave.reply({ content: strings.command.behave.answer })
 			}
 
-			return await message.reply({ content: string('command.behave.answer') })
+			return await message.reply({ content: strings.command.behave.answer })
 		} else return await message.reply({ content: 'lol no' });
 	}
 };

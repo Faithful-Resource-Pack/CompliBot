@@ -1,5 +1,5 @@
 const Discord = require('discord.js')
-const strings = require("../../resources/strings")
+const strings = require("../../resources/strings.json")
 const textures = require('../../helpers/firestorm/texture')
 const FindTexture = require('../../functions/textures/findTexture')
 const choiceEmbed = require('../../helpers/choiceEmbed')
@@ -51,12 +51,12 @@ module.exports = function (compareOptions) {
 
   // PANIC if both search and id
   if (compareOptions.search !== undefined && compareOptions.id !== undefined)
-    return Promise.reject(new Error(`${string('command.args.invalid.generic')}\nYou can't compare an Id and a search term`))
+    return Promise.reject(new Error(`${strings.command.args.invalid.generic}\nYou can't compare an Id and a search term`))
 
   // search check
   if (compareOptions.search !== undefined) {
     if (typeof compareOptions.search !== 'string') {
-      return Promise.reject(new Error(`${string('command.args.invalid.generic')}\nSearch term must be a string`))
+      return Promise.reject(new Error(`${strings.command.args.invalid.generic}\nSearch term must be a string`))
     } else {
       compareOptions.search = compareOptions.search.trim()
     }
@@ -64,7 +64,7 @@ module.exports = function (compareOptions) {
 
   if (compareOptions.id !== undefined) {
     if (typeof compareOptions.id !== 'string' && typeof compareOptions.id !== 'number')
-      return Promise.reject(new Error(`${string('command.args.invalid.generic')}\nID must be a string or a number`))
+      return Promise.reject(new Error(`${strings.command.args.invalid.generic}\nID must be a string or a number`))
 
     if (typeof compareOptions.id === 'string') {
       // clean string
@@ -78,7 +78,7 @@ module.exports = function (compareOptions) {
 
       // PANIC if not a number
       if (isNaN(compareOptions.id)) {
-        return Promise.reject(new Error(`${string('command.args.invalid.generic')}\nID string must be a correct id or a number`))
+        return Promise.reject(new Error(`${strings.command.args.invalid.generic}\nID string must be a correct id or a number`))
       }
     }
   }
@@ -109,7 +109,7 @@ module.exports = function (compareOptions) {
   }
   // reject if so
   if (!correctRes) {
-    return Promise.reject(new Error(`${string('command.args.invalid.generic')}\nIncorrect resolution : ${incorrectRes}`))
+    return Promise.reject(new Error(`${strings.command.args.invalid.generic}\nIncorrect resolution : ${incorrectRes}`))
   }
 
   if (!askedForJava && !askedForBedrock) {
@@ -136,15 +136,15 @@ module.exports = function (compareOptions) {
     }
 
     if (!correctType) {
-      return Promise.reject(new Error(`${string('command.args.invalid.generic')}\n Images must be a string array`))
+      return Promise.reject(new Error(`${strings.command.args.invalid.generic}\n Images must be a string array`))
     }
   } else {
-    return Promise.reject(new Error(`${string('command.args.invalid.generic')}\n Images must an array`))
+    return Promise.reject(new Error(`${strings.command.args.invalid.generic}\n Images must an array`))
   }
 
   // using ! to check for null-like value
   if (!compareOptions.response && !compareOptions.user) {
-    return Promise.reject(new Error(`${string('command.args.invalid.generic')}\n You must provide a user or a message to respond to`))
+    return Promise.reject(new Error(`${strings.command.args.invalid.generic}\n You must provide a user or a message to respond to`))
   }
 
   // user not null-like
@@ -153,7 +153,7 @@ module.exports = function (compareOptions) {
     // now check if method available
     // https://discord.js.org/#/docs/main/stable/class/User?scrollTo=send
     if (compareOptions.user.send === undefined) {
-      return Promise.reject(new Error(`${string('command.args.invalid.generic')}\n user must be a User`))
+      return Promise.reject(new Error(`${strings.command.args.invalid.generic}\n user must be a User`))
     }
     compareOptions.response = undefined // ease for next use
   } else {
@@ -161,7 +161,7 @@ module.exports = function (compareOptions) {
     // now check if method available
     // https://discord.js.org/#/docs/main/stable/class/Message?scrollTo=reply
     if (compareOptions.response.reply === undefined) {
-      return Promise.reject(new Error(`${string('command.args.invalid.generic')}\n response must be a Message`))
+      return Promise.reject(new Error(`${strings.command.args.invalid.generic}\n response must be a Message`))
     }
     compareOptions.user = undefined // ease for next use
   }
@@ -187,7 +187,7 @@ module.exports = function (compareOptions) {
 
       // check no results
       if (results === undefined || results.length === 0) {
-        return Promise.reject(new Error(`${string('command.texture.does_not_exist')}\nCouldn't find results`))
+        return Promise.reject(new Error(`${strings.command.texture.does_not_exist}\nCouldn't find results`))
       }
 
       return Promise.resolve(results)
@@ -226,7 +226,7 @@ module.exports = function (compareOptions) {
     })
     .then(choiceIndex => {
       if (choiceIndex === undefined || (typeof choiceIndex !== 'string' && typeof choiceIndex !== 'number')) {
-        return Promise.reject(new Error(`${string('command.args.invalid.generic')}\nIncorrect idnex : ${choiceIndex}`))
+        return Promise.reject(new Error(`${strings.command.args.invalid.generic}\nIncorrect idnex : ${choiceIndex}`))
       }
 
       /** @type {textures.Texture} */

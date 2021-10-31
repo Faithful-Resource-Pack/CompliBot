@@ -1,6 +1,6 @@
 const { getMessages } = require('../../../helpers/getMessages')
 
-const settings = require('../../../resources/settings')
+const settings = require('../../../resources/settings.json')
 
 const texturesCollection = require('../../../helpers/firestorm/texture')
 const contributionsCollection = require('../../../helpers/firestorm/contributions')
@@ -18,7 +18,7 @@ async function downloadResults(client, channelInID) {
 	let messages = await getMessages(client, channelInID)
 
 	let res = 'c32'
-	if (channelInID == settings.C64_RESULTS) res = 'c64'
+	if (channelInID == settings.channels.submit_results.c64) res = 'c64'
 
 	// get messages from the same day
 	let delayedDate = new Date()

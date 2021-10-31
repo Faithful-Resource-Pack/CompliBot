@@ -1,6 +1,5 @@
 const Discord = require('discord.js')
-const colors = require('../../resources/colors')
-const settings = require('../../resources/settings')
+const settings = require('../../resources/settings.json')
 
 /**
  * Send an embed message when triggered
@@ -13,7 +12,7 @@ async function inviteDetection(client, message) {
 	if (!message.content) return
 
 	// ignore EM server
-	if (message.guild.id === '814198513847631944') return
+	if (message.guild.id === settings.guilds.em.id) return
 
 	let isAd = false
 
@@ -40,11 +39,11 @@ async function inviteDetection(client, message) {
 	if (isAd && !whitelist.some(w => message.content.includes(w))) {
 		var embed = new Discord.MessageEmbed()
 			.setAuthor(`${message.author.tag} may have advertised a discord server`, message.author.displayAvatarURL())
-			.setColor(colors.RED)
+			.setColor(settings.colors.red)
 			.setDescription(`[Jump to message](${message.url})\n\n**Channel**: <#${message.channel.id}>\n**Server**: \`${message.guild}\`\n**User ID**: \`${message.author.id}\`\n**Date**: \`${message.createdAt.toLocaleString()}\`\n\n\`\`\`${message.content}\`\`\``)
 			.setTimestamp()
 
-		client.channels.cache.get(settings.C32_LOGS).send({ embeds: [embed] })
+		client.channels.cache.get(settings.channels.logs.c32).send({ embeds: [embed] })
 	}
 }
 

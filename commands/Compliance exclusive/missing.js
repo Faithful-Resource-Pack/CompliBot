@@ -3,8 +3,8 @@ const prefix = process.env.PREFIX;
 
 // eslint-disable-next-line no-unused-vars
 const Discord = require("discord.js");
-const { string } = require('../../resources/strings');
-const settings = require('../../resources/settings');
+const strings = require('../../resources/strings.json');
+const settings = require('../../resources/settings.json');
 const { mkdir } = require('fs/promises');
 const filesystem = require("fs");
 const { join, normalize } = require("path");
@@ -13,16 +13,15 @@ const difference = require('lodash/difference');
 
 const { exec, series } = require('../../helpers/exec').promises;
 const { warnUser } = require('../../helpers/warnUser');
-const { BLUE } = require("../../resources/colors");
 
 const COMPLIANCE_REPOS = {
   java: {
-    '32': settings.COMPLIANCE_32X_JAVA_REPOSITORY_JAPPA,
-    '64': settings.COMPLIANCE_64X_JAVA_REPOSITORY_JAPPA
+    '32': settings.repositories.raw.c32.java + 'Jappa-',
+    '64': settings.repositories.raw.c64.java + 'Jappa-'
   },
   bedrock: {
-    '32': settings.COMPLIANCE_32X_BEDROCK_REPOSITORY_JAPPA,
-    '64': settings.COMPLIANCE_64X_BEDROCK_REPOSITORY_JAPPA
+    '32': settings.repositories.raw.c32.bedrock + 'Jappa-',
+    '64': settings.repositories.raw.c64.bedrock + 'Jappa-'
   }
 }
 
@@ -173,8 +172,8 @@ const BEDROCK_UI = [
 ]
 
 const VANILLA_REPOS = {
-  java: settings.DEFAULT_MC_JAVA_REPOSITORY,
-  bedrock: settings.DEFAULT_MC_BEDROCK_REPOSITORY
+  java: settings.repositories.raw.default.java,
+  bedrock: settings.repositories.raw.default.bedrock
 }
 
 const REPLACE_URLS = [
@@ -231,10 +230,10 @@ const _getAllFilesFromFolder = function (dir, filter = []) {
 
 module.exports = {
   name: 'missing',
-  description: string('command.description.missing'),
+  description: strings.command.description.missing,
   category: 'Compliance exclusive',
   guildOnly: false,
-  uses: string('command.use.anyone'),
+  uses: strings.command.use.anyone,
   syntax: `${prefix}missing <32|64> <java|bedrock>`,
   example: `${prefix}missing 32 java`,
   /**
@@ -244,12 +243,12 @@ module.exports = {
    * @author TheRolf
    */
   async execute(_client, message, args) {
-    if (args.length < 2) return warnUser(message, string('command.args.none_given'))
+    if (args.length < 2) return warnUser(message, strings.command.args.none_given)
 
     const res = args[0].trim().toLowerCase()
     const edition = args[1].trim().toLowerCase()
 
-    if ((edition !== 'java' && edition !== 'bedrock') || (res !== '32' && res !== '64')) return warnUser(message, string('command.args.invalid.generic'))
+    if ((edition !== 'java' && edition !== 'bedrock') || (res !== '32' && res !== '64')) return warnUser(message, strings.command.args.invalid.generic)
 
     const vanilla_repo = _rawToRepoURL(VANILLA_REPOS[edition])
     const compliance_repo = _rawToRepoURL(COMPLIANCE_REPOS[edition][res])
@@ -257,9 +256,9 @@ module.exports = {
     let embed = new Discord.MessageEmbed()
       .setTitle('Searching for missing textures...')
       .setDescription('This takes some time, please wait...')
-      .setThumbnail(settings.LOADING_IMG)
-      .setColor(BLUE)
-      .setFooter(message.client.user.username, settings.BOT_IMG)
+      .setThumbnail(settings.images.loading)
+      .setColor(settings.colors.blue)
+      .setFooter(message.client.user.username, settings.images.bot)
       .addField('Steps', 'Steps will be listed here')
 
     let embedMessage = await message.reply({ embeds: [embed] })
@@ -335,7 +334,7 @@ module.exports = {
     await embedMessage.edit({ embeds: [embed] })
 
     embed.addField('Results', Math.round(10000 - diff_result.length / vanilla_textures.length * 10000) / 100 + `% complete\n ${diff_result.length} textures missing`)
-      .setThumbnail(settings.BOT_IMG)
+      .setThumbnail(settings.images.bot)
     await embedMessage.edit({ embeds: [embed] })
 
     const result_file = new Discord.MessageAttachment(Buffer.from(diff_result.join('\n'), 'utf8'), `missing-${edition}-${res}.txt`)

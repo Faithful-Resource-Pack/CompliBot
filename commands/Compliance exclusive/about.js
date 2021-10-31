@@ -1,14 +1,12 @@
 const prefix = process.env.PREFIX
-
-const { string } = require('../../resources/strings')
-const { warnUser } = require('../../helpers/warnUser')
+const settings = require('../../resources/settings.json')
+const strings = require('../../resources/strings.json')
 const firestorm = require('../../helpers/firestorm/index')
-const { contributions, texture } = require('../../helpers/firestorm/all')
 const asyncTools = require('../../helpers/asyncTools')
 const { MessageEmbed } = require('discord.js')
-const { BLUE } = require('../../resources/colors')
-const { BOT_IMG } = require('../../resources/settings')
 const { addDeleteReact } = require('../../helpers/addDeleteReact')
+const { warnUser } = require('../../helpers/warnUser')
+const { contributions, texture } = require('../../helpers/firestorm/all')
 
 const NAME_REGEX = /(.+)#([0-9]{4})/
 const CHOICE_EMOJIS = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟', '🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮', '🇯']
@@ -18,10 +16,10 @@ const MAX_EDITIONS = CHOICE_EMOJIS.length + Object.keys(PACKS_EMOJIS).length
 
 module.exports = {
 	name: 'about',
-	description: string('command.description.about'),
+	description: strings.command.description.about,
 	category: 'Compliance exclusive',
 	guildOnly: true,
-	uses: string('command.use.anyone'),
+	uses: strings.command.use.anyone,
 	syntax: `${prefix}about\n${prefix}about me\n${prefix}about <userTag>\n`,
 	example: `${prefix}about Hozz#0889`,
 	/**
@@ -37,7 +35,7 @@ module.exports = {
 
 		const who = args[0]
 		let name_match
-		if (who !== 'me' && !(name_match = who.match(NAME_REGEX))) return warnUser(message, string('command.args.invalid.generic'))
+		if (who !== 'me' && !(name_match = who.match(NAME_REGEX))) return warnUser(message, strings.command.args.invalid.generic)
 
 		let target // undefined
 		let target_id // undefined
@@ -45,7 +43,7 @@ module.exports = {
 		else {
 			target = [...client.users.cache.values()].filter(u => u.discriminator == name_match[2] && u.username == name_match[1])[0]
 		}
-		if (target === undefined) return warnUser(message, string('command.user.do_not_exist'))
+		if (target === undefined) return warnUser(message, strings.command.user.do_not_exist)
 		target_id = target.id
 
 		// add waiting emoji
@@ -108,8 +106,8 @@ module.exports = {
 		const finalEmbed = new MessageEmbed()
 			.setTitle(`Found in total ${big_total} contributions`)
 			.setAuthor(message.author.tag, message.author.avatarURL())
-			.setColor(BLUE)
-			.setFooter(message.client.user.username, BOT_IMG)
+			.setColor(settings.colors.blue)
+			.setFooter(message.client.user.username, settings.images.bot)
 			.setDescription(desc)
 
 		Object.keys(contri_sorted_by_res).forEach(res => {

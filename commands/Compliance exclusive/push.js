@@ -1,7 +1,7 @@
 /* eslint-disable no-unreachable */
 
 const fs = require('fs');
-const { string } = require('../../resources/strings');
+const strings = require('../../resources/strings.json');
 const { REPO_NAMES: REPOSITORIES } = require('../../resources/settings');
 
 const { Permissions } = require('discord.js');
@@ -13,11 +13,11 @@ const contributions = require('../../helpers/firestorm/contributions');
 
 module.exports = {
 	name: 'push',
-	description: string('command.description.push'),
+	description: strings.command.description.push,
 	category: 'Compliance exclusive',
 	guildOnly: false,
-	uses: string('command.disabled'),
-	//uses: string('command.use.mods'),
+	uses: strings.command.disabled,
+	//uses: strings.command.use.mods,
 	syntax: `${process.env.PREFIX}push -r -n -a + file attached`,
 	flags: '-r | --repo :\n\tCompliance-[Java|Bedrock]-[32x-64x]\n\
 					-n | --path :\n\tTexture path \n\
@@ -32,9 +32,9 @@ module.exports = {
 	async execute(client, message, args) {
 		return warnUser(message, 'NOT UPDATED TO THE NEW DATABASE SYSTEM')
 
-		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.id === '747839021421428776')) return warnUser(message, string('command.no_permission'))
+		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.id === '747839021421428776')) return warnUser(message, strings.command.no_permission)
 
-		if (!message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) return warnUser(message, string('command.no_permission'));
+		if (!message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) return warnUser(message, strings.command.no_permission);
 
 		args = parseArgs(message, args);
 

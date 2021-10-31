@@ -1,22 +1,21 @@
 const prefix = process.env.PREFIX;
 
-const { string } = require('../../resources/strings');
-const colors = require('../../resources/colors');
+const strings = require('../../resources/strings.json')
 
-const { MessageEmbed } = require('discord.js');
-const { warnUser } = require('../../helpers/warnUser');
+const { MessageEmbed } = require('discord.js')
+const { warnUser } = require('../../helpers/warnUser')
 
 module.exports = {
 	name: 'poll',
-	description: string('command.description.poll'),
+	description: strings.command.description.poll,
 	category: 'Server',
 	guildOnly: true,
-	uses: string('command.use.disabled'),
+	uses: strings.command.use.disabled,
 	syntax: `${prefix}poll <time in seconds> | <title> | <option1> | <option2> | ...`,
 	example: `${prefix}poll 3600 | Add more beans to the bot? | Yes | No`,
 	async execute(client, message, args) {
 
-		return warnUser(message, string('command.disabled'));
+		return warnUser(message, strings.command.disabled);
 		// be aware that old strings below aren't converted to the new format
 
 		/*if (message.content.includes(" | ")) {

@@ -1,9 +1,8 @@
 const prefix = process.env.PREFIX;
 
 const Discord = require("discord.js");
-const settings = require('../../resources/settings')
-const colors = require('../../resources/colors')
-const { string } = require('../../resources/strings')
+const settings = require('../../resources/settings.json')
+const strings = require('../../resources/strings.json')
 const { warnUser } = require('../../helpers/warnUser')
 const { default: axios } = require("axios")
 const cheerio = require('cheerio')
@@ -20,10 +19,10 @@ const HEADERS = {
 module.exports = {
   name: 'mcwiki',
   aliases: ['wiki'],
-  description: string('command.description.mcwiki'),
+  description: strings.command.description.mcwiki,
   category: 'Minecraft',
   guildOnly: false,
-  uses: string('command.use.anyone'),
+  uses: strings.command.use.anyone,
   syntax: `${prefix}mcwiki <searchTerms>`,
   example: `${prefix}mcwiki dog\n${prefix}mcwiki Java Edition 1.17.0`,
   /**
@@ -67,17 +66,17 @@ module.exports = {
         }).substring(0, 4096)
 
         const embed = new Discord.MessageEmbed()
-          .setAuthor(string('command.mcwiki.embed_link_text'), settings.VANILLA_IMG, wikiPage)
+          .setAuthor(strings.command.mcwiki.embed_link_text, settings.VANILLA_IMG, wikiPage)
           .setTitle(title)
           .setThumbnail(imageURL)
-          .setColor(colors.BLUE)
+          .setColor(settings.colors.blue)
           .setDescription(description)
 
         message.reply({ embeds: [embed] })
       })
       .catch(err => {
         if (err.res && err.res.status == 404) {
-          return warnUser(message, string('command.mcwiki.no_result_found').replace('%term%', search))
+          return warnUser(message, strings.command.mcwiki.no_result_found.replace('%term%', search))
         } else {
           return Promise.reject(err)
         }

@@ -1,5 +1,5 @@
 const Discord = require('discord.js')
-const colors = require('../../../resources/colors')
+const settings = require('../../../resources/settings.json')
 const { errorEmbed } = require('./errorEmbed')
 const allCollection = require('../../../helpers/firestorm/all')
 
@@ -49,7 +49,7 @@ async function getUser(id) {
     user = await allCollection.users.get(id)
   } catch (err) { return errorEmbed(err) }
 
-  let embed = new Discord.MessageEmbed().setColor(colors.BLUE)
+  let embed = new Discord.MessageEmbed().setColor(settings.colors.blue)
 
   embed.addFields(
     { name: 'username:', value: user.username ? user.username : 'None' },

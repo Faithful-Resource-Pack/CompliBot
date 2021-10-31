@@ -1,23 +1,22 @@
-const prefix = process.env.PREFIX;
+const prefix = process.env.PREFIX
+const strings = require('../../resources/strings.json')
 
-const { string } = require('../../resources/strings');
-
-const { tile } = require('../../functions/textures/tile');
-const { warnUser } = require('../../helpers/warnUser');
+const { tile } = require('../../functions/textures/tile')
+const { warnUser } = require('../../helpers/warnUser')
 
 module.exports = {
 	name: 'tile',
 	aliases: ['t'],
-	description: string('command.description.tile'),
+	description: strings.command.description.tile,
 	category: 'Minecraft',
 	guildOnly: false,
-	uses: string('command.use.anyone'),
+	uses: strings.command.use.anyone,
 	syntax: `${prefix}tile [vertical/horizontal/grid/round/plus] + attach a file`,
 	async execute(client, message, args) {
 		const tileArgs = ['grid', 'g', 'vertical', 'v', 'horizontal', 'h', 'round', 'r', 'plus', 'p'];
 		var DATA;
 
-		if (!tileArgs.includes(args[0]) && args[0] != undefined) return warnUser(message, string('command.args.invalid.generic'));
+		if (!tileArgs.includes(args[0]) && args[0] != undefined) return warnUser(message, strings.command.args.invalid.generic);
 
 		// <data>
 		// image attached
@@ -33,7 +32,7 @@ module.exports = {
 					DATA = msg.attachments.first().url;
 					return tile(message, DATA, args[0]);
 				}
-				else return warnUser(message, string('ccommand.image.no_reply_attachment'));
+				else return warnUser(message, strings.ccommand.image.no_reply_attachment);
 			}).catch(error => {
 				return warnUser(message, error);
 			})
@@ -99,12 +98,12 @@ module.exports = {
 					}
 				}
 			} catch (e) {
-				return warnUser(message, string('command.image.not_found_in_10_last'));
+				return warnUser(message, strings.command.image.not_found_in_10_last);
 			}
 			//}
 
 			if (found) await tile(message, url, type);
-			else return warnUser(message, string('command.image.not_found_in_10_last'));
+			else return warnUser(message, strings.command.image.not_found_in_10_last);
 		}
 	}
 }

@@ -1,7 +1,7 @@
 const prefix = process.env.PREFIX;
 
-const colors = require('../../resources/colors');
-const { string } = require('../../resources/strings');
+const settings = require('../../resources/settings.json')
+const strings = require('../../resources/strings.json');
 const Discord = require('discord.js');
 
 const { warnUser } = require('../../helpers/warnUser');
@@ -9,14 +9,14 @@ const { warnUser } = require('../../helpers/warnUser');
 module.exports = {
 	name: 'embed',
 	aliases: ['embeds'],
-	description: string('command.description.embed'),
+	description: strings.command.description.embed,
 	category: 'Developer exclusive',
 	guildOnly: false,
-	uses: string('command.use.admins'),
+	uses: strings.command.use.admins,
 	syntax: `${prefix}embed <id> <colors> <black/blue/green/red/yellow/crimson>\n\n${prefix}embed <id> <description> <set/add/remove> <value>\n\n${prefix}embed <id> <fields> <modify> <pos> <value>\n${prefix}embed <id> <fields> <add> <title> <value> [inline: true/false]\n${prefix}embed <id> <fields> <remove> <pos>`,
 	async execute(client, message, args) {
-		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.id === '747839021421428776')) return warnUser(message, string('command.no_permission'))
-		if (!args.length) return warnUser(message, string('command.args.none_given'));
+		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.id === '747839021421428776')) return warnUser(message, strings.command.no_permission)
+		if (!args.length) return warnUser(message, strings.command.args.none_given);
 		if (isNaN(args[0])) return warnUser(message, 'You have to specify an ID first');
 
 		try {
@@ -31,12 +31,12 @@ module.exports = {
 		embed = embedMessage.embeds[0];
 
 		if (args[1] == 'colors' || args[1] == 'color') {
-			if (args[2] == 'black') embed.setColor(colors.BLACK);
-			else if (args[2] == 'blue') embed.setColor(colors.BLUE);
-			else if (args[2] == 'green') embed.setColor(colors.GREEN);
-			else if (args[2] == 'red') embed.setColor(colors.RED);
-			else if (args[2] == 'yellow') embed.setColor(colors.YELLOW);
-			else if (args[2] == 'council' || args[2] == 'crimson') embed.setColor(colors.COUNCIL);
+			if (args[2] == 'black') embed.setColor(settings.colors.black);
+			else if (args[2] == 'blue') embed.setColor(settings.colors.blue);
+			else if (args[2] == 'green') embed.setColor(settings.colors.green);
+			else if (args[2] == 'red') embed.setColor(settings.colors.red);
+			else if (args[2] == 'yellow') embed.setColor(settings.colors.yellow);
+			else if (args[2] == 'council' || args[2] == 'crimson') embed.setColor(settings.colors.council);
 			else return warnUser(message, `You should use black/blue/green/red/yellow/crimson, not ${args[2]}`);
 		}
 

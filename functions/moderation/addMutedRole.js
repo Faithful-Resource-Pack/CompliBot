@@ -1,14 +1,11 @@
-const settings = require('../../resources/settings')
+const settings = require('../../resources/settings.json')
 const users = require('../../helpers/firestorm/users')
 
 async function addMutedRole(client, userID, seconds) {
 	const servers = [
-		settings.CDUNGEONS_ID,
-		settings.CMODS_ID,
-		settings.CTWEAKS_ID,
-		settings.CEXTRAS_ID,
-		settings.C64_ID,
-		settings.C32_ID,
+		settings.guilds.cextras.id,
+		settings.guilds.c64.id,
+		settings.guilds.c32.id,
 		// '720677267424018526' // Bot dev discord
 	]
 

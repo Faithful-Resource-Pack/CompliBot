@@ -4,17 +4,17 @@ const uidR = process.env.UIDR;
 const uidJ = process.env.UIDJ;
 const uidD = process.env.UIDD;
 
-const { string } = require('../../resources/strings');
+const strings = require('../../resources/strings.json');
 
 const { translate } = require('../../functions/translate');
 const { warnUser } = require('../../helpers/warnUser');
 
 module.exports = {
 	name: 'translate',
-	description: string('command.description.translate'),
+	description: strings.command.description.translate,
 	category: 'Server',
 	guildOnly: false,
-	uses: string('command.use.devs'),
+	uses: strings.command.use.devs,
 	syntax: `${prefix}translate`,
 	example: `${prefix}translate de Hello world!`,
 	async execute(client, message, args) {
@@ -26,7 +26,7 @@ module.exports = {
 			}
 
 			return await translate(message, args.slice(1), args);
-		} else warnUser(message, string('command.testing'));
+		} else warnUser(message, strings.command.testing);
 
 		async function PreviousMessage() {
 			var found = false;
@@ -44,12 +44,12 @@ module.exports = {
 						break;
 					}
 				} catch (e) {
-					return warnUser(message, string('command.translate.no_message'));
+					return warnUser(message, strings.command.translate.no_message);
 				}
 			}
 
 			if (found) await translate(message, content, args);
-			else return warnUser(message, string('command.translate.no_message'));
+			else return warnUser(message, strings.command.translate.no_message);
 		}
 
 	}

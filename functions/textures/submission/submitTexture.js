@@ -1,8 +1,6 @@
 const Discord = require('discord.js')
-const settings = require('../../../resources/settings')
-const colors = require('../../../resources/colors')
-const { string } = require('../../../resources/strings')
-const emojis = require('../../../resources/emojis')
+const settings = require('../../../resources/settings.json')
+const strings = require('../../../resources/strings.json')
 const choiceEmbed = require('../../../helpers/choiceEmbed')
 const textures = require('../../../helpers/firestorm/texture')
 const paths = require('../../../helpers/firestorm/texture_paths')
@@ -80,7 +78,7 @@ async function submitTexture(client, message) {
     /*var waitEmbed = new Discord.MessageEmbed()
       .setTitle('Loading')
       .setDescription(string('command.texture.searching'))
-      .setColor(colors.BLUE)
+      .setColor(settings.colors.blue)
     const waitEmbedMessage = await message.reply({embeds: [waitEmbed]});*/
 
     // partial texture name (_sword, _axe -> diamond_sword, diamond_axe...)
@@ -153,12 +151,12 @@ async function submitTexture(client, message) {
     }
     else {
       //if (!waitEmbedMessage.deleted) await waitEmbedMessage.delete()
-      await invalidSubmission(message, string('command.texture.does_not_exist') + '\n' + search)
+      await invalidSubmission(message, strings.command.texture.does_not_exist + '\n' + search)
     }
   }
 }
 
-const EMOJIS = [emojis.UPVOTE, emojis.DOWNVOTE, emojis.SEE_MORE]
+const EMOJIS = [settings.emojis.upvote, settings.emojis.downvote, settings.emojis.see_more]
 async function makeEmbed(client, message, texture, param = new Object()) {
 
   /** @type {import("../../helpers/firestorm/texture_use.js").TextureUse[]} */
@@ -176,7 +174,7 @@ async function makeEmbed(client, message, texture, param = new Object()) {
 
   let embed = new Discord.MessageEmbed()
     .setAuthor(message.author.tag, message.author.displayAvatarURL()) // TODO: add a Compliance gallery url that match his profile and show us all his recent textures
-    .setColor(colors.BLUE)
+    .setColor(settings.colors.blue)
     .setTitle(`[#${texture.id}] ${texture.name}`)
     //.setImage(message.attachments.first().url)
     .addFields(
@@ -211,9 +209,9 @@ async function invalidSubmission(message, error = 'Not given') {
   try {
     var embed = new Discord.MessageEmbed()
       .setAuthor(message.author.tag, message.author.displayAvatarURL())
-      .setColor(colors.RED)
-      .setTitle(string('submission.autoreact.error_title'))
-      .setFooter(string('submission.autoreact.error_footer'), settings.BOT_IMG)
+      .setColor(settings.colors.red)
+      .setTitle(strings.submission.autoreact.error_title)
+      .setFooter(strings.submission.autoreact.error_footer, settings.images.bot)
       .setDescription(error)
 
     const msg = await message.reply({ embeds: [embed] });

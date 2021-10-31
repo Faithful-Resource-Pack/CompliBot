@@ -1,5 +1,5 @@
 const Discord = require('discord.js')
-const colors = require('../../../resources/colors')
+const settings = require('../../../resources/settings.json')
 const { errorEmbed } = require('./errorEmbed')
 const allCollection = require('../../../helpers/firestorm/all')
 
@@ -20,7 +20,7 @@ async function deleteUse(id) {
     await allCollection.texture_use.remove(id)
   } catch (err) { return errorEmbed(err) }
 
-  return new Discord.MessageEmbed().setColor(colors.BLUE).setDescription(`Successfully deleted use: ${id}\n**Remember, this command doesn't delete children, please make:**\n\`${prefix}db path delete <id>\``)
+  return new Discord.MessageEmbed().setColor(settings.colors.blue).setDescription(`Successfully deleted use: ${id}\n**Remember, this command doesn't delete children, please make:**\n\`${prefix}db path delete <id>\``)
 }
 
 /**
@@ -43,7 +43,7 @@ async function addUse(textureID, args) {
    * TODO: if a there is more than 26 use, the 27th one should be named <id>aa then <id>ab ... <id>zz etc.. (<id>aaaaaaaaa could be a thing :eyes:)
    * (not urgent)
    */
-  const SUFFIX = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+  const SUFFIX = settings.uses.suffix
   const id = textureID + SUFFIX[uses.length]
 
   if (args.length > 0) {
@@ -182,7 +182,7 @@ async function getUse(id) {
   } catch (err) { return errorEmbed(err) }
 
   let pathsID = paths.map(use => use.id)
-  let embed = new Discord.MessageEmbed().setColor(colors.BLUE)
+  let embed = new Discord.MessageEmbed().setColor(settings.colors.blue)
 
   embed.addFields(
     { name: 'textureUseName', value: use.textureUseName != "" ? use.textureUseName : 'None' },

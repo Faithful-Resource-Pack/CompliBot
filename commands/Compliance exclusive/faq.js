@@ -1,9 +1,8 @@
 const prefix = process.env.PREFIX
 
 const Discord = require("discord.js")
-const settings = require('../../resources/settings')
-const colors = require('../../resources/colors')
-const { string } = require('../../resources/strings')
+const settings = require('../../resources/settings.json')
+const strings = require('../../resources/strings.json')
 const { warnUser } = require('../../helpers/warnUser')
 
 const FAQS = [
@@ -102,38 +101,29 @@ const FAQS = [
 
 module.exports = {
 	name: 'faq',
-	description: string('command.description.faq'),
+	description: strings.command.description.faq,
 	category: 'Compliance exclusive',
 	guildOnly: true,
-	uses: string('command.use.anyone'),
+	uses: strings.command.use.anyone,
 	syntax: `${prefix}faq <keyword>`,
 	flags: '',
 	example: `${prefix}faq bot offline\n${prefix}faq submit\n\nADMINS ONLY:\n${prefix}faq all`,
 	async execute(client, message, args) {
-		let color = colors.COUNCIL
+		let color = settings.colors.council
 
 		switch (message.guild.id) {
-			case settings.C32_ID:
-				color = colors.C32
+			case settings.guilds.c32.id:
+				color = settings.colors.c32
 				break
-			case settings.C64_ID:
-				color = colors.C32
+			case settings.guilds.c64.id:
+				color = settings.colors.c32
 				break
-			case settings.CEXTRAS_ID:
-				color = colors.CADDONS
-				break
-			case settings.CMODS_ID:
-				color = colors.CMODS
-				break
-			case settings.CTWEAKS_ID:
-				color = colors.CTWEAKS
-				break
-			case settings.CDUNGEONS_ID:
-				color = colors.CDUNGEONS
+			case settings.guilds.cextras.id:
+				color = settings.colors.caddons
 				break
 
 			default:
-				color = colors.C32
+				color = settings.colors.c32
 				break
 		}
 
@@ -158,7 +148,7 @@ module.exports = {
 					embed = new Discord.MessageEmbed()
 						.setTitle(`FAQ: ${FAQS[i].title}`)
 						.setThumbnail(settings.QUESTION_MARK_IMG)
-						.setColor(colors.BLUE)
+						.setColor(settings.colors.blue)
 						.setDescription(FAQS[i].description)
 						.setFooter(`Keywords: ${FAQS[i].keywords.join(' | ')}`)
 					await message.reply({ embeds: [embed] })

@@ -1,13 +1,12 @@
-const prefix = process.env.PREFIX;
-
-const { string } = require('../../resources/strings');
+const prefix = process.env.PREFIX
+const strings = require('../../resources/strings.json')
 
 module.exports = {
 	name: 'order',
-	description: string('command.description.order'),
+	description: strings.command.description.order,
 	category: 'Fun',
 	guildOnly: false,
-	uses: string('command.use.anyone'),
+	uses: strings.command.use.anyone,
 	syntax: `${prefix}order <pizza/66/help/soup>`,
 	example: `${prefix}order pizza`,
 	async execute(client, message, args) {

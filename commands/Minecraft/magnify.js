@@ -1,17 +1,17 @@
-const prefix = process.env.PREFIX;
+const prefix = process.env.PREFIX
 
-const { string } = require('../../resources/strings');
+const strings = require('../../resources/strings.json')
 
-const { magnify } = require('../../functions/textures/magnify');
-const { warnUser } = require('../../helpers/warnUser');
+const { magnify } = require('../../functions/textures/magnify')
+const { warnUser } = require('../../helpers/warnUser')
 
 module.exports = {
 	name: 'magnify',
 	aliases: ['zoom', 'z', 'scale', 'mag', 'm'],
-	description: string('command.description.magnify'),
+	description: strings.command.description.magnify,
 	category: 'Minecraft',
 	guildOnly: false,
-	uses: string('command.use.anyone'),
+	uses: strings.command.use.anyone,
 	syntax: `${prefix}magnify (Default: up to 10 images above)\n${prefix}magnify (attach an image)\n${prefix}magnify (reply to a message)\n${prefix}magnify <Discord message url>\n${prefix}magnify <image URL>\n${prefix}magnify <message ID>\n${prefix}magnify [up/^/last]`,
 	example: `${prefix}magnify`,
 	async execute(client, message, args) {
@@ -31,7 +31,7 @@ module.exports = {
 					DATA = msg.attachments.first().url;
 					return magnify(message, DATA);
 				}
-				else return warnUser(message, string('command.image.no_reply_attachment'));
+				else return warnUser(message, strings.command.image.no_reply_attachment);
 			}).catch(error => {
 				return warnUser(message, error);
 			})
@@ -49,8 +49,8 @@ module.exports = {
 					DATA = msg.attachments.first().url;
 					return magnify(message, DATA);
 				}
-				else return warnUser(message, string('command.image.not_attached.message'))
-			}).catch(() => { return warnUser(message, string('command.url.same_channel_only')) })
+				else return warnUser(message, strings.command.image.not_attached.message)
+			}).catch(() => { return warnUser(message, strings.command.url.same_channel_only) })
 		}
 
 		// Image URL
@@ -58,7 +58,7 @@ module.exports = {
 			if (args[0].endsWith('.png') || args[0].endsWith('.jpeg') || args[0].endsWith('.jpg') || args[0].endsWith('.gif')) {
 				DATA = args[0];
 				return magnify(message, DATA);
-			} else return warnUser(message, string('command.image.invalid_extension'))
+			} else return warnUser(message, strings.command.image.invalid_extension)
 		}
 
 		// Discord message ID
@@ -68,7 +68,7 @@ module.exports = {
 					DATA = msg.attachments.first().url;
 					return magnify(message, DATA);
 				}
-				else return warnUser(message, string('command.image.not_attached.id'));
+				else return warnUser(message, strings.command.image.not_attached.id);
 			}).catch(error => {
 				return warnUser(message, error);
 			})
@@ -108,12 +108,12 @@ module.exports = {
 					}
 				}
 			} catch (e) {
-				return warnUser(message, string('command.image.not_found_in_10_last'))
+				return warnUser(message, strings.command.image.not_found_in_10_last)
 			}
 			//}
 
 			if (found) await magnify(message, url);
-			else return warnUser(message, string('command.image.not_found_in_10_last'))
+			else return warnUser(message, strings.command.image.not_found_in_10_last)
 		}
 	}
 }

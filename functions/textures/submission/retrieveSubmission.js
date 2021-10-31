@@ -1,5 +1,4 @@
-const emojis = require('../../../resources/emojis')
-const colors = require('../../../resources/colors')
+const settings = require('../../../resources/settings.json')
 
 const { getMessages } = require('../../../helpers/getMessages')
 
@@ -30,8 +29,8 @@ async function retrieveSubmission(client, channelFromID, channelOutID, delay) {
 
 	// map messages adding reacts count, embed and message (easier management like that)
 	messages = messages.map(message => {
-		let upvotes = message.reactions.cache.get(emojis.UPVOTE).count
-		let downvotes = message.reactions.cache.get(emojis.DOWNVOTE).count
+		let upvotes = message.reactions.cache.get(settings.emojis.upvote).count
+		let downvotes = message.reactions.cache.get(settings.emojis.downvote).count
 
 		message = {
 			upvote: upvotes,
@@ -49,16 +48,16 @@ async function retrieveSubmission(client, channelFromID, channelOutID, delay) {
 
 	// change status message
 	messagesDownvoted.forEach(message => {
-		editEmbed(message.message, `<:downvote:${emojis.DOWNVOTE}> Not enough upvotes!`)
+		editEmbed(message.message, `<:downvote:${settings.emojis.downvote}> Not enough upvotes!`)
 	})
 
 	// send message to the output channel & change status
-	const EMOJIS = [emojis.UPVOTE, emojis.DOWNVOTE, emojis.SEE_MORE]
+	const EMOJIS = [settings.emojis.upvote, settings.emojis.downvote, settings.emojis.see_more]
 	messagesUpvoted.forEach(message => {
 		channelOut.send({
 			embeds: [
 				message.embed
-					.setColor(colors.COUNCIL)
+					.setColor(settings.colors.council)
 					.setDescription(`[Original Post](${message.message.url})\n${message.embed.description ? message.embed.description : ''}`)
 			]
 		})
@@ -66,7 +65,7 @@ async function retrieveSubmission(client, channelFromID, channelOutID, delay) {
 				for (const emojiID of EMOJIS) await sentMessage.react(client.emojis.cache.get(emojiID))
 			})
 
-		editEmbed(message.message, `<:upvote:${emojis.UPVOTE}> Sent to Council!`)
+		editEmbed(message.message, `<:upvote:${settings.emojis.upvote}> Sent to Council!`)
 	})
 }
 
@@ -75,7 +74,7 @@ async function editEmbed(message, string) {
 	embed.fields[1].value = string
 
 	// fix the weird bug that also apply changes to the old embed (wtf)
-	embed.setColor(colors.BLUE)
+	embed.setColor(settings.colors.blue)
 	if (embed.description !== null) embed.setDescription(message.embeds[0].description.replace(`[Original Post](${message.url})\n`, ''))
 
 	await message.edit({ embeds: [embed] })

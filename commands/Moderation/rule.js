@@ -1,11 +1,10 @@
 const prefix = process.env.PREFIX;
 
-const Discord = require("discord.js");
-const settings = require('../../resources/settings');
-const { string } = require('../../resources/strings');
-const colors = require('../../resources/colors');
+const Discord = require("discord.js")
+const strings = require('../../resources/strings.json')
+const settings = require('../../resources/settings.json')
 
-const { warnUser } = require('../../helpers/warnUser');
+const { warnUser } = require('../../helpers/warnUser')
 
 const EDIT = {
 	date: '10/10/2021',
@@ -96,40 +95,31 @@ const RULES = [
 module.exports = {
 	name: 'rule',
 	aliases: ['rules'],
-	description: string('command.description.rules'),
+	description: strings.command.description.rules,
 	category: 'Moderation',
 	guildOnly: true,
-	uses: string('command.use.mods'),
+	uses: strings.command.use.mods,
 	syntax: `${prefix}rule <n>`,
 	flags: '',
 	example: `${prefix}rule 1`,
 	async execute(client, message, args) {
-		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("Moderator") || role.id === '747839021421428776')) return warnUser(message, string('command.no_permission'))
+		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("Moderator") || role.id === '747839021421428776')) return warnUser(message, strings.command.no_permission)
 
-		let thumbnail = settings.BOT_IMG
-		let color = colors.COUNCIL
+		let thumbnail = settings.images.bot
+		let color = settings.colors.council
 
 		switch (message.guild.id) {
-			case settings.C32_ID:
+			case settings.guilds.c32.id:
 				color = colors.C32
-				thumbnail = settings.C32_IMG;
+				thumbnail = settings.images.c32;
 				break
-			case settings.C64_ID:
+			case settings.guilds.c64.id:
 				color = colors.C32
-				thumbnail = settings.C64_IMG;
+				thumbnail = settings.images.c64;
 				break
-			case settings.CEXTRAS_ID:
+			case settings.guilds.cextras.id:
 				color = colors.C32
-				thumbnail = settings.CEXTRAS_IMG;
-				break
-			case settings.CMODS_ID:
-				color = colors.CMODS
-				break
-			case settings.CTWEAKS_ID:
-				color = colors.CTWEAKS
-				break
-			case settings.CDUNGEONS_ID:
-				color = colors.CDUNGEONS
+				thumbnail = settings.images.cextras;
 				break
 
 			default:

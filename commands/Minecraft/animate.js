@@ -1,7 +1,7 @@
 const prefix = process.env.PREFIX
 
 //const Discord    = require('discord.js')
-const { string } = require('../../resources/strings')
+const strings = require('../../resources/strings.json')
 //const colors     = require('../../resources/colors')
 //const settings   = require('../../resources/settings')
 //const asyncTools = require('../../helpers/asyncTools')
@@ -14,10 +14,10 @@ const { warnUser } = require('../../helpers/warnUser')
 module.exports = {
 	name: 'animate',
 	aliases: ['play'],
-	description: string('command.description.animate'),
+	description: strings.command.description.animate,
 	category: 'Minecraft',
 	guildOnly: false,
-	uses: string('command.use.anyone'),
+	uses: strings.command.use.anyone,
 	//syntax: `${prefix}animate [-c | -m] [-u | file attached]`,
 	//flags: '-c | --custom : Boolean, set to false by default, set true if you want to give custom mcmeta settings.\n-m | --mcmeta : String, give texture name to find mcmeta, if none exist, default settings will be applied.',
 	//example: `${prefix}animate + file attached\n${prefix}animate --mcmeta=true + file attached\n${prefix}play -u=https://discord.com/channels/.../.../...`,
@@ -97,7 +97,7 @@ module.exports = {
 		}*/
 		/*else if (haveCustom && !haveMCMETA) {
 			let embed = new Discord.MessageEmbed()
-				.setColor(colors.BLUE)
+				.setColor(settings.colors.blue)
 				.setTitle('Waiting for MCMETA config:')
 				.setDescription('Please, send a message following this example:\n\\`\\`\\`json //mcmeta file content here \\`\\`\\`\nYou should obtain something like this: ```//mcmeta file content here```')
 				.setFooter('The bot will stop searching for message if 🚫 is added to this message.');
@@ -180,10 +180,10 @@ async function previousImage(message, mcmeta) {
 			}
 		}
 	} catch (e) {
-		return warnUser(message, string('command.image.not_found_in_10_last'))
+		return warnUser(message, strings.command.image.not_found_in_10_last)
 	}
 	//}
 
 	if (found) await animate(message, mcmeta, url);
-	else return warnUser(message, string('command.image.not_found_in_10_last'))
+	else return warnUser(message, strings.command.image.not_found_in_10_last)
 }

@@ -1,17 +1,4 @@
-const settings = require('../resources/settings')
-
-const URL_START = {
-  java: {
-    c64: settings.COMPLIANCE_64X_JAVA_REPOSITORY_JAPPA,
-    c32: settings.COMPLIANCE_32X_JAVA_REPOSITORY_JAPPA,
-    default: settings.DEFAULT_MC_JAVA_REPOSITORY
-  },
-  bedrock: {
-    c64: settings.COMPLIANCE_64X_BEDROCK_REPOSITORY_JAPPA,
-    c32: settings.COMPLIANCE_32X_BEDROCK_REPOSITORY_JAPPA,
-    default: settings.DEFAULT_MC_BEDROCK_REPOSITORY
-  }
-}
+const settings = require('../resources/settings.json')
 
 /**
  * Get the right URL using given information
@@ -19,10 +6,11 @@ const URL_START = {
  * @param {String} version minecraft version
  * @param {String} path texture path
  * @param {String} res texture resolution
+ * @param {String} branch github branch
  * @returns {String} URL
  */
-function textureURL(edition, version, path, res) {
-  return `${URL_START[edition][res ? res : "default"]}${version}/${path}`
+function textureURL(edition, version, path, res, branch = 'Jappa') {
+  return `${settings.repositories.raw[res ? res : 'default'][edition]}${branch}-${version}/${path}`
 }
 
 exports.textureURL = textureURL

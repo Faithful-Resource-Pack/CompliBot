@@ -4,8 +4,7 @@ const Discord = require('discord.js')
 const PREFIX = process.env.PREFIX
 const DEV = (process.env.DEV.toLowerCase() == 'true')
 
-const colors = require('../resources/colors')
-const settings = require('../resources/settings')
+const settings = require('../resources/settings.json')
 
 module.exports = {
   name: 'guildCreate',
@@ -19,9 +18,9 @@ module.exports = {
         { name: 'Feedback', value: `If you have a suggestion or want to report a bug, then please use the command \`${PREFIX}feedback [your message]\`` },
         { name: 'Personalisation', value: 'soon:tm:' },
       )
-      .setColor(colors.BLUE)
-      .setThumbnail(settings.BOT_IMG)
-      .setFooter(client.user.username, settings.BOT_IMG);
+      .setColor(settings.colors.blue)
+      .setThumbnail(settings.images.bot)
+      .setFooter(client.user.username, settings.images.bot);
 
     var channel = guild.channels.cache.find(channel => channel.type === 'GUILD_TEXT' && channel.permissionsFor(guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES']))
     await channel.send({ embeds: [embed] })

@@ -1,8 +1,8 @@
 const prefix = process.env.PREFIX;
 
 const Discord = require('discord.js');
-const { string } = require('../../resources/strings');
-const colors = require('../../resources/colors');
+const strings = require('../../resources/strings.json')
+const settings = require('../../resources/settings.json')
 
 const { warnUser } = require('../../helpers/warnUser');
 const { modLog } = require('../../functions/moderation/modLog');
@@ -10,15 +10,15 @@ const { addMutedRole } = require('../../functions/moderation/addMutedRole');
 
 module.exports = {
 	name: 'mute',
-	description: string('command.description.mute'),
+	description: strings.command.description.mute,
 	category: 'Moderation',
 	guildOnly: true,
-	uses: string('command.use.mods'),
+	uses: strings.command.use.mods,
 	syntax: `${prefix}mute <@user> <time> <reason>`,
 	example: `${prefix}mute @Domi#5813 3h posting memes in #general`,
 	async execute(client, message, args) {
-		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("Moderator") || role.id === '747839021421428776')) return warnUser(message, string('command.no_permission'))
-		if (!args.length) return warnUser(message, string('command.args.none_given'));
+		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("Moderator") || role.id === '747839021421428776')) return warnUser(message, strings.command.no_permission)
+		if (!args.length) return warnUser(message, strings.command.args.none_given);
 
 		let userID = undefined
 		try {
@@ -66,14 +66,14 @@ module.exports = {
 				if (parseInt(timeOr, 10) == 1) timeDur = 'year'
 				else timeDur = 'years'
 			}
-			else return await warnUser(message, string('command.mute.invalid.time'))
+			else return await warnUser(message, strings.command.mute.invalid.time)
 		}
 
-		if (!userID) return await warnUser(message, string('command.mute.specify_user'))
-		if (userID === message.author.id) return await warnUser(message, string('command.mute.cant_mute_self'))
-		if (userID === client.user.id) return await message.channel.send({ content: string('command.no_i_dont_think_i_will') })
+		if (!userID) return await warnUser(message, strings.command.mute.specify_user)
+		if (userID === message.author.id) return await warnUser(message, strings.command.mute.cant_mute_self)
+		if (userID === client.user.id) return await message.channel.send({ content: strings.command.no_i_dont_think_i_will })
 
-		if (isNaN(time)) return await warnUser(message, string('command.specify_number'))
+		if (isNaN(time)) return await warnUser(message, strings.command.specify_number)
 		else {
 			var timeout = undefined
 			if (time < 0) timeout = 'Unlimited'
@@ -90,7 +90,7 @@ module.exports = {
 				.setAuthor(message.author.tag, message.author.displayAvatarURL())
 				.setTitle(`Muted someone:`)
 				.setDescription(`**User:** <@!${userID}>\n**Reason:** \`${reason}\`\n**Time:** \`${timeout != 'Unlimited' ? parseInt(timeOr, 10) + ` ${timeDur}` : 'Unlimited'}\`\n**Ends at:** \`${endsAt}\``)
-				.setColor(colors.BLACK)
+				.setColor(settings.colors.black)
 				.setTimestamp()
 
 			await message.reply({ embeds: [embed] })

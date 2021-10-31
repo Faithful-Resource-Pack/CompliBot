@@ -1,4 +1,4 @@
-const settings = require('../resources/settings')
+const settings = require('../resources/settings.json')
 
 /**
  * Manage roles using reactions in the Extra Compliance Server
@@ -6,27 +6,27 @@ const settings = require('../resources/settings')
 async function manageExtraRoles(client, reaction, user) {
 	const reactID = reaction.emoji.id
 
-	const server = await client.guilds.cache.get(settings.CEXTRAS_ID) || undefined
+	const server = await client.guilds.cache.get(settings.guilds.cextras.id) || undefined
 	const member = server === undefined ? undefined : await server.members.cache.get(user.id)
 
 	if (member === undefined) return
 
 	switch (reactID) {
-		case '782350092106465300': // addons
-			if (member.roles.cache.some(r => r.id === '860462015864111114')) member.roles.remove('860462015864111114')
-			else member.roles.add('860462015864111114')
+		case settings.emojis.caddons:
+			if (member.roles.cache.some(r => r.id === settings.roles.addons.cextras.id)) member.roles.remove(settings.roles.addons.cextras.id)
+			else member.roles.add(settings.roles.addons.cextras.id)
 			break
-		case '782350111694651452': // tweaks
-			if (member.roles.cache.some(r => r.id === '860462167249780737')) member.roles.remove('860462167249780737')
-			else member.roles.add('860462167249780737')
+		case settings.emojis.ctweaks:
+			if (member.roles.cache.some(r => r.id === settings.roles.tweaks.cextras.id)) member.roles.remove(settings.roles.tweaks.cextras.id)
+			else member.roles.add(settings.roles.tweaks.cextras.id)
 			break
-		case '782350147119218718': // mods
-			if (member.roles.cache.some(r => r.id === '860462150615302144')) member.roles.remove('860462150615302144')
-			else member.roles.add('860462150615302144')
+		case settings.emojis.cmods:
+			if (member.roles.cache.some(r => r.id === settings.roles.mods.cextras.id)) member.roles.remove(settings.roles.mods.cextras.id)
+			else member.roles.add(settings.roles.mods.cextras.id)
 			break
-		case '782350138550648833': // dungeons
-			if (member.roles.cache.some(r => r.id === '860462126765703179')) member.roles.remove('860462126765703179')
-			else member.roles.add('860462126765703179')
+		case settings.emojis.cdungeons:
+			if (member.roles.cache.some(r => r.id === settings.roles.dungeons.cextras.id)) member.roles.remove(settings.roles.dungeons.cextras.id)
+			else member.roles.add(settings.roles.dungeons.cextras.id)
 			break
 
 		default:
