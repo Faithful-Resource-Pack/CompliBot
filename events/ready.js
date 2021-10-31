@@ -113,7 +113,7 @@ module.exports = {
     }, 30000);
 
     // UPDATE MEMBERS
-    updateMembers(client, settings.guilds.c32.id, settings.C32_COUNTER)
+    updateMembers(client, settings.guilds.c32.id, settings.channels.counters.c32)
 
     // FETCH MEMBERS DATA
     syncMembers(client, [settings.guilds.c32.id, settings.guilds.c64.id, settings.guilds.cextras.id])
