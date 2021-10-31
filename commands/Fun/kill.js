@@ -6,6 +6,7 @@ const colors = require('../../resources/colors');
 const { string, stringsStartsWith } = require('../../resources/strings');
 const { addDeleteReact } = require('../../helpers/addDeleteReact');
 const { warnUser } = require('../../helpers/warnUser');
+const { getMember } = require("../../helpers/getMember");
 
 module.exports = {
 	name: 'kill',
@@ -13,14 +14,16 @@ module.exports = {
 	category: 'Fun',
 	guildOnly: true,
 	uses: string('command.use.mods'),
-	syntax: `${prefix}kill <@user> [weapon]`,
+	syntax: `${prefix}kill <@user> [weapon / leave empty]\n${prefix}kill <user id> [weapon / leave empty]\n${prefix}kill <username> [weapon / leave empty]\n${prefix}kill <nickname> [weapon / leave empty]`,
 	example: `${prefix}kill Sei the beans`,
 	async execute(client, message, args) {
 		if (!args.length) return warnUser(message, string('command.args.none_given'))
 
-		const member = message.mentions.members.first() || message.guild.members.cache.find(m => m.username === args[0] || m.displayName === args[0])
 
-		if (!member) return warnUser(message, string('command.kill.specify_user'))
+		const memberId = await getMember(message, args[0])
+		if (memberId == undefined) return warnUser(message, string('command.kill.specify_user'))
+
+		const member = await message.guild.members.fetch(memberId)
 
 		const weapon = args.slice(1).join(' ')
 

@@ -18,12 +18,13 @@ async function getMember(message, arg) {
 	} catch {
 		try {
 			member = (await message.guild.members.search({
-				query: arg,
+				query: arg.split('#')[0],
 				cache: false
 			})).first()
 		} catch (err) { console.log(err) }
 	}
-	return member.id
+	if (!member) return undefined
+	else return member.id
 }
 
 exports.getMember = getMember
