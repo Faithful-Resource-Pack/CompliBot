@@ -50,13 +50,13 @@ async function submitTexture(client, message) {
   }
 
   // same if no file is attached
-  if (message.attachments.size == 0) return invalidSubmission(message, string('command.push.image_not_attached'))
+  if (message.attachments.size == 0) return invalidSubmission(message, strings.command.push.image_not_attached)
   // same if it's not a PNG
   if (
     message.attachments.first().url.endsWith('.zip') ||
     message.attachments.first().url.endsWith('.rar') ||
     message.attachments.first().url.endsWith('.7zip')
-  ) return invalidSubmission(message, string('command.push.invalid_format'))
+  ) return invalidSubmission(message, strings.command.push.invalid_format)
 
   // if no name are given, take the image url and get it's name
   if (!search) search = message.attachments.first().url.split('/').slice(-1)[0].replace('.png', '')
@@ -70,7 +70,7 @@ async function submitTexture(client, message) {
 
   // priority to ids -> faster
   if (id) {
-    let texture = await textures.get(id).catch(err => invalidSubmission(message, string('command.push.unknown_id' + err)))
+    let texture = await textures.get(id).catch(err => invalidSubmission(message, strings.command.push.unknown_id + err))
     await makeEmbed(client, message, texture, param)
   }
   // no id given, search texture
@@ -134,7 +134,7 @@ async function submitTexture(client, message) {
       //if (!waitEmbedMessage.deleted) await waitEmbedMessage.delete();
       choiceEmbed(message, {
         title: `${results.length} results, react to choose one!`,
-        description: string('command.texture.search_description'),
+        description: strings.command.texture.search_description,
         footer: `${message.client.user.username}`,
         propositions: choice
       })
