@@ -1,18 +1,19 @@
 /* global Buffer */
-const prefix = process.env.PREFIX;
+const prefix = process.env.PREFIX
 
 // eslint-disable-next-line no-unused-vars
-const Discord = require("discord.js");
-const strings = require('../../resources/strings.json');
-const settings = require('../../resources/settings.json');
-const { mkdir } = require('fs/promises');
-const filesystem = require("fs");
-const { join, normalize } = require("path");
-const os = require('os');
-const difference = require('lodash/difference');
+const Discord = require("discord.js")
+const strings = require('../../resources/strings.json')
+const settings = require('../../resources/settings.json')
+const { mkdir } = require('fs/promises')
+const filesystem = require("fs")
+const { join, normalize } = require("path")
+const os = require('os')
+const difference = require('lodash/difference')
 
-const { exec, series } = require('../../helpers/exec').promises;
-const { warnUser } = require('../../helpers/warnUser');
+const { exec, series } = require('../../helpers/exec').promises
+const { warnUser } = require('../../helpers/warnUser')
+const { sorterMC } = require('../../helpers/sorterMC')
 
 const COMPLIANCE_REPOS = {
   java: {
@@ -291,7 +292,7 @@ module.exports = {
       })
     }
 
-    const last_version = edition === 'bedrock' ? settings.LATEST_MC_BE_VERSION : '1.17.1' // settings.LATEST_MC_JE_VERSION (uncomment when we switch compliance texture pack support to 1.18)
+    const last_version = edition === 'bedrock' ? settings.versions.bedrock[0] : settings.versions.java.sort(sorterMC).reverse()[0]
 
     steps.push('Updating repos with latest version known...')
     embed.fields[0].value = steps.join('\n')
@@ -322,8 +323,7 @@ module.exports = {
     embed.fields[0].value = steps.join('\n')
     await embedMessage.edit({ embeds: [embed] })
 
-    const edition_filter = edition === 'java' ? normalizeArray(['font/', 'colormap/', 'misc/shadow', 'presets/isles', 'realms/inspiration', 'realms/new_world', 'realms/survival_spawn', 'realms/upload', 'realms/adventure', 'realms/experience', 'environment/clouds', 'misc/nausea', 'misc/vignette', 'realms/darken', 'realms/plus_icon', 'models/armor/piglin_leather_layer_1', 'entity/phantom_eyes.png', 'misc/white.png', 'block/lightning_rod_on.png'
-      , 'gui/title/background/panorama_overlay.png']) : normalizeArray([...BEDROCK_UI, 'font/', 'colormap/', '/gui/', 'environments/clouds', 'persona_thumbnails/', 'environment/end_portal_colors', 'textures/flame_atlas', 'textures/forcefield_atlas', 'blocks/bed_feet_', 'blocks/bed_head_', 'blocks/flower_paeonia', 'blocks/flower_rose_blue', 'blocks/structure_air', 'map/player_icon_background', 'misc/missing_texture', 'items/boat', 'items/egg_agent', 'items/quiver', 'items/ruby', 'entity/agent.png', 'entity/cape_invisible.png', 'entity/char.png', 'entity/horse/', 'entity/lead_rope.png', 'entity/loyalty_rope.png', 'entity/pig/pigzombie.png', 'entity/villager/', 'entity\\wither_boss\\wither_armor_blue.png', 'entity/zombie_villager/'])
+    const edition_filter = edition === 'java' ? normalizeArray(['font/', 'colormap/', 'misc/shadow', 'presets/isles', 'realms/inspiration', 'realms/new_world', 'realms/survival_spawn', 'realms/upload', 'realms/adventure', 'realms/experience', 'environment/clouds', 'misc/nausea', 'misc/vignette', 'realms/darken', 'realms/plus_icon', 'models/armor/piglin_leather_layer_1', 'entity/phantom_eyes.png', 'misc/white.png', 'block/lightning_rod_on.png', 'gui/title/background/panorama_overlay.png']) : normalizeArray([...BEDROCK_UI, 'font/', 'colormap/', '/gui/', 'environments/clouds', 'persona_thumbnails/', 'environment/end_portal_colors', 'textures/flame_atlas', 'textures/forcefield_atlas', 'blocks/bed_feet_', 'blocks/bed_head_', 'blocks/flower_paeonia', 'blocks/flower_rose_blue', 'blocks/structure_air', 'map/player_icon_background', 'misc/missing_texture', 'items/boat', 'items/egg_agent', 'items/quiver', 'items/ruby', 'entity/agent.png', 'entity/cape_invisible.png', 'entity/char.png', 'entity/horse/', 'entity/lead_rope.png', 'entity/loyalty_rope.png', 'entity/pig/pigzombie.png', 'entity/villager/', 'entity\\wither_boss\\wither_armor_blue.png', 'entity/zombie_villager/'])
 
     const vanilla_textures = _getAllFilesFromFolder(vanilla_tmp_path, edition_filter).map(f => normalize(f).replace(vanilla_tmp_path, ''))
     const compliance_textures = _getAllFilesFromFolder(compliance_tmp_path).map(f => normalize(f).replace(compliance_tmp_path, ''))
