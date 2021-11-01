@@ -70,7 +70,7 @@ module.exports = {
 
 			embed
 				.setTitle('Websites:')
-				.setColor(colors.C32)
+				.setColor(settings.colors.c32)
 
 			for (let i = 0; i < DATA.length; i++) embed.addField(DATA[i].name, DATA[i].value)
 

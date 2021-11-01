@@ -20,7 +20,7 @@ module.exports = {
 
 		var embed = new Discord.MessageEmbed()
 			.setTitle('React with the appropriate emote to receive access to a project channel category.')
-			.setColor(colors.C32)
+			.setColor(settings.colors.c32)
 			.setThumbnail(settings.images.cextras)
 			.setDescription('If you already have a role, you can react again to remove it. \n\n<:ComplianceAddons:782350092106465300> Add-ons \n\n<:ComplianceTweaks:782350111694651452> Tweaks \n\n <:ComplianceMods:782350147119218718>  Mods \n\n <:ComplianceDungeons:782350138550648833> Dungeons')
 		var embedMessage = await message.channel.send({ embeds: [embed] })

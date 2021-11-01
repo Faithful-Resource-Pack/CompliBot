@@ -3,94 +3,7 @@ const prefix = process.env.PREFIX;
 const Discord = require("discord.js")
 const strings = require('../../resources/strings.json')
 const settings = require('../../resources/settings.json')
-
 const { warnUser } = require('../../helpers/warnUser')
-
-const EDIT = {
-	date: '10/10/2021',
-	description: `• Updated rule 1 with a note to message loggers.
-	• Added an additional punishable offense to rule 2.
-	• Prohibited discussion of illegal actions in rule 5.
-	• Fixed a typo in rule 5.`,
-	enabled: true
-}
-
-const NUMBER = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟']
-
-// NOTE : you can't use markdown inside title field
-const RULES = [
-	{
-		title: `**Read & Follow Discord Terms Of Service and Community Guidelines.**`,
-		description: `• TOS : https://discord.com/terms
-		• Guidelines : https://discord.com/guidelines
-		> This applies to any kind of message logger plug-ins as well. If you’re using one, please disable it to avoid punishment.`
-	},
-	{
-		title: `**Be respectful**`,
-		description: `This is your standard "don't be an asshole" rule. Just be polite to others and you'll be fine.
-
-		__Examples of unacceptable behaviour:__
-		• Mocking and/or making fun of people, under any circumstances. This also applies to jokes – snarky comments that make fun of anybody in any way will not be tolerated.
-		• Being unable to accept civil feedback from others. If others can provide constructive criticism for your creation, you must be civil about it too!
-		• Renaming yourself to harm someone, a third party or a competitor is not acceptable. Renaming yourself is a right, not a funny feature.
-
-		> These are just examples, and other behaviour not listed here may be considered unacceptable as well.`
-	},
-	{
-		title: `**No spamming or hate speech**`,
-		description: `
-		__Spamming:__
-		This means no random garbage that does not contribute anything to real discussions.
-		> That includes walls of text as well as excessively long chains of similar/identical messages.
-		
-		__Hate speech:__
-		That includes, but _is not limited to_: general derogatory names, racial slurs, homophobia, transphobia and other slurs related to sexual orientation/sex/gender...`
-	},
-	{
-		title: `**Be civilized**`,
-		description: `__Don't ask to ask:__
-		Don't just go in a channel and say "can anybody help me?" – Ask your question directly instead. Also, remember to read our #FAQ.
-		
-		__Stay on topic:__
-		There are multiple channels with different purposes for a reason.
-
-		__Provide constructive criticism:__
-		Never say just "that's bad" when giving your opinion on something. Always elaborate on your view, and remember to stay polite!
-
-		__Privacy:__
-		Leaking any private information from staff without permission is strictly prohibited.
-		> This applies to channel names, as well as all content shared in these private channels.`
-	},
-	{
-		title: `**No NSFW/Prohibited content**`,
-		description: `The following is **NOT** allowed at any time, including but not limited to:
-		
-		• Offensive content
-		• Questionable and NSFW content
-		• Politics, religion and any controversial issues.
-		• Jokes, memes, and misinformation about past or on-going tragic events.
-		• Potentially seizure-inducing animated images/videos.
-		• Excessively loud audio/videos.
-		• Discussion of illegal actions.
-
-		> If you think something is NSFW, it is NSFW. Don't post it or DM a Moderator to approve the content you want to post.`
-	},
-	{
-		title: `**No promoting or advertising.**`,
-		description: `Unsolicited server invites, referral links, and any/all other unwanted promotional content is not allowed.
-		> Resource Packs and anything related to Compliance are allowed, within reason.`
-	},
-	{
-		title: `**Speak english**`,
-		description: `This is an English-speaking server. If you cannot fluently write in English, please use a [translator](https://www.deepl.com/translator).
-		
-		> Developers are currently working on a translation command, but there is currently no ETA when it will be released.`
-	},
-	{
-		title: `**No brigading and/or raiding on other servers in Compliance's name.**`,
-		description: `We strictly prohibit this behaviour, as not only it makes the Compliance project look bad, but is uncivil, unfair and against Discord TOS. Any offenders of this rule will suffer harsh punishments.`
-	}
-]
 
 module.exports = {
 	name: 'rule',
@@ -105,25 +18,27 @@ module.exports = {
 	async execute(client, message, args) {
 		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("Moderator") || role.id === '747839021421428776')) return warnUser(message, strings.command.no_permission)
 
+		const RULES = Object.values(strings.rules)
+
 		let thumbnail = settings.images.bot
 		let color = settings.colors.council
 
 		switch (message.guild.id) {
 			case settings.guilds.c32.id:
-				color = colors.C32
+				color = settings.colors.c32
 				thumbnail = settings.images.c32;
 				break
 			case settings.guilds.c64.id:
-				color = colors.C32
+				color = settings.colors.c32
 				thumbnail = settings.images.c64;
 				break
 			case settings.guilds.cextras.id:
-				color = colors.C32
+				color = settings.colors.c32
 				thumbnail = settings.images.cextras;
 				break
 
 			default:
-				color = colors.C32
+				color = settings.colors.c32
 				break
 		}
 
@@ -137,7 +52,7 @@ module.exports = {
 
 		if (rule <= RULES.length && rule > 0) {
 			const embed = new Discord.MessageEmbed()
-				.setTitle(RULES[rule - 1].title)
+				.setTitle(`${RULES[rule - 1].number} ${RULES[rule - 1].title}`)
 				.setColor(color)
 				.setThumbnail(thumbnail)
 				.setDescription(RULES[rule - 1].description);
@@ -155,22 +70,24 @@ module.exports = {
 			await message.channel.send({ embeds: [embed] })
 
 			for (let i = 0; i < RULES.length; i++) {
-				let embedRule = new Discord.MessageEmbed()
-					.setColor(color)
-					.setTitle(`${NUMBER[i]} ${RULES[i].title}`)
-					.setDescription(RULES[i].description)
+				if (RULES[i].date == undefined) { // skip changes note
+					let embedRule = new Discord.MessageEmbed()
+						.setColor(color)
+						.setTitle(`${RULES[i].number} ${RULES[i].title}`)
+						.setDescription(RULES[i].description)
 
-				await message.channel.send({ embeds: [embedRule] });
-			}
+					await message.channel.send({ embeds: [embedRule] });
+				}
 
-			if (EDIT.enabled) {
-				const embedChanges = new Discord.MessageEmbed()
-					.setTitle(`Latest changes as of the ${EDIT.date}`)
-					.setColor(color)
-					.setDescription(EDIT.description + '\n\n> Please understand that failing to comply to these rules will result in an adequate punishment.')
-					.setFooter(`The rules are subject to change.`, thumbnail)
+				else if (RULES[i].enabled == "true" || RULES[i].enabled == true) { // only for the changes note
+					const embedChanges = new Discord.MessageEmbed()
+						.setTitle(`Latest changes as of the ${RULES[i].date}`)
+						.setColor(color)
+						.setDescription(RULES[i].description + '\n\n> Please understand that failing to comply to these rules will result in an adequate punishment.')
+						.setFooter(`The rules are subject to change.`, thumbnail)
 
-				await message.channel.send({ embeds: [embedChanges] })
+					await message.channel.send({ embeds: [embedChanges] })
+				}
 			}
 
 			if (!message.deleted) await message.delete();
