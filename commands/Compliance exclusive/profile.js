@@ -57,7 +57,7 @@ module.exports = {
 
 		let writeResult = await usersCollection.set(message.author.id, user).catch(err => console.error(err))
 
-		return await message.react(writeResult ? '✅' : '❌')
+		return await message.react(writeResult ? settings.emojis.upvote : settings.emojis.downvote)
 	}
 }
 

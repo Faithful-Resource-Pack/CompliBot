@@ -7,6 +7,7 @@ const uidT = process.env.UIDT
 
 const { saveDB } = require('../../functions/saveDB')
 const strings = require('../../resources/strings.json')
+const settings = require('../../resources/settings.json')
 
 module.exports = {
   name: 'backup',
@@ -21,7 +22,7 @@ module.exports = {
     if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD || message.author.id === uidT) {
 
       await saveDB(`Manual backup executed by: ${message.author.username}`)
-      await message.react('✅')
+      await message.react(settings.emojis.upvote)
     }
   }
 }

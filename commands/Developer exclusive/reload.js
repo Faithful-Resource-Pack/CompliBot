@@ -6,6 +6,7 @@ const uidD = process.env.UIDD
 const uidT = process.env.UIDT
 
 const strings = require('../../resources/strings.json')
+const settings = require('../../resources/settings.json')
 
 const { warnUser } = require('../../helpers/warnUser')
 const { walkSync } = require('../../helpers/walkSync')
@@ -33,10 +34,10 @@ module.exports = {
 			try {
 				const newCommand = require(commandPath);
 				message.client.commands.set(newCommand.name, newCommand);
-				await message.react('✅');
+				await message.react(settings.emojis.upvote);
 			} catch (error) {
 				console.error(error);
-				await message.react('❌');
+				await message.react(settings.emojis.downvote);
 			}
 		}
 		else return warnUser(message, strings.command.no_permission);

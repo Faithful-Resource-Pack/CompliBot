@@ -10,6 +10,7 @@ const { warnUser } = require('../../helpers/warnUser');
 const { pushTextures } = require('../../functions/textures/admission/pushTextures');
 const texture_path = require('../../helpers/firestorm/texture_paths');
 const contributions = require('../../helpers/firestorm/contributions');
+const settings = require('../../resources/settings.json')
 
 module.exports = {
 	name: 'push',
@@ -140,7 +141,7 @@ module.exports = {
 					})
 
 					await pushTextures(`Manual Push for ${texturePath.split('/').pop()} executed by: ${message.author.username}`)
-					await message.react('✅')
+					await message.react(settings.emojis.upvote)
 				})
 				.catch(reject)
 		})

@@ -6,6 +6,7 @@ const uidD = process.env.UIDD;
 const uidT = process.env.UIDT;
 
 const strings = require('../../resources/strings.json');
+const settings = require('../../resources/settings.json')
 
 const { warnUser } = require('../../helpers/warnUser');
 
@@ -34,7 +35,7 @@ module.exports = {
 					status: args[1]
 				});
 			}
-			await message.react('✅');
+			await message.react(settings.emojis.upvote);
 		} else return warnUser(message, strings.command.no_permission);
 	}
 };

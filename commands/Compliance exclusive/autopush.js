@@ -31,6 +31,6 @@ module.exports = {
 
 		await pushTextures(`Manual push, executed by: ${message.author.username} (${date()})`);	// Push them trough GitHub
 
-		return await message.react('✅');
+		return await message.react(settings.emojis.upvote);
 	}
 }
