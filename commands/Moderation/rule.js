@@ -54,7 +54,7 @@ module.exports = {
 			const embed = new Discord.MessageEmbed()
 				.setTitle(`${RULES[rule - 1].number} ${RULES[rule - 1].title}`)
 				.setColor(color)
-				.setThumbnail(thumbnail)
+				.setThumbnail(settings.images.rules)
 				.setDescription(RULES[rule - 1].description);
 
 			return await message.reply({ embeds: [embed] });
