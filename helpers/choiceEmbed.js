@@ -1,9 +1,9 @@
 const Discord = require('discord.js')
 const asyncTools = require('./asyncTools')
 const settings = require('../resources/settings.json')
+const strings = require('../resources/strings.json')
 
 /**
- * 
  * @typedef {Object} ChoiceParameter
  * @property {String?} title Embed title
  * @property {String?} [separator=' — '] Emoji proposition separator
@@ -22,22 +22,6 @@ const settings = require('../resources/settings.json')
  */
 
 /**
- * @type {ChoiceParameter}
- */
-const DEFAULT = {
-  title: 'Choose proposition',
-  description: 'Please choose one result using the associated reaction.\n',
-  footer: 'chooseEmbed',
-  color: settings.colors.blue,
-  max: 1,
-  separator: ' — ',
-  imageURL: settings.images.bot,
-  timeout: 60000
-}
-
-const DEFAULT_EMOJIS = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟', '🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮', '🇯']
-
-/**
  * @author TheRolf
  * @param {Discord.Message} message Received message
  * @param {ChoiceParameter} params Settings
@@ -46,6 +30,20 @@ const DEFAULT_EMOJIS = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '
  */
 module.exports = function (message, params, user) {
   return new Promise((resolve, reject) => {
+    /** @type {ChoiceParameter} */
+    const DEFAULT = {
+      title: strings.choice_embed.title,
+      description: strings.choice_embed.description,
+      footer: 'chooseEmbed',
+      color: settings.colors.blue,
+      max: 1,
+      separator: ' — ',
+      imageURL: settings.images.bot,
+      timeout: 60000
+    }
+
+    const DEFAULT_EMOJIS = settings.emojis.default_select
+
     params = Object.assign({}, DEFAULT, params)
 
     if (!params.propositions) reject(new Error('No proposition in object'))

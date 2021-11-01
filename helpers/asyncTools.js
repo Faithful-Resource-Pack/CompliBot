@@ -1,3 +1,5 @@
+const strings = require('../resources/strings.json')
+
 module.exports = {
   /**
    * @param {import('discord.js').Message} message Message to react to
@@ -11,13 +13,13 @@ module.exports = {
       reactions = [reactions]
 
     if (!Array.isArray(reactions))
-      throw new Error('Reactions are not an array')
+      throw new Error(strings.async_tools.error['1'])
 
     // be strict about type
     let i = 0
     while (i < reactions.length) {
       if (typeof (reactions[i]) !== 'string')
-        throw new Error('Incorrect array value, only strings accepted, got' + reactions.toString())
+        throw new Error(strings.async_tools.error['2'] + reactions.toString())
       ++i
     }
 

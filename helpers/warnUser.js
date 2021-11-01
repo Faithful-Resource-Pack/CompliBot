@@ -1,6 +1,7 @@
 const Discord = require('discord.js')
 const settings = require('../resources/settings.json')
 const strings = require('../resources/strings.json')
+const prefix = process.env.PREFIX
 
 const { addDeleteReact } = require('./addDeleteReact')
 
@@ -16,7 +17,7 @@ async function warnUser(message, text) {
 		.setThumbnail(settings.images.warning)
 		.setTitle(strings.bot.error)
 		.setDescription(text)
-		.setFooter('Type /help to get more information about commands', settings.images.bot)
+		.setFooter(strings.warn_user.footer.replace('%prefix%', prefix), settings.images.bot)
 
 	let embedMessage
 	if (message.deleted) embedMessage = await message.channel.send({ embeds: [embed] })
