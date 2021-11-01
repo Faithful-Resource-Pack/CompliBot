@@ -8,6 +8,6 @@ module.exports = {
   // eslint-disable-next-line no-unused-vars
   async execute(guild) {
     if (DEV) return
-    updateMembers(client, settings.guilds.c32.id, settings.channels.counter.c32)
+    updateMembers(client, settings.guilds.c32.id, settings.channels.counters.c32)
   }
 }
