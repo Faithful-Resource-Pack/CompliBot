@@ -1,7 +1,8 @@
 const prefix = process.env.PREFIX
 
-const Discord = require('discord.js')
-const strings = require('../../resources/strings.json')
+const Discord  = require('discord.js')
+const strings  = require('../../resources/strings.json')
+const settings = require('../../resources/settings.json')
 
 const { warnUser } = require('../../helpers/warnUser')
 const { modLog } = require('../../functions/moderation/modLog')

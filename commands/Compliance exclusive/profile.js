@@ -84,11 +84,13 @@ async function showProfile(message, user = undefined, memberID = 'None') {
 			{ name: 'Website Username', value: username },
 			{ name: 'Minecraft UUID', value: uuid },
 			{ name: 'Discord ID', value: discordID },
-			{ name: 'Roles', value: type },
-			{ name: `Warns ${warns == 'None' ? '' : '(' + user.warns.length + ')'}`, value: warns }
+			{ name: 'Roles', value: type }
 		)
 		.setColor(settings.colors.blue)
 		.setFooter(message.client.user.username, settings.images.bot);
+
+		if (message.guild !== null && message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("Moderator")))
+			embed.addField(`Warns ${warns == 'None' ? '' : '(' + user.warns.length + ')'}`, warns)
 
 	return message.reply({ embeds: [embed] });
 }
