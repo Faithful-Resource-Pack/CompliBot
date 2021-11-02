@@ -26,7 +26,7 @@ module.exports = {
 
 		const weapon = args.slice(1).join(' ')
 
-		let result = weapon.length > 0 ? strings.command.kill.weapon_response : Object.values(strings.kill.responses)[Math.floor(Math.random() * Object.values(strings.kill.responses).length)]
+		let result = weapon.length > 0 ? strings.command.kill.weapon_response : Object.values(strings.command.kill.responses)[Math.floor(Math.random() * Object.values(strings.command.kill.responses).length)]
 
 		result = result.replace('%player%', member.displayName)
 		result = result.replace('%weapon%', weapon)
