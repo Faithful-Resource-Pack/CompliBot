@@ -238,7 +238,7 @@ async function getTexture(message, res, texture) {
 				.setImage(imgURL)
 				.addField('Resolution:', size, true)
 
-			if (res === '16') embed.setFooter('Vanilla Texture', settings.VANILLA_IMG);
+			if (res === '16') embed.setFooter('Vanilla Texture', settings.images.vanilla);
 			if (res === '32') embed.setFooter('Compliance 32x', settings.images.c32)
 			if (res === '64') embed.setFooter('Compliance 64x', settings.images.c64)
 
