@@ -292,7 +292,7 @@ module.exports = {
       })
     }
 
-    const last_version = edition === 'bedrock' ? settings.versions.bedrock[0] : settings.versions.java.sort(sorterMC).reverse()[0]
+    const last_version = edition === 'bedrock' ? settings.versions.bedrock[0] : '1.17.1' // settings.versions.java.sort(sorterMC).reverse()[0] (uncomment when we switch compliance resource pack support to 1.18)
 
     steps.push('Updating repos with latest version known...')
     embed.fields[0].value = steps.join('\n')
