@@ -259,7 +259,6 @@ module.exports = {
       .setDescription('This takes some time, please wait...')
       .setThumbnail(settings.images.loading)
       .setColor(settings.colors.blue)
-      .setFooter(message.client.user.username, settings.images.bot)
       .addField('Steps', 'Steps will be listed here')
 
     let embedMessage = await message.reply({ embeds: [embed] })
@@ -274,8 +273,10 @@ module.exports = {
 
     let exists = filesystem.existsSync(vanilla_tmp_path)
     if (!exists) {
-      steps.push(`Cloning vanilla ${edition} repo...`)
+      steps.push(`Downloading vanilla ${edition} pack...`)
+      embed.fields[0].value = steps.join('\n')
       await embedMessage.edit({ embeds: [embed] })
+
       await mkdir(vanilla_tmp_path)
       await exec(`git clone ${vanilla_repo} .`, {
         cwd: vanilla_tmp_path
@@ -283,7 +284,8 @@ module.exports = {
     }
     exists = filesystem.existsSync(compliance_tmp_path)
     if (!exists) {
-      steps.push(`Cloning Compliance ${edition} ${res} repo...`)
+      steps.push(`Downloading Compliance ${edition} ${res}x pack...`)
+      embed.fields[0].value = steps.join('\n')
       await embedMessage.edit({ embeds: [embed] })
 
       await mkdir(compliance_tmp_path)
@@ -294,7 +296,7 @@ module.exports = {
 
     const last_version = edition === 'bedrock' ? settings.versions.bedrock[0] : '1.17.1' // settings.versions.java.sort(sorterMC).reverse()[0] (uncomment when we switch compliance resource pack support to 1.18)
 
-    steps.push('Updating repos with latest version known...')
+    steps.push('Updating packs with latest version known...')
     embed.fields[0].value = steps.join('\n')
     await embedMessage.edit({ embeds: [embed] })
 
@@ -319,7 +321,7 @@ module.exports = {
     ])
 
     // diff
-    steps.push(`Creating diff...`)
+    steps.push(`Searching for differences...`)
     embed.fields[0].value = steps.join('\n')
     await embedMessage.edit({ embeds: [embed] })
 
@@ -333,12 +335,12 @@ module.exports = {
     embed.fields[0].value = steps.join('\n')
     await embedMessage.edit({ embeds: [embed] })
 
-    embed.addField('Results', Math.round(10000 - diff_result.length / vanilla_textures.length * 10000) / 100 + `% complete\n ${diff_result.length} textures missing`)
-      .setThumbnail(settings.images.bot)
-    await embedMessage.edit({ embeds: [embed] })
-
     const result_file = new Discord.MessageAttachment(Buffer.from(diff_result.join('\n'), 'utf8'), `missing-${edition}-${res}.txt`)
 
-    await embedMessage.reply({ files: [result_file] })
+    let resultEmbed = new Discord.MessageEmbed()
+      .addField(`Compliance ${edition} ${res}x progress:`, Math.round(10000 - diff_result.length / vanilla_textures.length * 10000) / 100 + `% complete\n ${diff_result.length} textures missing`)
+      .setColor(settings.colors.blue)
+
+    await embedMessage.edit({ embeds: [resultEmbed], files: [result_file] })
   }
 };
