@@ -17,7 +17,8 @@ module.exports = {
     const isTails = Math.random() > 0.5
     const embed = new Discord.MessageEmbed()
       .setTitle(isTails ? 'Tails' : 'Heads')
-      .setThumbnail(isTails ? 'https://www.cjoint.com/doc/21_10/KJyoaQ8CqnR_euro-tails.png' : 'https://www.cjoint.com/doc/21_10/KJyohzpOqDR_euro-heads.png')
+      // TODO : implements settings.images.coin_edge with a probability of 0.001%
+      .setThumbnail(isTails ? settings.images.coin_tails : settings.images.coin_heads)
       .setColor(settings.colors.blue)
     const embedMessage = await message.reply({ embeds: [embed] })
     await addDeleteReact(embedMessage, message, true);
