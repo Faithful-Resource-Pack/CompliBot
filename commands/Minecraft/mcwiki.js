@@ -66,7 +66,7 @@ module.exports = {
         }).substring(0, 4096)
 
         const embed = new Discord.MessageEmbed()
-          .setAuthor(strings.command.mcwiki.embed_link_text, settings.VANILLA_IMG, wikiPage)
+          .setAuthor(strings.command.mcwiki.embed_link_text, settings.images.vanilla, wikiPage)
           .setTitle(title)
           .setThumbnail(imageURL)
           .setColor(settings.colors.blue)

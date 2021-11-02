@@ -13,7 +13,7 @@ const settings = require('../../resources/settings.json')
 async function modLog(client, message, memberID, reason, time, type) {
 	var logChannel = undefined
 
-	if (message.guild.id == settings.guilds.c32.id || message.guild.id == settings.guilds.c64.id || message.guild.id == settings.guilds.cextras.id) logChannel = client.channels.cache.get(settings.C32_MOD_LOGS)
+	if (message.guild.id == settings.guilds.c32.id || message.guild.id == settings.guilds.c64.id || message.guild.id == settings.guilds.cextras.id) logChannel = client.channels.cache.get(settings.c32.modLog)
 	if (logChannel == undefined) return
 
 	var embed = new Discord.MessageEmbed()
