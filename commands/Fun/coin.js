@@ -14,11 +14,11 @@ module.exports = {
   uses: strings.command.use.anyone,
   syntax: `${prefix}coin`,
   async execute(_client, message) {
-    const isTails = Math.random() > 0.5
+
+    const res = Math.random()
     const embed = new Discord.MessageEmbed()
-      .setTitle(isTails ? 'Tails' : 'Heads')
-      // TODO : implements settings.images.coin_edge with a probability of 0.001%
-      .setThumbnail(isTails ? settings.images.coin_tails : settings.images.coin_heads)
+      .setTitle(res > .5 ? 'Tails' : (res < .5 ? 'Heads' : 'Edge'))
+      .setThumbnail(res > .5 ? settings.images.coin_tails : (res < .5 ? settings.images.coin_heads : settings.images.coin_edge))
       .setColor(settings.colors.blue)
     const embedMessage = await message.reply({ embeds: [embed] })
     await addDeleteReact(embedMessage, message, true);
