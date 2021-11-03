@@ -5,7 +5,7 @@ const axios = require('axios')
 const minecraftVersionsCache = []
 
 exports.loadMCVersions = async () =>  {
-	const { status, data: versions } = await axios.get('https://launchermeta.mojang.com/mc/game/version_manifest.json')
+	const { status, data: versions } = await axios.get('https://launchermeta.mojang.com/mc/game/version_manifest_v2.json')
 
 	if (versions === '' || status !== 200) {
 		console.log('Failed to load Java Minecraft versions')
@@ -23,7 +23,7 @@ exports.loadMCVersions = async () =>  {
 
 exports.updateMCVersions = async (client) => {
 	try {
-		const { status, data: versions } = await axios.get('https://launchermeta.mojang.com/mc/game/version_manifest.json')
+		const { status, data: versions } = await axios.get('https://launchermeta.mojang.com/mc/game/version_manifest_v2.json')
 
 		if (versions === '' || status !== 200) {
 			return
