@@ -21,6 +21,13 @@ async function inviteDetection(client, message) {
 		'discord.gg'
 	]
 
+	// not implemented yet, will be added soon
+	const scams = [
+		'bit.ly/3k5Uc81',
+		'discocrd-gift.com',
+		'ttr-discord.com'
+	]
+
 	const whitelist = [
 		'discord.gg/compliance32x',
 		'discord.gg/sN9YRQbBv7',
@@ -43,7 +50,7 @@ async function inviteDetection(client, message) {
 			.setDescription(`[Jump to message](${message.url})\n\n**Channel**: <#${message.channel.id}>\n**Server**: \`${message.guild}\`\n**User ID**: \`${message.author.id}\`\n**Date**: \`${message.createdAt.toLocaleString()}\`\n\n\`\`\`${message.content}\`\`\``)
 			.setTimestamp()
 
-		client.channels.cache.get(settings.channels.logs.c32).send({ embeds: [embed] })
+		client.channels.cache.get(settings.channels.moderation_logs.c32).send({ embeds: [embed] })
 	}
 }
 
