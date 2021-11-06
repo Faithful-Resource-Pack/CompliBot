@@ -9,12 +9,14 @@ const JSON_SPACE = 0
 /**
  * Fetch distant settings file into the local one
  * @author Juknum
- * @returns {Promise<void>}
+ * @returns {Promise<Object>}
  */
 const doCheckSettings = () => {
   return new Promise((resolve, reject) => {
+    let json // = undefined
     allCollection.settings.read_raw()
     .then(res => {
+      json = res
       return fs.writeFile(
         OUT_PATH,
         JSON.stringify(res, JSON_REPLACER, JSON_SPACE),
@@ -22,7 +24,7 @@ const doCheckSettings = () => {
       )
     })
     .then(() => {
-      resolve()
+      resolve(json)
     })
     .catch(err => {
       reject(err)

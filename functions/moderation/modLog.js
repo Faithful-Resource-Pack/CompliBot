@@ -1,5 +1,6 @@
 const Discord = require('discord.js')
-const settings = require('../../resources/settings.json')
+let settings = require('../../resources/settings.json')
+const { doCheckSettings } = require('../settings/doCheckSettings')
 
 /**
  * Send a embed message in the logChannel
@@ -13,11 +14,19 @@ const settings = require('../../resources/settings.json')
 async function modLog(client, message, memberID, reason, time, type) {
 	var logChannel = undefined
 
+	let autoReportChannelID // = undefined
 	try {
-		if (message.guild.id == settings.guilds.c32.id || message.guild.id == settings.guilds.c64.id || message.guild.id == settings.guilds.cextras.id) logChannel = client.channels.cache.get(settings.channels.auto_report.c32)
-	} catch(_e) {
-		// fix your damn settings json before loading this
+		autoReportChannelID = settings.channels.auto_report.c32 // if already loaded
+	} catch (_error) {
+		// else the settings aren't updated
+
+		settings = await doCheckSettings() // update them
+
+		// then try again to get them
+		autoReportChannelID = settings.channels.auto_report.c32
 	}
+
+	if (message.guild.id == settings.guilds.c32.id || message.guild.id == settings.guilds.c64.id || message.guild.id == settings.guilds.cextras.id) logChannel = client.channels.cache.get(autoReportChannelID)
 	if (logChannel == undefined) return
 
 	var embed = new Discord.MessageEmbed()
