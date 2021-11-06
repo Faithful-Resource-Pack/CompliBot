@@ -26,6 +26,12 @@ const COMPLIANCE_REPOS = {
   }
 }
 
+const ESCAPER = '+'
+const RES_REPLACER = ESCAPER + 'RES' + ESCAPER
+const EDITION_REPLACER = ESCAPER + 'EDITION' + ESCAPER
+const PERCENT_REPLACER = ESCAPER + 'PERCENT' + ESCAPER
+const CHANNEL_NAME_TEMPLATE = `${RES_REPLACER}x ${EDITION_REPLACER}: ${PERCENT_REPLACER}%`
+
 const BEDROCK_UI = [
   "ui/Black.png",
   "ui/5stars_empty.png",
@@ -235,16 +241,17 @@ module.exports = {
   category: 'Compliance exclusive',
   guildOnly: false,
   uses: strings.command.use.anyone,
-  syntax: `${prefix}missing <32|64> <java|bedrock>`,
-  example: `${prefix}missing 32 java`,
+  syntax: `${prefix}missing <32|64> <java|bedrock> [-u]`,
+  example: `${prefix}missing 32 java\n${prefix}missing 64 java -u`,
   /**
    * @param {Discord.Client} client Discord client using this command
    * @param {Discord.Message} message Incoming message matching
    * @param {Array<string>} args Arguments after the command
    * @author TheRolf
    */
-  async execute(_client, message, args) {
+  async execute(client, message, args) {
     if (args.length < 2) return warnUser(message, strings.command.args.none_given)
+    const updateChannel = args.length > 2 && args[2].trim() === '-u'
 
     const res = args[0].trim().toLowerCase()
     const edition = args[1].trim().toLowerCase()
@@ -337,10 +344,34 @@ module.exports = {
 
     const result_file = new Discord.MessageAttachment(Buffer.from(diff_result.join('\n'), 'utf8'), `missing-${edition}-${res}.txt`)
 
+    const progress = Math.round(10000 - diff_result.length / vanilla_textures.length * 10000) / 100
+
     let resultEmbed = new Discord.MessageEmbed()
-      .addField(`Compliance ${edition} ${res}x progress:`, Math.round(10000 - diff_result.length / vanilla_textures.length * 10000) / 100 + `% complete\n ${diff_result.length} textures missing`)
+      .addField(`Compliance ${edition} ${res}x progress:`, progress + `% complete\n ${diff_result.length} textures missing`)
       .setColor(settings.colors.blue)
 
     await embedMessage.edit({ embeds: [resultEmbed], files: [result_file] })
+
+    if(updateChannel && client !== null) {
+      const ucEdition = edition.charAt(0).toUpperCase() + edition.substr(1)
+      const channelName = CHANNEL_NAME_TEMPLATE
+        .replace(RES_REPLACER, res)
+        .replace(EDITION_REPLACER, ucEdition)
+        .replace(PERCENT_REPLACER, String(progress))
+
+      /** @type {Discord.TextChannel} */
+      const channelID = settings.channels.percentages[res][edition]
+      const channel = client.channels.cache.get(channelID)
+
+      console.log(channelName)
+      // happens when the channel exists
+      if(channel !== undefined) {
+        await channel.setName(channelName)
+      } else {
+        resultEmbed.addField('Final sentence would be', channelName)
+        await embedMessage.edit({ embeds: [resultEmbed] })
+      }
+      await embedMessage.react(settings.emojis.upvote)
+    }
   }
 };
