@@ -14,19 +14,19 @@ const { doCheckSettings } = require('../settings/doCheckSettings')
 async function modLog(client, message, memberID, reason, time, type) {
 	var logChannel = undefined
 
-	let autoReportChannelID // = undefined
+	let modLogsChannelID // = undefined
 	try {
-		autoReportChannelID = settings.channels.auto_report.c32 // if already loaded
+		modLogsChannelID = settings.channels.moderation_logs.c32 // if already loaded
 	} catch (_error) {
 		// else the settings aren't updated
 
 		settings = await doCheckSettings() // update them
 
 		// then try again to get them
-		autoReportChannelID = settings.channels.auto_report.c32
+		modLogsChannelID = settings.channels.moderation_logs.c32
 	}
 
-	if (message.guild.id == settings.guilds.c32.id || message.guild.id == settings.guilds.c64.id || message.guild.id == settings.guilds.cextras.id) logChannel = client.channels.cache.get(autoReportChannelID)
+	if (message.guild.id == settings.guilds.c32.id || message.guild.id == settings.guilds.c64.id || message.guild.id == settings.guilds.cextras.id) logChannel = client.channels.cache.get(modLogsChannelID)
 	if (logChannel == undefined) return
 
 	var embed = new Discord.MessageEmbed()

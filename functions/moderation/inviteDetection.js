@@ -50,7 +50,7 @@ async function inviteDetection(client, message) {
 			.setDescription(`[Jump to message](${message.url})\n\n**Channel**: <#${message.channel.id}>\n**Server**: \`${message.guild}\`\n**User ID**: \`${message.author.id}\`\n**Date**: \`${message.createdAt.toLocaleString()}\`\n\n\`\`\`${message.content}\`\`\``)
 			.setTimestamp()
 
-		client.channels.cache.get(settings.channels.moderation_logs.c32).send({ embeds: [embed] })
+		client.channels.cache.get(settings.channels.auto_report.c32).send({ embeds: [embed] })
 	}
 }
 
