@@ -17,7 +17,7 @@ require('dotenv').config()
 const { doCheckLang } = require('./functions/strings/doCheckLang')
 const { doCheckSettings } = require('./functions/settings/doCheckSettings')
 doCheckLang()
-doCheckSettings()
+doCheckSettings() // beware you need THIS to be loaded before all the functions are used
 
 // eslint-disable-next-line no-unused-vars
 const { Client, Intents } = require('discord.js')
