@@ -28,7 +28,9 @@ const quotes = [
 	"9+10=",
 	"Does anybody even read these?",
 	"Rule of thumb: Blame Discord API.",
-	"<#852223879535657010> my beloved"
+	"<#852223879535657010> my beloved",
+	"Here's your ping. Now let me go back to sleep.",
+	"Fun fact: this is your ping",
 ]
 
 module.exports = {
@@ -38,7 +40,7 @@ module.exports = {
 	guildOnly: false,
 	uses: strings.command.use.anyone,
 	syntax: `${prefix}ping`,
-	async execute(client, message, args) {
+	async execute(client, message) {
 		const m = new Discord.MessageEmbed().setTitle('Ping?').setColor(settings.colors.blue)
 
 		message.reply({ embeds: [m] }).then(async m => {
