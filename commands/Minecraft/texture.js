@@ -15,7 +15,7 @@ const { warnUser } = require('../../helpers/warnUser')
 const { timestampConverter } = require('../../helpers/timestampConverter')
 const { addDeleteReact } = require('../../helpers/addDeleteReact')
 
-const allowed = ['vanilla', '16', '32', '64'];
+const allowed = ['16', '32', '64'];
 const used = ['16', '32', '64'];
 
 const MinecraftSorter = (a, b) => {
@@ -64,8 +64,6 @@ module.exports = {
 		let res = args[0]
 		let search = args[1]
 
-		// no valids args given
-		if (!allowed.includes(args[0])) return warnUser(message, strings.command.args.invalid.generic)
 		// no search field given
 		if (!args[1]) return warnUser(message, strings.command.args.not_enough_given)
 		else args[1] = String(args[1])
@@ -77,6 +75,8 @@ module.exports = {
 		if (args[0].includes('16') || args[0] === 'vanilla') res = '16'
 		if (args[0].includes('32')) res = '32'
 		if (args[0].includes('64')) res = '64'
+
+		if (!allowed.includes(res)) return warnUser(message, strings.command.texture.invalid_resolution)
 
 		// partial texture name (_sword, _axe -> diamond_sword, diamond_axe...)
 		if (search.startsWith('_') || search.endsWith('_')) {
