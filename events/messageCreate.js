@@ -53,27 +53,52 @@ module.exports = {
 
         const meantCmd = await meant(commandName, commandList)
 
-        if (meantCmd?.length == 0) return
-        else if (meantCmd?.length > 1) return await message.reply({ content: `Did you mean ${meantCmd.map(cmd => `\`${PREFIX}${cmd}\``).join(' or ')}?` })
-        else return await message.reply({ content: `Did you mean \`${PREFIX}${meantCmd[0]}\`?` })
+        if (meantCmd?.length !== 0) {
+          const row = new Discord.MessageActionRow()
+            .addComponents(
+              new Discord.MessageButton()
+                .setCustomId('meantBtn')
+                .setLabel('Run command')
+                .setStyle('PRIMARY'),
+            );
+          const meantMsg = await message.reply({ content: `Did you mean \`${PREFIX}${meantCmd[0]}\`?`, components: [row] })
+
+          const filter = i => i.customId === 'meantBtn' && i.user.id === message.author.id;
+
+          const collector = message.channel.createMessageComponentCollector({ filter, time: 1000 * 60 }); // 1 minute
+
+          collector.on('collect', async i => {
+            if (i.customId === 'meantBtn') {
+              if (!meantMsg.deleted) await meantMsg.delete();
+              await client.commands.get(meantCmd[0]).execute(client, message, args).then(async () => {
+                return increaseCommandProcessed()
+              })
+            }
+          });
+
+          collector.on('end', async () => { if (!meantMsg.deleted) return await meantMsg.edit({ content: `Did you mean \`${PREFIX}${meantCmd[0]}\`?`, components: [] }).catch(() => { }) } ); // catch to avoid "Unknown Message" error, I don't know why this is happening
+        }
+        else return
       }
-      if (command.guildOnly && message.channel.type === 'DM') return warnUser(message, strings.bot.cant_dm)
+      else {
+        if  (command.guildOnly && message.channel.type === 'DM') return warnUser(message, strings.bot.cant_dm)
 
-      command.execute(client, message, args).then(async () => {
-        return increaseCommandProcessed()
-      }).catch(async error => {
-        console.trace(error)
+        command.execute(client, message, args).then(async () => {
+          return increaseCommandProcessed()
+        }).catch(async error => {
+          console.trace(error)
 
-        const embed = new Discord.MessageEmbed()
-          .setColor(settings.colors.red)
-          .setTitle(strings.bot.error)
-          .setThumbnail(settings.images.error)
-          .setDescription(`${strings.command.error}\nError for the developers:\n${error}`)
+          const embed = new Discord.MessageEmbed()
+            .setColor(settings.colors.red)
+            .setTitle(strings.bot.error)
+            .setThumbnail(settings.images.error)
+            .setDescription(`${strings.command.error}\nError for the developers:\n${error}`)
 
-        let msgEmbed = await message.reply({ embeds: [embed] })
-        await message.react('❌')
-        return addDeleteReact(msgEmbed, message, true)
-      })
+          let msgEmbed = await message.reply({ embeds: [embed] })
+          await message.react('❌')
+          return addDeleteReact(msgEmbed, message, true)
+        })
+      }
     }
 
     else {

@@ -47,6 +47,7 @@ module.exports = {
 			const embed = new Discord.MessageEmbed()
 				.setTitle('Pong!')
 				.setColor(settings.colors.blue)
+				// Bot latency broken with command suggestions, solution needed without using message.createdTimestamp
 				.setDescription(`_${quotes[Math.floor(Math.random() * quotes.length)]}_\n\n**Bot Latency** \n${m.createdTimestamp - message.createdTimestamp}ms \n**API Latency** \n${Math.round(client.ws.ping)}ms`)
 
 			await m.edit({ embeds: [embed] })
