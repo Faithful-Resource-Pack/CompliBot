@@ -13,7 +13,6 @@ const difference = require('lodash/difference')
 
 const { exec, series } = require('../../helpers/exec').promises
 const { warnUser } = require('../../helpers/warnUser')
-const { sorterMC } = require('../../helpers/sorterMC')
 
 const COMPLIANCE_REPOS = {
   java: {
@@ -268,7 +267,12 @@ module.exports = {
       .setColor(settings.colors.blue)
       .addField('Steps', 'Steps will be listed here')
 
-    let embedMessage = await message.reply({ embeds: [embed] })
+    let embedMessage = await message.reply({
+      embeds: [embed],
+      allowedMentions: {
+        repliedUser: !updateChannel // do not mention if update
+      }
+    })
 
     let steps = []
 
@@ -362,8 +366,7 @@ module.exports = {
       /** @type {Discord.TextChannel} */
       const channelID = settings.channels.percentages[res][edition]
       const channel = client.channels.cache.get(channelID)
-
-      console.log(channelName)
+      
       // happens when the channel exists
       if(channel !== undefined) {
         await channel.setName(channelName)
