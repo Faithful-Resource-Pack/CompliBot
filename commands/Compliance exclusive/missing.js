@@ -13,6 +13,8 @@ const difference = require('lodash/difference')
 
 const { exec, series } = require('../../helpers/exec').promises
 const { warnUser } = require('../../helpers/warnUser')
+// needed for later
+//const { sorterMC } = require('../../helpers/sorterMC')
 
 const COMPLIANCE_REPOS = {
   java: {
@@ -267,12 +269,7 @@ module.exports = {
       .setColor(settings.colors.blue)
       .addField('Steps', 'Steps will be listed here')
 
-    let embedMessage = await message.reply({
-      embeds: [embed],
-      allowedMentions: {
-        repliedUser: !updateChannel // do not mention if update
-      }
-    })
+    let embedMessage = await message.reply({ embeds: [embed] })
 
     let steps = []
 
