@@ -175,7 +175,7 @@ module.exports = {
       /**
        * EMULATED VATTIC TEXTURES BASIC AUTOREACT (FHLX's server)
        */
-      if (message.channel.id === '814209343502286899' || message.channel.id === '814201529032114226') {
+      if (message.channel.id === '814209343502286899' || message.channel.id === '814201529032114226' || message.channel.id === '909503944118648883') {
         if (!message.attachments.size) {
           if (message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) return
           var embed = new Discord.MessageEmbed()
