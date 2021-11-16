@@ -24,12 +24,11 @@ module.exports = {
 		try {
 			user = await usersCollection.get(message.author.id)
 		}
-		catch (err) {
-			return warnUser(message, 'You haven\'t specified any username!')
-		}
+		catch (err) { /* Keep this empty */ }
 
 		if (args[0]) return showSkin(message, args)
-		else showSkin(message, undefined, user)
+		else if (user) showSkin(message, undefined, user)
+		else return warnUser(message, 'You haven\'t specified any username!')
 
 	}
 };
