@@ -343,7 +343,7 @@ module.exports = {
     embed.fields[0].value = steps.join('\n')
     await embedMessage.edit({ embeds: [embed] })
 
-    const result_file = new Discord.MessageAttachment(Buffer.from(diff_result.join('\n'), 'utf8'), `missing-${edition}-${res}.txt`)
+    const result_file = new Discord.MessageAttachment(Buffer.from(diff_result.join('\n').replace(/\\/g,'/').replace(/\/assets\/minecraft/g,'').replace(/\/textures\//g,''), 'utf8'), `missing-${edition}-${res}.txt`)
 
     const progress = Math.round(10000 - diff_result.length / vanilla_textures.length * 10000) / 100
 
