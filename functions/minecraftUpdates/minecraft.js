@@ -14,7 +14,7 @@ exports.loadMCVersions = async () =>  {
 
 	versions.versions.forEach(version => {
 		// uncomment to test for specific versions being released
-		//if (version.id === '1.17-rc1') return
+		//if (version.id === '1.18-pre5') return
 		minecraftVersionsCache.push(version.id)
 	})
 
@@ -37,12 +37,33 @@ exports.updateMCVersions = async (client) => {
 				let updateChannel = await client.channels.cache.get('773983707299184703')
 
 				if (version.id.includes('pre')) {
-					updateMessage = await updateChannel.send({ content: `A new pre-release of Minecraft Java was just released: \`${version.id}\`` })
-					await updateMessage.reply({ content: `https://www.minecraft.net/en-us/article/minecraft-${version.id.split('-')[0].replace(/\./g,'-')}-pre-release-${version.id.split('pre')[1]}` })
+					var pre = version.id.split('pre')[1]
+					let res
+					res = await axios.get(`https://www.minecraft.net/en-us/article/minecraft-${version.id.split('-')[0].replace(/\./g,'-')}-pre-release-${pre}`, {validateStatus: () => true})
+
+					if (res.status == 404) {
+						for (pre; pre > 1; pre--) {
+							res = await axios.get(`https://www.minecraft.net/en-us/article/minecraft-${version.id.split('-')[0].replace(/\./g,'-')}-pre-release-${pre}`, {validateStatus: () => true})
+
+							if (res.status !== 404) {
+								updateMessage = await updateChannel.send({ content: `A new pre-release of Minecraft Java was just released: \`${version.id}\`` })
+								await updateMessage.reply({ content: `https://www.minecraft.net/en-us/article/minecraft-${version.id.split('-')[0].replace(/\./g,'-')}-pre-release-${pre}` })
+								break;
+							}
+						}
+					}
+
+					else {
+						updateMessage = await updateChannel.send({ content: `A new pre-release of Minecraft Java was just released: \`${version.id}\`` })
+						await updateMessage.reply({ content: `https://www.minecraft.net/en-us/article/minecraft-${version.id.split('-')[0].replace(/\./g,'-')}-pre-release-${pre}` })
+					}
 				}
 				else if (version.id.includes('rc')) {
 					updateMessage = await updateChannel.send({ content: `A new release candidate of Minecraft Java was just released: \`${version.id}\`` })
-					await updateMessage.reply({ content: `https://www.minecraft.net/en-us/article/minecraft-${version.id.split('-')[0].replace(/\./g,'-')}-release-candidate-${version.id.split('rc')[1]}` })
+
+					// it is very unlikely that there is more than one release candidate, so we'll just use the first one
+					// if there is a second one, Mojang will use the first article anyway
+					await updateMessage.reply({ content: `https://www.minecraft.net/en-us/article/minecraft-${version.id.split('-')[0].replace(/\./g,'-')}-release-candidate-1` })
 				}
 				else {
 					updateMessage = await updateChannel.send({ content: `A new ${version.type} of Minecraft Java was just released: \`${version.id}\`` })
