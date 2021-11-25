@@ -126,6 +126,10 @@ const createBlobForFile = (octo, org, repo) => async (filePath) => {
 			content,
 			encoding: 'utf-8',
 		})
+		.catch(err => {
+			console.error(err)
+			return Promise.reject(err)
+		})
 	}
 
 	return blobData.data

@@ -42,13 +42,6 @@ const client = new Client({
 
 module.exports.Client = client
 
-// Environment vars
-const DEV = (process.env.DEV.toLowerCase() == 'true')
-const LOG_DEV = ((process.env.LOG_DEV.toLowerCase() || 'false') == 'true')
-
-// Resources: 
-const settings = require('./resources/settings.json')
-
 /**
  * COMMAND HANDLER
  */
@@ -71,18 +64,9 @@ for (const file of eventsFiles) {
 	else client.on(event.name, (...args) => event.execute(...args))
 }
 
-// eslint-disable-next-line no-unused-vars
+const unhandledRejection = require('./events/unhandledRejection')
 process.on('unhandledRejection', (reason, promise) => {
-	if (DEV) return console.trace(reason.stack || reason)
-
-	const channel = client.channels.cache.get(LOG_DEV ? '875301873316413440' : '853547435782701076')
-	const embed = new Discord.MessageEmbed()
-		.setTitle('Unhandled Rejection')
-		.setDescription(`\`\`\`fix\n${reason.stack || JSON.stringify(reason)}\`\`\``)
-		.setColor(settings.colors.red)
-		.setTimestamp()
-
-	channel.send({ embeds: [embed] })
+	unhandledRejection(client, reason, promise)
 })
 
 client.login(process.env.CLIENT_TOKEN).catch(console.error)
