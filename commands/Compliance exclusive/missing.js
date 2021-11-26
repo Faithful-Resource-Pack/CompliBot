@@ -9,7 +9,6 @@ const { mkdir } = require('fs/promises')
 const filesystem = require("fs")
 const { join, normalize } = require("path")
 const os = require('os')
-const difference = require('lodash/difference')
 
 const { exec, series } = require('../../helpers/exec').promises
 const { warnUser } = require('../../helpers/warnUser')
@@ -292,7 +291,7 @@ module.exports = {
     }
     exists = filesystem.existsSync(compliance_tmp_path)
     if (!exists) {
-      steps.push(`Downloading Compliance ${edition} ${res}x pack...`)
+      steps.push(`Downloading Compliance ${res}x ${edition} pack...`)
       embed.fields[0].value = steps.join('\n')
       await embedMessage.edit({ embeds: [embed] })
 
@@ -338,17 +337,20 @@ module.exports = {
     const vanilla_textures = _getAllFilesFromFolder(vanilla_tmp_path, edition_filter).map(f => normalize(f).replace(vanilla_tmp_path, ''))
     const compliance_textures = _getAllFilesFromFolder(compliance_tmp_path).map(f => normalize(f).replace(compliance_tmp_path, ''))
 
-    const diff_result = difference(vanilla_textures, compliance_textures).sort()
+    // I have no clue what this dark magic does, but it is faster than the previous solution and doesn't use any dependencies
+    var objA = {};
+    compliance_textures.forEach(function(v) { objA[v] = true; });
+    const diff_result = vanilla_textures.filter(function(v) { return !objA[v]; });
 
     embed.fields[0].value = steps.join('\n')
     await embedMessage.edit({ embeds: [embed] })
 
-    const result_file = new Discord.MessageAttachment(Buffer.from(diff_result.join('\n').replace(/\\/g,'/').replace(/\/assets\/minecraft/g,'').replace(/\/textures\//g,''), 'utf8'), `missing-${edition}-${res}.txt`)
+    const result_file = new Discord.MessageAttachment(Buffer.from(diff_result.join('\n').replace(/\\/g,'/').replace(/\/assets\/minecraft/g,'').replace(/\/textures\//g,''), 'utf8'), `missing-${res}-${edition}.txt`)
 
     const progress = Math.round(10000 - diff_result.length / vanilla_textures.length * 10000) / 100
 
     let resultEmbed = new Discord.MessageEmbed()
-      .addField(`Compliance ${edition} ${res}x progress:`, progress + `% complete\n ${diff_result.length} textures missing`)
+      .addField(`Compliance ${res}x ${edition} progress:`, progress + `% complete\n ${diff_result.length} textures missing`)
       .setColor(settings.colors.blue)
 
     await embedMessage.edit({ embeds: [resultEmbed], files: [result_file] })
