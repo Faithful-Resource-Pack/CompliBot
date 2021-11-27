@@ -40,7 +40,7 @@ module.exports = {
         if (!message.deleted) setTimeout(() => msg.delete(), 30000);
       }
 
-      const args = message.content.slice(PREFIX.length).trim().split(/ +/)
+      const args = message.content.toLowerCase().slice(PREFIX.length).trim().split(/ +/)
       const commandName = args.shift().toLowerCase()
       const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName))
 
@@ -116,7 +116,7 @@ module.exports = {
         const embed = new MessageEmbed()
           .setDescription('```Uh-oh moment```')
           .setColor(settings.colors.blue)
-          .setFooter('Swahili → English', settings.images.bot)
+          .setFooter('Swahili → English', client.user.displayAvatarURL())
         let msgEmbed = await message.reply({ embeds: [embed] })
         return addDeleteReact(msgEmbed, message)
       }
@@ -182,7 +182,7 @@ module.exports = {
             .setColor(settings.colors.red)
             .setTitle(strings.submission.autoreact.error_title)
             .setDescription(strings.submission.no_file_attached)
-            .setFooter(strings.submission.autoreact.error_footer, settings.images.bot)
+            .setFooter(strings.submission.autoreact.error_footer, client.user.displayAvatarURL())
 
           const msg = await message.reply({ embeds: [embed] })
           if (!msg.deleted) setTimeout(() => msg.delete(), 30000);

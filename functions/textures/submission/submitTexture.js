@@ -211,7 +211,7 @@ async function invalidSubmission(message, error = 'Not given') {
       .setAuthor(message.author.tag, message.author.displayAvatarURL())
       .setColor(settings.colors.red)
       .setTitle(strings.submission.autoreact.error_title)
-      .setFooter(strings.submission.autoreact.error_footer, settings.images.bot)
+      .setFooter(strings.submission.autoreact.error_footer, message.client.user.displayAvatarURL())
       .setDescription(error)
 
     const msg = await message.reply({ embeds: [embed] });

@@ -17,7 +17,7 @@ module.exports = {
 	name: 'status',
 	aliases: ['presence', 'activity'],
 	description: strings.command.description.status,
-	category: 'Developer exclusive',
+	category: 'Developer',
 	guildOnly: false,
 	uses: strings.command.use.devs,
 	syntax: `${prefix}status <activity> <presence> <status>`,

@@ -12,7 +12,7 @@ const { warnUser } = require('../../helpers/warnUser.js');
 module.exports = {
 	name: 'say',
 	description: strings.command.description.say,
-	category: 'Developer exclusive',
+	category: 'Developer',
 	guildOnly: true,
 	uses: strings.command.use.devs,
 	syntax: `${prefix}say [message] [attach a file]`,

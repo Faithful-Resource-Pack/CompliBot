@@ -4,6 +4,7 @@ const Discord = require("discord.js")
 const settings = require('../../resources/settings.json')
 
 const strings = require('../../resources/strings.json')
+
 const { warnUser } = require('../../helpers/warnUser')
 
 module.exports = {
@@ -11,7 +12,7 @@ module.exports = {
 	description: 'none',
 	guildOnly: true,
 	uses: strings.command.use.admins,
-	category: 'Compliance exclusive',
+	category: 'Compliance',
 	syntax: `${prefix}reactionroles`,
 	flags: '',
 	example: `${prefix}reactionroles`,

@@ -17,7 +17,7 @@ const MAX_EDITIONS = CHOICE_EMOJIS.length + Object.keys(PACKS_EMOJIS).length
 module.exports = {
 	name: 'about',
 	description: strings.command.description.about,
-	category: 'Compliance exclusive',
+	category: 'Compliance',
 	guildOnly: true,
 	uses: strings.command.use.anyone,
 	syntax: `${prefix}about\n${prefix}about me\n${prefix}about <userTag>\n`,
@@ -107,7 +107,7 @@ module.exports = {
 			.setTitle(`Found in total ${big_total} contributions`)
 			.setAuthor(message.author.tag, message.author.avatarURL())
 			.setColor(settings.colors.blue)
-			.setFooter(message.client.user.username, settings.images.bot)
+			.setFooter(client.user.username, client.user.displayAvatarURL())
 			.setDescription(desc)
 
 		Object.keys(contri_sorted_by_res).forEach(res => {

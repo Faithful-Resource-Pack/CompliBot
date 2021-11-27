@@ -20,8 +20,8 @@ module.exports = {
         { name: 'Personalisation', value: 'soon:tm:' },
       )
       .setColor(settings.colors.blue)
-      .setThumbnail(settings.images.bot)
-      .setFooter(client.user.username, settings.images.bot);
+      .setThumbnail(client.user.displayAvatarURL())
+      .setFooter(client.user.username, client.user.displayAvatarURL());
 
     var channel = guild.channels.cache.find(channel => channel.type === 'GUILD_TEXT' && channel.permissionsFor(guild.me).has(['EMBED_LINKS', 'SEND_MESSAGES']))
     await channel.send({ embeds: [embed] })

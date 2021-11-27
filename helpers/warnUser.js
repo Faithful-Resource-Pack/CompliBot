@@ -17,7 +17,7 @@ async function warnUser(message, text) {
 		.setThumbnail(settings.images.warning)
 		.setTitle(strings.bot.error)
 		.setDescription(text)
-		.setFooter(strings.warn_user.footer.replace('%prefix%', prefix), settings.images.bot)
+		.setFooter(strings.warn_user.footer.replace('%prefix%', prefix), message.client.user.displayAvatarURL())
 
 	let embedMessage
 	if (message.deleted) embedMessage = await message.channel.send({ embeds: [embed] })

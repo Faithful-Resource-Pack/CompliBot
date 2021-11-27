@@ -14,7 +14,7 @@ module.exports = {
 	name: 'shutdown',
 	aliases: ['logout', 'die'],
 	description: strings.command.description.shutdown,
-	category: 'Developer exclusive',
+	category: 'Developer',
 	guildOnly: false,
 	uses: strings.command.use.devs,
 	syntax: `${prefix}shutdown`,
@@ -25,7 +25,7 @@ module.exports = {
 		}
 		else {
 			var embed = new MessageEmbed()
-				.setAuthor(message.client.user.username, settings.images.bot)
+				.setAuthor(client.user.username, client.user.displayAvatarURL())
 				.setDescription(`Banned <@${message.author.id}> \nReason: trying to stop me lmao`)
 				.setColor(settings.colors.blue)
 				.setTimestamp();

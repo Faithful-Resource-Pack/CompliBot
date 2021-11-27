@@ -11,7 +11,7 @@ const { getMember } = require("../../helpers/getMember");
 module.exports = {
 	name: 'profile',
 	description: strings.command.description.profile,
-	category: 'Compliance exclusive',
+	category: 'Compliance',
 	guildOnly: false,
 	uses: strings.command.use.anyone,
 	syntax: `${prefix}profile username <Your Name>\n${prefix}profile uuid <Your MC uuid (full uuid)>\n${prefix}profile show -> Display what the bot knows about you\n\nModerators only:\n${prefix}profile [@someone/username/nickname/id]`,
@@ -87,7 +87,7 @@ async function showProfile(message, user = undefined, memberID = 'None') {
 			{ name: 'Roles', value: type }
 		)
 		.setColor(settings.colors.blue)
-		.setFooter(message.client.user.username, settings.images.bot);
+		.setFooter(message.client.user.username, message.client.user.displayAvatarURL());
 
 		if (message.guild !== null && message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("Moderator")))
 			embed.addField(`Warns ${warns == 'None' ? '' : '(' + user.warns.length + ')'}`, warns)

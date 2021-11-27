@@ -10,7 +10,7 @@ const strings = require('../../resources/strings.json');
 module.exports = {
 	name: 'behave',
 	description: strings.command.description.behave,
-	category: 'Developer exclusive',
+	category: 'Developer',
 	guildOnly: false,
 	uses: strings.command.use.devs,
 	syntax: `${prefix}behave`,

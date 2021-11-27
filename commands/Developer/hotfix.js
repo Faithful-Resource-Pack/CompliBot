@@ -23,7 +23,7 @@ module.exports = {
 	name: 'hotfix',
 	aliases: ['fix'],
 	description: strings.command.description.hotfix,
-	category: 'Developer exclusive',
+	category: 'Developer',
 	guildOnly: false,
 	uses: strings.command.use.devs,
 	syntax: `${prefix}hotfix <something>`,

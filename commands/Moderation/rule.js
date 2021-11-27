@@ -20,7 +20,7 @@ module.exports = {
 
 		const RULES = Object.values(strings.rules)
 
-		let thumbnail = settings.images.bot
+		let thumbnail = client.user.displayAvatarURL()
 		let color = settings.colors.council
 
 		switch (message.guild.id) {

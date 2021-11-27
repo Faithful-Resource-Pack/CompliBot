@@ -15,7 +15,7 @@ module.exports = {
 	name: 'reload',
 	aliases: ['r'],
 	description: strings.command.description.reload,
-	category: 'Developer exclusive',
+	category: 'Developer',
 	guildOnly: false,
 	uses: strings.command.use.devs,
 	syntax: `${prefix}reload <command>`,

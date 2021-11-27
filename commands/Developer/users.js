@@ -16,7 +16,7 @@ module.exports = {
   name: 'users',
   aliases: ['user'],
   description: 'Fix or modify users elements directly from the bot',
-  category: 'Developer exclusive',
+  category: 'Developer',
   guildOnly: false,
   uses: strings.command.use.devs,
   syntax: `${prefix}users <set> <id> <field> <value>\n${prefix}user <delete> <id>\n${prefix}user <add> <id> [username]`,

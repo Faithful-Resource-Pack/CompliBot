@@ -15,7 +15,7 @@ const settings = require('../../resources/settings.json')
 module.exports = {
 	name: 'push',
 	description: strings.command.description.push,
-	category: 'Compliance exclusive',
+	category: 'Compliance',
 	guildOnly: false,
 	uses: strings.command.disabled,
 	//uses: strings.command.use.mods,

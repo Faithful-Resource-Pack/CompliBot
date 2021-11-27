@@ -35,8 +35,8 @@ module.exports = {
 		if (days == 1) thours = 'day';
 
 		const embed = new Discord.MessageEmbed()
-			.setTitle(`${message.client.user.username} Info:`)
-			.setThumbnail(settings.images.bot)
+			.setTitle(`${client.user.username} Info:`)
+			.setThumbnail(client.user.displayAvatarURL())
 			.setColor(settings.colors.blue)
 			.setDescription('This is the official bot of all Compliance Resource Pack discords, developed by the Compliance Team!')
 			.addFields(

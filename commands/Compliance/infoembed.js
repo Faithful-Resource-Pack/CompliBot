@@ -11,7 +11,7 @@ const uidJ = process.env.UIDJ;
 module.exports = {
 	name: 'infoembed',
 	description: strings.command.description.infoembed,
-	category: 'Compliance exclusive',
+	category: 'Compliance',
 	guildOnly: true,
 	uses: strings.command.use.devs,
 	syntax: `${prefix}discords`,

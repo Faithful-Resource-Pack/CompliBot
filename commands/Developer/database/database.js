@@ -18,6 +18,7 @@ module.exports = {
   name: 'database',
   aliases: ['db'],
   description: 'Fix or modify database textures directly from the bot',
+  category: 'Developer',
   guildOnly: false,
   uses: strings.command.use.devs,
   syntax: `${prefix}db [texture|use|path] <get|set|add|delete/remove> <id> <parameters (see examples)>`,

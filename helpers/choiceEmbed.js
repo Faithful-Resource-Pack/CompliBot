@@ -39,7 +39,7 @@ module.exports = function (message, params, user) {
       color: settings.colors.blue,
       max: 1,
       separator: ' — ',
-      imageURL: settings.images.bot,
+      imageURL: message.client.user.displayAvatarURL(),
       timeout: 60000
     }
 

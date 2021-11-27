@@ -11,7 +11,7 @@ const { warnUser } = require('../../helpers/warnUser')
 module.exports = {
 	name: 'autopush',
 	description: strings.command.description.autopush,
-	category: 'Compliance exclusive',
+	category: 'Compliance',
 	guildOnly: false,
 	uses: strings.command.use.admins,
 	syntax: `${prefix}autopush <both/c32/c64>`,

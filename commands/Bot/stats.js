@@ -32,8 +32,8 @@ module.exports = {
 		const number = await getCommandProcessed()
 
 		const embed = new Discord.MessageEmbed()
-			.setTitle(`${message.client.user.username} Stats`)
-			.setThumbnail(settings.images.bot)
+			.setTitle(`${client.user.username} Stats`)
+			.setThumbnail(client.user.displayAvatarURL())
 			.setColor(settings.colors.blue)
 			.addFields(
 				{ name: 'Prefix', value: prefix, inline: true },

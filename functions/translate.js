@@ -13,7 +13,7 @@ async function translate(message, content, args) {
 	var embed = new MessageEmbed()
 		.setDescription(`\`\`\`${result.text}\`\`\``)
 		.setColor(settings.colors.blue)
-		.setFooter(`${result.from.language.iso} → ${langTo}`, settings.images.bot)
+		.setFooter(`${result.from.language.iso} → ${langTo}`, message.client.user.displayAvatarURL())
 
 	const messageEmbed = await message.reply({ embeds: [embed] })
 	addDeleteReact(messageEmbed, message, true)

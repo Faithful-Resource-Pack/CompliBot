@@ -12,7 +12,7 @@ module.exports = {
   name: 'lang',
   aliases: ['dict'],
   description: 'Edit global strings without restarting the bot :)',
-  category: 'Developer exclusive',
+  category: 'Developer',
   guildOnly: false,
   uses: strings.command.use.devs,
   syntax: `

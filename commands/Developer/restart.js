@@ -67,7 +67,7 @@ function execPromise(cmd) {
 module.exports = {
   name: 'restart',
   description: strings.command.description.restart,
-  category: 'Developer exclusive',
+  category: 'Developer',
   guildOnly: false,
   uses: strings.command.use.devs,
   syntax: `${prefix}restart`,
