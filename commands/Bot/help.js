@@ -90,7 +90,7 @@ module.exports = {
 					.setDescription(`**Description:**\n${command.description || 'No description'}\n**Can be used by:**\n${command.uses || 'Not set'}\n**Syntax:**\n${syntax}\n**Aliases:**\n${aliases}\n**Example:**\n${example}`)
 					.setFooter(client.user.username, client.user.displayAvatarURL())
 			}
-			else return warnUser(message, 'The specified command, alias or category does not exist.')
+			else return warnUser(message, 'The specified command or category does not exist.')
 		}
 
 		if (!args[0]) {

@@ -175,7 +175,9 @@ const BEDROCK_UI = [
   "ui/warning_alex.png",
   "ui/white_background.png",
   "ui/whiteline.png",
-  "ui/yellow_banner.png"
+  "ui/yellow_banner.png",
+  "entity/horse2/armor/horse_armor_none.png",
+  "entity/horse2/horse_markings_none"
 ]
 
 const VANILLA_REPOS = {
