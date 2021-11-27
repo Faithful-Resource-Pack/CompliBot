@@ -1,8 +1,8 @@
 const Canvas = require('canvas')
-const Discord = require('discord.js')
 const settings = require('../../resources/settings.json')
 const strings = require('../../resources/strings.json')
 
+const { MessageAttachment } = require('discord.js');
 const { addDeleteReact } = require('../../helpers/addDeleteReact')
 const { getMeta } = require('../../helpers/getMeta')
 const { warnUser } = require('../../helpers/warnUser')
@@ -44,7 +44,7 @@ function magnify(message, url, gotocomplichannel = undefined, redirectMessage = 
 		canvasResultCTX.imageSmoothingEnabled = false
 		canvasResultCTX.drawImage(temp, 0, 0, width, height)
 
-		const attachment = new Discord.MessageAttachment(canvasResult.toBuffer(), 'magnified.png');
+		const attachment = new MessageAttachment(canvasResult.toBuffer(), 'magnified.png');
 
 		let embedMessage
 		if (gotocomplichannel) {

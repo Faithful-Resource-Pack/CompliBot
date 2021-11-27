@@ -1,8 +1,9 @@
 const prefix = process.env.PREFIX
-const Discord = require('discord.js')
 
 const strings = require('../../resources/strings.json')
 const settings = require('../../resources/settings.json')
+
+const { MessageEmbed } = require('discord.js')
 const { addDeleteReact } = require('../../helpers/addDeleteReact');
 const { warnUser } = require('../../helpers/warnUser')
 
@@ -25,7 +26,7 @@ module.exports = {
 
     const love_amount = Math.round(Math.random() * 100)
 
-    const embed = new Discord.MessageEmbed()
+    const embed = new MessageEmbed()
       .setTitle(`${member.displayName} :heart: ${member2.displayName}`)
       .setDescription(love_amount + '%')
       .setColor(settings.colors.blue)

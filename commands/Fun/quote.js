@@ -1,9 +1,10 @@
 const prefix = process.env.PREFIX
-const Discord = require('discord.js')
 const axios = require('axios').default
 
 const strings = require('../../resources/strings.json')
 const settings = require('../../resources/settings.json')
+
+const { MessageEmbed } = require('discord.js')
 const { addDeleteReact } = require('../../helpers/addDeleteReact');
 
 module.exports = {
@@ -16,7 +17,7 @@ module.exports = {
   async execute(_client, message) {
     const image = await axios.get('https://inspirobot.me/api?generate=true')
 
-    const embed = new Discord.MessageEmbed()
+    const embed = new MessageEmbed()
       .setImage(image.data)
       .setColor(settings.colors.blue)
     const embedMessage = await message.reply({ embeds: [embed] })

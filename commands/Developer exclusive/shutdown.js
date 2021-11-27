@@ -5,9 +5,10 @@ const uidJ = process.env.UIDJ;
 const uidD = process.env.UIDD;
 const uidT = process.env.UIDT;
 
-const Discord = require('discord.js');
 const strings = require('../../resources/strings.json');
 const settings = require('../../resources/settings.json')
+
+const { MessageEmbed } = require('discord.js')
 
 module.exports = {
 	name: 'shutdown',
@@ -23,7 +24,7 @@ module.exports = {
 			await process.exit();
 		}
 		else {
-			var embed = new Discord.MessageEmbed()
+			var embed = new MessageEmbed()
 				.setAuthor(message.client.user.username, settings.images.bot)
 				.setDescription(`Banned <@${message.author.id}> \nReason: trying to stop me lmao`)
 				.setColor(settings.colors.blue)

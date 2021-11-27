@@ -1,9 +1,9 @@
 const prefix = process.env.PREFIX
 
-const Discord = require('discord.js')
 const strings = require('../../resources/strings.json')
 const settings = require('../../resources/settings.json')
 
+const { MessageEmbed } = require('discord.js')
 const { Permissions } = require('discord.js');
 const { warnUser } = require('../../helpers/warnUser')
 const { modLog } = require('../../functions/moderation/modLog')
@@ -34,7 +34,7 @@ module.exports = {
 
 		modLog(client, message, member.id, reason, 'none', 'banned')
 
-		var embed = new Discord.MessageEmbed()
+		var embed = new MessageEmbed()
 			.setAuthor(message.author.tag, message.author.displayAvatarURL())
 			.setDescription(`Banned ${member} \nReason: ${reason}`)
 			.setColor(settings.colors.blue)

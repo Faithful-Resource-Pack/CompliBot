@@ -10,9 +10,8 @@ const DEVELOPER_IDs = [uidR, uidJ, uidD, uidT]
 const strings = require('../../resources/strings.json')
 const settings = require('../../resources/settings.json')
 
+const { MessageEmbed } = require('discord.js')
 const { warnUser } = require('../../helpers/warnUser')
-
-const Discord = require('discord.js')
 const { writeFile } = require('fs').promises
 const { exec } = require('child_process')
 const { join } = require('path')
@@ -82,7 +81,7 @@ module.exports = {
   // eslint-disable-next-line no-unused-vars
   async execute(client, message, args) {
     if (!DEVELOPER_IDs.includes(message.author.id)) {
-      const emb = new Discord.MessageEmbed()
+      const emb = new MessageEmbed()
         .setTitle(':no_entry: Access denied :no_entry:')
         .setColor(settings.colors.red)
         .setDescription('You are not allowed to use this command')
@@ -96,7 +95,7 @@ module.exports = {
       return
     }
 
-    const emb = new Discord.MessageEmbed()
+    const emb = new MessageEmbed()
       .setTitle(':white_check_mark: Access granted :white_check_mark:')
       .setColor(settings.colors.green)
       .setDescription('Welcome sir')

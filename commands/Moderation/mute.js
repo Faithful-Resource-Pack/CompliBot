@@ -1,9 +1,9 @@
 const prefix = process.env.PREFIX;
 
-const Discord = require('discord.js');
 const strings = require('../../resources/strings.json')
 const settings = require('../../resources/settings.json')
 
+const { MessageEmbed } = require('discord.js')
 const { warnUser } = require('../../helpers/warnUser');
 const { modLog } = require('../../functions/moderation/modLog');
 const { addMutedRole } = require('../../functions/moderation/addMutedRole');
@@ -86,7 +86,7 @@ module.exports = {
 			if (time < 0) endsAt = "Never"
 			else endsAt = `${endsAt.getUTCDate()}/${endsAt.getUTCMonth() + 1}/${endsAt.getUTCFullYear()} ${endsAt.getUTCHours()}:${endsAt.getUTCMinutes()}:${endsAt.getUTCSeconds()} UTC`
 
-			var embed = new Discord.MessageEmbed()
+			var embed = new MessageEmbed()
 				.setAuthor(message.author.tag, message.author.displayAvatarURL())
 				.setTitle(`Muted someone:`)
 				.setDescription(`**User:** <@!${userID}>\n**Reason:** \`${reason}\`\n**Time:** \`${timeout != 'Unlimited' ? parseInt(timeOr, 10) + ` ${timeDur}` : 'Unlimited'}\`\n**Ends at:** \`${endsAt}\``)

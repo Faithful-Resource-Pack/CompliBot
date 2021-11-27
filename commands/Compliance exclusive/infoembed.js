@@ -1,8 +1,9 @@
 const prefix = process.env.PREFIX;
-const Discord = require('discord.js')
 
 const settings = require('../../resources/settings.json')
 const strings = require('../../resources/strings.json')
+
+const { MessageEmbed } = require('discord.js')
 
 const uidR = process.env.UIDR;
 const uidJ = process.env.UIDJ;
@@ -43,25 +44,25 @@ module.exports = {
 				} else return
 			}
 			else if (args[0] === 'media') {
-				var websiteEmbed = new Discord.MessageEmbed()
+				var websiteEmbed = new MessageEmbed()
 					.setTitle('Compliance Website')
 					.setDescription('https://compliancepack.net/')
 					.setColor(settings.colors.C32)
 					.setThumbnail(settings.images.c32)
 
-				var twitterEmbed = new Discord.MessageEmbed()
+				var twitterEmbed = new MessageEmbed()
 					.setTitle('Compliance Twitter')
 					.setDescription('https://twitter.com/CompliancePack')
 					.setColor(settings.colors.twitter)
 					.setThumbnail('https://upload.wikimedia.org/wikipedia/en/thumb/6/60/Twitter_Logo_as_of_2021.svg/1280px-Twitter_Logo_as_of_2021.svg.png')
 
-				var youtubeEmbed = new Discord.MessageEmbed()
+				var youtubeEmbed = new MessageEmbed()
 					.setTitle('Compliance Youtube')
 					.setDescription('https://www.youtube.com/channel/UCQFajwwCLyFKLhZsAkHSGJA')
 					.setColor(settings.colors.youtube)
 					.setThumbnail('https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/YouTube_full-color_icon_%282017%29.svg/1280px-YouTube_full-color_icon_%282017%29.svg.png')
 
-				var patreonEmbed = new Discord.MessageEmbed()
+				var patreonEmbed = new MessageEmbed()
 					.setTitle('Compliance Patreon')
 					.setDescription('https://www.patreon.com/Compliance')
 					.setColor(settings.colors.patreon)

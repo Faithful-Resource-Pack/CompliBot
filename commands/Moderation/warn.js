@@ -1,10 +1,10 @@
 const prefix = process.env.PREFIX;
 
-const Discord = require('discord.js');
 const strings = require('../../resources/strings.json');
 const settings = require('../../resources/settings.json');
 const users = require('../../helpers/firestorm/users')
 
+const { MessageEmbed } = require('discord.js');
 const { warnUser } = require('../../helpers/warnUser');
 const { modLog } = require('../../functions/moderation/modLog');
 const { addMutedRole } = require('../../functions/moderation/addMutedRole');
@@ -65,7 +65,7 @@ module.exports = {
 		if (warns.length % 3 == 0) {
 			time = 86400 * 5 // 5 days of mute
 
-			var mutedEmbed = new Discord.MessageEmbed()
+			var mutedEmbed = new MessageEmbed()
 				.setAuthor(message.author.tag, message.author.displayAvatarURL())
 				.setDescription(`After ${warns.length} warns, <@!${userID}> has been muted for \`${time / 86400}\` days`)
 				.setColor(settings.colors.black)
@@ -80,7 +80,7 @@ module.exports = {
 			addMutedRole(client, userID, time);
 		}
 
-		var embed = new Discord.MessageEmbed()
+		var embed = new MessageEmbed()
 			.setAuthor(message.author.tag, message.author.displayAvatarURL())
 			.setTitle(`Warned someone:`)
 			.setDescription(`**User:** <@!${userID}>\n**Reason:** \`${reason}\``)

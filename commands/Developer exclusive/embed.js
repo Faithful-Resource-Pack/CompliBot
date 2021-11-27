@@ -2,8 +2,8 @@ const prefix = process.env.PREFIX;
 
 const settings = require('../../resources/settings.json')
 const strings = require('../../resources/strings.json');
-const Discord = require('discord.js');
 
+const { MessageEmbed } = require('discord.js')
 const { warnUser } = require('../../helpers/warnUser');
 
 module.exports = {
@@ -26,7 +26,7 @@ module.exports = {
 		}
 
 		var embedMessage = await message.channel.messages.fetch(args[0]);
-		var embed = new Discord.MessageEmbed();
+		var embed = new MessageEmbed();
 
 		embed = embedMessage.embeds[0];
 

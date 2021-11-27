@@ -1,8 +1,8 @@
 const Canvas = require('canvas')
-const Discord = require('discord.js')
 const settings = require('../../resources/settings.json')
 const strings = require('../../resources/strings.json')
 
+const { MessageEmbed, MessageAttachment } = require('discord.js');
 const { getMeta } = require('../../helpers/getMeta')
 const { warnUser } = require('../../helpers/warnUser')
 const { addDeleteReact } = require('../../helpers/addDeleteReact')
@@ -76,7 +76,7 @@ async function palette(message, url, gotocomplichannel = undefined, redirectMess
 
 		// object trick so no duplicates
 
-		var embed = new Discord.MessageEmbed()
+		var embed = new MessageEmbed()
 			.setTitle('Palette results')
 			.setColor(settings.colors.blue)
 			.setDescription(`List of colors:\n`)
@@ -175,7 +175,7 @@ async function palette(message, url, gotocomplichannel = undefined, redirectMess
 		})
 
 		// create the attachement
-		const colorImageAttachment = new Discord.MessageAttachment(colorCanvas.toBuffer(), 'colors.png');
+		const colorImageAttachment = new MessageAttachment(colorCanvas.toBuffer(), 'colors.png');
 
 		let embedMessage
 		if (gotocomplichannel) {

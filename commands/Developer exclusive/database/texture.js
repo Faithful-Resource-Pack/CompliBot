@@ -1,7 +1,8 @@
-const Discord = require('discord.js')
 const settings = require('../../../resources/settings.json')
-const { errorEmbed } = require('./errorEmbed')
 const allCollection = require('../../../helpers/firestorm/all')
+
+const { MessageEmbed } = require('discord.js')
+const { errorEmbed } = require('./errorEmbed')
 
 const prefix = process.env.PREFIX
 
@@ -22,7 +23,7 @@ async function deleteTexture(id) {
     await allCollection.texture.remove(id)
   } catch (err) { return errorEmbed(err) }
 
-  return new Discord.MessageEmbed().setColor(settings.colors.blue).setDescription(`Successfully deleted texture: ${id}\n**Remember, this command doesn't delete children, please make:**\n\`${prefix}db use delete <id>\` & \`${prefix}db path delete <id>\``)
+  return new MessageEmbed().setColor(settings.colors.blue).setDescription(`Successfully deleted texture: ${id}\n**Remember, this command doesn't delete children, please make:**\n\`${prefix}db use delete <id>\` & \`${prefix}db path delete <id>\``)
 }
 
 /**
@@ -94,7 +95,7 @@ async function getTexture(id) {
   } catch (err) { return errorEmbed(err) }
 
   let usesID = uses.map(use => use.id)
-  let embed = new Discord.MessageEmbed().setColor(settings.colors.blue)
+  let embed = new MessageEmbed().setColor(settings.colors.blue)
 
   embed.addFields(
     { name: 'name:', value: texture.name ? texture.name : "None" },

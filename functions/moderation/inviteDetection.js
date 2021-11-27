@@ -1,5 +1,6 @@
-const Discord = require('discord.js')
 const settings = require('../../resources/settings.json')
+
+const { MessageEmbed } = require('discord.js');
 
 /**
  * Send an embed message when triggered
@@ -44,7 +45,7 @@ async function inviteDetection(client, message) {
 	if (advertising.some(a => message.content.includes(a))) isAd = true;
 
 	if (isAd && !whitelist.some(w => message.content.includes(w))) {
-		var embed = new Discord.MessageEmbed()
+		var embed = new MessageEmbed()
 			.setAuthor(`${message.author.tag} may have advertised a discord server`, message.author.displayAvatarURL())
 			.setColor(settings.colors.red)
 			.setDescription(`[Jump to message](${message.url})\n\n**Channel**: <#${message.channel.id}>\n**Server**: \`${message.guild}\`\n**User ID**: \`${message.author.id}\`\n**Date**: \`${message.createdAt.toLocaleString()}\`\n\n\`\`\`${message.content}\`\`\``)

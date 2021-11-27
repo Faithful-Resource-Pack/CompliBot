@@ -6,10 +6,10 @@ const uidJ = process.env.UIDJ
 const uidD = process.env.UIDD
 const uidT = process.env.UIDT
 
-const Discord = require('discord.js')
 const settings = require('../../resources/settings.json')
 const strings = require('../../resources/strings.json')
 
+const { MessageEmbed } = require('discord.js')
 const { warnUser } = require('../../helpers/warnUser')
 
 module.exports = {
@@ -32,7 +32,7 @@ module.exports = {
       let options1 = args[3]
       let user = undefined
 
-      var embed = new Discord.MessageEmbed().setColor(settings.colors.blue)
+      var embed = new MessageEmbed().setColor(settings.colors.blue)
 
       if (id === undefined) return warnUser(message, "Please specify a Discord ID")
 

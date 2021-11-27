@@ -1,8 +1,9 @@
 const prefix = process.env.PREFIX
-const Discord = require('discord.js')
 
 const strings = require('../../resources/strings.json')
 const settings = require('../../resources/settings.json')
+
+const { MessageEmbed } = require('discord.js')
 const { warnUser } = require('../../helpers/warnUser')
 const { addDeleteReact } = require('../../helpers/addDeleteReact');
 
@@ -20,7 +21,7 @@ module.exports = {
     const question = args.join(' ')
 
     const randomIndex = Math.floor(Math.random() * Object.values(strings.command.ball.responses).length)
-    const embed = new Discord.MessageEmbed()
+    const embed = new MessageEmbed()
       .setAuthor(message.author.username + ' asked: ' + question, message.author.displayAvatarURL())
       .setTitle('**' + Object.values(strings.command.ball.responses)[randomIndex] + '**')
       .setColor(settings.colors.blue)

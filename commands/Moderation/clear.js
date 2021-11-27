@@ -1,8 +1,9 @@
 const prefix = process.env.PREFIX;
 
-const Discord = require('discord.js')
 const settings = require('../../resources/settings.json')
 const strings = require('../../resources/strings.json')
+
+const { MessageEmbed } = require('discord.js')
 const { warnUser } = require('../../helpers/warnUser')
 
 module.exports = {
@@ -24,7 +25,7 @@ module.exports = {
 		var amount = (parseInt(args, 10) + 1) > 100 ? 100 : parseInt(args, 10) + 1
 		const messages = await message.channel.messages.fetch({ limit: amount })
 		await message.channel.bulkDelete(messages);
-		var embed = new Discord.MessageEmbed()
+		var embed = new MessageEmbed()
 			.setAuthor(`${message.author.tag} bulk deleted ${args} messages!`)
 			.setColor(settings.colors.red)
 			.setThumbnail(message.author.displayAvatarURL())

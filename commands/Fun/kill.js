@@ -1,8 +1,9 @@
-const prefix = process.env.PREFIX;
-const Discord = require('discord.js');
+const prefix = process.env.PREFIX;;
 
 const strings = require('../../resources/strings.json');
 const settings = require('../../resources/settings.json');
+
+const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js')
 const { addDeleteReact } = require('../../helpers/addDeleteReact');
 const { warnUser } = require('../../helpers/warnUser');
 const { getMember } = require("../../helpers/getMember");
@@ -34,7 +35,7 @@ module.exports = {
 		result = result.replace('%player%', member.displayName)
 		result = result.replace('%weapon%', weapon)
 
-		const embed = new Discord.MessageEmbed()
+		const embed = new MessageEmbed()
 			.setDescription(result)
 			.setColor(settings.colors.blue)
 
@@ -46,9 +47,9 @@ module.exports = {
 		if (result == response36 || result == response37) {
 			embed.setDescription(`${result}\n\n**Need an explanation?**`)
 
-			const row = new Discord.MessageActionRow()
+			const row = new MessageActionRow()
 			.addComponents(
-				new Discord.MessageButton()
+				new MessageButton()
 					.setCustomId('explBtn')
 					.setLabel('Yes, please explain')
 					.setStyle('PRIMARY'),

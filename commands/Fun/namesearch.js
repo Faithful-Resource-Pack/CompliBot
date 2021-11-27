@@ -1,8 +1,9 @@
 const prefix = process.env.PREFIX
-const Discord = require('discord.js')
 
 const strings = require('../../resources/strings.json')
 const settings = require('../../resources/settings.json')
+
+const { MessageEmbed } = require('discord.js')
 const { addDeleteReact } = require('../../helpers/addDeleteReact');
 const { warnUser } = require('../../helpers/warnUser')
 
@@ -26,7 +27,7 @@ module.exports = {
       return m.user && m.user.username.toLowerCase().includes(search)
     })
 
-    const embed = new Discord.MessageEmbed()
+    const embed = new MessageEmbed()
       .setTitle(`Members with \`\`${search}\`\` in their name`)
       .setDescription(results.size > 0 ? results.map(e => `<@!${e.id}>`).join(' ') : '*No user found*')
       .setColor(settings.colors.blue)

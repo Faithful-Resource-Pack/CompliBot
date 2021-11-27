@@ -1,8 +1,9 @@
 const prefix = process.env.PREFIX
-const Discord = require('discord.js')
 
 const settings = require('../../resources/settings.json')
 const strings = require('../../resources/strings.json')
+
+const { MessageEmbed } = require('discord.js')
 const { addDeleteReact } = require('../../helpers/addDeleteReact')
 
 const quotes = [
@@ -41,10 +42,10 @@ module.exports = {
 	uses: strings.command.use.anyone,
 	syntax: `${prefix}ping`,
 	async execute(client, message) {
-		const m = new Discord.MessageEmbed().setTitle('Ping?').setColor(settings.colors.blue)
+		const m = new MessageEmbed().setTitle('Ping?').setColor(settings.colors.blue)
 
 		message.reply({ embeds: [m] }).then(async m => {
-			const embed = new Discord.MessageEmbed()
+			const embed = new MessageEmbed()
 				.setTitle('Pong!')
 				.setColor(settings.colors.blue)
 				// Bot latency broken with command suggestions, solution needed without using message.createdTimestamp

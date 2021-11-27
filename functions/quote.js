@@ -1,6 +1,6 @@
-const Discord = require('discord.js')
 const settings = require('../resources/settings.json')
 
+const { MessageEmbed } = require('discord.js');
 const { addDeleteReact } = require('../helpers/addDeleteReact')
 
 /**
@@ -44,7 +44,7 @@ async function quote(msg) {
 		let message = await channel.messages.fetch(ids[2])
 
 		if (message.embeds[0] !== undefined) {
-			embed = new Discord.MessageEmbed()
+			embed = new MessageEmbed()
 				.setColor(settings.colors.blue)
 
 			if (message.embeds[0].description && typeof (message.embeds[0].description) === 'string') // fixes bug "MessageEmbed description must be a string."
@@ -80,7 +80,7 @@ async function quote(msg) {
 		}
 
 		else {
-			embed = new Discord.MessageEmbed()
+			embed = new MessageEmbed()
 				.setColor(settings.colors.blue)
 				.setAuthor(`Message sent by ${message.author.tag}`, settings.images.quote)
 				.setThumbnail(message.author.displayAvatarURL())

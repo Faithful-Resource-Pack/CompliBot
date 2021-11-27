@@ -1,9 +1,9 @@
 const Canvas = require('canvas')
-const Discord = require('discord.js')
 const GIFEncoderFixed = require('../../modified_libraries/GIFEncoder')
 
 const strings = require('../../resources/strings.json')
 
+const { MessageAttachment } = require('discord.js');
 const { getMeta } = require('../../helpers/getMeta')
 const { warnUser } = require('../../helpers/warnUser')
 const { addDeleteReact } = require('../../helpers/addDeleteReact')
@@ -147,7 +147,7 @@ async function animate(message, valMCMETA, valURL) {
 		encoder.finish()
 
 		// Send result:
-		const attachment = new Discord.MessageAttachment(encoder.out.getData(), 'output.gif')
+		const attachment = new MessageAttachment(encoder.out.getData(), 'output.gif')
 
 		const embedMessage = await message.reply({ files: [attachment] })
 		addDeleteReact(embedMessage, message, true)

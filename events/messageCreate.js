@@ -1,7 +1,7 @@
 const client = require('../index').Client
-const Discord = require('discord.js')
 const meant = require('meant')
 
+const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 const { Permissions } = require('discord.js')
 
 const DEV = (process.env.DEV.toLowerCase() == 'true')
@@ -54,9 +54,9 @@ module.exports = {
         const meantCmd = await meant(commandName, commandList)
 
         if (meantCmd?.length !== 0) {
-          const row = new Discord.MessageActionRow()
+          const row = new MessageActionRow()
             .addComponents(
-              new Discord.MessageButton()
+              new MessageButton()
                 .setCustomId('meantBtn')
                 .setLabel('Run command')
                 .setStyle('PRIMARY'),
@@ -88,7 +88,7 @@ module.exports = {
         }).catch(async error => {
           console.trace(error)
 
-          const embed = new Discord.MessageEmbed()
+          const embed = new MessageEmbed()
             .setColor(settings.colors.red)
             .setTitle(strings.bot.error)
             .setThumbnail(settings.images.error)
@@ -113,7 +113,7 @@ module.exports = {
       if (message.content === 'F') return await message.react('🇫')
 
       if (message.content.toLowerCase() === 'mhhh') {
-        const embed = new Discord.MessageEmbed()
+        const embed = new MessageEmbed()
           .setDescription('```Uh-oh moment```')
           .setColor(settings.colors.blue)
           .setFooter('Swahili → English', settings.images.bot)
@@ -178,7 +178,7 @@ module.exports = {
       if (message.channel.id === '814209343502286899' || message.channel.id === '814201529032114226' || message.channel.id === '909503944118648883') {
         if (!message.attachments.size) {
           if (message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) return
-          var embed = new Discord.MessageEmbed()
+          var embed = new MessageEmbed()
             .setColor(settings.colors.red)
             .setTitle(strings.submission.autoreact.error_title)
             .setDescription(strings.submission.no_file_attached)

@@ -1,5 +1,6 @@
-const Discord = require('discord.js')
 let settings = require('../../resources/settings.json')
+
+const { MessageEmbed } = require('discord.js');
 const { doCheckSettings } = require('../settings/doCheckSettings')
 
 /**
@@ -29,7 +30,7 @@ async function modLog(client, message, memberID, reason, time, type) {
 	if (message.guild.id == settings.guilds.c32.id || message.guild.id == settings.guilds.c64.id || message.guild.id == settings.guilds.cextras.id) logChannel = client.channels.cache.get(modLogsChannelID)
 	if (logChannel == undefined) return
 
-	var embed = new Discord.MessageEmbed()
+	var embed = new MessageEmbed()
 		.setAuthor(`${message.author.tag} ${type} someone`)
 		.setColor(settings.colors.yellow)
 		.setThumbnail(message.author.displayAvatarURL())

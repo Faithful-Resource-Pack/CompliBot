@@ -1,8 +1,8 @@
-const Discord = require('discord.js')
 const prefix = process.env.PREFIX
 const strings = require('../../resources/strings.json')
 const Canvas = require('canvas')
 
+const { MessageEmbed, MessageAttachment } = require('discord.js')
 const { warnUser } = require('../../helpers/warnUser')
 const { addDeleteReact } = require('../../helpers/addDeleteReact')
 
@@ -154,9 +154,9 @@ ${prefix}color cmyk(0,50,85,0)`,
 
     canvasCTX.fillStyle = alpha ? `${hex}${alpha}` : hex
     canvasCTX.fillRect(0, 0, 128, 128)
-    const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'color.png')
+    const attachment = new MessageAttachment(canvas.toBuffer(), 'color.png')
 
-    let embed = new Discord.MessageEmbed()
+    let embed = new MessageEmbed()
       .setTitle('Color Preview')
       .setColor(hex)
       .addFields(

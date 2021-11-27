@@ -1,9 +1,9 @@
 const prefix = process.env.PREFIX
-const Discord = require('discord.js')
 
 const strings = require('../../resources/strings.json')
 const settings = require('../../resources/settings.json')
 
+const { MessageEmbed } = require('discord.js')
 const { warnUser } = require('../../helpers/warnUser')
 
 module.exports = {
@@ -26,7 +26,7 @@ module.exports = {
 		if (member.id === client.user.id) return await message.channel.send({ content: strings.command.no_i_dont_think_i_will })
 
 		else {
-			const embed = new Discord.MessageEmbed()
+			const embed = new MessageEmbed()
 				.setAuthor(message.author.tag, message.author.displayAvatarURL())
 				.setDescription(`Beaned ${member} \nReason: ${reason}`)
 				.setColor(settings.colors.blue)

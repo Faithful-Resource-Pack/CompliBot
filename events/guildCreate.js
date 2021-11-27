@@ -1,17 +1,18 @@
 const client = require('../index').Client
-const Discord = require('discord.js')
 
 const PREFIX = process.env.PREFIX
 const DEV = (process.env.DEV.toLowerCase() == 'true')
 
 const settings = require('../resources/settings.json')
 
+const { MessageEmbed } = require('discord.js');
+
 module.exports = {
   name: 'guildCreate',
   async execute(guild) {
 
     if (DEV) return
-    var embed = new Discord.MessageEmbed()
+    var embed = new MessageEmbed()
       .setTitle(`Thanks for adding me to ${guild.name}!`)
       .addFields(
         { name: 'Commands', value: `My prefix is: \`${PREFIX}\` \nUse \`${PREFIX}help\` to see a list of all my commands!` },

@@ -1,8 +1,9 @@
 const prefix = process.env.PREFIX;
 
-const Discord = require('discord.js');
 const strings = require('../../resources/strings.json');
+const settings = require('../../resources/settings.json');
 
+const { MessageEmbed } = require('discord.js');
 const { warnUser } = require('../../helpers/warnUser');
 
 module.exports = {
@@ -20,7 +21,7 @@ module.exports = {
 
 		if (args == 'off' || args == 'disable' || args == 'stop') {
 			await message.channel.setRateLimitPerUser("0", `${message.author.tag} has used the slowmode command`);
-			let embed = new Discord.MessageEmbed()
+			let embed = new MessageEmbed()
 				.setAuthor(message.author.tag, message.author.displayAvatarURL())
 				.setColor(settings.colors.blue)
 				.setDescription(`Disabled slowmode.`)
@@ -34,7 +35,7 @@ module.exports = {
 
 		else {
 			await message.channel.setRateLimitPerUser(parseInt(args[0]), `${message.author.tag} has used the slowmode command`);
-			let embed = new Discord.MessageEmbed()
+			let embed = new MessageEmbed()
 				.setAuthor(message.author.tag, message.author.displayAvatarURL())
 				.setColor(settings.colors.blue)
 				.setDescription(`Slowmode set to **${parseInt(args[0])} seconds**.`)

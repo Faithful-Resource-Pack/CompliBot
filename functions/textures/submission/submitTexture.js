@@ -1,10 +1,10 @@
-const Discord = require('discord.js')
 const settings = require('../../../resources/settings.json')
 const strings = require('../../../resources/strings.json')
 const choiceEmbed = require('../../../helpers/choiceEmbed')
 const textures = require('../../../helpers/firestorm/texture')
 const paths = require('../../../helpers/firestorm/texture_paths')
 
+const { MessageEmbed, MessageAttachment } = require('discord.js');
 const { Permissions } = require('discord.js');
 
 const MinecraftSorter = (a, b) => {
@@ -172,7 +172,7 @@ async function makeEmbed(client, message, texture, param = new Object()) {
     }
   }
 
-  let embed = new Discord.MessageEmbed()
+  let embed = new MessageEmbed()
     .setAuthor(message.author.tag, message.author.displayAvatarURL()) // TODO: add a Compliance gallery url that match his profile and show us all his recent textures
     .setColor(settings.colors.blue)
     .setTitle(`[#${texture.id}] ${texture.name}`)
@@ -184,7 +184,7 @@ async function makeEmbed(client, message, texture, param = new Object()) {
     )
 
   // re-upload the image to the new message, avoid broken link (rename it in the same time)
-  const attachment = new Discord.MessageAttachment(message.attachments.first().url, texture.name + '.png')
+  const attachment = new MessageAttachment(message.attachments.first().url, texture.name + '.png')
   embed.setImage(`attachment://${texture.name}.png`)
 
   // add, if provided, the description
@@ -207,7 +207,7 @@ async function invalidSubmission(message, error = 'Not given') {
   if (message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) return // allow admins to talk in submit channels
 
   try {
-    var embed = new Discord.MessageEmbed()
+    var embed = new MessageEmbed()
       .setAuthor(message.author.tag, message.author.displayAvatarURL())
       .setColor(settings.colors.red)
       .setTitle(strings.submission.autoreact.error_title)

@@ -1,7 +1,8 @@
-const Discord = require('discord.js')
 const asyncTools = require('./asyncTools')
 const settings = require('../resources/settings.json')
 const strings = require('../resources/strings.json')
+
+const { MessageEmbed } = require('discord.js');
 
 /**
  * @typedef {Object} ChoiceParameter
@@ -48,7 +49,7 @@ module.exports = function (message, params, user) {
 
     if (!params.propositions) reject(new Error('No proposition in object'))
 
-    let embed = new Discord.MessageEmbed()
+    let embed = new MessageEmbed()
       .setTitle(params.title)
       .setColor(params.color)
 

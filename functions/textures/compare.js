@@ -1,8 +1,9 @@
-const Discord = require('discord.js')
 const strings = require("../../resources/strings.json")
 const textures = require('../../helpers/firestorm/texture')
 const FindTexture = require('../../functions/textures/findTexture')
 const choiceEmbed = require('../../helpers/choiceEmbed')
+
+const { MessageAttachment } = require('discord.js');
 const { addDeleteReact } = require('../../helpers/addDeleteReact')
 const { ID_FIELD } = require('../../helpers/firestorm')
 
@@ -288,7 +289,7 @@ module.exports = function (compareOptions) {
       return drawer.draw()
     })
     .then(bufferResult => {
-      const attachment = new Discord.MessageAttachment(bufferResult, 'output.png')
+      const attachment = new MessageAttachment(bufferResult, 'output.png')
       const messageOptions = { files: [attachment] }
       const messageTitle = `\`\`[#${finalTextureChosen[ID_FIELD]}]\`\` ${finalTextureChosen.name}`
       const sendPromise = compareOptions.response !== undefined ? compareOptions.response.reply(messageTitle) : compareOptions.user.send(messageTitle)

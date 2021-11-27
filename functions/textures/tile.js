@@ -1,7 +1,7 @@
 const Canvas = require('canvas')
-const Discord = require('discord.js')
 const settings = require('../../resources/settings.json')
 
+const { MessageAttachment } = require('discord.js');
 const { addDeleteReact } = require('../../helpers/addDeleteReact')
 const { getMeta } = require('../../helpers/getMeta')
 const { warnUser } = require('../../helpers/warnUser')
@@ -134,7 +134,7 @@ function tile(message, url, type, gotocomplichannel = undefined, redirectMessage
 			canvasContext.clearRect(0, dimension.height * 2, dimension.width, dimension.height) // bottom left
 		}
 
-		const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'tiled.png')
+		const attachment = new MessageAttachment(canvas.toBuffer(), 'tiled.png')
 		let embedMessage
 		if (gotocomplichannel) {
 			try {

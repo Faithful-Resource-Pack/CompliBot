@@ -1,7 +1,8 @@
-const Discord = require('discord.js')
 const settings = require('../../../resources/settings.json')
-const { errorEmbed } = require('./errorEmbed')
 const allCollection = require('../../../helpers/firestorm/all')
+
+const { MessageEmbed } = require('discord.js')
+const { errorEmbed } = require('./errorEmbed')
 
 const prefix = process.env.PREFIX
 const EDITIONS = ["bedrock", "java"]
@@ -20,7 +21,7 @@ async function deleteUse(id) {
     await allCollection.texture_use.remove(id)
   } catch (err) { return errorEmbed(err) }
 
-  return new Discord.MessageEmbed().setColor(settings.colors.blue).setDescription(`Successfully deleted use: ${id}\n**Remember, this command doesn't delete children, please make:**\n\`${prefix}db path delete <id>\``)
+  return new MessageEmbed().setColor(settings.colors.blue).setDescription(`Successfully deleted use: ${id}\n**Remember, this command doesn't delete children, please make:**\n\`${prefix}db path delete <id>\``)
 }
 
 /**
@@ -182,7 +183,7 @@ async function getUse(id) {
   } catch (err) { return errorEmbed(err) }
 
   let pathsID = paths.map(use => use.id)
-  let embed = new Discord.MessageEmbed().setColor(settings.colors.blue)
+  let embed = new MessageEmbed().setColor(settings.colors.blue)
 
   embed.addFields(
     { name: 'textureUseName', value: use.textureUseName != "" ? use.textureUseName : 'None' },

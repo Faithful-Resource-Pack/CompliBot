@@ -1,12 +1,12 @@
 /*eslint-env node*/
 const prefix = process.env.PREFIX
 
-const Discord = require('discord.js')
 const axios = require('axios').default
 const strings = require('../../resources/strings.json')
 const settings = require('../../resources/settings.json')
 const choiceEmbed = require('../../helpers/choiceEmbed')
 
+const { MessageEmbed } = require('discord.js')
 const { magnify } = require('../../functions/textures/magnify')
 const { palette } = require('../../functions/textures/palette')
 const { tile } = require('../../functions/textures/tile');
@@ -231,7 +231,7 @@ async function getTexture(message, res, texture) {
 		getMeta(imgURL).then(async dimension => {
 			const size = dimension.width + '×' + dimension.height;
 
-			var embed = new Discord.MessageEmbed()
+			var embed = new MessageEmbed()
 				.setTitle(`[#${texture.id}] ${texture.name}`)
 				.setColor(settings.colors.blue)
 				//.setURL(imgURL) TODO: add a link to the website gallery where more information could be found about the texture

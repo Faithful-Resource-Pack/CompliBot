@@ -1,9 +1,9 @@
 const prefix = process.env.PREFIX;
 
-const Discord = require('discord.js')
 const strings = require('../../resources/strings.json')
 const settings = require('../../resources/settings.json')
 
+const { MessageEmbed } = require('discord.js');
 const { warnUser } = require('../../helpers/warnUser');
 const { addDeleteReact } = require('../../helpers/addDeleteReact');
 
@@ -63,7 +63,7 @@ module.exports = {
 	example: `${prefix}website : only in DM\n${prefix}website compliance32|32x|32\n${prefix}website compliance64|64x|64\n${prefix}website dungeons\n${prefix}website mods\n${prefix}website tweaks\n${prefix}website addons`,
 	async execute(client, message, args) {
 
-		let embed = new Discord.MessageEmbed()
+		let embed = new MessageEmbed()
 
 		if (!args[0]) {
 			if (message.channel.type !== 'DM') return warnUser(message, strings.command.website.provide_valid_args)

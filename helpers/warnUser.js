@@ -1,8 +1,8 @@
-const Discord = require('discord.js')
 const settings = require('../resources/settings.json')
 const strings = require('../resources/strings.json')
 const prefix = process.env.PREFIX
 
+const { MessageEmbed } = require('discord.js');
 const { addDeleteReact } = require('./addDeleteReact')
 
 /**
@@ -12,7 +12,7 @@ const { addDeleteReact } = require('./addDeleteReact')
  * @param {String} text 
  */
 async function warnUser(message, text) {
-	var embed = new Discord.MessageEmbed()
+	var embed = new MessageEmbed()
 		.setColor(settings.colors.red)
 		.setThumbnail(settings.images.warning)
 		.setTitle(strings.bot.error)
