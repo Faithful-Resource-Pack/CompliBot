@@ -190,8 +190,7 @@ async function makeEmbed(client, message, texture, param = new Object()) {
       { name: '\u200B', value: pathText.toString().replace(/,/g, ''), inline: false }
     )
 
-  const attachmentThumbnail = await magnifyAttachment(`https://raw.githubusercontent.com/CompliBot/Default-${thumbnail.edition.toLowerCase() === 'java' ? 'Java' : 'Bedrock'}/${thumbnail.version}/${thumbnail.path}`)
-  console.log(attachmentThumbnail)
+  const attachmentThumbnail = await magnifyAttachment(`${settings.repositories.raw.default[thumbnail.edition.toLowerCase()]}${thumbnail.version}/${thumbnail.path}`)
   embed.setThumbnail(`attachment://magnified.png`)
 
   // re-upload the image to the new message, avoid broken link (rename it in the same time)

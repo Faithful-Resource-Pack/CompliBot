@@ -102,9 +102,6 @@ module.exports = {
     }
 
     else {
-
-      if (message.channel.id === '841396215211360296') return submitTexture(client, message) // dev test
-
       if (DEV) return
 
       /**
