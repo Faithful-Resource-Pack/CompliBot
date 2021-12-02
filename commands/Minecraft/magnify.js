@@ -112,7 +112,7 @@ module.exports = {
 			}
 			//}
 
-			if (found) await magnify(message, url);
+			if (found) await magnify(message, url)
 			else return warnUser(message, strings.command.image.not_found_in_10_last)
 		}
 	}
