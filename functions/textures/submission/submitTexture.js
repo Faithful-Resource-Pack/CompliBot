@@ -191,11 +191,18 @@ async function makeEmbed(client, message, texture, param = new Object()) {
     )
 
   const attachmentThumbnail = await magnifyAttachment(`${settings.repositories.raw.default[thumbnail.edition.toLowerCase()]}${thumbnail.version}/${thumbnail.path}`)
-  embed.setThumbnail(`attachment://magnified.png`)
-
-  // re-upload the image to the new message, avoid broken link (rename it in the same time)
   const attachment = new MessageAttachment(message.attachments.first().url, texture.name + '.png')
-  embed.setImage(`attachment://${texture.name}.png`)
+
+  const imgMessage = await client.channels.cache.get('916766396170518608').send({files: [attachmentThumbnail, attachment]})
+
+  var imgArray = new Array()
+
+  imgMessage.attachments.forEach(Attachment => {
+    imgArray.push(Attachment.url)
+  })
+
+  embed.setThumbnail(imgArray[0])
+  embed.setImage(imgArray[1])
 
   // add, if provided, the description
   if (param.description) embed.setDescription(param.description)
@@ -203,7 +210,7 @@ async function makeEmbed(client, message, texture, param = new Object()) {
   if (param.authors.length > 1) embed.fields[0].name = 'Authors'
 
   // send the embed
-  const msg = await message.channel.send({ embeds: [embed], files: [attachment, attachmentThumbnail] });
+  const msg = await message.channel.send({ embeds: [embed] });
   if (!message.deleted) setTimeout(() => message.delete(), 10);
 
   // add reactions to the embed
