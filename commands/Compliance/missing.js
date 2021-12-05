@@ -246,33 +246,26 @@ module.exports = {
   syntax: `${prefix}missing <32|64> <java|bedrock> [-u]`,
   example: `${prefix}missing 32 java\n${prefix}missing 64 java -u`,
   /**
-   * @param {Discord.Client} client Discord client using this command
-   * @param {Discord.Message} message Incoming message matching
-   * @param {Array<string>} args Arguments after the command
-   * @author TheRolf
+   * @param {String} res resolution chosen
+   * @param {String} edition edition chosen
+   * @param { Function(String) } out output callback
+   * @return {Promise<Buffer, Number, Number>} resolves if went well else error
    */
-  async execute(client, message, args) {
-    if (args.length < 2) return warnUser(message, strings.command.args.none_given)
-    const updateChannel = args.length > 2 && args[2].trim() === '-u'
+  compute: async function(res, edition, out) {
+    let cbval = undefined
+    if(out === undefined) out = async function() {}
 
-    const res = args[0].trim().toLowerCase()
-    const edition = args[1].trim().toLowerCase()
-
-    if ((edition !== 'java' && edition !== 'bedrock') || (res !== '32' && res !== '64')) return warnUser(message, strings.command.args.invalid.generic)
+    if ((edition !== 'java' && edition !== 'bedrock') || (res !== '32' && res !== '64')) {
+      return Promise.reject(new Error(strings.command.args.invalid.generic))
+    }
 
     const vanilla_repo = _rawToRepoURL(VANILLA_REPOS[edition])
     const compliance_repo = _rawToRepoURL(COMPLIANCE_REPOS[edition][res])
 
-    let embed = new Discord.MessageEmbed()
-      .setTitle('Searching for missing textures...')
-      .setDescription('This takes some time, please wait...')
-      .setThumbnail(settings.images.loading)
-      .setColor(settings.colors.blue)
-      .addField('Steps', 'Steps will be listed here')
-
-    let embedMessage = await message.reply({ embeds: [embed] })
-
-    let steps = []
+    await out('Steps will be listed here').catch(err => {
+      cbval = err
+    })
+    if(cbval !== undefined) return Promise.reject(cbval)
 
     let tmp_filepath = normalize(os.tmpdir())
     let vanilla_tmp_path, compliance_tmp_path
@@ -282,9 +275,10 @@ module.exports = {
 
     let exists = filesystem.existsSync(vanilla_tmp_path)
     if (!exists) {
-      steps.push(`Downloading vanilla ${edition} pack...`)
-      embed.fields[0].value = steps.join('\n')
-      await embedMessage.edit({ embeds: [embed] })
+      await out(`Downloading vanilla ${edition} pack...`).catch(err => {
+        cbval = err
+      })
+      if(cbval !== undefined) return Promise.reject(cbval)
 
       await mkdir(vanilla_tmp_path)
       await exec(`git clone ${vanilla_repo} .`, {
@@ -293,21 +287,23 @@ module.exports = {
     }
     exists = filesystem.existsSync(compliance_tmp_path)
     if (!exists) {
-      steps.push(`Downloading Compliance ${res}x ${edition} pack...`)
-      embed.fields[0].value = steps.join('\n')
-      await embedMessage.edit({ embeds: [embed] })
+      await out(`Downloading Compliance ${res}x ${edition} pack...`).catch(err => {
+        cbval = err
+      })
+      if(cbval !== undefined) return Promise.reject(cbval)
 
       await mkdir(compliance_tmp_path)
       await exec(`git clone ${compliance_repo} .`, {
         cwd: compliance_tmp_path
       })
-    }
+  }
+
+    await out('Updating packs with latest version known...').catch(err => {
+      cbval = err
+    })
+    if(cbval !== undefined) return Promise.reject(cbval)
 
     const last_version = edition === 'bedrock' ? settings.versions.bedrock[0] : '1.17.1' // settings.versions.java.sort(sorterMC).reverse()[0] (uncomment when we switch compliance resource pack support to 1.18)
-
-    steps.push('Updating packs with latest version known...')
-    embed.fields[0].value = steps.join('\n')
-    await embedMessage.edit({ embeds: [embed] })
 
     // anyway stash
     // checkout latest branch
@@ -327,12 +323,15 @@ module.exports = {
       ], {
         cwd: compliance_tmp_path
       })
-    ])
+    ]).catch(err => {
+      cbval = err
+    })
+    if(cbval !== undefined) return Promise.reject(cbval)
 
-    // diff
-    steps.push(`Searching for differences...`)
-    embed.fields[0].value = steps.join('\n')
-    await embedMessage.edit({ embeds: [embed] })
+    await out(`Searching for differences...`).catch(err => {
+      cbval = err
+    })
+    if(cbval !== undefined) return Promise.reject(cbval)
 
     const edition_filter = edition === 'java' ? normalizeArray(['font/', 'colormap/', 'misc/shadow', 'presets/isles', 'realms/inspiration', 'realms/new_world', 'realms/survival_spawn', 'realms/upload', 'realms/adventure', 'realms/experience', 'environment/clouds', 'misc/nausea', 'misc/vignette', 'realms/darken', 'realms/plus_icon', 'models/armor/piglin_leather_layer_1', 'entity/phantom_eyes.png', 'misc/white.png', 'block/lightning_rod_on.png', 'gui/title/background/panorama_overlay.png']) : normalizeArray([...BEDROCK_UI, 'font/', 'colormap/', '/gui/', 'environments/clouds', 'persona_thumbnails/', 'environment/end_portal_colors', 'textures/flame_atlas', 'textures/forcefield_atlas', 'blocks/bed_feet_', 'blocks/bed_head_', 'blocks/flower_paeonia', 'blocks/flower_rose_blue', 'blocks/structure_air', 'map/player_icon_background', 'misc/missing_texture', 'items/boat', 'items/egg_agent', 'items/quiver', 'items/ruby', 'entity/agent.png', 'entity/cape_invisible.png', 'entity/char.png', 'entity/horse/', 'entity/lead_rope.png', 'entity/loyalty_rope.png', 'entity/pig/pigzombie.png', 'entity/villager/', 'entity\\wither_boss\\wither_armor_blue.png', 'entity/zombie_villager/'])
 
@@ -344,38 +343,104 @@ module.exports = {
     compliance_textures.forEach(function(v) { objA[v] = true; });
     const diff_result = vanilla_textures.filter(function(v) { return !objA[v]; });
 
-    embed.fields[0].value = steps.join('\n')
-    await embedMessage.edit({ embeds: [embed] })
-
-    const result_file = new Discord.MessageAttachment(Buffer.from(diff_result.join('\n').replace(/\\/g,'/').replace(/\/assets\/minecraft/g,'').replace(/\/textures\//g,''), 'utf8'), `missing-${res}-${edition}.txt`)
+    const result_buffer = Buffer.from(diff_result.join('\n').replace(/\\/g,'/').replace(/\/assets\/minecraft/g,'').replace(/\/textures\//g,''), 'utf8')
 
     const progress = Math.round(10000 - diff_result.length / vanilla_textures.length * 10000) / 100
 
-    let resultEmbed = new Discord.MessageEmbed()
-      .addField(`Compliance ${res}x ${edition} progress:`, progress + `% complete\n ${diff_result.length} textures missing`)
+    return Promise.resolve([result_buffer, diff_result, progress])
+  },
+  
+  /**
+   * @param {Discord.Client} client discord client to act
+   * @param {String} res resolution chosen
+   * @param {String} edition edition chosen
+   * @param { Function(String) } out output callback
+   * @return {Promise<Buffer, Number, Number>} resolves if went well else error
+   */
+  computeAndUpdate: async function(client, res, edition, out) {
+    return this.compute(res, edition, out)
+      .then(async (results) => {
+        const progress = results[2]
+        
+        if(client !== null) {
+          const ucEdition = edition.charAt(0).toUpperCase() + edition.substr(1)
+          const channelName = CHANNEL_NAME_TEMPLATE
+            .replace(RES_REPLACER, res)
+            .replace(EDITION_REPLACER, ucEdition)
+            .replace(PERCENT_REPLACER, String(progress))
+
+            /** @type {Discord.TextChannel} */
+            const channelID = settings.channels.percentages[res][edition]
+            const channel = client.channels.cache.get(channelID)
+        
+            // happens when the channel exists
+            let ret_err // = undefined 
+            if(channel !== undefined) {
+              await channel.setName(channelName).catch(err => {
+                ret_err = err
+              })
+              if(ret_err !== undefined) return Promise.reject(ret_err)
+            } else {
+              console.log('Final sentence would be', channelName)
+            }
+        }
+
+        return Promise.resolve(results)
+      })
+  },
+  /**
+   * @param {Discord.Client} client Discord client using this command
+   * @param {Discord.Message} message Incoming message matching
+   * @param {Array<string>} args Arguments after the command
+   * @author TheRolf
+   */
+  execute: async function (client, message, args) {
+    if (args.length < 2) return warnUser(message, strings.command.args.none_given)
+    const updateChannel = args.length > 2 && args[2].trim() === '-u'
+
+    const res = args[0].trim().toLowerCase()
+    const edition = args[1].trim().toLowerCase()
+
+    let embed = new Discord.MessageEmbed()
+      .setTitle('Searching for missing textures...')
+      .setDescription('This takes some time, please wait...')
+      .setThumbnail(settings.images.loading)
       .setColor(settings.colors.blue)
+      .addField('Steps', 'Steps will be listed here')
 
-    await embedMessage.edit({ embeds: [resultEmbed], files: [result_file] })
+    let embedMessage = await message.reply({ embeds: [embed] })
+    let steps = []
 
-    if(updateChannel && client !== null) {
-      const ucEdition = edition.charAt(0).toUpperCase() + edition.substr(1)
-      const channelName = CHANNEL_NAME_TEMPLATE
-        .replace(RES_REPLACER, res)
-        .replace(EDITION_REPLACER, ucEdition)
-        .replace(PERCENT_REPLACER, String(progress))
+    let step_callback = async (step) => {
+      steps.push(step)
 
-      /** @type {Discord.TextChannel} */
-      const channelID = settings.channels.percentages[res][edition]
-      const channel = client.channels.cache.get(channelID)
-      
-      // happens when the channel exists
-      if(channel !== undefined) {
-        await channel.setName(channelName)
-      } else {
-        resultEmbed.addField('Final sentence would be', channelName)
-        await embedMessage.edit({ embeds: [resultEmbed] })
-      }
-      await embedMessage.react(settings.emojis.upvote)
+      embed.fields[0].value = steps.join('\n')
+      await embedMessage.edit({ embeds: [embed] })
     }
+
+    let prom // = undefined
+    if(updateChannel) {
+      prom = this.compute(res, edition, step_callback)
+    } else {
+      prom = this.computeAndUpdate(client, res, edition, step_callback)
+    }
+    
+    prom.then(async (results) => {
+      const [result_buffer, diff_result, progress] = results
+      const result_file = new Discord.MessageAttachment(result_buffer, `missing-${res}-${edition}.txt`);
+
+      let resultEmbed = new Discord.MessageEmbed()
+        .addField(`Compliance ${res}x ${edition} progress:`, progress + `% complete\n ${diff_result.length} textures missing`)
+        .setColor(settings.colors.blue)
+  
+      await embedMessage.edit({ embeds: [resultEmbed], files: [result_file] })
+      
+      if(updateChannel) {
+        await embedMessage.react(settings.emojis.upvote)
+      }
+    })
+    .catch(err => {
+      return warnUser(message, JSON.stringify(err))
+    })
   }
 };
