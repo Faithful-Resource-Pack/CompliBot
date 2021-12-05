@@ -12,8 +12,7 @@ const os = require('os')
 
 const { exec, series } = require('../../helpers/exec').promises
 const { warnUser } = require('../../helpers/warnUser')
-// needed for later
-//const { sorterMC } = require('../../helpers/sorterMC')
+const { sorterMC } = require('../../helpers/sorterMC')
 
 const COMPLIANCE_REPOS = {
   java: {
@@ -303,7 +302,7 @@ module.exports = {
       })
     }
 
-    const last_version = edition === 'bedrock' ? settings.versions.bedrock[0] : '1.17.1' // settings.versions.java.sort(sorterMC).reverse()[0] (uncomment when we switch compliance resource pack support to 1.18)
+    const last_version = edition === 'bedrock' ? settings.versions.bedrock[0] : settings.versions.java.sort(sorterMC).reverse()[0]
 
     steps.push('Updating packs with latest version known...')
     embed.fields[0].value = steps.join('\n')
