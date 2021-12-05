@@ -76,12 +76,12 @@ module.exports = {
             }
           });
 
-          collector.on('end', async () => { if (!meantMsg.deleted) return await meantMsg.edit({ content: `Did you mean \`${PREFIX}${meantCmd[0]}\`?`, components: [] }).catch(() => { }) } ); // catch to avoid "Unknown Message" error, I don't know why this is happening
+          collector.on('end', async () => { if (!meantMsg.deleted) return await meantMsg.edit({ content: `Did you mean \`${PREFIX}${meantCmd[0]}\`?`, components: [] }).catch(() => { }) }); // catch to avoid "Unknown Message" error, I don't know why this is happening
         }
         else return
       }
       else {
-        if  (command.guildOnly && message.channel.type === 'DM') return warnUser(message, strings.bot.cant_dm)
+        if (command.guildOnly && message.channel.type === 'DM') return warnUser(message, strings.bot.cant_dm)
 
         command.execute(client, message, args).then(async () => {
           return increaseCommandProcessed()
@@ -102,7 +102,6 @@ module.exports = {
     }
 
     else {
-
       if (DEV) return
 
       /**

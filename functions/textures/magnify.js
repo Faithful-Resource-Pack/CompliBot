@@ -5,7 +5,32 @@ const strings = require('../../resources/strings.json')
 const { MessageAttachment } = require('discord.js');
 const { addDeleteReact } = require('../../helpers/addDeleteReact')
 const { getMeta } = require('../../helpers/getMeta')
-const { warnUser } = require('../../helpers/warnUser')
+
+async function magnifyAttachment(url) {
+	return getMeta(url)
+		.then(async function (dimension) {
+			let factor = 64
+			const surface = dimension.width * dimension.height
+
+			if (surface == 256) factor = 32
+			if (surface > 256) factor = 16
+			if (surface > 1024) factor = 8
+			if (surface > 4096) factor = 4
+			if (surface > 65636) factor = 2
+			if (surface > 262144) factor = 1
+
+			const width = dimension.width * factor
+			const height = dimension.height * factor
+			let canvasResult = Canvas.createCanvas(width, height)
+			let canvasResultCTX = canvasResult.getContext('2d')
+
+			const tmp = await Canvas.loadImage(url).catch(err => { console.trace(err); return Promise.reject(err) })
+			canvasResultCTX.imageSmoothingEnabled = false
+			canvasResultCTX.drawImage(tmp, 0, 0, width, height)
+
+			return new MessageAttachment(canvasResult.toBuffer(), 'magnified.png')
+		})
+}
 
 /**
  * Magnify image
@@ -15,7 +40,8 @@ const { warnUser } = require('../../helpers/warnUser')
  * @param {DiscordUserID} gotocomplichannel if set, the message is send to the corresponding #complibot
  * @returns Send a message with the magnified image
  */
-function magnify(message, url, gotocomplichannel = undefined, redirectMessage = undefined) {
+async function magnify(message, url, gotocomplichannel = undefined, redirectMessage = undefined) {
+	const attachment = await magnifyAttachment(url)
 
 	let complichannel
 	if (gotocomplichannel) {
@@ -24,44 +50,24 @@ function magnify(message, url, gotocomplichannel = undefined, redirectMessage = 
 		if (message.guild.id == settings.guilds.cextras.id) complichannel = message.guild.channels.cache.get(settings.channels.complibot.cextras) // CExtras discord
 	}
 
-	getMeta(url).then(async function (dimension) {
-		var sizeOrigin = dimension.width * dimension.height
-		var factor = 64
-
-		if (sizeOrigin == 256) factor = 32
-		if (sizeOrigin > 256) factor = 16
-		if (sizeOrigin > 1024) factor = 8
-		if (sizeOrigin > 4096) factor = 4
-		if (sizeOrigin > 65636) factor = 2
-		if (sizeOrigin > 262144) return warnUser(message, strings.command.image.too_big)
-
-		var width = dimension.width * factor
-		var height = dimension.height * factor
-		var canvasResult = Canvas.createCanvas(width, height)
-		var canvasResultCTX = canvasResult.getContext('2d')
-
-		const temp = await Canvas.loadImage(url).catch(error => { console.trace(error); return Promise.reject(error); })
-		canvasResultCTX.imageSmoothingEnabled = false
-		canvasResultCTX.drawImage(temp, 0, 0, width, height)
-
-		const attachment = new MessageAttachment(canvasResult.toBuffer(), 'magnified.png');
-
-		let embedMessage
-		if (gotocomplichannel) {
-			try {
-				const member = await message.guild.members.cache.get(gotocomplichannel)
-				embedMessage = await member.send({ files: [attachment] });
-			} catch (e) {
-				embedMessage = await complichannel.send({ content: `<@!${gotocomplichannel}>`, files: [attachment] });
-			}
+	let embedMessage
+	if (gotocomplichannel) {
+		try {
+			const member = await message.guild.members.cache.get(gotocomplichannel)
+			embedMessage = await member.send({ files: [attachment] });
+		} catch (e) {
+			embedMessage = await complichannel.send({ content: `<@!${gotocomplichannel}>`, files: [attachment] });
 		}
-		else embedMessage = await message.reply({ files: [attachment] });
+	}
+	else embedMessage = await message.reply({ files: [attachment] });
 
-		if (redirectMessage) addDeleteReact(embedMessage, redirectMessage, true)
-		else addDeleteReact(embedMessage, message, true)
+	if (redirectMessage) addDeleteReact(embedMessage, redirectMessage, true)
+	else addDeleteReact(embedMessage, message, true)
 
-		return attachment;
-	});
+	return attachment;
 }
 
-exports.magnify = magnify;
+module.exports = {
+	magnify: magnify,
+	magnifyAttachment: magnifyAttachment,
+}

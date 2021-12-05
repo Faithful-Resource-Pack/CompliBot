@@ -6,6 +6,7 @@ const paths = require('../../../helpers/firestorm/texture_paths')
 
 const { MessageEmbed, MessageAttachment } = require('discord.js');
 const { Permissions } = require('discord.js');
+const { magnifyAttachment } = require('../magnify')
 
 const MinecraftSorter = (a, b) => {
   const aSplit = a.split('.').map(s => parseInt(s))
@@ -172,20 +173,36 @@ async function makeEmbed(client, message, texture, param = new Object()) {
     }
   }
 
+  const paths = await uses[0].paths()
+  const thumbnail = {
+    path: paths[0].path,
+    version: paths[0].versions.sort(MinecraftSorter).reverse()[0],
+    edition: uses[0].editions[0]
+  }
+
   let embed = new MessageEmbed()
     .setAuthor(message.author.tag, message.author.displayAvatarURL()) // TODO: add a Compliance gallery url that match his profile and show us all his recent textures
     .setColor(settings.colors.blue)
     .setTitle(`[#${texture.id}] ${texture.name}`)
-    //.setImage(message.attachments.first().url)
     .addFields(
       { name: 'Author', value: `<@!${param.authors.join('>\n<@!').toString()}>`, inline: true },
       { name: 'Status', value: '⏳ Pending...', inline: true },
       { name: '\u200B', value: pathText.toString().replace(/,/g, ''), inline: false }
     )
 
-  // re-upload the image to the new message, avoid broken link (rename it in the same time)
+  const attachmentThumbnail = await magnifyAttachment(`${settings.repositories.raw.default[thumbnail.edition.toLowerCase()]}${thumbnail.version}/${thumbnail.path}`)
   const attachment = new MessageAttachment(message.attachments.first().url, texture.name + '.png')
-  embed.setImage(`attachment://${texture.name}.png`)
+
+  const imgMessage = await client.channels.cache.get('916766396170518608').send({files: [attachmentThumbnail, attachment]})
+
+  var imgArray = new Array()
+
+  imgMessage.attachments.forEach(Attachment => {
+    imgArray.push(Attachment.url)
+  })
+
+  embed.setThumbnail(imgArray[0])
+  embed.setImage(imgArray[1])
 
   // add, if provided, the description
   if (param.description) embed.setDescription(param.description)
@@ -193,7 +210,7 @@ async function makeEmbed(client, message, texture, param = new Object()) {
   if (param.authors.length > 1) embed.fields[0].name = 'Authors'
 
   // send the embed
-  const msg = await message.channel.send({ embeds: [embed], files: [attachment] });
+  const msg = await message.channel.send({ embeds: [embed] });
   if (!message.deleted) setTimeout(() => message.delete(), 10);
 
   // add reactions to the embed
