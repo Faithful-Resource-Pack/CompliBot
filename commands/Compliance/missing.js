@@ -370,7 +370,12 @@ module.exports = {
 
             /** @type {Discord.TextChannel} */
             const channelID = settings.channels.percentages[res][edition]
-            const channel = client.channels.cache.get(channelID)
+            let channel = client.channels.cache.get(channelID)
+
+            // fetch channel if failed to get it
+            if(!channel) {
+              channel = await client.channels.fetch(channelID).catch(() => {})
+            }
         
             // happens when the channel exists
             let ret_err // = undefined 
@@ -380,7 +385,7 @@ module.exports = {
               })
               if(ret_err !== undefined) return Promise.reject(ret_err)
             } else {
-              console.log('Final sentence would be', channelName)
+              console.log('Final channel name would be', channelName)
             }
         }
 
@@ -439,7 +444,12 @@ module.exports = {
       }
     })
     .catch(err => {
-      return warnUser(message, JSON.stringify(err))
+      let errMessage = err.message
+      if(!errMessage) {
+        console.error(errMessage)
+        errMessage = 'An error occured when launching missing command. Please check console error output for more infos'
+      }
+      return warnUser(message, errMessage)
     })
   }
 };
