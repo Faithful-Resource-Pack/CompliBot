@@ -1,5 +1,6 @@
 
 const { MessageEmbed } = require('discord.js');
+const lastMessages = require('../functions/lastMessages');
 
 // Environment vars
 const DEV = (process.env.DEV.toLowerCase() == 'true')
@@ -24,13 +25,20 @@ module.exports = function(client, reason, promise, originMessage) {
 		description = 'Coming from [this message](' + originMessage.url + ')\n' + description
 	}
 
+	const array = lastMessages.getLastMessages()
+	const links = array.map((e,i) => `[Message ${i}](${e})`).join(' ')
+
 	const embed = new MessageEmbed()
 		.setTitle('Unhandled Rejection')
 		.setDescription(description)
 		.setColor(settings.colors.red)
+		.addField('Last messages received', links, false)
 		.setTimestamp()
 
   console.error(reason, promise)
 
-	channel.send({ embeds: [embed] })
+	channel.send({
+		embeds: [embed]
+	})
+	.catch(console.error) // DO NOT DELETE THIS CATCH, IT AVOIDS INFINITE LOOP IF THIS PROMISE REJECTS
 }

@@ -1,4 +1,5 @@
 const client = require('../index').Client
+const lastMessages = require('../functions/lastMessages')
 const meant = require('meant')
 
 const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
@@ -70,6 +71,9 @@ module.exports = {
           collector.on('collect', async i => {
             if (i.customId === 'meantBtn') {
               if (!meantMsg.deleted) await meantMsg.delete();
+
+              lastMessages.addMessage(message)
+
               await client.commands.get(meantCmd[0]).execute(client, message, args).then(async () => {
                 return increaseCommandProcessed()
               })
@@ -83,6 +87,9 @@ module.exports = {
       else {
         if (command.guildOnly && message.channel.type === 'DM') return warnUser(message, strings.bot.cant_dm)
 
+
+      lastMessages.addMessage(message)
+      
         command.execute(client, message, args).then(async () => {
           return increaseCommandProcessed()
         }).catch(async error => {
