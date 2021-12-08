@@ -82,12 +82,12 @@ async function editSubmission(client, reaction, user) {
          * TODO: for instapass & flush reacts, check if the user who reacted have the Council role, and not admin perms
          */
         if (REACTION.emoji.id === settings.emojis.instapass && member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
-          removeReact(message, [settings.emojis.upvote, settings.emojis.upvote_old, settings.emojis.downvote, settings.emojis.downvote_old])
+          removeReact(message, [settings.emojis.upvote, settings.emojis.downvote])
           changeStatus(message, `<:instapass:${settings.emojis.instapass}> Instapassed`)
           instapass(client, message)
         }
         if (REACTION.emoji.id === settings.emojis.invalid && member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
-          removeReact(message, [settings.emojis.upvote, settings.emojis.upvote_old, settings.emojis.downvote, settings.emojis.downvote_old])
+          removeReact(message, [settings.emojis.upvote, settings.emojis.downvote])
           changeStatus(message, `<:invalid:${settings.emojis.invalid}> Invalid`)
         }
 
@@ -155,7 +155,6 @@ async function removeReact(message, emojis) {
   for (let i = 0; emojis[i]; i++) {
     await message.reactions.cache.get(emojis[i]).remove().catch(err => {
       if (process.DEBUG) console.error(`Can't remove emoji: ${emojis[i]}\n${err}`)
-      else return
     })
   }
 }
