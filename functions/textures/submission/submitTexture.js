@@ -186,7 +186,7 @@ async function makeEmbed(client, message, texture, param = new Object()) {
     .setTitle(`[#${texture.id}] ${texture.name}`)
     .addFields(
       { name: 'Author', value: `<@!${param.authors.join('>\n<@!').toString()}>`, inline: true },
-      { name: 'Status', value: '⏳ Pending...', inline: true },
+      { name: 'Status', value: `<:pending:${settings.emojis.pending}> Pending...`, inline: true },
       { name: '\u200B', value: pathText.toString().replace(/,/g, ''), inline: false }
     )
 
