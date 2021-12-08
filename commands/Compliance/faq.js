@@ -13,8 +13,7 @@ module.exports = {
 	category: 'Compliance',
 	guildOnly: true,
 	uses: strings.command.use.anyone,
-	syntax: `${prefix}faq <keyword>`,
-	flags: '',
+	syntax: `${prefix}faq [keyword]`,
 	example: `${prefix}faq bot offline\n${prefix}faq submit\n\nADMINS ONLY:\n${prefix}faq all`,
 	async execute(client, message, args) {
 		let color = settings.colors.council

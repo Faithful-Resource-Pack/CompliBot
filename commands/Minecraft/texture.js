@@ -57,26 +57,26 @@ module.exports = {
 		let results = []
 		const textures = require('../../helpers/firestorm/texture')
 		const paths = require('../../helpers/firestorm/texture_paths')
+		const exampleCommand =  strings.command.texture.example.replace('%prefix%', prefix)
 
 		// no args given
-		if (args == '') return warnUser(message, strings.command.args.none_given)
+		if (!args) return warnUser(message, strings.command.args.none_given + exampleCommand)
 
 		let res = args[0]
 		let search = args[1]
-
-		// no search field given
-		if (!args[1]) return warnUser(message, strings.command.args.not_enough_given)
-		else args[1] = String(args[1])
-
-		// texture name too short
-		if (args[1].length < 3) return warnUser(message, strings.command.texture.too_short)
 
 		// universal args
 		if (args[0].includes('16') || args[0] === 'vanilla') res = '16'
 		if (args[0].includes('32')) res = '32'
 		if (args[0].includes('64')) res = '64'
 
-		if (!allowed.includes(res)) return warnUser(message, strings.command.texture.invalid_resolution)
+		if (!allowed.includes(res)) return warnUser(message, strings.command.texture.invalid_resolution + exampleCommand)
+
+		// no search field given
+		if (!args[1]) return warnUser(message, strings.command.texture.no_name_given + exampleCommand)
+
+		// texture name too short
+		if (args[1].length < 3) return warnUser(message, strings.command.texture.too_short + exampleCommand)
 
 		// partial texture name (_sword, _axe -> diamond_sword, diamond_axe...)
 		if (search.startsWith('_') || search.endsWith('_')) {

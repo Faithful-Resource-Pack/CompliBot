@@ -1,9 +1,11 @@
 const prefix = process.env.PREFIX
 
+/*
 const uidR = process.env.UIDR
 const uidJ = process.env.UIDJ
 const uidD = process.env.UIDD
 const uidT = process.env.UIDT
+*/
 
 const Discord = require("discord.js")
 const strings = require('../../resources/strings.json')
@@ -24,8 +26,8 @@ module.exports = {
 	category: 'Bot',
 	guildOnly: false,
 	uses: strings.command.use.anyone,
-	syntax: `${prefix}help <command>\n${prefix}help <alias>`,
-	example: `${prefix}help modping`,
+	syntax: `${prefix}help [category]\n${prefix}help [command]`,
+	example: `${prefix}help bot\n${prefix}help bean`,
 	async execute(client, message, args) {
 
 		let embed = new Discord.MessageEmbed()

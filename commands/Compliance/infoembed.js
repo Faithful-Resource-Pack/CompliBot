@@ -14,7 +14,7 @@ module.exports = {
 	category: 'Compliance',
 	guildOnly: true,
 	uses: strings.command.use.devs,
-	syntax: `${prefix}discords`,
+	syntax: `${prefix}discords\n${prefix}media`,
 	async execute(client, message, args) {
 		if (message.author.id === uidR || message.author.id === uidJ) {
 			if (args[0] === 'discords') {

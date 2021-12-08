@@ -13,7 +13,7 @@ module.exports = {
 	uses: strings.command.use.anyone,
 	syntax: `${prefix}modtools`,
 	async execute(client, message, args) {
-		if (message.guild.id !== settings.guilds.cextras.id) return warnUser(message, 'This command can only be used in the Compliance Extras server!');
+		if (message.guild.id !== settings.guilds.cextras.id) return warnUser(message, strings.command.modtools.extras);
 
 		const embed = new Discord.MessageEmbed()
 			.setTitle('Tools for making Dungeons mods:')

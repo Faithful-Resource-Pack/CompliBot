@@ -243,7 +243,7 @@ module.exports = {
   guildOnly: false,
   uses: strings.command.use.anyone,
   syntax: `${prefix}missing <32|64> <java|bedrock> [-u]`,
-  example: `${prefix}missing 32 java\n${prefix}missing 64 java -u`,
+  example: `${prefix}missing 32 java\n${prefix}missing 64 bedrock -u`,
   /**
    * @param {String} res resolution chosen
    * @param {String} edition edition chosen

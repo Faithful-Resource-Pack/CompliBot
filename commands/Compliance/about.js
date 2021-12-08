@@ -20,7 +20,7 @@ module.exports = {
 	category: 'Compliance',
 	guildOnly: true,
 	uses: strings.command.use.anyone,
-	syntax: `${prefix}about\n${prefix}about me\n${prefix}about <userTag>\n`,
+	syntax: `${prefix}about\n${prefix}about me\n${prefix}about [user tag]\n`,
 	example: `${prefix}about Hozz#0889`,
 	/**
 	 * @param {import('discord.js').Client} client

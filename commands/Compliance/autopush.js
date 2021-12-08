@@ -14,7 +14,7 @@ module.exports = {
 	category: 'Compliance',
 	guildOnly: false,
 	uses: strings.command.use.admins,
-	syntax: `${prefix}autopush <both/c32/c64>`,
+	syntax: `${prefix}autopush [both/c32/c64]`,
 	example: `${prefix}autopush c32`,
 	async execute(client, message, args) {
 		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.id === '747839021421428776')) return warnUser(message, strings.command.no_permission)

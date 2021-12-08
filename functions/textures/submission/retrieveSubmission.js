@@ -29,8 +29,16 @@ async function retrieveSubmission(client, channelFromID, channelOutID, delay) {
 
 	// map messages adding reacts count, embed and message (easier management like that)
 	messages = messages.map(message => {
+
+		/* uncomment below code on the 11/12/2021 after the submission functions executed (use "[#1425] cod" texture for orientation)
 		let upvotes = message.reactions.cache.get(settings.emojis.upvote).count
 		let downvotes = message.reactions.cache.get(settings.emojis.downvote).count
+		uncomment above code with conditions above
+
+		remove below code with conditions above */
+		let upvotes = message.reactions.cache.get(settings.emojis.upvote_old).count
+		let downvotes = message.reactions.cache.get(settings.emojis.downvote_old).count
+		// remove above code with conditions above
 
 		message = {
 			upvote: upvotes,

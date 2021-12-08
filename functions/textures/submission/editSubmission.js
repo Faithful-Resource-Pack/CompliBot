@@ -25,14 +25,14 @@ async function editSubmission(client, reaction, user) {
 
   const authorID = await message.embeds[0].fields[0].value.split('\n').map(el => el.replace('<@', '').replace('!', '').replace('>', ''))[0]
 
-  if (reaction.emoji.id === settings.emojis.see_more || reaction.emoji.id === settings.emojis.see_more_OLD) {
+  if (reaction.emoji.id === settings.emojis.see_more || reaction.emoji.id === settings.emojis.see_more_old) {
 
     reaction.remove().catch(err => { if (process.DEBUG) console.error(err) })
 
     let EMOJIS = [settings.emojis.see_less, settings.emojis.delete, settings.emojis.instapass, settings.emojis.invalid, settings.emojis.magnify, settings.emojis.palette, settings.emojis.tile, settings.emojis.compare]
 
     // if the message does not have up/down vote react, remove INSTAPASS & INVALID from the emojis list (already instapassed or votes flushed)
-    if (!message.embeds[0].fields[1].value.includes('⏳'))
+    if (!message.embeds[0].fields[1].value.includes(settings.emojis.pending) || !message.embeds[0].fields[1].value.includes('⏳'))
       EMOJIS = EMOJIS.filter(emoji => emoji !== settings.emojis.instapass && emoji !== settings.emojis.invalid && emoji !== settings.emojis.delete)
 
     // if the message is in #council-vote #texture-revote, remove delete reaction (avoid missclick)
@@ -82,12 +82,12 @@ async function editSubmission(client, reaction, user) {
          * TODO: for instapass & flush reacts, check if the user who reacted have the Council role, and not admin perms
          */
         if (REACTION.emoji.id === settings.emojis.instapass && member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
-          removeReact(message, [settings.emojis.upvote, settings.emojis.downvote])
+          removeReact(message, [settings.emojis.upvote, settings.emojis.upvote_old, settings.emojis.downvote, settings.emojis.downvote_old])
           changeStatus(message, `<:instapass:${settings.emojis.instapass}> Instapassed`)
           instapass(client, message)
         }
         if (REACTION.emoji.id === settings.emojis.invalid && member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
-          removeReact(message, [settings.emojis.upvote, settings.emojis.downvote])
+          removeReact(message, [settings.emojis.upvote, settings.emojis.upvote_old, settings.emojis.downvote, settings.emojis.downvote_old])
           changeStatus(message, `<:invalid:${settings.emojis.invalid}> Invalid`)
         }
 
@@ -155,6 +155,7 @@ async function removeReact(message, emojis) {
   for (let i = 0; emojis[i]; i++) {
     await message.reactions.cache.get(emojis[i]).remove().catch(err => {
       if (process.DEBUG) console.error(`Can't remove emoji: ${emojis[i]}\n${err}`)
+      else return
     })
   }
 }
