@@ -32,7 +32,7 @@ async function editSubmission(client, reaction, user) {
     let EMOJIS = [settings.emojis.see_less, settings.emojis.delete, settings.emojis.instapass, settings.emojis.invalid, settings.emojis.magnify, settings.emojis.palette, settings.emojis.tile, settings.emojis.compare]
 
     // if the message does not have up/down vote react, remove INSTAPASS & INVALID from the emojis list (already instapassed or votes flushed)
-    if (!message.embeds[0].fields[1].value.includes(settings.emojis.pending) || !message.embeds[0].fields[1].value.includes('⏳'))
+    if (!message.embeds[0].fields[1].value.includes(settings.emojis.pending) && !message.embeds[0].fields[1].value.includes('⏳'))
       EMOJIS = EMOJIS.filter(emoji => emoji !== settings.emojis.instapass && emoji !== settings.emojis.invalid && emoji !== settings.emojis.delete)
 
     // if the message is in #council-vote #texture-revote, remove delete reaction (avoid missclick)
