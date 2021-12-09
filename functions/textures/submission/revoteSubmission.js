@@ -25,7 +25,7 @@ async function revoteSubmission(client, channelFromID, channelOutID, delay) {
   // filter message that only have embeds & that have a pending status
   messages = messages
     .filter(message => message.embeds.length > 0)
-    .filter(message => message.embeds[0].fields[1] !== undefined && message.embeds[0].fields[1].value.includes('⏳'))
+    .filter(message => message.embeds[0].fields[1] !== undefined && (message.embeds[0].fields[1].value.includes('⏳') || message.embeds[0].fields[1].value.includes(settings.emojis.pending)))
 
   // map messages adding reacts count, embed and message (easier management like that)
   messages = messages.map(message => {

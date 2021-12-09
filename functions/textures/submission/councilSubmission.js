@@ -27,20 +27,13 @@ async function councilSubmission(client, channelFromID, channelResultsID, channe
   // filter message that only have embeds & that have a pending status
   messages = messages
     .filter(message => message.embeds.length > 0)
-    .filter(message => message.embeds[0].fields[1] !== undefined && message.embeds[0].fields[1].value.includes('⏳'))
+    .filter(message => message.embeds[0].fields[1] !== undefined && (message.embeds[0].fields[1].value.includes('⏳') || message.embeds[0].fields[1].value.includes(settings.emojis.pending)))
 
   // map messages adding reacts count, embed and message (easier management like that)
   messages = messages.map(message => {
     message = {
-      /* uncomment below code on the 11/12/2021 after the submission functions executed (use "[#1425] cod" texture for orientation)
       upvote: message.reactions.cache.get(settings.emojis.upvote).count,
       downvote: message.reactions.cache.get(settings.emojis.downvote).count,
-      uncomment above code with conditions above
-
-      remove below code with conditions above */
-      upvote: message.reactions.cache.get(settings.emojis.upvote_old).count,
-      downvote: message.reactions.cache.get(settings.emojis.downvote_old).count,
-      // remove above code with conditions above
       embed: message.embeds[0],
       message: message
     }

@@ -25,20 +25,22 @@ async function retrieveSubmission(client, channelFromID, channelOutID, delay) {
 	// filter message that only have embeds & that have a pending status
 	messages = messages
 		.filter(message => message.embeds.length > 0)
-		.filter(message => message.embeds[0].fields[1] !== undefined && message.embeds[0].fields[1].value.includes('⏳'))
+		.filter(message => message.embeds[0].fields[1] !== undefined && (message.embeds[0].fields[1].value.includes('⏳') || message.embeds[0].fields[1].value.includes(settings.emojis.pending)))
 
 	// map messages adding reacts count, embed and message (easier management like that)
 	messages = messages.map(message => {
 
-		/* uncomment below code on the 11/12/2021 after the submission functions executed (use "[#1425] cod" texture for orientation)
-		let upvotes = message.reactions.cache.get(settings.emojis.upvote).count
-		let downvotes = message.reactions.cache.get(settings.emojis.downvote).count
-		uncomment above code with conditions above
+		let upvotes
+		let downvotes
 
-		remove below code with conditions above */
-		let upvotes = message.reactions.cache.get(settings.emojis.upvote_old).count
-		let downvotes = message.reactions.cache.get(settings.emojis.downvote_old).count
-		// remove above code with conditions above
+		if (message.reactions.cache.get(settings.emojis.upvote_old)) {
+			upvotes = message.reactions.cache.get(settings.emojis.upvote_old).count
+			downvotes = message.reactions.cache.get(settings.emojis.downvote_old).count
+		}
+		else {
+			upvotes = message.reactions.cache.get(settings.emojis.upvote).count
+			downvotes = message.reactions.cache.get(settings.emojis.downvote).count
+		}
 
 		message = {
 			upvote: upvotes,
