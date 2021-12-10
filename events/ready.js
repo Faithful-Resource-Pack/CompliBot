@@ -93,11 +93,9 @@ module.exports = {
     downloadToBot.start()
     pushToGithub.start()
 
-    /* bugs.mojang.com currently under maintenance
     await jiraJE.loadJiraVersions()
     await jiraBE.loadJiraVersions()
     await minecraft.loadMCVersions()
-    */
 
     /**
      * LOOP EVENTS
@@ -106,8 +104,7 @@ module.exports = {
      * @event checkTimeout()    -> every 30s   | MODERATION MUTE SYSTEM UPDATE INTERVAL
      */
     setInterval(() => {
-      // bugs.mojang.com currently under maintenance
-      //doMCUpdateCheck()
+      doMCUpdateCheck()
       doCheckLang()
       doCheckSettings()
     }, 60000);
