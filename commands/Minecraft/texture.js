@@ -60,7 +60,7 @@ module.exports = {
 		const exampleCommand =  strings.command.texture.example.replace('%prefix%', prefix)
 
 		// no args given
-		if (!args) return warnUser(message, strings.command.args.none_given + exampleCommand)
+		if (!args.length) return warnUser(message, strings.command.args.none_given + exampleCommand)
 
 		let res = args[0]
 		let search = args[1]
