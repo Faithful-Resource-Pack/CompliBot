@@ -254,10 +254,6 @@ module.exports = {
     let cbval = undefined
     if(out === undefined) out = async function() {}
 
-    if ((edition !== 'java' && edition !== 'bedrock') || (res !== '32' && res !== '64')) {
-      return Promise.reject(new Error(strings.command.args.invalid.generic))
-    }
-
     const vanilla_repo = _rawToRepoURL(VANILLA_REPOS[edition])
     const compliance_repo = _rawToRepoURL(COMPLIANCE_REPOS[edition][res])
 
@@ -399,7 +395,20 @@ module.exports = {
    * @author TheRolf
    */
   execute: async function (client, message, args) {
-    if (args.length < 2) return warnUser(message, strings.command.args.none_given)
+    const exampleCommand =  strings.command.missing.example.replace('%prefix%', prefix)
+
+    // no args specified
+		if (!args) return warnUser(message, strings.command.args.none_given + exampleCommand)
+
+    // invalid resolution specified
+    if (args[0] != '32' && args[0] != '64') return warnUser(message, strings.command.missing.invalid_resolution + exampleCommand)
+
+    // no edition specified
+    if (!args[1]) return warnUser(message, strings.command.missing.no_edition + exampleCommand)
+
+    // invalid edition specified
+    if (args[1] != 'java' && args[1] != 'bedrock') return warnUser(message, strings.command.missing.invalid_edition + exampleCommand)
+
     const updateChannel = args.length > 2 && args[2].trim() === '-u'
 
     const res = args[0].trim().toLowerCase()

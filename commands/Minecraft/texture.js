@@ -146,8 +146,8 @@ module.exports = {
 					let paths = await uses[j].paths()
 					for (let k = 0; paths[k]; k++) {
 						let versions = paths[k].versions.sort(MinecraftSorter)
-						if (versions.length > 1) stringBuilder.push(`\`[${versions[0]}+]\`\t${paths[k].path.replace(search, `**${search}**`).replace(/_/g, '\\_')}`)
-						else stringBuilder.push(`\`[${versions[0]}]\`\t${paths[k].path.replace(search, `**${search}**`).replace(/_/g, '\\_')}`)
+						if (versions.length > 1) stringBuilder.push(`\`[${versions[0]}+]\`\t${paths[k].path.replace(search, `**${search}**`).replace(/_/g, '\\_').replace('assets/minecraft/', '').replace('textures/', '')}`)
+						else stringBuilder.push(`\`[${versions[0]}]\`\t${paths[k].path.replace(search, `**${search}**`).replace(/_/g, '\\_').replace('assets/minecraft/', '').replace('textures/', '')}`)
 					}
 				}
 
