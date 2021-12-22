@@ -26,11 +26,11 @@ module.exports = {
    */
 	async execute(client, message) {
     const embed = new MessageEmbed()
-      .setTitle('Do you want to help us or support us in the Compliance dev?')
-      .setDescription('You love this project and you want to help the devs ?\n' + 
-        'Please contact one of the devs to be invited to the devs.\n' + 
-        'Contact ' + DEVS.map(d => `<@!${d}>`).join(', ') + ' for an invite to the server.\n' + 
-        'You can also checkout the repository on GitHub: https://github.com/Compliance-Resource-Pack')
+      .setTitle('Do you want to help or support us in the Compliance development?')
+      .setDescription('You love this project and you want to help the devs?\n' + 
+        'Please contact one of the devs to be invited to the development server:\n' + 
+        DEVS.map(d => `<@!${d}>`).join(', ') + '\n\n' + 
+        'You can also check us out on GitHub: https://github.com/Compliance-Resource-Pack')
       .setThumbnail(client.user.avatarURL())
       .setFooter(client.user.username, client.user.displayAvatarURL())
 
