@@ -115,7 +115,7 @@ module.exports = {
        * EASTER EGGS
        */
       if (message.content.includes('(╯°□°）╯︵ ┻━┻')) return await message.reply({ content: '┬─┬ ノ( ゜-゜ノ) calm down bro' })
-      if (message.content.toLowerCase().includes('engineer gaming')) return await message.react('👷‍♂️')
+      if (message.content.toLowerCase().includes('engineer gaming')) return await message.react('👷')
       if (message.content === 'F') return await message.react('🇫')
 
       if (message.content.toLowerCase() === 'mhhh') {
