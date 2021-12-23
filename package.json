@@ -1,48 +1,20 @@
 {
-  "name": "complibot",
-  "version": "1.0.0",
-  "description": "The official Discord bot of the Compliance Discord servers.",
-  "main": "index.js",
-  "scripts": {
-    "start": "node --use_strict --trace-warnings index.js",
-    "restart": "npm i --save ; npm start",
-    "test": "echo \"Error: no test specified\" && exit 0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Compliance-Resource-Pack/Discord-Bot.git"
-  },
-  "keywords": [],
-  "author": "Compliance Team",
-  "license": "CC-BY-NC-SA 4.0",
-  "bugs": {
-    "url": "https://github.com/Compliance-Resource-Pack/Discord-Bot/issues"
-  },
-  "homepage": "https://github.com/Compliance-Resource-Pack/Discord-Bot#readme",
-  "dependencies": {
-    "@octokit/rest": "^18.12.0",
-    "@vitalets/google-translate-api": "^7.0.0",
-    "async-mutex": "^0.3.2",
-    "axios": "^0.24.0",
-    "canvas": "^2.8.0",
-    "cheerio": "^1.0.0-rc.10",
-    "cron": "^1.8.2",
-    "cross-spawn": "^7.0.3",
-    "discord.js": "^13.3.1",
-    "dotenv": "^10.0.0",
-    "fs-extra": "^10.0.0",
-    "getopts": "^2.3.0",
-    "gif-encoder-2": "^1.0.5",
-    "globby": "^11.0.4",
-    "html-to-text": "^8.1.0",
-    "http": "0.0.1-security",
-    "image-size": "^1.0.0",
-    "meant": "^2.0.1",
-    "moment": "^2.29.1",
-    "node-fetch": "^3.1.0",
-    "simple-git": "^2.48.0"
-  },
-  "devDependencies": {
-    "eslint": "^8.5.0"
-  }
+    "name": "complibot",
+    "version": "1.0.0",
+    "description": "a discord bot for the compliance texture pack",
+    "main": "src/index.js",
+    "type": "module",
+    "scripts": {
+        "start": "ts-node-dev --respawn --transpile-only --poll ./src/index.ts"
+    },
+    "devDependencies": {
+        "ts-node": "^10.2.1",
+        "ts-node-dev": "^1.1.8",
+        "typescript": "^4.4.2"
+    },
+    "dependencies": {
+        "@types/node": "^17.0.4",
+        "canvas": "^2.8.0",
+        "discord.js": "^13.1.0"
+    }
 }
