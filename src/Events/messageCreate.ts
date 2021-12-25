@@ -11,8 +11,6 @@ export const event: Event = {
 			switch (message.content.toLocaleLowerCase()) {
 				case 'engineer gaming':
 					return message.react('👷');
-				case 'test':
-					return message.react(emojis.parseId(emojis.ids.delete));
 				case 'rip':
 				case 'f':
 					return message.react('🇫');
