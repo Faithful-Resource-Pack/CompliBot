@@ -1,10 +1,5 @@
+config.json
+src/index.ts
 node_modules
-json/
-texturesPush/
-desktop.ini
-.DS_Store
-.idea
-.env
-.vscode/
-firestore.json
-bot.service
+.vscode
+.github
