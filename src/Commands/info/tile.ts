@@ -13,7 +13,7 @@ export const command: Command = {
 
 		if (message.type == 'REPLY' && message.channel.type == 'GUILD_TEXT') {
 			if ((await message.channel.messages.fetch(message.reference.messageId)).attachments.size > 0) {
-				return (attach = (await message.channel.messages.fetch(message.reference.messageId)).attachments.first().url);
+				attach = (await message.channel.messages.fetch(message.reference.messageId)).attachments.first().url;
 			}
 			return;
 		}
