@@ -15,7 +15,6 @@ export const command: Command = {
 			if ((await message.channel.messages.fetch(message.reference.messageId)).attachments.size > 0) {
 				attach = (await message.channel.messages.fetch(message.reference.messageId)).attachments.first().url;
 			}
-			return;
 		}
 
 		if (args.length != 0) attach = args[0];
