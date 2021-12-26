@@ -1,14 +1,22 @@
 import { Command } from '../../Interfaces';
 import { Message, MessageAttachment } from 'discord.js';
 import { tileAttachment } from '../../functions/canvas/tile';
+import { appendFile } from 'fs';
 
 export const command: Command = {
 	name: 'tile',
 	description: 'Tiles an image around a 3x3 plane',
 	usage: ['tile (image attachment)', 'tile (image url)'],
-	aliases: ['tessellate', 'repeat'],
+	aliases: ['tessellate', 'repeat', 't'],
 	run: async (client, message, args) => {
 		let attach: string;
+
+		if (message.type == 'REPLY' && message.channel.type == 'GUILD_TEXT') {
+			if ((await message.channel.messages.fetch(message.reference.messageId)).attachments.size > 0) {
+				return (attach = (await message.channel.messages.fetch(message.reference.messageId)).attachments.first().url);
+			}
+			return;
+		}
 
 		if (args.length != 0) attach = args[0];
 		if (message.attachments.size == 1) attach = message.attachments.first().url;
@@ -16,10 +24,10 @@ export const command: Command = {
 		if (attach == undefined) {
 			let messages = await message.channel.messages.fetch({ limit: 10 });
 
-			//gets last message with at least one attachment and no embeds and ist a message sent by the bot
+			//gets last message with at least one attachment and no embeds and ist a message sent by a bot
 			const lastMessage = messages
 				.sort((a, b) => b.createdTimestamp - a.createdTimestamp)
-				.filter((m) => m.attachments.size > 0 && m.embeds.length == 0 && m.author.id != client.user.id)
+				.filter((m) => m.attachments.size > 0 && m.embeds.length == 0 && !m.author.bot)
 				.first();
 
 			/**
