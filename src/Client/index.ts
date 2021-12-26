@@ -15,7 +15,7 @@ class ExtendedClient extends Client {
 	public async init() {
 		this.login(this.config.token);
 
-		//command handleing
+		//command handling
 		const commandPath = path.join(__dirname, '..', 'Commands');
 		readdirSync(commandPath).forEach((dir) => {
 			const commands = readdirSync(`${commandPath}/${dir}`).filter((file) => file.endsWith('.ts'));
