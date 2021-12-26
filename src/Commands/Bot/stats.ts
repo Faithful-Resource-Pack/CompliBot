@@ -2,7 +2,7 @@ import { MessageEmbed, version as djsVersion } from 'discord.js';
 import { duration } from 'moment';
 import { get as getCommandsProcessed } from '~/functions/commandProcess';
 import { Command } from '~/Interfaces';
-import { version as osVersion } from 'os';
+import os from 'os';
 
 export const command: Command = {
 	name: 'stats',
@@ -11,6 +11,7 @@ export const command: Command = {
 	aliases: ['statistics'],
 	run: async (client, message, args) => {
 		let sumMembers = 0;
+		let version;
 
 		client.guilds.cache.each((guild) => {
 			sumMembers += guild.memberCount;
@@ -18,7 +19,12 @@ export const command: Command = {
 
 		const number = await getCommandsProcessed();
 
-		const embed = new MessageEmbed()
+		// I have no clue if this actually works
+		// a little bit taken from https://github.com/sindresorhus/os-name/blob/main/index.js#L37
+		if (os.platform() === 'linux') version = 'Linux' + os.release().replace(/^(\d+\.\d+).*/, '$1');
+		else version = os.version();
+
+		var embed = new MessageEmbed()
 			.setTitle(`${client.user.username} Stats`)
 			.setThumbnail(client.user.displayAvatarURL())
 			.setColor(client.config.colors.blue)
@@ -35,10 +41,10 @@ export const command: Command = {
 				{ name: 'Commands\nProcessed', value: '' + number, inline: true },
 				{ name: 'Members\nAcross Guilds', value: '' + sumMembers, inline: true },
 
-				{ name: 'Operating System', value: osVersion() },
+				{ name: 'Operating System', value: version },
 			)
 			.setFooter('Bot made with love', 'https://static.wikia.nocookie.net/minecraft_gamepedia/images/0/06/Heart_(icon).png');
 
-		message.channel.send({ embeds: [embed] });
+		await message.channel.send({ embeds: [embed] });
 	},
 };
