@@ -18,7 +18,8 @@
     "devDependencies": {
         "ts-node": "^10.4.0",
         "ts-node-dev": "^1.1.8",
-        "typescript": "^4.5.4"
+        "typescript": "^4.5.4",
+        "tsconfig-paths": "^3.12.0"
     },
     "dependencies": {
         "@types/node": "^17.0.4",
@@ -27,8 +28,6 @@
         "discord.js": "^13.4.0",
         "follow-redirects": "^1.14.6",
         "image-size": "^1.0.0",
-        "moment": "^2.29.1",
-        "os": "^0.1.2",
-        "tsconfig-paths": "^3.12.0"
+        "moment": "^2.29.1"
     }
 }
