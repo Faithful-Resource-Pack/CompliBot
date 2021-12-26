@@ -19,7 +19,6 @@
         "discord.js": "^13.4.0",
         "follow-redirects": "^1.14.6",
         "image-size": "^1.0.0",
-        "moment": "^2.29.1",
-        "os": "^0.1.2"
+        "moment": "^2.29.1"
     }
 }
