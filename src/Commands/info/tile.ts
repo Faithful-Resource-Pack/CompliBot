@@ -1,7 +1,5 @@
 import { Command } from '../../Interfaces';
-import { Message, MessageAttachment } from 'discord.js';
 import { tileAttachment } from '../../functions/canvas/tile';
-import { appendFile } from 'fs';
 
 export const command: Command = {
 	name: 'tile',

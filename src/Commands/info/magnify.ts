@@ -1,6 +1,5 @@
 import { Command } from '../../Interfaces';
 import { magnifyAttachment } from '../../functions/canvas/magnify';
-import { Message } from 'discord.js';
 
 export const command: Command = {
 	name: 'magnify',
