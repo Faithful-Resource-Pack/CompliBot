@@ -1,5 +1,5 @@
 import { Message } from 'discord.js';
-import Client from '../Client';
+import Client from '~/Client';
 
 interface Run {
 	(client: Client, message: Message, args: string[]);

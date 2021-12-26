@@ -1,7 +1,7 @@
 import { MessageEmbed, version as djsVersion } from 'discord.js';
 import { duration } from 'moment';
-import { get as getCommandsProcessed } from '../../functions/commandProcess';
-import { Command } from '../../Interfaces';
+import { get as getCommandsProcessed } from '~/functions/commandProcess';
+import { Command } from '~/Interfaces';
 import { version as osVersion } from 'os';
 
 export const command: Command = {

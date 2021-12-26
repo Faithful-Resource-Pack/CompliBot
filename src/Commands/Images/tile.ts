@@ -1,5 +1,5 @@
-import { Command } from '../../Interfaces';
-import { tileAttachment } from '../../functions/canvas/tile';
+import { Command } from '~/Interfaces';
+import { tileAttachment } from '~/functions/canvas/tile';
 
 export const command: Command = {
 	name: 'tile',

@@ -1,7 +1,7 @@
 import { Message } from 'discord.js';
-import * as emojis from '../Helpers/emojis';
-import { Event, Command } from '../Interfaces';
-import { increase } from '../functions/commandProcess';
+import * as emojis from '~/Helpers/emojis';
+import { Event, Command } from '~/Interfaces';
+import { increase } from '~/functions/commandProcess';
 
 export const event: Event = {
 	name: 'messageCreate',

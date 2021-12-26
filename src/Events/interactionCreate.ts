@@ -1,6 +1,6 @@
-import { CommandInteraction, ContextMenuInteraction, Emoji, Interaction, Message, MessageActionRow, MessageButton, MessageEmbed } from 'discord.js';
-import { Command, Event } from '../Interfaces';
-import * as emojis from '../Helpers/emojis';
+import { Interaction, Message } from 'discord.js';
+import { Command, Event } from '~/Interfaces';
+import * as emojis from '~/Helpers/emojis';
 
 export const event: Event = {
 	name: 'interactionCreate',

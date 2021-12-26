@@ -13,7 +13,12 @@
 		"skipLibCheck": true,
 		"declaration": true,
 		"allowJs": true,
-		"resolveJsonModule": true
+		"resolveJsonModule": true,
+		"baseUrl": "src",
+		"paths": {
+			"@/*": ["../*"],
+			"~/*": ["*"] //you will thank me later
+		}
 	},
 	"exclude": ["node_modules"],
 	"include": ["src"]

@@ -1,7 +1,7 @@
 import { ColorResolvable } from 'discord.js';
 
 export interface Config {
-	colors: { [name: string]: ColorResolvable };
+	colors: any;
 	token: string;
 	prefix: string;
 }

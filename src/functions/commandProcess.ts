@@ -2,7 +2,7 @@ const path = require('path');
 const { existsSync } = require('fs');
 const fs = require('fs/promises');
 
-const COUNTER_FOLDER = path.resolve(__dirname, '..', 'json');
+const COUNTER_FOLDER = path.resolve('~/json/');
 const COUNTER_FILE_PATH = path.resolve(COUNTER_FOLDER, 'commandsProcessed.txt');
 const SAVE_EVERY = 20; // save file every n commands triggered
 
