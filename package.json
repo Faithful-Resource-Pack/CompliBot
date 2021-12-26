@@ -4,8 +4,16 @@
     "description": "a discord bot for the compliance texture pack",
     "main": "src/index.ts",
     "type": "module",
+    "_moduleAliases": {
+        "~/*": [
+            "dist/src"
+        ],
+        "@/*": [
+            "dist/"
+        ]
+    },
     "scripts": {
-        "start": "ts-node-dev --respawn --transpile-only --poll ./src/index.ts"
+        "start": "ts-node-dev --respawn -r tsconfig-paths/register src/index.ts"
     },
     "devDependencies": {
         "ts-node": "^10.4.0",
@@ -20,6 +28,7 @@
         "follow-redirects": "^1.14.6",
         "image-size": "^1.0.0",
         "moment": "^2.29.1",
-        "os": "^0.1.2"
+        "os": "^0.1.2",
+        "tsconfig-paths": "^3.12.0"
     }
 }
