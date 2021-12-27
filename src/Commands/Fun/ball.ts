@@ -1,0 +1,84 @@
+import { MessageEmbed } from 'discord.js';
+import { Command } from '~/Interfaces';
+
+const answers = [
+	'Yes',
+	'Yes.',
+	'Yes?',
+	'Yes!',
+	'No',
+	'No.',
+	'No?',
+	'No!',
+	'Maybe',
+	'Maybe not',
+	'Probably',
+	'Probably not',
+	'I don\'t know',
+	'True',
+	'False',
+	'I\'ll think about it',
+	'Could you rephrase that',
+	'I\'m sure of it',
+	'I\'m not sure',
+	'Of course',
+	'Of course not',
+	'Question too vague',
+	'Definitely',
+	'Definitely not',
+	'Totally not',
+	'Totally',
+	'It is impossible',
+	'It is possible',
+	'It is decidedly so',
+	'Possibly',
+	'Possibly not',
+	'Try asking again',
+	'Up to you',
+	'¯\_(ツ)_/¯',
+	'Not really',
+	'Absolutely',
+	'Absolutely not',
+	'It is decidedly so',
+	'Sure',
+	'It is certain',
+	'Without a doubt',
+	'Yes definitely',
+	'You may rely on it',
+	'As I see it, yes',
+	'Most likely',
+	'Outlook good',
+	'Signs point to yes',
+	'Reply hazy try again',
+	'Ask again later',
+	'Better not tell you now',
+	'Cannot predict now',
+	'Concentrate and ask again',
+	'Don\'t count on it',
+	'My reply is no',
+	'My sources say no',
+	'Outlook not so good',
+	'Very doubtful'
+];
+
+export const command: Command = {
+	name: 'ball',
+	description: 'not implemented yet',
+	usage: ['ball <question>'],
+	run: async (client, message, args) => {
+		// not implemented yet
+		// if (!args.length) return warnUser(message, strings.command.args.none_given);
+
+		var embed = new MessageEmbed()
+			.setTitle(answers[Math.floor(Math.random() * answers.length)])
+			.setColor(client.config.colors.blue);
+
+		// special replies
+		if (args.join(' ') == 'balls') embed.setTitle('lol');
+		else if (args.join(' ').includes('sentient')) embed.setTitle('Yes.');
+
+		var embedMessage = await message.reply({ embeds: [embed] });
+		// not implemented yet
+		// await addDeleteReact(embedMessage, message, true);
+	},
+};
