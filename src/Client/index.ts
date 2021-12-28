@@ -1,19 +1,25 @@
 import { Client, Collection } from 'discord.js';
 import path from 'path';
 import { readdirSync } from 'fs';
-import { Command, Event, Config } from '~/Interfaces';
+import { Command, Event, Config, Tokens } from '~/Interfaces';
 import ConfigJson from '@/config.json';
+import TokensJson from '@/tokens.json';
+
+import * as firestorm from 'firestorm-db';
 
 class ExtendedClient extends Client {
 	public commands: Collection<string, Command> = new Collection();
 	public aliases: Collection<string, Command> = new Collection();
 	public events: Collection<string, Event> = new Collection();
 	public config: Config = ConfigJson;
+	public tokens: Tokens = TokensJson;
 	public ownerIDs: string[];
 	public categorys = readdirSync(path.join(__dirname, '..', 'Commands'));
 
 	public async init() {
-		this.login(this.config.token);
+		this.login(this.tokens.token);
+		firestorm.address(this.config.firestormUrl);
+		firestorm.token(this.tokens.firestormToken);
 
 		//command handling
 		const commandPath = path.join(__dirname, '..', 'Commands');

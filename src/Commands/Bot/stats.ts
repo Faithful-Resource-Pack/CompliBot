@@ -21,6 +21,22 @@ export const command: Command = {
 
 		// I have no clue if this actually works
 		// a little bit taken from https://github.com/sindresorhus/os-name/blob/main/index.js#L37
+
+		/**
+		 * @author nick
+		 * i know what it does, its a stupid regex.
+		 *
+		 * \d+ (any digit repeated any ammount of times)
+		 * ^ (start of string)
+		 * \. (period)
+		 *
+		 * if the platfor is linux and the release starts with \d+.\d+ (e.g 69.420)
+		 * then use replace it and everything following it with '$1' (i.e fist capture group (which is the version thing) )
+		 *
+		 * example:
+		 *  1.0.0-beta trolling version => 1.0
+		 */
+
 		if (os.platform() === 'linux') version = 'Linux' + os.release().replace(/^(\d+\.\d+).*/, '$1');
 		else version = os.version();
 

@@ -1,6 +1,6 @@
 {
-    "token": "discord-Token",
     "prefix": "n/",
+    "firestormUrl": "https://example.com",
     "colors": {
         "red": "#f44336",
         "yellow": "#ffeb3b",

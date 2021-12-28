@@ -32,7 +32,7 @@ export const command: Command = {
 	name: 'ping',
 	description: 'Gets latency',
 	usage: ['ping'],
-	aliases: ['p'],
+	aliases: ['latency'],
 	run: async (client, message, args) => {
 		var embed = new MessageEmbed().setTitle('Pinging...').setColor(client.config.colors.blue);
 
