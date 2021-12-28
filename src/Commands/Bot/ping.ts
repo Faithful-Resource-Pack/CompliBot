@@ -34,21 +34,20 @@ export const command: Command = {
 	usage: ['ping'],
 	aliases: ['latency'],
 	run: async (client, message, args) => {
-		var embed = new MessageEmbed().setTitle('Pinging...').setColor(client.config.colors.blue);
+		var embed = new MessageEmbed()
+			.setTitle('Pinging...')
+			.setColor(client.config.colors.blue);
 
-		var embedmessage = await message.reply({ embeds: [embed] });
+		var embedMessage = await message.reply({ embeds: [embed] });
 
 		embed
 			.setTitle('Pong!')
 			// Bot latency broken with command suggestions, solution needed without using message.createdTimestamp
 			// May not be up to date as of the typescript rewrite
-			.setDescription(
-				`_${quotes[Math.floor(Math.random() * quotes.length)]}_\n\n**Bot Latency** \n${
-					embedmessage.createdTimestamp - message.createdTimestamp
-				}ms \n**API Latency** \n${Math.round(client.ws.ping)}ms`,
-			);
+			.setDescription(`_${quotes[Math.floor(Math.random() * quotes.length)]}_\n\n**Bot Latency** \n${embedMessage.createdTimestamp - message.createdTimestamp}ms \n**API Latency** \n${Math.round(client.ws.ping)}ms`);
 
-		await embedmessage.edit({ embeds: [embed] });
-		//addDeleteReact(m, message, true)
+		await embedMessage.edit({ embeds: [embed] });
+		// not implementend yet
+		// addDeleteReact(embedMessage, message, true);
 	},
 };
