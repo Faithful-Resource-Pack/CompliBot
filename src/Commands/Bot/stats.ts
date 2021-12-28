@@ -1,8 +1,8 @@
 import { MessageEmbed, version as djsVersion } from 'discord.js';
 import { duration } from 'moment';
-import { get as getCommandsProcessed } from '~/functions/commandProcess';
 import { Command } from '~/Interfaces';
 import os from 'os';
+import { total } from '~/functions/commandProcess';
 
 export const command: Command = {
 	name: 'stats',
@@ -17,7 +17,7 @@ export const command: Command = {
 			sumMembers += guild.memberCount;
 		});
 
-		const number = await getCommandsProcessed();
+		const number = total() + 1;
 
 		// I have no clue if this actually works
 		// a little bit taken from https://github.com/sindresorhus/os-name/blob/main/index.js#L37

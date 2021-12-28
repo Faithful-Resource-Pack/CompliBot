@@ -6,7 +6,7 @@ import { increase } from '~/functions/commandProcess';
 export const event: Event = {
 	name: 'messageCreate',
 	run: async (client, message: Message) => {
-		if (message.author.bot || !message.guild) return;
+		if (message.author.bot) return;
 
 		if (!message.content.startsWith(client.config.prefix)) {
 			switch (message.content.toLocaleLowerCase()) {
@@ -39,7 +39,7 @@ export const event: Event = {
 		const command = client.commands.get(cmd) || client.aliases.get(cmd);
 		if (command) {
 			(command as Command).run(client, message, args);
-			increase();
+			increase((command as Command).name);
 		}
 	},
 };

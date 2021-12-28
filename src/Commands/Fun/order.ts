@@ -6,7 +6,7 @@ export const command: Command = {
 	description: 'get yourself some snacks!',
 	usage: ['order (secret yummy snack)'],
 	run: async (client, message, args) => {
-		if (args.length == undefined) return message.reply('Sorry could you repeat your order?');
+		if (args.length != 1) return message.reply('Sorry could you repeat your order?');
 
 		switch (args[0]) {
 			case '66':

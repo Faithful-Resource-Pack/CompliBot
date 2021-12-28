@@ -4,14 +4,12 @@ import get from 'axios';
 
 export const command: Command = {
 	name: 'quote',
-	description: 'not implemented yet',
+	description: 'Truely inspiring',
 	usage: ['quote'],
 	run: async (client, message, args) => {
 		var image = await get('https://inspirobot.me/api?generate=true');
 
-		var embed = new MessageEmbed()
-		  .setImage(image.data)
-		  .setColor(client.config.colors.blue);
+		var embed = new MessageEmbed().setImage(image.data).setColor(client.config.colors.blue);
 
 		var embedMessage = await message.reply({ embeds: [embed] });
 		// not implemented yet

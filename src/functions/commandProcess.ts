@@ -1,48 +1,35 @@
 const path = require('path');
 const { existsSync } = require('fs');
-const fs = require('fs/promises');
+import { readFileSync } from 'fs';
+import * as fs from 'fs';
+import ExtendedClient from '~/Client';
 
 const COUNTER_FOLDER = path.resolve(__dirname, '../json/');
-const COUNTER_FILE_PATH = path.resolve(COUNTER_FOLDER, 'commandsProcessed.txt');
+const COUNTER_FILE_PATH = path.resolve(COUNTER_FOLDER, 'commandsProcessed.json');
 const SAVE_EVERY = 20; // save file every n commands triggered
 
-let number: number;
+const jsonString = fs.readFileSync(COUNTER_FILE_PATH).toString();
+const commandsObj = JSON.parse(jsonString);
 
-export function get(): Promise<number> {
-	let prom;
-	if (number === undefined) {
-		prom = fs
-			.readFile(COUNTER_FILE_PATH)
-			.catch(() => {
-				return '0';
-			})
-			.then((content) => {
-				number = parseInt(content.toString());
+let commandsProcessed: { [commandName: string]: number } = JSON.parse(fs.readFileSync(COUNTER_FILE_PATH).toString());
 
-				return number;
-			});
-	} else {
-		prom = Promise.resolve(number);
+export function init(client: ExtendedClient) {
+	client.commands.forEach((command) => {
+		commandsProcessed[command.name] == commandsObj[command.name];
+	});
+}
+export var total = () => Object.values(commandsProcessed).reduce((a, b) => a + b);
+export var getUsage = function (commandName: string) {
+	return commandsProcessed[commandName];
+};
+
+export function increase(name: string) {
+	if (commandsProcessed[name] == undefined) commandsProcessed[name] = 1;
+	else {
+		commandsProcessed[name]++;
 	}
 
-	return prom;
-}
-
-export function increase() {
-	return get().then(() => {
-		number = number + 1;
-
-		//if the number is one or number is divisible by SAVE_EVERY with no remainders:
-		if (number === 1 || number % SAVE_EVERY === 0) {
-			const folderCreate = existsSync(COUNTER_FOLDER) ? Promise.resolve() : fs.mkdir(COUNTER_FOLDER, { recursive: true });
-			return (
-				folderCreate
-					//tab char code dont worry
-					.then(() => fs.writeFile(COUNTER_FILE_PATH, '' + number))
-					.catch((e) => {
-						console.error(e);
-					})
-			);
-		}
-	});
+	if (commandsProcessed[name] == 1 || commandsProcessed[name] % SAVE_EVERY == 0) {
+		fs.writeFileSync(COUNTER_FILE_PATH, JSON.stringify(commandsProcessed));
+	}
 }

@@ -6,6 +6,7 @@ import ConfigJson from '@/config.json';
 import TokensJson from '@/tokens.json';
 
 import * as firestorm from 'firestorm-db';
+import { init } from '~/functions/commandProcess';
 
 class ExtendedClient extends Client {
 	public commands: Collection<string, Command> = new Collection();
@@ -18,6 +19,7 @@ class ExtendedClient extends Client {
 
 	public async init() {
 		this.login(this.tokens.token);
+		init(this);
 		firestorm.address(this.config.firestormUrl);
 		firestorm.token(this.tokens.firestormToken);
 

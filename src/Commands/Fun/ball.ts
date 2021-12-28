@@ -14,13 +14,13 @@ const answers = [
 	'Maybe not',
 	'Probably',
 	'Probably not',
-	'I don\'t know',
+	"I don't know",
 	'True',
 	'False',
-	'I\'ll think about it',
+	"I'll think about it",
 	'Could you rephrase that',
-	'I\'m sure of it',
-	'I\'m not sure',
+	"I'm sure of it",
+	"I'm not sure",
 	'Of course',
 	'Of course not',
 	'Question too vague',
@@ -35,7 +35,7 @@ const answers = [
 	'Possibly not',
 	'Try asking again',
 	'Up to you',
-	'¯\_(ツ)_/¯',
+	'¯_(ツ)_/¯',
 	'Not really',
 	'Absolutely',
 	'Absolutely not',
@@ -54,11 +54,11 @@ const answers = [
 	'Better not tell you now',
 	'Cannot predict now',
 	'Concentrate and ask again',
-	'Don\'t count on it',
+	"Don't count on it",
 	'My reply is no',
 	'My sources say no',
 	'Outlook not so good',
-	'Very doubtful'
+	'Very doubtful',
 ];
 
 export const command: Command = {
@@ -69,9 +69,7 @@ export const command: Command = {
 		// not implemented yet
 		// if (!args.length) return warnUser(message, strings.command.args.none_given);
 
-		var embed = new MessageEmbed()
-			.setTitle(answers[Math.floor(Math.random() * answers.length)])
-			.setColor(client.config.colors.blue);
+		var embed = new MessageEmbed().setTitle(answers[Math.floor(Math.random() * answers.length)]).setColor(client.config.colors.blue);
 
 		// special replies
 		if (args.join(' ') == 'balls') embed.setTitle('lol');
