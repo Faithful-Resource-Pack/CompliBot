@@ -11,9 +11,8 @@ export const command: Command = {
 
 		/**
 		 * i rounded so we dont get a one 1 in 18,446,744,073,709,551,616 of landing edge
-		 * now it should be 1 in 1000, much more realistic
+		 * now it should be 1 in 100, much more realistic
 		 */
 		message.reply(result > 0.5 ? 'Heads!' : result < 0.5 ? 'Tails!' : 'Edge???!!!');
-		console.log(result);
 	},
 };
