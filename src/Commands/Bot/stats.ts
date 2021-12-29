@@ -59,9 +59,9 @@ export const command: Command = {
 
 				{ name: 'Operating System', value: version },
 			)
-			.setFooter('Bot made with love', 'https://static.wikia.nocookie.net/minecraft_gamepedia/images/0/06/Heart_(icon).png');
+			.setFooter({ text: 'Bot made with love', iconURL: 'https://static.wikia.nocookie.net/minecraft_gamepedia/images/0/06/Heart_(icon).png' });
 
-		await message.channel.send({ embeds: [embed] });
+		await message.reply({ embeds: [embed] });
 		// not implementend yet
 		// await addDeleteReact(embedMessage, message, true);
 	},
