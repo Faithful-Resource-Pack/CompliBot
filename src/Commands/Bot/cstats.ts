@@ -30,7 +30,7 @@ export const command: Command = {
 
 		if (isValid != true) return message.reply('Please provide a valid command or alias!');
 
-		var embed = new MessageEmbed().setTitle(`${name} has been used **${getUsage(args[0])}** times`).setColor(client.config.colors.blue);
+		var embed = new MessageEmbed().setTitle(`\`${client.config.prefix + name}\` has been used \`${getUsage(args[0]) ?? '0'}\` times`).setColor(client.config.colors.blue);
 		message.reply({ embeds: [embed] });
 	},
 };
