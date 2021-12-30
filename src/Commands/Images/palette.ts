@@ -40,11 +40,11 @@ export const command: Command = {
 		}
 
 		if (attach != undefined) {
-			message.reply({ embeds: [await paletteEmbed(attach)] }).catch(() => {
+			message.reply({ embeds: [await paletteEmbed(attach, client.config.colors.blue)] }).catch(() => {
 				message.reply('Output exeeds the maximum of 512 x 512px²!');
 			});
 		} else {
-			message.reply({ embeds: [await paletteEmbed(attach)] });
+			message.reply({ embeds: [await paletteEmbed(attach, client.config.colors.blue)] });
 		}
 	},
 };

@@ -1,12 +1,12 @@
 function hexToInt(hex: string) {}
 
 import { createCanvas, loadImage } from 'canvas';
-import { Message, MessageAttachment, MessageEmbed } from 'discord.js';
+import { ColorResolvable, Message, MessageAttachment, MessageEmbed } from 'discord.js';
 import getMeta from './getMeta';
 
 const coloursPerPalette = 10;
 const coloursPerLine = 2;
-export async function paletteEmbed(url: string): Promise<MessageEmbed> {
+export async function paletteEmbed(url: string, color: ColorResolvable): Promise<MessageEmbed> {
 	return getMeta(url)
 		.then(async (dimension) => {
 			const surface = dimension.width * dimension.height;
@@ -17,6 +17,7 @@ export async function paletteEmbed(url: string): Promise<MessageEmbed> {
 			canvas.drawImage(image, 0, 0);
 			var imageData = canvas.getImageData(0, 0, dimension.width, dimension.height).data;
 
+			let total = 0;
 			let allColors: any = {};
 			let index: number, r: number, g: number, b: number, a: number; //this is why i hate ts lol
 
@@ -32,7 +33,10 @@ export async function paletteEmbed(url: string): Promise<MessageEmbed> {
 
 					if (a !== 0 && a != undefined) {
 						var hex = rgbToHex(r, g, b);
-						if (!(hex in allColors)) allColors[hex] = { hex: hex, opacity: [], rgb: [r, g, b], count: 0 };
+						if (!(hex in allColors)) {
+							allColors[hex] = { hex: hex, opacity: [], rgb: [r, g, b], count: 0 };
+							total++;
+						}
 						++allColors[hex].count;
 						allColors[hex].opacity.push(a);
 					}
@@ -63,7 +67,8 @@ export async function paletteEmbed(url: string): Promise<MessageEmbed> {
 				chunk = chunk.join('`\n`').split(',');
 				embed.addField(`Palette ${i + 1}: `, '`' + chunk.join('` `') + '` ', true);
 			}
-			embed.setTitle(`Colors - ${colors.length}`);
+			embed.setTitle(`Colors - ${total}`).setColor(color);
+			if (total > 60) embed.setFooter({ text: 'Not all colours are being displayed! The total count is over 60' });
 			return embed;
 		})
 		.catch((e) => {
