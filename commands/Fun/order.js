@@ -14,16 +14,18 @@ module.exports = {
 		else if (args == 'help') return await message.channel.send({ content: 'https://i.giphy.com/media/WNJGAwRW1LFG5T4qOs/giphy.webp' });
 		else if (args == 'pizza') {
 			await message.reply({ content: 'Guten Appetit' })
-			return await message.channel.send({ content: 'https://i0.wp.com/metro.co.uk/wp-content/uploads/2016/02/pizza-cheese.gif' });
+			return await message.channel.send({ content: 'https://tenor.com/view/pizza-cooking-gif-9957360' });
 		}
 		else if (args == 'soup') {
 			await message.reply({ content: 'Guten Appetit' })
-			return await message.channel.send({ content: 'https://tenor.com/view/sopita-de-fideo-noodle-soup-mexican-noodles-gif-15167113' });
+			return await message.channel.send({ content: 'https://tenor.com/view/wonton-soup-gif-9902358' });
 		}
 		else if (args == 'butler') return await message.channel.send({ content: 'https://tenor.com/view/alfred-batman-butler-batman-animated-gif-9005410' });
-		else if (args == 'ice') return await message.channel.send({ content: 'https://london.frenchmorning.com/wp-content/uploads/sites/10/2019/02/glacons-boissons-choses-enervent-francais-londres.gif' });
-		else if (args == 'fire') return await message.channel.send({ content: 'https://i.giphy.com/media/Qre4feuyNhiYIzD7hC/200.gif' })
-		else if (args == 'burger') return await message.channel.send({ content: 'https://c.tenor.com/tdFqDJemKpUAAAAC/mcdonalds-big-mac.gif' })
+		else if (args == 'ice') return await message.channel.send({ content: 'https://tenor.com/view/glacon-ice-melt-gif-5821993' });
+		else if (args == 'fire') return await message.channel.send({ content: 'https://tenor.com/view/fire-lit-bonfire-flames-gif-12491054' })
+		else if (args == 'burger') {
+			await message.reply({ content: 'Guten Appetit' })
+			return await message.channel.send({ content: 'https://tenor.com/view/burger-food-gif-8669971' })
 
 	}
 };
