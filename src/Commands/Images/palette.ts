@@ -33,18 +33,14 @@ export const command: Command = {
 			 * explanation:
 			 * wierd regex trolling, returns true if it contains .jpeg, .jpg or .png and a string termination ($)
 			 */
-			if (lastMessage == undefined) {
-				return message.reply('Nothing to tile in the last 10 messages!');
-			}
+			if (lastMessage == undefined) return message.warn('Nothing to tile in the last 10 messages!');
 			if (lastMessage.attachments.first().url.match(/\.(jpeg|jpg|png)$/)) attach = lastMessage.attachments.first().url;
 		}
 
 		if (attach != undefined) {
 			message.reply({ embeds: [await paletteEmbed(attach, client.config.colors.blue)] }).catch(() => {
-				message.reply('Output exeeds the maximum of 512 x 512px²!');
+				message.warn('Output exeeds the maximum of 512 x 512px²!');
 			});
-		} else {
-			message.reply({ embeds: [await paletteEmbed(attach, client.config.colors.blue)] });
-		}
+		} else message.warn({ embeds: [await paletteEmbed(attach, client.config.colors.blue)] });
 	},
 };

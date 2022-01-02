@@ -23,7 +23,7 @@ export const command: Command = {
 		if (attachmentUrl == undefined) {
 			let messages = await message.channel.messages.fetch({ limit: 10 });
 
-			//gets last message with at least one attachment and no embeds and ist a message sent by a bot
+			//gets last message with at least one attachment and no embeds and is a message sent by a bot
 			const lastMessage = messages
 				.sort((a, b) => b.createdTimestamp - a.createdTimestamp)
 				.filter((m) => m.attachments.size > 0 && m.embeds.length == 0)
@@ -34,18 +34,14 @@ export const command: Command = {
 			 * explanation:
 			 * wierd regex trolling, returns true if it contains .jpeg, .jpg or .png and a string termination ($)
 			 */
-			if (lastMessage == undefined) {
-				return message.reply('Nothing to tile and magnify in the last 10 messages!');
-			}
+			if (lastMessage == undefined) return message.warn('Nothing to tile and magnify in the last 10 messages!');
 			if (lastMessage.attachments.first().url.match(/\.(jpeg|jpg|png)$/)) attachmentUrl = lastMessage.attachments.first().url;
 		}
 
 		if (attachmentUrl != undefined) {
 			message.reply({ files: [await magnifyAttachment(await tileCanvas(attachmentUrl))] }).catch(() => {
-				message.reply('Output exeeds the maximum of 512 x 512px²!');
+				message.warn('Output exeeds the maximum of 512 x 512px²!');
 			});
-		} else {
-			message.reply('Nothing to tile and magnify in the last 10 messages!');
-		}
+		} else message.warn('Nothing to tile and magnify in the last 10 messages!');
 	},
 };

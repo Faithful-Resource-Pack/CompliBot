@@ -8,7 +8,7 @@ export const command: Command = {
 	usage: ['cstats'],
 	aliases: ['commandstats'],
 	run: async (client, message, args) => {
-		if (args.length != 1) return message.reply('Please provide a command or alias!');
+		if (args.length != 1) return message.warn('Please provide a command or alias!');
 
 		let isValid: Boolean = false;
 		let name: string;
@@ -28,7 +28,7 @@ export const command: Command = {
 			}
 		});
 
-		if (isValid != true) return message.reply('Please provide a valid command or alias!');
+		if (isValid != true) return message.warn('Please provide a valid command or alias!');
 
 		var embed = new MessageEmbed().setTitle(`\`${client.config.prefix + name}\` has been used \`${getUsage(args[0]) ?? '0'}\` times`).setColor(client.config.colors.blue);
 		message.reply({ embeds: [embed] });
