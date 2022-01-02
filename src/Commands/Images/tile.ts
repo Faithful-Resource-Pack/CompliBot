@@ -4,7 +4,7 @@ import { tileAttachment } from '~/functions/canvas/tile';
 export const command: Command = {
 	name: 'tile',
 	description: 'Tiles an image around a 3x3 plane',
-	usage: ['tile (image attachment)', 'tile (image url)'],
+	usage: ['tile (image attachment|reply to message with image attachment)', 'tile (image url)'],
 	aliases: ['tessellate', 'repeat', 't'],
 	run: async (client, message, args) => {
 		let attach: string;
@@ -24,7 +24,7 @@ export const command: Command = {
 			//gets last message with at least one attachment and no embeds and ist a message sent by a bot
 			const lastMessage = messages
 				.sort((a, b) => b.createdTimestamp - a.createdTimestamp)
-				.filter((m) => m.attachments.size > 0 && m.embeds.length == 0 && !m.author.bot)
+				.filter((m) => m.attachments.size > 0 && m.embeds.length == 0)
 				.first();
 
 			/**

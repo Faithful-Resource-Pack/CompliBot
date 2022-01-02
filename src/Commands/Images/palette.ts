@@ -5,7 +5,7 @@ import { paletteEmbed } from '~/functions/canvas/palette';
 export const command: Command = {
 	name: 'palette',
 	description: 'Shows colours of an image.',
-	usage: ['palette (image attachment)', 'palette (image url)'],
+	usage: ['palette (image attachment|reply to message with image attachment)', 'palette (image url)'],
 	aliases: ['p', 'colors', 'colours'],
 	run: async (client, message, args) => {
 		let attach: string;

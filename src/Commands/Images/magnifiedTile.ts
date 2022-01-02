@@ -1,24 +1,26 @@
-import { Command } from '~/Interfaces';
+import { MessageEmbed } from 'discord.js';
 import { magnifyAttachment } from '~/functions/canvas/magnify';
+import { tileCanvas } from '~/functions/canvas/tile';
+import { Command } from '~/Interfaces';
 
 export const command: Command = {
-	name: 'magnify',
-	description: 'Scales an image without smoothing by a factor',
+	name: 'tileAndMagnify',
+	description: 'Magnifies and tiles an image',
 	usage: ['magnify (image attachment|reply to message with image attachment)', 'magnify (image url)'],
-	aliases: ['m', 'z', 'mag', 'scale', 'zoom'],
+	aliases: ['tm', 'tz'],
 	run: async (client, message, args) => {
-		let attach: string;
+		let attachmentUrl: string;
 
 		if (message.type == 'REPLY' && message.channel.type == 'GUILD_TEXT') {
 			if ((await message.channel.messages.fetch(message.reference.messageId)).attachments.size > 0) {
-				attach = (await message.channel.messages.fetch(message.reference.messageId)).attachments.first().url;
+				attachmentUrl = (await message.channel.messages.fetch(message.reference.messageId)).attachments.first().url;
 			}
 		}
 
-		if (args.length != 0) attach = args[0];
-		if (message.attachments.size == 1) attach = message.attachments.first().url;
+		if (args.length != 0) attachmentUrl = args[0];
+		if (message.attachments.size == 1) attachmentUrl = message.attachments.first().url;
 
-		if (attach == undefined) {
+		if (attachmentUrl == undefined) {
 			let messages = await message.channel.messages.fetch({ limit: 10 });
 
 			//gets last message with at least one attachment and no embeds and ist a message sent by a bot
@@ -33,17 +35,17 @@ export const command: Command = {
 			 * wierd regex trolling, returns true if it contains .jpeg, .jpg or .png and a string termination ($)
 			 */
 			if (lastMessage == undefined) {
-				return message.reply('Nothing to tile in the last 10 messages!');
+				return message.reply('Nothing to tile and magnify in the last 10 messages!');
 			}
-			if (lastMessage.attachments.first().url.match(/\.(jpeg|jpg|png)$/)) attach = lastMessage.attachments.first().url;
+			if (lastMessage.attachments.first().url.match(/\.(jpeg|jpg|png)$/)) attachmentUrl = lastMessage.attachments.first().url;
 		}
 
-		if (attach != undefined) {
-			message.reply({ files: [await magnifyAttachment(attach)] }).catch(() => {
+		if (attachmentUrl != undefined) {
+			message.reply({ files: [await magnifyAttachment(await tileCanvas(attachmentUrl))] }).catch(() => {
 				message.reply('Output exeeds the maximum of 512 x 512px²!');
 			});
 		} else {
-			message.reply('Nothing to tile in the last 10 messages!');
+			message.reply('Nothing to tile and magnify in the last 10 messages!');
 		}
 	},
 };

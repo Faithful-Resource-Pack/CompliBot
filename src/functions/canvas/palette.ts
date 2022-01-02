@@ -77,6 +77,8 @@ export async function paletteEmbed(url: string, color: ColorResolvable): Promise
 		});
 }
 
+function paletteImage(imageUrl: string) {}
+
 const palette = (arr, nth) => arr.filter((e, i) => i % nth === nth - 1);
 
 function rgbToHex(r: number, g: number, b: number) {
