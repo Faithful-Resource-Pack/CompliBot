@@ -30,7 +30,7 @@ export const command: Command = {
 		 * ^ (start of string)
 		 * \. (period)
 		 *
-		 * if the platfor is linux and the release starts with \d+.\d+ (e.g 69.420)
+		 * if the platform is linux and the release starts with \d+.\d+ (e.g 69.420)
 		 * then use replace it and everything following it with '$1' (i.e fist capture group (which is the version thing) )
 		 *
 		 * example:
