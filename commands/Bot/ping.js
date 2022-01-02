@@ -18,13 +18,13 @@ const quotes = [
 	"Open your mind. ~Mr. Valve",
 	"Open your eyes. ~Mr. Valve",
 	"Yeah it's sour cream mmm I love drinking sour cream out of a bowl",
-	"\*elevator music*",
+	"*elevator music*",
 	"Long-range nuclear missiles engaged and inbound to your location. Brace for impact in approximately `5` minutes.",
 	"Have I been that much of a burden?",
 	"STAHP",
 	"Rise and shine… bot, rise and shine",
 	"Networking the circuit…\nBypassing the back-end XML transistor…\nEncoding the DHCP pixel…",
-	"\*Windows XP start-up jingle*",
+	"*Windows XP start-up jingle*",
 	"Do not look behind you",
 	"9+10=",
 	"Does anybody even read these?",
@@ -42,16 +42,24 @@ module.exports = {
 	uses: strings.command.use.anyone,
 	syntax: `${prefix}ping`,
 	async execute(client, message) {
-		const m = new MessageEmbed().setTitle('Ping?').setColor(settings.colors.blue)
-
-		message.reply({ embeds: [m] }).then(async m => {
+		// NEVER USE AWAIT ASYNC
+		// only send response to maximize response time
+		return message.channel.send('R').then((msg) => {
+			const apiPing = client.ws.ping
+			const botPing = msg.createdTimestamp - message.createdTimestamp
+			
 			const embed = new MessageEmbed()
 				.setTitle('Pong!')
 				.setColor(settings.colors.blue)
 				// Bot latency broken with command suggestions, solution needed without using message.createdTimestamp
-				.setDescription(`_${quotes[Math.floor(Math.random() * quotes.length)]}_\n\n**Bot Latency** \n${m.createdTimestamp - message.createdTimestamp}ms \n**API Latency** \n${Math.round(client.ws.ping)}ms`)
+				.setDescription(`_${quotes[Math.floor(Math.random() * quotes.length)]}_
 
-			await m.edit({ embeds: [embed] })
+				**Bot Latency** \n${apiPing}ms
+				**API Latency** \n${Math.round(botPing)}ms`)
+			
+			return Promise.all([msg.delete(), message.reply({ embeds: [embed] })])
+		}).then(results => {
+			const m = results[1]
 			addDeleteReact(m, message, true)
 		})
 	}
