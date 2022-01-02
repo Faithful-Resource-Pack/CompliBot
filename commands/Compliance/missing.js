@@ -306,6 +306,7 @@ module.exports = {
     await Promise.all([
       series([
         'git stash',
+        `git fetch origin ${last_version}`, // necessary to get created branches
         `git checkout ${last_version}`,
         `git pull`
       ], {
@@ -313,6 +314,7 @@ module.exports = {
       }),
       series([
         'git stash',
+        `git fetch origin Jappa-${last_version}`, // necessary to get created branches
         `git checkout Jappa-${last_version}`,
         `git pull`
       ], {
