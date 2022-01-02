@@ -1,4 +1,5 @@
 import { Message } from 'discord.js';
+import ExtendedMessage from '~/Client/message';
 import * as emojis from '~/Helpers/emojis';
 import { Event, Command } from '~/Interfaces';
 import { increase } from '~/functions/commandProcess';
@@ -38,7 +39,7 @@ export const event: Event = {
 
 		const command = client.commands.get(cmd) || client.aliases.get(cmd);
 		if (command) {
-			(command as Command).run(client, message, args);
+			(command as Command).run(client, (message as ExtendedMessage), args);
 			increase((command as Command).name);
 		}
 	},

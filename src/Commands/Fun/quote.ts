@@ -12,7 +12,6 @@ export const command: Command = {
 		var embed = new MessageEmbed().setImage(image.data).setColor(client.config.colors.blue);
 
 		var embedMessage = await message.reply({ embeds: [embed] });
-		// not implemented yet
-		// await addDeleteReact(embedMessage, message, true);
+		// todo: await addDeleteReact(embedMessage, message, true);
 	},
 };

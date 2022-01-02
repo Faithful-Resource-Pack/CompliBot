@@ -66,8 +66,7 @@ export const command: Command = {
 	description: 'not implemented yet',
 	usage: ['ball <question>'],
 	run: async (client, message, args) => {
-		// not implemented yet
-		// if (!args.length) return warnUser(message, strings.command.args.none_given);
+		if (!args.length) return message.warn('No args given');
 
 		var embed = new MessageEmbed().setTitle(answers[Math.floor(Math.random() * answers.length)]).setColor(client.config.colors.blue);
 
@@ -76,7 +75,7 @@ export const command: Command = {
 		else if (args.join(' ').includes('sentient')) embed.setTitle('Yes.');
 
 		var embedMessage = await message.reply({ embeds: [embed] });
-		// not implemented yet
-		// await addDeleteReact(embedMessage, message, true);
+
+		// todo : await addDeleteReact(embedMessage, message, true);
 	},
 };

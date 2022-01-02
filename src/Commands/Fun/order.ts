@@ -14,11 +14,11 @@ export const command: Command = {
 			case 'help':
 				return message.reply('https://i.giphy.com/media/WNJGAwRW1LFG5T4qOs/giphy.webp');
 			case 'pizza':
-				message.reply('Guten Appetit');
+				message.reply('Buon Appetito');
 				return message.channel.send('https://i0.wp.com/metro.co.uk/wp-content/uploads/2016/02/pizza-cheese.gif');
 			case 'soup':
 				message.reply('Guten Appetit');
-				return await message.channel.send('https://tenor.com/view/sopita-de-fideo-noodle-soup-mexican-noodles-gif-15167113');
+				return message.channel.send('https://tenor.com/view/sopita-de-fideo-noodle-soup-mexican-noodles-gif-15167113');
 			case 'ice':
 				return message.reply('https://london.frenchmorning.com/wp-content/uploads/sites/10/2019/02/glacons-boissons-choses-enervent-francais-londres.gif');
 			case 'fire':
@@ -28,7 +28,7 @@ export const command: Command = {
 			case 'poop':
 				return message.reply('https://c.tenor.com/RrkaJ9JlVUgAAAAC/cake-eat.gif');
 			default:
-				return message.reply('Sorry could you repeat your order? i cant see that on the menu...');
+				return message.reply('Sorry could you repeat your order? I can\'t see that on the menu...');
 		}
 	},
 };
