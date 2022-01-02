@@ -9,6 +9,7 @@ import * as firestorm from 'firestorm-db';
 import { init as initCommands } from '~/functions/commandProcess';
 
 class ExtendedClient extends Client {
+	public instance = this;
 	public commands: Collection<string, Command> = new Collection();
 	public aliases: Collection<string, Command> = new Collection();
 	public events: Collection<string, Event> = new Collection();

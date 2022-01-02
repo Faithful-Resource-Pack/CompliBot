@@ -1,4 +1,5 @@
 import { MessageEmbed } from 'discord.js';
+import ExtendedMessage from '~/Client/message';
 import { Command } from '~/Interfaces';
 
 const answers = [
