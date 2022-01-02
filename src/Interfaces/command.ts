@@ -1,8 +1,8 @@
 import Client from '~/Client';
-import ExtendedMessage from '~/Client/message';
+import Message from '~/Client/message';
 
 interface Run {
-	(client: Client, message: ExtendedMessage, args: string[]);
+	(client: Client, message: Message, args: string[]);
 }
 
 export interface Command {
