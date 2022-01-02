@@ -164,13 +164,13 @@ module.exports = {
 				propositions: choice
 			})
 				.then(choice => {
-					return getTexture(message, res, results[choice.index])
+					return getTexture(message, res, results[choice.index], client)
 				})
 				.catch((message, error) => {
 					if (process.env.DEBUG) console.error(message, error)
 				})
 		}
-		else if (results.length == 1) await getTexture(message, res, results[0])
+		else if (results.length == 1) await getTexture(message, res, results[0], client)
 		else await warnUser(message, strings.command.texture.does_not_exist)
 	}
 }
@@ -178,10 +178,12 @@ module.exports = {
 /**
  * TODO: make this function in it's own file?
  * Show the asked texture
+ * @param {Discord.Message} message Incoming message
  * @param {String} res texture resolution
  * @param {import('../../helpers/firestorm/texture').Texture} texture
+ * @param {Discord.Client} client Discord client used to get contributors usernames
  */
-async function getTexture(message, res, texture) {
+async function getTexture(message, res, texture, client) {
 	var imgURL = undefined;
 
 	const uses = await texture.uses()
@@ -250,8 +252,13 @@ async function getTexture(message, res, texture) {
 				const lastContribution = await texture.lastContribution((res == '32' || res == '64') ? `c${res}` : undefined).catch(() => Promise.resolve(undefined))
 
 				if (lastContribution) {
-					const contributors = lastContribution.contributors.map(contributor => { return `<@!${contributor}>` }).join(', ')
-					embed.addField('Author(s)', contributors, true)
+					const members = await Promise.allSettled(lastContribution.contributors.map(contributor => message.guild.members.fetch(contributor)))
+					console.log(members)
+					const contributors = await Promise.all(members.map((val,i) => val.status === 'fulfilled' ? Promise.resolve(`<@!${val.value.user.id}>`) : client.users.fetch(lastContribution.contributors[i])))
+					console.log(contributors)
+					const contributorString = contributors.map(u => typeof(u) === 'string' ? u : u.username).join(', ')
+					console.log(contributorString)
+					embed.addField('Author(s)', contributorString, true)
 
 					try {
 						const date = timestampConverter(lastContribution.date)
@@ -292,7 +299,7 @@ async function getTexture(message, res, texture) {
 					}
 					if (reaction.emoji.id === settings.emojis.next_res && used.includes(res)) {
 						if (!embedMessage.deleted) await embedMessage.delete()
-						return getTexture(message, used[(used.indexOf(res) + 1) % used.length], texture)
+						return getTexture(message, used[(used.indexOf(res) + 1) % used.length], texture, client)
 					}
 					if (reaction.emoji.id === settings.emojis.tile && imageSmallEnough) {
 						return tile(embedMessage, embedMessage.embeds[0].image.url, 'grid', undefined, message)
