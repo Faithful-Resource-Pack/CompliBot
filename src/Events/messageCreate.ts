@@ -32,6 +32,7 @@ export const event: Event = {
 			return;
 		}
 
+		client.storeMessage(message);
 		const args = message.content.slice(client.tokens.prefix.length).trim().split(/ +/);
 
 		const cmd = args.shift().toLowerCase();

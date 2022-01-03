@@ -1,4 +1,5 @@
 import { Client, Collection } from 'discord.js';
+import Message from '~/Client/message';
 import path from 'path';
 import { readdirSync } from 'fs';
 import { Command, Event, Config, Tokens } from '~/Interfaces';
@@ -7,9 +8,9 @@ import TokensJson from '@/tokens.json';
 
 import * as firestorm from 'firestorm-db';
 import { init as initCommands } from '~/Functions/commandProcess';
+import { unhandledRejection } from '~/Functions/unhandledRejection';
 
 class ExtendedClient extends Client {
-	public instance = this;
 	public commands: Collection<string, Command> = new Collection();
 	public aliases: Collection<string, Command> = new Collection();
 	public events: Collection<string, Event> = new Collection();
@@ -17,6 +18,18 @@ class ExtendedClient extends Client {
 	public tokens: Tokens = TokensJson;
 	public ownerIDs: string[];
 	public categorys = readdirSync(path.join(__dirname, '..', 'Commands'));
+
+	private lastMessages = [];
+	private lastMessagesIndex = 0;
+
+	public storeMessage(message: Message) {
+		this.lastMessages[this.lastMessagesIndex] = message;
+		this.lastMessagesIndex = (this.lastMessagesIndex + 1) % 5; // store 5 last messages
+	}
+
+	public getLastMessages(): Array<Message> {
+		return this.lastMessages;
+	}
 
 	public async init() {
 		this.login(this.tokens.token);
@@ -50,6 +63,10 @@ class ExtendedClient extends Client {
 			this.events.set(event.name, event);
 			this.on(event.name, event.run.bind(null, this));
 		});
+
+		process.on('unhandledRejection', (reason, promise) => {
+			unhandledRejection(this, reason)
+		})
 	}
 }
 export default ExtendedClient;
