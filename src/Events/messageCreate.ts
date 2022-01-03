@@ -1,6 +1,6 @@
 import * as emojis from '~/Helpers/emojis';
 import { Event, Command } from '~/Interfaces';
-import { increase } from '~/functions/commandProcess';
+import { increase } from '~/Functions/commandProcess';
 import Message from '~/Client/message';
 import ExtendedClient from '~/Client';
 

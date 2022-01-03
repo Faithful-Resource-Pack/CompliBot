@@ -1,6 +1,6 @@
 import { MessageEmbed } from 'discord.js';
-import { magnifyAttachment } from '~/functions/canvas/magnify';
-import { tileCanvas } from '~/functions/canvas/tile';
+import { magnifyAttachment } from '~/Functions/canvas/magnify';
+import { tileCanvas } from '~/Functions/canvas/tile';
 import { Command } from '~/Interfaces';
 
 export const command: Command = {

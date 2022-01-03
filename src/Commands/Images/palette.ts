@@ -1,6 +1,6 @@
 import { Command } from '~/Interfaces';
-import { magnifyAttachment } from '~/functions/canvas/magnify';
-import { paletteEmbed } from '~/functions/canvas/palette';
+import { magnifyAttachment } from '~/Functions/canvas/magnify';
+import { paletteEmbed } from '~/Functions/canvas/palette';
 
 export const command: Command = {
 	name: 'palette',

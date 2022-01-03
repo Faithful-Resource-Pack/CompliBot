@@ -1,5 +1,5 @@
 import { MessageEmbed } from 'discord.js';
-import { getUsage } from '~/functions/commandProcess';
+import { getUsage } from '~/Functions/commandProcess';
 import { Command } from '~/Interfaces';
 
 export const command: Command = {

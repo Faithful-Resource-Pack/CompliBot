@@ -6,7 +6,7 @@ import ConfigJson from '@/config.json';
 import TokensJson from '@/tokens.json';
 
 import * as firestorm from 'firestorm-db';
-import { init as initCommands } from '~/functions/commandProcess';
+import { init as initCommands } from '~/Functions/commandProcess';
 
 class ExtendedClient extends Client {
 	public instance = this;

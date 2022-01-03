@@ -2,7 +2,7 @@ import { MessageEmbed, version as djsVersion } from 'discord.js';
 import { duration } from 'moment';
 import { Command } from '~/Interfaces';
 import os from 'os';
-import { total } from '~/functions/commandProcess';
+import { total } from '~/Functions/commandProcess';
 
 export const command: Command = {
 	name: 'stats',
