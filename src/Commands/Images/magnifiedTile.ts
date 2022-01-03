@@ -12,9 +12,16 @@ export const command: Command = {
 		let attachmentUrl: string;
 
 		if (message.type == 'REPLY' && message.channel.type == 'GUILD_TEXT') {
-			if ((await message.channel.messages.fetch(message.reference.messageId)).attachments.size > 0) {
-				attachmentUrl = (await message.channel.messages.fetch(message.reference.messageId)).attachments.first().url;
-			}
+			const reply = await message.channel.messages.fetch(message.reference.messageId);
+
+			if (reply.attachments.size > 0)
+				attachmentUrl = reply.attachments.first().url;
+			else if (reply.embeds[0].image)
+				attachmentUrl = reply.embeds[0].image.url;
+			else if (reply.embeds[0].thumbnail)
+				attachmentUrl = reply.embeds[0].thumbnail.url;
+
+			else return message.warn('This reply doesn\'t have any image attached!');
 		}
 
 		if (args.length != 0) attachmentUrl = args[0];
@@ -23,19 +30,24 @@ export const command: Command = {
 		if (attachmentUrl == undefined) {
 			let messages = await message.channel.messages.fetch({ limit: 10 });
 
-			//gets last message with at least one attachment and no embeds and is a message sent by a bot
+			//gets last message with at least one attachment
 			const lastMessage = messages
 				.sort((a, b) => b.createdTimestamp - a.createdTimestamp)
-				.filter((m) => m.attachments.size > 0 && m.embeds.length == 0)
+				.filter((m) => m.attachments.size > 0 || m.embeds[0] != undefined)
 				.first();
 
 			/**
 			 * bacically checks if the attachment url ends with an image extension
 			 * explanation:
-			 * wierd regex trolling, returns true if it contains .jpeg, .jpg or .png and a string termination ($)
+			 * wierd regex trolling, returns true if it contains .jpeg, .jpg, .png or .webp and a string termination ($)
 			 */
-			if (lastMessage == undefined) return message.warn('Nothing to tile and magnify in the last 10 messages!');
-			if (lastMessage.attachments.first().url.match(/\.(jpeg|jpg|png)$/)) attachmentUrl = lastMessage.attachments.first().url;
+			if (lastMessage == undefined) return message.warn('Nothing to magnify in the last 10 messages!');
+			if (lastMessage.attachments.size > 0 && lastMessage.attachments.first().url.match(/\.(jpeg|jpg|png|webp)$/))
+				attachmentUrl = lastMessage.attachments.first().url;
+			else if (lastMessage.embeds[0].image)
+				attachmentUrl = lastMessage.embeds[0].image.url;
+			else if (lastMessage.embeds[0].thumbnail)
+				attachmentUrl = lastMessage.embeds[0].thumbnail.url;
 		}
 
 		if (attachmentUrl != undefined) {
