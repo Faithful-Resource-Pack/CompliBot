@@ -9,7 +9,7 @@ export const event: Event = {
 	run: async (client, message: Message) => {
 		if (message.author.bot) return;
 
-		if (!message.content.startsWith(client.config.prefix)) {
+		if (!message.content.startsWith(client.tokens.prefix)) {
 			switch (message.content.toLocaleLowerCase()) {
 				case 'engineer gaming':
 					return message.react('👷');
@@ -32,7 +32,7 @@ export const event: Event = {
 			return;
 		}
 
-		const args = message.content.slice(client.config.prefix.length).trim().split(/ +/);
+		const args = message.content.slice(client.tokens.prefix.length).trim().split(/ +/);
 
 		const cmd = args.shift().toLowerCase();
 		if (!cmd) return;

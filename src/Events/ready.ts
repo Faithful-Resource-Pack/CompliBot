@@ -4,6 +4,6 @@ export const event: Event = {
 	name: 'ready',
 	run: async (client) => {
 		console.log(`${client.user.tag} is online.`);
-		client.user.setActivity(`${client.config.prefix}help`, { type: 'LISTENING' });
+		client.user.setActivity(`${client.tokens.prefix}help`, { type: 'LISTENING' });
 	},
 };

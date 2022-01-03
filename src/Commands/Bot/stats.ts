@@ -45,7 +45,7 @@ export const command: Command = {
 			.setThumbnail(client.user.displayAvatarURL())
 			.setColor('BLURPLE')
 			.addFields(
-				{ name: 'Prefix', value: client.config.prefix, inline: true },
+				{ name: 'Prefix', value: client.tokens.prefix, inline: true },
 				{ name: 'Uptime', value: duration(message.client.uptime).humanize(), inline: true },
 				{ name: 'Guild Count', value: client.guilds.cache.size.toString(), inline: true },
 

@@ -1,11 +1,13 @@
-import { Message, MessageEmbed, ReactionCollector, ReactionCollectorOptions, ReactionEmoji, ReactionManager, ReactionUserManager, User } from 'discord.js';
-import { Config } from '~/Interfaces';
+import { Message, MessageEmbed } from 'discord.js';
+import { Config, Tokens } from '~/Interfaces';
 import ConfigJson from '@/config.json';
 import Menu from '~/Helpers/menu';
 import { ids } from '~/Helpers/emojis';
+import tokens from '@/tokens.json';
 
 declare module 'discord.js' {
 	interface Message {
+		tokens: Tokens;
 		config: Config;
 		menu: Menu;
 		setMenu(choiceType: 'texture' | 'imageOptions', id: string): Menu;
@@ -13,6 +15,8 @@ declare module 'discord.js' {
 		deleteReact(options: { authorMessage: Message, previousMessage?: Message, deleteAuthorMessage: boolean }): void;
 	}
 }
+
+Message.prototype.tokens = tokens;
 
 /**
  * Add a trash can emote and await of user interaction, if used, the message is deleted
@@ -66,7 +70,7 @@ Message.prototype.warn = function (text: string) {
 		.setThumbnail(`${this.config.images}warning.png`)
 		.setTitle('Action failed')
 		.setDescription(text)
-		.setFooter({ text: `Type ${this.config.prefix}help to get more information about commands`, iconURL: this.client.user.displayAvatarURL() });
+		.setFooter({ text: `Type ${this.tokens.prefix}help to get more information about commands`, iconURL: this.client.user.displayAvatarURL() });
 
 	this.reply({ embeds: [embed] })
 		.then((sentMessage: Message) => { sentMessage.deleteReact({ authorMessage: this, deleteAuthorMessage: true }) })
