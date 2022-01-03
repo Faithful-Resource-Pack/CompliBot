@@ -13,7 +13,7 @@ export const command: Command = {
 			.setImage(image.data)
 			.setColor('BLURPLE');
 
-		var embedMessage = await message.reply({ embeds: [embed] });
-		// todo: await addDeleteReact(embedMessage, message, true);
+		const res = await message.reply({ embeds: [embed] });
+		res.deleteReact({ authorMessage: message, deleteAuthorMessage: true })
 	},
 };

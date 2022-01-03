@@ -77,8 +77,7 @@ export const command: Command = {
 		if (args.join(' ') == 'balls') embed.setTitle('lol');
 		else if (args.join(' ').includes('sentient')) embed.setTitle('Yes.');
 
-		var embedMessage = await message.reply({ embeds: [embed] });
-
-		// todo : await addDeleteReact(embedMessage, message, true);
+		const res = await message.reply({ embeds: [embed] });
+		res.deleteReact({ authorMessage: message, deleteAuthorMessage: true })
 	},
 };

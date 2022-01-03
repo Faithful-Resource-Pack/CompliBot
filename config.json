@@ -1,5 +1,6 @@
 {
     "prefix": "d/",
+    "images": "https://database.compliancepack.net/images/bot/",
     "firestormUrl": "https://database.compliancepack.net/firestorm-test/",
     "colors": {
         "red": "#f44336",

@@ -34,6 +34,7 @@ export const command: Command = {
 			.setTitle(`\`${client.config.prefix + name}\` has been used \`${getUsage(args[0]) ?? '0'}\` times`)
 			.setColor('BLURPLE');
 
-		message.reply({ embeds: [embed] });
+		const res = await message.reply({ embeds: [embed] });
+		res.deleteReact({ authorMessage: message, deleteAuthorMessage: true })
 	},
 };

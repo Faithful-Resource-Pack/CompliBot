@@ -39,9 +39,11 @@ export const command: Command = {
 		}
 
 		if (attachmentUrl != undefined) {
-			message.reply({ files: [await magnifyAttachment(await tileCanvas(attachmentUrl))] }).catch(() => {
-				message.warn('Output exeeds the maximum of 512 x 512px²!');
-			});
+			message.reply({ files: [await magnifyAttachment(await tileCanvas(attachmentUrl))] })
+				.then((res) => res.deleteReact({ authorMessage: message, deleteAuthorMessage: true }))
+				.catch(() => {
+					message.warn('Output exeeds the maximum of 512 x 512px²!');
+				});
 		} else message.warn('Nothing to tile and magnify in the last 10 messages!');
 	},
 };

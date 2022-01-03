@@ -38,9 +38,11 @@ export const command: Command = {
 		}
 
 		if (attach != undefined) {
-			message.reply({ embeds: [await paletteEmbed(attach, 'BLURPLE')] }).catch(() => {
-				message.warn('Output exeeds the maximum of 512 x 512px²!');
-			});
+			message.reply({ embeds: [await paletteEmbed(attach, 'BLURPLE')] })
+				.then((res) => res.deleteReact({ authorMessage: message, deleteAuthorMessage: true }))
+				.catch(() => {
+					message.warn('Output exeeds the maximum of 512 x 512px²!');
+				});
 		} else message.warn('Nothing to palette in the last 10 messages!');
 	},
 };

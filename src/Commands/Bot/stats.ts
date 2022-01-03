@@ -61,8 +61,7 @@ export const command: Command = {
 			)
 			.setFooter({ text: 'Bot made with love', iconURL: 'https://static.wikia.nocookie.net/minecraft_gamepedia/images/0/06/Heart_(icon).png' });
 
-		await message.reply({ embeds: [embed] });
-		// not implementend yet
-		// await addDeleteReact(embedMessage, message, true);
+		const res = await message.reply({ embeds: [embed] });
+		res.deleteReact({ authorMessage: message, deleteAuthorMessage: true })
 	},
 };
