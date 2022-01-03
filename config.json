@@ -1,6 +1,6 @@
 {
-    "prefix": "n/",
-    "firestormUrl": "https://example.com",
+    "prefix": "d/",
+    "firestormUrl": "https://database.compliancepack.net/firestorm-test/",
     "colors": {
         "red": "#f44336",
         "yellow": "#ffeb3b",
