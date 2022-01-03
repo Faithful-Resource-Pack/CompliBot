@@ -14,7 +14,7 @@ class Menu {
   constructor(message: Message, choiceType: 'texture' | 'imageOptions', id: string) {
     this.message = message;
     this.choiceType = choiceType;
-    this.embed.setColor(this.config.colors.blue);
+    this.embed.setColor('BLURPLE');
     this.menu.setCustomId(id);
   }
 

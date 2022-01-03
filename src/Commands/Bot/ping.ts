@@ -36,7 +36,7 @@ export const command: Command = {
 	run: async (client, message, args) => {
 		var embed = new MessageEmbed()
 			.setTitle('Pinging...')
-			.setColor(client.config.colors.blue);
+			.setColor('BLURPLE');
 
 		var embedMessage = await message.reply({ embeds: [embed] });
 

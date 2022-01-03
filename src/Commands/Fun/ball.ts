@@ -69,7 +69,9 @@ export const command: Command = {
 	run: async (client, message, args) => {
 		if (!args.length) return message.warn('No args given');
 
-		var embed = new MessageEmbed().setTitle(answers[Math.floor(Math.random() * answers.length)]).setColor(client.config.colors.blue);
+		var embed = new MessageEmbed()
+			.setTitle(answers[Math.floor(Math.random() * answers.length)])
+			.setColor('BLURPLE');
 
 		// special replies
 		if (args.join(' ') == 'balls') embed.setTitle('lol');

@@ -38,7 +38,7 @@ export const command: Command = {
 		}
 
 		if (attach != undefined) {
-			message.reply({ embeds: [await paletteEmbed(attach, client.config.colors.blue)] }).catch(() => {
+			message.reply({ embeds: [await paletteEmbed(attach, 'BLURPLE')] }).catch(() => {
 				message.warn('Output exeeds the maximum of 512 x 512px²!');
 			});
 		} else message.warn('Nothing to palette in the last 10 messages!');
