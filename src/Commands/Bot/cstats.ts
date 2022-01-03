@@ -1,4 +1,4 @@
-import { MessageEmbed } from 'discord.js';
+import MessageEmbed from '~/Client/embed';
 import { getUsage } from '~/Functions/commandProcess';
 import { Command } from '~/Interfaces';
 
@@ -30,11 +30,9 @@ export const command: Command = {
 
 		if (isValid != true) return message.warn('Please provide a valid command or alias!');
 
-		var embed = new MessageEmbed()
-			.setTitle(`\`${client.tokens.prefix + name}\` has been used \`${getUsage(args[0]) ?? '0'}\` times`)
-			.setColor('BLURPLE');
+		var embed = new MessageEmbed().setTitle(`\`${client.tokens.prefix + name}\` has been used \`${getUsage(args[0]) ?? '0'}\` times`).setColor('BLURPLE');
 
 		const res = await message.reply({ embeds: [embed] });
-		res.deleteReact({ authorMessage: message, deleteAuthorMessage: true })
+		res.deleteReact({ authorMessage: message, deleteAuthorMessage: true });
 	},
 };

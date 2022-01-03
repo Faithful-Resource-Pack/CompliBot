@@ -1,5 +1,4 @@
-import { MessageEmbed } from 'discord.js';
-import ExtendedMessage from '~/Client/message';
+import MessageEmbed from '~/Client/embed';
 import { Command } from '~/Interfaces';
 
 const answers = [
@@ -69,15 +68,13 @@ export const command: Command = {
 	run: async (client, message, args) => {
 		if (!args.length) return message.warn('No args given');
 
-		var embed = new MessageEmbed()
-			.setTitle(answers[Math.floor(Math.random() * answers.length)])
-			.setColor('BLURPLE');
+		var embed = new MessageEmbed().setTitle(answers[Math.floor(Math.random() * answers.length)]).setColor('BLURPLE');
 
 		// special replies
 		if (args.join(' ') == 'balls') embed.setTitle('lol');
 		else if (args.join(' ').includes('sentient')) embed.setTitle('Yes.');
 
 		const res = await message.reply({ embeds: [embed] });
-		res.deleteReact({ authorMessage: message, deleteAuthorMessage: true })
+		res.deleteReact({ authorMessage: message, deleteAuthorMessage: true });
 	},
 };

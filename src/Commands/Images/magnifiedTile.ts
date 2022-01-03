@@ -1,4 +1,4 @@
-import { MessageEmbed } from 'discord.js';
+import MessageEmbed from '~/Client/embed';
 import { magnifyAttachment } from '~/Functions/canvas/magnify';
 import { tileCanvas } from '~/Functions/canvas/tile';
 import { Command } from '~/Interfaces';
@@ -39,7 +39,8 @@ export const command: Command = {
 		}
 
 		if (attachmentUrl != undefined) {
-			message.reply({ files: [await magnifyAttachment(await tileCanvas(attachmentUrl))] })
+			message
+				.reply({ files: [await magnifyAttachment(await tileCanvas(attachmentUrl))] })
 				.then((res) => res.deleteReact({ authorMessage: message, deleteAuthorMessage: true }))
 				.catch(() => {
 					message.warn('Output exeeds the maximum of 512 x 512px²!');

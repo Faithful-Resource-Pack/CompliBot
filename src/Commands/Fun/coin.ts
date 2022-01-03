@@ -1,4 +1,4 @@
-import { MessageEmbed } from 'discord.js';
+import MessageEmbed from '~/Client/embed';
 import { Command } from '~/Interfaces';
 
 export const command: Command = {
@@ -14,6 +14,6 @@ export const command: Command = {
 		 * now it should be 1 in 100, much more realistic
 		 */
 		const res = await message.reply(result > 0.5 ? 'Heads!' : result < 0.5 ? 'Tails!' : 'Edge???!!!');
-		res.deleteReact({ authorMessage: message, deleteAuthorMessage: true })
+		res.deleteReact({ authorMessage: message, deleteAuthorMessage: true });
 	},
 };

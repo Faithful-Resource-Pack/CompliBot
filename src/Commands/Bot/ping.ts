@@ -1,4 +1,4 @@
-import { MessageEmbed } from 'discord.js';
+import MessageEmbed from '~/Client/embed';
 import { Command } from '~/Interfaces';
 
 const quotes = [
@@ -34,16 +34,18 @@ export const command: Command = {
 	usage: ['ping'],
 	aliases: ['latency'],
 	run: async (client, message, args) => {
-		var embed = new MessageEmbed()
-			.setTitle('Pinging...')
-			.setColor('BLURPLE');
-
+		var embed = new MessageEmbed().setTitle('Pinging...');
 		var res = await message.reply({ embeds: [embed] });
 
-		embed.setTitle('Pong!')
+		embed
+			.setTitle('Pong!')
 			// Bot latency broken with command suggestions, solution needed without using message.createdTimestamp
 			// May not be up to date as of the typescript rewrite
-			.setDescription(`_${quotes[Math.floor(Math.random() * quotes.length)]}_\n\n**Bot Latency** \n${res.createdTimestamp - message.createdTimestamp}ms \n**API Latency** \n${Math.round(client.ws.ping)}ms`);
+			.setDescription(
+				`_${quotes[Math.floor(Math.random() * quotes.length)]}_\n\n**Bot Latency** \n${res.createdTimestamp - message.createdTimestamp}ms \n**API Latency** \n${Math.round(
+					client.ws.ping,
+				)}ms`,
+			);
 
 		await res.edit({ embeds: [embed] });
 		res.deleteReact({ authorMessage: message, deleteAuthorMessage: true });

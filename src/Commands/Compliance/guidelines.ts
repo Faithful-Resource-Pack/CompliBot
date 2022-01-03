@@ -1,4 +1,4 @@
-import { MessageEmbed } from 'discord.js';
+import MessageEmbed from '~/Client/embed';
 import { Command } from '~/Interfaces';
 
 export const command: Command = {
@@ -7,6 +7,6 @@ export const command: Command = {
 	usage: ['guidelines'],
 	run: async (client, message, args) => {
 		const res = await message.reply({ content: 'https://docs.compliancepack.net/pages/textures/texturing-guidelines' });
-		res.deleteReact({ authorMessage: message, deleteAuthorMessage: true })
+		res.deleteReact({ authorMessage: message, deleteAuthorMessage: true });
 	},
 };

@@ -1,4 +1,4 @@
-import { MessageEmbed, version as djsVersion } from 'discord.js';
+import { MessageEmbed, ReplyMessageOptions, version as djsVersion } from 'discord.js';
 import { duration } from 'moment';
 import { Command } from '~/Interfaces';
 import os from 'os';
@@ -62,6 +62,7 @@ export const command: Command = {
 			.setFooter({ text: 'Bot made with love', iconURL: 'https://static.wikia.nocookie.net/minecraft_gamepedia/images/0/06/Heart_(icon).png' });
 
 		const res = await message.reply({ embeds: [embed] });
-		res.deleteReact({ authorMessage: message, deleteAuthorMessage: true })
+
+		res.deleteReact({ authorMessage: message, deleteAuthorMessage: true });
 	},
 };

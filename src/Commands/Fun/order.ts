@@ -1,4 +1,4 @@
-import { MessageEmbed } from 'discord.js';
+import MessageEmbed from '~/Client/embed';
 import { Command } from '~/Interfaces';
 
 export const command: Command = {
@@ -28,7 +28,7 @@ export const command: Command = {
 			case 'poop':
 				return message.reply('https://c.tenor.com/RrkaJ9JlVUgAAAAC/cake-eat.gif');
 			default:
-				return message.reply('Sorry could you repeat your order? I can\'t see that on the menu...');
+				return message.reply("Sorry could you repeat your order? I can't see that on the menu...");
 		}
 	},
 };
