@@ -1,8 +1,7 @@
-import { Message } from 'discord.js';
 import * as emojis from '~/Helpers/emojis';
 import { Event, Command } from '~/Interfaces';
 import { increase } from '~/functions/commandProcess';
-import ExtendedMessage from '~/Client/message';
+import Message from '~/Client/message';
 import ExtendedClient from '~/Client';
 
 export const event: Event = {
@@ -40,8 +39,8 @@ export const event: Event = {
 
 		const command = client.commands.get(cmd) || client.aliases.get(cmd);
 		if (command) {
-			(command as Command).run(client, message as ExtendedMessage, args);
-			console.log((message as ExtendedMessage) instanceof ExtendedMessage);
+			let _ = ((message as Message) instanceof Message); // do not remove, 'force' message to be casted (break if removed)
+			(command as Command).run(client, message, args);
 			increase((command as Command).name);
 		}
 	},
