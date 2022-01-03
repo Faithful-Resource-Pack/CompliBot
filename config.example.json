@@ -1,6 +1,5 @@
 {
     "prefix": "n/",
-    "botImages": "https://database.compliancepack.net/images/bot/",
     "firestormUrl": "https://example.com",
     "colors": {
         "red": "#f44336",

@@ -1,7 +1,6 @@
 import { Command } from '~/Interfaces';
 import { magnifyAttachment } from '~/functions/canvas/magnify';
 import { paletteEmbed } from '~/functions/canvas/palette';
-import { ColorResolvable } from 'discord.js';
 
 export const command: Command = {
 	name: 'palette',
@@ -34,7 +33,7 @@ export const command: Command = {
 			 * explanation:
 			 * wierd regex trolling, returns true if it contains .jpeg, .jpg or .png and a string termination ($)
 			 */
-			if (lastMessage == undefined) return message.warn('Nothing to palette in the last 10 messages!');
+			if (lastMessage == undefined) return message.warn('Nothing to tile in the last 10 messages!');
 			if (lastMessage.attachments.first().url.match(/\.(jpeg|jpg|png)$/)) attach = lastMessage.attachments.first().url;
 		}
 
@@ -42,6 +41,6 @@ export const command: Command = {
 			message.reply({ embeds: [await paletteEmbed(attach, client.config.colors.blue)] }).catch(() => {
 				message.warn('Output exeeds the maximum of 512 x 512px²!');
 			});
-		} else message.warn('Nothing to palette in the last 10 messages!');
+		} else message.warn({ embeds: [await paletteEmbed(attach, client.config.colors.blue)] });
 	},
 };
