@@ -41,7 +41,6 @@ export const event: Event = {
 		const command = client.commands.get(cmd) || client.aliases.get(cmd);
 		if (command) {
 			(command as Command).run(client, message as ExtendedMessage, args);
-			console.log((message as ExtendedMessage) instanceof ExtendedMessage);
 			increase((command as Command).name);
 		}
 	},
