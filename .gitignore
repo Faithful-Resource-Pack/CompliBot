@@ -3,3 +3,5 @@ config.json
 node_modules
 .vscode
 json/
+.env
+src/Commands/Bot/test.ts
