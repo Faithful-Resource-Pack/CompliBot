@@ -50,7 +50,8 @@ export const command: Command = {
 		}
 
 		if (attach != undefined) {
-			message.reply({ embeds: [await paletteEmbed(attach, 'BLURPLE')] })
+			// todo: add the image with all colors displayed back
+			message.reply({ embeds: [await paletteEmbed(attach)] })
 				.then((res) => res.deleteReact({ authorMessage: message, deleteAuthorMessage: true }))
 				.catch(() => {
 					message.warn('Output exeeds the maximum of 512 x 512px²!');

@@ -43,7 +43,6 @@ export const command: Command = {
 		var embed = new MessageEmbed()
 			.setTitle(`${client.user.username} Stats`)
 			.setThumbnail(client.user.displayAvatarURL())
-			.setColor('BLURPLE')
 			.addFields(
 				{ name: 'Prefix', value: client.tokens.prefix, inline: true },
 				{ name: 'Uptime', value: duration(message.client.uptime).humanize(), inline: true },

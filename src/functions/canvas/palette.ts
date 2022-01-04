@@ -1,12 +1,12 @@
-function hexToInt(hex: string) {}
+function hexToInt(hex: string) { }
 
 import { createCanvas, loadImage } from 'canvas';
-import { ColorResolvable, Message, MessageAttachment, MessageEmbed } from 'discord.js';
+import { ColorResolvable, MessageEmbed } from 'discord.js';
 import getMeta from './getMeta';
 
 const coloursPerPalette = 10;
 const coloursPerLine = 2;
-export async function paletteEmbed(url: string, color: ColorResolvable): Promise<MessageEmbed> {
+export async function paletteEmbed(url: string, color?: ColorResolvable): Promise<MessageEmbed> {
 	return getMeta(url)
 		.then(async (dimension) => {
 			const surface = dimension.width * dimension.height;
@@ -67,7 +67,8 @@ export async function paletteEmbed(url: string, color: ColorResolvable): Promise
 				chunk = chunk.join('`\n`').split(',');
 				embed.addField(`Palette ${i + 1}: `, '`' + chunk.join('` `') + '` ', true);
 			}
-			embed.setTitle(`Colors - ${total}`).setColor(color);
+			embed.setTitle(`Colors - ${total}`);
+			if (color) embed.setColor(color);
 			if (total > 60) embed.setFooter({ text: 'Not all colours are being displayed! The total count is over 60' });
 			return embed;
 		})
@@ -77,7 +78,7 @@ export async function paletteEmbed(url: string, color: ColorResolvable): Promise
 		});
 }
 
-function paletteImage(imageUrl: string) {}
+function paletteImage(imageUrl: string) { }
 
 const palette = (arr, nth) => arr.filter((e, i) => i % nth === nth - 1);
 
