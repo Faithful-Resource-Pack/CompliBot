@@ -41,7 +41,6 @@ export async function colorAttachment(color: string, client: ExtendedClient): Pr
 		return function (rgb) {
 			if (!executed) {
 				executed = true;
-				console.log(rgb);
 			}
 		};
 	})();

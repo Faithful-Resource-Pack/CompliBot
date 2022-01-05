@@ -25,7 +25,6 @@ export const command: Command = {
 				})
 				.join('');
 		}
-		console.log('#' + messageColor);
 
 		let colorAttach: MessageAttachment;
 		try {
