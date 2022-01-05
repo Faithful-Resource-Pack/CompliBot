@@ -32,7 +32,14 @@ class ExtendedClient extends Client {
 	}
 
 	public async init() {
-		this.login(this.tokens.token);
+		this.login(this.tokens.token).catch(() => {
+			console.log(
+				'='.repeat(105) +
+				'\nThe provided bot token is invalid! Please check if the provided token is copied correctly and try again.\n' +
+				'='.repeat(105)
+			);
+			process.exit(1);
+		});
 		initCommands(this);
 		firestorm.address(this.config.firestormUrl);
 		firestorm.token(this.tokens.firestormToken);

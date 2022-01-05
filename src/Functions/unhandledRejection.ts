@@ -17,7 +17,25 @@ const randomSentences: Array<string> = [
   'Another one! DJ Khaleeeeed!',
   'I just don\'t know what went wrong :(',
   'My bad.',
-  'Hold my beer.'
+  'Hold my beer.',
+  'I\'m so sorry, I\'m just a bot :(',
+  'Unfortunately I was coded in a way that I can\'t handle this error',
+  'Would you like a cupcake?',
+  'Why did you do that?',
+  'Don\'t be sad. I\'ll do better next time, I promise!',
+  'somebody set up us the error',
+  'I\'m sorry, Dave.',
+  'Hi. I\'m CompliBot, and I\'m a erroraholic.',
+  'Ooh. Shiny.',
+  'But it works on my machine.',
+  'Oops.',
+  'On the bright side, I bought you a teddy bear!',
+  'Shall we play a game?',
+  'Surprise! Haha. Well, this is awkward.',
+  'This doesn\'t make any sense!',
+  'Why is it breaking :(',
+  'Don\'t do that.',
+  'Ouch. That hurt :('
 ]
 
 export const unhandledRejection: Function = async (client: Client, reason: any) => {
