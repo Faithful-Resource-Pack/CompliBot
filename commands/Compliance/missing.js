@@ -298,7 +298,7 @@ module.exports = {
     })
     if(cbval !== undefined) return Promise.reject(cbval)
 
-    const last_version = edition === 'bedrock' ? settings.versions.bedrock[0] : settings.versions.java.sort(sorterMC).reverse()[0]
+    const last_version = edition === 'bedrock' ? settings.versions.bedrock[0] : '1.18.1' // remove this comment after 1.19 has releases settings.versions.java.sort(sorterMC).reverse()[0]
 
     // anyway stash
     // checkout latest branch
@@ -330,7 +330,7 @@ module.exports = {
     })
     if(cbval !== undefined) return Promise.reject(cbval)
 
-    const edition_filter = edition === 'java' ? normalizeArray(['font/', 'colormap/', 'misc/shadow', 'presets/isles', 'realms/inspiration', 'realms/new_world', 'realms/survival_spawn', 'realms/upload', 'realms/adventure', 'realms/experience', 'environment/clouds', 'misc/nausea', 'misc/vignette', 'realms/darken', 'realms/plus_icon', 'models/armor/piglin_leather_layer_1', 'entity/phantom_eyes.png', 'misc/white.png', 'block/lightning_rod_on.png', 'gui/title/background/panorama_overlay.png', 'effect/dither.png', 'misc/unknown_server.png', 'entity/llama/spit.png', 'block/redstone_dust_overlay.png']) : normalizeArray([...BEDROCK_UI, 'font/', 'colormap/', '/gui/', 'environments/clouds', 'persona_thumbnails/', 'environment/end_portal_colors', 'textures/flame_atlas', 'textures/forcefield_atlas', 'blocks/bed_feet_', 'blocks/bed_head_', 'blocks/flower_paeonia', 'blocks/flower_rose_blue', 'blocks/structure_air', 'map/player_icon_background', 'misc/missing_texture', 'items/boat', 'items/egg_agent', 'items/quiver', 'items/ruby', 'entity/agent.png', 'entity/cape_invisible.png', 'entity/char.png', 'entity/horse/', 'entity/lead_rope.png', 'entity/loyalty_rope.png', 'entity/pig/pigzombie.png', 'entity/villager/', 'entity/wither_boss/wither_armor_blue.png', 'entity/zombie_villager/'])
+    const edition_filter = edition === 'java' ? normalizeArray(['font/', 'colormap/', 'misc/shadow', 'presets/isles', 'realms/inspiration', 'realms/new_world', 'realms/survival_spawn', 'realms/upload', 'realms/adventure', 'realms/experience', 'environment/clouds', 'misc/nausea', 'misc/vignette', 'realms/darken', 'realms/plus_icon', 'models/armor/piglin_leather_layer_1', 'entity/phantom_eyes.png', 'misc/white.png', 'block/lightning_rod_on.png', 'gui/title/background/panorama_overlay.png', 'effect/dither.png', 'misc/unknown_server.png', 'entity/llama/spit.png', 'block/redstone_dust_overlay.png', 'entity/enderman/enderman_eyes.png', 'entity/phantom_eyes.png']) : normalizeArray([...BEDROCK_UI, 'font/', 'colormap/', '/gui/', 'environments/clouds', 'persona_thumbnails/', 'environment/end_portal_colors', 'textures/flame_atlas', 'textures/forcefield_atlas', 'blocks/bed_feet_', 'blocks/bed_head_', 'blocks/flower_paeonia', 'blocks/flower_rose_blue', 'blocks/structure_air', 'map/player_icon_background', 'misc/missing_texture', 'items/boat', 'items/egg_agent', 'items/quiver', 'items/ruby', 'entity/agent.png', 'entity/cape_invisible.png', 'entity/char.png', 'entity/horse/', 'entity/lead_rope.png', 'entity/loyalty_rope.png', 'entity/pig/pigzombie.png', 'entity/villager/', 'entity/wither_boss/wither_armor_blue.png', 'entity/zombie_villager/'])
 
     const vanilla_textures = _getAllFilesFromFolder(vanilla_tmp_path, edition_filter).map(f => normalize(f).replace(vanilla_tmp_path, ''))
     const compliance_textures = _getAllFilesFromFolder(compliance_tmp_path).map(f => normalize(f).replace(compliance_tmp_path, ''))
