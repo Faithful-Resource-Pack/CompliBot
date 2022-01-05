@@ -27,10 +27,10 @@ module.exports = {
 
 		const weapon = args.slice(1).join(' ')
 
-		//let result = weapon.length > 0 ? strings.command.kill.weapon_response : Object.values(strings.command.kill.responses)[Math.floor(Math.random() * Object.values(strings.command.kill.responses).length)]
+		let result = weapon.length > 0 ? strings.command.kill.weapon_response : Object.values(strings.command.kill.responses)[Math.floor(Math.random() * Object.values(strings.command.kill.responses).length)]
 		
 		// use this one to test specific responses
-		let result = weapon.length > 0 ? strings.command.kill.weapon_response : Object.values(strings.command.kill.responses)[36]
+		//let result = weapon.length > 0 ? strings.command.kill.weapon_response : Object.values(strings.command.kill.responses)[36]
 
 		result = result.replace('%player%', member.displayName)
 		result = result.replace('%weapon%', weapon)
