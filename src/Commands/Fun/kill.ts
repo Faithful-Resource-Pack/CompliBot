@@ -1,4 +1,3 @@
-import { MessageActionRow, MessageButton } from 'discord.js';
 import MessageEmbed from '~/Client/embed';
 import { Command } from '~/Interfaces';
 import { getMember } from '~/Functions/getMember';
@@ -105,8 +104,9 @@ export const command: Command = {
 	usage: ['kill <user> [weapon]'],
 	run: async (client, message, args) => {
 		if (!args.length) return message.warn('No args given');
+
 		const memberId = await getMember(message, args[0]);
-		if (memberId == undefined) return message.warn('I couldn\'t find anyone to kill');
+		if (memberId == undefined) return message.warn('I couldn\'t find anyone to kill!');
 
 		const member = await message.guild.members.fetch(memberId);
 		const author = await message.guild.members.fetch(message.author.id);

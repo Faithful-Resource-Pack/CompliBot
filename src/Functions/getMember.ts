@@ -9,6 +9,7 @@ import { Message } from 'discord.js';
  * @returns Returns the id of the user
  */
 export async function getMember(message: Message, arg: string) {
+	if (!arg.length) return undefined;
 	let member;
 	try {
 		const id = arg.replace(/\D+/g, "");
