@@ -50,7 +50,7 @@ export function tileCanvas(url: string): Promise<Canvas> {
 					context.drawImage(imageToDraw, x * dimension.width, y * dimension.width);
 				}
 			}
-
+			//todo: add other patterns
 			return canvas;
 		})
 		.catch((e) => {
