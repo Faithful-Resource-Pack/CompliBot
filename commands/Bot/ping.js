@@ -54,8 +54,8 @@ module.exports = {
 				// Bot latency broken with command suggestions, solution needed without using message.createdTimestamp
 				.setDescription(`_${quotes[Math.floor(Math.random() * quotes.length)]}_
 
-				**Bot Latency** \n${apiPing}ms
-				**API Latency** \n${Math.round(botPing)}ms`)
+				**Bot Latency** \n${botPing}ms
+				**API Latency** \n${Math.round(apiPing)}ms`)
 			
 			return Promise.all([msg.delete(), message.reply({ embeds: [embed] })])
 		}).then(results => {
