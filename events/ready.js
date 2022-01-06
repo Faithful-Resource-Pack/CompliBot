@@ -24,6 +24,8 @@ const { restartAutoDestroy } = require('../functions/restartAutoDestroy')
 const { saveDB } = require('../functions/saveDB')
 const { doCheckLang } = require('../functions/strings/doCheckLang')
 const { doCheckSettings } = require('../functions/settings/doCheckSettings')
+const { computeAndUpdate } = require('../commands/Compliance/missing')
+const unhandledRejection = require('./unhandledRejection')
 
 /**
  * SCHEDULED FUNCTIONS : Texture Submission
@@ -49,6 +51,18 @@ const downloadToBot = new cron.CronJob('15 0 * * *', async () => {
 let pushToGithub = new cron.CronJob('30 0 * * *', async () => {
   await pushTextures()
   await saveDB(`Daily Backup`)
+})
+
+const updatePercentages = new cron.CronJob('45 0 * * *', async () => {
+  const editions = settings.editions.map(e => e.toLowerCase())
+  const resolutions = settings.resolutions.map(r => String(parseInt(r)))
+  const editions_and_resolutions = editions.map(e => resolutions.map(r => [e, r])).flat()
+  const updatePromises = editions_and_resolutions.map(er => computeAndUpdate(client, er[1], er[0], () => {}))
+
+  const prom = Promise.all(updatePromises)
+  return prom.catch(err => {
+    unhandledRejection(client, err, prom, undefined)
+  })
 })
 
 function doMCUpdateCheck() {
@@ -92,6 +106,7 @@ module.exports = {
     submissionProcess.start()
     downloadToBot.start()
     pushToGithub.start()
+    updatePercentages.start()
 
     await jiraJE.loadJiraVersions()
     await jiraBE.loadJiraVersions()
