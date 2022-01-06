@@ -28,7 +28,7 @@ async function saveDB(commitMessage) {
     )
   }
 
-  pushToGitHub('Compliance-Resource-Pack', 'JSON', 'main', commitMessage, './json/')
+  pushToGitHub('Compliance-Resource-Pack', 'Database', 'main', commitMessage, './json/')
 }
 
 exports.saveDB = saveDB
