@@ -7,7 +7,7 @@ export const command: Command = {
 	name: 'mute',
     aliases: ['timeout'],
 	description: 'not implemented yet',
-	usage: ['mute <user> [weapon]'],
+	usage: ['mute <user> [time] [reason]'],
 	run: async (client, message, args) => {
 		if (!args.length) return message.warn('No args given');
 
@@ -17,6 +17,8 @@ export const command: Command = {
         if (!args[1]) return message.warn('You didn\'t provide a time!');
         const time = stringToMs(args[1]);
 
+		if (time > 1000 * 60 * 60 * 24 * 7 * 4) return message.warn('You can\'t mute someone for longer than 4 weeks! (blame Discord)');
+
         const reason = !args[2] ? 'Not specified' : args.slice(2).join(' ');
 
         const member = await message.guild.members.fetch(memberId);
@@ -24,12 +26,17 @@ export const command: Command = {
         await member.timeout(time, reason);
 
 		var embed = new MessageEmbed()
-            .setDescription(`**Muted <@${memberId}>**`)
+			.setDescription(`**Muted <@${memberId}>**`)
 			.addFields(
 				// time needs to be replaced with something better than args[1]
-                { name: 'Time', value: args[1] },
-                { name: 'Reason', value: reason}
-            );
+				{ name: 'Time', value: args[1] },
+				{ name: 'Reason', value: reason}
+			);
+		
+		if (time == 0)
+			var embed = new MessageEmbed()
+				.setDescription(`**Unmuted <@${memberId}>**`)
+				.addField('Reason', reason);
 
 		const res = await message.reply({ embeds: [embed] });
 		res.deleteReact({ authorMessage: message, deleteAuthorMessage: true });
