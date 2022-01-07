@@ -24,7 +24,7 @@ const { restartAutoDestroy } = require('../functions/restartAutoDestroy')
 const { saveDB } = require('../functions/saveDB')
 const { doCheckLang } = require('../functions/strings/doCheckLang')
 const { doCheckSettings } = require('../functions/settings/doCheckSettings')
-const { computeAndUpdate } = require('../commands/Compliance/missing')
+const missingCommand = require('../commands/Compliance/missing') // you need to import the whole module, see details below
 const unhandledRejection = require('./unhandledRejection')
 
 /**
@@ -57,7 +57,8 @@ const updatePercentages = new cron.CronJob('45 0 * * *', async () => {
   const editions = settings.editions.map(e => e.toLowerCase())
   const resolutions = settings.resolutions.map(r => String(parseInt(r)))
   const editions_and_resolutions = editions.map(e => resolutions.map(r => [e, r])).flat()
-  const updatePromises = editions_and_resolutions.map(er => computeAndUpdate(client, er[1], er[0], () => {}))
+  // you have to import the whole module so that computeAndUpdate calls compute function of the module
+  const updatePromises = editions_and_resolutions.map(er => missingCommand.computeAndUpdate(client, er[1], er[0], () => {}))
 
   const prom = Promise.all(updatePromises)
   return prom.catch(err => {
