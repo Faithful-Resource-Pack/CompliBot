@@ -1,5 +1,6 @@
 {
     "prefix": "/",
     "firestormToken": "bing",
-    "token": "chilling"
+    "token": "chilling",
+    "appID": "botID"
 }

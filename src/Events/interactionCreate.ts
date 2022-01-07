@@ -1,11 +1,20 @@
-import { Interaction, Message } from 'discord.js';
-import { Command, Event } from '~/Interfaces';
-import * as emojis from '~/Helpers/emojis';
+import { Interaction } from 'discord.js';
+import { Event } from '~/Interfaces';
 
 export const event: Event = {
 	name: 'interactionCreate',
 	run: async (client, interaction: Interaction) => {
-		if (interaction.isButton()) {
+		if (interaction.isCommand()) {
+			const { commandName } = interaction
+
+			if (!client.slashCommands.has(commandName)) return;
+			const command = client.slashCommands.get(commandName);
+
+			try { await command.execute(interaction, client) } catch (err) { console.error(err); }
+		}
+
+
+		else if (interaction.isButton()) {
 			switch (interaction.customId) {
 				case 'vote-yes-submission':
 					break;
