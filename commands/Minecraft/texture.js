@@ -252,7 +252,8 @@ async function getTexture(message, res, texture, client) {
 				const lastContribution = await texture.lastContribution((res == '32' || res == '64') ? `c${res}` : undefined).catch(() => Promise.resolve(undefined))
 
 				if (lastContribution) {
-					const members = await Promise.allSettled(lastContribution.contributors.map(contributor => message.guild.members.fetch(contributor)))
+					// guild property must be checked if dm because 'Cannot read properties of null (reading 'members')' 
+					const members = await Promise.allSettled(lastContribution.contributors.map(contributor => message.guild ? message.guild.members.fetch(contributor) : Promise.reject()))
 					console.log(members)
 					const contributors = await Promise.all(members.map((val,i) => val.status === 'fulfilled' ? Promise.resolve(`<@!${val.value.user.id}>`) : client.users.fetch(lastContribution.contributors[i])))
 					console.log(contributors)
