@@ -4,6 +4,6 @@ import Client from '~/Client';
 
 export interface SlashCommand {
   dev?: boolean,
-  data: SlashCommandBuilder,
+  data: Omit<SlashCommandBuilder, "addSubcommand" | "addSubcommandGroup">,
   execute(interaction: Interaction, client?: Client): void
 }
