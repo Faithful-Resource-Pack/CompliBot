@@ -5,7 +5,7 @@ import MessageEmbed from '~/Client/embed';
 import Client from '~/Client';
 
 export const command: SlashCommand = {
-  dev: true,
+  dev: false,
   data: new SlashCommandBuilder()
     .setName("ball")
     .setDescription("Asks a question to the 8-ball.")

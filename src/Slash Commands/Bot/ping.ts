@@ -5,6 +5,7 @@ import MessageEmbed from '~/Client/embed';
 import Client from '~/Client';
 
 export const command: SlashCommand = {
+  dev: false,
   data: new SlashCommandBuilder()
     .setName("ping")
     .setDescription("Gets latency.")
