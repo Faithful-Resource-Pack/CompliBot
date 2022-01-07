@@ -14,6 +14,13 @@ function getMeta(imageURL) {
 			.then(response => {
 				const data = response.data
 				const buf = Buffer.from(data, "base64")
+
+				// fixes bug where buf was equal to undefined
+				if(!buf) {
+					reject(new Error('Buffer for getMeta invalid: ' + buf))
+					return
+				}
+
 				const size = sizeOf(buf)
 				resolve(size)
 			})
