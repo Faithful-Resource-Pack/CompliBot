@@ -58,7 +58,7 @@ const updatePercentages = new cron.CronJob('45 0 * * *', async () => {
   const resolutions = settings.resolutions.map(r => String(parseInt(r)))
   const editions_and_resolutions = editions.map(e => resolutions.map(r => [e, r])).flat()
   // you have to import the whole module so that computeAndUpdate calls compute function of the module
-  const updatePromises = editions_and_resolutions.map(er => missingCommand.computeAndUpdate(client, er[1], er[0], () => {}))
+  const updatePromises = editions_and_resolutions.map(er => missingCommand.computeAndUpdate(client, er[1], er[0]))
 
   const prom = Promise.all(updatePromises)
   return prom.catch(err => {
