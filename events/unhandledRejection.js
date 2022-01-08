@@ -32,7 +32,7 @@ module.exports = function(client, reason, promise, originMessage) {
 		.setTitle('Unhandled Rejection')
 		.setDescription(description)
 		.setColor(settings.colors.red)
-		.addField('Last messages received', links, false)
+		.addField('Last messages received', links ? links : '*No messages received yet*', false) // Fix bug where embed field value must not be empty
 		.setTimestamp()
 
   console.error(reason, promise)
