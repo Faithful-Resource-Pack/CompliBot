@@ -76,9 +76,27 @@ async function textureIDQuote(message) {
     let timestamp32 = contrib32 ? contrib32.date : undefined
     let author32 = contrib32 ? contrib32.contributors : undefined
 
+    if (contrib32) {
+      const usersCollection = require('../../helpers/firestorm/users')
+      // guild property must be checked if dm because 'Cannot read properties of null (reading 'members')' 
+      const members = await Promise.allSettled(contrib32.contributors.map(contributor => message.guild ? message.guild.members.fetch(contributor) : Promise.reject()))
+      const contributors = await Promise.all(members.map((val,i) => val.status === 'fulfilled' ? Promise.resolve(`<@!${val.value.user.id}>`) : usersCollection.get(contrib32.contributors[i])))
+      const contributorString = contributors.map(u => typeof(u) === 'string' ? u : u.username).join(', ')
+      author32 = contributorString
+    }
+
     let contrib64 = await texture.lastContribution('c64')
     let timestamp64 = contrib64 ? contrib64.date : undefined
     let author64 = contrib64 ? contrib64.contributors : undefined
+
+    if (contrib64) {
+      const usersCollection = require('../../helpers/firestorm/users')
+      // guild property must be checked if dm because 'Cannot read properties of null (reading 'members')' 
+      const members = await Promise.allSettled(contrib64.contributors.map(contributor => message.guild ? message.guild.members.fetch(contributor) : Promise.reject()))
+      const contributors = await Promise.all(members.map((val,i) => val.status === 'fulfilled' ? Promise.resolve(`<@!${val.value.user.id}>`) : usersCollection.get(contrib64.contributors[i])))
+      const contributorString = contributors.map(u => typeof(u) === 'string' ? u : u.username).join(', ')
+      author64 = contributorString
+    }
 
     const paths = {}
     const pathVersion = texturePath[0].versions[0]
@@ -116,8 +134,8 @@ async function textureIDQuote(message) {
       .setImage('attachment://output.png')
       .addField('Paths', pathValue, false)
       .addFields(
-        { name: '32x', value: author[0] != undefined && author[0].length ? `<@!${author[0].join('> <@!')}> - ${timestampConverter(timestamp[0])}` : `Contribution not found` },
-        { name: '64x', value: author[1] != undefined && author[1].length ? `<@!${author[1].join('> <@!')}> - ${timestampConverter(timestamp[1])}` : `Contribution not found` },
+        { name: '32x', value: author[0] != undefined && author[0].length ? `${author[0]} - ${timestampConverter(timestamp[0])}` : `Contribution not found` },
+        { name: '64x', value: author[1] != undefined && author[1].length ? `${author[1]} - ${timestampConverter(timestamp[1])}` : `Contribution not found` },
         // \u200B empty character not inline field is not working in v13, generating empty field error
       )
 

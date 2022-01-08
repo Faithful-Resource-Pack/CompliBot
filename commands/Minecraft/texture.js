@@ -252,13 +252,11 @@ async function getTexture(message, res, texture, client) {
 				const lastContribution = await texture.lastContribution((res == '32' || res == '64') ? `c${res}` : undefined).catch(() => Promise.resolve(undefined))
 
 				if (lastContribution) {
+					const usersCollection = require('../../helpers/firestorm/users')
 					// guild property must be checked if dm because 'Cannot read properties of null (reading 'members')' 
 					const members = await Promise.allSettled(lastContribution.contributors.map(contributor => message.guild ? message.guild.members.fetch(contributor) : Promise.reject()))
-					console.log(members)
-					const contributors = await Promise.all(members.map((val,i) => val.status === 'fulfilled' ? Promise.resolve(`<@!${val.value.user.id}>`) : client.users.fetch(lastContribution.contributors[i])))
-					console.log(contributors)
-					const contributorString = contributors.map(u => typeof(u) === 'string' ? u : u.username).join(', ')
-					console.log(contributorString)
+					const contributors = await Promise.all(members.map((val,i) => val.status === 'fulfilled' ? Promise.resolve(`<@!${val.value.user.id}>`) : usersCollection.get(lastContribution.contributors[i])))
+					const contributorString = contributors.map(u => typeof(u) === 'string' ? u : u.username).join('\n')
 					embed.addField('Author(s)', contributorString, true)
 
 					try {
