@@ -33,9 +33,8 @@ async function downloadResults(client, channelInID) {
 		.filter(message => message.embeds[0] && message.embeds[0].fields && message.embeds[0].fields[1])
 
 	// keep good textures
-	// for some reason instapassed textures get filtered out even tough being listed here? 
 	messages = messages
-		.filter(message => message.embeds[0].fields[1] !== undefined && (message.embeds[0].fields[1].value.includes(`Will be added in a future version!`) || message.embeds[0].fields[1].value.includes(`Instapassed`) || message.embeds[0].fields[1].value.includes(`After a revote, this texture will be added in a future version!`)))
+		.filter(message => message.embeds[0].fields[1] !== undefined && !message.embeds[0].fields[1].value.includes('is not going to be added'))
 
 	messages.reverse() // upload them from the oldest to the newest
 

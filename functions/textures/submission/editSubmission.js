@@ -112,8 +112,8 @@ async function editSubmission(client, reaction, user) {
 
 async function instapass(client, message) {
   let channelOut
-  if (message.channel.id == settings.channels.submit_textures.c32) channelOut = await client.channels.fetch(settings.channels.submit_results.c32) // obtains the channel or returns the one from cache
-  else if (message.channel.id == settings.channels.submit_textures.c64) channelOut = await client.channels.fetch(settings.channels.submit_results.c64) // obtains the channel or returns the one from cache
+  if (message.channel.id == settings.channels.submit_textures.c32 || message.channel.id == settings.channels.submit_council.c32 || message.channel.id == settings.channels.submit_revote.c32) channelOut = await client.channels.fetch(settings.channels.submit_results.c32) // obtains the channel or returns the one from cache
+  else if (message.channel.id == settings.channels.submit_textures.c64  || message.channel.id == settings.channels.submit_council.c64 || message.channel.id == settings.channels.submit_revote.c64) channelOut = await client.channels.fetch(settings.channels.submit_results.c64) // obtains the channel or returns the one from cache
 
   channelOut.send({
     embeds:
