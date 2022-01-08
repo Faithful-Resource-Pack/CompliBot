@@ -3,6 +3,7 @@ const settings = require('../../resources/settings.json');
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 const { timestampConverter } = require('../../helpers/timestampConverter');
 const { addDeleteReact } = require("../../helpers/addDeleteReact");
+const { sorterMC } = require("../../helpers/sorterMC")
 const { ID_FIELD } = require("../../helpers/firestorm");
 
 require('../../helpers/jsExtension');
@@ -61,7 +62,7 @@ async function textureIDQuote(message) {
 
         let localPath = await uses[i].paths()
         for (let k = 0; k < localPath.length; k++) {
-          const useVersionsSorted = localPath[k].versions.sort()
+          const useVersionsSorted = localPath[k].versions.sort(sorterMC)
           const versionPrefix = `\`[${useVersionsSorted[0]}${useVersionsSorted.length > 1 ? ` — ${useVersionsSorted[useVersionsSorted.length - 1]}` : ''}]\``
           pathObject[useEditionLc].push(`${versionPrefix} ${localPath[k].path}`)
         }
