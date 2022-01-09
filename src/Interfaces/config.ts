@@ -3,4 +3,7 @@ export interface Config {
 	firestormUrl: string;
 	images: string;
 	channels: any;
+	discords: {
+		dev: string
+	}
 }

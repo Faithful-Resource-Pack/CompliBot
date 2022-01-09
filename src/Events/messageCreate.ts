@@ -32,9 +32,9 @@ export const event: Event = {
 			return;
 		}
 
-		client.storeMessage(message);
-		const args = message.content.slice(client.tokens.prefix.length).trim().split(/ +/);
+		client.storeMessage(message); // used to backup last 5 messages in case of unhandled rejection
 
+		const args = message.content.slice(client.tokens.prefix.length).trim().split(/ +/);
 		const cmd = args.shift().toLowerCase();
 		if (!cmd) return;
 

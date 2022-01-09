@@ -1,5 +1,7 @@
-import { Interaction } from 'discord.js';
+import { Collection, Interaction } from 'discord.js';
+import { increase } from '~/Functions/commandProcess';
 import { Event } from '~/Interfaces';
+import { SlashCommandI } from '~/Interfaces/slashCommand';
 
 export const event: Event = {
 	name: 'interactionCreate',
@@ -10,27 +12,20 @@ export const event: Event = {
 			if (!client.slashCommands.has(commandName)) return;
 			const command = client.slashCommands.get(commandName);
 
-			try { await command.execute(interaction, client) } catch (err) { console.error(err); }
-		}
+			// todo: add verification that execute is instanceof Collection<string, SlashCommandI>
 
+			try {
+				// test if it has a subcommand
+				interaction.options.getSubcommand();
+				await (command.execute as Collection<string, SlashCommandI>).get(interaction.options.getSubcommand())(interaction, client);
+				increase((command.data as SlashCommandI).name);
+			} catch (err) {
 
-		else if (interaction.isButton()) {
-			switch (interaction.customId) {
-				case 'vote-yes-submission':
-					break;
-				case 'vote-no-submission':
-					break;
-				case 'more-submission':
-					break;
-			}
-		} else if (interaction.isSelectMenu()) {
-			switch (interaction.values[0]) {
-				case 'magnify':
-					break;
-				case 'palette':
-					break;
-				case 'tile':
-					break;
+				// not a subcomand
+				try {
+					await (command.execute as SlashCommandI)(interaction, client);
+					increase((command.data as SlashCommandI).name);
+				} catch (err) { console.error(err); } // weird stuff happening
 			}
 		}
 	},

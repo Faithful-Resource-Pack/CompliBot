@@ -2,5 +2,6 @@
     "prefix": "/",
     "firestormToken": "bing",
     "token": "chilling",
-    "appID": "botID"
+    "appID": "botID",
+    "dev": true
 }

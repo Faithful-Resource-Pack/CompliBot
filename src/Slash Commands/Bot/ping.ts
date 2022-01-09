@@ -5,7 +5,6 @@ import MessageEmbed from '~/Client/embed';
 import Client from '~/Client';
 
 export const command: SlashCommand = {
-  dev: false,
   data: new SlashCommandBuilder()
     .setName("ping")
     .setDescription("Gets latency.")
@@ -18,7 +17,7 @@ export const command: SlashCommand = {
 
         embed
           .setTitle('Pong!')
-          // Bot latency broken with command suggestions, solution needed without using message.createdTimestamp
+          // todo: Bot latency broken with command suggestions, solution needed without using message.createdTimestamp
           // May not be up to date as of the typescript rewrite
           .setDescription(
             `_${quotes[Math.floor(Math.random() * quotes.length)]}_\n\n**Bot Latency** \n${d.getTime() - interaction.createdTimestamp}ms \n**API Latency** \n${Math.round(
