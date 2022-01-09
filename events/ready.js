@@ -54,13 +54,8 @@ let pushToGithub = new cron.CronJob('30 0 * * *', async () => {
 })
 
 const updatePercentages = new cron.CronJob('45 0 * * *', async () => {
-  const editions = settings.editions.map(e => e.toLowerCase())
-  const resolutions = settings.resolutions.map(r => String(parseInt(r)))
-  const editions_and_resolutions = editions.map(e => resolutions.map(r => [e, r])).flat()
-  // you have to import the whole module so that computeAndUpdate calls compute function of the module
-  const updatePromises = editions_and_resolutions.map(er => missingCommand.computeAndUpdate(client, er[1], er[0]))
-
-  const prom = Promise.all(updatePromises)
+  // you have to import the whole module so that computeAndUpdateAll calls computeAndUpdate function of the module
+  const prom = missingCommand.computeAndUpdateAll(client)
   return prom.catch(err => {
     unhandledRejection(client, err, prom, undefined)
   })

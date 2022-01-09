@@ -12,7 +12,6 @@ const os = require('os')
 
 const { exec, series } = require('../../helpers/exec').promises
 const { warnUser } = require('../../helpers/warnUser')
-const { sorterMC } = require('../../helpers/sorterMC')
 
 const COMPLIANCE_REPOS = {
   java: {
@@ -242,8 +241,8 @@ module.exports = {
   category: 'Compliance',
   guildOnly: false,
   uses: strings.command.use.anyone,
-  syntax: `${prefix}missing <32|64> <java|bedrock> [-u]`,
-  example: `${prefix}missing 32 java\n${prefix}missing 64 bedrock -u`,
+  syntax: `${prefix}missing <all|<32|64> <java|bedrock> [-u]>`,
+  example: `${prefix}missing 32 java\n${prefix}missing 64 bedrock -u\n${prefix}missing all`,
   /**
    * @param {String} res resolution chosen
    * @param {String} edition edition chosen
@@ -391,6 +390,39 @@ module.exports = {
       })
   },
   /**
+   * Computes all
+   * @param {Discord.Client} client Discord client to act
+   * @param {Function(String): Promise} out Callback out steps
+   * @returns {Promise<void>} 
+   */
+  computeAndUpdateAll: function(client, out = undefined) {
+    const editions = settings.editions.map(e => e.toLowerCase())
+    const resolutions = settings.resolutions.map(r => String(parseInt(r)))
+    const editions_and_resolutions = editions.map(e => resolutions.map(r => [e, r])).flat()
+
+    // recursive async function to series updates
+    const startNext = (arr, out, results) => {
+      if(results === undefined) results = []
+      if(arr.length === 0) return Promise.resolve(results)
+
+      out('') // reset steps
+
+      const er = arr.shift()
+      return this.computeAndUpdate(client, er[1], er[0], out)
+        .then(result => {
+          results.push({
+            res: er[1],
+            edition: er[0],
+            result: result
+          })
+
+          return startNext(arr, out, results)
+        })
+    }
+
+    return startNext(editions_and_resolutions, out)
+  },
+  /**
    * @param {Discord.Client} client Discord client using this command
    * @param {Discord.Message} message Incoming message matching
    * @param {Array<string>} args Arguments after the command
@@ -402,19 +434,25 @@ module.exports = {
     // no args specified
 		if (!args) return warnUser(message, strings.command.args.none_given + exampleCommand)
 
-    // invalid resolution specified
-    if (args[0] != '32' && args[0] != '64') return warnUser(message, strings.command.missing.invalid_resolution + exampleCommand)
+    let all = args.length === 1 && args[0] === 'all'
 
-    // no edition specified
-    if (!args[1]) return warnUser(message, strings.command.missing.no_edition + exampleCommand)
+    let updateChannel, res, edition
+    if(!all) {
+      // invalid resolution specified
+      if (args[0] != '32' && args[0] != '64') return warnUser(message, strings.command.missing.invalid_resolution + exampleCommand)
+  
+      // no edition specified
+      if (!args[1]) return warnUser(message, strings.command.missing.no_edition + exampleCommand)
+  
+      // invalid edition specified
+      if (args[1] != 'java' && args[1] != 'bedrock') return warnUser(message, strings.command.missing.invalid_edition + exampleCommand)
+      
 
-    // invalid edition specified
-    if (args[1] != 'java' && args[1] != 'bedrock') return warnUser(message, strings.command.missing.invalid_edition + exampleCommand)
+      updateChannel = args.length > 2 && args[2].trim() === '-u'
 
-    const updateChannel = args.length > 2 && args[2].trim() === '-u'
-
-    const res = args[0].trim().toLowerCase()
-    const edition = args[1].trim().toLowerCase()
+      res = args[0].trim().toLowerCase()
+      edition = args[1].trim().toLowerCase()
+    }
 
     let embed = new Discord.MessageEmbed()
       .setTitle('Searching for missing textures...')
@@ -427,28 +465,56 @@ module.exports = {
     let steps = []
 
     let step_callback = async (step) => {
-      steps.push(step)
+      if(step === '') {
+        steps = ['Next one...']
+      } else {
+        if(steps.length === 1 && steps[0] === 'Next one...') steps = [] 
+        steps.push(step)
+      }
 
       embed.fields[0].value = steps.join('\n')
       await embedMessage.edit({ embeds: [embed] })
     }
 
     let prom // = undefined
-    if(updateChannel) {
-      prom = this.compute(res, edition, step_callback)
+    if(all) {
+      prom = this.computeAndUpdateAll(client, step_callback)
     } else {
-      prom = this.computeAndUpdate(client, res, edition, step_callback)
+      if(updateChannel) {
+        prom = this.compute(res, edition, step_callback)
+      } else {
+        prom = this.computeAndUpdate(client, res, edition, step_callback)
+      }
     }
     
-    prom.then(async (results) => {
-      const [result_buffer, diff_result, progress] = results
-      const result_file = new Discord.MessageAttachment(result_buffer, `missing-${res}-${edition}.txt`);
+    prom.then(async (responses) => {
+      const files = []
+      if(responses.length && !responses[0].res) {
+        responses = [{
+          res: res,
+          edition: edition,
+          result: responses
+        }]
+      }
+      responses.forEach((result_buffer) => {
+        files.push(new Discord.MessageAttachment(result_buffer.result[0], `missing-${result_buffer.res}-${result_buffer.edition}.txt`));
+      })
 
       let resultEmbed = new Discord.MessageEmbed()
-        .addField(`Compliance ${res}x ${edition} progress:`, progress + `% complete\n ${diff_result.length} textures missing`)
-        .setColor(settings.colors.blue)
+
+      responses.forEach(response => {
+        const result = response.result
+        const res = response.res
+        const edition = response.edition
+        const diff_result = result[1]
+        const progress = result[2]
+
+        resultEmbed
+          .addField(`Compliance ${res}x ${edition} progress:`, progress + `% complete\n ${diff_result.length} textures missing`)
+          .setColor(settings.colors.blue)
+      })
   
-      await embedMessage.edit({ embeds: [resultEmbed], files: [result_file] })
+      await embedMessage.edit({ embeds: [resultEmbed], files: files })
       
       if(updateChannel) {
         await embedMessage.react(settings.emojis.upvote)
