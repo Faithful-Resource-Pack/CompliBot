@@ -7,13 +7,11 @@ import { Command, Event, Config, Tokens } from '~/Interfaces';
 import ConfigJson from '@/config.json';
 import TokensJson from '@/tokens.json';
 
-import * as firestorm from 'firestorm-db';
 import { init as initCommands } from '~/Functions/commandProcess';
 import { unhandledRejection } from '~/Functions/unhandledRejection';
 
 import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v9";
-import { SlashCommandBuilder } from "@discordjs/builders";
 import { SlashCommand } from '~/Interfaces/slashCommand';
 
 class ExtendedClient extends Client {
@@ -49,9 +47,6 @@ class ExtendedClient extends Client {
 		});
 
 		initCommands(this); // commands counter
-
-		firestorm.address(this.config.firestormUrl);
-		firestorm.token(this.tokens.firestormToken);
 
 		//slash commands handler
 		const slashCommandsPath = path.join(__dirname, '..', 'Slash Commands');

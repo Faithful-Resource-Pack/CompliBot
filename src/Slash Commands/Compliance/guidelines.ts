@@ -7,7 +7,7 @@ export const command: SlashCommand = {
 		.setName("guidelines")
 		.setDescription("Shows the guidelines for the Compliance Resource Pack.")
 	,
-	execute: async (interaction: CommandInteraction) => {
-		await interaction.reply({ content: "https://docs.compliancepack.net/pages/textures/texturing-guidelines" })
+	execute: (interaction: CommandInteraction) => {
+		interaction.reply({ content: "https://docs.compliancepack.net/pages/textures/texturing-guidelines" })
 	}
 };

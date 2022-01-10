@@ -4,9 +4,9 @@ import Client from '~/Client';
 
 export interface SlashCommand {
   data: Omit<SlashCommandBuilder, "addSubcommand" | "addSubcommandGroup" | any>,
-  execute: Collection<string, SlashCommandI> | SlashCommandI
+  execute: Collection<string, SlashCommandI> | SlashCommandI;
 }
 
 export interface SlashCommandI {
-  (interaction: Interaction, client?: Client): void
+  (interaction: Interaction, client?: Client): void;
 }
