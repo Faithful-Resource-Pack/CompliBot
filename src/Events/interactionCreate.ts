@@ -7,7 +7,7 @@ export const event: Event = {
 	name: 'interactionCreate',
 	run: async (client, interaction: Interaction) => {
 		if (interaction.isCommand()) {
-			const { commandName } = interaction
+			const { commandName } = interaction;
 
 			if (!client.slashCommands.has(commandName)) return;
 			const command = client.slashCommands.get(commandName);

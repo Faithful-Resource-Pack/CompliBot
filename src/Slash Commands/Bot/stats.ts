@@ -13,11 +13,11 @@ export const command: SlashCommand = {
     .setDescription("Gets statistics about the bot or commands!")
     .addSubcommand((subcommand) =>
       subcommand.setName("bot")
-        .setDescription("Statistics about the bot!!")
+        .setDescription("Statistics about the bot!")
     )
     .addSubcommand((subcommand) =>
       subcommand.setName("command")
-        .setDescription("Statistics about commands!!")
+        .setDescription("Statistics about commands!")
         .addStringOption(option =>
           option.setName("command")
             .setDescription("A command from the bot.")
@@ -59,15 +59,12 @@ export const command: SlashCommand = {
           { name: 'Prefix', value: client.tokens.prefix, inline: true },
           { name: 'Uptime', value: duration(client.uptime).humanize(), inline: true },
           { name: 'Guild Count', value: client.guilds.cache.size.toString(), inline: true },
-
           { name: 'RAM used', value: `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB`, inline: true },
           { name: 'Discord Library', value: `discord.js ${djsVersion}`, inline: true },
           { name: 'Node.js', value: `${process.version}`, inline: true },
-
           { name: 'Total\nCommands', value: '' + client.commands.size, inline: true },
           { name: 'Commands\nProcessed', value: '' + number, inline: true },
           { name: 'Members\nAcross Guilds', value: '' + sumMembers, inline: true },
-
           { name: 'Operating System', value: version },
         )
         .setFooter({ text: 'Bot made with love', iconURL: 'https://static.wikia.nocookie.net/minecraft_gamepedia/images/0/06/Heart_(icon).png' });
