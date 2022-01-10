@@ -6,6 +6,7 @@ import Client from "~/Client";
 
 /**
  * Warning: key value cannot be longer than a certain value (I didn't search how much it is)
+ * :: values used in SlashCommandBuilder must be defined before the bot construct it
  */
 const options: [name: string, value: string][] = [
   ['pizza', 'https://i0.wp.com/metro.co.uk/wp-content/uploads/2016/02/pizza-cheese.gif'],
