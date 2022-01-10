@@ -55,27 +55,27 @@ class ExtendedClient extends Client {
 
 		//slash commands handler
 		const slashCommandsPath = path.join(__dirname, '..', 'Slash Commands');
-		const commandsArr = []
+
 
 		readdirSync(slashCommandsPath).forEach(async (dir) => {
 			const commands = readdirSync(`${slashCommandsPath}/${dir}`).filter(file => file.endsWith('.ts'));
-
 			for (const file of commands) {
 				const { command } = require(`${slashCommandsPath}/${dir}/${file}`);
-
 				this.slashCommands.set(command.data.name, command);
-				commandsArr.push(command.data.toJSON());
 			}
 		})
 
+		let commandsArr: any[] = [];
+		this.slashCommands.each((c: SlashCommand) => commandsArr.push(c.data));
+
 		const rest = new REST({ version: "9" }).setToken(this.tokens.token);
 		if (this.tokens.dev) {
-			rest.put(Routes.applicationGuildCommands(this.tokens.appID, this.config.discords.dev), { body: commandsArr })
+			rest.put(Routes.applicationGuildCommands(this.tokens.appID, this.config.discords.dev), { body: commandsArr.map(c => c.toJSON()) })
 				.then(() => console.log('succeed dev'))
 				.catch(console.error);
 		}
 		else {
-			rest.put(Routes.applicationCommands(this.tokens.appID), { body: commandsArr })
+			rest.put(Routes.applicationCommands(this.tokens.appID), { body: commandsArr.map(c => c.toJSON()) })
 				.then(() => console.log('succeed all'))
 				.catch(console.error);
 		}
