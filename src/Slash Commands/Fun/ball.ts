@@ -14,7 +14,7 @@ export const command: SlashCommand = {
         .setRequired(true)
     )
   ,
-  execute: (interaction: CommandInteraction, client: Client) => {
+  execute: (interaction: CommandInteraction) => {
 
     let embed = new MessageEmbed()
       .setTitle(`${interaction.options.getString("question", true)}`.slice(0, 255))

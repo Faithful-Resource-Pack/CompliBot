@@ -11,7 +11,7 @@ export const command: SlashCommand = {
     .addUserOption(user => user.setName('user').setDescription('User to be killed.'))
     .addStringOption(string => string.setName('weapon').setDescription('Weapon to kill the user with.'))
   ,
-  execute: (interaction: CommandInteraction, client: Client) => {
+  execute: (interaction: CommandInteraction) => {
 
     let embed = new MessageEmbed();
 
