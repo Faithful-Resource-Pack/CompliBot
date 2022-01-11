@@ -3,6 +3,7 @@ import { colorAttachment } from '~/Functions/canvas/color';
 import MessageEmbed from '~/Client/embed';
 import { ColorResolvable, MessageAttachment } from 'discord.js';
 import axios from 'axios';
+import { parseColor } from '~/Functions/parseColor';
 
 export const command: Command = {
 	name: 'color',
@@ -10,33 +11,20 @@ export const command: Command = {
 	usage: ['color (image attachment|reply to message with image attachment)', 'color (image url)'],
 	aliases: ['hex', 'colour'], //im brittish im entitled to this
 	run: async (client, message, args) => {
-		let messageColor = '';
-
-		if (!(args.length > 0)) return message.warn('No arguments were provided.');
-		if (!args[0].match(/^(#|0x)?(?:[0-9a-fA-F]{3}){1,2}$/g)) return message.warn('Invalid color was provided!');
-
-		//removes # if any for url stuff below
-		messageColor = args[0].startsWith('#') ? args[0].substring(1).toUpperCase() : args[0].startsWith('0x') ? args[0].substring(2).toUpperCase() : args[0].toUpperCase();
-		if (messageColor.length != 6) {
-			messageColor = messageColor
-				.split('')
-				.map(function (hex) {
-					return hex + hex;
-				})
-				.join('');
-		}
+		let messageColor = parseColor(args);
+		if (messageColor == undefined) return message.warn('Invalid color!');
 
 		let colorAttach: MessageAttachment;
 		try {
-			colorAttach = await colorAttachment(messageColor, client);
+			colorAttach = await colorAttachment(args, client);
 		} catch (e) {
 			return console.log(e);
 		}
 
 		let embed = new MessageEmbed()
-			.setColor(('#' + messageColor) as ColorResolvable)
+			.setColor(('#' + messageColor.substring(0, 6)) as ColorResolvable)
 			.setThumbnail('attachment://color.png')
-			.setTitle('#' + messageColor) //
+			.setTitle('0x' + messageColor) //
 			.setURL('https://coolors.co/' + messageColor.toLowerCase());
 
 		var colorName = await axios.get(`https://www.thecolorapi.com/id?format=json&hex=${messageColor}`).then((response) => {
@@ -56,6 +44,9 @@ export const command: Command = {
 		message.channel.send({ embeds: [embed], files: [colorAttach] });
 	},
 };
+
+//todo: use the new parseColor function once its done
+
 function rgbToHsl(r: number, g: number, b: number) {
 	(r /= 255), (g /= 255), (b /= 255);
 	var max = Math.max(r, g, b),

@@ -2,24 +2,15 @@ import { Canvas, createCanvas, loadImage } from 'canvas';
 import { CommandInteractionOptionResolver, Message, MessageAttachment } from 'discord.js';
 import { writeFileSync } from 'fs';
 import ExtendedClient from '~/Client';
+import { parseColor } from '../parseColor';
 
 /**
  * @author nick
  * @param hexColor uses funky regex, can be shorthand (fff|#fff) or full (ffffff|#ffffff)
  */
-export async function colorAttachment(color: string, client: ExtendedClient): Promise<MessageAttachment> {
-	let hexColor = color;
+export async function colorAttachment(args: string[], client: ExtendedClient): Promise<MessageAttachment> {
+	let hexColor = parseColor(args);
 
-	//allows rgb shorthand to happen, #f0c => #ff00cc
-	if (color.length == 3 || color.length == 4) {
-		let r = color.substring(0, 1);
-		let g = color.substring(1, 2);
-		let b = color.substring(2, 3);
-		r += r;
-		g += g;
-		b += g;
-		hexColor = r + g + b;
-	}
 	let canvas = createCanvas(256, 256);
 	const context = canvas.getContext('2d');
 
@@ -28,7 +19,8 @@ export async function colorAttachment(color: string, client: ExtendedClient): Pr
 		return Promise.reject(err);
 	});
 	context.drawImage(imageToDraw, 0, 0, canvas.width, canvas.height);
-
+	context.fillStyle = '#ffe';
+	context.fillRect(0, 0, canvas.width, canvas.height);
 	var imgData = context.getImageData(0, 0, canvas.width, canvas.height);
 	var data = imgData.data;
 
@@ -54,14 +46,14 @@ export async function colorAttachment(color: string, client: ExtendedClient): Pr
 		// only met when its a fully opaque white pixel
 		if (red[i] + green[i] + blue[i] + alpha[i] == 1020) {
 			if (hexToRgb(hexColor) != null) {
-				const rgb: number[] = hexToRgb(hexColor);
-				something(rgb);
+				const rgba: number[] = hexToRgb(hexColor);
+				something(rgba);
 
-				red[i] = rgb[0];
-				green[i] = rgb[1];
-				blue[i] = rgb[2];
+				red[i] = rgba[0];
+				green[i] = rgba[1];
+				blue[i] = rgba[2];
 
-				alpha[i] = 256; //max the alpha since who cares about transparency lets be real
+				alpha[i] = rgba[3]; //max the alpha since who cares about transparency lets be real
 			} else {
 				return Promise.reject('Invalid hex color!');
 			}
@@ -88,18 +80,15 @@ export async function colorAttachment(color: string, client: ExtendedClient): Pr
 	return new MessageAttachment(canvas.toBuffer('image/png'), 'color.png');
 }
 function hexToRgb(hex: string) {
-	var result = /^(#|0x)?(?:[0-9a-fA-F]{3}){1,2}$/g.exec(hex); // rolf would be proud xd
-	if (result) {
-		if (hex.startsWith('0x') || hex.startsWith('#')) {
-			hex.replace('0x', '');
-			hex.replace('#', '');
-		}
-		var r = parseInt(hex.substring(0, 2), 16);
-		var g = parseInt(hex.substring(2, 4), 16);
-		var b = parseInt(hex.substring(4, 6), 16);
-		var rgb: number[] = [];
-		rgb.push(r, g, b);
-		return rgb; //return [23,14,45] -> reformat if needed
+	if (hex.startsWith('0x') || hex.startsWith('#')) {
+		hex.replace('0x', '');
+		hex.replace('#', '');
 	}
-	return null;
+	var r = parseInt(hex.substring(0, 2), 16);
+	var g = parseInt(hex.substring(2, 4), 16);
+	var b = parseInt(hex.substring(4, 6), 16);
+	var a = parseInt(hex.substring(6, 8), 16);
+	var rgba: number[] = [];
+	rgba.push(r, g, b, a);
+	return rgba; //return [23,14,45] -> reformat if needed
 }
