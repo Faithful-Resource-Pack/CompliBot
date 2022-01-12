@@ -204,6 +204,7 @@ async function getTexture(message, res, texture, client) {
 	}
 
 	if (pathUseType == "java") {
+		if (pathVersion == '1.19') pathVersion = '1.18.1'
 		switch (res) {
 			case "16":
 				imgURL = settings.repositories.raw.default.java + pathVersion + '/' + path
