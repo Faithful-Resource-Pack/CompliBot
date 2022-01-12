@@ -189,7 +189,7 @@ async function getTexture(message, res, texture, client) {
 	const uses = await texture.uses()
 	const path = (await uses[0].paths())[0].path
 	const pathSort = (await uses[0].paths())[0].versions.sort(MinecraftSorter).reverse()
-	const pathVersion = pathSort[0]
+	var pathVersion = pathSort[0]
 	const pathUseType = uses[0].editions[0]
 
 	let pathsText = []
