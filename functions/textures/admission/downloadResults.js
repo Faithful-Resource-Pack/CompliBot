@@ -24,8 +24,7 @@ async function downloadResults(client, channelInID) {
 	let delayedDate = new Date()
 	messages = messages.filter(message => {
 		let messageDate = new Date(message.createdTimestamp)
-		// may have issues on the first day of a month with instapassed textures on the previous day
-		return messageDate.getDate() >= delayedDate.getDate() - 1 && messageDate.getMonth() == delayedDate.getMonth() && messageDate.getFullYear() == delayedDate.getFullYear() && messageDate.getMinutes() > 0
+		return messageDate.getDate() == delayedDate.getDate() && messageDate.getMonth() == delayedDate.getMonth() && messageDate.getFullYear() == delayedDate.getFullYear()
 	})
 
 	// select non already processed messages
