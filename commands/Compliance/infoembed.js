@@ -92,7 +92,7 @@ module.exports = {
 					.setColor(settings.colors.patreon)
 					.setThumbnail('https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Patreon_logomark.svg/1024px-Patreon_logomark.svg.png')
 
-				await message.channel.send({ embeds: [websiteEmbed, twitterEmbed, curseforgeEmbed, planetminecraftEmbed, youtubeEmbed, patreonEmbed] })
+				await message.channel.send({ embeds: [websiteEmbed, githubEmbed, twitterEmbed, curseforgeEmbed, planetminecraftEmbed, mcpedlEmbed, youtubeEmbed, patreonEmbed] })
 				await message.delete()
 			}
 		} else return
