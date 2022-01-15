@@ -1,0 +1,5 @@
+Error.General:Encountered an error!
+Error.NotFound:%THING% Not Found!
+Error.DevBad:Poop!
+Args.Insufficient:Not enough arguments!
+Args.Invalid:Invalid arguments!

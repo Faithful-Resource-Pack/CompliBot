@@ -1,5 +1,6 @@
 export function stringToMs(text: string) {
     let ms = 0;
+    
     const seconds = /(\d+)\s?(s|sec|seconds?)/.exec(text);
     if (seconds) ms += Number(seconds[1]) * 1000;
 

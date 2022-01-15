@@ -25,7 +25,7 @@ export const command: Command = {
 			.setColor(('#' + messageColor.substring(0, 6)) as ColorResolvable)
 			.setThumbnail('attachment://color.png')
 			.setTitle('0x' + messageColor) //
-			.setURL('https://coolors.co/' + messageColor.toLowerCase());
+			.setURL('https://coolors.co/' + messageColor.substring(0,6).toLowerCase());
 
 		var colorName = await axios.get(`https://www.thecolorapi.com/id?format=json&hex=${messageColor}`).then((response) => {
 			return response.data.name.value;
