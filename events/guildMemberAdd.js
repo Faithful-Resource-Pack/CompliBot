@@ -9,5 +9,6 @@ module.exports = {
   async execute(guild) {
     if (DEV) return
     updateMembers(client, settings.guilds.c32.id, settings.channels.counters.c32)
+    updateMembers(client, '814198513847631944', '814246773459255328')
   }
 }

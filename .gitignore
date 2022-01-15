@@ -9,3 +9,5 @@ desktop.ini
 firestore.json
 bot.service
 tokens.json
+resources/settings.json
+resources/strings.json
