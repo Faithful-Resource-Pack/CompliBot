@@ -45,30 +45,54 @@ module.exports = {
 			}
 			else if (args[0] === 'media') {
 				var websiteEmbed = new MessageEmbed()
-					.setTitle('Compliance Website')
+					.setTitle('Website')
 					.setDescription('https://compliancepack.net/')
-					.setColor(settings.colors.C32)
+					.setColor(settings.colors.c32)
 					.setThumbnail(settings.images.c32)
 
+				var githubEmbed = new MessageEmbed()
+					.setTitle('Github')
+					.setDescription('https://github.com/Compliance-Resource-Pack')
+					.setColor(settings.colors.github)
+					.setThumbnail('https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png')
+
 				var twitterEmbed = new MessageEmbed()
-					.setTitle('Compliance Twitter')
+					.setTitle('Twitter')
 					.setDescription('https://twitter.com/CompliancePack')
 					.setColor(settings.colors.twitter)
-					.setThumbnail('https://upload.wikimedia.org/wikipedia/en/thumb/6/60/Twitter_Logo_as_of_2021.svg/1280px-Twitter_Logo_as_of_2021.svg.png')
+					.setThumbnail('https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Twitter-logo.svg/512px-Twitter-logo.svg.png')
+
+				var curseforgeEmbed = new MessageEmbed()
+					.setTitle('CurseForge')
+					.setDescription('https://www.curseforge.com/members/compliance_team/projects')
+					.setColor(settings.colors.curseforge)
+					.setThumbnail('https://gist.githubusercontent.com/thecodewarrior/110057b210551c4ecf2c9be6d58ff824/raw/38748511ca1eb5677f009092fb3fcd71cc76cdf0/logo.png')
+
+				var planetminecraftEmbed = new MessageEmbed()
+					.setTitle('Planet Minecraft')
+					.setDescription('https://www.planetminecraft.com/member/compliance/')
+					.setColor(settings.colors.planetminecraft)
+					.setThumbnail('https://www.planetminecraft.com/images/layout/themes/modern/planetminecraft_logo.png') // why do they not offer the logo itself smh
+
+				var mcpedlEmbed = new MessageEmbed()
+					.setTitle('MCPEDL')
+					.setDescription('https://mcpedl.com/user/compliance/')
+					.setColor(settings.colors.mcpedl)
+					.setThumbnail('https://mcpedl.com/_nuxt/img/logo.e39b598.png')
 
 				var youtubeEmbed = new MessageEmbed()
-					.setTitle('Compliance Youtube')
+					.setTitle('Youtube')
 					.setDescription('https://www.youtube.com/channel/UCQFajwwCLyFKLhZsAkHSGJA')
 					.setColor(settings.colors.youtube)
 					.setThumbnail('https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/YouTube_full-color_icon_%282017%29.svg/1280px-YouTube_full-color_icon_%282017%29.svg.png')
 
 				var patreonEmbed = new MessageEmbed()
-					.setTitle('Compliance Patreon')
+					.setTitle('Patreon')
 					.setDescription('https://www.patreon.com/Compliance')
 					.setColor(settings.colors.patreon)
 					.setThumbnail('https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Patreon_logomark.svg/1024px-Patreon_logomark.svg.png')
 
-				await message.channel.send({ embeds: [websiteEmbed, twitterEmbed, youtubeEmbed, patreonEmbed] })
+				await message.channel.send({ embeds: [websiteEmbed, twitterEmbed, curseforgeEmbed, planetminecraftEmbed, youtubeEmbed, patreonEmbed] })
 				await message.delete()
 			}
 		} else return
