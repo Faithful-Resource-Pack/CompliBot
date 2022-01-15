@@ -402,6 +402,7 @@ module.exports = {
 
     // recursive async function to series updates
     const startNext = (arr, out, results) => {
+      if(out === undefined) out = async function() {}
       if(results === undefined) results = []
       if(arr.length === 0) return Promise.resolve(results)
 
