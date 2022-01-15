@@ -20,8 +20,10 @@ module.exports = {
 			if (args[0] === 'discords') {
 				if (message.guild.id === settings.guilds.c32.id || args[1] === '32x') {
 					await message.channel.send({ content: 'This server:\n> https://discord.gg/sN9YRQbBv7' });
-					await message.channel.send({ content: 'Compliance 64x:\n> https://discord.gg/Tqtwtgh' });
 					await message.channel.send({ content: 'Compliance Extras:\n> https://discord.gg/qVeDfZw' });
+					await message.channel.send({ content: 'Compliance Extras:\n> https://discord.gg/qVeDfZw' });
+					await message.channel.send({ content: 'Classic Faithful:\n> https://discord.gg/KSEhCVtg4J' });
+					await message.channel.send({ content: 'Faithful Community Testing:\n> https://discord.gg/c9xtzKGFZs' });
 					await message.channel.send({ content: 'Minecraft:\n> https://discord.gg/minecraft' });
 					await message.delete()
 				}
@@ -29,13 +31,16 @@ module.exports = {
 					await message.channel.send({ content: 'This server:\n> https://discord.gg/Tqtwtgh' });
 					await message.channel.send({ content: 'Compliance 32x:\n> https://discord.gg/sN9YRQbBv7' });
 					await message.channel.send({ content: 'Compliance Extras:\n> https://discord.gg/qVeDfZw' });
+					await message.channel.send({ content: 'Classic Faithful:\n> https://discord.gg/KSEhCVtg4J' });
+					await message.channel.send({ content: 'Faithful Community Testing:\n> https://discord.gg/c9xtzKGFZs' });
 					await message.channel.send({ content: 'Minecraft:\n> https://discord.gg/minecraft' });
 					await message.delete()
 				}
 				else if (message.guild.id === settings.guilds.cextras.id || args[1] === 'extras') {
 					await message.channel.send({ content: 'This server:\n> https://discord.gg/qVeDfZw' });
 					await message.channel.send({ content: 'Compliance 32x:\n> https://discord.gg/sN9YRQbBv7' });
-					await message.channel.send({ content: 'Compliance 64x:\n> https://discord.gg/Tqtwtgh' });
+					await message.channel.send({ content: 'Classic Faithful:\n> https://discord.gg/KSEhCVtg4J' });
+					await message.channel.send({ content: 'Faithful Community Testing:\n> https://discord.gg/c9xtzKGFZs' });
 					await message.channel.send({ content: 'Minecraft:\n> https://discord.gg/minecraft' });
 					await message.channel.send({ content: 'Minecraft Dungeons:\n> https://discord.gg/minecraftdungeons' });
 					await message.channel.send({ content: 'Optifine:\n> https://discord.gg/3mMpcwW' });
