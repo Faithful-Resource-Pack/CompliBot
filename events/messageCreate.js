@@ -88,8 +88,8 @@ module.exports = {
         if (command.guildOnly && message.channel.type === 'DM') return warnUser(message, strings.bot.cant_dm)
 
 
-      lastMessages.addMessage(message)
-      
+        lastMessages.addMessage(message)
+
         command.execute(client, message, args).then(async () => {
           return increaseCommandProcessed()
         }).catch(async error => {
@@ -174,7 +174,8 @@ module.exports = {
        */
       if (
         message.channel.id === settings.channels.submit_textures.c32 ||
-        message.channel.id === settings.channels.submit_textures.c64 ||
+        message.channel.id === settings.channels.submit_textures.c64 || // OLD
+        message.channel.id === '931887174977208370' ||
         message.channel.id === settings.channels.submit_textures.cdungeons
       ) return submitTexture(client, message)
 

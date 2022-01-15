@@ -113,7 +113,14 @@ async function editSubmission(client, reaction, user) {
 async function instapass(client, message) {
   let channelOut
   if (message.channel.id == settings.channels.submit_textures.c32 || message.channel.id == settings.channels.submit_council.c32 || message.channel.id == settings.channels.submit_revote.c32) channelOut = await client.channels.fetch(settings.channels.submit_results.c32) // obtains the channel or returns the one from cache
-  else if (message.channel.id == settings.channels.submit_textures.c64  || message.channel.id == settings.channels.submit_council.c64 || message.channel.id == settings.channels.submit_revote.c64) channelOut = await client.channels.fetch(settings.channels.submit_results.c64) // obtains the channel or returns the one from cache
+  else if (
+    message.channel.id == settings.channels.submit_textures.c64 || // OLD
+    message.channel.id == settings.channels.submit_council.c64 || // OLD
+    message.channel.id == settings.channels.submit_revote.c64 || // OLD
+    message.channel.id == '931887174977208370' ||
+    message.channel.id == '931886877521350696' ||
+    message.channel.id == '931887204748374096'
+  ) channelOut = await client.channels.fetch('931887235433906276') // obtains the channel or returns the one from cache
 
   channelOut.send({
     embeds:
@@ -133,11 +140,11 @@ async function editEmbed(message) {
   let embed = message.embeds[0]
   // fix the weird bug that also apply changes to the old embed (wtf)
   if (message.channel.id == '841396215211360296') embed.setColor(settings.colors.blue)
-  else if (message.channel.id == settings.channels.submit_textures.c32 || message.channel.id == settings.channels.submit_textures.c64)
+  else if (message.channel.id == settings.channels.submit_textures.c32 || message.channel.id == '931887174977208370')
     embed.setColor(settings.colors.blue)
-  else if (message.channel.id == settings.channels.submit_council.c32 || message.channel.id == settings.channels.submit_council.c64)
+  else if (message.channel.id == settings.channels.submit_council.c32 || message.channel.id == '931886877521350696')
     embed.setColor(settings.colors.council)
-  else if (message.channel.id == settings.channels.submit_revote.c32 || message.channel.id == settings.channels.submit_revote.c64)
+  else if (message.channel.id == settings.channels.submit_revote.c32 || message.channel.id == '931887204748374096')
     embed.setColor(settings.colors.red)
 
   if (embed.description !== null) embed.setDescription(message.embeds[0].description.replace(`[Original Post](${message.url})\n`, ''))
