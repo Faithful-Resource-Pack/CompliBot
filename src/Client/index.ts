@@ -1,5 +1,5 @@
 // import { Client } from "discord-slash-commands-client";
-import { Client, Collection } from 'discord.js';
+import { Channel, Client, Collection, Guild, TextChannel, VoiceChannel } from 'discord.js';
 import Message from '~/Client/message';
 import path from 'path';
 import { readdirSync } from 'fs';
@@ -21,20 +21,6 @@ class ExtendedClient extends Client {
 	public events: Collection<string, Event> = new Collection();
 	public config: Config = ConfigJson;
 	public tokens: Tokens = TokensJson;
-	public ownerIDs: string[];
-	public categorys = readdirSync(path.join(__dirname, '..', 'Commands'));
-
-	private lastMessages = [];
-	private lastMessagesIndex = 0;
-
-	public storeMessage(message: Message) {
-		this.lastMessages[this.lastMessagesIndex] = message;
-		this.lastMessagesIndex = (this.lastMessagesIndex + 1) % 5; // store 5 last messages
-	}
-
-	public getLastMessages(): Array<Message> {
-		return this.lastMessages;
-	}
 
 	public async init() {
 		this.login(this.tokens.token).catch(() => {
@@ -65,7 +51,7 @@ class ExtendedClient extends Client {
 
 		const rest = new REST({ version: "9" }).setToken(this.tokens.token);
 		if (this.tokens.dev) {
-			rest.put(Routes.applicationGuildCommands(this.tokens.appID, this.config.discords.dev), { body: commandsArr.map(c => c.toJSON()) })
+			rest.put(Routes.applicationGuildCommands(this.tokens.appID, this.config.discords.filter(s => s.name === 'dev')[0].id), { body: commandsArr.map(c => c.toJSON()) })
 				.then(() => console.log('succeed dev'))
 				.catch(console.error);
 		}
@@ -106,5 +92,50 @@ class ExtendedClient extends Client {
 			unhandledRejection(this, reason)
 		})
 	}
+
+	/**
+	 * Store last 5 messages to get more context when debugging
+	 * @author Juknum
+	 */
+	private lastMessages = [];
+	private lastMessagesIndex = 0;
+
+	public storeMessage(message: Message) {
+		this.lastMessages[this.lastMessagesIndex] = message;
+		this.lastMessagesIndex = (this.lastMessagesIndex + 1) % 5; // store 5 last messages
+	}
+
+	public getLastMessages(): Array<Message> {
+		return this.lastMessages;
+	}
+
+	/**
+	 * Update Guild Member when used
+	 * @author Juknum
+	 * @param guildID guild ID to be updated
+	 * @param channelID channel ID from the fetched guild ID to be updated
+	 */
+	public updateMembers(guildID: string, channelID: string): void {
+		if (!guildID || !channelID) return;
+
+		let guild: Guild;
+		let channel: Channel
+
+		try {
+			guild = this.guilds.cache.get(guildID);
+			channel = guild.channels.cache.get(channelID);
+		} catch (_err) { return; }
+
+		if (guild && channel) switch (channel.type) {
+			case 'GUILD_VOICE':
+				(channel as VoiceChannel).setName(`Members: ${guild.memberCount}`);
+				break;
+			case 'GUILD_TEXT':
+			default:
+				(channel as TextChannel).setName(`members-${guild.memberCount}`);
+				break;
+		}
+	}
+
 }
 export default ExtendedClient;

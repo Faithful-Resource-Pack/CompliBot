@@ -7,9 +7,13 @@ export interface Config {
 		compliance: Repository,
 		vanilla: Repository
 	},
-	discords: {
-		dev: string
-	}
+	discords: Array<Discord>
+}
+
+interface Discord {
+	name: string;
+	id: string;
+	updateMember?: string;
 }
 
 interface Repository {
