@@ -72,19 +72,19 @@ async function councilSubmission(client, channelFromID, channelResultsID, channe
   })
 
   // send upvoted messages to #results (denied)
-  messagesDownvoted.forEach(message => {
-    let embed = message.embed
-    embed.setColor(settings.colors.red)
-    embed.fields[1].value = `<:downvote:${settings.emojis.downvote}> After a council decision, this texture is not going to be added, ask them if you want to know more about it.`
+//   messagesDownvoted.forEach(message => {
+//     let embed = message.embed
+//     embed.setColor(settings.colors.red)
+//     embed.fields[1].value = `<:downvote:${settings.emojis.downvote}> After a council decision, this texture is not going to be added, ask them if you want to know more about it.`
 
-    channelResults.send({ embeds: [embed] })
-      .then(async sentMessage => {
-        for (const emojiID of [settings.emojis.see_more]) await sentMessage.react(client.emojis.cache.get(emojiID))
-      })
+//     channelResults.send({ embeds: [embed] })
+//       .then(async sentMessage => {
+//         for (const emojiID of [settings.emojis.see_more]) await sentMessage.react(client.emojis.cache.get(emojiID))
+//       })
 
-    editEmbed(message.message, `<:upvote:${settings.emojis.upvote}> Sent to results!`)
-  })
-}
+//     editEmbed(message.message, `<:upvote:${settings.emojis.upvote}> Sent to results!`)
+//   })
+// }
 
 async function editEmbed(message, string) {
   let embed = message.embeds[0]
