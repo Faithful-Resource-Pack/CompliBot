@@ -37,13 +37,14 @@ const submissionProcess = new cron.CronJob('0 0 * * *', async () => {
   // Compliance 32x
   await retrieveSubmission(client, settings.channels.submit_textures.c32, settings.channels.submit_council.c32, 3)
   await councilSubmission(client, settings.channels.submit_council.c32, settings.channels.submit_results.c32, settings.channels.submit_revote.c32, 1)
-  await revoteSubmission(client, settings.channels.submit_revote.c32, settings.channels.submit_results.c32, 3)
+  //so it wont run every fricking time and yoink resources
+  //   await revoteSubmission(client, settings.channels.submit_revote.c32, settings.channels.submit_results.c32, 3)
 
   // Compliance 64x
   await retrieveSubmission(client, settings.channels.submit_textures.c64, '931886877521350696', 3) // OLD
   await retrieveSubmission(client, '931887174977208370', '931886877521350696', 3)
   await councilSubmission(client, '931886877521350696', '931887235433906276', '931887204748374096', 1)
-  await revoteSubmission(client, '931887204748374096', '931887235433906276', 3)
+  //   await revoteSubmission(client, '931887204748374096', '931887235433906276', 3)
 })
 const downloadToBot = new cron.CronJob('15 0 * * *', async () => {
   await downloadResults(client, settings.channels.submit_results.c32)
