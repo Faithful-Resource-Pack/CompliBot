@@ -13,7 +13,6 @@ const settings = require('../resources/settings.json')
 
 const { retrieveSubmission } = require('../functions/textures/submission/retrieveSubmission')
 const { councilSubmission } = require('../functions/textures/submission/councilSubmission')
-//const { revoteSubmission } = require('../functions/textures/submission/revoteSubmission')
 const { downloadResults } = require('../functions/textures/admission/downloadResults')
 const { pushTextures } = require('../functions/textures/admission/pushTextures')
 
@@ -37,17 +36,13 @@ const submissionProcess = new cron.CronJob('0 0 * * *', async () => {
   // Compliance 32x
   await retrieveSubmission(client, settings.channels.submit_textures.c32, settings.channels.submit_council.c32, 3)
   await councilSubmission(client, settings.channels.submit_council.c32, settings.channels.submit_results.c32, settings.channels.submit_revote.c32, 1)
-  //await revoteSubmission(client, settings.channels.submit_revote.c32, settings.channels.submit_results.c32, 3)
 
   // Compliance 64x
-  //await retrieveSubmission(client, settings.channels.submit_textures.c64, '931886877521350696', 3) // OLD
   await retrieveSubmission(client, '931887174977208370', '931886877521350696', 3)
   await councilSubmission(client, '931886877521350696', '931887235433906276', '931887204748374096', 1)
-  //await revoteSubmission(client, '931887204748374096', '931887235433906276', 3)
 })
 const downloadToBot = new cron.CronJob('15 0 * * *', async () => {
   await downloadResults(client, settings.channels.submit_results.c32)
-  //await downloadResults(client, settings.channels.submit_results.c64) // OLD
   await downloadResults(client, '931887235433906276')
 })
 let pushToGithub = new cron.CronJob('30 0 * * *', async () => {
