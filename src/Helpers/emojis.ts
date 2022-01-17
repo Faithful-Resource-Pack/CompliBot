@@ -1,5 +1,5 @@
 export const ids = {
-	planetMC: '863132124333080576',
+	planet_mc: '863132124333080576',
 	curseforge: '863132124306472980',
 	c64: '863126350700871710',
 	c32: '863126354458837002',
@@ -32,8 +32,10 @@ export const ids = {
 	tile: '918186692307996723',
 	next_res: '918186640571256842',
 	pending: '918186662780092537',
-};
+} as const;
 
 export function parseId(id: string): string {
 	return `<:${Object.keys(ids).find((key) => ids[key] === id)}:${id}>`;
 }
+
+export type emojiTypes = keyof typeof ids;

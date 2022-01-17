@@ -1,24 +1,37 @@
-import { readFileSync } from 'fs';
-import path from 'path';
-import { unhandledRejection } from './unhandledRejection';
+import en_US from '@/lang/en_US.json';
+import { ids, parseId } from '~/Helpers/emojis';
+export type stringKey = keyof typeof en_US;
 
-export type key = 'Error.General' | 'Error.NotFound' | 'Error.DevBad' | 'InvalidArgs' | 'InsufficientArgs';
-
-export function string(countryCode: string, string: key): string {
+export async function string(countryCode: string, text: stringKey, placeholders?: Array<string>): Promise<string> {
 	try {
-		const data = readFileSync(path.join(__dirname, `../../lang/${countryCode}.lang`), 'utf-8');
-		let map: { [key: string]: key } = data.split(/\r?\n/).reduce((obj, line) => {
-			let cols = line.split(':');
-			if (cols.length >= 2) {
-				obj[cols[0]] = cols[1];
-			}
-			return obj;
-		}, {});
-
-		if (Object.keys(map).filter((key) => key == string) != undefined) return map[string];
-		else return `not added to \`${countryCode}.lang\` yet!`;
+		const data: {} = await import(`@/lang/${countryCode}.json`).catch((e) => {
+			Promise.reject(e);
+		});
+		return data[text] == undefined ? undefined : parse(data[text], placeholders);
 	} catch (error) {
 		Promise.reject(error);
+		return undefined;
 	}
-	return undefined;
+}
+
+function parse(text: string, placeholders?: Array<string>): string {
+	if (text == undefined) return undefined;
+	let result = text;
+
+	//handles emojis: %EMOJI.DELETE%
+	result = result.replaceAll(/%EMOJI\.([A-Z_]+)%/g, (string) => {
+		let parsedStr = string.substring(7, string.length - 1);
+		return parseId(ids[parsedStr.toLowerCase()]);
+	});
+
+	//handles placeholders: %1%, %2%..
+	//todo: use an object so key value pairs can exist: "%weDoAlil%" => "trolling"
+
+	if (placeholders != undefined) {
+		for (let i = 0; i < placeholders.length; i++) {
+			result = result.replaceAll(`%${i}%`, placeholders[i].replaceAll(/\\n/, '\n').replaceAll('s', ' '));
+		}
+	}
+
+	return result;
 }
