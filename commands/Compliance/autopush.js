@@ -22,11 +22,11 @@ module.exports = {
 		if (!args.length) return warnUser(message, strings.command.args.invalid.generic)
 
 		if (args[0] == 'both') {
-			await downloadResults(client, settings.channels.submit_results.c64)
+			await downloadResults(client, '931887235433906276')
 			await downloadResults(client, settings.channels.submit_results.c32)
 		}
 		else if (args[0] == 'c32') await downloadResults(client, settings.channels.submit_results.c32)
-		else if (args[0] == 'c64') await downloadResults(client, settings.channels.submit_results.c64)
+		else if (args[0] == 'c64') await downloadResults(client, '931887235433906276')
 		else return warnUser(message, strings.command.args.invalid.generic);
 
 		await pushTextures(`Manual push, executed by: ${message.author.username} (${date()})`);	// Push them trough GitHub
