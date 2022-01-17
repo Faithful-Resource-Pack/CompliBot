@@ -13,6 +13,6 @@ export const command: Command = {
 			message.warn((await string('en_US', 'Error.NotFound')).replace('%THING%', args[1]));
 		}
 
-		message.channel.send(await string(args[0], args[1] as stringKey, args.splice(1)));
+		message.channel.send(await string(args[0], args[1] as stringKey, { pog: args[3] }));
 	},
 };
