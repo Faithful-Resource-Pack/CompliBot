@@ -18,7 +18,7 @@ async function downloadResults(client, channelInID) {
 	let messages = await getMessages(client, channelInID)
 
 	let res = 'c32'
-	if (channelInID == settings.channels.submit_results.c64) res = 'c64'
+	if (channelInID == '931887235433906276') res = 'c64'
 
 	// get messages from the same day
 	let delayedDate = new Date()
