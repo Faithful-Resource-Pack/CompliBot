@@ -2,7 +2,7 @@ name: Deploy
 
 on:
   push:
-    branches: [ master ]
+    branches: [ typescript ]
   workflow_dispatch:
 
 jobs:
