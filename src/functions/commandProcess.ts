@@ -1,6 +1,5 @@
 const path = require('path');
 const { existsSync } = require('fs');
-import { readFileSync } from 'fs';
 import * as fs from 'fs';
 import ExtendedClient from '@src/Client';
 
