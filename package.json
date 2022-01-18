@@ -5,7 +5,7 @@
     "main": "src/index.ts",
     "type": "module",
     "_moduleAliases": {
-        "~/*": [
+        "@src/*": [
             "dist/src"
         ],
         "@/*": [

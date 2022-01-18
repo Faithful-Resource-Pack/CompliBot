@@ -1,8 +1,8 @@
-import { SlashCommand } from "~/Interfaces/slashCommand";
+import { SlashCommand } from "@src/Interfaces/slashCommand";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction } from "discord.js";
-import MessageEmbed from '~/Client/embed';
-import Client from '~/Client';
+import MessageEmbed from '@src/Client/embed';
+import Client from '@src/Client';
 import get from 'axios';
 
 export const command: SlashCommand = {

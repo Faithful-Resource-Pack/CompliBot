@@ -2,7 +2,7 @@ const path = require('path');
 const { existsSync } = require('fs');
 import { readFileSync } from 'fs';
 import * as fs from 'fs';
-import ExtendedClient from '~/Client';
+import ExtendedClient from '@src/Client';
 
 const COUNTER_FOLDER = path.resolve(__dirname, '../json/');
 const COUNTER_FILE_PATH = path.resolve(COUNTER_FOLDER, 'commandsProcessed.json');

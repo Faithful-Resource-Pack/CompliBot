@@ -1,6 +1,8 @@
 {
 	"compilerOptions": {
-		"lib": ["ESNext"],
+		"lib": [
+			"ESNext"
+		],
 		"module": "commonjs",
 		"moduleResolution": "node",
 		"target": "ESNEXT",
@@ -16,10 +18,18 @@
 		"resolveJsonModule": true,
 		"baseUrl": "src",
 		"paths": {
-			"@/*": ["../*"],
-			"~/*": ["*"] //you will thank me later
+			"@/*": [
+				"../*"
+			],
+			"@src/*": [
+				"*"
+			] //you will thank me later
 		}
 	},
-	"exclude": ["node_modules"],
-	"include": ["src"]
+	"exclude": [
+		"node_modules"
+	],
+	"include": [
+		"src"
+	]
 }

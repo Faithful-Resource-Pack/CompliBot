@@ -1,8 +1,8 @@
-import { SlashCommand } from "~/Interfaces/slashCommand";
+import { SlashCommand } from "@src/Interfaces/slashCommand";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction, TextChannel } from "discord.js";
-import MessageEmbed from '~/Client/embed';
-import Client from "~/Client";
+import MessageEmbed from '@src/Client/embed';
+import Client from "@src/Client";
 
 /**
  * Warning: key value cannot be longer than a certain value (I didn't search how much it is)

@@ -1,6 +1,6 @@
-import MessageEmbed from '~/Client/embed';
-import { Command } from '~/Interfaces';
-import { getMember } from '~/Functions/getMember';
+import MessageEmbed from '@src/Client/embed';
+import { Command } from '@src/Interfaces';
+import { getMember } from '@src/Functions/getMember';
 
 export const command: Command = {
 	name: 'unmute',

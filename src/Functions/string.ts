@@ -1,5 +1,5 @@
 import en_US from '@/lang/en_US.json';
-import { ids, parseId } from '~/Helpers/emojis';
+import { ids, parseId } from '@src/Helpers/emojis';
 export type stringKey = keyof typeof en_US;
 
 export async function string(countryCode: string, text: stringKey, placeholders?: { [key: string]: string }): Promise<string> {

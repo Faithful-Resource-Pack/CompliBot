@@ -1,9 +1,9 @@
-import { Command } from '~/Interfaces';
-import { colorAttachment } from '~/Functions/canvas/color';
-import MessageEmbed from '~/Client/embed';
+import { Command } from '@src/Interfaces';
+import { colorAttachment } from '@src/Functions/canvas/color';
+import MessageEmbed from '@src/Client/embed';
 import { ColorResolvable, MessageAttachment } from 'discord.js';
 import axios from 'axios';
-import { parseColor } from '~/Functions/parseColor';
+import { parseColor } from '@src/Functions/parseColor';
 
 export const command: Command = {
 	name: 'color',

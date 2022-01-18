@@ -1,5 +1,5 @@
-import { string, stringKey } from '~/Functions/string';
-import { Command } from '~/Interfaces';
+import { string, stringKey } from '@src/Functions/string';
+import { Command } from '@src/Interfaces';
 
 export const command: Command = {
 	name: 'langtest',

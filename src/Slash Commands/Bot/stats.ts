@@ -1,9 +1,9 @@
-import { SlashCommand, SlashCommandI } from "~/Interfaces/slashCommand";
+import { SlashCommand, SlashCommandI } from "@src/Interfaces/slashCommand";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { Collection, CommandInteraction, Guild, version as djsVersion } from "discord.js";
-import MessageEmbed from "~/Client/embed";
-import Client from "~/Client";
-import { getUsage, total } from "~/Functions/commandProcess";
+import MessageEmbed from "@src/Client/embed";
+import Client from "@src/Client";
+import { getUsage, total } from "@src/Functions/commandProcess";
 import os from "os";
 import { duration } from "moment";
 

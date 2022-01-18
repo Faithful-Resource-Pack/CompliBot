@@ -1,5 +1,5 @@
 import firestorm from 'firestorm-db';
-import { parseArr } from '~/Functions/parseArray';
+import { parseArr } from '@src/Functions/parseArray';
 import config from '../config';
 config();
 

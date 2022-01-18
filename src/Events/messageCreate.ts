@@ -1,8 +1,8 @@
-import * as emojis from '~/Helpers/emojis';
-import { Event, Command } from '~/Interfaces';
-import { increase } from '~/Functions/commandProcess';
-import Message from '~/Client/message';
-import ExtendedClient from '~/Client';
+import * as emojis from '@src/Helpers/emojis';
+import { Event, Command } from '@src/Interfaces';
+import { increase } from '@src/Functions/commandProcess';
+import Message from '@src/Client/message';
+import ExtendedClient from '@src/Client';
 
 export const event: Event = {
 	name: 'messageCreate',

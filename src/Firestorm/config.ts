@@ -1,5 +1,5 @@
 import firestorm from 'firestorm-db';
-import { Config, Tokens } from '~/Interfaces';
+import { Config, Tokens } from '@src/Interfaces';
 
 import ConfigJson from '@/config.json';
 import TokensJson from '@/tokens.json';

@@ -1,5 +1,5 @@
-import { Command } from '~/Interfaces';
-import { magnifyAttachment } from '~/Functions/canvas/magnify';
+import { Command } from '@src/Interfaces';
+import { magnifyAttachment } from '@src/Functions/canvas/magnify';
 
 export const command: Command = {
 	name: 'magnify',

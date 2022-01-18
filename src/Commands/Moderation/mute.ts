@@ -1,7 +1,7 @@
-import MessageEmbed from '~/Client/embed';
-import { Command } from '~/Interfaces';
-import { getMember } from '~/Functions/getMember';
-import { stringToMs } from '~/Functions/time';
+import MessageEmbed from '@src/Client/embed';
+import { Command } from '@src/Interfaces';
+import { getMember } from '@src/Functions/getMember';
+import { stringToMs } from '@src/Functions/time';
 
 export const command: Command = {
 	name: 'mute',

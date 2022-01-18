@@ -1,6 +1,6 @@
 import { MessageAttachment, MessageEmbed, TextChannel } from 'discord.js';
-import Client from '~/Client';
-import Message from '~/Client/message';
+import Client from '@src/Client';
+import Message from '@src/Client/message';
 import fs from 'fs';
 
 const randomSentences: Array<string> = [

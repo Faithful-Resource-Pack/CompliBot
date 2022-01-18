@@ -1,5 +1,5 @@
 import { Guild, MessageEmbed } from 'discord.js';
-import { Event } from '~/Interfaces';
+import { Event } from '@src/Interfaces';
 
 export const event: Event = {
 	name: 'guildCreate',

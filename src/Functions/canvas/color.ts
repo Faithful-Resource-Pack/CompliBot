@@ -1,7 +1,7 @@
 import { Canvas, createCanvas, loadImage } from 'canvas';
 import { CommandInteractionOptionResolver, Message, MessageAttachment } from 'discord.js';
 import { writeFileSync } from 'fs';
-import ExtendedClient from '~/Client';
+import ExtendedClient from '@src/Client';
 import { parseColor } from '../parseColor';
 
 /**

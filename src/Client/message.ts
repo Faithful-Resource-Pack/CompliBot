@@ -1,8 +1,8 @@
 import { Message, MessageEmbed } from 'discord.js';
-import { Config, Tokens } from '~/Interfaces';
+import { Config, Tokens } from '@src/Interfaces';
 import ConfigJson from '@/config.json';
-import Menu from '~/Helpers/menu';
-import { ids } from '~/Helpers/emojis';
+import Menu from '@src/Helpers/menu';
+import { ids } from '@src/Helpers/emojis';
 import tokens from '@/tokens.json';
 import { stringify } from 'querystring';
 

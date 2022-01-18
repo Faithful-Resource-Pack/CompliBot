@@ -1,18 +1,18 @@
 // import { Client } from "discord-slash-commands-client";
 import { Channel, Client, Collection, Guild, TextChannel, VoiceChannel } from 'discord.js';
-import Message from '~/Client/message';
+import Message from '@src/Client/message';
 import path from 'path';
 import { readdirSync } from 'fs';
-import { Command, Event, Config, Tokens } from '~/Interfaces';
+import { Command, Event, Config, Tokens } from '@src/Interfaces';
 import ConfigJson from '@/config.json';
 import TokensJson from '@/tokens.json';
 
-import { init as initCommands } from '~/Functions/commandProcess';
-import { unhandledRejection } from '~/Functions/unhandledRejection';
+import { init as initCommands } from '@src/Functions/commandProcess';
+import { unhandledRejection } from '@src/Functions/unhandledRejection';
 
 import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v9";
-import { SlashCommand } from '~/Interfaces/slashCommand';
+import { SlashCommand } from '@src/Interfaces/slashCommand';
 
 class ExtendedClient extends Client {
 	public commands: Collection<string, Command> = new Collection();

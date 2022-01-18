@@ -1,7 +1,7 @@
 import { Collection, Interaction } from 'discord.js';
-import { increase } from '~/Functions/commandProcess';
-import { Event } from '~/Interfaces';
-import { SlashCommandI } from '~/Interfaces/slashCommand';
+import { increase } from '@src/Functions/commandProcess';
+import { Event } from '@src/Interfaces';
+import { SlashCommandI } from '@src/Interfaces/slashCommand';
 
 export const event: Event = {
 	name: 'interactionCreate',

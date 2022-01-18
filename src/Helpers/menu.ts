@@ -1,6 +1,6 @@
 import { MessageActionRow, MessageEmbed, MessageSelectMenu } from 'discord.js';
-import Message from '~/Client/message';
-import { Config } from '~/Interfaces';
+import Message from '@src/Client/message';
+import { Config } from '@src/Interfaces';
 import ConfigJson from '@/config.json';
 import { ids, parseId } from './emojis';
 

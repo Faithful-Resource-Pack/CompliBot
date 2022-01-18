@@ -1,7 +1,7 @@
-import { SlashCommand } from "~/Interfaces/slashCommand";
+import { SlashCommand } from "@src/Interfaces/slashCommand";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction } from "discord.js";
-import { getTexture } from "~/Functions/getTexture";
+import { getTexture } from "@src/Functions/getTexture";
 
 
 export const command: SlashCommand = {

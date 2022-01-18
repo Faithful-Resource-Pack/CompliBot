@@ -1,7 +1,7 @@
-import MessageEmbed from '~/Client/embed';
-import { magnifyAttachment } from '~/Functions/canvas/magnify';
-import { tileCanvas } from '~/Functions/canvas/tile';
-import { Command } from '~/Interfaces';
+import MessageEmbed from '@src/Client/embed';
+import { magnifyAttachment } from '@src/Functions/canvas/magnify';
+import { tileCanvas } from '@src/Functions/canvas/tile';
+import { Command } from '@src/Interfaces';
 
 export const command: Command = {
 	name: 'tileAndMagnify',
