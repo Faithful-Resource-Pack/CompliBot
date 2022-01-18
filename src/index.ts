@@ -1,3 +1,5 @@
+import './paths';
+
 import { Intents } from 'discord.js';
 import Client from './Client';
 
