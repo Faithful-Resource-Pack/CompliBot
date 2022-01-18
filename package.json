@@ -5,12 +5,8 @@
     "main": "src/index.ts",
     "type": "module",
     "_moduleAliases": {
-        "@src/*": [
-            "dist/src"
-        ],
-        "@/*": [
-            "dist/"
-        ]
+        "@src/*": "dist/src",
+        "@/*": "dist/"
     },
     "scripts": {
         "start": "ts-node-dev --respawn -r tsconfig-paths/register src/index.ts"
@@ -32,6 +28,7 @@
         "firestorm-db": "^1.8.0",
         "follow-redirects": "^1.14.6",
         "image-size": "^1.0.0",
+        "module-alias": "^2.2.2",
         "moment": "^2.29.1",
         "slash-commands": "^1.5.0"
     }
