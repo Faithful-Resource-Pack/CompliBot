@@ -1,0 +1,17 @@
+    %randomSentence%
+    %randomSentenceUnderline%
+
+CompliBot crash report, please report this to developers!
+Date: %date%
+%stack%
+
+Messages: (last 5 commands messages)
+%messageStart%
+  index:        %messageIndex%
+  timestamp:    %messageCreatedTimestamp%
+  url:          %messageURL%
+  channel type: %messageChannelType%
+  content:      %messageContent%
+
+  ---
+%messageEnd%
