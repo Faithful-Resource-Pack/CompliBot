@@ -4,6 +4,7 @@ import { CommandInteraction } from "discord.js";
 import Client from "@src/Client";
 
 export const command: SlashCommand = {
+  permissions: undefined,
   data: new SlashCommandBuilder()
     .setName("coin")
     .setDescription("Flip a coin. Will it be heads? Will it be tails? Who knows?")

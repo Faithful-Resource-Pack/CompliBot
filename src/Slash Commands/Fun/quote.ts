@@ -6,6 +6,7 @@ import Client from '@src/Client';
 import get from 'axios';
 
 export const command: SlashCommand = {
+  permissions: undefined,
   data: new SlashCommandBuilder()
     .setName("quote")
     .setDescription("Truely inspiring.")

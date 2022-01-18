@@ -13,30 +13,81 @@ import { unhandledRejection } from '@src/Functions/unhandledRejection';
 import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v9";
 import { SlashCommand } from '@src/Interfaces/slashCommand';
+import { SlashCommandBuilder } from "@discordjs/builders";
 
 class ExtendedClient extends Client {
-	public commands: Collection<string, Command> = new Collection();
-	public slashCommands: Collection<string, SlashCommand> = new Collection();
-	public aliases: Collection<string, Command> = new Collection();
-	public events: Collection<string, Event> = new Collection();
 	public config: Config = ConfigJson;
 	public tokens: Tokens = TokensJson;
 
 	public async init() {
+		// login client
 		this.login(this.tokens.token).catch(() => {
-			console.log(
-				'='.repeat(105) +
-				'\nThe provided bot token is invalid! Please check if the provided token is copied correctly and try again.\n' +
-				'='.repeat(105)
-			);
+			const e = 'The provided bot token is invalid! Please check if the provided token is copied correctly and try again.';
+			console.log(`${'='.repeat(e.length)}\n${e}\n${'='.repeat(e.length)}`);
 			process.exit(1);
+		})
+			.then(() => {
+				// commands counter
+				initCommands(this);
+
+				// load old commands only if not dev server
+				if (this.tokens.dev) this.loadCommands();
+
+				// load slash commands
+				this.loadSlashCommands();
+				this.loadSlashCommandsPerms();
+
+				// load events
+				this.loadEvents();
+
+			});
+
+		process.on('unhandledRejection', (reason, promise) => {
+			unhandledRejection(this, reason)
+		})
+	}
+
+	/**
+	 * SLASH COMMANDS PERMS
+	 */
+	private loadSlashCommandsPerms = async () => {
+		if (!this.application?.owner) await this.application?.fetch();
+
+		this.guilds.cache.forEach(async (guild: Guild) => {
+			const fullPermissions = [];
+			const guildSlashCommands = await guild.commands.fetch();
+
+			this.slashCommands.forEach(async (slashCommand: SlashCommand) => {
+				if (slashCommand.permissions === undefined) return; // no permission to be checked
+
+				const p = {
+					id: guildSlashCommands.find(cmd => cmd.name === (slashCommand.data as SlashCommandBuilder).name).id,
+					permissions: []
+				}
+
+				if (slashCommand.permissions.roles !== undefined)
+					for (const id of slashCommand.permissions.roles)
+						if (guild.roles.cache.get(id)) p.permissions.push({ id: id, type: "ROLE", permission: true });
+
+				if (slashCommand.permissions.users !== undefined)
+					for (const id of slashCommand.permissions.users)
+						if (guild.members.cache.get(id)) p.permissions.push({ id: id, type: "USER", permission: true });
+
+				fullPermissions.push(p);
+			});
+
+			await guild.commands.permissions.set({ fullPermissions });
 		});
 
-		initCommands(this); // commands counter
 
-		//slash commands handler
+	}
+
+	/**
+	 * SLASH COMMANDS HANDLER
+	 */
+	public slashCommands: Collection<string, SlashCommand> = new Collection();
+	private loadSlashCommands = () => {
 		const slashCommandsPath = path.join(__dirname, '..', 'Slash Commands');
-
 
 		readdirSync(slashCommandsPath).forEach(async (dir) => {
 			const commands = readdirSync(`${slashCommandsPath}/${dir}`).filter(file => file.endsWith('.ts'));
@@ -50,6 +101,8 @@ class ExtendedClient extends Client {
 		this.slashCommands.each((c: SlashCommand) => commandsArr.push(c.data));
 
 		const rest = new REST({ version: "9" }).setToken(this.tokens.token);
+
+		// deploy commands only for dev discord if so
 		if (this.tokens.dev) {
 			rest.put(Routes.applicationGuildCommands(this.tokens.appID, this.config.discords.filter(s => s.name === 'dev')[0].id), { body: commandsArr.map(c => c.toJSON()) })
 				.then(() => console.log('succeed dev'))
@@ -60,8 +113,15 @@ class ExtendedClient extends Client {
 				.then(() => console.log('succeed all'))
 				.catch(console.error);
 		}
+	}
 
-		//command handling
+	/**
+	 * CLASSIC COMMAND HANDLER
+	 * todo: remove this once all commands are implemented as slash commands
+	 */
+	public aliases: Collection<string, Command> = new Collection();
+	public commands: Collection<string, Command> = new Collection();
+	private loadCommands = () => {
 		const commandPath = path.join(__dirname, '..', 'Commands');
 		readdirSync(commandPath).forEach((dir) => {
 			const commands = readdirSync(`${commandPath}/${dir}`).filter((file) => file.endsWith('.ts'));
@@ -79,18 +139,20 @@ class ExtendedClient extends Client {
 				}
 			}
 		});
+	}
 
-		//event handling
+	/**
+	 * Read "Events" directory and add them as events
+	 */
+	public events: Collection<string, Event> = new Collection();
+	private loadEvents = (): void => {
 		const eventPath = path.join(__dirname, '..', 'Events');
+
 		readdirSync(eventPath).forEach(async (file) => {
 			const { event } = await import(`${eventPath}/${file}`);
 			this.events.set(event.name, event);
 			this.on(event.name, event.run.bind(null, this));
 		});
-
-		process.on('unhandledRejection', (reason, promise) => {
-			unhandledRejection(this, reason)
-		})
 	}
 
 	/**

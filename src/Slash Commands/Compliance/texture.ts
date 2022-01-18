@@ -5,6 +5,7 @@ import { getTexture } from "@src/Functions/getTexture";
 
 
 export const command: SlashCommand = {
+  permissions: undefined,
   data: new SlashCommandBuilder()
     .setName("texture")
     .setDescription("Displays a specified texture from either vanilla Minecraft or Compliance.")

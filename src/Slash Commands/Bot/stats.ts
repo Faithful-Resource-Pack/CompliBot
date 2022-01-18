@@ -8,6 +8,7 @@ import os from "os";
 import { duration } from "moment";
 
 export const command: SlashCommand = {
+  permissions: undefined,
   data: new SlashCommandBuilder()
     .setName("stats")
     .setDescription("Gets statistics about the bot or commands!")
