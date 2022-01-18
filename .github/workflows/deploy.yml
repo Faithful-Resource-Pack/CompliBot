@@ -21,9 +21,9 @@ jobs:
         PORT: ${{ secrets.PORT }}
         KEY: ${{ secrets.SSH }}
         script: |
-          cd ./CompliBot
+          cd ./"CompliBot (TS)"
           git stash
           git pull
           npm install
-          pm2 delete "BOT"
-          pm2 start "node --use_strict --trace-warnings index.js" --name "BOT"
+          pm2 delete "BOT (TS)"
+          pm2 start "npm run start" --name "BOT (TS)"
