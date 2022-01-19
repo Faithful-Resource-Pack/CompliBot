@@ -109,9 +109,13 @@ class ExtendedClient extends Client {
 				.catch(console.error);
 		}
 		else {
-			rest.put(Routes.applicationCommands(this.tokens.appID), { body: commandsArr.map(c => c.toJSON()) })
-				.then(() => console.log('succeed all'))
-				.catch(console.error);
+			const devID = this.config.discords.filter(s => s.name === 'dev')[0].id
+			this.guilds.cache.forEach((guild: Guild) => {
+				if (guild.id !== devID) return;
+				rest.put(Routes.applicationGuildCommands(this.tokens.appID, devID), { body: commandsArr.map(c => c.toJSON()) })
+					.then(() => console.log(`succeed ${guild.name}`))
+					.catch(console.error);
+			})
 		}
 	}
 
