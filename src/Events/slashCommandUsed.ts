@@ -21,11 +21,13 @@ export const event: Event = {
       await (command.execute as Collection<string, SlashCommandI>).get(interaction.options.getSubcommand())(interaction, client);
     }
     catch (_err) {
+      console.error(_err);
       // not a subcommand
       try {
         // execute command
         await (command.execute as SlashCommandI)(interaction, client);
       } catch (err) {
+        console.error(err);
         return interaction.reply({ content: 'There were an error with command!', ephemeral: true });
       }
     }
