@@ -26,8 +26,9 @@ export class ColorManager {
   }
 
   async swapPixel(options: { url: string, color: RGBA, target: RGBA }): Promise<Buffer> {
-    let canvas = createCanvas(256, 256);
+    let canvas = createCanvas(512, 512);
     let ctx = canvas.getContext('2d');
+    ctx.imageSmoothingEnabled = false;
 
     let imgToDraw = await loadImage(options.url).catch((err) => {
       console.trace(err);
@@ -35,8 +36,6 @@ export class ColorManager {
     });
 
     ctx.drawImage(imgToDraw, 0, 0, canvas.width, canvas.height);
-    // ctx.fillStyle = '#fff';
-    // ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     let img = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
@@ -45,7 +44,8 @@ export class ColorManager {
       if (
         img.data[i] == options.target.r &&
         img.data[i + 1] == options.target.g &&
-        img.data[i + 2] == options.target.b
+        img.data[i + 2] == options.target.b &&
+        img.data[i + 3] == options.target.a * 255
       ) {
         img.data[i] = options.color.r;
         img.data[i + 1] = options.color.g;
