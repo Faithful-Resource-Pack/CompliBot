@@ -1,5 +1,4 @@
 import { createCanvas, loadImage } from 'canvas';
-import fs from 'fs';
 
 interface HEXA extends HEX { }
 interface HEX {
@@ -11,14 +10,32 @@ interface RGB {
   g: number;
   b: number;
 }
-
+interface HSL {
+  h: number;
+  s: number;
+  l: number;
+}
+interface HSV {
+  h: number;
+  s: number;
+  v: number;
+}
+interface CMYK {
+  c: number;
+  m: number;
+  y: number;
+  k: number
+}
 interface ColorManagerOptions {
   hex?: string;
-  rgb?: Array<number>
+  rgb?: { r: number; g: number; b: number; a: number };
+  hsl?: { h: number; s: number; l: number };
+  hsv?: { h: number; s: number; v: number };
+  cmyk?: { c: number; m: number; y: number; k: number }
 }
 
 export class ColorManager {
-  private color: HEXA | RGBA;
+  private color: RGBA;
 
   private b10b16(c: number | string): string {
     let hex = (typeof c === 'string') ? parseInt(c, 10).toString(16) : c.toString(16);
@@ -63,11 +80,57 @@ export class ColorManager {
   }
 
   toHEXA(): HEXA {
-    if ('value' in this.color) return this.color as HEXA;
+    return { value: `${this.b10b16(this.color.r)}${this.b10b16(this.color.g)}${this.b10b16(this.color.b)}${this.b10b16(+(this.color.a * 255).toFixed(0))}` } as HEXA;
+  }
 
-    if ('r' in this.color && 'g' in this.color && 'b' in this.color) {
-      return { value: `${this.b10b16(this.color.r)}${this.b10b16(this.color.g)}${this.b10b16(this.color.b)}` } as HEXA;
+  toHSL(): HSL {
+    let r: number = this.color.r / 255;
+    let g: number = this.color.g / 255;
+    let b: number = this.color.b / 255;
+
+    let max = Math.max(r, g, b);
+    let min = Math.min(r, g, b);
+    let diff = max - min;
+
+    let h: number, s: number, l: number = (max + min) / 2;
+
+    if (diff == 0) h = 0;
+    else if (max == r) h = ((g - b) / (diff)) % 6;
+    else if (max == g) h = (b - r) / (diff) + 2;
+    else h = (r - g) / diff + 4;
+    h *= 60;
+    if (h < 0) h += 360;
+
+    l = (max + min) / 2;
+
+    if (diff == 0) s = 0;
+    else s = diff / (1 - Math.abs(2 * l - 1));
+
+
+    return { h: +(h).toFixed(0), s: +(s * 100).toFixed(1), l: +(l * 100).toFixed(1) } as HSL;
+  }
+
+  toHSV(): HSV {
+    let r: number = this.color.r / 255;
+    let g: number = this.color.g / 255;
+    let b: number = this.color.b / 255;
+
+    let max: number = Math.max(r, g, b);
+    let min: number = Math.min(r, g, b);
+    let diff: number = max - min;
+
+    let h: number;
+    if (diff == 0) h = 0;
+    else switch (max) {
+      case r: h = 60 * (((g - b) / diff) % 6); break;
+      case g: h = 60 * (((b - r) / diff) + 2); break;
+      case b: h = 60 * (((r - g) / diff) + 4); break;
     }
+
+    let s: number = max == 0 ? 0 : diff / max;
+    let v: number = max;
+
+    return { h: +(h).toFixed(0), s: +(s * 100).toFixed(1), v: +(v * 100).toFixed(1) } as HSV;
   }
 
   toRGB(): RGB {
@@ -77,49 +140,127 @@ export class ColorManager {
   }
 
   toRGBA(): RGBA {
-    if ('r' in this.color && 'g' in this.color && 'b' in this.color && 'a' in this.color) return this.color;
-    if ('value' in this.color) {
-      let res = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(this.color.value)
+    return this.color;
+  }
 
-      return res ? {
-        r: parseInt(res[1], 16),
-        g: parseInt(res[2], 16),
-        b: parseInt(res[3], 16),
-        a: +(parseInt(res[4], 16) / 255).toFixed(2)
-      } : { r: 0, g: 0, b: 0, a: 0 }
-    }
+  toCMYK(): CMYK {
+    let c: number = 1 - (this.color.r / 255);
+    let m: number = 1 - (this.color.g / 255);
+    let y: number = 1 - (this.color.b / 255);
+    let k: number = Math.min(c, m, y);
+
+    c = Math.round(((c - k) / (1 - k)) * 10000) / 100;
+    m = Math.round(((m - k) / (1 - k)) * 10000) / 100;
+    y = Math.round(((y - k) / (1 - k)) * 10000) / 100;
+    k = Math.round(k * 10000) / 100;
+
+    c = isNaN(c) ? 0 : c;
+    m = isNaN(m) ? 0 : m;
+    y = isNaN(y) ? 0 : y;
+    k = isNaN(k) ? 0 : k;
+
+    return {
+      c: Math.round(c),
+      m: Math.round(m),
+      y: Math.round(y),
+      k: Math.round(k)
+    } as CMYK;
   }
 
   constructor(options?: ColorManagerOptions) {
+    // from rgb(a) to rgba
     if (options.rgb) {
       this.color = {
-        r: options.rgb[0] ? (options.rgb[0] > 255 ? 255 : (options.rgb[0] < 0 ? 0 : options.rgb[0])) : 0,
-        g: options.rgb[1] ? (options.rgb[1] > 255 ? 255 : (options.rgb[1] < 0 ? 0 : options.rgb[1])) : 0,
-        b: options.rgb[2] ? (options.rgb[2] > 255 ? 255 : (options.rgb[2] < 0 ? 0 : options.rgb[2])) : 0,
-        a: options.rgb[3] ? (options.rgb[3] > 1 ? 1 : (options.rgb[3] < 0 ? 0 : options.rgb[3])) : 1,
+        r: (options.rgb.r > 255 ? 255 : (options.rgb.r < 0 ? 0 : options.rgb.r)),
+        g: (options.rgb.g > 255 ? 255 : (options.rgb.g < 0 ? 0 : options.rgb.g)),
+        b: (options.rgb.b > 255 ? 255 : (options.rgb.b < 0 ? 0 : options.rgb.b)),
+        a: options.rgb.a ? (options.rgb.a > 1 ? 1 : (options.rgb.a < 0 ? 0 : options.rgb.a)) : 1,
       } as RGBA;
     }
 
+    // from cmyk to rgba
+    if (options.cmyk) {
+      options.cmyk.c = +((options.cmyk.c % 100) / 100).toFixed(2);
+      options.cmyk.m = +((options.cmyk.m % 100) / 100).toFixed(2);
+      options.cmyk.y = +((options.cmyk.y % 100) / 100).toFixed(2);
+      options.cmyk.k = +((options.cmyk.k % 100) / 100).toFixed(2);
+
+      this.color = {
+        r: +(255 * (1 - options.cmyk.c) * (1 - options.cmyk.k)).toFixed(0),
+        g: +(255 * (1 - options.cmyk.m) * (1 - options.cmyk.k)).toFixed(0),
+        b: +(255 * (1 - options.cmyk.y) * (1 - options.cmyk.k)).toFixed(0),
+        a: 1
+      } as RGBA;
+    }
+
+    // from hex to rgba
     if (options.hex) {
+
       switch (options.hex.length) {
         case 3:
-          let [r, g, b] = options.hex.split('');
-          this.color = { value: (r + r + g + g + b + b + 'ff').toLowerCase() } as HEXA;
+          options.hex = options.hex.replace(/^#?([a-f\d])([a-f\d])([a-f\d])$/i, (m, r, g, b) => r + r + g + g + b + b + 'ff');
           break;
         case 4:
-          let [r1, g1, b1, a] = options.hex.split('');
-          this.color = { value: (r1 + r1 + g1 + g1 + b1 + b1 + a + a).toLowerCase() } as HEXA;
+          options.hex = options.hex.replace(/^#?([a-f\d])([a-f\d])([a-f\d])([a-f\d])$/i, (m, r, g, b, a) => r + r + g + g + b + b + a + a);
           break;
         case 6:
-          this.color = { value: `${options.hex}ff`.toLowerCase() } as HEXA;
+          options.hex += 'ff';
           break;
         case 8:
-          this.color = { value: options.hex.toLowerCase() } as HEXA;
           break;
         default:
-          this.color = { value: "00000000" } as HEXA;
+          options.hex = '000000ff';
           break;
       }
+
+      const res = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(options.hex);
+      this.color = res ? { r: parseInt(res[1], 16), g: parseInt(res[2], 16), b: parseInt(res[3], 16), a: +(parseInt(res[4], 16) / 255).toFixed(2) } as RGBA : { r: 0, g: 0, b: 0, a: 1 } as RGBA;
+    }
+
+    const hslv = (h: number, c: number, x: number, m: number): void => {
+      let r: number = 0, g: number = 0, b: number = 0;
+      if (h >= 0 && h < 1) { r = c; g = x; }
+      else if (h >= 1 && h < 2) { r = x; g = c; }
+      else if (h >= 2 && h < 3) { g = c; b = x; }
+      else if (h >= 3 && h < 4) { g = x; b = c; }
+      else if (h >= 4 && h < 5) { r = x; b = c; }
+      else { r = c; b = x; }
+
+      r += m; g += m; b += m;
+      r *= 255.0; g *= 255.0; b *= 255.0;
+      r = Math.round(r); g = Math.round(g); b = Math.round(b);
+
+      this.color = {
+        r: r, g: g, b: b, a: 1
+      } as RGBA
+    }
+
+    // from hsv to rgba
+    if (options.hsv) {
+      options.hsv.h = +(options.hsv.h % 360).toFixed(2);
+      options.hsv.s = +((options.hsv.s % 100) / 100).toFixed(2);
+      options.hsv.v = +((options.hsv.v % 100) / 100).toFixed(2);
+
+      let h: number = options.hsv.h / 60;
+      let c: number = options.hsv.v * options.hsv.s;
+      let x: number = c * (1 - Math.abs(h % 2 - 1));
+      let m: number = options.hsv.v - c;
+
+      hslv(h, c, x, m);
+    }
+
+    // from hsl to rgba
+    if (options.hsl) {
+      options.hsl.h = +(options.hsl.h % 360).toFixed(2);
+      options.hsl.s = +((options.hsl.s % 100) / 100).toFixed(2);
+      options.hsl.l = +((options.hsl.l % 100) / 100).toFixed(2);
+
+      let h: number = options.hsl.h / 60;
+      let c: number = (1 - Math.abs(2 * options.hsl.l - 1)) * options.hsl.s;
+      let x: number = c * (1 - Math.abs(h % 2 - 1));
+      let m: number = options.hsl.l - c / 2;
+
+      hslv(h, c, x, m);
     }
   }
 }

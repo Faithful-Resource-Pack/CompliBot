@@ -15,7 +15,7 @@ export const command: SlashCommand = {
 		.setDescription("Use this commands to gets information about a color.")
 		.addSubcommand((subcommand) =>
 			subcommand.setName("hex")
-				.setDescription("Get information about an hex color!")
+				.setDescription("Get information about a HEX color!")
 				.addStringOption(option =>
 					option.setName("value")
 						.setDescription("Hexadecimal value.")
@@ -24,7 +24,7 @@ export const command: SlashCommand = {
 		)
 		.addSubcommand((subcommand) =>
 			subcommand.setName("rgb-a")
-				.setDescription("Get information about an hex color!")
+				.setDescription("Get information about a RGBa color!")
 				.addNumberOption(option =>
 					option.setName("red")
 						.setDescription("red value.")
@@ -45,16 +45,98 @@ export const command: SlashCommand = {
 						.setDescription("alpha value.")
 				)
 		)
+		.addSubcommand((subcommand) =>
+			subcommand.setName("hsl")
+				.setDescription("Get information about a HSL color!")
+				.addNumberOption(option =>
+					option.setName("hue")
+						.setDescription("hue value.")
+						.setRequired(true)
+				)
+				.addNumberOption(option =>
+					option.setName("saturation")
+						.setDescription("saturation value.")
+						.setRequired(true)
+				)
+				.addNumberOption(option =>
+					option.setName("lightness")
+						.setDescription("lightness/brightness value.")
+						.setRequired(true)
+				)
+		)
+		.addSubcommand((subcommand) =>
+			subcommand.setName("hsv")
+				.setDescription("Get information about a HSV color!")
+				.addNumberOption(option =>
+					option.setName("hue")
+						.setDescription("hue value.")
+						.setRequired(true)
+				)
+				.addNumberOption(option =>
+					option.setName("saturation")
+						.setDescription("saturation value.")
+						.setRequired(true)
+				)
+				.addNumberOption(option =>
+					option.setName("value")
+						.setDescription("color value.")
+						.setRequired(true)
+				)
+		)
+		.addSubcommand((subcommand) =>
+			subcommand.setName("cmyk")
+				.setDescription("Get information about a CMYK color!")
+				.addNumberOption(option =>
+					option.setName("cyan")
+						.setDescription("cyan color.")
+						.setRequired(true)
+				)
+				.addNumberOption(option =>
+					option.setName("magenta")
+						.setDescription("magenta color.")
+						.setRequired(true)
+				)
+				.addNumberOption(option =>
+					option.setName("yellow")
+						.setDescription("yellow color.")
+						.setRequired(true)
+				)
+				.addNumberOption(option =>
+					option.setName("key")
+						.setDescription("black key color.")
+						.setRequired(true)
+				)
+		)
 	,
 	execute: new Collection<string, SlashCommandI>()
 		.set("hex", async (interaction: CommandInteraction, client: Client) => {
+			// todo : add value verification
 
 			const c = new ColorManager({ hex: interaction.options.getString('value') });
 			try { interaction.reply(await constructResponse(client, c)); } catch (_err) { console.error(_err); };
 		})
 		.set("rgb-a", async (interaction: CommandInteraction, client: Client) => {
+			// todo : add value verification
 
-			const c = new ColorManager({ rgb: [interaction.options.getNumber('red', true), interaction.options.getNumber('green', true), interaction.options.getNumber('blue', true), interaction.options.getNumber('alpha', false)] });
+			const c = new ColorManager({ rgb: { r: interaction.options.getNumber('red', true), g: interaction.options.getNumber('green', true), b: interaction.options.getNumber('blue', true), a: interaction.options.getNumber('alpha', false) } });
+			interaction.reply(await constructResponse(client, c));
+		})
+		.set("hsl", async (interaction: CommandInteraction, client: Client) => {
+			// todo : add value verification
+
+			const c = new ColorManager({ hsl: { h: interaction.options.getNumber('hue', true), s: interaction.options.getNumber('saturation', true), l: interaction.options.getNumber('lightness', true) } });
+			interaction.reply(await constructResponse(client, c));
+		})
+		.set("hsv", async (interaction: CommandInteraction, client: Client) => {
+			// todo : add value verification
+
+			const c = new ColorManager({ hsv: { h: interaction.options.getNumber('hue', true), s: interaction.options.getNumber('saturation', true), v: interaction.options.getNumber('value', true) } });
+			interaction.reply(await constructResponse(client, c));
+		})
+		.set("cmyk", async (interaction: CommandInteraction, client: Client) => {
+			// todo : add value verification
+
+			const c = new ColorManager({ cmyk: { c: interaction.options.getNumber('cyan', true), m: interaction.options.getNumber('magenta', true), y: interaction.options.getNumber('yellow', true), k: interaction.options.getNumber('key', true) } });
 			interaction.reply(await constructResponse(client, c));
 		})
 }
@@ -78,12 +160,12 @@ async function constructResponse(client: Client, color: ColorManager): Promise<W
 	const thumbnail = new MessageAttachment(await color.swapPixel(options), `color.png`);
 
 	embed.addFields(
-		{ name: 'HEXa', value: `#${color.toHEXA().value}`, inline: true },
-		{ name: 'RGBa', value: `rgba(${Object.values(color.toRGBA()).join(', ')})`, inline: true },
-		{ name: 'HSL', value: 'soon', inline: true },
-		{ name: 'HSV', value: 'soon', inline: true },
-		{ name: 'CMYK', value: 'soon', inline: true },
-		{ name: 'Color Name', value: name }
+		{ name: 'Color Name', value: `\`${name}\`` },
+		{ name: 'HEXa', value: `\`#${color.toHEXA().value}\``, inline: true },
+		{ name: 'RGBa', value: `\`rgba(${Object.values(color.toRGBA()).join(', ')})\``, inline: true },
+		{ name: 'HSL', value: `\`hsl(${Object.values(color.toHSL()).join(', ')})\``, inline: true },
+		{ name: 'HSV', value: `\`hsv(${Object.values(color.toHSV()).join(', ')})\``, inline: true },
+		{ name: 'CMYK', value: `\`cmyk(${Object.values(color.toCMYK()).join(', ')})\``, inline: true }
 	)
 
 	return { embeds: [embed], files: [thumbnail] };
