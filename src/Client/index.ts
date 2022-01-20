@@ -14,6 +14,7 @@ import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v9";
 import { SlashCommand } from '@src/Interfaces/slashCommand';
 import { SlashCommandBuilder } from "@discordjs/builders";
+import { bot } from '..';
 
 class ExtendedClient extends Client {
 	public config: Config = ConfigJson;
@@ -47,10 +48,16 @@ class ExtendedClient extends Client {
 		})
 	}
 
+	public async restart(): Promise<void> {
+		console.log('restarting bot...');
+		this.destroy();
+		await bot.init();
+	}
+
 	/**
 	 * SLASH COMMANDS PERMS
 	 */
-	private loadSlashCommandsPerms = async () => {
+	public loadSlashCommandsPerms = async () => {
 		if (!this.application?.owner) await this.application?.fetch();
 
 		this.guilds.cache.forEach(async (guild: Guild) => {
@@ -82,14 +89,17 @@ class ExtendedClient extends Client {
 
 	}
 
+	/**
+	 * SLASH COMMANDS DELETION
+	 */
 	public deleteGlobalSlashCommands = () => {
 		const rest = new REST({ version: '9' }).setToken(this.tokens.token);
 		rest.get(Routes.applicationCommands(this.tokens.appID))
 			.then((data: any) => {
 				const promises = [];
 				for (const command of data) promises.push(rest.delete(`${Routes.applicationCommands(this.tokens.appID)}/${command.id}`))
-				return Promise.all(promises);
-			}).then(() => console.log('delete succeed'))
+				return Promise.all(promises).then(() => console.log('delete succeed'));
+			})
 	}
 
 	/**
@@ -111,18 +121,18 @@ class ExtendedClient extends Client {
 		this.slashCommands.each((c: SlashCommand) => commandsArr.push(c.data));
 
 		const rest = new REST({ version: "9" }).setToken(this.tokens.token);
+		const devID = this.config.discords.filter(s => s.name === 'dev')[0].id;
 
 		// deploy commands only for dev discord if so
 		if (this.tokens.dev) {
-			rest.put(Routes.applicationGuildCommands(this.tokens.appID, this.config.discords.filter(s => s.name === 'dev')[0].id), { body: commandsArr.map(c => c.toJSON()) })
+			rest.put(Routes.applicationGuildCommands(this.tokens.appID, devID), { body: commandsArr.map(c => c.toJSON()) })
 				.then(() => console.log('succeed dev'))
 				.catch(console.error);
 		}
 		else {
-			const devID = this.config.discords.filter(s => s.name === 'dev')[0].id
 			this.guilds.cache.forEach((guild: Guild) => {
 				if (guild.id !== devID) return;
-				rest.put(Routes.applicationGuildCommands(this.tokens.appID, devID), { body: commandsArr.map(c => c.toJSON()) })
+				rest.put(Routes.applicationGuildCommands(this.tokens.appID, guild.id), { body: commandsArr.map(c => c.toJSON()) })
 					.then(() => console.log(`succeed ${guild.name}`))
 					.catch(console.error);
 			})
