@@ -8,7 +8,7 @@ import ConfigJson from '@/config.json';
 import TokensJson from '@/tokens.json';
 
 import { init as initCommands } from '@src/Functions/commandProcess';
-import { unhandledRejection } from '@src/Functions/unhandledRejection';
+import { errorHandler } from '@src/Functions/errorHandler';
 
 import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v9";
@@ -43,9 +43,10 @@ class ExtendedClient extends Client {
 
 			});
 
-		process.on('unhandledRejection', (reason, promise) => {
-			unhandledRejection(this, reason)
-		})
+		process.on('exit', () => { errorHandler(this, 'disconnect', 'exit') });
+		process.on('disconnect', (code: number) => { errorHandler(this, code, 'disconnect') });
+		process.on('uncaughtException', (error, origin) => { errorHandler(this, error, 'uncaughtException') });
+		process.on('unhandledRejection', (reason, promise) => { errorHandler(this, reason, 'unhandledRejection') });
 	}
 
 	public async restart(): Promise<void> {

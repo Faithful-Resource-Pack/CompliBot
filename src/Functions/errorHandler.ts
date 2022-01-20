@@ -37,11 +37,11 @@ const randomSentences: Array<string> = [
 	'Ouch. That hurt :('
 ];
 
-export const unhandledRejection: Function = async (client: Client, reason: any) => {
+export const errorHandler: Function = async (client: Client, reason: any, type: string) => {
 	const channel = client.channels.cache.get(client.config.channels.error) as TextChannel;
 
 	const embed = new MessageEmbed()
-		.setTitle('Unhandled Rejection')
+		.setTitle(type)
 		.setThumbnail(`${client.config.images}error.png`)
 		.setColor(client.config.colors.red)
 		.addField(
@@ -55,7 +55,7 @@ export const unhandledRejection: Function = async (client: Client, reason: any) 
 		.setTimestamp()
 		.setFooter({ text: client.user.tag, iconURL: client.user.avatarURL() });
 
-	const logTemplate = fs.readFileSync(__dirname + '/unhandledRejection.log', { encoding: 'utf-8' });
+	const logTemplate = fs.readFileSync(__dirname + '/errorHandler.log', { encoding: 'utf-8' });
 	const messageTemplate = logTemplate.match(new RegExp(/\%messageStart%([\s\S]*?)%messageEnd/))[1]; // get message template
 
 	const t = Math.floor(Math.random() * randomSentences.length);

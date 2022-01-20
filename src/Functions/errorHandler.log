@@ -1,7 +1,7 @@
     %randomSentence%
     %randomSentenceUnderline%
 
-CompliBot crash report, please report this to developers!
+CompliBot crash/log report, please report this to developers!
 Date: %date%
 %stack%
 
