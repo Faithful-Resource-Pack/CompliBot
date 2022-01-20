@@ -82,11 +82,21 @@ class ExtendedClient extends Client {
 
 	}
 
+	public deleteGlobalSlashCommands = () => {
+		const rest = new REST({ version: '9' }).setToken(this.tokens.token);
+		rest.get(Routes.applicationCommands(this.tokens.appID))
+			.then((data: any) => {
+				const promises = [];
+				for (const command of data) promises.push(rest.delete(`${Routes.applicationCommands(this.tokens.appID)}/${command.id}`))
+				return Promise.all(promises);
+			}).then(() => console.log('delete succeed'))
+	}
+
 	/**
 	 * SLASH COMMANDS HANDLER
 	 */
 	public slashCommands: Collection<string, SlashCommand> = new Collection();
-	private loadSlashCommands = () => {
+	public loadSlashCommands = () => {
 		const slashCommandsPath = path.join(__dirname, '..', 'Slash Commands');
 
 		readdirSync(slashCommandsPath).forEach(async (dir) => {
