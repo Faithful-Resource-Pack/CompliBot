@@ -1,8 +1,9 @@
-function hexToInt(hex: string) { }
+function hexToInt(hex: string) {}
 
-import { createCanvas, loadImage } from 'canvas';
-import { ColorResolvable, MessageEmbed } from 'discord.js';
-import getMeta from './getMeta';
+import { err } from "@src/Helpers/logger";
+import { createCanvas, loadImage } from "canvas";
+import { ColorResolvable, MessageEmbed } from "discord.js";
+import getMeta from "./getMeta";
 
 const coloursPerPalette = 10;
 const coloursPerLine = 2;
@@ -10,9 +11,9 @@ export async function paletteEmbed(url: string, color?: ColorResolvable): Promis
 	return getMeta(url)
 		.then(async (dimension) => {
 			const surface = dimension.width * dimension.height;
-			if (surface > 262144) return Promise.reject('Output exeeds the maximum of 512 x 512px²!');
+			if (surface > 262144) return Promise.reject("Output exeeds the maximum of 512 x 512px²!");
 
-			var canvas = createCanvas(dimension.width, dimension.height).getContext('2d');
+			var canvas = createCanvas(dimension.width, dimension.height).getContext("2d");
 			const image = await loadImage(url);
 			canvas.drawImage(image, 0, 0);
 			var imageData = canvas.getImageData(0, 0, dimension.width, dimension.height).data;
@@ -64,26 +65,29 @@ export async function paletteEmbed(url: string, color?: ColorResolvable): Promis
 					chunk.push(line);
 				});
 
-				chunk = chunk.join('`\n`').split(',');
-				embed.addField(`Palette ${i + 1}: `, '`' + chunk.join('` `') + '` ', true);
+				chunk = chunk.join("`\n`").split(",");
+				embed.addField(`Palette ${i + 1}: `, "`" + chunk.join("` `") + "` ", true);
 			}
 			embed.setTitle(`Colors - ${total}`);
 			if (color) embed.setColor(color);
-			if (total > 60) embed.setFooter({ text: 'Not all colours are being displayed! The total count is over 60' });
+			if (total > 60) embed.setFooter({ text: "Not all colours are being displayed! The total count is over 60" });
 			return embed;
 		})
 		.catch((e) => {
-			console.log(e);
+			console.log(err + e);
 			return e;
 		});
 }
 
-function paletteImage(imageUrl: string) { }
+function paletteImage(imageUrl: string) {}
 
 const palette = (arr, nth) => arr.filter((e, i) => i % nth === nth - 1);
 
 function rgbToHex(r: number, g: number, b: number) {
-	return '#' + ((r | (1 << 8)).toString(16).slice(1) + (g | (1 << 8)).toString(16).slice(1) + (b | (1 << 8)).toString(16).slice(1));
+	return (
+		"#" +
+		((r | (1 << 8)).toString(16).slice(1) + (g | (1 << 8)).toString(16).slice(1) + (b | (1 << 8)).toString(16).slice(1))
+	);
 }
 
 function sliceIntoChunks(arr, chunkSize) {

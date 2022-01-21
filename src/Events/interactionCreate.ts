@@ -1,9 +1,9 @@
-import Client from '@src/Client';
-import { Interaction } from 'discord.js';
-import { Event } from '@src/Interfaces';
+import Client from "@src/Client";
+import { Interaction } from "discord.js";
+import { Event } from "@src/Interfaces";
 
 export const event: Event = {
-	name: 'interactionCreate',
+	name: "interactionCreate",
 	run: async (client: Client, interaction: Interaction) => {
 		if (!interaction.inGuild()) return;
 

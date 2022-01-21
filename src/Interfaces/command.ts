@@ -1,5 +1,5 @@
-import Client from '@src/Client';
-import Message from '@src/Client/message';
+import Client from "@src/Client";
+import Message from "@src/Client/message";
 
 interface Run {
 	(client: Client, message: Message, args: string[]);

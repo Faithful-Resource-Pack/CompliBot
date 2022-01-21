@@ -1,25 +1,21 @@
-import { Command } from '@src/Interfaces';
-import { magnifyAttachment } from '@src/Functions/canvas/magnify';
+import { Command } from "@src/Interfaces";
+import { magnifyAttachment } from "@src/Functions/canvas/magnify";
 
 export const command: Command = {
-	name: 'magnify',
-	description: 'Scales an image without smoothing by a factor',
-	usage: ['magnify (image attachment|reply to message with image attachment)', 'magnify (image url)'],
-	aliases: ['m', 'z', 'mag', 'scale', 'zoom'],
+	name: "magnify",
+	description: "Scales an image without smoothing by a factor",
+	usage: ["magnify (image attachment|reply to message with image attachment)", "magnify (image url)"],
+	aliases: ["m", "z", "mag", "scale", "zoom"],
 	run: async (client, message, args) => {
 		let attach: string;
 
-		if (message.type == 'REPLY' && message.channel.type == 'GUILD_TEXT') {
+		if (message.type == "REPLY" && message.channel.type == "GUILD_TEXT") {
 			const reply = await message.channel.messages.fetch(message.reference.messageId);
 
-			if (reply.attachments.size > 0)
-				attach = reply.attachments.first().url;
-			else if (reply.embeds[0].image)
-				attach = reply.embeds[0].image.url;
-			else if (reply.embeds[0].thumbnail)
-				attach = reply.embeds[0].thumbnail.url;
-
-			else return message.warn('This reply doesn\'t have any image attached!');
+			if (reply.attachments.size > 0) attach = reply.attachments.first().url;
+			else if (reply.embeds[0].image) attach = reply.embeds[0].image.url;
+			else if (reply.embeds[0].thumbnail) attach = reply.embeds[0].thumbnail.url;
+			else return message.warn("This reply doesn't have any image attached!");
 		}
 
 		if (args.length != 0) attach = args[0];
@@ -39,21 +35,20 @@ export const command: Command = {
 			 * explanation:
 			 * wierd regex trolling, returns true if it contains .jpeg, .jpg, .png or .webp and a string termination ($)
 			 */
-			if (lastMessage == undefined) return message.warn('Nothing to magnify in the last 10 messages!');
+			if (lastMessage == undefined) return message.warn("Nothing to magnify in the last 10 messages!");
 			if (lastMessage.attachments.size > 0 && lastMessage.attachments.first().url.match(/\.(jpeg|jpg|png|webp)$/))
 				attach = lastMessage.attachments.first().url;
-			else if (lastMessage.embeds[0].image)
-				attach = lastMessage.embeds[0].image.url;
-			else if (lastMessage.embeds[0].thumbnail)
-				attach = lastMessage.embeds[0].thumbnail.url;
+			else if (lastMessage.embeds[0].image) attach = lastMessage.embeds[0].image.url;
+			else if (lastMessage.embeds[0].thumbnail) attach = lastMessage.embeds[0].thumbnail.url;
 		}
 
 		if (attach != undefined) {
-			message.reply({ files: [await magnifyAttachment(attach)] })
+			message
+				.reply({ files: [await magnifyAttachment(attach)] })
 				.then((res) => res.deleteReact({ authorMessage: message, deleteAuthorMessage: true }))
 				.catch(() => {
-					message.warn('Output exeeds the maximum of 512 x 512px²!');
+					message.warn("Output exeeds the maximum of 512 x 512px²!");
 				});
-		} else message.warn('Nothing to magnify in the last 10 messages!');
+		} else message.warn("Nothing to magnify in the last 10 messages!");
 	},
 };

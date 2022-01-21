@@ -6,9 +6,8 @@ export const command: SlashCommand = {
 	permissions: undefined,
 	data: new SlashCommandBuilder()
 		.setName("guidelines")
-		.setDescription("Shows the guidelines for the Compliance Resource Pack.")
-	,
+		.setDescription("Shows the guidelines for the Compliance Resource Pack."),
 	execute: (interaction: CommandInteraction) => {
-		interaction.reply({ content: "https://docs.compliancepack.net/pages/textures/texturing-guidelines" })
-	}
+		interaction.reply({ content: "https://docs.compliancepack.net/pages/textures/texturing-guidelines" });
+	},
 };

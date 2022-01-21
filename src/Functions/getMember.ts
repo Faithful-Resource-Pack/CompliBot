@@ -1,4 +1,5 @@
-import { Message } from 'discord.js';
+import { err } from "@src/Helpers/logger";
+import { Message } from "discord.js";
 
 /**
  * Fetches the id of a mentioned user
@@ -20,11 +21,15 @@ export async function getMember(message: Message, arg: string) {
 		}
 	} catch {
 		try {
-			member = (await message.guild.members.search({
-				query: arg.split('#')[0],
-				cache: false
-			})).first();
-		} catch (err) { console.log(err); }
+			member = (
+				await message.guild.members.search({
+					query: arg.split("#")[0],
+					cache: false,
+				})
+			).first();
+		} catch (error) {
+			console.log(err + error);
+		}
 	}
 	if (!member) return undefined;
 	else return member.id;

@@ -4,10 +4,10 @@ export interface Config {
 	images: string;
 	channels: any;
 	repositories: {
-		compliance: Repository,
-		vanilla: Repository
-	},
-	discords: Array<Discord>
+		compliance: Repository;
+		vanilla: Repository;
+	};
+	discords: Array<Discord>;
 }
 
 interface Discord {
@@ -17,7 +17,7 @@ interface Discord {
 }
 
 interface Repository {
-	name: string,
-	url: string,
-	images: string
+	name: string;
+	url: string;
+	images: string;
 }

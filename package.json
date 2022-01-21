@@ -3,19 +3,25 @@
     "version": "1.0.0",
     "description": "a discord bot for the compliance texture pack",
     "main": "src/index.ts",
-    "type": "module",
+    "type": "commonjs",
     "_moduleAliases": {
-        "@src/*": "dist/src",
-        "@/*": "dist/"
+        "@": "dist",
+        "@functions": "dist/src/Functions",
+        "@helpers": "dist/src/helpers",
+        "@interfaces": "dist/src/Interfaces",
+        "@src": "dist/src"
     },
     "scripts": {
         "dev": "ts-node-dev --respawn -r tsconfig-paths/register src/index.ts",
-        "build": "tsc",
-        "start": "node /dist/src/index.js"
+        "build": "tsc --project tsconfig.json && tsc-alias -p tsconfig.json",
+        "start": "node dist/src/index.js",
+        "prettier-format": "prettier src/**/*.ts --config .prettierrc --write"
     },
     "devDependencies": {
+        "prettier": "^2.5.1",
         "ts-node": "^10.4.0",
         "ts-node-dev": "^1.1.8",
+        "tsc-alias": "^1.5.0",
         "tsconfig-paths": "^3.12.0",
         "typescript": "^4.5.4"
     },
@@ -24,12 +30,14 @@
         "@types/node": "^17.0.7",
         "axios": "^0.24.0",
         "canvas": "^2.8.0",
+        "chalk": "^4.1.2",
         "discord-api-types": "^0.26.1",
         "discord-slash-commands-client": "^1.2.2",
         "discord.js": "^13.5.0",
         "firestorm-db": "^1.8.0",
         "follow-redirects": "^1.14.6",
         "image-size": "^1.0.0",
+        "module-alias": "^2.2.2",
         "moment": "^2.29.1",
         "slash-commands": "^1.5.0"
     }

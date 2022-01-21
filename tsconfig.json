@@ -11,7 +11,7 @@
 		"emitDecoratorMetadata": true,
 		"allowSyntheticDefaultImports": true,
 		"skipLibCheck": true,
-		"declaration": true,
+		"declaration": false,
 		"allowJs": true,
 		"resolveJsonModule": true,
 		"baseUrl": "src",
@@ -20,8 +20,13 @@
 			"@functions/*": ["./Functions/*"],
 			"@helpers/*": ["./helpers/*"],
 			"@interfaces": ["./Interfaces/*"],
-			"@src/*": ["*"] //you will thank me later
-		}
+			"@src/*": ["*"]
+		},
+		"plugins": [
+			{
+				"transform": "@zerollup/ts-transform-paths"
+			}
+		]
 	},
 	"exclude": ["node_modules"],
 	"include": ["src"]

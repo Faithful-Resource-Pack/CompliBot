@@ -1,9 +1,9 @@
-import { MessageEmbed } from 'discord.js';
+import { MessageEmbed } from "discord.js";
 
 class ExtendedEmbed extends MessageEmbed {
 	constructor() {
 		super();
-		this.setColor('BLURPLE');
+		this.setColor("BLURPLE");
 	}
 }
 

@@ -1,13 +1,13 @@
 const parseArr = (arr: Array<Array<any>>): Array<any> => {
-  const output: Array<any> = []
+	const output: Array<any> = [];
 
-  arr.forEach(_arr => {
-    _arr.forEach(el => {
-      output.push(el)
-    })
-  })
+	arr.forEach((_arr) => {
+		_arr.forEach((el) => {
+			output.push(el);
+		});
+	});
 
-  return output
-}
+	return output;
+};
 
 export { parseArr };

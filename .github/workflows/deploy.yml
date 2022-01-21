@@ -1,29 +1,28 @@
 name: Deploy
 
 on:
-  push:
-    branches: [ typescript ]
-  workflow_dispatch:
+    push:
+        branches: [typescript]
+    workflow_dispatch:
 
 jobs:
-  build:
+    build:
+        runs-on: ubuntu-latest
 
-    runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
 
-    steps:
-    - uses: actions/checkout@v2
-
-    - name: Executing remote command
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.HOST }}
-        USERNAME: ${{ secrets.USERNAME }}
-        PORT: ${{ secrets.PORT }}
-        KEY: ${{ secrets.SSH }}
-        script: |
-          cd ./"CompliBot (TS)"
-          git stash
-          git pull
-          npm install
-          pm2 delete "BOT (TS)"
-          pm2 start "npm run start" --name "BOT (TS)"
+            - name: Executing remote command
+              uses: appleboy/ssh-action@master
+              with:
+                  host: ${{ secrets.HOST }}
+                  USERNAME: ${{ secrets.USERNAME }}
+                  PORT: ${{ secrets.PORT }}
+                  KEY: ${{ secrets.SSH }}
+                  script: |
+                      cd ./"CompliBot (TS)"
+                      git stash
+                      git pull
+                      npm install
+                      pm2 delete "BOT (TS)"
+                      pm2 start "npm run dev" --name "BOT (TS)"

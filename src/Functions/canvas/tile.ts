@@ -1,14 +1,15 @@
-import { Canvas, createCanvas, Image, loadImage } from 'canvas';
-import { Message, MessageAttachment } from 'discord.js';
-import getMeta from './getMeta';
+import { Canvas, createCanvas, Image, loadImage } from "canvas";
+import { Message, MessageAttachment } from "discord.js";
+import getMeta from "./getMeta";
 
 export async function tileAttachment(url: string): Promise<MessageAttachment> {
 	return getMeta(url)
 		.then(async (dimension) => {
-			if (dimension.width * dimension.height * 3 > 262144) return Promise.reject('Output exeeds the maximum of 512 x 512px²!');
+			if (dimension.width * dimension.height * 3 > 262144)
+				return Promise.reject("Output exeeds the maximum of 512 x 512px²!");
 
 			let canvas = createCanvas(dimension.height * 3, dimension.width * 3);
-			const context = canvas.getContext('2d');
+			const context = canvas.getContext("2d");
 
 			context.imageSmoothingEnabled = false;
 
@@ -23,7 +24,7 @@ export async function tileAttachment(url: string): Promise<MessageAttachment> {
 				}
 			}
 
-			return new MessageAttachment(await canvas.toBuffer('image/png'), 'tiled.png');
+			return new MessageAttachment(await canvas.toBuffer("image/png"), "tiled.png");
 		})
 		.catch((e) => {
 			return e;
@@ -33,10 +34,11 @@ export async function tileAttachment(url: string): Promise<MessageAttachment> {
 export function tileCanvas(url: string): Promise<Canvas> {
 	return getMeta(url)
 		.then(async (dimension) => {
-			if (dimension.width * dimension.height * 3 > 262144) return Promise.reject('Output exeeds the maximum of 512 x 512px²!');
+			if (dimension.width * dimension.height * 3 > 262144)
+				return Promise.reject("Output exeeds the maximum of 512 x 512px²!");
 
 			let canvas = createCanvas(dimension.height * 3, dimension.width * 3);
-			const context = canvas.getContext('2d');
+			const context = canvas.getContext("2d");
 
 			context.imageSmoothingEnabled = false;
 

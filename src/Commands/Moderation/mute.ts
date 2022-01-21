@@ -1,42 +1,39 @@
-import MessageEmbed from '@src/Client/embed';
-import { Command } from '@src/Interfaces';
-import { getMember } from '@src/Functions/getMember';
-import { stringToMs } from '@src/Functions/time';
+import MessageEmbed from "@src/Client/embed";
+import { Command } from "@src/Interfaces";
+import { getMember } from "@src/Functions/getMember";
+import { stringToMs } from "@src/Functions/time";
 
 export const command: Command = {
-	name: 'mute',
-    aliases: ['timeout'],
-	description: 'not implemented yet',
-	usage: ['mute <user> [time] [reason]'],
+	name: "mute",
+	aliases: ["timeout"],
+	description: "not implemented yet",
+	usage: ["mute <user> [time] [reason]"],
 	run: async (client, message, args) => {
-		if (!args.length) return message.warn('No args given');
+		if (!args.length) return message.warn("No args given");
 
 		const memberId = await getMember(message, args[0]);
-		if (memberId == undefined) return message.warn('I couldn\'t find anyone to mute!');
+		if (memberId == undefined) return message.warn("I couldn't find anyone to mute!");
 
-        if (!args[1]) return message.warn('You didn\'t provide a time!');
-        const time = stringToMs(args[1]);
+		if (!args[1]) return message.warn("You didn't provide a time!");
+		const time = stringToMs(args[1]);
 
-		if (time > 1000 * 60 * 60 * 24 * 7 * 4) return message.warn('You can\'t mute someone for longer than 4 weeks! (blame Discord)');
+		if (time > 1000 * 60 * 60 * 24 * 7 * 4)
+			return message.warn("You can't mute someone for longer than 4 weeks! (blame Discord)");
 
-        const reason = !args[2] ? 'Not specified' : args.slice(2).join(' ');
+		const reason = !args[2] ? "Not specified" : args.slice(2).join(" ");
 
-        const member = await message.guild.members.fetch(memberId);
+		const member = await message.guild.members.fetch(memberId);
 
-        await member.timeout(time, reason);
+		await member.timeout(time, reason);
 
-		var embed = new MessageEmbed()
-			.setDescription(`**Muted <@${memberId}>**`)
-			.addFields(
-				// time needs to be replaced with something better than args[1]
-				{ name: 'Time', value: args[1] },
-				{ name: 'Reason', value: reason}
-			);
-		
+		var embed = new MessageEmbed().setDescription(`**Muted <@${memberId}>**`).addFields(
+			// time needs to be replaced with something better than args[1]
+			{ name: "Time", value: args[1] },
+			{ name: "Reason", value: reason },
+		);
+
 		if (time == 0)
-			var embed = new MessageEmbed()
-				.setDescription(`**Unmuted <@${memberId}>**`)
-				.addField('Reason', reason);
+			var embed = new MessageEmbed().setDescription(`**Unmuted <@${memberId}>**`).addField("Reason", reason);
 
 		const res = await message.reply({ embeds: [embed] });
 		res.deleteReact({ authorMessage: message, deleteAuthorMessage: true });

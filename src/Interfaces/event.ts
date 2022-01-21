@@ -1,5 +1,5 @@
-import Client from '@src/Client';
-import { ClientEvents } from 'discord.js';
+import Client from "@src/Client";
+import { ClientEvents } from "discord.js";
 
 interface CustomEvents extends ClientEvents {
 	slashCommandUsed: any;

@@ -1,8 +1,8 @@
-import { Intents } from 'discord.js';
-import Client from './Client';
+import { Intents } from "discord.js";
+import Client from "./Client";
 
 export const bot = new Client({
-	allowedMentions: { parse: ['users', 'roles'], repliedUser: false }, // remove this line to die instantly ~JackDotJS 2021
+	allowedMentions: { parse: ["users", "roles"], repliedUser: false }, // remove this line to die instantly ~JackDotJS 2021
 	restTimeOffset: 0,
 	intents: [
 		Intents.FLAGS.GUILDS,
@@ -20,8 +20,8 @@ export const bot = new Client({
 		Intents.FLAGS.DIRECT_MESSAGES,
 		Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
 		Intents.FLAGS.DIRECT_MESSAGE_TYPING,
-		Intents.FLAGS.GUILD_SCHEDULED_EVENTS
-	]
-})
+		Intents.FLAGS.GUILD_SCHEDULED_EVENTS,
+	],
+});
 
 bot.init();
