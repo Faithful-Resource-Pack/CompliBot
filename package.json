@@ -9,7 +9,9 @@
         "@/*": "dist/"
     },
     "scripts": {
-        "start": "ts-node-dev --respawn -r tsconfig-paths/register src/index.ts"
+        "dev": "ts-node-dev --respawn -r tsconfig-paths/register src/index.ts",
+        "build": "tsc",
+        "start": "node /dist/src/index.js"
     },
     "devDependencies": {
         "ts-node": "^10.4.0",
