@@ -8,7 +8,7 @@ export const event: Event = {
 		if (!interaction.inGuild()) return;
 
 		if (interaction.isCommand()) client.emit("slashCommandUsed", (client as Client, interaction));
-		if (interaction.isButton()) client.emit("useButton", (client as Client, interaction));
-		if (interaction.isSelectMenu()) client.emit("useSelectMenu", (client as Client, interaction));
+		if (interaction.isButton()) client.emit("buttonUsed", (client as Client, interaction));
+		if (interaction.isSelectMenu()) client.emit("selectMenuUsed", (client as Client, interaction));
 	},
 };

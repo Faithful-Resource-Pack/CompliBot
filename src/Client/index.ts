@@ -14,12 +14,14 @@ import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v9";
 import { SlashCommand } from "@src/Interfaces/slashCommand";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { bot } from "..";
 import { err, info, sucsess } from "@src/Helpers/logger";
+import { bot } from "..";
+import { Automation } from "./automation";
 
 class ExtendedClient extends Client {
 	public config: Config = ConfigJson;
 	public tokens: Tokens = TokensJson;
+	public automation: Automation = new Automation(this);
 
 	public async init() {
 		// login client
@@ -43,6 +45,9 @@ class ExtendedClient extends Client {
 
 				// load events
 				this.loadEvents();
+
+				// starts automated functions
+				this.automation.start();
 			});
 
 		process.on("exit", () => {

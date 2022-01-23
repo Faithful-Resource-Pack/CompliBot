@@ -1,9 +1,10 @@
-import { Intents } from "discord.js";
+import { Constants, Intents } from "discord.js";
 import Client from "./Client";
 
 export const bot = new Client({
 	allowedMentions: { parse: ["users", "roles"], repliedUser: false }, // remove this line to die instantly ~JackDotJS 2021
 	restTimeOffset: 0,
+	partials: Object.values(Constants.PartialTypes),
 	intents: [
 		Intents.FLAGS.GUILDS,
 		Intents.FLAGS.GUILD_MEMBERS,

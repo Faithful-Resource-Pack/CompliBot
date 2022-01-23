@@ -1,34 +1,52 @@
-import * as emojis from "@src/Helpers/emojis";
 import { Event, Command } from "@src/Interfaces";
 import { increase } from "@src/Functions/commandProcess";
 import Message from "@src/Client/message";
+import Client from "@src/Client";
 
 export const event: Event = {
 	name: "messageCreate",
-	run: async (client, message: Message) => {
+	run: async (client: Client, message: Message) => {
 		if (message.author.bot) return;
 
 		if (!message.content.startsWith(client.tokens.prefix)) {
 			switch (message.content.toLocaleLowerCase()) {
-				case "engineer":
-					return message.react("👷");
-				case "test":
-					return message.react(emojis.parseId(emojis.ids.delete));
+				case "engineer gaming":
+					try {
+						await message.react("👷");
+					} catch (err) {
+						/* can't react */
+					}
+					break;
 				case "rip":
 				case "f":
-				case "oof":
-					return message.react("🇫");
+					try {
+						await message.react("🇫");
+					} catch (err) {
+						/* can't react */
+					}
+					break;
 				case "band":
-					return ["🎤", "🎸", "🥁", "🪘", "🎺", "🎷", "🎹", "🪗", "🎻"].forEach(async (emoji) => {
-						await message.react(emoji);
+					["🎤", "🎸", "🥁", "🪘", "🎺", "🎷", "🎹", "🪗", "🎻"].forEach(async (emoji) => {
+						try {
+							await message.react(emoji);
+						} catch (err) {
+							/* can't react */
+						}
 					});
+					break;
 				case "monke": //cases can do this, they can overlap. Very useful
 				case "monkee":
 				case "monkey":
-					return ["🎷", "🐒"].forEach(async (emoji) => {
-						await message.react(emoji);
+					["🎷", "🐒"].forEach(async (emoji) => {
+						try {
+							await message.react(emoji);
+						} catch (err) {
+							/* can't react */
+						}
 					});
+					break;
 			}
+
 			return;
 		}
 
