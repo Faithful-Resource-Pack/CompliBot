@@ -37,7 +37,7 @@ export const command: SlashCommand = {
 	},
 };
 
-const killed = ["%author% fell out of the world", "%author% died"];
+const killed = ["%author% fell out of the world", "%author% died", "%author% didn't specify a user to kill and died"];
 
 const killed_by = [
 	"%player% was shot by %author%",
