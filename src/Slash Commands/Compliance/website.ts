@@ -12,18 +12,17 @@ export const command: SlashCommand = {
 		.setDescription("Displays websites for the given keyword.")
 		.addStringOption((option) =>
 			option
-      .setName("name")
-      .setDescription("Name of the project you want to see websites.")
-      .addChoices([
-				["Compliance 32x", "compliance_32"],
-				["Compliance 64x", "compliance_64"],
-				["Compliance Add-ons", "compliance_addons"],
-				["Compliance Dungeons 32x", "compliance_dungeons_32"],
-				["Compliance Mods 32x", "compliance_mods_32"],
-				["Compliance Tweaks 32x", "compliance_tweaks_32"],
-			]),
-		)
-    ,
+				.setName("name")
+				.setDescription("Name of the project you want to see websites.")
+				.addChoices([
+					["Compliance 32x", "compliance_32"],
+					["Compliance 64x", "compliance_64"],
+					["Compliance Add-ons", "compliance_addons"],
+					["Compliance Dungeons 32x", "compliance_dungeons_32"],
+					["Compliance Mods 32x", "compliance_mods_32"],
+					["Compliance Tweaks 32x", "compliance_tweaks_32"],
+				]),
+		),
 	execute: (interaction: CommandInteraction) => {
 		const embed = new MessageEmbed();
 		const key: string | null = interaction.options.getString("name", false);
