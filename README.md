@@ -19,7 +19,7 @@ ___
 Please submit it using our [bug tracker](https://github.com/Compliance-Resource-Pack/Discord-Bot/issues/new/choose) or by using the `/feedback <text>` command from the bot. The bug tracker is preferred but both options are valids.
 ___
 ### Installation and launching:
-1. Install **[Node.js](https://nodejs.org/)** on your machine. **Version 16.6.0 or higher is required!**
+1. Install **[Node.js](https://nodejs.org/)** on your machine. **Version 16.9.0 or higher is required!**
 2. Clone the repository on your machine.
 3. Open your console in the cloned repository.
 4. To complete the installation, write the following command in the console:
