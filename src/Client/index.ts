@@ -37,7 +37,8 @@ class ExtendedClient extends Client {
 				initCommands(this);
 
 				// load old commands only if not dev server
-				if (this.tokens.dev) this.loadCommands();
+				//if (this.tokens.dev) this.loadCommands();
+				this.loadCommands();
 
 				// load slash commands
 				this.loadSlashCommands();
