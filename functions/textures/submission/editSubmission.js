@@ -78,15 +78,12 @@ async function editSubmission(client, reaction, user) {
           await compareFunction(options)
         }
 
-        /**
-         * TODO: for instapass & flush reacts, check if the user who reacted have the Council role, and not admin perms
-         */
-        if (REACTION.emoji.id === settings.emojis.instapass && member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
+        if (REACTION.emoji.id === settings.emojis.instapass && member.roles.cache.some(role => role.name.toLowerCase().includes("art director council"))) {
           removeReact(message, [settings.emojis.upvote, settings.emojis.downvote])
           changeStatus(message, `<:instapass:${settings.emojis.instapass}> Instapassed`)
           instapass(client, message)
         }
-        if (REACTION.emoji.id === settings.emojis.invalid && member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
+        if (REACTION.emoji.id === settings.emojis.invalid && member.roles.cache.some(role => role.name.toLowerCase().includes("art director council"))) {
           removeReact(message, [settings.emojis.upvote, settings.emojis.downvote])
           changeStatus(message, `<:invalid:${settings.emojis.invalid}> Invalid`)
         }
