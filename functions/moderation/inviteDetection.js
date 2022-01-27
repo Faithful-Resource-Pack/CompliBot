@@ -12,9 +12,6 @@ async function inviteDetection(client, message) {
 	if (message.member.permissions.has("MANAGE_MESSAGES")) return
 	if (!message.content) return
 
-	// ignore EM server
-	if (message.guild.id === settings.guilds.em.id) return
-
 	let isAd = false
 
 	// currently only discord servers, can be expanded with more links later
