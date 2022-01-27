@@ -2,28 +2,28 @@ name: Deploy
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   workflow_dispatch:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Executing remote command
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.HOST }}
-        USERNAME: ${{ secrets.USERNAME }}
-        PORT: ${{ secrets.PORT }}
-        KEY: ${{ secrets.SSH }}
-        script: |
-          cd ./CompliBot
-          git stash
-          git pull
-          npm install
-          pm2 delete "BOT"
-          pm2 start "node --use_strict --trace-warnings index.js" --name "BOT"
+      - name: Executing remote command
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          USERNAME: ${{ secrets.USERNAME }}
+          PORT: ${{ secrets.PORT }}
+          KEY: ${{ secrets.SSH }}
+          script: |
+            cd ./CompliBot
+            git checkout master
+            git stash
+            git pull
+            npm install
+            pm2 delete "BOT"
+            pm2 start "node --use_strict --trace-warnings index.js" --name "BOT"
