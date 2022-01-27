@@ -4,7 +4,6 @@ import ConfigJson from "@/config.json";
 import Menu from "@src/Helpers/menu";
 import { ids } from "@src/Helpers/emojis";
 import tokens from "@/tokens.json";
-import { stringify } from "querystring";
 
 declare module "discord.js" {
 	interface Message {
