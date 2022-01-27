@@ -27,7 +27,7 @@ async function modLog(client, message, memberID, reason, time, type) {
 		modLogsChannelID = settings.channels.moderation_logs.c32
 	}
 
-	if (message.guild.id == settings.guilds.c32.id || message.guild.id == settings.guilds.c64.id || message.guild.id == settings.guilds.cextras.id) logChannel = client.channels.cache.get(modLogsChannelID)
+	logChannel = client.channels.cache.get(modLogsChannelID)
 	if (logChannel == undefined) return
 
 	var embed = new MessageEmbed()
