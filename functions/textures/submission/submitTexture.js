@@ -222,7 +222,7 @@ async function makeEmbed(client, message, texture, param = new Object()) {
 
 async function invalidSubmission(message, error = 'Not given') {
   if (message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) return // allow admins to talk in submit channels
-  if (message.member.roles.cache.some(role => role.name.toLowerCase().includes("art director council"))) return; // allow council to talk in submission channels
+  if (message.member.roles.cache.some(role => role.name.toLowerCase().includes("council"))) return; // allow council to talk in submission channels
 
   try {
     var embed = new MessageEmbed()
