@@ -15,14 +15,22 @@ export async function string(
 		const data: {} = await import(`@/lang/${countryCode}.json`).catch((e) => {
 			Promise.reject(e);
 		});
-		return data[text] == undefined ? undefined : parse(data[text], countryCode, placeholders);
+		return data[text] == undefined ? undefined : parse(data[text], countryCode, placeholders, false);
 	} catch (error) {
+		const data: {} = en_US;
+		return data[text] == undefined ? undefined : parse(data[text], countryCode, placeholders, true);
+
 		Promise.reject(error);
 		return undefined;
 	}
 }
 
-function parse(text: string | string[], lang: string, placeholders?: { [key: Capitalize<string>]: string }): string {
+function parse(
+	text: string | string[],
+	lang: string,
+	placeholders?: { [key: Capitalize<string>]: string },
+	fallback: boolean,
+): string {
 	if (text == undefined) return undefined;
 	let result: string;
 	typeof text === "string" ? (result = text) : (result = text.join("$"));
@@ -45,5 +53,6 @@ function parse(text: string | string[], lang: string, placeholders?: { [key: Cap
 		}
 	}
 
+	if (fallback) result = "(untranslated) " + result;
 	return result;
 }
