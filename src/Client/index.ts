@@ -26,9 +26,8 @@ class ExtendedClient extends Client {
 	public async init() {
 		// login client
 		this.login(this.tokens.token)
-			.catch(() => {
-				const e =
-					"The provided bot token is invalid! Please check if the provided token is copied correctly and try again.";
+			.catch((e) => {
+				// Allows for showing different errors like missing privaleged gateway intents, this caused me so much pain >:(
 				console.log(`${err}${e}`);
 				process.exit(1);
 			})
