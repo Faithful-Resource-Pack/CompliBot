@@ -15,10 +15,10 @@ export async function string(
 		const data: {} = await import(`@/lang/${countryCode}.json`).catch((e) => {
 			Promise.reject(e);
 		});
-		return data[text] == undefined ? undefined : parse(data[text], countryCode, placeholders, false);
+		return data[text] == undefined ? undefined : parse(data[text], countryCode, false, placeholders);
 	} catch (error) {
 		const data: {} = en_US;
-		return data[text] == undefined ? undefined : parse(data[text], countryCode, placeholders, true);
+		return data[text] == undefined ? undefined : parse(data[text], countryCode, true, placeholders);
 
 		Promise.reject(error);
 		return undefined;
@@ -28,8 +28,8 @@ export async function string(
 function parse(
 	text: string | string[],
 	lang: string,
-	placeholders?: { [key: Capitalize<string>]: string },
 	fallback: boolean,
+	placeholders?: { [key: Capitalize<string>]: string },
 ): string {
 	if (text == undefined) return undefined;
 	let result: string;
