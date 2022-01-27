@@ -3,7 +3,7 @@ import { increase } from "@src/Functions/commandProcess";
 import Message from "@src/Client/message";
 import Client from "@src/Client";
 import { MessageReaction, User } from "discord.js";
-import { Polls } from "@src/Functions/poll";
+// import { Polls } from "@src/Functions/poll";
 
 export const event: Event = {
 	name: "messageReactionAdd",
@@ -11,11 +11,11 @@ export const event: Event = {
 		if (user.bot) return;
 		if (reaction.message.partial) await reaction.message.fetch();
 
-		/* Poll system */
-		new Polls(client)
-			.setGuild(reaction.message.guildId)
-			.setChannel(reaction.message.channelId)
-			.setMessage(reaction.message.id)
-			.addVote(reaction, user); // check if it's a poll, do nothing if not
+		// /* Poll system */
+		// new Polls(client)
+		// 	.setGuild(reaction.message.guildId)
+		// 	.setChannel(reaction.message.channelId)
+		// 	.setMessage(reaction.message.id)
+		// 	.addVote(reaction, user); // check if it's a poll, do nothing if not
 	},
 };
