@@ -1,7 +1,8 @@
 import { SlashCommand } from "@src/Interfaces/slashCommand";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction } from "discord.js";
+import ExtendedCmdInteraction from "@src/Client/commandInteraction";
 import { getTexture } from "@src/Functions/getTexture";
+import { string } from "@functions/string";
 
 export const command: SlashCommand = {
 	permissions: undefined,
@@ -22,7 +23,7 @@ export const command: SlashCommand = {
 				])
 				.setRequired(true),
 		),
-	execute: async (interaction: CommandInteraction) => {
+	execute: async (interaction: ExtendedCmdInteraction) => {
 		await interaction.deferReply();
 		const firestorm = await import("../../Firestorm");
 
@@ -65,10 +66,12 @@ export const command: SlashCommand = {
 
 		// todo: implements a select menu when there is multiple results
 		else if (results.length > 1) {
-			interaction.editReply({ content: "I have not coded this part yet." });
+			interaction.editReply({ content: await string(interaction.locale, "Error.DevBad") });
 		} else {
 			interaction.editReply({
-				content: "No results for this texture name: " + interaction.options.getString("name", true),
+				content: await string(interaction.locale, "Command.Texture.NotFound", {
+					TEXTURENAME: interaction.options.getString("name", true),
+				}),
 			});
 		}
 	},

@@ -1,6 +1,6 @@
 import { SlashCommand } from "@src/Interfaces/slashCommand";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction } from "discord.js";
+import ExtendedCmdInteraction from "@src/Client/commandInteraction";
 import { colors } from "@src/Helpers/colors";
 import { ids, parseId } from "@src/Helpers/emojis";
 import MessageEmbed from "@/src/Client/embed";
@@ -23,7 +23,7 @@ export const command: SlashCommand = {
 					["Compliance Tweaks 32x", "compliance_tweaks_32"],
 				]),
 		),
-	execute: (interaction: CommandInteraction) => {
+	execute: (interaction: ExtendedCmdInteraction) => {
 		const embed = new MessageEmbed();
 		const key: string | null = interaction.options.getString("name", false);
 		const options: boolean = key !== null;

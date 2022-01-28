@@ -1,6 +1,6 @@
 import Client from "@src/Client";
 import { getData } from "@src/Functions/getDataFromJSON";
-import { Polls } from "@src/Functions/poll";
+// import { Polls } from "@src/Functions/poll";
 import { setData } from "@src/Functions/setDataToJSON";
 
 export class Automation {
@@ -15,19 +15,19 @@ export class Automation {
 		setInterval(() => {
 			if (!this.ticking) return;
 
-			this.doCheckPolls();
+			// this.doCheckPolls();
 		}, 1000); // each seconds
 	}
 
-	private doCheckPolls() {
-		let data: JSON = getData({ filename: "polls.json", relative_path: "../json/" });
+	// private doCheckPolls() {
+	// 	let data: JSON = getData({ filename: "polls.json", relative_path: "../json/" });
 
-		for (const [key, poll] of Object.entries(data)) {
-			const p = new Polls(this.client, poll);
-			if (p.checkTimeout()) {
-				delete data[key];
-				setData({ filename: "polls.json", relative_path: "../json/", data: data });
-			}
-		}
-	}
+	// 	for (const [key, poll] of Object.entries(data)) {
+	// 		const p = new Polls(this.client, poll);
+	// 		if (p.checkTimeout()) {
+	// 			delete data[key];
+	// 			setData({ filename: "polls.json", relative_path: "../json/", data: data });
+	// 		}
+	// 	}
+	// }
 }
