@@ -23,7 +23,7 @@ Have fun polylinguals!
 - lt	Lithuanian
 - no	Norwegian
 - pl	Polish
-+ pt-BR	Portuguese (Brazil) - PedroESP_01
++ pt-BR	Portuguese (Brazil)
 - ro	Romanian
 - ru	Russian
 - es-ES	Spanish (Spain)
