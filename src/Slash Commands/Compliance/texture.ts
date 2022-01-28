@@ -1,6 +1,6 @@
 import { SlashCommand } from "@src/Interfaces/slashCommand";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction } from "discord.js";
+import ExtendedCmdInteraction from "@src/Client/commandInteraction";
 import { getTexture } from "@src/Functions/getTexture";
 import { string } from "@functions/string";
 
@@ -23,7 +23,7 @@ export const command: SlashCommand = {
 				])
 				.setRequired(true),
 		),
-	execute: async (interaction: CommandInteraction) => {
+	execute: async (interaction: ExtendedCmdInteraction) => {
 		await interaction.deferReply();
 		const firestorm = await import("../../Firestorm");
 

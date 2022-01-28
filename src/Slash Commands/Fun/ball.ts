@@ -1,6 +1,6 @@
 import { SlashCommand } from "@src/Interfaces/slashCommand";
 import { SlashCommandBuilder, SlashCommandStringOption } from "@discordjs/builders";
-import { CommandInteraction } from "discord.js";
+import ExtendedCmdInteraction from "@src/Client/commandInteraction";
 import MessageEmbed from "@src/Client/embed";
 import Client from "@src/Client";
 import { string } from "@functions/string";
@@ -13,8 +13,8 @@ export const command: SlashCommand = {
 		.addStringOption((option: SlashCommandStringOption) =>
 			option.setName("question").setDescription("The question to ask to the 8-ball.").setRequired(true),
 		),
-	execute: async (interaction: CommandInteraction) => {
-		const answers = await (await string(interaction.locale, "Command.EightBall.Answers")).split("$");
+	execute: async (interaction: ExtendedCmdInteraction) => {
+		const answers = (await interaction.text("Command.EightBall.Answers")).split("$,");
 
 		let embed = new MessageEmbed()
 			.setTitle(`${interaction.options.getString("question", true)}`.slice(0, 255))

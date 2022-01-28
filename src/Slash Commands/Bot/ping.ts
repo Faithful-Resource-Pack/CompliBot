@@ -1,6 +1,6 @@
 import { SlashCommand } from "@src/Interfaces/slashCommand";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction } from "discord.js";
+import ExtendedCmdInteraction from "@src/Client/commandInteraction";
 import MessageEmbed from "@src/Client/embed";
 import Client from "@src/Client";
 import { string } from "@functions/string";
@@ -8,8 +8,8 @@ import { string } from "@functions/string";
 export const command: SlashCommand = {
 	permissions: undefined,
 	data: new SlashCommandBuilder().setName("ping").setDescription("Gets latency."),
-	execute: async (interaction: CommandInteraction, client: Client) => {
-		let embed = new MessageEmbed().setTitle(await string(interaction.locale, "Command.Ping.Await"));
+	execute: async (interaction: ExtendedCmdInteraction, client: Client) => {
+		let embed = new MessageEmbed().setTitle(await interaction.text("Command.Ping.Await"));
 		await interaction.reply({ embeds: [embed], ephemeral: true }).then(async () => {
 			const d: Date = new Date();
 			const quotes = (

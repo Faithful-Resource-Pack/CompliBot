@@ -1,6 +1,6 @@
 import { SlashCommand } from "@src/Interfaces/slashCommand";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction } from "discord.js";
+import ExtendedCmdInteraction from "@src/Client/commandInteraction";
 import MessageEmbed from "@src/Client/embed";
 import Client from "@src/Client";
 import { string } from "@functions/string";
@@ -12,18 +12,14 @@ export const command: SlashCommand = {
 		.setDescription("Kill someone you tag, be carefull with weapons!")
 		.addUserOption((user) => user.setName("user").setDescription("User to be killed."))
 		.addStringOption((string) => string.setName("weapon").setDescription("Weapon to kill the user with.")),
-	execute: async (interaction: CommandInteraction) => {
+	execute: async (interaction: ExtendedCmdInteraction) => {
 		let embed = new MessageEmbed();
 
-		const killed = (await string(interaction.locale, "Command.Kill.Killed", { DONT_REPORT_MISSING: "True" })).split(
-			"$",
+		const killed = (await interaction.text("Command.Kill.Killed", { IGNORE_MISSING: "True" })).split("$,");
+		const killed_by = (await interaction.text("Command.Kill.KilledBy", { IGNORE_MISSING: "True" })).split("$,");
+		const killed_by_using = (await interaction.text("Command.Kill.KilledByUsing", { IGNORE_MISSING: "True" })).split(
+			"$,",
 		);
-		const killed_by = (
-			await string(interaction.locale, "Command.Kill.KilledBy", { DONT_REPORT_MISSING: "True" })
-		).split("$");
-		const killed_by_using = (
-			await string(interaction.locale, "Command.Kill.KilledByUsing", { DONT_REPORT_MISSING: "True" })
-		).split("$");
 
 		if (interaction.options.getUser("user") !== null) {
 			if (interaction.options.getString("weapon") !== null)
