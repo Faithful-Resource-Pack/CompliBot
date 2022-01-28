@@ -1,9 +1,7 @@
 import { SlashCommand } from "@src/Interfaces/slashCommand";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import ExtendedCmdInteraction from "@src/Client/commandInteraction";
 import MessageEmbed from "@src/Client/embed";
-import Client from "@src/Client";
-import { string } from "@functions/string";
+import CommandInteraction from "@src/Client/commandInteraction";
 
 export const command: SlashCommand = {
 	permissions: undefined,
@@ -12,7 +10,7 @@ export const command: SlashCommand = {
 		.setDescription("Kill someone you tag, be carefull with weapons!")
 		.addUserOption((user) => user.setName("user").setDescription("User to be killed."))
 		.addStringOption((string) => string.setName("weapon").setDescription("Weapon to kill the user with.")),
-	execute: async (interaction: ExtendedCmdInteraction) => {
+	execute: async (interaction: CommandInteraction) => {
 		let embed = new MessageEmbed();
 
 		const killed = (await interaction.text("Command.Kill.Killed", { IGNORE_MISSING: "True" })).split("$,");
