@@ -1,8 +1,6 @@
 import { SlashCommand } from "@src/Interfaces/slashCommand";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction } from "discord.js";
-import Client from "@src/Client";
-import { string } from "@functions/string";
+import CommandInteraction from "@src/Client/commandInteraction";
 
 export const command: SlashCommand = {
 	permissions: undefined,
@@ -18,10 +16,10 @@ export const command: SlashCommand = {
 		interaction.reply({
 			content: `${
 				res > 0.5
-					? await string(interaction.locale, "Command.Coin.Heads")
+					? await interaction.text("Command.Coin.Heads")
 					: res < 0.5
-					? await string(interaction.locale, "Command.Coin.Tails")
-					: await string(interaction.locale, "Command.Coin.Edge")
+					? await interaction.text("Command.Coin.Tails")
+					: await interaction.text("Command.Coin.Edge")
 			}`,
 		});
 	},

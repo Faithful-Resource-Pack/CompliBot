@@ -1,6 +1,6 @@
 import { SlashCommand } from "@src/Interfaces/slashCommand";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction } from "discord.js";
+import CommandInteraction from "@src/Client/commandInteraction";
 import { getTexture } from "@src/Functions/getTexture";
 import { string } from "@functions/string";
 
@@ -66,10 +66,10 @@ export const command: SlashCommand = {
 
 		// todo: implements a select menu when there is multiple results
 		else if (results.length > 1) {
-			interaction.editReply({ content: await string(interaction.locale, "Error.DevBad") });
+			interaction.editReply({ content: await interaction.text("Error.DevBad") });
 		} else {
 			interaction.editReply({
-				content: await string(interaction.locale, "Command.Texture.NotFound", {
+				content: await interaction.text("Command.Texture.NotFound", {
 					TEXTURENAME: interaction.options.getString("name", true),
 				}),
 			});

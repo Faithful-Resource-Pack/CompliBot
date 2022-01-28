@@ -3,7 +3,6 @@ import { ids, parseId } from "@src/Helpers/emojis";
 import { type } from "os";
 export type stringKey = keyof typeof en_US;
 
-//todo: document all replacements, emojis and DONT_REPORT_MISSING: "True" key
 export async function string(
 	countryCode: string,
 	text: stringKey,
@@ -19,9 +18,6 @@ export async function string(
 	} catch (error) {
 		const data: {} = en_US;
 		return data[text] == undefined ? undefined : parse(data[text], countryCode, true, placeholders);
-
-		Promise.reject(error);
-		return undefined;
 	}
 }
 
@@ -33,7 +29,7 @@ function parse(
 ): string {
 	if (text == undefined) return undefined;
 	let result: string;
-	typeof text === "string" ? (result = text) : (result = text.join("$"));
+	typeof text === "string" ? (result = text) : (result = text.join("$,"));
 
 	//handles emojis: %EMOJI.DELETE%
 	result = result.replaceAll(/%EMOJI\.([A-Z_]+)%/g, (string) => {
@@ -45,7 +41,7 @@ function parse(
 	if (placeholders != undefined && Object.keys(placeholders).length > 0) {
 		for (let key in placeholders) {
 			if (placeholders[key] == undefined) {
-				if (placeholders["DONT_REPORT_MISSING"] == "True") return;
+				if (placeholders["IGNORE_MISSING"].toLocaleLowerCase() == "true") return;
 				console.error(`No translation for key: %${key}% in language: ${lang}!`);
 			}
 

@@ -1,8 +1,7 @@
 import { SlashCommand } from "@src/Interfaces/slashCommand";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction } from "discord.js";
+import CommandInteraction from "@src/Client/commandInteraction";
 import Client from "@src/Client";
-import { string } from "@functions/string";
 
 export const command: SlashCommand = {
 	permissions: {
@@ -12,6 +11,6 @@ export const command: SlashCommand = {
 	data: new SlashCommandBuilder().setName("delete-slash-command").setDescription("Remove global slash commands."),
 	execute: async (interaction: CommandInteraction, client: Client) => {
 		await client.deleteGlobalSlashCommands();
-		interaction.reply({ content: await string(interaction.locale, "Sucsess.General"), ephemeral: true });
+		interaction.reply({ content: await interaction.text("Sucsess.General"), ephemeral: true });
 	},
 };
