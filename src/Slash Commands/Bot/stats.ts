@@ -51,7 +51,7 @@ export const command: SlashCommand = {
 			if (os.platform() === "linux") version = "Linux" + os.release().replace(/^(\d+\.\d+).*/, "$1");
 			else version = os.version();
 
-			const FieldTitles = (await interaction.text("Command.Stats.Embed.FieldTitles")).split("$");
+			const FieldTitles = (await interaction.text({ string: "Command.Stats.Embed.FieldTitles"})).split("$");
 
 			const embed = new MessageEmbed()
 				.setTitle(`${client.user.username} Stats`)

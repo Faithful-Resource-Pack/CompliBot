@@ -1,5 +1,5 @@
 import { Client, CommandInteraction } from "discord.js";
-import { string, stringKey } from "@src/Helpers/string";
+import { string, keys } from "@src/Helpers/string";
 
 declare module "discord.js" {
 	interface CommandInteraction {
@@ -8,7 +8,7 @@ declare module "discord.js" {
 }
 
 interface TextOptions {
-	string: stringKey;
+	string: keys;
 	placeholders?: { [key: Capitalize<string>]: string };
 }
 
