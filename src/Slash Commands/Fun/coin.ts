@@ -16,10 +16,10 @@ export const command: SlashCommand = {
 		interaction.reply({
 			content: `${
 				res > 0.5
-					? await interaction.text("Command.Coin.Heads")
+					? await interaction.text({ string: "Command.Coin.Heads" })
 					: res < 0.5
-					? await interaction.text("Command.Coin.Tails")
-					: await interaction.text("Command.Coin.Edge")
+					? await interaction.text({ string: "Command.Coin.Tails" })
+					: await interaction.text({ string: "Command.Coin.Edge" })
 			}`,
 		});
 	},

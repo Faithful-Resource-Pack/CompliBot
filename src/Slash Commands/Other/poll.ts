@@ -1,10 +1,10 @@
-import MessageEmbed from "@src/Client/embed";
+// import MessageEmbed from "@src/Client/embed";
 import Client from "@src/Client";
 
 import { CommandInteraction, Message, TextChannel } from "discord.js";
 import { SlashCommand } from "@src/Interfaces/slashCommand";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { ids, parseId } from "@src/Helpers/emojis";
+// import { ids, parseId } from "@src/Helpers/emojis";
 // import { Polls } from "@src/Functions/poll";
 
 export const command: SlashCommand = {
@@ -32,7 +32,7 @@ export const command: SlashCommand = {
 
 		return;
 		// todo: finish this using API & uncreated yet poll collection
-		
+
 		// /* params */
 		// const _a: number = interaction.options.getNumber("answers", true);
 		// const answers: number | 2 = _a > 2 ? (_a > 5 ? 5 : _a) : 2;
@@ -45,7 +45,6 @@ export const command: SlashCommand = {
 		// const anonymous: boolean = interaction.options.getBoolean("anonymous", false) === true ? true : false;
 		// const multiple: boolean = interaction.options.getBoolean("multiple", false);
 		// const poll = new Polls(client);
-
 
 		// /* default embed */
 		// const embed = new MessageEmbed()

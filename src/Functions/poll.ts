@@ -1,6 +1,5 @@
 // todo: to be redone using the API & uncreated yet poll collection
 
-
 // import Client from "@src/Client";
 // import MessageEmbed from "@src/Client/embed";
 // import Message from "@src/Client/message";

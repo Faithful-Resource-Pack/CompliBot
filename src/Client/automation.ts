@@ -1,7 +1,7 @@
 import Client from "@src/Client";
-import { getData } from "@src/Functions/getDataFromJSON";
+// import { getData } from "@src/Functions/getDataFromJSON";
 // import { Polls } from "@src/Functions/poll";
-import { setData } from "@src/Functions/setDataToJSON";
+// import { setData } from "@src/Functions/setDataToJSON";
 
 export class Automation {
 	private ticking: boolean = true;

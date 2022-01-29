@@ -1,4 +1,4 @@
-import { string, stringKey } from "@src/Functions/string";
+import { string, stringKey } from "@src/Helpers/string";
 import { Command } from "@src/Interfaces";
 import enUS from "@/lang/en-US.json";
 export const command: Command = {

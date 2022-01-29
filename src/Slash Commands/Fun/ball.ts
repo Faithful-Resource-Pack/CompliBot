@@ -12,7 +12,7 @@ export const command: SlashCommand = {
 			option.setName("question").setDescription("The question to ask to the 8-ball.").setRequired(true),
 		),
 	execute: async (interaction: CommandInteraction) => {
-		const answers = (await interaction.text("Command.EightBall.Answers")).split("$,");
+		const answers = (await interaction.text({ string: "Command.EightBall.Answers" })).split("$,");
 
 		let embed = new MessageEmbed()
 			.setTitle(`${interaction.options.getString("question", true)}`.slice(0, 255))

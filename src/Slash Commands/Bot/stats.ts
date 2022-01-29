@@ -6,7 +6,7 @@ import Client from "@src/Client";
 import { getUsage, total } from "@src/Functions/commandProcess";
 import os from "os";
 import { duration } from "moment";
-import { string } from "@functions/string";
+import { string } from "@src/Helpers/string";
 
 export const command: SlashCommand = {
 	permissions: undefined,

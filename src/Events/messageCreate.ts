@@ -58,7 +58,7 @@ export const event: Event = {
 
 		const command = client.commands.get(cmd) || client.aliases.get(cmd);
 		if (command) {
-			let _ = (message as Message) instanceof Message; // do not remove, 'force' message to be casted (break if removed)
+			let _ = (message as Message) instanceof Message; //! do not remove, 'force' message to be casted (break if removed)
 			(command as Command).run(client, message, args);
 			increase((command as Command).name);
 		}
