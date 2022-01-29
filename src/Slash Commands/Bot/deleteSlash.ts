@@ -11,6 +11,6 @@ export const command: SlashCommand = {
 	data: new SlashCommandBuilder().setName("delete-slash-command").setDescription("Remove global slash commands."),
 	execute: async (interaction: CommandInteraction, client: Client) => {
 		await client.deleteGlobalSlashCommands();
-		interaction.reply({ content: await interaction.text("Sucsess.General"), ephemeral: true });
+		interaction.reply({ content: await interaction.text({ string: "Sucsess.General" }), ephemeral: true });
 	},
 };

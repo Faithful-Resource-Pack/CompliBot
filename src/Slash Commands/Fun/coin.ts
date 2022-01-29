@@ -1,13 +1,13 @@
 import { SlashCommand } from "@src/Interfaces/slashCommand";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import ExtendedCmdInteraction from "@src/Client/commandInteraction";
+import CommandInteraction from "@src/Client/commandInteraction";
 
 export const command: SlashCommand = {
 	permissions: undefined,
 	data: new SlashCommandBuilder()
 		.setName("coin")
 		.setDescription("Flip a coin. Will it be heads? Will it be tails? Who knows?"),
-	execute: async (interaction: ExtendedCmdInteraction) => {
+	execute: async (interaction: CommandInteraction) => {
 		const res = Math.round(Math.random() * 100) / 100; // round to 2 decimal places;
 
 		/**
@@ -16,10 +16,10 @@ export const command: SlashCommand = {
 		interaction.reply({
 			content: `${
 				res > 0.5
-					? await interaction.text("Command.Coin.Heads")
+					? await interaction.text({ string: "Command.Coin.Heads" })
 					: res < 0.5
-					? await interaction.text("Command.Coin.Tails")
-					: await interaction.text("Command.Coin.Edge")
+					? await interaction.text({ string: "Command.Coin.Tails" })
+					: await interaction.text({ string: "Command.Coin.Edge" })
 			}`,
 		});
 	},

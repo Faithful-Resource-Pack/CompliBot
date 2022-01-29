@@ -65,11 +65,12 @@ export const command: SlashCommand = {
 
 		// todo: implements a select menu when there is multiple results
 		else if (results.length > 1) {
-			interaction.editReply({ content: await interaction.text("Error.DevBad") });
+			interaction.editReply({ content: await interaction.text({ string: "Error.DevBad" }) });
 		} else {
 			interaction.editReply({
-				content: await interaction.text("Command.Texture.NotFound", {
-					TEXTURENAME: interaction.options.getString("name", true),
+				content: await interaction.text({
+					string: "Command.Texture.NotFound",
+					placeholders: { TEXTURENAME: interaction.options.getString("name", true) },
 				}),
 			});
 		}

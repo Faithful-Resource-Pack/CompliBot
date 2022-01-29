@@ -1,7 +1,7 @@
 import { SlashCommand } from "@src/Interfaces/slashCommand";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import MessageEmbed from "@src/Client/embed";
 import CommandInteraction from "@src/Client/commandInteraction";
+import MessageEmbed from "@src/Client/embed";
 
 export const command: SlashCommand = {
 	permissions: undefined,
@@ -13,11 +13,15 @@ export const command: SlashCommand = {
 	execute: async (interaction: CommandInteraction) => {
 		let embed = new MessageEmbed();
 
-		const killed = (await interaction.text("Command.Kill.Killed", { IGNORE_MISSING: "True" })).split("$,");
-		const killed_by = (await interaction.text("Command.Kill.KilledBy", { IGNORE_MISSING: "True" })).split("$,");
-		const killed_by_using = (await interaction.text("Command.Kill.KilledByUsing", { IGNORE_MISSING: "True" })).split(
-			"$,",
-		);
+		const killed = (
+			await interaction.text({ string: "Command.Kill.Killed", placeholders: { IGNORE_MISSING: "True" } })
+		).split("$,");
+		const killed_by = (
+			await interaction.text({ string: "Command.Kill.KilledBy", placeholders: { IGNORE_MISSING: "True" } })
+		).split("$,");
+		const killed_by_using = (
+			await interaction.text({ string: "Command.Kill.KilledByUsing", placeholders: { IGNORE_MISSING: "True" } })
+		).split("$,");
 
 		if (interaction.options.getUser("user") !== null) {
 			if (interaction.options.getString("weapon") !== null)
