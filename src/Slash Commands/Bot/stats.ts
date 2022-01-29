@@ -51,7 +51,7 @@ export const command: SlashCommand = {
 			if (os.platform() === "linux") version = "Linux" + os.release().replace(/^(\d+\.\d+).*/, "$1");
 			else version = os.version();
 
-			const FieldTitles = (await string(interaction.locale, "Command.Stats.Embed.FieldTitles")).split("$");
+			const FieldTitles = (await interaction.text("Command.Stats.Embed.FieldTitles")).split("$");
 
 			const embed = new MessageEmbed()
 				.setTitle(`${client.user.username} Stats`)
@@ -73,17 +73,17 @@ export const command: SlashCommand = {
 					{ name: FieldTitles[9], value: version },
 				)
 				.setFooter({
-					text: await string(interaction.locale, "Command.Stats.Footer"),
+					text: await interaction.text({ string: "Command.Stats.Footer"}),
 					iconURL: "https://static.wikia.nocookie.net/minecraft_gamepedia/images/0/06/Heart_(icon).png",
 				});
 			interaction.reply({ embeds: [embed] });
 		})
 		.set("command", async (interaction: CommandInteraction, client: Client) => {
 			const embed = new MessageEmbed().setTitle(
-				await string(interaction.locale, "Command.Stats.Usage", {
+				await interaction.text({ string: "Command.Stats.Usage", placeholders: {
 					COMMAND: interaction.options.getString("command", true),
 					USE: getUsage(interaction.options.getString("command", true)).toString() ?? "0",
-				}),
+				}}),
 			);
 			interaction.reply({ embeds: [embed] });
 		}),

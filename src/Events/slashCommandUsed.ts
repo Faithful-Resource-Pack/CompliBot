@@ -1,8 +1,9 @@
 import { increase } from "@src/Functions/commandProcess";
 import { SlashCommandI } from "@src/Interfaces/slashCommand";
-import { Collection, CommandInteraction, Interaction } from "discord.js";
+import { Collection } from "discord.js";
 import { Event } from "@src/Interfaces";
 import Client from "@src/Client";
+import CommandInteraction from "@src/Client/commandInteraction";
 
 export const event: Event = {
 	name: "slashCommandUsed",
@@ -26,7 +27,7 @@ export const event: Event = {
 			// not a subcommand
 			try {
 				// execute command
-				await (command.execute as SlashCommandI)(interaction, client);
+				await (command.execute as SlashCommandI)(interaction as CommandInteraction, client);
 			} catch (err) {
 				console.error(err);
 				return interaction.reply({ content: "There were an error with command!", ephemeral: true });

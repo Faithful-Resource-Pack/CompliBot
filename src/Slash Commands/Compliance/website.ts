@@ -1,9 +1,9 @@
 import { SlashCommand } from "@src/Interfaces/slashCommand";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import CommandInteraction from "@src/Client/commandInteraction";
 import { colors } from "@src/Helpers/colors";
 import { ids, parseId } from "@src/Helpers/emojis";
 import MessageEmbed from "@/src/Client/embed";
+import CommandInteraction from "@src/Client/commandInteraction";
 
 export const command: SlashCommand = {
 	permissions: undefined,
