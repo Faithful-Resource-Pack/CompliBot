@@ -1,33 +1,33 @@
-A list of all translations supported by discord. 
+A list of all translations supported by discord.
 Have fun polylinguals!
 
-- en-US	English (United States)
-- en-GB	English (Great Britain)
-- [ ] bg	Bulgarian
-- [ ] zh-CN	Chinese (China)
-- [ ] zh-TW	Chinese (Taiwan)
-- [ ] hr	Croatian
-- [ ] cs	Czech
-- [ ] da	Danish
-- [ ] nl	Dutch
-- [ ] fi	Finnish
-- [ ] fr	French
-- [ ] de	German
-- [ ] el	Greek
-- [ ] hi	Hindi
-- [ ] hu	Hungarian
-- [ ] it	Italian
-- [ ] ja	Japanese
-- [ ] ko	Korean
-- [ ] lt	Lithuanian
-- [ ] no	Norwegian
-- [ ] pl	Polish
-- [ ] pt-BR	Portuguese (Brazil)
-- [ ] ro	Romanian
-- [ ] ru	Russian
-- [ ] es-ES	Spanish (Spain)
-- [ ] sv-SE	Swedish
-- [ ] th	Thai
-- [ ] tr	Turkish
-- [ ] uk	Ukrainian
-- [ ] vi	Vietnamese
+- [x] en-US	English (United States) `100%`
+- [x] en-GB	English (Great Britain) `100%`
+- [ ] bg	Bulgarian `0%`
+- [ ] zh-CN	Chinese (China) `0%`
+- [ ] zh-TW	Chinese (Taiwan) `0%`
+- [ ] hr	Croatian `0%`
+- [ ] cs	Czech `0%`
+- [ ] da	Danish `0%`
+- [ ] nl	Dutch `0%`
+- [ ] fi	Finnish `0%`
+- [ ] fr	French `24%`
+- [ ] de	German `0%`
+- [ ] el	Greek `0%`
+- [ ] hi	Hindi `0%`
+- [ ] hu	Hungarian `0%`
+- [ ] it	Italian `0%`
+- [ ] ja	Japanese `0%`
+- [ ] ko	Korean `0%`
+- [ ] lt	Lithuanian `0%`
+- [ ] no	Norwegian `0%`
+- [ ] pl	Polish `0%`
+- [ ] pt-BR	Portuguese (Brazil) `0%`
+- [ ] ro	Romanian `0%`
+- [ ] ru	Russian `0%`
+- [ ] es-ES	Spanish (Spain) `0%`
+- [ ] sv-SE	Swedish `0%`
+- [ ] th	Thai `0%`
+- [ ] tr	Turkish `0%`
+- [ ] uk	Ukrainian `0%`
+- [ ] vi	Vietnamese `0%`

@@ -13,8 +13,7 @@
     },
     "scripts": {
         "dev": "ts-node-dev --respawn -r tsconfig-paths/register src/index.ts",
-        "build": "tsc --project tsconfig.json && tsc-alias -p tsconfig.json",
-        "start": "node dist/src/index.js",
+        "genLang": "ts-node-dev -r tsconfig-paths/register src/genLangReadme.ts",
         "prettier-format": "prettier src/**/*.ts --config .prettierrc --write"
     },
     "devDependencies": {

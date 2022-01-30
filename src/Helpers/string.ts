@@ -24,14 +24,6 @@ export async function string(
 		: parse(lang[key], country_code, placeholders);
 }
 
-/**
- * !todo: add description @Nick
- *
- * @param text
- * @param lang
- * @param placeholders
- * @returns
- */
 function parse(text: string | string[], lang: string, placeholders?: { [key: Capitalize<string>]: string }): string {
 	if (text === undefined) return "!!Translation Missing!!"; // just in case, shouldn't happening
 
