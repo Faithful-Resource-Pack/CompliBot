@@ -3,7 +3,8 @@ import path from "path";
 import en_US from "@/lang/en-US.json";
 import { err, info, sucsess } from "./Helpers/logger";
 
-const header = "A list of all translations supported by discord.\nHave fun polylinguals!\n\n";
+const header = "A list of all translations and their completions.\nHave fun polylingual translators!\n\n";
+const note = "\n\n### Note: make sure to run `npm run genLang` after creating a language file to update this list.";
 const checked = "- [x] ";
 const unchecked = "- [ ] ";
 const languages = [
@@ -54,17 +55,16 @@ async function generate() {
 			// console.log(info + `Lang ${langCode}.json does not exist`);
 		}
 
-		let keys = 0;
-		for (var key in lang) keys++;
-
 		//substracting 1 because default key, tested to be accurate (fr.json keys: 7, en-US.json keys: 25 : 7/25 = 0.24 = 24%)
-		completion = ((Object.keys(lang).length != 0 ? Object.keys(lang).length - 1 : 0) / size) * 100;
+		lang["_CONTRIBUTORS"] == undefined
+			? (completion = ((Object.keys(lang).length != 0 ? Object.keys(lang).length - 1 : 0) / size) * 100)
+			: (completion = ((Object.keys(lang).length != 0 ? Object.keys(lang).length - 2 : 0) / size) * 100);
 		completion = parseFloat(completion.toFixed(2));
 
 		languages[i] = (completion == 100 ? checked : unchecked) + languages[i] + ` \`${completion}%\``;
 	}
 
-	writeFileSync(path.join(__dirname, "../lang/README.md"), header + languages.join("\n"));
+	writeFileSync(path.join(__dirname, "../lang/README.md"), header + languages.join("\n") + note);
 	console.log(sucsess + "Generated README.md in /lang/");
 }
 

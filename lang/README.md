@@ -1,5 +1,5 @@
-A list of all translations supported by discord.
-Have fun polylinguals!
+A list of all translations and their completions.
+Have fun polylingual translators!
 
 - [x] en-US	English (United States) `100%`
 - [x] en-GB	English (Great Britain) `100%`
@@ -22,7 +22,7 @@ Have fun polylinguals!
 - [ ] lt	Lithuanian `0%`
 - [ ] no	Norwegian `0%`
 - [ ] pl	Polish `0%`
-- [ ] pt-BR	Portuguese (Brazil) `104%`
+- [x] pt-BR	Portuguese (Brazil) `100%`
 - [ ] ro	Romanian `0%`
 - [ ] ru	Russian `0%`
 - [ ] es-ES	Spanish (Spain) `0%`
@@ -31,3 +31,5 @@ Have fun polylinguals!
 - [ ] tr	Turkish `0%`
 - [ ] uk	Ukrainian `0%`
 - [ ] vi	Vietnamese `0%`
+
+### Note: make sure to run `npm run genLang` after creating a language file to update this list.
