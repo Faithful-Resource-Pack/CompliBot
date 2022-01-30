@@ -26,7 +26,7 @@
     },
     "dependencies": {
         "@discordjs/rest": "^0.3.0",
-        "@types/node": "^17.0.10",
+        "@types/node": "^17.0.13",
         "axios": "^0.25.0",
         "canvas": "^2.9.0",
         "chalk": "^4.1.2",
@@ -36,6 +36,7 @@
         "firestorm-db": "^1.9.0",
         "follow-redirects": "^1.14.7",
         "image-size": "^1.0.1",
+        "linux-os-info": "^2.0.0",
         "module-alias": "^2.2.2",
         "moment": "^2.29.1",
         "slash-commands": "^1.5.0"

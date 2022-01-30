@@ -5,6 +5,7 @@ import MessageEmbed from "@src/Client/embed";
 import Client from "@src/Client";
 import { getUsage, total } from "@src/Functions/commandProcess";
 import os from "os";
+import linuxOs from "linux-os-info";
 import { duration } from "moment";
 import { string } from "@src/Helpers/string";
 
@@ -33,22 +34,7 @@ export const command: SlashCommand = {
 
 			const number = total() + 1;
 
-			/**
-			 * @author nick
-			 * i know what it does, its a stupid regex.
-			 *
-			 * \d+ (any digit repeated any ammount of times)
-			 * ^ (start of string)
-			 * \. (period)
-			 *
-			 * if the platform is linux and the release starts with \d+.\d+ (e.g 69.420)
-			 * then use replace it and everything following it with '$1' (i.e fist capture group (which is the version thing) )
-			 *
-			 * example:
-			 *  1.0.0-beta trolling version => 1.0
-			 */
-
-			if (os.platform() === "linux") version = "Linux" + os.release().replace(/^(\d+\.\d+).*/, "$1");
+			if (os.platform() == "linux") linuxOs().pretty_name
 			else version = os.version();
 
 			const FieldTitles = (await interaction.text({ string: "Command.Stats.Embed.FieldTitles" })).split("$");
