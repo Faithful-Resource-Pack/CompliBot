@@ -14,7 +14,7 @@ export async function string(
 			lang = await import(`@/lang/${country_code}.json`);
 		} catch (error) {
 			// fallback
-			console.error(error);
+			//console.error(error);
 			lang = en_US;
 		}
 	} else lang = en_US; // same for enGB & enUS
