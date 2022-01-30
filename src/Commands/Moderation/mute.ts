@@ -2,6 +2,7 @@ import MessageEmbed from "@src/Client/embed";
 import { Command } from "@src/Interfaces";
 import { getMember } from "@src/Functions/getMember";
 import { stringToMs } from "@src/Functions/time";
+import { Permissions } from "discord.js";
 
 export const command: Command = {
 	name: "mute",
@@ -9,10 +10,18 @@ export const command: Command = {
 	description: "not implemented yet",
 	usage: ["mute <user> [time] [reason]"],
 	run: async (client, message, args) => {
+		if (!message.member.permissions.has([Permissions.FLAGS.KICK_MEMBERS])) return message.warn("You don't have permission to do that!");
+
 		if (!args.length) return message.warn("No args given");
 
 		const memberId = await getMember(message, args[0]);
 		if (memberId == undefined) return message.warn("I couldn't find anyone to mute!");
+
+		if (memberId == message.author.id) return message.warn("You can't mute yourself!");
+
+		if (memberId == client.user.id) return message.warn("I won't mute myself!");
+
+		if (memberId.manageable) return message.warn("I can't mute higher beings.");
 
 		if (!args[1]) return message.warn("You didn't provide a time!");
 		const time = stringToMs(args[1]);
