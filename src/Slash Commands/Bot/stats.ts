@@ -34,7 +34,7 @@ export const command: SlashCommand = {
 
 			const number = total() + 1;
 
-			if (os.platform() == "linux") linuxOs().pretty_name
+			if (os.platform() == "linux") linuxOs({mode: 'sync'}).pretty_name
 			else version = os.version();
 
 			const FieldTitles = (await interaction.text({ string: "Command.Stats.Embed.FieldTitles" })).split("$");
