@@ -22,7 +22,7 @@ Have fun polylinguals!
 - [ ] lt	Lithuanian `0%`
 - [ ] no	Norwegian `0%`
 - [ ] pl	Polish `0%`
-- [ ] pt-BR	Portuguese (Brazil) `0%`
+- [ ] pt-BR	Portuguese (Brazil) `104%`
 - [ ] ro	Romanian `0%`
 - [ ] ru	Russian `0%`
 - [ ] es-ES	Spanish (Spain) `0%`

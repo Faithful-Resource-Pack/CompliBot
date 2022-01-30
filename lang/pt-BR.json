@@ -1,5 +1,7 @@
 {
-    "_CONTRIBUTORS": ["PedroESP_01"],
+    "_CONTRIBUTORS": [
+        "PedroESP_01"
+    ],
     "Args.Insufficient": "Não há argumentos suficientes!",
     "Args.Invalid": "Argumentos inválidos!",
     "Command.Coin.Edge": "De lado?!",
@@ -203,7 +205,7 @@
         "Node.js",
         "Total de\ncomandos",
         "Comandos\nprocessados",
-        "Membros\em guildas",
+        "Membros\nem guildas",
         "Sistema operacional"
     ],
     "Command.Stats.Embed.Title": "Estatísticas de %USER%.",
