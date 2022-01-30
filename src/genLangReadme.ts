@@ -4,7 +4,7 @@ import en_US from "@/lang/en-US.json";
 import { err, info, sucsess } from "./Helpers/logger";
 
 const header = "A list of all translations and their completions.\nHave fun polylingual translators!\n\n";
-const note = "\n\n### Note: make sure to run `npm run genLang` after creating a language file to update this list.";
+const note = "\n\n### Note: make sure to read `/translation-guide.md` before contributing!";
 const checked = "- [x] ";
 const unchecked = "- [ ] ";
 const languages = [
