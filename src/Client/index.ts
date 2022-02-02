@@ -17,8 +17,10 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { err, info, sucsess } from "@src/Helpers/logger";
 import { bot } from "..";
 import { Automation } from "./automation";
+import { Button } from "@src/Interfaces";
 
 class ExtendedClient extends Client {
+	public verboseInit = false;
 	public config: Config = ConfigJson;
 	public tokens: Tokens = TokensJson;
 	public automation: Automation = new Automation(this);
@@ -34,20 +36,32 @@ class ExtendedClient extends Client {
 			.then(() => {
 				// commands counter
 				initCommands(this);
+				if (this.verboseInit) console.log(info + `Initialized command counter`);
 
 				// load old commands only if not dev server
 				//if (this.tokens.dev) this.loadCommands();
 				this.loadCommands();
+				if (this.verboseInit) console.log(info + `Loaded classical commands`);
 
 				// load slash commands
 				this.loadSlashCommands();
+				if (this.verboseInit) console.log(info + `Loaded slash commands`);
 				this.loadSlashCommandsPerms();
+				if (this.verboseInit) console.log(info + `Loaded slash command perms`);
 
 				// load events
 				this.loadEvents();
+				if (this.verboseInit) console.log(info + `Loaded events`);
+
+				// load buttons
+				this.loadButtons();
+				if (this.verboseInit) console.log(info + `Loaded buttons`);
 
 				// starts automated functions
 				this.automation.start();
+				if (this.verboseInit) console.log(info + `Started automated functions`);
+
+				if (this.verboseInit) console.log(info + `Init complete`);
 			});
 
 		process.on("exit", () => {
@@ -189,11 +203,28 @@ class ExtendedClient extends Client {
 	private loadEvents = (): void => {
 		const eventPath = path.join(__dirname, "..", "Events");
 
-		readdirSync(eventPath).forEach(async (file) => {
-			const { event } = await import(`${eventPath}/${file}`);
-			this.events.set(event.name, event);
-			this.on(event.name, event.run.bind(null, this));
-		});
+		readdirSync(eventPath)
+			.filter((file) => file.endsWith(".ts"))
+			.forEach(async (file) => {
+				const { event } = await import(`${eventPath}/${file}`);
+				this.events.set(event.name, event);
+				this.on(event.name, event.run.bind(null, this));
+			});
+	};
+
+	/**
+	 * Read "Buttons" directory and add them to the button collection
+	 */
+	public buttons: Collection<string, Button> = new Collection();
+	private loadButtons = (): void => {
+		const buttonPath = path.join(__dirname, "..", "Buttons");
+
+		readdirSync(buttonPath)
+			.filter((file) => file.endsWith(".ts"))
+			.forEach(async (file) => {
+				const { button } = await import(`${buttonPath}/${file}`);
+				this.buttons.set(button.buttonId, button);
+			});
 	};
 
 	/**

@@ -1,6 +1,8 @@
 import { Constants, Intents } from "discord.js";
 import Client from "./Client";
 
+let verbose = false; //* Use this for debugging startup to see where it gets stuck, leave on false by default
+
 export const bot = new Client({
 	allowedMentions: { parse: ["users", "roles"], repliedUser: false }, // remove this line to die instantly ~JackDotJS 2021
 	restTimeOffset: 0,
@@ -24,5 +26,5 @@ export const bot = new Client({
 		Intents.FLAGS.GUILD_SCHEDULED_EVENTS,
 	],
 });
-
+bot.verboseInit = verbose;
 bot.init();

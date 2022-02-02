@@ -2,7 +2,7 @@ export interface Config {
 	colors: any;
 	firestormUrl: string;
 	images: string;
-	channels: any;
+	channels: { [key: string]: string };
 	repositories: {
 		compliance: Repository;
 		vanilla: Repository;
