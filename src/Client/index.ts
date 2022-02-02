@@ -20,7 +20,7 @@ import { Automation } from "./automation";
 import { Button } from "@src/Interfaces";
 
 class ExtendedClient extends Client {
-	public verboseInit = false;
+	public verbose: boolean = false;
 	public config: Config = ConfigJson;
 	public tokens: Tokens = TokensJson;
 	public automation: Automation = new Automation(this);
@@ -36,32 +36,32 @@ class ExtendedClient extends Client {
 			.then(() => {
 				// commands counter
 				initCommands(this);
-				if (this.verboseInit) console.log(info + `Initialized command counter`);
+				if (this.verbose) console.log(info + `Initialized command counter`);
 
 				// load old commands only if not dev server
 				//if (this.tokens.dev) this.loadCommands();
 				this.loadCommands();
-				if (this.verboseInit) console.log(info + `Loaded classical commands`);
+				if (this.verbose) console.log(info + `Loaded classical commands`);
 
 				// load slash commands
 				this.loadSlashCommands();
-				if (this.verboseInit) console.log(info + `Loaded slash commands`);
+				if (this.verbose) console.log(info + `Loaded slash commands`);
 				this.loadSlashCommandsPerms();
-				if (this.verboseInit) console.log(info + `Loaded slash command perms`);
+				if (this.verbose) console.log(info + `Loaded slash command perms`);
 
 				// load events
 				this.loadEvents();
-				if (this.verboseInit) console.log(info + `Loaded events`);
+				if (this.verbose) console.log(info + `Loaded events`);
 
 				// load buttons
 				this.loadButtons();
-				if (this.verboseInit) console.log(info + `Loaded buttons`);
+				if (this.verbose) console.log(info + `Loaded buttons`);
 
 				// starts automated functions
 				this.automation.start();
-				if (this.verboseInit) console.log(info + `Started automated functions`);
+				if (this.verbose) console.log(info + `Started automated functions`);
 
-				if (this.verboseInit) console.log(info + `Init complete`);
+				if (this.verbose) console.log(info + `Init complete`);
 			});
 
 		process.on("exit", () => {

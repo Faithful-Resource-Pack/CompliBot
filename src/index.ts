@@ -26,5 +26,5 @@ export const bot = new Client({
 		Intents.FLAGS.GUILD_SCHEDULED_EVENTS,
 	],
 });
-bot.verboseInit = verbose;
+bot.verbose = verbose;
 bot.init();
