@@ -44,7 +44,7 @@ export const command: Command = {
 
 		if (attach != undefined) {
 			message
-				.reply({ files: [await tileAttachment(attach)] })
+				.reply({ files: [await tileAttachment({url: attach})] })
 				.then((res) => res.deleteReact({ authorMessage: message, deleteAuthorMessage: true }))
 				.catch(() => {
 					message.warn("Output exeeds the maximum of 512 x 512px²!");

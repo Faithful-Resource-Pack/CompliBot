@@ -1,7 +1,7 @@
 import { Constants, Intents } from "discord.js";
 import Client from "./Client";
 
-let verbose = false; //* Use this for debugging startup to see where it gets stuck, leave on false by default
+let verbose = true; //* Use this for debugging startup to see where it gets stuck, leave on false by default
 
 export const bot = new Client({
 	allowedMentions: { parse: ["users", "roles"], repliedUser: false }, // remove this line to die instantly ~JackDotJS 2021
