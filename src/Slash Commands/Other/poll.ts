@@ -10,6 +10,7 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 export const command: SlashCommand = {
 	permissions: undefined,
 	data: new SlashCommandBuilder()
+		.setDefaultPermission(false) //! disabled the command for Everyone
 		.setName("poll")
 		.setDescription("You want to ask something?")
 		.addStringOption((option) =>
