@@ -203,6 +203,7 @@ class ExtendedClient extends Client {
 	private loadEvents = (): void => {
 		const eventPath = path.join(__dirname, "..", "Events");
 
+		//! if the directory doesn't exist, the bot won't start @nick-1666!!
 		readdirSync(eventPath)
 			.filter((file) => file.endsWith(".ts"))
 			.forEach(async (file) => {
@@ -219,6 +220,8 @@ class ExtendedClient extends Client {
 	private loadButtons = (): void => {
 		const buttonPath = path.join(__dirname, "..", "Buttons");
 
+		return;
+		//! if the directory doesn't exist, the bot won't start @nick-1666!!
 		readdirSync(buttonPath)
 			.filter((file) => file.endsWith(".ts"))
 			.forEach(async (file) => {
