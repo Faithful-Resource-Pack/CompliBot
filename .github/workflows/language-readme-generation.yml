@@ -27,5 +27,6 @@ jobs:
                       git stash
                       git pull
                       npm run genLang
+                      git add lang/README.md
                       git commit -m "Language readme updated"
                       git push
