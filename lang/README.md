@@ -32,4 +32,4 @@ Have fun polylingual translators!
 - [ ] uk	Ukrainian `0%`
 - [ ] vi	Vietnamese `0%`
 
-### Note: make sure to read `/translation-guide.md` before contributing!
+### Note: make sure to read `translation-guide.md` before contributing!
