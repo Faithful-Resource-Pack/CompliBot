@@ -39,8 +39,18 @@ Message.prototype.deleteReact = async function (options: Options) {
 
 	// filter to get the right user
 	const filter = (reaction, user) => {
-		if (options.previousMessage) return !user.bot && ids.delete === reaction.emoji.id && (user.id === options.previousMessage.author.id || user.id === options.authorID);
-		else return !user.bot && ids.delete === reaction.emoji.id && (user.id === options.authorMessage.author.id || user.id === options.authorID);
+		if (options.previousMessage)
+			return (
+				!user.bot &&
+				ids.delete === reaction.emoji.id &&
+				(user.id === options.previousMessage.author.id || user.id === options.authorID)
+			);
+		else
+			return (
+				!user.bot &&
+				ids.delete === reaction.emoji.id &&
+				(user.id === options.authorMessage.author.id || user.id === options.authorID)
+			);
 	};
 
 	// await for reaction for 1 minute long

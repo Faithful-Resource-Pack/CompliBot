@@ -11,7 +11,8 @@ export class Automation {
 		this.client = client;
 	}
 
-	public start() { // Optimised to not tick until implemented
+	public start() {
+		// Optimised to not tick until implemented
 		//setInterval(() => {
 		//	if (!this.ticking) return;
 		//

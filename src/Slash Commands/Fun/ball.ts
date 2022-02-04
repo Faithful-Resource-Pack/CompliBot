@@ -20,7 +20,7 @@ export const command: SlashCommand = {
 			.setDescription(answers[Math.floor(Math.random() * answers.length)]);
 
 		interaction.reply({ embeds: [embed] });
-		const message: Message = await interaction.fetchReply() as Message;
+		const message: Message = (await interaction.fetchReply()) as Message;
 		message.deleteReact({ authorMessage: message, authorID: interaction.user.id, deleteAuthorMessage: false });
 	},
 };

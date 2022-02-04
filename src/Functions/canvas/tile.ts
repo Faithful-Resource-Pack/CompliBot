@@ -6,13 +6,13 @@ export type tileShape = "grid" | "vertical" | "horizontal" | "hollow" | "plus";
 interface options {
 	url: string;
 	name?: string;
-	shape?: tileShape
+	shape?: tileShape;
 }
 
 export async function tileAttachment(options: options): Promise<MessageAttachment | null> {
 	try {
 		const canvas = await tileCanvas(options);
-		return new MessageAttachment(canvas.toBuffer("image/png"), `${options.name ? options.name : 'tiled'}.png`);
+		return new MessageAttachment(canvas.toBuffer("image/png"), `${options.name ? options.name : "tiled"}.png`);
 	} catch (err) {
 		return null;
 	}
@@ -38,32 +38,33 @@ export function tileCanvas(options: options): Promise<Canvas> {
 			 *  x x x	     x x x      . x .     . x .     . . .
 			 */
 			// base grid
-			for (let x = 0; x < 3; x++) for (let y = 0; y < 3; y++) 
-				context.drawImage(imageToDraw, x * dimension.width, y * dimension.height);
+			for (let x = 0; x < 3; x++)
+				for (let y = 0; y < 3; y++) context.drawImage(imageToDraw, x * dimension.width, y * dimension.height);
 
-			if (options.shape === 'hollow')
+			if (options.shape === "hollow")
 				context.clearRect(dimension.width, dimension.height, dimension.width, dimension.height); // middle middle
 
-			if (options.shape === 'plus' || options.shape === 'horizontal' || options.shape === 'vertical') {
-				context.clearRect(0, 0,  dimension.width, dimension.height);                                     // top left
-				context.clearRect(dimension.width * 2, 0,  dimension.width, dimension.height);                   // top right
+			if (options.shape === "plus" || options.shape === "horizontal" || options.shape === "vertical") {
+				context.clearRect(0, 0, dimension.width, dimension.height); // top left
+				context.clearRect(dimension.width * 2, 0, dimension.width, dimension.height); // top right
 				context.clearRect(dimension.width * 2, dimension.height * 2, dimension.width, dimension.height); // bottom right
-				context.clearRect(0, dimension.height * 2, dimension.width, dimension.height);                   // bottom left
+				context.clearRect(0, dimension.height * 2, dimension.width, dimension.height); // bottom left
 			}
 
-			if (options.shape === 'horizontal') {
-				context.clearRect(dimension.width, 0,  dimension.width, dimension.height);                   // top middle
+			if (options.shape === "horizontal") {
+				context.clearRect(dimension.width, 0, dimension.width, dimension.height); // top middle
 				context.clearRect(dimension.width, dimension.height * 2, dimension.width, dimension.height); // bottom middle
 			}
 
-			if (options.shape === 'vertical') {
+			if (options.shape === "vertical") {
 				context.clearRect(dimension.width * 2, dimension.height, dimension.width, dimension.height); // middle left
-				context.clearRect(0, dimension.height, dimension.width, dimension.height);                   // middle right
+				context.clearRect(0, dimension.height, dimension.width, dimension.height); // middle right
 			}
 
 			return canvas;
 		})
-		.catch((e) => { // todo: add better handling when URL is 404
+		.catch((e) => {
+			// todo: add better handling when URL is 404
 			return e;
 		});
 }

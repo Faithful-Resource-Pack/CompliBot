@@ -35,24 +35,34 @@ export const command: SlashCommand = {
 		interaction.reply({
 			content: `${interaction.options.getString("item")}`,
 		});
-		message = await interaction.fetchReply() as Message;
+		message = (await interaction.fetchReply()) as Message;
 
 		// send an anotation following the gif
 		for (const option of options) {
 			if (option[1] === interaction.options.getString("item")) {
 				switch (option[0]) {
 					case "soup":
-						followMessage = await (client.channels.cache.get(interaction.channel.id) as TextChannel).send("Gutten Appetit") as Message;
+						followMessage = (await (client.channels.cache.get(interaction.channel.id) as TextChannel).send(
+							"Gutten Appetit",
+						)) as Message;
 						break;
 					case "pizza":
-						followMessage = await (client.channels.cache.get(interaction.channel.id) as TextChannel).send('Buon Appetito!') as Message;
+						followMessage = (await (client.channels.cache.get(interaction.channel.id) as TextChannel).send(
+							"Buon Appetito!",
+						)) as Message;
 					default:
 						break;
 				}
 			}
 		}
 
-		if (followMessage) followMessage.deleteReact({ authorMessage: followMessage, previousMessage: message, authorID: interaction.user.id, deleteAuthorMessage: true });
-		else message.deleteReact({ authorMessage: message, authorID: interaction.user.id, deleteAuthorMessage: false })
+		if (followMessage)
+			followMessage.deleteReact({
+				authorMessage: followMessage,
+				previousMessage: message,
+				authorID: interaction.user.id,
+				deleteAuthorMessage: true,
+			});
+		else message.deleteReact({ authorMessage: message, authorID: interaction.user.id, deleteAuthorMessage: false });
 	},
 };

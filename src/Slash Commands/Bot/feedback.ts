@@ -1,10 +1,8 @@
-import { SlashCommand, SlashCommandI } from "@src/Interfaces/slashCommand";
+import { SlashCommand } from "@src/Interfaces/slashCommand";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction } from "@src/Client/interaction";
 import MessageEmbed from "@src/Client/embed";
-import Message from "@src/Client/message";
-import Client from "@src/Client";
-import { ButtonInteraction, Collection, MessageActionRow, MessageButton, MessageComponentInteraction } from "discord.js";
+import { MessageActionRow, MessageButton } from "discord.js";
 import { ids, parseId } from "@src/Helpers/emojis";
 import ExtendedClient from "@src/Client";
 
@@ -50,5 +48,3 @@ export const command: SlashCommand = {
 		});
 	},
 };
-
-

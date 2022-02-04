@@ -23,7 +23,7 @@ export const command: SlashCommand = {
 					: await interaction.text({ string: "Command.Coin.Edge" })
 			}`,
 		});
-		const message: Message = await interaction.fetchReply() as Message;
+		const message: Message = (await interaction.fetchReply()) as Message;
 		message.deleteReact({ authorMessage: message, authorID: interaction.user.id, deleteAuthorMessage: false });
 	},
 };

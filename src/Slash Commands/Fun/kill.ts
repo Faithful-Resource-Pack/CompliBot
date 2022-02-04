@@ -44,7 +44,7 @@ export const command: SlashCommand = {
 			);
 
 		interaction.reply({ embeds: [embed] });
-		const message: Message = await interaction.fetchReply() as Message;
+		const message: Message = (await interaction.fetchReply()) as Message;
 		message.deleteReact({ authorMessage: message, authorID: interaction.user.id, deleteAuthorMessage: false });
 	},
 };

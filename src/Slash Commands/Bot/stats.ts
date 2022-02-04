@@ -35,7 +35,7 @@ export const command: SlashCommand = {
 
 			const number = total() + 1;
 
-			if (os.platform() == "linux") version = linuxOs({mode: 'sync'}).pretty_name
+			if (os.platform() == "linux") version = linuxOs({ mode: "sync" }).pretty_name;
 			else version = os.version();
 
 			const FieldTitles = (await interaction.text({ string: "Command.Stats.Embed.FieldTitles" })).split("$");
@@ -64,7 +64,7 @@ export const command: SlashCommand = {
 					iconURL: "https://static.wikia.nocookie.net/minecraft_gamepedia/images/0/06/Heart_(icon).png",
 				});
 			interaction.reply({ embeds: [embed] });
-			const message: Message = await interaction.fetchReply() as Message;
+			const message: Message = (await interaction.fetchReply()) as Message;
 			message.deleteReact({ authorMessage: message, authorID: interaction.user.id, deleteAuthorMessage: false });
 		})
 		.set("command", async (interaction: CommandInteraction, client: Client) => {
@@ -78,7 +78,7 @@ export const command: SlashCommand = {
 				}),
 			);
 			interaction.reply({ embeds: [embed] });
-			const message: Message = await interaction.fetchReply() as Message;
+			const message: Message = (await interaction.fetchReply()) as Message;
 			message.deleteReact({ authorMessage: message, authorID: interaction.user.id, deleteAuthorMessage: false });
 		}),
 };

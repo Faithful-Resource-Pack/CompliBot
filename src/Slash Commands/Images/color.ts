@@ -59,8 +59,8 @@ export const command: SlashCommand = {
 			// todo : add value verification
 
 			const c = new ColorManager({ hex: interaction.options.getString("value") });
-			await interaction.reply(await constructResponse(client, c)) 
-			const message: Message = await interaction.fetchReply() as Message;
+			await interaction.reply(await constructResponse(client, c));
+			const message: Message = (await interaction.fetchReply()) as Message;
 			message.deleteReact({ authorMessage: message, authorID: interaction.user.id, deleteAuthorMessage: false });
 		})
 		.set("rgb-a", async (interaction: CommandInteraction, client: Client) => {
@@ -74,8 +74,8 @@ export const command: SlashCommand = {
 					a: interaction.options.getNumber("alpha", false),
 				},
 			});
-			await interaction.reply(await constructResponse(client, c)) 
-			const message: Message = await interaction.fetchReply() as Message;
+			await interaction.reply(await constructResponse(client, c));
+			const message: Message = (await interaction.fetchReply()) as Message;
 			message.deleteReact({ authorMessage: message, authorID: interaction.user.id, deleteAuthorMessage: false });
 		})
 		.set("hsl", async (interaction: CommandInteraction, client: Client) => {
@@ -88,8 +88,8 @@ export const command: SlashCommand = {
 					l: interaction.options.getNumber("lightness", true),
 				},
 			});
-			await interaction.reply(await constructResponse(client, c)) 
-			const message: Message = await interaction.fetchReply() as Message;
+			await interaction.reply(await constructResponse(client, c));
+			const message: Message = (await interaction.fetchReply()) as Message;
 			message.deleteReact({ authorMessage: message, authorID: interaction.user.id, deleteAuthorMessage: false });
 		})
 		.set("hsv", async (interaction: CommandInteraction, client: Client) => {
@@ -102,8 +102,8 @@ export const command: SlashCommand = {
 					v: interaction.options.getNumber("value", true),
 				},
 			});
-			await interaction.reply(await constructResponse(client, c)) 
-			const message: Message = await interaction.fetchReply() as Message;
+			await interaction.reply(await constructResponse(client, c));
+			const message: Message = (await interaction.fetchReply()) as Message;
 			message.deleteReact({ authorMessage: message, authorID: interaction.user.id, deleteAuthorMessage: false });
 		})
 		.set("cmyk", async (interaction: CommandInteraction, client: Client) => {
@@ -117,8 +117,8 @@ export const command: SlashCommand = {
 					k: interaction.options.getNumber("key", true),
 				},
 			});
-			await interaction.reply(await constructResponse(client, c)) 
-			const message: Message = await interaction.fetchReply() as Message;
+			await interaction.reply(await constructResponse(client, c));
+			const message: Message = (await interaction.fetchReply()) as Message;
 			message.deleteReact({ authorMessage: message, authorID: interaction.user.id, deleteAuthorMessage: false });
 		}),
 };

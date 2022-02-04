@@ -10,7 +10,8 @@ export const command: Command = {
 	description: "not implemented yet",
 	usage: ["mute <user> [time] [reason]"],
 	run: async (client, message, args) => {
-		if (!message.member.permissions.has([Permissions.FLAGS.KICK_MEMBERS])) return message.warn("You don't have permission to do that!");
+		if (!message.member.permissions.has([Permissions.FLAGS.KICK_MEMBERS]))
+			return message.warn("You don't have permission to do that!");
 
 		if (!args.length) return message.warn("No args given");
 
