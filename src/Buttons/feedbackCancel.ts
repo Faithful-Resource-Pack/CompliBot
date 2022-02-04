@@ -13,11 +13,11 @@ export const button: Button = {
 
 		if (interaction.user.id !== messageInteraction.user.id)
 			return interaction.reply({
-				content: `This interaction is reserved to its owner (<@!${messageInteraction.user.id}>)`,
+				content: (await interaction.text({ string: "Error.Interaction.Reserved" })).replace("%USER%", `<@!${messageInteraction.user.id}>`),
 				ephemeral: true,
 			});
 
-		await interaction.reply({ content: "Feedback canceled!", ephemeral: true });
+		await interaction.reply({ content: (await interaction.text({ string: "Success.Cancel" })).replace("%ACTION%", await interaction.text({ string: "Command.Feedback.Title" })), ephemeral: true });
 
 		try {
 			message.delete();

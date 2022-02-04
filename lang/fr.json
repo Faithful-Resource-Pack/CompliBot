@@ -215,6 +215,6 @@
     "Error.DevBad": "Cette partie reste non implémentée en raison d'incompétence. Demandez aux développeurs ou débrouillez-vous.",
     "Error.General": "Une erreur s'est produite !",
     "Error.NotFound": "%THING% Introuvable!",
-    "Sucsess.Detailed": "Succès! %DETAILS%",
-    "Sucsess.General": "Succès!"
+    "Success.Detailed": "Succès! %DETAILS%",
+    "Success.General": "Succès!"
 }

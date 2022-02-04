@@ -14,7 +14,7 @@ import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v9";
 import { SlashCommand } from "@src/Interfaces/slashCommand";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { err, info, sucsess } from "@src/Helpers/logger";
+import { err, info, Success } from "@src/Helpers/logger";
 import { bot } from "..";
 import { Automation } from "./automation";
 import { Button } from "@src/Interfaces";
@@ -126,7 +126,7 @@ class ExtendedClient extends Client {
 			const promises = [];
 			for (const command of data)
 				promises.push(rest.delete(`${Routes.applicationCommands(this.tokens.appID)}/${command.id}`));
-			return Promise.all(promises).then(() => console.log(`${sucsess}delete succeed`));
+			return Promise.all(promises).then(() => console.log(`${Success}delete succeed`));
 		});
 	};
 
@@ -155,7 +155,7 @@ class ExtendedClient extends Client {
 		if (this.tokens.dev) {
 			rest
 				.put(Routes.applicationGuildCommands(this.tokens.appID, devID), { body: commandsArr.map((c) => c.toJSON()) })
-				.then(() => console.log(`${sucsess}succeed dev`))
+				.then(() => console.log(`${Success}succeed dev`))
 				.catch(console.error);
 		} else {
 			this.guilds.cache.forEach((guild: Guild) => {
@@ -164,7 +164,7 @@ class ExtendedClient extends Client {
 					.put(Routes.applicationGuildCommands(this.tokens.appID, guild.id), {
 						body: commandsArr.map((c) => c.toJSON()),
 					})
-					.then(() => console.log(`${sucsess}succeed ${guild.name}`))
+					.then(() => console.log(`${Success}succeed ${guild.name}`))
 					.catch(console.error);
 			});
 		}

@@ -13,7 +13,7 @@ export const button: Button = {
 
 		if (interaction.user.id !== messageInteraction.user.id)
 			return interaction.reply({
-				content: `This interaction is reserved to its owner (<@!${messageInteraction.user.id}>)`,
+				content: (await interaction.text({ string: "Error.Interaction.Reserved" })).replace("%USER%", `<@!${messageInteraction.user.id}>`),
 				ephemeral: true,
 			});
 
@@ -21,13 +21,13 @@ export const button: Button = {
 
 		if (!channelFeedback)
 			return interaction.reply({
-				content: "The feedback channel cannot be found in cache!",
+				content: (await interaction.text({ string: "Error.Channel.CacheNotFound" })).replace("%CHANNEL_NAME%", "#feedback"),
 				ephemeral: true,
 			});
 
 		if (!channelFeedback.isText())
 			return interaction.reply({
-				content: "The found channel is not a text channel, the feedback cannot be sent!",
+				content: await interaction.text({ string: "Error.Channel.NotTextChannel" }),
 				ephemeral: true,
 			});
 
@@ -39,13 +39,14 @@ export const button: Button = {
 
 		const reply: Message = (await interaction.reply({ embeds: [embedResponse], fetchReply: true })) as Message;
 		const url: string = reply.url;
-		const quote: string = suggestion[Math.floor(Math.random() * suggestion.length)];
+		const quotes: Array<string> = (await interaction.text({ string: "Command.Feedback.Suggestion.Responses", placeholders: { IGNORE_MISSING: "True" } })).split("$,")
+		const quote: string = quotes[Math.floor(Math.random() * quotes.length)].replace("%DATE%", (new Date()).toString());
 
 		const embedFeedback = new MessageEmbed()
 			.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL() })
-			.setTitle(`[SUGGESTION] Feedback`)
+			.setTitle(`[${await (await interaction.text({ string: "Command.Feedback.Suggestion" })).toUpperCase()}] ${await interaction.text({ string: "Command.Feedback.Title" })}`)
 			.setDescription(`[Jump to message](${url})\n` + "```" + message.embeds[0].description + "```" + `\n_${quote}_`)
-			.setFooter({ text: `In ${interaction.guild.name}` })
+			.setFooter({ text: `${interaction.guild.name}` })
 			.setTimestamp();
 
 		channelFeedback.send({ embeds: [embedFeedback] });
@@ -57,14 +58,3 @@ export const button: Button = {
 		}
 	},
 };
-
-const suggestion = [
-	"Hot take but okay",
-	"Sure...",
-	'"Maby later..."',
-	"Why didnt i think of that?",
-	`Adding one to the other ${+new Date()} things todo`, //unix time stamp because funny
-	"Infeasable idea but tell them you might",
-	"Dev bad",
-	"soon:tm:",
-];

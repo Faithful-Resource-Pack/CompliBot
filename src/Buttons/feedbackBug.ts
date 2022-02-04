@@ -13,7 +13,7 @@ export const button: Button = {
 
 		if (interaction.user.id !== messageInteraction.user.id)
 			return interaction.reply({
-				content: `This interaction is reserved to its owner (<@!${messageInteraction.user.id}>)`,
+				content: (await interaction.text({ string: "Error.Interaction.Reserved" })).replace("%USER%", `<@!${messageInteraction.user.id}>`),
 				ephemeral: true,
 			});
 
@@ -21,13 +21,13 @@ export const button: Button = {
 
 		if (!channelFeedback)
 			return interaction.reply({
-				content: "The feedback channel cannot be found in cache!",
+				content: (await interaction.text({ string: "Error.Channel.CacheNotFound" })).replace("%CHANNEL_NAME%", "#feedback"),
 				ephemeral: true,
 			});
 
 		if (!channelFeedback.isText())
 			return interaction.reply({
-				content: "The found channel is not a text channel, the feedback cannot be sent!",
+				content: await interaction.text({ string: "Error.Channel.NotTextChannel" }),
 				ephemeral: true,
 			});
 
@@ -39,15 +39,16 @@ export const button: Button = {
 
 		const reply: Message = (await interaction.reply({ embeds: [embedResponse], fetchReply: true })) as Message;
 		const url: string = reply.url;
-		const quote: string = bug[Math.floor(Math.random() * bug.length)];
+		const quotes: Array<string> = (await interaction.text({ string: "Command.Feedback.Bug.Responses", placeholders: { IGNORE_MISSING: "True" } })).split("$,")
+		const quote: string = quotes[Math.floor(Math.random() * quotes.length)]
 
 		const embedFeedback = new MessageEmbed()
 			.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL() })
-			.setTitle(`[BUG] Feedback`)
+			.setTitle(`[${await (await interaction.text({ string: "Command.Feedback.Suggestion" })).toUpperCase()}] ${await interaction.text({ string: "Command.Feedback.Title" })}`)
 			.setDescription(`[Jump to message](${url})\n` + "```" + message.embeds[0].description + "```" + `\n_${quote}_`)
-			.setColor("RED")
-			.setFooter({ text: `In ${interaction.guild.name}` })
-			.setTimestamp();
+			.setFooter({ text: `${interaction.guild.name}` })
+			.setTimestamp()
+			.setColor("RED");
 
 		channelFeedback.send({ embeds: [embedFeedback] });
 
@@ -58,13 +59,3 @@ export const button: Button = {
 		}
 	},
 };
-
-const bug = [
-	"God i hate being a developer",
-	"I thought i fixed this yesterday",
-	"AAAAAAAAAA",
-	"Shit.",
-	"slap a //todo fix plz in there.",
-	"Rule #69: Always blame Juknum",
-	"Major skill issue",
-];
