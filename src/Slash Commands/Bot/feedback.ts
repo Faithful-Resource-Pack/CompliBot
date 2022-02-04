@@ -47,7 +47,6 @@ export const command: SlashCommand = {
 		return interaction.reply({
 			components: [buttons],
 			embeds: [embedPreview],
-			fetchReply: true,
 		});
 	},
 };

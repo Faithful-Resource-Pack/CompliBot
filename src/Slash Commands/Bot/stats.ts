@@ -1,13 +1,14 @@
+import { duration } from "moment";
 import { SlashCommand, SlashCommandI } from "@src/Interfaces/slashCommand";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { Collection, CommandInteraction, Guild, version as djsVersion } from "discord.js";
-import MessageEmbed from "@src/Client/embed";
-import Client from "@src/Client";
+import { Collection, Guild, version as djsVersion } from "discord.js";
 import { getUsage, total } from "@src/Functions/commandProcess";
+import { CommandInteraction } from "@src/Client/interaction";
+import MessageEmbed from "@src/Client/embed";
+import Message from "@src/Client/message";
+import Client from "@src/Client";
 import os from "os";
 import linuxOs from "linux-os-info";
-import { duration } from "moment";
-import { string } from "@src/Helpers/string";
 
 export const command: SlashCommand = {
 	permissions: undefined,
@@ -63,6 +64,8 @@ export const command: SlashCommand = {
 					iconURL: "https://static.wikia.nocookie.net/minecraft_gamepedia/images/0/06/Heart_(icon).png",
 				});
 			interaction.reply({ embeds: [embed] });
+			const message: Message = await interaction.fetchReply() as Message;
+			message.deleteReact({ authorMessage: message, authorID: interaction.user.id, deleteAuthorMessage: false });
 		})
 		.set("command", async (interaction: CommandInteraction, client: Client) => {
 			const embed = new MessageEmbed().setTitle(
@@ -75,5 +78,7 @@ export const command: SlashCommand = {
 				}),
 			);
 			interaction.reply({ embeds: [embed] });
+			const message: Message = await interaction.fetchReply() as Message;
+			message.deleteReact({ authorMessage: message, authorID: interaction.user.id, deleteAuthorMessage: false });
 		}),
 };
