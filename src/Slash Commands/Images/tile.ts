@@ -1,7 +1,7 @@
 import { SlashCommand } from "@src/Interfaces/slashCommand";
 import { SlashCommandBuilder, SlashCommandStringOption } from "@discordjs/builders";
 import { tileAttachment, tileShape } from "@functions/canvas/tile";
-import CommandInteraction from "@src/Client/commandInteraction";
+import { CommandInteraction } from "@src/Client/interaction";
 import MessageEmbed from "@src/Client/embed";
 import Message from "@src/Client/message";
 import { MessageAttachment } from "discord.js";

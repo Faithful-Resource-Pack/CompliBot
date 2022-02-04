@@ -4,7 +4,7 @@ import { colors } from "@src/Helpers/colors";
 import { ids, parseId } from "@src/Helpers/emojis";
 import Message from "@src/Client/message";
 import MessageEmbed from "@/src/Client/embed";
-import CommandInteraction from "@src/Client/commandInteraction";
+import { CommandInteraction } from "@src/Client/interaction";
 
 export const command: SlashCommand = {
 	permissions: undefined,
