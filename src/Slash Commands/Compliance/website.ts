@@ -2,6 +2,7 @@ import { SlashCommand } from "@src/Interfaces/slashCommand";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { colors } from "@src/Helpers/colors";
 import { ids, parseId } from "@src/Helpers/emojis";
+import Message from "@src/Client/message";
 import MessageEmbed from "@/src/Client/embed";
 import CommandInteraction from "@src/Client/commandInteraction";
 
@@ -23,7 +24,7 @@ export const command: SlashCommand = {
 					["Compliance Tweaks 32x", "compliance_tweaks_32"],
 				]),
 		),
-	execute: (interaction: CommandInteraction) => {
+	execute: async (interaction: CommandInteraction) => {
 		const embed = new MessageEmbed();
 		const key: string | null = interaction.options.getString("name", false);
 		const options: boolean = key !== null;
@@ -37,6 +38,10 @@ export const command: SlashCommand = {
 		else embed.setTitle("Websites: ").addFields(Object.values(websites));
 
 		interaction.reply({ embeds: [embed], ephemeral: !options });
+		if (options) {
+			const message: Message = await interaction.fetchReply() as Message;
+			message.deleteReact({ authorMessage: message, authorID: interaction.user.id, deleteAuthorMessage: false });
+		}
 	},
 };
 

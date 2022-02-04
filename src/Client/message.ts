@@ -12,21 +12,24 @@ declare module "discord.js" {
 		menu: Menu;
 		setMenu(choiceType: "texture" | "imageOptions", id: string): Menu;
 		warn(text: string, disappearing?: boolean): void;
-		deleteReact(options: { authorMessage: Message; previousMessage?: Message; deleteAuthorMessage: boolean }): void;
+		deleteReact(options: Options): void;
 	}
 }
 
 Message.prototype.tokens = tokens;
 
+export interface Options {
+	authorMessage: Message;
+	deleteAuthorMessage: boolean;
+	previousMessage?: Message;
+	authorID?: string;
+}
+
 /**
  * Add a trash can emote and await of user interaction, if used, the message is deleted
  * - does nothing if it's DM
  */
-Message.prototype.deleteReact = async function (options: {
-	authorMessage: Message;
-	previousMessage?: Message;
-	deleteAuthorMessage: boolean;
-}) {
+Message.prototype.deleteReact = async function (options: Options) {
 	if (this.channel.type === "DM") return;
 
 	// react using the trash can emoji
@@ -36,9 +39,8 @@ Message.prototype.deleteReact = async function (options: {
 
 	// filter to get the right user
 	const filter = (reaction, user) => {
-		if (options.previousMessage)
-			return !user.bot && ids.delete === reaction.emoji.id && user.id === options.previousMessage.author.id;
-		else return !user.bot && ids.delete === reaction.emoji.id && user.id === options.authorMessage.author.id;
+		if (options.previousMessage) return !user.bot && ids.delete === reaction.emoji.id && (user.id === options.previousMessage.author.id || user.id === options.authorID);
+		else return !user.bot && ids.delete === reaction.emoji.id && (user.id === options.authorMessage.author.id || user.id === options.authorID);
 	};
 
 	// await for reaction for 1 minute long

@@ -1,6 +1,7 @@
 import { SlashCommand } from "@src/Interfaces/slashCommand";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import CommandInteraction from "@src/Client/commandInteraction";
+import Message from "@src/Client/message";
 
 export const command: SlashCommand = {
 	permissions: undefined,
@@ -22,5 +23,7 @@ export const command: SlashCommand = {
 					: await interaction.text({ string: "Command.Coin.Edge" })
 			}`,
 		});
+		const message: Message = await interaction.fetchReply() as Message;
+		message.deleteReact({ authorMessage: message, authorID: interaction.user.id, deleteAuthorMessage: false });
 	},
 };

@@ -2,6 +2,7 @@ import { SlashCommand } from "@src/Interfaces/slashCommand";
 import { SlashCommandBuilder, SlashCommandStringOption } from "@discordjs/builders";
 import CommandInteraction from "@src/Client/commandInteraction";
 import MessageEmbed from "@src/Client/embed";
+import Message from "@src/Client/message";
 
 export const command: SlashCommand = {
 	permissions: undefined,
@@ -19,5 +20,7 @@ export const command: SlashCommand = {
 			.setDescription(answers[Math.floor(Math.random() * answers.length)]);
 
 		interaction.reply({ embeds: [embed] });
+		const message: Message = await interaction.fetchReply() as Message;
+		message.deleteReact({ authorMessage: message, authorID: interaction.user.id, deleteAuthorMessage: false });
 	},
 };

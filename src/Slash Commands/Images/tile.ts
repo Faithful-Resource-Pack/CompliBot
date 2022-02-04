@@ -3,6 +3,7 @@ import { SlashCommandBuilder, SlashCommandStringOption } from "@discordjs/builde
 import { tileAttachment, tileShape } from "@functions/canvas/tile";
 import CommandInteraction from "@src/Client/commandInteraction";
 import MessageEmbed from "@src/Client/embed";
+import Message from "@src/Client/message";
 import { MessageAttachment } from "discord.js";
 
 export const command: SlashCommand = {
@@ -69,7 +70,10 @@ export const command: SlashCommand = {
         .setImage('attachment://tiled.png')
 
       const file: MessageAttachment = await tileAttachment({url: imageURL, shape: shape});
-      if (file !== null) interaction.editReply({ files: [file], embeds: [embed] });
+      if (file !== null) {
+        const result: Message = await interaction.editReply({ files: [file], embeds: [embed] }) as Message;
+        result.deleteReact({ authorMessage: result, authorID: interaction.user.id, deleteAuthorMessage: false });
+      }
       else {
         interaction.deleteReply();
         interaction.followUp({ content: 'Output exeeds the maximum of 512 x 512px²!', ephemeral: true});

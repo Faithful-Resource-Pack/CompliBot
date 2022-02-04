@@ -1,7 +1,7 @@
 import MessageEmbed from "@src/Client/embed";
 import axios from "axios";
 import Client from "@src/Client";
-
+import Message from "@src/Client/message";
 import { Collection, CommandInteraction, MessageAttachment, WebhookEditMessageOptions } from "discord.js";
 import { SlashCommand, SlashCommandI } from "@src/Interfaces/slashCommand";
 import { SlashCommandBuilder } from "@discordjs/builders";
@@ -59,11 +59,9 @@ export const command: SlashCommand = {
 			// todo : add value verification
 
 			const c = new ColorManager({ hex: interaction.options.getString("value") });
-			try {
-				interaction.reply(await constructResponse(client, c));
-			} catch (_err) {
-				console.error(_err);
-			}
+			await interaction.reply(await constructResponse(client, c)) 
+			const message: Message = await interaction.fetchReply() as Message;
+			message.deleteReact({ authorMessage: message, authorID: interaction.user.id, deleteAuthorMessage: false });
 		})
 		.set("rgb-a", async (interaction: CommandInteraction, client: Client) => {
 			// todo : add value verification
@@ -76,7 +74,9 @@ export const command: SlashCommand = {
 					a: interaction.options.getNumber("alpha", false),
 				},
 			});
-			interaction.reply(await constructResponse(client, c));
+			await interaction.reply(await constructResponse(client, c)) 
+			const message: Message = await interaction.fetchReply() as Message;
+			message.deleteReact({ authorMessage: message, authorID: interaction.user.id, deleteAuthorMessage: false });
 		})
 		.set("hsl", async (interaction: CommandInteraction, client: Client) => {
 			// todo : add value verification
@@ -88,7 +88,9 @@ export const command: SlashCommand = {
 					l: interaction.options.getNumber("lightness", true),
 				},
 			});
-			interaction.reply(await constructResponse(client, c));
+			await interaction.reply(await constructResponse(client, c)) 
+			const message: Message = await interaction.fetchReply() as Message;
+			message.deleteReact({ authorMessage: message, authorID: interaction.user.id, deleteAuthorMessage: false });
 		})
 		.set("hsv", async (interaction: CommandInteraction, client: Client) => {
 			// todo : add value verification
@@ -100,7 +102,9 @@ export const command: SlashCommand = {
 					v: interaction.options.getNumber("value", true),
 				},
 			});
-			interaction.reply(await constructResponse(client, c));
+			await interaction.reply(await constructResponse(client, c)) 
+			const message: Message = await interaction.fetchReply() as Message;
+			message.deleteReact({ authorMessage: message, authorID: interaction.user.id, deleteAuthorMessage: false });
 		})
 		.set("cmyk", async (interaction: CommandInteraction, client: Client) => {
 			// todo : add value verification
@@ -113,7 +117,9 @@ export const command: SlashCommand = {
 					k: interaction.options.getNumber("key", true),
 				},
 			});
-			interaction.reply(await constructResponse(client, c));
+			await interaction.reply(await constructResponse(client, c)) 
+			const message: Message = await interaction.fetchReply() as Message;
+			message.deleteReact({ authorMessage: message, authorID: interaction.user.id, deleteAuthorMessage: false });
 		}),
 };
 

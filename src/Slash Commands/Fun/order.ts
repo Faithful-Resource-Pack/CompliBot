@@ -1,7 +1,7 @@
 import { SlashCommand } from "@src/Interfaces/slashCommand";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction, TextChannel } from "discord.js";
-import MessageEmbed from "@src/Client/embed";
+import Message from "@src/Client/message";
 import Client from "@src/Client";
 
 /**
@@ -28,24 +28,31 @@ export const command: SlashCommand = {
 		.addStringOption((option) =>
 			option.setName("item").setDescription("The item you want!").addChoices(options).setRequired(true),
 		),
-	execute: (interaction: CommandInteraction, client: Client) => {
+	execute: async (interaction: CommandInteraction, client: Client) => {
+		let followMessage: Message;
+		let message: Message;
+
 		interaction.reply({
 			content: `${interaction.options.getString("item")}`,
 		});
+		message = await interaction.fetchReply() as Message;
 
 		// send an anotation following the gif
-		options.forEach(async (option) => {
+		for (const option of options) {
 			if (option[1] === interaction.options.getString("item")) {
 				switch (option[0]) {
 					case "soup":
-						await (client.channels.cache.get(interaction.channel.id) as TextChannel).send("Gutten Appetit");
+						followMessage = await (client.channels.cache.get(interaction.channel.id) as TextChannel).send("Gutten Appetit") as Message;
 						break;
 					case "pizza":
-						await (client.channels.cache.get(interaction.channel.id) as TextChannel).send("Buon Appetito");
+						followMessage = await (client.channels.cache.get(interaction.channel.id) as TextChannel).send('Buon Appetito!') as Message;
 					default:
 						break;
 				}
 			}
-		});
+		}
+
+		if (followMessage) followMessage.deleteReact({ authorMessage: followMessage, previousMessage: message, authorID: interaction.user.id, deleteAuthorMessage: true });
+		else message.deleteReact({ authorMessage: message, authorID: interaction.user.id, deleteAuthorMessage: false })
 	},
 };
