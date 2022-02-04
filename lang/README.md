@@ -11,7 +11,7 @@ Have fun polylingual translators!
 - [ ] da	Danish `0%`
 - [ ] nl	Dutch `0%`
 - [ ] fi	Finnish `0%`
-- [ ] fr	French `24%`
+- [x] fr	French `100%`
 - [ ] de	German `0%`
 - [ ] el	Greek `0%`
 - [ ] hi	Hindi `0%`
@@ -22,7 +22,7 @@ Have fun polylingual translators!
 - [ ] lt	Lithuanian `0%`
 - [ ] no	Norwegian `0%`
 - [ ] pl	Polish `0%`
-- [x] pt-BR	Portuguese (Brazil) `100%`
+- [ ] pt-BR	Portuguese (Brazil) `64.1%`
 - [ ] ro	Romanian `0%`
 - [ ] ru	Russian `0%`
 - [ ] es-ES	Spanish (Spain) `0%`

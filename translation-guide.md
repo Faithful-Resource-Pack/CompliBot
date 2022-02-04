@@ -9,7 +9,9 @@ Should you want to have your work be attributed to you, write your name at the s
 ```
     "_CONTRIBUTORS": [ "your name here", "other people here", "oldest contributor here" ],
 ```
-All thats left to do once you translated a few (or all of the) keys is to run `npm run genLang` in a terminal (and make sure you are in the same directory as this file) to generate `lang/README.md` with correct coverage of your language.
+~~All thats left to do once you translated a few (or all of the) keys is to run `npm run genLang` in a terminal (and make sure you are in the same directory as this file) to generate `lang/README.md` with correct coverage of your language.~~
+
+The language readme now generates upon push.
 
 ## Supporting a new language
 To create a new `.json` file, first look at `lang/README.md` and find the country code corresponding with your language then follow the steps above.

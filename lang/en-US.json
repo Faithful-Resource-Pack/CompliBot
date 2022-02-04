@@ -64,29 +64,10 @@
         "Very doubtful"
     ],
     "Command.Feedback.Bug": "Bug",
-    "Command.Feedback.Bug.Responses": [
-        "God i hate being a developer",
-        "I thought i fixed this yesterday",
-        "AAAAAAAAAA",
-        "Shit.",
-        "Slap a '//todo fix plz' in there.",
-        "Rule #69: Always blame Juknum",
-        "Major skill issue"
-    ],
     "Command.Feedback.ConfirmPrompt": "Are you sure you want to send this? confirm with the buttons below",
     "Command.Feedback.Preview": "Preview of your feedback:",
     "Command.Feedback.Sent": "%EMOJI.SEE_MORE% Feedback sent to developers!",
     "Command.Feedback.Suggestion": "Suggestion",
-    "Command.Feedback.Suggestion.Responses": [
-        "Hot take but okay",
-        "Sure...",
-        "Maby later...",
-        "Why didnt i think of that?",
-        "Adding one to the other %NUMBER% things todo",
-        "Infeasable idea but tell them you might",
-        "Dev bad",
-        "soon:tm:"
-    ],
     "Command.Feedback.Title": "Feedback",
     "Command.HelpUs.Description": "You love this project and you want to help the developers?\nPlease contact one of the developers below to be invited to the development servers:\n<@!473860522710794250>, <@!207471947662098432>, <@!173336582265241601>, <@!601501288978448411>\n\nYou can also check us out on GitHub:\n> https: //github.com/Compliance-Resource-Pack/Discord-Bot",
     "Command.HelpUs.Title": "Do you want to help or support us in the CompliBot development?",
