@@ -66,6 +66,31 @@
         "Des perspectives pas si bonnes",
         "Très douteux"
     ],
+    "Command.Feedback.Bug": "Bug",
+    "Command.Feedback.Bug.Responses": [
+        "Mon dieu ce que je déteste être développeur",
+        "Je pensais avoir fixé ça hier",
+        "AAAAAAAAAA",
+        "Merde.",
+        "Mettre un '//à-faire fix svp' ici.",
+        "Règle #69: Toujours blâmer Juknum",
+        "Problème majeur de compétence"
+    ],
+    "Command.Feedback.ConfirmPrompt": "Êtes vous sûr de vouloir envoyer ceci? confirmez avec les bouttons ci-dessous",
+    "Command.Feedback.Preview": "Apperçu de votre feedback :",
+    "Command.Feedback.Sent": "%EMOJI.SEE_MORE% Feedback envoyé aux développeurs!",
+    "Command.Feedback.Suggestion": "Suggestion",
+    "Command.Feedback.Suggestion.Responses": [
+        "Coup dur",
+        "Biensûr...",
+        "Peut-être plus tard...",
+        "Pourquoi je n'avais pas pensé à ça?",
+        "Et ça fait un de plus aux %NUMBER% autres choses à faire",
+        "Idée impossible, mais dit leurs que peut-être tu le feras",
+        "Dev bad",
+        "bientôt:tm:"
+    ],
+    "Command.Feedback.Title": "Feedback",
     "Command.HelpUs.Description": "Vous aimez ce projet et vous souhaitez aider les développeurs ?\nVeuillez contacter l'un des développeurs ci-dessous pour être invité sur les serveurs de développement :\n<@!473860522710794250>, <@!207471947662098432>, <@!173336582265241601>, <@ !601501288978448411>\n\nVous pouvez également nous consulter sur GitHub :\n> https://github.com/Compliance-Resource-Pack/Discord-Bot",
     "Command.HelpUs.Title": "Vous souhaitez nous aider ou nous soutenir dans le développement de CompliBot ?",
     "Command.Kill.Killed": [
@@ -215,6 +240,14 @@
     "Error.DevBad": "Cette partie reste non implémentée en raison d'incompétence. Demandez aux développeurs ou débrouillez-vous.",
     "Error.General": "Une erreur s'est produite !",
     "Error.NotFound": "%THING% Introuvable!",
+    "Error.Interaction.Reserved": "Cette intéraction est réservée à son propriétaire (%USER%)",
+    "Error.Channel.CacheNotFound": "Le salon %CHANNEL_NAME% ne peut être trouvé dans le cache!",
+    "Error.Channel.NotTextChannel": "Le salon ciblé n'est pas un salon textuel, le message ne peut être envoyé!",
+    "General.Cancel": "Annuler",
+    "General.No": "Non",
+    "General.Send": "Envoyer",
+    "General.Yes": "Oui",
     "Success.Detailed": "Succès! %DETAILS%",
-    "Success.General": "Succès!"
+    "Success.General": "Succès!",
+    "Success.Cancel": "%ACTION% annulé(e)!"
 }

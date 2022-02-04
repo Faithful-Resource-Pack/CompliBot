@@ -69,7 +69,7 @@
         "I thought i fixed this yesterday",
         "AAAAAAAAAA",
         "Shit.",
-        "slap a //todo fix plz in there.",
+        "Slap a '//todo fix plz' in there.",
         "Rule #69: Always blame Juknum",
         "Major skill issue"
     ],
@@ -88,10 +88,6 @@
         "soon:tm:"
     ],
     "Command.Feedback.Title": "Feedback",
-    "General.Cancel": "Cancel",
-    "General.No": "No",
-    "General.Send": "Send",
-    "General.Yes": "Yes",
     "Command.HelpUs.Description": "You love this project and you want to help the developers?\nPlease contact one of the developers below to be invited to the development servers:\n<@!473860522710794250>, <@!207471947662098432>, <@!173336582265241601>, <@!601501288978448411>\n\nYou can also check us out on GitHub:\n> https: //github.com/Compliance-Resource-Pack/Discord-Bot",
     "Command.HelpUs.Title": "Do you want to help or support us in the CompliBot development?",
     "Command.Kill.Killed": [
@@ -244,6 +240,10 @@
     "Error.Interaction.Reserved": "This interaction is reserved to its owner (%USER%)",
     "Error.Channel.CacheNotFound": "The %CHANNEL_NAME% channel cannot be found in cache!",
     "Error.Channel.NotTextChannel": "The targeted channel is not a text channel, the message can't be send!",
+    "General.Cancel": "Cancel",
+    "General.No": "No",
+    "General.Send": "Send",
+    "General.Yes": "Yes",
     "Success.Detailed": "Success! %DETAILS%",
     "Success.General": "Success!",
     "Success.Cancel": "%ACTION% canceled!"
