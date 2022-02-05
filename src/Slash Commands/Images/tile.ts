@@ -22,6 +22,7 @@ export const command: SlashCommand = {
 					["horizontal", "horizontal"],
 					["hollow", "hollow"],
 					["plus", "plus"],
+					["rotate", "rotate"],
 				]),
 		),
 	execute: async (interaction: CommandInteraction) => {
