@@ -38,7 +38,7 @@ export const command: SlashCommand = {
 			if (os.platform() == "linux") version = linuxOs({ mode: "sync" }).pretty_name;
 			else version = os.version();
 
-			const FieldTitles = (await interaction.text({ string: "Command.Stats.Embed.FieldTitles" })).split("$");
+			const FieldTitles = (await interaction.text({ string: "Command.Stats.Embed.FieldTitles" })).split("$,");
 
 			const embed = new MessageEmbed()
 				.setTitle(`${client.user.username} Stats`)
