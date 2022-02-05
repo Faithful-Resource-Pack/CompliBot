@@ -2,6 +2,7 @@ import { Event, Command } from "@src/Interfaces";
 import { increase } from "@src/Functions/commandProcess";
 import Message from "@src/Client/message";
 import Client from "@src/Client";
+import { quote } from "@src/Functions/quote";
 
 export const event: Event = {
 	name: "messageCreate",
@@ -9,6 +10,8 @@ export const event: Event = {
 		if (message.author.bot) return;
 
 		if (!message.content.startsWith(client.tokens.prefix)) {
+			if (/https:\/\/(canary\.)?discord(app)?\.com\/channels\/([0-9]+)\/([0-9]+)\/([0-9]+)/g.exec(message.content)) quote(message);
+
 			switch (message.content.toLocaleLowerCase()) {
 				case "engineer gaming":
 					try {
