@@ -34,7 +34,7 @@ const MessageBody = {
 		const btnDelete = new MessageButton().setStyle("DANGER").setEmoji(parseId(ids.delete)).setCustomId("deleteMessage");
 		const buttons = new MessageActionRow().addComponents([btnDelete]);
 
-		return this.edit({ components: [buttons] });
+		return this.edit({ components: [ ...this.components, buttons] });
 	},
 
 	setMenu: function (choiceType: "texture" | "imageOptions", id: string): Menu {
