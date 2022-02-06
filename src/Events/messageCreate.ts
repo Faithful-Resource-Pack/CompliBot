@@ -2,6 +2,8 @@ import { Event, Command } from "@src/Interfaces";
 import { increase } from "@src/Functions/commandProcess";
 import { Client, Message } from "@src/Extended Discord";
 import { quote } from "@src/Functions/quote";
+import easterEgg from "@functions/canvas/isEasterEggImg";
+import ExtendedEmbed from "@src/Client/embed";
 
 export const event: Event = {
 	name: "messageCreate",
@@ -50,6 +52,19 @@ export const event: Event = {
 					break;
 			}
 
+			if (message.attachments.size > 0) {
+				console.log("a");
+				console.log(await easterEgg(message.attachments.first().url));
+				if (await easterEgg(message.attachments.first().url)) {
+					console.log("a");
+					const embed = new ExtendedEmbed()
+						.setTitle('"rOtAte tiLinG"')
+						.setImage("https://cdn.discordapp.com/attachments/923370825762078720/939476550749913138/tiled.png")
+						.setFooter({ text: "Nick.#1666" })
+						.setTimestamp(new Date(1644059063305)); // when the funny moment happened
+					message.channel.send({ embeds: [embed] });
+				}
+			}
 			return;
 		}
 

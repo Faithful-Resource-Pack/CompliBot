@@ -1,0 +1,22 @@
+import get from "axios";
+
+async function easterEgg(url: string): Promise<Boolean> {
+	if (!url.endsWith("grass_block_side_overlay.png")) return false;
+
+	return await get(url, { responseType: "arraybuffer" }).then((response) => {
+		const data = response.data;
+		const buf = Buffer.from(data, "base64").toString();
+		const result = get(gamerUrl, { responseType: "arraybuffer" }).then((response) => {
+			const easterEggData = response.data;
+			const easterEggBuffer = Buffer.from(easterEggData, "base64").toString();
+			if (buf == easterEggBuffer) return true;
+			else return false;
+		});
+		return result;
+	});
+}
+export default easterEgg;
+
+//de funny
+const gamerUrl =
+	"https://cdn.discordapp.com/attachments/923370825762078720/939888814028111992/grass_block_side_overlay.png";
