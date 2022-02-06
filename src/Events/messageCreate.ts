@@ -3,7 +3,7 @@ import { increase } from "@src/Functions/commandProcess";
 import { Client, Message } from "@src/Extended Discord";
 import { quote } from "@src/Functions/quote";
 import easterEgg from "@functions/canvas/isEasterEggImg";
-import ExtendedEmbed from "@src/Client/embed";
+import { ExtendedEmbed } from "@src/Extended Discord/embed";
 
 export const event: Event = {
 	name: "messageCreate",
