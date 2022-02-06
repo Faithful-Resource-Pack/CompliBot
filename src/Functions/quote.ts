@@ -42,7 +42,5 @@ export async function quote(message: Message) {
 	}
 
 	embed.setFooter({ text: `Quoted by ${message.author.tag}`, iconURL: message.author.displayAvatarURL() });
-
-	const res = await message.reply({ embeds: [embed] });
-	res.deleteReact({ authorMessage: message, deleteAuthorMessage: false });
+	message.reply({ embeds: [embed] }).then((message: Message) => message.deleteButton());
 }
