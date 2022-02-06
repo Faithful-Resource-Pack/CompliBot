@@ -2,9 +2,9 @@ import { Canvas, createCanvas, loadImage } from "canvas";
 import { MessageAttachment } from "discord.js";
 import getMeta from "./getMeta";
 
-export async function magnifyAttachment(urlOrCanvas: string | Canvas): Promise<MessageAttachment> {
-	if (urlOrCanvas instanceof Canvas) {
-		let canvas = urlOrCanvas;
+export async function magnifyAttachment(options:  { url: string | Canvas }): Promise<MessageAttachment> {
+	if (options.url instanceof Canvas) {
+		let canvas = options.url;
 
 		let factor = 64;
 		const surface = canvas.width * canvas.height;
@@ -26,7 +26,7 @@ export async function magnifyAttachment(urlOrCanvas: string | Canvas): Promise<M
 
 		return new MessageAttachment(await newCanvas.toBuffer("image/png"), "magnified.png");
 	} else {
-		return getMeta(urlOrCanvas).then(async (dimension) => {
+		return getMeta(options.url).then(async (dimension) => {
 			let factor = 64;
 			const surface = dimension.width * dimension.height;
 
@@ -44,7 +44,7 @@ export async function magnifyAttachment(urlOrCanvas: string | Canvas): Promise<M
 
 			context.imageSmoothingEnabled = false;
 
-			let imageToDraw = await loadImage(urlOrCanvas).catch((err) => {
+			let imageToDraw = await loadImage(options.url as string).catch((err) => {
 				console.trace(err);
 				return Promise.reject(err);
 			});
