@@ -1,8 +1,7 @@
 import { SlashCommand } from "@src/Interfaces/slashCommand";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction, MessageAttachment } from "discord.js";
-import Message from "@src/Client/message";
-import Client from "@src/Client";
+import { Message, Client } from "@src/Extended Discord";
 
 /**
  * Warning: key value cannot be longer than a certain value (I didn't search how much it is)

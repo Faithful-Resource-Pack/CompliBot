@@ -1,9 +1,6 @@
 import { SlashCommand } from "@src/Interfaces/slashCommand";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction } from "@src/Client/interaction";
-import MessageEmbed from "@src/Client/embed";
-import Client from "@src/Client";
-import Message from "@src/Client/message";
+import { CommandInteraction, MessageEmbed, Client, Message } from "@src/Extended Discord";
 import get from "axios";
 
 export const command: SlashCommand = {

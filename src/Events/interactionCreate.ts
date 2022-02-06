@@ -1,6 +1,5 @@
 import { Event } from "@src/Interfaces";
-import Client from "@src/Client";
-import { CommandInteraction, ButtonInteraction } from "@src/Client/interaction";
+import { Client, CommandInteraction, ButtonInteraction } from "@src/Extended Discord";
 import { Interaction } from "discord.js";
 
 export const event: Event = {

@@ -1,6 +1,6 @@
 import { ButtonInteraction } from "discord.js";
 import { Button, Event } from "@src/Interfaces";
-import Client from "@src/Client";
+import { Client } from "@src/Extended Discord";
 
 export const event: Event = {
 	name: "buttonUsed",

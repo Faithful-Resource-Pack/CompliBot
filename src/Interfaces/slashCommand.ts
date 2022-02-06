@@ -1,6 +1,6 @@
 import { Collection, Interaction } from "discord.js";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import Client from "@src/Client";
+import { Client } from "@src/Extended Discord";
 
 export interface SlashCommand {
 	permissions: Permissions | undefined;

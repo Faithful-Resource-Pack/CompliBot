@@ -2,8 +2,7 @@ import { increase } from "@src/Functions/commandProcess";
 import { SlashCommandI } from "@src/Interfaces/slashCommand";
 import { Collection } from "discord.js";
 import { Event } from "@src/Interfaces";
-import Client from "@src/Client";
-import { CommandInteraction } from "@src/Client/interaction";
+import { Client, CommandInteraction } from "@src/Extended Discord";
 
 export const event: Event = {
 	name: "slashCommandUsed",

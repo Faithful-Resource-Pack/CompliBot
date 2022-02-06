@@ -1,8 +1,7 @@
 import { SlashCommand } from "@src/Interfaces/slashCommand";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction } from "@src/Client/interaction";
+import { CommandInteraction, Message } from "@src/Extended Discord";
 import { getTexture } from "@src/Functions/getTexture";
-import Message from "@src/Client/message";
 
 export const command: SlashCommand = {
 	permissions: undefined,

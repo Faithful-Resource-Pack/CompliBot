@@ -1,7 +1,6 @@
 import { Event, Command } from "@src/Interfaces";
 import { increase } from "@src/Functions/commandProcess";
-import Message from "@src/Client/message";
-import Client from "@src/Client";
+import { Client, Message } from "@src/Extended Discord";
 import { MessageReaction, User } from "discord.js";
 // import { Polls } from "@src/Functions/poll";
 

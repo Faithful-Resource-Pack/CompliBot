@@ -3,10 +3,7 @@ import { SlashCommand, SlashCommandI } from "@src/Interfaces/slashCommand";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { Collection, Guild, version as djsVersion } from "discord.js";
 import { getUsage, total } from "@src/Functions/commandProcess";
-import { CommandInteraction } from "@src/Client/interaction";
-import MessageEmbed from "@src/Client/embed";
-import Message from "@src/Client/message";
-import Client from "@src/Client";
+import { Client, MessageEmbed, CommandInteraction, Message } from "@src/Extended Discord";
 import os from "os";
 import linuxOs from "linux-os-info";
 

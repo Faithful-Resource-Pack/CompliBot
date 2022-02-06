@@ -1,5 +1,5 @@
 import { ThreadChannel } from "discord.js";
-import Client from "@src/Client";
+import { Client } from "@src/Extended Discord";
 import { Event } from "@src/Interfaces";
 
 export const event: Event = {

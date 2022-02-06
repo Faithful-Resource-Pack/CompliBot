@@ -1,6 +1,6 @@
 // import { Client } from "discord-slash-commands-client";
 import { Channel, Client, Collection, Guild, TextChannel, VoiceChannel } from "discord.js";
-import Message from "@src/Client/message";
+import { Message } from "@src/Extended Discord";
 import path from "path";
 import { readdirSync } from "fs";
 import { Command, Event, Config, Tokens } from "@src/Interfaces";
@@ -276,4 +276,5 @@ class ExtendedClient extends Client {
 			}
 	}
 }
-export default ExtendedClient;
+
+export { ExtendedClient };

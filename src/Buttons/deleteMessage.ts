@@ -1,8 +1,6 @@
-import { ButtonInteraction } from "@src/Client/interaction";
 import { Button } from "@src/Interfaces/buttonEvent";
 import { info } from "@src/Helpers/logger";
-import Client from "@src/Client";
-import Message from "@src/Client/message";
+import { Client, Message, ButtonInteraction } from "@src/Extended Discord";
 import { MessageInteraction } from "discord.js";
 
 export const button: Button = {

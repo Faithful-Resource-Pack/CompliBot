@@ -1,7 +1,4 @@
-import Client from "@src/Client";
-import MessageEmbed from "@src/Client/embed";
-import Message from "@src/Client/message";
-import { ButtonInteraction } from "@src/Client/interaction";
+import { Client, MessageEmbed, Message, ButtonInteraction } from "@src/Extended Discord";
 import { Button } from "@src/Interfaces/buttonEvent";
 import { MessageInteraction } from "discord.js";
 import { info } from "@src/Helpers/logger";

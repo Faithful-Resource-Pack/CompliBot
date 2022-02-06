@@ -1,10 +1,8 @@
 import { SlashCommand } from "@src/Interfaces/slashCommand";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction } from "@src/Client/interaction";
-import MessageEmbed from "@src/Client/embed";
 import { MessageActionRow, MessageButton } from "discord.js";
 import { ids, parseId } from "@src/Helpers/emojis";
-import ExtendedClient from "@src/Client";
+import { Client, MessageEmbed, CommandInteraction } from "@src/Extended Discord";
 
 export const command: SlashCommand = {
 	permissions: undefined,
@@ -14,7 +12,7 @@ export const command: SlashCommand = {
 		.addStringOption((option) =>
 			option.setName("message").setDescription("The message you wish to send").setRequired(true),
 		),
-	execute: async (interaction: CommandInteraction, client: ExtendedClient) => {
+	execute: async (interaction: CommandInteraction, client: Client) => {
 		const embedPreview = new MessageEmbed()
 			.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL() })
 			.setTitle(await interaction.text({ string: "Command.Feedback.Preview" }))

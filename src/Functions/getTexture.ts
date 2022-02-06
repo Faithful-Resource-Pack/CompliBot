@@ -1,4 +1,4 @@
-import MessageEmbed from "@src/Client/embed";
+import { MessageEmbed } from "@src/Extended Discord";
 
 import ConfigJson from "@/config.json";
 import { Config } from "@src/Interfaces";

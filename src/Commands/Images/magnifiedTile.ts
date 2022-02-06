@@ -1,4 +1,3 @@
-import MessageEmbed from "@src/Client/embed";
 import { magnifyAttachment } from "@src/Functions/canvas/magnify";
 import { tileCanvas } from "@src/Functions/canvas/tile";
 import { Command } from "@src/Interfaces";

@@ -1,4 +1,4 @@
-import Client from "@src/Client";
+import { Client } from "@src/Extended Discord";
 import { Guild } from "discord.js";
 import { Event } from "@src/Interfaces";
 

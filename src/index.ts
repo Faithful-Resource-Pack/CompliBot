@@ -1,5 +1,5 @@
 import { Constants, Intents } from "discord.js";
-import Client from "./Client";
+import { Client } from "@src/Extended Discord";
 
 let verbose = true; //* Use this for debugging startup to see where it gets stuck, leave on false by default
 

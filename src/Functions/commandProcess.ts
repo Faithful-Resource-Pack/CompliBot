@@ -1,7 +1,7 @@
 const { existsSync } = require("fs");
 import fs from "fs";
 import path from "path";
-import ExtendedClient from "@src/Client";
+import { Client } from "@src/Extended Discord";
 import { getData } from "./getDataFromJSON";
 
 const COUNTER_FOLDER = path.resolve(__dirname, "../json/");
@@ -14,7 +14,7 @@ let commandsProcessed: { [commandName: string]: number } = getData({
 	relative_path: "../json/",
 }) as any;
 
-export function init(client: ExtendedClient) {
+export function init(client: Client) {
 	client.commands.forEach((command) => {
 		commandsProcessed[command.name] == commandsObj[command.name];
 	});

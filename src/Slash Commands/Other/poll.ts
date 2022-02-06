@@ -1,5 +1,4 @@
-// import MessageEmbed from "@src/Client/embed";
-import Client from "@src/Client";
+import { Client, MessageEmbed } from "@src/Extended Discord";
 
 import { CommandInteraction, Message, TextChannel } from "discord.js";
 import { SlashCommand } from "@src/Interfaces/slashCommand";

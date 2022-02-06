@@ -1,17 +1,9 @@
-import MessageEmbed from "@src/Client/embed";
-import axios from "axios";
-import Client from "@src/Client";
-import Message from "@src/Client/message";
-import {
-	Collection,
-	CommandInteraction,
-	InteractionReplyOptions,
-	MessageAttachment,
-	WebhookEditMessageOptions,
-} from "discord.js";
+import { MessageEmbed, Client, Message } from "@src/Extended Discord";
+import { Collection, CommandInteraction, InteractionReplyOptions, MessageAttachment } from "discord.js";
 import { SlashCommand, SlashCommandI } from "@src/Interfaces/slashCommand";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { ColorManager } from "@src/Functions/canvas/colors";
+import axios from "axios";
 
 export const command: SlashCommand = {
 	permissions: undefined,

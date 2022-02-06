@@ -1,8 +1,6 @@
 // todo: to be redone using the API & uncreated yet poll collection
 
-// import Client from "@src/Client";
-// import MessageEmbed from "@src/Client/embed";
-// import Message from "@src/Client/message";
+// import { Client, MessageEmbed, Message } from "@src/Client";
 // import { ids, parseId } from "@src/Helpers/emojis";
 // import { EmbedField, Guild, MessageReaction, TextChannel, User } from "discord.js";
 // import { getData } from "./getDataFromJSON";

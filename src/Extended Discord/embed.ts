@@ -10,4 +10,4 @@ class ExtendedEmbed extends MessageEmbed {
 	}
 }
 
-export default ExtendedEmbed;
+export { ExtendedEmbed };

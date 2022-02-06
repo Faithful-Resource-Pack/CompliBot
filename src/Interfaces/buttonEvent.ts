@@ -1,4 +1,4 @@
-import Client from "@src/Client";
+import { Client } from "@src/Extended Discord";
 import { ButtonInteraction } from "discord.js";
 
 interface Execute {

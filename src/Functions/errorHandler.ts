@@ -1,6 +1,5 @@
 import { MessageAttachment, MessageEmbed, TextChannel } from "discord.js";
-import Client from "@src/Client";
-import Message from "@src/Client/message";
+import { Client, Message } from "@src/Extended Discord";
 import fs from "fs";
 import { err } from "@src/Helpers/logger";
 

@@ -1,6 +1,4 @@
-import Client from "@src/Client";
-import Message from "@src/Client/message";
-
+import { Client, Message } from "@src/Extended Discord";
 interface Run {
 	(client: Client, message: Message, args: string[]);
 }

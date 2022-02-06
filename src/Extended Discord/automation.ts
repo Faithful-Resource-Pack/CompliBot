@@ -1,4 +1,4 @@
-import Client from "@src/Client";
+import { Client } from "@src/Extended Discord";
 // import { getData } from "@src/Functions/getDataFromJSON";
 // import { Polls } from "@src/Functions/poll";
 // import { setData } from "@src/Functions/setDataToJSON";

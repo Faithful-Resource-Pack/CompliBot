@@ -1,4 +1,4 @@
-import MessageEmbed from "@src/Client/embed";
+import { MessageEmbed } from "@src/Extended Discord";
 import { Command } from "@src/Interfaces";
 import { getMember } from "@src/Functions/getMember";
 import { Permissions } from "discord.js";

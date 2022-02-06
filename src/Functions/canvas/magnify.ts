@@ -2,7 +2,7 @@ import { Canvas, createCanvas, loadImage } from "canvas";
 import { MessageAttachment } from "discord.js";
 import getMeta from "./getMeta";
 
-export async function magnifyAttachment(options:  { url: string | Canvas }): Promise<MessageAttachment> {
+export async function magnifyAttachment(options: { url: string | Canvas }): Promise<MessageAttachment> {
 	if (options.url instanceof Canvas) {
 		let canvas = options.url;
 

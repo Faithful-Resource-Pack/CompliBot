@@ -1,8 +1,6 @@
 import { SlashCommand } from "@src/Interfaces/slashCommand";
 import { SlashCommandBuilder, SlashCommandStringOption } from "@discordjs/builders";
-import { CommandInteraction } from "@src/Client/interaction";
-import MessageEmbed from "@src/Client/embed";
-import Message from "@src/Client/message";
+import { CommandInteraction, MessageEmbed, Message } from "@src/Extended Discord";
 
 export const command: SlashCommand = {
 	permissions: undefined,

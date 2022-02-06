@@ -137,4 +137,4 @@ Object.keys(MessageBody).forEach((key) => {
 	Message.prototype[key] = MessageBody[key];
 });
 
-export default Message;
+export { Message };

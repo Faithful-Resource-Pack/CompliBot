@@ -1,4 +1,4 @@
-import Client from "@src/Client";
+import { Client } from "@src/Extended Discord";
 import { ClientEvents } from "discord.js";
 
 interface CustomEvents extends ClientEvents {

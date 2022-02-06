@@ -1,5 +1,4 @@
-import Message from "@src/Client/message";
-import MessageEmbed from "@src/Client/embed";
+import { Message, MessageEmbed } from "@src/Extended Discord";
 import { TextChannel } from "discord.js";
 
 export async function quote(message: Message) {
