@@ -2,7 +2,13 @@ import MessageEmbed from "@src/Client/embed";
 import axios from "axios";
 import Client from "@src/Client";
 import Message from "@src/Client/message";
-import { Collection, CommandInteraction, MessageAttachment, WebhookEditMessageOptions } from "discord.js";
+import {
+	Collection,
+	CommandInteraction,
+	InteractionReplyOptions,
+	MessageAttachment,
+	WebhookEditMessageOptions,
+} from "discord.js";
 import { SlashCommand, SlashCommandI } from "@src/Interfaces/slashCommand";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { ColorManager } from "@src/Functions/canvas/colors";
@@ -59,9 +65,7 @@ export const command: SlashCommand = {
 			// todo : add value verification
 
 			const c = new ColorManager({ hex: interaction.options.getString("value") });
-			await interaction.reply(await constructResponse(client, c));
-			const message: Message = (await interaction.fetchReply()) as Message;
-			message.deleteReact({ authorMessage: message, authorID: interaction.user.id, deleteAuthorMessage: false });
+			interaction.reply(await constructResponse(client, c)).then((message: Message) => message.deleteButton());
 		})
 		.set("rgb-a", async (interaction: CommandInteraction, client: Client) => {
 			// todo : add value verification
@@ -74,9 +78,7 @@ export const command: SlashCommand = {
 					a: interaction.options.getNumber("alpha", false),
 				},
 			});
-			await interaction.reply(await constructResponse(client, c));
-			const message: Message = (await interaction.fetchReply()) as Message;
-			message.deleteReact({ authorMessage: message, authorID: interaction.user.id, deleteAuthorMessage: false });
+			interaction.reply(await constructResponse(client, c)).then((message: Message) => message.deleteButton());
 		})
 		.set("hsl", async (interaction: CommandInteraction, client: Client) => {
 			// todo : add value verification
@@ -88,9 +90,7 @@ export const command: SlashCommand = {
 					l: interaction.options.getNumber("lightness", true),
 				},
 			});
-			await interaction.reply(await constructResponse(client, c));
-			const message: Message = (await interaction.fetchReply()) as Message;
-			message.deleteReact({ authorMessage: message, authorID: interaction.user.id, deleteAuthorMessage: false });
+			interaction.reply(await constructResponse(client, c)).then((message: Message) => message.deleteButton());
 		})
 		.set("hsv", async (interaction: CommandInteraction, client: Client) => {
 			// todo : add value verification
@@ -102,9 +102,7 @@ export const command: SlashCommand = {
 					v: interaction.options.getNumber("value", true),
 				},
 			});
-			await interaction.reply(await constructResponse(client, c));
-			const message: Message = (await interaction.fetchReply()) as Message;
-			message.deleteReact({ authorMessage: message, authorID: interaction.user.id, deleteAuthorMessage: false });
+			interaction.reply(await constructResponse(client, c)).then((message: Message) => message.deleteButton());
 		})
 		.set("cmyk", async (interaction: CommandInteraction, client: Client) => {
 			// todo : add value verification
@@ -117,13 +115,14 @@ export const command: SlashCommand = {
 					k: interaction.options.getNumber("key", true),
 				},
 			});
-			await interaction.reply(await constructResponse(client, c));
-			const message: Message = (await interaction.fetchReply()) as Message;
-			message.deleteReact({ authorMessage: message, authorID: interaction.user.id, deleteAuthorMessage: false });
+			interaction.reply(await constructResponse(client, c)).then((message: Message) => message.deleteButton());
 		}),
 };
 
-async function constructResponse(client: Client, color: ColorManager): Promise<WebhookEditMessageOptions> {
+async function constructResponse(
+	client: Client,
+	color: ColorManager,
+): Promise<InteractionReplyOptions & { fetchReply: true }> {
 	const name = await axios
 		.get(`https://www.thecolorapi.com/id?format=json&hex=${color.toHEX().value}`)
 		.then((res) => res.data.name.value)
@@ -153,5 +152,5 @@ async function constructResponse(client: Client, color: ColorManager): Promise<W
 		{ name: "CMYK", value: `\`cmyk(${Object.values(color.toCMYK()).join(", ")})\``, inline: true },
 	);
 
-	return { embeds: [embed], files: [thumbnail] };
+	return { embeds: [embed], files: [thumbnail], fetchReply: true };
 }

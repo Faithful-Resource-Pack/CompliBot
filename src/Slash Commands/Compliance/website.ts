@@ -38,10 +38,7 @@ export const command: SlashCommand = {
 		else embed.setTitle("Websites: ").addFields(Object.values(websites));
 
 		interaction.reply({ embeds: [embed], ephemeral: !options });
-		if (options) {
-			const message: Message = (await interaction.fetchReply()) as Message;
-			message.deleteReact({ authorMessage: message, authorID: interaction.user.id, deleteAuthorMessage: false });
-		}
+		if (options) ((await interaction.fetchReply()) as Message).deleteButton();
 	},
 };
 

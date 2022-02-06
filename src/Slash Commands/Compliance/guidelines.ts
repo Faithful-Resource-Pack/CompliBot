@@ -9,8 +9,8 @@ export const command: SlashCommand = {
 		.setName("guidelines")
 		.setDescription("Shows the guidelines for the Compliance Resource Pack."),
 	execute: async (interaction: CommandInteraction) => {
-		interaction.reply({ content: "https://docs.compliancepack.net/pages/textures/texturing-guidelines" });
-		const message: Message = (await interaction.fetchReply()) as Message;
-		message.deleteReact({ authorMessage: message, authorID: interaction.user.id, deleteAuthorMessage: false });
+		interaction
+			.reply({ content: "https://docs.compliancepack.net/pages/textures/texturing-guidelines", fetchReply: true })
+			.then((message: Message) => message.deleteButton());
 	},
 };

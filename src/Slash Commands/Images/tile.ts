@@ -1,5 +1,5 @@
 import { SlashCommand } from "@src/Interfaces/slashCommand";
-import { SlashCommandBuilder, SlashCommandStringOption } from "@discordjs/builders";
+import { SlashCommandBuilder, SlashCommandStringOption, SlashCommandBooleanOption } from "@discordjs/builders";
 import { tileAttachment, tileShape } from "@functions/canvas/tile";
 import { CommandInteraction } from "@src/Client/interaction";
 import MessageEmbed from "@src/Client/embed";
@@ -22,12 +22,16 @@ export const command: SlashCommand = {
 					["horizontal", "horizontal"],
 					["hollow", "hollow"],
 					["plus", "plus"],
-					["rotate", "rotate"],
 				]),
+		)
+		.addBooleanOption((option: SlashCommandBooleanOption) =>
+			option.setName("random").setDescription("Does tiling is randomly rotated?"),
 		),
 	execute: async (interaction: CommandInteraction) => {
 		await interaction.deferReply();
 
+		let random: boolean =
+			interaction.options.getBoolean("random") === null ? false : interaction.options.getBoolean("random");
 		let shape: tileShape = interaction.options.getString("type", true) as tileShape;
 		let imageURL: string = "";
 		let isResponse: boolean = false;
@@ -79,10 +83,9 @@ export const command: SlashCommand = {
 				.setTitle(`${shape.charAt(0).toUpperCase() + shape.slice(1)} tiling`)
 				.setImage("attachment://tiled.png");
 
-			const file: MessageAttachment = await tileAttachment({ url: imageURL, shape: shape });
+			const file: MessageAttachment = await tileAttachment({ url: imageURL, shape: shape, random: random });
 			if (file !== null) {
-				const result: Message = (await interaction.editReply({ files: [file], embeds: [embed] })) as Message;
-				result.deleteReact({ authorMessage: result, authorID: interaction.user.id, deleteAuthorMessage: false });
+				interaction.editReply({ files: [file], embeds: [embed] }).then((message: Message) => message.deleteButton());
 			} else {
 				interaction.deleteReply();
 				interaction.followUp({ content: "Output exeeds the maximum of 512 x 512px²!", ephemeral: true });

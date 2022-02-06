@@ -14,8 +14,6 @@ export const command: SlashCommand = {
 		let embed = new MessageEmbed();
 		embed.setImage(image.data);
 
-		interaction.reply({ embeds: [embed] });
-		const message: Message = (await interaction.fetchReply()) as Message;
-		message.deleteReact({ authorMessage: message, authorID: interaction.user.id, deleteAuthorMessage: false });
+		interaction.reply({ embeds: [embed], fetchReply: true }).then((message: Message) => message.deleteButton());
 	},
 };

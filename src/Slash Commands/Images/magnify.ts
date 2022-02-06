@@ -62,8 +62,7 @@ export const command: SlashCommand = {
 
 			const file: MessageAttachment = await magnifyAttachment(imageURL);
 			if (file !== null) {
-				const result: Message = (await interaction.editReply({ files: [file], embeds: [embed] })) as Message;
-				result.deleteReact({ authorMessage: result, authorID: interaction.user.id, deleteAuthorMessage: false });
+				interaction.editReply({ files: [file], embeds: [embed] }).then((message: Message) => message.deleteButton());
 			} else {
 				interaction.deleteReply();
 				interaction.followUp({ content: "Output exeeds the maximum of 512 x 512px²!", ephemeral: true });

@@ -19,8 +19,6 @@ export const command: SlashCommand = {
 			.setTitle(`${interaction.options.getUser("user1").username} ❤️ ${interaction.options.getUser("user2").username}`)
 			.setDescription(`${Math.trunc(lover1 + lover2)}%`);
 
-		interaction.reply({ embeds: [embed] });
-		const message: Message = (await interaction.fetchReply()) as Message;
-		message.deleteReact({ authorMessage: message, authorID: interaction.user.id, deleteAuthorMessage: false });
+		interaction.reply({ embeds: [embed], fetchReply: true }).then((message: Message) => message.deleteButton());
 	},
 };

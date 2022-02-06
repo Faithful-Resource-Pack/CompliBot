@@ -43,8 +43,6 @@ export const command: SlashCommand = {
 				killed[Math.floor(Math.random() * killed.length)].replace("%AUTHOR%", interaction.member.user.username),
 			);
 
-		interaction.reply({ embeds: [embed] });
-		const message: Message = (await interaction.fetchReply()) as Message;
-		message.deleteReact({ authorMessage: message, authorID: interaction.user.id, deleteAuthorMessage: false });
+		interaction.reply({ embeds: [embed], fetchReply: true }).then((message: Message) => message.deleteButton());
 	},
 };

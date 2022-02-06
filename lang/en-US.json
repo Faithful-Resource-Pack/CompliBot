@@ -217,6 +217,7 @@
     "Command.Texture.NotFound": "No results for this texture name: %TEXTURENAME%",
     "Error.DevBad": "This part remains unimplemented due to incompetance. Ask the devs or cope.",
     "Error.General": "Encountered an error!",
+    "Error.Message.Deleted": "This message has already been deleted!",
     "Error.NotFound": "%THING% Not Found!",
     "Error.Interaction.Reserved": "This interaction is reserved to its owner (%USER%)",
     "Error.Channel.CacheNotFound": "The %CHANNEL_NAME% channel cannot be found in cache!",

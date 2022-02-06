@@ -61,11 +61,9 @@ export const command: SlashCommand = {
 				)
 				.setFooter({
 					text: await interaction.text({ string: "Command.Stats.Footer" }),
-					iconURL: "https://static.wikia.nocookie.net/minecraft_gamepedia/images/0/06/Heart_(icon).png",
+					iconURL: "https://cdn.discordapp.com/emojis/799357507126427699",
 				});
-			interaction.reply({ embeds: [embed] });
-			const message: Message = (await interaction.fetchReply()) as Message;
-			message.deleteReact({ authorMessage: message, authorID: interaction.user.id, deleteAuthorMessage: false });
+			interaction.reply({ embeds: [embed], fetchReply: true }).then((message: Message) => message.deleteButton());
 		})
 		.set("command", async (interaction: CommandInteraction, client: Client) => {
 			const embed = new MessageEmbed().setTitle(
@@ -77,8 +75,6 @@ export const command: SlashCommand = {
 					},
 				}),
 			);
-			interaction.reply({ embeds: [embed] });
-			const message: Message = (await interaction.fetchReply()) as Message;
-			message.deleteReact({ authorMessage: message, authorID: interaction.user.id, deleteAuthorMessage: false });
+			interaction.reply({ embeds: [embed], fetchReply: true }).then((message: Message) => message.deleteButton());
 		}),
 };

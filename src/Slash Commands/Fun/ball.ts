@@ -18,12 +18,10 @@ export const command: SlashCommand = {
 		let embed = new MessageEmbed()
 			.setTitle(`${interaction.options.getString("question", true)}`.slice(0, 255))
 			.setDescription(answers[Math.floor(Math.random() * answers.length)]);
-		
-		if (interaction.options.getString("question") == 'balls') embed.setDescription('lol');
-		else if (interaction.options.getString("question").includes('sentient')) embed.setDescription('Yes.');
 
-		interaction.reply({ embeds: [embed] });
-		const message: Message = (await interaction.fetchReply()) as Message;
-		message.deleteReact({ authorMessage: message, authorID: interaction.user.id, deleteAuthorMessage: false });
+		if (interaction.options.getString("question") == "balls") embed.setDescription("lol");
+		else if (interaction.options.getString("question").includes("sentient")) embed.setDescription("Yes.");
+
+		interaction.reply({ embeds: [embed], fetchReply: true }).then((message: Message) => message.deleteButton());
 	},
 };
