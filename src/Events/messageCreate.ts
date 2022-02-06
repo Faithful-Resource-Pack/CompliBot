@@ -1,9 +1,8 @@
 import { Event, Command } from "@src/Interfaces";
 import { increase } from "@src/Functions/commandProcess";
-import { Client, Message } from "@src/Extended Discord";
+import { Client, Message, MessageEmbed } from "@src/Extended Discord";
 import { quote } from "@src/Functions/quote";
 import easterEgg from "@functions/canvas/isEasterEggImg";
-import { ExtendedEmbed } from "@src/Extended Discord/embed";
 
 export const event: Event = {
 	name: "messageCreate",
@@ -57,7 +56,7 @@ export const event: Event = {
 				console.log(await easterEgg(message.attachments.first().url));
 				if (await easterEgg(message.attachments.first().url)) {
 					console.log("a");
-					const embed = new ExtendedEmbed()
+					const embed = new MessageEmbed()
 						.setTitle('"rOtAte tiLinG"')
 						.setImage("https://cdn.discordapp.com/attachments/923370825762078720/939476550749913138/tiled.png")
 						.setFooter({ text: "Nick.#1666" })
