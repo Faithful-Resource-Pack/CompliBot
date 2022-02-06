@@ -43,8 +43,10 @@ export const command: SlashCommand = {
 						break;
 					case "pizza":
 						advice = "Buon Appetito!";
+						break;
 					case "poop":
 						advice = ":eyes:";
+						break;
 					default:
 						break;
 				}
