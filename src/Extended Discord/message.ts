@@ -108,7 +108,7 @@ const MessageBody = {
 	warn: async function (text: string, disappearing?: boolean) {
 		const embed = new MessageEmbed()
 			.setColor(this.config.colors.red)
-			.setThumbnail(`${this.config.images}warning.png`)
+			.setThumbnail(`${this.config.images}bot/warning.png`)
 			.setTitle("Action failed")
 			.setDescription(text)
 			.setFooter({

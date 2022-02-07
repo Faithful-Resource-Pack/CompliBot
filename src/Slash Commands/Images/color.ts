@@ -129,7 +129,7 @@ async function constructResponse(
 		.setURL(`https://coolors.co/${color.toHEX().value}`);
 
 	const options = {
-		url: `${client.config.images}monochrome_logo.png`,
+		url: `${client.config.images}bot/monochrome_logo.png`,
 		color: color.toRGBA(),
 		target: { r: 255, g: 255, b: 255, a: 1 },
 	};

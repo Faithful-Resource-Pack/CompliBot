@@ -42,7 +42,7 @@ export const errorHandler: Function = async (client: Client, reason: any, type: 
 
 	const embed = new MessageEmbed()
 		.setTitle(type)
-		.setThumbnail(`${client.config.images}error.png`)
+		.setThumbnail(`${client.config.images}bot/error.png`)
 		.setColor(client.config.colors.red)
 		.addField(
 			"Last message(s) received:",

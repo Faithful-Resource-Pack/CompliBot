@@ -11,7 +11,7 @@ export const command: SlashCommand = {
 		const embed = new MessageEmbed()
 			.setTitle(await interaction.text({ string: "Command.HelpUs.Title" }))
 			.setDescription(await interaction.text({ string: "Command.HelpUs.Description" }))
-			.setThumbnail(client.config.images + "question_mark.png");
+			.setThumbnail(client.config.images + "bot/question_mark.png");
 
 		interaction.reply({ embeds: [embed], ephemeral: true });
 	},

@@ -3,7 +3,7 @@ import { Channel, Client, Collection, Guild, TextChannel, VoiceChannel } from "d
 import { Message } from "@src/Extended Discord";
 import path from "path";
 import { readdirSync } from "fs";
-import { Command, Event, Config, Tokens } from "@src/Interfaces";
+import { Command, Event, Config, Tokens, Button, SelectMenu, SlashCommand } from "@src/Interfaces";
 import ConfigJson from "@/config.json";
 import TokensJson from "@/tokens.json";
 
@@ -12,12 +12,10 @@ import { errorHandler } from "@src/Functions/errorHandler";
 
 import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v9";
-import { SlashCommand } from "@src/Interfaces/slashCommand";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { err, info, Success } from "@src/Helpers/logger";
 import { bot } from "..";
 import { Automation } from "./automation";
-import { Button } from "@src/Interfaces";
 
 class ExtendedClient extends Client {
 	public verbose: boolean = false;
@@ -56,6 +54,10 @@ class ExtendedClient extends Client {
 				// load buttons
 				this.loadButtons();
 				if (this.verbose) console.log(info + `Loaded buttons`);
+
+				// load buttons
+				this.loadSelectMenus();
+				if (this.verbose) console.log(info + `Loaded select menus`);
 
 				// starts automated functions
 				this.automation.start();
@@ -214,7 +216,7 @@ class ExtendedClient extends Client {
 	};
 
 	/**
-	 * Read "Buttons" directory and add them to the button collection
+	 * Read "Buttons" directory and add them to the buttons collection
 	 */
 	public buttons: Collection<string, Button> = new Collection();
 	private loadButtons = (): void => {
@@ -226,6 +228,22 @@ class ExtendedClient extends Client {
 			.forEach(async (file) => {
 				const { button } = await import(`${buttonPath}/${file}`);
 				this.buttons.set(button.buttonId, button);
+			});
+	};
+
+	/**
+	 * Read "Menus" directory and add them to the menus collection
+	 */
+	public menus: Collection<string, SelectMenu> = new Collection();
+	private loadSelectMenus = (): void => {
+		const menusPathh = path.join(__dirname, "..", "Menus");
+
+		//! if the directory doesn't exist, the bot won't start @nick-1666!!
+		readdirSync(menusPathh)
+			.filter((file) => file.endsWith(".ts"))
+			.forEach(async (file) => {
+				const { menu } = await import(`${menusPathh}/${file}`);
+				this.menus.set(menu.selectMenuId, menu);
 			});
 	};
 

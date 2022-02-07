@@ -1,4 +1,4 @@
-import { ButtonInteraction, CommandInteraction } from "discord.js";
+import { ButtonInteraction, CommandInteraction, SelectMenuInteraction } from "discord.js";
 import { string, keys } from "@src/Helpers/string";
 
 declare module "discord.js" {
@@ -7,6 +7,10 @@ declare module "discord.js" {
 	}
 
 	interface ButtonInteraction {
+		text(options: TextOptions): Promise<string>;
+	}
+
+	interface SelectMenuInteraction {
 		text(options: TextOptions): Promise<string>;
 	}
 }
@@ -34,5 +38,6 @@ async function text(options: TextOptions): Promise<string> {
 
 CommandInteraction.prototype.text = text;
 ButtonInteraction.prototype.text = text;
+SelectMenuInteraction.prototype.text = text;
 
-export { CommandInteraction, ButtonInteraction };
+export { CommandInteraction, ButtonInteraction, SelectMenuInteraction };

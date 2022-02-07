@@ -1,5 +1,6 @@
 {
-    "images": "https://database.compliancepack.net/images/bot/",
+    "images": "https://database.compliancepack.net/images/",
+    "apiUrl": "https://api.compliancepack.net/v2/",
     "firestormUrl": "https://database.compliancepack.net/firestorm-test/",
     "repositories": {
         "compliance": {

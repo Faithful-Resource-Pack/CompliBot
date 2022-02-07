@@ -1,57 +1,102 @@
 import { MessageEmbed } from "@src/Extended Discord";
-
 import ConfigJson from "@/config.json";
 import { Config } from "@src/Interfaces";
 import { minecraftSorter } from "./minecraftSorter";
 import axios from "axios";
 import getMeta from "./canvas/getMeta";
+import { MessageAttachment } from "discord.js";
+import { magnifyAttachment } from "./canvas/magnify";
+import { ISizeCalculationResult } from "image-size/dist/types/interface";
 
-export const getTexture = async (texture, resolution: number): Promise<MessageEmbed> => {
+export const getTextureMessageOptions = async (options: { texture: any, pack: string }): Promise<[MessageEmbed, Array<MessageAttachment>]> => {
 	const config: Config = ConfigJson;
+	const texture = options.texture;
+	const pack = options.pack;
+	const uses = texture.uses;
+	const paths = texture.paths;
 
-	let embed = new MessageEmbed().setTitle(`[#${texture.id}] ${texture.name}`).setFooter({
-		text: `${resolution === 16 ? "Vanilla Texture" : `Compliance ${resolution}×`}`,
-		iconURL: `${resolution === 16 ? `${config.images}texture_16x.png` : `${config.images}monochrome_logo.png`}`,
-	});
-
-	const paths = await texture.paths();
-	const edition = await paths[0].edition();
-	const textureURL = config.repositories[resolution === 16 ? "vanilla" : "compliance"].images
-		.replace("%EDITION%", edition.charAt(0).toLocaleUpperCase() + edition.slice(1))
-		.replace("%RESOLUTION%", resolution.toString())
-		.replace("%VERSION%", paths[0].versions.sort(minecraftSorter)[paths[0].versions.length - 1])
-		.replace("%PATH%", paths[0].path);
-
-	try {
-		await axios.get(textureURL);
-	} catch (err) {
-		console.error(err);
-	} // image url isn't valid (ex: 404)
-
-	const dimension = await getMeta(textureURL);
-	embed.addField("Resolution", `${dimension.width}×${dimension.height}`, true).setImage(textureURL);
-
-	let tmp = {};
-	for (let i = 0; i < paths.length; i++) {
-		let edition = await paths[i].edition();
-		let versions = paths[i].versions.sort(minecraftSorter);
-
-		if (tmp[edition] === undefined) tmp[edition] = [];
-		tmp[edition].push(
-			`\`[${versions.length > 1 ? `${versions[0]} — ${versions[versions.length - 1]}` : versions[0]}]\` ${
-				paths[i].path
-			}`,
-		);
+	let strPack: string; 
+	let strIconURL: string;
+	switch (pack) {
+		case "default": 
+			strPack = "Minecraft Default";
+			strIconURL = "bot/texture_16x.png";
+			break;
+		case "c32": 
+			strPack = "Compliance 32x";
+			strIconURL = "brand/logos/no%20background/64/Compliance%20Basic.png";
+			break;
+		case "c64": 
+			strPack = "Compliance 64x";
+			strIconURL = "brand/logos/no%20background/64/Compliance%2064.png";
+			break;
+	
+		default:
+			break;
 	}
 
+	const files: Array<MessageAttachment> = []; 
+	const embed = new MessageEmbed()
+		.setTitle(`[#${texture.id}] ${texture.name}`)
+		.setThumbnail('attachment://magnified.png')
+		.setFooter({
+			text: `${strPack}`,
+			iconURL: config.images + strIconURL
+		})
+
+	let textureURL = (await axios.get(`${config.apiUrl}textures/${texture.id}/url/${pack}/${paths[0].versions.sort(minecraftSorter).reverse()[0]}`)).data;
+	console.log(textureURL);
+
+	// test if url isn't a 404
+	let validURL: boolean = false;
+	let dimensions: ISizeCalculationResult;
+	try {
+		dimensions = await getMeta(textureURL)
+		validURL = true;
+
+	} catch (err) {
+		textureURL = "https://raw.githubusercontent.com/Compliance-Resource-Pack/App/main/resources/transparency.png";
+		embed.addField("Image not found", "This texture hasn't been made yet or is blacklisted!")
+	}
+
+	if (validURL) {
+		embed.addField("Source", `[GitHub](${textureURL})`, true);
+		embed.addField("Resolution", `${dimensions.width}×${dimensions.height}`, true);
+
+		let contributions: Array<any> = texture.contributions.filter(c => strPack.includes(c.resolution)).map(c => {
+			let date = new Date(c.date);
+			let strDate: string = `${date.getDate() < 10 ? `0${date.getDate()}` : date.getDate()}/${date.getMonth()+1 < 10 ? `0${date.getMonth()+1}` : date.getMonth()+1}/${date.getFullYear()}`;
+			let authors = c.authors.map(authorId => `<@!${authorId}>`);
+			return `\`${strDate}\` ${authors.join(', ')}`;
+		})
+
+		if (contributions.length) embed.addField("Contributions", contributions.join('\n'), false);
+	}
+
+	let tmp = {}
+	uses.forEach(use => {
+		paths
+			.filter(el => el.use === use.id)
+			.forEach(p => {
+				const versions = p.versions.sort(minecraftSorter);
+				if (tmp[use.edition]) tmp[use.edition].push(`\`[${versions.length > 1 ? `${versions[0]} — ${versions[versions.length - 1]}` : versions[0]}]\` ${p.name}`);
+				else tmp[use.edition] = [`\`[${versions.length > 1 ? `${versions[0]} — ${versions[versions.length - 1]}` : versions[0]}]\` ${p.name}`]
+			})
+	})
+
 	Object.keys(tmp).forEach((edition) => {
-		if (tmp[edition] && tmp[edition] !== 0)
+		if (tmp[edition].length > 0) {
 			embed.addField(
-				edition.charAt(0).toLocaleUpperCase() + edition.slice(1),
-				tmp[edition].map((el) => el.replace("assets/minecraft/", "").replace("textures/", "")).join("\n"),
-				false,
+				edition.charAt(0).toLocaleUpperCase() + edition.slice(1), 
+				tmp[edition].join('\n').replaceAll(' textures/', ' '), 
+				false
 			);
+		}
 	});
 
-	return embed;
+
+	// magnifying the texture in thumbnail
+	files.push(await magnifyAttachment({ url: textureURL, name: 'magnified.png' }));
+
+	return [embed, files];
 };

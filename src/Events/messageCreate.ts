@@ -52,10 +52,7 @@ export const event: Event = {
 			}
 
 			if (message.attachments.size > 0) {
-				console.log("a");
-				console.log(await easterEgg(message.attachments.first().url));
 				if (await easterEgg(message.attachments.first().url)) {
-					console.log("a");
 					const embed = new MessageEmbed()
 						.setTitle('"rOtAte tiLinG"')
 						.setImage("https://cdn.discordapp.com/attachments/923370825762078720/939476550749913138/tiled.png")

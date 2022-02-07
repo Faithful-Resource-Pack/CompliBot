@@ -1,5 +1,5 @@
 import { Event } from "@src/Interfaces";
-import { Client, CommandInteraction, ButtonInteraction } from "@src/Extended Discord";
+import { Client, CommandInteraction, ButtonInteraction, SelectMenuInteraction } from "@src/Extended Discord";
 import { Interaction } from "discord.js";
 
 export const event: Event = {
@@ -15,6 +15,10 @@ export const event: Event = {
 			let _ = (interaction as ButtonInteraction) instanceof ButtonInteraction; //! do not remove, 'force' interaction to be casted (break if removed)
 			client.emit("buttonUsed", (client as Client, interaction));
 		}
-		if (interaction.isSelectMenu()) client.emit("selectMenuUsed", (client as Client, interaction));
+
+		if (interaction.isSelectMenu()) {
+			let _ = (interaction as SelectMenuInteraction) instanceof SelectMenuInteraction; //! do not remove, 'force' interaction to be casted (break if removed)
+			client.emit("selectMenuUsed", (client as Client, interaction));
+		}
 	},
 };

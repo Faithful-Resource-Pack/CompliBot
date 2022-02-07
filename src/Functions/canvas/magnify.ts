@@ -2,7 +2,7 @@ import { Canvas, createCanvas, loadImage } from "canvas";
 import { MessageAttachment } from "discord.js";
 import getMeta from "./getMeta";
 
-export async function magnifyAttachment(options: { url: string | Canvas }): Promise<MessageAttachment> {
+export async function magnifyAttachment(options: { url: string | Canvas, name?: string }): Promise<MessageAttachment> {
 	if (options.url instanceof Canvas) {
 		let canvas = options.url;
 
@@ -24,7 +24,7 @@ export async function magnifyAttachment(options: { url: string | Canvas }): Prom
 
 		newContext.drawImage(canvas, 0, 0, canvas.width * factor, canvas.height * factor);
 
-		return new MessageAttachment(await newCanvas.toBuffer("image/png"), "magnified.png");
+		return new MessageAttachment(newCanvas.toBuffer("image/png"), `${options.name ? options.name : "magnified.png"}`);
 	} else {
 		return getMeta(options.url).then(async (dimension) => {
 			let factor = 64;
@@ -51,7 +51,7 @@ export async function magnifyAttachment(options: { url: string | Canvas }): Prom
 
 			context.drawImage(imageToDraw, 0, 0, width, height);
 
-			return new MessageAttachment(await canvas.toBuffer("image/png"), "magnified.png");
+			return new MessageAttachment(canvas.toBuffer("image/png"), `${options.name ? options.name : "magnified.png"}`);
 		});
 	}
 }
