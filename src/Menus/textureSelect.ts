@@ -9,11 +9,10 @@ export const menu: SelectMenu = {
   selectMenuId: "textureSelect",
   execute: async (client: Client, interaction: SelectMenuInteraction) => {
 		if (client.verbose) console.log(`${info}Texture selected!`);
-		interaction.deferReply();
 
 		const messageInteraction: MessageInteraction = interaction.message.interaction as MessageInteraction;
 		const message: Message = interaction.message as Message;
-    
+
     if (interaction.user.id !== messageInteraction.user.id)
 			return interaction.reply({
 				content: (await interaction.text({ string: "Error.Interaction.Reserved" })).replace(
@@ -22,6 +21,7 @@ export const menu: SelectMenu = {
 				),
 				ephemeral: true,
 			});
+		else interaction.deferReply();
 
     const [id, pack] = interaction.values[0].split('__');
     const [embed, files] = await getTextureMessageOptions({ texture: (await axios.get(`${(interaction.client as Client).config.apiUrl}textures/${id}/all`)).data, pack: pack });
