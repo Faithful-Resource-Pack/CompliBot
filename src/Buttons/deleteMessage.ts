@@ -6,7 +6,7 @@ import { MessageInteraction } from "discord.js";
 export const button: Button = {
 	buttonId: "deleteMessage",
 	execute: async (client: Client, interaction: ButtonInteraction) => {
-		if (client.verbose) console.log(`${info}Messade deleted!`);
+		if (client.verbose) console.log(`${info}Message deleted!`);
 
 		const messageInteraction: MessageInteraction = interaction.message.interaction as MessageInteraction;
 		const message: Message = interaction.message as Message;
