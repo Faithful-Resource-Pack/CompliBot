@@ -9,7 +9,7 @@
 
 ### Changed
 
-- Tile command now has a random option to mimick bedrock texture randomization,
+- Tile command now has a random option to mimic minecraft texture randomization,
 `flip` behaves like stone; randomly flips textures. `rotate`
 randomly rotates textures at 90deg intervals behaves like moss.
 Random options can be applied to all patterns
