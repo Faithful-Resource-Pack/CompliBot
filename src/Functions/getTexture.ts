@@ -20,18 +20,33 @@ export const getTextureMessageOptions = async (options: { texture: any, pack: st
 	switch (pack) {
 		case "default": 
 			strPack = "Minecraft Default";
-			strIconURL = "bot/texture_16x.png";
+			strIconURL = config.images + "bot/texture_16x.png";
 			break;
 		case "c32": 
 			strPack = "Compliance 32x";
-			strIconURL = "brand/logos/no%20background/64/Compliance%20Basic.png";
+			strIconURL = config.images + "brand/logos/no%20background/64/Compliance%20Basic.png";
 			break;
 		case "c64": 
 			strPack = "Compliance 64x";
-			strIconURL = "brand/logos/no%20background/64/Compliance%2064.png";
+			strIconURL = config.images + "brand/logos/no%20background/64/Compliance%2064.png";
 			break;
-	
+
+		case "classic_faithful_32":
+			strPack = "Classic Faithful 32x";
+			strIconURL = "https://raw.githubusercontent.com/ClassicFaithful/Branding/main/Logos/32x%20Scale/Main%2032x.png";
+			break;
+		case "classic_faithful_32_progart":
+			strPack = "Classic Faithful 32x Programer Art";
+			strIconURL = "https://raw.githubusercontent.com/ClassicFaithful/Branding/main/Logos/32x%20Scale/Programmer%20Art%2032x.png";
+			break;
+		case "classic_faithful_64":
+			strPack = "Classic Faithful 64x";
+			strIconURL = "https://raw.githubusercontent.com/ClassicFaithful/Branding/main/Logos/32x%20Scale/Main%2032x.png";
+			break;
+			
 		default:
+			strPack = "Unknown Pack";
+			strIconURL = "https://raw.githubusercontent.com/Compliance-Resource-Pack/App/main/resources/transparency.png"
 			break;
 	}
 
@@ -41,7 +56,7 @@ export const getTextureMessageOptions = async (options: { texture: any, pack: st
 		.setThumbnail('attachment://magnified.png')
 		.setFooter({
 			text: `${strPack}`,
-			iconURL: config.images + strIconURL
+			iconURL: strIconURL
 		})
 
 	let textureURL = (await axios.get(`${config.apiUrl}textures/${texture.id}/url/${pack}/${paths[0].versions.sort(minecraftSorter).reverse()[0]}`)).data;
@@ -63,7 +78,7 @@ export const getTextureMessageOptions = async (options: { texture: any, pack: st
 		embed.addField("Source", `[GitHub](${textureURL})`, true);
 		embed.addField("Resolution", `${dimensions.width}×${dimensions.height}`, true);
 
-		let contributions: Array<any> = texture.contributions.filter(c => strPack.includes(c.resolution)).map(c => {
+		let contributions: Array<any> = texture.contributions.filter(c => strPack.includes(c.resolution) && pack === c.pack).map(c => {
 			let date = new Date(c.date);
 			let strDate: string = `${date.getDate() < 10 ? `0${date.getDate()}` : date.getDate()}/${date.getMonth()+1 < 10 ? `0${date.getMonth()+1}` : date.getMonth()+1}/${date.getFullYear()}`;
 			let authors = c.authors.map(authorId => `<@!${authorId}>`);
