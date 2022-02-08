@@ -63,6 +63,14 @@ export const command: SlashCommand = {
 			interaction.reply({ embeds: [embed], fetchReply: true }).then((message: Message) => message.deleteButton());
 		})
 		.set("command", async (interaction: CommandInteraction, client: Client) => {
+			if (getUsage(interaction.options.getString("command", true)) == undefined)
+				return interaction.reply({
+					ephemeral: true,
+					content: await interaction.text({
+						string: "Command.Stats.NotFound"
+					}),
+				})
+
 			const embed = new MessageEmbed().setTitle(
 				await interaction.text({
 					string: "Command.Stats.Usage",

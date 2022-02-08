@@ -17,8 +17,6 @@ export const command: SlashCommand = {
 			).split("$,");
 			embed
 				.setTitle(await interaction.text({ string: "Command.Ping.Title" }))
-				// todo: Bot latency broken with command suggestions, solution needed without using message.createdTimestamp
-				// May not be up to date as of the typescript rewrite
 				.setDescription(
 					await interaction.text({
 						string: "Command.Ping.Description",
