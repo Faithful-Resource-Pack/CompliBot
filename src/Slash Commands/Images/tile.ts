@@ -22,23 +22,28 @@ export const command: SlashCommand = {
 					["plus", "plus"],
 				]),
 		)
-		.addBooleanOption((option: SlashCommandBooleanOption) =>
-			option.setName("random").setDescription("Does tiling is randomly rotated?"),
+		.addStringOption((option: SlashCommandStringOption) =>
+			option
+				.setName("random")
+				.setDescription("Does tiling is randomly rotated?")
+				.addChoices([
+					["rotation", "rotation"],
+					["flip", "flip"], // only horizontal because mc doesnt use vertical flipping
+				]),
 		),
 	execute: async (interaction: CommandInteraction) => {
-		let random: boolean =
-			interaction.options.getBoolean("random") === null ? false : interaction.options.getBoolean("random");
-		let shape: tileShape = interaction.options.getString("type", true) as tileShape;
+		const random = interaction.options.getString("random");
+		const shape: tileShape = interaction.options.getString("type", true) as tileShape;
 
 		slashCommandImage({
 			interaction: interaction,
 			limit: 10,
 			response: {
 				title: `Tiled as ${shape}`,
-				description: `Random: ${random}`,
+				description: `Random: ${random == undefined ? false : random}`,
 				url: "attachment://tiled.png",
 				attachmentOptions: {
-					random: random,
+					random: interaction.options.getString("random"),
 					shape: shape,
 				},
 				attachment: tileAttachment,

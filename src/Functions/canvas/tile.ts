@@ -7,7 +7,7 @@ interface options {
 	url: string;
 	name?: string;
 	shape?: tileShape;
-	random?: boolean;
+	random?: "flip" | "rotation";
 }
 
 export async function tileAttachment(options: options): Promise<MessageAttachment | null> {
@@ -22,6 +22,9 @@ export async function tileAttachment(options: options): Promise<MessageAttachmen
 export function tileCanvas(options: options): Promise<Canvas> {
 	return getMeta(options.url)
 		.then(async (dimension) => {
+			if (dimension.width * dimension.height * 3 > 262144)
+				return Promise.reject("Output exeeds the maximum of 512 x 512px²!");
+
 			let canvas: Canvas = createCanvas(dimension.width * 3, dimension.height * 3);
 			let context: CanvasRenderingContext2D = canvas.getContext("2d");
 
@@ -35,6 +38,19 @@ export function tileCanvas(options: options): Promise<Canvas> {
 
 				context.setTransform(); // reset context position to it's origin
 			};
+			const drawMirroredImage = (x = 0, y = 0) => {
+				context.save(); // save the current canvas state
+				context.setTransform(
+					-1, // set the direction of x axis
+					0,
+					0,
+					1, // set the direction of y axis to 1 since its unchangeing
+					x + imageToDraw.width, // set the x origin
+					0, // set the y origin
+				);
+				context.drawImage(imageToDraw, 0, 0);
+				context.restore(); // restore the state as it was when this function was called
+			};
 
 			/**
 			 * Follows this pattern:
@@ -43,7 +59,7 @@ export function tileCanvas(options: options): Promise<Canvas> {
 			 *  x x x	     x x x      . x .     . x .     . . .
 			 */
 
-			if (options.random && options.random === true) {
+			if (options.random && options.random === "rotation") {
 				const angles = [0, 90, 180, 270];
 				for (let x = 0; x < 3; x++) {
 					for (let y = 0; y < 3; y++) {
@@ -63,6 +79,11 @@ export function tileCanvas(options: options): Promise<Canvas> {
 			else
 				for (let x = 0; x < 3; x++)
 					for (let y = 0; y < 3; y++) context.drawImage(imageToDraw, x * dimension.width, y * dimension.height);
+
+			if (options.random && options.random === "flip")
+				for (let x = 0; x < 3; x++)
+					for (let y = 0; y < 3; y++)
+						if (Math.random() < 0.5) drawMirroredImage(x * dimension.width, y * dimension.height);
 
 			if (options.shape === "hollow")
 				context.clearRect(dimension.width, dimension.height, dimension.width, dimension.height); // middle middle

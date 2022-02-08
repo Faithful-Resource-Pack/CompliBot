@@ -66,18 +66,19 @@ class ExtendedClient extends Client {
 				if (this.verbose) console.log(info + `Init complete`);
 			});
 
-		process.on("exit", () => {
-			errorHandler(this, "disconnect", "exit");
-		});
-		process.on("disconnect", (code: number) => {
-			errorHandler(this, code, "disconnect");
-		});
-		process.on("uncaughtException", (error, origin) => {
-			errorHandler(this, error, "uncaughtException");
-		});
-		process.on("unhandledRejection", (reason, promise) => {
-			errorHandler(this, reason, "unhandledRejection");
-		});
+		//! this is bs
+		// process.on("exit", () => {
+		// 	errorHandler(this, "disconnect", "exit");
+		// });
+		// process.on("disconnect", (code: number) => {
+		// 	errorHandler(this, code, "disconnect");
+		// });
+		// process.on("uncaughtException", (error, origin) => {
+		// 	errorHandler(this, error, "uncaughtException");
+		// });
+		// process.on("unhandledRejection", (reason, promise) => {
+		// 	errorHandler(this, reason, "unhandledRejection");
+		// });
 	}
 
 	public async restart(): Promise<void> {

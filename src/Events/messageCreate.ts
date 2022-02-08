@@ -52,12 +52,20 @@ export const event: Event = {
 			}
 
 			if (message.attachments.size > 0) {
-				if (await easterEgg(message.attachments.first().url)) {
+				if ((await easterEgg(message.attachments.first().url, 1)) && !client.tokens.dev) {
 					const embed = new MessageEmbed()
 						.setTitle('"rOtAte tiLinG"')
 						.setImage("https://cdn.discordapp.com/attachments/923370825762078720/939476550749913138/tiled.png")
 						.setFooter({ text: "Nick.#1666" })
 						.setTimestamp(new Date(1644059063305)); // when the funny moment happened
+					message.channel.send({ embeds: [embed] });
+				}
+				if ((await easterEgg(message.attachments.first().url, 2)) && !client.tokens.dev) {
+					const embed = new MessageEmbed()
+						.setTitle('"FlIp tiLinG"')
+						.setImage("https://cdn.discordapp.com/attachments/923370825762078720/940676536330223676/tiled.png")
+						.setFooter({ text: "Nick.#1666 - again" })
+						.setTimestamp(new Date(1644345162257)); // when the funny moment happened again
 					message.channel.send({ embeds: [embed] });
 				}
 			}
