@@ -7,7 +7,7 @@ Have fun polylingual translators!
 - [ ] zh-CN	Chinese (China) `0%`
 - [ ] zh-TW	Chinese (Taiwan) `0%`
 - [ ] hr	Croatian `0%`
-- [ ] cs	Czech `0%`
+- [x] cs	Czech `100%`
 - [ ] da	Danish `0%`
 - [ ] nl	Dutch `0%`
 - [ ] fi	Finnish `0%`
