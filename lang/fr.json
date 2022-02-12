@@ -5,8 +5,8 @@
     "Args.Insufficient": "Pas assez d'arguments !",
     "Args.Invalid": "Arguments non valides !",
     "Command.Coin.Edge": "Côté?!",
-    "Command.Coin.Heads": "Face!",
-    "Command.Coin.Tails": "Pile!",
+    "Command.Coin.Heads": "Face",
+    "Command.Coin.Tails": "Pile",
     "Command.EightBall.Answers": [
         "Oui",
         "Oui.",

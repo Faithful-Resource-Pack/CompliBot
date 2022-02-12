@@ -5,8 +5,8 @@
     "Args.Insufficient": "Não há argumentos suficientes!",
     "Args.Invalid": "Argumentos inválidos!",
     "Command.Coin.Edge": "De lado?!",
-    "Command.Coin.Heads": "Cara!",
-    "Command.Coin.Tails": "Coroa!",
+    "Command.Coin.Heads": "Cara",
+    "Command.Coin.Tails": "Coroa",
     "Command.EightBall.Answers": [
         "Sim",
         "Sim.",

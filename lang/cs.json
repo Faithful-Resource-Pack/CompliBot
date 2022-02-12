@@ -2,8 +2,8 @@
     "Args.Insufficient": "Málo argumentů!",
     "Args.Invalid": "Chybné argumenty!",
     "Command.Coin.Edge": "Hrana?!",
-    "Command.Coin.Heads": "Panna!",
-    "Command.Coin.Tails": "Orel!",
+    "Command.Coin.Heads": "Panna",
+    "Command.Coin.Tails": "Orel",
     "Command.EightBall.Answers": [
         "Ano",
         "Ano.",

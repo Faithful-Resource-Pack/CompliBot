@@ -2,8 +2,8 @@
     "Args.Insufficient": "Not enough arguments!",
     "Args.Invalid": "Invalid arguments!",
     "Command.Coin.Edge": "Edge?!",
-    "Command.Coin.Heads": "Heads!",
-    "Command.Coin.Tails": "Tails!",
+    "Command.Coin.Heads": "Heads",
+    "Command.Coin.Tails": "Tails",
     "Command.EightBall.Answers": [
         "Yes",
         "Yes.",
