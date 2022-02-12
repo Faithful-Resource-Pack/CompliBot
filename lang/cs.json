@@ -73,7 +73,7 @@
     "Command.HelpUs.Title": "Chceš nám pomoct či nás podpořit ve vývoji CompliBota?",
     "Command.Images.NotFound.Title": "Nenalezeny žádné obrázky!",
     "Command.Images.NotFound": "Nenalezeny žádné obrázky v předchozích %NUMBER% zprávách, prosím odešlete jeden obrázek jedním z tímto způsobů:\n\n- Odesláním URL obrázku\n- Připojením obrázku k vaší zprávě\n- Odpovězením na předchozí zprávu (může být opakované).\n\n> Tohle můžeš zrušit posláním čehokoliv jiného.",
-    "Command.Images.ToBig": "Výsledný obrázek by byl větší než maximum (512 x 512px)!",
+    "Command.Images.TooBig": "Výsledný obrázek by byl větší než maximum 512px²!",
     "Command.Images.NoImageAttached": "Nebyl připojen žádný obrázek, ani nebylo dodáno platné URL obrázku.",
     "Command.Kill.Killed": [
         "%AUTHOR% vypadl/a ze světa",

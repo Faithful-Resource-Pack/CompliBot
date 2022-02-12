@@ -73,7 +73,7 @@
     "Command.HelpUs.Title": "Do you want to help or support us in the CompliBot development?",
     "Command.Images.NotFound.Title": "No images found!",
     "Command.Images.NotFound": "No images were found in the last %NUMBER% messages, please submit one using the following:\n\n- Sending an image URL\n- Attaching one to your message\n- Reply to a previous message (can be chained)\n\n> You can cancel this by sending anything else.",
-    "Command.Images.ToBig": "Output exeeds the maximum of 512 x 512px²!",
+    "Command.Images.TooBig": "Output exceeds the maximum of 512px²!",
     "Command.Images.NoImageAttached": "No image were attached, nor valid URL were given!",
     "Command.Kill.Killed": [
         "%AUTHOR% fell out of the world",
