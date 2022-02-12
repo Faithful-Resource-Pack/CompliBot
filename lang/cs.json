@@ -1,4 +1,7 @@
 {
+    "_CONTRIBUTORS": [
+        "Pomi108"
+    ]
     "Args.Insufficient": "Málo argumentů!",
     "Args.Invalid": "Chybné argumenty!",
     "Command.Coin.Edge": "Hrana?!",
