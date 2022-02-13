@@ -1,6 +1,6 @@
 # Changelog
 
-## [v2.0.0] 14/02/2002
+## [v2.0.0] 14/02/2022
 > This is a beta and will not be fully stable. To report any bugs, use `/feedback`
 ### Added
 
@@ -15,7 +15,7 @@
 
 - Tile command now has a random option to mimic minecraft texture randomization,
 `flip` behaves like stone; randomly flips textures. `rotate`
-randomly rotates textures at 90deg intervals behaves like moss.
+randomly rotates textures at 90° intervals; behaves like i.e. moss.
 Random options can be applied to all patterns
 - `/mute` command now uses Discord's timeout feature
 - Image searching for all image commands now can follow reply chains to the original image. Perfect for long discussions about textures.
@@ -42,4 +42,4 @@ Random options can be applied to all patterns
 #### [release] 
 - End of "Complibot Beta", will be reincarnated as "Complibot" and the old will become the new
 
-_"Yea but wen [version] release?"_ - we dont know.
+_"Yea but wen [version] release?"_ - we don't know.
