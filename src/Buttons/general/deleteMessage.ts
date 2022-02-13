@@ -20,7 +20,7 @@ export const button: Button = {
 				}),
 				ephemeral: true,
 			});
-		if ((await (interaction.message as Message).fetchReference()).author.id != interaction.user.id)
+		if ((interaction.message as Message).reference != undefined && (await (interaction.message as Message).fetchReference()).author.id != interaction.user.id)
 			return interaction.reply({
 				content: await interaction.text({
 					string: "Error.Interaction.Reserved",
