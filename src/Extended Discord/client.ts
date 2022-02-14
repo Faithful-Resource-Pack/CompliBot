@@ -243,7 +243,6 @@ class ExtendedClient extends Client {
 
 		//* then make the directory :D
 		readdirSync(menusPath)
-			.filter((file) => file.endsWith(".ts"))
 			.forEach(async (dir) => {
 				const menus = readdirSync(`${menusPath}/${dir}`).filter((file) => file.endsWith(".ts"));
 
