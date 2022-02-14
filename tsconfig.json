@@ -18,8 +18,8 @@
 		"paths": {
 			"@/*": ["../*"],
 			"@functions/*": ["./Functions/*"],
-			"@helpers/*": ["./helpers/*"],
-			"@interfaces": ["./Interfaces/*"],
+			"@helpers/*": ["./Helpers/*"],
+			"@interfaces/*": ["./Interfaces/*"],
 			"@src/*": ["*"]
 		},
 		"plugins": [

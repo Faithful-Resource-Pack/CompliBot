@@ -5,6 +5,8 @@ interface CustomEvents extends ClientEvents {
 	slashCommandUsed: any;
 	buttonUsed: any;
 	selectMenuUsed: any;
+	/** @deprecated slash commands interaction should be used */
+	oldCommandUsed: any;
 }
 
 interface Run {

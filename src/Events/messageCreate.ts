@@ -1,5 +1,4 @@
-import { Event, Command } from "@src/Interfaces";
-import { increase } from "@src/Functions/commandProcess";
+import { Event } from "@src/Interfaces";
 import { Client, Message, MessageEmbed } from "@src/Extended Discord";
 import { quote } from "@src/Functions/quote";
 import easterEgg from "@functions/canvas/isEasterEggImg";
@@ -9,80 +8,74 @@ export const event: Event = {
 	run: async (client: Client, message: Message) => {
 		if (message.author.bot) return;
 
-		if (!message.content.startsWith(client.tokens.prefix)) {
-			if (/https:\/\/(canary\.)?discord(app)?\.com\/channels\/([0-9]+)\/([0-9]+)\/([0-9]+)/g.exec(message.content))
-				quote(message);
+		//! do not remove, 'force' message to be casted (break if removed)
+		let _ = (message as Message) instanceof Message;
 
-			switch (message.content.toLocaleLowerCase()) {
-				case "engineer gaming":
-					try {
-						await message.react("👷");
-					} catch (err) {
-						/* can't react */
-					}
-					break;
-				case "rip":
-				case "f":
-					try {
-						await message.react("🇫");
-					} catch (err) {
-						/* can't react */
-					}
-					break;
-				case "band":
-					["🎤", "🎸", "🥁", "🪘", "🎺", "🎷", "🎹", "🪗", "🎻"].forEach(async (emoji) => {
-						try {
-							await message.react(emoji);
-						} catch (err) {
-							/* can't react */
-						}
-					});
-					break;
-				case "monke": //cases can do this, they can overlap. Very useful
-				case "monkee":
-				case "monkey":
-					["🎷", "🐒"].forEach(async (emoji) => {
-						try {
-							await message.react(emoji);
-						} catch (err) {
-							/* can't react */
-						}
-					});
-					break;
-			}
-
-			if (message.attachments.size > 0) {
-				if ((await easterEgg(message.attachments.first().url, 1)) && !client.tokens.dev) {
-					const embed = new MessageEmbed()
-						.setTitle('"rOtAte tiLinG"')
-						.setImage("https://cdn.discordapp.com/attachments/923370825762078720/939476550749913138/tiled.png")
-						.setFooter({ text: "Nick.#1666" })
-						.setTimestamp(new Date(1644059063305)); // when the funny moment happened
-					message.channel.send({ embeds: [embed] });
-				}
-				if ((await easterEgg(message.attachments.first().url, 2)) && !client.tokens.dev) {
-					const embed = new MessageEmbed()
-						.setTitle('"FlIp tiLinG"')
-						.setImage("https://cdn.discordapp.com/attachments/923370825762078720/940676536330223676/tiled.png")
-						.setFooter({ text: "Nick.#1666 - again" })
-						.setTimestamp(new Date(1644345162257)); // when the funny moment happened again
-					message.channel.send({ embeds: [embed] });
-				}
-			}
+		// old commands handler (remove for release)
+		if (message.content.startsWith(client.tokens.prefix)) {
+			client.emit("oldCommandUsed", (client as Client, message));
 			return;
 		}
 
-		client.storeMessage(message); // used to backup last 5 messages in case of unhandled rejection
+		if (/https:\/\/(canary\.)?discord(app)?\.com\/channels\/([0-9]+)\/([0-9]+)\/([0-9]+)/g.exec(message.content))
+			quote(message);
 
-		const args = message.content.slice(client.tokens.prefix.length).trim().split(/ +/);
-		const cmd = args.shift().toLowerCase();
-		if (!cmd) return;
-
-		const command = client.commands.get(cmd) || client.aliases.get(cmd);
-		if (command) {
-			let _ = (message as Message) instanceof Message; //! do not remove, 'force' message to be casted (break if removed)
-			(command as Command).run(client, message, args);
-			increase((command as Command).name);
+		switch (message.content.toLocaleLowerCase()) {
+			case "engineer gaming":
+				try {
+					await message.react("👷");
+				} catch (err) {
+					/* can't react */
+				}
+				break;
+			case "rip":
+			case "f":
+				try {
+					await message.react("🇫");
+				} catch (err) {
+					/* can't react */
+				}
+				break;
+			case "band":
+				["🎤", "🎸", "🥁", "🪘", "🎺", "🎷", "🎹", "🪗", "🎻"].forEach(async (emoji) => {
+					try {
+						await message.react(emoji);
+					} catch (err) {
+						/* can't react */
+					}
+				});
+				break;
+			case "monke": //cases can do this, they can overlap. Very useful
+			case "monkee":
+			case "monkey":
+				["🎷", "🐒"].forEach(async (emoji) => {
+					try {
+						await message.react(emoji);
+					} catch (err) {
+						/* can't react */
+					}
+				});
+				break;
 		}
+
+		if (message.attachments.size > 0) {
+			if ((await easterEgg(message.attachments.first().url, 1)) && !client.tokens.dev) {
+				const embed = new MessageEmbed()
+					.setTitle('"rOtAte tiLinG"')
+					.setImage("https://cdn.discordapp.com/attachments/923370825762078720/939476550749913138/tiled.png")
+					.setFooter({ text: "Nick.#1666" })
+					.setTimestamp(new Date(1644059063305)); // when the funny moment happened
+				message.channel.send({ embeds: [embed] });
+			}
+			if ((await easterEgg(message.attachments.first().url, 2)) && !client.tokens.dev) {
+				const embed = new MessageEmbed()
+					.setTitle('"FlIp tiLinG"')
+					.setImage("https://cdn.discordapp.com/attachments/923370825762078720/940676536330223676/tiled.png")
+					.setFooter({ text: "Nick.#1666 - again" })
+					.setTimestamp(new Date(1644345162257)); // when the funny moment happened again
+				message.channel.send({ embeds: [embed] });
+			}
+		}
+
 	},
 };
