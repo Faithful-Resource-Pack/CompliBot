@@ -21,7 +21,7 @@ Have fun polylingual translators!
 - [ ] ko	Korean `0%`
 - [ ] lt	Lithuanian `0%`
 - [ ] no	Norwegian `0%`
-- [ ] pl	Polish `0%`
+- [x] pl	Polish `100%`
 - [ ] pt-BR	Portuguese (Brazil) `55.56%`
 - [ ] ro	Romanian `0%`
 - [ ] ru	Russian `0%`
