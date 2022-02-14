@@ -1,5 +1,6 @@
 import { CommandInteraction, Message, MessageEmbed } from "@src/Extended Discord";
-import { MessageAttachment } from "discord.js";
+import imageButtons from "@src/Helpers/imageBtn";
+import { MessageActionRow, MessageAttachment, MessageSelectMenu } from "discord.js";
 
 /**
  * Check if the message has a image attached somewhere
@@ -105,11 +106,18 @@ export async function slashCommandImage(options: slashCommandImageOptions) {
 	if (file === null) {
 		options.interaction.deleteReply();
 		options.interaction.followUp({
-			content: await options.interaction.text({ string: "Command.Images.ToBig" }),
+			content: await options.interaction.text({ string: "Command.Images.TooBig" }),
 			ephemeral: true,
 		});
 		return;
 	}
-
-	options.interaction.editReply({ files: [file], embeds: [embed] }).then((message: Message) => message.deleteButton());
+	options.interaction
+		.editReply({
+			files: [file],
+			embeds: [embed],
+			components: [imageButtons],
+		})
+		.then((message: Message) => {
+			message.deleteButton();
+		});
 }

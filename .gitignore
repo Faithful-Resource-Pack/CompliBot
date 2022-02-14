@@ -5,3 +5,4 @@ json/
 .env
 src/Commands/Bot/test.ts
 dist
+Commands

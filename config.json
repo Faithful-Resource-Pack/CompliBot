@@ -1,5 +1,6 @@
 {
     "images": "https://database.compliancepack.net/images/",
+    "icon": "https://cdn.discordapp.com/avatars/929066601930706954/86f92a2870e5924a04b75cc917cb4ecd.webp?size=80",
     "apiUrl": "https://api.compliancepack.net/v2/",
     "firestormUrl": "https://database.compliancepack.net/firestorm-test/",
     "repositories": {
@@ -28,7 +29,8 @@
         "cdungeons": "#df7c2b",
         "twitter": "#1da0f2",
         "youtube": "#ff0000",
-        "patreon": "#f96754"
+        "patreon": "#f96754",
+        "coin": "#ffdc16"
     },
     "discords": [
         {

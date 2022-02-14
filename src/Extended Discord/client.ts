@@ -206,7 +206,7 @@ class ExtendedClient extends Client {
 	private loadEvents = (): void => {
 		const eventPath = path.join(__dirname, "..", "Events");
 
-		//! if the directory doesn't exist, the bot won't start @nick-1666!!
+		//* then make the directory :D
 		readdirSync(eventPath)
 			.filter((file) => file.endsWith(".ts"))
 			.forEach(async (file) => {
@@ -223,13 +223,15 @@ class ExtendedClient extends Client {
 	private loadButtons = (): void => {
 		const buttonPath = path.join(__dirname, "..", "Buttons");
 
-		//! if the directory doesn't exist, the bot won't start @nick-1666!!
-		readdirSync(buttonPath)
-			.filter((file) => file.endsWith(".ts"))
-			.forEach(async (file) => {
-				const { button } = await import(`${buttonPath}/${file}`);
+		//* then make the directory :D
+		readdirSync(buttonPath).forEach(async (dir) => {
+			const buttons = readdirSync(`${buttonPath}/${dir}`).filter((file) => file.endsWith(".ts"));
+
+			for (const file of buttons) {
+				const { button } = await import(`${buttonPath}/${dir}/${file}`);
 				this.buttons.set(button.buttonId, button);
-			});
+			}
+		});
 	};
 
 	/**
@@ -237,14 +239,18 @@ class ExtendedClient extends Client {
 	 */
 	public menus: Collection<string, SelectMenu> = new Collection();
 	private loadSelectMenus = (): void => {
-		const menusPathh = path.join(__dirname, "..", "Menus");
+		const menusPath = path.join(__dirname, "..", "Menus");
 
-		//! if the directory doesn't exist, the bot won't start @nick-1666!!
-		readdirSync(menusPathh)
+		//* then make the directory :D
+		readdirSync(menusPath)
 			.filter((file) => file.endsWith(".ts"))
-			.forEach(async (file) => {
-				const { menu } = await import(`${menusPathh}/${file}`);
-				this.menus.set(menu.selectMenuId, menu);
+			.forEach(async (dir) => {
+				const menus = readdirSync(`${menusPath}/${dir}`).filter((file) => file.endsWith(".ts"));
+
+				for (const file of menus) {
+					const { menu } = await import(`${menusPath}/${dir}/${file}`);
+					this.menus.set(menu.selectMenuId, menu);
+				}
 			});
 	};
 

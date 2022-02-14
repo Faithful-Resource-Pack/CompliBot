@@ -32,9 +32,19 @@ const MessageBody = {
 
 	deleteButton: async function (): Promise<Message> {
 		const btnDelete = new MessageButton().setStyle("DANGER").setEmoji(parseId(ids.delete)).setCustomId("deleteMessage");
-		const buttons = new MessageActionRow().addComponents([btnDelete]);
 
-		return this.edit({ components: [ ...this.components, buttons] });
+		if (
+			this.components[0] != undefined &&
+			this.components.at(-1).components.length < 5 && //check there arent 5 buttons
+			(this as Message).components.at(-1).components[0].type == "BUTTON" //checks there isnt a select menu
+		) {
+			(this as Message).components.at(-1).addComponents([btnDelete]);
+
+			return this.edit({
+				components: [...this.components],
+			});
+		}
+		return this.edit({ components: [...this.components, new MessageActionRow().addComponents([btnDelete])] });
 	},
 
 	setMenu: function (choiceType: "texture" | "imageOptions", id: string): Menu {

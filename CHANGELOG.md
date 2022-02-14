@@ -1,38 +1,36 @@
 # Changelog
 
-## [v2.0.0]
-> This is a beta and will not be stable. To report any bugs, use `/feedback`
+## [v2.0.0] 14/02/2022
+> This is a beta and will not be fully stable. To report any bugs, use `/feedback`
 ### Added
 
-- New easter eggs _(with ones based of images now; if you know you know)_
-- Native translation based on discord language for **ALL** commands currently implemented, requires no setup and is maintained by community translators _many thanks for those who contributed so far :D_
+- Slash commands (replacing normal commands)
+- Buttons and selection menus (replacing reactions)
+- Native translations based on Discord language
+- `/stats command` command to see the amount of uses of a specific command
+- `/license` command for the Compliance Resource Pack license
+- Lots of new easter eggs
 
 ### Changed
 
 - Tile command now has a random option to mimic minecraft texture randomization,
 `flip` behaves like stone; randomly flips textures. `rotate`
-randomly rotates textures at 90deg intervals behaves like moss.
+randomly rotates textures at 90° intervals; behaves like i.e. moss.
 Random options can be applied to all patterns
-
-- Texture command now uses select menus instead of reactions which were slow and unreliable. Ui for the embed has also changed for the better providing useful information and the image both large and in its original size for easier copy.
-
+- `/mute` command now uses Discord's timeout feature
 - Image searching for all image commands now can follow reply chains to the original image. Perfect for long discussions about textures.
-
-- Better feedback, now reports will be sorted into bugs and suggestions which is easier for us devs but also provides a chance to preview your feedback before submitting it
-
-### Removed
-
-- Outdated regular commands and replaced by fancy new slash commands
-which are simple to code and maintain plus are both easier to use (especially on mobile) and
-show a detailed description of commands and their options.
-
-- Reaction menus. Everyone hates them. Buttons are cool and fast.
+- Image commands now support many new Discord image types, especially for embeds
+- Better feedback command, reports will now be sorted into bugs and suggestions which is easier for us devs but also provides a chance to preview your feedback before submitting it
+- Improved error logging, which will help us fix bugs faster in the future
+- Various changes, tweaks and enhancements to all commands
 
 ### Planned
 
+> Note: These are not the full changelogs, more entires will be added in the future.
+
 #### [v2.1.0]
 - full implementation of missing commands
-- slash command image attachments (we are waiting on discord.js v14 to drop)
+- slash command image attachments (we are waiting on discord.js v14 or v13.7 to drop)
 #### [v2.2.0]
 - mute and unmute taking advantage of new timeouts
 - warns offenders can see
@@ -40,8 +38,8 @@ show a detailed description of commands and their options.
 #### [v2.3.0] 
 - Submission system
 - Anonymous voting (not previously possible with stinky reaction menus)
-- Instapassing and Invalid working
+- Instapassing and invalidating working
 #### [release] 
 - End of "Complibot Beta", will be reincarnated as "Complibot" and the old will become the new
 
-_"Yea but wen [version] release?"_ - we dont know.
+_"Yea but wen [version] release?"_ - we don't know.

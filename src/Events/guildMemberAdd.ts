@@ -5,6 +5,7 @@ import { Event } from "@src/Interfaces";
 export const event: Event = {
 	name: "guildMemberAdd",
 	run: async (client: Client, guild: Guild) => {
+		return;
 		client.updateMembers(guild.id, client.config.discords.filter((s) => s.id === guild.id)[0].updateMember);
 	},
 };
