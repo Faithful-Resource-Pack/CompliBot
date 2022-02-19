@@ -9,7 +9,8 @@ export const button: Button = {
 	execute: async (client: Client, interaction: ButtonInteraction) => {
 		if (client.verbose) console.log(`${info}Image was magnified!`);
 
-		const messageInteraction: MessageInteraction = interaction.message.interaction as MessageInteraction;
+                // mfw unnecessary thing stopping buttons from working on texture
+		// const messageInteraction: MessageInteraction = interaction.message.interaction as MessageInteraction;
 		const message: Message = interaction.message as Message;
 		const url = message.embeds[0].image.url;
 		const attachment = await magnifyAttachment({
@@ -21,12 +22,12 @@ export const button: Button = {
 				content: await interaction.text({ string: "Command.Images.TooBig" }),
 				ephemeral: true,
 			});
-		if (messageInteraction !== null) {
+		// if (messageInteraction !== null) {
 			return interaction.reply({
 				embeds: [new MessageEmbed().setImage(`attachment://${attachment.name}`).setTimestamp()],
 				files: [attachment],
 				ephemeral: true,
 			});
-		}
+		// }
 	},
 };
