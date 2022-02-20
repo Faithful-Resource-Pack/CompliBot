@@ -12,12 +12,12 @@ export class Automation {
 	}
 
 	public start() {
-		// Optimised to not tick until implemented
-		//setInterval(() => {
-		//	if (!this.ticking) return;
-		//
-		//	// this.doCheckPolls();
-		//}, 1000); // each seconds
+		setInterval(() => {
+			if (!this.ticking) return;
+		
+			// todo: add submissions checks here
+			// this.doCheckPolls();
+		}, 1000); // each seconds
 	}
 
 	// private doCheckPolls() {

@@ -9,6 +9,7 @@ export interface Config {
 		vanilla: Repository;
 	};
 	discords: Array<Discord>;
+	submitChannels: { [key: string]: string };
 }
 
 interface Discord {

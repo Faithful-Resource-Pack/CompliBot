@@ -17,6 +17,11 @@ export const event: Event = {
 			return;
 		}
 
+		if (Object.values(client.config.submitChannels).includes(message.channelId)) {
+			client.emit("textureSubmitted", (client as Client, message));
+			return;
+		}
+
 		quote(message);
 
 		switch (message.content.toLocaleLowerCase()) {

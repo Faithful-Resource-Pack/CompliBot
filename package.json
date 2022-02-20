@@ -36,6 +36,7 @@
         "firestorm-db": "^1.10.0",
         "follow-redirects": "^1.14.8",
         "image-size": "^1.0.1",
+        "jszip": "^3.7.1",
         "linux-os-info": "^2.0.0",
         "module-alias": "^2.2.2",
         "moment": "^2.29.1",

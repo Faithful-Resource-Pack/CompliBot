@@ -138,7 +138,7 @@ const MessageBody = {
 			setTimeout(() => {
 				replyMsg.delete();
 				this.delete();
-			}, 3000); //deletes the message after 30s
+			}, 30000); //deletes the message after 30s
 		}
 	},
 };
