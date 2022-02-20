@@ -59,7 +59,7 @@ export const getTextureMessageOptions = async (options: { texture: any, pack: st
 			iconURL: strIconURL
 		})
 
-	let textureURL = (await axios.get(`${config.apiUrl}textures/${texture.id}/url/${pack}/${paths[0].versions.sort(minecraftSorter).reverse()[0]}`)).data;
+	let textureURL = (await axios.get(`${config.apiUrl}textures/${texture.id}/url/${pack}/${paths[0].versions.sort(minecraftSorter).reverse()[0]}`)).request.res.responseUrl;
 	embed.setImage(textureURL);
 
 	// test if url isn't a 404
