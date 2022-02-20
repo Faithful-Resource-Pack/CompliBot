@@ -9,6 +9,8 @@ import { postSubmitedTextureEmbed } from "@functions/postSubmittedTextureEmbed";
 export const event: Event = {
   name: "textureSubmitted",
   run: async (client: Client, message: Message) => {
+    if (!client.tokens.dev) return; // only for devs now
+
 		if (client.verbose) console.log(`${info}Texture submitted!`);
 
     if (message.attachments.size === 0) return message.warn("No images were attached!", true);
