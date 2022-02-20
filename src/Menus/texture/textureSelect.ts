@@ -26,7 +26,7 @@ export const menu: SelectMenu = {
 
 		const [id, pack] = interaction.values[0].split('__');
 		const [embed, files] = await getTextureMessageOptions({ texture: (await axios.get(`${(interaction.client as Client).config.apiUrl}textures/${id}/all`)).data, pack: pack });
-
+		embed.setAuthor({ iconURL: interaction.user.avatarURL(), name: `Requested by ${interaction.user.tag}`})
 		try {
 			message.delete();
 		} catch (err) { 
