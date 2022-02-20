@@ -48,8 +48,8 @@ export const errorHandler: Function = async (client: Client, reason: any, type: 
 	if(lastReasons.length == loopLimit) lastReasons.pop(); // pop removes an item from the end of an array
 	lastReasons.push(reason); // push adds one to the start
 
-	console.log(lastReasons.length)
-	console.log(lastReasons.every(v => v.stack == lastReasons[0].stack))
+	// console.log(lastReasons.length)
+	// console.log(lastReasons.every(v => v.stack == lastReasons[0].stack))
 	//checks if every value is equal to index
 	if (lastReasons.every(v => v.stack == lastReasons[0].stack) && lastReasons.length == loopLimit) {
 		const embed = new MessageEmbed()
