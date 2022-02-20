@@ -30,7 +30,8 @@ export const command: SlashCommand = {
 	execute: async (interaction: CommandInteraction) => {
 		await interaction.deferReply();
 
-		const name = interaction.options.getString("name");
+		var name = interaction.options.getString("name");
+		if (name.includes(".png")) name = name.replace(".png", "");
 		if (name.length <= 3) {
 			try {
 				interaction.deleteReply();
@@ -42,7 +43,7 @@ export const command: SlashCommand = {
 		// todo: use the api here
 		const results: Array<any> = (await axios.get(`${(interaction.client as Client).config.apiUrl}textures/${name}/all`)).data;
 
-		// only 1 results
+		// only 1 result
 		if (results.length === 1) {
 			const [embed, files] = await getTextureMessageOptions({ texture: results[0], pack: interaction.options.getString("pack", true) });
 			interaction.editReply({ embeds: [embed], files: files })
