@@ -3,6 +3,7 @@ import { info } from "@src/Helpers/logger";
 import { Client, Message, ButtonInteraction, MessageEmbed } from "@src/Extended Discord";
 import { MessageInteraction } from "discord.js";
 import { tileAttachment } from "@functions/canvas/tile";
+import imageButtons from "@helpers/imageBtn";
 
 export const button: Button = {
 	buttonId: "tile",
@@ -27,8 +28,11 @@ export const button: Button = {
 			return interaction.reply({
 				embeds: [new MessageEmbed().setImage(`attachment://${attachment.name}`).setTimestamp()],
 				files: [attachment],
-				ephemeral: true,
-			});
+				components: [imageButtons],
+				fetchReply: true,
+			}).then((message: Message) => {
+				message.deleteButton();
+			});;
 		// }
 	},
 };

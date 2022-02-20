@@ -5,6 +5,6 @@ export const event: Event = {
 	name: "ready",
 	run: async (client) => {
 		console.log(`${Success}${client.user.tag} is online.`);
-		client.user.setActivity(`${client.tokens.prefix}help`, { type: "LISTENING" });
+		client.user.setActivity(`with other packs.`, { type: "COMPETING" });
 	},
 };

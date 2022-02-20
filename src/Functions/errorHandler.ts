@@ -2,6 +2,7 @@ import { MessageAttachment, MessageEmbed, TextChannel } from "discord.js";
 import { Client, Message } from "@src/Extended Discord";
 import fs from "fs";
 import { err } from "@src/Helpers/logger";
+import { ActivityTypes } from "discord.js/typings/enums";
 
 const randomSentences: Array<string> = [
 	"Oh no, not again!",
@@ -37,14 +38,41 @@ const randomSentences: Array<string> = [
 	"Ouch. That hurt :(",
 ];
 
+var lastReasons = [];
+const loopLimit = 3; //how many times the same error needs to be made to trigger a loop
+
 export const errorHandler: Function = async (client: Client, reason: any, type: string) => {
+	console.error(`${err} ${reason.stack || JSON.stringify(reason)}`);
 	const channel = client.channels.cache.get(client.config.channels.error) as TextChannel;
+ 
+	if(lastReasons.length == loopLimit) lastReasons.pop(); // pop removes an item from the end of an array
+	lastReasons.push(reason); // push adds one to the start
+
+	console.log(lastReasons.length)
+	console.log(lastReasons.every(v => v.stack == lastReasons[0].stack))
+	//checks if every value is equal to index
+	if (lastReasons.every(v => v.stack == lastReasons[0].stack) && lastReasons.length == loopLimit) {
+		const embed = new MessageEmbed()
+			.setTitle("(Probably) Looped, error encountered!")
+			.setFooter({ text: "Got the same error three times in a row. Atempting restart..." })
+			.setDescription("```bash\n" + reason.stack + "\n```");
+		await channel.send({ embeds: [embed] });
+		await console.log(`${err}Suspected loop detected; Restarting...`) 
+		//awaits so it doesnt exit before sending and logging
+		client.restart() // round 2 babyy
+	}
 
 	const embed = new MessageEmbed()
 		.setTitle(type)
 		.setThumbnail(`${client.config.images}bot/error.png`)
 		.setColor(client.config.colors.red)
-		.addField(
+		.setTimestamp()
+		.setFooter({ text: client.user.tag, iconURL: client.user.avatarURL() });
+
+	//check to see if it errored before any commands were ran
+	// #(for instance if a button was pressed before a command and it threw an error)
+	if (client.getLastMessages()[0] != undefined) {
+		embed.addField(
 			"Last message(s) received:",
 			`${client
 				.getLastMessages()
@@ -56,10 +84,8 @@ export const errorHandler: Function = async (client: Client, reason: any, type: 
 				)
 				.join("\n")}`,
 			false,
-		)
-		.setTimestamp()
-		.setFooter({ text: client.user.tag, iconURL: client.user.avatarURL() });
-
+		);
+	} else embed.addField("Last message(s) recieved:", "No last messages sent. Probably button or menu failiure.");
 	const logTemplate = fs.readFileSync(__dirname + "/errorHandler.log", { encoding: "utf-8" });
 	const messageTemplate = logTemplate.match(new RegExp(/\%messageStart%([\s\S]*?)%messageEnd/))[1]; // get message template
 
@@ -86,5 +112,4 @@ export const errorHandler: Function = async (client: Client, reason: any, type: 
 
 	await channel.send({ embeds: [embed] }).catch(console.error);
 	await channel.send({ files: [attachment] }).catch(console.error);
-	console.error(`${err}${reason}`);
 };
