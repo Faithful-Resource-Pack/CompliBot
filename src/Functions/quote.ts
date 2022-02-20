@@ -2,10 +2,18 @@ import { Message, MessageEmbed } from "@src/Extended Discord";
 import { TextChannel } from "discord.js";
 
 export async function quote(message: Message) {
-	let file;
 	var embed = new MessageEmbed();
 
-	let matches = /https:\/\/(canary\.)?discord(app)?\.com\/channels\/([0-9]+)\/([0-9]+)\/([0-9]+)/g.exec(
+	/**
+	 * Will match following Discord links:
+	 * https://discord.com/channels/{guildID}/{channelID}/{messageID}
+	 * https://discordapp.com/channels/{guildID}/{channelID}/{messageID}
+	 * https://canary.discord.com/channels/{guildID}/{channelID}/{messageID}
+	 * https://canary.discordapp.com/channels/{guildID}/{channelID}/{messageID}
+	 * https://ptb.discord.com/channels/{guildID}/{channelID}/{messageID}
+	 * https://ptb.discordapp.com/channels/{guildID}/{channelID}/{messageID}
+	 */
+	let matches = /https:\/\/(canary\.|ptb\.)?discord(app)?\.com\/channels\/([0-9]+)\/([0-9]+)\/([0-9]+)/g.exec(
 		message.content,
 	);
 
@@ -24,8 +32,17 @@ export async function quote(message: Message) {
 
 		if (quotedMsg.embeds[0].title != undefined) embed.setTitle(quotedMsg.embeds[0].title);
 		if (quotedMsg.embeds[0].url != undefined) embed.setURL(quotedMsg.embeds[0].url);
+		if (quotedMsg.embeds[0].description != undefined) embed.setDescription(quotedMsg.embeds[0].description);
+		if (quotedMsg.embeds[0].image != undefined) embed.setImage(quotedMsg.embeds[0].image.url);
+		if (quotedMsg.embeds[0].fields != undefined) embed.addFields(quotedMsg.embeds[0].fields);
 
-		if (quotedMsg.embeds[0].thumbnail != undefined) embed.setThumbnail(quotedMsg.embeds[0].thumbnail.url);
+		if (quotedMsg.embeds[0].thumbnail != undefined) {
+			embed.setThumbnail(quotedMsg.embeds[0].thumbnail.url);
+			embed.setAuthor({
+				name: `Embed sent by ${quotedMsg.author.tag}`,
+				iconURL: quotedMsg.author.displayAvatarURL(),
+			});
+		}
 		else embed.setThumbnail(quotedMsg.author.displayAvatarURL());
 	} else {
 		if (quotedMsg.attachments.size > 0 && quotedMsg.attachments.first().url.match(/\.(jpeg|jpg|png|webp|gif)$/))

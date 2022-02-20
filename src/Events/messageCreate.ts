@@ -17,8 +17,7 @@ export const event: Event = {
 			return;
 		}
 
-		if (/https:\/\/(canary\.)?discord(app)?\.com\/channels\/([0-9]+)\/([0-9]+)\/([0-9]+)/g.exec(message.content))
-			quote(message);
+		quote(message);
 
 		switch (message.content.toLocaleLowerCase()) {
 			case "engineer gaming":
