@@ -8,6 +8,7 @@ export const command: Command = {
 	usage: ["palette (image attachment|reply to message with image attachment)", "palette (image url)"],
 	aliases: ["p", "colors", "colours"],
 	run: async (client, message, args) => {
+		return;
 		let attach: string;
 
 		if (message.type == "REPLY" && message.channel.type == "GUILD_TEXT") {
