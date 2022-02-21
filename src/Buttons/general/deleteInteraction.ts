@@ -5,19 +5,18 @@ import { Interaction, MessageInteraction } from "discord.js";
 import { InteractionType } from "discord-api-types";
 
 export const button: Button = {
-	buttonId: "deleteMessage",
+	buttonId: "deleteInteraction",
 	execute: async (client: Client, interaction: ButtonInteraction) => {
-		if (client.verbose) console.log(`${info}Message deleted!`);
+		if (client.verbose) console.log(`${info}Interaction message deleted!`);
 
+		const messageInteraction: MessageInteraction = interaction.message.interaction as MessageInteraction;
 		const message: Message = interaction.message as Message;
-		// as we can't fetch the interaction to detect who is the owner of the message/interaction, we uses the stored id inside the footer
-		const authorid: string = interaction.message.embeds[0].footer.text;
 
-		if (interaction.user.id != authorid)
+		if (interaction.user.id != messageInteraction.user.id)
 			return interaction.reply({
 				content: await interaction.text({
 					string: "Error.Interaction.Reserved",
-					placeholders: { USER: `<@!${authorid}>` },
+					placeholders: { USER: `<@!${messageInteraction.user.id}>` },
 				}),
 				ephemeral: true,
 			});

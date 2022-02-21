@@ -34,7 +34,7 @@ export const event: Event = {
       try {
         req = await axios.get(`${client.config.apiUrl}textures/${file.name.replace('.png', '')}/all`);
       } catch (_err) {
-        return message.warn(`An API error occured:\n\`\`\`(${_err.response.data.status}) ${_err.response.data.message}\`\`\``, true);
+        return message.warn(`An API error occured for \`${file.name.replace('.png', '')}\`:\n\`\`\`(${_err.response.data.status}) ${_err.response.data.message}\`\`\``, true);
       }
 
       const textures = req.data.filter(t => t.name === file.name.replace('.png', ''));
@@ -47,9 +47,9 @@ export const event: Event = {
       await postSubmitedTextureEmbed(message, textures[0], file);
     })
 
-    // try {
-    //   message.delete();
-    // } catch { /* message already deleted */ }
+    try {
+      message.delete();
+    } catch { /* message already deleted */ }
 
   }
 }

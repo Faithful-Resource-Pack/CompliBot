@@ -1,38 +1,44 @@
 import { Button } from "@src/Interfaces";
 import { info } from "@src/Helpers/logger";
 import { Client, Message, ButtonInteraction, MessageEmbed } from "@src/Extended Discord";
-import { MessageInteraction } from "discord.js";
 import { tileAttachment } from "@functions/canvas/tile";
-import imageButtons from "@helpers/imageBtn";
+import {imageButtons} from "@helpers/buttons";
 
 export const button: Button = {
 	buttonId: "tile",
 	execute: async (client: Client, interaction: ButtonInteraction) => {
 		if (client.verbose) console.log(`${info}Image was tiled!`);
 
-                // see magnify button for explanation 
-		// const messageInteraction: MessageInteraction = interaction.message.interaction as MessageInteraction;
 		const message: Message = interaction.message as Message;
 		const url = message.embeds[0].image.url;
-
 		const attachment = await tileAttachment({
 			url: url,
 			name: url.split("/").at(-1), //gets last element and trims off .png as it is readded later
 		});
+
 		if (attachment == null)
 			return interaction.reply({
 				content: await interaction.text({ string: "Command.Images.TooBig" }),
 				ephemeral: true,
 			});
-		// if (messageInteraction !== null) {
+
+
+		if (Object.values(client.config.submitChannels).includes(interaction.channel.id)) 
 			return interaction.reply({
 				embeds: [new MessageEmbed().setImage(`attachment://${attachment.name}`).setTimestamp()],
 				files: [attachment],
 				components: [imageButtons],
-				fetchReply: true,
-			}).then((message: Message) => {
-				message.deleteButton();
-			});;
-		// }
+				ephemeral: true,
+			})
+
+
+		else return interaction.reply({
+			embeds: [new MessageEmbed().setImage(`attachment://${attachment.name}`).setTimestamp()],
+			files: [attachment],
+			components: [imageButtons],
+			fetchReply: true,
+		}).then((message: Message) => {
+			message.deleteButton();
+		});;
 	},
 };

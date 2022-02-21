@@ -1,7 +1,7 @@
 import { Client, Message, SelectMenuInteraction } from "@src/Extended Discord"
 import { SelectMenu } from "@src/Interfaces"
 import { info } from "@src/Helpers/logger";
-import imageButtons from "@src/Helpers/imageBtn";
+import {imageButtons} from "@helpers/buttons";
 import { MessageInteraction } from "discord.js";
 import { getTextureMessageOptions } from "@src/Functions/getTexture";
 import axios from "axios";
