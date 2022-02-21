@@ -42,8 +42,7 @@ export async function quote(message: Message) {
 				name: `Embed sent by ${quotedMsg.author.tag}`,
 				iconURL: quotedMsg.author.displayAvatarURL(),
 			});
-		}
-		else embed.setThumbnail(quotedMsg.author.displayAvatarURL());
+		} else embed.setThumbnail(quotedMsg.author.displayAvatarURL());
 	} else {
 		if (quotedMsg.attachments.size > 0 && quotedMsg.attachments.first().url.match(/\.(jpeg|jpg|png|webp|gif)$/))
 			embed.setImage(quotedMsg.attachments.first().url);

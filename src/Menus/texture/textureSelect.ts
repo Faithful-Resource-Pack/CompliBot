@@ -1,14 +1,14 @@
-import { Client, Message, SelectMenuInteraction } from "@src/Extended Discord"
-import { SelectMenu } from "@src/Interfaces"
+import { Client, Message, SelectMenuInteraction } from "@src/Extended Discord";
+import { SelectMenu } from "@src/Interfaces";
 import { info } from "@src/Helpers/logger";
-import {imageButtons} from "@helpers/buttons";
+import { imageButtons } from "@helpers/buttons";
 import { MessageInteraction } from "discord.js";
 import { getTextureMessageOptions } from "@src/Functions/getTexture";
 import axios from "axios";
 
 export const menu: SelectMenu = {
-  selectMenuId: "textureSelect",
-  execute: async (client: Client, interaction: SelectMenuInteraction) => {
+	selectMenuId: "textureSelect",
+	execute: async (client: Client, interaction: SelectMenuInteraction) => {
 		if (client.verbose) console.log(`${info}Texture selected!`);
 
 		const messageInteraction: MessageInteraction = interaction.message.interaction as MessageInteraction;
@@ -24,18 +24,22 @@ export const menu: SelectMenu = {
 			});
 		else interaction.deferReply();
 
-		const [id, pack] = interaction.values[0].split('__');
-		const [embed, files] = await getTextureMessageOptions({ texture: (await axios.get(`${(interaction.client as Client).config.apiUrl}textures/${id}/all`)).data, pack: pack });
-		embed.setAuthor({ iconURL: interaction.user.avatarURL(), name: `Requested by ${interaction.user.tag}`})
+		const [id, pack] = interaction.values[0].split("__");
+		const [embed, files] = await getTextureMessageOptions({
+			texture: (await axios.get(`${(interaction.client as Client).config.apiUrl}textures/${id}/all`)).data,
+			pack: pack,
+		});
+		embed.setAuthor({ iconURL: interaction.user.avatarURL(), name: `Requested by ${interaction.user.tag}` });
 		try {
 			message.delete();
-		} catch (err) { 
+		} catch (err) {
 			interaction.editReply({
-				content: await interaction.text({ string: "Error.Message.Deleted" })
+				content: await interaction.text({ string: "Error.Message.Deleted" }),
 			});
 		}
 
-		interaction.editReply({ embeds: [embed], files: files, components: [imageButtons] })
+		interaction
+			.editReply({ embeds: [embed], files: files, components: [imageButtons] })
 			.then((message: Message) => message.deleteButton());
-  }
-}
+	},
+};

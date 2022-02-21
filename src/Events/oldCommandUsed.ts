@@ -3,9 +3,8 @@ import { increase } from "@src/Functions/commandProcess";
 import { Client, Message, MessageEmbed } from "@src/Extended Discord";
 
 export const event: Event = {
-  name: "oldCommandUsed",
-  run: async (client: Client, message: Message) => {
-    
+	name: "oldCommandUsed",
+	run: async (client: Client, message: Message) => {
 		// todo: make this works with slash commands too (put this inside ./interactionCreate.ts)
 		client.storeMessage(message); // used to backup last 5 messages in case of unhandled rejection
 
@@ -20,5 +19,5 @@ export const event: Event = {
 			(command as Command).run(client, message, args);
 			increase((command as Command).name);
 		}
-  }
-}
+	},
+};

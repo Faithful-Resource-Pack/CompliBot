@@ -3,7 +3,7 @@ import { info } from "@src/Helpers/logger";
 import { Client, Message, ButtonInteraction, MessageEmbed } from "@src/Extended Discord";
 import { MessageInteraction } from "discord.js";
 import { magnifyAttachment } from "@functions/canvas/magnify";
-import {imageButtons} from "@helpers/buttons";
+import { imageButtons } from "@helpers/buttons";
 
 export const button: Button = {
 	buttonId: "magnify",
@@ -22,22 +22,24 @@ export const button: Button = {
 				content: await interaction.text({ string: "Command.Images.TooBig" }),
 				ephemeral: true,
 			});
-		
-		if (Object.values(client.config.submitChannels).includes(interaction.channel.id)) 
+
+		if (Object.values(client.config.submitChannels).includes(interaction.channel.id))
 			return interaction.reply({
 				embeds: [new MessageEmbed().setImage(`attachment://${attachment.name}`).setTimestamp()],
 				files: [attachment],
 				components: [imageButtons],
 				ephemeral: true,
-			})
-			
-		else return interaction.reply({
-			embeds: [new MessageEmbed().setImage(`attachment://${attachment.name}`).setTimestamp()],
-			files: [attachment],
-			components: [imageButtons],
-			fetchReply: true,
-		}).then((message: Message) => {
-			message.deleteButton();
-		});;
+			});
+		else
+			return interaction
+				.reply({
+					embeds: [new MessageEmbed().setImage(`attachment://${attachment.name}`).setTimestamp()],
+					files: [attachment],
+					components: [imageButtons],
+					fetchReply: true,
+				})
+				.then((message: Message) => {
+					message.deleteButton();
+				});
 	},
 };

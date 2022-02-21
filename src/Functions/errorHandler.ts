@@ -45,19 +45,19 @@ export const errorHandler: Function = async (client: Client, reason: any, type: 
 	console.error(`${err} ${reason.stack || JSON.stringify(reason)}`);
 	const channel = client.channels.cache.get(client.config.channels.error) as TextChannel;
 	if (channel === undefined) return; // avoid infinite loop when crash is outside of client
- 
+
 	if (lastReasons.length == loopLimit) lastReasons.pop(); // pop removes an item from the end of an array
 	lastReasons.push(reason); // push adds one to the start
 
 	//checks if every value is equal to index
-	if (lastReasons.every(v => v.stack == lastReasons[0].stack) && lastReasons.length == loopLimit) {
-		if (client.verbose) console.log(`${err}Suspected loop detected; Restarting...`) 
+	if (lastReasons.every((v) => v.stack == lastReasons[0].stack) && lastReasons.length == loopLimit) {
+		if (client.verbose) console.log(`${err}Suspected loop detected; Restarting...`);
 		const embed = new MessageEmbed()
 			.setTitle("(Probably) Looped, error encountered!")
 			.setFooter({ text: "Got the same error three times in a row. Atempting restart..." })
 			.setDescription("```bash\n" + reason.stack + "\n```");
 		await channel.send({ embeds: [embed] });
-		client.restart() // round 2 babyy
+		client.restart(); // round 2 babyy
 	}
 
 	const embed = new MessageEmbed()
@@ -83,7 +83,11 @@ export const errorHandler: Function = async (client: Client, reason: any, type: 
 				.join("\n")}`,
 			false,
 		);
-	} else embed.addField("Last message(s) recieved:", "No last messages sent. Might be another interaction such as a Button or selectMenu.");
+	} else
+		embed.addField(
+			"Last message(s) recieved:",
+			"No last messages sent. Might be another interaction such as a Button or selectMenu.",
+		);
 	const logTemplate = fs.readFileSync(__dirname + "/errorHandler.log", { encoding: "utf-8" });
 	const messageTemplate = logTemplate.match(new RegExp(/\%messageStart%([\s\S]*?)%messageEnd/))[1]; // get message template
 

@@ -7,6 +7,5 @@ export const event: Event = {
 		const button: Button = client.buttons.get(interaction.customId);
 
 		if (button) return button.execute(client, interaction);
-		
 	},
 };

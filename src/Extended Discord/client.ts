@@ -66,7 +66,7 @@ class ExtendedClient extends Client {
 				if (this.verbose) console.log(info + `Init complete`);
 			});
 
-		// exit should exit; nothing should ever reach this unless its process.exit() 
+		// exit should exit; nothing should ever reach this unless its process.exit()
 		// which should exit >:(  -@nick-1666
 		process.on("disconnect", (code: number) => {
 			errorHandler(this, code, "disconnect");
@@ -240,15 +240,14 @@ class ExtendedClient extends Client {
 		const menusPath = path.join(__dirname, "..", "Menus");
 
 		//* then make the directory :D
-		readdirSync(menusPath)
-			.forEach(async (dir) => {
-				const menus = readdirSync(`${menusPath}/${dir}`).filter((file) => file.endsWith(".ts"));
+		readdirSync(menusPath).forEach(async (dir) => {
+			const menus = readdirSync(`${menusPath}/${dir}`).filter((file) => file.endsWith(".ts"));
 
-				for (const file of menus) {
-					const { menu } = await import(`${menusPath}/${dir}/${file}`);
-					this.menus.set(menu.selectMenuId, menu);
-				}
-			});
+			for (const file of menus) {
+				const { menu } = await import(`${menusPath}/${dir}/${file}`);
+				this.menus.set(menu.selectMenuId, menu);
+			}
+		});
 	};
 
 	/**

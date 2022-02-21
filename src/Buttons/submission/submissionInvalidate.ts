@@ -3,21 +3,21 @@ import { Client, Message, ButtonInteraction, MessageEmbed } from "@src/Extended 
 import { ids, parseId } from "@helpers/emojis";
 
 export const button: Button = {
-  buttonId: "submissionInvalidate",
-  execute: async (client: Client, interaction: ButtonInteraction) => {
-    const message: Message = interaction.message as Message;
+	buttonId: "submissionInvalidate",
+	execute: async (client: Client, interaction: ButtonInteraction) => {
+		const message: Message = interaction.message as Message;
 
-    const embed = message.embeds[0];
-    embed.fields.forEach(field => {
-      if (field.name === "Status") field.value = `${parseId(ids.invalid)} Invalidated by <@!${interaction.user.id}>`
-    })
+		const embed = message.embeds[0];
+		embed.fields.forEach((field) => {
+			if (field.name === "Status") field.value = `${parseId(ids.invalid)} Invalidated by <@!${interaction.user.id}>`;
+		});
 
-    message.edit({ embeds: [embed] })
+		message.edit({ embeds: [embed] });
 
-    try {
-      interaction.update({});
-    } catch (err) {
-      console.error(err);
-    }
-  }
-}
+		try {
+			interaction.update({});
+		} catch (err) {
+			console.error(err);
+		}
+	},
+};

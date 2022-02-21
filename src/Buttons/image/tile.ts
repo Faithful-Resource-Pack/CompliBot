@@ -2,7 +2,7 @@ import { Button } from "@src/Interfaces";
 import { info } from "@src/Helpers/logger";
 import { Client, Message, ButtonInteraction, MessageEmbed } from "@src/Extended Discord";
 import { tileAttachment } from "@functions/canvas/tile";
-import {imageButtons} from "@helpers/buttons";
+import { imageButtons } from "@helpers/buttons";
 
 export const button: Button = {
 	buttonId: "tile",
@@ -22,23 +22,23 @@ export const button: Button = {
 				ephemeral: true,
 			});
 
-
-		if (Object.values(client.config.submitChannels).includes(interaction.channel.id)) 
+		if (Object.values(client.config.submitChannels).includes(interaction.channel.id))
 			return interaction.reply({
 				embeds: [new MessageEmbed().setImage(`attachment://${attachment.name}`).setTimestamp()],
 				files: [attachment],
 				components: [imageButtons],
 				ephemeral: true,
-			})
-
-
-		else return interaction.reply({
-			embeds: [new MessageEmbed().setImage(`attachment://${attachment.name}`).setTimestamp()],
-			files: [attachment],
-			components: [imageButtons],
-			fetchReply: true,
-		}).then((message: Message) => {
-			message.deleteButton();
-		});;
+			});
+		else
+			return interaction
+				.reply({
+					embeds: [new MessageEmbed().setImage(`attachment://${attachment.name}`).setTimestamp()],
+					files: [attachment],
+					components: [imageButtons],
+					fetchReply: true,
+				})
+				.then((message: Message) => {
+					message.deleteButton();
+				});
 	},
 };

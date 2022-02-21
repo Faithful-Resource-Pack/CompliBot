@@ -1,7 +1,7 @@
 export interface Config {
 	colors: any;
 	firestormUrl: string;
-	apiUrl: string,
+	apiUrl: string;
 	images: string;
 	channels: { [key: string]: string };
 	repositories: {

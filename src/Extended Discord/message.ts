@@ -37,13 +37,18 @@ const MessageBody = {
 			this.components.at(-1).components.length < 5 && //check there arent 5 buttons
 			this.components.at(-1).components[0].type == "BUTTON" //checks there isnt a select menu
 		) {
-			this.components.at(-1).addComponents([(isMessage === true ? deleteMessage : deleteInteraction)]);
+			this.components.at(-1).addComponents([isMessage === true ? deleteMessage : deleteInteraction]);
 
 			return this.edit({
 				components: [...this.components],
 			});
 		}
-		return this.edit({ components: [...this.components, new MessageActionRow().addComponents([(isMessage === true ? deleteMessage : deleteInteraction)])] });
+		return this.edit({
+			components: [
+				...this.components,
+				new MessageActionRow().addComponents([isMessage === true ? deleteMessage : deleteInteraction]),
+			],
+		});
 	},
 
 	setMenu: function (choiceType: "texture" | "imageOptions", id: string): Menu {

@@ -12,23 +12,21 @@ export const command: SlashCommand = {
 
 		var embed = new MessageEmbed()
 			.setTitle(
-				res > .5
-				? await interaction.text({ string: "Command.Coin.Heads" })
-				: res < .5
-				? await interaction.text({ string: "Command.Coin.Tails" })
-				: await interaction.text({ string: "Command.Coin.Edge" })
+				res > 0.5
+					? await interaction.text({ string: "Command.Coin.Heads" })
+					: res < 0.5
+					? await interaction.text({ string: "Command.Coin.Tails" })
+					: await interaction.text({ string: "Command.Coin.Edge" }),
 			)
 			.setThumbnail(
-				res > .5
-				? "https://database.compliancepack.net/images/bot/coin_heads.png"
-				: res < .5
-				? "https://database.compliancepack.net/images/bot/coin_tails.png"
-				: "https://database.compliancepack.net/images/bot/coin_edge.png"
+				res > 0.5
+					? "https://database.compliancepack.net/images/bot/coin_heads.png"
+					: res < 0.5
+					? "https://database.compliancepack.net/images/bot/coin_tails.png"
+					: "https://database.compliancepack.net/images/bot/coin_edge.png",
 			)
 			.setColor((interaction.client as Client).config.colors.coin);
-		
-		interaction
-			.reply({ embeds: [embed], fetchReply: true })
-			.then((message: Message) => message.deleteButton());
+
+		interaction.reply({ embeds: [embed], fetchReply: true }).then((message: Message) => message.deleteButton());
 	},
 };

@@ -15,18 +15,16 @@ export const command: SlashCommand = {
 					placeholders: { YEAR: (new Date().getFullYear() + 2).toString() },
 				})
 			).split("$,");
-			embed
-				.setTitle(await interaction.text({ string: "Command.Ping.Title" }))
-				.setDescription(
-					await interaction.text({
-						string: "Command.Ping.Description",
-						placeholders: {
-							QUOTE: quotes[Math.floor(Math.random() * quotes.length)],
-							LATENCY: (d.getTime() - interaction.createdTimestamp).toString(),
-							APILATENCY: Math.round(client.ws.ping).toString(),
-						},
-					}),
-				);
+			embed.setTitle(await interaction.text({ string: "Command.Ping.Title" })).setDescription(
+				await interaction.text({
+					string: "Command.Ping.Description",
+					placeholders: {
+						QUOTE: quotes[Math.floor(Math.random() * quotes.length)],
+						LATENCY: (d.getTime() - interaction.createdTimestamp).toString(),
+						APILATENCY: Math.round(client.ws.ping).toString(),
+					},
+				}),
+			);
 
 			try {
 				interaction.editReply({ embeds: [embed] });
