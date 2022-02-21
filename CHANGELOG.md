@@ -1,6 +1,6 @@
 # Changelog
 
-## [v2.0.0] 14/02/2022
+## [v2.0.0] 21/02/2022
 > This is a beta and will not be fully stable. To report any bugs, use `/feedback`
 ### Added
 
@@ -21,6 +21,7 @@ Random options can be applied to all patterns
 - Image searching for all image commands now can follow reply chains to the original image. Perfect for long discussions about textures.
 - Image commands now support many new Discord image types, especially for embeds
 - Better feedback command, reports will now be sorted into bugs and suggestions which is easier for us devs but also provides a chance to preview your feedback before submitting it
+- Improved message quoting and added ptb.discord.com as valid quote link
 - Improved error logging, which will help us fix bugs faster in the future
 - Various changes, tweaks and enhancements to all commands
 
