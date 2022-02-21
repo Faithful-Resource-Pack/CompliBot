@@ -2,7 +2,7 @@
 import { Channel, Client, Collection, Guild, TextChannel, VoiceChannel } from "discord.js";
 import { Message } from "@src/Extended Discord";
 import path from "path";
-import { readdirSync } from "fs";
+import { readdirSync, writeFileSync } from "fs";
 import { Command, Event, Config, Tokens, Button, SelectMenu, SlashCommand } from "@src/Interfaces";
 import ConfigJson from "@/config.json";
 import TokensJson from "@/tokens.json";
@@ -16,12 +16,14 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { err, info, Success } from "@src/Helpers/logger";
 import { bot } from "..";
 import { Automation } from "./automation";
+import { SID } from "@functions/postSubmittedTextureEmbed";
 
 class ExtendedClient extends Client {
 	public verbose: boolean = false;
 	public config: Config = ConfigJson;
 	public tokens: Tokens = TokensJson;
 	public automation: Automation = new Automation(this);
+	public sid: number;
 
 	public async init() {
 		// login client
@@ -34,7 +36,7 @@ class ExtendedClient extends Client {
 			.then(() => {
 				// commands counter
 				initCommands(this);
-				if (this.verbose) console.log(info + `Initialized command counter`);
+				if (this.verbose) console.log(info + `Initialized command counter & SIDs`);
 
 				// load old commands only if not dev server
 				//if (this.tokens.dev) this.loadCommands();
@@ -66,8 +68,20 @@ class ExtendedClient extends Client {
 				if (this.verbose) console.log(info + `Init complete`);
 			});
 
-		// exit should exit; nothing should ever reach this unless its process.exit()
-		// which should exit >:(  -@nick-1666
+		// save sid on exit
+		function exitCleanup (code: number) {
+			console.log(`${info}PLEASE WAIT FOR SID TO BE SAVED BEFORE EXIT!!`)
+			writeFileSync(path.join(__dirname, "../json/submissionsCount.json"), JSON.stringify(SID) )
+			console.log(`${Success}Saved SID (${JSON.stringify(SID)}) to file. You can safely exit now`)
+			process.exit(code)
+		}
+		//catches ^C event
+		process.on('SIGINT', exitCleanup.bind(null, 0));
+
+		// catches "kill pid" (for example: nodemon restart)
+		process.on('SIGUSR1', exitCleanup.bind(null, 0));
+		process.on('SIGUSR2', exitCleanup.bind(null, 0));
+
 		process.on("disconnect", (code: number) => {
 			errorHandler(this, code, "disconnect");
 		});

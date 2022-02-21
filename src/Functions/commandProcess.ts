@@ -1,8 +1,9 @@
 const { existsSync } = require("fs");
-import fs from "fs";
+import fs, { readFileSync, writeFileSync } from "fs";
 import path from "path";
 import { Client } from "@src/Extended Discord";
 import { getData } from "./getDataFromJSON";
+import { setSid } from "./postSubmittedTextureEmbed";
 
 const COUNTER_FOLDER = path.resolve(__dirname, "../json/");
 const COUNTER_FILE_PATH = path.resolve(COUNTER_FOLDER, "commandsProcessed.json");
@@ -15,6 +16,11 @@ let commandsProcessed: { [commandName: string]: number } = getData({
 }) as any;
 
 export function init(client: Client) {
+	//loads sid 
+	const loadedSid: number = JSON.parse(readFileSync(path.join(__dirname, "../json/submissionsCount.json"), "utf8")).SID;
+	loadedSid != undefined ? setSid( loadedSid ) : writeFileSync(path.join(__dirname, "../json/submissionsCount.json"), `{"SID":0}`)
+	//if sid doesnt exist in submissionsCount.json it creates it with SID equal to 0
+
 	client.commands.forEach((command) => {
 		commandsProcessed[command.name] == commandsObj[command.name];
 	});

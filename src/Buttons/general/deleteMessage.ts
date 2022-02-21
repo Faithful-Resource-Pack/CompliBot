@@ -11,7 +11,7 @@ export const button: Button = {
 
 		const message: Message = interaction.message as Message;
 		// as we can't fetch the interaction to detect who is the owner of the message/interaction, we uses the stored id inside the footer
-		const authorid: string = interaction.message.embeds[0].footer.text;
+		const authorid: string = interaction.message.embeds[0].footer.text.split("|")[1]; //splits by | to remove sid
 
 		if (interaction.user.id != authorid)
 			return interaction.reply({

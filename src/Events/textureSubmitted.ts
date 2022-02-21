@@ -52,7 +52,7 @@ export const event: Event = {
 					`Multiple results for \`${file.name}\`, please select one below:\n>(WIP add select menu here)`,
 				);
 
-			await postSubmitedTextureEmbed(message, textures[0], file);
+			await postSubmitedTextureEmbed(client, message, textures[0], file);
 		});
 
 		try {
