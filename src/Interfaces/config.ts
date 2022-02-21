@@ -10,6 +10,9 @@ export interface Config {
 	};
 	discords: Array<Discord>;
 	submitChannels: { [key: string]: string };
+	roles: {
+		council: { [key: string]: string };
+	}
 }
 
 interface Discord {

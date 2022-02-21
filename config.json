@@ -61,5 +61,12 @@
     },
     "submitChannels": {
         "testServer": "841396215211360296"
+    },
+    "roles": {
+        "council": {
+            "testServer": "936043191977787452",
+            "compliance": "775636065338785813",
+            "classicFaithful": "814200754197364786"
+        }
     }
 }

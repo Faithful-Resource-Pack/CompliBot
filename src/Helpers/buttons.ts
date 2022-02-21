@@ -18,7 +18,6 @@ export const instapass = new MessageButton()
 	.setStyle("DANGER")
 	.setEmoji(parseId(ids.instapass))
 	.setCustomId("submissionInstapass")
-	.setDisabled(true); // todo enable once instapass is done
 export const invalidate = new MessageButton()
 	.setStyle("DANGER")
 	.setEmoji(parseId(ids.invalid))
@@ -67,4 +66,11 @@ export const submissionButtonsClosed = new MessageActionRow().addComponents([
 	compare,
 	see_more,
 ]);
+export const submissionsButtons = new MessageActionRow().addComponents([
+	magnify,
+	tile,
+	palette,
+	compare,
+	deleteMessage
+])
 export const submissionButtonsVotes = new MessageActionRow().addComponents([upvote, downvote]);

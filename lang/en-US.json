@@ -224,6 +224,7 @@
     "Error.General": "Encountered an error!",
     "Error.Message.Deleted": "This message has already been deleted!",
     "Error.NotFound": "%THING% Not Found!",
+    "Error.NoPermissions": "You don't have the permission to do that!",
     "Error.Interaction.Reserved": "This interaction is reserved to its owner (%USER%)",
     "Error.Channel.CacheNotFound": "The %CHANNEL_NAME% channel cannot be found in cache!",
     "Error.Channel.NotTextChannel": "The targeted channel is not a text channel, the message can't be send!",

@@ -6,9 +6,9 @@ import { submissionsButtons } from "@helpers/buttons";
 import { colors } from "@helpers/colors";
 
 export const button: Button = {
-	buttonId: "submissionInvalidate",
-	execute: async (client: Client, interaction: ButtonInteraction) => {
-		const message: Message = interaction.message as Message;
+  buttonId: "submissionInstapass",
+  execute: async (client: Client, interaction: ButtonInteraction) => {
+    const message: Message = interaction.message as Message;
 		const member: GuildMember = interaction.member as GuildMember;
 
 		// check if member is council
@@ -18,22 +18,23 @@ export const button: Button = {
 				ephemeral: true
 			})
 
-		const embed: MessageEmbed = message.embeds[0];
-		embed.setColor(colors.red);
+    const embed: MessageEmbed = message.embeds[0];
+		embed.setColor(colors.yellow);
 		embed.fields.forEach((field: EmbedField) => {
-			if (field.name === "Status") field.value = `${parseId(ids.invalid)} Invalidated by <@!${interaction.user.id}>`;
-			if (field.name === "Until") {
-				field.name = "Reason";
-				field.value = "Use `/invalidate` to set up a reason!";
-			}
+			if (field.name === "Status") field.value = `${parseId(ids.instapass)} Instapassed by <@!${interaction.user.id}>`;
 		});
 
-		message.edit({ embeds: [embed], files: [...message.attachments.values()], components: [submissionsButtons] });
+    // remove the until field as we doesn't needs it anymore
+    embed.fields = embed.fields.filter((field: EmbedField) => field.name !== "Until");
+
+    message.edit({ embeds: [embed], files: [...message.attachments.values()], components: [submissionsButtons] });
 
 		try {
 			interaction.update({});
 		} catch (err) {
 			console.error(err);
 		}
-	},
-};
+
+    // todo: ADD CONTRIBUTION CREATION TROUGH API & COMMIT FILE TO GITHUB (ALL BRANCHES + CORRESPONDING REPO)
+  }
+}
