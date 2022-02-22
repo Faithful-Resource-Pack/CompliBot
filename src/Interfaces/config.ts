@@ -3,19 +3,22 @@ export interface Config {
 	firestormUrl: string;
 	apiUrl: string,
 	images: string;
-	channels: { [key: string]: string };
+	channels: { [key: string]: string }; //! deprecated (should be implemented in the discords field)
 	repositories: {
 		compliance: Repository;
 		vanilla: Repository;
 	};
 	discords: Array<Discord>;
-	submitChannels: { [key: string]: string };
+	submitChannels: { [key: string]: string }; //! deprecated
 }
 
 interface Discord {
 	name: string;
 	id: string;
-	updateMember?: string;
+	channels: {
+		updateMember?: string;
+		submitChannels?: { [key: string]: string }; // to be implemented
+	}
 }
 
 interface Repository {

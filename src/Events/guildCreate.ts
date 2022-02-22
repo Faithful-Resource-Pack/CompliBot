@@ -5,10 +5,6 @@ import { info } from "@src/Helpers/logger";
 export const event: Event = {
 	name: "guildCreate",
 	run: async (client, guild: Guild) => {
-		await client.loadSlashCommands(); // load slash command for that new guild!
-		await client.loadSlashCommandsPerms(); // setup perms for it
-		await client.restart();
-
 		const embed = new MessageEmbed()
 			.setTitle("Thanks for Inviting me")
 			.setDescription(`To get started, try run \`/help\`!`);

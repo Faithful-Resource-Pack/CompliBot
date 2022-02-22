@@ -152,22 +152,21 @@ class ExtendedClient extends Client {
 		const rest = new REST({ version: "9" }).setToken(this.tokens.token);
 		const devID = this.config.discords.filter((s) => s.name === "dev")[0].id;
 
-		// deploy commands only for dev discord if so
+		// deploy commands only for dev discord when in dev mode
 		if (this.tokens.dev) {
 			rest
 				.put(Routes.applicationGuildCommands(this.tokens.appID, devID), { body: commandsArr.map((c) => c.toJSON()) })
 				.then(() => console.log(`${Success}succeed dev`))
 				.catch(console.error);
-		} else {
-			this.guilds.cache.forEach((guild: Guild) => {
-				if (guild.id !== devID) return;
-				rest
-					.put(Routes.applicationGuildCommands(this.tokens.appID, guild.id), {
-						body: commandsArr.map((c) => c.toJSON()),
-					})
-					.then(() => console.log(`${Success}succeed ${guild.name}`))
-					.catch(console.error);
-			});
+		} 
+		// deploy commands globally
+		else {
+			rest
+				.put(Routes.applicationCommands(this.tokens.appID), {
+					body: commandsArr.map((c) => c.toJSON()),
+				})
+				.then(() => console.log(`${Success}succeed global commands`))
+				.catch(console.error);
 		}
 	};
 
@@ -273,29 +272,32 @@ class ExtendedClient extends Client {
 	 * @param guildID guild ID to be updated
 	 * @param channelID channel ID from the fetched guild ID to be updated
 	 */
-	public updateMembers(guildID: string, channelID: string): void {
+	public async updateMembers(guildID: string, channelID: string): Promise<void> {
 		if (!guildID || !channelID) return;
 
 		let guild: Guild;
-		let channel: Channel;
+		let channel: TextChannel | VoiceChannel;
 
 		try {
-			guild = this.guilds.cache.get(guildID);
-			channel = guild.channels.cache.get(channelID);
-		} catch (_err) {
-			return;
+			guild = await this.guilds.fetch(guildID);
+			channel = (await guild.channels.fetch(channelID)) as any;
+		} catch { return; }
+
+		/**
+		 * DISCLAIMER:
+		 * - Discord API limits bots to modify channels name only twice each 10 minutes
+		 * > this below won't fails nor return any erros, the operation is only delayed (not if client is restarted)
+		 */
+		switch (channel.type) {
+			case "GUILD_VOICE":
+				await channel.setName(`Members: ${guild.memberCount}`);
+				break;
+			case "GUILD_TEXT":
+			default:
+				await channel.setName(`members-${guild.memberCount}`);
+				break;
 		}
 
-		if (guild && channel)
-			switch (channel.type) {
-				case "GUILD_VOICE":
-					(channel as VoiceChannel).setName(`Members: ${guild.memberCount}`);
-					break;
-				case "GUILD_TEXT":
-				default:
-					(channel as TextChannel).setName(`members-${guild.memberCount}`);
-					break;
-			}
 	}
 }
 
