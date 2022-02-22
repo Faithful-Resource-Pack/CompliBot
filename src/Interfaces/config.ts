@@ -1,7 +1,7 @@
 export interface Config {
 	colors: any;
 	firestormUrl: string;
-	apiUrl: string,
+	apiUrl: string;
 	images: string;
 	channels: { [key: string]: string }; //! deprecated (should be implemented in the discords field)
 	repositories: {
@@ -18,7 +18,7 @@ interface Discord {
 	channels: {
 		updateMember?: string;
 		submitChannels?: { [key: string]: string }; // to be implemented
-	}
+	};
 }
 
 interface Repository {

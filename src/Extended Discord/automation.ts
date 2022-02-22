@@ -14,7 +14,7 @@ export class Automation {
 	public start() {
 		setInterval(() => {
 			if (!this.ticking) return;
-		
+
 			// todo: add submissions checks here
 			// this.doCheckPolls();
 		}, 1000); // each seconds

@@ -80,6 +80,5 @@ export const event: Event = {
 				message.channel.send({ embeds: [embed] });
 			}
 		}
-
 	},
 };

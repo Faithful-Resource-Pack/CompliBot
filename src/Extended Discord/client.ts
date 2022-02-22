@@ -66,7 +66,7 @@ class ExtendedClient extends Client {
 				if (this.verbose) console.log(info + `Init complete`);
 			});
 
-		// exit should exit; nothing should ever reach this unless its process.exit() 
+		// exit should exit; nothing should ever reach this unless its process.exit()
 		// which should exit >:(  -@nick-1666
 		process.on("disconnect", (code: number) => {
 			errorHandler(this, code, "disconnect");
@@ -158,7 +158,7 @@ class ExtendedClient extends Client {
 				.put(Routes.applicationGuildCommands(this.tokens.appID, devID), { body: commandsArr.map((c) => c.toJSON()) })
 				.then(() => console.log(`${Success}succeed dev`))
 				.catch(console.error);
-		} 
+		}
 		// deploy commands globally
 		else {
 			rest
@@ -239,15 +239,14 @@ class ExtendedClient extends Client {
 		const menusPath = path.join(__dirname, "..", "Menus");
 
 		//* then make the directory :D
-		readdirSync(menusPath)
-			.forEach(async (dir) => {
-				const menus = readdirSync(`${menusPath}/${dir}`).filter((file) => file.endsWith(".ts"));
+		readdirSync(menusPath).forEach(async (dir) => {
+			const menus = readdirSync(`${menusPath}/${dir}`).filter((file) => file.endsWith(".ts"));
 
-				for (const file of menus) {
-					const { menu } = await import(`${menusPath}/${dir}/${file}`);
-					this.menus.set(menu.selectMenuId, menu);
-				}
-			});
+			for (const file of menus) {
+				const { menu } = await import(`${menusPath}/${dir}/${file}`);
+				this.menus.set(menu.selectMenuId, menu);
+			}
+		});
 	};
 
 	/**
@@ -282,7 +281,9 @@ class ExtendedClient extends Client {
 		try {
 			guild = await this.guilds.fetch(guildID);
 			channel = (await guild.channels.fetch(channelID)) as any;
-		} catch { return; }
+		} catch {
+			return;
+		}
 
 		/**
 		 * DISCLAIMER:
@@ -298,7 +299,6 @@ class ExtendedClient extends Client {
 				await channel.setName(`members-${guild.memberCount}`);
 				break;
 		}
-
 	}
 }
 

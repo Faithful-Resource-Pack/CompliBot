@@ -67,9 +67,9 @@ export const command: SlashCommand = {
 				return interaction.reply({
 					ephemeral: true,
 					content: await interaction.text({
-						string: "Command.Stats.NotFound"
+						string: "Command.Stats.NotFound",
 					}),
-				})
+				});
 
 			const embed = new MessageEmbed().setTitle(
 				await interaction.text({

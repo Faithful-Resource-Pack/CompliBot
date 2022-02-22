@@ -16,20 +16,27 @@ export const button: Button = {
 			url: url,
 			name: url.split("/").at(-1),
 		});
-		
+
 		if (attachment == null)
 			return interaction.reply({
 				content: await interaction.text({ string: "Command.Images.TooBig" }),
 				ephemeral: true,
 			});
 
-		return interaction.reply({
-			embeds: [new MessageEmbed().setImage(`attachment://${attachment.name}`).setFooter({ text: `${interaction.user.username} | ${interaction.user.id}` }).setTimestamp()],
-			files: [attachment],
-			components: [imageButtons],
-			fetchReply: true,
-		}).then((message: Message) => {
-			message.deleteButton(true);
-		});;
+		return interaction
+			.reply({
+				embeds: [
+					new MessageEmbed()
+						.setImage(`attachment://${attachment.name}`)
+						.setFooter({ text: `${interaction.user.username} | ${interaction.user.id}` })
+						.setTimestamp(),
+				],
+				files: [attachment],
+				components: [imageButtons],
+				fetchReply: true,
+			})
+			.then((message: Message) => {
+				message.deleteButton(true);
+			});
 	},
 };

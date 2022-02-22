@@ -7,8 +7,8 @@ export const event: Event = {
 		console.log(`${Success}${client.user.tag} is online.`);
 		client.user.setActivity(`with other packs.`, { type: "COMPETING" });
 
-		client.config.discords.forEach(guild => {
+		client.config.discords.forEach((guild) => {
 			if (guild.channels.updateMember) client.updateMembers(guild.id, guild.channels.updateMember);
-		})
+		});
 	},
 };

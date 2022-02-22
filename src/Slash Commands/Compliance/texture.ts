@@ -18,12 +18,12 @@ export const command: SlashCommand = {
 				.setName("pack")
 				.setDescription("Resource pack of the texture you are searching for.")
 				.addChoices([
-					["Vanilla 16x", 'default'],
-					["Compliance 32x", 'c32'],
-					["Compliance 64x", 'c64'],
-					["Classic Faithful 32x", 'classic_faithful_32'],
-					["Classic Faithful 64x", 'classic_faithful_64'],
-					["Classic Faithful 32x Programmer Art", 'classic_faithful_32_progart'],
+					["Vanilla 16x", "default"],
+					["Compliance 32x", "c32"],
+					["Compliance 64x", "c64"],
+					["Classic Faithful 32x", "classic_faithful_32"],
+					["Classic Faithful 64x", "classic_faithful_64"],
+					["Classic Faithful 32x Programmer Art", "classic_faithful_32_progart"],
 				])
 				.setRequired(true),
 		),
@@ -32,22 +32,29 @@ export const command: SlashCommand = {
 
 		var name = interaction.options.getString("name");
 		if (name.includes(".png")) name = name.replace(".png", "");
-		if (name.length < 3) { //textures like bed exist :/
+		if (name.length < 3) {
+			//textures like bed exist :/
 			try {
 				interaction.deleteReply();
 			} catch (err) {}
-			interaction.followUp({ content: "The minimum length for a texture name search is 3, please search with a longer name.", ephemeral: true })
+			interaction.followUp({
+				content: "The minimum length for a texture name search is 3, please search with a longer name.",
+				ephemeral: true,
+			});
 			return;
 		}
 
 		// todo: use the api here
-		const results: Array<any> = (await axios.get(`${(interaction.client as Client).config.apiUrl}textures/${name}/all`)).data;
+		const results: Array<any> = (await axios.get(`${(interaction.client as Client).config.apiUrl}textures/${name}/all`))
+			.data;
 
 		// only 1 result
 		if (results.length === 1) {
-			const [embed, files] = await getTextureMessageOptions({ texture: results[0], pack: interaction.options.getString("pack", true) });
-			interaction.editReply({ embeds: [embed], files: files })
-				.then((message: Message) => message.deleteButton());
+			const [embed, files] = await getTextureMessageOptions({
+				texture: results[0],
+				pack: interaction.options.getString("pack", true),
+			});
+			interaction.editReply({ embeds: [embed], files: files }).then((message: Message) => message.deleteButton());
 			return;
 		}
 
@@ -60,16 +67,40 @@ export const command: SlashCommand = {
 
 			// parsing everything correctly
 			for (let i = 0; i < results.length; i++) {
-				results[i] = { 
+				results[i] = {
 					label: `[#${results[i].id}] ${results[i].name}`,
 					description: results[i].paths[0].name,
-					value: `${results[i].id}__${interaction.options.getString("pack", true)}`
-				}
+					value: `${results[i].id}__${interaction.options.getString("pack", true)}`,
+				};
 			}
 
 			const emojis: Array<string> = [
-				"1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟", "🇦", "🇧", "🇨", "🇩", "🇪", "🇫", "🇬", "🇭", "🇮", "🇯", "🇰", "🇱", "🇲", "🇳", "🇴"
-			] 
+				"1️⃣",
+				"2️⃣",
+				"3️⃣",
+				"4️⃣",
+				"5️⃣",
+				"6️⃣",
+				"7️⃣",
+				"8️⃣",
+				"9️⃣",
+				"🔟",
+				"🇦",
+				"🇧",
+				"🇨",
+				"🇩",
+				"🇪",
+				"🇫",
+				"🇬",
+				"🇭",
+				"🇮",
+				"🇯",
+				"🇰",
+				"🇱",
+				"🇲",
+				"🇳",
+				"🇴",
+			];
 
 			// dividing into maximum of 25 choices per menu
 			// 4 menus max
@@ -86,18 +117,17 @@ export const command: SlashCommand = {
 
 				const menu = new MessageSelectMenu()
 					.setCustomId(`textureSelect_${_max}`)
-					.setPlaceholder('Choose a texture!')
+					.setPlaceholder("Choose a texture!")
 					.addOptions(options);
 
-				const row = new MessageActionRow()
-					.addComponents(menu);
+				const row = new MessageActionRow().addComponents(menu);
 
 				components.push(row);
-			} while (results.length !== 0 && _max++ < max)
+			} while (results.length !== 0 && _max++ < max);
 
 			const embed = new MessageEmbed()
 				.setTitle(`${rlen} results`)
-				.setFooter({ text: "Some results may be hidden, if you don't see them, be more specific"})
+				.setFooter({ text: "Some results may be hidden, if you don't see them, be more specific" });
 
 			await interaction
 				.editReply({ embeds: [embed], components: components })
@@ -108,16 +138,15 @@ export const command: SlashCommand = {
 
 		// no results
 		try {
-			interaction.deleteReply()
+			interaction.deleteReply();
 		} catch (err) {}
 
-		return interaction
-			.followUp({
-				ephemeral: true,
-				content: await interaction.text({
-					string: "Command.Texture.NotFound",
-					placeholders: { TEXTURENAME: name }
-				}),
-			})
+		return interaction.followUp({
+			ephemeral: true,
+			content: await interaction.text({
+				string: "Command.Texture.NotFound",
+				placeholders: { TEXTURENAME: name },
+			}),
+		});
 	},
 };

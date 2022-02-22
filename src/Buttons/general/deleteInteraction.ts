@@ -23,7 +23,7 @@ export const button: Button = {
 
 		let fetchedRef: boolean = false;
 		try {
-			fetchedRef =(await message.fetchReference()).author.id != interaction.user.id
+			fetchedRef = (await message.fetchReference()).author.id != interaction.user.id;
 		} catch {} // ref deleted or author not matching
 
 		if (message.reference !== undefined && fetchedRef)
