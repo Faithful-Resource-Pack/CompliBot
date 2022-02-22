@@ -82,6 +82,7 @@ export const getTextureMessageOptions = async (options: {
 	} catch (err) {
 		textureURL = "https://raw.githubusercontent.com/Compliance-Resource-Pack/App/main/resources/transparency.png";
 		embed.addField("Image not found", "This texture hasn't been made yet or is blacklisted!");
+		embed.setColor(colors.red);
 	}
 
 	if (validURL) {
