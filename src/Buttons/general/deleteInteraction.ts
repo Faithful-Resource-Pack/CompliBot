@@ -20,7 +20,13 @@ export const button: Button = {
 				}),
 				ephemeral: true,
 			});
-		if (message.reference != undefined && (await message.fetchReference()).author.id != interaction.user.id)
+
+		let fetchedRef: boolean = false;
+		try {
+			fetchedRef =(await message.fetchReference()).author.id != interaction.user.id
+		} catch {} // ref deleted or author not matching
+
+		if (message.reference !== undefined && fetchedRef)
 			return interaction.reply({
 				content: await interaction.text({
 					string: "Error.Interaction.Reserved",
