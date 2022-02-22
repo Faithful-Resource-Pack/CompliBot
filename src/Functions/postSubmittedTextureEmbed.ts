@@ -34,15 +34,23 @@ export const postSubmitedTextureEmbed = async (message: Message, texture: any, f
 
 	if (message.content !== "" || message.content !== undefined) embed.setDescription(message.content);
 
-	files.push(
-		await magnifyAttachment({
-			url: (
-				await axios.get(
+	let textureURL: string;
+
+	try {
+		textureURL = (
+			await axios.get(
 					`${config.apiUrl}textures/${texture.id}/url/default/${
 						texture.paths[0].versions.sort(minecraftSorter).reverse()[0]
 					}`,
 				)
-			).request.res.responseUrl,
+			).request.res.responseUrl;
+	} catch {
+		textureURL = "";
+	}
+
+	files.push(
+		await magnifyAttachment({
+			url: textureURL,
 			name: "magnified.png",
 		}),
 	);
