@@ -36,7 +36,7 @@ export const getTextureMessageOptions = async (options: { texture: any, pack: st
 			strIconURL = "https://raw.githubusercontent.com/ClassicFaithful/Branding/main/Logos/32x%20Scale/Main%2032x.png";
 			break;
 		case "classic_faithful_32_progart":
-			strPack = "Classic Faithful 32x Programer Art";
+			strPack = "Classic Faithful 32x Programmer Art";
 			strIconURL = "https://raw.githubusercontent.com/ClassicFaithful/Branding/main/Logos/32x%20Scale/Programmer%20Art%2032x.png";
 			break;
 		case "classic_faithful_64":
