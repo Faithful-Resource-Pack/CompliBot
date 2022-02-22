@@ -273,6 +273,7 @@ class ExtendedClient extends Client {
 	 * @param channelID channel ID from the fetched guild ID to be updated
 	 */
 	public async updateMembers(guildID: string, channelID: string): Promise<void> {
+		if (this.tokens.dev) return; // disabled for devs instances
 		if (!guildID || !channelID) return;
 
 		let guild: Guild;
