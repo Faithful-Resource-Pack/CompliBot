@@ -18,7 +18,6 @@ const UIDA = [
 const strings = require('../resources/strings.json')
 const settings = require('../resources/settings.json')
 
-const { quote } = require('../functions/quote')
 const { textureIDQuote } = require('../functions/textures/textureIDQuote')
 const { submitTexture } = require('../functions/textures/submission/submitTexture')
 const { inviteDetection } = require('../functions/moderation/inviteDetection')
@@ -115,8 +114,6 @@ module.exports = {
        * EASTER EGGS
        */
       if (message.content.includes('(╯°□°）╯︵ ┻━┻')) return await message.reply({ content: '┬─┬ ノ( ゜-゜ノ) calm down bro' })
-      if (message.content.toLowerCase().includes('engineer gaming')) return await message.react('👷')
-      if (message.content === 'F') return await message.react('🇫')
 
       if (message.content.toLowerCase() === 'mhhh') {
         const embed = new MessageEmbed()
@@ -127,14 +124,6 @@ module.exports = {
         return addDeleteReact(msgEmbed, message)
       }
 
-      if (message.content.toLowerCase() === 'band') {
-        return ['🎤', '🎸', '🥁', '🪘', '🎺', '🎷', '🎹', '🪗', '🎻'].forEach(async emoji => { await message.react(emoji) })
-      }
-
-      if (message.content.toLowerCase() === 'monke') {
-        return ['🎷', '🐒'].forEach(async emoji => { await message.react(emoji) })
-      }
-
       if (message.content.toLowerCase() === 'hello there') {
         let msgEmbed
         if (Math.floor(Math.random() * Math.floor(5)) != 1) msgEmbed = await message.reply({ content: 'https://media1.tenor.com/images/8dc53503f5a5bb23ef12b2c83a0e1d4d/tenor.gif' })
@@ -142,17 +131,6 @@ module.exports = {
 
         return addDeleteReact(msgEmbed, message)
       }
-
-      /**
-       * MESSAGE URL QUOTE
-       * when someone send a message with https://discord.com/channels/<server ID>/<channel ID>/<message ID>
-       * @author Juknum
-       */
-      if (
-        message.content.includes('https://canary.discord.com/channels/') ||
-        message.content.includes('https://discord.com/channels/') ||
-        message.content.includes('https://discordapp.com/channels')
-      ) quote(message)
 
       /**
        * TEXTURE ID QUOTE
