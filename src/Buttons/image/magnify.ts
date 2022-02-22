@@ -3,7 +3,7 @@ import { info } from "@src/Helpers/logger";
 import { Client, Message, ButtonInteraction, MessageEmbed } from "@src/Extended Discord";
 import { MessageInteraction } from "discord.js";
 import { magnifyAttachment } from "@functions/canvas/magnify";
-import imageButtons from "@helpers/imageBtn";
+import { imageButtons } from "@helpers/buttons";
 
 export const button: Button = {
 	buttonId: "magnify",

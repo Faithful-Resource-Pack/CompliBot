@@ -4,6 +4,7 @@ import { Config, Tokens } from "@src/Interfaces";
 import ConfigJson from "@/config.json";
 import Menu from "@src/Helpers/menu";
 import tokens from "@/tokens.json";
+import { deleteInteraction, deleteMessage } from "@helpers/buttons";
 
 declare module "discord.js" {
 	interface Message {
@@ -14,7 +15,7 @@ declare module "discord.js" {
 		setMenu(choiceType: "texture" | "imageOptions", id: string): Menu;
 		warn(text: string, disappearing?: boolean): void;
 		deleteReact(options: Options): void;
-		deleteButton(): Promise<Message>;
+		deleteButton(isMessage?: boolean): Promise<Message>;
 	}
 }
 
@@ -30,21 +31,24 @@ const MessageBody = {
 	tokens: tokens,
 	menu: undefined,
 
-	deleteButton: async function (): Promise<Message> {
-		const btnDelete = new MessageButton().setStyle("DANGER").setEmoji(parseId(ids.delete)).setCustomId("deleteMessage");
-
+	deleteButton: async function (isMessage?: boolean): Promise<Message> {
 		if (
 			this.components[0] != undefined &&
 			this.components.at(-1).components.length < 5 && //check there arent 5 buttons
-			(this as Message).components.at(-1).components[0].type == "BUTTON" //checks there isnt a select menu
+			this.components.at(-1).components[0].type == "BUTTON" //checks there isnt a select menu
 		) {
-			(this as Message).components.at(-1).addComponents([btnDelete]);
+			this.components.at(-1).addComponents([isMessage === true ? deleteMessage : deleteInteraction]);
 
 			return this.edit({
 				components: [...this.components],
 			});
 		}
-		return this.edit({ components: [...this.components, new MessageActionRow().addComponents([btnDelete])] });
+		return this.edit({
+			components: [
+				...this.components,
+				new MessageActionRow().addComponents([isMessage === true ? deleteMessage : deleteInteraction]),
+			],
+		});
 	},
 
 	setMenu: function (choiceType: "texture" | "imageOptions", id: string): Menu {

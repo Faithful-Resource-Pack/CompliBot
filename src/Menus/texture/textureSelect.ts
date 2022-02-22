@@ -1,7 +1,7 @@
 import { Client, Message, SelectMenuInteraction } from "@src/Extended Discord"
 import { SelectMenu } from "@src/Interfaces"
 import { info } from "@src/Helpers/logger";
-import imageButtons from "@src/Helpers/imageBtn";
+import { imageButtons } from "@helpers/buttons";
 import { MessageInteraction } from "discord.js";
 import { getTextureMessageOptions } from "@src/Functions/getTexture";
 import axios from "axios";
@@ -26,7 +26,8 @@ export const menu: SelectMenu = {
 
 		const [id, pack] = interaction.values[0].split('__');
 		const [embed, files] = await getTextureMessageOptions({ texture: (await axios.get(`${(interaction.client as Client).config.apiUrl}textures/${id}/all`)).data, pack: pack });
-		embed.setAuthor({ iconURL: interaction.user.avatarURL(), name: `Requested by ${interaction.user.tag}`})
+		embed.setFooter({ iconURL: embed.footer.iconURL, text: `${embed.footer.text} | ${interaction.user.id}` });
+
 		try {
 			message.delete();
 		} catch (err) { 
@@ -36,6 +37,6 @@ export const menu: SelectMenu = {
 		}
 
 		interaction.editReply({ embeds: [embed], files: files, components: [imageButtons] })
-			.then((message: Message) => message.deleteButton());
+			.then((message: Message) => message.deleteButton(true));
   }
 }

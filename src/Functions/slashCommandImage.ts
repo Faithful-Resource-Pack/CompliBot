@@ -1,5 +1,5 @@
 import { CommandInteraction, Message, MessageEmbed } from "@src/Extended Discord";
-import imageButtons from "@src/Helpers/imageBtn";
+import { imageButtons } from "@helpers/buttons";
 import { MessageActionRow, MessageAttachment, MessageSelectMenu } from "discord.js";
 
 /**
