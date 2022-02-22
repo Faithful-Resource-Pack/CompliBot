@@ -21,8 +21,14 @@ export async function quote(message: Message) {
 
 	let ids = [matches[3], matches[4], matches[5]];
 
-	let channel = message.guild.channels.cache.get(ids[1]) as TextChannel;
-	let quotedMsg = await channel.messages.fetch(ids[2]);
+	let channel: TextChannel;
+	let quotedMsg: Message;
+	try {
+		channel = await message.guild.channels.fetch(ids[1]) as TextChannel;
+		quotedMsg = await channel.messages.fetch(ids[2]);
+	} catch {
+		return; // can't fetch channel or quotedMsg : abort mission
+	}
 
 	if (quotedMsg.embeds[0] != undefined) {
 		embed.setAuthor({
