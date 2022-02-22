@@ -1,8 +1,6 @@
 import { Button } from "@src/Interfaces";
 import { info } from "@src/Helpers/logger";
 import { Client, Message, ButtonInteraction } from "@src/Extended Discord";
-import { Interaction, MessageInteraction } from "discord.js";
-import { InteractionType } from "discord-api-types";
 
 export const button: Button = {
 	buttonId: "deleteMessage",
@@ -12,8 +10,6 @@ export const button: Button = {
 		const message: Message = interaction.message as Message;
 		// as we can't fetch the interaction to detect who is the owner of the message/interaction, we uses the stored id inside the footer
 		const authorId: string = interaction.message.embeds[0].footer.text.split(" | ")[1]; //splits by | to remove stuff before author id
-
-		console.log(authorId)
 
 		if (!authorId) return interaction.reply({
 			content: await interaction.text({
@@ -28,20 +24,6 @@ export const button: Button = {
 				content: await interaction.text({
 					string: "Error.Interaction.Reserved",
 					placeholders: { USER: `<@!${authorId}>` },
-				}),
-				ephemeral: true,
-			});
-
-		let fetchedRef: boolean = false;
-		try {
-			fetchedRef =(await message.fetchReference()).author.id != interaction.user.id
-		} catch {} // ref deleted or author not matching
-
-		if (message.reference !== undefined && fetchedRef)
-			return interaction.reply({
-				content: await interaction.text({
-					string: "Error.Interaction.Reserved",
-					placeholders: { USER: `<@!${(await message.fetchReference()).author.id}>` },
 				}),
 				ephemeral: true,
 			});
