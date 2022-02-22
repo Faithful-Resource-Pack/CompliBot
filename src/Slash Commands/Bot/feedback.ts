@@ -21,20 +21,19 @@ export const command: SlashCommand = {
 			.setFooter({ text: await interaction.text({ string: "Command.Feedback.ConfirmPrompt" }) });
 
 		const btnCancel = new MessageButton()
-			.setLabel(await interaction.text({ string: "General.Cancel" }))
-			.setStyle("SECONDARY")
+			.setStyle("DANGER")
 			.setEmoji(parseId(ids.delete))
 			.setCustomId("feedbackCancel");
 
 		const btnBug = new MessageButton()
 			.setLabel(await interaction.text({ string: "Command.Feedback.Bug" }))
-			.setStyle("DANGER")
+			.setStyle("PRIMARY")
 			.setEmoji(parseId(ids.downvote))
 			.setCustomId("feedbackBug");
 
 		const btnSuggestion = new MessageButton()
 			.setLabel(await interaction.text({ string: "Command.Feedback.Suggestion" }))
-			.setStyle("SUCCESS")
+			.setStyle("PRIMARY")
 			.setEmoji(parseId(ids.upvote))
 			.setCustomId("feedbackSuggestion");
 

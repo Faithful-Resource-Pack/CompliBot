@@ -67,20 +67,13 @@ class ExtendedClient extends Client {
 
 				if (this.verbose) console.log(info + `Init complete`);
 			});
-
-		// save sid on exit
-		function exitCleanup (code: number) {
-			console.log(`${info}PLEASE WAIT FOR SID TO BE SAVED BEFORE EXIT!!`)
-			writeFileSync(path.join(__dirname, "../json/submissionsCount.json"), JSON.stringify(SID) )
-			console.log(`${Success}Saved SID (${JSON.stringify(SID)}) to file. You can safely exit now`)
-			process.exit(code)
-		}
+		
 		//catches ^C event
-		process.on('SIGINT', exitCleanup.bind(null, 0));
+		process.on('SIGINT', this.exitCleanup.bind(null, 0));
 
 		// catches "kill pid" (for example: nodemon restart)
-		process.on('SIGUSR1', exitCleanup.bind(null, 0));
-		process.on('SIGUSR2', exitCleanup.bind(null, 0));
+		process.on('SIGUSR1', this.exitCleanup.bind(null, 0));
+		process.on('SIGUSR2', this.exitCleanup.bind(null, 0));
 
 		process.on("disconnect", (code: number) => {
 			errorHandler(this, code, "disconnect");
@@ -91,6 +84,14 @@ class ExtendedClient extends Client {
 		process.on("unhandledRejection", (reason, promise) => {
 			errorHandler(this, reason, "unhandledRejection");
 		});
+	}
+
+	// save SIDs on exit
+	private exitCleanup (code: number) {
+		console.log(`${info}PLEASE WAIT FOR SID TO BE SAVED BEFORE EXIT!!`)
+		writeFileSync(path.join(__dirname, "../json/submissionsCount.json"), JSON.stringify(SID) )
+		console.log(`${Success}Saved SID (${JSON.stringify(SID)}) to file. You can safely exit now`)
+		process.exit(code)
 	}
 
 	public async restart(): Promise<void> {
@@ -166,22 +167,21 @@ class ExtendedClient extends Client {
 		const rest = new REST({ version: "9" }).setToken(this.tokens.token);
 		const devID = this.config.discords.filter((s) => s.name === "dev")[0].id;
 
-		// deploy commands only for dev discord if so
+		// deploy commands only for dev discord when in dev mode
 		if (this.tokens.dev) {
 			rest
 				.put(Routes.applicationGuildCommands(this.tokens.appID, devID), { body: commandsArr.map((c) => c.toJSON()) })
 				.then(() => console.log(`${Success}succeed dev`))
 				.catch(console.error);
-		} else {
-			this.guilds.cache.forEach((guild: Guild) => {
-				if (guild.id !== devID) return;
-				rest
-					.put(Routes.applicationGuildCommands(this.tokens.appID, guild.id), {
-						body: commandsArr.map((c) => c.toJSON()),
-					})
-					.then(() => console.log(`${Success}succeed ${guild.name}`))
-					.catch(console.error);
-			});
+		}
+		// deploy commands globally
+		else {
+			rest
+				.put(Routes.applicationCommands(this.tokens.appID), {
+					body: commandsArr.map((c) => c.toJSON()),
+				})
+				.then(() => console.log(`${Success}succeed global commands`))
+				.catch(console.error);
 		}
 	};
 
@@ -286,29 +286,34 @@ class ExtendedClient extends Client {
 	 * @param guildID guild ID to be updated
 	 * @param channelID channel ID from the fetched guild ID to be updated
 	 */
-	public updateMembers(guildID: string, channelID: string): void {
+	public async updateMembers(guildID: string, channelID: string): Promise<void> {
+		if (this.tokens.dev) return; // disabled for devs instances
 		if (!guildID || !channelID) return;
 
 		let guild: Guild;
-		let channel: Channel;
+		let channel: TextChannel | VoiceChannel;
 
 		try {
-			guild = this.guilds.cache.get(guildID);
-			channel = guild.channels.cache.get(channelID);
-		} catch (_err) {
+			guild = await this.guilds.fetch(guildID);
+			channel = (await guild.channels.fetch(channelID)) as any;
+		} catch {
 			return;
 		}
 
-		if (guild && channel)
-			switch (channel.type) {
-				case "GUILD_VOICE":
-					(channel as VoiceChannel).setName(`Members: ${guild.memberCount}`);
-					break;
-				case "GUILD_TEXT":
-				default:
-					(channel as TextChannel).setName(`members-${guild.memberCount}`);
-					break;
-			}
+		/**
+		 * DISCLAIMER:
+		 * - Discord API limits bots to modify channels name only twice each 10 minutes
+		 * > this below won't fails nor return any erros, the operation is only delayed (not if client is restarted)
+		 */
+		switch (channel.type) {
+			case "GUILD_VOICE":
+				await channel.setName(`Members: ${guild.memberCount}`);
+				break;
+			case "GUILD_TEXT":
+			default:
+				await channel.setName(`members-${guild.memberCount}`);
+				break;
+		}
 	}
 }
 

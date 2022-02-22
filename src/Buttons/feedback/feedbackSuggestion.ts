@@ -44,7 +44,7 @@ export const button: Button = {
 		const url: string = reply.url;
 		const quote: string = Suggestion[Math.floor(Math.random() * Suggestion.length)].replace(
 			"%NUMBER%",
-			new Date().toString(),
+			new Date().getTime().toString(),
 		);
 
 		const embedFeedback = new MessageEmbed()

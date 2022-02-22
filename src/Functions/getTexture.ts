@@ -7,6 +7,7 @@ import getMeta from "./canvas/getMeta";
 import { MessageAttachment } from "discord.js";
 import { magnifyAttachment } from "./canvas/magnify";
 import { ISizeCalculationResult } from "image-size/dist/types/interface";
+import { colors } from "@helpers/colors";
 
 export const getTextureMessageOptions = async (options: {
 	texture: any;
@@ -39,7 +40,7 @@ export const getTextureMessageOptions = async (options: {
 			strIconURL = "https://raw.githubusercontent.com/ClassicFaithful/Branding/main/Logos/32x%20Scale/Main%2032x.png";
 			break;
 		case "classic_faithful_32_progart":
-			strPack = "Classic Faithful 32x Programer Art";
+			strPack = "Classic Faithful 32x Programmer Art";
 			strIconURL =
 				"https://raw.githubusercontent.com/ClassicFaithful/Branding/main/Logos/32x%20Scale/Programmer%20Art%2032x.png";
 			break;
@@ -63,11 +64,13 @@ export const getTextureMessageOptions = async (options: {
 			iconURL: strIconURL,
 		});
 
-	let textureURL = (
-		await axios.get(
-			`${config.apiUrl}textures/${texture.id}/url/${pack}/${paths[0].versions.sort(minecraftSorter).reverse()[0]}`,
-		)
-	).request.res.responseUrl;
+	let textureURL: string;
+	try {
+		textureURL = (await axios.get(`${config.apiUrl}textures/${texture.id}/url/${pack}/${paths[0].versions.sort(minecraftSorter).reverse()[0]}`)).request.res.responseUrl;;
+	} catch {
+		textureURL = "";
+	}
+
 	embed.setImage(textureURL);
 
 	// test if url isn't a 404
@@ -79,6 +82,7 @@ export const getTextureMessageOptions = async (options: {
 	} catch (err) {
 		textureURL = "https://raw.githubusercontent.com/Compliance-Resource-Pack/App/main/resources/transparency.png";
 		embed.addField("Image not found", "This texture hasn't been made yet or is blacklisted!");
+		embed.setColor(colors.red);
 	}
 
 	if (validURL) {
@@ -87,6 +91,8 @@ export const getTextureMessageOptions = async (options: {
 
 		let contributions: Array<any> = texture.contributions
 			.filter((c) => strPack.includes(c.resolution) && pack === c.pack)
+			.sort((a, b) => a.date > b.date)
+			.reverse()
 			.map((c) => {
 				let date = new Date(c.date);
 				let strDate: string = `${date.getDate() < 10 ? `0${date.getDate()}` : date.getDate()}/${
@@ -96,6 +102,7 @@ export const getTextureMessageOptions = async (options: {
 				return `\`${strDate}\` ${authors.join(", ")}`;
 			});
 
+		if (contributions.length > 2) contributions = [...contributions.slice(0, 2), "[see more in the webapp...](https://webapp.compliancepack.net/#/gallery)"];
 		if (contributions.length) embed.addField("Contributions", contributions.join("\n"), false);
 	}
 
@@ -107,15 +114,11 @@ export const getTextureMessageOptions = async (options: {
 				const versions = p.versions.sort(minecraftSorter);
 				if (tmp[use.edition])
 					tmp[use.edition].push(
-						`\`[${versions.length > 1 ? `${versions[0]} — ${versions[versions.length - 1]}` : versions[0]}]\` ${
-							p.name
-						}`,
+						`\`[${versions.length > 1 ? `${versions[0]} — ${versions[versions.length - 1]}` : versions[0]}]\` ${(use.assets !== null && use.assets !== "minecraft") ? use.assets + '/' : ''}${p.name}`,
 					);
 				else
 					tmp[use.edition] = [
-						`\`[${versions.length > 1 ? `${versions[0]} — ${versions[versions.length - 1]}` : versions[0]}]\` ${
-							p.name
-						}`,
+						`\`[${versions.length > 1 ? `${versions[0]} — ${versions[versions.length - 1]}` : versions[0]}]\` ${(use.assets !== null && use.assets !== "minecraft") ? use.assets + '/' : ''}${p.name}`,
 					];
 			});
 	});
@@ -124,7 +127,7 @@ export const getTextureMessageOptions = async (options: {
 		if (tmp[edition].length > 0) {
 			embed.addField(
 				edition.charAt(0).toLocaleUpperCase() + edition.slice(1),
-				tmp[edition].join("\n").replaceAll(" textures/", " "),
+				tmp[edition].join("\n").replaceAll(" textures/", "../"),
 				false,
 			);
 		}

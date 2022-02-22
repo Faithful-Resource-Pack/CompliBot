@@ -1,14 +1,14 @@
-import get from "axios";
+import axios from "axios";
 
 async function easterEgg(url: string, id: number): Promise<Boolean> {
 	switch (id) {
 		case 1:
 			if (!url.endsWith("grass_block_side_overlay.png")) return false;
 
-			return await get(url, { responseType: "arraybuffer" }).then((response) => {
+			return await axios.get(url, { responseType: "arraybuffer" }).then((response) => {
 				const data = response.data;
 				const buf = Buffer.from(data, "base64").toString();
-				const result = get(gamerUrl, { responseType: "arraybuffer" }).then((response) => {
+				const result = axios.get(gamerUrl, { responseType: "arraybuffer" }).then((response) => {
 					const easterEggData = response.data;
 					const easterEggBuffer = Buffer.from(easterEggData, "base64").toString();
 					if (buf == easterEggBuffer) return true;
@@ -19,10 +19,10 @@ async function easterEgg(url: string, id: number): Promise<Boolean> {
 		case 2:
 			if (!url.endsWith("unknown.png")) return false;
 
-			return await get(url, { responseType: "arraybuffer" }).then((response) => {
+			return await axios.get(url, { responseType: "arraybuffer" }).then((response) => {
 				const data = response.data;
 				const buf = Buffer.from(data, "base64").toString();
-				const result = get(trolling, { responseType: "arraybuffer" }).then((response) => {
+				const result = axios.get(trolling, { responseType: "arraybuffer" }).then((response) => {
 					const easterEggData = response.data;
 					const easterEggBuffer = Buffer.from(easterEggData, "base64").toString();
 					if (buf == easterEggBuffer) return true;

@@ -29,7 +29,8 @@ export const menu: SelectMenu = {
 			texture: (await axios.get(`${(interaction.client as Client).config.apiUrl}textures/${id}/all`)).data,
 			pack: pack,
 		});
-		embed.setAuthor({ iconURL: interaction.user.avatarURL(), name: `Requested by ${interaction.user.tag}` });
+		embed.setFooter({ iconURL: embed.footer.iconURL, text: `${embed.footer.text} | ${interaction.user.id}` });
+
 		try {
 			message.delete();
 		} catch (err) {
@@ -40,6 +41,6 @@ export const menu: SelectMenu = {
 
 		interaction
 			.editReply({ embeds: [embed], files: files, components: [imageButtons] })
-			.then((message: Message) => message.deleteButton());
+			.then((message: Message) => message.deleteButton(true));
 	},
 };

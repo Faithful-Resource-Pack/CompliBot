@@ -33,13 +33,14 @@ export const button: Button = {
 		else
 			return interaction
 				.reply({
-					embeds: [new MessageEmbed().setImage(`attachment://${attachment.name}`).setTimestamp()],
+					embeds: [new MessageEmbed().setImage(`attachment://${attachment.name}`).setFooter({ text: `${interaction.user.username} | ${interaction.user.id}` }).setTimestamp()],
 					files: [attachment],
 					components: [imageButtons],
 					fetchReply: true,
 				})
 				.then((message: Message) => {
-					message.deleteButton();
+					message.deleteButton(true);
 				});
+
 	},
 };

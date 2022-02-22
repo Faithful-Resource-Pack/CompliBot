@@ -1,13 +1,13 @@
 import { SlashCommand } from "@src/Interfaces/slashCommand";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction, MessageEmbed, Client, Message } from "@src/Extended Discord";
-import get from "axios";
+import axios from "axios";
 
 export const command: SlashCommand = {
 	permissions: undefined,
 	data: new SlashCommandBuilder().setName("quote").setDescription("Truely inspiring."),
 	execute: async (interaction: CommandInteraction, client: Client) => {
-		let image = await get("https://inspirobot.me/api?generate=true");
+		let image = await axios.get("https://inspirobot.me/api?generate=true");
 		let embed = new MessageEmbed();
 		embed.setImage(image.data);
 

@@ -36,22 +36,30 @@
         {
             "name": "dev",
             "id": "720677267424018526",
-            "updateMember": "897476033136189460"
+            "channels": {
+                "updateMember": "897476033136189460"
+            }
         },
         {
             "name": "compliance",
             "id": "773983706582482946",
-            "updateMember": "774333964101615637"
+            "channels": {
+                "updateMember": "774333964101615637"
+            }
         },
         {
             "name": "compliance_extra",
             "id": "614160586032414845",
-            "updateMember": "802854096779477002"
+            "channels": {
+                "updateMember": "802854096779477002"
+            }
         },
         {
             "name": "classic_faithful",
             "id": "814198513847631944",
-            "updateMember": "814246773459255328"
+            "channels": {
+                "updateMember": "814246773459255328"
+            }
         }
     ],
     "channels": {

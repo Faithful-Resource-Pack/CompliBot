@@ -23,7 +23,7 @@ export const command: SlashCommand = {
 					["Compliance 64x", "c64"],
 					["Classic Faithful 32x", "classic_faithful_32"],
 					["Classic Faithful 64x", "classic_faithful_64"],
-					["Classic Faithful 32x Programer Art", "classic_faithful_32_progart"],
+					["Classic Faithful 32x Programmer Art", "classic_faithful_32_progart"],
 				])
 				.setRequired(true),
 		),

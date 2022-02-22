@@ -15,7 +15,7 @@ declare module "discord.js" {
 		setMenu(choiceType: "texture" | "imageOptions", id: string): Menu;
 		warn(text: string, disappearing?: boolean): void;
 		deleteReact(options: Options): void;
-		deleteButton(): Promise<Message>;
+		deleteButton(isMessage?: boolean): Promise<Message>;
 	}
 }
 
