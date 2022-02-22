@@ -209,13 +209,13 @@
     "Command.Stats.Embed.FieldTitles": [
         "Préfixe",
         "En route depuis",
-        "Nombre de Guilde",
+        "Nombre de Guildes",
         "RAM utilisée",
-        "Librarie Discord",
+        "Librairie Discord",
         "Node.js",
         "Commandes\nTotales",
         "Commandes\nTraitées",
-        "Membres sur\ntoute les guildes",
+        "Membres sur\ntoutes les guildes",
         "Système d'Exploitation"
     ],
     "Command.Stats.Embed.Title": "Stats de %USER%.",

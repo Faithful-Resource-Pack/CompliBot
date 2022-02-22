@@ -206,7 +206,7 @@
     "Command.Stats.Embed.FieldTitles": [
         "Prefix",
         "Uptime",
-        "Guild Count",
+        "Guilds Count",
         "Ram Used",
         "Discord Library",
         "Node.js",
