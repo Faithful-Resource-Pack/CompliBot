@@ -44,22 +44,20 @@ const loopLimit = 3; //how many times the same error needs to be made to trigger
 export const errorHandler: Function = async (client: Client, reason: any, type: string) => {
 	console.error(`${err} ${reason.stack || JSON.stringify(reason)}`);
 	const channel = client.channels.cache.get(client.config.channels.error) as TextChannel;
- 
-	if(lastReasons.length == loopLimit) lastReasons.pop(); // pop removes an item from the end of an array
+	if (channel === undefined) return; // avoid infinite loop when crash is outside of client
+
+	if (lastReasons.length == loopLimit) lastReasons.pop(); // pop removes an item from the end of an array
 	lastReasons.push(reason); // push adds one to the start
 
-	// console.log(lastReasons.length)
-	// console.log(lastReasons.every(v => v.stack == lastReasons[0].stack))
 	//checks if every value is equal to index
-	if (lastReasons.every(v => v.stack == lastReasons[0].stack) && lastReasons.length == loopLimit) {
+	if (lastReasons.every((v) => v.stack == lastReasons[0].stack) && lastReasons.length == loopLimit) {
+		if (client.verbose) console.log(`${err}Suspected loop detected; Restarting...`);
 		const embed = new MessageEmbed()
 			.setTitle("(Probably) Looped, error encountered!")
 			.setFooter({ text: "Got the same error three times in a row. Atempting restart..." })
 			.setDescription("```bash\n" + reason.stack + "\n```");
 		await channel.send({ embeds: [embed] });
-		await console.log(`${err}Suspected loop detected; Restarting...`) 
-		//awaits so it doesnt exit before sending and logging
-		client.restart() // round 2 babyy
+		client.restart(); // round 2 babyy
 	}
 
 	const embed = new MessageEmbed()
@@ -85,7 +83,11 @@ export const errorHandler: Function = async (client: Client, reason: any, type: 
 				.join("\n")}`,
 			false,
 		);
-	} else embed.addField("Last message(s) recieved:", "No last messages sent. Probably button or menu failiure.");
+	} else
+		embed.addField(
+			"Last message(s) recieved:",
+			"No last messages sent. Might be another interaction such as a Button or selectMenu.",
+		);
 	const logTemplate = fs.readFileSync(__dirname + "/errorHandler.log", { encoding: "utf-8" });
 	const messageTemplate = logTemplate.match(new RegExp(/\%messageStart%([\s\S]*?)%messageEnd/))[1]; // get message template
 
