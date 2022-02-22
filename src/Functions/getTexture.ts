@@ -7,6 +7,7 @@ import getMeta from "./canvas/getMeta";
 import { MessageAttachment } from "discord.js";
 import { magnifyAttachment } from "./canvas/magnify";
 import { ISizeCalculationResult } from "image-size/dist/types/interface";
+import { colors } from "@helpers/colors";
 
 export const getTextureMessageOptions = async (options: {
 	texture: any;
@@ -89,6 +90,8 @@ export const getTextureMessageOptions = async (options: {
 
 		let contributions: Array<any> = texture.contributions
 			.filter((c) => strPack.includes(c.resolution) && pack === c.pack)
+			.sort((a, b) => a.date > b.date)
+			.reverse()
 			.map((c) => {
 				let date = new Date(c.date);
 				let strDate: string = `${date.getDate() < 10 ? `0${date.getDate()}` : date.getDate()}/${
@@ -98,6 +101,7 @@ export const getTextureMessageOptions = async (options: {
 				return `\`${strDate}\` ${authors.join(", ")}`;
 			});
 
+		if (contributions.length > 2) contributions = [...contributions.slice(0, 2), "[see more in the webapp...](https://webapp.compliancepack.net/#/gallery)"];
 		if (contributions.length) embed.addField("Contributions", contributions.join("\n"), false);
 	}
 
