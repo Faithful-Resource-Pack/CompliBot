@@ -115,14 +115,15 @@ module.exports = {
        */
       if (message.content.includes('(╯°□°）╯︵ ┻━┻')) return await message.reply({ content: '┬─┬ ノ( ゜-゜ノ) calm down bro' })
 
-      if (message.content.toLowerCase() === 'mhhh') {
-        const embed = new MessageEmbed()
-          .setDescription('```Uh-oh moment```')
-          .setColor(settings.colors.blue)
-          .setFooter('Swahili → English', client.user.displayAvatarURL())
-        let msgEmbed = await message.reply({ embeds: [embed] })
-        return addDeleteReact(msgEmbed, message)
-      }
+      //in beta
+//       if (message.content.toLowerCase() === 'mhhh') {
+//         const embed = new MessageEmbed()
+//           .setDescription('```Uh-oh moment```')
+//           .setColor(settings.colors.blue)
+//           .setFooter('Swahili → English', client.user.displayAvatarURL())
+//         let msgEmbed = await message.reply({ embeds: [embed] })
+//         return addDeleteReact(msgEmbed, message)
+//       }
 
       if (message.content.toLowerCase() === 'hello there') {
         let msgEmbed
