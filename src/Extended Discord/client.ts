@@ -16,9 +16,10 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { err, info, safeExit, success } from "@src/Helpers/logger";
 import { bot } from "..";
 import { Automation } from "./automation";
-import { Submission } from "@functions/submissions";
+import { Submission } from "@helpers/class/submissions";
 import { getData } from "@functions/getDataFromJSON";
 import { EmittingCollection } from "./emittingCollection";
+import { setData } from "@functions/setDataToJSON";
 
 const JSON_PATH = "../json";
 const JSON_FOLDER = path.resolve(__dirname, JSON_PATH);
@@ -96,25 +97,10 @@ class ExtendedClient extends Client {
 
 		[...errorEvents, ...events].forEach((eventType) => {
 			process.on(eventType, (...args) => {
-				/**
-				 * This functions doesn't reach the end, nodeJS doesn't seems to let the function finish before closing the program :///
-				 * @Juknum
-				 */
-				// this.safeExit();
 				if (errorEvents.includes(eventType)) errorHandler(this, args[0], eventType);
 			});
 		})
 	}
-
-	//! not used as functions can't be fullfilled in time
-	// // save data on exits
-	// private async safeExit() {
-	// 	if (this.verbose) console.log(`${safeExit}Saving data`)
-
-	// 	await this.saveSubmissions();
-	// 	if (this.verbose) console.log(`${info}Saved submissions.`);
-	// 	if (this.verbose) console.log(`${safeExit}You can safely exit now.`)
-	// }
 
 	/**
 	 * SUBMISSIONS DATA
@@ -128,20 +114,24 @@ class ExtendedClient extends Client {
 
 		this.submissions.events.on("dataSet", (key: string, value: Submission) => {
 			this.saveSubmissions();
+			if (this.verbose) console.log(`${info}Submission saved (set)`)
+		})
+
+		this.submissions.events.on("dataDeleted", (key: string) => {
+			this.saveSubmissions();
+			if (this.verbose) console.log(`${info}Submission saved (delete)`)
 		})
 	}
 
 	public saveSubmissions = async () => {
-		let data = getData({ filename: SUBMISSIONS_FILENAME, relative_path: JSON_PATH })
-		this.submissions.each((submission: Submission) => {
-			data[submission.id] = submission; 			
+		let data = getData({ filename: SUBMISSIONS_FILENAME, relative_path: JSON_PATH });
+		console.log(this.submissions); // only the emitter event is shown
+		console.log(this.submissions.values()) // empty // todo found why it is empty :/
+		this.submissions.each((submission: Submission) => { // doesn't happens since empty :(
+			data[submission.id] = submission; 
+			console.log(data);
 		})
-		try {
-			writeFileSync(SUBMISSIONS_FILE_PATH, JSON.stringify(data));
-		} catch (err) {
-			console.log(err)
-		}
-		console.log("saved!");
+		setData({ filename: SUBMISSIONS_FILENAME, relative_path: JSON_PATH, data: data });
 	}
 
 	/**

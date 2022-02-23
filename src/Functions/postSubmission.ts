@@ -7,8 +7,7 @@ import axios from "axios";
 import { minecraftSorter } from "./minecraftSorter";
 import { submissionButtonsClosed, submissionButtonsVotes } from "@helpers/buttons";
 import { ExtendedClient } from "@src/Extended Discord/client";
-import { Submission } from "./submissions";
-import { addMinutes } from "@helpers/dates";
+import { Submission } from "../Helpers/class/submissions";
 
 export const postSubmission = async (client: ExtendedClient, message: Message, texture: any, file: MessageAttachment) => {
 	const submission: Submission = new Submission();
@@ -28,8 +27,9 @@ export const postSubmission = async (client: ExtendedClient, message: Message, t
 			`\`${Object.keys(config.submitChannels).filter((key) => config.submitChannels[key] === message.channel.id)[0]}\``,
 			true,
 		)
-		.addField("Status", `Waiting for votes...`)
-		.addField("Until", `<t:${(addMinutes(new Date(), 4320).getTime() / 1000).toFixed(0)}>`, true) // 4320 min is 3 days
+		.addField("Status", submission.getStatusUI())
+		.addField("Until", `<t:${submission.getTimeout()}>`, true)
+		.addField("Votes", submission.getVotesUI().join(',\n'))
 		.setThumbnail("attachment://magnified.png")
 		.setFooter({ text: `${submission.id} | ${message.author.id}` }); // used to authenticate the submitter (for message deletion)
 

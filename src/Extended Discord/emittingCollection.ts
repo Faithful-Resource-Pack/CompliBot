@@ -4,11 +4,13 @@ import EventEmitter from "events";
 export class EmittingCollection<K, V> extends Collection<K, V> {
   public events: EventEmitter = new EventEmitter();
 
-  constructor() { super(); }
-
   public set(key: K, value: V): this {
-    super.set(key, value);
     this.events.emit("dataSet", key, value);
-    return this;
+    return super.set(key, value);
+  }
+
+  public delete(key: K): boolean {
+    this.events.emit("dataDeleted", key);
+    return super.delete(key);
   }
 }
