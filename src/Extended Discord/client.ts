@@ -106,12 +106,13 @@ class ExtendedClient extends Client {
 	 * SUBMISSIONS DATA
 	 */
 	public loadSubmissions = async () => {
+		// read file and load it into the collection
 		const submissionsObj = getData({ filename: SUBMISSIONS_FILENAME, relative_path: JSON_PATH })
-		
 		Object.values(submissionsObj).forEach((submission: Submission) => {
 			this.submissions.set(submission.id, submission);
 		})
 
+		// events
 		this.submissions.events.on("dataSet", (key: string, value: Submission) => {
 			this.saveSubmissions();
 			if (this.verbose) console.log(`${info}Submission saved (set)`)
@@ -125,8 +126,6 @@ class ExtendedClient extends Client {
 
 	public saveSubmissions = async () => {
 		let data = getData({ filename: SUBMISSIONS_FILENAME, relative_path: JSON_PATH });
-		console.log(this.submissions); // only the emitter event is shown
-		console.log(this.submissions.values()) // empty // todo found why it is empty :/
 		this.submissions.each((submission: Submission) => { // doesn't happens since empty :(
 			data[submission.id] = submission; 
 			console.log(data);
