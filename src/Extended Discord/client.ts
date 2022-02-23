@@ -125,12 +125,11 @@ class ExtendedClient extends Client {
 	}
 
 	public saveSubmissions = async () => {
-		let data = getData({ filename: SUBMISSIONS_FILENAME, relative_path: JSON_PATH });
-		this.submissions.each((submission: Submission) => { // doesn't happens since empty :(
+		let data = {};
+		[...this.submissions.values()].forEach((submission: Submission) => {
 			data[submission.id] = submission; 
-			console.log(data);
 		})
-		setData({ filename: SUBMISSIONS_FILENAME, relative_path: JSON_PATH, data: data });
+		setData({ filename: SUBMISSIONS_FILENAME, relative_path: JSON_PATH, data: JSON.parse(JSON.stringify(data)) });
 	}
 
 	/**

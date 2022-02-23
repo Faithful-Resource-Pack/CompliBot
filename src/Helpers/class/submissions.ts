@@ -1,11 +1,12 @@
 import { magnifyAttachment } from "@functions/canvas/magnify";
 import { minecraftSorter } from "@functions/minecraftSorter";
-import { submissionButtonsClosed, submissionButtonsVotes } from "@helpers/buttons";
+import { submissionButtonsClosed, submissionButtonsVotes, submissionsButtons } from "@helpers/buttons";
 import { addMinutes } from "@helpers/dates";
 import { ids, parseId } from "@helpers/emojis";
 import { Client, Message, MessageEmbed } from "@src/Extended Discord";
-import { MessageAttachment } from "discord.js";
+import { DMChannel, EmbedField, MessageActionRow, MessageAttachment, NewsChannel, PartialDMChannel, TextChannel, ThreadChannel } from "discord.js";
 import axios from "axios";
+import { colors } from "@helpers/colors";
 
 export interface Votes {
   upvotes: Array<string>, 
@@ -13,23 +14,39 @@ export interface Votes {
 }
 
 // where "in" & "out" are both at the ends of the process but "in" -> go to the pack, "out" -> not enough votes
-export type SubmissionStatus = "pending" | "invalid" | "instapass" | "council" | "in" | "out";
+export type SubmissionStatus = "pending" | "invalid" | "instapassed" | "council" | "in" | "out";
 
 export class Submission {
   readonly id: string;
-  private message: Message;
+  private messageId: string;
+  private channelId: string;
   private votes: Votes;
   private status: SubmissionStatus = "pending";
   private timeout: number; // used for end of events (pending until...)
 
-  constructor() {
-    this.id = new Date().getTime().toString();
-    this.votes = {
-      upvotes: [],
-      downvotes: []
+  constructor(data?: Submission) {
+    // new
+    if (!data) {
+      this.id = new Date().getTime().toString();
+      this.votes = {
+        upvotes: [],
+        downvotes: []
+      }
+      // current time + 3d
+      this.setTimeout(parseInt((addMinutes(new Date(), 4320).getTime() / 1000).toFixed(0), 10));
+      this.setStatus("pending");
     }
-    // current time + 3d
-    this.setTimeout(parseInt((addMinutes(new Date(), 4320).getTime() / 1000).toFixed(0), 10))
+
+    // copy
+    else {
+      const s: Submission = data;
+      this.id = s.id;
+      this.messageId = s.messageId;
+      this.channelId = s.channelId;
+      this.votes = s.votes;
+      this.status = s.status;
+      this.timeout = s.timeout;
+    }
   }
 
   public getVotes(): [number, number] {
@@ -63,11 +80,26 @@ export class Submission {
     return this;
   }
 
-  public getMessage(): Message {
-    return this.message;
+
+  public getMessageId(): string {
+    return this.messageId;
   }
-  public setMessage(message: Message): this {
-    this.message = message;
+  public setMessageId(message: string): this
+  public setMessageId(message: Message): this 
+  public setMessageId(message: any) {
+    if (message.id) this.messageId = message.id; // object
+    else this.messageId = message; // string
+    return this;
+  }
+
+  public getChannelId(): string {
+    return this.channelId;
+  }
+  public setChannelId(channel: string): this
+  public setChannelId(channel: TextChannel): this 
+  public setChannelId(channel: any) {
+    if (channel.id) this.channelId = channel.id; // object
+    else this.channelId = channel; // string
     return this;
   }
 
@@ -83,7 +115,7 @@ export class Submission {
     switch (this.getStatus()) {
       case "council":
         return `${parseId(ids.pending)} Waiting for council votes...`;
-      case "instapass":
+      case "instapassed":
         return `${parseId(ids.instapass)} Instapassed by %USER%`;
       case "in":
         return `${parseId(ids.upvote)} This textures will be added in a future version!`;
@@ -106,6 +138,42 @@ export class Submission {
     return this;
   }
 
+  public async updateSubmissionMessage(client: Client, userId: string): Promise<void> {
+    let channel: TextChannel;
+    let message: Message;
+
+    // waky method to turns json object to json object with methods (methods aren't saved and needs to be fetched)
+    try {
+      channel = await client.channels.fetch(this.getChannelId()) as any;
+      message = await channel.messages.fetch(this.getMessageId());
+    } catch {
+      // message / channel can't be fetched
+    }
+
+    const embed: MessageEmbed = new MessageEmbed(message.embeds[0]);
+    let components: Array<MessageActionRow> = message.components;
+
+    switch (this.getStatus()) {
+      case "instapassed":
+        embed.setColor(colors.yellow)
+        // update status
+        embed.fields = embed.fields.map((field: EmbedField) => {
+          field.value = field.name === "Status" ? field.value = this.getStatusUI().replace("%USER%", `<@!${userId}>`) : field.value;
+          return field;
+        });
+        // remove until field
+        embed.fields = embed.fields.filter((field: EmbedField) => field.name !== "Until");
+        components = [submissionsButtons];
+        break;
+
+      default:
+        break; // todo
+    }
+
+    await message.edit({ embeds: [embed], files: [...message.attachments.values()], components: [...components] })
+    return;
+  }
+
   public async postSubmissionMessage(client: Client, baseMessage: Message, file: MessageAttachment, texture: any): Promise<void> {
     const [embed, files] = await this.makeSubmissionMessage(baseMessage, file, texture);
     const submissionMessage: Message = await baseMessage.channel.send({
@@ -114,10 +182,9 @@ export class Submission {
       components: [submissionButtonsClosed, submissionButtonsVotes]
     })
 
-    this.setMessage(submissionMessage);
+    this.setChannelId(baseMessage.channel.id);
+    this.setMessageId(submissionMessage);
     client.submissions.set(this.id, this);
-
-    return;
   }
 
   public async makeSubmissionMessage(baseMessage: Message, file: MessageAttachment, texture: any): Promise<[MessageEmbed, Array<MessageAttachment>]> {
@@ -136,9 +203,9 @@ export class Submission {
         `\`${Object.keys((baseMessage.client as Client).config.submitChannels).filter((key) => (baseMessage.client as Client).config.submitChannels[key] === baseMessage.channel.id)[0]}\``,
         true,
       )
+      .addField("Votes", this.getVotesUI().join(',\n'))
       .addField("Status", this.getStatusUI())
       .addField("Until", `<t:${this.getTimeout()}>`, true)
-      .addField("Votes", this.getVotesUI().join(',\n'))
       .setThumbnail("attachment://magnified.png")
       .setFooter({ text: `${this.id} | ${baseMessage.author.id}` }); // used to authenticate the submitter (for message deletion)
 
