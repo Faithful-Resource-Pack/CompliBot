@@ -1,6 +1,11 @@
+import { magnifyAttachment } from "@functions/canvas/magnify";
+import { minecraftSorter } from "@functions/minecraftSorter";
+import { submissionButtonsClosed, submissionButtonsVotes } from "@helpers/buttons";
 import { addMinutes } from "@helpers/dates";
 import { ids, parseId } from "@helpers/emojis";
-import { Message } from "@src/Extended Discord";
+import { Client, Message, MessageEmbed } from "@src/Extended Discord";
+import { MessageAttachment } from "discord.js";
+import axios from "axios";
 
 export interface Votes {
   upvotes: Array<string>, 
@@ -99,5 +104,66 @@ export class Submission {
   public setTimeout(timeout: number): this {
     this.timeout = timeout;
     return this;
+  }
+
+  public async postSubmissionMessage(client: Client, baseMessage: Message, file: MessageAttachment, texture: any): Promise<void> {
+    const [embed, files] = await this.makeSubmissionMessage(baseMessage, file, texture);
+    const submissionMessage: Message = await baseMessage.channel.send({
+      embeds: [embed],
+      files: [...files],
+      components: [submissionButtonsClosed, submissionButtonsVotes]
+    })
+
+    this.setMessage(submissionMessage);
+    client.submissions.set(this.id, this);
+
+    return;
+  }
+
+  public async makeSubmissionMessage(baseMessage: Message, file: MessageAttachment, texture: any): Promise<[MessageEmbed, Array<MessageAttachment>]> {
+    const files: Array<MessageAttachment> = [];
+    const mentions = [
+      ...new Set([...Array.from(baseMessage.mentions.users.values()), baseMessage.author].map((user) => user.id)),
+    ];
+    
+    const embed = new MessageEmbed()
+      .setTitle(`[#${texture.id}] ${texture.name}`)
+      .setAuthor({ iconURL: baseMessage.author.avatarURL(), name: baseMessage.author.username })
+      .addField("Tags", texture.tags.join(', '))
+      .addField("Contributor(s)", `<@!${mentions.join(">\n<@!")}>`, true)
+      .addField(
+        "Resource Pack",
+        `\`${Object.keys((baseMessage.client as Client).config.submitChannels).filter((key) => (baseMessage.client as Client).config.submitChannels[key] === baseMessage.channel.id)[0]}\``,
+        true,
+      )
+      .addField("Status", this.getStatusUI())
+      .addField("Until", `<t:${this.getTimeout()}>`, true)
+      .addField("Votes", this.getVotesUI().join(',\n'))
+      .setThumbnail("attachment://magnified.png")
+      .setFooter({ text: `${this.id} | ${baseMessage.author.id}` }); // used to authenticate the submitter (for message deletion)
+
+    // add description if there is one
+    if (baseMessage.content !== "" || baseMessage.content !== undefined) embed.setDescription(baseMessage.content);
+    
+    if (file.url) embed.setImage(file.url);
+    else {
+      embed.setImage(`attachment://${file.name}`);
+      files.push(file);
+    }
+
+    files.push(
+      await magnifyAttachment({
+        url: (
+          await axios.get(
+            `${(baseMessage.client as Client).config.apiUrl}textures/${texture.id}/url/default/${
+              texture.paths[0].versions.sort(minecraftSorter).reverse()[0]
+            }`,
+          )
+        ).request.res.responseUrl,
+        name: "magnified.png",
+      }),
+    );  
+
+    return [embed, files];
   }
 }

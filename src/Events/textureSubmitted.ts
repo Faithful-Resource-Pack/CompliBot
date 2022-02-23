@@ -4,7 +4,7 @@ import { info } from "@helpers/logger";
 import { MessageAttachment } from "discord.js";
 import { zipToMA } from "@functions/zipToMessageAttachments";
 import axios, { AxiosResponse } from "axios";
-import { postSubmission } from "@functions/postSubmission";
+import { Submission } from "@helpers/class/submissions";
 
 export const event: Event = {
 	name: "textureSubmitted",
@@ -44,15 +44,18 @@ export const event: Event = {
 
 			const textures = req.data.filter((t) => t.name === file.name.replace(".png", ""));
 
+			// no results
 			if (textures.length < 1) return message.warn(`No textures found for \`${file.name.replace(".png", "")}\``, true);
 
-			// todo add select menu
+			// multiple results // todo
 			if (textures.length > 1)
 				return message.reply(
 					`Multiple results for \`${file.name}\`, please select one below:\n>(WIP add select menu here)`,
 				);
 
-			await postSubmission(client, message, textures[0], file);
+			// 1 result
+			const submission = new Submission();
+			submission.postSubmissionMessage(client, message, file, textures[0]);
 		});
 
 		try {
