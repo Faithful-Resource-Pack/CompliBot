@@ -2,6 +2,8 @@ import { Event } from "@src/Interfaces";
 import { Client, Message, MessageEmbed } from "@src/Extended Discord";
 import { quote } from "@src/Functions/quote";
 import easterEgg from "@functions/canvas/isEasterEggImg";
+import { deleteMessage } from "@helpers/buttons";
+import { MessageActionRow } from "discord.js";
 
 export const event: Event = {
 	name: "messageCreate",
@@ -60,6 +62,9 @@ export const event: Event = {
 					}
 				});
 				break;
+			case "mhhh":
+				const embed = new MessageEmbed().setDescription("```Uh-oh moment```").setFooter({ text: "Swahili → English" });
+				message.reply({ embeds: [embed] }).then((message) => message.deleteButton(true));
 		}
 
 		if (message.attachments.size > 0) {
@@ -69,7 +74,7 @@ export const event: Event = {
 					.setImage("https://cdn.discordapp.com/attachments/923370825762078720/939476550749913138/tiled.png")
 					.setFooter({ text: "Nick.#1666" })
 					.setTimestamp(new Date(1644059063305)); // when the funny moment happened
-				message.channel.send({ embeds: [embed] });
+				message.reply({ embeds: [embed] }).then((message) => message.deleteButton(true));
 			}
 			if ((await easterEgg(message.attachments.first().url, 2)) && !client.tokens.dev) {
 				const embed = new MessageEmbed()
@@ -77,7 +82,7 @@ export const event: Event = {
 					.setImage("https://cdn.discordapp.com/attachments/923370825762078720/940676536330223676/tiled.png")
 					.setFooter({ text: "Nick.#1666 - again" })
 					.setTimestamp(new Date(1644345162257)); // when the funny moment happened again
-				message.channel.send({ embeds: [embed] });
+				message.reply({ embeds: [embed] }).then((message) => message.deleteButton(true));
 			}
 		}
 	},

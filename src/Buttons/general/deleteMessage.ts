@@ -11,7 +11,16 @@ export const button: Button = {
 		// as we can't fetch the interaction to detect who is the owner of the message/interaction, we uses the stored id inside the footer
 		const authorId: string = interaction.message.embeds[0].footer.text.split(" | ")[1]; //splits by | to remove stuff before author id
 
-		if (!authorId)
+		if (message.reference && (await message.fetchReference()).author.id != interaction.user.id)
+			//for replies
+			return interaction.reply({
+				content: await interaction.text({
+					string: "Error.Interaction.Reserved",
+					placeholders: { USER: `<@!${(await message.fetchReference()).author.id}>` },
+				}),
+				ephemeral: true,
+			});
+		else if (!authorId && !message.reference)
 			return interaction.reply({
 				content: await interaction.text({
 					string: "Error.NotFound",
@@ -20,7 +29,8 @@ export const button: Button = {
 				ephemeral: true,
 			});
 
-		if (interaction.user.id != authorId)
+		if (interaction.user.id != authorId && !message.reference)
+			//stupid check because undefined
 			return interaction.reply({
 				content: await interaction.text({
 					string: "Error.Interaction.Reserved",
