@@ -113,9 +113,10 @@ module.exports = {
       /**
        * EASTER EGGS
        */
-      if (message.content.includes('(╯°□°）╯︵ ┻━┻')) return await message.reply({ content: '┬─┬ ノ( ゜-゜ノ) calm down bro' })
-
-      //in beta
+      //disabled because they exist in beta bot
+      
+//       if (message.content.includes('(╯°□°）╯︵ ┻━┻')) return await message.reply({ content: '┬─┬ ノ( ゜-゜ノ) calm down bro' })
+      
 //       if (message.content.toLowerCase() === 'mhhh') {
 //         const embed = new MessageEmbed()
 //           .setDescription('```Uh-oh moment```')
@@ -125,13 +126,13 @@ module.exports = {
 //         return addDeleteReact(msgEmbed, message)
 //       }
 
-      if (message.content.toLowerCase() === 'hello there') {
-        let msgEmbed
-        if (Math.floor(Math.random() * Math.floor(5)) != 1) msgEmbed = await message.reply({ content: 'https://media1.tenor.com/images/8dc53503f5a5bb23ef12b2c83a0e1d4d/tenor.gif' })
-        else msgEmbed = await message.reply({ content: 'https://preview.redd.it/6n6zu25c66211.png?width=960&crop=smart&auto=webp&s=62024911a6d6dd85f83a2eb305df6082f118c8d1' })
+//       if (message.content.toLowerCase() === 'hello there') {
+//         let msgEmbed
+//         if (Math.floor(Math.random() * Math.floor(5)) != 1) msgEmbed = await message.reply({ content: 'https://media1.tenor.com/images/8dc53503f5a5bb23ef12b2c83a0e1d4d/tenor.gif' })
+//         else msgEmbed = await message.reply({ content: 'https://preview.redd.it/6n6zu25c66211.png?width=960&crop=smart&auto=webp&s=62024911a6d6dd85f83a2eb305df6082f118c8d1' })
 
-        return addDeleteReact(msgEmbed, message)
-      }
+//         return addDeleteReact(msgEmbed, message)
+//       }
 
       /**
        * TEXTURE ID QUOTE
