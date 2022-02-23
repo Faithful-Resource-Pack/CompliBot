@@ -70,6 +70,8 @@ export const event: Event = {
 					.reply("https://media1.tenor.com/images/8dc53503f5a5bb23ef12b2c83a0e1d4d/tenor.gif")
 					.then((message) => message.deleteButton(true));
 		}
+		if (message.content.includes("(╯°□°）╯︵ ┻━┻"))
+			return await message.reply({ content: "┬─┬ ノ( ゜-゜ノ) calm down bro" });
 		if (message.attachments.size > 0) {
 			if ((await easterEgg(message.attachments.first().url, 1)) && !client.tokens.dev) {
 				const embed = new MessageEmbed()
