@@ -2,4 +2,5 @@ import chalk from "chalk";
 
 export const err = `[${chalk.redBright("ERR")}] `;
 export const info = `[${chalk.blue("INFO")}] `;
-export const Success = `[${chalk.green("SUCCESS")}] `;
+export const success = `[${chalk.green("SUCCESS")}] `;
+export const safeExit = `[${chalk.yellow("SAFE EXIT")}] `;

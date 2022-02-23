@@ -1,7 +1,7 @@
 import { writeFile, writeFileSync } from "fs";
 import path from "path";
 import en_US from "@/lang/en-US.json";
-import { err, info, Success } from "./Helpers/logger";
+import { err, info, success } from "./Helpers/logger";
 
 const header = "A list of all translations and their completions.\nHave fun polylingual translators!\n\n";
 const note = "\n\n### Note: make sure to read `/translation-guide.md` before contributing!";
@@ -65,7 +65,7 @@ async function generate() {
 	}
 
 	writeFileSync(path.join(__dirname, "../lang/README.md"), header + languages.join("\n") + note);
-	console.log(Success + "Generated README.md in /lang/");
+	console.log(success + "Generated README.md in /lang/");
 }
 
 generate();

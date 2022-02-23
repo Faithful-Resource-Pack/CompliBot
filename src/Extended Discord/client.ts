@@ -2,7 +2,7 @@
 import { Channel, Client, Collection, Guild, TextChannel, VoiceChannel } from "discord.js";
 import { Message } from "@src/Extended Discord";
 import path from "path";
-import { readdirSync, writeFileSync } from "fs";
+import { cp, readdirSync, writeFileSync } from "fs";
 import { Command, Event, Config, Tokens, Button, SelectMenu, SlashCommand } from "@src/Interfaces";
 import ConfigJson from "@/config.json";
 import TokensJson from "@/tokens.json";
@@ -13,17 +13,42 @@ import { errorHandler } from "@src/Functions/errorHandler";
 import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v9";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { err, info, Success } from "@src/Helpers/logger";
+import { err, info, safeExit, success } from "@src/Helpers/logger";
 import { bot } from "..";
 import { Automation } from "./automation";
-import { SID } from "@functions/postSubmittedTextureEmbed";
+import { Submission } from "@functions/submissions";
+import { getData } from "@functions/getDataFromJSON";
+import { EmittingCollection } from "./emittingCollection";
+
+const JSON_PATH = "../json";
+const JSON_FOLDER = path.resolve(__dirname, JSON_PATH);
+const SUBMISSIONS_FILENAME = "submissions.json";
+const SUBMISSIONS_FILE_PATH = path.resolve(JSON_FOLDER, SUBMISSIONS_FILENAME);
+// const COUNTER_FILE_PATH = path.resolve(JSON_FOLDER, "commandsProcessed.json"); //! NYI
 
 class ExtendedClient extends Client {
 	public verbose: boolean = false;
 	public config: Config = ConfigJson;
 	public tokens: Tokens = TokensJson;
 	public automation: Automation = new Automation(this);
-	public sid: number;
+	
+	private lastMessages = [];
+	private lastMessagesIndex = 0;
+
+	public menus: Collection<string, SelectMenu> = new Collection();
+	public buttons: Collection<string, Button> = new Collection();
+	public events: Collection<string, Event> = new Collection();
+	public aliases: Collection<string, Command> = new Collection();
+	public commands: Collection<string, Command> = new Collection();
+	public slashCommands: Collection<string, SlashCommand> = new Collection();
+
+	public submissions: EmittingCollection<string, Submission> = new EmittingCollection();
+
+	public async restart(): Promise<void> {
+		console.log(`${info}restarting bot...`);
+		this.destroy();
+		await bot.init();
+	}
 
 	public async init() {
 		// login client
@@ -36,68 +61,87 @@ class ExtendedClient extends Client {
 			.then(() => {
 				// commands counter
 				initCommands(this);
-				if (this.verbose) console.log(info + `Initialized command counter & SIDs`);
+				if (this.verbose) console.log(info + `Initialized command counter`);
 
 				// load old commands only if not dev server
 				//if (this.tokens.dev) this.loadCommands();
 				this.loadCommands();
 				if (this.verbose) console.log(info + `Loaded classical commands`);
 
-				// load slash commands
 				this.loadSlashCommands();
 				if (this.verbose) console.log(info + `Loaded slash commands`);
+
 				this.loadSlashCommandsPerms();
 				if (this.verbose) console.log(info + `Loaded slash command perms`);
 
-				// load events
 				this.loadEvents();
 				if (this.verbose) console.log(info + `Loaded events`);
 
-				// load buttons
 				this.loadButtons();
 				if (this.verbose) console.log(info + `Loaded buttons`);
 
-				// load buttons
 				this.loadSelectMenus();
 				if (this.verbose) console.log(info + `Loaded select menus`);
 
-				// starts automated functions
+				this.loadSubmissions();
+				if (this.verbose) console.log(info + `Loaded submissions data`);
+
 				this.automation.start();
 				if (this.verbose) console.log(info + `Started automated functions`);
-
 				if (this.verbose) console.log(info + `Init complete`);
 			});
 		
-		//catches ^C event
-		process.on('SIGINT', this.exitCleanup.bind(null, 0));
+		const errorEvents = ["uncaughtException", "unhandledRejection"];
+		const events = ["exit", "SIGINT", "SIGUSR1", "SIGUSR2", "SIGTERM"];
 
-		// catches "kill pid" (for example: nodemon restart)
-		process.on('SIGUSR1', this.exitCleanup.bind(null, 0));
-		process.on('SIGUSR2', this.exitCleanup.bind(null, 0));
-
-		process.on("disconnect", (code: number) => {
-			errorHandler(this, code, "disconnect");
-		});
-		process.on("uncaughtException", (error, origin) => {
-			errorHandler(this, error, "uncaughtException", origin);
-		});
-		process.on("unhandledRejection", (reason, promise) => {
-			errorHandler(this, reason, "unhandledRejection");
-		});
+		[...errorEvents, ...events].forEach((eventType) => {
+			process.on(eventType, (...args) => {
+				/**
+				 * This functions doesn't reach the end, nodeJS doesn't seems to let the function finish before closing the program :///
+				 * @Juknum
+				 */
+				// this.safeExit();
+				if (errorEvents.includes(eventType)) errorHandler(this, args[0], eventType);
+			});
+		})
 	}
 
-	// save SIDs on exit
-	private exitCleanup (code: number) {
-		console.log(`${info}PLEASE WAIT FOR SID TO BE SAVED BEFORE EXIT!!`)
-		writeFileSync(path.join(__dirname, "../json/submissionsCount.json"), JSON.stringify(SID) )
-		console.log(`${Success}Saved SID (${JSON.stringify(SID)}) to file. You can safely exit now`)
-		process.exit(code)
+	//! not used as functions can't be fullfilled in time
+	// // save data on exits
+	// private async safeExit() {
+	// 	if (this.verbose) console.log(`${safeExit}Saving data`)
+
+	// 	await this.saveSubmissions();
+	// 	if (this.verbose) console.log(`${info}Saved submissions.`);
+	// 	if (this.verbose) console.log(`${safeExit}You can safely exit now.`)
+	// }
+
+	/**
+	 * SUBMISSIONS DATA
+	 */
+	public loadSubmissions = async () => {
+		const submissionsObj = getData({ filename: SUBMISSIONS_FILENAME, relative_path: JSON_PATH })
+		
+		Object.values(submissionsObj).forEach((submission: Submission) => {
+			this.submissions.set(submission.id, submission);
+		})
+
+		this.submissions.events.on("dataSet", (key: string, value: Submission) => {
+			this.saveSubmissions();
+		})
 	}
 
-	public async restart(): Promise<void> {
-		console.log(`${info}restarting bot...`);
-		this.destroy();
-		await bot.init();
+	public saveSubmissions = async () => {
+		let data = getData({ filename: SUBMISSIONS_FILENAME, relative_path: JSON_PATH })
+		this.submissions.each((submission: Submission) => {
+			data[submission.id] = submission; 			
+		})
+		try {
+			writeFileSync(SUBMISSIONS_FILE_PATH, JSON.stringify(data));
+		} catch (err) {
+			console.log(err)
+		}
+		console.log("saved!");
 	}
 
 	/**
@@ -142,14 +186,13 @@ class ExtendedClient extends Client {
 			const promises = [];
 			for (const command of data)
 				promises.push(rest.delete(`${Routes.applicationCommands(this.tokens.appID)}/${command.id}`));
-			return Promise.all(promises).then(() => console.log(`${Success}delete succeed`));
+			return Promise.all(promises).then(() => console.log(`${success}delete succeed`));
 		});
 	};
 
 	/**
 	 * SLASH COMMANDS HANDLER
 	 */
-	public slashCommands: Collection<string, SlashCommand> = new Collection();
 	public loadSlashCommands = () => {
 		const slashCommandsPath = path.join(__dirname, "..", "Slash Commands");
 
@@ -171,7 +214,7 @@ class ExtendedClient extends Client {
 		if (this.tokens.dev) {
 			rest
 				.put(Routes.applicationGuildCommands(this.tokens.appID, devID), { body: commandsArr.map((c) => c.toJSON()) })
-				.then(() => console.log(`${Success}succeed dev`))
+				.then(() => console.log(`${success}succeed dev`))
 				.catch(console.error);
 		}
 		// deploy commands globally
@@ -180,7 +223,7 @@ class ExtendedClient extends Client {
 				.put(Routes.applicationCommands(this.tokens.appID), {
 					body: commandsArr.map((c) => c.toJSON()),
 				})
-				.then(() => console.log(`${Success}succeed global commands`))
+				.then(() => console.log(`${success}succeed global commands`))
 				.catch(console.error);
 		}
 	};
@@ -189,8 +232,6 @@ class ExtendedClient extends Client {
 	 * CLASSIC COMMAND HANDLER
 	 * todo: remove this once all commands are implemented as slash commands
 	 */
-	public aliases: Collection<string, Command> = new Collection();
-	public commands: Collection<string, Command> = new Collection();
 	private loadCommands = () => {
 		const commandPath = path.join(__dirname, "..", "Commands");
 		readdirSync(commandPath).forEach((dir) => {
@@ -213,12 +254,11 @@ class ExtendedClient extends Client {
 
 	/**
 	 * Read "Events" directory and add them as events
+	 * !! broke if dir doesn't exist
 	 */
-	public events: Collection<string, Event> = new Collection();
 	private loadEvents = (): void => {
 		const eventPath = path.join(__dirname, "..", "Events");
 
-		//* then make the directory :D
 		readdirSync(eventPath)
 			.filter((file) => file.endsWith(".ts"))
 			.forEach(async (file) => {
@@ -230,12 +270,11 @@ class ExtendedClient extends Client {
 
 	/**
 	 * Read "Buttons" directory and add them to the buttons collection
+	 * !! broke if dir doesn't exist
 	 */
-	public buttons: Collection<string, Button> = new Collection();
 	private loadButtons = (): void => {
 		const buttonPath = path.join(__dirname, "..", "Buttons");
 
-		//* then make the directory :D
 		readdirSync(buttonPath).forEach(async (dir) => {
 			const buttons = readdirSync(`${buttonPath}/${dir}`).filter((file) => file.endsWith(".ts"));
 
@@ -248,12 +287,11 @@ class ExtendedClient extends Client {
 
 	/**
 	 * Read "Menus" directory and add them to the menus collection
+	 * !! broke if dir doesn't exist
 	 */
-	public menus: Collection<string, SelectMenu> = new Collection();
 	private loadSelectMenus = (): void => {
 		const menusPath = path.join(__dirname, "..", "Menus");
 
-		//* then make the directory :D
 		readdirSync(menusPath).forEach(async (dir) => {
 			const menus = readdirSync(`${menusPath}/${dir}`).filter((file) => file.endsWith(".ts"));
 
@@ -268,8 +306,6 @@ class ExtendedClient extends Client {
 	 * Store last 5 messages to get more context when debugging
 	 * @author Juknum
 	 */
-	private lastMessages = [];
-	private lastMessagesIndex = 0;
 
 	public storeMessage(message: Message) {
 		this.lastMessages[this.lastMessagesIndex] = message;

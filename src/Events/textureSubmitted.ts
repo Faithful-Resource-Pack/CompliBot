@@ -1,10 +1,10 @@
 import { Event } from "@src/Interfaces";
-import { Client, Message, MessageEmbed } from "@src/Extended Discord";
+import { Client, Message } from "@src/Extended Discord";
 import { info } from "@helpers/logger";
 import { MessageAttachment } from "discord.js";
 import { zipToMA } from "@functions/zipToMessageAttachments";
 import axios, { AxiosResponse } from "axios";
-import { postSubmitedTextureEmbed } from "@functions/postSubmittedTextureEmbed";
+import { postSubmission } from "@functions/postSubmission";
 
 export const event: Event = {
 	name: "textureSubmitted",
@@ -52,7 +52,7 @@ export const event: Event = {
 					`Multiple results for \`${file.name}\`, please select one below:\n>(WIP add select menu here)`,
 				);
 
-			await postSubmitedTextureEmbed(client, message, textures[0], file);
+			await postSubmission(client, message, textures[0], file);
 		});
 
 		try {
