@@ -65,10 +65,12 @@ export const event: Event = {
 			case "mhhh":
 				const embed = new MessageEmbed().setDescription("```Uh-oh moment```").setFooter({ text: "Swahili → English" });
 				message.reply({ embeds: [embed] }).then((message) => message.deleteButton(true));
+				break;
 			case "hello there":
 				message
 					.reply("https://media1.tenor.com/images/8dc53503f5a5bb23ef12b2c83a0e1d4d/tenor.gif")
 					.then((message) => message.deleteButton(true));
+				break;
 		}
 		if (message.content.includes("(╯°□°）╯︵ ┻━┻"))
 			return await message.reply({ content: "┬─┬ ノ( ゜-゜ノ) calm down bro" });
