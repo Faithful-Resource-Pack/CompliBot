@@ -212,24 +212,26 @@ export class Submission {
     // add description if there is one
     if (baseMessage.content !== "" || baseMessage.content !== undefined) embed.setDescription(baseMessage.content);
     
-    if (file.url) embed.setImage(file.url);
-    else {
-      embed.setImage(`attachment://${file.name}`);
-      files.push(file);
-    }
+    //* avoid message attachment to be deleted by Discord API when message is edited
+    let channel: TextChannel;
+    try {
+      channel = await baseMessage.client.channels.fetch("946432206530826240") as any;
+    } catch { return; } // can't fetch channel
 
-    files.push(
-      await magnifyAttachment({
-        url: (
-          await axios.get(
-            `${(baseMessage.client as Client).config.apiUrl}textures/${texture.id}/url/default/${
-              texture.paths[0].versions.sort(minecraftSorter).reverse()[0]
-            }`,
-          )
-        ).request.res.responseUrl,
-        name: "magnified.png",
-      }),
-    );  
+    let url: string = "https://raw.githubusercontent.com/Compliance-Resource-Pack/App/main/resources/transparency.png";
+    try {
+      url = (await axios.get(`${(baseMessage.client as Client).config.apiUrl}textures/${texture.id}/url/default/${texture.paths[0].versions.sort(minecraftSorter).reverse()[0]}`)).request.res.responseUrl;
+    } catch {}
+
+    // magnified x16 texture in thumbnail
+    const magnifiedAttachment = await magnifyAttachment({url: url,name: "magnified.png"})
+    
+    // saved attachments in a private message
+    const messageAttachment = await channel.send({ files: [file, magnifiedAttachment] });
+    messageAttachment.attachments.forEach((ma: MessageAttachment) => files.push(ma));
+
+    // set submitted texture in image
+    embed.setImage(files[0].url);
 
     return [embed, files];
   }
