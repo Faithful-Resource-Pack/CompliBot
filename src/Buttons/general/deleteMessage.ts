@@ -10,6 +10,7 @@ export const button: Button = {
 		const message: Message = interaction.message as Message;
 		// as we can't fetch the interaction to detect who is the owner of the message/interaction, we uses the stored id inside the footer
 		const authorId: string = interaction.message.embeds[0].footer.text.split(" | ")[1]; //splits by | to remove stuff before author id
+		const sid: string = interaction.message.embeds[0].footer.text.split(" | ")[0];
 
 		if (!authorId)
 			return interaction.reply({
@@ -30,12 +31,17 @@ export const button: Button = {
 			});
 
 		try {
-			return message.delete();
+			message.delete();
 		} catch (err) {
 			return interaction.reply({
 				content: await interaction.text({ string: "Error.Message.Deleted" }),
 				ephemeral: true,
 			});
 		}
+
+		// try deleting submission from json file if sid is valid
+		try {
+			client.submissions.delete(sid);
+		} catch { /* sid not valid */ }
 	},
 };

@@ -159,7 +159,6 @@ class ExtendedClient extends Client {
 					for (const id of slashCommand.permissions.users)
 						p.permissions.push({ id: id, type: "USER", permission: true });
 
-				console.log(p.permissions)
 				fullPermissions.push(p);
 			});
 
