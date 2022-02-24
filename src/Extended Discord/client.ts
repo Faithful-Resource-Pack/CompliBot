@@ -150,14 +150,16 @@ class ExtendedClient extends Client {
 					permissions: [],
 				};
 
+
 				if (slashCommand.permissions.roles !== undefined)
 					for (const id of slashCommand.permissions.roles)
-						if (guild.roles.cache.get(id)) p.permissions.push({ id: id, type: "ROLE", permission: true });
+						p.permissions.push({ id: id, type: "ROLE", permission: true });
 
 				if (slashCommand.permissions.users !== undefined)
 					for (const id of slashCommand.permissions.users)
-						if (guild.members.cache.get(id)) p.permissions.push({ id: id, type: "USER", permission: true });
+						p.permissions.push({ id: id, type: "USER", permission: true });
 
+				console.log(p.permissions)
 				fullPermissions.push(p);
 			});
 

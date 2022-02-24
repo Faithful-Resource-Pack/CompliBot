@@ -3,11 +3,17 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { Client, CommandInteraction, Message, MessageEmbed } from "@src/Extended Discord";
 import { EmbedField, GuildMember, Role } from "discord.js";
 import { ids, parseId } from "@helpers/emojis";
-
+import { Config } from "@interfaces/config";
+import ConfigJson from "@/config.json";
+const config: Config = ConfigJson;
 
 export const command: SlashCommand = {
-  permissions: undefined,
+  permissions: {
+    roles: Object.values(config.roles.council),
+    users: undefined
+  },
   data: new SlashCommandBuilder()
+		.setDefaultPermission(false) // disable the command for @everyone (only council can do it)
     .setName("invalidate")
     .setDescription("Set reason for submission invalidation!")
     .addStringOption(option => 
@@ -24,16 +30,8 @@ export const command: SlashCommand = {
     )
     ,
   execute: async (interaction: CommandInteraction) => {
-    const member: GuildMember = interaction.member as GuildMember;
     let isInvalidated: boolean = false;
-
-    // check if member is council
-    if (member.roles.cache.find((role: Role) => Object.values((interaction.client as Client).config.roles.council).includes(role.id)) === undefined) 
-      return interaction.reply({
-        content: await interaction.text({ string: "Error.NoPermissions" }),
-        ephemeral: true
-      })
-
+    console.log(Object.values(config.roles.council));
 
     interaction.channel.messages.fetch(interaction.options.getString("message_id", true))
       .then(async (message: Message) => {

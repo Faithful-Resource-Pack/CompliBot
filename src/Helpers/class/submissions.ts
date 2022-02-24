@@ -120,7 +120,7 @@ export class Submission {
       case "in":
         return `${parseId(ids.upvote)} This textures will be added in a future version!`;
       case "invalid":
-        return `${parseId(ids.upvote)} Invalidated by %USER%`;
+        return `${parseId(ids.invalid)} Invalidated by %USER%`;
       case "out": 
         return `${parseId(ids.downvote)} This texture won't be added.`
       case "pending":
@@ -155,7 +155,7 @@ export class Submission {
 
     switch (this.getStatus()) {
       case "instapassed":
-        embed.setColor(colors.yellow)
+        embed.setColor(colors.yellow);
         // update status
         embed.fields = embed.fields.map((field: EmbedField) => {
           field.value = field.name === "Status" ? field.value = this.getStatusUI().replace("%USER%", `<@!${userId}>`) : field.value;
@@ -165,20 +165,38 @@ export class Submission {
         embed.fields = embed.fields.filter((field: EmbedField) => field.name !== "Until");
         components = [submissionsButtons];
         break;
+      
+      case "invalid":
+        embed.setColor(colors.red);
+        embed.fields = embed.fields.map((field: EmbedField) => {
+          // update status
+          if (field.name === "Status") 
+            field.value = field.value = this.getStatusUI().replace("%USER%", `<@!${userId}>`)
+          
+          // change until field for a reason field
+          else if (field.name === "Until") {
+            field.value = "Use `/invalidate` to set up a reason!";
+            field.name = "Reason";
+          }
+
+          return field;
+        })
+        components = [submissionsButtons];
+        break;
 
       default:
         break; // todo
     }
 
-    await message.edit({ embeds: [embed], files: [...message.attachments.values()], components: [...components] })
+    console.log(message.attachments.values());
+    await message.edit({ embeds: [embed], components: [...components] })
     return;
   }
 
   public async postSubmissionMessage(client: Client, baseMessage: Message, file: MessageAttachment, texture: any): Promise<void> {
-    const [embed, files] = await this.makeSubmissionMessage(baseMessage, file, texture);
+    const embed = await this.makeSubmissionMessage(baseMessage, file, texture);
     const submissionMessage: Message = await baseMessage.channel.send({
       embeds: [embed],
-      files: [...files],
       components: [submissionButtonsClosed, submissionButtonsVotes]
     })
 
@@ -187,7 +205,7 @@ export class Submission {
     client.submissions.set(this.id, this);
   }
 
-  public async makeSubmissionMessage(baseMessage: Message, file: MessageAttachment, texture: any): Promise<[MessageEmbed, Array<MessageAttachment>]> {
+  public async makeSubmissionMessage(baseMessage: Message, file: MessageAttachment, texture: any): Promise<MessageEmbed> {
     const files: Array<MessageAttachment> = [];
     const mentions = [
       ...new Set([...Array.from(baseMessage.mentions.users.values()), baseMessage.author].map((user) => user.id)),
@@ -206,7 +224,6 @@ export class Submission {
       .addField("Votes", this.getVotesUI().join(',\n'))
       .addField("Status", this.getStatusUI())
       .addField("Until", `<t:${this.getTimeout()}>`, true)
-      .setThumbnail("attachment://magnified.png")
       .setFooter({ text: `${this.id} | ${baseMessage.author.id}` }); // used to authenticate the submitter (for message deletion)
 
     // add description if there is one
@@ -216,7 +233,7 @@ export class Submission {
     let channel: TextChannel;
     try {
       channel = await baseMessage.client.channels.fetch("946432206530826240") as any;
-    } catch { return; } // can't fetch channel
+    } catch { return embed; } // can't fetch channel
 
     let url: string = "https://raw.githubusercontent.com/Compliance-Resource-Pack/App/main/resources/transparency.png";
     try {
@@ -232,7 +249,13 @@ export class Submission {
 
     // set submitted texture in image
     embed.setImage(files[0].url);
+    embed.setThumbnail(files[1].url);
 
-    return [embed, files];
+    return embed;
+  }
+
+  public async createContribution() {
+    // todo: ADD CONTRIBUTION CREATION TROUGH API & COMMIT FILE TO GITHUB (ALL BRANCHES + CORRESPONDING REPO)
+
   }
 }

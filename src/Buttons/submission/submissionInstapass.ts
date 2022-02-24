@@ -23,9 +23,10 @@ export const button: Button = {
 		// get submission, update it, delete it (no needs to keep it in memory since it has ended the submission process)
 		const sid: string = embed.footer.text.split(" | ")[0];
 		const submission: Submission = new Submission(client.submissions.get(sid));
-		submission
-			.setStatus("instapassed")
-			.updateSubmissionMessage(client, interaction.user.id);
+		
+		submission.setStatus("instapassed");
+		await submission.updateSubmissionMessage(client, interaction.user.id);
+		await submission.createContribution();
 		
 		client.submissions.delete(sid);
 
@@ -34,7 +35,5 @@ export const button: Button = {
 		} catch (err) {
 			console.error(err);
 		}
-
-    // todo: ADD CONTRIBUTION CREATION TROUGH API & COMMIT FILE TO GITHUB (ALL BRANCHES + CORRESPONDING REPO)
   }
 }

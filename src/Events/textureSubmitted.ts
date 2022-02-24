@@ -13,7 +13,7 @@ export const event: Event = {
 
 		if (client.verbose) console.log(`${info}Texture submitted!`);
 
-		if (message.attachments.size === 0) return message.warn("No images were attached!", true);
+		if (message.attachments.size === 0) return message.warn("No images/zip files were attached!", true);
 
 		let files: Array<MessageAttachment> = [];
 		const currAttch = [...message.attachments.values()];
