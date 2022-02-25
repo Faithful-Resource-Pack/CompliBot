@@ -1,20 +1,21 @@
 import { magnifyAttachment } from "@functions/canvas/magnify";
 import { minecraftSorter } from "@functions/minecraftSorter";
-import { submissionButtonsClosed, submissionButtonsVotes, submissionsButtons } from "@helpers/buttons";
+import { submissionButtonsClosed, submissionButtonsVotes, submissionButtonsVotesCouncil, submissionsButtons } from "@helpers/buttons";
 import { addMinutes } from "@helpers/dates";
 import { ids, parseId } from "@helpers/emojis";
 import { Client, Message, MessageEmbed } from "@src/Extended Discord";
-import { DMChannel, EmbedField, MessageActionRow, MessageAttachment, NewsChannel, PartialDMChannel, TextChannel, ThreadChannel } from "discord.js";
+import { AnyChannel, DMChannel, EmbedField, MessageActionRow, MessageAttachment, NewsChannel, PartialDMChannel, TextChannel, ThreadChannel } from "discord.js";
 import axios from "axios";
 import { colors } from "@helpers/colors";
 
-export interface Votes {
-  upvotes: Array<string>, 
-  downvotes: Array<string>
-}
+export type VotesT = "upvote" | "downvote";
+export type Votes = {
+  [key in VotesT]: Array<string>;
+};
 
 // where "in" & "out" are both at the ends of the process but "in" -> go to the pack, "out" -> not enough votes
-export type SubmissionStatus = "pending" | "invalid" | "instapassed" | "council" | "in" | "out";
+export type SubmissionStatusCouncilPing = "council" | "denied" | "invalid";
+export type SubmissionStatus = "pending" | "instapassed" | "added" | "no_council" | SubmissionStatusCouncilPing;
 
 export class Submission {
   readonly id: string;
@@ -29,12 +30,13 @@ export class Submission {
     if (!data) {
       this.id = new Date().getTime().toString();
       this.votes = {
-        upvotes: [],
-        downvotes: []
+        upvote: [],
+        downvote: []
       }
       // current time + 3d
-      this.setTimeout(parseInt((addMinutes(new Date(), 4320).getTime() / 1000).toFixed(0), 10));
-      this.setStatus("pending");
+      // this.setTimeout(addMinutes(new Date(), 4320));
+      this.setTimeout(addMinutes(new Date(), 1));
+      this.status = "pending";
     }
 
     // copy
@@ -50,23 +52,23 @@ export class Submission {
   }
 
   public getVotes(): [number, number] {
-    return [this.votes.upvotes.length, this.votes.downvotes.length];
+    return [this.votes.upvote.length, this.votes.downvote.length];
   }
   public getVotesUI(): [string, string] {
     let [u, d] = this.getVotes();
     return [
-      `${parseId(ids.upvote)} ${u} Upvotes`,
-      `${parseId(ids.downvote)} ${d} Downvotes`,
+      `${parseId(ids.upvote)} ${u} Upvote${u > 1 ? "s" : ""}`,
+      `${parseId(ids.downvote)} ${d} Downvote${d > 1 ? "s" : ""}`,
     ]
     
   }
 
-  public addUpvote(id: string): this { return this.addVote("upvotes", id); }
-  public addDownvote(id: string): this { return this.addVote("downvotes", id); }
-  private addVote(type: string, id: string): this {
+  public addUpvote(id: string): this { return this.addVote("upvote", id); }
+  public addDownvote(id: string): this { return this.addVote("downvote", id); }
+  private addVote(type: VotesT, id: string): this {
     // the user can only vote for one side
-    if (this.votes.upvotes.includes(id)) this.removeUpvote(id);
-    if (this.votes.downvotes.includes(id)) this.removeDownvote(id);
+    if (this.votes.upvote.includes(id)) this.removeUpvote(id);
+    if (this.votes.downvote.includes(id)) this.removeDownvote(id);
     
     this.votes[type].push(id);
 
@@ -75,8 +77,16 @@ export class Submission {
 
   public removeUpvote(id: string): this { return this.removeVote("upvote", id); }
   public removeDownvote(id: string): this { return this.removeVote("downvote", id); }
-  private removeVote(type: string, id: string): this {
+  private removeVote(type: VotesT, id: string): this {
     if (this.votes[type].includes(id)) this.votes[type].splice(this.votes[type].indexOf(id), 1);
+    return this;
+  }
+
+  public voidVotes(): this {
+    this.votes = {
+      upvote: [],
+      downvote: []
+    }
     return this;
   }
 
@@ -106,8 +116,38 @@ export class Submission {
   public getStatus(): SubmissionStatus {
     return this.status;
   }
-  public setStatus(status: SubmissionStatus): this {
+  public setStatus(status: SubmissionStatus, client: Client): this {
     this.status = status;
+
+    let channel: TextChannel;
+
+    // send message to inform council members
+    switch (status) {
+      case "council":
+      case "denied":
+      case "invalid":
+        client.channels.fetch(Object.values(client.config.submissions).filter(c => c.submit === this.channelId)[0].council)
+          .then((channel: TextChannel) => {
+            const embed: MessageEmbed = new MessageEmbed()
+              .setTitle(`A texture is ${status === "council" ? `in ${status}` : status}`)
+              .setDescription(`[Submission](https://discord.com/channels/${channel.guildId}/${this.channelId}/${this.messageId})\n${
+                status === "council" ? "Please, proceed to vote!" : `Please, give a reason for the ${status === "denied" ? "deny" : "invalidation"}.`
+              }`)
+
+            channel.send({ embeds: [embed] })
+              .then((message: Message) => {
+                if (status === "council") message.startThread({ name: "Debate about that texture!" });
+              })
+          })
+          .catch(null); // channel can't be fetched
+        
+        break;
+        
+      default:
+        break;
+    }
+
+
     return this;
   }
 
@@ -117,24 +157,31 @@ export class Submission {
         return `${parseId(ids.pending)} Waiting for council votes...`;
       case "instapassed":
         return `${parseId(ids.instapass)} Instapassed by %USER%`;
-      case "in":
+      case "added":
         return `${parseId(ids.upvote)} This textures will be added in a future version!`;
       case "invalid":
         return `${parseId(ids.invalid)} Invalidated by %USER%`;
-      case "out": 
+      case "denied": 
         return `${parseId(ids.downvote)} This texture won't be added.`
       case "pending":
         return `${parseId(ids.pending)} Waiting for votes...`
+      case "no_council":
+        return `${parseId(ids.downvote)} Not enough votes to go to council!`
       default:
         return "Unknown status"
     }
   }
 
+  public isTimeout(): boolean {
+    if (this.getTimeout() < (new Date().getTime() / 1000)) return true;
+    return false;
+  }
+
   public getTimeout(): number {
     return this.timeout;
   }
-  public setTimeout(timeout: number): this {
-    this.timeout = timeout;
+  public setTimeout(date: Date): this {
+    this.timeout = parseInt((date.getTime() / 1000).toFixed(0));
     return this;
   }
 
@@ -154,6 +201,33 @@ export class Submission {
     let components: Array<MessageActionRow> = message.components;
 
     switch (this.getStatus()) {
+      case "no_council":
+      case "added":
+        embed.setColor(this.getStatus() === "added" ? colors.green : colors.black);
+        embed.fields = embed.fields.map((field: EmbedField) => {
+          if (field.name === "Status")
+            field.value = this.getStatusUI();
+
+          return field
+        });
+        // remove until field
+        embed.fields = embed.fields.filter((field: EmbedField) => field.name !== "Until");
+        components = [submissionsButtons];
+        break;
+
+      case "council":
+
+        embed.setColor(colors.council);
+        embed.fields = embed.fields.map((field: EmbedField) => {
+          if (field.name === "Status") field.value = this.getStatusUI();
+          if (field.name === "Until") field.value = `<t:${this.getTimeout()}>`;
+          if (field.name === "Votes") field.value =  this.getVotesUI().join(',\n');
+          return field;
+        })
+
+        components = [submissionButtonsClosed, submissionButtonsVotesCouncil];
+        break;
+
       case "instapassed":
         embed.setColor(colors.yellow);
         // update status
@@ -166,16 +240,17 @@ export class Submission {
         components = [submissionsButtons];
         break;
       
+      case "denied":
       case "invalid":
-        embed.setColor(colors.red);
+        embed.setColor(this.getStatus() === "denied" ? colors.black : colors.red);
         embed.fields = embed.fields.map((field: EmbedField) => {
           // update status
           if (field.name === "Status") 
-            field.value = field.value = this.getStatusUI().replace("%USER%", `<@!${userId}>`)
+            field.value = this.getStatusUI().replace("%USER%", `<@!${userId}>`);
           
           // change until field for a reason field
           else if (field.name === "Until") {
-            field.value = "Use `/invalidate` to set up a reason!";
+            field.value = "Use `/reason` to set up a reason!";
             field.name = "Reason";
           }
 
@@ -184,11 +259,16 @@ export class Submission {
         components = [submissionsButtons];
         break;
 
+      case "pending":
       default:
-        break; // todo
+        break; // nothing
     }
 
-    console.log(message.attachments.values());
+    // always update votes
+    embed.fields = embed.fields.map((field: EmbedField) => {
+      field.value = field.name === "Votes" ? field.value =  this.getVotesUI().join(',\n') : field.value;
+      return field;
+    })
     await message.edit({ embeds: [embed], components: [...components] })
     return;
   }
@@ -218,7 +298,7 @@ export class Submission {
       .addField("Contributor(s)", `<@!${mentions.join(">\n<@!")}>`, true)
       .addField(
         "Resource Pack",
-        `\`${Object.keys((baseMessage.client as Client).config.submitChannels).filter((key) => (baseMessage.client as Client).config.submitChannels[key] === baseMessage.channel.id)[0]}\``,
+        `\`${Object.keys((baseMessage.client as Client).config.submissions).filter((pack) => (baseMessage.client as Client).config.submissions[pack].submit === baseMessage.channel.id)[0]}\``,
         true,
       )
       .addField("Votes", this.getVotesUI().join(',\n'))

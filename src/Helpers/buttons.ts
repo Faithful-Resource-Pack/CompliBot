@@ -45,12 +45,18 @@ export const upvote = new MessageButton()
 	.setStyle("SUCCESS")
 	.setEmoji(parseId(ids.upvote))
 	.setCustomId("submissionUpvote")
-	.setDisabled(true); // todo enable once it's done
 export const downvote = new MessageButton()
 	.setStyle("DANGER")
 	.setEmoji(parseId(ids.downvote))
 	.setCustomId("submissionDownvote")
-	.setDisabled(true); // todo enable once it's done
+export const upvoteCouncil = new MessageButton()
+	.setStyle("SUCCESS")
+	.setEmoji(parseId(ids.upvote))
+	.setCustomId("submissionUpvoteCouncil")
+export const downvoteCouncil = new MessageButton()
+	.setStyle("DANGER")
+	.setEmoji(parseId(ids.downvote))
+	.setCustomId("submissionDownvoteCouncil")
 
 export const imageButtons = new MessageActionRow().addComponents([magnify, tile, palette, compare]);
 export const submissionButtonsOpen = new MessageActionRow().addComponents([
@@ -74,3 +80,4 @@ export const submissionsButtons = new MessageActionRow().addComponents([
 	deleteMessage
 ])
 export const submissionButtonsVotes = new MessageActionRow().addComponents([upvote, downvote]);
+export const submissionButtonsVotesCouncil = new MessageActionRow().addComponents([upvoteCouncil, downvoteCouncil]);

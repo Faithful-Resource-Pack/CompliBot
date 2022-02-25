@@ -24,7 +24,7 @@ export const button: Button = {
 		const sid: string = embed.footer.text.split(" | ")[0];
 		const submission: Submission = new Submission(client.submissions.get(sid));
 		
-		submission.setStatus("invalid");
+		submission.setStatus("invalid", client);
 		await submission.updateSubmissionMessage(client, interaction.user.id);
 
 		client.submissions.delete(sid);

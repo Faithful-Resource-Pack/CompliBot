@@ -59,7 +59,7 @@ class ExtendedClient extends Client {
 				console.log(`${err}${e}`);
 				process.exit(1);
 			})
-			.then(() => {
+			.then(async () => {
 				// commands counter
 				initCommands(this);
 				if (this.verbose) console.log(info + `Initialized command counter`);
@@ -69,7 +69,7 @@ class ExtendedClient extends Client {
 				this.loadCommands();
 				if (this.verbose) console.log(info + `Loaded classical commands`);
 
-				this.loadSlashCommands();
+				await this.loadSlashCommands();
 				if (this.verbose) console.log(info + `Loaded slash commands`);
 
 				this.loadSlashCommandsPerms();
@@ -115,12 +115,10 @@ class ExtendedClient extends Client {
 		// events
 		this.submissions.events.on("dataSet", (key: string, value: Submission) => {
 			this.saveSubmissions();
-			if (this.verbose) console.log(`${info}Submission saved (set)`)
 		})
 
 		this.submissions.events.on("dataDeleted", (key: string) => {
 			this.saveSubmissions();
-			if (this.verbose) console.log(`${info}Submission saved (delete)`)
 		})
 	}
 
@@ -182,7 +180,7 @@ class ExtendedClient extends Client {
 	/**
 	 * SLASH COMMANDS HANDLER
 	 */
-	public loadSlashCommands = () => {
+	public async loadSlashCommands(): Promise<void> {
 		const slashCommandsPath = path.join(__dirname, "..", "Slash Commands");
 
 		readdirSync(slashCommandsPath).forEach(async (dir) => {

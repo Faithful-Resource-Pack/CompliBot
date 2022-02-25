@@ -22,7 +22,7 @@ export const button: Button = {
 				ephemeral: true,
 			});
 
-		if (Object.values(client.config.submitChannels).includes(interaction.channel.id))
+		if (Object.values(client.config.submissions).filter(c => c.submit === interaction.channel.id).length > 0)
 			return interaction.reply({
 				embeds: [new MessageEmbed().setImage(`attachment://${attachment.name}`).setTimestamp()],
 				files: [attachment],

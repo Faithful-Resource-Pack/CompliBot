@@ -67,8 +67,15 @@
         "feedbackBug": "938475927887839243",
         "feedbackSuggestion": "938475860938342440"
     },
-    "submitChannels": {
-        "testServer": "841396215211360296"
+    "submissions": {
+        "testServer": {
+            "submit": "841396215211360296",
+            "council": "946558091929985055"
+        },
+        "compliance32x": {
+            "submit": "",
+            "council": ""
+        }
     },
     "roles": {
         "council": {

@@ -14,18 +14,18 @@ export const command: SlashCommand = {
   },
   data: new SlashCommandBuilder()
 		.setDefaultPermission(false) // disable the command for @everyone (only council can do it)
-    .setName("invalidate")
-    .setDescription("Set reason for submission invalidation!")
+    .setName("reason")
+    .setDescription("Set reason for submission invalidation/deny!")
     .addStringOption(option => 
       option
         .setName("message_id")
-        .setDescription("Submission you want to add a reason.")
+        .setDescription("Submission message ID you want to add a reason.")
         .setRequired(true)
     )
     .addStringOption(option => 
       option
         .setName("reason")
-        .setDescription("Reason of the invalidation.")
+        .setDescription("Reason of the invalidation/deny.")
         .setRequired(true)
     )
     ,

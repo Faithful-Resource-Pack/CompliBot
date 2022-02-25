@@ -1,7 +1,6 @@
+import { Submission } from "@helpers/class/submissions";
+import { addMinutes } from "@helpers/dates";
 import { Client } from "@src/Extended Discord";
-// import { getData } from "@src/Functions/getDataFromJSON";
-// import { Polls } from "@src/Functions/poll";
-// import { setData } from "@src/Functions/setDataToJSON";
 
 export class Automation {
 	private ticking: boolean = true;
@@ -11,24 +10,51 @@ export class Automation {
 		this.client = client;
 	}
 
+	public pause() {
+		this.ticking = !this.ticking;
+	}
+
 	public start() {
 		setInterval(() => {
 			if (!this.ticking) return;
 
-			// todo: add submissions checks here
-			// this.doCheckPolls();
-		}, 1000); // each seconds
+			// submissions check:
+			this.client.submissions.each((s: Submission) => {
+				const submission = new Submission(s); // get methods back
+				
+				if (submission.isTimeout()) {
+					console.log(submission)
+					const [up, down] = submission.getVotes();
+
+					switch (submission.getStatus()) {
+						case "pending":
+							if (up >= down) {
+								submission
+									.setStatus("council", this.client)
+									.voidVotes()
+									// .setTimeout(addMinutes(new Date(), 1440)); // now + 1 day
+									.setTimeout(addMinutes(new Date(), 1));
+								this.client.submissions.set(submission.id, submission)
+							}
+							else {
+								submission.setStatus("no_council", this.client);
+								this.client.submissions.delete(submission.id);
+							}
+
+							submission.updateSubmissionMessage(this.client, null);
+							break;
+					
+						case "council":
+							if (up > down) submission.setStatus("added", this.client).createContribution();
+							else submission.setStatus("denied", this.client);
+
+							submission.updateSubmissionMessage(this.client, null);
+							this.client.submissions.delete(submission.id);
+						default:
+							break;
+					}
+				}
+			})
+		}, 1000); // each second
 	}
-
-	// private doCheckPolls() {
-	// 	let data: JSON = getData({ filename: "polls.json", relative_path: "../json/" });
-
-	// 	for (const [key, poll] of Object.entries(data)) {
-	// 		const p = new Polls(this.client, poll);
-	// 		if (p.checkTimeout()) {
-	// 			delete data[key];
-	// 			setData({ filename: "polls.json", relative_path: "../json/", data: data });
-	// 		}
-	// 	}
-	// }
 }

@@ -9,18 +9,21 @@ export interface Config {
 		vanilla: Repository;
 	};
 	discords: Array<Discord>;
-	submitChannels: { [key: string]: string }; //! deprecated
+	submissions: { [pack: string]: SubmissionChannels };
 	roles: {
-		council: { [key: string]: string };
+		council: { [guild: string]: string };
 	}
 }
 
+interface SubmissionChannels {
+	submit: string;
+	council: string;
+}
 interface Discord {
 	name: string;
 	id: string;
 	channels: {
 		updateMember?: string;
-		submitChannels?: { [key: string]: string }; // to be implemented
 	};
 }
 
