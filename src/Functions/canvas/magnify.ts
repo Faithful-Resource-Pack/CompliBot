@@ -5,7 +5,7 @@ import getMeta from "./getMeta";
 type options = {
 	url: string | Canvas;
 	name?: string;
-	factor?: 32 | 16 | 8 | 4 | 2;
+	factor?: 32 | 16 | 8 | 4 | 2 | 1;
 };
 
 export async function magnifyAttachment(options: options): Promise<MessageAttachment> {
@@ -22,8 +22,8 @@ export async function magnifyAttachment(options: options): Promise<MessageAttach
 			if (surface > 1024) factor = 8; // 32^2px
 			if (surface > 4096) factor = 4; // 64^2px
 			if (surface > 65636) factor = 2; // 512^2px
-			if (surface >= 262144) return null; //no point in magnifying by a scale of 1
-		} else if (surface * factor >= 262144) return null; // if a factor was givven, it checks if it is over 512^2px
+			if (surface >= 262144) factor = 1; //no point in magnifying by a scale of 1
+		} else if (surface * factor >= 262144) return null; // if a factor was given, it checks if it is over 512^2px
 
 		const context = canvas.getContext("2d");
 		context.imageSmoothingEnabled = false;
@@ -46,8 +46,8 @@ export async function magnifyAttachment(options: options): Promise<MessageAttach
 				if (surface > 1024) factor = 8; // 32^2px
 				if (surface > 4096) factor = 4; // 64^2px
 				if (surface > 65636) factor = 2; // 512^2px
-				if (surface >= 262144) return null; //no point in magnifying by a scale of 1
-			} else if (surface * factor >= 262144) return null; // if a factor was givven, it checks if it is over 512^2px
+				if (surface >= 262144) factor = 1;
+			} else if (surface * factor >= 262144) return null; // if a factor was given, it checks if it is over 512^2px
 
 			const width = dimension.width * factor;
 			const height = dimension.height * factor;
