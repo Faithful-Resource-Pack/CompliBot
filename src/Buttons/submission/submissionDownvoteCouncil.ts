@@ -17,7 +17,7 @@ export const button: Button = {
 				ephemeral: true
 			})
 
-		// get submission, update it, delete it (no needs to keep it in memory since it has ended the submission process)
+		// get submission, update it
 		const sid: string = embed.footer.text.split(" | ")[0];
 		const submission: Submission = new Submission(client.submissions.get(sid));
     

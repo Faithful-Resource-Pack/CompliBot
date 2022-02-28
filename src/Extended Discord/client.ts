@@ -20,9 +20,11 @@ import { Submission } from "@helpers/class/submissions";
 import { getData } from "@functions/getDataFromJSON";
 import { EmittingCollection } from "./emittingCollection";
 import { setData } from "@functions/setDataToJSON";
+import { Poll } from "@helpers/class/poll";
 
 const JSON_PATH = "../json";
 const JSON_FOLDER = path.resolve(__dirname, JSON_PATH);
+const POLLS_FILENAME= "polls.json";
 const SUBMISSIONS_FILENAME = "submissions.json";
 const SUBMISSIONS_FILE_PATH = path.resolve(JSON_FOLDER, SUBMISSIONS_FILENAME);
 // const COUNTER_FILE_PATH = path.resolve(JSON_FOLDER, "commandsProcessed.json"); //! NYI
@@ -44,6 +46,7 @@ class ExtendedClient extends Client {
 	public slashCommands: Collection<string, SlashCommand> = new Collection();
 
 	public submissions: EmittingCollection<string, Submission> = new EmittingCollection();
+	public polls: EmittingCollection<string, Poll> = new EmittingCollection();
 
 	public async restart(): Promise<void> {
 		console.log(`${info}restarting bot...`);
@@ -85,7 +88,8 @@ class ExtendedClient extends Client {
 				if (this.verbose) console.log(info + `Loaded select menus`);
 
 				this.loadSubmissions();
-				if (this.verbose) console.log(info + `Loaded submissions data`);
+				this.loadPolls();
+				if (this.verbose) console.log(info + `Loaded submissions & polls data`);
 
 				this.automation.start();
 				if (this.verbose) console.log(info + `Started automated functions`);
@@ -100,6 +104,34 @@ class ExtendedClient extends Client {
 				if (errorEvents.includes(eventType)) errorHandler(this, args[0], eventType);
 			});
 		})
+	}
+
+	/**
+	 * SUBMISSIONS DATA
+	 */
+	public loadPolls = async () => {
+		// read file and load it into the collection
+		const submissionsObj = getData({ filename: POLLS_FILENAME, relative_path: JSON_PATH })
+		Object.values(submissionsObj).forEach((poll: Poll) => {
+			this.polls.set(poll.id, poll);
+		})
+
+		// events
+		this.polls.events.on("dataSet", (key: string, value: Submission) => {
+			this.savePolls();
+		})
+
+		this.polls.events.on("dataDeleted", (key: string) => {
+			this.savePolls();
+		})
+	}
+	
+	public savePolls = async () => {
+		let data = {};
+		[...this.polls.values()].forEach((poll: Poll) => {
+			data[poll.id] = poll; 
+		})
+		setData({ filename: POLLS_FILENAME, relative_path: JSON_PATH, data: JSON.parse(JSON.stringify(data)) });
 	}
 
 	/**

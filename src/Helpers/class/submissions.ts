@@ -4,135 +4,45 @@ import { submissionButtonsClosed, submissionButtonsVotes, submissionButtonsVotes
 import { addMinutes } from "@helpers/dates";
 import { ids, parseId } from "@helpers/emojis";
 import { Client, Message, MessageEmbed } from "@src/Extended Discord";
-import { AnyChannel, DMChannel, EmbedField, MessageActionRow, MessageAttachment, NewsChannel, PartialDMChannel, TextChannel, ThreadChannel } from "discord.js";
+import { EmbedField, MessageActionRow, MessageAttachment, TextChannel } from "discord.js";
 import axios from "axios";
 import { colors } from "@helpers/colors";
-
-export type VotesT = "upvote" | "downvote";
-export type Votes = {
-  [key in VotesT]: Array<string>;
-};
+import { BaseStatus, TimedEmbed } from "./timedEmbed";
 
 // where "in" & "out" are both at the ends of the process but "in" -> go to the pack, "out" -> not enough votes
-export type SubmissionStatusCouncilPing = "council" | "denied" | "invalid";
-export type SubmissionStatus = "pending" | "instapassed" | "added" | "no_council" | SubmissionStatusCouncilPing;
+export type SubmissionStatus = BaseStatus | "instapassed" | "added" | "no_council" | "council" | "denied" | "invalid";
 
-export class Submission {
-  readonly id: string;
-  private messageId: string;
-  private channelId: string;
-  private votes: Votes;
-  private status: SubmissionStatus = "pending";
-  private timeout: number; // used for end of events (pending until...)
-
+export class Submission extends TimedEmbed {
   constructor(data?: Submission) {
+    super(data);
+
     // new
-    if (!data) {
-      this.id = new Date().getTime().toString();
-      this.votes = {
-        upvote: [],
-        downvote: []
-      }
-      // current time + 3d
-      // this.setTimeout(addMinutes(new Date(), 4320));
-      this.setTimeout(addMinutes(new Date(), 1));
-      this.status = "pending";
-    }
-
-    // copy
-    else {
-      const s: Submission = data;
-      this.id = s.id;
-      this.messageId = s.messageId;
-      this.channelId = s.channelId;
-      this.votes = s.votes;
-      this.status = s.status;
-      this.timeout = s.timeout;
-    }
+    // if (!data) this.setTimeout(addMinutes(new Date(), 4320));
+    if (!data) this.setTimeout(addMinutes(new Date(), 1));
   }
 
-  public getVotes(): [number, number] {
-    return [this.votes.upvote.length, this.votes.downvote.length];
-  }
-  public getVotesUI(): [string, string] {
-    let [u, d] = this.getVotes();
-    return [
-      `${parseId(ids.upvote)} ${u} Upvote${u > 1 ? "s" : ""}`,
-      `${parseId(ids.downvote)} ${d} Downvote${d > 1 ? "s" : ""}`,
-    ]
-    
-  }
-
-  public addUpvote(id: string): this { return this.addVote("upvote", id); }
-  public addDownvote(id: string): this { return this.addVote("downvote", id); }
-  private addVote(type: VotesT, id: string): this {
-    // the user can only vote for one side
-    if (this.votes.upvote.includes(id)) this.removeUpvote(id);
-    if (this.votes.downvote.includes(id)) this.removeDownvote(id);
-    
-    this.votes[type].push(id);
-
-    return this;
-  }
-
-  public removeUpvote(id: string): this { return this.removeVote("upvote", id); }
-  public removeDownvote(id: string): this { return this.removeVote("downvote", id); }
-  private removeVote(type: VotesT, id: string): this {
-    if (this.votes[type].includes(id)) this.votes[type].splice(this.votes[type].indexOf(id), 1);
-    return this;
-  }
-
-  public voidVotes(): this {
-    this.votes = {
-      upvote: [],
-      downvote: []
-    }
-    return this;
-  }
-
-
-  public getMessageId(): string {
-    return this.messageId;
-  }
-  public setMessageId(message: string): this
-  public setMessageId(message: Message): this 
-  public setMessageId(message: any) {
-    if (message.id) this.messageId = message.id; // object
-    else this.messageId = message; // string
-    return this;
-  }
-
-  public getChannelId(): string {
-    return this.channelId;
-  }
-  public setChannelId(channel: string): this
-  public setChannelId(channel: TextChannel): this 
-  public setChannelId(channel: any) {
-    if (channel.id) this.channelId = channel.id; // object
-    else this.channelId = channel; // string
-    return this;
-  }
-
-  public getStatus(): SubmissionStatus {
-    return this.status;
-  }
   public setStatus(status: SubmissionStatus, client: Client): this {
-    this.status = status;
-
-    let channel: TextChannel;
+    super.setStatus(status);
 
     // send message to inform council members
     switch (status) {
       case "council":
       case "denied":
       case "invalid":
-        client.channels.fetch(Object.values(client.config.submissions).filter(c => c.submit === this.channelId)[0].council)
+        client.channels.fetch(Object.values(client.config.submissions).filter(c => c.submit === this.getChannelId())[0].council)
           .then((channel: TextChannel) => {
+            const [up, down] = this.getVotesCount();
+            const [upvoters, downvoters] = this.getVotes();
+
             const embed: MessageEmbed = new MessageEmbed()
               .setTitle(`A texture is ${status === "council" ? `in ${status}` : status}`)
-              .setDescription(`[Submission](https://discord.com/channels/${channel.guildId}/${this.channelId}/${this.messageId})\n${
-                status === "council" ? "Please, proceed to vote!" : `Please, give a reason for the ${status === "denied" ? "deny" : "invalidation"}.`
-              }`)
+              .setURL(`https://discord.com/channels/${channel.guildId}/${this.getChannelId()}/${this.getMessageId()}`)
+              .setDescription(`${status === "council" ? "Please, vote here!" : `Please, give a reason for ${status === "denied" ? "denying" : "invalidating"} the texture.`}`)
+            
+            if (status === "council") embed.addFields(
+                { name: "Upvotes", value: `${parseId(ids.upvote)} ${up > 0 ? `<@!${upvoters.join('>,\n<@!')}>` : "None"}` },
+                { name: "Downvotes", value: `${parseId(ids.downvote)} ${down > 0 ? `<@!${downvoters.join('>,\n<@!')}>` : "None"}` }
+              )
 
             channel.send({ embeds: [embed] })
               .then((message: Message) => {
@@ -141,14 +51,23 @@ export class Submission {
           })
           .catch(null); // channel can't be fetched
         
+          this.voidVotes()
         break;
         
       default:
         break;
     }
 
-
     return this;
+  }
+  
+  public getVotesUI(): [string, string] {
+    let votes = this.getVotesCount();
+    return [
+      `${parseId(ids.upvote)} ${votes[0]} Upvote${votes[0] > 1 ? "s" : ""}`,
+      `${parseId(ids.downvote)} ${votes[1]} Downvote${votes[1] > 1 ? "s" : ""}`,
+    ]
+    
   }
 
   public getStatusUI(): string {
@@ -162,28 +81,16 @@ export class Submission {
       case "invalid":
         return `${parseId(ids.invalid)} Invalidated by %USER%`;
       case "denied": 
-        return `${parseId(ids.downvote)} This texture won't be added.`
+        return `${parseId(ids.downvote)} This texture won't be added.`;
       case "pending":
-        return `${parseId(ids.pending)} Waiting for votes...`
+        return `${parseId(ids.pending)} Waiting for votes...`;
       case "no_council":
-        return `${parseId(ids.downvote)} Not enough votes to go to council!`
+        return `${parseId(ids.downvote)} Not enough votes to go to council!`;
       default:
-        return "Unknown status"
+        return super.getStatusUI();
     }
   }
 
-  public isTimeout(): boolean {
-    if (this.getTimeout() < (new Date().getTime() / 1000)) return true;
-    return false;
-  }
-
-  public getTimeout(): number {
-    return this.timeout;
-  }
-  public setTimeout(date: Date): this {
-    this.timeout = parseInt((date.getTime() / 1000).toFixed(0));
-    return this;
-  }
 
   public async updateSubmissionMessage(client: Client, userId: string): Promise<void> {
     let channel: TextChannel;
@@ -195,6 +102,7 @@ export class Submission {
       message = await channel.messages.fetch(this.getMessageId());
     } catch {
       // message / channel can't be fetched
+      return;
     }
 
     const embed: MessageEmbed = new MessageEmbed(message.embeds[0]);
@@ -273,7 +181,7 @@ export class Submission {
     return;
   }
 
-  public async postSubmissionMessage(client: Client, baseMessage: Message, file: MessageAttachment, texture: any): Promise<void> {
+  public async postSubmissionMessage(client: Client, baseMessage: Message, file: MessageAttachment, texture: any): Promise<Message> {
     const embed = await this.makeSubmissionMessage(baseMessage, file, texture);
     const submissionMessage: Message = await baseMessage.channel.send({
       embeds: [embed],
@@ -283,6 +191,8 @@ export class Submission {
     this.setChannelId(baseMessage.channel.id);
     this.setMessageId(submissionMessage);
     client.submissions.set(this.id, this);
+    
+    return submissionMessage; 
   }
 
   public async makeSubmissionMessage(baseMessage: Message, file: MessageAttachment, texture: any): Promise<MessageEmbed> {
@@ -335,6 +245,7 @@ export class Submission {
   }
 
   public async createContribution() {
+    //! use the API here!!
     // todo: ADD CONTRIBUTION CREATION TROUGH API & COMMIT FILE TO GITHUB (ALL BRANCHES + CORRESPONDING REPO)
 
   }

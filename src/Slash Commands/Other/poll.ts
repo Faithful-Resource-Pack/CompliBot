@@ -3,13 +3,14 @@ import { Client, MessageEmbed } from "@src/Extended Discord";
 import { CommandInteraction, Message, TextChannel } from "discord.js";
 import { SlashCommand } from "@src/Interfaces/slashCommand";
 import { SlashCommandBuilder } from "@discordjs/builders";
-// import { ids, parseId } from "@src/Helpers/emojis";
-// import { Polls } from "@src/Functions/poll";
+import { Poll } from "@helpers/class/poll";
+import { addMinutes } from "@helpers/dates";
+import { ids, parseId } from "@helpers/emojis";
+import { EmbedField } from "slash-commands";
 
 export const command: SlashCommand = {
 	permissions: undefined,
 	data: new SlashCommandBuilder()
-		.setDefaultPermission(false) //! disabled the command for @everyone
 		.setName("poll")
 		.setDescription("You want to ask something?")
 		.addStringOption((option) =>
@@ -24,95 +25,81 @@ export const command: SlashCommand = {
 		.addBooleanOption((option) =>
 			option.setName("yesno").setDescription("Did you want YES/NO format? Only works if 2 answers are provided."),
 		)
-		.addBooleanOption((option) =>
-			option.setName("multiple").setDescription("If set to true, the user would be able to choose multiple answers."),
-		),
+		.addStringOption((option) =>
+			option.setName("description").setDescription("Add more information about your poll here!."),
+		)
+		,
 	execute: async (interaction: CommandInteraction, client: Client) => {
-		interaction.reply({ content: "This command isn't finished yet.", ephemeral: true });
+		const timeoutVal: number | null = interaction.options.getNumber("timeout", false);
+		const _answersCount: number =  interaction.options.getNumber("answers", true);
+		const yesno: boolean = interaction.options.getBoolean("yesno", false) === true ? true : false;
+		const question: string = interaction.options.getString("question", true);
+		const thread: boolean = interaction.options.getBoolean("thread", false) === true ? true : false;
+		const description: string = interaction.options.getString("description", false);
+		const anonymous: boolean = interaction.options.getBoolean("anonymous", false) === true ? true : false;
+		const answersCount: number = yesno ? 2 : (_answersCount > 5 ? 5 : (_answersCount < 2 ? 2 : _answersCount)) ;
 
-		return;
-		// todo: finish this using API & uncreated yet poll collection
+		// instantiate a new poll
+		const poll = new Poll();
+		
+		// setup timeout
+		if (timeoutVal !== null) poll.setTimeout(addMinutes(new Date, timeoutVal));
+		else poll.setTimeout(0);
 
-		// /* params */
-		// const _a: number = interaction.options.getNumber("answers", true);
-		// const answers: number | 2 = _a > 2 ? (_a > 5 ? 5 : _a) : 2;
-		// const question: string = interaction.options.getString("question", true);
-		// const yesno: boolean = interaction.options.getBoolean("yesno", false) === true && answers === 2 ? true : false;
-		// const _t: number | null = interaction.options.getNumber("timeout", false);
-		// const timeout: number | null = _t > 0 ? _t : null;
-		// const endsAt: number | null = timeout === null ? null : new Date().getTime() + timeout * 60000;
-		// const thread: boolean = interaction.options.getBoolean("thread", false) === true ? true : false;
-		// const anonymous: boolean = interaction.options.getBoolean("anonymous", false) === true ? true : false;
-		// const multiple: boolean = interaction.options.getBoolean("multiple", false);
-		// const poll = new Polls(client);
+		/* default embed */
+		const embed = new MessageEmbed()
+			.setTitle("Poll constructor:")
+			.setDescription(`Please send a message below for each ${answersCount} answers:`)
+			.setFooter({ text: "use /poll to make a poll!" });
 
-		// /* default embed */
-		// const embed = new MessageEmbed()
-		// 	.setTitle("Poll constructor:")
-		// 	.setDescription(`Please send a message below for each ${answers} answers:`)
-		// 	.setFooter({ text: poll._footer });
+		interaction.reply({ embeds: [embed] });
 
-		// interaction.reply({ embeds: [embed] });
+		/* watching for message with answers */
+		const filter = (m) => m.author.id === interaction.member.user.id;
 
-		// /* watching for message with answers */
-		// const filter = (m) => m.author.id === interaction.member.user.id;
-		// let answersArr: Array<string> = [];
-		// let response: any;
-		// do {
-		// 	try {
-		// 		const collected = await interaction.channel.awaitMessages({ filter, max: 1, time: 30000, errors: ["time"] });
-		// 		answersArr.push(collected.first().content);
-		// 		try {
-		// 			collected.first().delete();
-		// 		} catch (_err) {
-		// 			/* message can't be deleted */
-		// 		}
-		// 	} catch (err) {
-		// 		answersArr.push(err);
-		// 	}
+		let answersArr: Array<string> = [];
+		let response: any;
+		const yesnoEmojis: Array<string> = [parseId(ids.upvote), parseId(ids.downvote)];
+		const numberEmojis: Array<string> = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"];
+		embed.addField("Answers", "None", true);
+		do {
+			try {
+				const collected = await interaction.channel.awaitMessages({ filter, max: 1, time: 30000, errors: ["time"] });
+				answersArr.push(collected.first().content);
+				try {
+					collected.first().delete();
+				} catch (_err) {
+					/* message can't be deleted */
+				}
+			} catch (err) {
+				answersArr.push(err);
+			}
 
-		// 	embed.setDescription(
-		// 		`Waiting for answers... ${answers - answersArr.length} left.\n\n**Answers:**\n${answersArr
-		// 			.map((el) => `- ${el}`)
-		// 			.join("\n")}`,
-		// 	);
-		// 	response = await interaction.editReply({ embeds: [embed] });
-		// } while (answersArr.length < answers);
+			embed.setDescription(`Waiting for answers... ${answersCount - answersArr.length} left.`)
+			embed.setFields(embed.fields.map((field: EmbedField) => {
+				if (field.name === "Answers") field.value = answersArr
+					.map((answer: string, index: number) => `${yesno ? yesnoEmojis[index] : numberEmojis[index]} ${answer}`)
+					.join('\n');
+				return field;
+			}));
+			
+			response = await interaction.editReply({ embeds: [embed] });
+		} while (answersArr.length < answersCount);
 
-		// /* building embed with all answers */
-		// const yesnoEmojis: Array<string> = [parseId(ids.upvote), parseId(ids.downvote)];
-		// const numberEmojis: Array<string> = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"];
+    if (description) embed.setDescription(description);
+		else embed.description = null;
+		
+		poll.setAnonymous(anonymous);
+		poll.postSubmissionMessage(interaction, embed, {
+			question,
+			yesno,
+			answersArr
+		})
 
-		// embed.setTitle(question);
-		// embed.setDescription(
-		// 	answersArr.map((el, index) => `${yesno ? yesnoEmojis[index] : numberEmojis[index]} ${el}`).join("\n"),
-		// );
-		// if (timeout) embed.addField(poll._field, `<t:${(endsAt / 1000).toFixed(0)}:R>`, true);
+		console.log(poll);
 
-		// await interaction.editReply({ embeds: [embed] });
-
-		// /* add it to local data if so */
-		// poll
-		// 	.setChannel(response.channelId)
-		// 	.setGuild(response.guildId)
-		// 	.setMessage(response.id)
-		// 	.setTimeout(timeout == null ? null : endsAt)
-		// 	// .setMultipleVote() // todo
-		// 	.addPoll();
-
-		// /* add reactions */
-		// if (yesno) {
-		// 	response.react(ids.upvote);
-		// 	response.react(ids.downvote);
-		// } else
-		// 	answersArr.forEach(async (_el, index) => {
-		// 		try {
-		// 			await (response as Message).react(numberEmojis[index]);
-		// 		} catch (_e) {}
-		// 	});
-
-		// /* create thread if true */
-		// if (thread)
-		// 	(response.channel as TextChannel).threads.create({ name: question, reason: "Discuss about that poll here!" });
+		/* create thread if true */
+		if (thread)
+			(interaction.channel as TextChannel).threads.create({ name: `Debate: ${question}`, reason: "Discuss about that poll here!" });
 	},
 };

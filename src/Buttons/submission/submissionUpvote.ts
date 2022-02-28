@@ -8,7 +8,7 @@ export const button: Button = {
     const message: Message = interaction.message as Message;
     const embed: MessageEmbed = message.embeds[0];
 
-		// get submission, update it, delete it (no needs to keep it in memory since it has ended the submission process)
+		// get submission, update it
 		const sid: string = embed.footer.text.split(" | ")[0];
 		const submission: Submission = new Submission(client.submissions.get(sid));
     
