@@ -25,23 +25,11 @@ export class Automation {
 				const submission = new Submission(s); // get methods back
 				
 				if (submission.isTimeout()) {
-					console.log(submission)
 					const [up, down] = submission.getVotesCount();
 					const [upvoters, downvoters] = submission.getVotes();
 
 					switch (submission.getStatus()) {
 						case "pending":
-							if (up >= down) {
-								submission
-									.setStatus("council", this.client)
-									// .setTimeout(addMinutes(new Date(), 1440)); // now + 1 day
-									.setTimeout(addMinutes(new Date(), 1));
-								this.client.submissions.set(submission.id, submission)
-							}
-							else {
-								submission.setStatus("no_council", this.client);
-								this.client.submissions.delete(submission.id);
-							}
 							
 							let channel: TextChannel;
 							let message: Message;
@@ -67,6 +55,17 @@ export class Automation {
 										.catch(null); // DM closed
 								})
 								.catch(null);
+								
+							if (up >= down) {
+								submission
+									.setStatus("council", this.client)
+									.setTimeout(addMinutes(new Date(), 1440)); // now + 1 day
+								this.client.submissions.set(submission.id, submission)
+							}
+							else {
+								submission.setStatus("no_council", this.client);
+								this.client.submissions.delete(submission.id);
+							}
 
 							submission.updateSubmissionMessage(this.client, null);
 							break;

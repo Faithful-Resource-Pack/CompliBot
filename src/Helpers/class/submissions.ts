@@ -48,10 +48,10 @@ export class Submission extends TimedEmbed {
               .then((message: Message) => {
                 if (status === "council") message.startThread({ name: "Debate about that texture!" });
               })
+              
+            this.voidVotes()
           })
           .catch(null); // channel can't be fetched
-        
-          this.voidVotes()
         break;
         
       default:

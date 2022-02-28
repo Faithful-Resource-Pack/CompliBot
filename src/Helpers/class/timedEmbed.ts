@@ -23,6 +23,7 @@ export class TimedEmbed {
   constructor(data?: TimedEmbed) {
     if (!data) {
       this.id = new Date().getTime().toString();
+      this.setVotes({ upvote: [], downvote: [] });
     }
 
     else {
