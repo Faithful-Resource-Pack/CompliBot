@@ -28,6 +28,7 @@ export async function checkImage(message: Message): Promise<string> {
 export interface slashCommandImageOptions {
 	interaction: CommandInteraction;
 	limit: number;
+	isResponse?: boolean;
 	response: {
 		title: string;
 		url: string;
@@ -37,54 +38,14 @@ export interface slashCommandImageOptions {
 	};
 }
 
-export async function slashCommandImage(options: slashCommandImageOptions) {
-	// defer reply as those commands take longer than 3 seconds
-	await options.interaction.deferReply();
-
+async function slashCommandImageResponse(options: slashCommandImageOptions, message: Message) {
 	let imageURL: string = null;
-	let isResponse: boolean = false;
-
-	let message: Message;
-	const messages = await options.interaction.channel.messages.fetch({ limit: options.limit });
-
-	message = messages
-		.sort((a, b) => b.createdTimestamp - a.createdTimestamp)
-		.filter(
-			(m) =>
-				(m.attachments.size > 0 && (m.attachments.first().url.match(/\.(jpeg|jpg|png|webp)$/) as any)) ||
-				(m.embeds[0] !== undefined && (m.embeds[0].thumbnail !== null || m.embeds[0].image !== null)),
-		)
-		.first();
-
-	// no valid message in the X last messages
-	if (message === undefined) {
-		const embed = new MessageEmbed()
-			.setTitle(await options.interaction.text({ string: "Command.Images.NotFound.Title" }))
-			.setDescription(
-				(await options.interaction.text({ string: "Command.Images.NotFound" })).replace(
-					"%NUMBER%",
-					options.limit.toString(),
-				),
-			);
-
-		options.interaction.editReply({ embeds: [embed] });
-		const filter = (m: Message) => m.author.id === options.interaction.member.user.id;
-		const collected = await options.interaction.channel.awaitMessages({
-			filter: filter,
-			max: 1,
-			time: 30000,
-			errors: ["time"],
-		});
-
-		message = collected.first();
-		isResponse = true;
-	}
 
 	// get the image from the parent reply (recusivity go brr) or from the present message
 	if (message) imageURL = await checkImage(message);
 
 	// delete response message (when no images were found in last messages)
-	if (isResponse) message.delete();
+	if (options.isResponse) message.delete();
 
 	if (imageURL === null) {
 		options.interaction.deleteReply();
@@ -120,4 +81,53 @@ export async function slashCommandImage(options: slashCommandImageOptions) {
 		.then((message: Message) => {
 			message.deleteButton();
 		});
+}
+
+export async function slashCommandImage(options: slashCommandImageOptions) {
+	// defer reply as those commands take longer than 3 seconds
+	await options.interaction.deferReply();
+
+	let message: Message;
+	const messages = await options.interaction.channel.messages.fetch({ limit: options.limit });
+
+	// get the last message with an image
+	message = messages
+		.sort((a, b) => b.createdTimestamp - a.createdTimestamp)
+		.filter(
+			(m) =>
+				(m.attachments.size > 0 && (m.attachments.first().url.match(/\.(jpeg|jpg|png|webp)$/) as any)) ||
+				(m.embeds[0] !== undefined && (m.embeds[0].thumbnail !== null || m.embeds[0].image !== null)),
+		)
+		.first();
+
+	if (message !== undefined) return slashCommandImageResponse(options, message);
+
+	// no valid message in the X last messages
+	const embed = new MessageEmbed()
+		.setTitle(await options.interaction.text({ string: "Command.Images.NotFound.Title" }))
+		.setDescription(
+			(await options.interaction.text({ string: "Command.Images.NotFound" })).replace(
+				"%NUMBER%",
+				options.limit.toString(),
+			),
+		);
+
+	options.interaction.editReply({ embeds: [embed] });
+	const collector = options.interaction.channel.createMessageCollector({
+		filter: (m: Message) => m.author.id === options.interaction.member.user.id,
+		max: 1,
+		time: 5000,
+	})
+
+	collector.on('collect', m => {
+		slashCommandImageResponse({...options, isResponse: true}, m);
+	});
+
+	collector.on('end', collected => {
+		// if no response
+		if (collected.size === 0) try {
+			options.interaction.deleteReply();
+		} catch {} // message already deleted
+	});
+
 }
