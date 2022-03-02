@@ -1,8 +1,8 @@
 import { SlashCommand } from "@src/Interfaces/slashCommand";
 import { SlashCommandBuilder, SlashCommandStringOption, SlashCommandBooleanOption } from "@discordjs/builders";
-import { CommandInteraction } from "@src/Extended Discord";
-import { slashCommandImage } from "@functions/slashCommandImage";
+import { CommandInteraction, MessageEmbed } from "@src/Extended Discord";
 import { tileAttachment, tileShape } from "@functions/canvas/tile";
+import { generalSlashCommandImage } from "@functions/slashCommandImage";
 
 export const command: SlashCommand = {
 	permissions: undefined,
@@ -35,19 +35,13 @@ export const command: SlashCommand = {
 		const random = interaction.options.getString("random");
 		const shape: tileShape = interaction.options.getString("type", true) as tileShape;
 
-		slashCommandImage({
-			interaction: interaction,
-			limit: 10,
-			response: {
-				title: `Tiled as ${shape}`,
-				description: `Random: ${random == undefined ? false : random}`,
-				url: "attachment://tiled.png",
-				attachmentOptions: {
-					random: interaction.options.getString("random"),
-					shape: shape,
-				},
-				attachment: tileAttachment,
-			},
-		});
+		generalSlashCommandImage(interaction, tileAttachment, {
+			factor: interaction.options.getNumber("factor"),
+			name: "tiled.png",
+			embed: new MessageEmbed()
+				.setTitle(`Tiled as ${shape}`)
+				.setDescription(`Random: ${random == undefined ? false : random}`)
+				.setImage("attachment://tiled.png")
+		})
 	},
 };

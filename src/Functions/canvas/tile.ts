@@ -1,3 +1,4 @@
+import { MessageEmbed } from "@src/Extended Discord";
 import { Canvas, createCanvas, CanvasRenderingContext2D, loadImage, Image } from "canvas";
 import { MessageAttachment } from "discord.js";
 import getMeta from "./getMeta";
@@ -5,21 +6,22 @@ import getMeta from "./getMeta";
 export type tileShape = "grid" | "vertical" | "horizontal" | "hollow" | "plus";
 interface options {
 	url: string;
+	embed?: MessageEmbed;
 	name?: string;
 	shape?: tileShape;
 	random?: "flip" | "rotation";
 }
 
-export async function tileAttachment(options: options): Promise<MessageAttachment | null> {
+export async function tileAttachment(options: options): Promise<[MessageAttachment, MessageEmbed]> {
 	try {
 		const canvas = await tileCanvas(options);
-		return new MessageAttachment(canvas.toBuffer("image/png"), `${options.name ? options.name : "tiled"}.png`);
+		return [new MessageAttachment(canvas.toBuffer("image/png"), `${options.name ? options.name : "tiled.png"}`), options.embed];
 	} catch (err) {
-		return null;
+		return [null, options.embed];
 	}
 }
 
-export function tileCanvas(options: options): Promise<Canvas> {
+export async function tileCanvas(options: options): Promise<Canvas> {
 	return getMeta(options.url)
 		.then(async (dimension) => {
 			if (dimension.width * dimension.height * 3 > 262144)

@@ -24,7 +24,12 @@ export async function string(
 		: parse(lang[key], country_code, placeholders);
 }
 
-function parse(text: string | string[], lang: string, placeholders?: { [key: Capitalize<string>]: string }): string {
+type Placeholders = { [key: Capitalize<string>]: string }
+export async function getString(text: keys, placeholders?: Placeholders): Promise<string> {
+	return await string("en-US", text, placeholders);
+}
+
+function parse(text: string | string[], lang: string, placeholders?: Placeholders): string {
 	if (text === undefined) return "!!Translation Missing!!"; // just in case, shouldn't happening
 
 	let result: string;

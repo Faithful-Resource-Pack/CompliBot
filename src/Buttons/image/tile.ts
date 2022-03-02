@@ -14,7 +14,7 @@ export const button: Button = {
 		const attachment = await tileAttachment({
 			url: url,
 			name: url.split("/").at(-1), //gets last element and trims off .png as it is readded later
-		});
+		})[0];
 
 		if (attachment == null)
 			return interaction.reply({

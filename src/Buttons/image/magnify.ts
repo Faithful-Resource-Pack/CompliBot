@@ -15,7 +15,7 @@ export const button: Button = {
 		const attachment = await magnifyAttachment({
 			url: url,
 			name: url.split("/").at(-1),
-		});
+		})[0];
 
 		if (attachment == null)
 			return interaction.reply({

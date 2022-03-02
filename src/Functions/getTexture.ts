@@ -134,7 +134,7 @@ export const getTextureMessageOptions = async (options: {
 	});
 
 	// magnifying the texture in thumbnail
-	files.push(await magnifyAttachment({ url: textureURL, name: "magnified.png" }));
+	files.push(await magnifyAttachment({ url: textureURL, name: "magnified.png" })[0]);
 
 	return [embed, files];
 };
