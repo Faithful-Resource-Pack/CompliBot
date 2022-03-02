@@ -2,8 +2,6 @@ import { ids, parseId } from "@helpers/emojis";
 import { TextChannel } from "discord.js";
 import { Client, Message, MessageEmbed } from "@src/Extended Discord";
 
-export type BaseStatus = "pending" | "infinite";
-export type VotesT = "upvote" | "downvote";
 export type Votes = {
   [key: string]: Array<string>;
 };
@@ -16,7 +14,7 @@ export class TimedEmbed {
   private messageId: string;
   private channelId: string;
   private votes: Votes;
-  private status: BaseStatus = "pending";
+  private status: string = "pending";
   private timeout: number = 0; // used for end of events (pending until...)
   private anounymous: boolean = true;
 

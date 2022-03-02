@@ -95,9 +95,7 @@ export const command: SlashCommand = {
 			yesno,
 			answersArr
 		})
-
-		console.log(poll);
-
+		
 		/* create thread if true */
 		if (thread)
 			(interaction.channel as TextChannel).threads.create({ name: `Debate: ${question}`, reason: "Discuss about that poll here!" });

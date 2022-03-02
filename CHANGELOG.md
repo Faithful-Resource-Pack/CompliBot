@@ -29,6 +29,9 @@ Random options can be applied to all patterns
 
 > Note: These are not the full changelogs, more entires will be added in the future.
 
+#### [v2.1.0-dev]
+- `/poll` command
+- Submission system (Push & Contribution creation NYI)
 #### [v2.1.0]
 - full implementation of missing commands
 - slash command image attachments (we are waiting on discord.js v14 or v13.7 to drop)
@@ -36,10 +39,6 @@ Random options can be applied to all patterns
 - mute and unmute taking advantage of new timeouts
 - warns offenders can see
 - immutable audit log for all punishments viewed by mods and admins
-#### [v2.3.0] 
-- Submission system
-- Anonymous voting (not previously possible with stinky reaction menus)
-- Instapassing and invalidating working
 #### [release] 
 - End of "Complibot Beta", will be reincarnated as "Complibot" and the old will become the new
 

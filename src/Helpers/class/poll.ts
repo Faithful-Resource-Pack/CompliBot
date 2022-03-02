@@ -29,19 +29,13 @@ export class Poll extends TimedEmbed {
     const embed: MessageEmbed = new MessageEmbed(message.embeds[0])
     let components: Array<MessageActionRow> = message.components;
 
-    switch (this.getStatus()) {
-      case "ended":
-        components = [];
-        break;
-
-      case "pending":
-      default:
-        break; // nothing to change
-    }
-
+    if (this.getStatus() === "ended") components = [];
     embed.fields = embed.fields.map((field: EmbedField, index: number) => {
       if (index === 0) return field;
-      if (field.name === "Timeout") return field;
+      if (field.name === "Timeout") {
+        if (this.getStatus() === "ended") field.value = "Ended";
+        return field;
+      }
 
       const votesCount: Array<number> = this.getVotesCount();
       const votes: Array<Array<string>> = this.getVotes();

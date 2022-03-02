@@ -7,21 +7,21 @@ import { Client, Message, MessageEmbed } from "@src/Extended Discord";
 import { EmbedField, MessageActionRow, MessageAttachment, TextChannel } from "discord.js";
 import axios from "axios";
 import { colors } from "@helpers/colors";
-import { BaseStatus, TimedEmbed } from "./timedEmbed";
+import { TimedEmbed } from "./timedEmbed";
 
 // where "in" & "out" are both at the ends of the process but "in" -> go to the pack, "out" -> not enough votes
-export type SubmissionStatus = BaseStatus | "instapassed" | "added" | "no_council" | "council" | "denied" | "invalid";
+export type SubmissionStatus = "pending" | "instapassed" | "added" | "no_council" | "council" | "denied" | "invalid";
 
 export class Submission extends TimedEmbed {
   constructor(data?: Submission) {
     super(data);
 
     // new
-    // if (!data) this.setTimeout(addMinutes(new Date(), 4320));
-    if (!data) this.setTimeout(addMinutes(new Date(), 1));
+    if (!data) this.setTimeout(addMinutes(new Date(), 4320));
+    // if (!data) this.setTimeout(addMinutes(new Date(), 1)); // for dev
   }
 
-  public setStatus(status: SubmissionStatus, client: Client): this {
+  public setStatus(status: string, client: Client): this {
     super.setStatus(status);
 
     // send message to inform council members
