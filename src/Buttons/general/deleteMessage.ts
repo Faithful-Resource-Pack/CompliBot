@@ -12,16 +12,7 @@ export const button: Button = {
 		const sid: string = interaction.message.embeds[0].footer.text.split(" | ")[0];
 
 		//additional checking for undefined embeds and footers and stuff
-		if (message.reference && (await message.fetchReference()).author.id != interaction.user.id)
-			//for replies
-			return interaction.reply({
-				content: await interaction.text({
-					string: "Error.Interaction.Reserved",
-					placeholders: { USER: `<@!${(await message.fetchReference()).author.id}>` },
-				}),
-				ephemeral: true,
-			});
-		else if (!authorId && !message.reference)
+		if (!authorId && !message.reference)
 			return interaction.reply({
 				content: await interaction.text({
 					string: "Error.NotFound",
