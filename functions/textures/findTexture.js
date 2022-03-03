@@ -81,13 +81,13 @@ module.exports = {
   pathToTextureURL: function (path, edition, res, version = undefined) {
     if (edition.toLowerCase() === 'java') {
       if (res == 16) return settings.repositories.raw.default.java + (version === undefined ? settings.versions.java.sort(sorterMC).reverse()[0] : version) + '/' + path
-      if (res == 32) return settings.repositories.raw.c32.java + 'Jappa-' + (version === undefined ? settings.versions.java.sort(sorterMC).reverse()[0] : version) + '/' + path
-      if (res == 64) return settings.repositories.raw.c64.java + 'Jappa-' + (version === undefined ? settings.versions.java.sort(sorterMC).reverse()[0] : version) + '/' + path
+      if (res == 32) return settings.repositories.raw.c32.java + (version === undefined ? settings.versions.java.sort(sorterMC).reverse()[0] : version) + '/' + path
+      if (res == 64) return settings.repositories.raw.c64.java + (version === undefined ? settings.versions.java.sort(sorterMC).reverse()[0] : version) + '/' + path
     }
     else if (edition.toLowerCase() === 'bedrock') {
       if (res == 16) return settings.repositories.raw.default.bedrock + (version === undefined ? settings.versions.bedrock[0] : version) + '/' + path
-      if (res == 32) return settings.repositories.raw.c32.bedrock + 'Jappa-' + (version === undefined ? settings.versions.bedrock[0] : version) + '/' + path
-      if (res == 64) return settings.repositories.raw.c64.bedrock + 'Jappa-' + (version === undefined ? settings.versions.bedrock[0] : version) + '/' + path
+      if (res == 32) return settings.repositories.raw.c32.bedrock + (version === undefined ? settings.versions.bedrock[0] : version) + '/' + path
+      if (res == 64) return settings.repositories.raw.c64.bedrock + (version === undefined ? settings.versions.bedrock[0] : version) + '/' + path
     }
 
     throw new Error(strings.command.args.invalid.generic)

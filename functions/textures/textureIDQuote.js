@@ -103,13 +103,13 @@ async function textureIDQuote(message) {
     const pathVersion = texturePath[0].versions[0]
     if (textureFirstEdition.includes('java')) {
       paths.c16 = settings.repositories.raw.default.java + pathVersion + '/' + path
-      paths.c32 = settings.repositories.raw.c32.java + 'Jappa-' + pathVersion + '/' + path
-      paths.c64 = settings.repositories.raw.c64.java + 'Jappa-' + pathVersion + '/' + path
+      paths.c32 = settings.repositories.raw.c32.java + pathVersion + '/' + path
+      paths.c64 = settings.repositories.raw.c64.java + pathVersion + '/' + path
     }
     else {
       paths.c16 = settings.repositories.raw.default.bedrock + pathVersion + '/' + path
-      paths.c32 = settings.repositories.raw.c32.bedrock + 'Jappa-' + pathVersion + '/' + path
-      paths.c64 = settings.repositories.raw.c64.bedrock + 'Jappa-' + pathVersion + '/' + path
+      paths.c32 = settings.repositories.raw.c32.bedrock + pathVersion + '/' + path
+      paths.c64 = settings.repositories.raw.c64.bedrock + pathVersion + '/' + path
     }
 
     /** @type {import('../helpers/firestorm/users').User} */

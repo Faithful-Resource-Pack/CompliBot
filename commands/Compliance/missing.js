@@ -15,12 +15,12 @@ const { warnUser } = require('../../helpers/warnUser')
 
 const COMPLIANCE_REPOS = {
   java: {
-    '32': settings.repositories.raw.c32.java + 'Jappa-',
-    '64': settings.repositories.raw.c64.java + 'Jappa-'
+    '32': settings.repositories.raw.c32.java,
+    '64': settings.repositories.raw.c64.java
   },
   bedrock: {
-    '32': settings.repositories.raw.c32.bedrock + 'Jappa-',
-    '64': settings.repositories.raw.c64.bedrock + 'Jappa-'
+    '32': settings.repositories.raw.c32.bedrock,
+    '64': settings.repositories.raw.c64.bedrock
   }
 }
 
@@ -184,8 +184,7 @@ const VANILLA_REPOS = {
 }
 
 const REPLACE_URLS = [
-  ['raw.githubusercontent.com', 'github.com'],
-  ['Jappa-', '']
+  ['raw.githubusercontent.com', 'github.com']
 ]
 
 const _rawToRepoURL = function (val) {
@@ -313,8 +312,8 @@ module.exports = {
       }),
       series([
         'git stash',
-        `git fetch origin Jappa-${last_version}`, // necessary to get created branches
-        `git checkout Jappa-${last_version}`,
+        `git fetch origin ${last_version}`, // necessary to get created branches
+        `git checkout ${last_version}`,
         `git pull`
       ], {
         cwd: compliance_tmp_path
