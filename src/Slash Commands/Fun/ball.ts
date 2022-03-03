@@ -3,7 +3,6 @@ import { SlashCommandBuilder, SlashCommandStringOption } from "@discordjs/builde
 import { CommandInteraction, MessageEmbed, Message } from "@src/Extended Discord";
 
 export const command: SlashCommand = {
-	permissions: undefined,
 	data: new SlashCommandBuilder()
 		.setName("ball")
 		.setDescription("Asks a question to the 8-ball.")

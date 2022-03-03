@@ -5,7 +5,6 @@ import { slashCommandImage } from "@functions/slashCommandImage";
 import { tileAttachment, tileShape } from "@functions/canvas/tile";
 
 export const command: SlashCommand = {
-	permissions: undefined,
 	data: new SlashCommandBuilder()
 		.setName("tile")
 		.setDescription("Tile an image")

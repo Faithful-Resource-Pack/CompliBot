@@ -3,7 +3,6 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { Client, CommandInteraction, MessageEmbed } from "@src/Extended Discord";
 
 export const command: SlashCommand = {
-	permissions: undefined,
 	data: new SlashCommandBuilder()
 		.setName("help-us")
 		.setDescription("Command to get infos on how to help the developers of CompliBot."),

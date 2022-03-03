@@ -3,7 +3,6 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction, MessageEmbed, Message } from "@src/Extended Discord";
 
 export const command: SlashCommand = {
-	permissions: undefined,
 	data: new SlashCommandBuilder()
 		.setName("kill")
 		.setDescription("Kill someone you tag, be carefull with weapons!")

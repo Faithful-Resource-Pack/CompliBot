@@ -5,7 +5,6 @@ import { ids, parseId } from "@src/Helpers/emojis";
 import { Client, MessageEmbed, CommandInteraction } from "@src/Extended Discord";
 
 export const command: SlashCommand = {
-	permissions: undefined,
 	data: new SlashCommandBuilder()
 		.setName("feedback")
 		.setDescription("Submits bot feedback to the developers.")
