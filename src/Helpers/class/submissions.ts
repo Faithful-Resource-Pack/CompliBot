@@ -231,7 +231,7 @@ export class Submission extends TimedEmbed {
     } catch {}
 
     // magnified x16 texture in thumbnail
-    const magnifiedAttachment = (await magnifyAttachment({url: url, name: "magnified.png", embed: null}))[0]
+    const magnifiedAttachment = (await magnifyAttachment({url: url, name: "magnified.png", embed: null}))[0];
     
     // saved attachments in a private message
     const messageAttachment = await channel.send({ files: [file, magnifiedAttachment] });

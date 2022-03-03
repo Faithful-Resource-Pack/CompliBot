@@ -30,7 +30,7 @@ interface CMYK {
 }
 interface ColorManagerOptions {
 	hex?: string;
-	rgb?: { r: number; g: number; b: number; a: number };
+	rgb?: { r: number; g: number; b: number; a?: number };
 	hsl?: { h: number; s: number; l: number };
 	hsv?: { h: number; s: number; v: number };
 	cmyk?: { c: number; m: number; y: number; k: number };

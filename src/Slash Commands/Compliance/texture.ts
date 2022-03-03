@@ -44,9 +44,7 @@ export const command: SlashCommand = {
 			return;
 		}
 
-		// todo: use the api here
-		const results: Array<any> = (await axios.get(`${(interaction.client as Client).config.apiUrl}textures/${name}/all`))
-			.data;
+		const results: Array<any> = (await axios.get(`${(interaction.client as Client).config.apiUrl}textures/${name}/all`)).data;
 
 		// only 1 result
 		if (results.length === 1) {

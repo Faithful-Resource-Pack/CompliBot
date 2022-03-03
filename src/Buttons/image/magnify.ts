@@ -12,10 +12,10 @@ export const button: Button = {
 
 		const message: Message = interaction.message as Message;
 		const url = message.embeds[0].image.url;
-		const attachment = await magnifyAttachment({
+		const attachment = (await magnifyAttachment({
 			url: url,
 			name: url.split("/").at(-1),
-		})[0];
+		}))[0];
 
 		if (attachment == null)
 			return interaction.reply({

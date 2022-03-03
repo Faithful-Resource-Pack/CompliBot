@@ -11,10 +11,10 @@ export const button: Button = {
 
 		const message: Message = interaction.message as Message;
 		const url = message.embeds[0].image.url;
-		const attachment = await tileAttachment({
+		const attachment = (await tileAttachment({
 			url: url,
 			name: url.split("/").at(-1), //gets last element and trims off .png as it is readded later
-		})[0];
+		}))[0];
 
 		if (attachment == null)
 			return interaction.reply({
