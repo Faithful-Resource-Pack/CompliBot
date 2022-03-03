@@ -3,6 +3,7 @@ import { info } from "@src/Helpers/logger";
 import { Client, Message, ButtonInteraction, MessageEmbed } from "@src/Extended Discord";
 import { tileAttachment } from "@functions/canvas/tile";
 import { imageButtons } from "@helpers/buttons";
+import { getImageFromMessage } from "@functions/slashCommandImage";
 
 export const button: Button = {
 	buttonId: "tile",
@@ -10,7 +11,7 @@ export const button: Button = {
 		if (client.verbose) console.log(`${info}Image was tiled!`);
 
 		const message: Message = interaction.message as Message;
-		const url = message.embeds[0].image.url;
+		const url = await getImageFromMessage(message);
 		const attachment = (await tileAttachment({
 			url: url,
 			name: url.split("/").at(-1), //gets last element and trims off .png as it is readded later

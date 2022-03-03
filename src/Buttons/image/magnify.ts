@@ -4,6 +4,7 @@ import { Client, Message, ButtonInteraction, MessageEmbed } from "@src/Extended 
 import { MessageInteraction } from "discord.js";
 import { magnifyAttachment } from "@functions/canvas/magnify";
 import { imageButtons } from "@helpers/buttons";
+import { getImageFromMessage } from "@functions/slashCommandImage";
 
 export const button: Button = {
 	buttonId: "magnify",
@@ -11,7 +12,7 @@ export const button: Button = {
 		if (client.verbose) console.log(`${info}Image was magnified!`);
 
 		const message: Message = interaction.message as Message;
-		const url = message.embeds[0].image.url;
+		const url = await getImageFromMessage(message);
 		const attachment = (await magnifyAttachment({
 			url: url,
 			name: url.split("/").at(-1),
