@@ -3,7 +3,6 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction, Message } from "@src/Extended Discord";
 
 export const command: SlashCommand = {
-	permissions: undefined,
 	data: new SlashCommandBuilder()
 		.setName("guidelines")
 		.setDescription("Shows the guidelines for the Compliance Resource Pack."),

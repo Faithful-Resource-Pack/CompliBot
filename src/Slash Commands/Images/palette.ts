@@ -6,7 +6,6 @@ import { MessageEmbed } from "@src/Extended Discord";
 import { paletteAttachment } from "@functions/canvas/palette";
 
 export const command: SlashCommand = {
-  permissions: undefined,
   data: new SlashCommandBuilder()
     .setName("palette")
     .setDescription("Get colors palette of an image"),

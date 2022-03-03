@@ -3,7 +3,7 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { Client } from "@src/Extended Discord";
 
 export interface SlashCommand {
-	permissions: Permissions | undefined;
+	permissions?: Permissions | undefined;
 	data: Omit<SlashCommandBuilder, "addSubcommand" | "addSubcommandGroup" | any>;
 	execute: Collection<string, SlashCommandI> | SlashCommandI;
 }

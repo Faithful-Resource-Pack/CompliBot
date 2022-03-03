@@ -5,7 +5,6 @@ import { generalSlashCommandImage } from "@functions/slashCommandImage";
 import { magnifyAttachment } from "@functions/canvas/magnify";
 
 export const command: SlashCommand = {
-	permissions: undefined,
 	data: new SlashCommandBuilder()
 		.setName("magnify")
 		.setDescription("Magnify an image")

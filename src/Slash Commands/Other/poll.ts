@@ -9,7 +9,6 @@ import { ids, parseId } from "@helpers/emojis";
 import { EmbedField } from "slash-commands";
 
 export const command: SlashCommand = {
-	permissions: undefined,
 	data: new SlashCommandBuilder()
 		.setName("poll")
 		.setDescription("You want to ask something?")

@@ -6,7 +6,6 @@ import { ColorManager } from "@src/Functions/canvas/colors";
 import axios from "axios";
 
 export const command: SlashCommand = {
-	permissions: undefined,
 	data: new SlashCommandBuilder()
 		.setName("color")
 		.setDescription("Use this commands to gets information about a color.")
