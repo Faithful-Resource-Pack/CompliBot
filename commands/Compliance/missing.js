@@ -296,7 +296,7 @@ module.exports = {
     })
     if(cbval !== undefined) return Promise.reject(cbval)
 
-    const last_version = edition === 'bedrock' ? settings.versions.bedrock[0] : '1.18.1' // remove this comment after 1.19 has releases settings.versions.java.sort(sorterMC).reverse()[0]
+    const last_version = edition === 'bedrock' ? settings.versions.bedrock[0] : '1.18.2' // remove this comment after 1.19 has releases settings.versions.java.sort(sorterMC).reverse()[0]
 
     // anyway stash
     // checkout latest branch
