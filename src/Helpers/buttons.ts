@@ -9,8 +9,7 @@ export const compare = new MessageButton()
 export const palette = new MessageButton()
 	.setStyle("PRIMARY")
 	.setEmoji(parseId(ids.palette))
-	.setCustomId("palette")
-	.setDisabled(true); //todo enable once palette button is made
+	.setCustomId("palette");
 export const magnify = new MessageButton().setStyle("PRIMARY").setEmoji(parseId(ids.magnify)).setCustomId("magnify");
 export const tile = new MessageButton().setStyle("PRIMARY").setEmoji(parseId(ids.tile)).setCustomId("tile");
 

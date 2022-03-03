@@ -97,7 +97,7 @@ export async function paletteAttachment(options: options): Promise<[MessageAttac
 
 			let groupValue;
 			field_groups.forEach((group, index) => {
-				groupValue = group.map(line => line.map(color => `[\`${color}\`](${COOLORS_URL}${color})`).join(' ')).join(' ');
+				groupValue = group.map(line => line.map(color => `[\`#${color}\`](${COOLORS_URL}${color})`).join(' ')).join(' ');
 				embed.addFields({ 
 					name: "Hex" + ((field_groups.length > 1) ? ` part ${(index + 1)}` : '') + ': ', 
 					value: groupValue, 
