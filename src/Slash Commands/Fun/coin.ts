@@ -3,6 +3,7 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { Client, CommandInteraction, Message, MessageEmbed } from "@src/Extended Discord";
 
 export const command: SlashCommand = {
+	permissions: undefined,
 	data: new SlashCommandBuilder()
 		.setName("coin")
 		.setDescription("Flip a coin. Will it be heads? Will it be tails? Who knows?"),

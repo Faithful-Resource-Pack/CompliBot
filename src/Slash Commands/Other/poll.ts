@@ -7,6 +7,7 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 // import { Polls } from "@src/Functions/poll";
 
 export const command: SlashCommand = {
+	permissions: undefined,
 	data: new SlashCommandBuilder()
 		.setDefaultPermission(false) //! disabled the command for Everyone
 		.setName("poll")

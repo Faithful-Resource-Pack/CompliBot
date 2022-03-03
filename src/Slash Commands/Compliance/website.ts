@@ -5,6 +5,7 @@ import { ids, parseId } from "@src/Helpers/emojis";
 import { Message, MessageEmbed, CommandInteraction } from "@src/Extended Discord";
 
 export const command: SlashCommand = {
+	permissions: undefined,
 	data: new SlashCommandBuilder()
 		.setName("website")
 		.setDescription("Displays websites for the given keyword.")

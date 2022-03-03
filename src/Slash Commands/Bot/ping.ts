@@ -3,6 +3,7 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { Client, MessageEmbed, CommandInteraction } from "@src/Extended Discord";
 
 export const command: SlashCommand = {
+	permissions: undefined,
 	data: new SlashCommandBuilder().setName("ping").setDescription("Gets latency."),
 	execute: async (interaction: CommandInteraction, client: Client) => {
 		let embed = new MessageEmbed().setTitle(await interaction.text({ string: "Command.Ping.Await" }));

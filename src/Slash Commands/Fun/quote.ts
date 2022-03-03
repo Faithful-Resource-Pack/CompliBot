@@ -4,6 +4,7 @@ import { CommandInteraction, MessageEmbed, Client, Message } from "@src/Extended
 import axios from "axios";
 
 export const command: SlashCommand = {
+	permissions: undefined,
 	data: new SlashCommandBuilder().setName("quote").setDescription("Truely inspiring."),
 	execute: async (interaction: CommandInteraction, client: Client) => {
 		let image = await axios.get("https://inspirobot.me/api?generate=true");

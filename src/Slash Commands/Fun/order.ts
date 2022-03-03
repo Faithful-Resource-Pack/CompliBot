@@ -23,6 +23,7 @@ const options: [name: string, value: string][] = [
 ];
 
 export const command: SlashCommand = {
+	permissions: undefined,
 	data: new SlashCommandBuilder()
 		.setName("order")
 		.setDescription("Get something special")

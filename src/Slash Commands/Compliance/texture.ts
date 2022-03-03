@@ -6,6 +6,7 @@ import { MessageActionRow, MessageSelectMenu, MessageSelectOptionData } from "di
 import axios from "axios";
 
 export const command: SlashCommand = {
+	permissions: undefined,
 	data: new SlashCommandBuilder()
 		.setName("texture")
 		.setDescription("Displays a specified texture from either vanilla Minecraft or Compliance.")
