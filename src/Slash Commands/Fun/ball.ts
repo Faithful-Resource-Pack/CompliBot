@@ -19,6 +19,7 @@ export const command: SlashCommand = {
 
 		if (interaction.options.getString("question") == "balls") embed.setDescription("lol");
 		else if (interaction.options.getString("question").includes("sentient")) embed.setDescription("Yes.");
+		else if (interaction.options.getString("question") == "bitches?") embed.setDescription("no bitches.");
 
 		interaction.reply({ embeds: [embed], fetchReply: true }).then((message: Message) => message.deleteButton());
 	},
