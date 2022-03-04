@@ -1,13 +1,17 @@
 import { Collection, Interaction } from "discord.js";
-import { SlashCommandBuilder } from "@discordjs/builders";
+import { SlashCommandSubcommandsOnlyBuilder, SlashCommandBuilder } from "@discordjs/builders";
 import { Client } from "@src/Extended Discord";
 
 export interface SlashCommand {
 	permissions?: Permissions | undefined;
-	data: Omit<SlashCommandBuilder, "addSubcommand" | "addSubcommandGroup" | any>;
+	data: SyncSlashCommandBuilder | AsyncSlashCommandBuilder;
 	execute: Collection<string, SlashCommandI> | SlashCommandI;
 }
 
+export type SyncSlashCommandBuilder = SlashCommandSubcommandsOnlyBuilder | Omit<SlashCommandBuilder, "addSubcommand" | "addSubcommandGroup">;
+export interface AsyncSlashCommandBuilder {
+	(...args: any): Promise<SyncSlashCommandBuilder>;
+}
 export interface SlashCommandI {
 	(interaction: Interaction, client?: Client): void;
 }

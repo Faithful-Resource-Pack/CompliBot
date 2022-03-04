@@ -12,7 +12,8 @@ import BLACKLIST from "@/blacklisted_textures.json";
 import axios from "axios";
 
 // return value for the compute function
-export type MissingResult = [Buffer, Array<string>, { completion: number, edition: string, pack: string, version: string }];
+export interface MissingOptions { completion: number, edition: string, pack: string, version: string };
+export type MissingResult = [Buffer, Array<string>, MissingOptions];
 export type MissingResults = Array<MissingResult>;
 
 export const computeAll = async (client: Client, pack: string, version: string, callback: Function): Promise<MissingResults> => {
@@ -86,19 +87,22 @@ export const compute = async (client: Client, pack: string, edition: string, ver
 		await exec(`git clone ${repoRequest} .`, { cwd:tmpDirPathRequest });
 	}
 
-	await callback("Updating packs with latest version known...").catch((err: any) => Promise.reject(err));
 	const versions: Array<string> = (await axios.get(`${client.config.apiUrl}settings/versions.${edition}`)).data;
 	if (!versions.includes(version)) version = versions[0]; // latest version if versions doesn't include version (unexisting/unsupported)
+	await callback(`Updating packs with latest version of \`${version}\` known...`).catch((err: any) => Promise.reject(err));
 
 	/**
 	 * STEPS:
 	 * - stash
-	 * - checkout latest branch
+	 * - update local repo
+	 * - checkout version X branch
 	 * - pull
 	 */
 	await Promise.all([
 		series([
 			"git stash",
+			"git remote update",
+			"git fetch",
 			`git checkout ${version}`,
 			`git pull`
 		], {
@@ -106,6 +110,8 @@ export const compute = async (client: Client, pack: string, edition: string, ver
 		}),
 		series([
 			"git stash",
+			"git remote update",
+			"git fetch",
 			`git checkout ${version}`,
 			`git pull`
 		], {
@@ -141,7 +147,7 @@ export const getAllFilesFromDir = (dir: string, filter = []): Array<string> => {
 		if (!file.includes('.git')) {
 			if (stat && stat.isDirectory()) res = res.concat(getAllFilesFromDir(file, filter));
 			else {
-				if (file.endsWith('.png') && includesNone(filter, file)) res.push(file);
+				if ((file.endsWith('.png') || file.endsWith(".tga")) && includesNone(filter, file)) res.push(file);
 			}
 		}
 	})

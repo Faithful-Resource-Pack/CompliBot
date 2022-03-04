@@ -11,7 +11,7 @@ import { init as initCommands } from "@src/Functions/commandProcess";
 import { errorHandler } from "@src/Functions/errorHandler";
 
 import { REST } from "@discordjs/rest";
-import { Routes } from "discord-api-types/v9";
+import { RESTPostAPIApplicationCommandsJSONBody, Routes } from "discord-api-types/v9";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { err, info, safeExit, success } from "@src/Helpers/logger";
 import { bot } from "..";
@@ -21,6 +21,7 @@ import { getData } from "@functions/getDataFromJSON";
 import { EmittingCollection } from "./emittingCollection";
 import { setData } from "@functions/setDataToJSON";
 import { Poll } from "@helpers/class/poll";
+import { AsyncSlashCommandBuilder, SyncSlashCommandBuilder } from "@interfaces/slashCommand";
 
 const JSON_PATH = "../json";
 const JSON_FOLDER = path.resolve(__dirname, JSON_PATH);
@@ -62,7 +63,7 @@ class ExtendedClient extends Client {
 				console.log(`${err}${e}`);
 				process.exit(1);
 			})
-			.then(async () => {
+			.then(() => {
 				// commands counter
 				initCommands(this);
 				if (this.verbose) console.log(info + `Initialized command counter`);
@@ -72,11 +73,8 @@ class ExtendedClient extends Client {
 				this.loadCommands();
 				if (this.verbose) console.log(info + `Loaded classical commands`);
 
-				await this.loadSlashCommands();
-				if (this.verbose) console.log(info + `Loaded slash commands`);
-
-				this.loadSlashCommandsPerms();
-				if (this.verbose) console.log(info + `Loaded slash command perms`);
+				this.loadSlashCommands();
+				if (this.verbose) console.log(info + `Loaded slash commands & slash command perms`);
 
 				this.loadEvents();
 				if (this.verbose) console.log(info + `Loaded events`);
@@ -166,7 +164,7 @@ class ExtendedClient extends Client {
 	 * SLASH COMMANDS PERMS
 	 */
 	public loadSlashCommandsPerms = async () => {
-		if (!this.application?.owner) await this.application?.fetch();
+		if (!this.application.owner) await this.application.fetch();
 
 		this.guilds.cache.forEach(async (guild: Guild) => {
 			const fullPermissions = [];
@@ -216,17 +214,28 @@ class ExtendedClient extends Client {
 	 */
 	public async loadSlashCommands(): Promise<void> {
 		const slashCommandsPath = path.join(__dirname, "..", "Slash Commands");
+		const commandsArr: Array<RESTPostAPIApplicationCommandsJSONBody> = [];
 
-		readdirSync(slashCommandsPath).forEach(async (dir) => {
+		const paths: Array<string> = readdirSync(slashCommandsPath);
+		// use a classic for loops to force async functions to be fullfilled
+		for (let i = 0; i < paths.length; i++) {
+			const dir: string = paths[i];
+
 			const commands = readdirSync(`${slashCommandsPath}/${dir}`).filter((file) => file.endsWith(".ts"));
 			for (const file of commands) {
 				const { command } = require(`${slashCommandsPath}/${dir}/${file}`);
-				this.slashCommands.set(command.data.name, command);
-			}
-		});
 
-		let commandsArr: any[] = [];
-		this.slashCommands.each((c: SlashCommand) => commandsArr.push(c.data));
+				if (command.data instanceof Function) {
+					this.slashCommands.set((await (command.data as AsyncSlashCommandBuilder)(this)).name, command); // AsyncSlashCommandBuilder
+					commandsArr.push((await (command.data as AsyncSlashCommandBuilder)(this)).toJSON());
+				}
+				
+				else {
+					this.slashCommands.set(command.data.name, command); // SyncSlashCommandBuilder
+					commandsArr.push(command.data.toJSON());
+				}
+			}
+		}
 
 		const rest = new REST({ version: "9" }).setToken(this.tokens.token);
 		const devID = this.config.discords.filter((s) => s.name === "dev")[0].id;
@@ -234,7 +243,7 @@ class ExtendedClient extends Client {
 		// deploy commands only for dev discord when in dev mode
 		if (this.tokens.dev) {
 			rest
-				.put(Routes.applicationGuildCommands(this.tokens.appID, devID), { body: commandsArr.map((c) => c.toJSON()) })
+				.put(Routes.applicationGuildCommands(this.tokens.appID, devID), { body: commandsArr })
 				.then(() => console.log(`${success}succeed dev`))
 				.catch(console.error);
 		}
@@ -242,11 +251,13 @@ class ExtendedClient extends Client {
 		else {
 			rest
 				.put(Routes.applicationCommands(this.tokens.appID), {
-					body: commandsArr.map((c) => c.toJSON()),
+					body: commandsArr,
 				})
 				.then(() => console.log(`${success}succeed global commands`))
 				.catch(console.error);
 		}
+		
+		this.loadSlashCommandsPerms();
 	};
 
 	/**

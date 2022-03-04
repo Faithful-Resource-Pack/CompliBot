@@ -1,8 +1,8 @@
-import { SlashCommand } from "@src/Interfaces/slashCommand";
+import { SlashCommand, SyncSlashCommandBuilder } from "@src/Interfaces/slashCommand";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { Client, CommandInteraction, Message, MessageEmbed } from "@src/Extended Discord";
 import { AnyChannel, MessageAttachment, VoiceChannel } from "discord.js";
-import { compute, computeAll, computeAndUpdate, computeAndUpdateAll, MissingResult, MissingResults } from "@functions/missing";
+import { compute, computeAll, computeAndUpdate, computeAndUpdateAll, MissingOptions, MissingResult, MissingResults } from "@functions/missing";
 import axios from "axios";
 import { doNestedArr } from "@helpers/arrays";
 
@@ -28,41 +28,49 @@ export const getDisplayNameForPack = (pack: string): string => {
 }
 
 export const command: SlashCommand = {
-  data: new SlashCommandBuilder()
-    .setName("missing")
-    .setDescription("Shows tree view of missing textures for a particular edition")
-		.addStringOption((option) =>
-			option
-				.setName("pack")
-				.setDescription("Resource pack of the texture you are searching for.")
-				.addChoices(PACKS)
-				.setRequired(true),
-		)
-		.addStringOption((option) =>
-			option
-				.setName("edition")
-				.setDescription("Edition for the requested pack.")
-				.addChoices([
-					["Java", "java"],
-					["Bedrock", "bedrock"],
-					["All", "all"],
-					// ["Minecraft Dungeons", "dungeons"], //todo: make dirs corresponding to the same setup for 32x & default repos
-				])
-				.setRequired(true),
-		)
-		.addBooleanOption((option) => 
-			option
-				.setName("update_channels")
-				.setDescription("Update completion channels after command.")
-				.setRequired(false)
-		)
-		// .addStringOption(async (option) => {
-		// 	return option
-		// 		.setName("version")
-		// 		.setDescription("Minecraft version you want to see completion.")
-		// 		.addChoices(doNestedArr((await axios.get(`settings/versions`)).data))
-		// 		.setRequired(false)
-		// })
+	data: async (client: Client): Promise<SyncSlashCommandBuilder> => {
+		let versions = Object.values((await axios.get(`${client.config.apiUrl}settings/versions`)).data).flat();
+		versions.splice(versions.indexOf("versions"), 1) // remove "versions" key id (API issue)
+
+		return new SlashCommandBuilder()
+			.setName("missing")
+			.setDescription("Shows tree view of missing textures for a particular edition")
+			.addStringOption((option) =>
+				option
+					.setName("pack")
+					.setDescription("Resource pack of the texture you are searching for.")
+					.addChoices(PACKS)
+					.setRequired(true),
+			)
+			.addStringOption((option) =>
+				option
+					.setName("edition")
+					.setDescription("Edition for the requested pack.")
+					.addChoices([
+						["Java", "java"],
+						["Bedrock", "bedrock"],
+						["All", "all"],
+						// ["Minecraft Dungeons", "dungeons"], //todo: make dirs corresponding to the same setup for 32x & default repos
+					])
+					.setRequired(true),
+			)
+			.addBooleanOption((option) => 
+				option
+					.setName("update_channels")
+					.setDescription("Update completion channels after command.")
+					.setRequired(false)
+			)
+			.addStringOption((option) =>
+				option
+					.setName("version")
+					.setDescription("Minecraft version you want to see completion.")
+					.addChoices(doNestedArr(versions))
+					.setRequired(false)
+			)
+	}
+
+  // data: new SlashCommandBuilder()
+    
 		,
   execute: async (interaction: CommandInteraction) => {
 		await interaction.deferReply();
@@ -70,6 +78,7 @@ export const command: SlashCommand = {
 		const edition: string = interaction.options.getString("edition", true);
 		const pack: string = interaction.options.getString("pack", true);
 		const updateChannels: boolean = interaction.options.getBoolean("update_channels") === null ? false : interaction.options.getBoolean("update_channels");
+		const version: string = interaction.options.getString("version") === null ? "latest": interaction.options.getString("version");
 
 		const embed: MessageEmbed = new MessageEmbed()
 			.setTitle("Searching for missing textures...")
@@ -91,30 +100,25 @@ export const command: SlashCommand = {
 			await interaction.editReply({ embeds: [embed] });
 		}
 
-		const catchErr = (err: string | Error) => {
+		const catchErr = (err: string | Error, options: MissingOptions): MissingResult => {
 			let errMessage: string = (err as Error).message;
 			if (!errMessage) {
 				console.error(err)
         errMessage = 'An error occured when launching missing command. Please check console error output for more infos';
 			}
 
-			try {
-				interaction.deleteReply();
-			} catch {} // already gone
-
-			interaction.editReply({ content: errMessage });
-			return null;
+			return [null, [errMessage], options];
 		}
 
 		let responses: MissingResults;
 
 		if (edition === "all") {
-			if (updateChannels) responses = await computeAndUpdateAll(interaction.client as Client, pack, "latest", stepCallback).catch(catchErr);
-			else responses = await computeAll(interaction.client as Client, pack, "latest", stepCallback).catch(catchErr);
+			if (updateChannels) responses = await computeAndUpdateAll(interaction.client as Client, pack, version, stepCallback).catch((err) => { return [catchErr(err, { completion: 0, pack: pack, version: version, edition: edition })] });
+			else responses = await computeAll(interaction.client as Client, pack, version, stepCallback).catch((err) => { return [catchErr(err, { completion: 0, pack: pack, version: version, edition: edition })] });
 		}
 		else {
-			if (updateChannels) responses = [await computeAndUpdate(interaction.client as Client, pack, "latest", edition, stepCallback).catch(catchErr)];
-			else responses = [await compute(interaction.client as Client, pack, "latest", edition, stepCallback).catch(catchErr)];
+			if (updateChannels) responses = [await computeAndUpdate(interaction.client as Client, pack, edition, version, stepCallback).catch((err) => catchErr(err, { completion: 0, pack: pack, version: version, edition: edition }))];
+			else responses = [await compute(interaction.client as Client, pack, edition, version, stepCallback).catch((err) => catchErr(err, { completion: 0, pack: pack, version: version, edition: edition }))];
 		}
 
 		const files: Array<MessageAttachment> = [];
@@ -122,10 +126,10 @@ export const command: SlashCommand = {
 
 		responses.forEach((response: MissingResult) => {
 			// no repo found for the asked pack + edition
-			if (response[0] === null)	embed2.addField(`${getDisplayNameForPack(response[2].pack)} (${response[2].edition}) progress:`, `${response[2].completion}% complete\n> ${response[1][0]}`);
+			if (response[0] === null)	embed2.addField(`${getDisplayNameForPack(response[2].pack)} - ${response[2].edition} - ${response[2].version}`, `${response[2].completion}% complete\n> ${response[1][0]}`);
 			else {
 				files.push(new MessageAttachment(response[0], `missing-${response[2].pack}-${response[2].edition}.txt`));
-				embed2.addField(`${getDisplayNameForPack(response[2].pack)} (${response[2].edition}) progress:`, `${response[2].completion}% complete\n> ${response[1].length} textures missing.`);
+				embed2.addField(`${getDisplayNameForPack(response[2].pack)} - ${response[2].edition} - ${response[2].version}`, `${response[2].completion}% complete\n> ${response[1].length} textures missing.`);
 			}
 		})
 
