@@ -194,10 +194,10 @@ export class ColorManager {
 
 		// from cmyk to rgba
 		if (options.cmyk) {
-			options.cmyk.c = +((options.cmyk.c % 100) / 100).toFixed(2);
-			options.cmyk.m = +((options.cmyk.m % 100) / 100).toFixed(2);
-			options.cmyk.y = +((options.cmyk.y % 100) / 100).toFixed(2);
-			options.cmyk.k = +((options.cmyk.k % 100) / 100).toFixed(2);
+			options.cmyk.c = +(((options.cmyk.c > 100) ? 100 : (options.cmyk.c < 0 ? 0 : options.cmyk.c)) / 100).toFixed(2);
+			options.cmyk.m = +(((options.cmyk.m > 100) ? 100 : (options.cmyk.m < 0 ? 0 : options.cmyk.m)) / 100).toFixed(2);
+			options.cmyk.y = +(((options.cmyk.y > 100) ? 100 : (options.cmyk.y < 0 ? 0 : options.cmyk.y)) / 100).toFixed(2);
+			options.cmyk.k = +(((options.cmyk.k > 100) ? 100 : (options.cmyk.k < 0 ? 0 : options.cmyk.k)) / 100).toFixed(2);
 
 			this.color = {
 				r: +(255 * (1 - options.cmyk.c) * (1 - options.cmyk.k)).toFixed(0),
@@ -209,38 +209,39 @@ export class ColorManager {
 
 		// from hex to rgba
 		if (options.hex) {
-			switch (options.hex.length) {
-				case 3:
-					options.hex = options.hex.replace(
-						/^#?([a-f\d])([a-f\d])([a-f\d])$/i,
-						(m, r, g, b) => r + r + g + g + b + b + "ff",
-					);
-					break;
-				case 4:
-					options.hex = options.hex.replace(
-						/^#?([a-f\d])([a-f\d])([a-f\d])([a-f\d])$/i,
-						(m, r, g, b, a) => r + r + g + g + b + b + a + a,
-					);
-					break;
-				case 6:
-					options.hex += "ff";
-					break;
-				case 8:
-					break;
-				default:
-					options.hex = "000000ff";
-					break;
-			}
+			let regHex = new RegExp(/^#?[A-Fa-f\d]{3,8}?$/i);
+			if (regHex.test(options.hex)) {
+				if (options.hex.startsWith("#")) options.hex = options.hex.slice(-options.hex.length + 1);
+      
+					switch (options.hex.length) {
+						case 3:
+							options.hex = options.hex[0] + options.hex[0] + options.hex[1] + options.hex[1] + options.hex[2] + options.hex[2] + "ff";
+							break;
+						case 4:
+							options.hex = options.hex[0] + options.hex[0] + options.hex[1] + options.hex[1] + options.hex[2] + options.hex[2] + options.hex[3] + options.hex[3];
+							break;
+						case 5:
+							options.hex = "000000ff";
+							break;
+						case 6:
+							options.hex = options.hex[0] + options.hex[1] + options.hex[2] + options.hex[3] + options.hex[4] + options.hex[5] + "ff";
+							break;
+						case 7:
+							options.hex = "000000ff";
+							break;
+						case 8:
+							break;
+					}
 
-			const res = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(options.hex);
-			this.color = res
-				? ({
-						r: parseInt(res[1], 16),
-						g: parseInt(res[2], 16),
-						b: parseInt(res[3], 16),
-						a: +(parseInt(res[4], 16) / 255).toFixed(2),
-				  } as RGBA)
-				: ({ r: 0, g: 0, b: 0, a: 1 } as RGBA);
+			} else options.hex = "000000ff";
+
+			let arr = options.hex.match(/.{2}/g) // cut it each 2 chars;
+			this.color = ({
+				r: parseInt(arr[0], 16),
+				g: parseInt(arr[1], 16),
+				b: parseInt(arr[2], 16),
+				a: +(parseInt(arr[3], 16) / 255).toFixed(2),
+			} as RGBA)
 		}
 
 		const hslv = (h: number, c: number, x: number, m: number): void => {
@@ -288,8 +289,8 @@ export class ColorManager {
 		// from hsv to rgba
 		if (options.hsv) {
 			options.hsv.h = +(options.hsv.h % 360).toFixed(2);
-			options.hsv.s = +((options.hsv.s % 100) / 100).toFixed(2);
-			options.hsv.v = +((options.hsv.v % 100) / 100).toFixed(2);
+			options.hsv.s = +((options.hsv.s > 100 ? 100 : (options.hsv.s < 0 ? 0 : options.hsv.s)) / 100).toFixed(2);
+			options.hsv.v = +((options.hsv.v > 100 ? 100 : (options.hsv.v < 0 ? 0 : options.hsv.v)) / 100).toFixed(2);
 
 			let h: number = options.hsv.h / 60;
 			let c: number = options.hsv.v * options.hsv.s;
@@ -302,8 +303,8 @@ export class ColorManager {
 		// from hsl to rgba
 		if (options.hsl) {
 			options.hsl.h = +(options.hsl.h % 360).toFixed(2);
-			options.hsl.s = +((options.hsl.s % 100) / 100).toFixed(2);
-			options.hsl.l = +((options.hsl.l % 100) / 100).toFixed(2);
+			options.hsl.s = +((options.hsl.s > 100 ? 100 : (options.hsl.s < 0 ? 0 : options.hsl.s)) / 100).toFixed(2);
+			options.hsl.l = +((options.hsl.l > 100 ? 100 : (options.hsl.l < 0 ? 0 : options.hsl.l)) / 100).toFixed(2);
 
 			let h: number = options.hsl.h / 60;
 			let c: number = (1 - Math.abs(2 * options.hsl.l - 1)) * options.hsl.s;

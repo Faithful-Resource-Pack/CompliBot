@@ -13,53 +13,53 @@ export const command: SlashCommand = {
 			subcommand
 				.setName("hex")
 				.setDescription("Get information about a HEX color!")
-				.addStringOption((option) => option.setName("value").setDescription("Hexadecimal value.").setRequired(true)),
+				.addStringOption((option) => option.setName("value").setDescription("Hexadecimal value (ex: #000, #0000, #abcdef, #aeaeff00)").setRequired(true)),
 		)
 		.addSubcommand((subcommand) =>
 			subcommand
 				.setName("rgb-a")
 				.setDescription("Get information about a RGBa color!")
-				.addNumberOption((option) => option.setName("red").setDescription("red value.").setRequired(true))
-				.addNumberOption((option) => option.setName("green").setDescription("green value.").setRequired(true))
-				.addNumberOption((option) => option.setName("blue").setDescription("blue value.").setRequired(true))
-				.addNumberOption((option) => option.setName("alpha").setDescription("alpha value.")),
+				.addNumberOption((option) => option.setName("red").setDescription("Red value [0-255]").setRequired(true))
+				.addNumberOption((option) => option.setName("green").setDescription("Green value [0-255]").setRequired(true))
+				.addNumberOption((option) => option.setName("blue").setDescription("Blue value [0-255]").setRequired(true))
+				.addNumberOption((option) => option.setName("alpha").setDescription("Alpha value [0-1]")),
 		)
 		.addSubcommand((subcommand) =>
 			subcommand
 				.setName("hsl")
 				.setDescription("Get information about a HSL color!")
-				.addNumberOption((option) => option.setName("hue").setDescription("hue value.").setRequired(true))
-				.addNumberOption((option) => option.setName("saturation").setDescription("saturation value.").setRequired(true))
+				.addNumberOption((option) => option.setName("hue").setDescription("Hue value [0-360]").setRequired(true))
+				.addNumberOption((option) => option.setName("saturation").setDescription("Saturation value [0-100]").setRequired(true))
 				.addNumberOption((option) =>
-					option.setName("lightness").setDescription("lightness/brightness value.").setRequired(true),
+					option.setName("lightness").setDescription("Lightness/Brightness value [0-100]").setRequired(true),
 				),
 		)
 		.addSubcommand((subcommand) =>
 			subcommand
 				.setName("hsv")
 				.setDescription("Get information about a HSV color!")
-				.addNumberOption((option) => option.setName("hue").setDescription("hue value.").setRequired(true))
-				.addNumberOption((option) => option.setName("saturation").setDescription("saturation value.").setRequired(true))
-				.addNumberOption((option) => option.setName("value").setDescription("color value.").setRequired(true)),
+				.addNumberOption((option) => option.setName("hue").setDescription("Hue value [0-360]").setRequired(true))
+				.addNumberOption((option) => option.setName("saturation").setDescription("Saturation value [0-100]").setRequired(true))
+				.addNumberOption((option) => option.setName("value").setDescription("Color value [0-100]").setRequired(true)),
 		)
 		.addSubcommand((subcommand) =>
 			subcommand
 				.setName("cmyk")
 				.setDescription("Get information about a CMYK color!")
-				.addNumberOption((option) => option.setName("cyan").setDescription("cyan color.").setRequired(true))
-				.addNumberOption((option) => option.setName("magenta").setDescription("magenta color.").setRequired(true))
-				.addNumberOption((option) => option.setName("yellow").setDescription("yellow color.").setRequired(true))
-				.addNumberOption((option) => option.setName("key").setDescription("black key color.").setRequired(true)),
+				.addNumberOption((option) => option.setName("cyan").setDescription("Cyan color [0-100]").setRequired(true))
+				.addNumberOption((option) => option.setName("magenta").setDescription("Magenta color [0-100]").setRequired(true))
+				.addNumberOption((option) => option.setName("yellow").setDescription("Yellow color [0-100]").setRequired(true))
+				.addNumberOption((option) => option.setName("key").setDescription("Black key color [0-100]").setRequired(true)),
 		),
 	execute: new Collection<string, SlashCommandI>()
 		.set("hex", async (interaction: CommandInteraction, client: Client) => {
-			// todo : add value verification
+			await interaction.deferReply()
 
 			const c = new ColorManager({ hex: interaction.options.getString("value") });
-			interaction.reply(await constructResponse(client, c)).then((message: Message) => message.deleteButton());
+			interaction.editReply(await constructResponse(client, c)).then((message: Message) => message.deleteButton());
 		})
 		.set("rgb-a", async (interaction: CommandInteraction, client: Client) => {
-			// todo : add value verification
+			await interaction.deferReply()
 
 			const c = new ColorManager({
 				rgb: {
@@ -69,10 +69,10 @@ export const command: SlashCommand = {
 					a: interaction.options.getNumber("alpha", false),
 				},
 			});
-			interaction.reply(await constructResponse(client, c)).then((message: Message) => message.deleteButton());
+			interaction.editReply(await constructResponse(client, c)).then((message: Message) => message.deleteButton());
 		})
 		.set("hsl", async (interaction: CommandInteraction, client: Client) => {
-			// todo : add value verification
+			await interaction.deferReply()
 
 			const c = new ColorManager({
 				hsl: {
@@ -81,10 +81,10 @@ export const command: SlashCommand = {
 					l: interaction.options.getNumber("lightness", true),
 				},
 			});
-			interaction.reply(await constructResponse(client, c)).then((message: Message) => message.deleteButton());
+			interaction.editReply(await constructResponse(client, c)).then((message: Message) => message.deleteButton());
 		})
 		.set("hsv", async (interaction: CommandInteraction, client: Client) => {
-			// todo : add value verification
+			await interaction.deferReply()
 
 			const c = new ColorManager({
 				hsv: {
@@ -93,10 +93,10 @@ export const command: SlashCommand = {
 					v: interaction.options.getNumber("value", true),
 				},
 			});
-			interaction.reply(await constructResponse(client, c)).then((message: Message) => message.deleteButton());
+			interaction.editReply(await constructResponse(client, c)).then((message: Message) => message.deleteButton());
 		})
 		.set("cmyk", async (interaction: CommandInteraction, client: Client) => {
-			// todo : add value verification
+			await interaction.deferReply()
 
 			const c = new ColorManager({
 				cmyk: {
@@ -106,7 +106,7 @@ export const command: SlashCommand = {
 					k: interaction.options.getNumber("key", true),
 				},
 			});
-			interaction.reply(await constructResponse(client, c)).then((message: Message) => message.deleteButton());
+			interaction.editReply(await constructResponse(client, c)).then((message: Message) => message.deleteButton());
 		}),
 };
 
