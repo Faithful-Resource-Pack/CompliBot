@@ -1,7 +1,19 @@
-# Changelog
-
-## [v2.0.0] 21/02/2022
+# CompliBot TypeScript - Changelog
 > This is a beta and will not be fully stable. To report any bugs, use `/feedback`
+
+## [v2.0.1] 05/03/2022
+
+### Added
+- `/poll` command
+- `/missing` command (for all compliance/classic faithful packs) [Dungeons 32x NYI]
+- `/palette` command & button command
+- Submission system (Push & Contribution creation NYI)
+### Fixed
+- Fixed undeletable interaction: `this interaction is reserved to Bot` :)
+
+---
+## [v2.0.0] 21/02/2022
+
 ### Added
 
 - Slash commands (replacing normal commands)
@@ -25,13 +37,11 @@ Random options can be applied to all patterns
 - Improved error logging, which will help us fix bugs faster in the future
 - Various changes, tweaks and enhancements to all commands
 
-### Planned
+---
+## Planned
 
-> Note: These are not the full changelogs, more entires will be added in the future.
+> Note: These are not the full changelogs, more entries will be added in the future.
 
-#### [v2.1.0-dev]
-- `/poll` command
-- Submission system (Push & Contribution creation NYI)
 #### [v2.1.0]
 - full implementation of missing commands
 - slash command image attachments (we are waiting on discord.js v14 or v13.7 to drop)

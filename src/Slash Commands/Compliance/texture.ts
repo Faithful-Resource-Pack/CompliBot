@@ -32,10 +32,10 @@ export const command: SlashCommand = {
 		var name = interaction.options.getString("name");
 		if (name.includes(".png")) name = name.replace(".png", "");
 		if (name.length < 3) {
-			// textures like bed exist :/
+			// textures like "bed" exist :/
 			try {
 				interaction.deleteReply();
-			} catch (err) { }
+			} catch { }
 			interaction.followUp({
 				content: "The minimum length for a texture name search is 3, please search with a longer name.",
 				ephemeral: true,
