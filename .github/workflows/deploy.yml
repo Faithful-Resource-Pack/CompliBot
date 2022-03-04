@@ -21,7 +21,7 @@ jobs:
           KEY: ${{ secrets.SSH }}
           script: |
             cd ./CompliBot
-            git checkout master
+            git checkout javascript
             git stash
             git pull
             npm install
