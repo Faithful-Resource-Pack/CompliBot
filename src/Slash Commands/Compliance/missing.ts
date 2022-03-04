@@ -54,12 +54,13 @@ export const command: SlashCommand = {
 					])
 					.setRequired(true),
 			)
-			.addBooleanOption((option) => 
-				option
-					.setName("update_channels")
-					.setDescription("Update completion channels after command.")
-					.setRequired(false)
-			)
+			//! NYI
+			// .addBooleanOption((option) => 
+			// 	option
+			// 		.setName("update_channels")
+			// 		.setDescription("Update completion channels after command.")
+			// 		.setRequired(false)
+			// )
 			.addStringOption((option) =>
 				option
 					.setName("version")
