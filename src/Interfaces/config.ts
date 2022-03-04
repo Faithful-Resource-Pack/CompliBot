@@ -12,6 +12,11 @@ export interface Config {
 	submissions: { [pack: string]: SubmissionChannels };
 	roles: {
 		council: { [guild: string]: string };
+	},
+	packProgress: {
+		[pack_slug: string]: {
+			[edition: string]: string;
+		}
 	}
 }
 

@@ -9,8 +9,7 @@ const config: Config = ConfigJson;
 
 export const command: SlashCommand = {
   permissions: {
-    roles: Object.values(config.roles.council),
-    users: undefined
+    roles: Object.values(config.roles.council)
   },
   data: new SlashCommandBuilder()
 		.setDefaultPermission(false) // disable the command for @everyone (only council can do it)

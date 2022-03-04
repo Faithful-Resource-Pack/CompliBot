@@ -17,6 +17,6 @@ export interface SlashCommandI {
  * otherwise the command will stay available for everybody else
  */
 export interface Permissions {
-	roles: Array<string> | undefined;
-	users: Array<string> | undefined;
+	roles?: Array<string> | undefined;
+	users?: Array<string> | undefined;
 }
