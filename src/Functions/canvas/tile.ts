@@ -15,7 +15,10 @@ interface options {
 export async function tileAttachment(options: options): Promise<[MessageAttachment, MessageEmbed]> {
 	try {
 		const canvas = await tileCanvas(options);
-		return [new MessageAttachment(canvas.toBuffer("image/png"), `${options.name ? options.name : "tiled.png"}`), options.embed];
+		return [
+			new MessageAttachment(canvas.toBuffer("image/png"), `${options.name ? options.name : "tiled.png"}`),
+			options.embed,
+		];
 	} catch (err) {
 		return [null, options.embed];
 	}

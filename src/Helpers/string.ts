@@ -24,7 +24,7 @@ export async function string(
 		: parse(lang[key], country_code, placeholders);
 }
 
-type Placeholders = { [key: Capitalize<string>]: string }
+type Placeholders = { [key: Capitalize<string>]: string };
 export async function getString(text: keys, placeholders?: Placeholders): Promise<string> {
 	return await string("en-US", text, placeholders);
 }

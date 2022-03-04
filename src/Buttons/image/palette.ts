@@ -5,24 +5,24 @@ import { imageButtons } from "@helpers/buttons";
 import { paletteAttachment } from "@functions/canvas/palette";
 
 export const button: Button = {
-  buttonId: "palette",
-  execute: async (client: Client, interaction: ButtonInteraction) => {
-    if (client.verbose) console.log(`${info}Image palette was requested!`);
+	buttonId: "palette",
+	execute: async (client: Client, interaction: ButtonInteraction) => {
+		if (client.verbose) console.log(`${info}Image palette was requested!`);
 
-    const message: Message = interaction.message as Message;
+		const message: Message = interaction.message as Message;
 		const url = message.embeds[0].image.url;
 		const [attachment, embed] = await paletteAttachment({
 			url: url,
 			name: url.split("/").at(-1),
 		});
 
-    if (attachment == null)
+		if (attachment == null)
 			return interaction.reply({
 				content: await interaction.text({ string: "Command.Images.TooBig" }),
 				ephemeral: true,
 			});
 
-    if (Object.values(client.config.submissions).filter(c => c.submit === interaction.channel.id).length > 0)
+		if (Object.values(client.config.submissions).filter((c) => c.submit === interaction.channel.id).length > 0)
 			return interaction.reply({
 				embeds: [new MessageEmbed().setImage(`attachment://${attachment.name}`).setTimestamp()],
 				files: [attachment],
@@ -32,7 +32,12 @@ export const button: Button = {
 		else
 			return interaction
 				.reply({
-					embeds: [new MessageEmbed().setImage(`attachment://${attachment.name}`).setFooter({ text: `${interaction.user.username} | ${interaction.user.id}` }).setTimestamp()],
+					embeds: [
+						new MessageEmbed()
+							.setImage(`attachment://${attachment.name}`)
+							.setFooter({ text: `${interaction.user.username} | ${interaction.user.id}` })
+							.setTimestamp(),
+					],
 					files: [attachment],
 					components: [imageButtons],
 					fetchReply: true,
@@ -40,5 +45,5 @@ export const button: Button = {
 				.then((message: Message) => {
 					message.deleteButton(true);
 				});
-  }
-}
+	},
+};

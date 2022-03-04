@@ -8,7 +8,9 @@ export interface SlashCommand {
 	execute: Collection<string, SlashCommandI> | SlashCommandI;
 }
 
-export type SyncSlashCommandBuilder = SlashCommandSubcommandsOnlyBuilder | Omit<SlashCommandBuilder, "addSubcommand" | "addSubcommandGroup">;
+export type SyncSlashCommandBuilder =
+	| SlashCommandSubcommandsOnlyBuilder
+	| Omit<SlashCommandBuilder, "addSubcommand" | "addSubcommandGroup">;
 export interface AsyncSlashCommandBuilder {
 	(...args: any): Promise<SyncSlashCommandBuilder>;
 }

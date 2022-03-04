@@ -20,7 +20,7 @@ export const event: Event = {
 		}
 
 		// test if message is in submit channel
-		if (Object.values(client.config.submissions).filter(c => c.submit === message.channelId).length > 0) {
+		if (Object.values(client.config.submissions).filter((c) => c.submit === message.channelId).length > 0) {
 			client.emit("textureSubmitted", (client as Client, message));
 			return;
 		}

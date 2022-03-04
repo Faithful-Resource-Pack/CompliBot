@@ -13,7 +13,12 @@ export const command: SlashCommand = {
 			subcommand
 				.setName("hex")
 				.setDescription("Get information about a HEX color!")
-				.addStringOption((option) => option.setName("value").setDescription("Hexadecimal value (ex: #000, #0000, #abcdef, #aeaeff00)").setRequired(true)),
+				.addStringOption((option) =>
+					option
+						.setName("value")
+						.setDescription("Hexadecimal value (ex: #000, #0000, #abcdef, #aeaeff00)")
+						.setRequired(true),
+				),
 		)
 		.addSubcommand((subcommand) =>
 			subcommand
@@ -29,7 +34,9 @@ export const command: SlashCommand = {
 				.setName("hsl")
 				.setDescription("Get information about a HSL color!")
 				.addNumberOption((option) => option.setName("hue").setDescription("Hue value [0-360]").setRequired(true))
-				.addNumberOption((option) => option.setName("saturation").setDescription("Saturation value [0-100]").setRequired(true))
+				.addNumberOption((option) =>
+					option.setName("saturation").setDescription("Saturation value [0-100]").setRequired(true),
+				)
 				.addNumberOption((option) =>
 					option.setName("lightness").setDescription("Lightness/Brightness value [0-100]").setRequired(true),
 				),
@@ -39,7 +46,9 @@ export const command: SlashCommand = {
 				.setName("hsv")
 				.setDescription("Get information about a HSV color!")
 				.addNumberOption((option) => option.setName("hue").setDescription("Hue value [0-360]").setRequired(true))
-				.addNumberOption((option) => option.setName("saturation").setDescription("Saturation value [0-100]").setRequired(true))
+				.addNumberOption((option) =>
+					option.setName("saturation").setDescription("Saturation value [0-100]").setRequired(true),
+				)
 				.addNumberOption((option) => option.setName("value").setDescription("Color value [0-100]").setRequired(true)),
 		)
 		.addSubcommand((subcommand) =>
@@ -47,19 +56,21 @@ export const command: SlashCommand = {
 				.setName("cmyk")
 				.setDescription("Get information about a CMYK color!")
 				.addNumberOption((option) => option.setName("cyan").setDescription("Cyan color [0-100]").setRequired(true))
-				.addNumberOption((option) => option.setName("magenta").setDescription("Magenta color [0-100]").setRequired(true))
+				.addNumberOption((option) =>
+					option.setName("magenta").setDescription("Magenta color [0-100]").setRequired(true),
+				)
 				.addNumberOption((option) => option.setName("yellow").setDescription("Yellow color [0-100]").setRequired(true))
 				.addNumberOption((option) => option.setName("key").setDescription("Black key color [0-100]").setRequired(true)),
 		),
 	execute: new Collection<string, SlashCommandI>()
 		.set("hex", async (interaction: CommandInteraction, client: Client) => {
-			await interaction.deferReply()
+			await interaction.deferReply();
 
 			const c = new ColorManager({ hex: interaction.options.getString("value") });
 			interaction.editReply(await constructResponse(client, c)).then((message: Message) => message.deleteButton());
 		})
 		.set("rgb-a", async (interaction: CommandInteraction, client: Client) => {
-			await interaction.deferReply()
+			await interaction.deferReply();
 
 			const c = new ColorManager({
 				rgb: {
@@ -72,7 +83,7 @@ export const command: SlashCommand = {
 			interaction.editReply(await constructResponse(client, c)).then((message: Message) => message.deleteButton());
 		})
 		.set("hsl", async (interaction: CommandInteraction, client: Client) => {
-			await interaction.deferReply()
+			await interaction.deferReply();
 
 			const c = new ColorManager({
 				hsl: {
@@ -84,7 +95,7 @@ export const command: SlashCommand = {
 			interaction.editReply(await constructResponse(client, c)).then((message: Message) => message.deleteButton());
 		})
 		.set("hsv", async (interaction: CommandInteraction, client: Client) => {
-			await interaction.deferReply()
+			await interaction.deferReply();
 
 			const c = new ColorManager({
 				hsv: {
@@ -96,7 +107,7 @@ export const command: SlashCommand = {
 			interaction.editReply(await constructResponse(client, c)).then((message: Message) => message.deleteButton());
 		})
 		.set("cmyk", async (interaction: CommandInteraction, client: Client) => {
-			await interaction.deferReply()
+			await interaction.deferReply();
 
 			const c = new ColorManager({
 				cmyk: {

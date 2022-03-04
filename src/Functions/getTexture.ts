@@ -66,7 +66,11 @@ export const getTextureMessageOptions = async (options: {
 
 	let textureURL: string;
 	try {
-		textureURL = (await axios.get(`${config.apiUrl}textures/${texture.id}/url/${pack}/${paths[0].versions.sort(minecraftSorter).reverse()[0]}`)).request.res.responseUrl;;
+		textureURL = (
+			await axios.get(
+				`${config.apiUrl}textures/${texture.id}/url/${pack}/${paths[0].versions.sort(minecraftSorter).reverse()[0]}`,
+			)
+		).request.res.responseUrl;
 	} catch {
 		textureURL = "";
 	}
@@ -102,7 +106,11 @@ export const getTextureMessageOptions = async (options: {
 				return `\`${strDate}\` ${authors.join(", ")}`;
 			});
 
-		if (contributions.length > 2) contributions = [...contributions.slice(0, 2), "[see more in the webapp...](https://webapp.compliancepack.net/#/gallery)"];
+		if (contributions.length > 2)
+			contributions = [
+				...contributions.slice(0, 2),
+				"[see more in the webapp...](https://webapp.compliancepack.net/#/gallery)",
+			];
 		if (contributions.length) embed.addField("Contributions", contributions.join("\n"), false);
 	}
 
@@ -114,11 +122,15 @@ export const getTextureMessageOptions = async (options: {
 				const versions = p.versions.sort(minecraftSorter);
 				if (tmp[use.edition])
 					tmp[use.edition].push(
-						`\`[${versions.length > 1 ? `${versions[0]} — ${versions[versions.length - 1]}` : versions[0]}]\` ${(use.assets !== null && use.assets !== "minecraft") ? use.assets + '/' : ''}${p.name}`,
+						`\`[${versions.length > 1 ? `${versions[0]} — ${versions[versions.length - 1]}` : versions[0]}]\` ${
+							use.assets !== null && use.assets !== "minecraft" ? use.assets + "/" : ""
+						}${p.name}`,
 					);
 				else
 					tmp[use.edition] = [
-						`\`[${versions.length > 1 ? `${versions[0]} — ${versions[versions.length - 1]}` : versions[0]}]\` ${(use.assets !== null && use.assets !== "minecraft") ? use.assets + '/' : ''}${p.name}`,
+						`\`[${versions.length > 1 ? `${versions[0]} — ${versions[versions.length - 1]}` : versions[0]}]\` ${
+							use.assets !== null && use.assets !== "minecraft" ? use.assets + "/" : ""
+						}${p.name}`,
 					];
 			});
 	});

@@ -24,7 +24,7 @@ export async function quote(message: Message) {
 	let channel: TextChannel;
 	let quotedMsg: Message;
 	try {
-		channel = await message.guild.channels.fetch(ids[1]) as TextChannel;
+		channel = (await message.guild.channels.fetch(ids[1])) as TextChannel;
 		quotedMsg = await channel.messages.fetch(ids[2]);
 	} catch {
 		return; // can't fetch channel or quotedMsg : abort mission

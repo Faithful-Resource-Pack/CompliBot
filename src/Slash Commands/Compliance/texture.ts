@@ -35,7 +35,7 @@ export const command: SlashCommand = {
 			// textures like "bed" exist :/
 			try {
 				interaction.deleteReply();
-			} catch { }
+			} catch {}
 			interaction.followUp({
 				content: "The minimum length for a texture name search is 3, please search with a longer name.",
 				ephemeral: true,
@@ -43,7 +43,8 @@ export const command: SlashCommand = {
 			return;
 		}
 
-		const results: Array<any> = (await axios.get(`${(interaction.client as Client).config.apiUrl}textures/${name}/all`)).data;
+		const results: Array<any> = (await axios.get(`${(interaction.client as Client).config.apiUrl}textures/${name}/all`))
+			.data;
 
 		// only 1 result
 		if (results.length === 1) {
@@ -136,7 +137,7 @@ export const command: SlashCommand = {
 		// no results
 		try {
 			interaction.deleteReply();
-		} catch (err) { }
+		} catch (err) {}
 
 		return interaction.followUp({
 			ephemeral: true,

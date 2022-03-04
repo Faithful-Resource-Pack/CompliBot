@@ -15,24 +15,30 @@ import { getString } from "@helpers/string";
  * Do a await message if the userInteraction.doInteraction is set to true
  * @param interaction {TextChannel}
  * @param limit {number}
- * @param userInteraction.doInteraction {boolean} 
+ * @param userInteraction.doInteraction {boolean}
  * @param userInteraction.user {User}
- * @param userInteraction.time {number} 
+ * @param userInteraction.time {number}
  * @returns {Promise<string>} image url
  */
-export async function fetchMessageImage(interaction: CommandInteraction, limit: number, userInteraction: { doInteraction: boolean, user: User, time?: number}): Promise<string> {
-	
+export async function fetchMessageImage(
+	interaction: CommandInteraction,
+	limit: number,
+	userInteraction: { doInteraction: boolean; user: User; time?: number },
+): Promise<string> {
 	// fetch X messages
 	let messages: Collection<string, Message<boolean>>;
 	try {
 		messages = await interaction.channel.messages.fetch({ limit });
-	} catch { return null; } // can't fetch messages
+	} catch {
+		return null;
+	} // can't fetch messages
 
 	let message: Message = messages
 		.sort((a, b) => b.createdTimestamp - a.createdTimestamp)
-		.filter((m) => 
-			(m.attachments.size > 0 && (m.attachments.first().url.match(/\.(jpeg|jpg|png|webp)$/) as any)) ||
-			(m.embeds[0] !== undefined && (m.embeds[0].thumbnail !== null || m.embeds[0].image !== null)),
+		.filter(
+			(m) =>
+				(m.attachments.size > 0 && (m.attachments.first().url.match(/\.(jpeg|jpg|png|webp)$/) as any)) ||
+				(m.embeds[0] !== undefined && (m.embeds[0].thumbnail !== null || m.embeds[0].image !== null)),
 		)
 		.first();
 
@@ -47,28 +53,28 @@ export async function fetchMessageImage(interaction: CommandInteraction, limit: 
 		.setTitle(await getString("Command.Images.NotFound.Title"))
 		.setDescription(await getString("Command.Images.NotFound", { NUMBER: `${limit}` }));
 
-	const embedMessage: Message = await interaction.editReply({ embeds: [embed] }) as Message;
-	const awaitedMessages: Collection<string, Message<boolean>> = await interaction.channel.awaitMessages({ 
+	const embedMessage: Message = (await interaction.editReply({ embeds: [embed] })) as Message;
+	const awaitedMessages: Collection<string, Message<boolean>> = await interaction.channel.awaitMessages({
 		filter: (m: Message) => m.author.id === userInteraction.user.id,
 		max: 1,
 		time: 5000, // 30s
-	})
+	});
 
 	message = awaitedMessages
 		.sort((a, b) => b.createdTimestamp - a.createdTimestamp)
-		.filter((m) => 
-			(m.attachments.size > 0 && (m.attachments.first().url.match(/\.(jpeg|jpg|png|webp)$/) as any)) ||
-			(m.embeds[0] !== undefined && (m.embeds[0].thumbnail !== null || m.embeds[0].image !== null)),
+		.filter(
+			(m) =>
+				(m.attachments.size > 0 && (m.attachments.first().url.match(/\.(jpeg|jpg|png|webp)$/) as any)) ||
+				(m.embeds[0] !== undefined && (m.embeds[0].thumbnail !== null || m.embeds[0].image !== null)),
 		)
 		.first();
 
 	try {
 		embedMessage.delete();
 	} catch {} // waiting embed already gone
-	
+
 	if (message !== undefined) return await getImageFromMessage(message);
 	else return null;
-
 }
 
 /**
@@ -92,22 +98,28 @@ export async function getImageFromMessage(message: Message): Promise<string> {
 	if (message.type === "REPLY") {
 		try {
 			await message.fetchReference();
-		} catch { return null; }
+		} catch {
+			return null;
+		}
 
 		return getImageFromMessage(await message.fetchReference());
-	};
+	}
 
 	return null; // default value
 }
 
-export type actionType = (args: any) => Promise<[MessageAttachment, MessageEmbed]>
-export async function generalSlashCommandImage(interaction: CommandInteraction, actionCommand: actionType, actionCommandParams: any): Promise<void> {
+export type actionType = (args: any) => Promise<[MessageAttachment, MessageEmbed]>;
+export async function generalSlashCommandImage(
+	interaction: CommandInteraction,
+	actionCommand: actionType,
+	actionCommandParams: any,
+): Promise<void> {
 	await interaction.deferReply();
 
 	const imageURL: string = await fetchMessageImage(interaction, 10, {
 		doInteraction: true,
 		user: interaction.user,
-	})
+	});
 
 	if (imageURL === null) {
 		await interaction.followUp({
@@ -116,9 +128,12 @@ export async function generalSlashCommandImage(interaction: CommandInteraction, 
 		});
 		return;
 	}
-	
-  const [attachment, embed]: [MessageAttachment, MessageEmbed] = await actionCommand({ ...actionCommandParams, url: imageURL });
-	
+
+	const [attachment, embed]: [MessageAttachment, MessageEmbed] = await actionCommand({
+		...actionCommandParams,
+		url: imageURL,
+	});
+
 	if (attachment === null) {
 		await interaction.followUp({
 			content: await interaction.text({ string: "Command.Images.TooBig" }),
@@ -131,7 +146,7 @@ export async function generalSlashCommandImage(interaction: CommandInteraction, 
 		.editReply({
 			files: [attachment],
 			embeds: [embed],
-			components: [imageButtons]
+			components: [imageButtons],
 		})
 		.then((message: Message) => {
 			message.deleteButton();

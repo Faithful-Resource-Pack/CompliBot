@@ -25,9 +25,7 @@ export const command: SlashCommand = {
 		generalSlashCommandImage(interaction, magnifyAttachment, {
 			factor: interaction.options.getNumber("factor"),
 			name: "magnified.png",
-			embed: new MessageEmbed()
-				.setTitle("Magnified")
-				.setImage("attachment://magnified.png")
-		})
+			embed: new MessageEmbed().setTitle("Magnified").setImage("attachment://magnified.png"),
+		});
 	},
 };

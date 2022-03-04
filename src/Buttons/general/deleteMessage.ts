@@ -43,6 +43,8 @@ export const button: Button = {
 		// try deleting submission from json file if sid is valid
 		try {
 			client.submissions.delete(sid);
-		} catch { /* sid not valid */ }
+		} catch {
+			/* sid not valid */
+		}
 	},
 };

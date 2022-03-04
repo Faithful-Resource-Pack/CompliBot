@@ -26,23 +26,22 @@ export const command: SlashCommand = {
 		)
 		.addStringOption((option) =>
 			option.setName("description").setDescription("Add more information about your poll here!."),
-		)
-		,
+		),
 	execute: async (interaction: CommandInteraction, client: Client) => {
 		const timeoutVal: number | null = interaction.options.getNumber("timeout", false);
-		const _answersCount: number =  interaction.options.getNumber("answers", true);
+		const _answersCount: number = interaction.options.getNumber("answers", true);
 		const yesno: boolean = interaction.options.getBoolean("yesno", false) === true ? true : false;
 		const question: string = interaction.options.getString("question", true);
 		const thread: boolean = interaction.options.getBoolean("thread", false) === true ? true : false;
 		const description: string = interaction.options.getString("description", false);
 		const anonymous: boolean = interaction.options.getBoolean("anonymous", false) === true ? true : false;
-		const answersCount: number = yesno ? 2 : (_answersCount > 5 ? 5 : (_answersCount < 2 ? 2 : _answersCount)) ;
+		const answersCount: number = yesno ? 2 : _answersCount > 5 ? 5 : _answersCount < 2 ? 2 : _answersCount;
 
 		// instantiate a new poll
 		const poll = new Poll();
-		
+
 		// setup timeout
-		if (timeoutVal !== null) poll.setTimeout(addMinutes(new Date, timeoutVal));
+		if (timeoutVal !== null) poll.setTimeout(addMinutes(new Date(), timeoutVal));
 		else poll.setTimeout(0);
 
 		/* default embed */
@@ -74,29 +73,35 @@ export const command: SlashCommand = {
 				answersArr.push(err);
 			}
 
-			embed.setDescription(`Waiting for answers... ${answersCount - answersArr.length} left.`)
-			embed.setFields(embed.fields.map((field: EmbedField) => {
-				if (field.name === "Answers") field.value = answersArr
-					.map((answer: string, index: number) => `${yesno ? yesnoEmojis[index] : numberEmojis[index]} ${answer}`)
-					.join('\n');
-				return field;
-			}));
-			
+			embed.setDescription(`Waiting for answers... ${answersCount - answersArr.length} left.`);
+			embed.setFields(
+				embed.fields.map((field: EmbedField) => {
+					if (field.name === "Answers")
+						field.value = answersArr
+							.map((answer: string, index: number) => `${yesno ? yesnoEmojis[index] : numberEmojis[index]} ${answer}`)
+							.join("\n");
+					return field;
+				}),
+			);
+
 			response = await interaction.editReply({ embeds: [embed] });
 		} while (answersArr.length < answersCount);
 
-    if (description) embed.setDescription(description);
+		if (description) embed.setDescription(description);
 		else embed.description = null;
-		
+
 		poll.setAnonymous(anonymous);
 		poll.postSubmissionMessage(interaction, embed, {
 			question,
 			yesno,
-			answersArr
-		})
-		
+			answersArr,
+		});
+
 		/* create thread if true */
 		if (thread)
-			(interaction.channel as TextChannel).threads.create({ name: `Debate: ${question}`, reason: "Discuss about that poll here!" });
+			(interaction.channel as TextChannel).threads.create({
+				name: `Debate: ${question}`,
+				reason: "Discuss about that poll here!",
+			});
 	},
 };

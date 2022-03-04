@@ -25,7 +25,7 @@ import { AsyncSlashCommandBuilder, SyncSlashCommandBuilder } from "@interfaces/s
 
 const JSON_PATH = "../json";
 const JSON_FOLDER = path.resolve(__dirname, JSON_PATH);
-const POLLS_FILENAME= "polls.json";
+const POLLS_FILENAME = "polls.json";
 const SUBMISSIONS_FILENAME = "submissions.json";
 const SUBMISSIONS_FILE_PATH = path.resolve(JSON_FOLDER, SUBMISSIONS_FILENAME);
 // const COUNTER_FILE_PATH = path.resolve(JSON_FOLDER, "commandsProcessed.json"); //! NYI
@@ -35,7 +35,7 @@ class ExtendedClient extends Client {
 	public config: Config = ConfigJson;
 	public tokens: Tokens = TokensJson;
 	public automation: Automation = new Automation(this);
-	
+
 	private lastMessages = [];
 	private lastMessagesIndex = 0;
 
@@ -93,7 +93,7 @@ class ExtendedClient extends Client {
 				if (this.verbose) console.log(info + `Started automated functions`);
 				if (this.verbose) console.log(info + `Init complete`);
 			});
-		
+
 		const errorEvents = ["uncaughtException", "unhandledRejection"];
 		const events = ["exit", "SIGINT", "SIGUSR1", "SIGUSR2", "SIGTERM"];
 
@@ -101,7 +101,7 @@ class ExtendedClient extends Client {
 			process.on(eventType, (...args) => {
 				if (errorEvents.includes(eventType)) errorHandler(this, args[0], eventType);
 			});
-		})
+		});
 	}
 
 	/**
@@ -109,56 +109,56 @@ class ExtendedClient extends Client {
 	 */
 	public loadPolls = async () => {
 		// read file and load it into the collection
-		const submissionsObj = getData({ filename: POLLS_FILENAME, relative_path: JSON_PATH })
+		const submissionsObj = getData({ filename: POLLS_FILENAME, relative_path: JSON_PATH });
 		Object.values(submissionsObj).forEach((poll: Poll) => {
 			this.polls.set(poll.id, poll);
-		})
+		});
 
 		// events
 		this.polls.events.on("dataSet", (key: string, value: Submission) => {
 			this.savePolls();
-		})
+		});
 
 		this.polls.events.on("dataDeleted", (key: string) => {
 			this.savePolls();
-		})
-	}
-	
+		});
+	};
+
 	public savePolls = async () => {
 		let data = {};
 		[...this.polls.values()].forEach((poll: Poll) => {
-			data[poll.id] = poll; 
-		})
+			data[poll.id] = poll;
+		});
 		setData({ filename: POLLS_FILENAME, relative_path: JSON_PATH, data: JSON.parse(JSON.stringify(data)) });
-	}
+	};
 
 	/**
 	 * SUBMISSIONS DATA
 	 */
 	public loadSubmissions = async () => {
 		// read file and load it into the collection
-		const submissionsObj = getData({ filename: SUBMISSIONS_FILENAME, relative_path: JSON_PATH })
+		const submissionsObj = getData({ filename: SUBMISSIONS_FILENAME, relative_path: JSON_PATH });
 		Object.values(submissionsObj).forEach((submission: Submission) => {
 			this.submissions.set(submission.id, submission);
-		})
+		});
 
 		// events
 		this.submissions.events.on("dataSet", (key: string, value: Submission) => {
 			this.saveSubmissions();
-		})
+		});
 
 		this.submissions.events.on("dataDeleted", (key: string) => {
 			this.saveSubmissions();
-		})
-	}
+		});
+	};
 
 	public saveSubmissions = async () => {
 		let data = {};
 		[...this.submissions.values()].forEach((submission: Submission) => {
-			data[submission.id] = submission; 
-		})
+			data[submission.id] = submission;
+		});
 		setData({ filename: SUBMISSIONS_FILENAME, relative_path: JSON_PATH, data: JSON.parse(JSON.stringify(data)) });
-	}
+	};
 
 	/**
 	 * SLASH COMMANDS PERMS
@@ -179,7 +179,6 @@ class ExtendedClient extends Client {
 					id: guildSlashCommands.find((cmd) => cmd.name === (slashCommand.data as SlashCommandBuilder).name).id,
 					permissions: [],
 				};
-
 
 				if (slashCommand.permissions.roles !== undefined)
 					for (const id of slashCommand.permissions.roles)
@@ -228,9 +227,7 @@ class ExtendedClient extends Client {
 				if (command.data instanceof Function) {
 					this.slashCommands.set((await (command.data as AsyncSlashCommandBuilder)(this)).name, command); // AsyncSlashCommandBuilder
 					commandsArr.push((await (command.data as AsyncSlashCommandBuilder)(this)).toJSON());
-				}
-				
-				else {
+				} else {
 					this.slashCommands.set(command.data.name, command); // SyncSlashCommandBuilder
 					commandsArr.push(command.data.toJSON());
 				}
@@ -256,9 +253,9 @@ class ExtendedClient extends Client {
 				.then(() => console.log(`${success}succeed global commands`))
 				.catch(console.error);
 		}
-		
+
 		this.loadSlashCommandsPerms();
-	};
+	}
 
 	/**
 	 * CLASSIC COMMAND HANDLER

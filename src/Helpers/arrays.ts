@@ -6,8 +6,8 @@ import { normalize } from "path";
  * @returns {arr<string>}
  */
 export const normalizeArray = (arr: Array<string>): Array<string> => {
-	return arr.map(e => normalize(e));
-}
+	return arr.map((e) => normalize(e));
+};
 
 /**
  * Test if an array of string include in one of it's string the given value
@@ -24,7 +24,7 @@ export const includesNone = (arr: Array<string>, val: string): boolean => {
 	}
 
 	return res;
-}
+};
 
 /**
  * Duplicate value of an array to a double nested array
@@ -34,4 +34,4 @@ export const includesNone = (arr: Array<string>, val: string): boolean => {
  */
 export const doNestedArr = (arr: Array<any>): Array<[any, any]> => {
 	return arr.map((v) => [v, v]);
-}
+};

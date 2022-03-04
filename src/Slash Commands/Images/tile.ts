@@ -40,7 +40,7 @@ export const command: SlashCommand = {
 			embed: new MessageEmbed()
 				.setTitle(`Tiled as ${shape}`)
 				.setDescription(`Random: ${random == undefined ? false : random}`)
-				.setImage("attachment://tiled.png")
-		})
+				.setImage("attachment://tiled.png"),
+		});
 	},
 };

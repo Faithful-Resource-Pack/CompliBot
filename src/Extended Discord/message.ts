@@ -143,7 +143,9 @@ const MessageBody = {
 				try {
 					replyMsg.delete();
 					this.delete();
-				} catch { /* already deleted */ }
+				} catch {
+					/* already deleted */
+				}
 			}, 30000); //deletes the message after 30s
 		}
 	},

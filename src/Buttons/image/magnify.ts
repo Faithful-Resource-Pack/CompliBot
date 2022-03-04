@@ -13,10 +13,12 @@ export const button: Button = {
 
 		const message: Message = interaction.message as Message;
 		const url = await getImageFromMessage(message);
-		const attachment = (await magnifyAttachment({
-			url: url,
-			name: url.split("/").at(-1),
-		}))[0];
+		const attachment = (
+			await magnifyAttachment({
+				url: url,
+				name: url.split("/").at(-1),
+			})
+		)[0];
 
 		if (attachment == null)
 			return interaction.reply({
@@ -24,7 +26,7 @@ export const button: Button = {
 				ephemeral: true,
 			});
 
-		if (Object.values(client.config.submissions).filter(c => c.submit === interaction.channel.id).length > 0)
+		if (Object.values(client.config.submissions).filter((c) => c.submit === interaction.channel.id).length > 0)
 			return interaction.reply({
 				embeds: [new MessageEmbed().setImage(`attachment://${attachment.name}`).setTimestamp()],
 				files: [attachment],
@@ -34,7 +36,12 @@ export const button: Button = {
 		else
 			return interaction
 				.reply({
-					embeds: [new MessageEmbed().setImage(`attachment://${attachment.name}`).setFooter({ text: `${interaction.user.username} | ${interaction.user.id}` }).setTimestamp()],
+					embeds: [
+						new MessageEmbed()
+							.setImage(`attachment://${attachment.name}`)
+							.setFooter({ text: `${interaction.user.username} | ${interaction.user.id}` })
+							.setTimestamp(),
+					],
 					files: [attachment],
 					components: [imageButtons],
 					fetchReply: true,
@@ -42,6 +49,5 @@ export const button: Button = {
 				.then((message: Message) => {
 					message.deleteButton(true);
 				});
-
 	},
 };
