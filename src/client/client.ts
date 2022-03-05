@@ -271,7 +271,7 @@ class ExtendedClient extends Client {
 	 * todo: remove this once all commands are implemented as slash commands
 	 */
 	private loadCommands = () => {
-		const commandPath = path.join(__dirname, "..", "Commands");
+		const commandPath = path.join(__dirname, "..", "commandsOld");
 		readdirSync(commandPath).forEach((dir) => {
 			const commands = readdirSync(`${commandPath}/${dir}`).filter((file) => file.endsWith(".ts"));
 
