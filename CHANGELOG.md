@@ -8,6 +8,10 @@
 - `/missing` command (for all compliance/classic faithful packs) [Dungeons 32x NYI]
 - `/palette` command & button command
 - Submission system (Push & Contribution creation NYI)
+
+### Changed
+- Improved message quoting for messages with file attachments
+
 ### Fixed
 - Fixed undeletable interaction: `this interaction is reserved to Bot` :)
 
