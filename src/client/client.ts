@@ -24,6 +24,7 @@ import { RESTPostAPIApplicationCommandsJSONBody, Routes } from "discord-api-type
 import { SlashCommandBuilder } from "@discordjs/builders";
 
 import path from "path";
+import chalk from "chalk";
 
 const JSON_PATH = path.join(__dirname, "../../json"); // json folder at root
 const JSON_FOLDER = path.resolve(__dirname, JSON_PATH);
@@ -64,7 +65,23 @@ class ExtendedClient extends Client {
 		await this.init();
 	}
 
+	private asciiArt() {
+		console.log(chalk.yellowBright("\n .d8888b.                                  888 d8b ") + chalk.red("888888b.            888"));
+		console.log(chalk.yellowBright("d88P  Y88b                                 888 Y8P ") + chalk.red("888  \"88b           888"));
+		console.log(chalk.yellowBright("888    888                                 888     ") + chalk.red("888  .88P           888"));
+		console.log(chalk.yellowBright("888         .d88b.  88888b.d88b.  88888b.  888 888 ") + chalk.red("8888888K.   .d88b.  888888 "));
+		console.log(chalk.yellowBright("888        d88\"\"88b 888 \"888 \"88b 888 \"88b 888 888 ") + chalk.red("888  \"Y88b d88\"\"88b 888"));
+		console.log(chalk.yellowBright("888    888 888  888 888  888  888 888  888 888 888 ") + chalk.red("888    888 888  888 888"));
+		console.log(chalk.yellowBright("Y88b  d88P Y88..88P 888  888  888 888 d88P 888 888 ") + chalk.red("888   d88P Y88..88P Y88b."));
+		console.log(chalk.yellowBright("\"Y8888P\"    \"Y88P\"  888  888  888 88888P\"  888 888 ") + chalk.red("8888888P\"   \"Y88P\"   \"Y888"));
+		console.log(chalk.yellowBright("                                  888"));
+		console.log(chalk.yellowBright("                                  888                   ")+ chalk.white("Compliance Devs. 2022 ©"));
+		console.log(chalk.yellowBright("                                  888\n"));
+	}
+
 	public async init() {
+		this.asciiArt();
+
 		// login client
 		this.login(this.tokens.token)
 			.catch((e) => {
@@ -77,27 +94,15 @@ class ExtendedClient extends Client {
 				initCommands(this);
 				if (this.verbose) console.log(info + `Initialized command counter`);
 
-				// load old commands only if not dev server
-				//if (this.tokens.dev) this.loadCommands();
-				this.loadCommands();
-				if (this.verbose) console.log(info + `Loaded classical commands`);
-
+				// load old commands only if dev server
+				if (this.tokens.dev) this.loadCommands();
 				this.loadSlashCommands();
-				if (this.verbose) console.log(info + `Loaded slash commands & slash command perms`);
 
 				this.loadEvents();
-				if (this.verbose) console.log(info + `Loaded events`);
-
 				this.loadButtons();
-				if (this.verbose) console.log(info + `Loaded buttons`);
-
 				this.loadSelectMenus();
-				if (this.verbose) console.log(info + `Loaded select menus`);
 
-				this.loadSubmissions();
-				this.loadPolls();
-				if (this.verbose) console.log(info + `Loaded submissions & polls data`);
-
+				this.loadCollections();
 				this.automation.start();
 				if (this.verbose) console.log(info + `Started automated functions`);
 				if (this.verbose) console.log(info + `Init complete`);
@@ -113,10 +118,16 @@ class ExtendedClient extends Client {
 		});
 	}
 
+	private loadCollections = async () => {
+		this.loadSubmissions();
+		this.loadPolls();
+		if (this.verbose) console.log(info + `Loaded collections data`);
+	}
+
 	/**
 	 * SUBMISSIONS DATA
 	 */
-	public loadPolls = async () => {
+	private loadPolls = async () => {
 		// read file and load it into the collection
 		const submissionsObj = getData({ filename: POLLS_FILENAME, relative_path: JSON_PATH });
 		Object.values(submissionsObj).forEach((poll: Poll) => {
@@ -133,7 +144,7 @@ class ExtendedClient extends Client {
 		});
 	};
 
-	public savePolls = async () => {
+	private savePolls = async () => {
 		let data = {};
 		[...this.polls.values()].forEach((poll: Poll) => {
 			data[poll.id] = poll;
@@ -144,7 +155,7 @@ class ExtendedClient extends Client {
 	/**
 	 * SUBMISSIONS DATA
 	 */
-	public loadSubmissions = async () => {
+	private loadSubmissions = async () => {
 		// read file and load it into the collection
 		const submissionsObj = getData({ filename: SUBMISSIONS_FILENAME, relative_path: JSON_PATH });
 		Object.values(submissionsObj).forEach((submission: Submission) => {
@@ -161,7 +172,7 @@ class ExtendedClient extends Client {
 		});
 	};
 
-	public saveSubmissions = async () => {
+	private saveSubmissions = async () => {
 		let data = {};
 		[...this.submissions.values()].forEach((submission: Submission) => {
 			data[submission.id] = submission;
@@ -172,7 +183,7 @@ class ExtendedClient extends Client {
 	/**
 	 * SLASH COMMANDS PERMS
 	 */
-	public loadSlashCommandsPerms = async () => {
+	private loadSlashCommandsPerms = async () => {
 		if (!this.application.owner) await this.application.fetch();
 
 		this.guilds.cache.forEach(async (guild: Guild) => {
@@ -201,6 +212,7 @@ class ExtendedClient extends Client {
 			});
 
 			await guild.commands.permissions.set({ fullPermissions });
+			if (this.verbose) console.log(success + `Loaded slash command perms`);
 		});
 	};
 
@@ -220,7 +232,7 @@ class ExtendedClient extends Client {
 	/**
 	 * SLASH COMMANDS HANDLER
 	 */
-	public async loadSlashCommands(): Promise<void> {
+	private async loadSlashCommands(): Promise<void> {
 		const slashCommandsPath = path.join(__dirname, "..", "commands");
 		const commandsArr: Array<RESTPostAPIApplicationCommandsJSONBody> = [];
 
@@ -250,7 +262,10 @@ class ExtendedClient extends Client {
 		if (this.tokens.dev) {
 			rest
 				.put(Routes.applicationGuildCommands(this.tokens.appID, devID), { body: commandsArr })
-				.then(() => console.log(`${success}succeed dev`))
+				.then(() => {
+					console.log(`${success}Successfully added slash commands to dev server`);
+					this.loadSlashCommandsPerms();
+				})
 				.catch(console.error);
 		}
 		// deploy commands globally
@@ -259,11 +274,13 @@ class ExtendedClient extends Client {
 				.put(Routes.applicationCommands(this.tokens.appID), {
 					body: commandsArr,
 				})
-				.then(() => console.log(`${success}succeed global commands`))
+				.then(() => {
+					console.log(`${success}Successfully added global slash commands`); 
+					this.loadSlashCommandsPerms();
+				})
 				.catch(console.error);
 		}
 
-		this.loadSlashCommandsPerms();
 	}
 
 	/**
@@ -288,6 +305,8 @@ class ExtendedClient extends Client {
 				}
 			}
 		});
+		
+		if (this.verbose) console.log(info + `Loaded classical commands`);
 	};
 
 	/**
