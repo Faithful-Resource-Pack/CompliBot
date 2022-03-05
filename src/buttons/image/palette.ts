@@ -3,6 +3,7 @@ import { info } from "@helpers/logger";
 import { Client, Message, ButtonInteraction, MessageEmbed } from "@client";
 import { imageButtons } from "@helpers/buttons";
 import { paletteAttachment } from "@functions/canvas/palette";
+import { getImageFromMessage } from "@functions/slashCommandImage";
 
 export const button: Button = {
 	buttonId: "palette",
@@ -10,7 +11,7 @@ export const button: Button = {
 		if (client.verbose) console.log(`${info}Image palette was requested!`);
 
 		const message: Message = interaction.message as Message;
-		const url = message.embeds[0].image.url;
+		const url = await getImageFromMessage(message);
 		const [attachment, embed] = await paletteAttachment({
 			url: url,
 			name: url.split("/").at(-1),
