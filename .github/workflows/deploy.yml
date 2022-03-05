@@ -25,4 +25,4 @@ jobs:
                       git pull
                       npm install
                       pm2 delete "BOT (TS)"
-                      pm2 start "npm run dev" --name "BOT (TS)"
+                      pm2 start "npm run start" --name "BOT (TS)"
