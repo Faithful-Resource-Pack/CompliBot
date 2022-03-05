@@ -24,7 +24,7 @@ export const button: Button = {
 
 		if (Object.values(client.config.submissions).filter((c) => c.submit === interaction.channel.id).length > 0)
 			return interaction.reply({
-				embeds: [new MessageEmbed().setImage(`attachment://${attachment.name}`).setTimestamp()],
+				embeds: [new MessageEmbed(embed).setTimestamp()],
 				files: [attachment],
 				components: [imageButtons],
 				ephemeral: true,
@@ -33,8 +33,7 @@ export const button: Button = {
 			return interaction
 				.reply({
 					embeds: [
-						new MessageEmbed()
-							.setImage(`attachment://${attachment.name}`)
+						new MessageEmbed(embed)
 							.setFooter({ text: `${interaction.user.username} | ${interaction.user.id}` })
 							.setTimestamp(),
 					],

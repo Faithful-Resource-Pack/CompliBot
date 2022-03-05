@@ -4,6 +4,7 @@ import { Client, CommandInteraction, Message, MessageEmbed } from "@client";
 import { getTextureMessageOptions } from "@functions/getTexture";
 import { MessageActionRow, MessageSelectMenu, MessageSelectOptionData } from "discord.js";
 import axios from "axios";
+import { imageButtons } from "@helpers/buttons";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -52,7 +53,7 @@ export const command: SlashCommand = {
 				texture: results[0],
 				pack: interaction.options.getString("pack", true),
 			});
-			interaction.editReply({ embeds: [embed], files: files }).then((message: Message) => message.deleteButton());
+			interaction.editReply({ embeds: [embed], files: files, components: [imageButtons] }).then((message: Message) => message.deleteButton());
 			return;
 		}
 
