@@ -184,8 +184,10 @@ class ExtendedClient extends Client {
 
 				//! sometimes the .find() methods doesn't find the command, needs to be investigated
 				//* happens with `/reason` command
+				const command = guildSlashCommands.find((cmd) => cmd.name === (slashCommand.data as SlashCommandBuilder).name);
+				if (command === undefined) return;
 				const p = {
-					id: guildSlashCommands.find((cmd) => cmd.name === (slashCommand.data as SlashCommandBuilder).name).id,
+					id: command.id,
 					permissions: [],
 				};
 
