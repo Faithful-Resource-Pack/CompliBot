@@ -1,5 +1,5 @@
-import { string, keys } from "@src/Helpers/string";
-import { Command } from "@src/Interfaces";
+import { string, keys } from "@helpers/string";
+import { Command } from "@helpers/interfaces";
 
 export const command: Command = {
 	name: "test",

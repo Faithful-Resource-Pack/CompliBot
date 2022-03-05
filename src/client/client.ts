@@ -1,29 +1,22 @@
-// import { Client } from "discord-slash-commands-client";
-import { Channel, Client, Collection, Guild, TextChannel, VoiceChannel } from "discord.js";
-import { Message } from "@src/Extended Discord";
-import path from "path";
-import { cp, readdirSync, writeFileSync } from "fs";
-import { Command, Event, Config, Tokens, Button, SelectMenu, SlashCommand } from "@src/Interfaces";
-import ConfigJson from "@/config.json";
-import TokensJson from "@/tokens.json";
+import { Client, ClientOptions, Collection, Guild, TextChannel, VoiceChannel } from "discord.js";
+import { Message, EmittingCollection, Automation } from "@client";
+import { Command, Event, Config, Tokens, Button, SelectMenu, SlashCommand, AsyncSlashCommandBuilder } from "@helpers/interfaces";
+import { getData } from "@functions/getDataFromJSON";
+import { setData } from "@functions/setDataToJSON";
+import { init as initCommands } from "@functions/commandProcess";
+import { errorHandler } from "@functions/errorHandler";
+import { err, info, success } from "@helpers/logger";
+import { Submission } from "@class/submissions";
+import { Poll } from "@class/poll";
 
-import { init as initCommands } from "@src/Functions/commandProcess";
-import { errorHandler } from "@src/Functions/errorHandler";
-
+import { readdirSync } from "fs";
 import { REST } from "@discordjs/rest";
 import { RESTPostAPIApplicationCommandsJSONBody, Routes } from "discord-api-types/v9";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { err, info, safeExit, success } from "@src/Helpers/logger";
-import { bot } from "..";
-import { Automation } from "./automation";
-import { Submission } from "@helpers/class/submissions";
-import { getData } from "@functions/getDataFromJSON";
-import { EmittingCollection } from "./emittingCollection";
-import { setData } from "@functions/setDataToJSON";
-import { Poll } from "@helpers/class/poll";
-import { AsyncSlashCommandBuilder, SyncSlashCommandBuilder } from "@interfaces/slashCommand";
 
-const JSON_PATH = "../json";
+import path from "path";
+
+const JSON_PATH = path.join(__dirname, "../../json"); // json folder at root
 const JSON_FOLDER = path.resolve(__dirname, JSON_PATH);
 const POLLS_FILENAME = "polls.json";
 const SUBMISSIONS_FILENAME = "submissions.json";
@@ -32,8 +25,8 @@ const SUBMISSIONS_FILE_PATH = path.resolve(JSON_FOLDER, SUBMISSIONS_FILENAME);
 
 class ExtendedClient extends Client {
 	public verbose: boolean = false;
-	public config: Config = ConfigJson;
-	public tokens: Tokens = TokensJson;
+	public config: Config;
+	public tokens: Tokens;
 	public automation: Automation = new Automation(this);
 
 	private lastMessages = [];
@@ -49,10 +42,17 @@ class ExtendedClient extends Client {
 	public submissions: EmittingCollection<string, Submission> = new EmittingCollection();
 	public polls: EmittingCollection<string, Poll> = new EmittingCollection();
 
+	constructor(data: ClientOptions & {verbose: boolean, config: Config, tokens: Tokens}) {
+		super(data)
+		this.verbose = data.verbose;
+		this.config = data.config;
+		this.tokens = data.tokens;
+	}
+
 	public async restart(): Promise<void> {
 		console.log(`${info}restarting bot...`);
 		this.destroy();
-		await bot.init();
+		await this.init();
 	}
 
 	public async init() {
@@ -212,7 +212,7 @@ class ExtendedClient extends Client {
 	 * SLASH COMMANDS HANDLER
 	 */
 	public async loadSlashCommands(): Promise<void> {
-		const slashCommandsPath = path.join(__dirname, "..", "Slash Commands");
+		const slashCommandsPath = path.join(__dirname, "..", "commands");
 		const commandsArr: Array<RESTPostAPIApplicationCommandsJSONBody> = [];
 
 		const paths: Array<string> = readdirSync(slashCommandsPath);

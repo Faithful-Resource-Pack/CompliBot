@@ -1,8 +1,8 @@
-import { Poll } from "@helpers/class/poll";
-import { Submission } from "@helpers/class/submissions";
+import { Poll } from "@class/poll";
+import { Submission } from "@class/submissions";
 import { addMinutes } from "@helpers/dates";
 import { ids, parseId } from "@helpers/emojis";
-import { Client, MessageEmbed } from "@src/Extended Discord";
+import { Client, MessageEmbed } from "@client";
 import { Message, TextChannel, User } from "discord.js";
 
 export class Automation {

@@ -1,5 +1,5 @@
 import { ButtonInteraction, CommandInteraction, SelectMenuInteraction } from "discord.js";
-import { string, keys } from "@src/Helpers/string";
+import { string, keys } from "@helpers/string";
 
 declare module "discord.js" {
 	interface CommandInteraction {

@@ -1,8 +1,8 @@
-import { Message, MessageActionRow, MessageButton, MessageEmbed } from "discord.js";
-import { ids, parseId } from "@src/Helpers/emojis";
-import { Config, Tokens } from "@src/Interfaces";
+import { Message, MessageActionRow, MessageEmbed } from "discord.js";
+import { ids } from "@helpers/emojis";
+import { Config, Tokens } from "@helpers/interfaces";
 import ConfigJson from "@/config.json";
-import Menu from "@src/Helpers/menu";
+import Menu from "@helpers/menu";
 import tokens from "@/tokens.json";
 import { deleteInteraction, deleteMessage } from "@helpers/buttons";
 

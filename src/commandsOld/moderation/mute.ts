@@ -1,7 +1,7 @@
-import { MessageEmbed } from "@src/Extended Discord";
-import { Command } from "@src/Interfaces";
-import { getMember } from "@src/Functions/getMember";
-import { stringToMs } from "@src/Functions/time";
+import { MessageEmbed } from "@client";
+import { Command } from "@helpers/interfaces";
+import { getMember } from "@functions/getMember";
+import { stringToMs } from "@functions/time";
 import { Permissions } from "discord.js";
 
 export const command: Command = {

@@ -1,28 +1,22 @@
 {
     "name": "complibot",
     "version": "2.0.1",
-    "description": "a discord bot for the compliance texture pack",
+    "description": "A discord bot for the compliance texture pack",
     "main": "src/index.ts",
     "type": "commonjs",
-    "_moduleAliases": {
-        "@": "dist",
-        "@functions": "dist/src/Functions",
-        "@helpers": "dist/src/helpers",
-        "@interfaces": "dist/src/Interfaces",
-        "@src": "dist/src"
-    },
     "scripts": {
         "dev": "ts-node-dev --respawn -r tsconfig-paths/register src/index.ts",
-        "genLang": "ts-node-dev -r tsconfig-paths/register src/genLangReadme.ts",
+        "start": "node -r ts-node/register -r tsconfig-paths/register src/index.ts",
+        "genLang": "node -r ts-node/register -r tsconfig-paths/register src/genLangReadme.ts",
         "prettier-format": "prettier src/**/*.ts --config .prettierrc --write"
     },
     "devDependencies": {
         "prettier": "^2.5.1",
-        "ts-node": "^10.5.0",
+        "ts-node": "^10.6.0",
         "ts-node-dev": "^1.1.8",
         "tsc-alias": "^1.6.3",
-        "tsconfig-paths": "^3.12.0",
-        "typescript": "^4.5.5"
+        "tsconfig-paths": "^3.13.0",
+        "typescript": "^4.6.2"
     },
     "dependencies": {
         "@discordjs/rest": "^0.3.0",
@@ -40,6 +34,6 @@
         "linux-os-info": "^2.0.0",
         "module-alias": "^2.2.2",
         "moment": "^2.29.1",
-        "slash-commands": "^1.5.0"
+        "tslib": "^2.3.1"
     }
 }

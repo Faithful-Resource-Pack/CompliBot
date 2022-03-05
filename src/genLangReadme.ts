@@ -1,7 +1,7 @@
-import { writeFile, writeFileSync } from "fs";
+import { writeFileSync } from "fs";
 import path from "path";
 import en_US from "@/lang/en-US.json";
-import { err, info, success } from "./Helpers/logger";
+import { success } from "@helpers/logger";
 
 const header = "A list of all translations and their completions.\nHave fun polylingual translators!\n\n";
 const note = "\n\n### Note: make sure to read `/translation-guide.md` before contributing!";
