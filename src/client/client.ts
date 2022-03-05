@@ -297,7 +297,7 @@ class ExtendedClient extends Client {
 	 * !! broke if dir doesn't exist
 	 */
 	private loadEvents = (): void => {
-		const eventPath = path.join(__dirname, "..", "Events");
+		const eventPath = path.join(__dirname, "..", "events");
 
 		readdirSync(eventPath)
 			.filter((file) => file.endsWith(".ts"))
@@ -313,7 +313,7 @@ class ExtendedClient extends Client {
 	 * !! broke if dir doesn't exist
 	 */
 	private loadButtons = (): void => {
-		const buttonPath = path.join(__dirname, "..", "Buttons");
+		const buttonPath = path.join(__dirname, "..", "buttons");
 
 		readdirSync(buttonPath).forEach(async (dir) => {
 			const buttons = readdirSync(`${buttonPath}/${dir}`).filter((file) => file.endsWith(".ts"));
@@ -330,7 +330,7 @@ class ExtendedClient extends Client {
 	 * !! broke if dir doesn't exist
 	 */
 	private loadSelectMenus = (): void => {
-		const menusPath = path.join(__dirname, "..", "Menus");
+		const menusPath = path.join(__dirname, "..", "menus");
 
 		readdirSync(menusPath).forEach(async (dir) => {
 			const menus = readdirSync(`${menusPath}/${dir}`).filter((file) => file.endsWith(".ts"));
