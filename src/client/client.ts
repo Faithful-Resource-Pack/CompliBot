@@ -9,7 +9,7 @@ import {
 	SelectMenu,
 	SlashCommand,
 	AsyncSlashCommandBuilder,
-} from "@helpers/interfaces";
+} from "@interfaces";
 import { getData } from "@functions/getDataFromJSON";
 import { setData } from "@functions/setDataToJSON";
 import { init as initCommands } from "@functions/commandProcess";

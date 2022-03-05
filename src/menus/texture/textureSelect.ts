@@ -1,5 +1,5 @@
 import { Client, Message, SelectMenuInteraction } from "@client";
-import { SelectMenu } from "@helpers/interfaces";
+import { SelectMenu } from "@interfaces";
 import { info } from "@helpers/logger";
 import { imageButtons } from "@helpers/buttons";
 import { MessageInteraction } from "discord.js";

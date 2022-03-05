@@ -1,4 +1,4 @@
-import { SlashCommand } from "@helpers/interfaces";
+import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { colors } from "@helpers/colors";
 import { ids, parseId } from "@helpers/emojis";

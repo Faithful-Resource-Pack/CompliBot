@@ -1,7 +1,7 @@
 import { increase } from "@functions/commandProcess";
-import { SlashCommandI } from "@helpers/interfaces";
+import { SlashCommandI } from "@interfaces";
 import { Collection } from "discord.js";
-import { Event } from "@helpers/interfaces";
+import { Event } from "@interfaces";
 import { Client, CommandInteraction } from "@client";
 
 export const event: Event = {

@@ -1,6 +1,6 @@
 import { MessageEmbed } from "@client";
 import ConfigJson from "@/config.json";
-import { Config } from "@helpers/interfaces";
+import { Config } from "@interfaces";
 import { minecraftSorter } from "./minecraftSorter";
 import axios from "axios";
 import getMeta from "./canvas/getMeta";

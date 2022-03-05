@@ -1,4 +1,4 @@
-import { Event } from "@helpers/interfaces";
+import { Event } from "@interfaces";
 import { Client, Message, MessageEmbed } from "@client";
 import { quote } from "@functions/quote";
 import easterEgg from "@functions/canvas/isEasterEggImg";

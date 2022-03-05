@@ -1,4 +1,4 @@
-import { Event } from "@helpers/interfaces";
+import { Event } from "@interfaces";
 import { Client, Message } from "@client";
 import { info } from "@helpers/logger";
 import { MessageAttachment } from "discord.js";

@@ -1,6 +1,6 @@
 import { MessageEmbed, Client, Message } from "@client";
 import { Collection, CommandInteraction, InteractionReplyOptions, MessageAttachment } from "discord.js";
-import { SlashCommand, SlashCommandI } from "@helpers/interfaces";
+import { SlashCommand, SlashCommandI } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { ColorManager } from "@functions/canvas/colors";
 import axios from "axios";

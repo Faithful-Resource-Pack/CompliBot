@@ -1,4 +1,4 @@
-import { SlashCommand, SyncSlashCommandBuilder } from "@helpers/interfaces";
+import { SlashCommand, SyncSlashCommandBuilder } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { Client, CommandInteraction, MessageEmbed } from "@client";
 import { MessageAttachment } from "discord.js";
@@ -13,10 +13,6 @@ import {
 } from "@functions/missing";
 import axios from "axios";
 import { doNestedArr } from "@helpers/arrays";
-
-/**
- * ! todo: add support for custom MC versions
- */
 
 export const PACKS: Array<[name: string, value: string]> = [
 	["Compliance 32x", "c32"],
@@ -63,13 +59,6 @@ export const command: SlashCommand = {
 						])
 						.setRequired(true),
 				)
-				//! NYI
-				// .addBooleanOption((option) =>
-				// 	option
-				// 		.setName("update_channels")
-				// 		.setDescription("Update completion channels after command.")
-				// 		.setRequired(false)
-				// )
 				.addStringOption((option) =>
 					option
 						.setName("version")
@@ -79,9 +68,6 @@ export const command: SlashCommand = {
 				)
 		);
 	},
-
-	// data: new SlashCommandBuilder()
-
 	execute: async (interaction: CommandInteraction) => {
 		await interaction.deferReply();
 

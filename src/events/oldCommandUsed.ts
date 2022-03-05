@@ -1,4 +1,4 @@
-import { Event, Command } from "@helpers/interfaces";
+import { Event, Command } from "@interfaces";
 import { increase } from "@functions/commandProcess";
 import { Client, Message } from "@client";
 

@@ -1,4 +1,4 @@
-import { SelectMenu, Event } from "@helpers/interfaces";
+import { SelectMenu, Event } from "@interfaces";
 import { Client, SelectMenuInteraction } from "@client";
 
 export const event: Event = {

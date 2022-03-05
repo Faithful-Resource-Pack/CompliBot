@@ -1,4 +1,4 @@
-import { Button, Event } from "@helpers/interfaces";
+import { Button, Event } from "@interfaces";
 import { Client, ButtonInteraction } from "@client";
 
 export const event: Event = {

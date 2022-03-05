@@ -1,4 +1,4 @@
-import { Button } from "@helpers/interfaces";
+import { Button } from "@interfaces";
 import { Client, Message, ButtonInteraction } from "@client";
 import { submissionButtonsClosed, submissionButtonsVotes } from "@helpers/buttons";
 

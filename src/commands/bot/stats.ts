@@ -1,5 +1,5 @@
 import { duration } from "moment";
-import { SlashCommand, SlashCommandI } from "@helpers/interfaces";
+import { SlashCommand, SlashCommandI } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { Collection, Guild, version as djsVersion } from "discord.js";
 import { getUsage, total } from "@functions/commandProcess";

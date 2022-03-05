@@ -1,4 +1,4 @@
-import { SlashCommand } from "@helpers/interfaces";
+import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder, SlashCommandStringOption } from "@discordjs/builders";
 import { CommandInteraction, MessageEmbed, Message } from "@client";
 

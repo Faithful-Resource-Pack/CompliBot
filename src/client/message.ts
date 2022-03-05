@@ -1,6 +1,6 @@
 import { Message, MessageActionRow, MessageEmbed } from "discord.js";
 import { ids } from "@helpers/emojis";
-import { Config, Tokens } from "@helpers/interfaces";
+import { Config, Tokens } from "@interfaces";
 import ConfigJson from "@/config.json";
 import Menu from "@helpers/menu";
 import tokens from "@/tokens.json";

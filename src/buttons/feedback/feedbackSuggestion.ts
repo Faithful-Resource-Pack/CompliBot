@@ -1,5 +1,5 @@
 import { Client, MessageEmbed, Message, ButtonInteraction } from "@client";
-import { Button } from "@helpers/interfaces";
+import { Button } from "@interfaces";
 import { MessageInteraction } from "discord.js";
 
 export const button: Button = {

@@ -1,9 +1,9 @@
-import { SlashCommand } from "@helpers/interfaces";
+import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction, Message, MessageEmbed } from "@client";
 import { EmbedField } from "discord.js";
 import { ids, parseId } from "@helpers/emojis";
-import { Config } from "@helpers/interfaces";
+import { Config } from "@interfaces";
 import ConfigJson from "@/config.json";
 const config: Config = ConfigJson;
 

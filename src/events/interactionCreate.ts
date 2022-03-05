@@ -1,4 +1,4 @@
-import { Event } from "@helpers/interfaces";
+import { Event } from "@interfaces";
 import { Client, CommandInteraction, ButtonInteraction, SelectMenuInteraction } from "@client";
 import { Interaction } from "discord.js";
 

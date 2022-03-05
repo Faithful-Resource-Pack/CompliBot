@@ -1,5 +1,5 @@
 import { Guild, MessageEmbed } from "discord.js";
-import { Event } from "@helpers/interfaces";
+import { Event } from "@interfaces";
 import { info } from "@helpers/logger";
 
 export const event: Event = {
