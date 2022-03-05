@@ -30,6 +30,8 @@
     "item/leather_chestplate_overlay.png"
   ],
   "bedrock": [
+    "spit",
+    "decor_none",
     "font/",
     "colormap/",
     "/gui/",
