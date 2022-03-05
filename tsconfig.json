@@ -1,5 +1,9 @@
 {
+	"ts-node": {
+		"require": [ "tsconfig-paths/register" ]
+	},
 	"compilerOptions": {
+		"typeRoots": [ "./node_modules/@types"],
 		"lib": ["ESNext"],
 		"module": "commonjs",
 		"moduleResolution": "node",
@@ -17,16 +21,15 @@
 		"baseUrl": "src",
 		"paths": {
 			"@/*": ["../*"],
-			"@functions/*": ["./Functions/*"],
-			"@helpers/*": ["./Helpers/*"],
-			"@interfaces/*": ["./Interfaces/*"],
-			"@src/*": ["*"]
-		},
-		"plugins": [
-			{
-				"transform": "@zerollup/ts-transform-paths"
-			}
-		]
+			"@client": ["client"],
+			"@client/buttons/*": ["buttons/*"],
+			"@client/commands/*": ["commands/*"],
+			"@client/menus/*": ["menus/*"],
+			"@functions/*": ["helpers/functions/*"],
+			"@class/*": ["helpers/class/*"],
+			"@helpers/*": ["helpers/*"],
+			"@interfaces": ["helpers/interfaces"]
+		}
 	},
 	"exclude": ["node_modules"],
 	"include": ["src"]

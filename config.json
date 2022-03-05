@@ -67,7 +67,41 @@
         "feedbackBug": "938475927887839243",
         "feedbackSuggestion": "938475860938342440"
     },
-    "submitChannels": {
-        "testServer": "841396215211360296"
+    "submissions": {
+        "testServer": {
+            "submit": "841396215211360296",
+            "council": "946558091929985055"
+        },
+        "compliance32x": {
+            "submit": "",
+            "council": ""
+        }
+    },
+    "roles": {
+        "council": {
+            "testServer": "936043191977787452",
+            "compliance": "775636065338785813",
+            "classicFaithful": "814200754197364786"
+        }
+    },
+    "packProgress": {
+        "c32": {
+            "java": "778257098437558312",
+            "bedrock": "834852328745205830",
+            "dungeons": "860474330584842241"
+        },
+        "c64": {
+            "java": "932039966836535328",
+            "bedrock": "932040163876548649"
+        },
+        "classic_faithful_32": {
+            "java": "948984052080337007"
+        },
+        "classic_faithful_64": {
+            "java": "914224818226856027"
+        },
+        "classic_faithful_32_progart": {
+            "java": "864660644685938688"
+        }
     }
 }

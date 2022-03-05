@@ -75,6 +75,7 @@
     "Command.Images.NotFound": "No images were found in the last %NUMBER% messages, please submit one using the following:\n\n- Sending an image URL\n- Attaching one to your message\n- Reply to a previous message (can be chained)\n\n> You can cancel this by sending anything else.",
     "Command.Images.TooBig": "Output exceeds the maximum of 512px²!",
     "Command.Images.NoImageAttached": "No image were attached, nor valid URL were given!",
+    "Command.Images.NoResponse": "No responses were given in time!",
     "Command.Kill.Killed": [
         "%AUTHOR% fell out of the world",
         "%AUTHOR% died",
@@ -224,6 +225,7 @@
     "Error.General": "Encountered an error!",
     "Error.Message.Deleted": "This message has already been deleted!",
     "Error.NotFound": "%THING% Not Found!",
+    "Error.NoPermissions": "You don't have the permission to do that!",
     "Error.Interaction.Reserved": "This interaction is reserved to its owner (%USER%)",
     "Error.Channel.CacheNotFound": "The %CHANNEL_NAME% channel cannot be found in cache!",
     "Error.Channel.NotTextChannel": "The targeted channel is not a text channel, the message can't be send!",

@@ -1,9 +1,13 @@
+import { Client } from "@client";
 import { Constants, Intents } from "discord.js";
-import { Client } from "@src/Extended Discord";
 
-let verbose = true; //* Use this for debugging startup to see where it gets stuck, leave on false by default
+import ConfigJson from "@/config.json";
+import TokensJson from "@/tokens.json";
 
-export const bot = new Client({
+new Client({
+	config: ConfigJson,
+	tokens: TokensJson,
+	verbose: TokensJson.dev,
 	allowedMentions: { parse: ["users", "roles"], repliedUser: false }, // remove this line to die instantly ~JackDotJS 2021
 	restTimeOffset: 0,
 	partials: Object.values(Constants.PartialTypes),
@@ -25,6 +29,4 @@ export const bot = new Client({
 		Intents.FLAGS.DIRECT_MESSAGE_TYPING,
 		Intents.FLAGS.GUILD_SCHEDULED_EVENTS,
 	],
-});
-bot.verbose = verbose;
-bot.init();
+}).init();
