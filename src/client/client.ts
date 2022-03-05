@@ -1,6 +1,15 @@
 import { Client, ClientOptions, Collection, Guild, TextChannel, VoiceChannel } from "discord.js";
 import { Message, EmittingCollection, Automation } from "@client";
-import { Command, Event, Config, Tokens, Button, SelectMenu, SlashCommand, AsyncSlashCommandBuilder } from "@helpers/interfaces";
+import {
+	Command,
+	Event,
+	Config,
+	Tokens,
+	Button,
+	SelectMenu,
+	SlashCommand,
+	AsyncSlashCommandBuilder,
+} from "@helpers/interfaces";
 import { getData } from "@functions/getDataFromJSON";
 import { setData } from "@functions/setDataToJSON";
 import { init as initCommands } from "@functions/commandProcess";
@@ -42,8 +51,8 @@ class ExtendedClient extends Client {
 	public submissions: EmittingCollection<string, Submission> = new EmittingCollection();
 	public polls: EmittingCollection<string, Poll> = new EmittingCollection();
 
-	constructor(data: ClientOptions & {verbose: boolean, config: Config, tokens: Tokens}) {
-		super(data)
+	constructor(data: ClientOptions & { verbose: boolean; config: Config; tokens: Tokens }) {
+		super(data);
 		this.verbose = data.verbose;
 		this.config = data.config;
 		this.tokens = data.tokens;

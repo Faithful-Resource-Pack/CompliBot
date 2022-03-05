@@ -1,4 +1,3 @@
-
 import { CommandInteraction, EmbedField, TextChannel } from "discord.js";
 import { SlashCommand } from "@helpers/interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
