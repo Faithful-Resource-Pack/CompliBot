@@ -50,8 +50,12 @@ export async function quote(message: Message) {
 			});
 		} else embed.setThumbnail(quotedMsg.author.displayAvatarURL());
 	} else {
-		if (quotedMsg.attachments.size > 0 && quotedMsg.attachments.first().url.match(/\.(jpeg|jpg|png|webp|gif)$/))
-			embed.setImage(quotedMsg.attachments.first().url);
+		if (quotedMsg.attachments.size > 0) {
+			if (quotedMsg.attachments.first().url.match(/\.(jpeg|jpg|png|webp|gif)$/))
+				embed.setImage(quotedMsg.attachments.first().url);
+			else
+				embed.addField("Attachment", `[${quotedMsg.attachments.first().name}](${quotedMsg.attachments.first().url})`);
+		}
 
 		embed
 			.setAuthor({
@@ -62,6 +66,8 @@ export async function quote(message: Message) {
 			.setDescription(quotedMsg.content);
 	}
 
-	embed.setFooter({ text: `Quoted by ${message.author.tag}`, iconURL: message.author.displayAvatarURL() });
+	embed
+		.setFooter({ text: `Quoted by ${message.author.tag}`, iconURL: message.author.displayAvatarURL() })
+		.setTimestamp(quotedMsg.createdTimestamp);
 	message.reply({ embeds: [embed] }).then((message: Message) => message.deleteButton());
 }
