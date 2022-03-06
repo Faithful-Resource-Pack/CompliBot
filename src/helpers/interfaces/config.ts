@@ -2,10 +2,6 @@ export interface Config {
 	firestormUrl: string;
 	apiUrl: string;
 	images: string;
-	repositories: {
-		compliance: Repository;
-		vanilla: Repository;
-	};
 	teams: Array<Team>;
 	discords: Array<Discord>;
 	packProgress: {
@@ -33,10 +29,4 @@ interface Discord {
 
 type Team = Omit<Discord, "id" | "submissionSystem" | "roles"> & {
 	roles: { [role: string]: Array<string> };
-}
-
-interface Repository {
-	name: string;
-	url: string;
-	images: string;
 }

@@ -3,18 +3,6 @@
     "icon": "https://cdn.discordapp.com/avatars/929066601930706954/86f92a2870e5924a04b75cc917cb4ecd.webp?size=80",
     "apiUrl": "https://api.compliancepack.net/v2/",
     "firestormUrl": "https://database.compliancepack.net/firestorm-test/",
-    "repositories": {
-        "compliance": {
-            "name": "Compliance-%EDITION%-%RESOLUTION%x",
-            "url": "https://github.com/Compliance-Resource-Pack/Compliance-%EDITION%-%RESOLUTION%x/",
-            "images": "https://raw.githubusercontent.com/Compliance-Resource-Pack/Compliance-%EDITION%-%RESOLUTION%x/Jappa-%VERSION%/%PATH%"
-        },
-        "vanilla": {
-            "name": "Default-%EDITION%",
-            "url": "https://github.com/CompliBot/Default-%EDITION%",
-            "images": "https://raw.githubusercontent.com/CompliBot/Default-%EDITION%/%VERSION%/%PATH%"
-        }
-    },
     "teams": [
         {
             "name": "faithful",
