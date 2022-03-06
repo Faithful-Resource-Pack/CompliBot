@@ -27,7 +27,6 @@ export const button: Button = {
 			return interaction.reply({
 				embeds: [new MessageEmbed(embed).setTimestamp()],
 				files: [attachment],
-				components: [imageButtons],
 				ephemeral: true,
 			});
 		else
@@ -39,7 +38,6 @@ export const button: Button = {
 							.setTimestamp(),
 					],
 					files: [attachment],
-					components: [imageButtons],
 					fetchReply: true,
 				})
 				.then((message: Message) => {

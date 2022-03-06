@@ -113,66 +113,28 @@ class ExtendedClient extends Client {
 		});
 	}
 
-	private loadCollections = async () => {
-		this.loadSubmissions();
-		this.loadPolls();
-		this.loadCommandsCounter();
+	private loadCollections = () => {
+		this.loadCollection(this.polls, POLLS_FILENAME, JSON_PATH);
+		this.loadCollection(this.submissions, SUBMISSIONS_FILENAME, JSON_PATH);
+		this.loadCollection(this.commandsProcessed, COMMANDS_PROCESSED_FILENAME, JSON_PATH);
 		if (this.verbose) console.log(info + `Loaded collections data`);
 	}
 
 	/**
-	 * COMMANDS COUNTER
+	 * Read & Load data from json file into emitting collection & setup events handler
+	 * @param collection {EmittingCollection}
+	 * @param filename {string}
+	 * @param relative_path {string}
 	 */
-	private loadCommandsCounter = async () => {
-		const commandsCounter: {[name: string]: number} = getData({ filename: COMMANDS_PROCESSED_FILENAME, relative_path: JSON_PATH }) as any;
-		Object.keys(commandsCounter).forEach((commandName: string) => {
-			this.commandsProcessed.set(commandName, commandsCounter[commandName])
+	private loadCollection = (collection: EmittingCollection<any, any>, filename: string, relative_path: string): void => {
+		const obj = getData({ filename, relative_path });
+		Object.keys(obj).forEach((key: string) => {
+			collection.set(key, obj[key]);
 		})
 
-		this.commandsProcessed.events.on("dataSet", (key: string, value: number) => {
-			this.saveEmittingCollection(this.commandsProcessed, COMMANDS_PROCESSED_FILENAME, JSON_PATH);
-		})
+		collection.events.on("dataSet", (key: string, value: any) => { this.saveEmittingCollection(collection, filename, relative_path); });
+		collection.events.on("dataDeleted", (key: string) => { this.saveEmittingCollection(collection, filename, relative_path); });
 	}
-
-	/**
-	 * POLL DATA
-	 */
-	private loadPolls = async () => {
-		// read file and load it into the collection
-		const submissionsObj = getData({ filename: POLLS_FILENAME, relative_path: JSON_PATH });
-		Object.values(submissionsObj).forEach((poll: Poll) => {
-			this.polls.set(poll.id, poll);
-		});
-
-		// events
-		this.polls.events.on("dataSet", (_key: string, _value: Submission) => {
-			this.saveEmittingCollection(this.polls, POLLS_FILENAME, JSON_PATH);
-		});
-
-		this.polls.events.on("dataDeleted", (_key: string) => {
-			this.saveEmittingCollection(this.polls, POLLS_FILENAME, JSON_PATH);
-		});
-	};
-
-	/**
-	 * SUBMISSIONS DATA
-	 */
-	private loadSubmissions = async () => {
-		// read file and load it into the collection
-		const submissionsObj = getData({ filename: SUBMISSIONS_FILENAME, relative_path: JSON_PATH });
-		Object.values(submissionsObj).forEach((submission: Submission) => {
-			this.submissions.set(submission.id, submission);
-		});
-
-		// events
-		this.submissions.events.on("dataSet", (key: string, value: Submission) => {
-			this.saveEmittingCollection(this.submissions, SUBMISSIONS_FILENAME, JSON_PATH);
-		});
-
-		this.submissions.events.on("dataDeleted", (key: string) => {
-			this.saveEmittingCollection(this.submissions, SUBMISSIONS_FILENAME, JSON_PATH);
-		});
-	};
 
 	/**
 	 * Save an emitting collection into a JSON file

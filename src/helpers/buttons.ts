@@ -11,13 +11,18 @@ export const magnify = new MessageButton().setStyle("PRIMARY").setEmoji(parseId(
 export const tile = new MessageButton().setStyle("PRIMARY").setEmoji(parseId(ids.tile)).setCustomId("tile");
 
 export const instapass = new MessageButton()
-	.setStyle("DANGER")
+	.setStyle("PRIMARY")
 	.setEmoji(parseId(ids.instapass))
 	.setCustomId("submissionInstapass");
 export const invalidate = new MessageButton()
-	.setStyle("DANGER")
+	.setStyle("PRIMARY")
 	.setEmoji(parseId(ids.invalid))
 	.setCustomId("submissionInvalidate");
+
+export const view_votes = new MessageButton()
+	.setStyle("PRIMARY")
+	.setEmoji(parseId(ids.view_votes))
+	.setCustomId("submissionViewVotes");
 
 export const see_more = new MessageButton()
 	.setStyle("SECONDARY")
@@ -81,9 +86,10 @@ export const pollYesNo = new MessageActionRow().addComponents([pollUpvote, pollD
 export const imageButtons = new MessageActionRow().addComponents([magnify, tile, palette, compare]);
 export const submissionButtonsOpen = new MessageActionRow().addComponents([
 	see_less,
-	deleteMessage,
+	view_votes,
 	instapass,
 	invalidate,
+	deleteMessage,
 ]);
 export const submissionButtonsClosed = new MessageActionRow().addComponents([
 	magnify,

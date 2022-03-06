@@ -32,8 +32,6 @@ export const button: Button = {
 
 		try {
 			interaction.update({});
-		} catch (err) {
-			console.error(err);
-		}
+		} catch {}
 	},
 };

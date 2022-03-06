@@ -2,8 +2,9 @@ import { Button } from "@interfaces";
 import { info } from "@helpers/logger";
 import { Client, Message, ButtonInteraction, MessageEmbed } from "@client";
 import { tileAttachment } from "@functions/canvas/tile";
-import { imageButtons } from "@helpers/buttons";
+import { magnify, palette } from "@helpers/buttons";
 import { getImageFromMessage } from "@functions/slashCommandImage";
+import { MessageActionRow } from "discord.js";
 
 export const button: Button = {
 	buttonId: "tile",
@@ -29,7 +30,7 @@ export const button: Button = {
 			return interaction.reply({
 				embeds: [new MessageEmbed().setImage(`attachment://${attachment.name}`).setTimestamp()],
 				files: [attachment],
-				components: [imageButtons],
+				components: [new MessageActionRow().addComponents(magnify)],
 				ephemeral: true,
 			});
 		else
@@ -42,7 +43,7 @@ export const button: Button = {
 							.setTimestamp(),
 					],
 					files: [attachment],
-					components: [imageButtons],
+					components: [new MessageActionRow().addComponents(magnify, palette)],
 					fetchReply: true,
 				})
 				.then((message: Message) => {
