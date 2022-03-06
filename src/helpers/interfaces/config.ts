@@ -8,6 +8,7 @@ export interface Config {
 		compliance: Repository;
 		vanilla: Repository;
 	};
+	teams: Array<Team>;
 	discords: Array<Discord>;
 	submissions: { [pack: string]: SubmissionChannels };
 	roles: {
@@ -25,6 +26,7 @@ interface SubmissionChannels {
 	council: string;
 }
 interface Discord {
+	team?: string; // tell if discord guilds are teamed up (for global commands)
 	name: string;
 	id: string;
 	channels: {
@@ -32,6 +34,8 @@ interface Discord {
 		moderation?: string;
 	};
 }
+
+interface Team extends Omit<Discord, "id"> {}
 
 interface Repository {
 	name: string;

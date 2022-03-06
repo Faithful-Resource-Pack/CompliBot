@@ -32,6 +32,14 @@
         "patreon": "#f96754",
         "coin": "#ffdc16"
     },
+    "teams": [
+        {
+            "name": "faithful",
+            "channels": {
+                "moderation": "776145239358046248"
+            }
+        }
+    ],
     "discords": [
         {
             "name": "dev",
@@ -43,26 +51,26 @@
         },
         {
             "name": "compliance",
+            "team": "faithful",
             "id": "773983706582482946",
             "channels": {
-                "updateMember": "774333964101615637",
-                "moderation": "776145239358046248"
+                "updateMember": "774333964101615637"
             }
         },
         {
             "name": "compliance_extra",
+            "team": "faithful",
             "id": "614160586032414845",
             "channels": {
-                "updateMember": "802854096779477002",
-                "moderation": "776145239358046248"
+                "updateMember": "802854096779477002"
             }
         },
         {
             "name": "classic_faithful",
+            "team": "faithful",
             "id": "814198513847631944",
             "channels": {
-                "updateMember": "814246773459255328",
-                "moderation": "776145239358046248"
+                "updateMember": "814246773459255328"
             }
         }
     ],
