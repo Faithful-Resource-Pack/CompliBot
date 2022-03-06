@@ -2,7 +2,7 @@ import { CommandInteraction, EmbedField, TextChannel } from "discord.js";
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { Poll } from "@class/poll";
-import { addMinutes } from "@helpers/dates";
+import { addSeconds, paraseDate } from "@helpers/dates";
 import { ids, parseId } from "@helpers/emojis";
 import { Client, MessageEmbed } from "@client";
 
@@ -16,7 +16,7 @@ export const command: SlashCommand = {
 		.addNumberOption((option) =>
 			option.setName("answers").setDescription("How many answers does the poll have? (Max: 5)").setRequired(true),
 		)
-		.addNumberOption((option) => option.setName("timeout").setDescription("Timeout for the vote. (in minutes!)"))
+		.addStringOption((option) => option.setName("timeout").setDescription("Timeout for the vote. (schema: 3 min, 10 h, 1 year)"))
 		.addBooleanOption((option) => option.setName("anonymous").setDescription("Are votes anonymous?"))
 		.addBooleanOption((option) => option.setName("thread").setDescription("Did you want a thread for this question?"))
 		.addBooleanOption((option) =>
@@ -28,7 +28,7 @@ export const command: SlashCommand = {
 	execute: async (interaction: CommandInteraction, client: Client) => {
 		const question: string = interaction.options.getString("question", true);
 		
-		const timeoutVal: number | null = interaction.options.getNumber("timeout", false);
+		const timeoutVal: string | null = interaction.options.getString("timeout", false);
 		const yesno: boolean = interaction.options.getBoolean("yesno", false) === true ? true : false;
 		const thread: boolean = interaction.options.getBoolean("thread", false) === true ? true : false;
 		const description: string = interaction.options.getString("description", false);
@@ -41,7 +41,10 @@ export const command: SlashCommand = {
 		const poll = new Poll();
 
 		// setup timeout
-		if (timeoutVal !== null) poll.setTimeout(addMinutes(new Date(), timeoutVal));
+		if (timeoutVal !== null) {
+			if (parseInt(timeoutVal, 10).toString() === timeoutVal) return interaction.reply({ content: await interaction.text({ string: "Error.Timeout.NoTypeGiven" }), ephemeral: true });
+			poll.setTimeout(addSeconds(new Date(), paraseDate(timeoutVal)));
+		}
 		else poll.setTimeout(0);
 
 		/* default embed */
