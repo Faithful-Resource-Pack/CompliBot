@@ -128,6 +128,7 @@ export class TimedEmbed {
 	}
 
 	public isTimeout(): boolean {
+		if (this.getTimeout() === 0) return false;
 		if (this.getTimeout() < new Date().getTime() / 1000) return true;
 		return false;
 	}

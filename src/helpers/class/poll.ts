@@ -41,7 +41,7 @@ export class Poll extends TimedEmbed {
 
 			field.value =
 				votesCount[index - 1] === 0
-					? "No votes yet."
+					? (this.getStatus() === "ended" ? "Nobody has voted." : "No votes yet.")
 					: `> ${votesCount[index - 1]} / ${votesCount.reduce((partialSum, a) => partialSum + a, 0)} (${(
 							(votesCount[index - 1] / votesCount.reduce((partialSum, a) => partialSum + a, 0)) *
 							100
