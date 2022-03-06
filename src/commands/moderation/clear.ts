@@ -34,20 +34,25 @@ export const command: SlashCommand = {
 
     interaction.reply({ ephemeral: true, content: `Succesfully deleted ${amount} messages` });
 
+    // construct logs
+    // todo: add clear icon in thumbnail (waiting for Pomi to draw it)
     const embed: MessageEmbed = new MessageEmbed()
       .setTitle(`Deleted ${amount} message${amount === 1 ? "": "s"}`)
-      .setAuthor({ name: interaction.user.username })
+      .setAuthor({ name: interaction.user.username, iconURL: interaction.user.avatarURL({ dynamic: true }) })
       .setColor(colors.red)
-      .setThumbnail(interaction.user.avatarURL({ dynamic: true }))
       .addFields([
-        { name: "Server", value: `\`${interaction.guild.name}\``, inline: true },
-        { name: "Channel", value: `${interaction.channel}`, inline: true },
+        { name: "Server", value: `\`${interaction.guild.name}\``, inline: true},
+        { name: "Channel", value: `${interaction.channel}`, inline: true},
       ])
       .setTimestamp();
 
+    // send log into the addressed logs channel
+    let logChannel: TextChannel;
+    const team: string = config.discords.filter(d => d.id === interaction.guildId)[0].team;
     try {
-      client.channels.fetch(config.discords.filter(d => d.id === interaction.guildId)[0].channels.moderation)
-        .then((channel: TextChannel) => channel.send({ embeds: [embed] }));
+      if (team) logChannel = await client.channels.fetch(config.teams.filter(t => t.name === team)[0].channels.moderation) as any;
+      else logChannel = await client.channels.fetch(config.discords.filter(d => d.id === interaction.guildId)[0].channels.moderation) as any;
+      logChannel.send({ embeds: [embed] });
     } catch { return; } // can't fetch channel
   }
 }

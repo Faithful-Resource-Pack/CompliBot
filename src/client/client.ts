@@ -88,9 +88,6 @@ class ExtendedClient extends Client {
 				process.exit(1);
 			})
 			.then(() => {
-
-				// load old commands only if dev server
-				if (this.tokens.dev) this.loadCommands();
 				this.loadSlashCommands();
 
 				this.loadEvents();
@@ -254,32 +251,6 @@ class ExtendedClient extends Client {
 		}
 
 	}
-
-	/**
-	 * CLASSIC COMMAND HANDLER
-	 * todo: remove this once all commands are implemented as slash commands
-	 */
-	private loadCommands = () => {
-		const commandPath = path.join(__dirname, "..", "commandsOld");
-		readdirSync(commandPath).forEach((dir) => {
-			const commands = readdirSync(`${commandPath}/${dir}`).filter((file) => file.endsWith(".ts"));
-
-			for (const file of commands) {
-				const { command } = require(`${commandPath}/${dir}/${file}`);
-				this.commands.set(command.name, command);
-
-				if (command.aliases) {
-					if (command.aliases.length !== 0) {
-						command.aliases.forEach((alias) => {
-							this.aliases.set(alias, command);
-						});
-					}
-				}
-			}
-		});
-		
-		if (this.verbose) console.log(info + `Loaded classical commands`);
-	};
 
 	/**
 	 * Read "Events" directory and add them as events
