@@ -173,10 +173,9 @@ class ExtendedClient extends Client {
 			this.slashCommands.forEach(async (slashCommand: SlashCommand) => {
 				if (slashCommand.permissions === undefined) return; // no permission to be checked
 
-				//! sometimes the .find() methods doesn't find the command, needs to be investigated
-				//* happens with `/reason` command
 				const command = guildSlashCommands.find((cmd) => cmd.name === (slashCommand.data as SlashCommandBuilder).name);
-				if (command === undefined) return;
+				if (command === undefined) return; // shouldn't be the case since commands are declared before this method
+				
 				const p = {
 					id: command.id,
 					permissions: [],
