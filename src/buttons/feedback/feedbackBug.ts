@@ -19,7 +19,7 @@ export const button: Button = {
 				ephemeral: true,
 			});
 
-		const channelFeedback = client.channels.cache.get(client.config.channels[interaction.customId]);
+		const channelFeedback = client.channels.cache.get(client.config.discords.filter(d => d.name === "dev")[0].channels[interaction.customId]);
 
 		if (!channelFeedback)
 			return interaction.reply({

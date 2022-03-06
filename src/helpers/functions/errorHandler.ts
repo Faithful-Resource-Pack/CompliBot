@@ -42,7 +42,7 @@ const loopLimit = 3; //how many times the same error needs to be made to trigger
 
 export const errorHandler: Function = async (client: Client, reason: any, type: string) => {
 	console.error(`${err} ${reason.stack || JSON.stringify(reason)}`);
-	const channel = client.channels.cache.get(client.config.channels.error) as TextChannel;
+	const channel = client.channels.cache.get(client.config.discords.filter(d => d.name === "dev")[0].channels.error) as TextChannel;
 	if (channel === undefined) return; // avoid infinite loop when crash is outside of client
 
 	if (lastReasons.length == loopLimit) lastReasons.pop(); // pop removes an item from the end of an array

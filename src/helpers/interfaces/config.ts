@@ -3,7 +3,6 @@ export interface Config {
 	firestormUrl: string;
 	apiUrl: string;
 	images: string;
-	channels: { [key: string]: string }; //! deprecated (should be implemented in the discords field)
 	repositories: {
 		compliance: Repository;
 		vanilla: Repository;
@@ -30,8 +29,7 @@ interface Discord {
 	name: string;
 	id: string;
 	channels: {
-		updateMember?: string;
-		moderation?: string;
+		[updateMember: string]: string;
 	};
 }
 
