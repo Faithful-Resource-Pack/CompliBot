@@ -4,16 +4,18 @@
 ## [v2.0.2] TBA
 
 ### Added
-- A beautiful Ascii art showing up when the bot starts
-- Added easy to use timeout value when making a poll with `/poll`
-- Added `/modping` command; used to pings moderators
-- Added `/mute <user> <time> <reason?>` command
-- Added `/clear <amount>` command
-- Added 2 super ~~secret~~ commands for devs only
+- A beautiful Ascii art showing up when the bot starts.
+- Added easy to use timeout value when making a poll with `/poll`.
+- Added `/modping` command; used to pings moderators when you needs direct help from them.
+- Added `/mute <user> <time> <reason?>` command: Mute the given user for the given period of time (moderators exclusive).
+- Added `/clear <amount>` command: Clear the given amount of message (moderators exclusive).
+- Added 2 ~~super secret~~ commands for devs fun & amusement only.
 - A view votes button has been added on submitted textures, thus, only giving output while the texture is still in the submission process.
 - **Config:** added "teams" config options: This now allow us to specify global roles, channels and so on for a group of discords servers (useful for Compliance & Co servers).
 
 ### Changed
+- ⚠️ Moved all `.json` files used to store data from `EmittingCollection` into `./json/dynamic`
+  > All polls data already saved will be lost! Already saved data needs to be manually transferred (only path as changed, not the data itself).
 - ⚠️ Commands in the `compliance` folders are now only available on `compliance`, `compliance_extra` & `classic_faithful` servers;  
   > Concerned commands are: `/guidelines`, `/license`, `/missing`, `/reason`, `/texture`, `/website`.  
   > To avoid duplicated commands, kick & reinvite the bot.
