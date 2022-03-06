@@ -26,14 +26,16 @@ export const command: SlashCommand = {
 			option.setName("description").setDescription("Add more information about your poll here!."),
 		),
 	execute: async (interaction: CommandInteraction, client: Client) => {
-		const timeoutVal: number | null = interaction.options.getNumber("timeout", false);
-		const _answersCount: number = interaction.options.getNumber("answers", true);
-		const yesno: boolean = interaction.options.getBoolean("yesno", false) === true ? true : false;
 		const question: string = interaction.options.getString("question", true);
+		
+		const timeoutVal: number | null = interaction.options.getNumber("timeout", false);
+		const yesno: boolean = interaction.options.getBoolean("yesno", false) === true ? true : false;
 		const thread: boolean = interaction.options.getBoolean("thread", false) === true ? true : false;
 		const description: string = interaction.options.getString("description", false);
 		const anonymous: boolean = interaction.options.getBoolean("anonymous", false) === true ? true : false;
-		const answersCount: number = yesno ? 2 : _answersCount > 5 ? 5 : _answersCount < 2 ? 2 : _answersCount;
+
+		const _count: number = interaction.options.getNumber("answers", true);
+		const answersCount: number = yesno ? 2 : _count > 5 ? 5 : _count < 2 ? 2 : _count;
 
 		// instantiate a new poll
 		const poll = new Poll();

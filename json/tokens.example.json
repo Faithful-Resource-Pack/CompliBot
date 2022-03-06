@@ -3,5 +3,6 @@
     "firestormToken": "bing",
     "token": "chilling",
     "appID": "botID",
+    "apiPassword": "test",
     "dev": true
 }
