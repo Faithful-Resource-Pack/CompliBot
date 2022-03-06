@@ -2,7 +2,7 @@ import { CommandInteraction, EmbedField, TextChannel } from "discord.js";
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { Poll } from "@class/poll";
-import { addSeconds, paraseDate } from "@helpers/dates";
+import { addSeconds, parseDate } from "@helpers/dates";
 import { ids, parseId } from "@helpers/emojis";
 import { Client, MessageEmbed } from "@client";
 
@@ -43,7 +43,7 @@ export const command: SlashCommand = {
 		// setup timeout
 		if (timeoutVal !== null) {
 			if (parseInt(timeoutVal, 10).toString() === timeoutVal) return interaction.reply({ content: await interaction.text({ string: "Error.Timeout.NoTypeGiven" }), ephemeral: true });
-			poll.setTimeout(addSeconds(new Date(), paraseDate(timeoutVal)));
+			poll.setTimeout(addSeconds(new Date(), parseDate(timeoutVal)));
 		}
 		else poll.setTimeout(0);
 

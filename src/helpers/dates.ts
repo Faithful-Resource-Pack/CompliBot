@@ -15,7 +15,7 @@ export const addSeconds = (d: Date, seconds?: number): Date => {
  * @param d {string} User input
  * @returns {number} equivalent in seconds
  */
-export const paraseDate = (d: string): number => {
+export const parseDate = (d: string): number => {
 	if (d.endsWith("y") || d.endsWith("year") || d.endsWith("years")) return parseInt(d, 10) * 24 * 3600 * 365;
 	if (d.endsWith("m") || d.endsWith("month") || d.endsWith("months")) return parseInt(d, 10) * 30 * 24 * 3600;
 	if (d.endsWith("w") || d.endsWith("week") || d.endsWith("weeks")) return parseInt(d, 10) * 7 * 86400;
