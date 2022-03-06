@@ -1,13 +1,13 @@
 import { Client } from "@client";
 import { Constants, Intents } from "discord.js";
 
-import ConfigJson from "@/config.json";
-import TokensJson from "@/tokens.json";
+import config from "@json/config.json";
+import tokens from "@json/tokens.json";
 
 new Client({
-	config: ConfigJson,
-	tokens: TokensJson,
-	verbose: TokensJson.dev,
+	config: config,
+	tokens: tokens,
+	verbose: tokens.dev,
 	allowedMentions: { parse: ["users", "roles"], repliedUser: false }, // remove this line to die instantly ~JackDotJS 2021
 	restTimeOffset: 0,
 	partials: Object.values(Constants.PartialTypes),

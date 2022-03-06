@@ -11,7 +11,7 @@ export interface Config {
 	discords: Array<Discord>;
 	submissions: { [pack: string]: SubmissionChannels };
 	roles: {
-		council: { [guild: string]: string };
+		[role: string]: { [guild: string]: string };
 	};
 	packProgress: {
 		[pack_slug: string]: {
@@ -29,6 +29,7 @@ interface Discord {
 	id: string;
 	channels: {
 		updateMember?: string;
+		moderation?: string;
 	};
 }
 

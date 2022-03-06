@@ -4,7 +4,7 @@ import { CommandInteraction, Message, MessageEmbed } from "@client";
 import { EmbedField } from "discord.js";
 import { ids, parseId } from "@helpers/emojis";
 import { Config } from "@interfaces";
-import ConfigJson from "@/config.json";
+import ConfigJson from "@json/config.json";
 const config: Config = ConfigJson;
 
 export const command: SlashCommand = {
@@ -23,7 +23,6 @@ export const command: SlashCommand = {
 		),
 	execute: async (interaction: CommandInteraction) => {
 		let isInvalidated: boolean = false;
-		console.log(Object.values(config.roles.council));
 
 		interaction.channel.messages
 			.fetch(interaction.options.getString("message_id", true))

@@ -2,7 +2,6 @@ import { duration } from "moment";
 import { SlashCommand, SlashCommandI } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { Collection, Guild, version as djsVersion } from "discord.js";
-import { getUsage, total } from "@functions/commandProcess";
 import { Client, MessageEmbed, CommandInteraction, Message } from "@client";
 import os from "os";
 import linuxOs from "linux-os-info";
@@ -29,7 +28,7 @@ export const command: SlashCommand = {
 				sumMembers += guild.memberCount;
 			});
 
-			const number = total() + 1;
+			const number = [...client.commandsProcessed.values()].reduce((a, b) => a + b, 0) + 1;
 
 			if (os.platform() == "linux") version = linuxOs({ mode: "sync" }).pretty_name;
 			else version = os.version();
@@ -62,7 +61,7 @@ export const command: SlashCommand = {
 			interaction.reply({ embeds: [embed], fetchReply: true }).then((message: Message) => message.deleteButton());
 		})
 		.set("command", async (interaction: CommandInteraction, client: Client) => {
-			if (getUsage(interaction.options.getString("command", true)) == undefined)
+			if (client.commandsProcessed.get(interaction.options.getString("command", true)) === undefined)
 				return interaction.reply({
 					ephemeral: true,
 					content: await interaction.text({
@@ -75,7 +74,7 @@ export const command: SlashCommand = {
 					string: "Command.Stats.Usage",
 					placeholders: {
 						COMMAND: interaction.options.getString("command", true),
-						USE: getUsage(interaction.options.getString("command", true)).toString() ?? "0",
+						USE: client.commandsProcessed.get(interaction.options.getString("command", true)).toString() ?? "0",
 					},
 				}),
 			);

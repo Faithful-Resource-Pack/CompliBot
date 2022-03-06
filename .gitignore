@@ -1,6 +1,8 @@
 tokens.json
 node_modules
-json/
 .env
 build
 src/commandsOld
+json/dynamic
+polls.json
+submissions.json

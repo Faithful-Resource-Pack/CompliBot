@@ -1,5 +1,4 @@
 import { Event, Command } from "@interfaces";
-import { increase } from "@functions/commandProcess";
 import { Client, Message } from "@client";
 
 export const event: Event = {
@@ -17,7 +16,6 @@ export const event: Event = {
 		if (command) {
 			let _ = (message as Message) instanceof Message; //! do not remove, 'force' message to be casted (break if removed)
 			(command as Command).run(client, message, args);
-			increase((command as Command).name);
 		}
 	},
 };

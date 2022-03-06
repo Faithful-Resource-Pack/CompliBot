@@ -1,7 +1,5 @@
 import { MessageActionRow, MessageEmbed, MessageSelectMenu } from "discord.js";
 import { Message } from "@client";
-import { Config } from "@interfaces";
-import ConfigJson from "@/config.json";
 import { ids, parseId } from "./emojis";
 
 class Menu {
@@ -9,7 +7,6 @@ class Menu {
 	private embed: MessageEmbed = new MessageEmbed();
 	private menu: MessageSelectMenu = new MessageSelectMenu();
 	private choiceType: "texture" | "imageOptions";
-	private config: Config = ConfigJson;
 
 	constructor(message: Message, choiceType: "texture" | "imageOptions", id: string) {
 		this.message = message;

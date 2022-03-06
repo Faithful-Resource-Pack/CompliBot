@@ -12,13 +12,12 @@ import {
 } from "@interfaces";
 import { getData } from "@functions/getDataFromJSON";
 import { setData } from "@functions/setDataToJSON";
-import { init as initCommands } from "@functions/commandProcess";
 import { errorHandler } from "@functions/errorHandler";
 import { err, info, success } from "@helpers/logger";
 import { Submission } from "@class/submissions";
 import { Poll } from "@class/poll";
 
-import { readdirSync } from "fs";
+import { cp, cpSync, readdirSync } from "fs";
 import { REST } from "@discordjs/rest";
 import { RESTPostAPIApplicationCommandsJSONBody, Routes } from "discord-api-types/v9";
 import { SlashCommandBuilder } from "@discordjs/builders";
@@ -26,12 +25,10 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import path from "path";
 import chalk from "chalk";
 
-const JSON_PATH = path.join(__dirname, "../../json"); // json folder at root
-const JSON_FOLDER = path.resolve(__dirname, JSON_PATH);
+const JSON_PATH = path.join(__dirname, "../../json/dynamic"); // json folder at root
 const POLLS_FILENAME = "polls.json";
 const SUBMISSIONS_FILENAME = "submissions.json";
-const SUBMISSIONS_FILE_PATH = path.resolve(JSON_FOLDER, SUBMISSIONS_FILENAME);
-// const COUNTER_FILE_PATH = path.resolve(JSON_FOLDER, "commandsProcessed.json"); //! NYI
+const COMMANDS_PROCESSED_FILENAME = "commandsProcessed.json";
 
 class ExtendedClient extends Client {
 	public verbose: boolean = false;
@@ -51,6 +48,7 @@ class ExtendedClient extends Client {
 
 	public submissions: EmittingCollection<string, Submission> = new EmittingCollection();
 	public polls: EmittingCollection<string, Poll> = new EmittingCollection();
+	public commandsProcessed: EmittingCollection<string, number> = new EmittingCollection();
 
 	constructor(data: ClientOptions & { verbose: boolean; config: Config; tokens: Tokens }) {
 		super(data);
@@ -90,9 +88,6 @@ class ExtendedClient extends Client {
 				process.exit(1);
 			})
 			.then(() => {
-				// commands counter
-				initCommands(this);
-				if (this.verbose) console.log(info + `Initialized command counter`);
 
 				// load old commands only if dev server
 				if (this.tokens.dev) this.loadCommands();
@@ -121,11 +116,26 @@ class ExtendedClient extends Client {
 	private loadCollections = async () => {
 		this.loadSubmissions();
 		this.loadPolls();
+		this.loadCommandsCounter();
 		if (this.verbose) console.log(info + `Loaded collections data`);
 	}
 
 	/**
-	 * SUBMISSIONS DATA
+	 * COMMANDS COUNTER
+	 */
+	private loadCommandsCounter = async () => {
+		const commandsCounter: {[name: string]: number} = getData({ filename: COMMANDS_PROCESSED_FILENAME, relative_path: JSON_PATH }) as any;
+		Object.keys(commandsCounter).forEach((commandName: string) => {
+			this.commandsProcessed.set(commandName, commandsCounter[commandName])
+		})
+
+		this.commandsProcessed.events.on("dataSet", (key: string, value: number) => {
+			this.saveEmittingCollection(this.commandsProcessed, COMMANDS_PROCESSED_FILENAME, JSON_PATH);
+		})
+	}
+
+	/**
+	 * POLL DATA
 	 */
 	private loadPolls = async () => {
 		// read file and load it into the collection
@@ -135,21 +145,13 @@ class ExtendedClient extends Client {
 		});
 
 		// events
-		this.polls.events.on("dataSet", (key: string, value: Submission) => {
-			this.savePolls();
+		this.polls.events.on("dataSet", (_key: string, _value: Submission) => {
+			this.saveEmittingCollection(this.polls, POLLS_FILENAME, JSON_PATH);
 		});
 
-		this.polls.events.on("dataDeleted", (key: string) => {
-			this.savePolls();
+		this.polls.events.on("dataDeleted", (_key: string) => {
+			this.saveEmittingCollection(this.polls, POLLS_FILENAME, JSON_PATH);
 		});
-	};
-
-	private savePolls = async () => {
-		let data = {};
-		[...this.polls.values()].forEach((poll: Poll) => {
-			data[poll.id] = poll;
-		});
-		setData({ filename: POLLS_FILENAME, relative_path: JSON_PATH, data: JSON.parse(JSON.stringify(data)) });
 	};
 
 	/**
@@ -164,20 +166,26 @@ class ExtendedClient extends Client {
 
 		// events
 		this.submissions.events.on("dataSet", (key: string, value: Submission) => {
-			this.saveSubmissions();
+			this.saveEmittingCollection(this.submissions, SUBMISSIONS_FILENAME, JSON_PATH);
 		});
 
 		this.submissions.events.on("dataDeleted", (key: string) => {
-			this.saveSubmissions();
+			this.saveEmittingCollection(this.submissions, SUBMISSIONS_FILENAME, JSON_PATH);
 		});
 	};
 
-	private saveSubmissions = async () => {
+	/**
+	 * Save an emitting collection into a JSON file
+	 * @param collection {EmittingCollection}
+	 * @param filename {string}
+	 * @param relative_path {string}
+	 */
+	private saveEmittingCollection = (collection: EmittingCollection<any, any>, filename: string, relative_path: string): void => {
 		let data = {};
-		[...this.submissions.values()].forEach((submission: Submission) => {
-			data[submission.id] = submission;
-		});
-		setData({ filename: SUBMISSIONS_FILENAME, relative_path: JSON_PATH, data: JSON.parse(JSON.stringify(data)) });
+		[...collection.keys()].forEach((k: string) => {
+			data[k] = collection.get(k);
+		})
+		setData({ filename, relative_path, data: JSON.parse(JSON.stringify(data)) });
 	};
 
 	/**

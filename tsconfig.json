@@ -28,7 +28,8 @@
 			"@functions/*": ["helpers/functions/*"],
 			"@class/*": ["helpers/class/*"],
 			"@helpers/*": ["helpers/*"],
-			"@interfaces": ["helpers/interfaces"]
+			"@interfaces": ["helpers/interfaces"],
+			"@json/*": ["../json/*"]
 		}
 	},
 	"exclude": ["node_modules"],

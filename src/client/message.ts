@@ -1,9 +1,9 @@
 import { Message, MessageActionRow, MessageEmbed } from "discord.js";
 import { ids } from "@helpers/emojis";
 import { Config, Tokens } from "@interfaces";
-import ConfigJson from "@/config.json";
+import config from "@json/config.json";
 import Menu from "@helpers/menu";
-import tokens from "@/tokens.json";
+import tokens from "@json/tokens.json";
 import { deleteInteraction, deleteMessage } from "@helpers/buttons";
 
 declare module "discord.js" {
@@ -27,7 +27,7 @@ export interface DeleteReactOptions {
 }
 
 const MessageBody = {
-	config: ConfigJson,
+	config: config,
 	tokens: tokens,
 	menu: undefined,
 

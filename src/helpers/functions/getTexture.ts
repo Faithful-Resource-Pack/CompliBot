@@ -1,5 +1,5 @@
 import { MessageEmbed } from "@client";
-import ConfigJson from "@/config.json";
+import ConfigJson from "@json/config.json";
 import { Config } from "@interfaces";
 import { minecraftSorter } from "./minecraftSorter";
 import axios from "axios";
