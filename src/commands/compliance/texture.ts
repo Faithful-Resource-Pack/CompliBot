@@ -7,6 +7,7 @@ import axios from "axios";
 import { imageButtons } from "@helpers/buttons";
 
 export const command: SlashCommand = {
+	servers: ["compliance", "compliance_extra", "classic_faithful"],
 	data: new SlashCommandBuilder()
 		.setName("texture")
 		.setDescription("Displays a specified texture from either vanilla Minecraft or Compliance.")

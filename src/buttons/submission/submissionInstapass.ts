@@ -12,7 +12,7 @@ export const button: Button = {
 		const member: GuildMember = interaction.member as GuildMember;
 
 		// check if member is council
-		if (member.roles.cache.find((role: Role) => getRolesIds("council").includes(role.id)) === undefined)
+		if (member.roles.cache.find((role: Role) => getRolesIds({ name: "council", teams: ["faithful"] }).includes(role.id)) === undefined)
 			return interaction.reply({
 				content: "This interaction is reserved to council members",
 				ephemeral: true,

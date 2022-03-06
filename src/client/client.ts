@@ -174,7 +174,7 @@ class ExtendedClient extends Client {
 				if (slashCommand.permissions === undefined) return; // no permission to be checked
 
 				const command = guildSlashCommands.find((cmd) => cmd.name === (slashCommand.data as SlashCommandBuilder).name);
-				if (command === undefined) return; // shouldn't be the case since commands are declared before this method
+				if (command === undefined) return; // happens when settings perms of private commands to all perms
 				
 				const p = {
 					id: command.id,
@@ -215,7 +215,7 @@ class ExtendedClient extends Client {
 	 */
 	private async loadSlashCommands(): Promise<void> {
 		const slashCommandsPath = path.join(__dirname, "..", "commands");
-		const commandsArr: Array<RESTPostAPIApplicationCommandsJSONBody> = [];
+		const commandsArr: Array<{ servers: Array<string>, command: RESTPostAPIApplicationCommandsJSONBody }> = [];
 
 		const paths: Array<string> = readdirSync(slashCommandsPath);
 		// use a classic for loops to force async functions to be fullfilled
@@ -228,10 +228,10 @@ class ExtendedClient extends Client {
 
 				if (command.data instanceof Function) {
 					this.slashCommands.set((await (command.data as AsyncSlashCommandBuilder)(this)).name, command); // AsyncSlashCommandBuilder
-					commandsArr.push((await (command.data as AsyncSlashCommandBuilder)(this)).toJSON());
+					commandsArr.push({ servers: command.servers, command: (await (command.data as AsyncSlashCommandBuilder)(this)).toJSON() })
 				} else {
 					this.slashCommands.set(command.data.name, command); // SyncSlashCommandBuilder
-					commandsArr.push(command.data.toJSON());
+					commandsArr.push({servers: command.servers, command: command.data.toJSON()});
 				}
 			}
 		}
@@ -240,27 +240,31 @@ class ExtendedClient extends Client {
 		const devID = this.config.discords.filter((s) => s.name === "dev")[0].id;
 
 		// deploy commands only for dev discord when in dev mode
-		if (this.tokens.dev) {
-			rest
-				.put(Routes.applicationGuildCommands(this.tokens.appID, devID), { body: commandsArr })
-				.then(() => {
-					console.log(`${success}Successfully added slash commands to dev server`);
-					this.loadSlashCommandsPerms();
-				})
-				.catch(console.error);
-		}
-		// deploy commands globally
-		else {
-			rest
-				.put(Routes.applicationCommands(this.tokens.appID), {
-					body: commandsArr,
-				})
-				.then(() => {
-					console.log(`${success}Successfully added global slash commands`);
-					this.loadSlashCommandsPerms();
-				})
-				.catch(console.error);
-		}
+		if (this.tokens.dev) commandsArr.forEach(el => { el.servers = ["dev"] });
+
+		const guilds = {}
+		commandsArr.forEach(el => {
+			if (el.servers === null || el.servers === undefined) {
+				if (guilds["global"] === undefined) guilds["global"] = [];
+				guilds["global"].push(el.command);
+			}
+			else el.servers.forEach(server => {
+				if (guilds[server] === undefined) guilds[server] = [];
+				guilds[server].push(el.command);
+			});
+		});
+
+		Promise.all(
+			Object.keys(guilds)
+				.map((server: string) => {
+					if (server === "global") return rest.put(Routes.applicationCommands(this.tokens.appID), { body: guilds["global"] });
+					return rest.put(Routes.applicationGuildCommands(this.tokens.appID, this.config.discords.filter(d => d.name === server)[0].id), { body: guilds[server] });
+				}))
+		.then(() => {
+			console.log(`${success}Successfully added slash commands: ${Object.keys(guilds).join(', ')}`);
+			this.loadSlashCommandsPerms();
+		})
+		.catch(console.error);
 	}
 
 	/**

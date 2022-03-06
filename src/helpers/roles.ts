@@ -43,6 +43,5 @@ export const getRolesIds = (options: { name: string | Array<string>, discords?: 
     else 
       options.name.forEach(name => (options.teams as Array<string>).forEach(team => output.push(...config.teams.filter(t => t.roles !== undefined && t.roles[name] !== undefined && t.name === team).map(t => t.roles[name]).flat())));
 
-  console.log(output, options)
   return output;
 }

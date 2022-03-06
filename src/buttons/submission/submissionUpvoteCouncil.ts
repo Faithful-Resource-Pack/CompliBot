@@ -13,7 +13,7 @@ export const button: Button = {
 
 		// check if member is council
 		if (
-			member.roles.cache.find((role: Role) => getRolesIds("council").includes(role.id)) ===
+			member.roles.cache.find((role: Role) => getRolesIds({ name: "council", teams: ["faithful"] }).includes(role.id)) ===
 			undefined
 		)
 			return interaction.reply({

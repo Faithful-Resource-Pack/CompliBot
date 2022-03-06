@@ -3,6 +3,7 @@ import { SlashCommandSubcommandsOnlyBuilder, SlashCommandBuilder } from "@discor
 import { Client } from "@client";
 
 export interface SlashCommand {
+	servers?: Array<string>;
 	permissions?: Permissions | undefined;
 	data: SyncSlashCommandBuilder | AsyncSlashCommandBuilder;
 	execute: Collection<string, SlashCommandI> | SlashCommandI;

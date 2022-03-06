@@ -5,6 +5,7 @@ import { ids, parseId } from "@helpers/emojis";
 import { Message, MessageEmbed, CommandInteraction } from "@client";
 
 export const command: SlashCommand = {
+	servers: ["compliance", "compliance_extra", "classic_faithful"],
 	data: new SlashCommandBuilder()
 		.setName("website")
 		.setDescription("Displays websites for the given keyword.")
