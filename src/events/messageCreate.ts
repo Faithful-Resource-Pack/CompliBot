@@ -2,6 +2,7 @@ import { Event } from "@interfaces";
 import { Client, Message, MessageEmbed } from "@client";
 import { quote } from "@functions/quote";
 import easterEgg from "@functions/canvas/isEasterEggImg";
+import { getSubmissionsChannels } from "@helpers/channels";
 
 export const event: Event = {
 	name: "messageCreate",
@@ -18,7 +19,7 @@ export const event: Event = {
 		}
 
 		// test if message is in submit channel
-		if (Object.values(client.config.submissions).filter((c) => c.submit === message.channelId).length > 0) {
+		if (getSubmissionsChannels(client as Client).includes(message.channelId)) {
 			client.emit("textureSubmitted", (client as Client, message));
 			return;
 		}

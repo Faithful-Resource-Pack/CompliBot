@@ -49,6 +49,12 @@
                 "moderation": "798676864599195655",
                 "feedbackBug": "938475927887839243",
                 "feedbackSuggestion": "938475860938342440"
+            },
+            "submissionSystem": {
+                "council": "946558091929985055",
+                "submission": {
+                    "testPack": "841396215211360296"
+                }
             }
         },
         {
@@ -57,6 +63,13 @@
             "id": "773983706582482946",
             "channels": {
                 "updateMember": "774333964101615637"
+            },
+            "submissionSystem": {
+                "council": "779363363158229004",
+                "submission": {
+                    "Compliance 32x": "774220983044669450",
+                    "Compliance 64x": "931886877521350696"
+                }
             }
         },
         {
@@ -73,19 +86,17 @@
             "id": "814198513847631944",
             "channels": {
                 "updateMember": "814246773459255328"
+            },
+            "submissionSystem": {
+                "council": "935773417993543730",
+                "submission": {
+                    "Classic Faithful 32x": "814201529032114226",
+                    "Classic Faithful 32x Programmer Art": "909503944118648883",
+                    "Classic Faithful 64x": "814209343502286899"
+                }
             }
         }
     ],
-    "submissions": {
-        "testServer": {
-            "submit": "841396215211360296",
-            "council": "946558091929985055"
-        },
-        "compliance32x": {
-            "submit": "",
-            "council": ""
-        }
-    },
     "roles": {
         "council": {
             "testServer": "936043191977787452",

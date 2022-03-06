@@ -9,7 +9,6 @@ export interface Config {
 	};
 	teams: Array<Team>;
 	discords: Array<Discord>;
-	submissions: { [pack: string]: SubmissionChannels };
 	roles: {
 		[role: string]: { [guild: string]: string };
 	};
@@ -28,12 +27,14 @@ interface Discord {
 	team?: string; // tell if discord guilds are teamed up (for global commands)
 	name: string;
 	id: string;
-	channels: {
-		[updateMember: string]: string;
-	};
+	channels: {	[updateMember: string]: string };
+	submissionSystem?: {
+		council: string;
+		submission: { [packName: string]: string }
+	}
 }
 
-interface Team extends Omit<Discord, "id"> {}
+interface Team extends Omit<Discord, "id" | "submissionSystem"> {}
 
 interface Repository {
 	name: string;

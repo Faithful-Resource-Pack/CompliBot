@@ -5,6 +5,7 @@ import { tileAttachment } from "@functions/canvas/tile";
 import { magnify, palette } from "@helpers/buttons";
 import { getImageFromMessage } from "@functions/slashCommandImage";
 import { MessageActionRow } from "discord.js";
+import { getSubmissionsChannels } from "@helpers/channels";
 
 export const button: Button = {
 	buttonId: "tile",
@@ -26,7 +27,7 @@ export const button: Button = {
 				ephemeral: true,
 			});
 
-		if (Object.values(client.config.submissions).filter((c) => c.submit === interaction.channel.id).length > 0)
+		if (getSubmissionsChannels(interaction.client as Client).includes(interaction.channelId))
 			return interaction.reply({
 				embeds: [new MessageEmbed().setImage(`attachment://${attachment.name}`).setTimestamp()],
 				files: [attachment],

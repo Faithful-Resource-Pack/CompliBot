@@ -13,6 +13,7 @@ import { EmbedField, MessageActionRow, MessageAttachment, TextChannel } from "di
 import axios from "axios";
 import { colors } from "@helpers/colors";
 import { TimedEmbed } from "./timedEmbed";
+import { getCorrespondingCouncilChannel, getSubmissionChannelName } from "@helpers/channels";
 
 // where "in" & "out" are both at the ends of the process but "in" -> go to the pack, "out" -> not enough votes
 export type SubmissionStatus = "pending" | "instapassed" | "added" | "no_council" | "council" | "denied" | "invalid";
@@ -35,7 +36,7 @@ export class Submission extends TimedEmbed {
 			case "denied":
 			case "invalid":
 				client.channels
-					.fetch(Object.values(client.config.submissions).filter((c) => c.submit === this.getChannelId())[0].council)
+					.fetch(getCorrespondingCouncilChannel(client, this.getChannelId()))
 					.then((channel: TextChannel) => {
 						const [up, down] = this.getVotesCount();
 						const [upvoters, downvoters] = this.getVotes();
@@ -232,11 +233,7 @@ export class Submission extends TimedEmbed {
 			.addField("Contributor(s)", `<@!${mentions.join(">\n<@!")}>`, true)
 			.addField(
 				"Resource Pack",
-				`\`${
-					Object.keys((baseMessage.client as Client).config.submissions).filter(
-						(pack) => (baseMessage.client as Client).config.submissions[pack].submit === baseMessage.channel.id,
-					)[0]
-				}\``,
+				`\`${getSubmissionChannelName(baseMessage.client as Client, baseMessage.channelId)}\``,
 				true,
 			)
 			.addField("Votes", this.getVotesUI().join(",\n"))
