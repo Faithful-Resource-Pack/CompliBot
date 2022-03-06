@@ -175,6 +175,11 @@
         "%PLAYER% was doomed to fall by %AUTHOR% using %WEAPON%",
         "%PLAYER% fell too far and was finished by %AUTHOR% using %WEAPON%"
     ],
+    "Command.Modping.AfkDnd": "There %NUMBER% moderators with Do not disturb / idle statuses and they may not respond.",
+    "Command.Modping.NoRole": "There is no role including the name \"mod\" or \"moderator\" in this server",
+    "Command.Modping.Online": "There %NUMBER% moderators online",
+    "Command.Modping.Offline": "There are currently no moderators online ¯\\_(ツ)_/¯, I'm going to ping them all.",
+    "Command.Modping.Urgent": "You demanded that **all** moderators be present.\nYou must have a good reason or penalties may be taken.",
     "Command.Ping.Await": "Pinging...",
     "Command.Ping.Description": "_%QUOTE%_\n\n**Bot Latency** \n%LATENCY%ms \n**API Latency** \n%APILATENCY%ms",
     "Command.Ping.Quotes": [
@@ -230,7 +235,9 @@
     "Error.Channel.CacheNotFound": "The %CHANNEL_NAME% channel cannot be found in cache!",
     "Error.Channel.NotTextChannel": "The targeted channel is not a text channel, the message can't be send!",
     "Error.Timeout.NoTypeGiven": "The given timeout doesn't specify which length it is!\nExample: `30s`, `1 min`, `10 hours`, `1 day`, `1 week`, `1 month`, `1 year`",
+    "General.Are": "are",
     "General.Cancel": "Cancel",
+    "General.Is": "is",
     "General.No": "No",
     "General.Send": "Send",
     "General.Yes": "Yes",
