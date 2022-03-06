@@ -1,5 +1,4 @@
 export interface Config {
-	colors: any;
 	firestormUrl: string;
 	apiUrl: string;
 	images: string;
@@ -9,9 +8,6 @@ export interface Config {
 	};
 	teams: Array<Team>;
 	discords: Array<Discord>;
-	roles: {
-		[role: string]: { [guild: string]: string };
-	};
 	packProgress: {
 		[pack_slug: string]: {
 			[edition: string]: string;
@@ -30,11 +26,14 @@ interface Discord {
 	channels: {	[updateMember: string]: string };
 	submissionSystem?: {
 		council: string;
-		submission: { [packName: string]: string }
-	}
+		submission: { [packName: string]: string };
+	},
+	roles?: { [role: string]: string };
 }
 
-interface Team extends Omit<Discord, "id" | "submissionSystem"> {}
+type Team = Omit<Discord, "id" | "submissionSystem" | "roles"> & {
+	roles: { [role: string]: Array<string> };
+}
 
 interface Repository {
 	name: string;

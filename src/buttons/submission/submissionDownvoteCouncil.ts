@@ -2,6 +2,7 @@ import { Button } from "@interfaces";
 import { Client, Message, ButtonInteraction, MessageEmbed } from "@client";
 import { Submission } from "@class/submissions";
 import { GuildMember, Role } from "discord.js";
+import { getRolesIds } from "@helpers/roles";
 
 export const button: Button = {
 	buttonId: "submissionDownvoteCouncil",
@@ -11,10 +12,7 @@ export const button: Button = {
 		const member: GuildMember = interaction.member as GuildMember;
 
 		// check if member is council
-		if (
-			member.roles.cache.find((role: Role) => Object.values(client.config.roles.council).includes(role.id)) ===
-			undefined
-		)
+		if (member.roles.cache.find((role: Role) => getRolesIds("council").includes(role.id)) === undefined)
 			return interaction.reply({
 				content: "Only council members can vote while the texture is in council!",
 				ephemeral: true,

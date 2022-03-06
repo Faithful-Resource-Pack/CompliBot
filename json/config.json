@@ -15,28 +15,23 @@
             "images": "https://raw.githubusercontent.com/CompliBot/Default-%EDITION%/%VERSION%/%PATH%"
         }
     },
-    "colors": {
-        "red": "#f44336",
-        "yellow": "#ffeb3b",
-        "black": "#000000",
-        "council": "#9c3848",
-        "green": "#4caf50",
-        "c32": "#76c945",
-        "c64": "#76c945",
-        "caddons": "#6d6163",
-        "ctweaks": "#658430",
-        "cmods": "#349687",
-        "cdungeons": "#df7c2b",
-        "twitter": "#1da0f2",
-        "youtube": "#ff0000",
-        "patreon": "#f96754",
-        "coin": "#ffdc16"
-    },
     "teams": [
         {
             "name": "faithful",
             "channels": {
                 "moderation": "776145239358046248"
+            },
+            "roles": {
+                "council": [
+                    "775636065338785813",
+                    "814200754197364786"
+                ],
+                "moderators": [
+                    "883803584318279750",
+                    "852215447394320395",
+                    "852227180322619422",
+                    "814200623276359740"
+                ]
             }
         }
     ],
@@ -55,6 +50,9 @@
                 "submission": {
                     "testPack": "841396215211360296"
                 }
+            },
+            "roles": {
+                "council": "936043191977787452"
             }
         },
         {
@@ -97,19 +95,6 @@
             }
         }
     ],
-    "roles": {
-        "council": {
-            "testServer": "936043191977787452",
-            "compliance": "775636065338785813",
-            "classicFaithful": "814200754197364786"
-        },
-        "moderators": {
-            "testServer": "883803584318279750",
-            "compliance": "852215447394320395",
-            "compliance_extra": "852227180322619422",
-            "classicFaithful": "814200623276359740"
-        }
-    },
     "packProgress": {
         "c32": {
             "java": "778257098437558312",

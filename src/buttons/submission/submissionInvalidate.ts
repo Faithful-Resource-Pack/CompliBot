@@ -2,6 +2,7 @@ import { Button } from "@interfaces";
 import { Client, Message, ButtonInteraction, MessageEmbed } from "@client";
 import { GuildMember, Role } from "discord.js";
 import { Submission } from "@class/submissions";
+import { getRolesIds } from "@helpers/roles";
 
 export const button: Button = {
 	buttonId: "submissionInvalidate",
@@ -11,10 +12,7 @@ export const button: Button = {
 		const member: GuildMember = interaction.member as GuildMember;
 
 		// check if member is council
-		if (
-			member.roles.cache.find((role: Role) => Object.values(client.config.roles.council).includes(role.id)) ===
-			undefined
-		)
+		if (member.roles.cache.find((role: Role) => getRolesIds("council").includes(role.id)) === undefined)
 			return interaction.reply({
 				content: "This interaction is reserved to council members",
 				ephemeral: true,

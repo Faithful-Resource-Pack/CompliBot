@@ -5,11 +5,12 @@ import { Client, Message, MessageEmbed } from "@client";
 import { Config } from "@interfaces";
 import ConfigJson from "@json/config.json";
 import { colors } from "@helpers/colors";
+import { getRolesIds } from "@helpers/roles";
 const config: Config = ConfigJson;
 
 export const command: SlashCommand = {
   permissions: {
-    roles: Object.values(config.roles.moderators)
+    roles: getRolesIds("moderators")
   },
   data: new SlashCommandBuilder()
     .setDefaultPermission(false)

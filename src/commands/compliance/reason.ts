@@ -5,11 +5,12 @@ import { EmbedField } from "discord.js";
 import { ids, parseId } from "@helpers/emojis";
 import { Config } from "@interfaces";
 import ConfigJson from "@json/config.json";
+import { getRolesIds } from "@helpers/roles";
 const config: Config = ConfigJson;
 
 export const command: SlashCommand = {
 	permissions: {
-		roles: Object.values(config.roles.council),
+		roles: getRolesIds("council"),
 	},
 	data: new SlashCommandBuilder()
 		.setDefaultPermission(false) // disable the command for @everyone (only council can do it)
