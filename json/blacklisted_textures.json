@@ -32,7 +32,13 @@
     "entity/phantom_eyes.png",
     "block/water_overlay.png",
     "entity/end_portal.png",
-    "item/leather_chestplate_overlay.png"
+    "item/leather_chestplate_overlay.png",
+    "block/debug.png",
+    "block/debug2.png",
+    "environment/end_sky.png",
+    "gui/title/mojangstudios.png",
+    "misc/enchanted_item_glint.png",
+    "misc/pumpkinblur.png",
   ],
   "bedrock": [
     "spit",
