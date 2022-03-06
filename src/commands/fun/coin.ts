@@ -1,6 +1,7 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { Client, CommandInteraction, Message, MessageEmbed } from "@client";
+import { colors } from "@helpers/colors";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -24,7 +25,7 @@ export const command: SlashCommand = {
 					? "https://database.compliancepack.net/images/bot/coin_tails.png"
 					: "https://database.compliancepack.net/images/bot/coin_edge.png",
 			)
-			.setColor((interaction.client as Client).config.colors.coin);
+			.setColor(colors.coin);
 
 		interaction.reply({ embeds: [embed], fetchReply: true }).then((message: Message) => message.deleteButton());
 	},

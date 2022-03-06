@@ -2,6 +2,7 @@ import { MessageAttachment, MessageEmbed, TextChannel } from "discord.js";
 import { Client, Message } from "@client";
 import fs from "fs";
 import { err } from "@helpers/logger";
+import { colors } from "@helpers/colors";
 
 const randomSentences: Array<string> = [
 	"Oh no, not again!",
@@ -62,7 +63,7 @@ export const errorHandler: Function = async (client: Client, reason: any, type: 
 	const embed = new MessageEmbed()
 		.setTitle(type)
 		.setThumbnail(`${client.config.images}bot/error.png`)
-		.setColor(client.config.colors.red)
+		.setColor(colors.red)
 		.setTimestamp()
 		.setFooter({ text: client.user.tag, iconURL: client.user.avatarURL() });
 

@@ -5,6 +5,7 @@ import config from "@json/config.json";
 import Menu from "@helpers/menu";
 import tokens from "@json/tokens.json";
 import { deleteInteraction, deleteMessage } from "@helpers/buttons";
+import { colors } from "@helpers/colors";
 
 declare module "discord.js" {
 	interface Message {
@@ -121,7 +122,7 @@ const MessageBody = {
 	 */
 	warn: async function (text: string, disappearing?: boolean) {
 		const embed = new MessageEmbed()
-			.setColor(this.config.colors.red)
+			.setColor(colors.red)
 			.setThumbnail(`${this.config.images}bot/warning.png`)
 			.setTitle("Action failed")
 			.setDescription(text)
