@@ -63,18 +63,19 @@ class ExtendedClient extends Client {
 		await this.init();
 	}
 
+	//prettier-ignore
 	private asciiArt() {
-		console.log(chalk.yellowBright("\n .d8888b.                                  888 d8b ") + chalk.red("888888b.            888"));
-		console.log(chalk.yellowBright("d88P  Y88b                                 888 Y8P ") + chalk.red("888  \"88b           888"));
-		console.log(chalk.yellowBright("888    888                                 888     ") + chalk.red("888  .88P           888"));
-		console.log(chalk.yellowBright("888         .d88b.  88888b.d88b.  88888b.  888 888 ") + chalk.red("8888888K.   .d88b.  888888 "));
-		console.log(chalk.yellowBright("888        d88\"\"88b 888 \"888 \"88b 888 \"88b 888 888 ") + chalk.red("888  \"Y88b d88\"\"88b 888"));
-		console.log(chalk.yellowBright("888    888 888  888 888  888  888 888  888 888 888 ") + chalk.red("888    888 888  888 888"));
-		console.log(chalk.yellowBright("Y88b  d88P Y88..88P 888  888  888 888 d88P 888 888 ") + chalk.red("888   d88P Y88..88P Y88b."));
-		console.log(chalk.yellowBright("\"Y8888P\"    \"Y88P\"  888  888  888 88888P\"  888 888 ") + chalk.red("8888888P\"   \"Y88P\"   \"Y888"));
-		console.log(chalk.yellowBright("                                  888"));
-		console.log(chalk.yellowBright("                                  888                   ")+ chalk.white("Compliance Devs. 2022 ©"));
-		console.log(chalk.yellowBright("                                  888\n"));
+		console.log(chalk.hex("0026ff")("\n .d8888b.                                  888 d8b ")     + chalk.hex("#0066ff")("888888b.            888"));
+		console.log(chalk.hex("0026ff")("d88P  Y88b                                 888 Y8P ")       + chalk.hex("#0066ff")("888  \"88b           888"));
+		console.log(chalk.hex("0026ff")("888    888                                 888     ")       + chalk.hex("#0066ff")("888  .88P           888"));
+		console.log(chalk.hex("0026ff")("888         .d88b.  88888b.d88b.  88888b.  888 888 ")       + chalk.hex("#0066ff")("8888888K.   .d88b.  888888 "));
+		console.log(chalk.hex("0026ff")("888        d88\"\"88b 888 \"888 \"88b 888 \"88b 888 888 ")  + chalk.hex("#0066ff")("888  \"Y88b d88\"\"88b 888"));
+		console.log(chalk.hex("0026ff")("888    888 888  888 888  888  888 888  888 888 888 ")       + chalk.hex("#0066ff")("888    888 888  888 888"));
+		console.log(chalk.hex("0026ff")("Y88b  d88P Y88..88P 888  888  888 888 d88P 888 888 ")       + chalk.hex("#0066ff")("888   d88P Y88..88P Y88b."));
+		console.log(chalk.hex("0026ff")("\"Y8888P\"    \"Y88P\"  888  888  888 88888P\"  888 888 ")  + chalk.hex("#0066ff")("8888888P\"   \"Y88P\"   \"Y888"));
+		console.log(chalk.hex("0026ff")("                                  888"));
+		console.log(chalk.hex("0026ff")("                                  888                   ")  + chalk.white.bold("Compliance Devs. 2022")); //we dont hold a fucking copyright idiot
+		console.log(chalk.hex("0026ff")("                                  888                ")  + chalk.gray.italic("~ Made loveingly With pain\n"));
 	}
 
 	public async init() {
@@ -115,7 +116,7 @@ class ExtendedClient extends Client {
 		this.loadCollection(this.submissions, SUBMISSIONS_FILENAME, JSON_PATH);
 		this.loadCollection(this.commandsProcessed, COMMANDS_PROCESSED_FILENAME, JSON_PATH);
 		if (this.verbose) console.log(info + `Loaded collections data`);
-	}
+	};
 
 	/**
 	 * Read & Load data from json file into emitting collection & setup events handler
@@ -123,15 +124,23 @@ class ExtendedClient extends Client {
 	 * @param filename {string}
 	 * @param relative_path {string}
 	 */
-	private loadCollection = (collection: EmittingCollection<any, any>, filename: string, relative_path: string): void => {
+	private loadCollection = (
+		collection: EmittingCollection<any, any>,
+		filename: string,
+		relative_path: string,
+	): void => {
 		const obj = getData({ filename, relative_path });
 		Object.keys(obj).forEach((key: string) => {
 			collection.set(key, obj[key]);
-		})
+		});
 
-		collection.events.on("dataSet", (key: string, value: any) => { this.saveEmittingCollection(collection, filename, relative_path); });
-		collection.events.on("dataDeleted", (key: string) => { this.saveEmittingCollection(collection, filename, relative_path); });
-	}
+		collection.events.on("dataSet", (key: string, value: any) => {
+			this.saveEmittingCollection(collection, filename, relative_path);
+		});
+		collection.events.on("dataDeleted", (key: string) => {
+			this.saveEmittingCollection(collection, filename, relative_path);
+		});
+	};
 
 	/**
 	 * Save an emitting collection into a JSON file
@@ -139,11 +148,15 @@ class ExtendedClient extends Client {
 	 * @param filename {string}
 	 * @param relative_path {string}
 	 */
-	private saveEmittingCollection = (collection: EmittingCollection<any, any>, filename: string, relative_path: string): void => {
+	private saveEmittingCollection = (
+		collection: EmittingCollection<any, any>,
+		filename: string,
+		relative_path: string,
+	): void => {
 		let data = {};
 		[...collection.keys()].forEach((k: string) => {
 			data[k] = collection.get(k);
-		})
+		});
 		setData({ filename, relative_path, data: JSON.parse(JSON.stringify(data)) });
 	};
 
@@ -244,12 +257,11 @@ class ExtendedClient extends Client {
 					body: commandsArr,
 				})
 				.then(() => {
-					console.log(`${success}Successfully added global slash commands`); 
+					console.log(`${success}Successfully added global slash commands`);
 					this.loadSlashCommandsPerms();
 				})
 				.catch(console.error);
 		}
-
 	}
 
 	/**

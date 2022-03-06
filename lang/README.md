@@ -7,11 +7,11 @@ Have fun polylingual translators!
 - [ ] zh-CN	Chinese (China) `0%`
 - [ ] zh-TW	Chinese (Taiwan) `0%`
 - [ ] hr	Croatian `0%`
-- [x] cs	Czech `100%`
+- [ ] cs	Czech `81.82%`
 - [ ] da	Danish `0%`
 - [ ] nl	Dutch `0%`
 - [ ] fi	Finnish `0%`
-- [ ] fr	French `97.78%`
+- [ ] fr	French `80%`
 - [ ] de	German `0%`
 - [ ] el	Greek `0%`
 - [ ] hi	Hindi `0%`
@@ -21,8 +21,8 @@ Have fun polylingual translators!
 - [ ] ko	Korean `0%`
 - [ ] lt	Lithuanian `0%`
 - [ ] no	Norwegian `0%`
-- [x] pl	Polish `100%`
-- [ ] pt-BR	Portuguese (Brazil) `55.56%`
+- [ ] pl	Polish `0%`
+- [ ] pt-BR	Portuguese (Brazil) `45.45%`
 - [ ] ro	Romanian `0%`
 - [ ] ru	Russian `0%`
 - [ ] es-ES	Spanish (Spain) `0%`
