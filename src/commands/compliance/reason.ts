@@ -10,7 +10,7 @@ const config: Config = ConfigJson;
 
 export const command: SlashCommand = {
 	permissions: {
-		roles: getRolesIds("council"),
+    roles: getRolesIds({ name: "council", teams: ["faithful"] }),
 	},
 	data: new SlashCommandBuilder()
 		.setDefaultPermission(false) // disable the command for @everyone (only council can do it)

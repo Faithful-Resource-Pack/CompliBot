@@ -10,7 +10,7 @@ const config: Config = ConfigJson;
 
 export const command: SlashCommand = {
   permissions: {
-    roles: getRolesIds("moderators")
+    roles: getRolesIds({ name: "moderators", discords: "all", teams: "all" })
   },
   data: new SlashCommandBuilder()
     .setDefaultPermission(false)

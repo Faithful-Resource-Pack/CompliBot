@@ -11,10 +11,6 @@ export interface Config {
 	};
 }
 
-interface SubmissionChannels {
-	submit: string;
-	council: string;
-}
 interface Discord {
 	team?: string; // tell if discord guilds are teamed up (for global commands)
 	name: string;
