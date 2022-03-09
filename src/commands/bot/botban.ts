@@ -41,22 +41,25 @@ export const command: SlashCommand = {
 			await interaction.deferReply({ ephemeral: true });
 			const banlist = require("@json/botbans.json");
 			// const banlist = JSON.parse(banlistJSON);
-            const victimID = await interaction.options.getUser("victim").id;
-            
-            if (victimID == client.user.id ||       //self
-                victimID == "207471947662098432" || //Juknum
-                victimID == "173336582265241601" || //The Rolf
-                victimID == "473860522710794250" || //RobertR11
-                victimID == "601501288978448411")   //Nick.
-            return interaction.followUp("You cannot ban/unban this user")
+			const victimID = await interaction.options.getUser("victim").id;
 
-            if (await interaction.options.getBoolean("revoke")) {
-                banlist.ids.filter(async (v) => {
-                    return v != (victimID); //removes only the id of the victim
-                });
-            } else {
-                banlist.ids.push(victimID);
-            }
+			if (
+				victimID == client.user.id || //self
+				victimID == "207471947662098432" || //Juknum
+				victimID == "173336582265241601" || //The Rolf
+				victimID == "473860522710794250" || //RobertR11
+				victimID == "601501288978448411"
+			)
+				//Nick.
+				return interaction.followUp("You cannot ban/unban this user");
+
+			if (await interaction.options.getBoolean("revoke")) {
+				banlist.ids.filter(async (v) => {
+					return v != victimID; //removes only the id of the victim
+				});
+			} else {
+				banlist.ids.push(victimID);
+			}
 			writeFileSync(join(__dirname, "../../../json/botbans.json"), JSON.stringify(banlist));
 
 			interaction.followUp({
@@ -64,7 +67,9 @@ export const command: SlashCommand = {
 				ephemeral: true,
 			});
 			const embed: MessageEmbed = new MessageEmbed()
-				.setTitle(`Added <@:${victimID} to botban list`)
+				.setTitle(
+					`${(await interaction.options.getBoolean("revoke")) ? "Removed" : "Added"} <@${victimID}> to botban list`,
+				)
 				.setAuthor({ name: interaction.user.username, iconURL: interaction.user.avatarURL({ dynamic: true }) })
 				.setColor(colors.red)
 				.addFields([
