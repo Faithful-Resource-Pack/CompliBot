@@ -3,6 +3,26 @@ import { Constants, Intents } from "discord.js";
 
 import config from "@json/config.json";
 import tokens from "@json/tokens.json";
+import { readFileSync } from "fs";
+import path from "path";
+import exp from "constants";
+
+//this is my 13th reason why
+export let changelogOptions = () => {
+	const changelogStr = readFileSync(path.join(__dirname, "../", "CHANGELOG.md"), "utf-8").replaceAll("\r", "");
+	const allVersions = changelogStr.match(/(?<=## )([^]*?)(?=(\n## )|($))/g);
+
+	let versions = [
+		[`${allVersions[0].substring(1, 7)} next`, allVersions[0].substring(1, 7)],
+		[`${allVersions[1].substring(1, 7)} current`, allVersions[1].substring(1, 7)],
+	];
+
+	for (let i = 1; i < allVersions.length; i++) {
+		versions.push([allVersions[i].substring(1, 7), allVersions[i].substring(1, 7)]);
+	}
+
+	return versions as [name: string, value: string][];
+};
 
 new Client({
 	config: config,
