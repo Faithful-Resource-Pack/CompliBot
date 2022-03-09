@@ -41,7 +41,7 @@ export const command: SlashCommand = {
 			await interaction.deferReply({ ephemeral: true });
 			const banlist = require("@json/botbans.json");
 			// const banlist = JSON.parse(banlistJSON);
-			const victimID = await interaction.options.getUser("victim").id;
+			const victimID = interaction.options.getUser("victim").id;
 
 			if (
 				victimID == client.user.id || //self
@@ -53,7 +53,7 @@ export const command: SlashCommand = {
 				//Nick.
 				return interaction.followUp("You cannot ban/unban this user");
 
-			if (await interaction.options.getBoolean("revoke")) {
+			if (interaction.options.getBoolean("revoke")) {
 				banlist.ids.filter(async (v) => {
 					return v != victimID; //removes only the id of the victim
 				});
@@ -63,13 +63,11 @@ export const command: SlashCommand = {
 			writeFileSync(join(__dirname, "../../../json/botbans.json"), JSON.stringify(banlist));
 
 			interaction.followUp({
-				content: `Bot-Banned <@${victimID}>`,
+				content: `Bot-${interaction.options.getBoolean("revoke") ? "Unbanned" : "Banned"} <@${victimID}>`,
 				ephemeral: true,
 			});
 			const embed: MessageEmbed = new MessageEmbed()
-				.setTitle(
-					`${(await interaction.options.getBoolean("revoke")) ? "Removed" : "Added"} <@${victimID}> to botban list`,
-				)
+				.setTitle(`${interaction.options.getBoolean("revoke") ? "Removed" : "Added"} <@${victimID}> to botban list`)
 				.setAuthor({ name: interaction.user.username, iconURL: interaction.user.avatarURL({ dynamic: true }) })
 				.setColor(colors.red)
 				.addFields([
