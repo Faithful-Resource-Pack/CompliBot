@@ -4,6 +4,8 @@
 ## [v2.0.2] TBA
 
 ### Added
+- Added `/changelog` command: Show the changelog by version.
+- Added `/notice` command: Give the users updates on stuff like scheduled downtime
 - A beautiful Ascii art showing up when the bot starts.
 - Added easy to use timeout value when making a poll with `/poll`.
 - Added `/modping` command; used to pings moderators when you needs direct help from them.
