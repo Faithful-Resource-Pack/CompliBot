@@ -1,4 +1,4 @@
-import { Client, ClientOptions, Collection, Guild, TextChannel, VoiceChannel } from "discord.js";
+import { Client, ClientOptions, Collection, CommandInteraction, Guild, Interaction, TextChannel, VoiceChannel } from "discord.js";
 import { Message, EmittingCollection, Automation } from "@client";
 import {
 	Command,
@@ -57,10 +57,11 @@ class ExtendedClient extends Client {
 		this.tokens = data.tokens;
 	}
 
-	public async restart(): Promise<void> {
+	public async restart(int?: CommandInteraction): Promise<void> {
 		console.log(`${info}restarting bot...`);
 		this.destroy();
 		await this.init();
+        if(int) {int.editReply({ content: "reboot suceeded" })}
 	}
 
 	//prettier-ignore
