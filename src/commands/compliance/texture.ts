@@ -69,7 +69,7 @@ export const command: SlashCommand = {
 			for (let i = 0; i < results.length; i++) {
 				results[i] = {
 					label: `[#${results[i].id}] ${results[i].name}`,
-					description: results[i].paths[0].name,
+					description: results[i].paths[0] != undefined ? results[i].paths[0].name : "No path found",
 					value: `${results[i].id}__${interaction.options.getString("pack", true)}`,
 				};
 			}

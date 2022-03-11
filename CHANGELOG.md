@@ -28,6 +28,7 @@
 - Images buttons are now back on `/texture` embed when there is only 1 result.
 - Images buttons have been tweaked to be only present when the operations is possible/logic.
 - Fixed `Polls` being automatically marked as "ended" while no timeout was given.
+- Fixed texture command erroring when there are multiple texture results and a texture having no path set
 
 ## [v2.0.1] 05/03/2022
 
