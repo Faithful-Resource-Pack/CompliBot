@@ -189,7 +189,6 @@
     "ui/smallHeight.png",
     "ui/smallerHeight.png",
     "ui/smithing-table-plus.png",
-    "ui/solidtransparency.png",
     "ui/store_background.png",
     "ui/store_banner_no_border.png",
     "ui/store_play_button_mask.png",
@@ -216,6 +215,13 @@
     "ui/whiteline.png",
     "ui/yellow_banner.png",
     "entity/horse2/armor/horse_armor_none.png",
-    "entity/horse2/horse_markings_none"
+    "entity/horse2/horse_markings_none",
+    "entity/iron_golem/cracked_none",
+    "persona_thumbnails/basic_clap_thumbnail_0",
+    "persona_thumbnails/communication_follow_me_thumbnail_0",
+    "persona_thumbnails/communication_point_thumbnail_0",
+    "persona_thumbnails/overhead_wave_thumbnail_0",
+    "ui/classic_skin_comp",
+    "ui/persona_key_comp"
   ]
 }
