@@ -23,17 +23,31 @@ export const command: SlashCommand = {
 		.setDescription("Manages the banlist *(devs naughty list :D).")
 		.setDefaultPermission(false)
 		.addSubcommand((view) => {
-			return view.setName("view").setDescription("view the banlist");
+			return view
+				.setName("view")
+				.setDescription("view the banlist")
+				.addStringOption((str) => {
+					return str
+						.setName("format")
+						.setRequired(false)
+						.setDescription("The format the banlist should be displayed.")
+						.addChoices([
+							["Json", "json"],
+							["Embed", "emb"],
+							["Text", "txt"],
+							["Mentions", "ment"],
+						]);
+				});
 		})
 		.addSubcommand((audit) => {
 			return audit
 				.setName("audit")
 				.setDescription("change the banlist")
 				.addUserOption((userOpt) => {
-					return userOpt.setName("victim").setDescription("The user to ban from using the bot").setRequired(true);
+					return userOpt.setName("subject").setDescription("The user to affect from using the bot").setRequired(true);
 				})
 				.addBooleanOption((bool) => {
-					return bool.setName("revoke").setDescription("Weather to undo an oopsie or not").setRequired(false);
+					return bool.setName("pardon").setDescription("Weather to undo an oopsie or not").setRequired(false);
 				});
 		}),
 	execute: new Collection<string, SlashCommandI>()
@@ -41,7 +55,7 @@ export const command: SlashCommand = {
 			await interaction.deferReply({ ephemeral: true });
 			const banlist = require("@json/botbans.json");
 			// const banlist = JSON.parse(banlistJSON);
-			const victimID = interaction.options.getUser("victim").id;
+			const victimID = interaction.options.getUser("subject").id;
 
 			if (
 				victimID == client.user.id || //self
@@ -53,7 +67,7 @@ export const command: SlashCommand = {
 				//Nick.
 				return interaction.followUp("You cannot ban/unban this user");
 
-			if (interaction.options.getBoolean("revoke")) {
+			if (interaction.options.getBoolean("pardon")) {
 				banlist.ids.filter(async (v) => {
 					return v != victimID; //removes only the id of the victim
 				});
@@ -95,7 +109,29 @@ export const command: SlashCommand = {
 		})
 		.set("view", async (interaction: CommandInteraction, client: Client) => {
 			await interaction.deferReply({ ephemeral: true });
-			let buffer = readFileSync(join(__dirname, "../../../json/botbans.json"));
-			interaction.followUp({ files: [new MessageAttachment(buffer, "bans.json")], ephemeral: true });
+			const buffer = readFileSync(join(__dirname, "../../../json/botbans.json"));
+			const txtBuff = Buffer.from(
+				`Botbanned IDs:\n\n${JSON.parse(buffer.toString("utf-8"))["ids"].join("\n")}`,
+				"utf-8",
+			);
+
+			switch (interaction.options.getString("format")) {
+				case "json":
+					return interaction.followUp({ files: [new MessageAttachment(buffer, "bans.json")], ephemeral: true });
+				case "emb":
+					const emb = new MessageEmbed()
+						.setTitle("Botbanned IDs:")
+						.setDescription(JSON.parse(buffer.toString("utf-8"))["ids"].join("\n"));
+					return interaction.followUp({ embeds: [emb], ephemeral: true });
+				case "ment":
+					const pingEmb = new MessageEmbed()
+						.setTitle("Botbanned Users:")
+						.setDescription("<@" + JSON.parse(buffer.toString("utf-8"))["ids"].join(">\n<@") + ">");
+					return interaction.followUp({ embeds: [pingEmb], ephemeral: true });
+				case "txt":
+				default:
+					interaction.followUp({ files: [new MessageAttachment(txtBuff, "bans.txt")], ephemeral: true });
+					break;
+			}
 		}),
 };
