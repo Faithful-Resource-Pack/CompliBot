@@ -1,14 +1,22 @@
 # CompliBot TypeScript - Changelog
 > This is a beta and will not be fully stable. To report any bugs, use `/feedback`
 
-## [v2.0.2] TBA
+## [v2.0.3] TBA
+
+## [v2.0.2] 14/03/2022
 
 ### Added
+- Added `/bean <user>` command: beans a user (moderators exclusive).
+- Added `/restart` command: restarts the bot process for maintanance (bot owners exclusive) 
+- Added `/botban view <format>` command: view the botban list in various formats (bot owners exclusive)
+- Added `/botban audit <subject> <pardon?>` command: add/remove a user from the botban list (bot owners exclusive)
+- ⚠️ Being botbanned disables use of any interaction and should be used only to patch exploiting users
 - Added `/changelog` command: Show the changelog by version.
 - Added `/notice` command: Give the users updates on stuff like scheduled downtime
+- Added `/setnotice` command: Sets the current notice (bot owners exclusive).
 - A beautiful Ascii art showing up when the bot starts.
 - Added easy to use timeout value when making a poll with `/poll`.
-- Added `/modping` command; used to pings moderators when you needs direct help from them.
+- Added `/modping <urgent?>` command: used to pings moderators when you needs direct help from them.
 - Added `/mute <user> <time> <reason?>` command: Mute the given user for the given period of time (moderators exclusive).
 - Added `/clear <amount>` command: Clear the given amount of message (moderators exclusive).
 - Added 2 ~~super secret~~ commands for devs fun & amusement only.

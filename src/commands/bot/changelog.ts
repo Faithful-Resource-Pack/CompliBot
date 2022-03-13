@@ -35,7 +35,7 @@ export const command: SlashCommand = {
 
 		for (let i = 0; i < versions.length; i++) {
 			if (versions[i][0] == versionChoice.split(" ")[0]) {
-				const date = /\d{2}\/\d{2}\/\d{4}/i.exec(versions[i][1]); //gets date if any
+				let date = /\d{2}\/\d{2}\/\d{4}/i.exec(versions[i][1]); //gets date if any
 
 				var timestamp;
 				if (date != undefined) {
@@ -56,13 +56,23 @@ export const command: SlashCommand = {
 
 				//pushes all subheadings (### <something>) into fields because cool
 				for (let i = 1; i < cleanedTxt.length; i++) {
+					const value = cleanedTxt[i].split("\n").splice(1, cleanedTxt[i].length).join("\n");
+
 					fields.push({
 						name: cleanedTxt[i].split("\n")[0],
-						value: cleanedTxt[i].split("\n").splice(1, cleanedTxt[i].length).join("\n"),
+						value: value.length == value.substring(0, 1021).length ? value : value.substring(0, 1021) + "...",
 						inline: false,
 					});
 				}
-				const embed = new MessageEmbed().setTitle(`Results for version ${versionChoice}: `).addFields(fields);
+				const cleanedVersion = (versionChoice.split(" ")[0] + "-" + (date ? date[0] : "TBA")).replaceAll(
+					/(\/|\[|\]|v|\.)/g,
+					"",
+				);
+				const url = `https://github.com/Compliance-Resource-Pack/Discord-Bot/blob/typescript/CHANGELOG.md#${cleanedVersion}`;
+				const embed = new MessageEmbed()
+					.setTitle(`${await interaction.text({ string: "Command.Changelog.Title" })}${versionChoice}: `)
+					.setURL(url)
+					.addFields(fields);
 				timestamp
 					? embed.setTimestamp().setFooter({ text: versionChoice })
 					: embed.setFooter({ text: `${versionChoice} • To be announced` }); //the illusion of a timestamp xd

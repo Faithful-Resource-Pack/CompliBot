@@ -1,6 +1,9 @@
 {
     "Args.Insufficient": "Not enough arguments!",
     "Args.Invalid": "Invalid arguments!",
+    "Command.Botban.isBanned": "You cannot use the bot as you have been bot banned!",
+    "Command.Botban.view.unbannable": "You cannot audit this user's entry in the botban list!",
+    "Command.Changelog.Title": "Results for version ",
     "Command.Coin.Edge": "Edge?!",
     "Command.Coin.Heads": "Heads",
     "Command.Coin.Tails": "Tails",
