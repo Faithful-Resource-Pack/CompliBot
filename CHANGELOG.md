@@ -3,12 +3,14 @@
 
 ## [v2.0.3] TBA
 
-- Added `/botban view <format>` command: view the botban list in various formats (bot owners exclusive)
-- Added `/botban audit <subject> <pardon?>` command: add/remove a user from the botban list (bot owners exclusive)
-
 ## [v2.0.2] 14/03/2022
 
 ### Added
+- Added `/bean <user>` command: beans a user (moderators exclusive).
+- Added `/restart` command: restarts the bot process for maintanance (bot owners exclusive) 
+- Added `/botban view <format>` command: view the botban list in various formats (bot owners exclusive)
+- Added `/botban audit <subject> <pardon?>` command: add/remove a user from the botban list (bot owners exclusive)
+- ⚠️ Being botbanned disables use of any interaction and should be used only to patch exploiting users
 - Added `/changelog` command: Show the changelog by version.
 - Added `/notice` command: Give the users updates on stuff like scheduled downtime
 - Added `/setnotice` command: Sets the current notice (bot owners exclusive).
@@ -17,7 +19,6 @@
 - Added `/modping <urgent?>` command: used to pings moderators when you needs direct help from them.
 - Added `/mute <user> <time> <reason?>` command: Mute the given user for the given period of time (moderators exclusive).
 - Added `/clear <amount>` command: Clear the given amount of message (moderators exclusive).
-- Added `/bean <user>` command: beans a user (moderators exclusive).
 - Added 2 ~~super secret~~ commands for devs fun & amusement only.
 - A view votes button has been added on submitted textures, thus, only giving output while the texture is still in the submission process.
 - **Config:** added "teams" config options: This now allow us to specify global roles, channels and so on for a group of discords servers (useful for Compliance & Co servers).

@@ -56,16 +56,14 @@ export const command: SlashCommand = {
 			const banlist = require("@json/botbans.json");
 			// const banlist = JSON.parse(banlistJSON);
 			const victimID = interaction.options.getUser("subject").id;
-
 			if (
 				victimID == client.user.id || //self
 				victimID == "207471947662098432" || //Juknum
 				victimID == "173336582265241601" || //The Rolf
 				victimID == "473860522710794250" || //RobertR11
-				victimID == "601501288978448411"
+				victimID == "601501288978448411" //Nick.
 			)
-				//Nick.
-				return interaction.followUp("You cannot ban/unban this user");
+				return interaction.followUp(await interaction.text({ string: "Command.Botban.view.unbannable" }));
 
 			if (interaction.options.getBoolean("pardon")) {
 				banlist.ids.filter(async (v) => {

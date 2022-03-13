@@ -19,6 +19,7 @@ export const command: SlashCommand = {
 		.setDescription("Bean him at once!")
 		.addUserOption((option) => option.setName("user").setDescription("User you want to mute").setRequired(true)),
 	execute: async (interaction: CommandInteraction, client: Client) => {
+		console.log("beaning..");
 		const embed = new MessageEmbed()
 			.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL() })
 			.setDescription(`<@${interaction.options.getUser("user").id}> has bean beaned!`)
