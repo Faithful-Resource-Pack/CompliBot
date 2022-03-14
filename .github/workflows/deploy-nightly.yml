@@ -1,0 +1,28 @@
+name: Deploy
+
+on:
+    push:
+        branches: [ts-dev]
+    workflow_dispatch:
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v2
+
+            - name: Executing remote command
+              uses: appleboy/ssh-action@master
+              with:
+                  host: ${{ secrets.HOST }}
+                  USERNAME: ${{ secrets.USERNAME }}
+                  PORT: ${{ secrets.PORT }}
+                  KEY: ${{ secrets.SSH }}
+                  script: |
+                      cd ./"CompliBot Nightly (TS)"
+                      git stash
+                      git pull
+                      npm install
+                      pm2 delete "BOT Nightly (TS)"
+                      pm2 start "npm run start" --name "BOT Nightly (TS)"
