@@ -81,7 +81,7 @@ const websites = {
 		name: "Compliance Mods 32x",
 		value: `[${parseId(ids.cmods)} Mods Resource Pack picker](https://www.compliancepack.net/mods)\n[${parseId(
 			ids.cmods,
-		)} Modpacks Resource Pack pressets](https://www.compliancepack.net/modpacks)`,
+		)} Modpacks Resource Pack presets](https://www.compliancepack.net/modpacks)`,
 	},
 	compliance_tweaks_32: {
 		image: "https://database.compliancepack.net/images/brand/logos/no%20background/512/Compliance%20Tweaks.png",

@@ -21,37 +21,36 @@ export const getTextureMessageOptions = async (options: {
 
 	let strPack: string;
 	let strIconURL: string;
+	
+	// todo: use API here
 	switch (pack) {
-		case "default":
-			strPack = "Minecraft Default";
-			strIconURL = config.images + "bot/texture_16x.png";
-			break;
-		case "c32":
+		case "compliance_32x":
 			strPack = "Compliance 32x";
 			strIconURL = config.images + "brand/logos/no%20background/64/Compliance%20Basic.png";
 			break;
-		case "c64":
+		case "compliance_64x":
 			strPack = "Compliance 64x";
 			strIconURL = config.images + "brand/logos/no%20background/64/Compliance%2064.png";
 			break;
 
-		case "classic_faithful_32":
+		case "classic_faithful_32x":
 			strPack = "Classic Faithful 32x";
 			strIconURL = "https://raw.githubusercontent.com/ClassicFaithful/Branding/main/Logos/32x%20Scale/Main%2032x.png";
 			break;
-		case "classic_faithful_32_progart":
+		case "classic_faithful_32x_progart":
 			strPack = "Classic Faithful 32x Programmer Art";
 			strIconURL =
 				"https://raw.githubusercontent.com/ClassicFaithful/Branding/main/Logos/32x%20Scale/Programmer%20Art%2032x.png";
 			break;
-		case "classic_faithful_64":
+		case "classic_faithful_64x":
 			strPack = "Classic Faithful 64x";
 			strIconURL = "https://raw.githubusercontent.com/ClassicFaithful/Branding/main/Logos/32x%20Scale/Main%2032x.png";
 			break;
 
 		default:
-			strPack = "Unknown Pack";
-			strIconURL = "https://raw.githubusercontent.com/Compliance-Resource-Pack/App/main/resources/transparency.png";
+		case "default":
+			strPack = "Minecraft Default";
+			strIconURL = config.images + "bot/texture_16x.png";
 			break;
 	}
 

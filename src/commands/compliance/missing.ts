@@ -15,11 +15,11 @@ import axios from "axios";
 import { doNestedArr } from "@helpers/arrays";
 
 export const PACKS: Array<[name: string, value: string]> = [
-	["Compliance 32x", "c32"],
-	["Compliance 64x", "c64"],
-	["Classic Faithful 32x", "classic_faithful_32"],
-	["Classic Faithful 64x", "classic_faithful_64"],
-	["Classic Faithful 32x Programmer Art", "classic_faithful_32_progart"],
+	["Compliance 32x", "compliance_32x"],
+	["Compliance 64x", "compliance_64x"],
+	["Classic Faithful 32x", "classic_faithful_32x"],
+	["Classic Faithful 64x", "classic_faithful_64x"],
+	["Classic Faithful 32x Programmer Art", "classic_faithful_32x_progart"],
 ];
 
 /**
