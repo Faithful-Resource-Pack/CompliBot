@@ -40,7 +40,11 @@
             "submissionSystem": {
                 "council": "946558091929985055",
                 "submission": {
-                    "testPack": "841396215211360296"
+                    "test Pack": {
+                        "channel": "841396215211360296",
+                        "slug": "compliance_32x",
+                        "resolution": 8
+                    }
                 }
             },
             "roles": {
@@ -59,8 +63,16 @@
             "submissionSystem": {
                 "council": "779363363158229004",
                 "submission": {
-                    "Compliance 32x": "774220983044669450",
-                    "Compliance 64x": "931886877521350696"
+                    "Compliance 32x": {
+                        "channel": "774220983044669450",
+                        "slug": "compliance_32x",
+                        "resolution": 32
+                    },
+                    "Compliance 64x": {
+                        "channel": "931886877521350696",
+                        "slug": "compliance_64x",
+                        "resolution": 64
+                    }
                 }
             }
         },
@@ -82,9 +94,21 @@
             "submissionSystem": {
                 "council": "935773417993543730",
                 "submission": {
-                    "Classic Faithful 32x": "814201529032114226",
-                    "Classic Faithful 32x Programmer Art": "909503944118648883",
-                    "Classic Faithful 64x": "814209343502286899"
+                    "Classic Faithful 32x": {
+                        "channel": "814201529032114226",
+                        "slug": "classic_faithful_32x",
+                        "resolution": 32
+                    },
+                    "Classic Faithful 32x Programmer Art": {
+                        "channel": "909503944118648883",
+                        "slug": "classic_faithful_32x_progart",
+                        "resolution": 32
+                    },
+                    "Classic Faithful 64x": {
+                        "channel": "814209343502286899",
+                        "slug": "classic_faithful_32x",
+                        "resolution": 64
+                    }
                 }
             }
         }

@@ -5,6 +5,7 @@ import { Poll } from "@class/poll";
 export const button: Button = {
 	buttonId: "pollVote",
 	execute: async (client: Client, interaction: ButtonInteraction) => {
+		await interaction.deferUpdate();
 		const message: Message = interaction.message as Message;
 		const embed: MessageEmbed = message.embeds[0];
 
@@ -15,9 +16,5 @@ export const button: Button = {
 		poll.addVote(interaction.customId.replace("pollVote__", ""), interaction.user.id);
 		await poll.updateEmbed(client);
 		client.polls.set(pid, poll);
-
-		try {
-			interaction.update({});
-		} catch {}
 	},
 };

@@ -5,7 +5,6 @@ import config from "@json/config.json";
 import tokens from "@json/tokens.json";
 import { readFileSync } from "fs";
 import path from "path";
-import exp from "constants";
 
 //this is my 13th reason why
 export let changelogOptions = () => {

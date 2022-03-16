@@ -7,6 +7,7 @@ import { getRolesIds } from "@helpers/roles";
 export const button: Button = {
 	buttonId: "submissionUpvoteCouncil",
 	execute: async (client: Client, interaction: ButtonInteraction) => {
+		await interaction.deferUpdate();
 		const message: Message = interaction.message as Message;
 		const embed: MessageEmbed = message.embeds[0];
 		const member: GuildMember = interaction.member as GuildMember;
@@ -28,9 +29,5 @@ export const button: Button = {
 		submission.addUpvote(interaction.user.id);
 		await submission.updateSubmissionMessage(client, interaction.user.id);
 		client.submissions.set(submission.id, submission);
-
-		try {
-			interaction.update({});
-		} catch {}
 	},
 };

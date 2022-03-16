@@ -16,10 +16,10 @@ export const event: Event = {
 		if (message.attachments.size === 0) return message.warn("No images/zip files were attached!", true);
 
 		let files: Array<MessageAttachment> = [];
-		const currAttch = [...message.attachments.values()];
+		const currAttach = [...message.attachments.values()];
 
-		for (let i = 0; i < currAttch.length; i++) {
-			let attachment = currAttch[i];
+		for (let i = 0; i < currAttach.length; i++) {
+			let attachment = currAttach[i];
 
 			// attachments that are non zip archives
 			if (attachment.contentType !== "application/zip") files.push(attachment);
@@ -35,7 +35,7 @@ export const event: Event = {
 				req = await axios.get(`${client.config.apiUrl}textures/${file.name.replace(".png", "")}/all`);
 			} catch (_err) {
 				return message.warn(
-					`An API error occured for \`${file.name.replace(".png", "")}\`:\n\`\`\`(${_err.response.data.status}) ${
+					`An API error occurred for \`${file.name.replace(".png", "")}\`:\n\`\`\`(${_err.response.data.status}) ${
 						_err.response.data.message
 					}\`\`\``,
 					true,

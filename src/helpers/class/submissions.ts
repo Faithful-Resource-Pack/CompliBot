@@ -1,10 +1,10 @@
 import { magnifyAttachment } from "@functions/canvas/magnify";
 import { minecraftSorter } from "@functions/minecraftSorter";
 import {
+	submissionButtonsClosedEnd,
 	submissionButtonsClosed,
 	submissionButtonsVotes,
 	submissionButtonsVotesCouncil,
-	submissionsButtons,
 } from "@helpers/buttons";
 import { addMinutes } from "@helpers/dates";
 import { ids, parseId } from "@helpers/emojis";
@@ -14,6 +14,7 @@ import axios from "axios";
 import { colors } from "@helpers/colors";
 import { TimedEmbed } from "./timedEmbed";
 import { getCorrespondingCouncilChannel, getSubmissionChannelName } from "@helpers/channels";
+import { getResourcePackFromName } from "@functions/getResourcePack";
 
 // where "in" & "out" are both at the ends of the process but "in" -> go to the pack, "out" -> not enough votes
 export type SubmissionStatus = "pending" | "instapassed" | "added" | "no_council" | "council" | "denied" | "invalid";
@@ -136,7 +137,7 @@ export class Submission extends TimedEmbed {
 				});
 				// remove until field
 				embed.fields = embed.fields.filter((field: EmbedField) => field.name !== "Until");
-				components = [submissionsButtons];
+				components = [submissionButtonsClosedEnd];
 				break;
 
 			case "council":
@@ -163,7 +164,7 @@ export class Submission extends TimedEmbed {
 				});
 				// remove until field
 				embed.fields = embed.fields.filter((field: EmbedField) => field.name !== "Until");
-				components = [submissionsButtons];
+				components = [submissionButtonsClosedEnd];
 				break;
 
 			case "denied":
@@ -180,7 +181,7 @@ export class Submission extends TimedEmbed {
 
 					return field;
 				});
-				components = [submissionsButtons];
+				components = [submissionButtonsClosedEnd];
 				break;
 
 			case "pending":
@@ -277,8 +278,31 @@ export class Submission extends TimedEmbed {
 		return embed;
 	}
 
-	public async createContribution() {
-		//! use the API here!!
-		// todo: ADD CONTRIBUTION CREATION TROUGH API & COMMIT FILE TO GITHUB (ALL BRANCHES + CORRESPONDING REPO)
+	public async createContribution(client: Client) {
+		
+
+		client.channels
+			.fetch(this.getChannelId())
+			.then((c: TextChannel) => {
+				// get the submission message
+				return c.messages.fetch(this.getMessageId());
+			})
+			.then((m: Message) => {
+				// collect required information to make the contribution
+				let texture: string = m.embeds[0].title.split(' ').filter(el => el.charAt(0) === '[' && el.charAt(1) === '#' && el.slice(-1) == "]").map(el => el.slice(2, el.length - 1))[0];
+				let authors: Array<string> = m.embeds[0].fields.filter(f => f.name === "Contributor(s)")[0].value.split('\n').map(auth => auth.replace('<@!', '').replace('>', ''));
+				let date: number = m.createdTimestamp;
+				let ressourcePack = getResourcePackFromName(client, m.embeds[0].fields.filter(f => f.name === "Resource Pack")[0].value.replaceAll('`', ''));
+				let resolution = ressourcePack.resolution;
+				let pack = ressourcePack.slug;
+
+				// send the contribution
+				return axios.post(`http://localhost:8000/v2/contributions`, { date, pack, resolution, authors, texture }, { headers: { bot: client.tokens.apiPassword } })
+			})
+			.then((res) => res.data) // axios data response
+			.then((contribution) => {
+				// todo: GITHUB PUSH TO EACH BRANCHHH + CORRESPONDING REPO
+			})
+			.catch(console.error)
 	}
 }

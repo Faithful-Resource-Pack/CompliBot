@@ -15,7 +15,7 @@ export class TimedEmbed {
 	private votes: Votes;
 	private status: string = "pending";
 	private timeout: number = 0; // used for end of events (pending until...)
-	private anounymous: boolean = true;
+	private anonymous: boolean = true;
 
 	constructor(data?: TimedEmbed) {
 		if (!data) {
@@ -29,16 +29,16 @@ export class TimedEmbed {
 			this.votes = tmp.votes;
 			this.status = tmp.status;
 			this.timeout = tmp.timeout;
-			this.anounymous = tmp.anounymous;
+			this.anonymous = tmp.anonymous;
 		}
 	}
 
 	public isAnonymous(): boolean {
-		return this.anounymous;
+		return this.anonymous;
 	}
 
 	public setAnonymous(a: boolean): this {
-		this.anounymous = a;
+		this.anonymous = a;
 		return this;
 	}
 

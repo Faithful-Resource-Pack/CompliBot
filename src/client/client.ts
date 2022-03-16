@@ -61,7 +61,7 @@ class ExtendedClient extends Client {
 		console.log(`${info}restarting bot...`);
 		this.destroy();
 		await this.init();
-        if(int) {int.editReply({ content: "reboot suceeded" })}
+        if(int) {int.editReply({ content: "reboot succeeded" })}
 	}
 
 	//prettier-ignore

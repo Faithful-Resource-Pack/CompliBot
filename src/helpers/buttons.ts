@@ -1,4 +1,4 @@
-import { MessageActionRow, MessageButton } from "discord.js";
+import { Message, MessageActionRow, MessageButton } from "discord.js";
 import { ids, parseId } from "./emojis";
 
 export const compare = new MessageButton()
@@ -28,10 +28,18 @@ export const see_more = new MessageButton()
 	.setStyle("SECONDARY")
 	.setEmoji(parseId(ids.see_more))
 	.setCustomId("submissionSeeMore");
+export const see_more_end = new MessageButton()
+	.setStyle("SECONDARY")
+	.setEmoji(parseId(ids.see_more))
+	.setCustomId("submissionSeeMoreEnd");
 export const see_less = new MessageButton()
 	.setStyle("SECONDARY")
 	.setEmoji(parseId(ids.see_less))
 	.setCustomId("submissionSeeLess");
+export const see_less_end = new MessageButton()
+	.setStyle("SECONDARY")
+	.setEmoji(parseId(ids.see_less))
+	.setCustomId("submissionSeeLessEnd");
 
 export const deleteMessage = new MessageButton()
 	.setStyle("DANGER")
@@ -91,6 +99,11 @@ export const submissionButtonsOpen = new MessageActionRow().addComponents([
 	invalidate,
 	deleteMessage,
 ]);
+export const submissionButtonsOpenEnd = new MessageActionRow().addComponents([
+	see_less_end,
+	view_votes,
+	deleteMessage,
+])
 export const submissionButtonsClosed = new MessageActionRow().addComponents([
 	magnify,
 	tile,
@@ -98,12 +111,12 @@ export const submissionButtonsClosed = new MessageActionRow().addComponents([
 	compare,
 	see_more,
 ]);
-export const submissionsButtons = new MessageActionRow().addComponents([
+export const submissionButtonsClosedEnd = new MessageActionRow().addComponents([
 	magnify,
 	tile,
 	palette,
 	compare,
-	deleteMessage,
-]);
+	see_more_end
+])
 export const submissionButtonsVotes = new MessageActionRow().addComponents([upvote, downvote]);
 export const submissionButtonsVotesCouncil = new MessageActionRow().addComponents([upvoteCouncil, downvoteCouncil]);
