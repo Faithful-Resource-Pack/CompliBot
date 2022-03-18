@@ -89,7 +89,6 @@ module.exports = {
     submissionProcess.start()
     downloadToBot.start()
     pushToGithub.start()
-    updatePercentages.start()
 
     await jiraJE.loadJiraVersions()
     await jiraBE.loadJiraVersions()
