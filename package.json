@@ -24,6 +24,7 @@
     "@vitalets/google-translate-api": "^7.0.0",
     "async-mutex": "^0.3.2",
     "axios": "^0.25.0",
+    "buffer": "^6.0.3",
     "canvas": "^2.9.0",
     "cheerio": "^1.0.0-rc.10",
     "cron": "^1.8.2",
@@ -39,7 +40,7 @@
     "image-size": "^1.0.1",
     "meant": "^2.0.1",
     "moment": "^2.29.1",
-    "node-fetch": "^3.2.0",
+    "node-fetch": "^3.2.3",
     "simple-git": "^2.48.0"
   },
   "devDependencies": {

@@ -8,6 +8,8 @@ const contributionsCollection = require('../../../helpers/firestorm/contribution
 const fs = require('fs')
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 
+var Buffer = require('buffer/').Buffer
+
 /**
  * Download textures from the given text channel
  * @author Juknum
@@ -97,7 +99,7 @@ async function downloadResults(client, channelInID) {
 		}
 
 		const response = await fetch(textureURL)
-		const buffer = await response.buffer()
+		const buffer = await response.arrayBuffer()
 
 		// download the texture to all it's paths
 		for (let j = 0; allPaths[j]; j++) {
@@ -106,7 +108,7 @@ async function downloadResults(client, channelInID) {
 				.catch(err => { if (process.DEBUG) console.error(err) })
 
 			// write texture to the corresponding path
-			fs.writeFile(allPaths[j], buffer, function (err) {
+			fs.writeFile(allPaths[j], Buffer.from(buffer), function (err) {
 				if (err && process.DEBUG == "true") return console.error(err)
 				else if (process.DEBUG == "true") return console.log(`ADDED TO: ${allPaths[j]}`)
 			})
