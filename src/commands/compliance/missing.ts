@@ -40,18 +40,18 @@ export const command: SlashCommand = {
 		return (
 			new SlashCommandBuilder()
 				.setName("missing")
-				.setDescription("Shows tree view of missing textures for a particular edition")
+				.setDescription("Displays the missing textures for a particular resource pack")
 				.addStringOption((option) =>
 					option
 						.setName("pack")
-						.setDescription("Resource pack of the texture you are searching for.")
+						.setDescription("The resource pack.")
 						.addChoices(PACKS)
 						.setRequired(true),
 				)
 				.addStringOption((option) =>
 					option
 						.setName("edition")
-						.setDescription("Edition for the requested pack.")
+						.setDescription("The resource pack edition.")
 						.addChoices([
 							["Java", "java"],
 							["Bedrock", "bedrock"],
@@ -63,7 +63,7 @@ export const command: SlashCommand = {
 				.addStringOption((option) =>
 					option
 						.setName("version")
-						.setDescription("Minecraft version you want to see completion.")
+						.setDescription("The Minecraft version.")
 						.addChoices(doNestedArr(versions))
 						.setRequired(false),
 				)

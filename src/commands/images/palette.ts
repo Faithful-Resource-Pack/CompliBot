@@ -6,7 +6,7 @@ import { MessageEmbed } from "@client";
 import { paletteAttachment } from "@functions/canvas/palette";
 
 export const command: SlashCommand = {
-	data: new SlashCommandBuilder().setName("palette").setDescription("Get colors palette of an image"),
+	data: new SlashCommandBuilder().setName("palette").setDescription("Get the color palette of an image."),
 	execute: async (interaction: CommandInteraction) => {
 		generalSlashCommandImage(interaction, paletteAttachment, {
 			factor: interaction.options.getNumber("factor"),

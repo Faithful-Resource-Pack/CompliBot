@@ -6,7 +6,7 @@ export const command: SlashCommand = {
 	servers: ["compliance", "compliance_extra", "classic_faithful"],
 	data: new SlashCommandBuilder()
 		.setName("license")
-		.setDescription("Shows the license for Compliance Resources Packs."),
+		.setDescription("Shows the license for the Compliance Resources Pack."),
 	execute: async (interaction: CommandInteraction) => {
 		interaction
 			.reply({ content: "https://www.compliancepack.net/license", fetchReply: true })

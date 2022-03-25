@@ -27,7 +27,7 @@ export const command: SlashCommand = {
 		.setName("order")
 		.setDescription("Get something special")
 		.addStringOption((option) =>
-			option.setName("item").setDescription("The item you want!").addChoices(options).setRequired(true),
+			option.setName("item").setDescription("The item you want.").addChoices(options).setRequired(true),
 		),
 	execute: async (interaction: CommandInteraction, client: Client) => {
 		await interaction.deferReply();

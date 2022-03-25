@@ -17,7 +17,7 @@ export const command: SlashCommand = {
 		.setDefaultPermission(false)
 		.setName("bean")
 		.setDescription("Bean him at once!")
-		.addUserOption((option) => option.setName("user").setDescription("User you want to mute").setRequired(true)),
+		.addUserOption((option) => option.setName("user").setDescription("User you want to bean").setRequired(true)),
 	execute: async (interaction: CommandInteraction, client: Client) => {
 		console.log("beaning..");
 		const embed = new MessageEmbed()

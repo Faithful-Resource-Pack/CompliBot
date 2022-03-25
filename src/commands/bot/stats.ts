@@ -9,12 +9,12 @@ import linuxOs from "linux-os-info";
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
 		.setName("stats")
-		.setDescription("Gets statistics about the bot or commands!")
-		.addSubcommand((subcommand) => subcommand.setName("bot").setDescription("Statistics about the bot!"))
+		.setDescription("Gets statistics about the bot or commands.")
+		.addSubcommand((subcommand) => subcommand.setName("bot").setDescription("Statistics about the bot."))
 		.addSubcommand((subcommand) =>
 			subcommand
 				.setName("command")
-				.setDescription("Statistics about commands!")
+				.setDescription("Statistics about commands.")
 				.addStringOption((option) =>
 					option.setName("command").setDescription("A command from the bot.").setRequired(true),
 				),

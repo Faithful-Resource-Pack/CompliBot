@@ -8,11 +8,11 @@ import axios from "axios";
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
 		.setName("color")
-		.setDescription("Use this commands to gets information about a color.")
+		.setDescription("Get the information about a specified color.")
 		.addSubcommand((subcommand) =>
 			subcommand
 				.setName("hex")
-				.setDescription("Get information about a HEX color!")
+				.setDescription("Get the information about a HEX color.")
 				.addStringOption((option) =>
 					option
 						.setName("value")
@@ -23,7 +23,7 @@ export const command: SlashCommand = {
 		.addSubcommand((subcommand) =>
 			subcommand
 				.setName("rgb-a")
-				.setDescription("Get information about a RGBa color!")
+				.setDescription("Get the information about a RGBa color.")
 				.addNumberOption((option) => option.setName("red").setDescription("Red value [0-255]").setRequired(true))
 				.addNumberOption((option) => option.setName("green").setDescription("Green value [0-255]").setRequired(true))
 				.addNumberOption((option) => option.setName("blue").setDescription("Blue value [0-255]").setRequired(true))
@@ -32,7 +32,7 @@ export const command: SlashCommand = {
 		.addSubcommand((subcommand) =>
 			subcommand
 				.setName("hsl")
-				.setDescription("Get information about a HSL color!")
+				.setDescription("Get the information about a HSL color.")
 				.addNumberOption((option) => option.setName("hue").setDescription("Hue value [0-360]").setRequired(true))
 				.addNumberOption((option) =>
 					option.setName("saturation").setDescription("Saturation value [0-100]").setRequired(true),
@@ -44,7 +44,7 @@ export const command: SlashCommand = {
 		.addSubcommand((subcommand) =>
 			subcommand
 				.setName("hsv")
-				.setDescription("Get information about a HSV color!")
+				.setDescription("Get the information about a HSV color.")
 				.addNumberOption((option) => option.setName("hue").setDescription("Hue value [0-360]").setRequired(true))
 				.addNumberOption((option) =>
 					option.setName("saturation").setDescription("Saturation value [0-100]").setRequired(true),
@@ -54,7 +54,7 @@ export const command: SlashCommand = {
 		.addSubcommand((subcommand) =>
 			subcommand
 				.setName("cmyk")
-				.setDescription("Get information about a CMYK color!")
+				.setDescription("Get the information about a CMYK color.")
 				.addNumberOption((option) => option.setName("cyan").setDescription("Cyan color [0-100]").setRequired(true))
 				.addNumberOption((option) =>
 					option.setName("magenta").setDescription("Magenta color [0-100]").setRequired(true),

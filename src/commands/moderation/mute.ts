@@ -16,10 +16,10 @@ export const command: SlashCommand = {
   data: new SlashCommandBuilder()
     .setDefaultPermission(false)
     .setName("mute")
-    .setDescription("Mute someone who deserves it. Unmute innocents with a timeout value of 0!")
-    .addMentionableOption((option) => option.setName("user").setDescription("User you want to mute").setRequired(true))
+    .setDescription("Mute someone who deserves it. Unmute innocents with a timeout value of 0.")
+    .addMentionableOption((option) => option.setName("user").setDescription("User you want to mute.").setRequired(true))
     .addStringOption((option) => option.setName("timeout").setDescription("How long do you want it to be muted? (Max: 27 days)").setRequired(true))
-    .addStringOption((option) => option.setName("reason").setDescription("The reason behind the mute"))
+    .addStringOption((option) => option.setName("reason").setDescription("The reason behind the mute."))
   ,
   execute: async (interaction: CommandInteraction, client: Client) => {
     const timeout: number = parseDate(interaction.options.getString("timeout", true));

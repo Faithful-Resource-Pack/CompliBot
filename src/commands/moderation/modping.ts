@@ -6,11 +6,11 @@ import { Client, Message, MessageEmbed } from "@client";
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
 		.setName("modping")
-		.setDescription("Ping a moderator")
+		.setDescription("Ping all online moderators.")
 		.addBooleanOption((option) =>
 			option
 				.setName("urgent")
-				.setDescription("Does it require all moderator's attention? consequences will be handed for misuse")
+				.setDescription("Does it require all moderator's attention? Consequences will be handed for misuse.")
 				.setRequired(false),
 		),
 	execute: async (interaction: CommandInteraction, client: Client) => {

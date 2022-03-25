@@ -15,9 +15,9 @@ export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
 		.setDefaultPermission(false)
 		.setName("clear")
-		.setDescription("Clear the asked amount of message")
+		.setDescription("Clear a specified amount of messages")
 		.addNumberOption((option) =>
-			option.setName("amount").setDescription("The amount of message you want to clear [0 - 100]").setRequired(true),
+			option.setName("amount").setDescription("The amount of messages you want to clear [0 - 100]").setRequired(true),
 		),
 	execute: async (interaction: CommandInteraction, client: Client) => {
 		interaction.reply("Disabled temporarily");

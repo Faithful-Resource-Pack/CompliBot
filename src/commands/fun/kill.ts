@@ -5,7 +5,7 @@ import { CommandInteraction, MessageEmbed, Message } from "@client";
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
 		.setName("kill")
-		.setDescription("Kill someone you tag, be carefull with weapons!")
+		.setDescription("Kill someone you tag, be careful with weapons!")
 		.addUserOption((user) => user.setName("user").setDescription("User to be killed."))
 		.addStringOption((string) => string.setName("weapon").setDescription("Weapon to kill the user with.")),
 	execute: async (interaction: CommandInteraction) => {

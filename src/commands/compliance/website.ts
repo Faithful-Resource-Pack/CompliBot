@@ -8,11 +8,11 @@ export const command: SlashCommand = {
 	servers: ["compliance", "compliance_extra", "classic_faithful"],
 	data: new SlashCommandBuilder()
 		.setName("website")
-		.setDescription("Displays websites for the given keyword.")
+		.setDescription("Displays all sites for the given resource pack.")
 		.addStringOption((option) =>
 			option
 				.setName("name")
-				.setDescription("Name of the project you want to see websites.")
+				.setDescription("Name of the resource pack you want to see the sites of.")
 				.addChoices([
 					["Compliance 32x", "compliance_32"],
 					["Compliance 64x", "compliance_64"],

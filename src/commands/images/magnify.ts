@@ -7,7 +7,7 @@ import { magnifyAttachment } from "@functions/canvas/magnify";
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
 		.setName("magnify")
-		.setDescription("Magnify an image")
+		.setDescription("Magnify an image.")
 		.addNumberOption((num) => {
 			return num
 				.addChoices([

@@ -16,14 +16,14 @@ export const command: SlashCommand = {
 		.addNumberOption((option) =>
 			option.setName("answers").setDescription("How many answers does the poll have? (Max: 5)").setRequired(true),
 		)
-		.addStringOption((option) => option.setName("timeout").setDescription("Timeout for the vote. (schema: 3 min, 10 h, 1 year)"))
-		.addBooleanOption((option) => option.setName("anonymous").setDescription("Are votes anonymous?"))
-		.addBooleanOption((option) => option.setName("thread").setDescription("Did you want a thread for this question?"))
+		.addStringOption((option) => option.setName("timeout").setDescription("Timeout for the vote. (schema: 3 min, 10 h, 1 year)").setRequired(true))
+		.addBooleanOption((option) => option.setName("anonymous").setDescription("Should votes be anonymous?"))
+		.addBooleanOption((option) => option.setName("thread").setDescription("Do you want a thread for this question?"))
 		.addBooleanOption((option) =>
-			option.setName("yesno").setDescription("Did you want YES/NO format? Only works if 2 answers are provided."),
+			option.setName("yesno").setDescription("Do you want to use the YES/NO format? Only works if 2 answers are provided."),
 		)
 		.addStringOption((option) =>
-			option.setName("description").setDescription("Add more information about your poll here!."),
+			option.setName("description").setDescription("Add more information about your poll here."),
 		),
 	execute: async (interaction: CommandInteraction, client: Client) => {
 		const question: string = interaction.options.getString("question", true);
