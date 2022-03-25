@@ -1,4 +1,4 @@
-import { Button } from "@helpers/interfaces";
+import { Button } from "@interfaces";
 import { info } from "@helpers/logger";
 import { Client, Message, ButtonInteraction } from "@client";
 import { MessageInteraction } from "discord.js";

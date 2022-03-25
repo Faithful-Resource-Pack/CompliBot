@@ -1,10 +1,11 @@
 import { Message, MessageActionRow, MessageEmbed } from "discord.js";
 import { ids } from "@helpers/emojis";
-import { Config, Tokens } from "@helpers/interfaces";
-import ConfigJson from "@/config.json";
+import { Config, Tokens } from "@interfaces";
+import config from "@json/config.json";
 import Menu from "@helpers/menu";
-import tokens from "@/tokens.json";
+import tokens from "@json/tokens.json";
 import { deleteInteraction, deleteMessage } from "@helpers/buttons";
+import { colors } from "@helpers/colors";
 
 declare module "discord.js" {
 	interface Message {
@@ -12,7 +13,6 @@ declare module "discord.js" {
 		config: Config;
 		menu: Menu;
 
-		setMenu(choiceType: "texture" | "imageOptions", id: string): Menu;
 		warn(text: string, disappearing?: boolean): void;
 		deleteReact(options: Options): void;
 		deleteButton(isMessage?: boolean): Promise<Message>;
@@ -27,15 +27,15 @@ export interface DeleteReactOptions {
 }
 
 const MessageBody = {
-	config: ConfigJson,
+	config: config,
 	tokens: tokens,
 	menu: undefined,
 
 	deleteButton: async function (isMessage?: boolean): Promise<Message> {
 		if (
 			this.components[0] != undefined &&
-			this.components.at(-1).components.length < 5 && //check there arent 5 buttons
-			this.components.at(-1).components[0].type == "BUTTON" //checks there isnt a select menu
+			this.components.at(-1).components.length < 5 && //check there aren't 5 buttons
+			this.components.at(-1).components[0].type === "BUTTON" //checks there isn't a select menu
 		) {
 			this.components.at(-1).addComponents([isMessage === true ? deleteMessage : deleteInteraction]);
 
@@ -49,11 +49,6 @@ const MessageBody = {
 				new MessageActionRow().addComponents([isMessage === true ? deleteMessage : deleteInteraction]),
 			],
 		});
-	},
-
-	setMenu: function (choiceType: "texture" | "imageOptions", id: string): Menu {
-		this.menu = new Menu(this, choiceType, id);
-		return this.menu;
 	},
 
 	/**
@@ -121,7 +116,7 @@ const MessageBody = {
 	 */
 	warn: async function (text: string, disappearing?: boolean) {
 		const embed = new MessageEmbed()
-			.setColor(this.config.colors.red)
+			.setColor(colors.red)
 			.setThumbnail(`${this.config.images}bot/warning.png`)
 			.setTitle("Action failed")
 			.setDescription(text)

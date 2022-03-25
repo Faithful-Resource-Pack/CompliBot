@@ -1,4 +1,4 @@
-import { Event } from "@helpers/interfaces";
+import { Event } from "@interfaces";
 import { success } from "@helpers/logger";
 
 export const event: Event = {

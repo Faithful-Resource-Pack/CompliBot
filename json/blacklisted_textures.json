@@ -1,5 +1,10 @@
 {
   "java": [
+    "block/debug.png",
+    "block/debug2.png",
+    "environment/end_sky.png",
+    "gui/title/mojangstudios.png",
+    "misc/unknown_pack.png",
     "font/",
     "colormap/",
     "misc/shadow",
@@ -36,6 +41,8 @@
     "misc/pumpkinblur.png"
   ],
   "bedrock": [
+    "spit",
+    "decor_none",
     "font/",
     "colormap/",
     "/gui/",

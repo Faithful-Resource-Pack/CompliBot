@@ -1,17 +1,18 @@
-import { SlashCommand } from "@helpers/interfaces";
+import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { colors } from "@helpers/colors";
 import { ids, parseId } from "@helpers/emojis";
 import { Message, MessageEmbed, CommandInteraction } from "@client";
 
 export const command: SlashCommand = {
+	servers: ["compliance", "compliance_extra", "classic_faithful"],
 	data: new SlashCommandBuilder()
 		.setName("website")
-		.setDescription("Displays websites for the given keyword.")
+		.setDescription("Displays all sites for the given resource pack.")
 		.addStringOption((option) =>
 			option
 				.setName("name")
-				.setDescription("Name of the project you want to see websites.")
+				.setDescription("Name of the resource pack you want to see the sites of.")
 				.addChoices([
 					["Compliance 32x", "compliance_32"],
 					["Compliance 64x", "compliance_64"],
@@ -80,7 +81,7 @@ const websites = {
 		name: "Compliance Mods 32x",
 		value: `[${parseId(ids.cmods)} Mods Resource Pack picker](https://www.compliancepack.net/mods)\n[${parseId(
 			ids.cmods,
-		)} Modpacks Resource Pack pressets](https://www.compliancepack.net/modpacks)`,
+		)} Modpacks Resource Pack presets](https://www.compliancepack.net/modpacks)`,
 	},
 	compliance_tweaks_32: {
 		image: "https://database.compliancepack.net/images/brand/logos/no%20background/512/Compliance%20Tweaks.png",

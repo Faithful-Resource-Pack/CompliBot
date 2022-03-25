@@ -1,8 +1,9 @@
-import { SlashCommand } from "@helpers/interfaces";
+import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction, Message } from "@client";
 
 export const command: SlashCommand = {
+	servers: ["compliance", "compliance_extra", "classic_faithful"],
 	data: new SlashCommandBuilder()
 		.setName("guidelines")
 		.setDescription("Shows the guidelines for the Compliance Resource Pack."),

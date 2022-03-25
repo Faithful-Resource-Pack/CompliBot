@@ -2,6 +2,7 @@ import { MessageAttachment, MessageEmbed, TextChannel } from "discord.js";
 import { Client, Message } from "@client";
 import fs from "fs";
 import { err } from "@helpers/logger";
+import { colors } from "@helpers/colors";
 
 const randomSentences: Array<string> = [
 	"Oh no, not again!",
@@ -42,7 +43,7 @@ const loopLimit = 3; //how many times the same error needs to be made to trigger
 
 export const errorHandler: Function = async (client: Client, reason: any, type: string) => {
 	console.error(`${err} ${reason.stack || JSON.stringify(reason)}`);
-	const channel = client.channels.cache.get(client.config.channels.error) as TextChannel;
+	const channel = client.channels.cache.get(client.tokens.errorChannel) as TextChannel;
 	if (channel === undefined) return; // avoid infinite loop when crash is outside of client
 
 	if (lastReasons.length == loopLimit) lastReasons.pop(); // pop removes an item from the end of an array
@@ -62,7 +63,7 @@ export const errorHandler: Function = async (client: Client, reason: any, type: 
 	const embed = new MessageEmbed()
 		.setTitle(type)
 		.setThumbnail(`${client.config.images}bot/error.png`)
-		.setColor(client.config.colors.red)
+		.setColor(colors.red)
 		.setTimestamp()
 		.setFooter({ text: client.user.tag, iconURL: client.user.avatarURL() });
 

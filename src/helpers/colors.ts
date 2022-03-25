@@ -18,6 +18,7 @@ export const colors = {
 	planet_mc: "#3366CC",
 	curseforge: "#484848",
 	mcpedl: "#12be3c",
+	coin: "#ffdc16",
 } as const;
 
 export type colorType = keyof typeof colors;

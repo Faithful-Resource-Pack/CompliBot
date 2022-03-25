@@ -1,0 +1,136 @@
+{
+    "images": "https://database.compliancepack.net/images/",
+    "icon": "https://cdn.discordapp.com/avatars/929066601930706954/86f92a2870e5924a04b75cc917cb4ecd.webp?size=80",
+    "apiUrl": "https://api.compliancepack.net/v2/",
+    "firestormUrl": "https://database.compliancepack.net/firestorm-test/",
+    "teams": [
+        {
+            "name": "faithful",
+            "channels": {
+                "moderation": "776145239358046248"
+            },
+            "roles": {
+                "council": [
+                    "775636065338785813",
+                    "814200754197364786"
+                ],
+                "moderators": [
+                    "852215447394320395",
+                    "852227180322619422",
+                    "814200623276359740"
+                ],
+                "trial_moderators": [
+                    "890728061128036353",
+                    "890729435395936286",
+                    "938859628144513024"
+                ]
+            }
+        }
+    ],
+    "discords": [
+        {
+            "name": "dev",
+            "id": "720677267424018526",
+            "channels": {
+                "updateMember": "897476033136189460",
+                "moderation": "798676864599195655",
+                "feedbackBug": "938475927887839243",
+                "feedbackSuggestion": "938475860938342440"
+            },
+            "submissionSystem": {
+                "council": "946558091929985055",
+                "submission": {
+                    "test Pack": {
+                        "channel": "841396215211360296",
+                        "slug": "compliance_32x",
+                        "resolution": 8
+                    }
+                }
+            },
+            "roles": {
+                "council": "936043191977787452",
+                "moderators": "852243126701522965",
+                "trial_moderators": "952550781767254036"
+            }
+        },
+        {
+            "name": "compliance",
+            "team": "faithful",
+            "id": "773983706582482946",
+            "channels": {
+                "updateMember": "774333964101615637"
+            },
+            "submissionSystem": {
+                "council": "779363363158229004",
+                "submission": {
+                    "Compliance 32x": {
+                        "channel": "774220983044669450",
+                        "slug": "compliance_32x",
+                        "resolution": 32
+                    },
+                    "Compliance 64x": {
+                        "channel": "931886877521350696",
+                        "slug": "compliance_64x",
+                        "resolution": 64
+                    }
+                }
+            }
+        },
+        {
+            "name": "compliance_extra",
+            "team": "faithful",
+            "id": "614160586032414845",
+            "channels": {
+                "updateMember": "802854096779477002"
+            }
+        },
+        {
+            "name": "classic_faithful",
+            "team": "faithful",
+            "id": "814198513847631944",
+            "channels": {
+                "updateMember": "814246773459255328"
+            },
+            "submissionSystem": {
+                "council": "935773417993543730",
+                "submission": {
+                    "Classic Faithful 32x": {
+                        "channel": "814201529032114226",
+                        "slug": "classic_faithful_32x",
+                        "resolution": 32
+                    },
+                    "Classic Faithful 32x Programmer Art": {
+                        "channel": "909503944118648883",
+                        "slug": "classic_faithful_32x_progart",
+                        "resolution": 32
+                    },
+                    "Classic Faithful 64x": {
+                        "channel": "814209343502286899",
+                        "slug": "classic_faithful_32x",
+                        "resolution": 64
+                    }
+                }
+            }
+        }
+    ],
+    "packProgress": {
+        "c32": {
+            "java": "778257098437558312",
+            "bedrock": "834852328745205830",
+            "dungeons": "860474330584842241"
+        },
+        "c64": {
+            "java": "932039966836535328",
+            "bedrock": "932040163876548649"
+        },
+        "classic_faithful_32": {
+            "java": "948984052080337007"
+        },
+        "classic_faithful_64": {
+            "java": "914224818226856027"
+        },
+        "classic_faithful_32_progart": {
+            "java": "864660644685938688"
+        }
+    }
+}

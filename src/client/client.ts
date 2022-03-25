@@ -1,4 +1,4 @@
-import { Client, ClientOptions, Collection, Guild, TextChannel, VoiceChannel } from "discord.js";
+import { Client, ClientOptions, Collection, CommandInteraction, Guild, Interaction, TextChannel, VoiceChannel } from "discord.js";
 import { Message, EmittingCollection, Automation } from "@client";
 import {
 	Command,
@@ -9,28 +9,26 @@ import {
 	SelectMenu,
 	SlashCommand,
 	AsyncSlashCommandBuilder,
-} from "@helpers/interfaces";
+} from "@interfaces";
 import { getData } from "@functions/getDataFromJSON";
 import { setData } from "@functions/setDataToJSON";
-import { init as initCommands } from "@functions/commandProcess";
 import { errorHandler } from "@functions/errorHandler";
 import { err, info, success } from "@helpers/logger";
 import { Submission } from "@class/submissions";
 import { Poll } from "@class/poll";
 
-import { readdirSync } from "fs";
+import { readdirSync, readFileSync } from "fs";
 import { REST } from "@discordjs/rest";
 import { RESTPostAPIApplicationCommandsJSONBody, Routes } from "discord-api-types/v9";
 import { SlashCommandBuilder } from "@discordjs/builders";
 
 import path from "path";
+import chalk from "chalk";
 
-const JSON_PATH = path.join(__dirname, "../../json"); // json folder at root
-const JSON_FOLDER = path.resolve(__dirname, JSON_PATH);
+const JSON_PATH = path.join(__dirname, "../../json/dynamic"); // json folder at root
 const POLLS_FILENAME = "polls.json";
 const SUBMISSIONS_FILENAME = "submissions.json";
-const SUBMISSIONS_FILE_PATH = path.resolve(JSON_FOLDER, SUBMISSIONS_FILENAME);
-// const COUNTER_FILE_PATH = path.resolve(JSON_FOLDER, "commandsProcessed.json"); //! NYI
+const COMMANDS_PROCESSED_FILENAME = "commandsProcessed.json";
 
 class ExtendedClient extends Client {
 	public verbose: boolean = false;
@@ -50,6 +48,7 @@ class ExtendedClient extends Client {
 
 	public submissions: EmittingCollection<string, Submission> = new EmittingCollection();
 	public polls: EmittingCollection<string, Poll> = new EmittingCollection();
+	public commandsProcessed: EmittingCollection<string, number> = new EmittingCollection();
 
 	constructor(data: ClientOptions & { verbose: boolean; config: Config; tokens: Tokens }) {
 		super(data);
@@ -58,13 +57,31 @@ class ExtendedClient extends Client {
 		this.tokens = data.tokens;
 	}
 
-	public async restart(): Promise<void> {
+	public async restart(int?: CommandInteraction): Promise<void> {
 		console.log(`${info}restarting bot...`);
 		this.destroy();
 		await this.init();
+        if(int) {int.editReply({ content: "reboot succeeded" })}
+	}
+
+	//prettier-ignore
+	private asciiArt() {
+		console.log(chalk.hex("0026ff")("\n .d8888b.                                  888 d8b ")     + chalk.hex("#0066ff")("888888b.            888"));
+		console.log(chalk.hex("0026ff")("d88P  Y88b                                 888 Y8P ")       + chalk.hex("#0066ff")("888  \"88b           888"));
+		console.log(chalk.hex("0026ff")("888    888                                 888     ")       + chalk.hex("#0066ff")("888  .88P           888"));
+		console.log(chalk.hex("0026ff")("888         .d88b.  88888b.d88b.  88888b.  888 888 ")       + chalk.hex("#0066ff")("8888888K.   .d88b.  888888 "));
+		console.log(chalk.hex("0026ff")("888        d88\"\"88b 888 \"888 \"88b 888 \"88b 888 888 ")  + chalk.hex("#0066ff")("888  \"Y88b d88\"\"88b 888"));
+		console.log(chalk.hex("0026ff")("888    888 888  888 888  888  888 888  888 888 888 ")       + chalk.hex("#0066ff")("888    888 888  888 888"));
+		console.log(chalk.hex("0026ff")("Y88b  d88P Y88..88P 888  888  888 888 d88P 888 888 ")       + chalk.hex("#0066ff")("888   d88P Y88..88P Y88b."));
+		console.log(chalk.hex("0026ff")("\"Y8888P\"    \"Y88P\"  888  888  888 88888P\"  888 888 ")  + chalk.hex("#0066ff")("8888888P\"   \"Y88P\"   \"Y888"));
+		console.log(chalk.hex("0026ff")("                                  888"));
+		console.log(chalk.hex("0026ff")("                                  888                   ")  + chalk.white.bold("Compliance Devs. 2022"));
+		console.log(chalk.hex("0026ff")("                                  888                ")  + chalk.gray.italic("~ Made loveingly With pain\n"));
 	}
 
 	public async init() {
+		this.asciiArt();
+
 		// login client
 		this.login(this.tokens.token)
 			.catch((e) => {
@@ -73,31 +90,13 @@ class ExtendedClient extends Client {
 				process.exit(1);
 			})
 			.then(() => {
-				// commands counter
-				initCommands(this);
-				if (this.verbose) console.log(info + `Initialized command counter`);
-
-				// load old commands only if not dev server
-				//if (this.tokens.dev) this.loadCommands();
-				this.loadCommands();
-				if (this.verbose) console.log(info + `Loaded classical commands`);
-
 				this.loadSlashCommands();
-				if (this.verbose) console.log(info + `Loaded slash commands & slash command perms`);
 
 				this.loadEvents();
-				if (this.verbose) console.log(info + `Loaded events`);
-
 				this.loadButtons();
-				if (this.verbose) console.log(info + `Loaded buttons`);
-
 				this.loadSelectMenus();
-				if (this.verbose) console.log(info + `Loaded select menus`);
 
-				this.loadSubmissions();
-				this.loadPolls();
-				if (this.verbose) console.log(info + `Loaded submissions & polls data`);
-
+				this.loadCollections();
 				this.automation.start();
 				if (this.verbose) console.log(info + `Started automated functions`);
 				if (this.verbose) console.log(info + `Init complete`);
@@ -113,66 +112,59 @@ class ExtendedClient extends Client {
 		});
 	}
 
-	/**
-	 * SUBMISSIONS DATA
-	 */
-	public loadPolls = async () => {
-		// read file and load it into the collection
-		const submissionsObj = getData({ filename: POLLS_FILENAME, relative_path: JSON_PATH });
-		Object.values(submissionsObj).forEach((poll: Poll) => {
-			this.polls.set(poll.id, poll);
-		});
-
-		// events
-		this.polls.events.on("dataSet", (key: string, value: Submission) => {
-			this.savePolls();
-		});
-
-		this.polls.events.on("dataDeleted", (key: string) => {
-			this.savePolls();
-		});
-	};
-
-	public savePolls = async () => {
-		let data = {};
-		[...this.polls.values()].forEach((poll: Poll) => {
-			data[poll.id] = poll;
-		});
-		setData({ filename: POLLS_FILENAME, relative_path: JSON_PATH, data: JSON.parse(JSON.stringify(data)) });
+	private loadCollections = () => {
+		this.loadCollection(this.polls, POLLS_FILENAME, JSON_PATH);
+		this.loadCollection(this.submissions, SUBMISSIONS_FILENAME, JSON_PATH);
+		this.loadCollection(this.commandsProcessed, COMMANDS_PROCESSED_FILENAME, JSON_PATH);
+		if (this.verbose) console.log(info + `Loaded collections data`);
 	};
 
 	/**
-	 * SUBMISSIONS DATA
+	 * Read & Load data from json file into emitting collection & setup events handler
+	 * @param collection {EmittingCollection}
+	 * @param filename {string}
+	 * @param relative_path {string}
 	 */
-	public loadSubmissions = async () => {
-		// read file and load it into the collection
-		const submissionsObj = getData({ filename: SUBMISSIONS_FILENAME, relative_path: JSON_PATH });
-		Object.values(submissionsObj).forEach((submission: Submission) => {
-			this.submissions.set(submission.id, submission);
+	private loadCollection = (
+		collection: EmittingCollection<any, any>,
+		filename: string,
+		relative_path: string,
+	): void => {
+		const obj = getData({ filename, relative_path });
+		Object.keys(obj).forEach((key: string) => {
+			collection.set(key, obj[key]);
 		});
 
-		// events
-		this.submissions.events.on("dataSet", (key: string, value: Submission) => {
-			this.saveSubmissions();
+		collection.events.on("dataSet", (key: string, value: any) => {
+			this.saveEmittingCollection(collection, filename, relative_path);
 		});
-
-		this.submissions.events.on("dataDeleted", (key: string) => {
-			this.saveSubmissions();
+		collection.events.on("dataDeleted", (key: string) => {
+			this.saveEmittingCollection(collection, filename, relative_path);
 		});
 	};
 
-	public saveSubmissions = async () => {
+	/**
+	 * Save an emitting collection into a JSON file
+	 * @param collection {EmittingCollection}
+	 * @param filename {string}
+	 * @param relative_path {string}
+	 */
+	private saveEmittingCollection = (
+		collection: EmittingCollection<any, any>,
+		filename: string,
+		relative_path: string,
+	): void => {
 		let data = {};
-		[...this.submissions.values()].forEach((submission: Submission) => {
-			data[submission.id] = submission;
+		[...collection.keys()].forEach((k: string) => {
+			data[k] = collection.get(k);
 		});
-		setData({ filename: SUBMISSIONS_FILENAME, relative_path: JSON_PATH, data: JSON.parse(JSON.stringify(data)) });
+		setData({ filename, relative_path, data: JSON.parse(JSON.stringify(data)) });
 	};
 
 	/**
 	 * SLASH COMMANDS PERMS
 	 */
-	public loadSlashCommandsPerms = async () => {
+	private loadSlashCommandsPerms = async () => {
 		if (!this.application.owner) await this.application.fetch();
 
 		this.guilds.cache.forEach(async (guild: Guild) => {
@@ -182,10 +174,9 @@ class ExtendedClient extends Client {
 			this.slashCommands.forEach(async (slashCommand: SlashCommand) => {
 				if (slashCommand.permissions === undefined) return; // no permission to be checked
 
-				//! sometimes the .find() methods doesn't find the command, needs to be investigated
-				//* happens with `/reason` command
 				const command = guildSlashCommands.find((cmd) => cmd.name === (slashCommand.data as SlashCommandBuilder).name);
-				if (command === undefined) return;
+				if (command === undefined) return; // happens when settings perms of private commands to all perms
+
 				const p = {
 					id: command.id,
 					permissions: [],
@@ -203,6 +194,7 @@ class ExtendedClient extends Client {
 			});
 
 			await guild.commands.permissions.set({ fullPermissions });
+			if (this.verbose) console.log(success + `Loaded slash command perms`);
 		});
 	};
 
@@ -222,9 +214,9 @@ class ExtendedClient extends Client {
 	/**
 	 * SLASH COMMANDS HANDLER
 	 */
-	public async loadSlashCommands(): Promise<void> {
+	private async loadSlashCommands(): Promise<void> {
 		const slashCommandsPath = path.join(__dirname, "..", "commands");
-		const commandsArr: Array<RESTPostAPIApplicationCommandsJSONBody> = [];
+		const commandsArr: Array<{ servers: Array<string>; command: RESTPostAPIApplicationCommandsJSONBody }> = [];
 
 		const paths: Array<string> = readdirSync(slashCommandsPath);
 		// use a classic for loops to force async functions to be fullfilled
@@ -237,10 +229,13 @@ class ExtendedClient extends Client {
 
 				if (command.data instanceof Function) {
 					this.slashCommands.set((await (command.data as AsyncSlashCommandBuilder)(this)).name, command); // AsyncSlashCommandBuilder
-					commandsArr.push((await (command.data as AsyncSlashCommandBuilder)(this)).toJSON());
+					commandsArr.push({
+						servers: command.servers,
+						command: (await (command.data as AsyncSlashCommandBuilder)(this)).toJSON(),
+					});
 				} else {
 					this.slashCommands.set(command.data.name, command); // SyncSlashCommandBuilder
-					commandsArr.push(command.data.toJSON());
+					commandsArr.push({ servers: command.servers, command: command.data.toJSON() });
 				}
 			}
 		}
@@ -249,48 +244,42 @@ class ExtendedClient extends Client {
 		const devID = this.config.discords.filter((s) => s.name === "dev")[0].id;
 
 		// deploy commands only for dev discord when in dev mode
-		if (this.tokens.dev) {
-			rest
-				.put(Routes.applicationGuildCommands(this.tokens.appID, devID), { body: commandsArr })
-				.then(() => console.log(`${success}succeed dev`))
-				.catch(console.error);
-		}
-		// deploy commands globally
-		else {
-			rest
-				.put(Routes.applicationCommands(this.tokens.appID), {
-					body: commandsArr,
-				})
-				.then(() => console.log(`${success}succeed global commands`))
-				.catch(console.error);
-		}
+		if (this.tokens.dev)
+			commandsArr.forEach((el) => {
+				el.servers = ["dev"];
+			});
 
-		this.loadSlashCommandsPerms();
-	}
-
-	/**
-	 * CLASSIC COMMAND HANDLER
-	 * todo: remove this once all commands are implemented as slash commands
-	 */
-	private loadCommands = () => {
-		const commandPath = path.join(__dirname, "..", "commandsOld");
-		readdirSync(commandPath).forEach((dir) => {
-			const commands = readdirSync(`${commandPath}/${dir}`).filter((file) => file.endsWith(".ts"));
-
-			for (const file of commands) {
-				const { command } = require(`${commandPath}/${dir}/${file}`);
-				this.commands.set(command.name, command);
-
-				if (command.aliases) {
-					if (command.aliases.length !== 0) {
-						command.aliases.forEach((alias) => {
-							this.aliases.set(alias, command);
-						});
-					}
-				}
-			}
+		const guilds = {};
+		commandsArr.forEach((el) => {
+			if (el.servers === null || el.servers === undefined) {
+				if (guilds["global"] === undefined) guilds["global"] = [];
+				guilds["global"].push(el.command);
+			} else
+				el.servers.forEach((server) => {
+					if (guilds[server] === undefined) guilds[server] = [];
+					guilds[server].push(el.command);
+				});
 		});
-	};
+
+		Promise.all(
+			Object.keys(guilds).map((server: string) => {
+				if (server === "global")
+					return rest.put(Routes.applicationCommands(this.tokens.appID), { body: guilds["global"] });
+				return rest.put(
+					Routes.applicationGuildCommands(
+						this.tokens.appID,
+						this.config.discords.filter((d) => d.name === server)[0].id,
+					),
+					{ body: guilds[server] },
+				);
+			}),
+		)
+			.then(() => {
+				console.log(`${success}Successfully added slash commands: ${Object.keys(guilds).join(", ")}`);
+				this.loadSlashCommandsPerms();
+			})
+			.catch(console.error);
+	}
 
 	/**
 	 * Read "Events" directory and add them as events

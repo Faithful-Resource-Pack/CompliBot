@@ -1,6 +1,6 @@
 import { Client } from "@client";
 import { GuildMember } from "discord.js";
-import { Event } from "@helpers/interfaces";
+import { Event } from "@interfaces";
 
 export const event: Event = {
 	name: "guildMemberAdd",

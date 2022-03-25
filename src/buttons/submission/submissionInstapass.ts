@@ -1,7 +1,8 @@
-import { Button } from "@helpers/interfaces";
+import { Button } from "@interfaces";
 import { Client, Message, ButtonInteraction, MessageEmbed } from "@client";
 import { GuildMember, Role } from "discord.js";
 import { Submission } from "@class/submissions";
+import { getRolesIds } from "@helpers/roles";
 
 export const button: Button = {
 	buttonId: "submissionInstapass",
@@ -11,14 +12,13 @@ export const button: Button = {
 		const member: GuildMember = interaction.member as GuildMember;
 
 		// check if member is council
-		if (
-			member.roles.cache.find((role: Role) => Object.values(client.config.roles.council).includes(role.id)) ===
-			undefined
-		)
+		if (member.roles.cache.find((role: Role) => getRolesIds({ name: "council", teams: ["faithful"], discords: ["dev"] }).includes(role.id)) === undefined)
 			return interaction.reply({
 				content: "This interaction is reserved to council members",
 				ephemeral: true,
 			});
+
+		await interaction.deferUpdate();
 
 		// get submission, update it, delete it (no needs to keep it in memory since it has ended the submission process)
 		const sid: string = embed.footer.text.split(" | ")[0];
@@ -26,14 +26,7 @@ export const button: Button = {
 
 		submission.setStatus("instapassed", client);
 		await submission.updateSubmissionMessage(client, interaction.user.id);
-		await submission.createContribution();
-
-		client.submissions.delete(sid);
-
-		try {
-			interaction.update({});
-		} catch (err) {
-			console.error(err);
-		}
+		await submission.createContribution(client);
+		client.submissions.set(submission.id, submission);
 	},
 };

@@ -1,9 +1,11 @@
-import { Button } from "@helpers/interfaces";
+import { Button } from "@interfaces";
 import { info } from "@helpers/logger";
 import { Client, Message, ButtonInteraction, MessageEmbed } from "@client";
 import { tileAttachment } from "@functions/canvas/tile";
-import { imageButtons } from "@helpers/buttons";
+import { magnify, palette } from "@helpers/buttons";
 import { getImageFromMessage } from "@functions/slashCommandImage";
+import { MessageActionRow } from "discord.js";
+import { getSubmissionsChannels } from "@helpers/channels";
 
 export const button: Button = {
 	buttonId: "tile",
@@ -15,7 +17,7 @@ export const button: Button = {
 		const attachment = (
 			await tileAttachment({
 				url: url,
-				name: url.split("/").at(-1), //gets last element and trims off .png as it is readded later
+				name: url.split("/").at(-1), //gets last element and trims off .png as it is re-added later
 			})
 		)[0];
 
@@ -25,11 +27,11 @@ export const button: Button = {
 				ephemeral: true,
 			});
 
-		if (Object.values(client.config.submissions).filter((c) => c.submit === interaction.channel.id).length > 0)
+		if (getSubmissionsChannels(interaction.client as Client).includes(interaction.channelId))
 			return interaction.reply({
 				embeds: [new MessageEmbed().setImage(`attachment://${attachment.name}`).setTimestamp()],
 				files: [attachment],
-				components: [imageButtons],
+				components: [new MessageActionRow().addComponents(magnify)],
 				ephemeral: true,
 			});
 		else
@@ -42,7 +44,7 @@ export const button: Button = {
 							.setTimestamp(),
 					],
 					files: [attachment],
-					components: [imageButtons],
+					components: [new MessageActionRow().addComponents(magnify, palette)],
 					fetchReply: true,
 				})
 				.then((message: Message) => {

@@ -38,64 +38,83 @@ export class Automation {
 		}
 	}
 
+	private submissionSendVotes(submission: Submission, votes: [number, number]): void {
+		const [upvoters, downvoters] = submission.getVotes();
+		let channel: TextChannel;
+		let message: Message;
+
+		this.client.channels
+			.fetch(submission.getChannelId())
+			.then((c: TextChannel) => {
+				channel = c;
+				return c.messages.fetch(submission.getMessageId());
+			})
+			.then((m: Message) => {
+				message = m;
+				return m.embeds[0].footer.text.split(" | ")[1];
+			})
+			.then((userID: string) => this.client.users.fetch(userID))
+			.then((user: User) => {
+				const embed = new MessageEmbed()
+					.setTitle("Votes for your submission")
+					.setURL(`https://discord.com/channels/${channel.guildId}/${channel.id}/${message.id}`)
+					.addFields(
+						{
+							name: "Upvotes",
+							value: `${parseId(ids.upvote)} ${votes[0] > 0 ? `<@!${upvoters.join(">,\n<@!")}>` : "None"}`,
+						},
+						{
+							name: "Downvotes",
+							value: `${parseId(ids.downvote)} ${votes[1] > 0 ? `<@!${downvoters.join(">,\n<@!")}>` : "None"}`,
+						},
+					);
+
+				user.send({ embeds: [embed] }).catch(null); // DM closed
+			})
+			.catch(null);
+	}
+
 	private submissionCheck(s: Submission): void {
 		const submission = new Submission(s); // get methods back
 
+		// if it's time to check the submission
 		if (submission.isTimeout()) {
 			const [up, down] = submission.getVotesCount();
-			const [upvoters, downvoters] = submission.getVotes();
+
+			// remove submission from bot data after 1 month
+			let t = new Date();
+			t.setMonth(t.getMonth() - 1);
+			if (+(t.getTime() / 1000).toFixed(0) > submission.getTimeout()) {
+				this.client.submissions.delete(submission.id);
+				return; // we don't needs to continue this iteration
+			}
 
 			switch (submission.getStatus()) {
 				case "pending":
-					let channel: TextChannel;
-					let message: Message;
-					this.client.channels
-						.fetch(submission.getChannelId())
-						.then((c: TextChannel) => {
-							channel = c;
-							return c.messages.fetch(submission.getMessageId());
-						})
-						.then((m: Message) => {
-							message = m;
-							return m.embeds[0].footer.text.split(" | ")[1];
-						})
-						.then((userID: string) => this.client.users.fetch(userID))
-						.then((user: User) => {
-							const embed = new MessageEmbed()
-								.setTitle("Votes for your submission")
-								.setURL(`https://discord.com/channels/${channel.guildId}/${channel.id}/${message.id}`)
-								.addFields(
-									{
-										name: "Upvotes",
-										value: `${parseId(ids.upvote)} ${up > 0 ? `<@!${upvoters.join(">,\n<@!")}>` : "None"}`,
-									},
-									{
-										name: "Downvotes",
-										value: `${parseId(ids.downvote)} ${down > 0 ? `<@!${downvoters.join(">,\n<@!")}>` : "None"}`,
-									},
-								);
-
-							user.send({ embeds: [embed] }).catch(null); // DM closed
-						})
-						.catch(null);
-
+					// check votes
 					if (up >= down) {
-						submission.setStatus("council", this.client).setTimeout(addMinutes(new Date(), 1440)); // now + 1 day
-						this.client.submissions.set(submission.id, submission);
-					} else {
+						submission.setStatus("council", this.client)
+						submission.setTimeout(addMinutes(new Date(), 1440)); // now + 1 day
+					}
+					else {
 						submission.setStatus("no_council", this.client);
-						this.client.submissions.delete(submission.id);
 					}
 
-					submission.updateSubmissionMessage(this.client, null);
+					this.client.submissions.set(submission.id, submission);
+					
+					// sends people that have voted to the submitter
+					this.submissionSendVotes(submission, [up, down]);
 					break;
 
 				case "council":
-					if (up > down) submission.setStatus("added", this.client).createContribution();
+					if (up > down) submission.setStatus("added", this.client).createContribution(this.client);
 					else submission.setStatus("denied", this.client);
 
+					this.client.submissions.set(submission.id, submission);
 					submission.updateSubmissionMessage(this.client, null);
-					this.client.submissions.delete(submission.id);
+
+					// sends people that have voted to the submitter
+					this.submissionSendVotes(submission, [up, down]);
 				default:
 					break;
 			}

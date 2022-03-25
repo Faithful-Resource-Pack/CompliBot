@@ -1,4 +1,4 @@
-import { SlashCommand } from "@helpers/interfaces";
+import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction, MessageEmbed } from "@client";
 import { generalSlashCommandImage } from "@functions/slashCommandImage";
@@ -7,7 +7,7 @@ import { magnifyAttachment } from "@functions/canvas/magnify";
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
 		.setName("magnify")
-		.setDescription("Magnify an image")
+		.setDescription("Magnify an image.")
 		.addNumberOption((num) => {
 			return num
 				.addChoices([

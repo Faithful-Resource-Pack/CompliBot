@@ -1,20 +1,19 @@
-import { Button } from "@helpers/interfaces";
+import { Button } from "@interfaces";
 import { Client, Message, ButtonInteraction, MessageEmbed } from "@client";
 import { Submission } from "@class/submissions";
 import { GuildMember, Role } from "discord.js";
+import { getRolesIds } from "@helpers/roles";
 
 export const button: Button = {
 	buttonId: "submissionDownvoteCouncil",
 	execute: async (client: Client, interaction: ButtonInteraction) => {
+		await interaction.deferUpdate();
 		const message: Message = interaction.message as Message;
 		const embed: MessageEmbed = message.embeds[0];
 		const member: GuildMember = interaction.member as GuildMember;
 
 		// check if member is council
-		if (
-			member.roles.cache.find((role: Role) => Object.values(client.config.roles.council).includes(role.id)) ===
-			undefined
-		)
+		if (member.roles.cache.find((role: Role) => getRolesIds({ name: "council", teams: ["faithful"] }).includes(role.id)) === undefined)
 			return interaction.reply({
 				content: "Only council members can vote while the texture is in council!",
 				ephemeral: true,
@@ -27,9 +26,5 @@ export const button: Button = {
 		submission.addDownvote(interaction.user.id);
 		await submission.updateSubmissionMessage(client, interaction.user.id);
 		client.submissions.set(submission.id, submission);
-
-		try {
-			interaction.update({});
-		} catch {}
 	},
 };

@@ -1,7 +1,6 @@
-import { increase } from "@functions/commandProcess";
-import { SlashCommandI } from "@helpers/interfaces";
+import { SlashCommandI } from "@interfaces";
 import { Collection } from "discord.js";
-import { Event } from "@helpers/interfaces";
+import { Event } from "@interfaces";
 import { Client, CommandInteraction } from "@client";
 
 export const event: Event = {
@@ -36,6 +35,7 @@ export const event: Event = {
 		}
 
 		// increase uses of that command
-		increase((command.data as SlashCommandI).name);
+		const count: number = client.commandsProcessed.get((command.data as SlashCommandI).name) + 1;
+		client.commandsProcessed.set((command.data as SlashCommandI).name, isNaN(count) ? 1 : count);
 	},
 };

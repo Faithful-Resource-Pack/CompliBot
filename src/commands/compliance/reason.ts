@@ -1,15 +1,17 @@
-import { SlashCommand } from "@helpers/interfaces";
+import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction, Message, MessageEmbed } from "@client";
 import { EmbedField } from "discord.js";
 import { ids, parseId } from "@helpers/emojis";
-import { Config } from "@helpers/interfaces";
-import ConfigJson from "@/config.json";
+import { Config } from "@interfaces";
+import ConfigJson from "@json/config.json";
+import { getRolesIds } from "@helpers/roles";
 const config: Config = ConfigJson;
 
 export const command: SlashCommand = {
+	servers: ["compliance", "classic_faithful"],
 	permissions: {
-		roles: Object.values(config.roles.council),
+    roles: getRolesIds({ name: "council", discords: ["dev"], teams: ["faithful"] }),
 	},
 	data: new SlashCommandBuilder()
 		.setDefaultPermission(false) // disable the command for @everyone (only council can do it)
@@ -23,7 +25,6 @@ export const command: SlashCommand = {
 		),
 	execute: async (interaction: CommandInteraction) => {
 		let isInvalidated: boolean = false;
-		console.log(Object.values(config.roles.council));
 
 		interaction.channel.messages
 			.fetch(interaction.options.getString("message_id", true))

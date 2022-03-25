@@ -1,4 +1,4 @@
-import { SlashCommand } from "@helpers/interfaces";
+import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction, MessageEmbed } from "@client";
 import { tileAttachment, tileShape } from "@functions/canvas/tile";
@@ -11,7 +11,7 @@ export const command: SlashCommand = {
 		.addStringOption((option) =>
 			option
 				.setName("type")
-				.setDescription("How the image should be tiled?")
+				.setDescription("How the image should be tiled.")
 				.setRequired(true)
 				.addChoices([
 					["grid", "grid"],
@@ -24,7 +24,7 @@ export const command: SlashCommand = {
 		.addStringOption((option) =>
 			option
 				.setName("random")
-				.setDescription("Does tiling is randomly rotated?")
+				.setDescription("Should individual tiles be randomly rotated?")
 				.addChoices([
 					["rotation", "rotation"],
 					["flip", "flip"], // only horizontal because mc doesnt use vertical flipping

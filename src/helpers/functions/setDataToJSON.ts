@@ -4,7 +4,7 @@ import path from "path";
 interface Options {
 	relative_path: string;
 	filename: string;
-	data: JSON;
+	data: {};
 }
 export function setData(options: Options): void {
 	let folder: string = path.resolve(__dirname, options.relative_path);

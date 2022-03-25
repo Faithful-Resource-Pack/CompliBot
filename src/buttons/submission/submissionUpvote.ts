@@ -1,10 +1,11 @@
-import { Button } from "@helpers/interfaces";
+import { Button } from "@interfaces";
 import { Client, Message, ButtonInteraction, MessageEmbed } from "@client";
 import { Submission } from "@class/submissions";
 
 export const button: Button = {
 	buttonId: "submissionUpvote",
 	execute: async (client: Client, interaction: ButtonInteraction) => {
+		await interaction.deferUpdate();
 		const message: Message = interaction.message as Message;
 		const embed: MessageEmbed = message.embeds[0];
 
@@ -15,9 +16,5 @@ export const button: Button = {
 		submission.addUpvote(interaction.user.id);
 		await submission.updateSubmissionMessage(client, interaction.user.id);
 		client.submissions.set(submission.id, submission);
-
-		try {
-			interaction.update({});
-		} catch {}
 	},
 };

@@ -1,4 +1,4 @@
-import { SlashCommand, SyncSlashCommandBuilder } from "@helpers/interfaces";
+import { SlashCommand, SyncSlashCommandBuilder } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { Client, CommandInteraction, MessageEmbed } from "@client";
 import { MessageAttachment } from "discord.js";
@@ -13,10 +13,6 @@ import {
 } from "@functions/missing";
 import axios from "axios";
 import { doNestedArr } from "@helpers/arrays";
-
-/**
- * ! todo: add support for custom MC versions
- */
 
 export const PACKS: Array<[name: string, value: string]> = [
 	["Compliance 32x", "compliance_32x"],
@@ -36,6 +32,7 @@ export const getDisplayNameForPack = (pack: string): string => {
 };
 
 export const command: SlashCommand = {
+	servers: ["compliance", "compliance_extra", "classic_faithful"],
 	data: async (client: Client): Promise<SyncSlashCommandBuilder> => {
 		let versions = Object.values((await axios.get(`${client.config.apiUrl}settings/versions`)).data).flat();
 		versions.splice(versions.indexOf("versions"), 1); // remove "versions" key id (API issue)
@@ -43,18 +40,18 @@ export const command: SlashCommand = {
 		return (
 			new SlashCommandBuilder()
 				.setName("missing")
-				.setDescription("Shows tree view of missing textures for a particular edition")
+				.setDescription("Displays the missing textures for a particular resource pack")
 				.addStringOption((option) =>
 					option
 						.setName("pack")
-						.setDescription("Resource pack of the texture you are searching for.")
+						.setDescription("The resource pack.")
 						.addChoices(PACKS)
 						.setRequired(true),
 				)
 				.addStringOption((option) =>
 					option
 						.setName("edition")
-						.setDescription("Edition for the requested pack.")
+						.setDescription("The resource pack edition.")
 						.addChoices([
 							["Java", "java"],
 							["Bedrock", "bedrock"],
@@ -63,25 +60,15 @@ export const command: SlashCommand = {
 						])
 						.setRequired(true),
 				)
-				//! NYI
-				// .addBooleanOption((option) =>
-				// 	option
-				// 		.setName("update_channels")
-				// 		.setDescription("Update completion channels after command.")
-				// 		.setRequired(false)
-				// )
 				.addStringOption((option) =>
 					option
 						.setName("version")
-						.setDescription("Minecraft version you want to see completion.")
+						.setDescription("The Minecraft version.")
 						.addChoices(doNestedArr(versions))
 						.setRequired(false),
 				)
 		);
 	},
-
-	// data: new SlashCommandBuilder()
-
 	execute: async (interaction: CommandInteraction) => {
 		await interaction.deferReply();
 

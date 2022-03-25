@@ -1,11 +1,13 @@
-import { SlashCommand } from "@helpers/interfaces";
+import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { Client, CommandInteraction, Message, MessageEmbed } from "@client";
 import { getTextureMessageOptions } from "@functions/getTexture";
 import { MessageActionRow, MessageSelectMenu, MessageSelectOptionData } from "discord.js";
 import axios from "axios";
+import { imageButtons } from "@helpers/buttons";
 
 export const command: SlashCommand = {
+	servers: ["compliance", "compliance_extra", "classic_faithful"],
 	data: new SlashCommandBuilder()
 		.setName("texture")
 		.setDescription("Displays a specified texture from either vanilla Minecraft or Compliance.")
@@ -52,7 +54,7 @@ export const command: SlashCommand = {
 				texture: results[0],
 				pack: interaction.options.getString("pack", true),
 			});
-			interaction.editReply({ embeds: [embed], files: files }).then((message: Message) => message.deleteButton());
+			interaction.editReply({ embeds: [embed], files: files, components: [imageButtons] }).then((message: Message) => message.deleteButton());
 			return;
 		}
 
@@ -67,7 +69,7 @@ export const command: SlashCommand = {
 			for (let i = 0; i < results.length; i++) {
 				results[i] = {
 					label: `[#${results[i].id}] ${results[i].name}`,
-					description: results[i].paths[0].name,
+					description: results[i].paths[0] != undefined ? results[i].paths[0].name : "No path found",
 					value: `${results[i].id}__${interaction.options.getString("pack", true)}`,
 				};
 			}

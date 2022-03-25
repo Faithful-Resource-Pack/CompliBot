@@ -8,7 +8,7 @@ import { join, normalize } from "path";
 import { includesNone, normalizeArray } from "@helpers/arrays";
 
 import os from "os";
-import BLACKLIST from "@/blacklisted_textures.json";
+import BLACKLIST from "@json/blacklisted_textures.json";
 import axios from "axios";
 
 // return value for the compute function

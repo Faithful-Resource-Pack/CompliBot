@@ -5,3 +5,4 @@ export * from "./event";
 export * from "./selectMenuEvent";
 export * from "./slashCommand";
 export * from "./tokens";
+export * from "./notice";

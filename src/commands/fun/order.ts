@@ -1,4 +1,4 @@
-import { SlashCommand } from "@helpers/interfaces";
+import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction, MessageAttachment } from "discord.js";
 import { Message, Client } from "@client";
@@ -27,7 +27,7 @@ export const command: SlashCommand = {
 		.setName("order")
 		.setDescription("Get something special")
 		.addStringOption((option) =>
-			option.setName("item").setDescription("The item you want!").addChoices(options).setRequired(true),
+			option.setName("item").setDescription("The item you want.").addChoices(options).setRequired(true),
 		),
 	execute: async (interaction: CommandInteraction, client: Client) => {
 		await interaction.deferReply();
