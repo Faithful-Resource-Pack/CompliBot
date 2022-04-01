@@ -16,7 +16,7 @@ export const addSeconds = (d: Date, seconds?: number): Date => {
  * @returns {number} equivalent in seconds
  */
 export const parseDate = (d: string): number => {
-	if (d.endsWith("y") || d.endsWith("year") || d.endsWith("years")) return parseInt(d, 10) * 24 * 3600 * 365;
+	if ((d.endsWith("y") && !d.endsWith("day")) || d.endsWith("year") || d.endsWith("years")) return parseInt(d, 10) * 24 * 3600 * 365;
 	if (d.endsWith("m") || d.endsWith("month") || d.endsWith("months")) return parseInt(d, 10) * 30 * 24 * 3600;
 	if (d.endsWith("w") || d.endsWith("week") || d.endsWith("weeks")) return parseInt(d, 10) * 7 * 86400;
 	if (d.endsWith("d") || d.endsWith("day") || d.endsWith("days")) return parseInt(d, 10) * 86400;
