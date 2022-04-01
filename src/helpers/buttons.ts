@@ -1,4 +1,4 @@
-import { Message, MessageActionRow, MessageButton } from "discord.js";
+import { MessageActionRow, MessageButton } from "discord.js";
 import { ids, parseId } from "./emojis";
 
 export const compare = new MessageButton()

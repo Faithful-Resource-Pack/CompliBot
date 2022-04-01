@@ -16,7 +16,6 @@ import { TimedEmbed } from "./timedEmbed";
 import { getCorrespondingCouncilChannel, getSubmissionChannelName } from "@helpers/channels";
 import { getResourcePackFromName } from "@functions/getResourcePack";
 
-// where "in" & "out" are both at the ends of the process but "in" -> go to the pack, "out" -> not enough votes
 export type SubmissionStatus = "pending" | "instapassed" | "added" | "no_council" | "council" | "denied" | "invalid";
 
 export class Submission extends TimedEmbed {

@@ -2,7 +2,6 @@ import { Message, MessageActionRow, MessageEmbed } from "discord.js";
 import { ids } from "@helpers/emojis";
 import { Config, Tokens } from "@interfaces";
 import config from "@json/config.json";
-import Menu from "@helpers/menu";
 import tokens from "@json/tokens.json";
 import { deleteInteraction, deleteMessage } from "@helpers/buttons";
 import { colors } from "@helpers/colors";
@@ -11,7 +10,6 @@ declare module "discord.js" {
 	interface Message {
 		tokens: Tokens;
 		config: Config;
-		menu: Menu;
 
 		warn(text: string, disappearing?: boolean): void;
 		deleteReact(options: Options): void;
@@ -112,7 +110,7 @@ const MessageBody = {
 	/**
 	 *  Warn the message by replying to it with an embed
 	 *  @author Juknum & Nick
-	 *  @param {boolean} disappearing Optional bool. If undefined or false it wont delete the warning. If true it will  delete in 30s.
+	 *  @param {boolean} disappearing - Optional bool. If undefined or false it wont delete the warning. If true it will  delete in 30s.
 	 */
 	warn: async function (text: string, disappearing?: boolean) {
 		const embed = new MessageEmbed()

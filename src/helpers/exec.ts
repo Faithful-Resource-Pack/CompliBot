@@ -1,6 +1,6 @@
 // spawn a child process and execute shell command
 // borrowed from https://github.com/mout/mout/ build script
-// borowed from Miller Medeiros on https://gist.github.com/millermedeiros/4724047
+// borrowed from Miller Medeiros on https://gist.github.com/millermedeiros/4724047
 // released under MIT License
 // version: 0.1.0 (2021/08/13)
 //* remade in TS by @Juknum

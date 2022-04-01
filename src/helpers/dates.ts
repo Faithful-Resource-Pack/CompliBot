@@ -1,9 +1,21 @@
+/**
+ * Add minutes to a date
+ * @param {Date} d - the date to add minutes to
+ * @param {Number} minutes - the number of minutes to add
+ * @returns {Date} - the new date
+ */
 export const addMinutes = (d: Date, minutes?: number): Date => {
 	if (minutes === null || minutes === undefined) minutes = 1; 
 	d.setMinutes(d.getMinutes() + minutes);
 	return d;
 };
 
+/**
+ * Add seconds to a date
+ * @param {Date} d - the date to add seconds to
+ * @param {Number} seconds - the number of seconds to add
+ * @returns {Date} - the new date
+ */
 export const addSeconds = (d: Date, seconds?: number): Date => {
 	if (seconds === null || seconds === undefined) seconds = 1;
 	d.setSeconds(d.getSeconds() + seconds);
@@ -12,8 +24,8 @@ export const addSeconds = (d: Date, seconds?: number): Date => {
 
 /**
  * Parse user input into seconds
- * @param d {string} User input
- * @returns {number} equivalent in seconds
+ * @param {string} d - user input
+ * @returns {number} - equivalent in seconds
  */
 export const parseDate = (d: string): number => {
 	if ((d.endsWith("y") && !d.endsWith("day")) || d.endsWith("year") || d.endsWith("years")) return parseInt(d, 10) * 24 * 3600 * 365;

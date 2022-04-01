@@ -5,10 +5,10 @@ const config: Config = configJson;
 
 /**
  * Get corresponding ids for the asked role name(s) in the asked discords & teams
- * @param options.name {string|Array<string>} role name (or names) you want ids
- * @param options.discords {"all"|Array<string>} discord servers names you want the role from (if string "all" is provided, all discords servers will be searched)
- * @param options.teams {"all"|Array<string>} discord teams names you want the role from (if string "all" is provided, all discords teams will be searched)
- * @returns {Array<string>} ids you searched
+ * @param {string|Array<string>} options.name - role name (or names) you want ids
+ * @param {"all"|Array<string>} options.discords - discord servers names you want the role from (if string "all" is provided, all discords servers will be searched)
+ * @param {"all"|Array<string>} options.teams - discord teams names you want the role from (if string "all" is provided, all discords teams will be searched)
+ * @returns {Array<string>} - ids you searched
  */
 export const getRolesIds = (options: { name: string | Array<string>, discords?: Array<string> | "all", teams?: Array<string> | "all" }): Array<string> => {
   const output: Array<string> = [];
