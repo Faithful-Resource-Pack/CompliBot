@@ -3,6 +3,14 @@
 
 ## [v2.0.3] TBA
 
+### Changed
+- Changed emojis for the buttons of the `/feedback` command
+- Added texture path version to the texture select menu (avoid confusion between exact same path & name for a texture, ex: `gold_ore`)
+
+### Fixed
+- Delete button should now be properly working again
+- Fixed some typo & added a lot of comments to describe methods/functions
+
 ## [v2.0.2] 14/03/2022
 
 ### Added
