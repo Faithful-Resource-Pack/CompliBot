@@ -65,11 +65,12 @@ export const command: SlashCommand = {
 			let max: number = 4; // actually 5 but - 1 because we are adding a delete button to it (the 5th one)
 			let _max: number = 0;
 
+
 			// parsing everything correctly
 			for (let i = 0; i < results.length; i++) {
 				results[i] = {
-					label: `[#${results[i].id}] ${results[i].name}`,
-					description: results[i].paths[0] != undefined ? results[i].paths[0].name : "No path found",
+					label: `[#${results[i].id}] (${results[i].paths[0].versions[0]}) ${results[i].name}`,
+					description: results[i].paths[0].name,
 					value: `${results[i].id}__${interaction.options.getString("pack", true)}`,
 				};
 			}
