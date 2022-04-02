@@ -7,6 +7,7 @@ export interface PollOptions {
 	question: string;
 	yesno: boolean;
 	answersArr: Array<string>;
+	thread: boolean
 }
 export class Poll extends TimedEmbed {
 	constructor(data?: Poll) {
@@ -106,6 +107,10 @@ export class Poll extends TimedEmbed {
 			embeds: [embed],
 			components: [...components, new MessageActionRow().addComponents(pollDelete)],
 		})) as any;
+
+		if (options.thread) {
+			message.startThread({name: `Debate: ${options.question}`})
+		}
 
 		this.setChannelId(interaction.channelId);
 		this.setMessageId(message.id);

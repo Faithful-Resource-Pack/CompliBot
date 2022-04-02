@@ -4,6 +4,7 @@
 ## [v2.0.3] TBA
 
 ### Changed
+- `/poll` threads are now directly attached to the poll message (yeet)
 - Changed emojis for the buttons of the `/feedback` command
 - Added texture path version to the texture select menu (avoid confusion between exact same path & name for a texture, ex: `gold_ore`)
 
@@ -15,9 +16,9 @@
 
 ### Added
 - Added `/bean <user>` command: beans a user (moderators exclusive).
-- Added `/restart` command: restarts the bot process for maintanance (bot owners exclusive) 
-- Added `/botban view <format>` command: view the botban list in various formats (bot owners exclusive)
-- Added `/botban audit <subject> <pardon?>` command: add/remove a user from the botban list (bot owners exclusive)
+- Added `/restart` command: restarts the bot process for maintenance (bot owners exclusive) 
+- Added `/botban view <format>` command: view the bot ban list in various formats (bot owners exclusive)
+- Added `/botban audit <subject> <pardon?>` command: add/remove a user from the bot ban list (bot owners exclusive)
 - ⚠️ Being botbanned disables use of any interaction and should be used only to patch exploiting users
 - Added `/changelog` command: Show the changelog by version.
 - Added `/notice` command: Give the users updates on stuff like scheduled downtime
@@ -58,7 +59,7 @@
 - Improved message quoting for messages with file attachments
 
 ### Fixed
-- Fixed undeletable interaction: `this interaction is reserved to Bot` :)
+- Fixed non deletable interaction: `this interaction is reserved to Bot` :)
 
 ---
 ## [v2.0.0] 21/02/2022

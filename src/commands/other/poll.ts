@@ -98,13 +98,7 @@ export const command: SlashCommand = {
 			question,
 			yesno,
 			answersArr,
+			thread,
 		});
-
-		/* create thread if true */
-		if (thread)
-			(interaction.channel as TextChannel).threads.create({
-				name: `Debate: ${question}`,
-				reason: "Discuss about that poll here!",
-			});
 	},
 };
