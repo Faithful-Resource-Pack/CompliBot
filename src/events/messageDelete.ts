@@ -8,16 +8,24 @@ export const event: Event = {
 	run: async (client: Client, message: Message) => {
 		if (message.author.bot) return;
 
-		if (message.guild.id !== "773983706582482946") return;
+		//! do not remove, 'force' message to be casted (break if removed)
+		//"I need a "typescript issue" gif" ~RobertR11 2022
+		let _ = (message as Message) instanceof Message;
 
-		var embed = new MessageEmbed()
-			.setAuthor({ name: `${message.author.tag} deleted a message`})
-			.setColor(colors.red)
-			.setThumbnail(message.author.displayAvatarURL())
-			.setDescription(`[Jump to location](${message.url})\n\n**Channel**: <#${message.channel.id}>**Content**:\n\`\`\`${message.content}\`\`\``)
-			.setTimestamp()
+		if (message.guild.id == "773983706582482946" || message.guild.id == "614160586032414845") {
 
-		const logChannel = client.channels.cache.get("959727916881686568") as TextChannel;
-		await logChannel.send({ embeds: [embed] });
+			if (message.channel.id == "773987409993793546" || message.channel.id == "931887174977208370") return; // Texture submission channels
+
+			var embed = new MessageEmbed()
+				.setAuthor({ name: `${message.author.tag} deleted a message`})
+				.setColor(colors.red)
+				.setThumbnail(message.author.displayAvatarURL())
+				.setDescription(`[Jump to location](${message.url})\n\n**Channel**: <#${message.channel.id}>\n\n**Server**: ${message.guild.name}\n\n**Content**:\n\`\`\`${message.content}${message.attachments.size > 0 ? message.attachments.first().name : ""}\`\`\``)
+				.setTimestamp()
+
+			const logChannel = client.channels.cache.get("959727916881686568") as TextChannel;
+			await logChannel.send({ embeds: [embed] });
+		}
+		else return;
 	},
 };
