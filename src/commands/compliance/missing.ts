@@ -56,7 +56,7 @@ export const command: SlashCommand = {
 							["Java", "java"],
 							["Bedrock", "bedrock"],
 							["All", "all"],
-							// ["Minecraft Dungeons", "dungeons"], //todo: make dirs corresponding to the same setup for 32x & default repos
+							// ["Minecraft Dungeons", "dungeons"], // TODO: make dirs corresponding to the same setup for 32x & default repos
 						])
 						.setRequired(true),
 				)

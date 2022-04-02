@@ -22,7 +22,7 @@ export const getTextureMessageOptions = async (options: {
 	let strPack: string;
 	let strIconURL: string;
 	
-	// todo: use API here
+	// TODO: use API here
 	switch (pack) {
 		case "compliance_32x":
 			strPack = "Compliance 32x";

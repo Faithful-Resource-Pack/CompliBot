@@ -28,7 +28,7 @@ export async function tileCanvas(options: options): Promise<Canvas> {
 	return getMeta(options.url)
 		.then(async (dimension) => {
 			if (dimension.width * dimension.height * 3 > 262144)
-				return Promise.reject("Output exeeds the maximum of 512 x 512px²!");
+				return Promise.reject("Output exceeds the maximum of 512 x 512px²!");
 
 			let canvas: Canvas = createCanvas(dimension.width * 3, dimension.height * 3);
 			let context: CanvasRenderingContext2D = canvas.getContext("2d");
@@ -49,7 +49,7 @@ export async function tileCanvas(options: options): Promise<Canvas> {
 					-1, // set the direction of x axis
 					0,
 					0,
-					1, // set the direction of y axis to 1 since its unchangeing
+					1, // set the direction of y axis to 1 since its unchanging
 					x + imageToDraw.width, // set the x origin
 					0, // set the y origin
 				);
@@ -113,7 +113,7 @@ export async function tileCanvas(options: options): Promise<Canvas> {
 			return canvas;
 		})
 		.catch((e) => {
-			// todo: add better handling when URL is 404
+			// TODO: add better handling when URL is 404
 			return e;
 		});
 }

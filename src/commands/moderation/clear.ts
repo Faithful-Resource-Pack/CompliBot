@@ -32,7 +32,7 @@ export const command: SlashCommand = {
 		interaction.reply({ ephemeral: true, content: `Successfully deleted ${amount} messages` });
 
 		// construct logs
-		//! todo: add clear icon in thumbnail (waiting for @Pomi to draw it)
+		//! TODO: add clear icon in thumbnail (waiting for @Pomi108 to draw it)
 		const embed: MessageEmbed = new MessageEmbed()
 		  .setTitle(`Deleted ${amount} message${amount === 1 ? "": "s"}`)
 		  .setAuthor({ name: interaction.user.username, iconURL: interaction.user.avatarURL({ dynamic: true }) })

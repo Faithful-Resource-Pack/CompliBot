@@ -67,10 +67,10 @@ export const button: Button = {
 const Suggestion = [
 	"Hot take but okay",
 	"Sure...",
-	"Maby later...",
-	"Why didnt i think of that?",
+	"Maybe later...",
+	"Why didn't i think of that?",
 	"Adding one to the other %NUMBER% things todo",
-	"Infeasable idea but tell them you might",
+	"Infeasible idea but tell them you might",
 	"Dev bad",
 	"soon:tm:",
 ];

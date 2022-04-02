@@ -76,7 +76,7 @@ export const command: SlashCommand = {
     const message: Message = await interaction.reply({ embeds: [embed], fetchReply: true }) as any;
 
     // construct logs
-    // todo: add mute icon in thumbnail (waiting for Pomi to draw it)
+    //! TODO: add mute icon in thumbnail (waiting for @Pomi108 to draw it)
     const logEmbed: MessageEmbed = new MessageEmbed()
       .setTitle(`${timeout > 0 ? "Muted" : "Unmuted"} someone`)
       .setAuthor({ name: interaction.user.username, iconURL: interaction.user.avatarURL({ dynamic: true }) })

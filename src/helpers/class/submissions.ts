@@ -300,7 +300,7 @@ export class Submission extends TimedEmbed {
 			})
 			.then((res) => res.data) // axios data response
 			.then((contribution) => {
-				// todo: GITHUB PUSH TO EACH BRANCHHH + CORRESPONDING REPO
+				// TODO: GITHUB PUSH TO EACH BRANCHHH + CORRESPONDING REPO
 			})
 			.catch(console.error)
 	}
