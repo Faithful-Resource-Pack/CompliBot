@@ -8,7 +8,8 @@ export const event: Event = {
 	name: "messageCreate",
 	run: async (client: Client, message: Message) => {
 		if (message.author.bot) return;
-
+		client.storeAction("message", message);
+		
 		//! do not remove, 'force' message to be casted (break if removed)
 		let _ = (message as Message) instanceof Message;
 

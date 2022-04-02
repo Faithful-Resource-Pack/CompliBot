@@ -4,6 +4,8 @@ import { Client, SelectMenuInteraction } from "@client";
 export const event: Event = {
 	name: "selectMenuUsed",
 	run: async (client: Client, interaction: SelectMenuInteraction) => {
+		client.storeAction("selectMenu", interaction);
+
 		let selectMenu: SelectMenu;
 
 		if (interaction.customId.startsWith("textureSelect_")) selectMenu = client.menus.get("textureSelect");

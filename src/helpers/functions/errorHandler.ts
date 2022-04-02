@@ -1,8 +1,9 @@
-import { MessageAttachment, MessageEmbed, TextChannel } from "discord.js";
+import { ButtonInteraction, CommandInteraction, Guild, GuildMember, MessageAttachment, MessageEmbed, SelectMenuInteraction, TextChannel } from "discord.js";
 import { Client, Message } from "@client";
 import fs from "fs";
 import { err } from "@helpers/logger";
 import { colors } from "@helpers/colors";
+import { Log } from "client/client";
 
 const randomSentences: Array<string> = [
 	"Oh no, not again!",
@@ -67,49 +68,29 @@ export const errorHandler: Function = async (client: Client, reason: any, type: 
 		.setTimestamp()
 		.setFooter({ text: client.user.tag, iconURL: client.user.avatarURL() });
 
-	//check to see if it errored before any commands were ran
-	// #(for instance if a button was pressed before a command and it threw an error)
-	if (client.getLastMessages()[0] != undefined) {
-		embed.addField(
-			"Last message(s) received:",
-			`${client
-				.getLastMessages()
-				.map(
-					(message: Message, index) =>
-						`[Message ${index + 1}](${message.url}) - ${
-							message.channel.type === "DM" ? "DM" : `<#${message.channel.id}>`
-						}`,
-				)
-				.join("\n")}`,
-			false,
-		);
-	} else
-		embed.addField(
-			"Last message(s) recieved:",
-			"No last messages sent. Might be another interaction such as a Button or selectMenu.",
-		);
 	const logTemplate = fs.readFileSync(__dirname + "/errorHandler.log", { encoding: "utf-8" });
-	const messageTemplate = logTemplate.match(new RegExp(/\%messageStart%([\s\S]*?)%messageEnd/))[1]; // get message template
+	const template = logTemplate.match(new RegExp(/\%templateStart%([\s\S]*?)%templateEnd/))[1]; // get message template
 
 	const t = Math.floor(Math.random() * randomSentences.length);
-	let log = logTemplate
+	let logText = template
 		.replace("%date%", new Date().toUTCString())
 		.replace("%stack%", reason.stack || JSON.stringify(reason))
 		.replace("%randomSentence%", randomSentences[t])
 		.replace("%randomSentenceUnderline%", "-".repeat(randomSentences[t].length));
 
-	log = log.split("%messageStart%")[0]; // remove message template
+	logText = logText.split("%messageStart%")[0]; // remove message template
 
-	client.getLastMessages().forEach((message: Message, index) => {
-		log += messageTemplate
-			.replace("%messageIndex%", index.toString())
-			.replace("%messageCreatedTimestamp%", message.createdTimestamp.toString())
-			.replace("%messageURL%", message.url)
-			.replace("%messageChannelType%", message.channel.type)
-			.replace("%messageContent%", message.content);
+	client.getAction().forEach((log: Log, index) => {
+		logText += template
+			.replace("%templateIndex%", index.toString())
+			.replace("%templateType%", log.type)
+			.replace("%templateCreatedTimestamp%", log.data.createdTimestamp.toString())
+			.replace("%templateURL%", log.data.url)
+			.replace("%templateChannelType%", log.data.channel.type)
+			.replace("%templateContent%", log.data.content)
 	});
 
-	const buffer = Buffer.from(log, "utf8");
+	const buffer = Buffer.from(logText, "utf8");
 	const attachment = new MessageAttachment(buffer, "stack.log");
 
 	await channel.send({ embeds: [embed] }).catch(console.error);

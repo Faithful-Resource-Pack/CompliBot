@@ -9,6 +9,8 @@ import { Submission } from "@class/submissions";
 export const event: Event = {
 	name: "textureSubmitted",
 	run: async (client: Client, message: Message) => {
+		client.storeAction("textureSubmitted", message);
+
 		if (!client.tokens.dev) return; // only for devs now
 
 		if (client.verbose) console.log(`${info}Texture submitted!`);

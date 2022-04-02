@@ -5,6 +5,8 @@ import { info } from "@helpers/logger";
 export const event: Event = {
 	name: "guildCreate",
 	run: async (client, guild: Guild) => {
+		client.storeAction("guildJoined", guild);
+
 		const embed = new MessageEmbed()
 			.setTitle("Thanks for Inviting me")
 			.setDescription("To get started, try to type `/` to see all available slash commmands!");

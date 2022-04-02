@@ -1,15 +1,6 @@
-import { Client, ClientOptions, Collection, CommandInteraction, Guild, Interaction, TextChannel, VoiceChannel } from "discord.js";
+import { ButtonInteraction, Client, ClientOptions, Collection, CommandInteraction, Guild, GuildMember, SelectMenuInteraction, TextChannel, VoiceChannel } from "discord.js";
 import { Message, EmittingCollection, Automation } from "@client";
-import {
-	Command,
-	Event,
-	Config,
-	Tokens,
-	Button,
-	SelectMenu,
-	SlashCommand,
-	AsyncSlashCommandBuilder,
-} from "@interfaces";
+import { Command, Event, Config, Tokens, Button, SelectMenu, SlashCommand, AsyncSlashCommandBuilder } from "@interfaces";
 import { getData } from "@functions/getDataFromJSON";
 import { setData } from "@functions/setDataToJSON";
 import { errorHandler } from "@functions/errorHandler";
@@ -17,7 +8,7 @@ import { err, info, success } from "@helpers/logger";
 import { Submission } from "@class/submissions";
 import { Poll } from "@class/poll";
 
-import { readdirSync, readFileSync } from "fs";
+import { readdirSync } from "fs";
 import { REST } from "@discordjs/rest";
 import { RESTPostAPIApplicationCommandsJSONBody, Routes } from "discord-api-types/v9";
 import { SlashCommandBuilder } from "@discordjs/builders";
@@ -30,14 +21,22 @@ const POLLS_FILENAME = "polls.json";
 const SUBMISSIONS_FILENAME = "submissions.json";
 const COMMANDS_PROCESSED_FILENAME = "commandsProcessed.json";
 
+export type ActionsStr = "message" | "slashCommand" | "oldCommand" | "button" | "selectMenu" | "guildMemberUpdate" | "textureSubmitted" | "guildJoined";
+export type Actions = Message | GuildMember | Guild | ButtonInteraction | SelectMenuInteraction | CommandInteraction;
+export type Log = {
+	type: ActionsStr,
+	data: any
+}
+
 class ExtendedClient extends Client {
 	public verbose: boolean = false;
 	public config: Config;
 	public tokens: Tokens;
 	public automation: Automation = new Automation(this);
 
-	private lastMessages = [];
-	private lastMessagesIndex = 0;
+	private logs: Array<Log> = [];
+	private maxLogs: number = 200;
+	private lastLogIndex: number = 0;
 
 	public menus: Collection<string, SelectMenu> = new Collection();
 	public buttons: Collection<string, Button> = new Collection();
@@ -61,7 +60,8 @@ class ExtendedClient extends Client {
 		console.log(`${info}restarting bot...`);
 		this.destroy();
 		await this.init();
-        if(int) {int.editReply({ content: "reboot succeeded" })}
+
+		if (int) {int.editReply({ content: "reboot succeeded" })}
 	}
 
 	//prettier-ignore
@@ -76,7 +76,7 @@ class ExtendedClient extends Client {
 		console.log(chalk.hex("0026ff")("\"Y8888P\"    \"Y88P\"  888  888  888 88888P\"  888 888 ")  + chalk.hex("#0066ff")("8888888P\"   \"Y88P\"   \"Y888"));
 		console.log(chalk.hex("0026ff")("                                  888"));
 		console.log(chalk.hex("0026ff")("                                  888                   ")  + chalk.white.bold("Compliance Devs. 2022"));
-		console.log(chalk.hex("0026ff")("                                  888                ")  + chalk.gray.italic("~ Made loveingly With pain\n"));
+		console.log(chalk.hex("0026ff")("                                  888                ")  + chalk.gray.italic("~ Made lovingly With pain\n"));
 	}
 
 	public async init() {
@@ -85,7 +85,7 @@ class ExtendedClient extends Client {
 		// login client
 		this.login(this.tokens.token)
 			.catch((e) => {
-				// Allows for showing different errors like missing privaleged gateway intents, this caused me so much pain >:(
+				// Allows for showing different errors like missing privileged gateway intents, this caused me so much pain >:(
 				console.log(`${err}${e}`);
 				process.exit(1);
 			})
@@ -219,7 +219,7 @@ class ExtendedClient extends Client {
 		const commandsArr: Array<{ servers: Array<string>; command: RESTPostAPIApplicationCommandsJSONBody }> = [];
 
 		const paths: Array<string> = readdirSync(slashCommandsPath);
-		// use a classic for loops to force async functions to be fullfilled
+		// use a classic for loops to force async functions to be fulfilled
 		for (let i = 0; i < paths.length; i++) {
 			const dir: string = paths[i];
 
@@ -331,18 +331,22 @@ class ExtendedClient extends Client {
 		});
 	};
 
-	/**
-	 * Store last 5 messages to get more context when debugging
-	 * @author Juknum
-	 */
 
-	public storeMessage(message: Message) {
-		this.lastMessages[this.lastMessagesIndex] = message;
-		this.lastMessagesIndex = (this.lastMessagesIndex + 1) % 5; // store 5 last messages
+	/**
+	 * Store any kind of action the bot does
+	 * @param {ActionsStr} type 
+	 * @param {Actions} data 
+	 */
+	public storeAction(type: ActionsStr, data: Actions): void {
+		this.logs[this.lastLogIndex++ % this.maxLogs] = { type, data };
 	}
 
-	public getLastMessages(): Array<Message> {
-		return this.lastMessages;
+	/**
+	 * Get the whole logs
+	 * @returns {Array<Log>}
+	 */
+	public getAction(): Array<Log> {
+		return this.logs;
 	}
 
 	/**
@@ -368,7 +372,7 @@ class ExtendedClient extends Client {
 		/**
 		 * DISCLAIMER:
 		 * - Discord API limits bots to modify channels name only twice each 10 minutes
-		 * > this below won't fails nor return any erros, the operation is only delayed (not if client is restarted)
+		 * > this below won't fails nor return any errors, the operation is only delayed (not if client is restarted)
 		 */
 		switch (channel.type) {
 			case "GUILD_VOICE":

@@ -5,6 +5,8 @@ import { info } from "@helpers/logger";
 export const event: Event = {
 	name: "buttonUsed",
 	run: async (client: Client, interaction: ButtonInteraction) => {
+		client.storeAction("button", interaction);
+
 		if (client.verbose) console.log(`${info}Button used`)
 		let button: Button;
 
