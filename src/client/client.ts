@@ -271,11 +271,17 @@ class ExtendedClient extends Client {
 				});
 		});
 
-		console.log(guilds)
+		Object.keys(guilds).forEach((guild: string) => {
+			if (guild === "global") return; // we only search guild specific commands
+
+			if (this.guilds.cache.get(this.config.discords.filter(d => d.name === guild)[0].id) === undefined){
+				delete guilds[guild]; // remove it to avoid missing access error
+				console.log(`${err}The client is not in this guild: ${guild}`);
+			}
+		});
 
 		Promise.all(
 			Object.keys(guilds).map((server: string) => {
-				console.log(server)
 				if (server === "global") return rest.put(Routes.applicationCommands(this.tokens.appID), { body: guilds["global"] });
 				
 				return rest.put(
