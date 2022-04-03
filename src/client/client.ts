@@ -35,7 +35,7 @@ class ExtendedClient extends Client {
 	public automation: Automation = new Automation(this);
 
 	private logs: Array<Log> = [];
-	private maxLogs: number = 200;
+	private maxLogs: number = 50;
 	private lastLogIndex: number = 0;
 
 	public menus: Collection<string, SelectMenu> = new Collection();
