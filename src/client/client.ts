@@ -45,7 +45,6 @@ class ExtendedClient extends Client {
 	public buttons: Collection<string, Button> = new Collection();
 	public events: Collection<string, Event> = new Collection();
 	public aliases: Collection<string, Command> = new Collection();
-	public commands: Collection<string, Command> = new Collection();
 	public slashCommands: Collection<string, SlashCommand> = new Collection();
 
 	public submissions: EmittingCollection<string, Submission> = new EmittingCollection();
@@ -200,7 +199,6 @@ class ExtendedClient extends Client {
 					for (const id of slashCommand.permissions.users)
 						p.permissions.push({ id: id, type: "USER", permission: true });
 
-				console.log(guild.name, command.name, p);
 				fullPermissions.push(p);
 			});
 
@@ -213,6 +211,8 @@ class ExtendedClient extends Client {
 	 * SLASH COMMANDS DELETION
 	 */
 	public deleteGlobalSlashCommands = () => {
+		console.log(`${success}deleting / commands`)
+
 		const rest = new REST({ version: "9" }).setToken(this.tokens.token);
 		rest.get(Routes.applicationCommands(this.tokens.appID)).then((data: any) => {
 			const promises = [];
@@ -225,7 +225,7 @@ class ExtendedClient extends Client {
 	/**
 	 * SLASH COMMANDS HANDLER
 	 */
-	private async loadSlashCommands(): Promise<void> {
+	public async loadSlashCommands(): Promise<void> {
 		const slashCommandsPath = path.join(__dirname, "..", "commands");
 		const commandsArr: Array<{ servers: Array<string>; command: RESTPostAPIApplicationCommandsJSONBody }> = [];
 
@@ -272,33 +272,24 @@ class ExtendedClient extends Client {
 				});
 		});
 
-		Object.keys(guilds).forEach((guild: string) => {
-			if (guild === "global") return; // we only search to remove guild specific commands where the bot isn't in the guild
+		for (let i = 0; i < this.config.discords.length; i++) {
+			const d = this.config.discords[i];
 
-			if (this.guilds.cache.get(this.config.discords.filter(d => d.name === guild)[0].id) === undefined){
-				delete guilds[guild]; // remove it to avoid missing access error
-				console.log(`${warning}The client is not in this guild: ${guild}`);
-			}
-		});
+			if (this.guilds.cache.get(d.id) === undefined) continue; // if the client isn't in the guild, skip it
+			else try { // otherwise we add specific commands to that guild
+				await rest.put(Routes.applicationGuildCommands(this.tokens.appID, d.id), { body: guilds[d.name] });
+				console.log(`${success}Successfully added slash commands to: ${d.name}`);
+			} catch (err) {console.error(err)};
+		}
 
-		Promise.all(
-			Object.keys(guilds).map((server: string) => {
-				if (server === "global") return rest.put(Routes.applicationCommands(this.tokens.appID), { body: guilds["global"] });
-				
-				return rest.put(
-					Routes.applicationGuildCommands(
-						this.tokens.appID,
-						this.config.discords.filter((d) => d.name === server)[0].id,
-					),
-					{ body: guilds[server] },
-				);
-			}),
-		)
-			.then(() => {
-				console.log(`${success}Successfully added slash commands: ${Object.keys(guilds).join(", ")}`);
-				this.loadSlashCommandsPerms();
-			})
-			.catch(console.error);
+		// we add global commands to all guilds (only if not in dev mode)
+		if (!this.tokens.dev) {
+			await rest.put(Routes.applicationCommands(this.tokens.appID), { body: guilds["global"] });
+			console.log(`${success}Successfully added global slash commands`);
+		}
+
+		// afterwards we add the permissions to each guilds
+		this.loadSlashCommandsPerms();
 	}
 
 	/**

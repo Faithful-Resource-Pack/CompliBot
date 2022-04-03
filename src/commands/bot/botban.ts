@@ -11,7 +11,6 @@ const config: Config = ConfigJson;
 export const command: SlashCommand = {
 	permissions: {
 		users: [
-			//* idk who this should be available to since i dont think mods should ban across servers
 			"207471947662098432", // Juknum
 			"173336582265241601", // TheRolf
 			"473860522710794250", // RobertR11

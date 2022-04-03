@@ -16,12 +16,6 @@ export const event: Event = {
 		
 		if (message.author.bot) return;
 
-		// old commands handler (remove for release)
-		if (message.content.startsWith(client.tokens.prefix)) {
-			client.emit("oldCommandUsed", (client as Client, message));
-			return;
-		}
-
 		// test if message is in submit channel
 		if (getSubmissionsChannels(client as Client).includes(message.channelId)) {
 			client.emit("textureSubmitted", (client as Client, message));

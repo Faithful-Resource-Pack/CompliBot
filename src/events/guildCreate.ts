@@ -7,6 +7,8 @@ export const event: Event = {
 	run: async (client, guild: Guild) => {
 		client.storeAction("guildJoined", guild);
 
+		client.loadSlashCommands();
+
 		const embed = new MessageEmbed()
 			.setTitle("Thanks for Inviting me")
 			.setDescription("To get started, try to type `/` to see all available slash commands!");
