@@ -7,7 +7,7 @@ import { SlashCommand, SlashCommandI } from "@helpers/interfaces";
 import { Note, User as ModerationUser } from "@helpers/interfaces/moderation";
 import { getRolesIds } from "@helpers/roles";
 import { checkIfUser } from "@helpers/users";
-import { Collection, CommandInteraction, GuildMember, GuildMemberRoleManager, Message } from "discord.js";
+import { Collection, CommandInteraction, Message, User } from "discord.js";
 
 export const command: SlashCommand = {
   permissions: {
@@ -21,7 +21,7 @@ export const command: SlashCommand = {
       subcommand
         .setName("add")
         .setDescription("Add a note to a user")
-        .addMentionableOption(option => 
+        .addUserOption(option => 
           option.setName("user").setDescription("The user you want to add a note to").setRequired(true)
         )
         .addStringOption(option =>
@@ -32,7 +32,7 @@ export const command: SlashCommand = {
       subcommand
         .setName("list")
         .setDescription("List notes of a user")
-        .addMentionableOption(option => 
+        .addUserOption(option => 
           option.setName("user").setDescription("The user you want to add a note to").setRequired(true)
         )
     )
@@ -40,11 +40,11 @@ export const command: SlashCommand = {
       subcommand
         .setName("edit")
         .setDescription("Edit/Delete notes of a user, to delete a note, do not provide the note parameter (administrator)")
-        .addMentionableOption(option => 
+        .addUserOption(option => 
           option.setName("user").setDescription("The user you want to edit the note").setRequired(true)
         )
         .addNumberOption(option =>
-          option.setName("index").setDescription("The index of the note you want to edit").setRequired(true)  
+          option.setName("index").setDescription("The index of the note you want to edit, starts at 0").setRequired(true)  
         )
         .addStringOption(option =>
           option.setName("note").setDescription("The note you want to edit, note is deleted if you don't provide the parameter (admin only)")
@@ -52,13 +52,13 @@ export const command: SlashCommand = {
     ),
   execute: new Collection<string, SlashCommandI>()
     .set("add", async (interaction: CommandInteraction, client: Client) => {
-      let user: GuildMember = interaction.options.getMentionable("user", true) as GuildMember;
+      let user: User = interaction.options.getUser("user", true) as User;
       if (!checkIfUser(client, user)) return interaction.reply({ content: "The given parameter is not a user", ephemeral: true });
 
       let guildName: string = getGuildName(interaction.guildId, true);
       let moderationUser: ModerationUser = {
         id: user.id,
-        username: user.displayName,
+        username: user.username,
         notes: Object.assign(
           client.moderationUsers.get(user.id) ? client.moderationUsers.get(user.id).notes : {}, // old notes are conserved
           {
@@ -73,7 +73,7 @@ export const command: SlashCommand = {
       interaction.reply({ content: "The note has been added!", embeds: [embedConstructor(user, guildName, client)], ephemeral: true });
     })
     .set("list", async (interaction: CommandInteraction, client: Client) => {
-      let user: GuildMember = interaction.options.getMentionable("user", true) as GuildMember;
+      let user: User = interaction.options.getUser("user", true) as User;
       if (!checkIfUser(client, user)) return interaction.reply({ content: "The given parameter is not a user", ephemeral: true });
 
       let guildName: string = getGuildName(interaction.guildId, true);
@@ -82,7 +82,7 @@ export const command: SlashCommand = {
       return interaction.reply({ embeds: [embedConstructor(user, guildName, client)], fetchReply: true }).then((msg: Message) => { msg.deleteButton() });
     })
     .set("edit", async (interaction: CommandInteraction, client: Client) => {
-      let user: GuildMember = interaction.options.getMentionable("user", true) as GuildMember;
+      let user: User = interaction.options.getUser("user", true) as User;
       if (!checkIfUser(client, user)) return interaction.reply({ content: "The given parameter is not a user", ephemeral: true });
 
       let guildName: string = getGuildName(interaction.guildId, true);
@@ -117,9 +117,9 @@ export const command: SlashCommand = {
     })
 }
 
-const embedConstructor = (user: GuildMember, guildName: string, client: Client): MessageEmbed => {
+const embedConstructor = (user: User, guildName: string, client: Client): MessageEmbed => {
   return new MessageEmbed()
-    .setTitle(`Moderation notes of ${user.displayName}`)
+    .setTitle(`Moderation notes of ${user.username}`)
     .setColor(colors.red)
     .setThumbnail(user.displayAvatarURL({ dynamic: true }))
     .addFields(client.moderationUsers.get(user.id).notes[guildName].map(n => { return { name: `${fromTimestampToHumanReadable(n.timestamp)}`, value: `> From <@!${n.from}>\n${n.note}` } }))
