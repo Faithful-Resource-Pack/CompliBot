@@ -155,7 +155,7 @@ export class TimedEmbed {
 
 	/**
 	 * Get the Discord Message Id of the poll/submission
-	 * @returns {string}
+	 * @returns {String}
 	 */
 	public getMessageId(): string {
 		return this.messageId;
@@ -176,7 +176,7 @@ export class TimedEmbed {
 
 	/**
 	 * Get the Discord Channel Id of the poll/submission
-	 * @returns {string}
+	 * @returns {String}
 	 */
 	public getChannelId(): string {
 		return this.channelId;
@@ -198,7 +198,7 @@ export class TimedEmbed {
 
 	/**
 	 * Get the status of the poll/submission
-	 * @returns {string}
+	 * @returns {String}
 	 */
 	public getStatus(): string {
 		return this.status;
@@ -206,7 +206,7 @@ export class TimedEmbed {
 
 	/**
 	 * Get the status displayed in the embed of the poll/submission
-	 * @returns {string}
+	 * @returns {String}
 	 */
 	public getStatusUI(): string {
 		return this.status;

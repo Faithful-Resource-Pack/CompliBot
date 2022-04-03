@@ -12,7 +12,7 @@ export const normalizeArray = (arr: Array<string>): Array<string> => {
 /**
  * Test if an array of string include in one of it's string the given value
  * @param {Array<string>} arr - the asked array
- * @param {string} val - the searched string
+ * @param {String} val - the searched string
  * @returns {boolean} - true if nothing if found
  */
 export const includesNone = (arr: Array<string>, val: string): boolean => {

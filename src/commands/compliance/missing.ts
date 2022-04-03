@@ -24,8 +24,8 @@ export const PACKS: Array<[name: string, value: string]> = [
 
 /**
  * Get the displayed name for the value property
- * @param pack {string}
- * @returns {string}
+ * @param pack {String}
+ * @returns {String}
  */
 export const getDisplayNameForPack = (pack: string): string => {
 	return PACKS.filter((p) => p[1] === pack)[0][0];

@@ -58,8 +58,6 @@ export const logConstructor: Function = (client: Client, reason: any = {stack: "
 
 	let len: number = client.getAction().length;
 	client.getAction().reverse().forEach((log: Log, index) => {
-		if (log.type == "message") console.log(log.data);
-
 		logText += template
 			.replace("%templateIndex%", `${len - index}`)
 			.replace("%templateType%", 
