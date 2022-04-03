@@ -7,6 +7,7 @@ import { errorHandler } from "@functions/errorHandler";
 import { err, info, success } from "@helpers/logger";
 import { Submission } from "@class/submissions";
 import { Poll } from "@class/poll";
+import { User } from "@helpers/interfaces/moderation";
 
 import { readdirSync } from "fs";
 import { REST } from "@discordjs/rest";
@@ -21,6 +22,7 @@ const JSON_PATH = path.join(__dirname, "../../json/dynamic"); // json folder at 
 const POLLS_FILENAME = "polls.json";
 const SUBMISSIONS_FILENAME = "submissions.json";
 const COMMANDS_PROCESSED_FILENAME = "commandsProcessed.json";
+const MODERATION_FILENAME = "moderation.json";
 
 export type ActionsStr = "message" | "slashCommand" | "button" | "selectMenu" | "guildMemberUpdate" | "textureSubmitted" | "guildJoined";
 export type Actions = Message | GuildMember | Guild | ButtonInteraction | SelectMenuInteraction | CommandInteraction;
@@ -49,6 +51,7 @@ class ExtendedClient extends Client {
 	public submissions: EmittingCollection<string, Submission> = new EmittingCollection();
 	public polls: EmittingCollection<string, Poll> = new EmittingCollection();
 	public commandsProcessed: EmittingCollection<string, number> = new EmittingCollection();
+	public moderationUsers: EmittingCollection<string, User> = new EmittingCollection();
 
 	constructor(data: ClientOptions & { verbose: boolean; config: Config; tokens: Tokens }) {
 		super(data);
@@ -122,14 +125,15 @@ class ExtendedClient extends Client {
 		this.loadCollection(this.polls, POLLS_FILENAME, JSON_PATH);
 		this.loadCollection(this.submissions, SUBMISSIONS_FILENAME, JSON_PATH);
 		this.loadCollection(this.commandsProcessed, COMMANDS_PROCESSED_FILENAME, JSON_PATH);
+		this.loadCollection(this.moderationUsers, MODERATION_FILENAME, JSON_PATH);
 		if (this.verbose) console.log(info + `Loaded collections data`);
 	};
 
 	/**
 	 * Read & Load data from json file into emitting collection & setup events handler
 	 * @param collection {EmittingCollection}
-	 * @param filename {string}
-	 * @param relative_path {string}
+	 * @param filename {String}
+	 * @param relative_path {String}
 	 */
 	private loadCollection = (
 		collection: EmittingCollection<any, any>,
@@ -152,8 +156,8 @@ class ExtendedClient extends Client {
 	/**
 	 * Save an emitting collection into a JSON file
 	 * @param collection {EmittingCollection}
-	 * @param filename {string}
-	 * @param relative_path {string}
+	 * @param filename {String}
+	 * @param relative_path {String}
 	 */
 	private saveEmittingCollection = (
 		collection: EmittingCollection<any, any>,

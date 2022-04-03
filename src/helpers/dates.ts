@@ -24,8 +24,8 @@ export const addSeconds = (d: Date, seconds?: number): Date => {
 
 /**
  * Parse user input into seconds
- * @param {string} d - user input
- * @returns {number} - equivalent in seconds
+ * @param {String} d - user input
+ * @returns {Number} - equivalent in seconds
  */
 export const parseDate = (d: string): number => {
 	if ((d.endsWith("y") && !d.endsWith("day")) || d.endsWith("year") || d.endsWith("years")) return parseInt(d, 10) * 24 * 3600 * 365;
@@ -37,4 +37,17 @@ export const parseDate = (d: string): number => {
 	if (d.endsWith("s") || d.endsWith("second") || d.endsWith("seconds")) return parseInt(d, 10);
 
 	return parseInt(d, 10); // default value is considered to be seconds
+}
+
+/**
+ * Convert timestamp to human readable format
+ * -> 1028193718 = 10/28/1937
+ * @param {String} t - timestamp to convert
+ * @returns {String} - human readable format
+ */
+export const fromTimestampToHumanReadable = (t: number): string => {
+	if (t === undefined) return "01/01/1970";
+
+	let date = new Date(parseInt(t.toString())); // cast to int because it might be a string
+	return `${date.getDate() < 10 ? `0${date.getDate()}` : date.getDate()}/${date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1}/${date.getFullYear()}`;
 }

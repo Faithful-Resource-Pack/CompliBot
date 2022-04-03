@@ -1,10 +1,22 @@
 # CompliBot TypeScript - Changelog
-> This is a beta and will not be fully stable. To report any bugs, use `/feedback`
+> This is a beta and will not be fully stable. To report any bugs, use the `/feedback` command
+
+## How to read this changelog?
+
+Commands are explained like so:
+```
+/notes [mandatory_parameter] (optional_parameter)
+```
 
 ## [v2.0.3] TBA
 
 ### Added
-- `/logs` let devs (only devs), see the whole current logs information without needing a crash of the bot (_aha_).
+- `/logs` for developers only, see the whole current logs information without needing a crash of the bot (_aha_).
+- `/notes [add|list|edit]`, moderators can now make private notes against all users
+  - Use `/notes list [user]` to list all attached notes from that user; **⚠️ the response is public**.
+  - Use `/notes add [user] [note]` to add a note to a user
+  - Use `/notes edit [user] [index] (note)` to edit a specific note, administrators can modify any notes, but moderators can only modify their personal notes. If the `note` parameter is not given **and** you're an administrator, the note is deleted.
+  
 ### Changed
 - Changed how no results are handled when using `/texture`, may solve the `Unknown Message` error + the no response at all.
 - Crash logs is now **way more** detailed and contains now information about: messages (deleted/created), slash commands, guild member (joined/removed), select menus, buttons, slash commands, guild joined (when the client is added to a guild: ⚠️ UNTESTED)
@@ -19,19 +31,19 @@
 ## [v2.0.2] 14/03/2022
 
 ### Added
-- Added `/bean <user>` command: beans a user (moderators exclusive).
-- Added `/restart` command: restarts the bot process for maintenance (bot owners exclusive) 
-- Added `/botban view <format>` command: view the bot ban list in various formats (bot owners exclusive)
-- Added `/botban audit <subject> <pardon?>` command: add/remove a user from the bot ban list (bot owners exclusive)
-- ⚠️ Being botbanned disables use of any interaction and should be used only to patch exploiting users
-- Added `/changelog` command: Show the changelog by version.
-- Added `/notice` command: Give the users updates on stuff like scheduled downtime
-- Added `/setnotice` command: Sets the current notice (bot owners exclusive).
+- `/bean [user]` will now beans a user (moderators exclusive).
+- `/restart` to restarts the bot process for maintenance (bot developers exclusive) 
+- `/botban [view|audit]` **⚠️ Being bot banned disables use of any interaction and should be used only to patch exploiting users.**
+  - `/botban view [format]` command: view the bot ban list in various formats (bot developers exclusive)
+  - `/botban audit [subject] (pardon)` command: add/remove a user from the bot ban list (bot developers exclusive)
+- `/changelog` command: Show the changelog by version.
+- `/notice` command: Give the users updates on stuff like scheduled downtime
+- `/setnotice` command: Sets the current notice (bot developers exclusive).
 - A beautiful Ascii art showing up when the bot starts.
-- Added easy to use timeout value when making a poll with `/poll`.
-- Added `/modping <urgent?>` command: used to pings moderators when you needs direct help from them.
-- Added `/mute <user> <time> <reason?>` command: Mute the given user for the given period of time (moderators exclusive).
-- Added `/clear <amount>` command: Clear the given amount of message (moderators exclusive).
+- Easy to use timeout value when making a poll with `/poll`.
+- `/modping (urgent)` command: used to pings moderators when you needs direct help from them.
+- `/mute [user] [time] (reason)` command: Mute the given user for the given period of time (moderators exclusive).
+- `/clear [amount]` command: Clear the given amount of message (moderators exclusive).
 - Added 2 ~~super secret~~ commands for devs fun & amusement only.
 - A view votes button has been added on submitted textures, thus, only giving output while the texture is still in the submission process.
 - **Config:** added "teams" config options: This now allow us to specify global roles, channels and so on for a group of discords servers (useful for Compliance & Co servers).
