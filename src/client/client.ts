@@ -271,10 +271,13 @@ class ExtendedClient extends Client {
 				});
 		});
 
+		console.log(guilds)
+
 		Promise.all(
 			Object.keys(guilds).map((server: string) => {
-				if (server === "global")
-					return rest.put(Routes.applicationCommands(this.tokens.appID), { body: guilds["global"] });
+				console.log(server)
+				if (server === "global") return rest.put(Routes.applicationCommands(this.tokens.appID), { body: guilds["global"] });
+				
 				return rest.put(
 					Routes.applicationGuildCommands(
 						this.tokens.appID,
