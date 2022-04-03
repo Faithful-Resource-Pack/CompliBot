@@ -49,9 +49,9 @@ export const command: SlashCommand = {
 					},
 					{ name: FieldTitles[4], value: `discord.js ${djsVersion}`, inline: true },
 					{ name: FieldTitles[5], value: `${process.version}`, inline: true },
-					{ name: FieldTitles[6], value: "" + (client.commands.size + client.slashCommands.size), inline: true },
-					{ name: FieldTitles[7], value: "" + number, inline: true },
-					{ name: FieldTitles[8], value: "" + sumMembers, inline: true },
+					{ name: FieldTitles[6], value: `${client.slashCommands.size}`, inline: true },
+					{ name: FieldTitles[7], value: `${number}`, inline: true },
+					{ name: FieldTitles[8], value: `${sumMembers}`, inline: true },
 					{ name: FieldTitles[9], value: version },
 				)
 				.setFooter({
