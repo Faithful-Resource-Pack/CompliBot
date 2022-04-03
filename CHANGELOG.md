@@ -16,6 +16,7 @@ Commands are explained like so:
   - Use `/notes list [user]` to list all attached notes from that user; **⚠️ the response is public**.
   - Use `/notes add [user] [note]` to add a note to a user
   - Use `/notes edit [user] [index] (note)` to edit a specific note, administrators can modify any notes, but moderators can only modify their personal notes. If the `note` parameter is not given **and** you're an administrator, the note is deleted.
+- `/userinfo` for moderators to get detailed information on a specified user
   
 ### Changed
 - Changed how no results are handled when using `/texture`, may solve the `Unknown Message` error + the no response at all.
