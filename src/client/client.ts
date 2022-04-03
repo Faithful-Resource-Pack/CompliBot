@@ -4,7 +4,7 @@ import { Command, Event, Config, Tokens, Button, SelectMenu, SlashCommand, Async
 import { getData } from "@functions/getDataFromJSON";
 import { setData } from "@functions/setDataToJSON";
 import { errorHandler } from "@functions/errorHandler";
-import { err, info, success } from "@helpers/logger";
+import { err, info, success, warning } from "@helpers/logger";
 import { Submission } from "@class/submissions";
 import { Poll } from "@class/poll";
 import { User } from "@helpers/interfaces/moderation";
@@ -200,6 +200,7 @@ class ExtendedClient extends Client {
 					for (const id of slashCommand.permissions.users)
 						p.permissions.push({ id: id, type: "USER", permission: true });
 
+				console.log(guild.name, command.name, p);
 				fullPermissions.push(p);
 			});
 
@@ -272,11 +273,11 @@ class ExtendedClient extends Client {
 		});
 
 		Object.keys(guilds).forEach((guild: string) => {
-			if (guild === "global") return; // we only search guild specific commands
+			if (guild === "global") return; // we only search to remove guild specific commands where the bot isn't in the guild
 
 			if (this.guilds.cache.get(this.config.discords.filter(d => d.name === guild)[0].id) === undefined){
 				delete guilds[guild]; // remove it to avoid missing access error
-				console.log(`${err}The client is not in this guild: ${guild}`);
+				console.log(`${warning}The client is not in this guild: ${guild}`);
 			}
 		});
 
