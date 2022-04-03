@@ -12,6 +12,7 @@ import { readdirSync } from "fs";
 import { REST } from "@discordjs/rest";
 import { RESTPostAPIApplicationCommandsJSONBody, Routes } from "discord-api-types/v9";
 import { SlashCommandBuilder } from "@discordjs/builders";
+import { loadJavaVersions, updateJavaVersions } from "@functions/MCupdates/java";
 
 import path from "path";
 import chalk from "chalk";
@@ -95,6 +96,11 @@ class ExtendedClient extends Client {
 				this.loadEvents();
 				this.loadButtons();
 				this.loadSelectMenus();
+
+				/*loadJavaVersions()
+				.then(() => {
+					updateJavaVersions(this);
+				})*/
 
 				this.loadCollections();
 				this.automation.start();
