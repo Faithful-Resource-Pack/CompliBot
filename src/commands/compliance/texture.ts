@@ -4,7 +4,7 @@ import { Client, CommandInteraction, Message, MessageEmbed } from "@client";
 import { getTextureMessageOptions } from "@functions/getTexture";
 import { MessageActionRow, MessageSelectMenu, MessageSelectOptionData } from "discord.js";
 import axios from "axios";
-import { imageButtons } from "@helpers/buttons";
+import { deleteInteraction, imageButtons } from "@helpers/buttons";
 
 export const command: SlashCommand = {
 	servers: ["compliance", "compliance_extra", "classic_faithful"],
@@ -45,6 +45,9 @@ export const command: SlashCommand = {
 			return;
 		}
 
+		/**
+		 * TODO: find a fix for this Error: connect ETIMEDOUT 172.67.209.9:443 at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1161:16)
+		 */
 		const results: Array<any> = (await axios.get(`${(interaction.client as Client).config.apiUrl}textures/${name}/all`))
 			.data;
 
@@ -133,21 +136,16 @@ export const command: SlashCommand = {
 			await interaction
 				.editReply({ embeds: [embed], components: components })
 				.then((message: Message) => message.deleteButton());
-
 			return;
 		}
 
 		// no results
-		try {
-			interaction.deleteReply();
-		} catch (err) {}
-
-		return interaction.followUp({
-			ephemeral: true,
+		interaction.editReply({ 
 			content: await interaction.text({
 				string: "Command.Texture.NotFound",
-				placeholders: { TEXTURENAME: name },
-			}),
-		});
+				placeholders: { TEXTURENAME: `\`${name}\`` },
+			})
+		})
+		.then((message: Message) => message.deleteButton());
 	},
 };

@@ -5,7 +5,9 @@ CompliBot crash/log report, please report this to developers!
 Date: %date%
 %stack%
 
-Actions: (last 200 bots actions)
+Actions: 
+> last 200 bots actions: slash commands, chat messages, etc...
+
 %templateStart%
   INDEX        : %templateIndex%
   TYPE         : %templateType%
@@ -13,6 +15,8 @@ Actions: (last 200 bots actions)
   URL          : %templateURL%
   CHANNEL_TYPE : %templateChannelType%
   CONTENT      : %templateContent%
+  EMBEDS       : %templateEmbeds%
+  COMPONENTS   : %templateComponents%
 
   ---
 %templateEnd%

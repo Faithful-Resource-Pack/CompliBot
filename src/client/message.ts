@@ -10,6 +10,7 @@ declare module "discord.js" {
 	interface Message {
 		tokens: Tokens;
 		config: Config;
+		isDeleted: boolean; //! this is only used for the logger, please do not use it for anything else
 
 		warn(text: string, disappearing?: boolean): void;
 		deleteReact(options: Options): void;

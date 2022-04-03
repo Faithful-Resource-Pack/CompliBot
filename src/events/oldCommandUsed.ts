@@ -4,8 +4,6 @@ import { Client, Message } from "@client";
 export const event: Event = {
 	name: "oldCommandUsed",
 	run: async (client: Client, message: Message) => {
-		client.storeAction("oldCommand", message);
-
 		// deprecated (old commands detection system)
 		const args = message.content.slice(client.tokens.prefix.length).trim().split(/ +/);
 		const cmd = args.shift().toLowerCase();

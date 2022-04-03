@@ -1,5 +1,5 @@
-import { ButtonInteraction, Client, ClientOptions, Collection, CommandInteraction, Guild, GuildMember, SelectMenuInteraction, TextChannel, VoiceChannel } from "discord.js";
-import { Message, EmittingCollection, Automation } from "@client";
+import { ButtonInteraction, Client, ClientOptions, Collection, CommandInteraction, Guild, SelectMenuInteraction, TextChannel, VoiceChannel } from "discord.js";
+import { Message, GuildMember, EmittingCollection, Automation } from "@client";
 import { Command, Event, Config, Tokens, Button, SelectMenu, SlashCommand, AsyncSlashCommandBuilder } from "@interfaces";
 import { getData } from "@functions/getDataFromJSON";
 import { setData } from "@functions/setDataToJSON";
@@ -21,7 +21,7 @@ const POLLS_FILENAME = "polls.json";
 const SUBMISSIONS_FILENAME = "submissions.json";
 const COMMANDS_PROCESSED_FILENAME = "commandsProcessed.json";
 
-export type ActionsStr = "message" | "slashCommand" | "oldCommand" | "button" | "selectMenu" | "guildMemberUpdate" | "textureSubmitted" | "guildJoined";
+export type ActionsStr = "message" | "slashCommand" | "button" | "selectMenu" | "guildMemberUpdate" | "textureSubmitted" | "guildJoined";
 export type Actions = Message | GuildMember | Guild | ButtonInteraction | SelectMenuInteraction | CommandInteraction;
 export type Log = {
 	type: ActionsStr,

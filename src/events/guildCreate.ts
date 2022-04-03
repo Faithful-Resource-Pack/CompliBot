@@ -9,7 +9,7 @@ export const event: Event = {
 
 		const embed = new MessageEmbed()
 			.setTitle("Thanks for Inviting me")
-			.setDescription("To get started, try to type `/` to see all available slash commmands!");
+			.setDescription("To get started, try to type `/` to see all available slash commands!");
 
 		guild.systemChannel?.send({ embeds: [embed] });
 		console.log(`${info}I was added to a guild, now im in: ` + client.guilds.cache.size);

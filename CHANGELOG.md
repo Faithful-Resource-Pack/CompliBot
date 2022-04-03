@@ -3,7 +3,11 @@
 
 ## [v2.0.3] TBA
 
+### Added
+- `/logs` let devs (only devs), see the whole current logs information without needing a crash of the bot (_aha_).
 ### Changed
+- Changed how no results are handled when using `/texture`, may solve the `Unknown Message` error + the no response at all.
+- Crash logs is now **way more** detailed and contains now information about: messages (deleted/created), slash commands, guild member (joined/removed), select menus, buttons, slash commands, guild joined (when the client is added to a guild: ⚠️ UNTESTED)
 - `/poll` threads are now directly attached to the poll message (yeet)
 - Changed emojis for the buttons of the `/feedback` command
 - Added texture path version to the texture select menu (avoid confusion between exact same path & name for a texture, ex: `gold_ore`)
