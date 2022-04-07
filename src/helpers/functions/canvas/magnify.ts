@@ -7,7 +7,7 @@ type options = {
 	url: string;
 	embed?: MessageEmbed;
 	name?: string;
-	factor?: 32 | 16 | 8 | 4 | 2 | 1;
+	factor?: 32 | 16 | 8 | 4 | 2 | 1 | 0.5 | 0.25;
 };
 
 export async function magnifyAttachment(options: options): Promise<[MessageAttachment, MessageEmbed]> {

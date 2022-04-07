@@ -1,0 +1,34 @@
+{
+    	"New event template": {
+		"prefix": "net",
+		"body": [
+			"import { Event } from '@interfaces';",
+			"export const event: Event = {",
+			"\tname: \"${1:Name}\",",
+			"\trun: async (client, ${2:/* args */}) => {",
+			"\t\t${3://todo: implement event",
+			"\t},\n};"
+		]
+	},
+
+	"New command template": {
+		"prefix": "nct",
+		"body": [
+			"import { SlashCommand, Client } from '@interfaces';",
+			"import { CommandInteraction } from 'discord.js';",
+			"import { SlashCommandBuilder } from '@discord.js/builders';",
+			"export const command: SlashCommand = {",
+			"\tpermissions: {",
+			"\t\troles: [], //roles array",
+			"\t\tusers: [], //userID array",
+			"\t},",
+			"\tdata: new SlashCommandBuilder()",
+			"\t\t.setDefaultPermission(true)",
+			"\t\t.setName(\"${1:Name}\")",
+			"\t\t.setDescription(`${2:Description}`),",
+			"\texecute: async (interaction: CommandInteraction, client: Client) => {",
+			"\t\t${3://todo: implement command}",
+			"\t},\n};"
+		]
+	},
+}
