@@ -15,8 +15,8 @@ const settings = require('../../../resources/settings.json')
  */
 async function pushTextures(COMMIT_MESSAGE = `Autopush passed textures from ${date()}`) {
 
-	const REPO_JAVA = [settings.repositories.repo_name.java.compliance_32x, settings.repositories.repo_name.java.compliance_64x]
-	const REPO_BEDROCK = [settings.repositories.repo_name.bedrock.compliance_32x, settings.repositories.repo_name.bedrock.compliance_64x]
+	const REPO_JAVA = [settings.repositories.repo_name.java.faithful_32x, settings.repositories.repo_name.java.faithful_64x]
+	const REPO_BEDROCK = [settings.repositories.repo_name.bedrock.faithful_32x, settings.repositories.repo_name.bedrock.faithful_64x]
 
 	const BRANCHES_JAVA = settings.versions.java
 	const BRANCHES_BEDROCK = settings.versions.bedrock

@@ -50,7 +50,7 @@ module.exports = {
 			else if (args[0] === 'media') {
 				var websiteEmbed = new MessageEmbed()
 					.setTitle('Website')
-					.setDescription('https://compliancepack.net/')
+					.setDescription('https://faithfulpack.net/')
 					.setColor(settings.colors.c32)
 					.setThumbnail(settings.images.c32)
 
@@ -68,19 +68,19 @@ module.exports = {
 
 				var curseforgeEmbed = new MessageEmbed()
 					.setTitle('CurseForge')
-					.setDescription('https://www.curseforge.com/members/compliance_team/projects')
+					.setDescription('https://www.curseforge.com/members/faithful_team/projects')
 					.setColor(settings.colors.curseforge)
 					.setThumbnail('https://gist.githubusercontent.com/thecodewarrior/110057b210551c4ecf2c9be6d58ff824/raw/38748511ca1eb5677f009092fb3fcd71cc76cdf0/logo.png')
 
 				var planetminecraftEmbed = new MessageEmbed()
 					.setTitle('Planet Minecraft')
-					.setDescription('https://www.planetminecraft.com/member/compliance/')
+					.setDescription('https://www.planetminecraft.com/member/faithful/')
 					.setColor(settings.colors.planetminecraft)
 					.setThumbnail('https://www.planetminecraft.com/images/layout/themes/modern/planetminecraft_logo.png') // why do they not offer the logo itself smh
 
 				var mcpedlEmbed = new MessageEmbed()
 					.setTitle('MCPEDL')
-					.setDescription('https://mcpedl.com/user/compliance/')
+					.setDescription('https://mcpedl.com/user/faithful/')
 					.setColor(settings.colors.mcpedl)
 					.setThumbnail('https://mcpedl.com/_nuxt/img/logo.e39b598.png')
 

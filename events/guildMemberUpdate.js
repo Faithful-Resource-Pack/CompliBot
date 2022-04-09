@@ -11,7 +11,7 @@ module.exports = {
   async execute(memberBefore, memberAfter) {
     if (DEV) return
 
-    // if the member isn't on a compliance server, return
+    // if the member isn't on a faithful server, return
     if (![settings.guilds.c32.id, settings.guilds.c64.id, settings.guilds.cextras.id, settings.guilds.cdevs.id].includes(memberBefore.guild.id)) return
 
     console.log(memberBefore)
@@ -43,12 +43,12 @@ module.exports = {
       if (ROLES.includes(oldRole.name) && user.type.includes(oldRole.name)) user.type = user.type.filter(t => t !== oldRole.name)
     }
 
-    // update role on all compliance server
+    // update role on all faithful server
     if ((oldRole && oldRole.name !== 'Muted') || (newRole && newRole.name !== 'Muted')) {
-      const complianceServers = [ settings.guilds.cextras.id, settings.guilds.c32.id, settings.guilds.c64.id ]
+      const faithfulServers = [ settings.guilds.cextras.id, settings.guilds.c32.id, settings.guilds.c64.id ]
 
-      for (let i = 0; i < complianceServers.length; i++) {
-        let server = await client.guilds.cache.get(complianceServers[i]) || undefined
+      for (let i = 0; i < faithfulServers.length; i++) {
+        let server = await client.guilds.cache.get(faithfulServers[i]) || undefined
         let member = server === undefined ? undefined : await server.members.cache.get(memberAfter.id) || undefined
         let role = member === undefined ? undefined : await server.roles.cache.find(r => r.name === (oldRole ? oldRole.name : newRole.name))
 

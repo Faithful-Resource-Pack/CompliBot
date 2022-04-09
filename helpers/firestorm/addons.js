@@ -8,10 +8,10 @@ require('./firestorm_config')()
  * @property {String} description Description of the Add-on
  * @property {String[]} authors Discords IDs of all authors
  * @property {String} status Add-ons status (pending, approved, hidden)
- * @property {Boolean} comments Adds Disqus discussion on compliancepack.net
+ * @property {Boolean} comments Adds Disqus discussion on faithfulpack.net
  * @property {String} id Add-on ID (based from the title)
  * @property {Object} images contains all information about addons images
- * @property {Base64} images.header Main image used for header on compliancepack.net
+ * @property {Base64} images.header Main image used for header on faithfulpack.net
  * @property {Base64[]} images.carousel List of all secondary images of the Add-on
  * @property {Boolean} optifine true if the Add-on require Optifine
  * @property {String[]} type Add-on tags (Java, 32x, 64x, Bedrock...)
