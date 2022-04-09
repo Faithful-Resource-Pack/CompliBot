@@ -14,9 +14,9 @@ export const command: SlashCommand = {
 		.addSubcommand((subcommand) =>
 			subcommand
 				.setName("command")
-				.setDescription("Statistics about commands.")
+				.setDescription("Returns top 10 most used commands.")
 				.addStringOption((option) =>
-					option.setName("command").setDescription("A command from the bot.").setRequired(true),
+					option.setName("command").setDescription("Returns usage for a spesific command.").setRequired(false),
 				),
 		),
 	execute: new Collection<string, SlashCommandI>()
@@ -61,7 +61,16 @@ export const command: SlashCommand = {
 			interaction.reply({ embeds: [embed], fetchReply: true }).then((message: Message) => message.deleteButton());
 		})
 		.set("command", async (interaction: CommandInteraction, client: Client) => {
-			if (client.commandsProcessed.get(interaction.options.getString("command", true)) === undefined)
+			// //console.log(interaction.options.getString("command"))
+			// // if (interaction.options.getString("command") == undefined) {
+			// // 	console.log(client.commandsProcessed);
+			// // }
+
+			//if the command ars is provided and the command does not exist in commandsProcessed:
+			if (
+				interaction.options.getString("command") &&
+				client.commandsProcessed.get(interaction.options.getString("command")) === undefined
+			)
 				return interaction.reply({
 					ephemeral: true,
 					content: await interaction.text({
@@ -69,15 +78,35 @@ export const command: SlashCommand = {
 					}),
 				});
 
-			const embed = new MessageEmbed().setTitle(
-				await interaction.text({
-					string: "Command.Stats.Usage",
-					placeholders: {
-						COMMAND: interaction.options.getString("command", true),
-						USE: client.commandsProcessed.get(interaction.options.getString("command", true)).toString() ?? "0",
-					},
-				}),
-			);
-			interaction.reply({ embeds: [embed], fetchReply: true }).then((message: Message) => message.deleteButton());
+			if (interaction.options.getString("command")) {
+				const embed = new MessageEmbed().setTitle(
+					await interaction.text({
+						string: "Command.Stats.Usage",
+						placeholders: {
+							COMMAND: interaction.options.getString("command"),
+							USE: client.commandsProcessed.get(interaction.options.getString("command")).toString() ?? "0",
+						},
+					}),
+				);
+				interaction.reply({ embeds: [embed], fetchReply: true }).then((message: Message) => message.deleteButton());
+			} else {
+				//sorts commands by usage: 4,3,2,1
+				const sorted = new Map([...client.commandsProcessed.entries()].sort((a, b) => b[1] - a[1]));
+				const iterator = sorted[Symbol.iterator]();
+
+				const embed = new MessageEmbed().setTitle("Top 10 most used commands:");
+				let description = "";
+
+				let placement = 0;
+				for (const pair of iterator) {
+					description += `${placement + 1}. [${pair[1]}] ${pair[0]}\n`;
+					placement++;
+
+					if (placement == 10) break;
+				}
+
+				embed.setDescription(description);
+				interaction.reply({ embeds: [embed] });
+			}
 		}),
 };
