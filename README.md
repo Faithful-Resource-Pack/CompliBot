@@ -1,18 +1,18 @@
 <img src="https://i.imgur.com/Hf0eeiU.png" alt="CompliBot" align="right" height="256px">
 <div align="center">
   <h1>CompliBot</h1>
-  <h3>The official bot of all Compliance Resource Pack discords</h3>
+  <h3>The official bot of all Faithful Resource Pack discords</h3>
 
-![RepoSize](https://img.shields.io/github/repo-size/Compliance-Resource-Pack/Discord-Bot)
-![Issues](https://img.shields.io/github/issues/Compliance-Resource-Pack/Discord-Bot)
-![PullRequests](https://img.shields.io/github/issues-pr/Compliance-Resource-Pack/Discord-Bot)
+![RepoSize](https://img.shields.io/github/repo-size/Faithful-Resource-Pack/Discord-Bot)
+![Issues](https://img.shields.io/github/issues/Faithful-Resource-Pack/Discord-Bot)
+![PullRequests](https://img.shields.io/github/issues-pr/Faithful-Resource-Pack/Discord-Bot)
 </div>
 
 ___
 ### Online on:
-- [Compliance 32x](https://discord.gg/sN9YRQbBv7)
-- [Compliance 64x](https://discord.gg/Tqtwtgh)
-- [Compliance Extras](https://discord.gg/qVeDfZw)
+- [Faithful 32x](https://discord.gg/sN9YRQbBv7)
+- [Faithful 64x](https://discord.gg/Tqtwtgh)
+- [Faithful Extras](https://discord.gg/qVeDfZw)
 
 ___
 ### Installation and launching:
@@ -51,7 +51,7 @@ ___
 |         LOG_DEV         |                  "false"                   |                Logs bot errors into the dev-logs channel.                 |
 | COMPLIBOT_GIT_USERNAME  |                "CompliBot"                 |                  Git username for the CompliBot account.                  |
 |   COMPLIBOT_GIT_EMAIL   |    "CompliBot@users.noreply.github.com"    |                   Git email for the CompliBot account.                    |
-| COMPLIBOT_GIT_JSON_REPO |     "/Compliance-Resource-Pack/JSON/"      |                Github repository to push/pull json files.                 |
+| COMPLIBOT_GIT_JSON_REPO |     "/Faithful-Resource-Pack/JSON/"      |                Github repository to push/pull json files.                 |
 |   COMPLIBOT_GIT_TOKEN   | "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0" |                Git token for the CompliBot GitHub account.                |
 
 ### Other configs:

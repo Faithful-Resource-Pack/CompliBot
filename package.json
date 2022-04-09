@@ -1,7 +1,7 @@
 {
   "name": "complibot",
   "version": "1.0.0",
-  "description": "The official Discord bot of the Compliance Discord servers.",
+  "description": "The official Discord bot of the Faithful Discord servers.",
   "main": "index.js",
   "scripts": {
     "start": "node --use_strict --trace-warnings index.js",
@@ -10,15 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Compliance-Resource-Pack/Discord-Bot.git"
+    "url": "git+https://github.com/Faithful-Resource-Pack/Discord-Bot.git"
   },
   "keywords": [],
-  "author": "Compliance Team",
-  "license": "CC-BY-NC-SA 4.0",
+  "author": "Faithful Team",
   "bugs": {
-    "url": "https://github.com/Compliance-Resource-Pack/Discord-Bot/issues"
+    "url": "https://github.com/Faithful-Resource-Pack/Discord-Bot/issues"
   },
-  "homepage": "https://github.com/Compliance-Resource-Pack/Discord-Bot#readme",
+  "homepage": "https://github.com/Faithful-Resource-Pack/Discord-Bot#readme",
   "dependencies": {
     "@octokit/rest": "^18.12.0",
     "@vitalets/google-translate-api": "^7.0.0",

@@ -38,7 +38,7 @@ module.exports = {
 			.setTitle(`${client.user.username} Info:`)
 			.setThumbnail(client.user.displayAvatarURL())
 			.setColor(settings.colors.blue)
-			.setDescription('This is the official bot of all Compliance Resource Pack discords, developed by the Compliance Team!')
+			.setDescription('This is the official bot of all Faithful Resource Pack discords, developed by the Faithful Team!')
 			.addFields(
 				{ name: '\u200B', value: '**Features:**' },
 				{ name: '🔍 Image Resizing', value: 'With the `/magnify <factor>` command you can resize images by a certain factor! \nKeep in mind, this feature was made for textures, other images may look weird.' },
@@ -47,7 +47,7 @@ module.exports = {
 				{ name: '❗ Modping', value: 'With the `/modping` command you can let me ping all mods online on one of our servers to get help.' },
 				{ name: '🗺️ soon™️: Translations', value: 'Soon you can translate any message when typing `/translate *to language* *your text*` or by reacting with a flag emoji to an existing message!' },
 				{ name: 'And more!', value: 'If you need a full list of all my commands, then use `/help`!' },
-				{ name: '\u200B', value: '\n\nI am completely open source!\nYou can find me by [clicking here](https://github.com/Compliance-Resource-Pack/Discord-Bot).' },
+				{ name: '\u200B', value: '\n\nI am completely open source!\nYou can find me by [clicking here](https://github.com/Faithful-Resource-Pack/Discord-Bot).' },
 			)
 			.setFooter(`Bot Uptime: ${days} ${tdays}, ${hours} ${thours}, ${minutes} ${tminutes}, ${seconds} ${tseconds}`)
 

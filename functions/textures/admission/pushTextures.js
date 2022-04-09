@@ -25,10 +25,10 @@ async function pushTextures(COMMIT_MESSAGE = `Autopush passed textures from ${da
 		for (let j = 0; BRANCHES_JAVA[j]; j++) {
 
 			if (checkFolder(`./texturesPush/${REPO_JAVA[i]}/${BRANCHES_JAVA[j]}/assets`)) {
-				await pushToGitHub('Compliance-Resource-Pack', REPO_JAVA[i], `${BRANCHES_JAVA[j]}`, COMMIT_MESSAGE, `./texturesPush/${REPO_JAVA[i]}/${BRANCHES_JAVA[j]}/`)
+				await pushToGitHub('Faithful-Resource-Pack', REPO_JAVA[i], `${BRANCHES_JAVA[j]}`, COMMIT_MESSAGE, `./texturesPush/${REPO_JAVA[i]}/${BRANCHES_JAVA[j]}/`)
 				fs.rmdirSync(`./texturesPush/${REPO_JAVA[i]}/${BRANCHES_JAVA[j]}/assets/`, { recursive: true })
 
-				if (DEBUG) console.log(`PUSHED TO GITHUB: Compliance-Java-32x (${BRANCHES_JAVA[j]})`)
+				if (DEBUG) console.log(`PUSHED TO GITHUB: Faithful-Java-32x (${BRANCHES_JAVA[j]})`)
 			}
 
 		}
@@ -38,10 +38,10 @@ async function pushTextures(COMMIT_MESSAGE = `Autopush passed textures from ${da
 		for (let j = 0; BRANCHES_BEDROCK[j]; j++) {
 
 			if (checkFolder(`./texturesPush/${REPO_BEDROCK[i]}/${BRANCHES_BEDROCK[j]}/textures`)) {
-				await pushToGitHub('Compliance-Resource-Pack', REPO_BEDROCK[i], `${BRANCHES_BEDROCK[j]}`, COMMIT_MESSAGE, `./texturesPush/${REPO_BEDROCK[i]}/${BRANCHES_BEDROCK[j]}/`)
+				await pushToGitHub('Faithful-Resource-Pack', REPO_BEDROCK[i], `${BRANCHES_BEDROCK[j]}`, COMMIT_MESSAGE, `./texturesPush/${REPO_BEDROCK[i]}/${BRANCHES_BEDROCK[j]}/`)
 				fs.rmdirSync(`./texturesPush/${REPO_BEDROCK[i]}/${BRANCHES_BEDROCK[j]}/textures/`, { recursive: true })
 
-				if (DEBUG) console.log(`PUSHED TO GITHUB: Compliance-Java-32x (${BRANCHES_BEDROCK[j]})`)
+				if (DEBUG) console.log(`PUSHED TO GITHUB: Faithful-Java-32x (${BRANCHES_BEDROCK[j]})`)
 			}
 
 		}

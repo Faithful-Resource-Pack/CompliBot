@@ -20,10 +20,10 @@ module.exports = {
 	uses: strings.command.disabled,
 	//uses: strings.command.use.mods,
 	syntax: `${process.env.PREFIX}push -r -n -a + file attached`,
-	flags: '-r | --repo :\n\tCompliance-[Java|Bedrock]-[32x-64x]\n\
+	flags: '-r | --repo :\n\tFaithful-[Java|Bedrock]-[32x-64x]\n\
 					-n | --path :\n\tTexture path \n\
 					-a | --author :\n\tDiscord tag of texture\'s author.',
-	example: `${process.env.PREFIX}push -r=Compliance-Java-32x -p=textures/block/stone.png -a=Someone#1234`,
+	example: `${process.env.PREFIX}push -r=Faithful-Java-32x -p=textures/block/stone.png -a=Someone#1234`,
 	/**
 	 * @param {import('discord.js').Client} client 
 	 * @param {import('discord.js').Message} message 

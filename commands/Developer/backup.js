@@ -12,7 +12,7 @@ const settings = require('../../resources/settings.json')
 module.exports = {
   name: 'backup',
   aliases: ['bdb'],
-  description: 'Backup the database to the [JSON repository](https://github.com/Compliance-Resource-Pack/JSON)',
+  description: 'Backup the database to the [JSON repository](https://github.com/Faithful-Resource-Pack/JSON)',
   category: 'Developer',
   guildOnly: false,
   uses: strings.command.use.devs,

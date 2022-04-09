@@ -2,7 +2,7 @@
 
 /**
  * COMPLIBOT INDEX FILE:
- * - Developped by and for the Compliance Community.
+ * - Developped by and for the Faithful Community.
  * - Please read our License first.
  * - If you find any bugs, please use our bug tracker
  */

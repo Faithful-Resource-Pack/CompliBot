@@ -1,7 +1,7 @@
 const settings = require('../resources/settings.json')
 
 /**
- * Manage roles using reactions in the Extra Compliance Server
+ * Manage roles using reactions in the Extra Faithful Server
  */
 async function manageExtraRoles(client, reaction, user) {
 	const reactID = reaction.emoji.id

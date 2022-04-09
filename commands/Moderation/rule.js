@@ -63,7 +63,7 @@ module.exports = {
 		else if (rule == -1) {
 
 			let embed = new Discord.MessageEmbed()
-				.setTitle(`Rules of the Compliance Discord's Servers`)
+				.setTitle(`Rules of the Faithful Discord Servers`)
 				.setColor(color)
 				.setThumbnail(thumbnail)
 				.setDescription(`**Ignoring, not knowing and/or bypassing the rules, as well as not listening to the moderators is not an excuse for misbehaving.**\nRemember, by talking in this server you're agreeing to follow these rules.`)

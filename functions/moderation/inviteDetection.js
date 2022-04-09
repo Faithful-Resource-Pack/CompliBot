@@ -27,7 +27,6 @@ async function inviteDetection(client, message) {
 	]
 
 	const whitelist = [
-		'discord.gg/compliance32x',
 		'discord.gg/sN9YRQbBv7',
 		'discord.gg/Tqtwtgh',
 		'discord.gg/qVeDfZw',

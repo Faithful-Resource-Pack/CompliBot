@@ -181,7 +181,7 @@ async function makeEmbed(client, message, texture, param = new Object()) {
   }
 
   let embed = new MessageEmbed()
-    .setAuthor(message.author.tag, message.author.displayAvatarURL()) // TODO: add a Compliance gallery url that match his profile and show us all his recent textures
+    .setAuthor(message.author.tag, message.author.displayAvatarURL()) // TODO: add a Faithful gallery url that match his profile and show us all his recent textures
     .setColor(settings.colors.blue)
     .setTitle(`[#${texture.id}] ${texture.name}`)
     .addFields(

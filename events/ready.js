@@ -31,11 +31,11 @@ const { doCheckSettings } = require('../functions/settings/doCheckSettings')
  * - Push to GitHub process (each day at 00:15 GMT) : @function pushToGithub
  */
 const submissionProcess = new cron.CronJob('0 0 * * *', async () => {
-  // Compliance 32x
+  // Faithful 32x
   await retrieveSubmission(client, settings.channels.submit_textures.c32, settings.channels.submit_council.c32, 3)
   await councilSubmission(client, settings.channels.submit_council.c32, settings.channels.submit_results.c32, settings.channels.submit_revote.c32, 1)
 
-  // Compliance 64x
+  // Faithful 64x
   await retrieveSubmission(client, '931887174977208370', '931886877521350696', 3)
   await councilSubmission(client, '931886877521350696', '931887235433906276', '931887204748374096', 1)
 })

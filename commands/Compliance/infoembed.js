@@ -20,7 +20,7 @@ module.exports = {
 			if (args[0] === 'discords') {
 				if (message.guild.id === settings.guilds.c32.id || args[1] === '32x') {
 					await message.channel.send({ content: 'This server:\n> https://discord.gg/sN9YRQbBv7' });
-					await message.channel.send({ content: 'Compliance Extras:\n> https://discord.gg/qVeDfZw' });
+					await message.channel.send({ content: 'Faithful Extras:\n> https://discord.gg/qVeDfZw' });
 					await message.channel.send({ content: 'Classic Faithful:\n> https://discord.gg/KSEhCVtg4J' });
 					await message.channel.send({ content: 'Faithful Community Testing:\n> https://discord.gg/c9xtzKGFZs' });
 					await message.channel.send({ content: 'Minecraft:\n> https://discord.gg/minecraft' });
@@ -28,8 +28,8 @@ module.exports = {
 				}
 				else if (message.guild.id === settings.guilds.c64.id || args[1] === '64x') {
 					await message.channel.send({ content: 'This server:\n> https://discord.gg/Tqtwtgh' });
-					await message.channel.send({ content: 'Compliance 32x:\n> https://discord.gg/sN9YRQbBv7' });
-					await message.channel.send({ content: 'Compliance Extras:\n> https://discord.gg/qVeDfZw' });
+					await message.channel.send({ content: 'Faithful 32x:\n> https://discord.gg/sN9YRQbBv7' });
+					await message.channel.send({ content: 'Faithful Extras:\n> https://discord.gg/qVeDfZw' });
 					await message.channel.send({ content: 'Classic Faithful:\n> https://discord.gg/KSEhCVtg4J' });
 					await message.channel.send({ content: 'Faithful Community Testing:\n> https://discord.gg/c9xtzKGFZs' });
 					await message.channel.send({ content: 'Minecraft:\n> https://discord.gg/minecraft' });
@@ -37,7 +37,7 @@ module.exports = {
 				}
 				else if (message.guild.id === settings.guilds.cextras.id || args[1] === 'extras') {
 					await message.channel.send({ content: 'This server:\n> https://discord.gg/qVeDfZw' });
-					await message.channel.send({ content: 'Compliance 32x:\n> https://discord.gg/sN9YRQbBv7' });
+					await message.channel.send({ content: 'Faithful 32x:\n> https://discord.gg/sN9YRQbBv7' });
 					await message.channel.send({ content: 'Classic Faithful:\n> https://discord.gg/KSEhCVtg4J' });
 					await message.channel.send({ content: 'Faithful Community Testing:\n> https://discord.gg/c9xtzKGFZs' });
 					await message.channel.send({ content: 'Minecraft:\n> https://discord.gg/minecraft' });
@@ -56,13 +56,13 @@ module.exports = {
 
 				var githubEmbed = new MessageEmbed()
 					.setTitle('Github')
-					.setDescription('https://github.com/Compliance-Resource-Pack')
+					.setDescription('https://github.com/Faithful-Resource-Pack')
 					.setColor(settings.colors.github)
 					.setThumbnail('https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png')
 
 				var twitterEmbed = new MessageEmbed()
 					.setTitle('Twitter')
-					.setDescription('https://twitter.com/CompliancePack')
+					.setDescription('https://twitter.com/FaithfulPack')
 					.setColor(settings.colors.twitter)
 					.setThumbnail('https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Twitter-logo.svg/512px-Twitter-logo.svg.png')
 
@@ -92,7 +92,7 @@ module.exports = {
 
 				var patreonEmbed = new MessageEmbed()
 					.setTitle('Patreon')
-					.setDescription('https://www.patreon.com/Compliance')
+					.setDescription('https://www.patreon.com/Faithful')
 					.setColor(settings.colors.patreon)
 					.setThumbnail('https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Patreon_logomark.svg/1024px-Patreon_logomark.svg.png')
 

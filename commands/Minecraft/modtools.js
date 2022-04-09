@@ -21,10 +21,10 @@ module.exports = {
 			.setThumbnail(settings.images.cdungeons)
 			.addFields(
 				{ name: 'Dungeons mod kit by CCCode:', value: 'https://github.com/Dokucraft/Dungeons-Mod-Kit', inline: true },
-				{ name: 'Loading icon creator:', value: 'https://github.com/Compliance-Dungeons/Resource-Pack/tree/master/Tools/loader', inline: true },
-				{ name: 'Alpha image converter:', value: 'https://github.com/Compliance-Dungeons/Resource-Pack/tree/master/Tools/alpha_img', inline: true },
+				{ name: 'Loading icon creator:', value: 'https://github.com/Faithful-Resource-Pack/Faithful-Dungeons-32x/tree/master/Tools/loader', inline: true },
+				{ name: 'Alpha image converter:', value: 'https://github.com/Faithful-Resource-Pack/Faithful-Dungeons-32x/tree/master/Tools/alpha_img', inline: true },
 			)
-			.setFooter('Compliance Dungeons', settings.images.cdungeons)
+			.setFooter('Faithful Dungeons', settings.images.cdungeons)
 
 		await message.reply({ embeds: [embed] })
 	}
