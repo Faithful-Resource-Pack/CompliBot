@@ -1,22 +1,22 @@
 <img src="https://i.imgur.com/Hf0eeiU.png" alt="CompliBot" align="right" height="256px">
 <div align="center">
   <h1>CompliBot</h1>
-  <h3>The official bot of all Compliance Resource Pack discords</h3>
+  <h3>The official bot of all Faithful Resource Pack discords</h3>
 
-![RepoSize](https://img.shields.io/github/repo-size/Compliance-Resource-Pack/Discord-Bot)
-![Issues](https://img.shields.io/github/issues/Compliance-Resource-Pack/Discord-Bot)
-![PullRequests](https://img.shields.io/github/issues-pr/Compliance-Resource-Pack/Discord-Bot)
+![RepoSize](https://img.shields.io/github/repo-size/Faithful-Resource-Pack/Discord-Bot)
+![Issues](https://img.shields.io/github/issues/Faithful-Resource-Pack/Discord-Bot)
+![PullRequests](https://img.shields.io/github/issues-pr/Faithful-Resource-Pack/Discord-Bot)
 </div>
 
 ___
 ### Online on:
-- [Compliance 32x](https://discord.gg/sN9YRQbBv7)
-- [Compliance 64x](https://discord.gg/Tqtwtgh)
-- [Compliance Extras](https://discord.gg/qVeDfZw)
+- [Faithful 32x](https://discord.gg/sN9YRQbBv7)
+- [Faithful 64x](https://discord.gg/Tqtwtgh)
+- [Faithful Extras](https://discord.gg/qVeDfZw)
 
 ___
-### You found an issue?
-Please submit it using our [bug tracker](https://github.com/Compliance-Resource-Pack/Discord-Bot/issues/new/choose) or by using the `/feedback <text>` command from the bot. The bug tracker is preferred but both options are valids.
+### Found an issue?
+Please submit it using our [bug tracker](https://github.com/Faithful-Resource-Pack/Discord-Bot/issues/new/choose) or by using the `/feedback <text>` command from the bot. The bug tracker is preferred but both options are valid.
 ___
 ### Installation and launching:
 1. Install **[Node.js](https://nodejs.org/)** on your machine. **Version 16.9.0 or higher is required!**
