@@ -108,7 +108,7 @@ export const getTextureMessageOptions = async (options: {
 		if (contributions.length > 2)
 			contributions = [
 				...contributions.slice(0, 2),
-				"[see more in the webapp...](https://webapp.compliancepack.net/#/gallery)",
+				"[see more in the webapp...](https://webapp.faithfulpack.net/#/gallery)",
 			];
 		if (contributions.length) embed.addField("Contributions", contributions.join("\n"), false);
 	}

@@ -45,7 +45,7 @@ const websites = {
 		image: "https://database.faithfulpack.net/images/brand/logos/no%20background/512/Compliance%20Basic.png",
 		color: colors.c32,
 		name: `Compliance 32x`,
-		value: `[${parseId(ids.c32)} Website](https://www.compliancepack.net/compliance32x/latest)\n[${parseId(
+		value: `[${parseId(ids.c32)} Website](https://www.faithfulpack.net/compliance32x/latest)\n[${parseId(
 			ids.curseforge,
 		)} CurseForge | Java](https://www.curseforge.com/minecraft/texture-packs/compliance-32x)\n[${parseId(
 			ids.curseforge,
@@ -57,7 +57,7 @@ const websites = {
 		image: "https://database.faithfulpack.net/images/brand/logos/no%20background/512/Compliance%2064.png",
 		color: colors.c64,
 		name: "Compliance 64x",
-		value: `[${parseId(ids.c64)} Website](https://www.compliancepack.net/compliance64x/latest)\n[${parseId(
+		value: `[${parseId(ids.c64)} Website](https://www.faithfulpack.net/compliance64x/latest)\n[${parseId(
 			ids.curseforge,
 		)} CurseForge | Java](https://www.curseforge.com/minecraft/texture-packs/compliance-64x)\n[${parseId(
 			ids.curseforge,
@@ -71,7 +71,7 @@ const websites = {
 		name: "Compliance Dungeons 32x",
 		value: `[${parseId(
 			ids.cdungeons,
-		)} Website](https://www.compliancepack.net/compliance32xDungeons/latest)\n[${parseId(
+		)} Website](https://www.faithfulpack.net/compliance32xDungeons/latest)\n[${parseId(
 			ids.curseforge,
 		)} CurseForge](https://www.curseforge.com/minecraft-dungeons/mods/compliance-dungeons)`,
 	},
@@ -79,22 +79,22 @@ const websites = {
 		image: "https://database.faithfulpack.net/images/brand/logos/no%20background/512/Compliance%20Mods.png",
 		color: colors.cmods,
 		name: "Compliance Mods 32x",
-		value: `[${parseId(ids.cmods)} Mods Resource Pack picker](https://www.compliancepack.net/mods)\n[${parseId(
+		value: `[${parseId(ids.cmods)} Mods Resource Pack picker](https://www.faithfulpack.net/mods)\n[${parseId(
 			ids.cmods,
-		)} Modpacks Resource Pack presets](https://www.compliancepack.net/modpacks)`,
+		)} Modpacks Resource Pack presets](https://www.faithfulpack.net/modpacks)`,
 	},
 	compliance_tweaks_32: {
 		image: "https://database.faithfulpack.net/images/brand/logos/no%20background/512/Compliance%20Tweaks.png",
 		color: colors.ctweaks,
 		name: "Compliance Tweaks",
-		value: `[${parseId(ids.ctweaks)} Website](https://www.compliancepack.net/tweaks)`,
+		value: `[${parseId(ids.ctweaks)} Website](https://www.faithfulpack.net/tweaks)`,
 	},
 	compliance_addons: {
 		image: "https://database.faithfulpack.net/images/brand/logos/no%20background/512/Compliance%20Add-ons.png",
 		color: colors.caddons,
 		name: "Compliance Addons",
-		value: `[${parseId(ids.ctweaks)} All resolutions](https://www.compliancepack.net/addons)\n[${parseId(
+		value: `[${parseId(ids.ctweaks)} All resolutions](https://www.faithfulpack.net/addons)\n[${parseId(
 			ids.ctweaks,
-		)} Collections](https://www.compliancepack.net/addonCollections)`,
+		)} Collections](https://www.faithfulpack.net/addonCollections)`,
 	},
 };
