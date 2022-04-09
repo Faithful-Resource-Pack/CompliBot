@@ -66,7 +66,7 @@
         "As previsões não são tão boas",
         "Muito duvidoso"
     ],
-    "Command.HelpUs.Description": "Você ama esse projeto e quer ajudar os desenvolvedores?\nPor favor contate um dos desenvolvedores abaixo para ser convidado para os servidores de desenvolvimento:\n<@!473860522710794250>, <@!207471947662098432>, <@!173336582265241601>, <@!601501288978448411>\n\nVocê também pode nos encontrar no GitHub:\n> https://github.com/Compliance-Resource-Pack/Discord-Bot",
+    "Command.HelpUs.Description": "Você ama esse projeto e quer ajudar os desenvolvedores?\nPor favor contate um dos desenvolvedores abaixo para ser convidado para os servidores de desenvolvimento:\n<@!473860522710794250>, <@!207471947662098432>, <@!173336582265241601>, <@!601501288978448411>\n\nVocê também pode nos encontrar no GitHub:\n> https://github.com/Faithful-Resource-Pack/Discord-Bot",
     "Command.HelpUs.Title": "Você quer nos ajudar ou apoiar no desenvolvimento do CompliBot?",
     "Command.Kill.Killed": [
         "%AUTHOR% caiu fora do mundo",

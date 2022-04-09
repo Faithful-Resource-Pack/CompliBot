@@ -72,7 +72,7 @@
     "Command.Feedback.Sent": "%EMOJI.SEE_MORE% Feedback envoyé aux développeurs!",
     "Command.Feedback.Suggestion": "Suggestion",
     "Command.Feedback.Title": "Feedback",
-    "Command.HelpUs.Description": "Vous aimez ce projet et vous souhaitez aider les développeurs ?\nVeuillez contacter l'un des développeurs ci-dessous pour être invité sur les serveurs de développement :\n<@!473860522710794250>, <@!207471947662098432>, <@!173336582265241601>, <@ !601501288978448411>\n\nVous pouvez également nous consulter sur GitHub :\n> https://github.com/Compliance-Resource-Pack/Discord-Bot",
+    "Command.HelpUs.Description": "Vous aimez ce projet et vous souhaitez aider les développeurs ?\nVeuillez contacter l'un des développeurs ci-dessous pour être invité sur les serveurs de développement :\n<@!473860522710794250>, <@!207471947662098432>, <@!173336582265241601>, <@ !601501288978448411>\n\nVous pouvez également nous consulter sur GitHub :\n> https://github.com/Faithful-Resource-Pack/Discord-Bot",
     "Command.HelpUs.Title": "Vous souhaitez nous aider ou nous soutenir dans le développement de CompliBot ?",
     "Command.Images.NotFound.Title": "Aucune image trouvée !",
     "Command.Images.NotFound": "Aucune image n'a été trouvée dans les %NUMBER% derniers messages, veuillez en envoyer en envoyer une:\n\n- Envoyez une URL d'image\n- Attachez une image a votre message\n- Répondez à un message antérieur (peut être enchaîné)\n\n> Vous pouvez annuler ceci en envoyant n'importe quoi d'autre.",
