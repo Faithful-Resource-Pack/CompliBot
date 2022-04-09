@@ -1,4 +1,13 @@
-import { Client, ClientOptions, Collection, CommandInteraction, Guild, Interaction, TextChannel, VoiceChannel } from "discord.js";
+import {
+	Client,
+	ClientOptions,
+	Collection,
+	CommandInteraction,
+	Guild,
+	Interaction,
+	TextChannel,
+	VoiceChannel,
+} from "discord.js";
 import { Message, EmittingCollection, Automation } from "@client";
 import {
 	Command,
@@ -61,7 +70,9 @@ class ExtendedClient extends Client {
 		console.log(`${info}restarting bot...`);
 		this.destroy();
 		await this.init();
-        if(int) {int.editReply({ content: "reboot succeeded" })}
+		if (int) {
+			int.editReply({ content: "reboot succeeded" });
+		}
 	}
 
 	//prettier-ignore
@@ -80,6 +91,19 @@ class ExtendedClient extends Client {
 	}
 
 	public async init() {
+		if (this.tokens.maintanance) {
+			this.login(this.tokens.token)
+				.catch((e) => {
+					// Allows for showing different errors like missing privaleged gateway intents, this caused me so much pain >:(
+					console.log(`${err}${e}`);
+					process.exit(1);
+				})
+				.then(() => {
+					this.loadEvents();
+				});
+			return console.log("MAINTANANCE: TRUE");
+		}
+
 		this.asciiArt();
 
 		// login client
@@ -286,15 +310,24 @@ class ExtendedClient extends Client {
 	 * !! broke if dir doesn't exist
 	 */
 	private loadEvents = (): void => {
-		const eventPath = path.join(__dirname, "..", "events");
-
-		readdirSync(eventPath)
-			.filter((file) => file.endsWith(".ts"))
-			.forEach(async (file) => {
-				const { event } = await import(`${eventPath}/${file}`);
-				this.events.set(event.name, event);
-				this.on(event.name, event.run.bind(null, this));
+		if (this.tokens.maintanance) {
+			this.on("ready", async () => {
+				this.user.setPresence({
+					activities: [{ name: "under maintanance", type: "PLAYING" }],
+					status: "idle",
+				});
 			});
+		} else {
+			const eventPath = path.join(__dirname, "..", "events");
+
+			readdirSync(eventPath)
+				.filter((file) => file.endsWith(".ts"))
+				.forEach(async (file) => {
+					const { event } = await import(`${eventPath}/${file}`);
+					this.events.set(event.name, event);
+					this.on(event.name, event.run.bind(null, this));
+				});
+		}
 	};
 
 	/**
