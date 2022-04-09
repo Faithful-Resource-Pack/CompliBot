@@ -15,8 +15,8 @@ import axios from "axios";
 import { doNestedArr } from "@helpers/arrays";
 
 export const PACKS: Array<[name: string, value: string]> = [
-	["Compliance 32x", "compliance_32x"],
-	["Compliance 64x", "compliance_64x"],
+	["Faithful 32x", "faithful_32x"],
+	["Faithful 64x", "faithful_64x"],
 	["Classic Faithful 32x", "classic_faithful_32x"],
 	["Classic Faithful 64x", "classic_faithful_64x"],
 	["Classic Faithful 32x Programmer Art", "classic_faithful_32x_progart"],
@@ -32,7 +32,7 @@ export const getDisplayNameForPack = (pack: string): string => {
 };
 
 export const command: SlashCommand = {
-	servers: ["compliance", "compliance_extra", "classic_faithful"],
+	servers: ["faithful", "faithful_extra", "classic_faithful"],
 	data: async (client: Client): Promise<SyncSlashCommandBuilder> => {
 		let versions = Object.values((await axios.get(`${client.config.apiUrl}settings/versions`)).data).flat();
 		versions.splice(versions.indexOf("versions"), 1); // remove "versions" key id (API issue)

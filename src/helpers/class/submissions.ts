@@ -252,7 +252,7 @@ export class Submission extends TimedEmbed {
 			return embed;
 		} // can't fetch channel
 
-		let url: string = "https://raw.githubusercontent.com/Compliance-Resource-Pack/App/main/resources/transparency.png";
+		let url: string = "https://raw.githubusercontent.com/Faithful-Resource-Pack/App/main/resources/transparency.png";
 		try {
 			url = (
 				await axios.get(

@@ -79,7 +79,7 @@ export const command: SlashCommand = {
 			const reason = interaction.options.getString("reason");
 			const parentName = interaction.options.getString("parent");
 
-			const data = (await axios.get(`https://api.compliancepack.net/v2/textures/${textureid}`)).data;
+			const data = (await axios.get(`https://api.faithfulpack.net/v2/textures/${textureid}`)).data;
 
 			// edge cases
 			if (data["name"] == undefined && data["status"] == 404)

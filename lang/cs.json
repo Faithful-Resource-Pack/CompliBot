@@ -72,7 +72,7 @@
     "Command.Feedback.Sent": "%EMOJI.SEE_MORE% Zpětná vazba byla odeslána vývojářům!",
     "Command.Feedback.Suggestion": "Návrh",
     "Command.Feedback.Title": "Zpětná vazba",
-    "Command.HelpUs.Description": "Líbí se ti tento projekt a chceš pomoci vývojářům?\nProsím kontaktuj jednoho z těchto vývojářů pro pozvánku na vývojový server:\n<@!473860522710794250>, <@!207471947662098432>, <@!173336582265241601>, <@!601501288978448411>\n\nTaky nás můžeš omrknout na GitHubu:\n> https://github.com/Compliance-Resource-Pack/Discord-Bot",
+    "Command.HelpUs.Description": "Líbí se ti tento projekt a chceš pomoci vývojářům?\nProsím kontaktuj jednoho z těchto vývojářů pro pozvánku na vývojový server:\n<@!473860522710794250>, <@!207471947662098432>, <@!173336582265241601>, <@!601501288978448411>\n\nTaky nás můžeš omrknout na GitHubu:\n> https://github.com/Faithful-Resource-Pack/Discord-Bot",
     "Command.HelpUs.Title": "Chceš nám pomoct či nás podpořit ve vývoji CompliBota?",
     "Command.Images.NotFound.Title": "Nenalezeny žádné obrázky!",
     "Command.Images.NotFound": "Nenalezeny žádné obrázky v předchozích %NUMBER% zprávách, prosím odešlete jeden obrázek jedním z tímto způsobů:\n\n- Odesláním URL obrázku\n- Připojením obrázku k vaší zprávě\n- Odpovězením na předchozí zprávu (může být opakované).\n\n> Tohle můžeš zrušit posláním čehokoliv jiného.",

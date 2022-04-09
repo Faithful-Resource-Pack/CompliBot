@@ -1,8 +1,8 @@
 {
-    "images": "https://database.compliancepack.net/images/",
+    "images": "https://database.faithfulpack.net/images/",
     "icon": "https://cdn.discordapp.com/avatars/929066601930706954/86f92a2870e5924a04b75cc917cb4ecd.webp?size=80",
-    "apiUrl": "https://api.compliancepack.net/v2/",
-    "firestormUrl": "https://database.compliancepack.net/firestorm-test/",
+    "apiUrl": "https://api.faithfulpack.net/v2/",
+    "firestormUrl": "https://database.faithfulpack.net/firestorm-test/",
     "teams": [
         {
             "name": "faithful",
@@ -48,7 +48,7 @@
                 "submission": {
                     "test Pack": {
                         "channel": "841396215211360296",
-                        "slug": "compliance_32x",
+                        "slug": "faithful_32x",
                         "resolution": 8
                     }
                 }
@@ -61,7 +61,7 @@
             }
         },
         {
-            "name": "compliance",
+            "name": "faithful",
             "team": "faithful",
             "id": "773983706582482946",
             "channels": {
@@ -70,21 +70,21 @@
             "submissionSystem": {
                 "council": "779363363158229004",
                 "submission": {
-                    "Compliance 32x": {
+                    "Faithful 32x": {
                         "channel": "774220983044669450",
-                        "slug": "compliance_32x",
+                        "slug": "faithful_32x",
                         "resolution": 32
                     },
-                    "Compliance 64x": {
+                    "Faithful 64x": {
                         "channel": "931886877521350696",
-                        "slug": "compliance_64x",
+                        "slug": "faithful_64x",
                         "resolution": 64
                     }
                 }
             }
         },
         {
-            "name": "compliance_extra",
+            "name": "faithful_extra",
             "team": "faithful",
             "id": "614160586032414845",
             "channels": {

@@ -20,7 +20,7 @@ export async function updateTodo(guildID: string, client: Client, json, interact
 
 			if (c[entry]["children"]) {
 				for (const child in c[entry]["children"]) {
-					const data = (await axios.get(`https://api.compliancepack.net/v2/textures/${c[entry]["children"][child]}`))
+					const data = (await axios.get(`https://api.faithfulpack.net/v2/textures/${c[entry]["children"][child]}`))
 						.data;
 
 					if (data["name"] == undefined && data["status"] == 404)
@@ -33,7 +33,7 @@ export async function updateTodo(guildID: string, client: Client, json, interact
 					description += `[#${c[entry]["children"][child]}] ${data["name"] ? data["name"] : "[undefined]"}\n`;
 				}
 			} else {
-				const data = (await axios.get(`https://api.compliancepack.net/v2/textures/${entry}`)).data;
+				const data = (await axios.get(`https://api.faithfulpack.net/v2/textures/${entry}`)).data;
 
 				if (data["name"] == undefined && data["status"] == 404)
 					return interaction.reply({

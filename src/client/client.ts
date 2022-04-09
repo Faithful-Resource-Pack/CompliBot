@@ -78,7 +78,7 @@ class ExtendedClient extends Client {
 		console.log(chalk.hex("0026ff")("Y88b  d88P Y88..88P 888  888  888 888 d88P 888 888 ")       + chalk.hex("#0066ff")("888   d88P Y88..88P Y88b."));
 		console.log(chalk.hex("0026ff")("\"Y8888P\"    \"Y88P\"  888  888  888 88888P\"  888 888 ")  + chalk.hex("#0066ff")("8888888P\"   \"Y88P\"   \"Y888"));
 		console.log(chalk.hex("0026ff")("                                  888"));
-		console.log(chalk.hex("0026ff")("                                  888                   ")  + chalk.white.bold("Compliance Devs. 2022"));
+		console.log(chalk.hex("0026ff")("                                  888                   ")  + chalk.white.bold("Faithful Devs. 2022"));
 		console.log(chalk.hex("0026ff")("                                  888                ")  + chalk.gray.italic("~ Made lovingly With pain\n"));
 	}
 
@@ -252,7 +252,6 @@ class ExtendedClient extends Client {
 		}
 
 		const rest = new REST({ version: "9" }).setToken(this.tokens.token);
-		const devID = this.config.discords.filter((s) => s.name === "dev")[0].id;
 
 		// deploy commands only for dev discord when in dev mode
 		if (this.tokens.dev)

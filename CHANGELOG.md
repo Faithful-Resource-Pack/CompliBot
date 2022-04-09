@@ -19,6 +19,7 @@ Commands are explained like so:
 - `/userinfo` for moderators to get detailed information on a specified user
   
 ### Changed
+- Re-brand Compliance to Faithful !
 - Changed how no results are handled when using `/texture`, may solve the `Unknown Message` error + the no response at all.
 - Crash logs is now **way more** detailed and contains now information about: messages (deleted/created), slash commands, guild member (joined/removed), select menus, buttons, slash commands, guild joined (when the client is added to a guild: ⚠️ UNTESTED)
 - `/poll` threads are now directly attached to the poll message (yeet)
@@ -47,12 +48,12 @@ Commands are explained like so:
 - `/clear [amount]` command: Clear the given amount of message (moderators exclusive).
 - Added 2 ~~super secret~~ commands for devs fun & amusement only.
 - A view votes button has been added on submitted textures, thus, only giving output while the texture is still in the submission process.
-- **Config:** added "teams" config options: This now allow us to specify global roles, channels and so on for a group of discords servers (useful for Compliance & Co servers).
+- **Config:** added "teams" config options: This now allow us to specify global roles, channels and so on for a group of discords servers (useful for Faithful servers).
 
 ### Changed
 - ⚠️ Moved all `.json` files used to store data from `EmittingCollection` into `./json/dynamic`
   > All polls data already saved will be lost! Already saved data needs to be manually transferred (only path as changed, not the data itself).
-- ⚠️ Commands in the `compliance` folders are now only available on `compliance`, `compliance_extra` & `classic_faithful` servers;  
+- ⚠️ Commands in the `faithful` folders are now only available on `faithful`, `faithful_extra` & `classic_faithful` servers;  
   > Concerned commands are: `/guidelines`, `/license`, `/missing`, `/reason`, `/texture`, `/website`.  
   > To avoid duplicated commands, kick & reinvite the bot.
 - Added some textures to the `blacklisted_textures.json`.
@@ -68,7 +69,7 @@ Commands are explained like so:
 
 ### Added
 - `/poll` command
-- `/missing` command (for all compliance/classic faithful packs) [Dungeons 32x NYI]
+- `/missing` command (for all faithful packs) [Dungeons 32x NYI]
 - `/palette` command & button command
 - Submission system (Push & Contribution creation NYI)
 
@@ -87,7 +88,7 @@ Commands are explained like so:
 - Buttons and selection menus (replacing reactions)
 - Native translations based on Discord language
 - `/stats command` command to see the amount of uses of a specific command
-- `/license` command for the Compliance Resource Pack license
+- `/license` command for the Faithful Resource Packs license
 - Lots of new easter eggs
 
 ### Changed

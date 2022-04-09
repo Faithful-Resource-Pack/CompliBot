@@ -58,9 +58,9 @@
         "Znaki wskazują na tak",
         "Odpowiedź niejasna",
         "Zapytaj się jeszcze raz",
-        "Lepiej nie mówić teraz", 
+        "Lepiej nie mówić teraz",
         "Nie można teraz przewidzieć",
-        "Skoncentruj się i zapytaj się jeszcze raz", 
+        "Skoncentruj się i zapytaj się jeszcze raz",
         "Nie licz na to",
         "Moja odpowiedź to nie",
         "Moje źródła mówią, że nie",
@@ -73,7 +73,7 @@
     "Command.Feedback.Sent": "%EMOJI.SEE_MORE% Informacja zwrotna wysłana do deweloperów!",
     "Command.Feedback.Suggestion": "Sugestia",
     "Command.Feedback.Title": "Informacja zwrotna",
-    "Command.HelpUs.Description": "Uwielbiasz ten projekt i chcesz pomóc deweloperom?\nProszę skontaktuj się z deweloperami poniżej, aby otrzymać zaproszenie na serwery deweloperskie:\n<@!473860522710794250>, <@!207471947662098432>, <@!173336582265241601>, <@!601501288978448411>\n\nMożesz nas znaleźć na GitHub:\n> https://github.com/Compliance-Resource-Pack/Discord-Bot",
+    "Command.HelpUs.Description": "Uwielbiasz ten projekt i chcesz pomóc deweloperom?\nProszę skontaktuj się z deweloperami poniżej, aby otrzymać zaproszenie na serwery deweloperskie:\n<@!473860522710794250>, <@!207471947662098432>, <@!173336582265241601>, <@!601501288978448411>\n\nMożesz nas znaleźć na GitHub:\n> https://github.com/Faithful-Resource-Pack/Discord-Bot",
     "Command.HelpUs.Title": "Chcesz nam pomóc albo nas wspierać w rozwoju CompliBot?",
     "Command.Images.NotFound.Title": "Nie znaleziono obrazów!",
     "Command.Images.NotFound": "Nie znaleziono obrazów przez ostatnie %NUMBER% wiadomości, prosimy o przesłanie jednego z:\n\n- Wysłanie adresu URL obrazu\n- Dołączenie do wiadomości\n- Odpowiedź na poprzednią wiadomość (może być przykuta)\n\n> Możesz to anulować wysyłając cokolwiek innego.",
@@ -84,7 +84,7 @@
         "%AUTHOR% umarł",
         "%AUTHOR% nie podał użytkownika do zabicia i zginął"
     ],
-    "Command.Kill.KilledBy": [ 
+    "Command.Kill.KilledBy": [
         "%PLAYER% został zastrzelony przez %AUTHOR%",
         "%PLAYER% został pobity przez gracza %AUTHOR%",
         "%PLAYER% został pobity na smierć",

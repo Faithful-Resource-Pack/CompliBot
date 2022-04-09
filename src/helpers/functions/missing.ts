@@ -1,7 +1,7 @@
 import { exec, series } from "@helpers/exec";
 import { existsSync, readdirSync, statSync } from "fs";
 import { mkdir } from "fs/promises";
-import { getDisplayNameForPack } from "@client/commands/compliance/missing";
+import { getDisplayNameForPack } from "@client/commands/faithful/missing";
 import { Client } from "@client";
 import { AnyChannel, VoiceChannel } from "discord.js";
 import { join, normalize } from "path";
@@ -99,7 +99,7 @@ export const compute = async (
 	const repoDefault = repo.default[edition];
 	const repoRequest = repo[pack][edition];
 
-	// pack doesn't support edition (ex: Compliance 64x -> dungeons)
+	// pack doesn't support edition (ex: Faithful 64x -> dungeons)
 	if (repoRequest === undefined)
 		return [
 			null,

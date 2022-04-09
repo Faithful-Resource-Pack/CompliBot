@@ -3,13 +3,13 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction, Message } from "@client";
 
 export const command: SlashCommand = {
-	servers: ["compliance", "compliance_extra", "classic_faithful"],
+	servers: ["faithful", "faithful_extra", "classic_faithful"],
 	data: new SlashCommandBuilder()
-		.setName("guidelines")
-		.setDescription("Shows the guidelines for the Compliance Resource Pack."),
+		.setName("license")
+		.setDescription("Shows the license for the Faithful Resources Pack."),
 	execute: async (interaction: CommandInteraction) => {
 		interaction
-			.reply({ content: "https://docs.compliancepack.net/pages/textures/texturing-guidelines", fetchReply: true })
+			.reply({ content: "https://www.faithfulpack.net/license", fetchReply: true })
 			.then((message: Message) => message.deleteButton());
 	},
 };
