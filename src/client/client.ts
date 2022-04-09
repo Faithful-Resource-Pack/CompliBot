@@ -316,6 +316,7 @@ class ExtendedClient extends Client {
 					activities: [{ name: "under maintanance", type: "PLAYING" }],
 					status: "idle",
 				});
+				this.user.setStatus("idle");
 			});
 		} else {
 			const eventPath = path.join(__dirname, "..", "events");
