@@ -33,7 +33,7 @@ export async function quote(message: Message) {
 	if (quotedMsg.embeds[0] != undefined) {
 		embed.setAuthor({
 			name: `Embed sent by ${quotedMsg.author.tag}`,
-			iconURL: "https://database.compliancepack.net/images/bot/quote.png",
+			iconURL: "https://database.faithfulpack.net/images/bot/quote.png",
 		});
 
 		if (quotedMsg.embeds[0].title != undefined) embed.setTitle(quotedMsg.embeds[0].title);
@@ -60,7 +60,7 @@ export async function quote(message: Message) {
 		embed
 			.setAuthor({
 				name: `Message sent by ${quotedMsg.author.tag}`,
-				iconURL: "https://database.compliancepack.net/images/bot/quote.png",
+				iconURL: "https://database.faithfulpack.net/images/bot/quote.png",
 			})
 			.setThumbnail(quotedMsg.author.displayAvatarURL())
 			.setDescription(quotedMsg.content);

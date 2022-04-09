@@ -9,7 +9,7 @@ export const command: SlashCommand = {
 		.setDescription("Shows the guidelines for the Compliance Resource Pack."),
 	execute: async (interaction: CommandInteraction) => {
 		interaction
-			.reply({ content: "https://docs.compliancepack.net/pages/textures/texturing-guidelines", fetchReply: true })
+			.reply({ content: "https://docs.faithfulpack.net/pages/textures/texturing-guidelines", fetchReply: true })
 			.then((message: Message) => message.deleteButton());
 	},
 };

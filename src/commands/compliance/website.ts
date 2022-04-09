@@ -42,7 +42,7 @@ export const command: SlashCommand = {
 
 const websites = {
 	compliance_32: {
-		image: "https://database.compliancepack.net/images/brand/logos/no%20background/512/Compliance%20Basic.png",
+		image: "https://database.faithfulpack.net/images/brand/logos/no%20background/512/Compliance%20Basic.png",
 		color: colors.c32,
 		name: `Compliance 32x`,
 		value: `[${parseId(ids.c32)} Website](https://www.compliancepack.net/compliance32x/latest)\n[${parseId(
@@ -54,7 +54,7 @@ const websites = {
 		)} Planet Minecraft](https://www.planetminecraft.com/texture-pack/compliance-32x/)`,
 	},
 	compliance_64: {
-		image: "https://database.compliancepack.net/images/brand/logos/no%20background/512/Compliance%2064.png",
+		image: "https://database.faithfulpack.net/images/brand/logos/no%20background/512/Compliance%2064.png",
 		color: colors.c64,
 		name: "Compliance 64x",
 		value: `[${parseId(ids.c64)} Website](https://www.compliancepack.net/compliance64x/latest)\n[${parseId(
@@ -66,7 +66,7 @@ const websites = {
 		)} Planet Minecraft](https://www.planetminecraft.com/texture-pack/compliance-64x/)`,
 	},
 	compliance_dungeons_32: {
-		image: "https://database.compliancepack.net/images/brand/logos/no%20background/512/Compliance%20Dungeons.png",
+		image: "https://database.faithfulpack.net/images/brand/logos/no%20background/512/Compliance%20Dungeons.png",
 		color: colors.cdungeons,
 		name: "Compliance Dungeons 32x",
 		value: `[${parseId(
@@ -76,7 +76,7 @@ const websites = {
 		)} CurseForge](https://www.curseforge.com/minecraft-dungeons/mods/compliance-dungeons)`,
 	},
 	compliance_mods_32: {
-		image: "https://database.compliancepack.net/images/brand/logos/no%20background/512/Compliance%20Mods.png",
+		image: "https://database.faithfulpack.net/images/brand/logos/no%20background/512/Compliance%20Mods.png",
 		color: colors.cmods,
 		name: "Compliance Mods 32x",
 		value: `[${parseId(ids.cmods)} Mods Resource Pack picker](https://www.compliancepack.net/mods)\n[${parseId(
@@ -84,13 +84,13 @@ const websites = {
 		)} Modpacks Resource Pack presets](https://www.compliancepack.net/modpacks)`,
 	},
 	compliance_tweaks_32: {
-		image: "https://database.compliancepack.net/images/brand/logos/no%20background/512/Compliance%20Tweaks.png",
+		image: "https://database.faithfulpack.net/images/brand/logos/no%20background/512/Compliance%20Tweaks.png",
 		color: colors.ctweaks,
 		name: "Compliance Tweaks",
 		value: `[${parseId(ids.ctweaks)} Website](https://www.compliancepack.net/tweaks)`,
 	},
 	compliance_addons: {
-		image: "https://database.compliancepack.net/images/brand/logos/no%20background/512/Compliance%20Add-ons.png",
+		image: "https://database.faithfulpack.net/images/brand/logos/no%20background/512/Compliance%20Add-ons.png",
 		color: colors.caddons,
 		name: "Compliance Addons",
 		value: `[${parseId(ids.ctweaks)} All resolutions](https://www.compliancepack.net/addons)\n[${parseId(

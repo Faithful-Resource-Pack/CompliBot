@@ -20,10 +20,10 @@ export const command: SlashCommand = {
 			)
 			.setThumbnail(
 				res > 0.5
-					? "https://database.compliancepack.net/images/bot/coin_heads.png"
+					? "https://database.faithfulpack.net/images/bot/coin_heads.png"
 					: res < 0.5
-					? "https://database.compliancepack.net/images/bot/coin_tails.png"
-					: "https://database.compliancepack.net/images/bot/coin_edge.png",
+					? "https://database.faithfulpack.net/images/bot/coin_tails.png"
+					: "https://database.faithfulpack.net/images/bot/coin_edge.png",
 			)
 			.setColor(colors.coin);
 

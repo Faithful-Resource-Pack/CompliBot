@@ -9,7 +9,7 @@ export const command: SlashCommand = {
 		.setDescription("Shows the license for the Compliance Resources Pack."),
 	execute: async (interaction: CommandInteraction) => {
 		interaction
-			.reply({ content: "https://www.compliancepack.net/license", fetchReply: true })
+			.reply({ content: "https://www.faithfulpack.net/license", fetchReply: true })
 			.then((message: Message) => message.deleteButton());
 	},
 };

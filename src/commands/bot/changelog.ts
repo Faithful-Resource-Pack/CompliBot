@@ -68,7 +68,7 @@ export const command: SlashCommand = {
 					/(\/|\[|\]|v|\.)/g,
 					"",
 				);
-				const url = `https://github.com/Compliance-Resource-Pack/Discord-Bot/blob/typescript/CHANGELOG.md#${cleanedVersion}`;
+				const url = `https://github.com/Faithful-Resource-Pack/Discord-Bot/blob/typescript/CHANGELOG.md#${cleanedVersion}`;
 				const embed = new MessageEmbed()
 					.setTitle(`${await interaction.text({ string: "Command.Changelog.Title" })}${versionChoice}: `)
 					.setURL(url)
