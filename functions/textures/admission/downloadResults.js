@@ -68,10 +68,10 @@ async function downloadResults(client, channelInID) {
 			let localPath = 'undef'
 			switch (uses[j].editions[0].toLowerCase()) {
 				case "java":
-					localPath = './texturesPush/Compliance-Java-'
+					localPath = './texturesPush/Faithful-Java-'
 					break
 				case "bedrock":
-					localPath = './texturesPush/Compliance-Bedrock-'
+					localPath = './texturesPush/Faithful-Bedrock-'
 					break
 				default:
 					break
