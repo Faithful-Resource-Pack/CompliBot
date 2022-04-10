@@ -6,7 +6,7 @@ export const command: SlashCommand = {
 	servers: ["compliance", "compliance_extra", "classic_faithful"],
 	data: new SlashCommandBuilder()
 		.setName("guidelines")
-		.setDescription("Shows the guidelines for the Compliance Resource Pack."),
+		.setDescription("Shows the guidelines for the Faithful Resource Pack."),
 	execute: async (interaction: CommandInteraction) => {
 		interaction
 			.reply({ content: "https://docs.faithfulpack.net/pages/textures/texturing-guidelines", fetchReply: true })

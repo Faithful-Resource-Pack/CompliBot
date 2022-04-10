@@ -10,7 +10,7 @@ export const command: SlashCommand = {
 	servers: ["compliance", "compliance_extra", "classic_faithful"],
 	data: new SlashCommandBuilder()
 		.setName("texture")
-		.setDescription("Displays a specified texture from either vanilla Minecraft or Compliance.")
+		.setDescription("Displays a specified texture from either vanilla Minecraft or Faithful.")
 		.addStringOption((option) =>
 			option.setName("name").setDescription("Name of the texture you are searching for.").setRequired(true),
 		)
@@ -20,8 +20,8 @@ export const command: SlashCommand = {
 				.setDescription("Resource pack of the texture you are searching for.")
 				.addChoices([
 					["Vanilla 16x", "default"],
-					["Compliance 32x", "compliance_32x"],
-					["Compliance 64x", "compliance_64x"],
+					["Faithful 32x", "faithful_32x"],
+					["Faithful 64x", "faithful_64x"],
 					["Classic Faithful 32x", "classic_faithful_32x"],
 					["Classic Faithful 64x", "classic_faithful_64x"],
 					["Classic Faithful 32x Programmer Art", "classic_faithful_32x_progart"],

@@ -21,12 +21,12 @@
 - Added `/clear <amount>` command: Clear the given amount of message (moderators exclusive).
 - Added 2 ~~super secret~~ commands for devs fun & amusement only.
 - A view votes button has been added on submitted textures, thus, only giving output while the texture is still in the submission process.
-- **Config:** added "teams" config options: This now allow us to specify global roles, channels and so on for a group of discords servers (useful for Compliance & Co servers).
+- **Config:** added "teams" config options: This now allow us to specify global roles, channels and so on for a group of discords servers (useful for Faithful & Co servers).
 
 ### Changed
 - ⚠️ Moved all `.json` files used to store data from `EmittingCollection` into `./json/dynamic`
   > All polls data already saved will be lost! Already saved data needs to be manually transferred (only path as changed, not the data itself).
-- ⚠️ Commands in the `compliance` folders are now only available on `compliance`, `compliance_extra` & `classic_faithful` servers;  
+- ⚠️ Commands in the `faithful` folders are now only available on `faithful`, `faithful_extra` & `classic_faithful` servers;  
   > Concerned commands are: `/guidelines`, `/license`, `/missing`, `/reason`, `/texture`, `/website`.  
   > To avoid duplicated commands, kick & reinvite the bot.
 - Added some textures to the `blacklisted_textures.json`.
@@ -42,7 +42,7 @@
 
 ### Added
 - `/poll` command
-- `/missing` command (for all compliance/classic faithful packs) [Dungeons 32x NYI]
+- `/missing` command (for all faithful/classic faithful packs) [Dungeons 32x NYI]
 - `/palette` command & button command
 - Submission system (Push & Contribution creation NYI)
 
@@ -61,7 +61,7 @@
 - Buttons and selection menus (replacing reactions)
 - Native translations based on Discord language
 - `/stats command` command to see the amount of uses of a specific command
-- `/license` command for the Compliance Resource Pack license
+- `/license` command for the faithful Resource Pack license
 - Lots of new easter eggs
 
 ### Changed

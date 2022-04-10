@@ -24,13 +24,13 @@ export const getTextureMessageOptions = async (options: {
 	
 	// todo: use API here
 	switch (pack) {
-		case "compliance_32x":
-			strPack = "Compliance 32x";
-			strIconURL = config.images + "brand/logos/no%20background/64/Compliance%20Basic.png";
+		case "faithful_32x":
+			strPack = "Faithful 32x";
+			strIconURL = config.images + "branding/logos/transparent/512/f32_logo.png";
 			break;
-		case "compliance_64x":
-			strPack = "Compliance 64x";
-			strIconURL = config.images + "brand/logos/no%20background/64/Compliance%2064.png";
+		case "faithful_64x":
+			strPack = "Faithful 64x";
+			strIconURL = config.images + "branding/logos/transparent/512/f64_logo.png";
 			break;
 
 		case "classic_faithful_32x":
@@ -83,7 +83,7 @@ export const getTextureMessageOptions = async (options: {
 		dimensions = await getMeta(textureURL);
 		validURL = true;
 	} catch (err) {
-		textureURL = "https://raw.githubusercontent.com/Compliance-Resource-Pack/App/main/resources/transparency.png";
+		textureURL = "https://raw.githubusercontent.com/Faithful-Resource-Pack/App/main/resources/transparency.png";
 		embed.addField("Image not found", "This texture hasn't been made yet or is blacklisted!");
 		embed.setColor(colors.red);
 	}

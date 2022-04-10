@@ -99,7 +99,7 @@ export const compute = async (
 	const repoDefault = repo.default[edition];
 	const repoRequest = repo[pack][edition];
 
-	// pack doesn't support edition (ex: Compliance 64x -> dungeons)
+	// pack doesn't support edition (ex: Faithful 64x -> dungeons)
 	if (repoRequest === undefined)
 		return [
 			null,

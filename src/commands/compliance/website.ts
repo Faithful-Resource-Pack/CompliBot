@@ -14,12 +14,12 @@ export const command: SlashCommand = {
 				.setName("name")
 				.setDescription("Name of the resource pack you want to see the sites of.")
 				.addChoices([
-					["Compliance 32x", "compliance_32"],
-					["Compliance 64x", "compliance_64"],
-					["Compliance Add-ons", "compliance_addons"],
-					["Compliance Dungeons 32x", "compliance_dungeons_32"],
-					["Compliance Mods 32x", "compliance_mods_32"],
-					["Compliance Tweaks 32x", "compliance_tweaks_32"],
+					["Faithful 32x", "faithful_32"],
+					["Faithful 64x", "faithful_64"],
+					["Faithful Add-ons", "faithful_addons"],
+					["Faithful Dungeons 32x", "faithful_dungeons_32"],
+					["Faithful Mods 32x", "faithful_mods_32"],
+					["Faithful Tweaks 32x", "faithful_tweaks_32"],
 				]),
 		),
 	execute: async (interaction: CommandInteraction) => {
@@ -41,58 +41,58 @@ export const command: SlashCommand = {
 };
 
 const websites = {
-	compliance_32: {
-		image: "https://database.faithfulpack.net/images/brand/logos/no%20background/512/Compliance%20Basic.png",
+	faithful_32: {
+		image: "https://database.faithfulpack.net/images/branding/logos/transparent/512/f32_logo.png",
 		color: colors.c32,
-		name: `Compliance 32x`,
+		name: `Faithful 32x`,
 		value: `[${parseId(ids.c32)} Website](https://www.faithfulpack.net/compliance32x/latest)\n[${parseId(
 			ids.curseforge,
-		)} CurseForge | Java](https://www.curseforge.com/minecraft/texture-packs/compliance-32x)\n[${parseId(
+		)} CurseForge | Java](https://www.curseforge.com/minecraft/texture-packs/faithful-32x)\n[${parseId(
 			ids.curseforge,
-		)} CurseForge | Bedrock](https://www.curseforge.com/minecraft-bedrock/addons/compliance-32x-bedrock)\n[${parseId(
+		)} CurseForge | Bedrock](https://www.curseforge.com/minecraft-bedrock/addons/faithful-32x-bedrock)\n[${parseId(
 			ids.planet_mc,
-		)} Planet Minecraft](https://www.planetminecraft.com/texture-pack/compliance-32x/)`,
+		)} Planet Minecraft](https://www.planetminecraft.com/texture-pack/faithful-32x/)`,
 	},
-	compliance_64: {
-		image: "https://database.faithfulpack.net/images/brand/logos/no%20background/512/Compliance%2064.png",
+	faithful_64: {
+		image: "https://database.faithfulpack.net/images/branding/logos/transparent/512/f64_logo.png",
 		color: colors.c64,
-		name: "Compliance 64x",
+		name: "Faithful 64x",
 		value: `[${parseId(ids.c64)} Website](https://www.faithfulpack.net/compliance64x/latest)\n[${parseId(
 			ids.curseforge,
-		)} CurseForge | Java](https://www.curseforge.com/minecraft/texture-packs/compliance-64x)\n[${parseId(
+		)} CurseForge | Java](https://www.curseforge.com/minecraft/texture-packs/faithful-64x)\n[${parseId(
 			ids.curseforge,
-		)} CurseForge | Bedrock](https://www.curseforge.com/minecraft-bedrock/addons/compliance-64x-bedrock)\n[${parseId(
+		)} CurseForge | Bedrock](https://www.curseforge.com/minecraft-bedrock/addons/faithful-64x-bedrock)\n[${parseId(
 			ids.planet_mc,
-		)} Planet Minecraft](https://www.planetminecraft.com/texture-pack/compliance-64x/)`,
+		)} Planet Minecraft](https://www.planetminecraft.com/texture-pack/faithful-64x/)`,
 	},
-	compliance_dungeons_32: {
-		image: "https://database.faithfulpack.net/images/brand/logos/no%20background/512/Compliance%20Dungeons.png",
+	faithful_dungeons_32: {
+		image: "https://database.faithfulpack.net/images/branding/logos/transparent/512/dungeons_logo.png",
 		color: colors.cdungeons,
-		name: "Compliance Dungeons 32x",
+		name: "Faithful Dungeons 32x",
 		value: `[${parseId(
 			ids.cdungeons,
 		)} Website](https://www.faithfulpack.net/compliance32xDungeons/latest)\n[${parseId(
 			ids.curseforge,
-		)} CurseForge](https://www.curseforge.com/minecraft-dungeons/mods/compliance-dungeons)`,
+		)} CurseForge](https://www.curseforge.com/minecraft-dungeons/mods/faithful-dungeons)`,
 	},
-	compliance_mods_32: {
-		image: "https://database.faithfulpack.net/images/brand/logos/no%20background/512/Compliance%20Mods.png",
+	faithful_mods_32: {
+		image: "https://database.faithfulpack.net/images/branding/logos/transparent/512/mods_logo.png",
 		color: colors.cmods,
-		name: "Compliance Mods 32x",
+		name: "Faithful Mods 32x",
 		value: `[${parseId(ids.cmods)} Mods Resource Pack picker](https://www.faithfulpack.net/mods)\n[${parseId(
 			ids.cmods,
 		)} Modpacks Resource Pack presets](https://www.faithfulpack.net/modpacks)`,
 	},
-	compliance_tweaks_32: {
-		image: "https://database.faithfulpack.net/images/brand/logos/no%20background/512/Compliance%20Tweaks.png",
+	faithful_tweaks_32: {
+		image: "https://database.faithfulpack.net/images/branding/logos/transparent/512/tweaks_logo.png",
 		color: colors.ctweaks,
-		name: "Compliance Tweaks",
+		name: "Faithful Tweaks",
 		value: `[${parseId(ids.ctweaks)} Website](https://www.faithfulpack.net/tweaks)`,
 	},
-	compliance_addons: {
-		image: "https://database.faithfulpack.net/images/brand/logos/no%20background/512/Compliance%20Add-ons.png",
+	faithful_addons: {
+		image: "https://database.faithfulpack.net/images/branding/logos/transparent/512/addons_logo.png",
 		color: colors.caddons,
-		name: "Compliance Addons",
+		name: "Faithful Addons",
 		value: `[${parseId(ids.ctweaks)} All resolutions](https://www.faithfulpack.net/addons)\n[${parseId(
 			ids.ctweaks,
 		)} Collections](https://www.faithfulpack.net/addonCollections)`,

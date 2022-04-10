@@ -5,5 +5,7 @@
     "appID": "botID",
     "apiPassword": "test",
     "errorChannel": "927617374738341959",
-    "dev": true
+    "dev": true,
+    "verbose": false,
+    "maintanance": false
 }
