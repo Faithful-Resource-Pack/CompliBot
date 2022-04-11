@@ -11,6 +11,7 @@ Commands are explained like so:
 ## [v2.0.3] TBA
 
 ### Added
+- `/eval [code]` command for developers.
 - `/logs` for developers only, see the whole current logs information without needing a crash of the bot (_aha_).
 - `/notes [add|list|edit]`, moderators can now make private notes against all users
   - Use `/notes list [user]` to list all attached notes from that user; **⚠️ the response is public**.
