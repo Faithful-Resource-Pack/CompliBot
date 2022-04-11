@@ -6,7 +6,7 @@ import { colors } from "@helpers/colors";
 export const event: Event = {
 	name: "messageDelete",
 	run: async (client: Client, message: Message) => {
-		if (message.author.bot) return;
+		if (message.author && message.author.bot) return;
 
 		//! do not remove, 'force' message to be casted (break if removed)
 		//"I need a "typescript issue" gif" ~RobertR11 2022
