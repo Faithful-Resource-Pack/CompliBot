@@ -22,7 +22,11 @@ Commands are explained like so:
 - Re-brand Compliance to Faithful !
 - Changed how no results are handled when using `/texture`, may solve the `Unknown Message` error + the no response at all.
 - Crash logs is now **way more** detailed and contains now information about: messages (deleted/created), slash commands, guild member (joined/removed), select menus, buttons, slash commands, guild joined (when the client is added to a guild: ⚠️ UNTESTED)
-- `/poll` threads are now directly attached to the poll message (yeet)
+- `/poll`:
+  - Threads are now directly attached to the poll message (yeet)
+  - Vote can now be set to accept multiple answers trough the `allow-multiple-answer` option! (set to `false` by default)
+  - You now receive a message when you add/remove a vote to an anonymous vote
+  - Fixed possible crash/unhandledError when too much text is displayed inside the vote field (for not anonymous votes)
 - Changed emojis for the buttons of the `/feedback` command
 - Added texture path version to the texture select menu (avoid confusion between exact same path & name for a texture, ex: `gold_ore`)
 

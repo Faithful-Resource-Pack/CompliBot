@@ -108,11 +108,11 @@ export class TimedEmbed {
 		if (!this.multipleAnswers) {
 			// remove user vote for all others categories
 			Object.keys(this.votes).forEach((key: string) => {
-				if (this.votes[key].includes(id)) this.removeVote(key, id);
+				this.removeVote(key, id);
 			})
 		}
 
-		if (this.votes[type].includes(id)) this.removeVote(type, id);
+		if (this.hasVotedFor(type, id)) this.removeVote(type, id);
 		else this.votes[type].push(id);
 		
 		return this;
@@ -138,11 +138,12 @@ export class TimedEmbed {
 
 	/**
 	 * Remove any vote to the poll/submission
+	 * @param {String} type - the type category of vote to remove
 	 * @param {User.id} id - the user id to remove
 	 * @returns {this}
 	 */
 	public removeVote(type: string, id: string): this {
-		if (this.votes[type].includes(id)) this.votes[type].splice(this.votes[type].indexOf(id), 1);
+		if (this.hasVotedFor(type, id)) this.votes[type].splice(this.votes[type].indexOf(id), 1);
 		return this;
 	}
 
@@ -157,6 +158,17 @@ export class TimedEmbed {
 		
 		return this;
 	}
+
+	/**
+	 * Tell if a user is in the array of voters for the given type
+	 * @param {String} type - the type category of vote to remove
+	 * @param {User.id} id - the user id to remove
+	 * @returns {Boolean}
+	 */
+	public hasVotedFor(type: string, id: string): boolean {
+		if (this.votes[type] === undefined) return false;
+		return this.votes[type].includes(id);
+	} 
 
 	/**
 	 * Get the Discord Message Id of the poll/submission
