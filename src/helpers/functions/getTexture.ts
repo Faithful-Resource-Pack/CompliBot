@@ -27,11 +27,11 @@ export const getTextureMessageOptions = async (options: {
 	switch (pack) {
 		case "faithful_32x":
 			strPack = "Faithful 32x";
-			strIconURL = config.images + "brand/logos/no%20background/64/Faithful%20Basic.png";
+			strIconURL = config.images + "branding/logos/transparent/512/f32_logo.png";
 			break;
 		case "faithful_64x":
 			strPack = "Faithful 64x";
-			strIconURL = config.images + "brand/logos/no%20background/64/Faithful%2064.png";
+			strIconURL = config.images + "branding/logos/transparent/512/f64_logo.png";
 			break;
 
 		case "classic_faithful_32x":

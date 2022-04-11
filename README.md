@@ -15,8 +15,8 @@ ___
 - [Faithful Extras](https://discord.gg/qVeDfZw)
 
 ___
-### You found an issue?
-Please submit it using our [bug tracker](https://github.com/Faithful-Resource-Pack/Discord-Bot/issues/new/choose) or by using the `/feedback <text>` command from the bot. The bug tracker is preferred but both options are valids.
+### Found an issue?
+Please submit it using our [bug tracker](https://github.com/Faithful-Resource-Pack/Discord-Bot/issues/new/choose) or by using the `/feedback <text>` command from the bot. The bug tracker is preferred but both options are valid.
 ___
 ### Installation and launching:
 1. Install **[Node.js](https://nodejs.org/)** on your machine. **Version 16.9.0 or higher is required!**

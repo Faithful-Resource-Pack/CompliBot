@@ -1,7 +1,7 @@
 {
     "name": "complibot",
     "version": "2.0.1",
-    "description": "A discord bot for the faithful organisation resource packs",
+    "description": "A discord bot for the Faithful Team Resource Packs",
     "main": "src/index.ts",
     "type": "commonjs",
     "scripts": {
@@ -33,7 +33,7 @@
         "jszip": "^3.8.0",
         "linux-os-info": "^2.0.0",
         "module-alias": "^2.2.2",
-        "moment": "^2.29.1",
+        "moment": "^2.29.2",
         "tslib": "^2.3.1"
     }
 }

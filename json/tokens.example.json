@@ -6,5 +6,6 @@
     "apiPassword": "test",
     "errorChannel": "927617374738341959",
     "dev": true,
-    "verbose": true
+    "verbose": false,
+    "maintenance": false
 }

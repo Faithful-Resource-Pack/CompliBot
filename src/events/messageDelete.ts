@@ -14,7 +14,7 @@ export const event: Event = {
 		m.author = message.author; // because we loose methods attached to the object :3
 		client.storeAction("message", m);
 
-		if (message.author.bot) return;
+		if (message.author && message.author.bot) return;
 
 		if (message.guild.id == "773983706582482946" || message.guild.id == "614160586032414845") {
 
