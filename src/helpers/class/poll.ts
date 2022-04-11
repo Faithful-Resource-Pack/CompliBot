@@ -51,11 +51,19 @@ export class Poll extends TimedEmbed {
 					: `> ${votesCount[index - 1]} / ${votesCount.reduce((partialSum, a) => partialSum + a, 0)} (${(
 							(votesCount[index - 1] / votesCount.reduce((partialSum, a) => partialSum + a, 0)) *
 							100
-					  ).toFixed(2)}%)`;
+					  ).toFixed(2)}%)\n`;
 
-			if (this.isAnonymous() === false)
-				field.value +=
-					votes[index - 1] && votes[index - 1].length > 0 ? `\n<@!${votes[index - 1].join(">, <@!")}>` : "";
+			if (this.isAnonymous() === false) {
+				let i = 0;
+
+				while (votes[index - 1][i] !== undefined && field.value.length + votes[index - 1][i].length < 1024) {
+					field.value += `<@!${votes[index - 1][i]}> `;
+					i++;
+				}
+
+				if (votes[index - 1][i] !== undefined && field.value.length + votes[index - 1][i].length > 1024 && field.value.length + ` ...`.length < 1024)
+					field.value += ` ...`;
+			}
 
 			return field;
 		});

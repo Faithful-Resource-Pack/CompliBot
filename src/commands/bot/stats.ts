@@ -61,11 +61,6 @@ export const command: SlashCommand = {
 			interaction.reply({ embeds: [embed], fetchReply: true }).then((message: Message) => message.deleteButton());
 		})
 		.set("command", async (interaction: CommandInteraction, client: Client) => {
-			// //console.log(interaction.options.getString("command"))
-			// // if (interaction.options.getString("command") == undefined) {
-			// // 	console.log(client.commandsProcessed);
-			// // }
-
 			//if the command ars is provided and the command does not exist in commandsProcessed:
 			if (
 				interaction.options.getString("command") &&

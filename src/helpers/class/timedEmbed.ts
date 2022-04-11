@@ -16,6 +16,7 @@ export class TimedEmbed {
 	private status: string = "pending";
 	private timeout: number = 0; // used for end of events (pending until...)
 	private anonymous: boolean = true;
+	private multipleAnswers: boolean = false;
 
 	constructor(data?: TimedEmbed) {
 		if (!data) {
@@ -30,6 +31,7 @@ export class TimedEmbed {
 			this.status = tmp.status;
 			this.timeout = tmp.timeout;
 			this.anonymous = tmp.anonymous;
+			this.multipleAnswers = tmp.multipleAnswers;
 		}
 	}
 
@@ -103,13 +105,16 @@ export class TimedEmbed {
 	 * @returns {this}
 	 */
 	public addVote(type: string, id: string): this {
-		// the user can only vote for one side
-		if (this.votes[type].includes(id)) {
-			this.removeVote(type, id);
-			return this;
+		if (!this.multipleAnswers) {
+			// remove user vote for all others categories
+			Object.keys(this.votes).forEach((key: string) => {
+				if (this.votes[key].includes(id)) this.removeVote(key, id);
+			})
 		}
 
-		this.votes[type].push(id);
+		if (this.votes[type].includes(id)) this.removeVote(type, id);
+		else this.votes[type].push(id);
+		
 		return this;
 	}
 	
@@ -248,6 +253,16 @@ export class TimedEmbed {
 	public setTimeout(value: any): this {
 		if (value instanceof Date) this.timeout = parseInt((value.getTime() / 1000).toFixed(0));
 		else this.timeout = value;
+		return this;
+	}
+
+	/**
+	 * Set the poll/submission multiple answers
+	 * @param {Boolean} bool - value
+	 * @returns {this}
+	 */
+	public setMultipleAnswers(bool: boolean): this {
+		this.multipleAnswers = bool;
 		return this;
 	}
 }

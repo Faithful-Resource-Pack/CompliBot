@@ -19,15 +19,16 @@ export const command: SlashCommand = {
 		.addStringOption((option) => option.setName("timeout").setDescription("Timeout for the vote. (schema: 3 min, 10 h, 1 year)").setRequired(true))
 		.addBooleanOption((option) => option.setName("anonymous").setDescription("Should votes be anonymous?"))
 		.addBooleanOption((option) => option.setName("thread").setDescription("Do you want a thread for this question?"))
+		.addBooleanOption((option) => option.setName("allow-multiple-answers").setDescription("When set to true, users can vote for multiple answers."))
 		.addBooleanOption((option) =>
-			option.setName("yesno").setDescription("Do you want to use the YES/NO format? Only works if 2 answers are provided."),
+			option.setName("yesno").setDescription("Do you want to use the YES/NO format? Will force 2 answers to be provided."),
 		)
 		.addStringOption((option) =>
 			option.setName("description").setDescription("Add more information about your poll here."),
 		),
 	execute: async (interaction: CommandInteraction, client: Client) => {
 		const question: string = interaction.options.getString("question", true);
-		
+		const multipleAnswers: boolean = interaction.options.getBoolean("allow-multiple-answers", false) === true ? true : false;
 		const timeoutVal: string | null = interaction.options.getString("timeout", false);
 		const yesno: boolean = interaction.options.getBoolean("yesno", false) === true ? true : false;
 		const thread: boolean = interaction.options.getBoolean("thread", false) === true ? true : false;
@@ -93,6 +94,7 @@ export const command: SlashCommand = {
 		if (description) embed.setDescription(description);
 		else embed.description = null;
 
+		poll.setMultipleAnswers(multipleAnswers);
 		poll.setAnonymous(anonymous);
 		poll.postSubmissionMessage(interaction, embed, {
 			question,

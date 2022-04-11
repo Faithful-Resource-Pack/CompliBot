@@ -278,8 +278,6 @@ export class Submission extends TimedEmbed {
 	}
 
 	public async createContribution(client: Client) {
-		
-
 		client.channels
 			.fetch(this.getChannelId())
 			.then((c: TextChannel) => {
@@ -296,6 +294,7 @@ export class Submission extends TimedEmbed {
 				let pack = ressourcePack.slug;
 
 				// send the contribution
+				// todo: use API url here
 				return axios.post(`http://localhost:8000/v2/contributions`, { date, pack, resolution, authors, texture }, { headers: { bot: client.tokens.apiPassword } })
 			})
 			.then((res) => res.data) // axios data response
