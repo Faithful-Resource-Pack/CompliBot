@@ -1,4 +1,4 @@
-import { ButtonInteraction, Client, ClientOptions, Collection, CommandInteraction, Guild, SelectMenuInteraction, TextChannel, VoiceChannel } from "discord.js";
+import { ApplicationCommand, ButtonInteraction, Client, ClientOptions, Collection, CommandInteraction, Guild, GuildApplicationCommandPermissionData, SelectMenuInteraction, TextChannel, VoiceChannel } from "discord.js";
 import { Message, GuildMember, EmittingCollection, Automation } from "@client";
 import { Command, Event, Config, Tokens, Button, SelectMenu, SlashCommand, AsyncSlashCommandBuilder } from "@interfaces";
 import { getData } from "@functions/getDataFromJSON";
@@ -176,22 +176,18 @@ class ExtendedClient extends Client {
 	private loadSlashCommandsPerms = async () => {
 		if (!this.application.owner) await this.application.fetch();
 
-		this.guilds.cache.forEach(async (guild: Guild) => {
-			const fullPermissions = [];
-			const guildSlashCommands = await guild.commands.fetch();
+		const addPerms = (commands: Collection<string, ApplicationCommand<{}>>): Array<GuildApplicationCommandPermissionData> => {
+			const fullPermissions: Array<GuildApplicationCommandPermissionData> = [];
 
 			this.slashCommands.forEach(async (slashCommand: SlashCommand) => {
-				if (slashCommand.permissions === undefined) return; // no permission to be checked
+				if (slashCommand.permissions === undefined) return; // no permissions set
 
-				const command = guildSlashCommands.find((cmd) => cmd.name === (slashCommand.data as SlashCommandBuilder).name);
-				if (command === undefined) return; // happens when settings perms of private commands to all perms
+				const command = commands.find((c) => c.name === (slashCommand.data as SlashCommandBuilder).name);
+				if (command === undefined) return; // command not found
 
-				const p = {
-					id: command.id,
-					permissions: [],
-				};
+				const p = { id: command.id, permissions: [] };
 
-				if (slashCommand.permissions.roles !== undefined)
+				if (slashCommand.permissions.roles !== undefined) 
 					for (const id of slashCommand.permissions.roles)
 						p.permissions.push({ id: id, type: "ROLE", permission: true });
 
@@ -200,10 +196,28 @@ class ExtendedClient extends Client {
 						p.permissions.push({ id: id, type: "USER", permission: true });
 
 				fullPermissions.push(p);
-			});
+			})
+
+			return fullPermissions;
+		}
+
+		// for all guilds
+		this.guilds.cache.forEach(async (guild: Guild) => {
+			// guilds specific slash commands
+			const guildSlashCommands = await guild.commands.fetch();
+			const fullPermissions = addPerms(guildSlashCommands);
 
 			await guild.commands.permissions.set({ fullPermissions });
-			if (this.verbose) console.log(success + `Loaded slash command perms`);
+			if (this.verbose) console.log(success + `Loaded slash command perms for ${guild.name}`);
+
+			// global slash commands
+			if (!this.tokens.dev) {
+				const slashCommands = await this.application?.commands.fetch();
+				const fullPermissions = addPerms(slashCommands);
+
+				await this.application?.commands.permissions.set({ fullPermissions, guild: guild });
+				if (this.verbose) console.log(success + `Loaded global slash command perms for ${guild.name}`);
+			}
 		});
 	};
 
