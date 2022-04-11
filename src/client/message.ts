@@ -12,6 +12,7 @@ declare module "discord.js" {
 		tokens: Tokens;
 		config: Config;
 		menu: Menu;
+		isDeleted: boolean;
 
 		warn(text: string, disappearing?: boolean): void;
 		deleteReact(options: Options): void;
