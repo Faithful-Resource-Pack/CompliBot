@@ -8,7 +8,11 @@ Commands are explained like so:
 /notes [mandatory_parameter] (optional_parameter)
 ```
 
-## [v2.0.3] TBA
+## [v2.0.4] TBA
+
+> NYI
+
+## [v2.0.3] 12/04/2022
 
 ### Added
 - `/eval [code]` command for developers.
@@ -32,6 +36,7 @@ Commands are explained like so:
 - Added texture path version to the texture select menu (avoid confusion between exact same path & name for a texture, ex: `gold_ore`)
 
 ### Fixed
+- Added permissions for global slash commands (BRUH)
 - Delete button should now be properly working again
 - Fixed some typo & added a lot of comments to describe methods/functions
 
