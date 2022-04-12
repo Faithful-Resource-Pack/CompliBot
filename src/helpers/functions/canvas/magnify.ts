@@ -14,22 +14,20 @@ export async function magnifyAttachment(options: options): Promise<[MessageAttac
 	return getMeta(options.url).then(async (dimension) => {
 		let factor = options.factor;
 
-		//If no factor was given it tries maximising the image output size
+		// If no factor was given it tries maximizing the image output size
 		if (factor == undefined) {
 			const surface = dimension.width * dimension.height;
 
-			if (surface <= 256) factor = 32; // 16^2px or below
-			if (surface > 256) factor = 16; // 16^2px
-			if (surface > 1024) factor = 8; // 32^2px
-			if (surface > 4096) factor = 4; // 64^2px
+			if (surface <= 256) factor = 32; // 16²px or below
+			if (surface > 256) factor = 16; // 16²px
+			if (surface > 1024) factor = 8; // 32²px
+			if (surface > 4096) factor = 4; // 64²px
 			if (surface > 65636) factor = 2;
-			// 262144 = 512^2
+			// 262144 = 512²px
 			else if (surface >= 262144) factor = 1;
-		}
+		} else if ((dimension.width * factor) * (dimension.height * factor) > 262144) factor = 1;
 
 		const [width, height] = [dimension.width * factor, dimension.height * factor];
-		if (width * height > 262144) return undefined;
-
 		const canvas = createCanvas(width, height);
 		const context = canvas.getContext("2d");
 
