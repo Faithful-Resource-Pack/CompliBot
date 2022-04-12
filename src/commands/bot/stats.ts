@@ -16,7 +16,7 @@ export const command: SlashCommand = {
 				.setName("command")
 				.setDescription("Returns top 10 most used commands.")
 				.addStringOption((option) =>
-					option.setName("command").setDescription("Returns usage for a spesific command.").setRequired(false),
+					option.setName("command").setDescription("Returns usage for a specific command.").setRequired(false),
 				),
 		),
 	execute: new Collection<string, SlashCommandI>()
@@ -70,38 +70,55 @@ export const command: SlashCommand = {
 					ephemeral: true,
 					content: await interaction.text({
 						string: "Command.Stats.NotFound",
+						placeholders: {
+							COMMAND: interaction.options.getString("command")
+						}
 					}),
 				});
 
 			if (interaction.options.getString("command")) {
-				const embed = new MessageEmbed().setTitle(
-					await interaction.text({
-						string: "Command.Stats.Usage",
-						placeholders: {
-							COMMAND: interaction.options.getString("command"),
-							USE: client.commandsProcessed.get(interaction.options.getString("command")).toString() ?? "0",
-						},
-					}),
-				);
-				interaction.reply({ embeds: [embed], fetchReply: true }).then((message: Message) => message.deleteButton());
+				const embed = new MessageEmbed()
+					.setTimestamp()
+					.setTitle(
+						await interaction.text({
+							string: "Command.Stats.Usage",
+							placeholders: {
+								COMMAND: interaction.options.getString("command"),
+								USE: client.commandsProcessed.get(interaction.options.getString("command")).toString() ?? "0",
+							},
+						}),
+					);
+				interaction.reply({ ephemeral: true, embeds: [embed], fetchReply: true });
 			} else {
 				//sorts commands by usage: 4,3,2,1
 				const sorted = new Map([...client.commandsProcessed.entries()].sort((a, b) => b[1] - a[1]));
-				const iterator = sorted[Symbol.iterator]();
+				const data = [[...sorted.keys()], [...sorted.values()]];
 
-				const embed = new MessageEmbed().setTitle("Top 10 most used commands:");
-				let description = "";
+				const embed = new MessageEmbed()
+					.setTimestamp()
+					.setTitle(await interaction.text({ string: "Command.Stats.Top10" }))
+					.setDescription(`\`\`\`
+┌───────┬─────────────┬───────────┐
+│ ORDER │   COMMAND   │ TIME USED │
+├───────┼─────────────┼───────────┤
+${
+	data[0]
+		.slice(0, data[0].length > 10 ? 10 : data[0].length)
+		.map((key: any, index: any) => {
+			let part1 = `  ${index + 1 < 10 ? ` ${index + 1}` : index + 1}.  `;
+			let part2 = ` /${key}`;
+			part2 += ` `.repeat(13 - part2.length);
+			let part3 = ` ${data[1][index]}`;
+			part3 += ` `.repeat(11 - part3.length);
 
-				let placement = 0;
-				for (const pair of iterator) {
-					description += `${placement + 1}. [${pair[1]}] ${pair[0]}\n`;
-					placement++;
+			return `│${part1}│${part2}│${part3}│`;
+		})
+		.join('\n')
+}
+└───────┴─────────────┴───────────┘
+\`\`\``);
 
-					if (placement == 10) break;
-				}
-
-				embed.setDescription(description);
-				interaction.reply({ embeds: [embed] });
+				interaction.reply({ ephemeral: true, embeds: [embed] });
 			}
 		}),
 };

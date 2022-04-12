@@ -16,7 +16,7 @@ Commands are explained like so:
 
 ### Added
 - `/activity [activity] (channel)` lets you start all of discord's mini-games in a channel that your in or a specified channel can be provided. (_some activities require boosts like the game octo_) 
-- `/stats command` now returns 10 most used commands if you don't specify any specific command.
+- `/stats command (command)` now returns 10 most used commands by default, you can still see per command by specifying the `command` option.
 - `/eval [code]` command for developers.
 - `/logs` for developers only, see the whole current logs information without needing a crash of the bot.
 - `/notes [add|list|edit]`, moderators can now make private notes against all users

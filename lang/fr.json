@@ -221,6 +221,8 @@
     "Command.Stats.Embed.Title": "Stats de %USER%.",
     "Command.Stats.Footer": "Fait avec amour",
     "Command.Stats.Usage": "%COMMAND% a été utilisée %USE% fois.",
+    "Command.Stats.Top10": "Top 10 des commands les plus utilisées:",
+    "Command.Stats.NotFound": "La commande `%COMMAND%` n'existe pas!",
     "Command.Texture.NotFound": "Aucun résultats pour ce nom de texture : %TEXTURENAME%",
     "Error.DevBad": "Cette partie reste non implémentée en raison d'incompétence. Demandez aux développeurs ou débrouillez-vous.",
     "Error.General": "Une erreur s'est produite !",
