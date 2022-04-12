@@ -1,5 +1,5 @@
 {
-    	"New event template": {
+	"New event template": {
 		"prefix": "net",
 		"body": [
 			"import { Event } from '@interfaces';",
@@ -11,16 +11,44 @@
 		]
 	},
 
+	"New async command template": {
+		"prefix": "nact",
+		"body": [
+			"import { SlashCommand, SyncSlashCommandBuilder } from \"@interfaces\";",
+			"import { Client, CommandInteraction, Message, MessageEmbed } from \"@client\";",
+			"import { SlashCommandBuilder } from \"@discordjs/builders\";",
+			"export const command: SlashCommand = {",
+			"\tservers: undefined, // servers exclusive to this command",
+			"\tpermissions: {",
+			"\t\troles: [], // permitted roles ids",
+			"\t\tusers: [], // permitted user ids",
+			"\t},",
+			"\tdata: async (client: Client): Promise<SyncSlashCommandBuilder> => {",
+			"\t\t/**",
+			"\t\t * todo: implement fetched stuff here",
+			"\t\t */",
+			"\t\treturn new SlashCommandBuilder()",
+			"\t\t\t.setDefaultPermission(true)",
+			"\t\t\t.setName(\"${1:Name}\")",
+			"\t\t\t.setDescription(\"${1:Description}\"),",
+			"\t},",
+			"\texecute: async (interaction: CommandInteraction, client: Client) => {",
+			"\t\t${3://todo: implement command}",
+			"\t},\n};"
+		]
+	},
+
 	"New command template": {
 		"prefix": "nct",
 		"body": [
-			"import { SlashCommand } from '@interfaces';",
-			"import { CommandInteraction, Client } from 'discord.js';",
-			"import { SlashCommandBuilder } from '@discordjs/builders';",
+			"import { SlashCommand } from \"@interfaces\";",
+			"import { Client, CommandInteraction, Message, MessageEmbed } from \"@client\";",
+			"import { SlashCommandBuilder } from \"@discordjs/builders\";",
 			"export const command: SlashCommand = {",
+			"\tservers: undefined, // servers exclusive to this command",
 			"\tpermissions: {",
-			"\t\troles: [], //roles array",
-			"\t\tusers: [], //userID array",
+			"\t\troles: [], // permitted roles ids",
+			"\t\tusers: [], // permitted user ids",
 			"\t},",
 			"\tdata: new SlashCommandBuilder()",
 			"\t\t.setDefaultPermission(true)",
