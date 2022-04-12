@@ -112,7 +112,7 @@
         "%PLAYER% został zmiażdżony przez spadające kowadło podczas walki z %AUTHOR%",
         "%PLAYER% został zmiażdżony przez spadający blok",
         "%PLAYER% został zmiażdżony przez spadający blok podczas walki z graczem %AUTHOR%",
-        "Spadający stalaktyt zrobił z "%PLAYER% szaszłyk",
+        "Spadający stalaktyt zrobił z %PLAYER% szaszłyk",
         "Spadający stalaktyt zrobił z %PLAYER% szaszłyk podczas walki z %AUTHOR%",
         "%PLAYER% zginął w płomieniach",
         "%PLAYER% wszedł w ogień podczas walki z %AUTHOR%",
