@@ -246,19 +246,13 @@ class ExtendedClient extends Client {
 		// for all guilds
 		this.guilds.cache.forEach(async (guild: Guild) => {
 			// global slash commands
-			if (!this.tokens.dev) {
-				const slashCommands = await this.application.commands.fetch();
-				const fullPermissions = addPerms(slashCommands);
-
-				await this.application.commands.permissions.set({ fullPermissions, guild: guild });
-				if (this.verbose) console.log(success + `Loaded global slash command perms for ${guild.name}`);
-			}
-
+			const slashCommands = await this.application.commands.fetch();
 			// guilds specific slash commands
 			const guildSlashCommands = await guild.commands.fetch();
-			const fullPermissions = addPerms(guildSlashCommands);
 
-			await guild.commands.permissions.set({ fullPermissions });
+			const fullPermissions = [...addPerms(slashCommands), ...addPerms(guildSlashCommands)];
+
+			await this.application.commands.permissions.set({ fullPermissions: fullPermissions, guild: guild });
 			if (this.verbose) console.log(success + `Loaded slash command perms for ${guild.name}`);
 		});
 	};
