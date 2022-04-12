@@ -94,24 +94,23 @@ export const command: SlashCommand = {
 
 				const embed = new MessageEmbed()
 					.setTimestamp()
-					.setTitle(await interaction.text({ string: "Command.Stats.Top10" })).setDescription(`\`\`\`
-┌───────┬─────────────┬───────────┐
-│ ORDER │   COMMAND   │ TIME USED │
-├───────┼─────────────┼───────────┤
+					.setTitle(await interaction.text({ string: "Command.Stats.Top10" }))
+					.setDescription(`
 ${data[0]
 	.slice(0, data[0].length > 10 ? 10 : data[0].length)
 	.map((key: any, index: any) => {
-		let part1 = `  ${index + 1 < 10 ? ` ${index + 1}` : index + 1}.  `;
-		let part2 = ` /${key}`;
-		part2 += ` `.repeat(13 - part2.length);
-		let part3 = ` ${data[1][index]}`;
-		part3 += ` `.repeat(11 - part3.length);
+		let place = `\`${index + 1 < 10 ? ` ${index + 1}` : index + 1}.`;
+		place += ` `.repeat(4 - place.length);
+		place += "\`";
+		let command = `\`${key}`;
+		command += ` `.repeat(13 - command.length);
+		command += "\`";
+		let uses = `\`${data[1][index]}`;
+		uses += "\`";
 
-		return `│${part1}│${part2}│${part3}│`;
+		return `${place} ${command} - ${uses}`;
 	})
-	.join("\n")}
-└───────┴─────────────┴───────────┘
-\`\`\``);
+	.join("\n")}`);
 
 				interaction.reply({ ephemeral: true, embeds: [embed] });
 			}
