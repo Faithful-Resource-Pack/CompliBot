@@ -10,7 +10,9 @@ Commands are explained like so:
 
 ## [v2.0.4] TBA
 
-> NYI
+### Changed
+
+- The CompliBot ascii art now show up & show up with different colors when `tokens.maintenance === true`
 
 ## [v2.0.3] 12/04/2022
 

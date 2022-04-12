@@ -96,20 +96,25 @@ class ExtendedClient extends Client {
 
 	//prettier-ignore
 	private asciiArt() {
-		console.log(chalk.hex("0026ff")("\n .d8888b.                                  888 d8b ")     + chalk.hex("#0066ff")("888888b.            888"));
-		console.log(chalk.hex("0026ff")("d88P  Y88b                                 888 Y8P ")       + chalk.hex("#0066ff")("888  \"88b           888"));
-		console.log(chalk.hex("0026ff")("888    888                                 888     ")       + chalk.hex("#0066ff")("888  .88P           888"));
-		console.log(chalk.hex("0026ff")("888         .d88b.  88888b.d88b.  88888b.  888 888 ")       + chalk.hex("#0066ff")("8888888K.   .d88b.  888888 "));
-		console.log(chalk.hex("0026ff")("888        d88\"\"88b 888 \"888 \"88b 888 \"88b 888 888 ")  + chalk.hex("#0066ff")("888  \"Y88b d88\"\"88b 888"));
-		console.log(chalk.hex("0026ff")("888    888 888  888 888  888  888 888  888 888 888 ")       + chalk.hex("#0066ff")("888    888 888  888 888"));
-		console.log(chalk.hex("0026ff")("Y88b  d88P Y88..88P 888  888  888 888 d88P 888 888 ")       + chalk.hex("#0066ff")("888   d88P Y88..88P Y88b."));
-		console.log(chalk.hex("0026ff")("\"Y8888P\"    \"Y88P\"  888  888  888 88888P\"  888 888 ")  + chalk.hex("#0066ff")("8888888P\"   \"Y88P\"   \"Y888"));
-		console.log(chalk.hex("0026ff")("                                  888"));
-		console.log(chalk.hex("0026ff")("                                  888                   ")  + chalk.white.bold("Faithful Devs. 2022"));
-		console.log(chalk.hex("0026ff")("                                  888                ")  + chalk.gray.italic("~ Made lovingly With pain\n"));
+		const darkColor = this.tokens.maintenance === false ? "#0026ff" : "#ff8400";
+		const lightColor = this.tokens.maintenance === false ? "#0066ff" : "#ffc400";
+
+		console.log(chalk.hex(darkColor)("\n .d8888b.                                  888 d8b ")     + chalk.hex(lightColor)("888888b.            888"));
+		console.log(chalk.hex(darkColor)("d88P  Y88b                                 888 Y8P ")       + chalk.hex(lightColor)("888  \"88b           888"));
+		console.log(chalk.hex(darkColor)("888    888                                 888     ")       + chalk.hex(lightColor)("888  .88P           888"));
+		console.log(chalk.hex(darkColor)("888         .d88b.  88888b.d88b.  88888b.  888 888 ")       + chalk.hex(lightColor)("8888888K.   .d88b.  888888 "));
+		console.log(chalk.hex(darkColor)("888        d88\"\"88b 888 \"888 \"88b 888 \"88b 888 888 ")  + chalk.hex(lightColor)("888  \"Y88b d88\"\"88b 888"));
+		console.log(chalk.hex(darkColor)("888    888 888  888 888  888  888 888  888 888 888 ")       + chalk.hex(lightColor)("888    888 888  888 888"));
+		console.log(chalk.hex(darkColor)("Y88b  d88P Y88..88P 888  888  888 888 d88P 888 888 ")       + chalk.hex(lightColor)("888   d88P Y88..88P Y88b."));
+		console.log(chalk.hex(darkColor)("\"Y8888P\"    \"Y88P\"  888  888  888 88888P\"  888 888 ")  + chalk.hex(lightColor)("8888888P\"   \"Y88P\"   \"Y888"));
+		console.log(chalk.hex(darkColor)("                                  888"));
+		console.log(chalk.hex(darkColor)("                                  888                   ")  + chalk.white.bold("Faithful Devs. 2022"));
+		console.log(chalk.hex(darkColor)("                                  888                ")  + chalk.gray.italic(this.tokens.maintenance === false ? "~ Made lovingly With pain\n" : "    Maintenance Mode!\n"));
 	}
 
 	public async init() {
+		this.asciiArt();
+
 		if (this.tokens.maintenance) {
 			this.login(this.tokens.token)
 				.catch((e) => {
@@ -120,10 +125,9 @@ class ExtendedClient extends Client {
 				.then(() => {
 					this.loadEvents();
 				});
-			return console.log("MAINTENANCE: TRUE");
-		}
 
-		this.asciiArt();
+			return;
+		}
 
 		// login client
 		this.login(this.tokens.token)
