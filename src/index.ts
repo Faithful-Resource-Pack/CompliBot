@@ -12,8 +12,8 @@ export let changelogOptions = () => {
 	const allVersions = changelogStr.match(/(?<=## )([^]*?)(?=(\n## )|($))/g);
 
 	let versions = [
-		[`${allVersions[1].substring(1, 7)} next`, allVersions[0].substring(1, 7)],
-		[`${allVersions[2].substring(1, 7)} current`, allVersions[1].substring(1, 7)],
+		[`${allVersions[1].substring(1, 7)} next`, allVersions[1].substring(1, 7)],
+		[`${allVersions[2].substring(1, 7)} current`, allVersions[2].substring(1, 7)],
 	];
 
 	for (let i = 2; i < allVersions.length; i++) {
