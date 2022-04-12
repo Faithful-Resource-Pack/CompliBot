@@ -71,9 +71,7 @@ export async function paletteAttachment(options: options): Promise<[MessageAttac
 			.slice(0, COLORS_TOP)
 			.map((el) => el.hex);
 
-		const embed = new MessageEmbed()
-			.setTitle("Palette results")
-			.setDescription("List of colors:\n")
+		const embed = new MessageEmbed().setTitle("Palette results").setDescription("List of colors:\n");
 
 		const field_groups = [];
 		let g: number;
@@ -135,7 +133,9 @@ export async function paletteAttachment(options: options): Promise<[MessageAttac
 		}
 
 		// add generate palette link && append palette to description
-		embed.setDescription(`Total: ${Object.values(allColors).length}\n\n` + embed.description + palette_urls.join(" - "));
+		embed.setDescription(
+			`Total: ${Object.values(allColors).length}\n\n` + embed.description + palette_urls.join(" - "),
+		);
 
 		// create gradient canvas for top GRADIENT_TOP colors
 		const bandWidth =

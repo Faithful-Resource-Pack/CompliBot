@@ -57,7 +57,9 @@ export const command: SlashCommand = {
 				texture: results[0],
 				pack: interaction.options.getString("pack", true),
 			});
-			interaction.editReply({ embeds: [embed], files: files, components: [imageButtons] }).then((message: Message) => message.deleteButton());
+			interaction
+				.editReply({ embeds: [embed], files: files, components: [imageButtons] })
+				.then((message: Message) => message.deleteButton());
 			return;
 		}
 
@@ -67,7 +69,6 @@ export const command: SlashCommand = {
 			let rlen: number = results.length;
 			let max: number = 4; // actually 5 but - 1 because we are adding a delete button to it (the 5th one)
 			let _max: number = 0;
-
 
 			// parsing everything correctly
 			for (let i = 0; i < results.length; i++) {
@@ -140,12 +141,13 @@ export const command: SlashCommand = {
 		}
 
 		// no results
-		interaction.editReply({ 
-			content: await interaction.text({
-				string: "Command.Texture.NotFound",
-				placeholders: { TEXTURENAME: `\`${name}\`` },
+		interaction
+			.editReply({
+				content: await interaction.text({
+					string: "Command.Texture.NotFound",
+					placeholders: { TEXTURENAME: `\`${name}\`` },
+				}),
 			})
-		})
-		.then((message: Message) => message.deleteButton());
+			.then((message: Message) => message.deleteButton());
 	},
 };

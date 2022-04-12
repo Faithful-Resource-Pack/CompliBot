@@ -1,6 +1,6 @@
 {
     "name": "complibot",
-    "version": "2.0.1",
+    "version": "2.0.4",
     "description": "A discord bot for the Faithful Team Resource Packs",
     "main": "src/index.ts",
     "type": "commonjs",

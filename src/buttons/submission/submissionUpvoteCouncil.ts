@@ -14,8 +14,9 @@ export const button: Button = {
 
 		// check if member is council
 		if (
-			member.roles.cache.find((role: Role) => getRolesIds({ name: "council", teams: ["faithful"] }).includes(role.id)) ===
-			undefined
+			member.roles.cache.find((role: Role) =>
+				getRolesIds({ name: "council", teams: ["faithful"] }).includes(role.id),
+			) === undefined
 		)
 			return interaction.reply({
 				content: "Only council members can vote while the texture is in council!",

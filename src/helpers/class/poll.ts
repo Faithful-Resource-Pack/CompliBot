@@ -7,7 +7,7 @@ export interface PollOptions {
 	question: string;
 	yesno: boolean;
 	answersArr: Array<string>;
-	thread: boolean
+	thread: boolean;
 }
 export class Poll extends TimedEmbed {
 	constructor(data?: Poll) {
@@ -47,7 +47,9 @@ export class Poll extends TimedEmbed {
 
 			field.value =
 				votesCount[index - 1] === 0
-					? (this.getStatus() === "ended" ? "Nobody has voted." : "No votes yet.")
+					? this.getStatus() === "ended"
+						? "Nobody has voted."
+						: "No votes yet."
 					: `> ${votesCount[index - 1]} / ${votesCount.reduce((partialSum, a) => partialSum + a, 0)} (${(
 							(votesCount[index - 1] / votesCount.reduce((partialSum, a) => partialSum + a, 0)) *
 							100
@@ -61,7 +63,11 @@ export class Poll extends TimedEmbed {
 					i++;
 				}
 
-				if (votes[index - 1][i] !== undefined && field.value.length + votes[index - 1][i].length > 1024 && field.value.length + ` ...`.length < 1024)
+				if (
+					votes[index - 1][i] !== undefined &&
+					field.value.length + votes[index - 1][i].length > 1024 &&
+					field.value.length + ` ...`.length < 1024
+				)
 					field.value += ` ...`;
 			}
 
@@ -117,7 +123,7 @@ export class Poll extends TimedEmbed {
 		})) as any;
 
 		if (options.thread) {
-			message.startThread({name: `Debate: ${options.question}`})
+			message.startThread({ name: `Debate: ${options.question}` });
 		}
 
 		this.setChannelId(interaction.channelId);

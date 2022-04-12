@@ -10,12 +10,12 @@ const config: Config = configJson;
  * @param {Boolean} team - if true, the team name will be returned instead of the guild name
  */
 export const getGuildName = (guildId: string, team: boolean = false): string => {
-  let output: string = undefined;
+	let output: string = undefined;
 
-  config.discords.forEach(discord => {
-    if (discord.id === guildId) output = discord.name;
-    if (discord.id === guildId && discord.team && team) output = discord.team;
-  })
+	config.discords.forEach((discord) => {
+		if (discord.id === guildId) output = discord.name;
+		if (discord.id === guildId && discord.team && team) output = discord.team;
+	});
 
-  return output;
-}
+	return output;
+};

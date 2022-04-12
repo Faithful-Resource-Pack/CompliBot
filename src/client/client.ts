@@ -1,6 +1,27 @@
-import { ApplicationCommand, ButtonInteraction, Client, ClientOptions, Collection, CommandInteraction, Guild, GuildApplicationCommandPermissionData, SelectMenuInteraction, TextChannel, VoiceChannel } from "discord.js";
+import {
+	ApplicationCommand,
+	ButtonInteraction,
+	Client,
+	ClientOptions,
+	Collection,
+	CommandInteraction,
+	Guild,
+	GuildApplicationCommandPermissionData,
+	SelectMenuInteraction,
+	TextChannel,
+	VoiceChannel,
+} from "discord.js";
 import { Message, GuildMember, EmittingCollection, Automation } from "@client";
-import { Command, Event, Config, Tokens, Button, SelectMenu, SlashCommand, AsyncSlashCommandBuilder } from "@interfaces";
+import {
+	Command,
+	Event,
+	Config,
+	Tokens,
+	Button,
+	SelectMenu,
+	SlashCommand,
+	AsyncSlashCommandBuilder,
+} from "@interfaces";
 import { getData } from "@functions/getDataFromJSON";
 import { setData } from "@functions/setDataToJSON";
 import { errorHandler } from "@functions/errorHandler";
@@ -24,12 +45,19 @@ const SUBMISSIONS_FILENAME = "submissions.json";
 const COMMANDS_PROCESSED_FILENAME = "commandsProcessed.json";
 const MODERATION_FILENAME = "moderation.json";
 
-export type ActionsStr = "message" | "slashCommand" | "button" | "selectMenu" | "guildMemberUpdate" | "textureSubmitted" | "guildJoined";
+export type ActionsStr =
+	| "message"
+	| "slashCommand"
+	| "button"
+	| "selectMenu"
+	| "guildMemberUpdate"
+	| "textureSubmitted"
+	| "guildJoined";
 export type Actions = Message | GuildMember | Guild | ButtonInteraction | SelectMenuInteraction | CommandInteraction;
 export type Log = {
-	type: ActionsStr,
-	data: any
-}
+	type: ActionsStr;
+	data: any;
+};
 
 class ExtendedClient extends Client {
 	public verbose: boolean = false;
@@ -188,7 +216,9 @@ class ExtendedClient extends Client {
 	private loadSlashCommandsPerms = async () => {
 		if (!this.application.owner) await this.application.fetch();
 
-		const addPerms = (commands: Collection<string, ApplicationCommand<{}>>): Array<GuildApplicationCommandPermissionData> => {
+		const addPerms = (
+			commands: Collection<string, ApplicationCommand<{}>>,
+		): Array<GuildApplicationCommandPermissionData> => {
 			const fullPermissions: Array<GuildApplicationCommandPermissionData> = [];
 
 			this.slashCommands.forEach(async (slashCommand: SlashCommand) => {
@@ -199,7 +229,7 @@ class ExtendedClient extends Client {
 
 				const p = { id: command.id, permissions: [] };
 
-				if (slashCommand.permissions.roles !== undefined) 
+				if (slashCommand.permissions.roles !== undefined)
 					for (const id of slashCommand.permissions.roles)
 						p.permissions.push({ id: id, type: "ROLE", permission: true });
 
@@ -208,10 +238,10 @@ class ExtendedClient extends Client {
 						p.permissions.push({ id: id, type: "USER", permission: true });
 
 				fullPermissions.push(p);
-			})
+			});
 
 			return fullPermissions;
-		}
+		};
 
 		// for all guilds
 		this.guilds.cache.forEach(async (guild: Guild) => {
@@ -237,7 +267,7 @@ class ExtendedClient extends Client {
 	 * SLASH COMMANDS DELETION
 	 */
 	public deleteGlobalSlashCommands = () => {
-		console.log(`${success}deleting / commands`)
+		console.log(`${success}deleting / commands`);
 
 		const rest = new REST({ version: "9" }).setToken(this.tokens.token);
 		rest.get(Routes.applicationCommands(this.tokens.appID)).then((data: any) => {
@@ -300,11 +330,16 @@ class ExtendedClient extends Client {
 		for (let i = 0; i < this.config.discords.length; i++) {
 			const d = this.config.discords[i];
 
-			if (this.guilds.cache.get(d.id) === undefined) continue; // if the client isn't in the guild, skip it
-			else try { // otherwise we add specific commands to that guild
-				await rest.put(Routes.applicationGuildCommands(this.tokens.appID, d.id), { body: guilds[d.name] });
-				console.log(`${success}Successfully added slash commands to: ${d.name}`);
-			} catch (err) {console.error(err)};
+			// if the client isn't in the guild, skip it
+			if (this.guilds.cache.get(d.id) === undefined) continue;
+			else
+				try {
+					// otherwise we add specific commands to that guild
+					await rest.put(Routes.applicationGuildCommands(this.tokens.appID, d.id), { body: guilds[d.name] });
+					console.log(`${success}Successfully added slash commands to: ${d.name}`);
+				} catch (err) {
+					console.error(err);
+				}
 		}
 
 		// we add global commands to all guilds (only if not in dev mode)
@@ -377,11 +412,10 @@ class ExtendedClient extends Client {
 		});
 	};
 
-
 	/**
 	 * Store any kind of action the bot does
-	 * @param {ActionsStr} type 
-	 * @param {Actions} data 
+	 * @param {ActionsStr} type
+	 * @param {Actions} data
 	 */
 	public storeAction(type: ActionsStr, data: Actions): void {
 		this.logs[this.lastLogIndex++ % this.maxLogs] = { type, data };

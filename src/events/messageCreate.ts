@@ -9,11 +9,11 @@ export const event: Event = {
 	run: async (client: Client, message: Message) => {
 		//! do not remove, 'force' message to be casted (break if removed)
 		let _ = (message as Message) instanceof Message;
-		
+
 		let m = Object.assign({}, message); // loose reference to message: create unique instance of the message for the logger (ask @Juknum)
 		m.isDeleted = false;
 		client.storeAction("message", m);
-		
+
 		if (message.author.bot) return;
 
 		// test if message is in submit channel

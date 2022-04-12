@@ -89,7 +89,7 @@ export class TimedEmbed {
 	public addUpvote(id: string): this {
 		return this.addVote("upvote", id);
 	}
-	
+
 	/**
 	 * Add a downvote to the poll/submission
 	 * @param {User.id} id - the user id to add
@@ -109,15 +109,15 @@ export class TimedEmbed {
 			// remove user vote for all others categories
 			Object.keys(this.votes).forEach((key: string) => {
 				this.removeVote(key, id);
-			})
+			});
 		}
 
 		if (this.hasVotedFor(type, id)) this.removeVote(type, id);
 		else this.votes[type].push(id);
-		
+
 		return this;
 	}
-	
+
 	/**
 	 * Remove an upvote to the poll/submission
 	 * @param {User.id} id - the user id to remove
@@ -154,8 +154,8 @@ export class TimedEmbed {
 	protected voidVotes(): this {
 		Object.values(this.votes).map((arr: Array<string>) => {
 			arr.length = 0;
-		})
-		
+		});
+
 		return this;
 	}
 
@@ -168,7 +168,7 @@ export class TimedEmbed {
 	public hasVotedFor(type: string, id: string): boolean {
 		if (this.votes[type] === undefined) return false;
 		return this.votes[type].includes(id);
-	} 
+	}
 
 	/**
 	 * Get the Discord Message Id of the poll/submission

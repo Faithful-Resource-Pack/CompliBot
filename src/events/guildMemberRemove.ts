@@ -4,7 +4,6 @@ import { Event } from "@interfaces";
 export const event: Event = {
 	name: "guildMemberRemove",
 	run: async (client: Client, member: GuildMember) => {
-
 		//! do not remove, 'force' member to be casted (break if removed)
 		let _ = (member as GuildMember) instanceof GuildMember;
 

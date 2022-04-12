@@ -71,23 +71,21 @@ export const command: SlashCommand = {
 					content: await interaction.text({
 						string: "Command.Stats.NotFound",
 						placeholders: {
-							COMMAND: interaction.options.getString("command")
-						}
+							COMMAND: interaction.options.getString("command"),
+						},
 					}),
 				});
 
 			if (interaction.options.getString("command")) {
-				const embed = new MessageEmbed()
-					.setTimestamp()
-					.setTitle(
-						await interaction.text({
-							string: "Command.Stats.Usage",
-							placeholders: {
-								COMMAND: interaction.options.getString("command"),
-								USE: client.commandsProcessed.get(interaction.options.getString("command")).toString() ?? "0",
-							},
-						}),
-					);
+				const embed = new MessageEmbed().setTimestamp().setTitle(
+					await interaction.text({
+						string: "Command.Stats.Usage",
+						placeholders: {
+							COMMAND: interaction.options.getString("command"),
+							USE: client.commandsProcessed.get(interaction.options.getString("command")).toString() ?? "0",
+						},
+					}),
+				);
 				interaction.reply({ ephemeral: true, embeds: [embed], fetchReply: true });
 			} else {
 				//sorts commands by usage: 4,3,2,1
@@ -96,25 +94,22 @@ export const command: SlashCommand = {
 
 				const embed = new MessageEmbed()
 					.setTimestamp()
-					.setTitle(await interaction.text({ string: "Command.Stats.Top10" }))
-					.setDescription(`\`\`\`
+					.setTitle(await interaction.text({ string: "Command.Stats.Top10" })).setDescription(`\`\`\`
 ┌───────┬─────────────┬───────────┐
 │ ORDER │   COMMAND   │ TIME USED │
 ├───────┼─────────────┼───────────┤
-${
-	data[0]
-		.slice(0, data[0].length > 10 ? 10 : data[0].length)
-		.map((key: any, index: any) => {
-			let part1 = `  ${index + 1 < 10 ? ` ${index + 1}` : index + 1}.  `;
-			let part2 = ` /${key}`;
-			part2 += ` `.repeat(13 - part2.length);
-			let part3 = ` ${data[1][index]}`;
-			part3 += ` `.repeat(11 - part3.length);
+${data[0]
+	.slice(0, data[0].length > 10 ? 10 : data[0].length)
+	.map((key: any, index: any) => {
+		let part1 = `  ${index + 1 < 10 ? ` ${index + 1}` : index + 1}.  `;
+		let part2 = ` /${key}`;
+		part2 += ` `.repeat(13 - part2.length);
+		let part3 = ` ${data[1][index]}`;
+		part3 += ` `.repeat(11 - part3.length);
 
-			return `│${part1}│${part2}│${part3}│`;
-		})
-		.join('\n')
-}
+		return `│${part1}│${part2}│${part3}│`;
+	})
+	.join("\n")}
 └───────┴─────────────┴───────────┘
 \`\`\``);
 

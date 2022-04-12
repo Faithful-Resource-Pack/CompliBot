@@ -15,19 +15,16 @@ export const button: Button = {
 
 		const type: string = interaction.customId.replace("pollVote__", "");
 		const id: string = interaction.user.id;
-		
-		if (poll.hasVotedFor(type, id)) poll.removeVote(type, id)
+
+		if (poll.hasVotedFor(type, id)) poll.removeVote(type, id);
 		else poll.addVote(type, id);
 
 		await poll.updateEmbed(client);
 
 		if (poll.isAnonymous())
-			interaction.followUp({ 
-				ephemeral: true, 
-				content: 
-					poll.hasVotedFor(type, id) 
-					? "Your vote has been counted." 
-					: "Your vote has been removed."
+			interaction.followUp({
+				ephemeral: true,
+				content: poll.hasVotedFor(type, id) ? "Your vote has been counted." : "Your vote has been removed.",
 			});
 
 		client.polls.set(pid, poll);

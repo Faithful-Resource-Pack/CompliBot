@@ -286,21 +286,34 @@ export class Submission extends TimedEmbed {
 			})
 			.then((m: Message) => {
 				// collect required information to make the contribution
-				let texture: string = m.embeds[0].title.split(' ').filter(el => el.charAt(0) === '[' && el.charAt(1) === '#' && el.slice(-1) == "]").map(el => el.slice(2, el.length - 1))[0];
-				let authors: Array<string> = m.embeds[0].fields.filter(f => f.name === "Contributor(s)")[0].value.split('\n').map(auth => auth.replace('<@!', '').replace('>', ''));
+				let texture: string = m.embeds[0].title
+					.split(" ")
+					.filter((el) => el.charAt(0) === "[" && el.charAt(1) === "#" && el.slice(-1) == "]")
+					.map((el) => el.slice(2, el.length - 1))[0];
+				let authors: Array<string> = m.embeds[0].fields
+					.filter((f) => f.name === "Contributor(s)")[0]
+					.value.split("\n")
+					.map((auth) => auth.replace("<@!", "").replace(">", ""));
 				let date: number = m.createdTimestamp;
-				let ressourcePack = getResourcePackFromName(client, m.embeds[0].fields.filter(f => f.name === "Resource Pack")[0].value.replaceAll('`', ''));
+				let ressourcePack = getResourcePackFromName(
+					client,
+					m.embeds[0].fields.filter((f) => f.name === "Resource Pack")[0].value.replaceAll("`", ""),
+				);
 				let resolution = ressourcePack.resolution;
 				let pack = ressourcePack.slug;
 
 				// send the contribution
 				// todo: use API url here
-				return axios.post(`http://localhost:8000/v2/contributions`, { date, pack, resolution, authors, texture }, { headers: { bot: client.tokens.apiPassword } })
+				return axios.post(
+					`http://localhost:8000/v2/contributions`,
+					{ date, pack, resolution, authors, texture },
+					{ headers: { bot: client.tokens.apiPassword } },
+				);
 			})
 			.then((res) => res.data) // axios data response
 			.then((contribution) => {
 				// TODO: GITHUB PUSH TO EACH BRANCHHH + CORRESPONDING REPO
 			})
-			.catch(console.error)
+			.catch(console.error);
 	}
 }

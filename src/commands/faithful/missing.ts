@@ -37,37 +37,31 @@ export const command: SlashCommand = {
 		let versions = Object.values((await axios.get(`${client.config.apiUrl}settings/versions`)).data).flat();
 		versions.splice(versions.indexOf("versions"), 1); // remove "versions" key id (API issue)
 
-		return (
-			new SlashCommandBuilder()
-				.setName("missing")
-				.setDescription("Displays the missing textures for a particular resource pack")
-				.addStringOption((option) =>
-					option
-						.setName("pack")
-						.setDescription("The resource pack.")
-						.addChoices(PACKS)
-						.setRequired(true),
-				)
-				.addStringOption((option) =>
-					option
-						.setName("edition")
-						.setDescription("The resource pack edition.")
-						.addChoices([
-							["Java", "java"],
-							["Bedrock", "bedrock"],
-							["All", "all"],
-							// ["Minecraft Dungeons", "dungeons"], // TODO: make dirs corresponding to the same setup for 32x & default repos
-						])
-						.setRequired(true),
-				)
-				.addStringOption((option) =>
-					option
-						.setName("version")
-						.setDescription("The Minecraft version.")
-						.addChoices(doNestedArr(versions))
-						.setRequired(false),
-				)
-		);
+		return new SlashCommandBuilder()
+			.setName("missing")
+			.setDescription("Displays the missing textures for a particular resource pack")
+			.addStringOption((option) =>
+				option.setName("pack").setDescription("The resource pack.").addChoices(PACKS).setRequired(true),
+			)
+			.addStringOption((option) =>
+				option
+					.setName("edition")
+					.setDescription("The resource pack edition.")
+					.addChoices([
+						["Java", "java"],
+						["Bedrock", "bedrock"],
+						["All", "all"],
+						// ["Minecraft Dungeons", "dungeons"], // TODO: make dirs corresponding to the same setup for 32x & default repos
+					])
+					.setRequired(true),
+			)
+			.addStringOption((option) =>
+				option
+					.setName("version")
+					.setDescription("The Minecraft version.")
+					.addChoices(doNestedArr(versions))
+					.setRequired(false),
+			);
 	},
 	execute: async (interaction: CommandInteraction) => {
 		await interaction.deferReply();

@@ -1,4 +1,13 @@
-import { ButtonInteraction, CommandInteraction, Guild, GuildMember, MessageAttachment, MessageEmbed, SelectMenuInteraction, TextChannel } from "discord.js";
+import {
+	ButtonInteraction,
+	CommandInteraction,
+	Guild,
+	GuildMember,
+	MessageAttachment,
+	MessageEmbed,
+	SelectMenuInteraction,
+	TextChannel,
+} from "discord.js";
 import { Client, Message } from "@client";
 import fs from "fs";
 import { err } from "@helpers/logger";
@@ -43,7 +52,10 @@ const randomSentences: Array<string> = [
 var lastReasons = [];
 const loopLimit = 3; //how many times the same error needs to be made to trigger a loop
 
-export const logConstructor: Function = (client: Client, reason: any = {stack: "You requested it with /logs ¯\\_(ツ)_/¯"}): MessageAttachment => {
+export const logConstructor: Function = (
+	client: Client,
+	reason: any = { stack: "You requested it with /logs ¯\\_(ツ)_/¯" },
+): MessageAttachment => {
 	const logTemplate = fs.readFileSync(path.join(__dirname + "/errorHandler.log"), { encoding: "utf-8" });
 	const template = logTemplate.match(new RegExp(/\%templateStart%([\s\S]*?)%templateEnd/))[1]; // get message template
 
@@ -57,48 +69,72 @@ export const logConstructor: Function = (client: Client, reason: any = {stack: "
 	logText = logText.split("%templateStart%")[0]; // remove message template
 
 	let len: number = client.getAction().length;
-	client.getAction().reverse().forEach((log: Log, index) => {
-		logText += template
-			.replace("%templateIndex%", `${len - index}`)
-			.replace("%templateType%", 
-				log.type === "slashCommand" ? `${log.type} (${log.data.commandName})` 
-				: log.type === "guildMemberUpdate" ? `${log.type} | ${log.data.user.username} ${log.data.reason === "added" ? "joined" : "left"} ${log.data.guild.name}`
-				: log.type === "message" ? `${log.type} [${log.data.isDeleted ? "deleted" : "created"}] | ${log.data.author.bot ? "BOT" : "USER"} | ${log.data.author.username}`
-				: log.type
-			)
-			.replace("%templateCreatedTimestamp%", `${log.data.createdTimestamp} | ${new Date(log.data.createdTimestamp).toLocaleDateString("en-UK", { timeZone: "UTC" })} ${new Date(log.data.createdTimestamp).toLocaleTimeString("en-US", { timeZone: "UTC" })} (UTC)`)
-			.replace("%templateURL%", 
-				log.data.url ? log.data.url
-				: log.data.message ? log.data.message.url // interaction
-				: log.data.guildId && log.data.channelId ? `https://discord.com/channels/${log.data.guildId}/${log.data.channelId}/${log.data.messageId ? log.data.messageId :''}` // slash command constructed url
-				: log.data.guild ? `Guild ID is ${log.data.guild.id}`
-				: "Unknown"
-			)
+	client
+		.getAction()
+		.reverse()
+		.forEach((log: Log, index) => {
+			logText += template
+				.replace("%templateIndex%", `${len - index}`)
+				.replace(
+					"%templateType%",
+					log.type === "slashCommand"
+						? `${log.type} (${log.data.commandName})`
+						: log.type === "guildMemberUpdate"
+						? `${log.type} | ${log.data.user.username} ${log.data.reason === "added" ? "joined" : "left"} ${
+								log.data.guild.name
+						  }`
+						: log.type === "message"
+						? `${log.type} [${log.data.isDeleted ? "deleted" : "created"}] | ${
+								log.data.author.bot ? "BOT" : "USER"
+						  } | ${log.data.author.username}`
+						: log.type,
+				)
+				.replace(
+					"%templateCreatedTimestamp%",
+					`${log.data.createdTimestamp} | ${new Date(log.data.createdTimestamp).toLocaleDateString("en-UK", {
+						timeZone: "UTC",
+					})} ${new Date(log.data.createdTimestamp).toLocaleTimeString("en-US", { timeZone: "UTC" })} (UTC)`,
+				)
+				.replace(
+					"%templateURL%",
+					log.data.url
+						? log.data.url
+						: log.data.message
+						? log.data.message.url // interaction
+						: log.data.guildId && log.data.channelId
+						? `https://discord.com/channels/${log.data.guildId}/${log.data.channelId}/${
+								log.data.messageId ? log.data.messageId : ""
+						  }` // slash command constructed url
+						: log.data.guild
+						? `Guild ID is ${log.data.guild.id}`
+						: "Unknown",
+				)
 
-			.replace("%templateChannelType%", 
-				log.data.channel ? log.data.channel.type 
-				: "Not relevant"
-			)
-			.replace("%templateContent%",
-				log.data.content !== undefined ? log.data.content === '' ? 'Empty' : log.data.content
-				: log.data.customId ? log.data.customId // button
-				: log.data.options ? `Parameters: ${JSON.stringify(log.data.options._hoistedOptions)}` // slash commands interaction
-				: log.type === "guildMemberUpdate" ? "Not relevant"
-				: "Unknown"
-			)
-			.replace("%templateEmbeds%",
-				log.data.embeds?.length > 0 ? `${JSON.stringify(log.data.embeds)}`
-				: "None"
-			)
-			.replace("%templateComponents%",
-				log.data.components?.length > 0 ? `${JSON.stringify(log.data.components)}`
-				: "None"
-			)
-	});
+				.replace("%templateChannelType%", log.data.channel ? log.data.channel.type : "Not relevant")
+				.replace(
+					"%templateContent%",
+					log.data.content !== undefined
+						? log.data.content === ""
+							? "Empty"
+							: log.data.content
+						: log.data.customId
+						? log.data.customId // button
+						: log.data.options
+						? `Parameters: ${JSON.stringify(log.data.options._hoistedOptions)}` // slash commands interaction
+						: log.type === "guildMemberUpdate"
+						? "Not relevant"
+						: "Unknown",
+				)
+				.replace("%templateEmbeds%", log.data.embeds?.length > 0 ? `${JSON.stringify(log.data.embeds)}` : "None")
+				.replace(
+					"%templateComponents%",
+					log.data.components?.length > 0 ? `${JSON.stringify(log.data.components)}` : "None",
+				);
+		});
 
 	const buffer = Buffer.from(logText, "utf8");
 	return new MessageAttachment(buffer, "stack.log");
-}
+};
 
 export const errorHandler: Function = async (client: Client, reason: any, type: string) => {
 	console.error(`${err} ${reason.stack || JSON.stringify(reason)}`);

@@ -7,7 +7,7 @@ export const event: Event = {
 	run: async (client: Client, interaction: ButtonInteraction) => {
 		client.storeAction("button", interaction);
 
-		if (client.verbose) console.log(`${info}Button used`)
+		if (client.verbose) console.log(`${info}Button used`);
 		let button: Button;
 
 		if (interaction.customId.startsWith("pollVote__")) button = client.buttons.get("pollVote");

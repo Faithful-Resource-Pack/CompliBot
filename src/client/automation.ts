@@ -93,15 +93,14 @@ export class Automation {
 				case "pending":
 					// check votes
 					if (up >= down) {
-						submission.setStatus("council", this.client)
+						submission.setStatus("council", this.client);
 						submission.setTimeout(addMinutes(new Date(), 1440)); // now + 1 day
-					}
-					else {
+					} else {
 						submission.setStatus("no_council", this.client);
 					}
 
 					this.client.submissions.set(submission.id, submission);
-					
+
 					// sends people that have voted to the submitter
 					this.submissionSendVotes(submission, [up, down]);
 					break;

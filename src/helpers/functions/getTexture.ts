@@ -22,7 +22,7 @@ export const getTextureMessageOptions = async (options: {
 
 	let strPack: string;
 	let strIconURL: string;
-	
+
 	// TODO: use API here
 	switch (pack) {
 		case "faithful_32x":
