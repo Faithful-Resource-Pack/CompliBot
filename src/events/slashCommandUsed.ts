@@ -6,6 +6,8 @@ import { Client, CommandInteraction } from "@client";
 export const event: Event = {
 	name: "slashCommandUsed",
 	run: async (client: Client, interaction: CommandInteraction) => {
+		client.storeAction("slashCommand", interaction);
+
 		// get command name
 		const { commandName } = interaction;
 

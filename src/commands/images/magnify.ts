@@ -11,6 +11,8 @@ export const command: SlashCommand = {
 		.addNumberOption((num) => {
 			return num
 				.addChoices([
+					["0.25x", 0.25],
+					["0.5x", 0.5],
 					["2x", 2],
 					["4x", 4],
 					["8x", 8],

@@ -58,9 +58,9 @@
         "Znaki wskazują na tak",
         "Odpowiedź niejasna",
         "Zapytaj się jeszcze raz",
-        "Lepiej nie mówić teraz", 
+        "Lepiej nie mówić teraz",
         "Nie można teraz przewidzieć",
-        "Skoncentruj się i zapytaj się jeszcze raz", 
+        "Skoncentruj się i zapytaj się jeszcze raz",
         "Nie licz na to",
         "Moja odpowiedź to nie",
         "Moje źródła mówią, że nie",
@@ -84,7 +84,7 @@
         "%AUTHOR% umarł",
         "%AUTHOR% nie podał użytkownika do zabicia i zginął"
     ],
-    "Command.Kill.KilledBy": [ 
+    "Command.Kill.KilledBy": [
         "%PLAYER% został zastrzelony przez %AUTHOR%",
         "%PLAYER% został pobity przez gracza %AUTHOR%",
         "%PLAYER% został pobity na smierć",
@@ -112,7 +112,7 @@
         "%PLAYER% został zmiażdżony przez spadające kowadło podczas walki z %AUTHOR%",
         "%PLAYER% został zmiażdżony przez spadający blok",
         "%PLAYER% został zmiażdżony przez spadający blok podczas walki z graczem %AUTHOR%",
-        "Spadający stalaktyt zrobił z "%PLAYER% szaszłyk",
+        "Spadający stalaktyt zrobił z %PLAYER% szaszłyk",
         "Spadający stalaktyt zrobił z %PLAYER% szaszłyk podczas walki z %AUTHOR%",
         "%PLAYER% zginął w płomieniach",
         "%PLAYER% wszedł w ogień podczas walki z %AUTHOR%",

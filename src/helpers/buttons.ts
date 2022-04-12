@@ -1,4 +1,4 @@
-import { Message, MessageActionRow, MessageButton } from "discord.js";
+import { MessageActionRow, MessageButton } from "discord.js";
 import { ids, parseId } from "./emojis";
 
 export const compare = new MessageButton()
@@ -99,11 +99,7 @@ export const submissionButtonsOpen = new MessageActionRow().addComponents([
 	invalidate,
 	deleteMessage,
 ]);
-export const submissionButtonsOpenEnd = new MessageActionRow().addComponents([
-	see_less_end,
-	view_votes,
-	deleteMessage,
-])
+export const submissionButtonsOpenEnd = new MessageActionRow().addComponents([see_less_end, view_votes, deleteMessage]);
 export const submissionButtonsClosed = new MessageActionRow().addComponents([
 	magnify,
 	tile,
@@ -116,7 +112,7 @@ export const submissionButtonsClosedEnd = new MessageActionRow().addComponents([
 	tile,
 	palette,
 	compare,
-	see_more_end
-])
+	see_more_end,
+]);
 export const submissionButtonsVotes = new MessageActionRow().addComponents([upvote, downvote]);
 export const submissionButtonsVotesCouncil = new MessageActionRow().addComponents([upvoteCouncil, downvoteCouncil]);

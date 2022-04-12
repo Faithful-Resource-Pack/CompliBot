@@ -2,7 +2,7 @@ import { normalize } from "path";
 
 /**
  * Apply the `normalize()` method on an array
- * @param arr {Array<string>} the array to apply the method
+ * @param {Array<string>} arr - the array to apply the method
  * @returns {arr<string>}
  */
 export const normalizeArray = (arr: Array<string>): Array<string> => {
@@ -11,9 +11,9 @@ export const normalizeArray = (arr: Array<string>): Array<string> => {
 
 /**
  * Test if an array of string include in one of it's string the given value
- * @param arr {Array<string>} the asked array
- * @param val {string} the searched string
- * @returns {boolean} True if nothing if found
+ * @param {Array<string>} arr - the asked array
+ * @param {String} val - the searched string
+ * @returns {boolean} - true if nothing if found
  */
 export const includesNone = (arr: Array<string>, val: string): boolean => {
 	let res: boolean = true;
@@ -30,7 +30,7 @@ export const includesNone = (arr: Array<string>, val: string): boolean => {
  * Duplicate value of an array to a double nested array
  * (used for slash commands strings options)
  * ["test", "options"] => [["test", "test"], ["options", "options"]]
- * @param arr {Array<T>}
+ * @param {Array<T>} arr
  */
 export const doNestedArr = (arr: Array<any>): Array<[any, any]> => {
 	return arr.map((v) => [v, v]);

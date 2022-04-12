@@ -1,0 +1,11 @@
+{
+  "recommendations": [
+    "streetsidesoftware.code-spell-checker",
+    "aaron-bond.better-comments",
+    "exodiusstudios.comment-anchors",
+    "leonardssh.vscord",
+    "github.copilot",
+    "ms-vscode.vscode-typescript-next",
+    "eamodio.gitlens"
+  ]
+}

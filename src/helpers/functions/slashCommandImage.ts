@@ -14,10 +14,10 @@ import { getString } from "@helpers/string";
  * Check if there is a message with a message within the `limit` of messages in the `channel`
  * Do a await message if the userInteraction.doInteraction is set to true
  * @param interaction {TextChannel}
- * @param limit {number}
+ * @param limit {Number}
  * @param userInteraction.doInteraction {boolean}
  * @param userInteraction.user {User}
- * @param userInteraction.time {number}
+ * @param userInteraction.time {Number}
  * @returns {Promise<string>} image url
  */
 export async function fetchMessageImage(

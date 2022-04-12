@@ -4,10 +4,10 @@ import { Client, CommandInteraction, Message, MessageEmbed } from "@client";
 import { getTextureMessageOptions } from "@functions/getTexture";
 import { MessageActionRow, MessageSelectMenu, MessageSelectOptionData } from "discord.js";
 import axios from "axios";
-import { imageButtons } from "@helpers/buttons";
+import { deleteInteraction, imageButtons } from "@helpers/buttons";
 
 export const command: SlashCommand = {
-	servers: ["compliance", "compliance_extra", "classic_faithful"],
+	servers: ["faithful", "faithful_extra", "classic_faithful"],
 	data: new SlashCommandBuilder()
 		.setName("texture")
 		.setDescription("Displays a specified texture from either vanilla Minecraft or Faithful.")
@@ -45,6 +45,9 @@ export const command: SlashCommand = {
 			return;
 		}
 
+		/**
+		 * TODO: find a fix for this Error: connect ETIMEDOUT 172.67.209.9:443 at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1161:16)
+		 */
 		const results: Array<any> = (await axios.get(`${(interaction.client as Client).config.apiUrl}textures/${name}/all`))
 			.data;
 
@@ -54,7 +57,9 @@ export const command: SlashCommand = {
 				texture: results[0],
 				pack: interaction.options.getString("pack", true),
 			});
-			interaction.editReply({ embeds: [embed], files: files, components: [imageButtons] }).then((message: Message) => message.deleteButton());
+			interaction
+				.editReply({ embeds: [embed], files: files, components: [imageButtons] })
+				.then((message: Message) => message.deleteButton());
 			return;
 		}
 
@@ -68,8 +73,8 @@ export const command: SlashCommand = {
 			// parsing everything correctly
 			for (let i = 0; i < results.length; i++) {
 				results[i] = {
-					label: `[#${results[i].id}] ${results[i].name}`,
-					description: results[i].paths[0] != undefined ? results[i].paths[0].name : "No path found",
+					label: `[#${results[i].id}] (${results[i].paths[0].versions[0]}) ${results[i].name}`,
+					description: results[i].paths[0].name,
 					value: `${results[i].id}__${interaction.options.getString("pack", true)}`,
 				};
 			}
@@ -132,21 +137,17 @@ export const command: SlashCommand = {
 			await interaction
 				.editReply({ embeds: [embed], components: components })
 				.then((message: Message) => message.deleteButton());
-
 			return;
 		}
 
 		// no results
-		try {
-			interaction.deleteReply();
-		} catch (err) {}
-
-		return interaction.followUp({
-			ephemeral: true,
-			content: await interaction.text({
-				string: "Command.Texture.NotFound",
-				placeholders: { TEXTURENAME: name },
-			}),
-		});
+		interaction
+			.editReply({
+				content: await interaction.text({
+					string: "Command.Texture.NotFound",
+					placeholders: { TEXTURENAME: `\`${name}\`` },
+				}),
+			})
+			.then((message: Message) => message.deleteButton());
 	},
 };

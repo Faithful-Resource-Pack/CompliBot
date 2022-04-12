@@ -8,6 +8,7 @@ import { MessageAttachment } from "discord.js";
 import { magnifyAttachment } from "./canvas/magnify";
 import { ISizeCalculationResult } from "image-size/dist/types/interface";
 import { colors } from "@helpers/colors";
+import { fromTimestampToHumanReadable } from "@helpers/dates";
 
 export const getTextureMessageOptions = async (options: {
 	texture: any;
@@ -21,8 +22,8 @@ export const getTextureMessageOptions = async (options: {
 
 	let strPack: string;
 	let strIconURL: string;
-	
-	// todo: use API here
+
+	// TODO: use API here
 	switch (pack) {
 		case "faithful_32x":
 			strPack = "Faithful 32x";
@@ -97,11 +98,8 @@ export const getTextureMessageOptions = async (options: {
 			.sort((a, b) => a.date > b.date)
 			.reverse()
 			.map((c) => {
-				let date = new Date(c.date);
-				let strDate: string = `${date.getDate() < 10 ? `0${date.getDate()}` : date.getDate()}/${
-					date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1
-				}/${date.getFullYear()}`;
-				let authors = c.authors.map((authorId) => `<@!${authorId}>`);
+				let strDate: string = fromTimestampToHumanReadable(c.date);
+				let authors = c.authors.map((authorId: string) => `<@!${authorId}>`);
 				return `\`${strDate}\` ${authors.join(", ")}`;
 			});
 

@@ -14,9 +14,9 @@ export const command: SlashCommand = {
 		.addSubcommand((subcommand) =>
 			subcommand
 				.setName("command")
-				.setDescription("Statistics about commands.")
+				.setDescription("Returns top 10 most used commands.")
 				.addStringOption((option) =>
-					option.setName("command").setDescription("A command from the bot.").setRequired(true),
+					option.setName("command").setDescription("Returns usage for a specific command.").setRequired(false),
 				),
 		),
 	execute: new Collection<string, SlashCommandI>()
@@ -49,9 +49,9 @@ export const command: SlashCommand = {
 					},
 					{ name: FieldTitles[4], value: `discord.js ${djsVersion}`, inline: true },
 					{ name: FieldTitles[5], value: `${process.version}`, inline: true },
-					{ name: FieldTitles[6], value: "" + (client.commands.size + client.slashCommands.size), inline: true },
-					{ name: FieldTitles[7], value: "" + number, inline: true },
-					{ name: FieldTitles[8], value: "" + sumMembers, inline: true },
+					{ name: FieldTitles[6], value: `${client.slashCommands.size}`, inline: true },
+					{ name: FieldTitles[7], value: `${number}`, inline: true },
+					{ name: FieldTitles[8], value: `${sumMembers}`, inline: true },
 					{ name: FieldTitles[9], value: version },
 				)
 				.setFooter({
@@ -61,23 +61,58 @@ export const command: SlashCommand = {
 			interaction.reply({ embeds: [embed], fetchReply: true }).then((message: Message) => message.deleteButton());
 		})
 		.set("command", async (interaction: CommandInteraction, client: Client) => {
-			if (client.commandsProcessed.get(interaction.options.getString("command", true)) === undefined)
+			//if the command ars is provided and the command does not exist in commandsProcessed:
+			if (
+				interaction.options.getString("command") &&
+				client.commandsProcessed.get(interaction.options.getString("command")) === undefined
+			)
 				return interaction.reply({
 					ephemeral: true,
 					content: await interaction.text({
 						string: "Command.Stats.NotFound",
+						placeholders: {
+							COMMAND: interaction.options.getString("command"),
+						},
 					}),
 				});
 
-			const embed = new MessageEmbed().setTitle(
-				await interaction.text({
-					string: "Command.Stats.Usage",
-					placeholders: {
-						COMMAND: interaction.options.getString("command", true),
-						USE: client.commandsProcessed.get(interaction.options.getString("command", true)).toString() ?? "0",
-					},
-				}),
-			);
-			interaction.reply({ embeds: [embed], fetchReply: true }).then((message: Message) => message.deleteButton());
+			if (interaction.options.getString("command")) {
+				const embed = new MessageEmbed().setTimestamp().setTitle(
+					await interaction.text({
+						string: "Command.Stats.Usage",
+						placeholders: {
+							COMMAND: interaction.options.getString("command"),
+							USE: client.commandsProcessed.get(interaction.options.getString("command")).toString() ?? "0",
+						},
+					}),
+				);
+				interaction.reply({ ephemeral: true, embeds: [embed], fetchReply: true });
+			} else {
+				//sorts commands by usage: 4,3,2,1
+				const sorted = new Map([...client.commandsProcessed.entries()].sort((a, b) => b[1] - a[1]));
+				const data = [[...sorted.keys()], [...sorted.values()]];
+
+				const embed = new MessageEmbed()
+					.setTimestamp()
+					.setTitle(await interaction.text({ string: "Command.Stats.Top10" }))
+					.setDescription(`
+${data[0]
+	.slice(0, data[0].length > 10 ? 10 : data[0].length)
+	.map((key: any, index: any) => {
+		let place = `\`${index + 1 < 10 ? ` ${index + 1}` : index + 1}.`;
+		place += ` `.repeat(4 - place.length);
+		place += "\`";
+		let command = `\`${key}`;
+		command += ` `.repeat(13 - command.length);
+		command += "\`";
+		let uses = `\`${data[1][index]}`;
+		uses += "\`";
+
+		return `${place} ${command} - ${uses}`;
+	})
+	.join("\n")}`);
+
+				interaction.reply({ ephemeral: true, embeds: [embed] });
+			}
 		}),
 };

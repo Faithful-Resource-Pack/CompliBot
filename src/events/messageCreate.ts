@@ -7,16 +7,14 @@ import { getSubmissionsChannels } from "@helpers/channels";
 export const event: Event = {
 	name: "messageCreate",
 	run: async (client: Client, message: Message) => {
-		if (message.author.bot) return;
-
 		//! do not remove, 'force' message to be casted (break if removed)
 		let _ = (message as Message) instanceof Message;
 
-		// old commands handler (remove for release)
-		if (message.content.startsWith(client.tokens.prefix)) {
-			client.emit("oldCommandUsed", (client as Client, message));
-			return;
-		}
+		let m = Object.assign({}, message); // loose reference to message: create unique instance of the message for the logger (ask @Juknum)
+		m.isDeleted = false;
+		client.storeAction("message", m);
+
+		if (message.author.bot) return;
 
 		// test if message is in submit channel
 		if (getSubmissionsChannels(client as Client).includes(message.channelId)) {

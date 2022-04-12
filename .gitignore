@@ -3,4 +3,3 @@ node_modules
 .env
 src/commandsOld
 json/dynamic
-.vscode/settings.json

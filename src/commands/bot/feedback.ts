@@ -27,13 +27,13 @@ export const command: SlashCommand = {
 		const btnBug = new MessageButton()
 			.setLabel(await interaction.text({ string: "Command.Feedback.Bug" }))
 			.setStyle("PRIMARY")
-			.setEmoji(parseId(ids.downvote))
+			.setEmoji(parseId(ids.bug))
 			.setCustomId("feedbackBug");
 
 		const btnSuggestion = new MessageButton()
 			.setLabel(await interaction.text({ string: "Command.Feedback.Suggestion" }))
 			.setStyle("PRIMARY")
-			.setEmoji(parseId(ids.upvote))
+			.setEmoji(parseId(ids.suggestion))
 			.setCustomId("feedbackSuggestion");
 
 		const buttons = new MessageActionRow().addComponents([btnCancel, btnBug, btnSuggestion]);

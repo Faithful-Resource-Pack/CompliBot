@@ -27,7 +27,7 @@ export const command: SlashCommand = {
 		const newNotice: notice = {
 			unix: +Date.now(),
 			title: await interaction.options.getString("title"),
-			description: await interaction.options.getString("description").split("\n"), //todo: make this a multiline input when it is released!
+			description: await interaction.options.getString("description").split("\n"), // TODO: make this a multiline input when it is released!
 		};
 		setData({ data: newNotice, filename: "notice.json", relative_path: path.join(__dirname + "../../../../json/") });
 		interaction.reply({ content: `Notice set as:\n\`\`\`json\n${JSON.stringify(newNotice)}\`\`\``, ephemeral: true });

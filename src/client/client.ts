@@ -1,14 +1,17 @@
 import {
+	ApplicationCommand,
+	ButtonInteraction,
 	Client,
 	ClientOptions,
 	Collection,
 	CommandInteraction,
 	Guild,
-	Interaction,
+	GuildApplicationCommandPermissionData,
+	SelectMenuInteraction,
 	TextChannel,
 	VoiceChannel,
 } from "discord.js";
-import { Message, EmittingCollection, Automation } from "@client";
+import { Message, GuildMember, EmittingCollection, Automation } from "@client";
 import {
 	Command,
 	Event,
@@ -22,14 +25,16 @@ import {
 import { getData } from "@functions/getDataFromJSON";
 import { setData } from "@functions/setDataToJSON";
 import { errorHandler } from "@functions/errorHandler";
-import { err, info, success } from "@helpers/logger";
+import { err, info, success, warning } from "@helpers/logger";
 import { Submission } from "@class/submissions";
 import { Poll } from "@class/poll";
+import { User } from "@helpers/interfaces/moderation";
 
-import { readdirSync, readFileSync } from "fs";
+import { readdirSync } from "fs";
 import { REST } from "@discordjs/rest";
 import { RESTPostAPIApplicationCommandsJSONBody, Routes } from "discord-api-types/v9";
 import { SlashCommandBuilder } from "@discordjs/builders";
+import { loadJavaVersions, updateJavaVersions } from "@functions/MCupdates/java";
 
 import path from "path";
 import chalk from "chalk";
@@ -38,6 +43,21 @@ const JSON_PATH = path.join(__dirname, "../../json/dynamic"); // json folder at 
 const POLLS_FILENAME = "polls.json";
 const SUBMISSIONS_FILENAME = "submissions.json";
 const COMMANDS_PROCESSED_FILENAME = "commandsProcessed.json";
+const MODERATION_FILENAME = "moderation.json";
+
+export type ActionsStr =
+	| "message"
+	| "slashCommand"
+	| "button"
+	| "selectMenu"
+	| "guildMemberUpdate"
+	| "textureSubmitted"
+	| "guildJoined";
+export type Actions = Message | GuildMember | Guild | ButtonInteraction | SelectMenuInteraction | CommandInteraction;
+export type Log = {
+	type: ActionsStr;
+	data: any;
+};
 
 class ExtendedClient extends Client {
 	public verbose: boolean = false;
@@ -45,19 +65,20 @@ class ExtendedClient extends Client {
 	public tokens: Tokens;
 	public automation: Automation = new Automation(this);
 
-	private lastMessages = [];
-	private lastMessagesIndex = 0;
+	private logs: Array<Log> = [];
+	private maxLogs: number = 50;
+	private lastLogIndex: number = 0;
 
 	public menus: Collection<string, SelectMenu> = new Collection();
 	public buttons: Collection<string, Button> = new Collection();
 	public events: Collection<string, Event> = new Collection();
 	public aliases: Collection<string, Command> = new Collection();
-	public commands: Collection<string, Command> = new Collection();
 	public slashCommands: Collection<string, SlashCommand> = new Collection();
 
 	public submissions: EmittingCollection<string, Submission> = new EmittingCollection();
 	public polls: EmittingCollection<string, Poll> = new EmittingCollection();
 	public commandsProcessed: EmittingCollection<string, number> = new EmittingCollection();
+	public moderationUsers: EmittingCollection<string, User> = new EmittingCollection();
 
 	constructor(data: ClientOptions & { verbose: boolean; config: Config; tokens: Tokens }) {
 		super(data);
@@ -70,9 +91,7 @@ class ExtendedClient extends Client {
 		console.log(`${info}restarting bot...`);
 		this.destroy();
 		await this.init();
-		if (int) {
-			int.editReply({ content: "reboot succeeded" });
-		}
+		if (int) int.editReply({ content: "reboot succeeded" });
 	}
 
 	//prettier-ignore
@@ -87,21 +106,21 @@ class ExtendedClient extends Client {
 		console.log(chalk.hex("0026ff")("\"Y8888P\"    \"Y88P\"  888  888  888 88888P\"  888 888 ")  + chalk.hex("#0066ff")("8888888P\"   \"Y88P\"   \"Y888"));
 		console.log(chalk.hex("0026ff")("                                  888"));
 		console.log(chalk.hex("0026ff")("                                  888                   ")  + chalk.white.bold("Faithful Devs. 2022"));
-		console.log(chalk.hex("0026ff")("                                  888                ")  + chalk.gray.italic("~ Made loveingly With pain\n"));
+		console.log(chalk.hex("0026ff")("                                  888                ")  + chalk.gray.italic("~ Made lovingly With pain\n"));
 	}
 
 	public async init() {
-		if (this.tokens.maintanance) {
+		if (this.tokens.maintenance) {
 			this.login(this.tokens.token)
 				.catch((e) => {
-					// Allows for showing different errors like missing privaleged gateway intents, this caused me so much pain >:(
+					// Allows for showing different errors like missing privileged gateway intents, this caused me so much pain >:(
 					console.log(`${err}${e}`);
 					process.exit(1);
 				})
 				.then(() => {
 					this.loadEvents();
 				});
-			return console.log("MAINTANANCE: TRUE");
+			return console.log("MAINTENANCE: TRUE");
 		}
 
 		this.asciiArt();
@@ -109,7 +128,7 @@ class ExtendedClient extends Client {
 		// login client
 		this.login(this.tokens.token)
 			.catch((e) => {
-				// Allows for showing different errors like missing privaleged gateway intents, this caused me so much pain >:(
+				// Allows for showing different errors like missing privileged gateway intents, this caused me so much pain >:(
 				console.log(`${err}${e}`);
 				process.exit(1);
 			})
@@ -119,6 +138,11 @@ class ExtendedClient extends Client {
 				this.loadEvents();
 				this.loadButtons();
 				this.loadSelectMenus();
+
+				/*loadJavaVersions()
+				.then(() => {
+					updateJavaVersions(this);
+				})*/
 
 				this.loadCollections();
 				this.automation.start();
@@ -140,14 +164,15 @@ class ExtendedClient extends Client {
 		this.loadCollection(this.polls, POLLS_FILENAME, JSON_PATH);
 		this.loadCollection(this.submissions, SUBMISSIONS_FILENAME, JSON_PATH);
 		this.loadCollection(this.commandsProcessed, COMMANDS_PROCESSED_FILENAME, JSON_PATH);
+		this.loadCollection(this.moderationUsers, MODERATION_FILENAME, JSON_PATH);
 		if (this.verbose) console.log(info + `Loaded collections data`);
 	};
 
 	/**
 	 * Read & Load data from json file into emitting collection & setup events handler
 	 * @param collection {EmittingCollection}
-	 * @param filename {string}
-	 * @param relative_path {string}
+	 * @param filename {String}
+	 * @param relative_path {String}
 	 */
 	private loadCollection = (
 		collection: EmittingCollection<any, any>,
@@ -170,8 +195,8 @@ class ExtendedClient extends Client {
 	/**
 	 * Save an emitting collection into a JSON file
 	 * @param collection {EmittingCollection}
-	 * @param filename {string}
-	 * @param relative_path {string}
+	 * @param filename {String}
+	 * @param relative_path {String}
 	 */
 	private saveEmittingCollection = (
 		collection: EmittingCollection<any, any>,
@@ -191,20 +216,18 @@ class ExtendedClient extends Client {
 	private loadSlashCommandsPerms = async () => {
 		if (!this.application.owner) await this.application.fetch();
 
-		this.guilds.cache.forEach(async (guild: Guild) => {
-			const fullPermissions = [];
-			const guildSlashCommands = await guild.commands.fetch();
+		const addPerms = (
+			commands: Collection<string, ApplicationCommand<{}>>,
+		): Array<GuildApplicationCommandPermissionData> => {
+			const fullPermissions: Array<GuildApplicationCommandPermissionData> = [];
 
 			this.slashCommands.forEach(async (slashCommand: SlashCommand) => {
-				if (slashCommand.permissions === undefined) return; // no permission to be checked
+				if (slashCommand.permissions === undefined) return; // no permissions set
 
-				const command = guildSlashCommands.find((cmd) => cmd.name === (slashCommand.data as SlashCommandBuilder).name);
-				if (command === undefined) return; // happens when settings perms of private commands to all perms
+				const command = commands.find((c) => c.name === (slashCommand.data as SlashCommandBuilder).name);
+				if (command === undefined) return; // command not found
 
-				const p = {
-					id: command.id,
-					permissions: [],
-				};
+				const p = { id: command.id, permissions: [] };
 
 				if (slashCommand.permissions.roles !== undefined)
 					for (const id of slashCommand.permissions.roles)
@@ -217,8 +240,20 @@ class ExtendedClient extends Client {
 				fullPermissions.push(p);
 			});
 
-			await guild.commands.permissions.set({ fullPermissions });
-			if (this.verbose) console.log(success + `Loaded slash command perms`);
+			return fullPermissions;
+		};
+
+		// for all guilds
+		this.guilds.cache.forEach(async (guild: Guild) => {
+			// global slash commands
+			const slashCommands = await this.application.commands.fetch();
+			// guilds specific slash commands
+			const guildSlashCommands = await guild.commands.fetch();
+
+			const fullPermissions = [...addPerms(slashCommands), ...addPerms(guildSlashCommands)];
+
+			await this.application.commands.permissions.set({ fullPermissions: fullPermissions, guild: guild });
+			if (this.verbose) console.log(success + `Loaded slash command perms for ${guild.name}`);
 		});
 	};
 
@@ -226,6 +261,8 @@ class ExtendedClient extends Client {
 	 * SLASH COMMANDS DELETION
 	 */
 	public deleteGlobalSlashCommands = () => {
+		console.log(`${success}deleting / commands`);
+
 		const rest = new REST({ version: "9" }).setToken(this.tokens.token);
 		rest.get(Routes.applicationCommands(this.tokens.appID)).then((data: any) => {
 			const promises = [];
@@ -238,12 +275,12 @@ class ExtendedClient extends Client {
 	/**
 	 * SLASH COMMANDS HANDLER
 	 */
-	private async loadSlashCommands(): Promise<void> {
+	public async loadSlashCommands(): Promise<void> {
 		const slashCommandsPath = path.join(__dirname, "..", "commands");
 		const commandsArr: Array<{ servers: Array<string>; command: RESTPostAPIApplicationCommandsJSONBody }> = [];
 
 		const paths: Array<string> = readdirSync(slashCommandsPath);
-		// use a classic for loops to force async functions to be fullfilled
+		// use a classic for loops to force async functions to be fulfilled
 		for (let i = 0; i < paths.length; i++) {
 			const dir: string = paths[i];
 
@@ -265,7 +302,6 @@ class ExtendedClient extends Client {
 		}
 
 		const rest = new REST({ version: "9" }).setToken(this.tokens.token);
-		const devID = this.config.discords.filter((s) => s.name === "dev")[0].id;
 
 		// deploy commands only for dev discord when in dev mode
 		if (this.tokens.dev)
@@ -273,36 +309,38 @@ class ExtendedClient extends Client {
 				el.servers = ["dev"];
 			});
 
-		const guilds = {};
+		const guilds = { global: [] };
 		commandsArr.forEach((el) => {
-			if (el.servers === null || el.servers === undefined) {
-				if (guilds["global"] === undefined) guilds["global"] = [];
-				guilds["global"].push(el.command);
-			} else
-				el.servers.forEach((server) => {
-					if (guilds[server] === undefined) guilds[server] = [];
-					guilds[server].push(el.command);
-				});
+			if (el.servers === null || el.servers === undefined) guilds["global"].push(el.command);
+			else el.servers.forEach((server) => {
+				if (guilds[server] === undefined) guilds[server] = [];
+				guilds[server].push(el.command);
+			});
 		});
 
-		Promise.all(
-			Object.keys(guilds).map((server: string) => {
-				if (server === "global")
-					return rest.put(Routes.applicationCommands(this.tokens.appID), { body: guilds["global"] });
-				return rest.put(
-					Routes.applicationGuildCommands(
-						this.tokens.appID,
-						this.config.discords.filter((d) => d.name === server)[0].id,
-					),
-					{ body: guilds[server] },
-				);
-			}),
-		)
-			.then(() => {
-				console.log(`${success}Successfully added slash commands: ${Object.keys(guilds).join(", ")}`);
-				this.loadSlashCommandsPerms();
-			})
-			.catch(console.error);
+		for (let i = 0; i < this.config.discords.length; i++) {
+			const d = this.config.discords[i];
+
+			// if the client isn't in the guild, skip it
+			if (this.guilds.cache.get(d.id) === undefined) continue;
+			else
+				try {
+					// otherwise we add specific commands to that guild
+					await rest.put(Routes.applicationGuildCommands(this.tokens.appID, d.id), { body: guilds[d.name] });
+					console.log(`${success}Successfully added slash commands to: ${d.name}`);
+				} catch (err) {
+					console.error(err);
+				}
+		}
+
+		// we add global commands to all guilds (only if not in dev mode)
+		if (!this.tokens.dev) {
+			await rest.put(Routes.applicationCommands(this.tokens.appID), { body: guilds["global"] });
+			console.log(`${success}Successfully added global slash commands`);
+		}
+
+		// afterwards we add the permissions to each guilds
+		this.loadSlashCommandsPerms();
 	}
 
 	/**
@@ -310,10 +348,10 @@ class ExtendedClient extends Client {
 	 * !! broke if dir doesn't exist
 	 */
 	private loadEvents = (): void => {
-		if (this.tokens.maintanance) {
+		if (this.tokens.maintenance) {
 			this.on("ready", async () => {
 				this.user.setPresence({
-					activities: [{ name: "under maintanance", type: "PLAYING" }],
+					activities: [{ name: "under maintenance", type: "PLAYING" }],
 					status: "idle",
 				});
 				this.user.setStatus("idle");
@@ -366,17 +404,20 @@ class ExtendedClient extends Client {
 	};
 
 	/**
-	 * Store last 5 messages to get more context when debugging
-	 * @author Juknum
+	 * Store any kind of action the bot does
+	 * @param {ActionsStr} type
+	 * @param {Actions} data
 	 */
-
-	public storeMessage(message: Message) {
-		this.lastMessages[this.lastMessagesIndex] = message;
-		this.lastMessagesIndex = (this.lastMessagesIndex + 1) % 5; // store 5 last messages
+	public storeAction(type: ActionsStr, data: Actions): void {
+		this.logs[this.lastLogIndex++ % this.maxLogs] = { type, data };
 	}
 
-	public getLastMessages(): Array<Message> {
-		return this.lastMessages;
+	/**
+	 * Get the whole logs
+	 * @returns {Array<Log>}
+	 */
+	public getAction(): Array<Log> {
+		return this.logs;
 	}
 
 	/**
@@ -402,7 +443,7 @@ class ExtendedClient extends Client {
 		/**
 		 * DISCLAIMER:
 		 * - Discord API limits bots to modify channels name only twice each 10 minutes
-		 * > this below won't fails nor return any erros, the operation is only delayed (not if client is restarted)
+		 * > this below won't fails nor return any errors, the operation is only delayed (not if client is restarted)
 		 */
 		switch (channel.type) {
 			case "GUILD_VOICE":

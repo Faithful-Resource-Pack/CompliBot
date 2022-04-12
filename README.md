@@ -35,7 +35,7 @@ npm run dev
 ___
 ### Bot config:
 
-> **⚠️ We won't help you rebranding the bot for any other server. If you really want to do that, then you need to figure it out yourself.**
+> **⚠️ We won't help you re-branding the bot for any other server. If you really want to do that, then you need to figure it out yourself.**
 
 1. Create an app on the **[Discord Developer Portal](https://discord.com/developers/)**.
 2. Go to the **Bot** tab, create a bot and copy its token.
@@ -55,4 +55,4 @@ ___
 See `config.json` for general public config.
 
 ### Firestorm
-This project is heavily developped around the self hosted Firestore-like database: [firestorm-db](https://github.com/TheRolfFR/firestorm-db). Feel free to check the repository of that library to easily understand how it works.
+This project is heavily developed around the self hosted Firestore-like database: [firestorm-db](https://github.com/TheRolfFR/firestorm-db). Feel free to check the repository of that library to easily understand how it works.

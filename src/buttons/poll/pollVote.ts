@@ -13,8 +13,20 @@ export const button: Button = {
 		const pid: string = embed.footer.text.split(" | ")[0];
 		const poll: Poll = new Poll(client.polls.get(pid));
 
-		poll.addVote(interaction.customId.replace("pollVote__", ""), interaction.user.id);
+		const type: string = interaction.customId.replace("pollVote__", "");
+		const id: string = interaction.user.id;
+
+		if (poll.hasVotedFor(type, id)) poll.removeVote(type, id);
+		else poll.addVote(type, id);
+
 		await poll.updateEmbed(client);
+
+		if (poll.isAnonymous())
+			interaction.followUp({
+				ephemeral: true,
+				content: poll.hasVotedFor(type, id) ? "Your vote has been counted." : "Your vote has been removed.",
+			});
+
 		client.polls.set(pid, poll);
 	},
 };

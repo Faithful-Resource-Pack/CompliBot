@@ -3,7 +3,8 @@ import path from "path";
 import en_US from "@/lang/en-US.json";
 import { success } from "@helpers/logger";
 
-const header = "A list of all translations and their completions.\nHave fun polylingual translators!\n\n";
+const header =
+	"# Languages Support\n> A list of all translations and their completions.\nHave fun polylingual translators!\n\n";
 const note = "\n\n### Note: make sure to read `/translation-guide.md` before contributing!";
 const checked = "- [x] ";
 const unchecked = "- [ ] ";

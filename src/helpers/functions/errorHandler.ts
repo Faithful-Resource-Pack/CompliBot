@@ -1,8 +1,19 @@
-import { MessageAttachment, MessageEmbed, TextChannel } from "discord.js";
+import {
+	ButtonInteraction,
+	CommandInteraction,
+	Guild,
+	GuildMember,
+	MessageAttachment,
+	MessageEmbed,
+	SelectMenuInteraction,
+	TextChannel,
+} from "discord.js";
 import { Client, Message } from "@client";
 import fs from "fs";
 import { err } from "@helpers/logger";
 import { colors } from "@helpers/colors";
+import { Log } from "client/client";
+import path from "path";
 
 const randomSentences: Array<string> = [
 	"Oh no, not again!",
@@ -41,77 +52,119 @@ const randomSentences: Array<string> = [
 var lastReasons = [];
 const loopLimit = 3; //how many times the same error needs to be made to trigger a loop
 
+export const logConstructor: Function = (
+	client: Client,
+	reason: any = { stack: "You requested it with /logs ¯\\_(ツ)_/¯" },
+): MessageAttachment => {
+	const logTemplate = fs.readFileSync(path.join(__dirname + "/errorHandler.log"), { encoding: "utf-8" });
+	const template = logTemplate.match(new RegExp(/\%templateStart%([\s\S]*?)%templateEnd/))[1]; // get message template
+
+	const t = Math.floor(Math.random() * randomSentences.length);
+	let logText = logTemplate
+		.replace("%date%", new Date().toUTCString())
+		.replace("%stack%", reason.stack || JSON.stringify(reason))
+		.replace("%randomSentence%", randomSentences[t])
+		.replace("%randomSentenceUnderline%", "-".repeat(randomSentences[t].length));
+
+	logText = logText.split("%templateStart%")[0]; // remove message template
+
+	let len: number = client.getAction().length;
+	client
+		.getAction()
+		.reverse()
+		.forEach((log: Log, index) => {
+			logText += template
+				.replace("%templateIndex%", `${len - index}`)
+				.replace(
+					"%templateType%",
+					log.type === "slashCommand"
+						? `${log.type} (${log.data.commandName})`
+						: log.type === "guildMemberUpdate"
+						? `${log.type} | ${log.data.user.username} ${log.data.reason === "added" ? "joined" : "left"} ${
+								log.data.guild.name
+						  }`
+						: log.type === "message"
+						? `${log.type} [${log.data.isDeleted ? "deleted" : "created"}] | ${
+								log.data.author.bot ? "BOT" : "USER"
+						  } | ${log.data.author.username}`
+						: log.type,
+				)
+				.replace(
+					"%templateCreatedTimestamp%",
+					`${log.data.createdTimestamp} | ${new Date(log.data.createdTimestamp).toLocaleDateString("en-UK", {
+						timeZone: "UTC",
+					})} ${new Date(log.data.createdTimestamp).toLocaleTimeString("en-US", { timeZone: "UTC" })} (UTC)`,
+				)
+				.replace(
+					"%templateURL%",
+					log.data.url
+						? log.data.url
+						: log.data.message
+						? log.data.message.url // interaction
+						: log.data.guildId && log.data.channelId
+						? `https://discord.com/channels/${log.data.guildId}/${log.data.channelId}/${
+								log.data.messageId ? log.data.messageId : ""
+						  }` // slash command constructed url
+						: log.data.guild
+						? `Guild ID is ${log.data.guild.id}`
+						: "Unknown",
+				)
+
+				.replace("%templateChannelType%", log.data.channel ? log.data.channel.type : "Not relevant")
+				.replace(
+					"%templateContent%",
+					log.data.content !== undefined
+						? log.data.content === ""
+							? "Empty"
+							: log.data.content
+						: log.data.customId
+						? log.data.customId // button
+						: log.data.options
+						? `Parameters: ${JSON.stringify(log.data.options._hoistedOptions)}` // slash commands interaction
+						: log.type === "guildMemberUpdate"
+						? "Not relevant"
+						: "Unknown",
+				)
+				.replace("%templateEmbeds%", log.data.embeds?.length > 0 ? `${JSON.stringify(log.data.embeds)}` : "None")
+				.replace(
+					"%templateComponents%",
+					log.data.components?.length > 0 ? `${JSON.stringify(log.data.components)}` : "None",
+				);
+		});
+
+	const buffer = Buffer.from(logText, "utf8");
+	return new MessageAttachment(buffer, "stack.log");
+};
+
 export const errorHandler: Function = async (client: Client, reason: any, type: string) => {
 	console.error(`${err} ${reason.stack || JSON.stringify(reason)}`);
+
+	// get dev log channel
 	const channel = client.channels.cache.get(client.tokens.errorChannel) as TextChannel;
 	if (channel === undefined) return; // avoid infinite loop when crash is outside of client
 
 	if (lastReasons.length == loopLimit) lastReasons.pop(); // pop removes an item from the end of an array
 	lastReasons.push(reason); // push adds one to the start
 
-	//checks if every value is equal to index
+	//checks if every reasons are the same
 	if (lastReasons.every((v) => v.stack == lastReasons[0].stack) && lastReasons.length == loopLimit) {
-		if (client.verbose) console.log(`${err}Suspected loop detected; Restarting...`);
+		if (client.verbose) console.log(`${err}Suspected crash loop detected; Restarting...`);
+
 		const embed = new MessageEmbed()
-			.setTitle("(Probably) Looped, error encountered!")
-			.setFooter({ text: "Got the same error three times in a row. Atempting restart..." })
+			.setTitle("(Probably) Looped, crash encountered!")
+			.setFooter({ text: `Got the same error ${loopLimit} times in a row. Attempting restart...` })
 			.setDescription("```bash\n" + reason.stack + "\n```");
 		await channel.send({ embeds: [embed] });
-		client.restart(); // round 2 babyy
+
+		client.restart();
 	}
 
 	const embed = new MessageEmbed()
-		.setTitle(type)
-		.setThumbnail(`${client.config.images}bot/error.png`)
+		.setAuthor({ name: type, iconURL: `${client.config.images}bot/error.png` }) // much compressed than .title() & .thumbnail()
 		.setColor(colors.red)
 		.setTimestamp()
 		.setFooter({ text: client.user.tag, iconURL: client.user.avatarURL() });
 
-	//check to see if it errored before any commands were ran
-	// #(for instance if a button was pressed before a command and it threw an error)
-	if (client.getLastMessages()[0] != undefined) {
-		embed.addField(
-			"Last message(s) received:",
-			`${client
-				.getLastMessages()
-				.map(
-					(message: Message, index) =>
-						`[Message ${index + 1}](${message.url}) - ${
-							message.channel.type === "DM" ? "DM" : `<#${message.channel.id}>`
-						}`,
-				)
-				.join("\n")}`,
-			false,
-		);
-	} else
-		embed.addField(
-			"Last message(s) recieved:",
-			"No last messages sent. Might be another interaction such as a Button or selectMenu.",
-		);
-	const logTemplate = fs.readFileSync(__dirname + "/errorHandler.log", { encoding: "utf-8" });
-	const messageTemplate = logTemplate.match(new RegExp(/\%messageStart%([\s\S]*?)%messageEnd/))[1]; // get message template
-
-	const t = Math.floor(Math.random() * randomSentences.length);
-	let log = logTemplate
-		.replace("%date%", new Date().toUTCString())
-		.replace("%stack%", reason.stack || JSON.stringify(reason))
-		.replace("%randomSentence%", randomSentences[t])
-		.replace("%randomSentenceUnderline%", "-".repeat(randomSentences[t].length));
-
-	log = log.split("%messageStart%")[0]; // remove message template
-
-	client.getLastMessages().forEach((message: Message, index) => {
-		log += messageTemplate
-			.replace("%messageIndex%", index.toString())
-			.replace("%messageCreatedTimestamp%", message.createdTimestamp.toString())
-			.replace("%messageURL%", message.url)
-			.replace("%messageChannelType%", message.channel.type)
-			.replace("%messageContent%", message.content);
-	});
-
-	const buffer = Buffer.from(log, "utf8");
-	const attachment = new MessageAttachment(buffer, "stack.log");
-
 	await channel.send({ embeds: [embed] }).catch(console.error);
-	await channel.send({ files: [attachment] }).catch(console.error);
+	await channel.send({ files: [logConstructor(client, reason)] }).catch(console.error); // send after because the file is displayed before the embed (embeds are prioritized)
 };

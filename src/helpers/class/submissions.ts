@@ -16,7 +16,6 @@ import { TimedEmbed } from "./timedEmbed";
 import { getCorrespondingCouncilChannel, getSubmissionChannelName } from "@helpers/channels";
 import { getResourcePackFromName } from "@functions/getResourcePack";
 
-// where "in" & "out" are both at the ends of the process but "in" -> go to the pack, "out" -> not enough votes
 export type SubmissionStatus = "pending" | "instapassed" | "added" | "no_council" | "council" | "denied" | "invalid";
 
 export class Submission extends TimedEmbed {
@@ -279,8 +278,6 @@ export class Submission extends TimedEmbed {
 	}
 
 	public async createContribution(client: Client) {
-		
-
 		client.channels
 			.fetch(this.getChannelId())
 			.then((c: TextChannel) => {
@@ -289,20 +286,34 @@ export class Submission extends TimedEmbed {
 			})
 			.then((m: Message) => {
 				// collect required information to make the contribution
-				let texture: string = m.embeds[0].title.split(' ').filter(el => el.charAt(0) === '[' && el.charAt(1) === '#' && el.slice(-1) == "]").map(el => el.slice(2, el.length - 1))[0];
-				let authors: Array<string> = m.embeds[0].fields.filter(f => f.name === "Contributor(s)")[0].value.split('\n').map(auth => auth.replace('<@!', '').replace('>', ''));
+				let texture: string = m.embeds[0].title
+					.split(" ")
+					.filter((el) => el.charAt(0) === "[" && el.charAt(1) === "#" && el.slice(-1) == "]")
+					.map((el) => el.slice(2, el.length - 1))[0];
+				let authors: Array<string> = m.embeds[0].fields
+					.filter((f) => f.name === "Contributor(s)")[0]
+					.value.split("\n")
+					.map((auth) => auth.replace("<@!", "").replace(">", ""));
 				let date: number = m.createdTimestamp;
-				let ressourcePack = getResourcePackFromName(client, m.embeds[0].fields.filter(f => f.name === "Resource Pack")[0].value.replaceAll('`', ''));
+				let ressourcePack = getResourcePackFromName(
+					client,
+					m.embeds[0].fields.filter((f) => f.name === "Resource Pack")[0].value.replaceAll("`", ""),
+				);
 				let resolution = ressourcePack.resolution;
 				let pack = ressourcePack.slug;
 
 				// send the contribution
-				return axios.post(`http://localhost:8000/v2/contributions`, { date, pack, resolution, authors, texture }, { headers: { bot: client.tokens.apiPassword } })
+				// todo: use API url here
+				return axios.post(
+					`http://localhost:8000/v2/contributions`,
+					{ date, pack, resolution, authors, texture },
+					{ headers: { bot: client.tokens.apiPassword } },
+				);
 			})
 			.then((res) => res.data) // axios data response
 			.then((contribution) => {
-				// todo: GITHUB PUSH TO EACH BRANCHHH + CORRESPONDING REPO
+				// TODO: GITHUB PUSH TO EACH BRANCHHH + CORRESPONDING REPO
 			})
-			.catch(console.error)
+			.catch(console.error);
 	}
 }

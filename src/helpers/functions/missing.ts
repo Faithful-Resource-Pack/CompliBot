@@ -1,7 +1,7 @@
 import { exec, series } from "@helpers/exec";
 import { existsSync, readdirSync, statSync } from "fs";
 import { mkdir } from "fs/promises";
-import { getDisplayNameForPack } from "@client/commands/compliance/missing";
+import { getDisplayNameForPack } from "@client/commands/faithful/missing";
 import { Client } from "@client";
 import { AnyChannel, VoiceChannel } from "discord.js";
 import { join, normalize } from "path";

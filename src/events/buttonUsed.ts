@@ -5,7 +5,9 @@ import { info } from "@helpers/logger";
 export const event: Event = {
 	name: "buttonUsed",
 	run: async (client: Client, interaction: ButtonInteraction) => {
-		if (client.verbose) console.log(`${info}Button used`)
+		client.storeAction("button", interaction);
+
+		if (client.verbose) console.log(`${info}Button used`);
 		let button: Button;
 
 		if (interaction.customId.startsWith("pollVote__")) button = client.buttons.get("pollVote");

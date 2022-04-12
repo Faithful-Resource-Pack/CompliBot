@@ -10,6 +10,11 @@
                 "moderation": "776145239358046248"
             },
             "roles": {
+                "administrator": [
+                    "773984348860711003",
+                    "614163845656608774",
+                    "814200027194720256"
+                ],
                 "council": [
                     "775636065338785813",
                     "814200754197364786"
@@ -32,6 +37,7 @@
             "name": "dev",
             "id": "720677267424018526",
             "channels": {
+                "todo": "962086355243004004",
                 "updateMember": "897476033136189460",
                 "moderation": "798676864599195655",
                 "feedbackBug": "938475927887839243",
@@ -42,19 +48,20 @@
                 "submission": {
                     "test Pack": {
                         "channel": "841396215211360296",
-                        "slug": "compliance_32x",
+                        "slug": "faithful_32x",
                         "resolution": 8
                     }
                 }
             },
             "roles": {
+                "administrator": "747839021421428776",
                 "council": "936043191977787452",
                 "moderators": "852243126701522965",
                 "trial_moderators": "952550781767254036"
             }
         },
         {
-            "name": "compliance",
+            "name": "faithful",
             "team": "faithful",
             "id": "773983706582482946",
             "channels": {
@@ -63,21 +70,21 @@
             "submissionSystem": {
                 "council": "779363363158229004",
                 "submission": {
-                    "Compliance 32x": {
+                    "Faithful 32x": {
                         "channel": "774220983044669450",
-                        "slug": "compliance_32x",
+                        "slug": "faithful_32x",
                         "resolution": 32
                     },
-                    "Compliance 64x": {
+                    "Faithful 64x": {
                         "channel": "931886877521350696",
-                        "slug": "compliance_64x",
+                        "slug": "faithful_64x",
                         "resolution": 64
                     }
                 }
             }
         },
         {
-            "name": "compliance_extra",
+            "name": "faithful_extra",
             "team": "faithful",
             "id": "614160586032414845",
             "channels": {

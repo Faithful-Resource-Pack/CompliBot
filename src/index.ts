@@ -26,7 +26,7 @@ export let changelogOptions = () => {
 new Client({
 	config: config,
 	tokens: tokens,
-	verbose: tokens.dev,
+	verbose: tokens.verbose,
 	allowedMentions: { parse: ["users", "roles"], repliedUser: false }, // remove this line to die instantly ~JackDotJS 2021
 	restTimeOffset: 0,
 	partials: Object.values(Constants.PartialTypes),

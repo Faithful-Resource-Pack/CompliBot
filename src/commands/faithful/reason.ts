@@ -9,9 +9,9 @@ import { getRolesIds } from "@helpers/roles";
 const config: Config = ConfigJson;
 
 export const command: SlashCommand = {
-	servers: ["compliance", "classic_faithful"],
+	servers: ["faithful", "classic_faithful"],
 	permissions: {
-    roles: getRolesIds({ name: "council", discords: ["dev"], teams: ["faithful"] }),
+		roles: getRolesIds({ name: "council", discords: ["dev"], teams: ["faithful"] }),
 	},
 	data: new SlashCommandBuilder()
 		.setDefaultPermission(false) // disable the command for @everyone (only council can do it)

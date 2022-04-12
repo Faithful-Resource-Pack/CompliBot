@@ -5,13 +5,18 @@ CompliBot crash/log report, please report this to developers!
 Date: %date%
 %stack%
 
-Messages: (last 5 commands messages)
-%messageStart%
-  index:        %messageIndex%
-  timestamp:    %messageCreatedTimestamp%
-  url:          %messageURL%
-  channel type: %messageChannelType%
-  content:      %messageContent%
+Actions: 
+> last 50 bots actions: slash commands, chat messages, etc...
+
+%templateStart%
+  INDEX        : %templateIndex%
+  TYPE         : %templateType%
+  TIMESTAMP    : %templateCreatedTimestamp%
+  URL          : %templateURL%
+  CHANNEL_TYPE : %templateChannelType%
+  CONTENT      : %templateContent%
+  EMBEDS       : %templateEmbeds%
+  COMPONENTS   : %templateComponents%
 
   ---
-%messageEnd%
+%templateEnd%
