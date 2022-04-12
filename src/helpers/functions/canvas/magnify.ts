@@ -23,11 +23,13 @@ export async function magnifyAttachment(options: options): Promise<[MessageAttac
 			if (surface > 1024) factor = 8; // 32^2px
 			if (surface > 4096) factor = 4; // 64^2px
 			if (surface > 65636) factor = 2;
-			// 512^2px
+			// 262144 = 512^2
 			else if (surface >= 262144) factor = 1;
 		}
 
 		const [width, height] = [dimension.width * factor, dimension.height * factor];
+		if (width * height > 262144) return undefined;
+
 		const canvas = createCanvas(width, height);
 		const context = canvas.getContext("2d");
 

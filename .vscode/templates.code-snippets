@@ -14,9 +14,9 @@
 	"New command template": {
 		"prefix": "nct",
 		"body": [
-			"import { SlashCommand, Client } from '@interfaces';",
-			"import { CommandInteraction } from 'discord.js';",
-			"import { SlashCommandBuilder } from '@discord.js/builders';",
+			"import { SlashCommand } from '@interfaces';",
+			"import { CommandInteraction, Client } from 'discord.js';",
+			"import { SlashCommandBuilder } from '@discordjs/builders';",
 			"export const command: SlashCommand = {",
 			"\tpermissions: {",
 			"\t\troles: [], //roles array",

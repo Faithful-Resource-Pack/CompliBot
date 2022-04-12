@@ -1,6 +1,9 @@
 {
     "Args.Insufficient": "Not enough arguments!",
     "Args.Invalid": "Invalid arguments!",
+    "Command.Activity.noChannel": "Please join a voice channel or add a channel argument!",
+    "Command.Activity.stageChannel": "Activities cannot be started in a stage channel! (move to a regular vc)",
+    "Command.Activity.unableToCreateInvite": "Unable to create invite! *(probably discord api downtime)",
     "Command.Botban.isBanned": "You cannot use the bot as you have been bot banned!",
     "Command.Botban.view.unbannable": "You cannot audit this user's entry in the bot ban list!",
     "Command.Changelog.Title": "Results for version ",

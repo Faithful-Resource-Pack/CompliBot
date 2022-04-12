@@ -15,6 +15,9 @@ Commands are explained like so:
 ## [v2.0.3] 12/04/2022
 
 ### Added
+- `/activity [activity] (channel)` lets you start all of discord's minigames in a channel that your in or
+    a specified channel can be provided. (_some activities require boosts like the game octo_) 
+- `/stats command` now returns 10 most used commands.
 - `/eval [code]` command for developers.
 - `/logs` for developers only, see the whole current logs information without needing a crash of the bot (_aha_).
 - `/notes [add|list|edit]`, moderators can now make private notes against all users
@@ -22,6 +25,9 @@ Commands are explained like so:
   - Use `/notes add [user] [note]` to add a note to a user
   - Use `/notes edit [user] [index] (note)` to edit a specific note, administrators can modify any notes, but moderators can only modify their personal notes. If the `note` parameter is not given **and** you're an administrator, the note is deleted.
 - `/userinfo` for moderators to get detailed information on a specified user
+- `/todo [add|remove]`, council can now add or remove from the todo list - a channel like rules that mimicks the todo doc. Note: this is meant to be automated with the submission system but the manual commands will remain for fixes
+    - `/todo add [entity|block|item|misc] [textureid] (parent) (reason)` Add an entry to a category by itself with a reason or add it to a parent or make a new parent with a reason and append it to that.
+    - `/todo remove [entity|block|item|misc] [textureid]` unimplemented as of 12/04/2022.
   
 ### Changed
 - Re-brand Compliance to Faithful !
