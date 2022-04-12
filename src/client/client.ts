@@ -245,21 +245,21 @@ class ExtendedClient extends Client {
 
 		// for all guilds
 		this.guilds.cache.forEach(async (guild: Guild) => {
+			// global slash commands
+			if (!this.tokens.dev) {
+				const slashCommands = await this.application.commands.fetch();
+				const fullPermissions = addPerms(slashCommands);
+
+				await this.application.commands.permissions.set({ fullPermissions, guild: guild });
+				if (this.verbose) console.log(success + `Loaded global slash command perms for ${guild.name}`);
+			}
+
 			// guilds specific slash commands
 			const guildSlashCommands = await guild.commands.fetch();
 			const fullPermissions = addPerms(guildSlashCommands);
 
 			await guild.commands.permissions.set({ fullPermissions });
 			if (this.verbose) console.log(success + `Loaded slash command perms for ${guild.name}`);
-
-			// global slash commands
-			if (!this.tokens.dev) {
-				const slashCommands = await this.application?.commands.fetch();
-				const fullPermissions = addPerms(slashCommands);
-
-				await this.application?.commands.permissions.set({ fullPermissions, guild: guild });
-				if (this.verbose) console.log(success + `Loaded global slash command perms for ${guild.name}`);
-			}
 		});
 	};
 
@@ -315,16 +315,13 @@ class ExtendedClient extends Client {
 				el.servers = ["dev"];
 			});
 
-		const guilds = {};
+		const guilds = { global: [] };
 		commandsArr.forEach((el) => {
-			if (el.servers === null || el.servers === undefined) {
-				if (guilds["global"] === undefined) guilds["global"] = [];
-				guilds["global"].push(el.command);
-			} else
-				el.servers.forEach((server) => {
-					if (guilds[server] === undefined) guilds[server] = [];
-					guilds[server].push(el.command);
-				});
+			if (el.servers === null || el.servers === undefined) guilds["global"].push(el.command);
+			else el.servers.forEach((server) => {
+				if (guilds[server] === undefined) guilds[server] = [];
+				guilds[server].push(el.command);
+			});
 		});
 
 		for (let i = 0; i < this.config.discords.length; i++) {
