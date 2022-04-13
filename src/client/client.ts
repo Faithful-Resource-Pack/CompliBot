@@ -88,10 +88,11 @@ class ExtendedClient extends Client {
 	}
 
 	public async restart(int?: CommandInteraction): Promise<void> {
-		console.log(`${info}restarting bot...`);
-		this.destroy();
-		await this.init();
-		if (int) int.editReply({ content: "reboot succeeded" });
+		process.exit(1);
+		//console.log(`${info}restarting bot...`);
+		//this.destroy();
+		//await this.init();
+		//if (int) int.editReply({ content: "reboot succeeded" });
 	}
 
 	//prettier-ignore
