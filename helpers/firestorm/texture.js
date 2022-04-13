@@ -26,13 +26,13 @@ module.exports = firestorm.collection('textures', el => {
     const contributions = require('./contributions')
 
     const s = [{
-      field: 'textureID',
+      field: 'texture',
       criteria: '==',
       value: el[firestorm.ID_FIELD]
     }]
 
     if (res) s.push({
-      field: 'res',
+      field: 'resolution',
       criteria: '==',
       value: res
     })

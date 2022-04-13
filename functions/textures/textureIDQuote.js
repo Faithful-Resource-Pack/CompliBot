@@ -73,7 +73,7 @@ async function textureIDQuote(message) {
       textureFirstEdition = Array.isArray(uses[0].editions) && uses[0].editions.length > 0 ? uses[0].editions[0] : '' + uses[0].editions
     }
 
-    let contrib32 = await texture.lastContribution('c32')
+    let contrib32 = await texture.lastContribution(32)
     let timestamp32 = contrib32 ? contrib32.date : undefined
     let author32 = contrib32 ? contrib32.contributors : undefined
 
@@ -86,7 +86,7 @@ async function textureIDQuote(message) {
       author32 = contributorString
     }
 
-    let contrib64 = await texture.lastContribution('c64')
+    let contrib64 = await texture.lastContribution(64)
     let timestamp64 = contrib64 ? contrib64.date : undefined
     let author64 = contrib64 ? contrib64.contributors : undefined
 
@@ -103,13 +103,13 @@ async function textureIDQuote(message) {
     const pathVersion = texturePath[0].versions[0]
     if (textureFirstEdition.includes('java')) {
       paths.c16 = settings.repositories.raw.default.java + pathVersion + '/' + path
-      paths.c32 = settings.repositories.raw.c32.java + pathVersion + '/' + path
-      paths.c64 = settings.repositories.raw.c64.java + pathVersion + '/' + path
+      paths.c32 = settings.repositories.raw.faithful_32x.java + pathVersion + '/' + path
+      paths.c64 = settings.repositories.raw.faithful_64x.java + pathVersion + '/' + path
     }
     else {
       paths.c16 = settings.repositories.raw.default.bedrock + pathVersion + '/' + path
-      paths.c32 = settings.repositories.raw.c32.bedrock + pathVersion + '/' + path
-      paths.c64 = settings.repositories.raw.c64.bedrock + pathVersion + '/' + path
+      paths.c32 = settings.repositories.raw.faithful_32x.bedrock + pathVersion + '/' + path
+      paths.c64 = settings.repositories.raw.faithful_64x.bedrock + pathVersion + '/' + path
     }
 
     /** @type {import('../helpers/firestorm/users').User} */

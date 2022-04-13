@@ -14,8 +14,8 @@ module.exports = {
 	category: 'Compliance',
 	guildOnly: false,
 	uses: strings.command.use.admins,
-	syntax: `${prefix}autopush [both/c32/c64]`,
-	example: `${prefix}autopush c32`,
+	syntax: `${prefix}autopush [both/32/64]`,
+	example: `${prefix}autopush 32`,
 	async execute(client, message, args) {
 		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.id === '747839021421428776')) return warnUser(message, strings.command.no_permission)
 
@@ -25,8 +25,8 @@ module.exports = {
 			await downloadResults(client, '931887235433906276')
 			await downloadResults(client, settings.channels.submit_results.c32)
 		}
-		else if (args[0] == 'c32') await downloadResults(client, settings.channels.submit_results.c32)
-		else if (args[0] == 'c64') await downloadResults(client, '931887235433906276')
+		else if (args[0] == "32") await downloadResults(client, settings.channels.submit_results.c32)
+		else if (args[0] == '64') await downloadResults(client, '931887235433906276')
 		else return warnUser(message, strings.command.args.invalid.generic);
 
 		await pushTextures(`Manual push, executed by: ${message.author.username} (${date()})`);	// Push them trough GitHub

@@ -19,8 +19,8 @@ var Buffer = require('buffer/').Buffer
 async function downloadResults(client, channelInID) {
 	let messages = await getMessages(client, channelInID)
 
-	let res = 'c32'
-	if (channelInID == '931887235433906276') res = 'c64'
+	let res = 32
+	if (channelInID == '931887235433906276') res = 64
 
 	// get messages from the same day
 	let delayedDate = new Date()
@@ -78,10 +78,10 @@ async function downloadResults(client, channelInID) {
 			}
 
 			switch (res) {
-				case "c32":
+				case 32:
 					localPath += '32x'
 					break
-				case "c64":
+				case 64:
 					localPath += '64x'
 					break
 				default:
@@ -117,9 +117,10 @@ async function downloadResults(client, channelInID) {
 		// prepare the authors for the texture:
 		allContribution.push({
 			date: textureDate,
-			res: res,
-			textureID: parseInt(textureID, 10),
-			contributors: textureAuthors
+			resolution: res,
+			pack: res === 32 ? 'faithful_32x' : "faithful_64x",
+			texture: `${textureID}`,
+			authors: textureAuthors
 		})
 	}
 
