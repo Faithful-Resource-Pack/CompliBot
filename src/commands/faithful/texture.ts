@@ -33,6 +33,7 @@ export const command: SlashCommand = {
 
 		var name = interaction.options.getString("name");
 		if (name.includes(".png")) name = name.replace(".png", "");
+		name = name.replace(/ /g, "_");
 		if (name.length < 3) {
 			// textures like "bed" exist :/
 			try {

@@ -10,6 +10,9 @@ Commands are explained like so:
 
 ## [v2.0.4] TBA
 
+### Added
+- You can now search for a texture without using underscores `_`
+
 ### Changed
 
 - The CompliBot ascii art now show up & show up with different colors when `tokens.maintenance === true`
