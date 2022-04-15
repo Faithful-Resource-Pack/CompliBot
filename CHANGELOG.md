@@ -14,8 +14,10 @@ Commands are explained like so:
 - You can now search for a texture without using underscores `_`
 
 ### Changed
-
 - The CompliBot ascii art now show up & show up with different colors when `tokens.maintenance === true`
+
+### Fixed
+- Thread title for polls being empty if the question is longer than 100 characters
 
 ## [v2.0.3] 12/04/2022
 

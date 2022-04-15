@@ -122,8 +122,12 @@ export class Poll extends TimedEmbed {
 			components: [...components, new MessageActionRow().addComponents(pollDelete)],
 		})) as any;
 
+		if (options.question.length > 100) {
+			options.question = options.question.substring(0, 96) + "...";
+		}
+
 		if (options.thread) {
-			message.startThread({ name: `Debate: ${options.question}` });
+			message.startThread({ name: `${options.question}` });
 		}
 
 		this.setChannelId(interaction.channelId);
