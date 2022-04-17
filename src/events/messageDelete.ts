@@ -14,8 +14,8 @@ export const event: Event = {
 		m.author = message.author; // because we loose methods attached to the object :3
 		client.storeAction("message", m);
 
-
-		if (message.author.id == client.user.id) return;
+		// !causes an infinite error loop
+		//if (message.author && message.author.bot) return;
 
 		if (message.guild.id == "773983706582482946" || message.guild.id == "614160586032414845") {
 			if (message.channel.id == "773987409993793546" || message.channel.id == "931887174977208370") return; // Texture submission channels
