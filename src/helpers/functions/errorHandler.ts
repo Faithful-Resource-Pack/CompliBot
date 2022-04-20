@@ -147,7 +147,7 @@ export const errorHandler: Function = async (client: Client, reason: any, type: 
 	lastReasons.push(reason); // push adds one to the start
 
 	//checks if every reasons are the same
-	if (lastReasons.every((v) => v.stack == lastReasons[0].stack) && lastReasons.length == loopLimit) {
+	/*if (lastReasons.every((v) => v.stack == lastReasons[0].stack) && lastReasons.length == loopLimit) {
 		if (client.verbose) console.log(`${err}Suspected crash loop detected; Restarting...`);
 
 		const embed = new MessageEmbed()
@@ -157,7 +157,7 @@ export const errorHandler: Function = async (client: Client, reason: any, type: 
 		await channel.send({ embeds: [embed] });
 
 		client.restart();
-	}
+	}*/
 
 	const embed = new MessageEmbed()
 		.setAuthor({ name: type, iconURL: `${client.config.images}bot/error.png` }) // much compressed than .title() & .thumbnail()
