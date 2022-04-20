@@ -25,11 +25,11 @@ export const command: SlashCommand = {
 			.setThumbnail(user.avatarURL({ dynamic: true }))
 			.addFields(
 				{ name: "Name & Tag", value: user.tag, inline: true },
-				{ name: "Nickname", value: guildUser.nickname, inline: true },
+				{ name: "Nickname", value: guildUser.nickname ? guildUser.nickname : "none", inline: true },
 				{ name: "ID", value: user.id, inline: true },
 				{
 					name: "Status",
-					value: guildUser.presence?.status != undefined ? guildUser.presence?.status : "offline",
+					value: guildUser.presence?.status ? guildUser.presence?.status : "offline",
 					inline: true,
 				},
 				{
