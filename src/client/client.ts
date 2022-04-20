@@ -110,7 +110,7 @@ class ExtendedClient extends Client {
 		console.log(chalk.hex(darkColor)("\"Y8888P\"    \"Y88P\"  888  888  888 88888P\"  888 888 ")  + chalk.hex(lightColor)("8888888P\"   \"Y88P\"   \"Y888"));
 		console.log(chalk.hex(darkColor)("                                  888"));
 		console.log(chalk.hex(darkColor)("                                  888                   ")  + chalk.white.bold("Faithful Devs. 2022"));
-		console.log(chalk.hex(darkColor)("                                  888                ")  + chalk.gray.italic(this.tokens.maintenance === false ? "~ Made lovingly With pain\n" : "    Maintenance Mode!\n"));
+		console.log(chalk.hex(darkColor)("                                  888                ")  + chalk.gray.italic(this.tokens.maintenance === false ? "~ Made lovingly with pain\n" : "    Maintenance mode!\n"));
 	}
 
 	public async init() {
