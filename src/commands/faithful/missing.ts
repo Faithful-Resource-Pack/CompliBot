@@ -77,9 +77,9 @@ export const command: SlashCommand = {
 
 		const embed: MessageEmbed = new MessageEmbed()
 			.setTitle("Searching for missing textures...")
-			.setDescription("This takes some times, please wait...")
+			.setDescription("This takes some time, please wait...")
 			.setThumbnail(`${(interaction.client as Client).config.images}bot/loading.gif`)
-			.addField("Steps", "Steps will be listed here");
+			.addField("Steps", "\u200b");
 
 		await interaction.editReply({ embeds: [embed] });
 		let steps: Array<string> = [];
@@ -100,7 +100,7 @@ export const command: SlashCommand = {
 			if (!errMessage) {
 				console.error(err);
 				errMessage =
-					"An error occured when launching missing command. Please check console error output for more infos";
+					"An error occured when launching missing command. Please check console error output for more info";
 			}
 
 			return [null, [errMessage], options];
