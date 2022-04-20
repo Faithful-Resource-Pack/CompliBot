@@ -85,7 +85,7 @@ export const logConstructor: Function = (
 						  }`
 						: log.type === "message"
 						? `${log.type} [${log.data.isDeleted ? "deleted" : "created"}] | ${
-								log.data.author && log.data.author.bot ? "BOT" : "USER"
+							log.data.author ? (log.data.author.bot ? "BOT" : "USER") : "USER"
 						  } | ${log.data.author.username}`
 						: log.type,
 				)
