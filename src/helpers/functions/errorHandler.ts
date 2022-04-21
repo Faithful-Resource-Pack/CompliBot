@@ -85,8 +85,8 @@ export const logConstructor: Function = (
 						  }`
 						: log.type === "message"
 						? `${log.type} [${log.data.isDeleted ? "deleted" : "created"}] | ${
-							log.data.author ? (log.data.author.bot ? "BOT" : "USER") : "USER"
-						  } | ${log.data.author.username}`
+							log.data.author ? (log.data.author.bot ? "BOT" : "USER") : "Unknown (likely bot)"
+						  } | ${log.data.author ? log.data.author.username : "Unknown"}`
 						: log.type,
 				)
 				.replace(
