@@ -58,7 +58,7 @@ export async function fetchMessageImage(
 	const awaitedMessages: Collection<string, Message<boolean>> = await interaction.channel.awaitMessages({
 		filter: (m: Message) => m.author.id === userInteraction.user.id,
 		max: 1,
-		time: 5000, // 30s
+		time: 30000, // 30s
 	});
 
 	message = awaitedMessages
