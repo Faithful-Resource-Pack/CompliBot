@@ -1,7 +1,7 @@
 import { SlashCommand } from "@interfaces";
 import { CommandInteraction, Client, VoiceChannel, VoiceBasedChannel } from "discord.js";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { activities, activityEnum } from "@helpers/activities";
+import { activities, activityOptions } from "@helpers/activities";
 import { ChannelType } from "discord-api-types";
 import axios from "axios";
 import { MessageEmbed } from "@client";
@@ -15,7 +15,7 @@ export const command: SlashCommand = {
 			option
 				.setName("activity")
 				.setDescription("The activity option to open in voice chat")
-				.addChoices(activities)
+				.addChoices(activityOptions)
 				.setRequired(true),
 		)
 		.addChannelOption((option) =>
@@ -66,7 +66,7 @@ export const command: SlashCommand = {
 		});
 		const embed = new MessageEmbed()
 			.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL() })
-			.setTitle(`Click to join ${activityEnum[parseInt(interaction.options.getString("activity"))]}`);
+			.setTitle(`Click to join ${activities[parseInt(interaction.options.getString("activity"))]}`);
 		if (data && data.data["code"]) {
 			embed.setURL(`https://discord.com/invite/${data.data["code"]}`);
 			return interaction.reply({ embeds: [embed] });
