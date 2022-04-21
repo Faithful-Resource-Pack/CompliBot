@@ -60,7 +60,7 @@ export async function tileCanvas(options: options): Promise<Canvas> {
 			/**
 			 * Follows this pattern:
 			 *  x x x	     x x x      . x .     . x .     . . .
-			 *  x x x  ->  x . x  ->  x x x  -> . x .  OR x x x
+			 *  x x x  ->    x . x  ->  x x x  -> . x .  OR x x x
 			 *  x x x	     x x x      . x .     . x .     . . .
 			 */
 

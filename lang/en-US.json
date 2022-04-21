@@ -215,6 +215,8 @@
         "Here's your ping. Now let me go back to sleep."
     ],
     "Command.Ping.Title": "Pong!",
+    "Command.Profile.noContent": "No such minecraft username exists!",
+    "Command.Profile.noResponse": "The %API%api is currently down, please check again later!",
     "Command.Stats.Embed.FieldTitles": [
         "Prefix",
         "Uptime",
