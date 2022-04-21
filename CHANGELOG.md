@@ -21,6 +21,7 @@ Commands are explained like so:
 - Typos in `/missing` command
 - "Author ID in footer Not Found!" falsely showing up in delete button in some cases
 - `/love` command erroring when no user was specified
+- Image commands erroring on webp images
 
 ## [v2.0.3] 12/04/2022
 

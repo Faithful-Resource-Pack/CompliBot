@@ -37,7 +37,7 @@ export async function fetchMessageImage(
 		.sort((a, b) => b.createdTimestamp - a.createdTimestamp)
 		.filter(
 			(m) =>
-				(m.attachments.size > 0 && (m.attachments.first().url.match(/\.(jpeg|jpg|png|webp)$/) as any)) ||
+				(m.attachments.size > 0 && (m.attachments.first().url.match(/\.(jpeg|jpg|png)$/) as any)) ||
 				(m.embeds[0] !== undefined && (m.embeds[0].thumbnail !== null || m.embeds[0].image !== null)),
 		)
 		.first();
@@ -64,7 +64,7 @@ export async function fetchMessageImage(
 		.sort((a, b) => b.createdTimestamp - a.createdTimestamp)
 		.filter(
 			(m) =>
-				(m.attachments.size > 0 && (m.attachments.first().url.match(/\.(jpeg|jpg|png|webp)$/) as any)) ||
+				(m.attachments.size > 0 && (m.attachments.first().url.match(/\.(jpeg|jpg|png)$/) as any)) ||
 				(m.embeds[0] !== undefined && (m.embeds[0].thumbnail !== null || m.embeds[0].image !== null)),
 		)
 		.first();
@@ -84,7 +84,7 @@ export async function fetchMessageImage(
  */
 export async function getImageFromMessage(message: Message): Promise<string> {
 	// if image is attached
-	if (message.attachments.size > 0 && message.attachments.first().url.match(/\.(jpeg|jpg|png|webp)$/))
+	if (message.attachments.size > 0 && message.attachments.first().url.match(/\.(jpeg|jpg|png)$/))
 		return message.attachments.first().url;
 	// else if the message is an embed
 	else if (message.embeds[0]) {
@@ -116,10 +116,11 @@ export async function generalSlashCommandImage(
 ): Promise<void> {
 	await interaction.deferReply();
 
-	const imageURL: string = await fetchMessageImage(interaction, 10, {
+	var imageURL: string = await fetchMessageImage(interaction, 10, {
 		doInteraction: true,
 		user: interaction.user,
 	});
+	if (!imageURL.match(/\.(jpeg|jpg|png)$/)) imageURL = null;
 
 	if (imageURL === null) {
 		await interaction.followUp({
