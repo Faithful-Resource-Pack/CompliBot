@@ -38,11 +38,12 @@ export async function fetchMessageImage(
 		.filter(
 			(m) =>
 				(m.attachments.size > 0 && (m.attachments.first().url.match(/\.(jpeg|jpg|png)$/) as any)) ||
-				(m.embeds[0] !== undefined && (m.embeds[0].thumbnail !== null || m.embeds[0].image !== null)),
+				// TODO: definitely not the best way to do this
+				(m.embeds[0] !== undefined && ((m.embeds[0].thumbnail !== null && m.embeds[0].thumbnail.url.match(/\.(jpeg|jpg|png)$/)) || (m.embeds[0].image !== null && m.embeds[0].image.url.match(/\.(jpeg|jpg|png)$/)))),
 		)
 		.first();
 
-	// no needs to await user interaction (a message has been found)
+	// no need to await user interaction (a message has been found)
 	if (message !== undefined) return await getImageFromMessage(message);
 
 	// no message found but we don't ask the user to provide an image
@@ -116,11 +117,10 @@ export async function generalSlashCommandImage(
 ): Promise<void> {
 	await interaction.deferReply();
 
-	var imageURL: string = await fetchMessageImage(interaction, 10, {
+	const imageURL: string = await fetchMessageImage(interaction, 10, {
 		doInteraction: true,
 		user: interaction.user,
 	});
-	if (!imageURL.match(/\.(jpeg|jpg|png)$/)) imageURL = null;
 
 	if (imageURL === null) {
 		await interaction.followUp({
