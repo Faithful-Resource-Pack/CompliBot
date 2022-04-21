@@ -18,6 +18,9 @@ Commands are explained like so:
 
 ### Fixed
 - Thread title for polls being empty if the question is longer than 100 characters
+- Typos in `/missing` command
+- "Author ID in footer Not Found!" falsely showing up in delete button in some cases
+- `/love` command erroring when no user was specified
 
 ## [v2.0.3] 12/04/2022
 
