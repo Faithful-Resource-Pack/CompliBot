@@ -12,16 +12,25 @@ Commands are explained like so:
 
 ### Added
 - You can now search for a texture without using underscores `_`
+- Added a new parameter to the `magnifyAttachment` function: `orientation` which could take 3 values `landscape`, `portrait` & `none`
+  - `portrait`: add margin on the top & bottom of the magnified image (used in submission system)
+  - `landscape`: add margin on the sides (unused yet)
+  - `none`: old behavior
 
 ### Changed
 - The CompliBot ascii art now show up & show up with different colors when `tokens.maintenance === true`
+- Submission System (v3 WIP):
+  - Submitted textures can now be searched trough the database when the name is duplicated.  
+  - Submitted texture is now in the thumbnail and a side by side comparaison is made in images fields (using multiple embeds trick)  
+  ⚠️ This "trick" is not supported on iOS (and maybe not on Android, untested yet), complain to Discord :(
 
 ### Fixed
 - Thread title for polls being empty if the question is longer than 100 characters
 - Typos in `/missing` command
 - "Author ID in footer Not Found!" falsely showing up in delete button in some cases
 - `/love` command erroring when no user was specified
-- Image commands erroring on webp images
+- Image commands erroring on `.webp` images
+- Error for already deleted message when warns shows up (when using <Message>.warns()), the message is now checked before replied, and if it is deleted, the message is sent to the channel instead of replying to the warned author's message.
 
 ## [v2.0.3] 12/04/2022
 

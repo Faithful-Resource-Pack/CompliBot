@@ -111,20 +111,32 @@ const MessageBody = {
 	/**
 	 *  Warn the message by replying to it with an embed
 	 *  @author Juknum & Nick
+	 *  @param {string} text - The text to warn the user with
 	 *  @param {boolean} disappearing - Optional bool. If undefined or false it wont delete the warning. If true it will  delete in 30s.
+	 *  @param {number} timeout - Optional number (in seconds). If defined it will delete the warning after the timeout. If not defined it will delete in 30s.
 	 */
-	warn: async function (text: string, disappearing?: boolean) {
+	warn: async function (text: string, disappearing?: boolean, timeout?: number) {
+		if (!timeout) timeout = 30;
+
 		const embed = new MessageEmbed()
 			.setColor(colors.red)
 			.setThumbnail(`${this.config.images}bot/warning.png`)
 			.setTitle("Action failed")
 			.setDescription(text)
 			.setFooter({
-				text: `Type ${this.tokens.prefix}help to get more information about commands`,
+				text: `Type ${this.tokens.prefix}help to get more information about commands. ${disappearing ? `This warning & original message will be deleted in ${timeout}s.` : ""}`,
 				iconURL: this.client.user.displayAvatarURL(),
 			});
 
-		const replyMsg = await this.reply({ embeds: [embed] });
+		let thisIsDeleted: boolean = false;
+		let replyMsg: Message
+
+		try {
+			replyMsg = await this.reply({ embeds: [embed] });
+		} catch { 
+			thisIsDeleted = true;
+			replyMsg = await this.channel.send({ embeds: [embed] });
+		} // message can't be fetched
 
 		if (!disappearing) {
 			try {
@@ -136,11 +148,11 @@ const MessageBody = {
 			setTimeout(() => {
 				try {
 					replyMsg.delete();
-					this.delete();
+					if (!thisIsDeleted) this.delete();
 				} catch {
 					/* already deleted */
 				}
-			}, 30000); //deletes the message after 30s
+			}, timeout * 1000); //deletes the message after 30s
 		}
 	},
 };

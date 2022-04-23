@@ -123,7 +123,7 @@ export const command: SlashCommand = {
 
 				const menu = new MessageSelectMenu()
 					.setCustomId(`textureSelect_${_max}`)
-					.setPlaceholder("Choose a texture!")
+					.setPlaceholder("Select a texture!")
 					.addOptions(options);
 
 				const row = new MessageActionRow().addComponents(menu);

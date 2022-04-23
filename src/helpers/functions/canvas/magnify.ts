@@ -8,6 +8,7 @@ type options = {
 	embed?: MessageEmbed;
 	name?: string;
 	factor?: 32 | 16 | 8 | 4 | 2 | 1 | 0.5 | 0.25;
+	orientation?: "portrait" | "landscape" | "none"; // default is none
 };
 
 export async function magnifyAttachment(options: options): Promise<[MessageAttachment, MessageEmbed]> {
@@ -28,13 +29,23 @@ export async function magnifyAttachment(options: options): Promise<[MessageAttac
 		} else if ((dimension.width * factor) * (dimension.height * factor) > 262144) factor = 1;
 
 		const [width, height] = [dimension.width * factor, dimension.height * factor];
-		const canvas = createCanvas(width, height);
+		const imageToDraw = await loadImage(options.url);
+
+		const canvas = createCanvas(
+			options.orientation === undefined || options.orientation === "none" || options.orientation === "portrait" ? width : width * (16/9),
+			options.orientation === undefined || options.orientation === "none" || options.orientation === "landscape" ? height : height * (16/9),
+		);
+
 		const context = canvas.getContext("2d");
-
 		context.imageSmoothingEnabled = false;
-		const imageToDraw = await loadImage(options.url as string);
-
-		context.drawImage(imageToDraw, 0, 0, width, height);
+		context.drawImage(
+			imageToDraw, 
+			options.orientation === undefined || options.orientation === "none" || options.orientation === "portrait" ? 0 : (width * (16/9) / 4), // landscape
+			options.orientation === undefined || options.orientation === "none" || options.orientation === "landscape" ? 0 : (height * (16/9) / 4), // portrait
+			width, 
+			height
+		);
+		
 		return [
 			new MessageAttachment(canvas.toBuffer("image/png"), `${options.name ? options.name : "magnified.png"}`),
 			options.embed,

@@ -113,7 +113,7 @@ export class Submission extends TimedEmbed {
 		let channel: TextChannel;
 		let message: Message;
 
-		// waky method to turns json object to json object with methods (methods aren't saved and needs to be fetched)
+		// wacky method to turns json object to json object with methods (methods aren't saved and needs to be fetched)
 		try {
 			channel = (await client.channels.fetch(this.getChannelId())) as any;
 			message = await channel.messages.fetch(this.getMessageId());
@@ -122,7 +122,7 @@ export class Submission extends TimedEmbed {
 			return;
 		}
 
-		const embed: MessageEmbed = new MessageEmbed(message.embeds[0]);
+		const embed: MessageEmbed = new MessageEmbed(message.embeds.shift()); // remove first embed (with description) & keep others with magnified imgs
 		let components: Array<MessageActionRow> = message.components;
 
 		switch (this.getStatus()) {
@@ -193,7 +193,7 @@ export class Submission extends TimedEmbed {
 			field.value = field.name === "Votes" ? (field.value = this.getVotesUI().join(",\n")) : field.value;
 			return field;
 		});
-		await message.edit({ embeds: [embed], components: [...components] });
+		await message.edit({ embeds: [embed, ...message.embeds], components: [...components] });
 		return;
 	}
 
@@ -203,9 +203,8 @@ export class Submission extends TimedEmbed {
 		file: MessageAttachment,
 		texture: any,
 	): Promise<Message> {
-		const embed = await this.makeSubmissionMessage(baseMessage, file, texture);
 		const submissionMessage: Message = await baseMessage.channel.send({
-			embeds: [embed],
+			embeds:  await this.makeSubmissionMessage(baseMessage, file, texture),
 			components: [submissionButtonsClosed, submissionButtonsVotes],
 		});
 
@@ -220,7 +219,7 @@ export class Submission extends TimedEmbed {
 		baseMessage: Message,
 		file: MessageAttachment,
 		texture: any,
-	): Promise<MessageEmbed> {
+	): Promise<MessageEmbed[]> {
 		const files: Array<MessageAttachment> = [];
 		const mentions = [
 			...new Set([...Array.from(baseMessage.mentions.users.values()), baseMessage.author].map((user) => user.id)),
@@ -249,7 +248,7 @@ export class Submission extends TimedEmbed {
 		try {
 			channel = (await baseMessage.client.channels.fetch("946432206530826240")) as any;
 		} catch {
-			return embed;
+			return [embed];
 		} // can't fetch channel
 
 		let url: string = "https://raw.githubusercontent.com/Faithful-Resource-Pack/App/main/resources/transparency.png";
@@ -264,17 +263,27 @@ export class Submission extends TimedEmbed {
 		} catch {}
 
 		// magnified x16 texture in thumbnail
-		const magnifiedAttachment = (await magnifyAttachment({ url: url, name: "magnified.png", embed: null }))[0];
+		const magnifiedDefault = (await magnifyAttachment({ url: url, name: "magnified_default.png", embed: null, orientation: "portrait" }))[0];
 
 		// saved attachments in a private message
-		const messageAttachment = await channel.send({ files: [file, magnifiedAttachment] });
-		messageAttachment.attachments.forEach((ma: MessageAttachment) => files.push(ma));
+		let attachments = [...(await channel.send({ files: [file, magnifiedDefault] })).attachments.values()];
+		files.push(...attachments);
+
+		// we need to post the submission first to get an url for the getMeta() call (because if "file" come from a zip, the MessageAttachement won't have an url (it has never been posted))
+		const magnifiedSubmission = (await magnifyAttachment({ url: attachments[0].url, name: "magnified_submission.png", embed: null, orientation: "portrait" }))[0];
+		let attachment = [...(await channel.send({ files: [magnifiedSubmission] })).attachments.values()];
+		files.push(...attachment);
 
 		// set submitted texture in image
-		embed.setImage(files[0].url);
-		embed.setThumbnail(files[1].url);
+		embed
+			.setURL(files[0].url)
+			.setThumbnail(files[0].url); // submitted image
 
-		return embed;
+		let res = [embed];
+		for (let i = 1; i < files.length; i++) 
+			res.push(new MessageEmbed().setURL(files[0].url).setImage(files[i].url));
+		
+		return res;
 	}
 
 	public async createContribution(client: Client) {
