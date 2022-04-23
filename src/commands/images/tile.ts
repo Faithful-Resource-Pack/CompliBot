@@ -27,7 +27,7 @@ export const command: SlashCommand = {
 				.setDescription("Should individual tiles be randomly rotated?")
 				.addChoices([
 					["rotation", "rotation"],
-					["flip", "flip"], // only horizontal because mc doesnt use vertical flipping
+					["flip", "flip"], // only horizontal because mc doesn't use vertical flipping
 				]),
 		),
 	execute: async (interaction: CommandInteraction) => {

@@ -15,6 +15,7 @@ import { colors } from "@helpers/colors";
 import { TimedEmbed } from "./timedEmbed";
 import { getCorrespondingCouncilChannel, getSubmissionChannelName } from "@helpers/channels";
 import { getResourcePackFromName } from "@functions/getResourcePack";
+import { stickAttachment } from "@functions/canvas/stick";
 
 export type SubmissionStatus = "pending" | "instapassed" | "added" | "no_council" | "council" | "denied" | "invalid";
 
@@ -204,7 +205,7 @@ export class Submission extends TimedEmbed {
 		texture: any,
 	): Promise<Message> {
 		const submissionMessage: Message = await baseMessage.channel.send({
-			embeds:  await this.makeSubmissionMessage(baseMessage, file, texture),
+			embeds: [await this.makeSubmissionMessage(baseMessage, file, texture)],
 			components: [submissionButtonsClosed, submissionButtonsVotes],
 		});
 
@@ -219,7 +220,7 @@ export class Submission extends TimedEmbed {
 		baseMessage: Message,
 		file: MessageAttachment,
 		texture: any,
-	): Promise<MessageEmbed[]> {
+	): Promise<MessageEmbed> {
 		const files: Array<MessageAttachment> = [];
 		const mentions = [
 			...new Set([...Array.from(baseMessage.mentions.users.values()), baseMessage.author].map((user) => user.id)),
@@ -248,7 +249,7 @@ export class Submission extends TimedEmbed {
 		try {
 			channel = (await baseMessage.client.channels.fetch("946432206530826240")) as any;
 		} catch {
-			return [embed];
+			return embed;
 		} // can't fetch channel
 
 		let url: string = "https://raw.githubusercontent.com/Faithful-Resource-Pack/App/main/resources/transparency.png";
@@ -263,27 +264,28 @@ export class Submission extends TimedEmbed {
 		} catch {}
 
 		// magnified x16 texture in thumbnail
-		const magnifiedDefault = (await magnifyAttachment({ url: url, name: "magnified_default.png", embed: null, orientation: "portrait" }))[0];
+		const magnifiedDefault = (await magnifyAttachment({ url: url, name: "magnified_default.png", embed: null }))[0];
 
 		// saved attachments in a private message
 		let attachments = [...(await channel.send({ files: [file, magnifiedDefault] })).attachments.values()];
 		files.push(...attachments);
 
 		// we need to post the submission first to get an url for the getMeta() call (because if "file" come from a zip, the MessageAttachement won't have an url (it has never been posted))
-		const magnifiedSubmission = (await magnifyAttachment({ url: attachments[0].url, name: "magnified_submission.png", embed: null, orientation: "portrait" }))[0];
+		const magnifiedSubmission = (await magnifyAttachment({ url: attachments[0].url, name: "magnified_submission.png", embed: null }))[0];
 		let attachment = [...(await channel.send({ files: [magnifiedSubmission] })).attachments.values()];
 		files.push(...attachment);
 
+		// we stick the default magnified & submission magnified together in the embed
+		const stickedImg = await stickAttachment({ left: { url: files[1].url }, right: { url: files[2].url }, name: "sticked.png" });
+		let stickedImgAttachment = [...(await channel.send({ files: [stickedImg] })).attachments.values()];
+		files.push(...stickedImgAttachment);
+
 		// set submitted texture in image
 		embed
-			.setURL(files[0].url)
-			.setThumbnail(files[0].url); // submitted image
+			.setThumbnail(files[0].url) // submitted image
+			.setImage(files[3].url); // sticked image
 
-		let res = [embed];
-		for (let i = 1; i < files.length; i++) 
-			res.push(new MessageEmbed().setURL(files[0].url).setImage(files[i].url));
-		
-		return res;
+		return embed;
 	}
 
 	public async createContribution(client: Client) {

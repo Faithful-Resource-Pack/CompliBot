@@ -12,17 +12,17 @@ Commands are explained like so:
 
 ### Added
 - You can now search for a texture without using underscores `_`
-- Added a new parameter to the `magnifyAttachment` function: `orientation` which could take 3 values `landscape`, `portrait` & `none`
-  - `portrait`: add margin on the top & bottom of the magnified image (used in submission system)
+- Added a new optional parameter to the `magnifyAttachment` function: `orientation` which could take 3 values `landscape`, `portrait` & `none`
+  - `portrait`: add margin on the top & bottom of the magnified image (unused)
   - `landscape`: add margin on the sides (unused yet)
-  - `none`: old behavior
+  - `none`: old behavior (used when no orientation is given)
+- `stickCanvas()` & `stickAttachment()` functions to stick side by side two canvas
 
 ### Changed
 - The CompliBot ascii art now show up & show up with different colors when `tokens.maintenance === true`
 - Submission System (v3 WIP):
   - Submitted textures can now be searched trough the database when the name is duplicated.  
-  - Submitted texture is now in the thumbnail and a side by side comparaison is made in images fields (using multiple embeds trick)  
-  ⚠️ This "trick" is not supported on iOS (and maybe not on Android, untested yet), complain to Discord :(
+  - Submitted texture is now in the thumbnail and a side by side comparaison is made in images fields
 
 ### Fixed
 - Thread title for polls being empty if the question is longer than 100 characters
