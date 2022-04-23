@@ -36,6 +36,8 @@ export const command: SlashCommand = {
 
 		generalSlashCommandImage(interaction, tileAttachment, {
 			factor: interaction.options.getNumber("factor"),
+			random: random,
+			shape: shape,
 			name: "tiled.png",
 			embed: new MessageEmbed()
 				.setTitle(`Tiled as ${shape}`)
