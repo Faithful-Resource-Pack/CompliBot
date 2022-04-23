@@ -1,7 +1,6 @@
 import { MessageEmbed } from "@client";
 import ConfigJson from "@json/config.json";
 import { Config } from "@interfaces";
-import { minecraftSorter } from "./minecraftSorter";
 import axios from "axios";
 import getMeta from "./canvas/getMeta";
 import { MessageAttachment } from "discord.js";
@@ -9,16 +8,31 @@ import { magnifyAttachment } from "./canvas/magnify";
 import { ISizeCalculationResult } from "image-size/dist/types/interface";
 import { colors } from "@helpers/colors";
 import { fromTimestampToHumanReadable } from "@helpers/dates";
+import { Contributions, Texture, Paths, Uses } from "@helpers/interfaces/firestorm";
+import { animateAttachment } from "./canvas/animate";
+import { MinecraftSorter } from "@helpers/sorter";
 
 export const getTextureMessageOptions = async (options: {
-	texture: any;
+	texture: Texture;
 	pack: string;
 }): Promise<[MessageEmbed, Array<MessageAttachment>]> => {
 	const config: Config = ConfigJson;
 	const texture = options.texture;
 	const pack = options.pack;
-	const uses = texture.uses;
-	const paths = texture.paths;
+	const uses: Uses = texture.uses;
+	const paths: Paths = texture.paths;
+	const contributions: Contributions = texture.contributions;
+	const animated: boolean = paths.filter(p => p.mcmeta === true).length !== 0;
+
+	let mcmeta: any = {};
+	if (animated) {
+		const [animatedPath] = paths.filter(p => p.mcmeta === true);
+		const animatedUse = uses.find(u => u.id === animatedPath.use);
+
+		try {
+			mcmeta = (await axios.get(`https://raw.githubusercontent.com/CompliBot/Default-Java/${animatedPath.versions.sort(MinecraftSorter).reverse()[0]}/assets/${animatedUse.assets}/${animatedPath.name}.mcmeta`)).data;
+		} catch { mcmeta = { "__comment": "mcmeta file not found, please check default repository" } }
+	}
 
 	let strPack: string;
 	let strIconURL: string;
@@ -58,7 +72,6 @@ export const getTextureMessageOptions = async (options: {
 	const files: Array<MessageAttachment> = [];
 	const embed = new MessageEmbed()
 		.setTitle(`[#${texture.id}] ${texture.name}`)
-		.setThumbnail("attachment://magnified.png")
 		.setFooter({
 			text: `${strPack}`,
 			iconURL: strIconURL,
@@ -66,16 +79,13 @@ export const getTextureMessageOptions = async (options: {
 
 	let textureURL: string;
 	try {
-		textureURL = (
-			await axios.get(
-				`${config.apiUrl}textures/${texture.id}/url/${pack}/${paths[0].versions.sort(minecraftSorter).reverse()[0]}`,
-			)
-		).request.res.responseUrl;
+		textureURL = (await axios.get(`${config.apiUrl}textures/${texture.id}/url/${pack}/latest`)).request.res.responseUrl;
 	} catch {
 		textureURL = "";
 	}
 
-	embed.setImage(textureURL);
+	embed.setThumbnail(textureURL);
+	embed.setImage(`attachment://magnified.${animated ? "gif" : "png"}`);
 
 	// test if url isn't a 404
 	let validURL: boolean = false;
@@ -93,22 +103,17 @@ export const getTextureMessageOptions = async (options: {
 		embed.addField("Source", `[GitHub](${textureURL})`, true);
 		embed.addField("Resolution", `${dimensions.width}×${dimensions.height}`, true);
 
-		let contributions: Array<any> = texture.contributions
-			.filter((c) => strPack.includes(c.resolution) && pack === c.pack)
-			.sort((a, b) => a.date > b.date)
-			.reverse()
+		const displayedContributions = [contributions
+			.filter((c) => strPack.includes(c.resolution.toString()) && pack === c.pack)
+			.sort((a, b) => a.date > b.date ? -1 : 1)
 			.map((c) => {
 				let strDate: string = fromTimestampToHumanReadable(c.date);
 				let authors = c.authors.map((authorId: string) => `<@!${authorId}>`);
-				return `\`${strDate}\` ${authors.join(", ")}`;
-			});
+				return `\`${strDate}\`\n${authors.join(", ")}`;
+			})[0]]
 
-		if (contributions.length > 2)
-			contributions = [
-				...contributions.slice(0, 2),
-				"[see more in the webapp...](https://webapp.faithfulpack.net/#/gallery)",
-			];
-		if (contributions.length) embed.addField("Contributions", contributions.join("\n"), false);
+		if (contributions.length > 2) displayedContributions.push("[See older contributions in the WebApp](https://webapp.faithfulpack.net/#/gallery)")
+		if (contributions.length && pack !== "default") embed.addField("Latest contribution", displayedContributions.join("\n"));
 	}
 
 	let tmp = {};
@@ -116,7 +121,7 @@ export const getTextureMessageOptions = async (options: {
 		paths
 			.filter((el) => el.use === use.id)
 			.forEach((p) => {
-				const versions = p.versions.sort(minecraftSorter);
+				const versions = p.versions.sort(MinecraftSorter);
 				if (tmp[use.edition])
 					tmp[use.edition].push(
 						`\`[${versions.length > 1 ? `${versions[0]} — ${versions[versions.length - 1]}` : versions[0]}]\` ${
@@ -143,7 +148,11 @@ export const getTextureMessageOptions = async (options: {
 	});
 
 	// magnifying the texture in thumbnail
-	files.push((await magnifyAttachment({ url: textureURL, name: "magnified.png" }))[0]);
+	if (animated) {
+		embed.addField("MCMETA", `\`\`\`json\n${JSON.stringify(mcmeta)}\`\`\``, false);
+		files.push(await animateAttachment({ url: textureURL, magnify: true, name: "magnified.gif" , mcmeta }))
+	}
+	else files.push((await magnifyAttachment({ url: textureURL, name: "magnified.png" }))[0]);
 
 	return [embed, files];
 };

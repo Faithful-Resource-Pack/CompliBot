@@ -1,5 +1,5 @@
 import { magnifyAttachment } from "@functions/canvas/magnify";
-import { minecraftSorter } from "@functions/minecraftSorter";
+import { MinecraftSorter } from "@helpers/sorter";
 import {
 	submissionButtonsClosedEnd,
 	submissionButtonsClosed,
@@ -257,7 +257,7 @@ export class Submission extends TimedEmbed {
 			url = (
 				await axios.get(
 					`${(baseMessage.client as Client).config.apiUrl}textures/${texture.id}/url/default/${
-						texture.paths[0].versions.sort(minecraftSorter).reverse()[0]
+						texture.paths[0].versions.sort(MinecraftSorter).reverse()[0]
 					}`,
 				)
 			).request.res.responseUrl;

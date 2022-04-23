@@ -29,6 +29,7 @@
         "discord.js": "^13.6.0",
         "firestorm-db": "^1.10.0",
         "follow-redirects": "^1.14.9",
+        "gif-encoder-2": "^1.0.5",
         "image-size": "^1.0.1",
         "jszip": "^3.9.1",
         "linux-os-info": "^2.0.0",

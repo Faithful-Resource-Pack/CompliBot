@@ -17,12 +17,16 @@ Commands are explained like so:
   - `landscape`: add margin on the sides (unused yet)
   - `none`: old behavior (used when no orientation is given)
 - `stickCanvas()` & `stickAttachment()` functions to stick side by side two canvas
+- Animated textures are now animated when using `/texture`.
+- Added types for textures related firestorm objects.
 
 ### Changed
 - The CompliBot ascii art now show up & show up with different colors when `tokens.maintenance === true`
 - Submission System (v3 WIP):
   - Submitted textures can now be searched trough the database when the name is duplicated.  
   - Submitted texture is now in the thumbnail and a side by side comparaison is made in images fields
+- Swapped non-magnified texture & magnified texture in the result embed from `/texture` to have a better view of the magnified texture
+- Texture embed now show only the latest contribution & link the webapp to see them all.
 
 ### Fixed
 - Thread title for polls being empty if the question is longer than 100 characters
@@ -31,6 +35,7 @@ Commands are explained like so:
 - `/love` command erroring when no user was specified
 - Image commands erroring on `.webp` images
 - Error for already deleted message when warns shows up (when using <Message>.warns()), the message is now checked before replied, and if it is deleted, the message is sent to the channel instead of replying to the warned author's message.
+- Fixed oldest supported version when selecting texture from `/texture`
 
 ## [v2.0.3] 12/04/2022
 
