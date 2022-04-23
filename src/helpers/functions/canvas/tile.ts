@@ -37,6 +37,7 @@ export async function tileCanvas(options: options): Promise<Canvas> {
 			let imageToDraw = await loadImage(options.url);
 
 			const drawRotatedImage = (image: Image, x: number, y: number, scale: number, rotation: number) => {
+				context.clearRect(x, y, dimension.width, dimension.height);
 				context.setTransform(scale, 0, 0, scale, x, y); // sets scale and origin
 				context.rotate(rotation * (Math.PI / 180));
 				context.drawImage(image, -image.width / 2, -image.height / 2);
@@ -44,17 +45,13 @@ export async function tileCanvas(options: options): Promise<Canvas> {
 				context.setTransform(); // reset context position to it's origin
 			};
 			const drawMirroredImage = (x = 0, y = 0) => {
-				context.save(); // save the current canvas state
-				context.setTransform(
-					-1, // set the direction of x axis
-					0,
-					0,
-					1, // set the direction of y axis to 1 since its unchanging
-					x + imageToDraw.width, // set the x origin
-					0, // set the y origin
-				);
-				context.drawImage(imageToDraw, 0, 0);
-				context.restore(); // restore the state as it was when this function was called
+				context.save();
+				context.scale(-1, 1); //scales the entire canvas
+
+				// draw in negative space (* -1) since its flipped by .scale()
+				// and account for image width since the corner is also flipped
+				context.drawImage(imageToDraw, x * -1 - dimension.width, y);
+				context.restore();
 			};
 
 			/**
@@ -82,13 +79,18 @@ export async function tileCanvas(options: options): Promise<Canvas> {
 
 			// base grid
 			else
-				for (let x = 0; x < 3; x++)
-					for (let y = 0; y < 3; y++) context.drawImage(imageToDraw, x * dimension.width, y * dimension.height);
-
-			if (options.random && options.random === "flip")
-				for (let x = 0; x < 3; x++)
-					for (let y = 0; y < 3; y++)
-						if (Math.random() < 0.5) drawMirroredImage(x * dimension.width, y * dimension.height);
+				for (let x = 0; x < 3; x++) {
+					for (let y = 0; y < 3; y++) {
+						if (options.random && options.random === "flip" && Math.random() < 0.5) {
+							drawMirroredImage(x * dimension.width, y * dimension.height);
+						} else context.drawImage(imageToDraw, x * dimension.width, y * dimension.height);
+					}
+				}
+			// context.fillStyle = "#fff";
+			// context.fillRect(1 * dimension.width, 1 * dimension.height, dimension.width, dimension.height);
+			// if (options.random && options.random === "flip") {
+			// 	drawMirroredImage(1 * dimension.width, 1 * dimension.height);
+			// } else context.drawImage(imageToDraw, 1 * dimension.width, 1 * dimension.height);
 
 			if (options.shape === "hollow")
 				context.clearRect(dimension.width, dimension.height, dimension.width, dimension.height); // middle middle

@@ -17,16 +17,6 @@ export const command: SlashCommand = {
 				.setName("minecraft")
 				.setDescription("Minecraft profile of a user")
 				.addStringOption((o) =>
-					o
-						.setName("fetch")
-						.setRequired(true)
-						.setDescription("What to return")
-						.addChoices([
-							["textures", "textures"],
-							["info", "info"],
-						]),
-				)
-				.addStringOption((o) =>
 					o.setName("username").setRequired(true).setDescription("Minecraft username of profile"),
 				),
 		)
@@ -111,64 +101,59 @@ export const command: SlashCommand = {
 					if (res.statusText == "OK") return res.data;
 				});
 
-			if (interaction.options.getString("fetch") == "textures") {
-				// counts the least significant bits in every 4th byte in the uuid
-				// an odd sum means alex and an even sum is steve
-				// therefore XOR-ing all the LSBs returns either 1 (alex) or 0 (steve)
-				const skinType =
-					parseInt(UUID[7], 16) ^ parseInt(UUID[15], 16) ^ parseInt(UUID[23], 16) ^ parseInt(UUID[31], 16);
-				const modelType = textureJSON["SKIN"]["metadata"] ? textureJSON["SKIN"]["metadata"]["model"] : "classic";
+			// counts the least significant bits in every 4th byte in the uuid
+			// an odd sum means alex and an even sum is steve
+			// therefore XOR-ing all the LSBs returns either 1 (alex) or 0 (steve)
+			const skinType = parseInt(UUID[7], 16) ^ parseInt(UUID[15], 16) ^ parseInt(UUID[23], 16) ^ parseInt(UUID[31], 16);
+			const modelType = textureJSON["SKIN"]["metadata"] ? textureJSON["SKIN"]["metadata"]["model"] : "classic";
 
-				//TODO: 3d rendering from side and back view in the base embed with split image method (ask nick)
-				const baseEmbed = new MessageEmbed()
-					.setTitle(name + "'s textures")
-					.setDescription(
-						[
-							`Base Skin: **${skinType == 0 ? "steve" : "alex"}**`,
-							`Model Type: **${modelType}**`,
-							`UUID: **${UUID}**`,
-						].join("\n"),
-					);
+			//TODO: 3d rendering from side and back view in the base embed with split image method (ask nick)
+			const baseEmbed = new MessageEmbed()
+				.setTitle(name + "'s textures")
+				.setThumbnail(`attachment://${name}.png`)
+				.setDescription(
+					[
+						`Base Skin: **${skinType == 0 ? "steve" : "alex"}**`,
+						`Model Type: **${modelType}**`,
+						`UUID: **${UUID}**`,
+					].join("\n"),
+				);
 
-				let cape: [MessageEmbed, MessageAttachment];
+			let cape: [MessageEmbed, MessageAttachment];
 
-				if (textureJSON["CAPE"]) {
-					cape = await axios.get(textureJSON["CAPE"]["url"], { responseType: "arraybuffer" }).then(async (res) => {
-						handleStatus("mojang", res.status, interaction);
+			if (textureJSON["CAPE"]) {
+				cape = await axios.get(textureJSON["CAPE"]["url"], { responseType: "arraybuffer" }).then(async (res) => {
+					handleStatus("mojang", res.status, interaction);
+					if (res.statusText == "OK") {
+						return [
+							new MessageEmbed().setTitle(`${name}'s cape:`).setImage("attachment://MCcape.png"),
+							new MessageAttachment(Buffer.from(res.data), "MCcape.png"),
+						];
+					}
+				});
+			} else {
+				cape = await axios
+					.get(`http://s.optifine.net/capes/${name}.png`, { responseType: "arraybuffer" })
+					.then(async (res) => {
+						handleStatus("optifine", res.status, interaction);
 						if (res.statusText == "OK") {
 							return [
-								new MessageEmbed().setTitle(`${name}'s cape:`).setImage("attachment://MCcape.png"),
-								new MessageAttachment(Buffer.from(res.data), "MCcape.png"),
+								new MessageEmbed().setTitle(`${name}'s cape:`).setImage("attachment://OFcape.png"),
+								new MessageAttachment(Buffer.from(res.data), "OFcape.png"),
 							];
 						}
 					});
-				} else {
-					cape = await axios
-						.get(`http://s.optifine.net/capes/${name}.png`, { responseType: "arraybuffer" })
-						.then(async (res) => {
-							handleStatus("optifine", res.status, interaction);
-							if (res.statusText == "OK") {
-								return [
-									new MessageEmbed().setTitle(`${name}'s cape:`).setImage("attachment://OFcape.png"),
-									new MessageAttachment(Buffer.from(res.data), "OFcape.png"),
-								];
-							}
-						});
-				}
+			}
 
-				const MCskin: [MessageEmbed, MessageAttachment] = [
-					new MessageEmbed().setTitle(`${name}'s skin:`).setImage(`attachment://${name}.png`),
-					new MessageAttachment(Buffer.from(skinData), `${name}.png`),
-				];
+			const MCskin: MessageAttachment = new MessageAttachment(Buffer.from(skinData), `${name}.png`);
 
-				if (cape) {
-					interaction.reply({
-						embeds: [baseEmbed, MCskin[0], cape[0]],
-						files: [MCskin[1], cape[1]],
-					});
-				} else {
-					interaction.reply({ embeds: [baseEmbed, MCskin[0]], files: [MCskin[1]] });
-				}
+			if (cape) {
+				interaction.reply({
+					embeds: [baseEmbed, cape[0]],
+					files: [MCskin, cape[1]],
+				});
+			} else {
+				interaction.reply({ embeds: [baseEmbed], files: [MCskin] });
 			}
 		}),
 };
