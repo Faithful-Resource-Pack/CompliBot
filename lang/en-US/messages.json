@@ -1,0 +1,20 @@
+{
+  "Error.DevBad": "This part remains unimplemented due to incompetence. Ask the devs or cope.",
+  "Error.General": "Encountered an error!",
+  "Error.Message.Deleted": "This message has already been deleted!",
+  "Error.NotFound": "%THING% Not Found!",
+  "Error.NoPermissions": "You don't have the permission to do that!",
+  "Error.Interaction.Reserved": "This interaction is reserved to its owner (%USER%)",
+  "Error.Channel.CacheNotFound": "The %CHANNEL_NAME% channel cannot be found in cache!",
+  "Error.Channel.NotTextChannel": "The targeted channel is not a text channel, the message can't be send!",
+  "Error.Timeout.NoTypeGiven": "The given timeout doesn't specify which length it is!\nExample: `30s`, `1 min`, `10 hours`, `1 day`, `1 week`, `1 month`, `1 year`",
+  "General.Are": "are",
+  "General.Cancel": "Cancel",
+  "General.Is": "is",
+  "General.No": "No",
+  "General.Send": "Send",
+  "General.Yes": "Yes",
+  "Success.Detailed": "Success! %DETAILS%",
+  "Success.General": "Success!",
+  "Success.Cancel": "%ACTION% canceled!"
+}
