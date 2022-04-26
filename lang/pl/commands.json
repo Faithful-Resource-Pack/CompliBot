@@ -1,8 +1,4 @@
 {
-    "_CONTRIBUTORS": [
-        "Brighton549#7498",
-        "Neluś#6248"
-    ],
     "Args.Insufficient": "Za mało argumentów!",
     "Args.Invalid": "Nieprawidłowe argumenty!",
     "Command.Coin.Edge": "Krawędź?!",
@@ -223,19 +219,5 @@
     "Command.Stats.Footer": "Zrobione z miłością",
     "Command.Stats.Usage": "%COMMAND% uruchomił %USE% razy.",
     "Command.Stats.NotFound": "Ta komenda nie istenieje!",
-    "Command.Texture.NotFound": "Brak wyników dla tej nazwy tekstury: %TEXTURENAME%",
-    "Error.DevBad": "Ta część pozostaje niezaimplementowana z powodu niekompetencji. Zapytaj deweloperów lub próbuj dalej.",
-    "Error.General": "Napotkano błąd!",
-    "Error.Message.Deleted": "Ta wiadomość została już usunięta!",
-    "Error.NotFound": "%THING% nie znaleziono!",
-    "Error.Interaction.Reserved": "Ta interakcja jest zastrzeżona dla jej właściciela (%USER%)",
-    "Error.Channel.CacheNotFound": "%CHANNEL_NAME% kanał nie znaleziony w cache!",
-    "Error.Channel.NotTextChannel": "Kanał docelowy nie jest kanałem tekstowym, wiadomość nie może zostać wysłana!",
-    "General.Cancel": "Anuluj",
-    "General.No": "Nie",
-    "General.Send": "Wyślij",
-    "General.Yes": "Tak",
-    "Success.Detailed": "Sukces! %DETAILS%",
-    "Success.General": "Sukces!",
-    "Success.Cancel": "%ACTION% anulowana!"
+    "Command.Texture.NotFound": "Brak wyników dla tej nazwy tekstury: %TEXTURENAME%"
 }

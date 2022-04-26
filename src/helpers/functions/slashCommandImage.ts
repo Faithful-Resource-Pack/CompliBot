@@ -1,7 +1,6 @@
 import { CommandInteraction, Message, MessageEmbed } from "@client";
 import { imageButtons } from "@helpers/buttons";
 import { Collection, MessageAttachment, TextChannel, User } from "discord.js";
-import { getString } from "@helpers/string";
 
 /**
  * STEPS:
@@ -51,8 +50,8 @@ export async function fetchMessageImage(
 
 	// no message found but we wait for user input
 	const embed = new MessageEmbed()
-		.setTitle(await getString("Command.Images.NotFound.Title"))
-		.setDescription(await getString("Command.Images.NotFound", { NUMBER: `${limit}` }));
+		.setTitle(await interaction.getString({ string: "Command.Images.NotFound.Title" }))
+		.setDescription(await interaction.getString({ string: "Command.Images.NotFound", placeholders: { NUMBER: `${limit}` }}));
 
 	const embedMessage: Message = (await interaction.editReply({ embeds: [embed] })) as Message;
 	const awaitedMessages: Collection<string, Message<boolean>> = await interaction.channel.awaitMessages({
@@ -95,7 +94,7 @@ export async function getImageFromMessage(message: Message): Promise<string> {
 		else if (message.embeds[0].thumbnail) return message.embeds[0].thumbnail.url;
 	}
 
-	// if no images attached to the first parent reply, check if there is another parent reply (recursivity go brr)
+	// if no images attached to the first parent reply, check if there is another parent reply (recursive go brr)
 	if (message.type === "REPLY") {
 		try {
 			await message.fetchReference();
@@ -124,7 +123,7 @@ export async function generalSlashCommandImage(
 
 	if (imageURL === null) {
 		await interaction.followUp({
-			content: await interaction.text({ string: "Command.Images.NoResponse" }),
+			content: await interaction.getEphemeralString({ string: "Command.Images.NoResponse" }),
 			ephemeral: true,
 		});
 		return;
@@ -137,7 +136,7 @@ export async function generalSlashCommandImage(
 
 	if (attachment === null) {
 		await interaction.followUp({
-			content: await interaction.text({ string: "Command.Images.TooBig" }),
+			content: await interaction.getEphemeralString({ string: "Command.Images.TooBig" }),
 			ephemeral: true,
 		});
 		return;

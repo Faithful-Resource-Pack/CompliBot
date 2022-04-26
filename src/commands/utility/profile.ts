@@ -161,12 +161,12 @@ export const command: SlashCommand = {
 async function handleStatus(api: string, status: number, interaction: CommandInteraction) {
 	if (status == 204)
 		return interaction.reply({
-			content: await interaction.text({ string: "Command.Profile.noContent" }),
+			content: await interaction.getEphemeralString({ string: "Command.Profile.noContent" }),
 			ephemeral: true,
 		});
 	else if (status != 200)
 		return interaction.reply({
-			content: (await interaction.text({ string: "Command.Profile.noResponse" })).replace("%API%", `${api} `),
+			content: (await interaction.getEphemeralString({ string: "Command.Profile.noResponse" })).replace("%API%", `${api} `),
 			ephemeral: true,
 		});
 }

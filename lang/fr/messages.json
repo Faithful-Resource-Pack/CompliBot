@@ -1,0 +1,15 @@
+{
+  "Error.General": "Une erreur s'est produite !",
+  "Error.Message.Deleted": "Ce message à déjà été supprimé !",
+  "Error.NotFound": "%THING% Introuvable!",
+  "Error.Interaction.Reserved": "Cette interaction est réservée à son propriétaire (%USER%)",
+  "Error.Channel.CacheNotFound": "Le salon %CHANNEL_NAME% ne peut être trouvé dans le cache!",
+  "Error.Channel.NotTextChannel": "Le salon ciblé n'est pas un salon textuel, le message ne peut être envoyé!",
+  "General.Cancel": "Annuler",
+  "General.No": "Non",
+  "General.Send": "Envoyer",
+  "General.Yes": "Oui",
+  "Success.Detailed": "Succès! %DETAILS%",
+  "Success.General": "Succès!",
+  "Success.Cancel": "%ACTION% annulé(e)!"
+}

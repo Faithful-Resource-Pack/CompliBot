@@ -7,7 +7,6 @@
     "scripts": {
         "dev": "ts-node-dev --respawn -r tsconfig-paths/register src/index.ts",
         "start": "node -r ts-node/register -r tsconfig-paths/register src/index.ts",
-        "genLang": "node -r ts-node/register -r tsconfig-paths/register src/genLangReadme.ts",
         "prettier": "prettier src/**/*.ts --config .prettierrc --write"
     },
     "devDependencies": {

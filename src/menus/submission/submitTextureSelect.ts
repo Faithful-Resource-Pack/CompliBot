@@ -17,7 +17,7 @@ export const menu: SelectMenu = {
 
 		if (interaction.user.id !== ref.author.id)
 			return interaction.reply({
-				content: (await interaction.text({ string: "Error.Interaction.Reserved" })).replace(
+				content: (await interaction.getEphemeralString({ string: "Error.Interaction.Reserved" })).replace(
 					"%USER%",
 					`<@!${ref.author.id}>`,
 				),

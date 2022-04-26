@@ -13,7 +13,7 @@ export const button: Button = {
 
 		if (interaction.user.id != authorId && !message.reference)
 			return interaction.reply({
-				content: await interaction.text({
+				content: await interaction.getEphemeralString({
 					string: "Error.Interaction.Reserved",
 					placeholders: { USER: `<@!${authorId}>` },
 				}),

@@ -10,7 +10,7 @@ export const event: Event = {
 		const banlist = require("@json/botbans.json");
 		if (banlist.ids.indexOf(interaction.user.id) > -1) {
 			(interaction as CommandInteraction | ButtonInteraction | SelectMenuInteraction).reply({
-				content: await (interaction as CommandInteraction | ButtonInteraction | SelectMenuInteraction).text({
+				content: await (interaction as CommandInteraction | ButtonInteraction | SelectMenuInteraction).getEphemeralString({
 					string: "Command.Botban.isBanned",
 				}),
 				ephemeral: true,

@@ -23,7 +23,7 @@ export const button: Button = {
 
 		if (attachment == null)
 			return interaction.reply({
-				content: await interaction.text({ string: "Command.Images.TooBig" }),
+				content: await interaction.getEphemeralString({ string: "Command.Images.TooBig" }),
 				ephemeral: true,
 			});
 

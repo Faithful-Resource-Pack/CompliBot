@@ -62,7 +62,7 @@ export const command: SlashCommand = {
 				victimID == "473860522710794250" || //RobertR11
 				victimID == "601501288978448411" //Nick.
 			)
-				return interaction.followUp(await interaction.text({ string: "Command.Botban.view.unbannable" }));
+				return interaction.followUp(await interaction.getEphemeralString({ string: "Command.Botban.view.unbannable" }));
 
 			if (interaction.options.getBoolean("pardon")) {
 				banlist.ids.filter(async (v) => {

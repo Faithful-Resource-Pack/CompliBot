@@ -33,7 +33,7 @@ export const command: SlashCommand = {
 			if (os.platform() == "linux") version = linuxOs({ mode: "sync" }).pretty_name;
 			else version = os.version();
 
-			const FieldTitles = (await interaction.text({ string: "Command.Stats.Embed.FieldTitles" })).split("$,");
+			const FieldTitles = (await interaction.getEphemeralString({ string: "Command.Stats.Embed.FieldTitles" })).split("$,");
 
 			const embed = new MessageEmbed()
 				.setTitle(`${client.user.username} Stats`)
@@ -55,7 +55,7 @@ export const command: SlashCommand = {
 					{ name: FieldTitles[9], value: version },
 				)
 				.setFooter({
-					text: await interaction.text({ string: "Command.Stats.Footer" }),
+					text: await interaction.getEphemeralString({ string: "Command.Stats.Footer" }),
 					iconURL: "https://cdn.discordapp.com/emojis/799357507126427699",
 				});
 			interaction.reply({ embeds: [embed], fetchReply: true }).then((message: Message) => message.deleteButton());
@@ -68,7 +68,7 @@ export const command: SlashCommand = {
 			)
 				return interaction.reply({
 					ephemeral: true,
-					content: await interaction.text({
+					content: await interaction.getEphemeralString({
 						string: "Command.Stats.NotFound",
 						placeholders: {
 							COMMAND: interaction.options.getString("command"),
@@ -78,7 +78,7 @@ export const command: SlashCommand = {
 
 			if (interaction.options.getString("command")) {
 				const embed = new MessageEmbed().setTimestamp().setTitle(
-					await interaction.text({
+					await interaction.getEphemeralString({
 						string: "Command.Stats.Usage",
 						placeholders: {
 							COMMAND: interaction.options.getString("command"),
@@ -94,7 +94,7 @@ export const command: SlashCommand = {
 
 				const embed = new MessageEmbed()
 					.setTimestamp()
-					.setTitle(await interaction.text({ string: "Command.Stats.Top10" }))
+					.setTitle(await interaction.getEphemeralString({ string: "Command.Stats.Top10" }))
 					.setDescription(`
 ${data[0]
 	.slice(0, data[0].length > 10 ? 10 : data[0].length)

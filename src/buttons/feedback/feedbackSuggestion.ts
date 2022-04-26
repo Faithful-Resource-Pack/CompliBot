@@ -10,7 +10,7 @@ export const button: Button = {
 
 		if (interaction.user.id !== messageInteraction.user.id)
 			return interaction.reply({
-				content: (await interaction.text({ string: "Error.Interaction.Reserved" })).replace(
+				content: (await interaction.getEphemeralString({ string: "Error.Interaction.Reserved" })).replace(
 					"%USER%",
 					`<@!${messageInteraction.user.id}>`,
 				),
@@ -23,7 +23,7 @@ export const button: Button = {
 
 		if (!channelFeedback)
 			return interaction.reply({
-				content: (await interaction.text({ string: "Error.Channel.CacheNotFound" })).replace(
+				content: (await interaction.getEphemeralString({ string: "Error.Channel.CacheNotFound" })).replace(
 					"%CHANNEL_NAME%",
 					"#feedback",
 				),
@@ -32,12 +32,12 @@ export const button: Button = {
 
 		if (!channelFeedback.isText())
 			return interaction.reply({
-				content: await interaction.text({ string: "Error.Channel.NotTextChannel" }),
+				content: await interaction.getEphemeralString({ string: "Error.Channel.NotTextChannel" }),
 				ephemeral: true,
 			});
 
 		const embedResponse = new MessageEmbed()
-			.setTitle(await interaction.text({ string: "Command.Feedback.Sent" }))
+			.setTitle(await interaction.getEphemeralString({ string: "Command.Feedback.Sent" }))
 			.setDescription(await message.embeds[0].description)
 			.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL() })
 			.setTimestamp();

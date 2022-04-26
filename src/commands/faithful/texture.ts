@@ -145,7 +145,7 @@ export const command: SlashCommand = {
 		// no results
 		interaction.deleteReply()
 		interaction.followUp({
-			content: await interaction.text({ string: "Command.Texture.NotFound", placeholders: { TEXTURENAME: `\`${name}\`` } }),
+			content: await interaction.getEphemeralString({ string: "Command.Texture.NotFound", placeholders: { TEXTURENAME: `\`${name}\`` } }),
 			ephemeral: true,
 		})
 	},

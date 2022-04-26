@@ -1,7 +1,4 @@
 {
-    "_CONTRIBUTORS": [
-        "PedroESP_01"
-    ],
     "Args.Insufficient": "Não há argumentos suficientes!",
     "Args.Invalid": "Argumentos inválidos!",
     "Command.Coin.Edge": "De lado?!",
@@ -211,10 +208,5 @@
     "Command.Stats.Embed.Title": "Estatísticas de %USER%.",
     "Command.Stats.Footer": "Feito com amor",
     "Command.Stats.Usage": "%COMMAND% foi executado %USE% vezes.",
-    "Command.Texture.NotFound": "Sem resultados para este nome de textura: %TEXTURENAME%",
-    "Error.DevBad": "Esta parte permanece não implementada devido a incompetência. Peça aos desenvolvedores ou lide com isso.",
-    "Error.General": "Erro encontrado!",
-    "Error.NotFound": "%THING% não encontrado!",
-    "Success.Detailed": "Sucesso! %DETAILS%",
-    "Success.General": "Sucesso!"
+    "Command.Texture.NotFound": "Sem resultados para este nome de textura: %TEXTURENAME%"
 }

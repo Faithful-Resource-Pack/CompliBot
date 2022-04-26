@@ -70,7 +70,7 @@ export const command: SlashCommand = {
 				);
 				const url = `https://github.com/Faithful-Resource-Pack/Discord-Bot/blob/typescript/CHANGELOG.md#${cleanedVersion}`;
 				const embed = new MessageEmbed()
-					.setTitle(`${await interaction.text({ string: "Command.Changelog.Title" })}${versionChoice}: `)
+					.setTitle(`${await interaction.getEphemeralString({ string: "Command.Changelog.Title" })}${versionChoice}: `)
 					.setURL(url)
 					.addFields(fields);
 				timestamp
