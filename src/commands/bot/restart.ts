@@ -14,6 +14,6 @@ export const command: SlashCommand = {
 	data: new SlashCommandBuilder().setName("restart").setDescription("Restarts the bot.").setDefaultPermission(false),
 	execute: async (interaction: CommandInteraction, client: Client) => {
 		await interaction.reply({ content: "restarting...", ephemeral: true });
-		client.restart(interaction);
+		await client.restart(interaction);
 	},
 };

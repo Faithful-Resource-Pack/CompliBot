@@ -38,6 +38,7 @@ import { loadJavaVersions, updateJavaVersions } from "@functions/MCupdates/java"
 
 import path from "path";
 import chalk from "chalk";
+import { newClient } from "index";
 
 const JSON_PATH = path.join(__dirname, "../../json/dynamic"); // json folder at root
 const POLLS_FILENAME = "polls.json";
@@ -87,12 +88,13 @@ class ExtendedClient extends Client {
 		this.tokens = data.tokens;
 	}
 
-	public async restart(int?: CommandInteraction): Promise<void> {
-		process.exit(1);
-		//console.log(`${info}restarting bot...`);
-		//this.destroy();
-		//await this.init();
-		//if (int) int.editReply({ content: "reboot succeeded" });
+	public async restart(interaction?: CommandInteraction): Promise<void> {
+		console.log(`${info}Restarting bot...`);
+		await this.destroy();
+		await newClient();
+		console.log(`${info}Restarted`);
+
+		if (interaction) interaction.editReply("Reboot suceeded");
 	}
 
 	//prettier-ignore
@@ -115,20 +117,6 @@ class ExtendedClient extends Client {
 
 	public async init() {
 		this.asciiArt();
-
-		if (this.tokens.maintenance) {
-			this.login(this.tokens.token)
-				.catch((e) => {
-					// Allows for showing different errors like missing privileged gateway intents, this caused me so much pain >:(
-					console.log(`${err}${e}`);
-					process.exit(1);
-				})
-				.then(() => {
-					this.loadEvents();
-				});
-
-			return;
-		}
 
 		// login client
 		this.login(this.tokens.token)
@@ -155,13 +143,18 @@ class ExtendedClient extends Client {
 				if (this.verbose) console.log(info + `Init complete`);
 			});
 
-		const errorEvents = ["uncaughtException", "unhandledRejection"];
-		const events = ["exit", "SIGINT", "SIGUSR1", "SIGUSR2", "SIGTERM"];
+		// catches "kill pid" (for example: nodemon restart)
+		process.on("SIGUSR1", () => this.restart());
+		process.on("SIGUSR2", () => this.restart());
 
-		[...errorEvents, ...events].forEach((eventType) => {
-			process.on(eventType, (...args) => {
-				if (errorEvents.includes(eventType)) errorHandler(this, args[0], eventType);
-			});
+		process.on("disconnect", (code: number) => {
+			errorHandler(this, code, "disconnect");
+		});
+		process.on("uncaughtException", (error, origin) => {
+			errorHandler(this, error, "uncaughtException", origin);
+		});
+		process.on("unhandledRejection", (reason, promise) => {
+			errorHandler(this, reason, "unhandledRejection");
 		});
 	}
 
@@ -317,10 +310,11 @@ class ExtendedClient extends Client {
 		const guilds = { global: [] };
 		commandsArr.forEach((el) => {
 			if (el.servers === null || el.servers === undefined) guilds["global"].push(el.command);
-			else el.servers.forEach((server) => {
-				if (guilds[server] === undefined) guilds[server] = [];
-				guilds[server].push(el.command);
-			});
+			else
+				el.servers.forEach((server) => {
+					if (guilds[server] === undefined) guilds[server] = [];
+					guilds[server].push(el.command);
+				});
 		});
 
 		for (let i = 0; i < this.config.discords.length; i++) {
