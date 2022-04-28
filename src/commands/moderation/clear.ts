@@ -20,6 +20,11 @@ export const command: SlashCommand = {
 			option.setName("amount").setDescription("The amount of messages you want to clear [0 - 100]").setRequired(true),
 		),
 	execute: async (interaction: CommandInteraction, client: Client) => {
+		return interaction.reply({
+			content: "This command is temporarily disabled! (complain to Discord for breaking slash command permissions)",
+			ephemeral: true,
+		});
+
 		const amount: number = interaction.options.getNumber("amount", true);
 		if (amount > 100 || amount < 0)
 			return interaction.reply({ ephemeral: true, content: "Amount must be between `0` and `100`" });

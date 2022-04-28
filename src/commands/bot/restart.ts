@@ -13,6 +13,11 @@ export const command: SlashCommand = {
 	},
 	data: new SlashCommandBuilder().setName("restart").setDescription("Restarts the bot.").setDefaultPermission(false),
 	execute: async (interaction: CommandInteraction, client: Client) => {
+		return interaction.reply({
+			content: "This command is temporarily disabled! (complain to Discord for breaking slash command permissions)",
+			ephemeral: true,
+		});
+
 		await interaction.reply({ content: "restarting...", ephemeral: true });
 		await client.restart(interaction);
 	},

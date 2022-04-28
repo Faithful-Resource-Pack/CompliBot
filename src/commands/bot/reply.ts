@@ -21,6 +21,11 @@ export const command: SlashCommand = {
 		)
 		.addStringOption((option) => option.setName("message").setDescription("Message ID to reply to").setRequired(true)),
 	execute: async (interaction: CommandInteraction, client: Client) => {
+		return interaction.reply({
+			content: "This command is temporarily disabled! (complain to Discord for breaking slash command permissions)",
+			ephemeral: true,
+		});
+
 		let msg: Message;
 		try {
 			msg = (await interaction.channel.messages.fetch(interaction.options.getString("message"))) as Message;

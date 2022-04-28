@@ -24,6 +24,11 @@ export const command: SlashCommand = {
 			option.setName("description").setDescription("Description of the new notice").setRequired(true),
 		),
 	execute: async (interaction: CommandInteraction, client: Client) => {
+		return interaction.reply({
+			content: "This command is temporarily disabled! (complain to Discord for breaking slash command permissions)",
+			ephemeral: true,
+		});
+
 		const newNotice: notice = {
 			unix: +Date.now(),
 			title: await interaction.options.getString("title"),

@@ -61,6 +61,11 @@ export const command: SlashCommand = {
 		),
 	execute: new Collection<string, SlashCommandI>()
 		.set("add", async (interaction: CommandInteraction, client: Client) => {
+			return interaction.reply({
+				content: "This command is temporarily disabled! (complain to Discord for breaking slash command permissions)",
+				ephemeral: true,
+			});
+
 			let user: User = interaction.options.getUser("user", true) as User;
 			if (!checkIfUser(client, user))
 				return interaction.reply({ content: "The given parameter is not a user", ephemeral: true });
@@ -101,6 +106,11 @@ export const command: SlashCommand = {
 			});
 		})
 		.set("list", async (interaction: CommandInteraction, client: Client) => {
+			return interaction.reply({
+				content: "This command is temporarily disabled! (complain to Discord for breaking slash command permissions)",
+				ephemeral: true,
+			});
+
 			let user: User = interaction.options.getUser("user", true) as User;
 			if (!checkIfUser(client, user))
 				return interaction.reply({ content: "The given parameter is not a user", ephemeral: true });
@@ -116,6 +126,11 @@ export const command: SlashCommand = {
 				});
 		})
 		.set("edit", async (interaction: CommandInteraction, client: Client) => {
+			return interaction.reply({
+				content: "This command is temporarily disabled! (complain to Discord for breaking slash command permissions)",
+				ephemeral: true,
+			});
+
 			let user: User = interaction.options.getUser("user", true) as User;
 			if (!checkIfUser(client, user))
 				return interaction.reply({ content: "The given parameter is not a user", ephemeral: true });

@@ -68,6 +68,11 @@ export const command: SlashCommand = {
 		),
 	execute: new Collection<string, SlashCommandI>()
 		.set("add", async (interaction: CommandInteraction, client: Client) => {
+			return interaction.reply({
+				content: "This command is temporarily disabled! (complain to Discord for breaking slash command permissions)",
+				ephemeral: true,
+			});
+	
 			let todoJson = getData({
 				filename: "todo.json",
 				relative_path: path.join(__dirname + "../../../../json/"),
@@ -124,6 +129,11 @@ export const command: SlashCommand = {
 		})
 
 		.set("remove", async (interaction: CommandInteraction, client: Client) => {
+			return interaction.reply({
+				content: "This command is temporarily disabled! (complain to Discord for breaking slash command permissions)",
+				ephemeral: true,
+			});
+	
 			const todoJson = getData({
 				filename: "todo.json",
 				relative_path: path.join(__dirname + "../../../../json/"),
