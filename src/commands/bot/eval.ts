@@ -18,6 +18,11 @@ export const command: SlashCommand = {
 		.setDescription("Evaluates a string of code.")
 		.addStringOption((option) => option.setName("code").setDescription("The code to evaluate.").setRequired(true)),
 	execute: async (interaction: CommandInteraction) => {
+		return interaction.reply({
+			content: "This command is temporarily disabled! (complain to Discord for breaking slash command permissions)",
+			ephemeral: true,
+		});
+
 		const clean = async (text: any, client: Client): Promise<string> => {
 			if (text && text.constructor.name === "Promise") text = await text;
 			if (typeof text !== "string") text = require("util").inspect(text, { depth: 1 });

@@ -18,6 +18,11 @@ export const command: SlashCommand = {
 	},
 	data: new SlashCommandBuilder().setName("logs").setDescription("Get logs of the bot.").setDefaultPermission(false),
 	execute: async (interaction: CommandInteraction, client: Client) => {
+		return interaction.reply({
+			content: "This command is temporarily disabled! (complain to Discord for breaking slash command permissions)",
+			ephemeral: true,
+		});
+
 		await interaction.reply({ files: [logConstructor(client)] }).catch(console.error);
 	},
 };

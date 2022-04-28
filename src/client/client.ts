@@ -253,7 +253,7 @@ class ExtendedClient extends Client {
 
 			const fullPermissions = [...addPerms(slashCommands), ...addPerms(guildSlashCommands)];
 
-			await this.application.commands.permissions.set({ fullPermissions: fullPermissions, guild: guild });
+			//await this.application.commands.permissions.set({ fullPermissions: fullPermissions, guild: guild });
 			if (this.verbose) console.log(success + `Loaded slash command perms for ${guild.name}`);
 		});
 	};

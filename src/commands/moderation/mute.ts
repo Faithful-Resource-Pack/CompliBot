@@ -7,6 +7,7 @@ import ConfigJson from "@json/config.json";
 import { parseDate } from "@helpers/dates";
 import { colors } from "@helpers/colors";
 import { getRolesIds } from "@helpers/roles";
+import { Permissions } from "discord.js";
 const config: Config = ConfigJson;
 
 export const command: SlashCommand = {
@@ -23,6 +24,11 @@ export const command: SlashCommand = {
 		)
 		.addStringOption((option) => option.setName("reason").setDescription("The reason behind the mute.")),
 	execute: async (interaction: CommandInteraction, client: Client) => {
+		return interaction.reply({
+			content: "This command is temporarily disabled! (complain to Discord for breaking slash command permissions)",
+			ephemeral: true,
+		});
+
 		const timeout: number = parseDate(interaction.options.getString("timeout", true));
 		const reason: string = interaction.options.getString("reason");
 		let user: GuildMember = interaction.options.getMentionable("user", true) as any;

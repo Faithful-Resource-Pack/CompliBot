@@ -51,6 +51,11 @@ export const command: SlashCommand = {
 		}),
 	execute: new Collection<string, SlashCommandI>()
 		.set("audit", async (interaction: CommandInteraction, client: Client) => {
+			return interaction.reply({
+				content: "This command is temporarily disabled! (complain to Discord for breaking slash command permissions)",
+				ephemeral: true,
+			});
+
 			await interaction.deferReply({ ephemeral: true });
 			const banlist = require("@json/botbans.json");
 			// const banlist = JSON.parse(banlistJSON);
@@ -105,6 +110,11 @@ export const command: SlashCommand = {
 			} // can't fetch channel
 		})
 		.set("view", async (interaction: CommandInteraction, client: Client) => {
+			return interaction.reply({
+				content: "This command is temporarily disabled! (complain to Discord for breaking slash command permissions)",
+				ephemeral: true,
+			});
+
 			await interaction.deferReply({ ephemeral: true });
 			const buffer = readFileSync(join(__dirname, "../../../json/botbans.json"));
 			const txtBuff = Buffer.from(

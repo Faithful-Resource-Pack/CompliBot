@@ -24,6 +24,11 @@ export const command: SlashCommand = {
 			option.setName("reason").setDescription("Reason of the invalidation/deny.").setRequired(true),
 		),
 	execute: async (interaction: CommandInteraction) => {
+		return interaction.reply({
+			content: "This command is temporarily disabled! (complain to Discord for breaking slash command permissions)",
+			ephemeral: true,
+		});
+
 		let isInvalidated: boolean = false;
 
 		interaction.channel.messages

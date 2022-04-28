@@ -20,6 +20,11 @@ export const command: SlashCommand = {
 			option.setName("sentence").setDescription("The funny thing you want the bot to say.").setRequired(true),
 		),
 	execute: async (interaction: CommandInteraction, client: Client) => {
+		return interaction.reply({
+			content: "This command is temporarily disabled! (complain to Discord for breaking slash command permissions)",
+			ephemeral: true,
+		});
+
 		interaction.reply({ content: ".", fetchReply: true }).then((message: Message) => message.delete());
 
 		interaction.channel.send({ content: interaction.options.getString("sentence", true) });
