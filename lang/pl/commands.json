@@ -2,7 +2,7 @@
   "Command.Activity.noChannel": "Proszę dołączyć do kanału głosowego lub dodać argument kanału!",
   "Command.Activity.stageChannel": "Aktywności nie mogą zostać uruchomione w kanale stage! (przenieś się do zwykłego vc)",
   "Command.Activity.unableToCreateInvite": "Nie można utworzyć zaproszenia! *(prawdopodobnie niedostępne api)",
-  "Command.Botban.isBanned": "Nie możesz użyć bota ponieważ zostałeś zbanowany!",
+  "Command.Botban.isBanned": "Nie możesz użyć bota, ponieważ zostałeś zbanowany!",
   "Command.Botban.view.unbannable": "Nie możesz kontrolować wpisu tego użytkownika na liście banów!",
   "Command.Changelog.Title": "Wyniki dla wersji ",
   "Command.Coin.Edge": "Krawędź?!",
