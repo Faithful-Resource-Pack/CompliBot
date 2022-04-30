@@ -38,7 +38,7 @@ import { loadJavaVersions, updateJavaVersions } from "@functions/MCupdates/java"
 
 import path from "path";
 import chalk from "chalk";
-import { newClient } from "index";
+import { StartClient } from "index";
 
 const JSON_PATH = path.join(__dirname, "../../json/dynamic"); // json folder at root
 const POLLS_FILENAME = "polls.json";
@@ -62,6 +62,7 @@ export type Log = {
 
 class ExtendedClient extends Client {
 	public verbose: boolean = false;
+	public cs: boolean = true; //cold start
 	public config: Config;
 	public tokens: Tokens;
 	public automation: Automation = new Automation(this);
@@ -81,20 +82,18 @@ class ExtendedClient extends Client {
 	public commandsProcessed: EmittingCollection<string, number> = new EmittingCollection();
 	public moderationUsers: EmittingCollection<string, User> = new EmittingCollection();
 
-	constructor(data: ClientOptions & { verbose: boolean; config: Config; tokens: Tokens }) {
+	constructor(data: ClientOptions & { verbose: boolean; config: Config; tokens: Tokens }, coldStart: boolean = true) {
 		super(data);
 		this.verbose = data.verbose;
 		this.config = data.config;
 		this.tokens = data.tokens;
+		this.cs = coldStart;
 	}
 
 	public async restart(interaction?: CommandInteraction): Promise<void> {
 		console.log(`${info}Restarting bot...`);
 		await this.destroy();
-		await newClient();
-		console.log(`${info}Restarted`);
-
-		if (interaction) interaction.editReply("Reboot suceeded");
+		await StartClient(false, interaction);
 	}
 
 	//prettier-ignore
@@ -115,8 +114,13 @@ class ExtendedClient extends Client {
 		console.log(chalk.hex(darkColor)("                                  888                ")  + chalk.gray.italic(this.tokens.maintenance === false ? "~ Made lovingly with pain\n" : "    Maintenance mode!\n"));
 	}
 
-	public async init() {
-		this.asciiArt();
+	public async init(interaction?: CommandInteraction) {
+		// pretty stuff so it doesnt print the logo upon restart
+		if (!this.cs) {
+			console.clear();
+			console.log(`\n\n${success}Restarted`);
+			if (interaction) interaction.editReply("Reboot suceeded");
+		} else this.asciiArt();
 
 		// login client
 		this.login(this.tokens.token)
