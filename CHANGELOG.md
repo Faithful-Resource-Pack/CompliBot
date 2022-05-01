@@ -20,6 +20,8 @@ Commands are explained like so:
 - `stickCanvas()` & `stickAttachment()` functions to stick side by side two canvas
 - Animated textures are now animated when using `/texture`.
 - Added types for textures related firestorm objects.
+- Added Minecraft update tracker
+- Added `/kick` and `/ban` commands
 
 ### Changed
 - The CompliBot ascii art now show up & show up with different colors when `tokens.maintenance === true`
@@ -37,6 +39,7 @@ Commands are explained like so:
 - Image commands erroring on `.webp` images
 - Error for already deleted message when warns shows up (when using <Message>.warns()), the message is now checked before replied, and if it is deleted, the message is sent to the channel instead of replying to the warned author's message.
 - Fixed oldest supported version when selecting texture from `/texture`
+- Fixed being able to specify a role as user in `/mute` command
 
 ## [v2.0.3] 12/04/2022
 

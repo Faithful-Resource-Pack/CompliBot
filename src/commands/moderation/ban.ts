@@ -4,7 +4,6 @@ import { Collection, CommandInteraction, Guild, GuildMember, Interaction, TextCh
 import { Client, Message, MessageEmbed } from "@client";
 import { Config } from "@interfaces";
 import ConfigJson from "@json/config.json";
-import { parseDate } from "@helpers/dates";
 import { colors } from "@helpers/colors";
 import { getRolesIds } from "@helpers/roles";
 import { Permissions } from "discord.js";
@@ -16,51 +15,39 @@ export const command: SlashCommand = {
 	},
 	data: new SlashCommandBuilder()
 		.setDefaultPermission(false)
-		.setName("mute")
-		.setDescription("Mute someone who deserves it. Unmute innocents with a timeout value of 0.")
-		.addUserOption((option) => option.setName("user").setDescription("User you want to mute.").setRequired(true))
-		.addStringOption((option) =>
-			option.setName("timeout").setDescription("How long do you want it to be muted? (Max: 27 days)").setRequired(true),
-		)
-		.addStringOption((option) => option.setName("reason").setDescription("The reason behind the mute.")),
+		.setName("ban")
+		.setDescription("Ban a member from the server.")
+		.addUserOption((option) => option.setName("user").setDescription("User you want to ban.").setRequired(true))
+		.addStringOption((option) => option.setName("reason").setDescription("The reason behind the ban.")),
 	execute: async (interaction: CommandInteraction, client: Client) => {
 		return interaction.reply({
 			content: "This command is temporarily disabled! (complain to Discord for breaking slash command permissions)",
 			ephemeral: true,
 		});
 
-		const timeout: number = parseDate(interaction.options.getString("timeout", true));
 		const reason: string = interaction.options.getString("reason");
-		let user: GuildMember = interaction.options.getUser("user", true) as any;
+		let guild = await interaction.client.guilds.fetch(interaction.guildId)
+        let user = await guild.members.fetch(interaction.options.getUser("user").id);
 
-		if (!(user instanceof GuildMember))
-			return interaction.reply({
-				content: "The mention should be a user from the server!",
-				ephemeral: true,
-			});
-
-		// check for team guilds & apply the mute to all teamed guilds
+		// check for team guilds & apply the ban to all teamed guilds
 		// if there is no "team", only apply to the guild were the command is made
-		let guildsToMute: Array<string> = [];
+		let guildsToBan: Array<string> = [];
 		const team: string = (interaction.client as Client).config.discords.filter((d) => d.id === interaction.guildId)[0]
 			.team;
 
 		if (team)
-			guildsToMute = (interaction.client as Client).config.discords.filter((d) => d.team === team).map((d) => d.id);
+			guildsToBan = (interaction.client as Client).config.discords.filter((d) => d.team === team).map((d) => d.id);
 		else
-			guildsToMute = [(interaction.client as Client).config.discords.filter((d) => d.id === interaction.guildId)[0].id];
+			guildsToBan = [(interaction.client as Client).config.discords.filter((d) => d.id === interaction.guildId)[0].id];
 
-		// test if user can be timed out (check for permissions)
-		try {
-			await user.timeout(null);
-		} catch (err) {
+		// test if user can be banned (check for permissions)
+		if (!user.bannable)
 			return await interaction.reply({
-				content: `An error occured:\n> Can't mute people above the bot!\n\`\`\`${err}\`\`\``,
+				content: `An error occured:\n> Can't ban people above the bot!`,
 				ephemeral: true,
 			});
-		}
 
-		guildsToMute.forEach(async (guildId: string) => {
+		guildsToBan.forEach(async (guildId: string) => {
 			let guild: Guild;
 			let member: GuildMember;
 
@@ -71,12 +58,11 @@ export const command: SlashCommand = {
 				return;
 			}
 
-			// maximum timeout is 27 days (discord limitation)
-			await member.timeout((timeout > 2332800 ? 2332800 : timeout) * 1000, reason);
+			await member.ban({ reason: reason });
 		});
 
 		const embed: MessageEmbed = new MessageEmbed()
-			.setTitle(`${user.displayName} has been ${timeout > 0 ? "muted" : "unmuted"}.`)
+			.setTitle(`${user.displayName} has been banned.`)
 			.setAuthor({ name: interaction.user.username, iconURL: interaction.user.avatarURL({ dynamic: true }) })
 			.setColor(colors.black)
 			.addFields([
@@ -84,17 +70,11 @@ export const command: SlashCommand = {
 				{ name: "Reason", value: reason ? reason : "No reason given.", inline: true },
 			]);
 
-		if (timeout > 0)
-			embed.addFields([
-				{ name: "Timeout", value: `<t:${(new Date().getTime() / 1000 + timeout).toFixed(0)}:R>`, inline: true },
-			]);
-
 		const message: Message = (await interaction.reply({ embeds: [embed], fetchReply: true })) as any;
 
 		// construct logs
-		//! TODO: add mute icon in thumbnail (waiting for @Pomi108 to draw it)
 		const logEmbed: MessageEmbed = new MessageEmbed()
-			.setTitle(`${timeout > 0 ? "Muted" : "Unmuted"} someone`)
+			.setTitle(`Banned someone`)
 			.setAuthor({ name: interaction.user.username, iconURL: interaction.user.avatarURL({ dynamic: true }) })
 			.setColor(colors.red)
 			.addFields([
@@ -105,11 +85,6 @@ export const command: SlashCommand = {
 				{ name: "Reason", value: reason ? reason : "No reason given.", inline: true },
 			])
 			.setTimestamp();
-
-		if (timeout > 0)
-			logEmbed.addFields([
-				{ name: "Timeout", value: `<t:${(new Date().getTime() / 1000 + timeout).toFixed(0)}:R>`, inline: true },
-			]);
 
 		// send log into the addressed logs channel
 		let logChannel: TextChannel;
