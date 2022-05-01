@@ -6,6 +6,8 @@
     "leonardssh.vscord",
     "github.copilot",
     "ms-vscode.vscode-typescript-next",
-    "eamodio.gitlens"
+    "eamodio.gitlens",
+    "wix.vscode-import-cost",
+    "visualstudioexptteam.vscodeintellicode",
   ]
 }
