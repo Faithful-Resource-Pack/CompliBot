@@ -35,6 +35,8 @@ import { REST } from "@discordjs/rest";
 import { RESTPostAPIApplicationCommandsJSONBody, Routes } from "discord-api-types/v9";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { loadJavaVersions, updateJavaVersions } from "@functions/MCupdates/java";
+import { loadJiraJavaVersions, updateJiraJavaVersions } from "@functions/MCupdates/jira-je";
+import { loadJiraBedrockVersions, updateJiraBedrockVersions } from "@functions/MCupdates/jire-be";
 
 import path from "path";
 import chalk from "chalk";
@@ -136,10 +138,18 @@ class ExtendedClient extends Client {
 				this.loadButtons();
 				this.loadSelectMenus();
 
-				/*loadJavaVersions()
-				.then(() => {
-					updateJavaVersions(this);
-				})*/
+				if (!this.tokens.dev) {
+					loadJavaVersions();
+					loadJiraJavaVersions();
+					loadJiraBedrockVersions()
+					.then(() => {
+						setInterval(() => {
+							updateJavaVersions(this);
+							updateJiraJavaVersions(this);
+							updateJiraBedrockVersions(this);
+						}, 60000); // 1 minute
+					})
+				}
 
 				this.loadCollections();
 				this.automation.start();
