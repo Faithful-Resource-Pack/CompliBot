@@ -38,7 +38,8 @@
     "environment/end_sky",
     "gui/title/mojangstudios",
     "misc/enchanted_item_glint",
-    "misc/pumpkinblur"
+    "misc/pumpkinblur",
+    "item/copper_horn"
   ],
   "bedrock": [
     "spit",
