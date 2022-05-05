@@ -78,14 +78,18 @@ module.exports = {
 					.setDescription('https://www.youtube.com/channel/UCQFajwwCLyFKLhZsAkHSGJA')
 					.setColor(settings.colors.youtube)
 					.setThumbnail('https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/YouTube_full-color_icon_%282017%29.svg/1280px-YouTube_full-color_icon_%282017%29.svg.png')
-
+				var redditEmbed = new MessageEmbed()
+					.setTitle('Reddit')
+					.setDescription('https://www.reddit.com/r/faithfulpack/')
+					.setColor("#FF5700") // Im editing on github sorrry for hardcoding
+					.setThumbnail('https://www.redditinc.com/assets/images/site/reddit-logo.png')
 				var patreonEmbed = new MessageEmbed()
 					.setTitle('Patreon')
 					.setDescription('https://www.patreon.com/Faithful_Resource_Pack')
 					.setColor(settings.colors.patreon)
 					.setThumbnail('https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Patreon_logomark.svg/1024px-Patreon_logomark.svg.png')
 
-				await message.channel.send({ embeds: [websiteEmbed, githubEmbed, twitterEmbed, curseforgeEmbed, planetminecraftEmbed, mcpedlEmbed, youtubeEmbed, patreonEmbed] })
+				await message.channel.send({ embeds: [websiteEmbed, githubEmbed, twitterEmbed, curseforgeEmbed, planetminecraftEmbed, mcpedlEmbed, youtubeEmbed, redditEmbed, patreonEmbed] })
 				await message.delete()
 			}
 		} else return
