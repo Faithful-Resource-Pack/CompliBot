@@ -16,7 +16,7 @@ module.exports = {
 	uses: strings.command.use.devs,
 	syntax: `${prefix}discords\n${prefix}media`,
 	async execute(client, message, args) {
-		if (message.author.id === uidR || message.author.id === uidJ) {
+		if (message.author.id === uidR || message.author.id === uidJ || "331073143613423616") {
 			if (args[0] === 'discords') {
 				if (message.guild.id === settings.guilds.c32.id || args[1] === '32x') {
 					await message.channel.send({ content: 'This server:\n> https://discord.gg/sN9YRQbBv7' });
