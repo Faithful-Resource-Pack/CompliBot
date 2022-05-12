@@ -1,7 +1,7 @@
 import { SlashCommand, SyncSlashCommandBuilder } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { Client, CommandInteraction, MessageEmbed } from "@client";
-import { MessageAttachment } from "discord.js";
+import { Message, MessageAttachment } from "discord.js";
 import {
 	compute,
 	computeAll,
@@ -99,8 +99,7 @@ export const command: SlashCommand = {
 			let errMessage: string = (err as Error).message;
 			if (!errMessage) {
 				console.error(err);
-				errMessage =
-					"An error occured when launching missing command. Please check console error output for more info";
+				errMessage = "An error occured when launching missing command. Please check console error output for more info";
 			}
 
 			return [null, [errMessage], options];
@@ -153,6 +152,8 @@ export const command: SlashCommand = {
 			}
 		});
 
-		return interaction.editReply({ embeds: [embed2], files: files });
+		return interaction.editReply({ embeds: [embed2], files: files }).then((message: Message) => {
+			message.deleteButton();
+		});
 	},
 };

@@ -141,14 +141,13 @@ class ExtendedClient extends Client {
 				if (!this.tokens.dev) {
 					loadJavaVersions();
 					loadJiraJavaVersions();
-					loadJiraBedrockVersions()
-					.then(() => {
+					loadJiraBedrockVersions().then(() => {
 						setInterval(() => {
 							updateJavaVersions(this);
 							updateJiraJavaVersions(this);
 							updateJiraBedrockVersions(this);
 						}, 60000); // 1 minute
-					})
+					});
 				}
 
 				this.loadCollections();
