@@ -8,7 +8,6 @@ import { MessageEmbed } from "@client";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
-		.setDefaultPermission(true)
 		.setName("activity")
 		.setDescription(`Creates an activity in a voice channel.`)
 		.addStringOption((option) =>

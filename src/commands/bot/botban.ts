@@ -12,7 +12,6 @@ export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
 		.setName("botban")
 		.setDescription("Manages the banlist *(devs naughty list :D).")
-		.setDefaultPermission(false)
 		.addSubcommand((view) => {
 			return view
 				.setName("view")

@@ -10,11 +10,7 @@ import { Permissions } from "discord.js";
 const config: Config = ConfigJson;
 
 export const command: SlashCommand = {
-	permissions: {
-		roles: getRolesIds({ name: ["moderators", "trial_moderators"], discords: "all", teams: "all" }),
-	},
 	data: new SlashCommandBuilder()
-		.setDefaultPermission(false)
 		.setName("kick")
 		.setDescription("Kick a member from the server.")
 		.addUserOption((option) => option.setName("user").setDescription("User you want to kick.").setRequired(true))

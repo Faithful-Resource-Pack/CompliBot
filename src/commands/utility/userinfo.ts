@@ -10,7 +10,6 @@ export const command: SlashCommand = {
 		roles: getRolesIds({ name: ["moderators", "trial_moderators"], discords: "all", teams: "all" }),
 	},
 	data: new SlashCommandBuilder()
-		.setDefaultPermission(false)
 		.setName("userinfo")
 		.setDescription("Get detailed information on a specified user.")
 		.addUserOption((option) =>

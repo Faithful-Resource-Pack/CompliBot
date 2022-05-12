@@ -8,7 +8,6 @@ import { imageButtons } from "@helpers/buttons";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
-		.setDefaultPermission(true)
 		.setName("profile")
 		.setDescription(`Get the profile of a user`)
 

@@ -13,7 +13,6 @@ export const command: SlashCommand = {
 		],
 	},
 	data: new SlashCommandBuilder()
-		.setDefaultPermission(false)
 		.setName("reply")
 		.setDescription("Say something with the bot")
 		.addStringOption((option) =>

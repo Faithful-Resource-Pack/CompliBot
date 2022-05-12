@@ -13,7 +13,6 @@ export const command: SlashCommand = {
 	},
 	servers: ["dev"],
 	data: new SlashCommandBuilder()
-		.setDefaultPermission(false)
 		.setName("eval")
 		.setDescription("Evaluates a string of code.")
 		.addStringOption((option) => option.setName("code").setDescription("The code to evaluate.").setRequired(true)),

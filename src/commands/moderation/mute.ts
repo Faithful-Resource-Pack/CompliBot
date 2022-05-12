@@ -12,7 +12,6 @@ const config: Config = ConfigJson;
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
-		.setDefaultPermission(false)
 		.setName("mute")
 		.setDescription("Mute someone who deserves it. Unmute innocents with a timeout value of 0.")
 		.addUserOption((option) => option.setName("user").setDescription("User you want to mute.").setRequired(true))

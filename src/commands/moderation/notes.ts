@@ -11,7 +11,6 @@ import { Collection, CommandInteraction, Message, User } from "discord.js";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
-		.setDefaultPermission(false)
 		.setName("notes")
 		.setDescription("Edit/See notes from a user")
 		.addSubcommand((subcommand) =>

@@ -23,7 +23,7 @@
 			"\t\t * todo: implement fetched stuff here",
 			"\t\t */",
 			"\t\treturn new SlashCommandBuilder()",
-			"\t\t\t.setDefaultPermission(true)",
+
 			"\t\t\t.setName(\"${1:Name}\")",
 			"\t\t\t.setDescription(\"${1:Description}\"),",
 			"\t},",
@@ -42,7 +42,7 @@
 			"import { SlashCommandBuilder } from \"@discordjs/builders\";",
 			"export const command: SlashCommand = {",
 			"\tdata: new SlashCommandBuilder()",
-			"\t\t.setDefaultPermission(true)",
+
 			"\t\t.setName(\"${1:Name}\")",
 			"\t\t.setDescription(`${2:Description}`),",
 			"\texecute: async (interaction: CommandInteraction, client: Client) => {",

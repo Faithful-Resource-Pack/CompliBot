@@ -16,7 +16,6 @@ export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
 		.setName("todo")
 		.setDescription("Audit the todo list")
-		.setDefaultPermission(false)
 		//todo: fully implement remove sub command below
 		// .addSubcommand((subcommand) =>
 		// 	subcommand

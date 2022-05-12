@@ -9,11 +9,7 @@ import { getRolesIds } from "@helpers/roles";
 const config: Config = ConfigJson;
 
 export const command: SlashCommand = {
-	permissions: {
-		roles: getRolesIds({ name: "moderators", discords: "all", teams: "all" }),
-	},
 	data: new SlashCommandBuilder()
-		.setDefaultPermission(false)
 		.setName("clear")
 		.setDescription("Clear a specified amount of messages")
 		.addNumberOption((option) =>

@@ -11,7 +11,6 @@ const config: Config = ConfigJson;
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
-		.setDefaultPermission(false)
 		.setName("ban")
 		.setDescription("Ban a member from the server.")
 		.addUserOption((option) => option.setName("user").setDescription("User you want to ban.").setRequired(true))

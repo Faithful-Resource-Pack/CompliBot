@@ -7,7 +7,6 @@ import path from "path";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
-		.setDefaultPermission(false)
 		.setName("setnotice")
 		.setDescription("Set the bots notice")
 		.addStringOption((option) => option.setName("title").setDescription("Title of the new notice").setRequired(true))

@@ -8,7 +8,6 @@ import { changelogOptions } from "index";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
-		.setDefaultPermission(true)
 		.setName("changelog")
 		.setDescription("Gets a changelog version of the bot")
 		.addStringOption((str) => {
