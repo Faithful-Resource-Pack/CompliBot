@@ -30,7 +30,7 @@ export const event: Event = {
 			}
 		}
 
-		let doDelete: boolean = await processFiles(client, message, files)
+		let doDelete: boolean = await processFiles(client, message, files);
 
 		try {
 			if (doDelete) message.delete(); // delete only if all textures were processed (and selected)
@@ -40,7 +40,13 @@ export const event: Event = {
 	},
 };
 
-export const processFiles = async (client: Client, message: Message, files: MessageAttachment[], INDEX: number = 0, id?: string): Promise<boolean> => {
+export const processFiles = async (
+	client: Client,
+	message: Message,
+	files: MessageAttachment[],
+	INDEX: number = 0,
+	id?: string,
+): Promise<boolean> => {
 	for (let index = INDEX; index < files.length; index++) {
 		const file: MessageAttachment = files[index];
 
@@ -49,9 +55,9 @@ export const processFiles = async (client: Client, message: Message, files: Mess
 			req = await axios.get(`${client.config.apiUrl}textures/${id ? id : file.name.replace(".png", "")}/all`);
 		} catch (_err) {
 			message.warn(
-				`An API error occurred for \`${id ? `the ID ${id}` : file.name.replace(".png", "")}\`:\n\`\`\`(${_err.response.data.status}) ${
-					_err.response.data.message
-				}\`\`\``
+				`An API error occurred for \`${id ? `the ID ${id}` : file.name.replace(".png", "")}\`:\n\`\`\`(${
+					_err.response.data.status
+				}) ${_err.response.data.message}\`\`\``,
 			);
 
 			return false;
@@ -73,13 +79,13 @@ export const processFiles = async (client: Client, message: Message, files: Mess
 			let max: number = 4;
 			let _max: number = 0;
 
-			for (let i = 0; i < textures.length; i++) 
+			for (let i = 0; i < textures.length; i++)
 				textures[i] = {
 					label: `[#${textures[i].id}] (${textures[i].paths[0].versions[0]}) ${textures[i].name}`,
 					description: textures[i].paths[0].name,
-					value: `${textures[i].id}__${index}`
+					value: `${textures[i].id}__${index}`,
 				};
-			
+
 			const emojis: string[] = [
 				"1️⃣",
 				"2️⃣",
@@ -123,8 +129,7 @@ export const processFiles = async (client: Client, message: Message, files: Mess
 					.setPlaceholder("Select a texture")
 					.addOptions(options);
 
-				const row = new MessageActionRow()
-					.addComponents(menu);
+				const row = new MessageActionRow().addComponents(menu);
 
 				components.push(row);
 			} while (textures.length !== 0 && _max++ < max);
@@ -134,16 +139,15 @@ export const processFiles = async (client: Client, message: Message, files: Mess
 				.setThumbnail(file.url)
 				.setFooter({ text: "Select the texture that correspond to your submission" });
 
-			message.reply({ embeds: [embed], components: components })
-				.then((msg: Message) => msg.deleteButton(true));
-	
+			message.reply({ embeds: [embed], components: components }).then((msg: Message) => msg.deleteButton(true));
+
 			return false;
 		}
 
 		// 1 result (instance of Object OR an array of length 1) (depends if it's from ID or name)
 		const submission = new Submission();
 		await submission.postSubmissionMessage(client, message, file, textures.length ? textures[0] : textures);
-	};
+	}
 
 	return true;
-}
+};

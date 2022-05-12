@@ -49,7 +49,10 @@ export const command: SlashCommand = {
 					});
 
 				message.edit({ embeds: [embed], files: [...message.attachments.values()] });
-				interaction.reply({ content: await interaction.getEphemeralString({ string: "Success.General" }), ephemeral: true });
+				interaction.reply({
+					content: await interaction.getEphemeralString({ string: "Success.General" }),
+					ephemeral: true,
+				});
 			})
 			.catch((err) => {
 				interaction.reply({ content: "Cannot fetch the message with the given message ID", ephemeral: true });

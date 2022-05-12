@@ -22,16 +22,24 @@ export const getTextureMessageOptions = async (options: {
 	const uses: Uses = texture.uses;
 	const paths: Paths = texture.paths;
 	const contributions: Contributions = texture.contributions;
-	const animated: boolean = paths.filter(p => p.mcmeta === true).length !== 0;
+	const animated: boolean = paths.filter((p) => p.mcmeta === true).length !== 0;
 
 	let mcmeta: any = {};
 	if (animated) {
-		const [animatedPath] = paths.filter(p => p.mcmeta === true);
-		const animatedUse = uses.find(u => u.id === animatedPath.use);
+		const [animatedPath] = paths.filter((p) => p.mcmeta === true);
+		const animatedUse = uses.find((u) => u.id === animatedPath.use);
 
 		try {
-			mcmeta = (await axios.get(`https://raw.githubusercontent.com/CompliBot/Default-Java/${animatedPath.versions.sort(MinecraftSorter).reverse()[0]}/assets/${animatedUse.assets}/${animatedPath.name}.mcmeta`)).data;
-		} catch { mcmeta = { "__comment": "mcmeta file not found, please check default repository" } }
+			mcmeta = (
+				await axios.get(
+					`https://raw.githubusercontent.com/CompliBot/Default-Java/${
+						animatedPath.versions.sort(MinecraftSorter).reverse()[0]
+					}/assets/${animatedUse.assets}/${animatedPath.name}.mcmeta`,
+				)
+			).data;
+		} catch {
+			mcmeta = { __comment: "mcmeta file not found, please check default repository" };
+		}
 	}
 
 	let strPack: string;
@@ -70,12 +78,10 @@ export const getTextureMessageOptions = async (options: {
 	}
 
 	const files: Array<MessageAttachment> = [];
-	const embed = new MessageEmbed()
-		.setTitle(`[#${texture.id}] ${texture.name}`)
-		.setFooter({
-			text: `${strPack}`,
-			iconURL: strIconURL,
-		});
+	const embed = new MessageEmbed().setTitle(`[#${texture.id}] ${texture.name}`).setFooter({
+		text: `${strPack}`,
+		iconURL: strIconURL,
+	});
 
 	let textureURL: string;
 	try {
@@ -103,17 +109,21 @@ export const getTextureMessageOptions = async (options: {
 		embed.addField("Source", `[GitHub](${textureURL})`, true);
 		embed.addField("Resolution", `${dimensions.width}×${dimensions.height}`, true);
 
-		const displayedContributions = [contributions
-			.filter((c) => strPack.includes(c.resolution.toString()) && pack === c.pack)
-			.sort((a, b) => a.date > b.date ? -1 : 1)
-			.map((c) => {
-				let strDate: string = fromTimestampToHumanReadable(c.date);
-				let authors = c.authors.map((authorId: string) => `<@!${authorId}>`);
-				return `\`${strDate}\`\n${authors.join(", ")}`;
-			})[0]]
+		const displayedContributions = [
+			contributions
+				.filter((c) => strPack.includes(c.resolution.toString()) && pack === c.pack)
+				.sort((a, b) => (a.date > b.date ? -1 : 1))
+				.map((c) => {
+					let strDate: string = fromTimestampToHumanReadable(c.date);
+					let authors = c.authors.map((authorId: string) => `<@!${authorId}>`);
+					return `\`${strDate}\`\n${authors.join(", ")}`;
+				})[0],
+		];
 
-		if (contributions.length > 2) displayedContributions.push("[See older contributions in the WebApp](https://webapp.faithfulpack.net/#/gallery)")
-		if (contributions.length && pack !== "default") embed.addField("Latest contribution", displayedContributions.join("\n"));
+		if (contributions.length > 2)
+			displayedContributions.push("[See older contributions in the WebApp](https://webapp.faithfulpack.net/#/gallery)");
+		if (contributions.length && pack !== "default")
+			embed.addField("Latest contribution", displayedContributions.join("\n"));
 	}
 
 	let tmp = {};
@@ -150,9 +160,8 @@ export const getTextureMessageOptions = async (options: {
 	// magnifying the texture in thumbnail
 	if (animated) {
 		embed.addField("MCMETA", `\`\`\`json\n${JSON.stringify(mcmeta)}\`\`\``, false);
-		files.push(await animateAttachment({ url: textureURL, magnify: true, name: "magnified.gif" , mcmeta }))
-	}
-	else files.push((await magnifyAttachment({ url: textureURL, name: "magnified.png" }))[0]);
+		files.push(await animateAttachment({ url: textureURL, magnify: true, name: "magnified.gif", mcmeta }));
+	} else files.push((await magnifyAttachment({ url: textureURL, name: "magnified.png" }))[0]);
 
 	return [embed, files];
 };

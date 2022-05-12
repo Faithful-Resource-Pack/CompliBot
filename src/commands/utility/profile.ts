@@ -166,7 +166,10 @@ async function handleStatus(api: string, status: number, interaction: CommandInt
 		});
 	else if (status != 200)
 		return interaction.reply({
-			content: (await interaction.getEphemeralString({ string: "Command.Profile.noResponse" })).replace("%API%", `${api} `),
+			content: (await interaction.getEphemeralString({ string: "Command.Profile.noResponse" })).replace(
+				"%API%",
+				`${api} `,
+			),
 			ephemeral: true,
 		});
 }

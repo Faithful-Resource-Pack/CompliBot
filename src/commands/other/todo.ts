@@ -13,9 +13,6 @@ import { getData } from "@functions/getDataFromJSON";
 import { updateTodo } from "@functions/updateTodo";
 
 export const command: SlashCommand = {
-	permissions: {
-		roles: getRolesIds({ name: "council", discords: "all", teams: "all" }),
-	},
 	data: new SlashCommandBuilder()
 		.setName("todo")
 		.setDescription("Audit the todo list")
@@ -68,11 +65,8 @@ export const command: SlashCommand = {
 		),
 	execute: new Collection<string, SlashCommandI>()
 		.set("add", async (interaction: CommandInteraction, client: Client) => {
-			return interaction.reply({
-				content: "This command is temporarily disabled! (complain to Discord for breaking slash command permissions)",
-				ephemeral: true,
-			});
-	
+			if (await interaction.perms({ roles: ["council"] })) return;
+
 			let todoJson = getData({
 				filename: "todo.json",
 				relative_path: path.join(__dirname + "../../../../json/"),
@@ -129,11 +123,8 @@ export const command: SlashCommand = {
 		})
 
 		.set("remove", async (interaction: CommandInteraction, client: Client) => {
-			return interaction.reply({
-				content: "This command is temporarily disabled! (complain to Discord for breaking slash command permissions)",
-				ephemeral: true,
-			});
-	
+			if (await interaction.perms({ roles: ["council"] })) return;
+
 			const todoJson = getData({
 				filename: "todo.json",
 				relative_path: path.join(__dirname + "../../../../json/"),

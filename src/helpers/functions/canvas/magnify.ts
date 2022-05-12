@@ -26,26 +26,34 @@ export async function magnifyAttachment(options: options): Promise<[MessageAttac
 			if (surface > 65636) factor = 2;
 			// 262144 = 512²px
 			else if (surface >= 262144) factor = 1;
-		} else if ((dimension.width * factor) * (dimension.height * factor) > 262144) factor = 1;
+		} else if (dimension.width * factor * (dimension.height * factor) > 262144) factor = 1;
 
 		const [width, height] = [dimension.width * factor, dimension.height * factor];
 		const imageToDraw = await loadImage(options.url);
 
 		const canvas = createCanvas(
-			options.orientation === undefined || options.orientation === "none" || options.orientation === "portrait" ? width : width * (16/9),
-			options.orientation === undefined || options.orientation === "none" || options.orientation === "landscape" ? height : height * (16/9),
+			options.orientation === undefined || options.orientation === "none" || options.orientation === "portrait"
+				? width
+				: width * (16 / 9),
+			options.orientation === undefined || options.orientation === "none" || options.orientation === "landscape"
+				? height
+				: height * (16 / 9),
 		);
 
 		const context = canvas.getContext("2d");
 		context.imageSmoothingEnabled = false;
 		context.drawImage(
-			imageToDraw, 
-			options.orientation === undefined || options.orientation === "none" || options.orientation === "portrait" ? 0 : (width * (16/9) / 4), // landscape
-			options.orientation === undefined || options.orientation === "none" || options.orientation === "landscape" ? 0 : (height * (16/9) / 4), // portrait
-			width, 
-			height
+			imageToDraw,
+			options.orientation === undefined || options.orientation === "none" || options.orientation === "portrait"
+				? 0
+				: (width * (16 / 9)) / 4, // landscape
+			options.orientation === undefined || options.orientation === "none" || options.orientation === "landscape"
+				? 0
+				: (height * (16 / 9)) / 4, // portrait
+			width,
+			height,
 		);
-		
+
 		return [
 			new MessageAttachment(canvas.toBuffer("image/png"), `${options.name ? options.name : "magnified.png"}`),
 			options.embed,

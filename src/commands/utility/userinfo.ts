@@ -17,10 +17,7 @@ export const command: SlashCommand = {
 			option.setName("user").setDescription("The User to get information of.").setRequired(true),
 		),
 	execute: async (interaction: CommandInteraction, client: Client) => {
-		return interaction.reply({
-			content: "This command is temporarily disabled! (complain to Discord for breaking slash command permissions)",
-			ephemeral: true,
-		});
+		if (await interaction.perms({ roles: ["moderators", "trial_moderators"] })) return;
 
 		const user = interaction.options.getUser("user") as User;
 		const guildUser = interaction.guild.members.cache.get(user.id) as GuildMember;
