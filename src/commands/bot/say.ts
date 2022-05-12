@@ -4,14 +4,6 @@ import { CommandInteraction } from "discord.js";
 import { Client, Message } from "@client";
 
 export const command: SlashCommand = {
-	permissions: {
-		users: [
-			"207471947662098432", // Juknum
-			"173336582265241601", // TheRolf
-			"473860522710794250", // RobertR11
-			"601501288978448411", // Nick
-		],
-	},
 	data: new SlashCommandBuilder()
 		.setDefaultPermission(false)
 		.setName("say")
@@ -20,10 +12,12 @@ export const command: SlashCommand = {
 			option.setName("sentence").setDescription("The funny thing you want the bot to say.").setRequired(true),
 		),
 	execute: async (interaction: CommandInteraction, client: Client) => {
-		return interaction.reply({
-			content: "This command is temporarily disabled! (complain to Discord for breaking slash command permissions)",
-			ephemeral: true,
-		});
+		if (
+			await interaction.perms({
+				users: ["207471947662098432", "173336582265241601", "601501288978448411", "473860522710794250"],
+			})
+		)
+			return;
 
 		interaction.reply({ content: ".", fetchReply: true }).then((message: Message) => message.delete());
 

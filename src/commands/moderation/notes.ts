@@ -10,9 +10,6 @@ import { checkIfUser } from "@helpers/users";
 import { Collection, CommandInteraction, Message, User } from "discord.js";
 
 export const command: SlashCommand = {
-	permissions: {
-		roles: getRolesIds({ name: "moderators", discords: "all", teams: "all" }),
-	},
 	data: new SlashCommandBuilder()
 		.setDefaultPermission(false)
 		.setName("notes")
@@ -61,10 +58,7 @@ export const command: SlashCommand = {
 		),
 	execute: new Collection<string, SlashCommandI>()
 		.set("add", async (interaction: CommandInteraction, client: Client) => {
-			return interaction.reply({
-				content: "This command is temporarily disabled! (complain to Discord for breaking slash command permissions)",
-				ephemeral: true,
-			});
+			if (await interaction.perms({ roles: ["moderators", "trial_moderators"] })) return;
 
 			let user: User = interaction.options.getUser("user", true) as User;
 			if (!checkIfUser(client, user))
