@@ -74,7 +74,8 @@ export class Poll extends TimedEmbed {
 			return field;
 		});
 
-		if (message.thread && !message.thread.archived) await message.edit({ embeds: [embed], components: [...components] });
+		if (message.thread && message.thread.archived) return;
+		await message.edit({ embeds: [embed], components: [...components] });
 		return;
 	}
 
