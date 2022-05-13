@@ -8,12 +8,12 @@ import { MessageAttachment } from "discord.js";
 import { processFiles } from "events/textureSubmitted";
 
 export const menu: SelectMenu = {
-  selectMenuId: "submitTextureSelect",
-  execute: async (client: Client, interaction: SelectMenuInteraction) => {
-    if (client.verbose) console.log(`${info}Submitted Texture selected!`)
+	selectMenuId: "submitTextureSelect",
+	execute: async (client: Client, interaction: SelectMenuInteraction) => {
+		if (client.verbose) console.log(`${info}Submitted Texture selected!`);
 
 		const message: Message = interaction.message as Message;
-    const ref: Message = await message.fetchReference();
+		const ref: Message = await message.fetchReference();
 
 		if (interaction.user.id !== ref.author.id)
 			return interaction.reply({
@@ -25,11 +25,11 @@ export const menu: SelectMenu = {
 			});
 		else interaction.deferReply();
 
-    const [textureId, fileIndex] = interaction.values[0].split("__");
+		const [textureId, fileIndex] = interaction.values[0].split("__");
 
 		let files: Array<MessageAttachment> = [];
 		const currAttach = [...ref.attachments.values()];
-    for (let i = 0; i < currAttach.length; i++) {
+		for (let i = 0; i < currAttach.length; i++) {
 			let attachment = currAttach[i];
 
 			// attachments that are non zip archives
@@ -40,14 +40,14 @@ export const menu: SelectMenu = {
 			}
 		}
 
-    let doDelete: boolean = await processFiles(client, ref, files, parseInt(fileIndex, 10), textureId);
+		let doDelete: boolean = await processFiles(client, ref, files, parseInt(fileIndex, 10), textureId);
 
-    try {
-      interaction.deleteReply();
-      message.delete();
+		try {
+			interaction.deleteReply();
+			message.delete();
 			if (doDelete) ref.delete();
 		} catch {
 			/* messages already deleted */
 		}
-  }
-}
+	},
+};

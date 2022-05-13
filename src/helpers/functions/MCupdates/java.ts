@@ -70,44 +70,41 @@ export async function updateJavaVersions(client: Client) {
 						);
 
 						if (res.status !== 404) {
-							description =
-								`A new pre-release of Minecraft Java was just released: \`${
-									version.id
-								}\`\nhttps://www.minecraft.net/en-us/article/minecraft-${version.id
-									.split("-")[0]
-									.replace(/\./g, "-")}-pre-release-${pre}`;
+							description = `A new pre-release of Minecraft Java was just released: \`${
+								version.id
+							}\`\nhttps://www.minecraft.net/en-us/article/minecraft-${version.id
+								.split("-")[0]
+								.replace(/\./g, "-")}-pre-release-${pre}`;
 							break;
 						}
 					}
 				} else {
-					description =
-						`A new pre-release of Minecraft Java was just released: \`${
-							version.id
-						}\`\nhttps://www.minecraft.net/en-us/article/minecraft-${version.id
-							.split("-")[0]
-							.replace(/\./g, "-")}-pre-release-${pre}`
+					description = `A new pre-release of Minecraft Java was just released: \`${
+						version.id
+					}\`\nhttps://www.minecraft.net/en-us/article/minecraft-${version.id
+						.split("-")[0]
+						.replace(/\./g, "-")}-pre-release-${pre}`;
 				}
 			} else if (version.id.includes("rc")) {
 				// it is very unlikely that there is more than one release candidate, so we'll just use the first one
 				// if there is a second one, Mojang will use the first article anyway
-				description =
-					`A new release candidate of Minecraft Java was just released: \`${
-						version.id
-					}\`\nhttps://www.minecraft.net/en-us/article/minecraft-${version.id
-						.split("-")[0]
-						.replace(/\./g, "-")}-release-candidate-1`
+				description = `A new release candidate of Minecraft Java was just released: \`${
+					version.id
+				}\`\nhttps://www.minecraft.net/en-us/article/minecraft-${version.id
+					.split("-")[0]
+					.replace(/\./g, "-")}-release-candidate-1`;
 			} else {
 				if (version.type === "snapshot")
-					description =
-						`A new ${version.type} of Minecraft Java was just released: \`${version.id}\`\nhttps://www.minecraft.net/en-us/article/minecraft-snapshot-${version.id.slice(0, -1)}a`
+					description = `A new ${version.type} of Minecraft Java was just released: \`${
+						version.id
+					}\`\nhttps://www.minecraft.net/en-us/article/minecraft-snapshot-${version.id.slice(0, -1)}a`;
 				else if (version.type === "release")
-					description =
-						`A new ${version.type} of Minecraft Java was just released: \`${
-							version.id
-						}\`\nhttps://www.minecraft.net/en-us/article/minecraft-java-edition-${version.id.replace(/\./g, "-")}`
+					description = `A new ${version.type} of Minecraft Java was just released: \`${
+						version.id
+					}\`\nhttps://www.minecraft.net/en-us/article/minecraft-java-edition-${version.id.replace(/\./g, "-")}`;
 			}
 
-			await updateChannel.send({content: description});
+			await updateChannel.send({ content: description });
 		}
 	});
 }

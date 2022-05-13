@@ -75,7 +75,9 @@ export const command: SlashCommand = {
 			// parsing everything correctly
 			for (let i = 0; i < results.length; i++) {
 				results[i] = {
-					label: `[#${results[i].id}] (${results[i].paths[0].versions.sort(MinecraftSorter).reverse()[0]}) ${results[i].name}`,
+					label: `[#${results[i].id}] (${results[i].paths[0].versions.sort(MinecraftSorter).reverse()[0]}) ${
+						results[i].name
+					}`,
 					description: results[i].paths[0].name,
 					value: `${results[i].id}__${interaction.options.getString("pack", true)}`,
 				};
@@ -143,10 +145,13 @@ export const command: SlashCommand = {
 		}
 
 		// no results
-		interaction.deleteReply()
+		interaction.deleteReply();
 		interaction.followUp({
-			content: await interaction.getEphemeralString({ string: "Command.Texture.NotFound", placeholders: { TEXTURENAME: `\`${name}\`` } }),
+			content: await interaction.getEphemeralString({
+				string: "Command.Texture.NotFound",
+				placeholders: { TEXTURENAME: `\`${name}\`` },
+			}),
 			ephemeral: true,
-		})
+		});
 	},
 };

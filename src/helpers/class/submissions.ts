@@ -271,12 +271,18 @@ export class Submission extends TimedEmbed {
 		files.push(...attachments);
 
 		// we need to post the submission first to get an url for the getMeta() call (because if "file" come from a zip, the MessageAttachement won't have an url (it has never been posted))
-		const magnifiedSubmission = (await magnifyAttachment({ url: attachments[0].url, name: "magnified_submission.png", embed: null }))[0];
+		const magnifiedSubmission = (
+			await magnifyAttachment({ url: attachments[0].url, name: "magnified_submission.png", embed: null })
+		)[0];
 		let attachment = [...(await channel.send({ files: [magnifiedSubmission] })).attachments.values()];
 		files.push(...attachment);
 
 		// we stick the default magnified & submission magnified together in the embed
-		const stickedImg = await stickAttachment({ left: { url: files[1].url }, right: { url: files[2].url }, name: "sticked.png" });
+		const stickedImg = await stickAttachment({
+			left: { url: files[1].url },
+			right: { url: files[2].url },
+			name: "sticked.png",
+		});
 		let stickedImgAttachment = [...(await channel.send({ files: [stickedImg] })).attachments.values()];
 		files.push(...stickedImgAttachment);
 

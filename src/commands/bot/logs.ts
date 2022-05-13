@@ -8,20 +8,14 @@ import path from "path";
 import { logConstructor } from "@functions/errorHandler";
 
 export const command: SlashCommand = {
-	permissions: {
-		users: [
-			"207471947662098432", // Juknum
-			"173336582265241601", // TheRolf
-			"473860522710794250", // RobertR11
-			"601501288978448411", // Nick
-		],
-	},
-	data: new SlashCommandBuilder().setName("logs").setDescription("Get logs of the bot.").setDefaultPermission(false),
+	data: new SlashCommandBuilder().setName("logs").setDescription("Get logs of the bot."),
 	execute: async (interaction: CommandInteraction, client: Client) => {
-		return interaction.reply({
-			content: "This command is temporarily disabled! (complain to Discord for breaking slash command permissions)",
-			ephemeral: true,
-		});
+		if (
+			await interaction.perms({
+				users: ["207471947662098432", "173336582265241601", "601501288978448411", "473860522710794250"],
+			})
+		)
+			return;
 
 		await interaction.reply({ files: [logConstructor(client)] }).catch(console.error);
 	},

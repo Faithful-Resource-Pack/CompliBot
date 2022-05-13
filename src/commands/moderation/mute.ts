@@ -11,11 +11,7 @@ import { Permissions } from "discord.js";
 const config: Config = ConfigJson;
 
 export const command: SlashCommand = {
-	permissions: {
-		roles: getRolesIds({ name: ["moderators", "trial_moderators"], discords: "all", teams: "all" }),
-	},
 	data: new SlashCommandBuilder()
-		.setDefaultPermission(false)
 		.setName("mute")
 		.setDescription("Mute someone who deserves it. Unmute innocents with a timeout value of 0.")
 		.addUserOption((option) => option.setName("user").setDescription("User you want to mute.").setRequired(true))
@@ -24,10 +20,7 @@ export const command: SlashCommand = {
 		)
 		.addStringOption((option) => option.setName("reason").setDescription("The reason behind the mute.")),
 	execute: async (interaction: CommandInteraction, client: Client) => {
-		return interaction.reply({
-			content: "This command is temporarily disabled! (complain to Discord for breaking slash command permissions)",
-			ephemeral: true,
-		});
+		if (await interaction.perms({ roles: ["moderators", "trial_moderators"] })) return;
 
 		const timeout: number = parseDate(interaction.options.getString("timeout", true));
 		const reason: string = interaction.options.getString("reason");

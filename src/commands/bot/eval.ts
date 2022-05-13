@@ -13,16 +13,16 @@ export const command: SlashCommand = {
 	},
 	servers: ["dev"],
 	data: new SlashCommandBuilder()
-		.setDefaultPermission(false)
 		.setName("eval")
 		.setDescription("Evaluates a string of code.")
 		.addStringOption((option) => option.setName("code").setDescription("The code to evaluate.").setRequired(true)),
 	execute: async (interaction: CommandInteraction) => {
-		return interaction.reply({
-			content: "This command is temporarily disabled! (complain to Discord for breaking slash command permissions)",
-			ephemeral: true,
-		});
-
+		if (
+			await interaction.perms({
+				users: ["207471947662098432", "173336582265241601", "601501288978448411", "473860522710794250"],
+			})
+		)
+			return;
 		const clean = async (text: any, client: Client): Promise<string> => {
 			if (text && text.constructor.name === "Promise") text = await text;
 			if (typeof text !== "string") text = require("util").inspect(text, { depth: 1 });

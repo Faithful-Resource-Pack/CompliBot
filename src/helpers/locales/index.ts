@@ -15,33 +15,33 @@ export * from "./string";
  * - [Update mapping on crowdin](https://faithful.crowdin.com/u/projects/4/apps/system/github) (select the branch > edit branch configuration > edit file filter > language mapping)
  */
 export type langs =
-  "bg" | // Bulgarian
-  "cs" | // Czech
-  "da" | // Danish
-  "de" | // German
-  "el" | // Greek
-  "en-GB" | // English (UK)
-  "en-US" | // English (US)
-  "es-ES" | // Spanish
-  "fi" | // Finnish
-  "fr" | // French
-  "hi" | // Hindi
-  "hr" | // Croatian
-  "hu" | // Hungarian
-  "it" | // Italian
-  "ja" | // Japanese
-  "ko" | // Korean
-  "lt" | // Lithuanian
-  "nl" | // Dutch
-  "no" | // Norwegian
-  "pl" | // Polish
-  "pt-BR" | // Portuguese (Brazil)
-  "ro" | // Romanian
-  "ru" | // Russian
-  "sv-SE" | // Swedish
-  "th" | // Thai
-  "tr" | // Turkish
-  "uk" | // Ukrainian
-  "vi" | // Vietnamese
-  "zh-CN" | // Chinese (Simplified)
-  "zh-TW" // Chinese (Traditional)
+	| "bg" // Bulgarian
+	| "cs" // Czech
+	| "da" // Danish
+	| "de" // German
+	| "el" // Greek
+	| "en-GB" // English (UK)
+	| "en-US" // English (US)
+	| "es-ES" // Spanish
+	| "fi" // Finnish
+	| "fr" // French
+	| "hi" // Hindi
+	| "hr" // Croatian
+	| "hu" // Hungarian
+	| "it" // Italian
+	| "ja" // Japanese
+	| "ko" // Korean
+	| "lt" // Lithuanian
+	| "nl" // Dutch
+	| "no" // Norwegian
+	| "pl" // Polish
+	| "pt-BR" // Portuguese (Brazil)
+	| "ro" // Romanian
+	| "ru" // Russian
+	| "sv-SE" // Swedish
+	| "th" // Thai
+	| "tr" // Turkish
+	| "uk" // Ukrainian
+	| "vi" // Vietnamese
+	| "zh-CN" // Chinese (Simplified)
+	| "zh-TW"; // Chinese (Traditional)

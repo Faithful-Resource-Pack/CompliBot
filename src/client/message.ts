@@ -124,16 +124,18 @@ const MessageBody = {
 			.setTitle("Action failed")
 			.setDescription(text)
 			.setFooter({
-				text: `Type ${this.tokens.prefix}help to get more information about commands. ${disappearing ? `This warning & original message will be deleted in ${timeout}s.` : ""}`,
+				text: `Type ${this.tokens.prefix}help to get more information about commands. ${
+					disappearing ? `This warning & original message will be deleted in ${timeout}s.` : ""
+				}`,
 				iconURL: this.client.user.displayAvatarURL(),
 			});
 
 		let thisIsDeleted: boolean = false;
-		let replyMsg: Message
+		let replyMsg: Message;
 
 		try {
 			replyMsg = await this.reply({ embeds: [embed] });
-		} catch { 
+		} catch {
 			thisIsDeleted = true;
 			replyMsg = await this.channel.send({ embeds: [embed] });
 		} // message can't be fetched

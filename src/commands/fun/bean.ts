@@ -10,16 +10,12 @@ import { getRolesIds } from "@helpers/roles";
 const config: Config = ConfigJson;
 
 export const command: SlashCommand = {
-	permissions: {
-		roles: getRolesIds({ name: ["moderators", "trial_moderators"], discords: "all", teams: "all" }),
-	},
 	data: new SlashCommandBuilder()
-		.setDefaultPermission(false)
 		.setName("bean")
 		.setDescription("Bean him at once!")
 		.addUserOption((option) => option.setName("user").setDescription("User you want to bean").setRequired(true)),
 	execute: async (interaction: CommandInteraction, client: Client) => {
-		console.log("beaning..");
+		if (await interaction.perms({ roles: ["moderators", "trial_moderators"] })) return;
 		const embed = new MessageEmbed()
 			.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL() })
 			.setDescription(`<@${interaction.options.getUser("user").id}> has bean beaned!`)

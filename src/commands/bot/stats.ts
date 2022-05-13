@@ -33,7 +33,9 @@ export const command: SlashCommand = {
 			if (os.platform() == "linux") version = linuxOs({ mode: "sync" }).pretty_name;
 			else version = os.version();
 
-			const FieldTitles = (await interaction.getEphemeralString({ string: "Command.Stats.Embed.FieldTitles" })).split("$,");
+			const FieldTitles = (await interaction.getEphemeralString({ string: "Command.Stats.Embed.FieldTitles" })).split(
+				"$,",
+			);
 
 			const embed = new MessageEmbed()
 				.setTitle(`${client.user.username} Stats`)
@@ -94,19 +96,18 @@ export const command: SlashCommand = {
 
 				const embed = new MessageEmbed()
 					.setTimestamp()
-					.setTitle(await interaction.getEphemeralString({ string: "Command.Stats.Top10" }))
-					.setDescription(`
+					.setTitle(await interaction.getEphemeralString({ string: "Command.Stats.Top10" })).setDescription(`
 ${data[0]
 	.slice(0, data[0].length > 10 ? 10 : data[0].length)
 	.map((key: any, index: any) => {
 		let place = `\`${index + 1 < 10 ? ` ${index + 1}` : index + 1}.`;
 		place += ` `.repeat(4 - place.length);
-		place += "\`";
+		place += "`";
 		let command = `\`${key}`;
 		command += ` `.repeat(13 - command.length);
-		command += "\`";
+		command += "`";
 		let uses = `\`${data[1][index]}`;
-		uses += "\`";
+		uses += "`";
 
 		return `${place} ${command} - ${uses}`;
 	})

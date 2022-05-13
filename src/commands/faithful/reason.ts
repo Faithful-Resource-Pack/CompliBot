@@ -13,8 +13,7 @@ export const command: SlashCommand = {
 	permissions: {
 		roles: getRolesIds({ name: "council", discords: ["dev"], teams: ["faithful"] }),
 	},
-	data: new SlashCommandBuilder()
-		.setDefaultPermission(false) // disable the command for @everyone (only council can do it)
+	data: new SlashCommandBuilder() // disable the command for @everyone (only council can do it)
 		.setName("reason")
 		.setDescription("Set reason for submission invalidation/deny!")
 		.addStringOption((option) =>
@@ -49,7 +48,10 @@ export const command: SlashCommand = {
 					});
 
 				message.edit({ embeds: [embed], files: [...message.attachments.values()] });
-				interaction.reply({ content: await interaction.getEphemeralString({ string: "Success.General" }), ephemeral: true });
+				interaction.reply({
+					content: await interaction.getEphemeralString({ string: "Success.General" }),
+					ephemeral: true,
+				});
 			})
 			.catch((err) => {
 				interaction.reply({ content: "Cannot fetch the message with the given message ID", ephemeral: true });

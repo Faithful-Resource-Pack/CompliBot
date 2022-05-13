@@ -6,10 +6,7 @@ import { readFileSync } from "fs";
 import path from "path";
 
 export const command: SlashCommand = {
-	data: new SlashCommandBuilder()
-		.setDefaultPermission(true)
-		.setName("notice")
-		.setDescription("Gets the latest and greatest news about the bot"),
+	data: new SlashCommandBuilder().setName("notice").setDescription("Gets the latest and greatest news about the bot"),
 	execute: async (interaction: CommandInteraction, client: Client) => {
 		const noticeJson = JSON.parse(readFileSync(path.join(__dirname, "../../../json/notice.json"), "utf-8"));
 

@@ -10,24 +10,17 @@ import { Permissions } from "discord.js";
 const config: Config = ConfigJson;
 
 export const command: SlashCommand = {
-	permissions: {
-		roles: getRolesIds({ name: ["moderators", "trial_moderators"], discords: "all", teams: "all" }),
-	},
 	data: new SlashCommandBuilder()
-		.setDefaultPermission(false)
 		.setName("kick")
 		.setDescription("Kick a member from the server.")
 		.addUserOption((option) => option.setName("user").setDescription("User you want to kick.").setRequired(true))
 		.addStringOption((option) => option.setName("reason").setDescription("The reason behind the kick.")),
 	execute: async (interaction: CommandInteraction, client: Client) => {
-		return interaction.reply({
-			content: "This command is temporarily disabled! (complain to Discord for breaking slash command permissions)",
-			ephemeral: true,
-		});
+		if (await interaction.perms({ roles: ["moderators", "trial_moderators"] })) return;
 
 		const reason: string = interaction.options.getString("reason");
-        let guild = await interaction.client.guilds.fetch(interaction.guildId)
-        let user = await guild.members.fetch(interaction.options.getUser("user").id);
+		let guild = await interaction.client.guilds.fetch(interaction.guildId);
+		let user = await guild.members.fetch(interaction.options.getUser("user").id);
 
 		// check for team guilds & apply the kick to all teamed guilds
 		// if there is no "team", only apply to the guild were the command is made
@@ -42,7 +35,7 @@ export const command: SlashCommand = {
 
 		// test if user can be kicked (check for permissions)
 		if (!user.kickable)
-            return await interaction.reply({
+			return await interaction.reply({
 				content: `An error occured:\n> Can't kick people above the bot!`,
 				ephemeral: true,
 			});
