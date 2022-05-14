@@ -8,17 +8,18 @@ export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
 		.setName("magnify")
 		.setDescription("Magnify an image.")
+		.addAttachmentOption((o) => o.setName("image").setDescription("The image to magnify").setRequired(false))
 		.addNumberOption((num) => {
 			return num
-				.addChoices([
-					["0.25x", 0.25],
-					["0.5x", 0.5],
-					["2x", 2],
-					["4x", 4],
-					["8x", 8],
-					["16x", 16],
-					["32x", 32],
-				])
+				.addChoices(
+					{ name: "0.25x", value: 0.25 },
+					{ name: "0.5x", value: 0.5 },
+					{ name: "2x", value: 2 },
+					{ name: "4x", value: 4 },
+					{ name: "8x", value: 8 },
+					{ name: "16x", value: 16 },
+					{ name: "32x", value: 32 },
+				)
 				.setName("factor")
 				.setDescription("The scale factor the image should be enlarged by.")
 				.setRequired(false);

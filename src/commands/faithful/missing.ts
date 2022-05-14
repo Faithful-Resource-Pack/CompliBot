@@ -12,16 +12,15 @@ import {
 	MissingResults,
 } from "@functions/missing";
 import axios from "axios";
-import { doNestedArr } from "@helpers/arrays";
+import { doNestedArr, doNestedObj } from "@helpers/arrays";
 
-export const PACKS: Array<[name: string, value: string]> = [
-	["Faithful 32x", "faithful_32x"],
-	["Faithful 64x", "faithful_64x"],
-	["Classic Faithful 32x", "classic_faithful_32x"],
-	["Classic Faithful 64x", "classic_faithful_64x"],
-	["Classic Faithful 32x Programmer Art", "classic_faithful_32x_progart"],
+export const PACKS: Array<{ name: string; value: string }> = [
+	{ name: "Faithful 32x", value: "faithful_32x" },
+	{ name: "Faithful 64x", value: "faithful_64x" },
+	{ name: "Classic Faithful 32x", value: "classic_faithful_32x" },
+	{ name: "Classic Faithful 64x", value: "classic_faithful_64x" },
+	{ name: "Classic Faithful 32x Programmer Art", value: "classic_faithful_32x_progart" },
 ];
-
 /**
  * Get the displayed name for the value property
  * @param pack {String}
@@ -41,25 +40,29 @@ export const command: SlashCommand = {
 			.setName("missing")
 			.setDescription("Displays the missing textures for a particular resource pack")
 			.addStringOption((option) =>
-				option.setName("pack").setDescription("The resource pack.").addChoices(PACKS).setRequired(true),
+				option
+					.setName("pack")
+					.setDescription("The resource pack.")
+					.addChoices(...PACKS)
+					.setRequired(true),
 			)
 			.addStringOption((option) =>
 				option
 					.setName("edition")
 					.setDescription("The resource pack edition.")
-					.addChoices([
-						["Java", "java"],
-						["Bedrock", "bedrock"],
-						["All", "all"],
+					.addChoices(
+						{ name: "Java", value: "java" },
+						{ name: "Bedrock", value: "bedrock" },
+						{ name: "All", value: "all" },
 						// ["Minecraft Dungeons", "dungeons"], // TODO: make dirs corresponding to the same setup for 32x & default repos
-					])
+					)
 					.setRequired(true),
 			)
 			.addStringOption((option) =>
 				option
 					.setName("version")
 					.setDescription("The Minecraft version.")
-					.addChoices(doNestedArr(versions))
+					.addChoices(...doNestedObj(versions))
 					.setRequired(false),
 			);
 	},

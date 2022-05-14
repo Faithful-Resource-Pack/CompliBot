@@ -20,7 +20,7 @@ export const command: SlashCommand = {
 		)
 		.addStringOption((option) => option.setName("reason").setDescription("The reason behind the mute.")),
 	execute: async (interaction: CommandInteraction, client: Client) => {
-		if (await interaction.perms({ roles: ["moderators", "trial_moderators"] })) return;
+		if (await interaction.perms({ type: "mod" })) return;
 
 		const timeout: number = parseDate(interaction.options.getString("timeout", true));
 		const reason: string = interaction.options.getString("reason");

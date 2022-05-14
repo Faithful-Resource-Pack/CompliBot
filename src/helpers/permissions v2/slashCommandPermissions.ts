@@ -21,8 +21,9 @@ export interface permissionOptions {
         it wont perform any lookup and ids
         will stay the same.
 
+    added presets for an easier time
     */
-	type?: "id" | "config";
+	type?: "id" | "config" | "dev" | "mod" | "council";
 
 	servers?: Array<string>; //will only use ids if type == id
 	roles?: Array<string>; //will only use ids if type == id
@@ -52,7 +53,32 @@ type permissionCode = [boolean, boolean, boolean];
 //TODO: use a bearer token for v2 in the future. This is a temporary workaround
 export function checkPermissions(interaction: CommandInteraction, permissions: permissionOptions): permissionCode {
 	let code: permissionCode = [true, true, true];
-	const type = permissions.type ? permissions.type : "config";
+
+	let type = permissions.type ? permissions.type : "config";
+
+	//presets
+	switch (type) {
+		case "council":
+			type = "config";
+			permissions = {
+				roles: ["council"],
+			};
+			break;
+		case "dev":
+			type = "config";
+			permissions = {
+				users: ["207471947662098432", "173336582265241601", "601501288978448411", "473860522710794250"],
+			};
+			break;
+		case "mod":
+			type = "config";
+			permissions = {
+				roles: ["moderators", "trial_moderators"],
+			};
+			break;
+		default:
+			break;
+	}
 
 	// no userIDs in config so this applies to all
 	if (permissions.users && !permissions.users.includes(interaction.user.id)) code[permissionCodeEnum.users] = false;
@@ -75,7 +101,6 @@ export function checkPermissions(interaction: CommandInteraction, permissions: p
 
 			permissions.roles.forEach((roleKey) => {
 				//we only have one team and im lazy
-				console.log(config.teams[0].roles);
 				for (const role in config.teams[0].roles) {
 					if (permissions.roles.includes(role)) {
 						roleIDsToCheck.push(config.teams[0].roles[role]);

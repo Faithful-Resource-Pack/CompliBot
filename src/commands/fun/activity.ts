@@ -2,7 +2,7 @@ import { SlashCommand } from "@interfaces";
 import { CommandInteraction, Client, VoiceChannel, VoiceBasedChannel } from "discord.js";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { activities, activityOptions } from "@helpers/activities";
-import { ChannelType } from "discord-api-types";
+import { ChannelType } from "discord-api-types/v10";
 import axios from "axios";
 import { MessageEmbed } from "@client";
 
@@ -14,15 +14,14 @@ export const command: SlashCommand = {
 			option
 				.setName("activity")
 				.setDescription("The activity option to open in voice chat")
-				.addChoices(activityOptions)
+				.addChoices(...activityOptions)
 				.setRequired(true),
 		)
 		.addChannelOption((option) =>
 			option
 				.setName("channel")
 				.setDescription("The channel to create the activity in")
-				.addChannelTypes([ChannelType.GuildVoice])
-
+				.addChannelTypes(2)
 				.setRequired(false),
 		),
 	execute: async (interaction: CommandInteraction, client: Client) => {

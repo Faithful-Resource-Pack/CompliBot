@@ -12,7 +12,7 @@ export const command: SlashCommand = {
 		.setDescription("Gets a changelog version of the bot")
 		.addStringOption((str) => {
 			return str
-				.addChoices(changelogOptions())
+				.addChoices(...changelogOptions())
 				.setName("version")
 				.setDescription("The version to fetch.")
 				.setRequired(true);

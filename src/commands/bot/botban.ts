@@ -21,12 +21,12 @@ export const command: SlashCommand = {
 						.setName("format")
 						.setRequired(false)
 						.setDescription("The format the banlist should be displayed.")
-						.addChoices([
-							["Json", "json"],
-							["Embed", "emb"],
-							["Text", "txt"],
-							["Mentions", "ment"],
-						]);
+						.addChoices(
+							{ name: "Json", value: "json" },
+							{ name: "Embed", value: "emb" },
+							{ name: "Text", value: "txt" },
+							{ name: "Mentions", value: "ment" },
+						);
 				});
 		})
 		.addSubcommand((audit) => {
@@ -44,7 +44,7 @@ export const command: SlashCommand = {
 		.set("audit", async (interaction: CommandInteraction, client: Client) => {
 			if (
 				await interaction.perms({
-					users: ["207471947662098432", "173336582265241601", "601501288978448411", "473860522710794250"],
+					type: "dev",
 				})
 			)
 				return;
@@ -105,7 +105,7 @@ export const command: SlashCommand = {
 		.set("view", async (interaction: CommandInteraction, client: Client) => {
 			if (
 				await interaction.perms({
-					users: ["207471947662098432", "173336582265241601", "601501288978448411", "473860522710794250"],
+					type: "dev",
 				})
 			)
 				return;

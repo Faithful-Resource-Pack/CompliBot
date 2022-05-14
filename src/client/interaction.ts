@@ -46,7 +46,6 @@ async function getString(options: TextOptions): Promise<string> {
 
 async function perms(options: permissionOptions): Promise<boolean> {
 	const code = checkPermissions(this, options);
-	console.log(code);
 	let output: string = "";
 
 	if (!code[permissionCodeEnum.users])

@@ -31,9 +31,9 @@ export enum mcColors {
 	DyeBlack = "#1D1D21",
 }
 
-export const mcColorsOptions: [name: string, value: string][] = Object.keys(mcColors).map((name) => {
+export const mcColorsOptions: { name: string; value: string }[] = Object.keys(mcColors).map((name) => {
 	//a cheeky regex for formatting
-	return [name.replace(/([a-z])([A-Z])/g, "$1 $2"), mcColors[name as keyof typeof mcColors]];
+	return { name: name.replace(/([a-z])([A-Z])/g, "$1 $2"), value: mcColors[name as keyof typeof mcColors] };
 });
 
 type options = {

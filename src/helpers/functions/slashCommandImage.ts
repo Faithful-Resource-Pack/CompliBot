@@ -120,10 +120,13 @@ export async function generalSlashCommandImage(
 ): Promise<void> {
 	await interaction.deferReply();
 
-	const imageURL: string = await fetchMessageImage(interaction, 10, {
-		doInteraction: true,
-		user: interaction.user,
-	});
+	const attachmentUrl = interaction.options.getAttachment("image", false)?.url; //safe navigation operator.
+	const imageURL: string = attachmentUrl
+		? attachmentUrl
+		: await fetchMessageImage(interaction, 10, {
+				doInteraction: true,
+				user: interaction.user,
+		  });
 
 	if (imageURL === null) {
 		await interaction.followUp({

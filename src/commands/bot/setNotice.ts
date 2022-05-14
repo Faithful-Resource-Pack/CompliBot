@@ -16,8 +16,7 @@ export const command: SlashCommand = {
 	execute: async (interaction: CommandInteraction, client: Client) => {
 		if (
 			await interaction.perms({
-				users: ["207471947662098432", "173336582265241601", "601501288978448411", "473860522710794250"],
-				servers: ["dev"],
+				type: "dev",
 			})
 		)
 			return;

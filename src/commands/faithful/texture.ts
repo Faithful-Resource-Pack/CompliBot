@@ -19,14 +19,14 @@ export const command: SlashCommand = {
 			option
 				.setName("pack")
 				.setDescription("Resource pack of the texture you are searching for.")
-				.addChoices([
-					["Vanilla 16x", "default"],
-					["Faithful 32x", "faithful_32x"],
-					["Faithful 64x", "faithful_64x"],
-					["Classic Faithful 32x", "classic_faithful_32x"],
-					["Classic Faithful 64x", "classic_faithful_64x"],
-					["Classic Faithful 32x Programmer Art", "classic_faithful_32x_progart"],
-				])
+				.addChoices(
+					{ name: "Vanilla 16x", value: "default" },
+					{ name: "Faithful 32x", value: "faithful_32x" },
+					{ name: "Faithful 64x", value: "faithful_64x" },
+					{ name: "Classic Faithful 32x", value: "classic_faithful_32x" },
+					{ name: "Classic Faithful 64x", value: "classic_faithful_64x" },
+					{ name: "Classic Faithful 32x Programmer Art", value: "classic_faithful_32x_progart" },
+				)
 				.setRequired(true),
 		),
 	execute: async (interaction: CommandInteraction) => {

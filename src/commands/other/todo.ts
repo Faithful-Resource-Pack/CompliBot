@@ -38,12 +38,12 @@ export const command: SlashCommand = {
 						.setRequired(true)
 						.setName("category")
 						.setDescription("Category to append the parent to")
-						.addChoices([
-							["entity", "entity"],
-							["block", "block"],
-							["item", "item"],
-							["misc", "misc"],
-						]),
+						.addChoices(
+							{ name: "entity", value: "entity" },
+							{ name: "block", value: "block" },
+							{ name: "item", value: "item" },
+							{ name: "misc", value: "misc" },
+						),
 				)
 				.addIntegerOption((option) =>
 					option
@@ -64,7 +64,7 @@ export const command: SlashCommand = {
 		),
 	execute: new Collection<string, SlashCommandI>()
 		.set("add", async (interaction: CommandInteraction, client: Client) => {
-			if (await interaction.perms({ roles: ["council"] })) return;
+			if (await interaction.perms({ type: "council" })) return;
 
 			let todoJson = getData({
 				filename: "todo.json",
@@ -122,7 +122,7 @@ export const command: SlashCommand = {
 		})
 
 		.set("remove", async (interaction: CommandInteraction, client: Client) => {
-			if (await interaction.perms({ roles: ["council"] })) return;
+			if (await interaction.perms({ type: "council" })) return;
 
 			const todoJson = getData({
 				filename: "todo.json",
