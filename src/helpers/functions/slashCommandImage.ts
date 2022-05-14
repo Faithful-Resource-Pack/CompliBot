@@ -52,9 +52,9 @@ export async function fetchMessageImage(
 
 	// no message found but we wait for user input
 	const embed = new MessageEmbed()
-		.setTitle(await interaction.getString({ string: "Command.Images.NotFound.Title" }))
+		.setTitle(await interaction.getEphemeralString({ string: "Command.Images.NotFound.Title" }))
 		.setDescription(
-			await interaction.getString({ string: "Command.Images.NotFound", placeholders: { NUMBER: `${limit}` } }),
+			await interaction.getEphemeralString({ string: "Command.Images.NotFound", placeholders: { NUMBER: `${limit}` } }),
 		);
 
 	const embedMessage: Message = (await interaction.editReply({ embeds: [embed] })) as Message;
