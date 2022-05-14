@@ -11,6 +11,7 @@ Commands are explained like so:
 ## [v2.0.4] TBA
 
 ### Added
+- Support for slash command attachments in image related commands
 - Strings are now stored in multiple JSON files & translated ones should be edited on the [crowdin page](https://translate.faithfulpack.net/discord-bot)
 - You can now search for a texture without using underscores `_`
 - Added a new optional parameter to the `magnifyAttachment` function: `orientation` which could take 3 values `landscape`, `portrait` & `none`
