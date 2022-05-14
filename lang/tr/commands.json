@@ -237,5 +237,5 @@
     "Permissions.temp.user": "Bu komutu kullanmak için belirli bir kullanıcı olmanız gerekiyor",
     "Permissions.temp.role": "Bu komutu kullanmak için belirli bir role sahip olmanız gerekiyor",
     "Permissions.temp.server": "Bu komutu kullanmak için belirli bir sunucuda olmanız gerekiyor",
-    "Permissions.temp.notice": "\n\n*(Bu, v2 izinleri için yakında benimseyeceğimiz bir düzeltmedir. Bu izin sistemi geçicidir - @Nick.#1666)"
+    "Permissions.temp.notice": "\n\n*(Bu, Discord'un önceki izin sistemini bozan yeni v2 izin sistemi için geçici bir düzeltmedir. Yeni sistem yakında benimsenecek)"
 }
