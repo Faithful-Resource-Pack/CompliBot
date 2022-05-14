@@ -19,7 +19,6 @@ Commands are explained like so:
   - `none`: old behavior (used when no orientation is given)
 - `stickCanvas()` & `stickAttachment()` functions to stick side by side two canvas
 - Animated textures are now animated when using `/texture`.
-- Added types for textures related firestorm objects.
 - Added Minecraft update tracker
 - Added `/kick` and `/ban` commands
 
@@ -28,10 +27,14 @@ Commands are explained like so:
 - Submission System (v3 WIP):
   - Submitted textures can now be searched trough the database when the name is duplicated.  
   - Submitted texture is now in the thumbnail and a side by side comparaison is made in images fields
-- Swapped non-magnified texture & magnified texture in the result embed from `/texture` to have a better view of the magnified texture
+- Swapped non-magnified texture & magnified texture in the embed of `/texture` to have a better view of the magnified texture
 - Texture embed now show only the latest contribution & link the webapp to see them all.
+- Moderation commands no longer show who executed the command
 
 ### Fixed
+- (previously shipped as hotfix) Poll command causing lots of errors when the poll is in a thread and the thread gets archived
+- (previously shipped as hotfix) Various errors caused by users deleting their own messages
+- (finally) Fixed slash command permissions with a temporary workaround till permissions v2 is supported by discord.js
 - Thread title for polls being empty if the question is longer than 100 characters
 - Typos in `/missing` command
 - "Author ID in footer Not Found!" falsely showing up in delete button in some cases
