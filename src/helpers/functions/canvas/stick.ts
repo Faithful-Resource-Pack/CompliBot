@@ -1,4 +1,3 @@
-import { MessageEmbed } from "@client";
 import { Canvas, CanvasRenderingContext2D, createCanvas, loadImage } from "canvas";
 import { MessageAttachment } from "discord.js";
 import getMeta from "./getMeta";

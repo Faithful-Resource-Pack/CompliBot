@@ -2,7 +2,6 @@ import { SlashCommand } from "@interfaces";
 import { CommandInteraction, Client, VoiceChannel, VoiceBasedChannel } from "discord.js";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { activities, activityOptions } from "@helpers/activities";
-import { ChannelType } from "discord-api-types/v10";
 import axios from "axios";
 import { MessageEmbed } from "@client";
 

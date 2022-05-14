@@ -1,4 +1,4 @@
-import { CommandInteraction, EmbedField, TextChannel } from "discord.js";
+import { CommandInteraction, EmbedField } from "discord.js";
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { Poll } from "@class/poll";

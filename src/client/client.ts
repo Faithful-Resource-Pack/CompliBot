@@ -25,7 +25,7 @@ import {
 import { getData } from "@functions/getDataFromJSON";
 import { setData } from "@functions/setDataToJSON";
 import { errorHandler } from "@functions/errorHandler";
-import { err, info, success, warning } from "@helpers/logger";
+import { err, info, success } from "@helpers/logger";
 import { Submission } from "@class/submissions";
 import { Poll } from "@class/poll";
 import { User } from "@helpers/interfaces/moderation";

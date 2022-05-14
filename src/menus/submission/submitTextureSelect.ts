@@ -1,9 +1,7 @@
-import { Submission } from "@class/submissions";
 import { Client, Message, SelectMenuInteraction } from "@client";
 import { zipToMA } from "@functions/zipToMessageAttachments";
 import { info } from "@helpers/logger";
 import { SelectMenu } from "@interfaces";
-import axios, { AxiosResponse } from "axios";
 import { MessageAttachment } from "discord.js";
 import { processFiles } from "events/textureSubmitted";
 

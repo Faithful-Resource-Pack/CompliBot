@@ -1,14 +1,9 @@
 import {
-	ButtonInteraction,
-	CommandInteraction,
-	Guild,
-	GuildMember,
 	MessageAttachment,
 	MessageEmbed,
-	SelectMenuInteraction,
 	TextChannel,
 } from "discord.js";
-import { Client, Message } from "@client";
+import { Client } from "@client";
 import fs from "fs";
 import { err } from "@helpers/logger";
 import { colors } from "@helpers/colors";

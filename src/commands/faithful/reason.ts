@@ -3,10 +3,7 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction, Message, MessageEmbed } from "@client";
 import { EmbedField } from "discord.js";
 import { ids, parseId } from "@helpers/emojis";
-import { Config } from "@interfaces";
-import ConfigJson from "@json/config.json";
 import { getRolesIds } from "@helpers/roles";
-const config: Config = ConfigJson;
 
 export const command: SlashCommand = {
 	servers: ["faithful", "classic_faithful"],

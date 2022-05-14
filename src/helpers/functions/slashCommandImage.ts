@@ -1,6 +1,6 @@
 import { CommandInteraction, Message, MessageEmbed } from "@client";
 import { imageButtons } from "@helpers/buttons";
-import { Collection, MessageAttachment, TextChannel, User } from "discord.js";
+import { Collection, MessageAttachment, User } from "discord.js";
 
 /**
  * STEPS:

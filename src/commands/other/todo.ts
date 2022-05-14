@@ -1,11 +1,8 @@
-import { duration } from "moment";
 import { SlashCommand, SlashCommandI } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { Collection, Guild, version as djsVersion } from "discord.js";
-import { Client, MessageEmbed, CommandInteraction, Message } from "@client";
-import { getRolesIds } from "@helpers/roles";
+import { Collection, version as djsVersion } from "discord.js";
+import { Client, CommandInteraction } from "@client";
 import { setData } from "@functions/setDataToJSON";
-import { readFileSync } from "fs";
 import path from "path";
 import axios from "axios";
 import { setDeep } from "@functions/setDeep";

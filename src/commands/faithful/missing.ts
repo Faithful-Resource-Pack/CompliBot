@@ -12,7 +12,7 @@ import {
 	MissingResults,
 } from "@functions/missing";
 import axios from "axios";
-import { doNestedArr, doNestedObj } from "@helpers/arrays";
+import { doNestedObj } from "@helpers/arrays";
 
 export const PACKS: Array<{ name: string; value: string }> = [
 	{ name: "Faithful 32x", value: "faithful_32x" },

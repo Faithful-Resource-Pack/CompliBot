@@ -1,13 +1,8 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { Collection, CommandInteraction, Guild, GuildMember, Interaction, TextChannel, User } from "discord.js";
+import { CommandInteraction, Guild, GuildMember, TextChannel } from "discord.js";
 import { Client, Message, MessageEmbed } from "@client";
-import { Config } from "@interfaces";
-import ConfigJson from "@json/config.json";
 import { colors } from "@helpers/colors";
-import { getRolesIds } from "@helpers/roles";
-import { Permissions } from "discord.js";
-const config: Config = ConfigJson;
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()

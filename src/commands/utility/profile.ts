@@ -4,7 +4,6 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { Collection, GuildMember, MessageAttachment, User } from "discord.js";
 import moment from "moment";
 import axios from "axios";
-import { imageButtons } from "@helpers/buttons";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
