@@ -237,5 +237,5 @@
     "Permissions.temp.user": "You need to be a specific user to run this command",
     "Permissions.temp.role": "You need a specific role to run this command",
     "Permissions.temp.server": "You must be in a specific server to run this command",
-    "Permissions.temp.notice": "\n\n*(This is a fix for permissions v2 which we will soon adopt. This permission system is temporary - @Nick.#1666)"
+    "Permissions.temp.notice": "\n\n*(This is a temporary fix for Discord's new permissions v2 system, which broke the previous permissions system. The new system will soon be adopted)"
 }

@@ -61,14 +61,15 @@ export const command: SlashCommand = {
 
 		const embed: MessageEmbed = new MessageEmbed()
 			.setTitle(`${user.displayName} has been banned.`)
-			.setAuthor({ name: interaction.user.username, iconURL: interaction.user.avatarURL({ dynamic: true }) })
 			.setColor(colors.black)
 			.addFields([
 				{ name: "User", value: `<@!${user.id}>` },
 				{ name: "Reason", value: reason ? reason : "No reason given.", inline: true },
 			]);
 
-		const message: Message = (await interaction.reply({ embeds: [embed], fetchReply: true })) as any;
+		await interaction.reply({content: "\u200B"})
+		await interaction.deleteReply();
+		const message: Message = (await interaction.channel.send({ embeds: [embed] })) as any;
 
 		// construct logs
 		const logEmbed: MessageEmbed = new MessageEmbed()

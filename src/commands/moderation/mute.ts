@@ -24,13 +24,8 @@ export const command: SlashCommand = {
 
 		const timeout: number = parseDate(interaction.options.getString("timeout", true));
 		const reason: string = interaction.options.getString("reason");
-		let user: GuildMember = interaction.options.getUser("user", true) as any;
-
-		if (!(user instanceof GuildMember))
-			return interaction.reply({
-				content: "The mention should be a user from the server!",
-				ephemeral: true,
-			});
+		let guild = await interaction.client.guilds.fetch(interaction.guildId);
+		let user = await guild.members.fetch(interaction.options.getUser("user").id);
 
 		// check for team guilds & apply the mute to all teamed guilds
 		// if there is no "team", only apply to the guild were the command is made
@@ -65,12 +60,11 @@ export const command: SlashCommand = {
 			}
 
 			// maximum timeout is 27 days (discord limitation)
-			await member.timeout((timeout > 2332800 ? 2332800 : timeout) * 1000, reason);
+			await member.timeout((timeout > 2332800 ? 2332800 : timeout) * 1000, reason); // The numbers Mason, what do they mean?!
 		});
 
 		const embed: MessageEmbed = new MessageEmbed()
 			.setTitle(`${user.displayName} has been ${timeout > 0 ? "muted" : "unmuted"}.`)
-			.setAuthor({ name: interaction.user.username, iconURL: interaction.user.avatarURL({ dynamic: true }) })
 			.setColor(colors.black)
 			.addFields([
 				{ name: "User", value: `<@!${user.id}>` },
@@ -82,7 +76,9 @@ export const command: SlashCommand = {
 				{ name: "Timeout", value: `<t:${(new Date().getTime() / 1000 + timeout).toFixed(0)}:R>`, inline: true },
 			]);
 
-		const message: Message = (await interaction.reply({ embeds: [embed], fetchReply: true })) as any;
+		await interaction.reply({content: "\u200B"})
+		await interaction.deleteReply();
+		const message: Message = (await interaction.channel.send({ embeds: [embed] })) as any;
 
 		// construct logs
 		//! TODO: add mute icon in thumbnail (waiting for @Pomi108 to draw it)

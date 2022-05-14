@@ -104,10 +104,12 @@ export const command: SlashCommand = {
 			});
 		})
 		.set("list", async (interaction: CommandInteraction, client: Client) => {
-			return interaction.reply({
-				content: "This command is temporarily disabled! (complain to Discord for breaking slash command permissions)",
-				ephemeral: true,
-			});
+			if (
+				await interaction.perms({
+					type: "mod",
+				})
+			)
+				return;
 
 			let user: User = interaction.options.getUser("user", true) as User;
 			if (!checkIfUser(client, user))
@@ -124,10 +126,12 @@ export const command: SlashCommand = {
 				});
 		})
 		.set("edit", async (interaction: CommandInteraction, client: Client) => {
-			return interaction.reply({
-				content: "This command is temporarily disabled! (complain to Discord for breaking slash command permissions)",
-				ephemeral: true,
-			});
+			if (
+				await interaction.perms({
+					type: "mod",
+				})
+			)
+				return;
 
 			let user: User = interaction.options.getUser("user", true) as User;
 			if (!checkIfUser(client, user))
