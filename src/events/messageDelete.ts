@@ -16,14 +16,7 @@ export const event: Event = {
 		m.author = message.author; // because we loose methods attached to the object :3
 		client.storeAction("message", m);
 
-		/**
-		 *! WARNING : old messages aren't cached in the client memory, so we need to fetch them first
-		 * - con: we can't fetch the message here because when the 'messageDelete' event is triggered, the message is already deleted (-> Message Not Found error)
-		 * - tip: old message should be fetched prior to the 'messageDelete' event trigger
-		 * >> before this line: @see https://github.com/discordjs/discord.js/blob/stable/src/client/actions/MessageDelete.js#L17
-		 * TODO: add a way to fetch old messages before the 'messageDelete' event trigger (adding a beforeDeleteMessage event ? overriding the 'messageDelete' event ?)
-		 */
-		if (!message.author || (message.author && message.author.bot)) return;
+		if (message.author && message.author.bot) return;
 
 		if ((client.tokens.dev || getTeamsIds({ name: "faithful" }).includes(message.guild.id)) && !getSubmissionsChannels(client).includes(message.channelId)) {
 			const embed = new MessageEmbed()
