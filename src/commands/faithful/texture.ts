@@ -13,6 +13,9 @@ export const command: SlashCommand = {
 		.setName("texture")
 		.setDescription("Displays a specified texture from either vanilla Minecraft or Faithful.")
 		.addStringOption((option) =>
+			option.setName("name").setDescription("Name of the texture you are searching for.").setRequired(true),
+		)
+		.addStringOption((option) =>
 			option
 				.setName("pack")
 				.setDescription("Resource pack of the texture you are searching for.")
@@ -25,9 +28,6 @@ export const command: SlashCommand = {
 					{ name: "Classic Faithful 32x Programmer Art", value: "classic_faithful_32x_progart" },
 				)
 				.setRequired(true),
-		)
-		.addStringOption((option) =>
-			option.setName("name").setDescription("Name of the texture you are searching for.").setRequired(true),
 		),
 	execute: async (interaction: CommandInteraction) => {
 		await interaction.deferReply();
