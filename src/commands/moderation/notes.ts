@@ -57,7 +57,12 @@ export const command: SlashCommand = {
 		),
 	execute: new Collection<string, SlashCommandI>()
 		.set("add", async (interaction: CommandInteraction, client: Client) => {
-			if (await interaction.perms({ roles: ["moderators", "trial_moderators"] })) return;
+			if (
+				await interaction.perms({
+					type: "mod",
+				})
+			)
+				return;
 
 			let user: User = interaction.options.getUser("user", true) as User;
 			if (!checkIfUser(client, user))

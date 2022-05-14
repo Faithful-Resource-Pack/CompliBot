@@ -16,7 +16,12 @@ export const command: SlashCommand = {
 			option.setName("amount").setDescription("The amount of messages you want to clear [0 - 100]").setRequired(true),
 		),
 	execute: async (interaction: CommandInteraction, client: Client) => {
-		if (await interaction.perms({ roles: ["moderators", "trial_moderators"] })) return;
+		if (
+			await interaction.perms({
+				type: "mod",
+			})
+		)
+			return;
 
 		const amount: number = interaction.options.getNumber("amount", true);
 		if (amount > 100 || amount < 0)

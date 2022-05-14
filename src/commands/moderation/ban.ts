@@ -16,7 +16,12 @@ export const command: SlashCommand = {
 		.addUserOption((option) => option.setName("user").setDescription("User you want to ban.").setRequired(true))
 		.addStringOption((option) => option.setName("reason").setDescription("The reason behind the ban.")),
 	execute: async (interaction: CommandInteraction, client: Client) => {
-		if (await interaction.perms({ roles: ["moderators", "trial_moderators"] })) return;
+		if (
+			await interaction.perms({
+				type: "mod",
+			})
+		)
+			return;
 
 		const reason: string = interaction.options.getString("reason");
 		let guild = await interaction.client.guilds.fetch(interaction.guildId);

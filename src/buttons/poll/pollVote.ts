@@ -21,11 +21,17 @@ export const button: Button = {
 
 		await poll.updateEmbed(client);
 
-		if (poll.isAnonymous())
+		if (poll.isAnonymous()) {
+			if (poll.getStatus() === "ended")
+				return interaction.followUp({
+					ephemeral: true,
+					content: "This poll has exceeded its timeout and has ended.",
+				});
 			interaction.followUp({
 				ephemeral: true,
 				content: poll.hasVotedFor(type, id) ? "Your vote has been counted." : "Your vote has been removed.",
 			});
+		}
 
 		client.polls.set(pid, poll);
 	},
