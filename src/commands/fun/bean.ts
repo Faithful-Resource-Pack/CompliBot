@@ -15,7 +15,13 @@ export const command: SlashCommand = {
 		.setDescription("Bean him at once!")
 		.addUserOption((option) => option.setName("user").setDescription("User you want to bean").setRequired(true)),
 	execute: async (interaction: CommandInteraction, client: Client) => {
-		if (await interaction.perms({ roles: ["moderators", "trial_moderators"] })) return;
+		if (
+			await interaction.perms({
+				type: "mod",
+			})
+		)
+			return;
+
 		const embed = new MessageEmbed()
 			.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL() })
 			.setDescription(`<@${interaction.options.getUser("user").id}> has bean beaned!`)

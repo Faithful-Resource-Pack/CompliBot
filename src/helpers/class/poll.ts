@@ -38,7 +38,7 @@ export class Poll extends TimedEmbed {
 		embed.fields = embed.fields.map((field: EmbedField, index: number) => {
 			if (index === 0) return field;
 			if (field.name === "Timeout") {
-				if (this.getStatus() === "ended") field.value = "Ended";
+				if (this.getStatus() === "ended") field.value = `Ended <t:${this.getTimeout()}:R>`;
 				return field;
 			}
 

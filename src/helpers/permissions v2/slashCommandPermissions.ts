@@ -1,3 +1,4 @@
+import { getRolesIds } from "@helpers/roles";
 import { CommandInteraction, GuildMemberRoleManager } from "discord.js";
 
 export interface permissionOptions {
@@ -97,21 +98,10 @@ export function checkPermissions(interaction: CommandInteraction, permissions: p
 		const config = require("@json/config.json");
 
 		if (permissions.roles) {
-			let roleIDsToCheck = [];
-
-			permissions.roles.forEach((roleKey) => {
-				//we only have one team and im lazy
-				for (const role in config.teams[0].roles) {
-					if (permissions.roles.includes(role)) {
-						roleIDsToCheck.push(config.teams[0].roles[role]);
-					}
-				}
-			});
-
-			roleIDsToCheck = roleIDsToCheck.flat();
-
-			if (!(interaction.member.roles as GuildMemberRoleManager).cache.some((role) => roleIDsToCheck.includes(role.id)))
-				code[permissionCodeEnum.roles] = false;
+			const roles = (interaction.member.roles as GuildMemberRoleManager).cache.map((r) => r.id);
+			code[permissionCodeEnum.roles] = roles.some((r) =>
+				getRolesIds({ name: permissions.roles, discords: "all", teams: "all" }).includes(r),
+			);
 		}
 
 		if (permissions.servers) {
