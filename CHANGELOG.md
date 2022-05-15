@@ -1,6 +1,13 @@
 # CompliBot TypeScript - Changelog
 > This is a beta and will not be fully stable. To report any bugs, use the `/feedback` command
 
+## How to read this changelog?
+
+Commands are explained like so:
+```
+/notes [mandatory_parameter] (optional_parameter)
+```
+
 ## [v2.0.5] TBA
 
 ### Added
@@ -26,6 +33,7 @@
 - Animated textures are now animated when using `/texture`.
 - Added Minecraft update tracker
 - Added `/kick` and `/ban` commands
+- Added `/profile [discord|minecraft]` to see a user's minecraft or discord profile information
 
 ### Changed
 - The CompliBot ascii art now show up & show up with different colors when `tokens.maintenance === true`
