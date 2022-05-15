@@ -31,6 +31,7 @@ Commands are explained like so:
   - `none`: old behavior (used when no orientation is given)
 - `stickCanvas()` & `stickAttachment()` functions to stick side by side two canvas
 - Animated textures are now animated when using `/texture`.
+- MCmeta is shown when using `/texture`.
 - Added Minecraft update tracker
 - Added `/kick` and `/ban` commands
 - Added `/profile [discord|minecraft]` to see a user's minecraft or discord profile information
