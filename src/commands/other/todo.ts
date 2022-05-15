@@ -1,11 +1,8 @@
-import { duration } from "moment";
 import { SlashCommand, SlashCommandI } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { Collection, Guild, version as djsVersion } from "discord.js";
-import { Client, MessageEmbed, CommandInteraction, Message } from "@client";
-import { getRolesIds } from "@helpers/roles";
+import { Collection, version as djsVersion } from "discord.js";
+import { Client, CommandInteraction } from "@client";
 import { setData } from "@functions/setDataToJSON";
-import { readFileSync } from "fs";
 import path from "path";
 import axios from "axios";
 import { setDeep } from "@functions/setDeep";
@@ -13,13 +10,9 @@ import { getData } from "@functions/getDataFromJSON";
 import { updateTodo } from "@functions/updateTodo";
 
 export const command: SlashCommand = {
-	permissions: {
-		roles: getRolesIds({ name: "council", discords: "all", teams: "all" }),
-	},
 	data: new SlashCommandBuilder()
 		.setName("todo")
 		.setDescription("Audit the todo list")
-		.setDefaultPermission(false)
 		//todo: fully implement remove sub command below
 		// .addSubcommand((subcommand) =>
 		// 	subcommand
@@ -42,12 +35,12 @@ export const command: SlashCommand = {
 						.setRequired(true)
 						.setName("category")
 						.setDescription("Category to append the parent to")
-						.addChoices([
-							["entity", "entity"],
-							["block", "block"],
-							["item", "item"],
-							["misc", "misc"],
-						]),
+						.addChoices(
+							{ name: "entity", value: "entity" },
+							{ name: "block", value: "block" },
+							{ name: "item", value: "item" },
+							{ name: "misc", value: "misc" },
+						),
 				)
 				.addIntegerOption((option) =>
 					option
@@ -68,11 +61,8 @@ export const command: SlashCommand = {
 		),
 	execute: new Collection<string, SlashCommandI>()
 		.set("add", async (interaction: CommandInteraction, client: Client) => {
-			return interaction.reply({
-				content: "This command is temporarily disabled! (complain to Discord for breaking slash command permissions)",
-				ephemeral: true,
-			});
-	
+			if (await interaction.perms({ type: "council" })) return;
+
 			let todoJson = getData({
 				filename: "todo.json",
 				relative_path: path.join(__dirname + "../../../../json/"),
@@ -129,11 +119,8 @@ export const command: SlashCommand = {
 		})
 
 		.set("remove", async (interaction: CommandInteraction, client: Client) => {
-			return interaction.reply({
-				content: "This command is temporarily disabled! (complain to Discord for breaking slash command permissions)",
-				ephemeral: true,
-			});
-	
+			if (await interaction.perms({ type: "council" })) return;
+
 			const todoJson = getData({
 				filename: "todo.json",
 				relative_path: path.join(__dirname + "../../../../json/"),

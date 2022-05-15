@@ -25,19 +25,22 @@ import {
 import { getData } from "@functions/getDataFromJSON";
 import { setData } from "@functions/setDataToJSON";
 import { errorHandler } from "@functions/errorHandler";
-import { err, info, success, warning } from "@helpers/logger";
+import { err, info, success } from "@helpers/logger";
 import { Submission } from "@class/submissions";
 import { Poll } from "@class/poll";
 import { User } from "@helpers/interfaces/moderation";
 
 import { readdirSync } from "fs";
 import { REST } from "@discordjs/rest";
-import { RESTPostAPIApplicationCommandsJSONBody, Routes } from "discord-api-types/v9";
+import { RESTPostAPIApplicationCommandsJSONBody, Routes } from "discord-api-types/v10";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { loadJavaVersions, updateJavaVersions } from "@functions/MCupdates/java";
+import { loadJiraJavaVersions, updateJiraJavaVersions } from "@functions/MCupdates/jira-je";
+import { loadJiraBedrockVersions, updateJiraBedrockVersions } from "@functions/MCupdates/jire-be";
 
 import path from "path";
 import chalk from "chalk";
+import { StartClient } from "index";
 
 const JSON_PATH = path.join(__dirname, "../../json/dynamic"); // json folder at root
 const POLLS_FILENAME = "polls.json";
@@ -61,6 +64,7 @@ export type Log = {
 
 class ExtendedClient extends Client {
 	public verbose: boolean = false;
+	public cs: boolean = true; //cold start
 	public config: Config;
 	public tokens: Tokens;
 	public automation: Automation = new Automation(this);
@@ -80,51 +84,45 @@ class ExtendedClient extends Client {
 	public commandsProcessed: EmittingCollection<string, number> = new EmittingCollection();
 	public moderationUsers: EmittingCollection<string, User> = new EmittingCollection();
 
-	constructor(data: ClientOptions & { verbose: boolean; config: Config; tokens: Tokens }) {
+	constructor(data: ClientOptions & { verbose: boolean; config: Config; tokens: Tokens }, coldStart: boolean = true) {
 		super(data);
 		this.verbose = data.verbose;
 		this.config = data.config;
 		this.tokens = data.tokens;
+		this.cs = coldStart;
 	}
 
-	public async restart(int?: CommandInteraction): Promise<void> {
-		process.exit(1);
-		//console.log(`${info}restarting bot...`);
-		//this.destroy();
-		//await this.init();
-		//if (int) int.editReply({ content: "reboot succeeded" });
+	public async restart(interaction?: CommandInteraction): Promise<void> {
+		console.log(`${info}Restarting bot...`);
+		await this.destroy();
+		await StartClient(false, interaction);
 	}
 
 	//prettier-ignore
 	private asciiArt() {
-		console.log(chalk.hex("0026ff")("\n .d8888b.                                  888 d8b ")     + chalk.hex("#0066ff")("888888b.            888"));
-		console.log(chalk.hex("0026ff")("d88P  Y88b                                 888 Y8P ")       + chalk.hex("#0066ff")("888  \"88b           888"));
-		console.log(chalk.hex("0026ff")("888    888                                 888     ")       + chalk.hex("#0066ff")("888  .88P           888"));
-		console.log(chalk.hex("0026ff")("888         .d88b.  88888b.d88b.  88888b.  888 888 ")       + chalk.hex("#0066ff")("8888888K.   .d88b.  888888 "));
-		console.log(chalk.hex("0026ff")("888        d88\"\"88b 888 \"888 \"88b 888 \"88b 888 888 ")  + chalk.hex("#0066ff")("888  \"Y88b d88\"\"88b 888"));
-		console.log(chalk.hex("0026ff")("888    888 888  888 888  888  888 888  888 888 888 ")       + chalk.hex("#0066ff")("888    888 888  888 888"));
-		console.log(chalk.hex("0026ff")("Y88b  d88P Y88..88P 888  888  888 888 d88P 888 888 ")       + chalk.hex("#0066ff")("888   d88P Y88..88P Y88b."));
-		console.log(chalk.hex("0026ff")("\"Y8888P\"    \"Y88P\"  888  888  888 88888P\"  888 888 ")  + chalk.hex("#0066ff")("8888888P\"   \"Y88P\"   \"Y888"));
-		console.log(chalk.hex("0026ff")("                                  888"));
-		console.log(chalk.hex("0026ff")("                                  888                   ")  + chalk.white.bold("Faithful Devs. 2022"));
-		console.log(chalk.hex("0026ff")("                                  888                ")  + chalk.gray.italic("~ Made lovingly With pain\n"));
+		const darkColor = this.tokens.maintenance === false ? "#0026ff" : "#ff8400";
+		const lightColor = this.tokens.maintenance === false ? "#0066ff" : "#ffc400";
+
+		console.log(chalk.hex(darkColor)("\n .d8888b.                                  888 d8b ")     + chalk.hex(lightColor)("888888b.            888"));
+		console.log(chalk.hex(darkColor)("d88P  Y88b                                 888 Y8P ")       + chalk.hex(lightColor)("888  \"88b           888"));
+		console.log(chalk.hex(darkColor)("888    888                                 888     ")       + chalk.hex(lightColor)("888  .88P           888"));
+		console.log(chalk.hex(darkColor)("888         .d88b.  88888b.d88b.  88888b.  888 888 ")       + chalk.hex(lightColor)("8888888K.   .d88b.  888888 "));
+		console.log(chalk.hex(darkColor)("888        d88\"\"88b 888 \"888 \"88b 888 \"88b 888 888 ")  + chalk.hex(lightColor)("888  \"Y88b d88\"\"88b 888"));
+		console.log(chalk.hex(darkColor)("888    888 888  888 888  888  888 888  888 888 888 ")       + chalk.hex(lightColor)("888    888 888  888 888"));
+		console.log(chalk.hex(darkColor)("Y88b  d88P Y88..88P 888  888  888 888 d88P 888 888 ")       + chalk.hex(lightColor)("888   d88P Y88..88P Y88b."));
+		console.log(chalk.hex(darkColor)("\"Y8888P\"    \"Y88P\"  888  888  888 88888P\"  888 888 ")  + chalk.hex(lightColor)("8888888P\"   \"Y88P\"   \"Y888"));
+		console.log(chalk.hex(darkColor)("                                  888"));
+		console.log(chalk.hex(darkColor)("                                  888                   ")  + chalk.white.bold("Faithful Devs. 2022"));
+		console.log(chalk.hex(darkColor)("                                  888                ")  + chalk.gray.italic(this.tokens.maintenance === false ? "~ Made lovingly with pain\n" : "    Maintenance mode!\n"));
 	}
 
-	public async init() {
-		if (this.tokens.maintenance) {
-			this.login(this.tokens.token)
-				.catch((e) => {
-					// Allows for showing different errors like missing privileged gateway intents, this caused me so much pain >:(
-					console.log(`${err}${e}`);
-					process.exit(1);
-				})
-				.then(() => {
-					this.loadEvents();
-				});
-			return console.log("MAINTENANCE: TRUE");
-		}
-
-		this.asciiArt();
+	public async init(interaction?: CommandInteraction) {
+		// pretty stuff so it doesnt print the logo upon restart
+		if (!this.cs) {
+			console.clear();
+			console.log(`\n\n${success}Restarted`);
+			if (interaction) interaction.editReply("Reboot suceeded");
+		} else this.asciiArt();
 
 		// login client
 		this.login(this.tokens.token)
@@ -140,10 +138,17 @@ class ExtendedClient extends Client {
 				this.loadButtons();
 				this.loadSelectMenus();
 
-				/*loadJavaVersions()
-				.then(() => {
-					updateJavaVersions(this);
-				})*/
+				if (!this.tokens.dev) {
+					loadJavaVersions();
+					loadJiraJavaVersions();
+					loadJiraBedrockVersions().then(() => {
+						setInterval(() => {
+							updateJavaVersions(this);
+							updateJiraJavaVersions(this);
+							updateJiraBedrockVersions(this);
+						}, 60000); // 1 minute
+					});
+				}
 
 				this.loadCollections();
 				this.automation.start();
@@ -151,13 +156,18 @@ class ExtendedClient extends Client {
 				if (this.verbose) console.log(info + `Init complete`);
 			});
 
-		const errorEvents = ["uncaughtException", "unhandledRejection"];
-		const events = ["exit", "SIGINT", "SIGUSR1", "SIGUSR2", "SIGTERM"];
+		// catches "kill pid" (for example: nodemon restart)
+		process.on("SIGUSR1", () => this.restart());
+		process.on("SIGUSR2", () => this.restart());
 
-		[...errorEvents, ...events].forEach((eventType) => {
-			process.on(eventType, (...args) => {
-				if (errorEvents.includes(eventType)) errorHandler(this, args[0], eventType);
-			});
+		process.on("disconnect", (code: number) => {
+			errorHandler(this, code, "disconnect");
+		});
+		process.on("uncaughtException", (error, origin) => {
+			errorHandler(this, error, "uncaughtException", origin);
+		});
+		process.on("unhandledRejection", (reason, promise) => {
+			errorHandler(this, reason, "unhandledRejection");
 		});
 	}
 
@@ -313,10 +323,11 @@ class ExtendedClient extends Client {
 		const guilds = { global: [] };
 		commandsArr.forEach((el) => {
 			if (el.servers === null || el.servers === undefined) guilds["global"].push(el.command);
-			else el.servers.forEach((server) => {
-				if (guilds[server] === undefined) guilds[server] = [];
-				guilds[server].push(el.command);
-			});
+			else
+				el.servers.forEach((server) => {
+					if (guilds[server] === undefined) guilds[server] = [];
+					guilds[server].push(el.command);
+				});
 		});
 
 		for (let i = 0; i < this.config.discords.length; i++) {

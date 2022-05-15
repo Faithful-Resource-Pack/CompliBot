@@ -1,7 +1,6 @@
 import { CommandInteraction, Message, MessageEmbed } from "@client";
 import { imageButtons } from "@helpers/buttons";
-import { Collection, MessageAttachment, TextChannel, User } from "discord.js";
-import { getString } from "@helpers/string";
+import { Collection, MessageAttachment, User } from "discord.js";
 
 /**
  * STEPS:
@@ -37,12 +36,15 @@ export async function fetchMessageImage(
 		.sort((a, b) => b.createdTimestamp - a.createdTimestamp)
 		.filter(
 			(m) =>
-				(m.attachments.size > 0 && (m.attachments.first().url.match(/\.(jpeg|jpg|png|webp)$/) as any)) ||
-				(m.embeds[0] !== undefined && (m.embeds[0].thumbnail !== null || m.embeds[0].image !== null)),
+				(m.attachments.size > 0 && (m.attachments.first().url.match(/\.(jpeg|jpg|png)$/) as any)) ||
+				// TODO: definitely not the best way to do this
+				(m.embeds[0] !== undefined &&
+					((m.embeds[0].thumbnail !== null && m.embeds[0].thumbnail.url.match(/\.(jpeg|jpg|png)$/)) ||
+						(m.embeds[0].image !== null && m.embeds[0].image.url.match(/\.(jpeg|jpg|png)$/)))),
 		)
 		.first();
 
-	// no needs to await user interaction (a message has been found)
+	// no need to await user interaction (a message has been found)
 	if (message !== undefined) return await getImageFromMessage(message);
 
 	// no message found but we don't ask the user to provide an image
@@ -50,21 +52,23 @@ export async function fetchMessageImage(
 
 	// no message found but we wait for user input
 	const embed = new MessageEmbed()
-		.setTitle(await getString("Command.Images.NotFound.Title"))
-		.setDescription(await getString("Command.Images.NotFound", { NUMBER: `${limit}` }));
+		.setTitle(await interaction.getEphemeralString({ string: "Command.Images.NotFound.Title" }))
+		.setDescription(
+			await interaction.getEphemeralString({ string: "Command.Images.NotFound", placeholders: { NUMBER: `${limit}` } }),
+		);
 
 	const embedMessage: Message = (await interaction.editReply({ embeds: [embed] })) as Message;
 	const awaitedMessages: Collection<string, Message<boolean>> = await interaction.channel.awaitMessages({
 		filter: (m: Message) => m.author.id === userInteraction.user.id,
 		max: 1,
-		time: 5000, // 30s
+		time: 30000, // 30s
 	});
 
 	message = awaitedMessages
 		.sort((a, b) => b.createdTimestamp - a.createdTimestamp)
 		.filter(
 			(m) =>
-				(m.attachments.size > 0 && (m.attachments.first().url.match(/\.(jpeg|jpg|png|webp)$/) as any)) ||
+				(m.attachments.size > 0 && (m.attachments.first().url.match(/\.(jpeg|jpg|png)$/) as any)) ||
 				(m.embeds[0] !== undefined && (m.embeds[0].thumbnail !== null || m.embeds[0].image !== null)),
 		)
 		.first();
@@ -84,7 +88,7 @@ export async function fetchMessageImage(
  */
 export async function getImageFromMessage(message: Message): Promise<string> {
 	// if image is attached
-	if (message.attachments.size > 0 && message.attachments.first().url.match(/\.(jpeg|jpg|png|webp)$/))
+	if (message.attachments.size > 0 && message.attachments.first().url.match(/\.(jpeg|jpg|png)$/))
 		return message.attachments.first().url;
 	// else if the message is an embed
 	else if (message.embeds[0]) {
@@ -94,7 +98,7 @@ export async function getImageFromMessage(message: Message): Promise<string> {
 		else if (message.embeds[0].thumbnail) return message.embeds[0].thumbnail.url;
 	}
 
-	// if no images attached to the first parent reply, check if there is another parent reply (recursivity go brr)
+	// if no images attached to the first parent reply, check if there is another parent reply (recursive go brr)
 	if (message.type === "REPLY") {
 		try {
 			await message.fetchReference();
@@ -116,14 +120,17 @@ export async function generalSlashCommandImage(
 ): Promise<void> {
 	await interaction.deferReply();
 
-	const imageURL: string = await fetchMessageImage(interaction, 10, {
-		doInteraction: true,
-		user: interaction.user,
-	});
+	const attachmentUrl = interaction.options.getAttachment("image", false)?.url; //safe navigation operator.
+	const imageURL: string = attachmentUrl
+		? attachmentUrl
+		: await fetchMessageImage(interaction, 10, {
+				doInteraction: true,
+				user: interaction.user,
+		  });
 
 	if (imageURL === null) {
 		await interaction.followUp({
-			content: await interaction.text({ string: "Command.Images.NoResponse" }),
+			content: await interaction.getEphemeralString({ string: "Command.Images.NoResponse" }),
 			ephemeral: true,
 		});
 		return;
@@ -136,7 +143,7 @@ export async function generalSlashCommandImage(
 
 	if (attachment === null) {
 		await interaction.followUp({
-			content: await interaction.text({ string: "Command.Images.TooBig" }),
+			content: await interaction.getEphemeralString({ string: "Command.Images.TooBig" }),
 			ephemeral: true,
 		});
 		return;

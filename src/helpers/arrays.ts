@@ -35,3 +35,15 @@ export const includesNone = (arr: Array<string>, val: string): boolean => {
 export const doNestedArr = (arr: Array<any>): Array<[any, any]> => {
 	return arr.map((v) => [v, v]);
 };
+
+/**
+ * Duplicate value of an array to a double nested object array
+ * (used for slash commands strings options)
+ * ["test", "options"] => [["test", "test"], ["options", "options"]]
+ * @param {Array<T>} arr
+ */
+export const doNestedObj = (obj: Array<any>): Array<{ name: string; value: any }> => {
+	return obj.map((v) => {
+		return { name: v, value: v };
+	});
+};

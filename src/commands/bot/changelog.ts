@@ -8,12 +8,11 @@ import { changelogOptions } from "index";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
-		.setDefaultPermission(true)
 		.setName("changelog")
 		.setDescription("Gets a changelog version of the bot")
 		.addStringOption((str) => {
 			return str
-				.addChoices(changelogOptions())
+				.addChoices(...changelogOptions())
 				.setName("version")
 				.setDescription("The version to fetch.")
 				.setRequired(true);
@@ -70,7 +69,7 @@ export const command: SlashCommand = {
 				);
 				const url = `https://github.com/Faithful-Resource-Pack/Discord-Bot/blob/typescript/CHANGELOG.md#${cleanedVersion}`;
 				const embed = new MessageEmbed()
-					.setTitle(`${await interaction.text({ string: "Command.Changelog.Title" })}${versionChoice}: `)
+					.setTitle(`${await interaction.getEphemeralString({ string: "Command.Changelog.Title" })}${versionChoice}: `)
 					.setURL(url)
 					.addFields(fields);
 				timestamp

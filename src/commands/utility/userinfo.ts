@@ -10,17 +10,13 @@ export const command: SlashCommand = {
 		roles: getRolesIds({ name: ["moderators", "trial_moderators"], discords: "all", teams: "all" }),
 	},
 	data: new SlashCommandBuilder()
-		.setDefaultPermission(false)
 		.setName("userinfo")
 		.setDescription("Get detailed information on a specified user.")
 		.addUserOption((option) =>
 			option.setName("user").setDescription("The User to get information of.").setRequired(true),
 		),
 	execute: async (interaction: CommandInteraction, client: Client) => {
-		return interaction.reply({
-			content: "This command is temporarily disabled! (complain to Discord for breaking slash command permissions)",
-			ephemeral: true,
-		});
+		if (await interaction.perms({ type: "mod" })) return;
 
 		const user = interaction.options.getUser("user") as User;
 		const guildUser = interaction.guild.members.cache.get(user.id) as GuildMember;
@@ -30,11 +26,11 @@ export const command: SlashCommand = {
 			.setThumbnail(user.avatarURL({ dynamic: true }))
 			.addFields(
 				{ name: "Name & Tag", value: user.tag, inline: true },
-				{ name: "Nickname", value: guildUser.nickname, inline: true },
+				{ name: "Nickname", value: guildUser.nickname ? guildUser.nickname : "none", inline: true },
 				{ name: "ID", value: user.id, inline: true },
 				{
 					name: "Status",
-					value: guildUser.presence?.status != undefined ? guildUser.presence?.status : "offline",
+					value: guildUser.presence?.status ? guildUser.presence?.status : "offline",
 					inline: true,
 				},
 				{

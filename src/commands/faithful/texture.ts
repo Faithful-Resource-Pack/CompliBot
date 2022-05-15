@@ -4,7 +4,8 @@ import { Client, CommandInteraction, Message, MessageEmbed } from "@client";
 import { getTextureMessageOptions } from "@functions/getTexture";
 import { MessageActionRow, MessageSelectMenu, MessageSelectOptionData } from "discord.js";
 import axios from "axios";
-import { deleteInteraction, imageButtons } from "@helpers/buttons";
+import { imageButtons } from "@helpers/buttons";
+import { MinecraftSorter } from "@helpers/sorter";
 
 export const command: SlashCommand = {
 	servers: ["faithful", "faithful_extra", "classic_faithful"],
@@ -18,14 +19,14 @@ export const command: SlashCommand = {
 			option
 				.setName("pack")
 				.setDescription("Resource pack of the texture you are searching for.")
-				.addChoices([
-					["Vanilla 16x", "default"],
-					["Faithful 32x", "faithful_32x"],
-					["Faithful 64x", "faithful_64x"],
-					["Classic Faithful 32x", "classic_faithful_32x"],
-					["Classic Faithful 64x", "classic_faithful_64x"],
-					["Classic Faithful 32x Programmer Art", "classic_faithful_32x_progart"],
-				])
+				.addChoices(
+					{ name: "Vanilla 16x", value: "default" },
+					{ name: "Faithful 32x", value: "faithful_32x" },
+					{ name: "Faithful 64x", value: "faithful_64x" },
+					{ name: "Classic Faithful 32x", value: "classic_faithful_32x" },
+					{ name: "Classic Faithful 64x", value: "classic_faithful_64x" },
+					{ name: "Classic Faithful 32x Programmer Art", value: "classic_faithful_32x_progart" },
+				)
 				.setRequired(true),
 		),
 	execute: async (interaction: CommandInteraction) => {
@@ -33,6 +34,7 @@ export const command: SlashCommand = {
 
 		var name = interaction.options.getString("name");
 		if (name.includes(".png")) name = name.replace(".png", "");
+		name = name.replace(/ /g, "_");
 		if (name.length < 3) {
 			// textures like "bed" exist :/
 			try {
@@ -73,7 +75,9 @@ export const command: SlashCommand = {
 			// parsing everything correctly
 			for (let i = 0; i < results.length; i++) {
 				results[i] = {
-					label: `[#${results[i].id}] (${results[i].paths[0].versions[0]}) ${results[i].name}`,
+					label: `[#${results[i].id}] (${results[i].paths[0].versions.sort(MinecraftSorter).reverse()[0]}) ${
+						results[i].name
+					}`,
 					description: results[i].paths[0].name,
 					value: `${results[i].id}__${interaction.options.getString("pack", true)}`,
 				};
@@ -122,7 +126,7 @@ export const command: SlashCommand = {
 
 				const menu = new MessageSelectMenu()
 					.setCustomId(`textureSelect_${_max}`)
-					.setPlaceholder("Choose a texture!")
+					.setPlaceholder("Select a texture!")
 					.addOptions(options);
 
 				const row = new MessageActionRow().addComponents(menu);
@@ -141,13 +145,13 @@ export const command: SlashCommand = {
 		}
 
 		// no results
-		interaction
-			.editReply({
-				content: await interaction.text({
-					string: "Command.Texture.NotFound",
-					placeholders: { TEXTURENAME: `\`${name}\`` },
-				}),
-			})
-			.then((message: Message) => message.deleteButton());
+		interaction.deleteReply();
+		interaction.followUp({
+			content: await interaction.getEphemeralString({
+				string: "Command.Texture.NotFound",
+				placeholders: { TEXTURENAME: `\`${name}\`` },
+			}),
+			ephemeral: true,
+		});
 	},
 };

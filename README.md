@@ -6,6 +6,7 @@
 ![RepoSize](https://img.shields.io/github/repo-size/Faithful-Resource-Pack/Discord-Bot)
 ![Issues](https://img.shields.io/github/issues/Faithful-Resource-Pack/Discord-Bot)
 ![PullRequests](https://img.shields.io/github/issues-pr/Faithful-Resource-Pack/Discord-Bot)
+[![Crowdin](https://badges.crowdin.net/e/1602cfd1a52793da79736586c4493097/localized.svg)](https://faithful.crowdin.com/discord-bot)
 </div>
 
 ___

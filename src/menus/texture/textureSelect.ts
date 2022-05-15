@@ -16,7 +16,7 @@ export const menu: SelectMenu = {
 
 		if (interaction.user.id !== messageInteraction.user.id)
 			return interaction.reply({
-				content: (await interaction.text({ string: "Error.Interaction.Reserved" })).replace(
+				content: (await interaction.getEphemeralString({ string: "Error.Interaction.Reserved" })).replace(
 					"%USER%",
 					`<@!${messageInteraction.user.id}>`,
 				),
@@ -35,7 +35,7 @@ export const menu: SelectMenu = {
 			message.delete();
 		} catch (err) {
 			interaction.editReply({
-				content: await interaction.text({ string: "Error.Message.Deleted" }),
+				content: await interaction.getEphemeralString({ string: "Error.Message.Deleted" }),
 			});
 		}
 

@@ -38,7 +38,7 @@ export class Poll extends TimedEmbed {
 		embed.fields = embed.fields.map((field: EmbedField, index: number) => {
 			if (index === 0) return field;
 			if (field.name === "Timeout") {
-				if (this.getStatus() === "ended") field.value = "Ended";
+				if (this.getStatus() === "ended") field.value = `Ended <t:${this.getTimeout()}:R>`;
 				return field;
 			}
 
@@ -123,8 +123,12 @@ export class Poll extends TimedEmbed {
 			components: [...components, new MessageActionRow().addComponents(pollDelete)],
 		})) as any;
 
+		if (options.question.length > 100) {
+			options.question = options.question.substring(0, 96) + "...";
+		}
+
 		if (options.thread) {
-			message.startThread({ name: `Debate: ${options.question}` });
+			message.startThread({ name: `${options.question}` });
 		}
 
 		this.setChannelId(interaction.channelId);

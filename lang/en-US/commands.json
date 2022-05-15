@@ -1,6 +1,4 @@
 {
-    "Args.Insufficient": "Not enough arguments!",
-    "Args.Invalid": "Invalid arguments!",
     "Command.Activity.noChannel": "Please join a voice channel or add a channel argument!",
     "Command.Activity.stageChannel": "Activities cannot be started in a stage channel! (move to a regular vc)",
     "Command.Activity.unableToCreateInvite": "Unable to create invite! *(probably discord api downtime)",
@@ -215,6 +213,8 @@
         "Here's your ping. Now let me go back to sleep."
     ],
     "Command.Ping.Title": "Pong!",
+    "Command.Profile.noContent": "No such minecraft username exists!",
+    "Command.Profile.noResponse": "The %API%api is currently down, please check again later!",
     "Command.Stats.Embed.FieldTitles": [
         "Prefix",
         "Uptime",
@@ -233,22 +233,9 @@
     "Command.Stats.Top10": "Top 10 most used commands:",
     "Command.Stats.NotFound": "The command `%COMMAND%` doesn't exist!",
     "Command.Texture.NotFound": "No results for this texture name: %TEXTURENAME%",
-    "Error.DevBad": "This part remains unimplemented due to incompetence. Ask the devs or cope.",
-    "Error.General": "Encountered an error!",
-    "Error.Message.Deleted": "This message has already been deleted!",
-    "Error.NotFound": "%THING% Not Found!",
-    "Error.NoPermissions": "You don't have the permission to do that!",
-    "Error.Interaction.Reserved": "This interaction is reserved to its owner (%USER%)",
-    "Error.Channel.CacheNotFound": "The %CHANNEL_NAME% channel cannot be found in cache!",
-    "Error.Channel.NotTextChannel": "The targeted channel is not a text channel, the message can't be send!",
-    "Error.Timeout.NoTypeGiven": "The given timeout doesn't specify which length it is!\nExample: `30s`, `1 min`, `10 hours`, `1 day`, `1 week`, `1 month`, `1 year`",
-    "General.Are": "are",
-    "General.Cancel": "Cancel",
-    "General.Is": "is",
-    "General.No": "No",
-    "General.Send": "Send",
-    "General.Yes": "Yes",
-    "Success.Detailed": "Success! %DETAILS%",
-    "Success.General": "Success!",
-    "Success.Cancel": "%ACTION% canceled!"
+    "Permissions.temp.template": "You are not permitted to run this command:",
+    "Permissions.temp.user": "You need to be a specific user to run this command",
+    "Permissions.temp.role": "You need a specific role to run this command",
+    "Permissions.temp.server": "You must be in a specific server to run this command",
+    "Permissions.temp.notice": "\n\n*(This is a temporary fix for Discord's new permissions v2 system, which broke the previous permissions system. The new system will soon be adopted)"
 }

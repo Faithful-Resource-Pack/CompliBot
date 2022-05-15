@@ -1,7 +1,7 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction } from "discord.js";
-import { Client, Message, MessageEmbed } from "@client";
+import { Client, MessageEmbed } from "@client";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -30,7 +30,7 @@ export const command: SlashCommand = {
 
 		if (modRole === undefined)
 			return interaction.reply({
-				content: await interaction.text({ string: "Command.Modping.NoRole" }),
+				content: await interaction.getEphemeralString({ string: "Command.Modping.NoRole" }),
 				ephemeral: true,
 			});
 
@@ -38,7 +38,7 @@ export const command: SlashCommand = {
 		const embed = new MessageEmbed().setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL() });
 
 		if (urgent) {
-			embed.setDescription(await interaction.text({ string: "Command.Modping.Urgent" }));
+			embed.setDescription(await interaction.getEphemeralString({ string: "Command.Modping.Urgent" }));
 			return interaction.reply({ embeds: [embed], content: `<@&${modRole.id}>` });
 		}
 
@@ -62,13 +62,13 @@ export const command: SlashCommand = {
 			});
 			if (onlineModIDs.length > 0) {
 				embed.setDescription(
-					await interaction.text({
+					await interaction.getEphemeralString({
 						string: "Command.Modping.Online",
 						placeholders: {
 							NUMBER: `${
 								moderatorIDs.length == 1
-									? await interaction.text({ string: "General.Is" })
-									: await interaction.text({ string: "General.Are" })
+									? await interaction.getEphemeralString({ string: "General.Is" })
+									: await interaction.getEphemeralString({ string: "General.Are" })
 							} **${onlineModIDs.length}**`,
 						},
 					}),
@@ -77,13 +77,13 @@ export const command: SlashCommand = {
 			}
 			if (dndModIDs.length > 0) {
 				embed.setDescription(
-					await interaction.text({
+					await interaction.getEphemeralString({
 						string: "Command.Modping.AfkDnd",
 						placeholders: {
 							NUMBER: `${
 								moderatorIDs.length == 1
-									? await interaction.text({ string: "General.Is" })
-									: await interaction.text({ string: "General.Are" })
+									? await interaction.getEphemeralString({ string: "General.Is" })
+									: await interaction.getEphemeralString({ string: "General.Are" })
 							} **${moderatorIDs.length}**`,
 						},
 					}),
@@ -91,12 +91,12 @@ export const command: SlashCommand = {
 				return interaction.reply({ embeds: [embed], content: dndModIDs.join(", ") });
 			}
 			if (dndModIDs.length + onlineModIDs.length == 0) {
-				embed.setDescription(await interaction.text({ string: "Command.Modping.Offline" }));
+				embed.setDescription(await interaction.getEphemeralString({ string: "Command.Modping.Offline" }));
 				return interaction.reply({ embeds: [embed], content: `<@&${modRole.id}>` });
 			}
 		}
 		//if no one has the role somehow lol
-		embed.setDescription(await interaction.text({ string: "Command.Modping.Offline" }));
+		embed.setDescription(await interaction.getEphemeralString({ string: "Command.Modping.Offline" }));
 		return interaction.reply({ embeds: [embed], content: `<@&${modRole.id}>` });
 	},
 };

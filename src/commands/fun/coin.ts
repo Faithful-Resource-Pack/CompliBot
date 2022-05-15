@@ -1,6 +1,6 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { Client, CommandInteraction, Message, MessageEmbed } from "@client";
+import { CommandInteraction, Message, MessageEmbed } from "@client";
 import { colors } from "@helpers/colors";
 
 export const command: SlashCommand = {
@@ -13,10 +13,10 @@ export const command: SlashCommand = {
 		var embed = new MessageEmbed()
 			.setTitle(
 				res > 0.5
-					? await interaction.text({ string: "Command.Coin.Heads" })
+					? await interaction.getEphemeralString({ string: "Command.Coin.Heads" })
 					: res < 0.5
-					? await interaction.text({ string: "Command.Coin.Tails" })
-					: await interaction.text({ string: "Command.Coin.Edge" }),
+					? await interaction.getEphemeralString({ string: "Command.Coin.Tails" })
+					: await interaction.getEphemeralString({ string: "Command.Coin.Edge" }),
 			)
 			.setThumbnail(
 				res > 0.5

@@ -1,43 +1,77 @@
-import { ButtonInteraction, CommandInteraction, SelectMenuInteraction } from "discord.js";
-import { string, keys } from "@helpers/string";
+import { ButtonInteraction, CommandInteraction, Interaction, SelectMenuInteraction } from "discord.js";
+import { string, keys, Placeholder } from "@helpers/locales";
+import {
+	checkPermissions, //<- hover over me (i know this is stupid its a jsdoc thing where you cant carry shit)
+	permissionCodeEnum,
+	permissionOptions,
+} from "@helpers/permissions v2/slashCommandPermissions";
 
 declare module "discord.js" {
 	interface CommandInteraction {
-		text(options: TextOptions): Promise<string>;
+		getEphemeralString(options: TextOptions): Promise<string>;
+		getString(options: TextOptions): Promise<string>;
+		/**
+		 * @see {@link checkPermissions} for implementation details
+		 * @example if (await interaction.perms({ servers: ["faithful", "dev"], roles: ["council", "administrator"]})) return;
+		 */
+		perms(options: permissionOptions): Promise<boolean>;
 	}
 
 	interface ButtonInteraction {
-		text(options: TextOptions): Promise<string>;
+		getEphemeralString(options: TextOptions): Promise<string>;
+		getString(options: TextOptions): Promise<string>;
 	}
 
 	interface SelectMenuInteraction {
-		text(options: TextOptions): Promise<string>;
+		getEphemeralString(options: TextOptions): Promise<string>;
+		getString(options: TextOptions): Promise<string>;
 	}
 }
-
 interface TextOptions {
 	string: keys;
-	placeholders?: { [key: Capitalize<string>]: string };
+	placeholders?: Placeholder;
 }
-
-/**
- * @author Nick-1666
- * @description a function for translating string keys into the users language.
- *
- * USAGE:
- * -    `%EMOJI.<emoji name>%` gets parsed as an emoji from "ids"
- * -    `%{KEY}%` gets parsed as its value pair as defined in the placeholders object (if given).
- * -    Arrays get parsed as strings with "$," as their seperator. A `.split("$,")` can be appended to convert back
- * -    Should the key `%IGNORE_MISSING%` be equal to "True" (case insensitive), missing keys wont default to en-US.
- * -    if a language is not yet implemented, en_US will be used as a default but "(untranslated) " will prefix it.
- * -    if placeholders are only partialy provided, the rest of the keys will not get parsed.
- */
-async function text(options: TextOptions): Promise<string> {
+async function getEphemeralString(options: TextOptions): Promise<string> {
 	return await string(this.locale, options.string, options.placeholders);
 }
 
-CommandInteraction.prototype.text = text;
-ButtonInteraction.prototype.text = text;
-SelectMenuInteraction.prototype.text = text;
+/**
+ * @author Juknum
+ * @description a function for translating string keys into the guild language.
+ * @important This function should be used in public response as the string depends on the locale of the guild.
+ */
+async function getString(options: TextOptions): Promise<string> {
+	return await string(this.guildLocale, options.string, options.placeholders);
+}
+
+async function perms(options: permissionOptions): Promise<boolean> {
+	const code = checkPermissions(this, options);
+	let output: string = "";
+
+	if (!code[permissionCodeEnum.users])
+		output += "\n\t" + (await this.getEphemeralString({ string: "Permissions.temp.user" }));
+	if (!code[permissionCodeEnum.servers])
+		output += "\n\t" + (await this.getEphemeralString({ string: "Permissions.temp.server" }));
+	if (!code[permissionCodeEnum.roles])
+		output += "\n\t" + (await this.getEphemeralString({ string: "Permissions.temp.role" }));
+
+	if (!code.every((v) => v == true)) {
+		await this.reply({
+			content:
+				(await this.getEphemeralString({ string: "Permissions.temp.template" })) +
+				output +
+				(await this.getEphemeralString({ string: "Permissions.temp.notice" })),
+			ephemeral: true,
+		});
+		return true;
+	}
+
+	return false;
+}
+
+CommandInteraction.prototype.getEphemeralString = getEphemeralString;
+ButtonInteraction.prototype.getEphemeralString = getEphemeralString;
+SelectMenuInteraction.prototype.getEphemeralString = getEphemeralString;
+CommandInteraction.prototype.perms = perms;
 
 export { CommandInteraction, ButtonInteraction, SelectMenuInteraction };

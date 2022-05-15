@@ -7,7 +7,8 @@
         {
             "name": "faithful",
             "channels": {
-                "moderation": "776145239358046248"
+                "moderation": "776145239358046248",
+                "logs": "959727916881686568"
             },
             "roles": {
                 "administrator": [

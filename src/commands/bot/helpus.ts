@@ -8,8 +8,8 @@ export const command: SlashCommand = {
 		.setDescription("Command to get infos on how to help the developers of CompliBot."),
 	execute: async (interaction: CommandInteraction, client: Client) => {
 		const embed = new MessageEmbed()
-			.setTitle(await interaction.text({ string: "Command.HelpUs.Title" }))
-			.setDescription(await interaction.text({ string: "Command.HelpUs.Description" }))
+			.setTitle(await interaction.getEphemeralString({ string: "Command.HelpUs.Title" }))
+			.setDescription(await interaction.getEphemeralString({ string: "Command.HelpUs.Description" }))
 			.setThumbnail(client.config.images + "bot/question_mark.png");
 
 		interaction.reply({ embeds: [embed], ephemeral: true });

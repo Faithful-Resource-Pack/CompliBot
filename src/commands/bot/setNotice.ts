@@ -6,17 +6,7 @@ import { setData } from "@functions/setDataToJSON";
 import path from "path";
 
 export const command: SlashCommand = {
-	servers: ["dev"],
-	permissions: {
-		users: [
-			"207471947662098432", // Juknum
-			"173336582265241601", // TheRolf
-			"473860522710794250", // RobertR11
-			"601501288978448411", // Nick
-		],
-	},
 	data: new SlashCommandBuilder()
-		.setDefaultPermission(false)
 		.setName("setnotice")
 		.setDescription("Set the bots notice")
 		.addStringOption((option) => option.setName("title").setDescription("Title of the new notice").setRequired(true))
@@ -24,10 +14,12 @@ export const command: SlashCommand = {
 			option.setName("description").setDescription("Description of the new notice").setRequired(true),
 		),
 	execute: async (interaction: CommandInteraction, client: Client) => {
-		return interaction.reply({
-			content: "This command is temporarily disabled! (complain to Discord for breaking slash command permissions)",
-			ephemeral: true,
-		});
+		if (
+			await interaction.perms({
+				type: "dev",
+			})
+		)
+			return;
 
 		const newNotice: notice = {
 			unix: +Date.now(),

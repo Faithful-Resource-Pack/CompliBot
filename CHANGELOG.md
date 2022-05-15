@@ -8,9 +8,55 @@ Commands are explained like so:
 /notes [mandatory_parameter] (optional_parameter)
 ```
 
-## [v2.0.4] TBA
+## [v2.0.5] TBA
 
-> NYI
+### Added
+- none
+
+### Changed
+- none
+
+### Fixed
+- none
+
+## [v2.0.4] 15/05/2022
+
+### Added
+- Support for slash command attachments in image related commands
+- Strings are now stored in multiple JSON files & translated ones should be edited on the [crowdin page](https://translate.faithfulpack.net/discord-bot)
+- You can now search for a texture without using underscores `_`
+- Added a new optional parameter to the `magnifyAttachment` function: `orientation` which could take 3 values `landscape`, `portrait` & `none`
+  - `portrait`: add margin on the top & bottom of the magnified image (unused)
+  - `landscape`: add margin on the sides (unused yet)
+  - `none`: old behavior (used when no orientation is given)
+- `stickCanvas()` & `stickAttachment()` functions to stick side by side two canvas
+- Animated textures are now animated when using `/texture`.
+- MCmeta is shown when using `/texture`.
+- Added Minecraft update tracker
+- Added `/kick` and `/ban` commands
+- Added `/profile [discord|minecraft]` to see a user's minecraft or discord profile information
+
+### Changed
+- The CompliBot ascii art now show up & show up with different colors when `tokens.maintenance === true`
+- Submission System (v3 WIP):
+  - Submitted textures can now be searched trough the database when the name is duplicated.  
+  - Submitted texture is now in the thumbnail and a side by side comparaison is made in images fields
+- Swapped non-magnified texture & magnified texture in the embed of `/texture` to have a better view of the magnified texture
+- Texture embed now show only the latest contribution & link the webapp to see them all.
+- Moderation commands no longer show who executed the command
+
+### Fixed
+- (previously shipped as hotfix) Poll command causing lots of errors when the poll is in a thread and the thread gets archived
+- (previously shipped as hotfix) Various errors caused by users deleting their own messages
+- (finally) Fixed slash command permissions with a temporary workaround till permissions v2 is supported by discord.js
+- Thread title for polls being empty if the question is longer than 100 characters
+- Typos in `/missing` command
+- "Author ID in footer Not Found!" falsely showing up in delete button in some cases
+- `/love` command erroring when no user was specified
+- Image commands erroring on `.webp` images
+- Error for already deleted message when warns shows up (when using <Message>.warns()), the message is now checked before replied, and if it is deleted, the message is sent to the channel instead of replying to the warned author's message.
+- Fixed oldest supported version when selecting texture from `/texture`
+- Fixed being able to specify a role as user in `/mute` command
 
 ## [v2.0.3] 12/04/2022
 

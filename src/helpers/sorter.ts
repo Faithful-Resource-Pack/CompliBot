@@ -3,7 +3,7 @@
  * Use this function as a filter for the sort() method:
  * [].sort(MinecraftSorter)
  */
-export const MinecraftSorter: Function = (a: string, b: string) => {
+export const MinecraftSorter: any = (a: string, b: string) => {
 	const _a = a.split(".").map((s) => parseInt(s));
 	const _b = b.split(".").map((s) => parseInt(s));
 

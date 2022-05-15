@@ -5,25 +5,22 @@ import { Client, Message, MessageEmbed } from "@client";
 import { Config } from "@interfaces";
 import ConfigJson from "@json/config.json";
 import { colors } from "@helpers/colors";
-import { getRolesIds } from "@helpers/roles";
 const config: Config = ConfigJson;
 
 export const command: SlashCommand = {
-	permissions: {
-		roles: getRolesIds({ name: "moderators", discords: "all", teams: "all" }),
-	},
 	data: new SlashCommandBuilder()
-		.setDefaultPermission(false)
 		.setName("clear")
 		.setDescription("Clear a specified amount of messages")
 		.addNumberOption((option) =>
 			option.setName("amount").setDescription("The amount of messages you want to clear [0 - 100]").setRequired(true),
 		),
 	execute: async (interaction: CommandInteraction, client: Client) => {
-		return interaction.reply({
-			content: "This command is temporarily disabled! (complain to Discord for breaking slash command permissions)",
-			ephemeral: true,
-		});
+		if (
+			await interaction.perms({
+				type: "mod",
+			})
+		)
+			return;
 
 		const amount: number = interaction.options.getNumber("amount", true);
 		if (amount > 100 || amount < 0)

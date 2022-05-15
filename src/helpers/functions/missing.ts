@@ -107,8 +107,6 @@ export const compute = async (
 			{ completion: 0, pack: pack, edition: edition, version: version },
 		];
 
-	await callback("Steps will be listed here").catch((err: any) => Promise.reject(err));
-
 	const tmpDirPath: string = normalize(os.tmpdir());
 	const tmpDirPathDefault: string = join(tmpDirPath, `missing-default-${edition}`);
 	const tmpDirPathRequest: string = join(tmpDirPath, `missing-${pack}-${edition}`);

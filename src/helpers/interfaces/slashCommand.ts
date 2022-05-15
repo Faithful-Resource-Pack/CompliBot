@@ -20,7 +20,7 @@ export interface SlashCommandI {
 }
 
 /**
- * important: When using permissions, please do ".setDefaultPermission(false)" to the slash command builder!
+ * important: When using permissions, please do "(false)" to the slash command builder!
  * otherwise the command will stay available for everybody else
  */
 export interface Permissions {

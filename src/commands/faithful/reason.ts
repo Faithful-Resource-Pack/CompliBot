@@ -3,18 +3,14 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction, Message, MessageEmbed } from "@client";
 import { EmbedField } from "discord.js";
 import { ids, parseId } from "@helpers/emojis";
-import { Config } from "@interfaces";
-import ConfigJson from "@json/config.json";
 import { getRolesIds } from "@helpers/roles";
-const config: Config = ConfigJson;
 
 export const command: SlashCommand = {
 	servers: ["faithful", "classic_faithful"],
 	permissions: {
 		roles: getRolesIds({ name: "council", discords: ["dev"], teams: ["faithful"] }),
 	},
-	data: new SlashCommandBuilder()
-		.setDefaultPermission(false) // disable the command for @everyone (only council can do it)
+	data: new SlashCommandBuilder() // disable the command for @everyone (only council can do it)
 		.setName("reason")
 		.setDescription("Set reason for submission invalidation/deny!")
 		.addStringOption((option) =>
@@ -24,10 +20,7 @@ export const command: SlashCommand = {
 			option.setName("reason").setDescription("Reason of the invalidation/deny.").setRequired(true),
 		),
 	execute: async (interaction: CommandInteraction) => {
-		return interaction.reply({
-			content: "This command is temporarily disabled! (complain to Discord for breaking slash command permissions)",
-			ephemeral: true,
-		});
+		if (!(await interaction.perms({ type: "council" }))) return;
 
 		let isInvalidated: boolean = false;
 
@@ -49,7 +42,10 @@ export const command: SlashCommand = {
 					});
 
 				message.edit({ embeds: [embed], files: [...message.attachments.values()] });
-				interaction.reply({ content: await interaction.text({ string: "Success.General" }), ephemeral: true });
+				interaction.reply({
+					content: await interaction.getEphemeralString({ string: "Success.General" }),
+					ephemeral: true,
+				});
 			})
 			.catch((err) => {
 				interaction.reply({ content: "Cannot fetch the message with the given message ID", ephemeral: true });

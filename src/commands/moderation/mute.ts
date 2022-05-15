@@ -1,45 +1,28 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { Collection, CommandInteraction, Guild, GuildMember, Interaction, TextChannel, User } from "discord.js";
+import { CommandInteraction, Guild, GuildMember, TextChannel } from "discord.js";
 import { Client, Message, MessageEmbed } from "@client";
-import { Config } from "@interfaces";
-import ConfigJson from "@json/config.json";
 import { parseDate } from "@helpers/dates";
 import { colors } from "@helpers/colors";
-import { getRolesIds } from "@helpers/roles";
-import { Permissions } from "discord.js";
-const config: Config = ConfigJson;
 
 export const command: SlashCommand = {
-	permissions: {
-		roles: getRolesIds({ name: ["moderators", "trial_moderators"], discords: "all", teams: "all" }),
-	},
 	data: new SlashCommandBuilder()
-		.setDefaultPermission(false)
 		.setName("mute")
 		.setDescription("Mute someone who deserves it. Unmute innocents with a timeout value of 0.")
-		.addMentionableOption((option) => option.setName("user").setDescription("User you want to mute.").setRequired(true))
+		.addUserOption((option) => option.setName("user").setDescription("User you want to mute.").setRequired(true))
 		.addStringOption((option) =>
 			option.setName("timeout").setDescription("How long do you want it to be muted? (Max: 27 days)").setRequired(true),
 		)
 		.addStringOption((option) => option.setName("reason").setDescription("The reason behind the mute.")),
 	execute: async (interaction: CommandInteraction, client: Client) => {
-		return interaction.reply({
-			content: "This command is temporarily disabled! (complain to Discord for breaking slash command permissions)",
-			ephemeral: true,
-		});
+		if (await interaction.perms({ type: "mod" })) return;
 
 		const timeout: number = parseDate(interaction.options.getString("timeout", true));
 		const reason: string = interaction.options.getString("reason");
-		let user: GuildMember = interaction.options.getMentionable("user", true) as any;
+		let guild = await interaction.client.guilds.fetch(interaction.guildId);
+		let user = await guild.members.fetch(interaction.options.getUser("user").id);
 
-		if (!(user instanceof GuildMember))
-			return interaction.reply({
-				content: "The mention should be a user from the server!",
-				ephemeral: true,
-			});
-
-		// check for teams guilds & apply the mute to all teamed guilds
+		// check for team guilds & apply the mute to all teamed guilds
 		// if there is no "team", only apply to the guild were the command is made
 		let guildsToMute: Array<string> = [];
 		const team: string = (interaction.client as Client).config.discords.filter((d) => d.id === interaction.guildId)[0]
@@ -72,12 +55,11 @@ export const command: SlashCommand = {
 			}
 
 			// maximum timeout is 27 days (discord limitation)
-			await member.timeout((timeout > 2332800 ? 2332800 : timeout) * 1000, reason);
+			await member.timeout((timeout > 2332800 ? 2332800 : timeout) * 1000, reason); // The numbers Mason, what do they mean?!
 		});
 
 		const embed: MessageEmbed = new MessageEmbed()
 			.setTitle(`${user.displayName} has been ${timeout > 0 ? "muted" : "unmuted"}.`)
-			.setAuthor({ name: interaction.user.username, iconURL: interaction.user.avatarURL({ dynamic: true }) })
 			.setColor(colors.black)
 			.addFields([
 				{ name: "User", value: `<@!${user.id}>` },
@@ -89,7 +71,9 @@ export const command: SlashCommand = {
 				{ name: "Timeout", value: `<t:${(new Date().getTime() / 1000 + timeout).toFixed(0)}:R>`, inline: true },
 			]);
 
-		const message: Message = (await interaction.reply({ embeds: [embed], fetchReply: true })) as any;
+		await interaction.reply({content: "\u200B"})
+		await interaction.deleteReply();
+		const message: Message = (await interaction.channel.send({ embeds: [embed] })) as any;
 
 		// construct logs
 		//! TODO: add mute icon in thumbnail (waiting for @Pomi108 to draw it)
@@ -100,7 +84,7 @@ export const command: SlashCommand = {
 			.addFields([
 				{ name: "Server", value: `\`${interaction.guild.name}\``, inline: true },
 				{ name: "Channel", value: `${interaction.channel}`, inline: true },
-				{ name: "Message", value: `[Jump to it](${message.url})`, inline: true },
+				{ name: "Message", value: `[Jump to message](${message.url})`, inline: true },
 				{ name: "User", value: `<@!${user.id}>`, inline: true },
 				{ name: "Reason", value: reason ? reason : "No reason given.", inline: true },
 			])

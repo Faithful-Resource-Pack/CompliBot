@@ -12,13 +12,19 @@ export const command: SlashCommand = {
 		let embed = new MessageEmbed();
 
 		const killed = (
-			await interaction.text({ string: "Command.Kill.Killed", placeholders: { IGNORE_MISSING: "True" } })
+			await interaction.getEphemeralString({ string: "Command.Kill.Killed", placeholders: { IGNORE_MISSING: "True" } })
 		).split("$,");
 		const killed_by = (
-			await interaction.text({ string: "Command.Kill.KilledBy", placeholders: { IGNORE_MISSING: "True" } })
+			await interaction.getEphemeralString({
+				string: "Command.Kill.KilledBy",
+				placeholders: { IGNORE_MISSING: "True" },
+			})
 		).split("$,");
 		const killed_by_using = (
-			await interaction.text({ string: "Command.Kill.KilledByUsing", placeholders: { IGNORE_MISSING: "True" } })
+			await interaction.getEphemeralString({
+				string: "Command.Kill.KilledByUsing",
+				placeholders: { IGNORE_MISSING: "True" },
+			})
 		).split("$,");
 
 		if (interaction.options.getUser("user") !== null) {

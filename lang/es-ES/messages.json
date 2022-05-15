@@ -1,0 +1,20 @@
+{
+  "Error.DevBad": "Esta parte permanece sin implementación debido a la incompetencia. Pregúntele a los desarrolladores o haga frente.",
+  "Error.General": "¡Se encontró un error!",
+  "Error.Message.Deleted": "¡Este mensaje ha sido borrado!",
+  "Error.NotFound": "¡%THING% no encontrado!",
+  "Error.NoPermissions": "¡No tienes permiso para hacer eso!",
+  "Error.Interaction.Reserved": "Esta interacción está reservada a su propietario (%USER%)",
+  "Error.Channel.CacheNotFound": "¡El canal %CHANNEL_NAME% no se encuentra en el caché!",
+  "Error.Channel.NotTextChannel": "El canal seleccionado no es un canal de texto, el mensaje no puede ser enviado!",
+  "Error.Timeout.NoTypeGiven": "¡El tiempo de espera dado no especifica la longitud que es!\nEjemplo: `30s`, `1 min`, `10 horas`, `1 día`, `1 semana`, `1 mes`, `1 año`",
+  "General.Are": "son",
+  "General.Cancel": "Cancelar",
+  "General.Is": "es",
+  "General.No": "No",
+  "General.Send": "Envíar",
+  "General.Yes": "Sí",
+  "Success.Detailed": "¡Éxito! %DETAILS%",
+  "Success.General": "¡Éxito!",
+  "Success.Cancel": "¡%ACTION% cancelado!"
+}

@@ -14,10 +14,10 @@ export const command: SlashCommand = {
 	execute: async (interaction: CommandInteraction, client: Client) => {
 		const embedPreview = new MessageEmbed()
 			.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL() })
-			.setTitle(await interaction.text({ string: "Command.Feedback.Preview" }))
+			.setTitle(await interaction.getEphemeralString({ string: "Command.Feedback.Preview" }))
 			.setDescription(interaction.options.getString("message"))
 			.setTimestamp()
-			.setFooter({ text: await interaction.text({ string: "Command.Feedback.ConfirmPrompt" }) });
+			.setFooter({ text: await interaction.getEphemeralString({ string: "Command.Feedback.ConfirmPrompt" }) });
 
 		const btnCancel = new MessageButton()
 			.setStyle("DANGER")
@@ -25,13 +25,13 @@ export const command: SlashCommand = {
 			.setCustomId("feedbackCancel");
 
 		const btnBug = new MessageButton()
-			.setLabel(await interaction.text({ string: "Command.Feedback.Bug" }))
+			.setLabel(await interaction.getEphemeralString({ string: "Command.Feedback.Bug" }))
 			.setStyle("PRIMARY")
 			.setEmoji(parseId(ids.bug))
 			.setCustomId("feedbackBug");
 
 		const btnSuggestion = new MessageButton()
-			.setLabel(await interaction.text({ string: "Command.Feedback.Suggestion" }))
+			.setLabel(await interaction.getEphemeralString({ string: "Command.Feedback.Suggestion" }))
 			.setStyle("PRIMARY")
 			.setEmoji(parseId(ids.suggestion))
 			.setCustomId("feedbackSuggestion");

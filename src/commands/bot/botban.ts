@@ -9,18 +9,9 @@ import { join } from "path";
 const config: Config = ConfigJson;
 
 export const command: SlashCommand = {
-	permissions: {
-		users: [
-			"207471947662098432", // Juknum
-			"173336582265241601", // TheRolf
-			"473860522710794250", // RobertR11
-			"601501288978448411", // Nick
-		],
-	},
 	data: new SlashCommandBuilder()
 		.setName("botban")
 		.setDescription("Manages the banlist *(devs naughty list :D).")
-		.setDefaultPermission(false)
 		.addSubcommand((view) => {
 			return view
 				.setName("view")
@@ -30,12 +21,12 @@ export const command: SlashCommand = {
 						.setName("format")
 						.setRequired(false)
 						.setDescription("The format the banlist should be displayed.")
-						.addChoices([
-							["Json", "json"],
-							["Embed", "emb"],
-							["Text", "txt"],
-							["Mentions", "ment"],
-						]);
+						.addChoices(
+							{ name: "Json", value: "json" },
+							{ name: "Embed", value: "emb" },
+							{ name: "Text", value: "txt" },
+							{ name: "Mentions", value: "ment" },
+						);
 				});
 		})
 		.addSubcommand((audit) => {
@@ -51,10 +42,12 @@ export const command: SlashCommand = {
 		}),
 	execute: new Collection<string, SlashCommandI>()
 		.set("audit", async (interaction: CommandInteraction, client: Client) => {
-			return interaction.reply({
-				content: "This command is temporarily disabled! (complain to Discord for breaking slash command permissions)",
-				ephemeral: true,
-			});
+			if (
+				await interaction.perms({
+					type: "dev",
+				})
+			)
+				return;
 
 			await interaction.deferReply({ ephemeral: true });
 			const banlist = require("@json/botbans.json");
@@ -67,7 +60,7 @@ export const command: SlashCommand = {
 				victimID == "473860522710794250" || //RobertR11
 				victimID == "601501288978448411" //Nick.
 			)
-				return interaction.followUp(await interaction.text({ string: "Command.Botban.view.unbannable" }));
+				return interaction.followUp(await interaction.getEphemeralString({ string: "Command.Botban.view.unbannable" }));
 
 			if (interaction.options.getBoolean("pardon")) {
 				banlist.ids.filter(async (v) => {
@@ -110,10 +103,12 @@ export const command: SlashCommand = {
 			} // can't fetch channel
 		})
 		.set("view", async (interaction: CommandInteraction, client: Client) => {
-			return interaction.reply({
-				content: "This command is temporarily disabled! (complain to Discord for breaking slash command permissions)",
-				ephemeral: true,
-			});
+			if (
+				await interaction.perms({
+					type: "dev",
+				})
+			)
+				return;
 
 			await interaction.deferReply({ ephemeral: true });
 			const buffer = readFileSync(join(__dirname, "../../../json/botbans.json"));

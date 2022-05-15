@@ -1,5 +1,5 @@
 import { magnifyAttachment } from "@functions/canvas/magnify";
-import { minecraftSorter } from "@functions/minecraftSorter";
+import { MinecraftSorter } from "@helpers/sorter";
 import {
 	submissionButtonsClosedEnd,
 	submissionButtonsClosed,
@@ -15,6 +15,7 @@ import { colors } from "@helpers/colors";
 import { TimedEmbed } from "./timedEmbed";
 import { getCorrespondingCouncilChannel, getSubmissionChannelName } from "@helpers/channels";
 import { getResourcePackFromName } from "@functions/getResourcePack";
+import { stickAttachment } from "@functions/canvas/stick";
 
 export type SubmissionStatus = "pending" | "instapassed" | "added" | "no_council" | "council" | "denied" | "invalid";
 
@@ -113,7 +114,7 @@ export class Submission extends TimedEmbed {
 		let channel: TextChannel;
 		let message: Message;
 
-		// waky method to turns json object to json object with methods (methods aren't saved and needs to be fetched)
+		// wacky method to turns json object to json object with methods (methods aren't saved and needs to be fetched)
 		try {
 			channel = (await client.channels.fetch(this.getChannelId())) as any;
 			message = await channel.messages.fetch(this.getMessageId());
@@ -122,7 +123,7 @@ export class Submission extends TimedEmbed {
 			return;
 		}
 
-		const embed: MessageEmbed = new MessageEmbed(message.embeds[0]);
+		const embed: MessageEmbed = new MessageEmbed(message.embeds.shift()); // remove first embed (with description) & keep others with magnified imgs
 		let components: Array<MessageActionRow> = message.components;
 
 		switch (this.getStatus()) {
@@ -193,7 +194,7 @@ export class Submission extends TimedEmbed {
 			field.value = field.name === "Votes" ? (field.value = this.getVotesUI().join(",\n")) : field.value;
 			return field;
 		});
-		await message.edit({ embeds: [embed], components: [...components] });
+		await message.edit({ embeds: [embed, ...message.embeds], components: [...components] });
 		return;
 	}
 
@@ -203,9 +204,8 @@ export class Submission extends TimedEmbed {
 		file: MessageAttachment,
 		texture: any,
 	): Promise<Message> {
-		const embed = await this.makeSubmissionMessage(baseMessage, file, texture);
 		const submissionMessage: Message = await baseMessage.channel.send({
-			embeds: [embed],
+			embeds: [await this.makeSubmissionMessage(baseMessage, file, texture)],
 			components: [submissionButtonsClosed, submissionButtonsVotes],
 		});
 
@@ -257,22 +257,39 @@ export class Submission extends TimedEmbed {
 			url = (
 				await axios.get(
 					`${(baseMessage.client as Client).config.apiUrl}textures/${texture.id}/url/default/${
-						texture.paths[0].versions.sort(minecraftSorter).reverse()[0]
+						texture.paths[0].versions.sort(MinecraftSorter).reverse()[0]
 					}`,
 				)
 			).request.res.responseUrl;
 		} catch {}
 
 		// magnified x16 texture in thumbnail
-		const magnifiedAttachment = (await magnifyAttachment({ url: url, name: "magnified.png", embed: null }))[0];
+		const magnifiedDefault = (await magnifyAttachment({ url: url, name: "magnified_default.png", embed: null }))[0];
 
 		// saved attachments in a private message
-		const messageAttachment = await channel.send({ files: [file, magnifiedAttachment] });
-		messageAttachment.attachments.forEach((ma: MessageAttachment) => files.push(ma));
+		let attachments = [...(await channel.send({ files: [file, magnifiedDefault] })).attachments.values()];
+		files.push(...attachments);
+
+		// we need to post the submission first to get an url for the getMeta() call (because if "file" come from a zip, the MessageAttachement won't have an url (it has never been posted))
+		const magnifiedSubmission = (
+			await magnifyAttachment({ url: attachments[0].url, name: "magnified_submission.png", embed: null })
+		)[0];
+		let attachment = [...(await channel.send({ files: [magnifiedSubmission] })).attachments.values()];
+		files.push(...attachment);
+
+		// we stick the default magnified & submission magnified together in the embed
+		const stickedImg = await stickAttachment({
+			left: { url: files[1].url },
+			right: { url: files[2].url },
+			name: "sticked.png",
+		});
+		let stickedImgAttachment = [...(await channel.send({ files: [stickedImg] })).attachments.values()];
+		files.push(...stickedImgAttachment);
 
 		// set submitted texture in image
-		embed.setImage(files[0].url);
-		embed.setThumbnail(files[1].url);
+		embed
+			.setThumbnail(files[0].url) // submitted image
+			.setImage(files[3].url); // sticked image
 
 		return embed;
 	}

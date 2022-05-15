@@ -1,0 +1,20 @@
+{
+  "Error.DevBad": "Ta część pozostaje niewdrożona z powodu braku kompetencji, zapytaj się deweloperów lub próbuj dalej.",
+  "Error.General": "Napotkano błąd!",
+  "Error.Message.Deleted": "Ta wiadomość została już usunięta!",
+  "Error.NotFound": "Nie znaleziono %THING% !",
+  "Error.NoPermissions": "Nie masz do tego uprawnień!",
+  "Error.Interaction.Reserved": "Ta interakcja jest zarezerwowana dla jego właściciela (%USER%)",
+  "Error.Channel.CacheNotFound": "Kanał %CHANNEL_NAME% nie może zostać znaleziony w pamięci podręcznej!",
+  "Error.Channel.NotTextChannel": "Wybrany kanał nie jest kanałem tekstowym, wiadomość nie może zostać wysłana!",
+  "Error.Timeout.NoTypeGiven": "Podany limit czasu nie określa długości!\nPrzykład: `30s`, `1 min`, `10 godzin`, `1 dzień`, `1 tydzień`, `1 miesiąc`, `1 rok`",
+  "General.Are": "są",
+  "General.Cancel": "Anuluj",
+  "General.Is": "jest",
+  "General.No": "Nie",
+  "General.Send": "Wyślij",
+  "General.Yes": "Tak",
+  "Success.Detailed": "Sukces! %DETAILS%",
+  "Success.General": "Sukces!",
+  "Success.Cancel": "%ACTION% anulowana!"
+}

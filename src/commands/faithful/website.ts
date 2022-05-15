@@ -13,14 +13,14 @@ export const command: SlashCommand = {
 			option
 				.setName("name")
 				.setDescription("Name of the resource pack you want to see the sites of.")
-				.addChoices([
-					["Faithful 32x", "faithful_32"],
-					["Faithful 64x", "faithful_64"],
-					["Faithful Add-ons", "faithful_addons"],
-					["Faithful Dungeons 32x", "faithful_dungeons_32"],
-					["Faithful Mods 32x", "faithful_mods_32"],
-					["Faithful Tweaks 32x", "faithful_tweaks_32"],
-				]),
+				.addChoices(
+					{ name: "Faithful 32x", value: "faithful_32" },
+					{ name: "Faithful 64x", value: "faithful_64" },
+					{ name: "Faithful Add-ons", value: "faithful_addons" },
+					{ name: "Faithful Dungeons 32x", value: "faithful_dungeons_32" },
+					{ name: "Faithful Mods 32x", value: "faithful_mods_32" },
+					{ name: "Faithful Tweaks 32x", value: "faithful_tweaks_32" },
+				),
 		),
 	execute: async (interaction: CommandInteraction) => {
 		const embed = new MessageEmbed();

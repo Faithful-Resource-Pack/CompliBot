@@ -1,0 +1,16 @@
+{
+  "Error.DevBad": "Tahle část zůstává nezrealizována kvůli nekompetenci vývojářů. Zeptej se jich nebo se stim smiř.",
+  "Error.General": "Stala se chyba!",
+  "Error.Message.Deleted": "Tato zpráva už byla dříve smazána!",
+  "Error.NotFound": "%THING% nenalezeno!",
+  "Error.Interaction.Reserved": "Tato interakce je vyhrazena jejímu majiteli (%USER%)",
+  "Error.Channel.CacheNotFound": "Kanál %CHANNEL_NAME% nebylo možno nalézt v mezipaměti!",
+  "Error.Channel.NotTextChannel": "Zadaný kanál není textový, zpráva nemohla být odeslána.",
+  "General.Cancel": "Zrušit",
+  "General.No": "Ne",
+  "General.Send": "Odeslat",
+  "General.Yes": "Ano",
+  "Success.Detailed": "Úspěch! %DETAILS%",
+  "Success.General": "Úspěch!",
+  "Success.Cancel": "%ACTION% zrušeno!"
+}

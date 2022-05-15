@@ -1,4 +1,4 @@
-import { CommandInteraction, EmbedField, TextChannel } from "discord.js";
+import { CommandInteraction, EmbedField } from "discord.js";
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { Poll } from "@class/poll";
@@ -52,7 +52,7 @@ export const command: SlashCommand = {
 		if (timeoutVal !== null) {
 			if (parseInt(timeoutVal, 10).toString() === timeoutVal)
 				return interaction.reply({
-					content: await interaction.text({ string: "Error.Timeout.NoTypeGiven" }),
+					content: await interaction.getEphemeralString({ string: "Error.Timeout.NoTypeGiven" }),
 					ephemeral: true,
 				});
 			poll.setTimeout(addSeconds(new Date(), parseDate(timeoutVal)));

@@ -10,7 +10,7 @@ export const button: Button = {
 
 		if (interaction.user.id !== messageInteraction.user.id)
 			return interaction.reply({
-				content: (await interaction.text({ string: "Error.Interaction.Reserved" })).replace(
+				content: (await interaction.getEphemeralString({ string: "Error.Interaction.Reserved" })).replace(
 					"%USER%",
 					`<@!${messageInteraction.user.id}>`,
 				),
@@ -19,8 +19,8 @@ export const button: Button = {
 
 		await interaction.reply({
 			content: (
-				await interaction.text({ string: "Success.Cancel" })
-			).replace("%ACTION%", await interaction.text({ string: "Command.Feedback.Title" })),
+				await interaction.getEphemeralString({ string: "Success.Cancel" })
+			).replace("%ACTION%", await interaction.getEphemeralString({ string: "Command.Feedback.Title" })),
 			ephemeral: true,
 		});
 
