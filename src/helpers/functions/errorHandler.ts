@@ -1,8 +1,4 @@
-import {
-	MessageAttachment,
-	MessageEmbed,
-	TextChannel,
-} from "discord.js";
+import { MessageAttachment, MessageEmbed, TextChannel } from "discord.js";
 import { Client } from "@client";
 import fs from "fs";
 import { err } from "@helpers/logger";
@@ -51,7 +47,9 @@ export const logConstructor: Function = (
 	client: Client,
 	reason: any = { stack: "You requested it with /logs ¯\\_(ツ)_/¯" },
 ): MessageAttachment => {
-	const logTemplate = fs.readFileSync(path.join(__dirname + "/errorHandler.log"), { encoding: "utf-8" });
+	const logTemplate = fs.readFileSync(path.join(__dirname + "/errorHandler.log").replace("dist\\", ""), {
+		encoding: "utf-8",
+	});
 	const template = logTemplate.match(new RegExp(/\%templateStart%([\s\S]*?)%templateEnd/))[1]; // get message template
 
 	const t = Math.floor(Math.random() * randomSentences.length);
@@ -80,7 +78,7 @@ export const logConstructor: Function = (
 						  }`
 						: log.type === "message"
 						? `${log.type} [${log.data.isDeleted ? "deleted" : "created"}] | ${
-							log.data.author ? (log.data.author.bot ? "BOT" : "USER") : "Unknown (likely bot)"
+								log.data.author ? (log.data.author.bot ? "BOT" : "USER") : "Unknown (likely bot)"
 						  } | ${log.data.author ? log.data.author.username : "Unknown"}`
 						: log.type,
 				)

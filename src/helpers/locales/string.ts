@@ -1,4 +1,5 @@
 import { ids, parseId } from "@helpers/emojis";
+import path from "path";
 import { langs, en_US, JSONFiles } from ".";
 export type keys = keyof typeof en_US;
 
@@ -8,14 +9,15 @@ export interface Placeholder {
 
 export async function string(country_code: langs, key: keys, placeholders?: Placeholder): Promise<string> {
 	let lang: {};
-	for (let i = 0; JSONFiles[i]; i++) lang = { ...lang, ...(await import(`@/lang/en-US/${JSONFiles[i]}.json`)) }; // fallback
+	for (let i = 0; JSONFiles[i]; i++)
+		lang = { ...lang, ...(await import(path.join(__dirname, "../../../", `/lang/en-US/${JSONFiles[i]}.json`))) }; // fallback
 
 	if (country_code !== "en-GB" && country_code !== "en-US")
 		// because the fallback is already IN ENGLISH
 		for (let i = 0; JSONFiles[i]; i++)
 			try {
 				//* We try the import before spreading the object to avoid issues, we only want to check if the file exists
-				const lang2 = await import(`@/lang/${country_code}/${JSONFiles[i]}.json`);
+				const lang2 = await import(path.join(__dirname, "../../../", `/lang/${country_code}/${JSONFiles[i]}.json`));
 				lang = { ...lang, ...lang2 };
 			} catch {} // file not found
 

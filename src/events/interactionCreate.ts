@@ -7,7 +7,7 @@ export const event: Event = {
 	run: async (client: Client, interaction: Interaction) => {
 		if (!interaction.inGuild()) return;
 
-		const banlist = require("@json/botbans.json");
+		const banlist = await import("@json/botbans.json");
 		if (banlist.ids.indexOf(interaction.user.id) > -1) {
 			(interaction as CommandInteraction | ButtonInteraction | SelectMenuInteraction).reply({
 				content: await (

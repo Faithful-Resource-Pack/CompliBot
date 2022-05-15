@@ -52,7 +52,10 @@ type permissionCode = [boolean, boolean, boolean];
  */
 
 //TODO: use a bearer token for v2 in the future. This is a temporary workaround
-export function checkPermissions(interaction: CommandInteraction, permissions: permissionOptions): permissionCode {
+export async function checkPermissions(
+	interaction: CommandInteraction,
+	permissions: permissionOptions,
+): Promise<permissionCode> {
 	let code: permissionCode = [true, true, true];
 
 	let type = permissions.type ? permissions.type : "config";
@@ -95,7 +98,7 @@ export function checkPermissions(interaction: CommandInteraction, permissions: p
 	}
 
 	if (type == "config") {
-		const config = require("@json/config.json");
+		const config = await import("@json/config.json");
 
 		if (permissions.roles) {
 			const roles = (interaction.member.roles as GuildMemberRoleManager).cache.map((r) => r.id);

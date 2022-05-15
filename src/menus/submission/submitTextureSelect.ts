@@ -3,7 +3,7 @@ import { zipToMA } from "@functions/zipToMessageAttachments";
 import { info } from "@helpers/logger";
 import { SelectMenu } from "@interfaces";
 import { MessageAttachment } from "discord.js";
-import { processFiles } from "events/textureSubmitted";
+import { processFiles } from "@/src/events/textureSubmitted";
 
 export const menu: SelectMenu = {
 	selectMenuId: "submitTextureSelect",

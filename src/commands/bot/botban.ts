@@ -50,7 +50,7 @@ export const command: SlashCommand = {
 				return;
 
 			await interaction.deferReply({ ephemeral: true });
-			const banlist = require("@json/botbans.json");
+			const banlist = await import("@json/botbans.json");
 			// const banlist = JSON.parse(banlistJSON);
 			const victimID = interaction.options.getUser("subject").id;
 			if (
