@@ -1,14 +1,18 @@
 # CompliBot TypeScript - Changelog
 > This is a beta and will not be fully stable. To report any bugs, use the `/feedback` command
 
-## How to read this changelog?
+## [v2.0.5] TBA
 
-Commands are explained like so:
-```
-/notes [mandatory_parameter] (optional_parameter)
-```
+### Added
+- none
 
-## [v2.0.4] TBA
+### Changed
+- none
+
+### Fixed
+- none
+
+## [v2.0.4] 15/05/2022
 
 ### Added
 - Support for slash command attachments in image related commands
