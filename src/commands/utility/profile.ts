@@ -50,7 +50,7 @@ export const command: SlashCommand = {
 				.setImage((await bannerUrl) ? await bannerUrl : "")
 				.addFields(
 					{ name: "Name & Tag", value: user.tag, inline: true },
-					{ name: "Nickname", value: guildUser.nickname, inline: true },
+					{ name: "Nickname", value: guildUser.nickname ? guildUser.nickname : "none", inline: true },
 					{ name: "ID", value: user.id, inline: true },
 					{
 						name: "Status",
