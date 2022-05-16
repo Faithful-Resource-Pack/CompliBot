@@ -122,7 +122,7 @@ export const getTextureMessageOptions = async (options: {
 
 		if (contributions.length > 2)
 			displayedContributions.push("[See older contributions in the WebApp](https://webapp.faithfulpack.net/#/gallery)");
-		if (contributions.length && pack !== "default")
+		if (displayedContributions[0] != undefined && contributions.length && pack !== "default")
 			embed.addField("Latest contribution", displayedContributions.join("\n"));
 	}
 
