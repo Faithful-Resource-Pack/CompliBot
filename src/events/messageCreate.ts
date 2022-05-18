@@ -17,7 +17,7 @@ export const event: Event = {
 		if (message.author.bot) return;
 
 		// test if message is in submit channel
-		if (getSubmissionsChannels(client as Client).includes(message.channelId)) {
+		if (getSubmissionsChannels(client as Client).includes(message.channelId) && !client.tokens.dev) {
 			client.emit("textureSubmitted", (client as Client, message));
 			return;
 		}
