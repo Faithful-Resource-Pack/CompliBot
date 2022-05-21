@@ -20,7 +20,11 @@ export const command: SlashCommand = {
 	execute: async (interaction: CommandInteraction, client: Client) => {
 		const versionChoice = await interaction.options.getString("version");
 
-		const changelogStr = readFileSync(path.join(__dirname, "../../../", "CHANGELOG.md"), "utf-8").replaceAll("\r", ""); //fuck caridge returns
+		const changelogStr = readFileSync(path.join(__dirname, "../../../", "CHANGELOG.md"), "utf-8")
+			.replaceAll("\r", "") //fuck caridge returns
+
+			.replaceAll("**Warning**", "**⚠️Warning**") //discord prefixes these two keyterms with emojis and styles
+			.replaceAll("**Note**", "**ℹ️Note**"); //them unlike discord so this is adding them back.
 		const allVersions = changelogStr.match(/(?<=## )([^]*?)(?=(\n## )|($))/g); //basically searches for strings between ## and another ## or the end of the file
 
 		let versions = [
