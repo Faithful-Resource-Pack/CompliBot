@@ -3,8 +3,6 @@ import axios from "axios";
 async function easterEgg(url: string, id: number): Promise<Boolean> {
 	switch (id) {
 		case 1:
-			if (!url.endsWith("grass_block_side_overlay.png")) return false;
-
 			return await axios.get(url, { responseType: "arraybuffer" }).then((response) => {
 				const data = response.data;
 				const buf = Buffer.from(data, "base64").toString();
@@ -17,8 +15,6 @@ async function easterEgg(url: string, id: number): Promise<Boolean> {
 				return result;
 			});
 		case 2:
-			if (!url.endsWith("unknown.png")) return false;
-
 			return await axios.get(url, { responseType: "arraybuffer" }).then((response) => {
 				const data = response.data;
 				const buf = Buffer.from(data, "base64").toString();

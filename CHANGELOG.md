@@ -1,4 +1,5 @@
 # CompliBot TypeScript - Changelog
+> **Note**
 > This is a beta and will not be fully stable. To report any bugs, use the `/feedback` command
 
 ## How to read this changelog?
@@ -8,7 +9,7 @@ Commands are explained like so:
 /notes [mandatory_parameter] (optional_parameter)
 ```
 
-## [v2.0.5] TBA
+## [v2.5.0] TBA
 
 ### Added
 - none
@@ -19,16 +20,16 @@ Commands are explained like so:
 ### Fixed
 - none
 
-## [v2.0.4] 15/05/2022
+## [v2.4.0] 15/05/2022
 
 ### Added
 - Support for slash command attachments in image related commands
 - Strings are now stored in multiple JSON files & translated ones should be edited on the [crowdin page](https://translate.faithfulpack.net/discord-bot)
 - You can now search for a texture without using underscores `_`
 - Added a new optional parameter to the `magnifyAttachment` function: `orientation` which could take 3 values `landscape`, `portrait` & `none`
-  - `portrait`: add margin on the top & bottom of the magnified image (unused)
-  - `landscape`: add margin on the sides (unused yet)
-  - `none`: old behavior (used when no orientation is given)
+    - `portrait`: add margin on the top & bottom of the magnified image (unused)
+    - `landscape`: add margin on the sides (unused yet)
+    - `none`: old behavior (used when no orientation is given)
 - `stickCanvas()` & `stickAttachment()` functions to stick side by side two canvas
 - Animated textures are now animated when using `/texture`.
 - MCmeta is shown when using `/texture`.
@@ -58,7 +59,7 @@ Commands are explained like so:
 - Fixed oldest supported version when selecting texture from `/texture`
 - Fixed being able to specify a role as user in `/mute` command
 
-## [v2.0.3] 12/04/2022
+## [v2.3.0] 12/04/2022
 
 ### Added
 - `/activity [activity] (channel)` lets you start all of discord's mini-games in a channel that your in or a specified channel can be provided. (_some activities require boosts like the game octo_) 
@@ -66,7 +67,9 @@ Commands are explained like so:
 - `/eval [code]` command for developers.
 - `/logs` for developers only, see the whole current logs information without needing a crash of the bot.
 - `/notes [add|list|edit]`, moderators can now make private notes against all users
-  - Use `/notes list [user]` to list all attached notes from that user; **⚠️ the response is public**.
+  - Use `/notes list [user]` to list all attached notes from that user; 
+  > **Warning**
+  > the response is public.
   - Use `/notes add [user] [note]` to add a note to a user
   - Use `/notes edit [user] [index] (note)` to edit a specific note, administrators can modify any notes, but moderators can only modify their personal notes. If the `note` parameter is not given **and** you're an administrator, the note is deleted.
 - `/userinfo` for moderators to get detailed information on a specified user
@@ -77,7 +80,9 @@ Commands are explained like so:
 ### Changed
 - Re-branded Compliance to Faithful.
 - Changed how no results are handled when using `/texture`, may solve the `Unknown Message` error + the no response at all.
-- Crash logs are now **way more** detailed and now contain information about: messages (deleted/created), slash commands, guild member (joined/removed), select menus, buttons, slash commands, guild joined (when the client is added to a guild: ⚠️ UNTESTED)
+- Crash logs are now **way more** detailed and now contain information about: messages (deleted/created), slash commands, guild member (joined/removed), select menus, buttons, slash commands and guild joined.
+> **Warning**
+> Guild join events are untested
 - `/poll`:
   - Threads are now directly attached to the poll message
   - Vote can now be set to accept multiple answers trough the `allow-multiple-answer` option! (set to `false` by default)
@@ -91,14 +96,16 @@ Commands are explained like so:
 - Delete button should now be properly working again
 - Fixed some typo & added a lot of comments to describe methods/functions
 
-## [v2.0.2] 14/03/2022
+## [v2.2.0] 14/03/2022
 
 ### Added
 - `/bean [user]` will now beans a user (moderators exclusive).
 - `/restart` to restarts the bot process for maintenance (bot developers exclusive) 
-- `/botban [view|audit]` **⚠️ Being bot banned disables use of any interaction and should be used only to patch exploiting users.**
-  - `/botban view [format]` command: view the bot ban list in various formats (bot developers exclusive)
-  - `/botban audit [subject] (pardon)` command: add/remove a user from the bot ban list (bot developers exclusive)
+- `/botban [view|audit]` 
+    - `/botban view [format]` command: view the bot ban list in various formats (bot developers exclusive)
+    - `/botban audit [subject] (pardon)` command: add/remove a user from the bot ban list (bot developers exclusive)
+> **Warning**
+> Being bot banned disables use of any interaction and should be used only to patch exploiting users.
 - `/changelog` command: Show the changelog by version.
 - `/notice` command: Give the users updates on stuff like scheduled downtime
 - `/setnotice` command: Sets the current notice (bot developers exclusive).
@@ -112,9 +119,12 @@ Commands are explained like so:
 - **Config:** added "teams" config options: This now allow us to specify global roles, channels and so on for a group of discords servers (useful for Faithful servers).
 
 ### Changed
-- ⚠️ Moved all `.json` files used to store data from `EmittingCollection` into `./json/dynamic`
-  > All polls data already saved will be lost! Already saved data needs to be manually transferred (only path as changed, not the data itself).
-- ⚠️ Commands in the `faithful` folders are now only available on `faithful`, `faithful_extra` & `classic_faithful` servers;  
+> **Warning**
+> Moved all `.json` files used to store data from `EmittingCollection` into `./json/dynamic`
+> All polls data already saved will be lost! Already saved data needs to be manually transferred (only path as changed, not the data itself).
+  
+> **Warning**
+> Commands in the `faithful` folders are now only available on `faithful`, `faithful_extra` & `classic_faithful` servers;  
   > Concerned commands are: `/guidelines`, `/license`, `/missing`, `/reason`, `/texture`, `/website`.  
   > To avoid duplicated commands, kick & reinvite the bot.
 - Added some textures to the `blacklisted_textures.json`.
@@ -126,7 +136,7 @@ Commands are explained like so:
 - Fixed `polls` being automatically marked as "ended" while no timeout was given.
 - Fixed `/texture` command erroring when there are multiple texture results and a texture having no path set
 
-## [v2.0.1] 05/03/2022
+## [v2.1.0] 05/03/2022
 
 ### Added
 - `/poll` command
