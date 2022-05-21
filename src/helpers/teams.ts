@@ -1,5 +1,5 @@
-import { Config } from "./interfaces";
-import configJson from "@json/config.json";
+import { Config } from './interfaces';
+import configJson from '@json/config.json';
 
 const config: Config = configJson;
 
@@ -9,16 +9,16 @@ const config: Config = configJson;
  * @returns {string[]} - ids you searched
  */
 export const getTeamsIds = (options: { name: string | Array<string> }): Array<string> => {
-	const output: Array<string> = [];
+  const output: Array<string> = [];
 
-	const search = (name: string): void => {
-		output.push(
-			...config.discords.filter((discord) => discord.team !== undefined && discord.team !== name).map((d) => d.team),
-		);
-	};
+  const search = (name: string): void => {
+    output.push(
+      ...config.discords.filter((discord) => discord.team !== undefined && discord.team !== name).map((d) => d.team),
+    );
+  };
 
-	if (typeof options.name === "string") search(options.name);
-	else options.name.forEach((name) => search(name));
+  if (typeof options.name === 'string') search(options.name);
+  else options.name.forEach((name) => search(name));
 
-	return output;
+  return output;
 };

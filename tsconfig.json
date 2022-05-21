@@ -15,6 +15,7 @@
 		"emitDecoratorMetadata": true,
 		"allowSyntheticDefaultImports": true,
 		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true,
 		"declaration": false,
 		"allowJs": true,
 		"resolveJsonModule": true,

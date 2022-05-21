@@ -7,16 +7,16 @@
  */
 
 export function setDeep(obj, path: any[], value) {
-	path.reduce((prev, curr, index) => {
-		if (typeof prev[curr] === "undefined" && index !== path.length) {
-			prev[curr] = {};
-			return prev[curr];
-		}
+  path.reduce((prev, curr, index) => {
+    if (typeof prev[curr] === 'undefined' && index !== path.length) {
+      prev[curr] = {};
+      return prev[curr];
+    }
 
-		if (index === path.length) {
-			prev[curr] = value;
-			return value;
-		}
-		return prev[curr];
-	}, obj);
+    if (index === path.length) {
+      prev[curr] = value;
+      return value;
+    }
+    return prev[curr];
+  }, obj);
 }

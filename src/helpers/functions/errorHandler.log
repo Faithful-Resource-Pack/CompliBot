@@ -11,9 +11,11 @@ Actions:
 %templateStart%
   INDEX        : %templateIndex%
   TYPE         : %templateType%
-  TIMESTAMP    : %templateCreatedTimestamp%
+  LOGGED       : %templateTimestampLogged%
+  CREATED      : %templateCreatedTimestamp%
   URL          : %templateURL%
   CHANNEL_TYPE : %templateChannelType%
+  PARAMETERS   : %templateParameters%
   CONTENT      : %templateContent%
   EMBEDS       : %templateEmbeds%
   COMPONENTS   : %templateComponents%

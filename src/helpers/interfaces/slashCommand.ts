@@ -1,22 +1,22 @@
-import { Collection, Interaction } from "discord.js";
-import { SlashCommandSubcommandsOnlyBuilder, SlashCommandBuilder } from "@discordjs/builders";
-import { Client } from "@client";
+import { Collection, Interaction } from 'discord.js';
+import { SlashCommandSubcommandsOnlyBuilder, SlashCommandBuilder } from '@discordjs/builders';
+import { Client } from '@client';
 
 export interface SlashCommand {
-	servers?: Array<string>;
-	permissions?: Permissions | undefined;
-	data: SyncSlashCommandBuilder | AsyncSlashCommandBuilder;
-	execute: Collection<string, SlashCommandI> | SlashCommandI;
+  servers?: Array<string>;
+  permissions?: Permissions | undefined;
+  data: SyncSlashCommandBuilder | AsyncSlashCommandBuilder;
+  execute: Collection<string, SlashCommandI> | SlashCommandI;
 }
 
 export type SyncSlashCommandBuilder =
-	| SlashCommandSubcommandsOnlyBuilder
-	| Omit<SlashCommandBuilder, "addSubcommand" | "addSubcommandGroup">;
+  | SlashCommandSubcommandsOnlyBuilder
+  | Omit<SlashCommandBuilder, 'addSubcommand' | 'addSubcommandGroup'>;
 export interface AsyncSlashCommandBuilder {
-	(...args: any): Promise<SyncSlashCommandBuilder>;
+  (...args: any): Promise<SyncSlashCommandBuilder>;
 }
 export interface SlashCommandI {
-	(interaction: Interaction, client?: Client): void;
+  (interaction: Interaction, client?: Client): void;
 }
 
 /**
@@ -24,6 +24,6 @@ export interface SlashCommandI {
  * otherwise the command will stay available for everybody else
  */
 export interface Permissions {
-	roles?: Array<string> | undefined;
-	users?: Array<string> | undefined;
+  roles?: Array<string> | undefined;
+  users?: Array<string> | undefined;
 }

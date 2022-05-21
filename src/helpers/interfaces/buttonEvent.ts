@@ -1,11 +1,11 @@
-import { Client } from "@client";
-import { ButtonInteraction } from "discord.js";
+import { Client } from '@client';
+import { ButtonInteraction } from 'discord.js';
 
 interface Execute {
-	(client: Client, interaction: ButtonInteraction): void;
+  (client: Client, interaction: ButtonInteraction): void;
 }
 
 export interface Button {
-	buttonId: string;
-	execute: Execute;
+  buttonId: string;
+  execute: Execute;
 }

@@ -1,4 +1,4 @@
-import { normalize } from "path";
+import { normalize } from 'path';
 
 /**
  * Apply the `normalize()` method on an array
@@ -6,7 +6,7 @@ import { normalize } from "path";
  * @returns {arr<string>}
  */
 export const normalizeArray = (arr: Array<string>): Array<string> => {
-	return arr.map((e) => normalize(e));
+  return arr.map((e) => normalize(e));
 };
 
 /**
@@ -16,14 +16,14 @@ export const normalizeArray = (arr: Array<string>): Array<string> => {
  * @returns {boolean} - true if nothing if found
  */
 export const includesNone = (arr: Array<string>, val: string): boolean => {
-	let res: boolean = true;
-	let i = 0;
-	while (i < arr.length && res) {
-		res = !val.includes(arr[i]);
-		i++;
-	}
+  let res: boolean = true;
+  let i = 0;
+  while (i < arr.length && res) {
+    res = !val.includes(arr[i]);
+    i++;
+  }
 
-	return res;
+  return res;
 };
 
 /**
@@ -33,7 +33,7 @@ export const includesNone = (arr: Array<string>, val: string): boolean => {
  * @param {Array<T>} arr
  */
 export const doNestedArr = (arr: Array<any>): Array<[any, any]> => {
-	return arr.map((v) => [v, v]);
+  return arr.map((v) => [v, v]);
 };
 
 /**
@@ -42,8 +42,16 @@ export const doNestedArr = (arr: Array<any>): Array<[any, any]> => {
  * ["test", "options"] => [["test", "test"], ["options", "options"]]
  * @param {Array<T>} arr
  */
-export const doNestedObj = (obj: Array<any>): Array<{ name: string; value: any }> => {
-	return obj.map((v) => {
-		return { name: v, value: v };
-	});
+export const doNestedObj = (
+  obj: Array<any>,
+): Array<{
+  name: string;
+  value: any;
+}> => {
+  return obj.map((v) => {
+    return {
+      name: v,
+      value: v,
+    };
+  });
 };

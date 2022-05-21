@@ -1,20 +1,20 @@
-import { Client } from "@client";
-import { ClientEvents } from "discord.js";
+import { Client } from '@client';
+import { ClientEvents } from 'discord.js';
 
 interface CustomEvents extends ClientEvents {
-	slashCommandUsed: any;
-	buttonUsed: any;
-	selectMenuUsed: any;
-	/** @deprecated slash commands interaction should be used */
-	oldCommandUsed: any;
-	textureSubmitted: any;
+  slashCommandUsed: any;
+  buttonUsed: any;
+  selectMenuUsed: any;
+  /** @deprecated slash commands interaction should be used */
+  oldCommandUsed: any;
+  textureSubmitted: any;
 }
 
 interface Run {
-	(client: Client, ...args: any[]);
+  (client: Client, ...args: any[]);
 }
 
 export interface Event {
-	name: keyof CustomEvents;
-	run: Run;
+  name: keyof CustomEvents;
+  run: Run;
 }
