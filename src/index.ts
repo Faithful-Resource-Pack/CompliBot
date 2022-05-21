@@ -8,7 +8,10 @@ import path from "path";
 
 //this is my 13th reason why
 export let changelogOptions = () => {
-	const changelogStr = readFileSync(path.join(__dirname, "../", "CHANGELOG.md"), "utf-8").replaceAll("\r", "");
+	const changelogStr = readFileSync(
+		path.join(__dirname, "../", "CHANGELOG.md").replace("dist\\", ""),
+		"utf-8",
+	).replaceAll("\r", "");
 	const allVersions = changelogStr.match(/(?<=## )([^]*?)(?=(\n## )|($))/g);
 
 	let versions = [

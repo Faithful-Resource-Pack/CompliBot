@@ -71,7 +71,7 @@ export const command: SlashCommand = {
 				{ name: "Timeout", value: `<t:${(new Date().getTime() / 1000 + timeout).toFixed(0)}:R>`, inline: true },
 			]);
 
-		await interaction.reply({content: "\u200B"})
+		await interaction.reply({ content: "\u200B" });
 		await interaction.deleteReply();
 		const message: Message = (await interaction.channel.send({ embeds: [embed] })) as any;
 

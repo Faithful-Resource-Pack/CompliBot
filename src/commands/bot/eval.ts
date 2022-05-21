@@ -25,7 +25,7 @@ export const command: SlashCommand = {
 			return;
 		const clean = async (text: any, client: Client): Promise<string> => {
 			if (text && text.constructor.name === "Promise") text = await text;
-			if (typeof text !== "string") text = require("util").inspect(text, { depth: 1 });
+			if (typeof text !== "string") text = (await import("util")).inspect(text, { depth: 1 });
 
 			text = text
 				.replaceAll(client.tokens.token, "[BOT_TOKEN]")

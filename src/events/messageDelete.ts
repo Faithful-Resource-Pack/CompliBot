@@ -18,7 +18,10 @@ export const event: Event = {
 
 		if (message.author && message.author.bot) return;
 
-		if ((client.tokens.dev || getTeamsIds({ name: "faithful" }).includes(message.guild.id)) && !getSubmissionsChannels(client).includes(message.channelId)) {
+		if (
+			(client.tokens.dev || getTeamsIds({ name: "faithful" }).includes(message.guild.id)) &&
+			!getSubmissionsChannels(client).includes(message.channelId)
+		) {
 			const embed = new MessageEmbed()
 				.setAuthor({ name: `${message.author.tag} deleted a message` })
 				.setColor(colors.red)
@@ -26,14 +29,14 @@ export const event: Event = {
 				.addFields([
 					{ name: "Server", value: message.guild.name, inline: true },
 					{ name: "Channel", value: `<#${message.channel.id}>`, inline: true },
-					{ name: "Message Content", value: `\`\`\`${message.content.replaceAll("```", "'''")}\`\`\`` }
+					{ name: "Message Content", value: `\`\`\`${message.content.replaceAll("```", "'''")}\`\`\`` },
 				])
 				.setDescription(`[Jump to location](${message.url})\n`)
 				.setTimestamp();
 
-			const logChannelId = client.tokens.dev 
-				? client.config.discords.filter(d => d.name === "dev")[0].channels.moderation
-				: client.config.teams.filter(t => t.name === "faithful")[0].channels.logs;
+			const logChannelId = client.tokens.dev
+				? client.config.discords.filter((d) => d.name === "dev")[0].channels.moderation
+				: client.config.teams.filter((t) => t.name === "faithful")[0].channels.logs;
 
 			const logChannel = client.channels.cache.get(logChannelId) as TextChannel;
 			await logChannel.send({ embeds: [embed] });

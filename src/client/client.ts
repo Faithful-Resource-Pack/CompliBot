@@ -40,7 +40,7 @@ import { loadJiraBedrockVersions, updateJiraBedrockVersions } from "@functions/M
 
 import path from "path";
 import chalk from "chalk";
-import { StartClient } from "index";
+import { StartClient } from "../index";
 
 const JSON_PATH = path.join(__dirname, "../../json/dynamic"); // json folder at root
 const POLLS_FILENAME = "polls.json";
@@ -295,9 +295,11 @@ class ExtendedClient extends Client {
 		for (let i = 0; i < paths.length; i++) {
 			const dir: string = paths[i];
 
-			const commands = readdirSync(`${slashCommandsPath}/${dir}`).filter((file) => file.endsWith(".ts"));
+			const commands = readdirSync(`${slashCommandsPath}/${dir}`).filter((file) =>
+				file.endsWith(process.env.NODE_ENV === "production" ? ".js" : ".ts"),
+			);
 			for (const file of commands) {
-				const { command } = require(`${slashCommandsPath}/${dir}/${file}`);
+				const { command } = await import(`${slashCommandsPath}/${dir}/${file}`);
 
 				if (command.data instanceof Function) {
 					this.slashCommands.set((await (command.data as AsyncSlashCommandBuilder)(this)).name, command); // AsyncSlashCommandBuilder
@@ -320,7 +322,7 @@ class ExtendedClient extends Client {
 				el.servers = ["dev"];
 			});
 
-		const guilds = { global: [] };
+		const guilds: { [guild: string]: RESTPostAPIApplicationCommandsJSONBody[] } = { global: [] };
 		commandsArr.forEach((el) => {
 			if (el.servers === null || el.servers === undefined) guilds["global"].push(el.command);
 			else
@@ -334,7 +336,7 @@ class ExtendedClient extends Client {
 			const d = this.config.discords[i];
 
 			// if the client isn't in the guild, skip it
-			if (this.guilds.cache.get(d.id) === undefined) continue;
+			if (this.guilds.cache.get(d.id) === undefined || guilds[d.name] === undefined) continue;
 			else
 				try {
 					// otherwise we add specific commands to that guild
@@ -372,7 +374,7 @@ class ExtendedClient extends Client {
 			const eventPath = path.join(__dirname, "..", "events");
 
 			readdirSync(eventPath)
-				.filter((file) => file.endsWith(".ts"))
+				.filter((file) => file.endsWith(process.env.NODE_ENV === "production" ? ".js" : ".ts"))
 				.forEach(async (file) => {
 					const { event } = await import(`${eventPath}/${file}`);
 					this.events.set(event.name, event);
@@ -389,7 +391,9 @@ class ExtendedClient extends Client {
 		const buttonPath = path.join(__dirname, "..", "buttons");
 
 		readdirSync(buttonPath).forEach(async (dir) => {
-			const buttons = readdirSync(`${buttonPath}/${dir}`).filter((file) => file.endsWith(".ts"));
+			const buttons = readdirSync(`${buttonPath}/${dir}`).filter((file) =>
+				file.endsWith(process.env.NODE_ENV === "production" ? ".js" : ".ts"),
+			);
 
 			for (const file of buttons) {
 				const { button } = await import(`${buttonPath}/${dir}/${file}`);
@@ -406,7 +410,9 @@ class ExtendedClient extends Client {
 		const menusPath = path.join(__dirname, "..", "menus");
 
 		readdirSync(menusPath).forEach(async (dir) => {
-			const menus = readdirSync(`${menusPath}/${dir}`).filter((file) => file.endsWith(".ts"));
+			const menus = readdirSync(`${menusPath}/${dir}`).filter((file) =>
+				file.endsWith(process.env.NODE_ENV === "production" ? ".js" : ".ts"),
+			);
 
 			for (const file of menus) {
 				const { menu } = await import(`${menusPath}/${dir}/${file}`);

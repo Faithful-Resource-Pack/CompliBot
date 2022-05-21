@@ -21,14 +21,14 @@
 		"baseUrl": "src",
 		"paths": {
 			"@/*": ["../*"],
-			"@client": ["client"],
-			"@client/buttons/*": ["buttons/*"],
-			"@client/commands/*": ["commands/*"],
-			"@client/menus/*": ["menus/*"],
-			"@functions/*": ["helpers/functions/*"],
-			"@class/*": ["helpers/class/*"],
-			"@helpers/*": ["helpers/*"],
-			"@interfaces": ["helpers/interfaces"],
+			"@client": ["../src/client"],
+			"@client/buttons/*": ["../src/buttons/*"],
+			"@client/commands/*": ["../src/commands/*"],
+			"@client/menus/*": ["../src/menus/*"],
+			"@functions/*": ["../src/helpers/functions/*"],
+			"@class/*": ["../src/helpers/class/*"],
+			"@helpers/*": ["../src/helpers/*"],
+			"@interfaces": ["../src/helpers/interfaces"],
 			"@json/*": ["../json/*"]
 		}
 	},

@@ -62,7 +62,7 @@ export const command: SlashCommand = {
 				{ name: "Reason", value: reason ? reason : "No reason given.", inline: true },
 			]);
 
-		await interaction.reply({content: "\u200B"})
+		await interaction.reply({ content: "\u200B" });
 		await interaction.deleteReply();
 		const message: Message = (await interaction.channel.send({ embeds: [embed] })) as any;
 

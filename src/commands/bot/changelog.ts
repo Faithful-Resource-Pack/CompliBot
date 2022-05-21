@@ -4,7 +4,7 @@ import { CommandInteraction, EmbedFieldData, Message } from "discord.js";
 import { Client, MessageEmbed } from "@client";
 import { readFileSync } from "fs";
 import path from "path";
-import { changelogOptions } from "index";
+import { changelogOptions } from "@/src";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -20,11 +20,11 @@ export const command: SlashCommand = {
 	execute: async (interaction: CommandInteraction, client: Client) => {
 		const versionChoice = await interaction.options.getString("version");
 
-		const changelogStr = readFileSync(path.join(__dirname, "../../../", "CHANGELOG.md"), "utf-8")
-			.replaceAll("\r", "") //fuck caridge returns
+		const changelogStr = readFileSync(path.join(__dirname, "../../../", "CHANGELOG.md").replace("dist\\", ""), "utf-8")
+			.replaceAll("\r", "") // no more \r returns
+			.replaceAll("**Warning**", "**⚠️ Warning**") //discord prefixes these two key terms with emojis and styles
+			.replaceAll("**Note**", "**ℹ️ Note**"); //them unlike discord so this is adding them back.
 
-			.replaceAll("**Warning**", "**⚠️Warning**") //discord prefixes these two keyterms with emojis and styles
-			.replaceAll("**Note**", "**ℹ️Note**"); //them unlike discord so this is adding them back.
 		const allVersions = changelogStr.match(/(?<=## )([^]*?)(?=(\n## )|($))/g); //basically searches for strings between ## and another ## or the end of the file
 
 		let versions = [
