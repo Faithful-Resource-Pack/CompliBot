@@ -8,7 +8,7 @@ import { zipToMA } from '@functions/zipToMessageAttachments';
 import axios, { AxiosResponse } from 'axios';
 import { Submission } from '@class/submissions';
 
-const processFiles = async (
+export const processFiles = async (
   client: Client,
   message: Message,
   files: MessageAttachment[],
