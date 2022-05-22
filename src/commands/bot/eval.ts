@@ -51,11 +51,7 @@ const command: SlashCommand = {
 
     const code: string = interaction.options.getString('code', true);
     // eslint-disable-next-line no-eval
-    const evaluated = await eval(
-      `(async () => { try { return await (async () => {${
-        code.includes('return') ? code : `return ${code}`
-      }})() } catch (e) { return e } })()`,
-    );
+    const evaluated = await eval(`(async () => { try { return await (async () => {${code.includes('return') ? code : `return ${code}`}})() } catch (e) { return e } })()`);
 
     interaction.reply({
       ephemeral: true,

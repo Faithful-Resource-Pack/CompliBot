@@ -1,10 +1,10 @@
+import path from 'path';
+import changelogOptions from '@helpers/changelog';
 import { SlashCommand } from '@interfaces';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { CommandInteraction, EmbedFieldData } from 'discord.js';
 import { MessageEmbed } from '@client';
 import { readFileSync } from 'fs';
-import path from 'path';
-import { changelogOptions } from '@/src';
 
 const command: SlashCommand = {
   data: new SlashCommandBuilder()

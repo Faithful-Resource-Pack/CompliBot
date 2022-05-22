@@ -21,16 +21,17 @@
 		"resolveJsonModule": true,
 		"baseUrl": "src",
 		"paths": {
-			"@/*": ["../*"],
 			"@client": ["../src/client"],
 			"@client/buttons/*": ["../src/buttons/*"],
 			"@client/commands/*": ["../src/commands/*"],
 			"@client/menus/*": ["../src/menus/*"],
+			"@client/events/*": ["../src/events/*"],
 			"@functions/*": ["../src/helpers/functions/*"],
 			"@class/*": ["../src/helpers/class/*"],
 			"@helpers/*": ["../src/helpers/*"],
 			"@interfaces": ["../src/helpers/interfaces"],
-			"@json/*": ["../json/*"]
+			"@json/*": ["../json/*"],
+			"@lang/*": ["../lang/*"]
 		}
 	},
 	"exclude": ["node_modules"],

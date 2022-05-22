@@ -1,6 +1,6 @@
-import main from '@/lang/en-US/main.json';
-import commands from '@/lang/en-US/commands.json';
-import messages from '@/lang/en-US/messages.json';
+import main from '@lang/en-US/main.json';
+import commands from '@lang/en-US/commands.json';
+import messages from '@lang/en-US/messages.json';
 
 export const JSONFiles = ['main', 'commands', 'messages'];
 export const enUS = {
