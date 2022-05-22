@@ -1,18 +1,17 @@
-import { SlashCommandI } from '@interfaces';
+import { SlashCommandI, Event } from '@interfaces';
 import { Collection } from 'discord.js';
-import { Event } from '@interfaces';
 import { Client, CommandInteraction } from '@client';
 
-export const event: Event = {
+const event: Event = {
   name: 'slashCommandUsed',
-  run: async (client: Client, interaction: CommandInteraction) => {
+  run: async (client: Client, interaction: CommandInteraction): Promise<void> => {
     client.storeAction('slashCommand', interaction);
 
     // get command name
     const { commandName } = interaction;
 
     // test if client has this command registered
-    if (!client.slashCommands.has(commandName)) return;
+    if (!client.slashCommands.has(commandName)) return Promise.reject(new Error(`Command ${commandName} not found`));
 
     // get this command
     const command = client.slashCommands.get(commandName);
@@ -41,6 +40,10 @@ export const event: Event = {
 
     // increase uses of that command
     const count: number = client.commandsProcessed.get((command.data as SlashCommandI).name) + 1;
-    client.commandsProcessed.set((command.data as SlashCommandI).name, isNaN(count) ? 1 : count);
+    client.commandsProcessed.set((command.data as SlashCommandI).name, Number.isNaN(count) ? 1 : count);
+
+    return Promise.resolve();
   },
 };
+
+export default event;

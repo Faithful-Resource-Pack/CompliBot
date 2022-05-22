@@ -26,15 +26,15 @@ export interface DeleteReactOptions {
 }
 
 const MessageBody = {
-  config: config,
-  tokens: tokens,
+  config,
+  tokens,
   menu: undefined,
 
-  deleteButton: async function (isMessage?: boolean): Promise<Message> {
+  async deleteButton(isMessage?: boolean): Promise<Message> {
     if (
-      this.components[0] != undefined &&
-      this.components.at(-1).components.length < 5 && //check there aren't 5 buttons
-      this.components.at(-1).components[0].type === 'BUTTON' //checks there isn't a select menu
+      this.components[0] !== undefined
+      && this.components.at(-1).components.length < 5 // check there aren't 5 buttons
+      && this.components.at(-1).components[0].type === 'BUTTON' // checks there isn't a select menu
     ) {
       this.components.at(-1).addComponents([isMessage === true ? deleteMessage : deleteInteraction]);
 
@@ -56,7 +56,7 @@ const MessageBody = {
    *
    * @deprecated Use .deleteButton() instead!
    */
-  deleteReact: async function (options: DeleteReactOptions) {
+  async deleteReact(options: DeleteReactOptions) {
     if (this.channel.type === 'DM') return;
 
     // react using the trash can emoji
@@ -66,23 +66,23 @@ const MessageBody = {
 
     // filter to get the right user
     const filter = (reaction, user) => {
-      if (options.previousMessage)
+      if (options.previousMessage) {
         return (
-          !user.bot &&
-          ids.delete === reaction.emoji.id &&
-          (user.id === options.previousMessage.author.id || user.id === options.authorID)
+          !user.bot
+          && ids.delete === reaction.emoji.id
+          && (user.id === options.previousMessage.author.id || user.id === options.authorID)
         );
-      else
-        return (
-          !user.bot &&
-          ids.delete === reaction.emoji.id &&
-          (user.id === options.authorMessage.author.id || user.id === options.authorID)
-        );
+      }
+      return (
+        !user.bot
+          && ids.delete === reaction.emoji.id
+          && (user.id === options.authorMessage.author.id || user.id === options.authorID)
+      );
     };
 
     // await for reaction for 1 minute long
     this.awaitReactions({
-      filter: filter,
+      filter,
       max: 1,
       time: 60000,
       errors: ['time'],
@@ -93,23 +93,25 @@ const MessageBody = {
         });
 
         if (options.deleteAuthorMessage === true) {
-          if (options.previousMessage)
+          if (options.previousMessage) {
             await options.previousMessage.delete().catch((err) => {
               console.trace(err);
             });
-          else
+          } else {
             await options.authorMessage.delete().catch((err) => {
               console.trace(err);
             });
+          }
         }
       })
       .catch(async () => {
         // on timeout:
         const reaction = this.reactions.cache.get(ids.delete);
-        if (reaction)
+        if (reaction) {
           await reaction.remove().catch((err) => {
             console.trace(err);
           });
+        }
       });
   },
 
@@ -120,7 +122,7 @@ const MessageBody = {
    *  @param {boolean} disappearing - Optional bool. If undefined or false it wont delete the warning. If true it will  delete in 30s.
    *  @param {number} timeout - Optional number (in seconds). If defined it will delete the warning after the timeout. If not defined it will delete in 30s.
    */
-  warn: async function (text: string, disappearing?: boolean, timeout?: number) {
+  async warn(text: string, disappearing?: boolean, timeout?: number) {
     if (!timeout) timeout = 30;
 
     const embed = new MessageEmbed()
@@ -168,7 +170,7 @@ const MessageBody = {
         } catch {
           /* already deleted */
         }
-      }, timeout * 1000); //deletes the message after 30s
+      }, timeout * 1000); // deletes the message after 30s
     }
   },
 };

@@ -2,7 +2,7 @@ import { SlashCommand } from '@interfaces';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { CommandInteraction, Message } from '@client';
 
-export const command: SlashCommand = {
+const command: SlashCommand = {
   servers: ['faithful', 'faithful_extra', 'classic_faithful'],
   data: new SlashCommandBuilder()
     .setName('license')
@@ -16,3 +16,5 @@ export const command: SlashCommand = {
       .then((message: Message) => message.deleteButton());
   },
 };
+
+export default command;

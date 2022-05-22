@@ -1,4 +1,6 @@
-import { Canvas, CanvasRenderingContext2D, createCanvas, loadImage } from 'canvas';
+import {
+  Canvas, CanvasRenderingContext2D, createCanvas, loadImage,
+} from 'canvas';
 import { MessageAttachment } from 'discord.js';
 import getMeta from './getMeta';
 import GIFEncoder from './GIFEncoder';
@@ -10,7 +12,7 @@ interface Options {
   magnify?: boolean;
 }
 
-export async function animateAttachment(options: Options): Promise<MessageAttachment> {
+export default async function animateAttachment(options: Options): Promise<MessageAttachment> {
   return getMeta(options.url).then(async (dimensions) => {
     if (options.magnify === true) {
       let factor: number = 1;
@@ -40,12 +42,11 @@ export async function animateAttachment(options: Options): Promise<MessageAttach
 
     // ! TODO: Width & Height properties from MCMETA are not supported yet
 
-    const MCMETA: any =
-      typeof options.mcmeta === 'object'
-        ? options.mcmeta
-        : {
-            animation: {},
-          };
+    const MCMETA: any = typeof options.mcmeta === 'object'
+      ? options.mcmeta
+      : {
+        animation: {},
+      };
     if (!MCMETA.animation) MCMETA.animation = {};
 
     const frametime: number = MCMETA.animation.frametime || 1;
@@ -53,34 +54,36 @@ export async function animateAttachment(options: Options): Promise<MessageAttach
 
     // MCMETA.animation.frames is defined
     if (Array.isArray(MCMETA.animation.frames) && MCMETA.animation.frames.length > 0) {
-      for (let i = 0; i < MCMETA.animation.frames.length; i++) {
+      for (let i = 0; i < MCMETA.animation.frames.length; i += 1) {
         const frame = MCMETA.animation.frames[i];
 
-        if (typeof frame === 'number')
+        if (typeof frame === 'number') {
           frames.push({
             index: frame,
             duration: frametime,
           });
-        if (typeof frame === 'object')
+        }
+        if (typeof frame === 'object') {
           frames.push({
             index: frame.index || 1,
             duration: frame.time || frametime,
           });
-        else
+        } else {
           frames.push({
             index: i,
             duration: frametime,
           });
+        }
       }
-    }
-
-    // MCMETA.animation.frames is not defined
-    else
-      for (let i = 0; i < dimensions.height / dimensions.width; i++)
+    } else {
+      // MCMETA.animation.frames is not defined
+      for (let i = 0; i < dimensions.height / dimensions.width; i += 1) {
         frames.push({
           index: i,
           duration: frametime,
         });
+      }
+    }
 
     // Draw frames
     const encoder = new GIFEncoder(dimensions.width, dimensions.width);
@@ -91,10 +94,10 @@ export async function animateAttachment(options: Options): Promise<MessageAttach
 
     // interpolation
     if (MCMETA.animation.interpolate) {
-      let limit: number = frametime;
+      const limit: number = frametime;
 
-      for (let i = 0; i < frames.length; i++) {
-        for (let y = 1; y <= limit; y++) {
+      for (let i = 0; i < frames.length; i += 1) {
+        for (let y = 1; y <= limit; y += 1) {
           context.clearRect(0, 0, canvas.width, canvas.height);
           context.globalAlpha = 1;
 
@@ -129,11 +132,9 @@ export async function animateAttachment(options: Options): Promise<MessageAttach
           encoder.addFrame(context);
         }
       }
-    }
-
-    // no interpolation
-    else
-      for (let i = 0; i < frames.length; i++) {
+    } else {
+      // no interpolation
+      for (let i = 0; i < frames.length; i += 1) {
         context.clearRect(0, 0, dimensions.width, dimensions.height);
         context.globalAlpha = 1;
 
@@ -152,6 +153,7 @@ export async function animateAttachment(options: Options): Promise<MessageAttach
         encoder.setDelay(50 * (frames[i].duration === 1 ? 3 : frames[i].duration));
         encoder.addFrame(context);
       }
+    }
 
     encoder.finish();
     return new MessageAttachment(encoder.out.getData(), options.name ? options.name : 'animation.gif');

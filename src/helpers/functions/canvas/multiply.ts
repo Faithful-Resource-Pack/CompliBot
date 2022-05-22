@@ -1,10 +1,10 @@
 import { MessageEmbed } from '@client';
 import { createCanvas, loadImage } from 'canvas';
 import { MessageAttachment } from 'discord.js';
-import { ColorManager } from './colors';
+import ColorManager from './colors';
 import getMeta from './getMeta';
 
-export enum mcColors {
+export enum MinecraftColors {
   Foliage = '#5BAB46',
   FoliageCold = '#60A17B',
   FoliageHot = '#1ABF00',
@@ -34,23 +34,21 @@ export enum mcColors {
 export const mcColorsOptions: {
   name: string;
   value: string;
-}[] = Object.keys(mcColors).map((name) => {
-  //a cheeky regex for formatting
-  return {
-    name: name.replace(/([a-z])([A-Z])/g, '$1 $2'),
-    value: mcColors[name as keyof typeof mcColors],
-  };
-});
+}[] = Object.keys(MinecraftColors).map((name) => ({
+  // a cheeky regex for formatting
+  name: name.replace(/([a-z])([A-Z])/g, '$1 $2'),
+  value: MinecraftColors[name as keyof typeof MinecraftColors],
+}));
 
-type options = {
+type Options = {
   url: string;
   embed?: MessageEmbed;
   name?: string;
   color: string;
 };
 
-export async function multiplyAttachment(options: options): Promise<[MessageAttachment, MessageEmbed]> {
-  return await getMeta(options.url).then(async (dimension) => {
+export async function multiplyAttachment(options: Options): Promise<[MessageAttachment, MessageEmbed]> {
+  return getMeta(options.url).then(async (dimension) => {
     const canvas = createCanvas(dimension.width, dimension.height);
     const context = canvas.getContext('2d');
 
@@ -63,7 +61,7 @@ export async function multiplyAttachment(options: options): Promise<[MessageAtta
     context.fillStyle = options.color;
     context.fillRect(0, 0, dimension.width, dimension.height);
 
-    var data = context.getImageData(0, 0, dimension.width, dimension.height);
+    const data = context.getImageData(0, 0, dimension.width, dimension.height);
 
     for (let i = 0; i < data.data.length; i += 4) {
       const red = data.data[i];
@@ -77,7 +75,7 @@ export async function multiplyAttachment(options: options): Promise<[MessageAtta
           b: blue,
         },
       }).toHEX().value;
-      if (hex.toUpperCase() == options.color.substring(1)) {
+      if (hex.toUpperCase() === options.color.substring(1)) {
         data.data[i + 3] = 0;
       }
     }

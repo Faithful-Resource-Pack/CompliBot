@@ -1,13 +1,13 @@
-import { getRolesIds } from '@helpers/roles';
+import getRolesIds from '@helpers/roles';
 import { CommandInteraction, GuildMemberRoleManager } from 'discord.js';
 
-export interface permissionOptions {
-  /* 
-    type sets weather checkPermissions 
+export interface PermissionOptions {
+  /*
+    type sets weather checkPermissions
     should use the config or ids to
     run its checks. By default set to
     "config" as its most used.
-    
+
     IF TYPE IS CONFIG:
         it will use names
         instead of ids and look them up in
@@ -26,11 +26,11 @@ export interface permissionOptions {
     */
   type?: 'id' | 'config' | 'dev' | 'mod' | 'council';
 
-  servers?: Array<string>; //will only use ids if type == id
-  roles?: Array<string>; //will only use ids if type == id
-  users?: Array<string>; //will always use ids
+  servers?: Array<string>; // will only use ids if type === id
+  roles?: Array<string>; // will only use ids if type === id
+  users?: Array<string>; // will always use ids
 }
-export enum permissionCodeEnum {
+export enum PermissionCodeEnum {
   servers,
   users,
   roles,
@@ -38,29 +38,29 @@ export enum permissionCodeEnum {
 
 // [true, true, true] => allowed to use command, no checks failed
 // permissionCode[permissionCodeEnum.<check>] to see if a check passed
-type permissionCode = [boolean, boolean, boolean];
+type PermissionCode = [boolean, boolean, boolean];
 
 /**
  * @author nick-1666
  * @param interaction CommandInteraction
- * @param permissions {@link permissionOptions}
+ * @param permissions {@link PermissionOptions}
  *
- * @returns returns a permission code (see: {@link permissionCode}) containing information
+ * @returns returns a permission code (see: {@link PermissionCode}) containing information
  * about which checks passed. Useful for determining what to reply when checks dont pass.
  *
  * @example checkPermissions(interaction, { servers: ["faithful", "dev"], roles: ["council", "administrator"]})
  */
 
-//TODO: use a bearer token for v2 in the future. This is a temporary workaround
+// TODO: use a bearer token for v2 in the future. This is a temporary workaround
 export async function checkPermissions(
   interaction: CommandInteraction,
-  permissions: permissionOptions,
-): Promise<permissionCode> {
-  let code: permissionCode = [true, true, true];
+  permissions: PermissionOptions,
+): Promise<PermissionCode> {
+  const code: PermissionCode = [true, true, true];
 
   let type = permissions.type ? permissions.type : 'config';
 
-  //presets
+  // presets
   switch (type) {
     case 'council':
       type = 'config';
@@ -85,41 +85,37 @@ export async function checkPermissions(
   }
 
   // no userIDs in config so this applies to all
-  if (permissions.users && !permissions.users.includes(interaction.user.id)) code[permissionCodeEnum.users] = false;
+  if (permissions.users && !permissions.users.includes(interaction.user.id)) code[PermissionCodeEnum.users] = false;
 
-  if (type == 'id') {
-    if (permissions.servers && !permissions.servers.includes(interaction.guildId))
-      code[permissionCodeEnum.servers] = false;
+  if (type === 'id') {
+    if (permissions.servers && !permissions.servers.includes(interaction.guildId)) code[PermissionCodeEnum.servers] = false;
     if (
-      permissions.roles &&
-      !(interaction.member.roles as GuildMemberRoleManager).cache.some((r) => permissions.roles.includes(r.id))
-    )
-      code[permissionCodeEnum.roles] = false;
+      permissions.roles
+      && !(interaction.member.roles as GuildMemberRoleManager).cache.some((r) => permissions.roles.includes(r.id))
+    ) code[PermissionCodeEnum.roles] = false;
   }
 
-  if (type == 'config') {
+  if (type === 'config') {
     const config = await import('@json/config.json');
 
     if (permissions.roles) {
       const roles = (interaction.member.roles as GuildMemberRoleManager).cache.map((r) => r.id);
-      code[permissionCodeEnum.roles] = roles.some((r) =>
-        getRolesIds({
-          name: permissions.roles,
-          discords: 'all',
-          teams: 'all',
-        }).includes(r),
-      );
+      code[PermissionCodeEnum.roles] = roles.some((r) => getRolesIds({
+        name: permissions.roles,
+        discords: 'all',
+        teams: 'all',
+      }).includes(r));
     }
 
     if (permissions.servers) {
       const serverIDsToCheck = config.discords
         .map((discord) => {
           if (permissions.servers.includes(discord.name)) return discord.id;
-          else return false;
+          return false;
         })
-        .filter((v) => v != false);
+        .filter((v) => v !== false);
 
-      if (!serverIDsToCheck.includes(interaction.guildId)) code[permissionCodeEnum.servers] = false;
+      if (!serverIDsToCheck.includes(interaction.guildId)) code[PermissionCodeEnum.servers] = false;
     }
   }
 

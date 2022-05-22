@@ -2,26 +2,26 @@ import { MessageEmbed } from '@client';
 import ConfigJson from '@json/config.json';
 import { Config } from '@interfaces';
 import axios from 'axios';
-import getMeta from './canvas/getMeta';
 import { MessageAttachment } from 'discord.js';
-import { magnifyAttachment } from './canvas/magnify';
 import { ISizeCalculationResult } from 'image-size/dist/types/interface';
 import { colors } from '@helpers/colors';
 import { fromTimestampToHumanReadable } from '@helpers/dates';
-import { Contributions, Texture, Paths, Uses } from '@helpers/interfaces/firestorm';
-import { animateAttachment } from './canvas/animate';
-import { MinecraftSorter } from '@helpers/sorter';
+import { Texture } from '@helpers/interfaces/firestorm';
+import MinecraftSorter from '@helpers/sorter';
+import animateAttachment from './canvas/animate';
+import magnifyAttachment from './canvas/magnify';
+import getMeta from './canvas/getMeta';
 
-export const getTextureMessageOptions = async (options: {
+export default async function getTextureMessageOptions(options: {
   texture: Texture;
   pack: string;
-}): Promise<[MessageEmbed, Array<MessageAttachment>]> => {
+}): Promise<[MessageEmbed, Array<MessageAttachment>]> {
   const config: Config = ConfigJson;
-  const texture = options.texture;
-  const pack = options.pack;
-  const uses: Uses = texture.uses;
-  const paths: Paths = texture.paths;
-  const contributions: Contributions = texture.contributions;
+  const { texture } = options;
+  const { pack } = options;
+  const { uses } = texture;
+  const { paths } = texture;
+  const { contributions } = texture;
   const animated: boolean = paths.filter((p) => p.mcmeta === true).length !== 0;
 
   let mcmeta: any = {};
@@ -51,11 +51,11 @@ export const getTextureMessageOptions = async (options: {
   switch (pack) {
     case 'faithful_32x':
       strPack = 'Faithful 32x';
-      strIconURL = config.images + 'branding/logos/transparent/512/f32_logo.png';
+      strIconURL = `${config.images}branding/logos/transparent/512/f32_logo.png`;
       break;
     case 'faithful_64x':
       strPack = 'Faithful 64x';
-      strIconURL = config.images + 'branding/logos/transparent/512/f64_logo.png';
+      strIconURL = `${config.images}branding/logos/transparent/512/f64_logo.png`;
       break;
 
     case 'classic_faithful_32x':
@@ -64,18 +64,17 @@ export const getTextureMessageOptions = async (options: {
       break;
     case 'classic_faithful_32x_progart':
       strPack = 'Classic Faithful 32x Programmer Art';
-      strIconURL =
-        'https://raw.githubusercontent.com/ClassicFaithful/Branding/main/Logos/32x%20Scale/Programmer%20Art%2032x.png';
+      strIconURL = 'https://raw.githubusercontent.com/ClassicFaithful/Branding/main/Logos/32x%20Scale/Programmer%20Art%2032x.png';
       break;
     case 'classic_faithful_64x':
       strPack = 'Classic Faithful 64x';
       strIconURL = 'https://raw.githubusercontent.com/ClassicFaithful/Branding/main/Logos/32x%20Scale/Main%2032x.png';
       break;
 
-    default:
     case 'default':
+    default:
       strPack = 'Minecraft Default';
-      strIconURL = config.images + 'bot/texture_16x.png';
+      strIconURL = `${config.images}bot/texture_16x.png`;
       break;
   }
 
@@ -116,36 +115,35 @@ export const getTextureMessageOptions = async (options: {
         .filter((c) => strPack.includes(c.resolution.toString()) && pack === c.pack)
         .sort((a, b) => (a.date > b.date ? -1 : 1))
         .map((c) => {
-          let strDate: string = fromTimestampToHumanReadable(c.date);
-          let authors = c.authors.map((authorId: string) => `<@!${authorId}>`);
+          const strDate: string = fromTimestampToHumanReadable(c.date);
+          const authors = c.authors.map((authorId: string) => `<@!${authorId}>`);
           return `\`${strDate}\`\n${authors.join(', ')}`;
         })[0],
     ];
 
-    if (contributions.length > 2)
-      displayedContributions.push('[See older contributions in the WebApp](https://webapp.faithfulpack.net/#/gallery)');
-    if (displayedContributions[0] != undefined && contributions.length && pack !== 'default')
-      embed.addField('Latest contribution', displayedContributions.join('\n'));
+    if (contributions.length > 2) displayedContributions.push('[See older contributions in the WebApp](https://webapp.faithfulpack.net/#/gallery)');
+    if (displayedContributions[0] !== undefined && contributions.length && pack !== 'default') embed.addField('Latest contribution', displayedContributions.join('\n'));
   }
 
-  let tmp = {};
+  const tmp = {};
   uses.forEach((use) => {
     paths
       .filter((el) => el.use === use.id)
       .forEach((p) => {
         const versions = p.versions.sort(MinecraftSorter);
-        if (tmp[use.edition])
+        if (tmp[use.edition]) {
           tmp[use.edition].push(
             `\`[${versions.length > 1 ? `${versions[0]} — ${versions[versions.length - 1]}` : versions[0]}]\` ${
-              use.assets !== null && use.assets !== 'minecraft' ? use.assets + '/' : ''
+              use.assets !== null && use.assets !== 'minecraft' ? `${use.assets}/` : ''
             }${p.name}`,
           );
-        else
+        } else {
           tmp[use.edition] = [
             `\`[${versions.length > 1 ? `${versions[0]} — ${versions[versions.length - 1]}` : versions[0]}]\` ${
-              use.assets !== null && use.assets !== 'minecraft' ? use.assets + '/' : ''
+              use.assets !== null && use.assets !== 'minecraft' ? `${use.assets}/` : ''
             }${p.name}`,
           ];
+        }
       });
   });
 
@@ -170,7 +168,7 @@ export const getTextureMessageOptions = async (options: {
         mcmeta,
       }),
     );
-  } else
+  } else {
     files.push(
       (
         await magnifyAttachment({
@@ -179,6 +177,7 @@ export const getTextureMessageOptions = async (options: {
         })
       )[0],
     );
+  }
 
   return [embed, files];
-};
+}

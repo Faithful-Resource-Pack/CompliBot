@@ -1,18 +1,19 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Event } from '@interfaces';
 import { Client, Message, MessageEmbed } from '@client';
-import { quote } from '@functions/quote';
-import easterEgg from '@functions/canvas/isEasterEggImg';
+import quote from '@functions/quote';
+import EasterEgg from '@functions/canvas/isEasterEggImg';
 import { getSubmissionsChannels } from '@helpers/channels';
 
-export const event: Event = {
+const event: Event = {
   name: 'messageCreate',
   run: async (client: Client, message: Message) => {
     //! do not remove, 'force' message to be casted (break if removed)
-    let _ = (message as Message) instanceof Message;
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    const _ = (message as Message) instanceof Message;
 
-    let m = Object.assign({}, message); // loose reference to message: create unique instance of the message for the logger (ask @Juknum)
-    m.isDeleted = false;
-    client.storeAction('message', m);
+    // loose reference to message: create unique instance of the message for the logger (ask @Juknum)
+    client.storeAction('message', { ...message, author: message.author, isDeleted: false } as Message);
 
     if (message.author.bot) return;
 
@@ -49,7 +50,7 @@ export const event: Event = {
           }
         });
         break;
-      case 'monke': //cases can do this, they can overlap. Very useful
+      case 'monke': // cases can do this, they can overlap. Very useful
       case 'monkee':
       case 'monkey':
         ['🎷', '🐒'].forEach(async (emoji) => {
@@ -61,27 +62,28 @@ export const event: Event = {
         });
         break;
       case 'mhhh':
-        const embed = new MessageEmbed().setDescription('```Uh-oh moment```').setFooter({
-          text: 'Swahili → English',
-        });
         message
           .reply({
-            embeds: [embed],
+            embeds: [new MessageEmbed().setDescription('```Uh-oh moment```').setFooter({ text: 'Swahili → English' })],
           })
-          .then((message) => message.deleteButton(true));
+          .then((m) => m.deleteButton(true));
         break;
       case 'hello there':
         message
           .reply('https://media1.tenor.com/images/8dc53503f5a5bb23ef12b2c83a0e1d4d/tenor.gif')
-          .then((message) => message.deleteButton(true));
+          .then((m) => m.deleteButton(true));
+        break;
+      default:
         break;
     }
-    if (message.content.includes('(╯°□°）╯︵ ┻━┻'))
-      return await message.reply({
-        content: '┬─┬ ノ( ゜-゜ノ) calm down bro',
-      });
+
+    if (message.content.includes('(╯°□°）╯︵ ┻━┻')) {
+      message.reply({ content: '┬─┬ ノ( ゜-゜ノ) calm down bro' });
+      return;
+    }
+
     if (message.attachments.size > 0) {
-      if ((await easterEgg(message.attachments.first().url, 1)) && !client.tokens.dev) {
+      if ((await EasterEgg(message.attachments.first().url, 1)) && !client.tokens.dev) {
         const embed = new MessageEmbed()
           .setTitle('"rOtAte tiLinG"')
           .setImage('https://cdn.discordapp.com/attachments/923370825762078720/939476550749913138/tiled.png')
@@ -93,9 +95,10 @@ export const event: Event = {
           .reply({
             embeds: [embed],
           })
-          .then((message) => message.deleteButton(true));
+          .then((m) => m.deleteButton(true));
       }
-      if ((await easterEgg(message.attachments.first().url, 2)) && !client.tokens.dev) {
+
+      if ((await EasterEgg(message.attachments.first().url, 2)) && !client.tokens.dev) {
         const embed = new MessageEmbed()
           .setTitle('"FlIp tiLinG"')
           .setImage('https://cdn.discordapp.com/attachments/923370825762078720/940676536330223676/tiled.png')
@@ -107,8 +110,10 @@ export const event: Event = {
           .reply({
             embeds: [embed],
           })
-          .then((message) => message.deleteButton(true));
+          .then((m) => m.deleteButton(true));
       }
     }
   },
 };
+
+export default event;

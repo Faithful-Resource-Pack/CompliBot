@@ -10,12 +10,19 @@ export type Votes = {
  */
 export class TimedEmbed {
   readonly id: string;
+
   private messageId: string;
+
   private channelId: string;
+
   private votes: Votes;
+
   private status: string = 'pending';
+
   private timeout: number = 0; // used for end of events (pending until...)
+
   private anonymous: boolean = true;
+
   private multipleAnswers: boolean = false;
 
   constructor(data?: TimedEmbed) {
@@ -155,10 +162,7 @@ export class TimedEmbed {
    * @returns {this}
    */
   protected voidVotes(): this {
-    Object.values(this.votes).map((arr: Array<string>) => {
-      arr.length = 0;
-    });
-
+    Object.values(this.votes).map(() => []);
     return this;
   }
 
@@ -267,7 +271,7 @@ export class TimedEmbed {
   public setTimeout(number: number): this;
   public setTimeout(date: Date): this;
   public setTimeout(value: any): this {
-    if (value instanceof Date) this.timeout = parseInt((value.getTime() / 1000).toFixed(0));
+    if (value instanceof Date) this.timeout = parseInt((value.getTime() / 1000).toFixed(0), 10);
     else this.timeout = value;
     return this;
   }

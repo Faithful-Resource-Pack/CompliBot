@@ -3,18 +3,18 @@ import { SelectMenu } from '@interfaces';
 import { info } from '@helpers/logger';
 import { imageButtons } from '@helpers/buttons';
 import { MessageInteraction } from 'discord.js';
-import { getTextureMessageOptions } from '@functions/getTexture';
+import getTextureMessageOptions from '@functions/getTexture';
 import axios from 'axios';
 
-export const menu: SelectMenu = {
+const menu: SelectMenu = {
   selectMenuId: 'textureSelect',
-  execute: async (client: Client, interaction: SelectMenuInteraction) => {
+  execute: async (client: Client, interaction: SelectMenuInteraction): Promise<void> => {
     if (client.verbose) console.log(`${info}Texture selected!`);
 
     const messageInteraction: MessageInteraction = interaction.message.interaction as MessageInteraction;
     const message: Message = interaction.message as Message;
 
-    if (interaction.user.id !== messageInteraction.user.id)
+    if (interaction.user.id !== messageInteraction.user.id) {
       return interaction.reply({
         content: (
           await interaction.getEphemeralString({
@@ -23,12 +23,13 @@ export const menu: SelectMenu = {
         ).replace('%USER%', `<@!${messageInteraction.user.id}>`),
         ephemeral: true,
       });
-    else interaction.deferReply();
+    }
+    interaction.deferReply();
 
     const [id, pack] = interaction.values[0].split('__');
     const [embed, files] = await getTextureMessageOptions({
       texture: (await axios.get(`${(interaction.client as Client).config.apiUrl}textures/${id}/all`)).data,
-      pack: pack,
+      pack,
     });
     embed.setFooter({
       iconURL: embed.footer.iconURL,
@@ -45,12 +46,14 @@ export const menu: SelectMenu = {
       });
     }
 
-    interaction
+    return interaction
       .editReply({
         embeds: [embed],
-        files: files,
+        files,
         components: [imageButtons],
       })
-      .then((message: Message) => message.deleteButton(true));
+      .then((m: Message) => { m.deleteButton(true); });
   },
 };
+
+export default menu;

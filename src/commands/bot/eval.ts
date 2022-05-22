@@ -2,7 +2,7 @@ import { SlashCommand } from '@helpers/interfaces';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { Client, CommandInteraction, MessageEmbed } from '@client';
 
-export const command: SlashCommand = {
+const command: SlashCommand = {
   permissions: {
     users: [
       '207471947662098432', // Juknum
@@ -21,34 +21,36 @@ export const command: SlashCommand = {
       await interaction.perms({
         type: 'dev',
       })
-    )
-      return;
+    ) { return; }
     const clean = async (text: any, client: Client): Promise<string> => {
       if (text && text.constructor.name === 'Promise') text = await text;
-      if (typeof text !== 'string')
+      if (typeof text !== 'string') {
         text = (await import('util')).inspect(text, {
           depth: 1,
         });
+      }
 
       text = text
         .replaceAll(client.tokens.token, '[BOT_TOKEN]')
         .replaceAll(client.tokens.apiPassword, '[API_PASSWORD]')
         .replaceAll(client.tokens.firestormToken, '[FIRESTORM_TOKEN]')
-        .replace(/`/g, '`' + String.fromCharCode(8203))
-        .replace(/@/g, '@' + String.fromCharCode(8203));
+        .replace(/`/g, `\`${String.fromCharCode(8203)}`)
+        .replace(/@/g, `@${String.fromCharCode(8203)}`);
 
       return text;
     };
+
     /**
      * VARIABLES USED IN eval()
      */
+    /* eslint-disable @typescript-eslint/no-unused-vars */
+    const { client } = interaction;
+    const { channel } = interaction;
 
-    const client = interaction.client;
-    const channel = interaction.channel;
-
-    // ----
+    // ============================================================
 
     const code: string = interaction.options.getString('code', true);
+    // eslint-disable-next-line no-eval
     const evaluated = await eval(
       `(async () => { try { return await (async () => {${
         code.includes('return') ? code : `return ${code}`
@@ -65,3 +67,5 @@ export const command: SlashCommand = {
     });
   },
 };
+
+export default command;

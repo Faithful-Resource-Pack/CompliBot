@@ -1,5 +1,5 @@
 import { Client, Message } from '@client';
-import { GuildMember, User } from 'discord.js';
+import { GuildMember } from 'discord.js';
 import { err } from '@helpers/logger';
 
 /**
@@ -10,10 +10,8 @@ import { err } from '@helpers/logger';
  * @returns {Promise<boolean>} true if the user is a true user object, false otherwise
  */
 export const checkIfUser = async (client: Client, user: any): Promise<boolean> => {
-  let u: User;
-
   try {
-    u = await client.users.fetch(user.id);
+    await client.users.fetch(user.id);
   } catch {
     return false;
   }
@@ -36,7 +34,7 @@ export const getMember = async (message: Message, arg: string): Promise<string> 
   try {
     const id = arg.replace(/\D+/g, '');
     if (id === '') {
-      throw Error;
+      throw new Error('Invalid user');
     } else {
       member = await message.guild.members.fetch(id);
     }
@@ -53,5 +51,5 @@ export const getMember = async (message: Message, arg: string): Promise<string> 
     }
   }
   if (!member) return undefined;
-  else return member.id;
+  return member.id;
 };

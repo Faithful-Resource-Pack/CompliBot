@@ -2,14 +2,14 @@ import { Client, ButtonInteraction, Message } from '@client';
 import { Button } from '@interfaces';
 import { MessageInteraction } from 'discord.js';
 
-export const button: Button = {
+const button: Button = {
   buttonId: 'feedbackCancel',
   execute: async (client: Client, interaction: ButtonInteraction) => {
     const messageInteraction: MessageInteraction = interaction.message.interaction as MessageInteraction;
     const message: Message = interaction.message as Message;
 
-    if (interaction.user.id !== messageInteraction.user.id)
-      return interaction.reply({
+    if (interaction.user.id !== messageInteraction.user.id) {
+      interaction.reply({
         content: (
           await interaction.getEphemeralString({
             string: 'Error.Interaction.Reserved',
@@ -17,6 +17,8 @@ export const button: Button = {
         ).replace('%USER%', `<@!${messageInteraction.user.id}>`),
         ephemeral: true,
       });
+      return;
+    }
 
     await interaction.reply({
       content: (
@@ -39,3 +41,5 @@ export const button: Button = {
     }
   },
 };
+
+export default button;

@@ -5,15 +5,15 @@ import { SelectMenu } from '@interfaces';
 import { MessageAttachment } from 'discord.js';
 import { processFiles } from '@/src/events/textureSubmitted';
 
-export const menu: SelectMenu = {
+const menu: SelectMenu = {
   selectMenuId: 'submitTextureSelect',
-  execute: async (client: Client, interaction: SelectMenuInteraction) => {
+  execute: async (client: Client, interaction: SelectMenuInteraction): Promise<void> => {
     if (client.verbose) console.log(`${info}Submitted Texture selected!`);
 
     const message: Message = interaction.message as Message;
     const ref: Message = await message.fetchReference();
 
-    if (interaction.user.id !== ref.author.id)
+    if (interaction.user.id !== ref.author.id) {
       return interaction.reply({
         content: (
           await interaction.getEphemeralString({
@@ -22,24 +22,25 @@ export const menu: SelectMenu = {
         ).replace('%USER%', `<@!${ref.author.id}>`),
         ephemeral: true,
       });
-    else interaction.deferReply();
+    }
+    interaction.deferReply();
 
     const [textureId, fileIndex] = interaction.values[0].split('__');
 
     let files: Array<MessageAttachment> = [];
     const currAttach = [...ref.attachments.values()];
-    for (let i = 0; i < currAttach.length; i++) {
-      let attachment = currAttach[i];
+    for (let i = 0; i < currAttach.length; i += 1) {
+      const attachment = currAttach[i];
 
       // attachments that are non zip archives
       if (attachment.contentType !== 'application/zip') files.push(attachment);
       else {
-        let zipFiles: Array<MessageAttachment> = await zipToMA(attachment.url);
+        const zipFiles: Array<MessageAttachment> = await zipToMA(attachment.url);
         files = [...files, ...zipFiles];
       }
     }
 
-    let doDelete: boolean = await processFiles(client, ref, files, parseInt(fileIndex, 10), textureId);
+    const doDelete: boolean = await processFiles(client, ref, files, parseInt(fileIndex, 10), textureId);
 
     try {
       interaction.deleteReply();
@@ -48,5 +49,9 @@ export const menu: SelectMenu = {
     } catch {
       /* messages already deleted */
     }
+
+    return Promise.resolve();
   },
 };
+
+export default menu;

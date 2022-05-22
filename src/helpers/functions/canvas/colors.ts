@@ -1,4 +1,4 @@
-import { createCanvas, loadImage } from 'canvas';
+import { Canvas, createCanvas, loadImage } from 'canvas';
 
 interface HEXA extends HEX {}
 interface HEX {
@@ -54,35 +54,37 @@ interface ColorManagerOptions {
   };
 }
 
-export class ColorManager {
+function b10b16(c: number | string): string {
+  const hex = typeof c === 'string' ? parseInt(c, 10).toString(16) : c.toString(16);
+  return hex.length === 1 ? `0${hex}` : hex;
+}
+
+export default class ColorManager {
   private color: RGBA;
 
-  private b10b16(c: number | string): string {
-    let hex = typeof c === 'string' ? parseInt(c, 10).toString(16) : c.toString(16);
-    return hex.length == 1 ? `0${hex}` : hex;
-  }
+  private canvas: Canvas;
 
   async swapPixel(options: { url: string; color: RGBA; target: RGBA }): Promise<Buffer> {
-    let canvas = createCanvas(512, 512);
-    let ctx = canvas.getContext('2d');
+    this.canvas = createCanvas(512, 512);
+    const ctx = this.canvas.getContext('2d');
     ctx.imageSmoothingEnabled = false;
 
-    let imgToDraw = await loadImage(options.url).catch((err) => {
+    const imgToDraw = await loadImage(options.url).catch((err) => {
       console.trace(err);
       return Promise.reject(err);
     });
 
-    ctx.drawImage(imgToDraw, 0, 0, canvas.width, canvas.height);
+    ctx.drawImage(imgToDraw, 0, 0, this.canvas.width, this.canvas.height);
 
-    let img = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const img = ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
 
     for (let i = 0; i < img.data.length; i += 4) {
       // only met when its the same color as the target color
       if (
-        img.data[i] == options.target.r &&
-        img.data[i + 1] == options.target.g &&
-        img.data[i + 2] == options.target.b &&
-        img.data[i + 3] == options.target.a * 255
+        img.data[i] === options.target.r
+        && img.data[i + 1] === options.target.g
+        && img.data[i + 2] === options.target.b
+        && img.data[i + 3] === options.target.a * 255
       ) {
         img.data[i] = options.color.r;
         img.data[i + 1] = options.color.g;
@@ -92,7 +94,7 @@ export class ColorManager {
     }
 
     ctx.putImageData(img, 0, 0);
-    return canvas.toBuffer('image/png');
+    return this.canvas.toBuffer('image/png');
   }
 
   toHEX(): HEX {
@@ -103,35 +105,35 @@ export class ColorManager {
 
   toHEXA(): HEXA {
     return {
-      value: `${this.b10b16(this.color.r)}${this.b10b16(this.color.g)}${this.b10b16(this.color.b)}${this.b10b16(
+      value: `${b10b16(this.color.r)}${b10b16(this.color.g)}${b10b16(this.color.b)}${b10b16(
         +(this.color.a * 255).toFixed(0),
       )}`,
     } as HEXA;
   }
 
   toHSL(): HSL {
-    let r: number = this.color.r / 255;
-    let g: number = this.color.g / 255;
-    let b: number = this.color.b / 255;
+    const r: number = this.color.r / 255;
+    const g: number = this.color.g / 255;
+    const b: number = this.color.b / 255;
 
-    let max = Math.max(r, g, b);
-    let min = Math.min(r, g, b);
-    let diff = max - min;
+    const max = Math.max(r, g, b);
+    const min = Math.min(r, g, b);
+    const diff = max - min;
 
-    let h: number,
-      s: number,
-      l: number = (max + min) / 2;
+    let h: number;
+    let s: number;
+    let l: number = (max + min) / 2;
 
-    if (diff == 0) h = 0;
-    else if (max == r) h = ((g - b) / diff) % 6;
-    else if (max == g) h = (b - r) / diff + 2;
+    if (diff === 0) h = 0;
+    else if (max === r) h = ((g - b) / diff) % 6;
+    else if (max === g) h = (b - r) / diff + 2;
     else h = (r - g) / diff + 4;
     h *= 60;
     if (h < 0) h += 360;
 
     l = (max + min) / 2;
 
-    if (diff == 0) s = 0;
+    if (diff === 0) s = 0;
     else s = diff / (1 - Math.abs(2 * l - 1));
 
     return {
@@ -142,17 +144,17 @@ export class ColorManager {
   }
 
   toHSV(): HSV {
-    let r: number = this.color.r / 255;
-    let g: number = this.color.g / 255;
-    let b: number = this.color.b / 255;
+    const r: number = this.color.r / 255;
+    const g: number = this.color.g / 255;
+    const b: number = this.color.b / 255;
 
-    let max: number = Math.max(r, g, b);
-    let min: number = Math.min(r, g, b);
-    let diff: number = max - min;
+    const max: number = Math.max(r, g, b);
+    const min: number = Math.min(r, g, b);
+    const diff: number = max - min;
 
     let h: number;
-    if (diff == 0) h = 0;
-    else
+    if (diff === 0) h = 0;
+    else {
       switch (max) {
         case r:
           h = 60 * (((g - b) / diff) % 6);
@@ -163,10 +165,13 @@ export class ColorManager {
         case b:
           h = 60 * ((r - g) / diff + 4);
           break;
+        default:
+          break;
       }
+    }
 
-    let s: number = max == 0 ? 0 : diff / max;
-    let v: number = max;
+    const s: number = max === 0 ? 0 : diff / max;
+    const v: number = max;
 
     return {
       h: +h.toFixed(0),
@@ -176,7 +181,7 @@ export class ColorManager {
   }
 
   toRGB(): RGB {
-    let d: RGBA = this.toRGBA();
+    const d: RGBA = this.toRGBA();
     delete d.a;
     return d as RGB;
   }
@@ -196,10 +201,10 @@ export class ColorManager {
     y = Math.round(((y - k) / (1 - k)) * 10000) / 100;
     k = Math.round(k * 10000) / 100;
 
-    c = isNaN(c) ? 0 : c;
-    m = isNaN(m) ? 0 : m;
-    y = isNaN(y) ? 0 : y;
-    k = isNaN(k) ? 0 : k;
+    c = Number.isNaN(c) ? 0 : c;
+    m = Number.isNaN(m) ? 0 : m;
+    y = Number.isNaN(y) ? 0 : y;
+    k = Number.isNaN(k) ? 0 : k;
 
     return {
       c: Math.round(c),
@@ -213,19 +218,19 @@ export class ColorManager {
     // from rgb(a) to rgba
     if (options.rgb) {
       this.color = {
-        r: options.rgb.r > 255 ? 255 : options.rgb.r < 0 ? 0 : options.rgb.r,
-        g: options.rgb.g > 255 ? 255 : options.rgb.g < 0 ? 0 : options.rgb.g,
-        b: options.rgb.b > 255 ? 255 : options.rgb.b < 0 ? 0 : options.rgb.b,
-        a: options.rgb.a ? (options.rgb.a > 1 ? 1 : options.rgb.a < 0 ? 0 : options.rgb.a) : 1,
+        r: options.rgb.r % 256 ?? 0,
+        g: options.rgb.g % 256 ?? 0,
+        b: options.rgb.b % 256 ?? 0,
+        a: options.rgb.a % 1.01 ?? 1,
       } as RGBA;
     }
 
     // from cmyk to rgba
     if (options.cmyk) {
-      options.cmyk.c = +((options.cmyk.c > 100 ? 100 : options.cmyk.c < 0 ? 0 : options.cmyk.c) / 100).toFixed(2);
-      options.cmyk.m = +((options.cmyk.m > 100 ? 100 : options.cmyk.m < 0 ? 0 : options.cmyk.m) / 100).toFixed(2);
-      options.cmyk.y = +((options.cmyk.y > 100 ? 100 : options.cmyk.y < 0 ? 0 : options.cmyk.y) / 100).toFixed(2);
-      options.cmyk.k = +((options.cmyk.k > 100 ? 100 : options.cmyk.k < 0 ? 0 : options.cmyk.k) / 100).toFixed(2);
+      options.cmyk.c = +((options.cmyk.c % 101 ?? 0) / 100).toFixed(2);
+      options.cmyk.m = +((options.cmyk.m % 101 ?? 0) / 100).toFixed(2);
+      options.cmyk.y = +((options.cmyk.y % 101 ?? 0) / 100).toFixed(2);
+      options.cmyk.k = +((options.cmyk.k % 101 ?? 0) / 100).toFixed(2);
 
       this.color = {
         r: +(255 * (1 - options.cmyk.c) * (1 - options.cmyk.k)).toFixed(0),
@@ -237,54 +242,51 @@ export class ColorManager {
 
     // from hex to rgba
     if (options.hex) {
-      let regHex = new RegExp(/^#?[A-Fa-f\d]{3,8}?$/i);
+      const regHex = /^#?[A-Fa-f\d]{3,8}?$/i;
       if (regHex.test(options.hex)) {
         if (options.hex.startsWith('#')) options.hex = options.hex.slice(-options.hex.length + 1);
 
         switch (options.hex.length) {
           case 3:
-            options.hex =
-              options.hex[0] +
-              options.hex[0] +
-              options.hex[1] +
-              options.hex[1] +
-              options.hex[2] +
-              options.hex[2] +
-              'ff';
+            options.hex = `${options.hex[0]
+              + options.hex[0]
+              + options.hex[1]
+              + options.hex[1]
+              + options.hex[2]
+              + options.hex[2]
+            }ff`;
             break;
           case 4:
-            options.hex =
-              options.hex[0] +
-              options.hex[0] +
-              options.hex[1] +
-              options.hex[1] +
-              options.hex[2] +
-              options.hex[2] +
-              options.hex[3] +
-              options.hex[3];
+            options.hex = options.hex[0]
+              + options.hex[0]
+              + options.hex[1]
+              + options.hex[1]
+              + options.hex[2]
+              + options.hex[2]
+              + options.hex[3]
+              + options.hex[3];
             break;
           case 5:
             options.hex = '000000ff';
             break;
           case 6:
-            options.hex =
-              options.hex[0] +
-              options.hex[1] +
-              options.hex[2] +
-              options.hex[3] +
-              options.hex[4] +
-              options.hex[5] +
-              'ff';
+            options.hex = `${options.hex[0]
+              + options.hex[1]
+              + options.hex[2]
+              + options.hex[3]
+              + options.hex[4]
+              + options.hex[5]
+            }ff`;
             break;
           case 7:
             options.hex = '000000ff';
             break;
-          case 8:
+          default:
             break;
         }
       } else options.hex = '000000ff';
 
-      let arr = options.hex.match(/.{2}/g); // cut it each 2 chars;
+      const arr = options.hex.match(/.{2}/g); // cut it each 2 chars;
       this.color = {
         r: parseInt(arr[0], 16),
         g: parseInt(arr[1], 16),
@@ -294,9 +296,9 @@ export class ColorManager {
     }
 
     const hslv = (h: number, c: number, x: number, m: number): void => {
-      let r: number = 0,
-        g: number = 0,
-        b: number = 0;
+      let r: number = 0;
+      let g: number = 0;
+      let b: number = 0;
       if (h >= 0 && h < 1) {
         r = c;
         g = x;
@@ -328,9 +330,9 @@ export class ColorManager {
       b = Math.round(b);
 
       this.color = {
-        r: r,
-        g: g,
-        b: b,
+        r,
+        g,
+        b,
         a: 1,
       } as RGBA;
     };
@@ -338,13 +340,13 @@ export class ColorManager {
     // from hsv to rgba
     if (options.hsv) {
       options.hsv.h = +(options.hsv.h % 360).toFixed(2);
-      options.hsv.s = +((options.hsv.s > 100 ? 100 : options.hsv.s < 0 ? 0 : options.hsv.s) / 100).toFixed(2);
-      options.hsv.v = +((options.hsv.v > 100 ? 100 : options.hsv.v < 0 ? 0 : options.hsv.v) / 100).toFixed(2);
+      options.hsv.s = +((options.hsv.s % 101 ?? 0) / 100).toFixed(2);
+      options.hsv.v = +((options.hsv.v % 101 ?? 0) / 100).toFixed(2);
 
-      let h: number = options.hsv.h / 60;
-      let c: number = options.hsv.v * options.hsv.s;
-      let x: number = c * (1 - Math.abs((h % 2) - 1));
-      let m: number = options.hsv.v - c;
+      const h: number = options.hsv.h / 60;
+      const c: number = options.hsv.v * options.hsv.s;
+      const x: number = c * (1 - Math.abs((h % 2) - 1));
+      const m: number = options.hsv.v - c;
 
       hslv(h, c, x, m);
     }
@@ -352,13 +354,13 @@ export class ColorManager {
     // from hsl to rgba
     if (options.hsl) {
       options.hsl.h = +(options.hsl.h % 360).toFixed(2);
-      options.hsl.s = +((options.hsl.s > 100 ? 100 : options.hsl.s < 0 ? 0 : options.hsl.s) / 100).toFixed(2);
-      options.hsl.l = +((options.hsl.l > 100 ? 100 : options.hsl.l < 0 ? 0 : options.hsl.l) / 100).toFixed(2);
+      options.hsl.s = +((options.hsl.s % 101 ?? 0) / 100).toFixed(2);
+      options.hsl.l = +((options.hsl.l % 101 ?? 0) / 100).toFixed(2);
 
-      let h: number = options.hsl.h / 60;
-      let c: number = (1 - Math.abs(2 * options.hsl.l - 1)) * options.hsl.s;
-      let x: number = c * (1 - Math.abs((h % 2) - 1));
-      let m: number = options.hsl.l - c / 2;
+      const h: number = options.hsl.h / 60;
+      const c: number = (1 - Math.abs(2 * options.hsl.l - 1)) * options.hsl.s;
+      const x: number = c * (1 - Math.abs((h % 2) - 1));
+      const m: number = options.hsl.l - c / 2;
 
       hslv(h, c, x, m);
     }

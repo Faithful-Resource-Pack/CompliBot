@@ -1,21 +1,20 @@
 import { SlashCommand } from '@interfaces';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { CommandInteraction } from 'discord.js';
-import { Client, MessageEmbed } from '@client';
+import { MessageEmbed } from '@client';
 import { colors } from '@helpers/colors';
 
-export const command: SlashCommand = {
+const command: SlashCommand = {
   data: new SlashCommandBuilder()
     .setName('bean')
     .setDescription('Bean him at once!')
     .addUserOption((option) => option.setName('user').setDescription('User you want to bean').setRequired(true)),
-  execute: async (interaction: CommandInteraction, client: Client) => {
+  execute: async (interaction: CommandInteraction) => {
     if (
       await interaction.perms({
         type: 'mod',
       })
-    )
-      return;
+    ) return;
 
     const embed = new MessageEmbed()
       .setAuthor({
@@ -29,3 +28,5 @@ export const command: SlashCommand = {
     });
   },
 };
+
+export default command;

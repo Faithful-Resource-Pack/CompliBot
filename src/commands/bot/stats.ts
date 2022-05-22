@@ -1,24 +1,22 @@
+import os from 'os';
+import linuxOs from 'linux-os-info';
 import { duration } from 'moment';
 import { SlashCommand, SlashCommandI } from '@interfaces';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { Collection, Guild, version as djsVersion } from 'discord.js';
-import { Client, MessageEmbed, CommandInteraction, Message } from '@client';
-import os from 'os';
-import linuxOs from 'linux-os-info';
+import {
+  Client, MessageEmbed, CommandInteraction, Message,
+} from '@client';
 
-export const command: SlashCommand = {
+const command: SlashCommand = {
   data: new SlashCommandBuilder()
     .setName('stats')
     .setDescription('Gets statistics about the bot or commands.')
     .addSubcommand((subcommand) => subcommand.setName('bot').setDescription('Statistics about the bot.'))
-    .addSubcommand((subcommand) =>
-      subcommand
-        .setName('command')
-        .setDescription('Returns top 10 most used commands.')
-        .addStringOption((option) =>
-          option.setName('command').setDescription('Returns usage for a specific command.').setRequired(false),
-        ),
-    ),
+    .addSubcommand((subcommand) => subcommand
+      .setName('command')
+      .setDescription('Returns top 10 most used commands.')
+      .addStringOption((option) => option.setName('command').setDescription('Returns usage for a specific command.').setRequired(false))),
   execute: new Collection<string, SlashCommandI>()
     .set('bot', async (interaction: CommandInteraction, client: Client) => {
       let sumMembers = 0;
@@ -30,11 +28,11 @@ export const command: SlashCommand = {
 
       const number = [...client.commandsProcessed.values()].reduce((a, b) => a + b, 0) + 1;
 
-      if (os.platform() == 'linux')
+      if (os.platform() === 'linux') {
         version = linuxOs({
           mode: 'sync',
         }).pretty_name;
-      else version = os.version();
+      } else version = os.version();
 
       const FieldTitles = (
         await interaction.getEphemeralString({
@@ -110,12 +108,12 @@ export const command: SlashCommand = {
         .then((message: Message) => message.deleteButton());
     })
     .set('command', async (interaction: CommandInteraction, client: Client) => {
-      //if the command ars is provided and the command does not exist in commandsProcessed:
+      // if the command ars is provided and the command does not exist in commandsProcessed:
       if (
-        interaction.options.getString('command') &&
-        client.commandsProcessed.get(interaction.options.getString('command')) === undefined
-      )
-        return interaction.reply({
+        interaction.options.getString('command')
+        && client.commandsProcessed.get(interaction.options.getString('command')) === undefined
+      ) {
+        interaction.reply({
           ephemeral: true,
           content: await interaction.getEphemeralString({
             string: 'Command.Stats.NotFound',
@@ -124,6 +122,8 @@ export const command: SlashCommand = {
             },
           }),
         });
+        return;
+      }
 
       if (interaction.options.getString('command')) {
         const embed = new MessageEmbed().setTimestamp().setTitle(
@@ -141,7 +141,7 @@ export const command: SlashCommand = {
           fetchReply: true,
         });
       } else {
-        //sorts commands by usage: 4,3,2,1
+        // sorts commands by usage: 4,3,2,1
         const sorted = new Map([...client.commandsProcessed.entries()].sort((a, b) => b[1] - a[1]));
         const data = [[...sorted.keys()], [...sorted.values()]];
 
@@ -149,22 +149,21 @@ export const command: SlashCommand = {
           await interaction.getEphemeralString({
             string: 'Command.Stats.Top10',
           }),
-        ).setDescription(`
-${data[0]
-  .slice(0, data[0].length > 10 ? 10 : data[0].length)
-  .map((key: any, index: any) => {
-    let place = `\`${index + 1 < 10 ? ` ${index + 1}` : index + 1}.`;
-    place += ` `.repeat(4 - place.length);
-    place += '`';
-    let command = `\`${key}`;
-    command += ` `.repeat(13 - command.length);
-    command += '`';
-    let uses = `\`${data[1][index]}`;
-    uses += '`';
+        ).setDescription(`${data[0]
+          .slice(0, data[0].length > 10 ? 10 : data[0].length)
+          .map((key: any, index: any) => {
+            let place = `\`${index + 1 < 10 ? ` ${index + 1}` : index + 1}.`;
+            place += ' '.repeat(4 - place.length);
+            place += '`';
+            let c = `\`${key}`;
+            c += ' '.repeat(13 - c.length);
+            c += '`';
+            let uses = `\`${data[1][index]}`;
+            uses += '`';
 
-    return `${place} ${command} - ${uses}`;
-  })
-  .join('\n')}`);
+            return `${place} ${c} - ${uses}`;
+          })
+          .join('\n')}`);
 
         interaction.reply({
           ephemeral: true,
@@ -173,3 +172,5 @@ ${data[0]
       }
     }),
 };
+
+export default command;

@@ -3,7 +3,7 @@ import { info } from '@helpers/logger';
 import { Client, Message, ButtonInteraction } from '@client';
 import { MessageInteraction } from 'discord.js';
 
-export const button: Button = {
+const button: Button = {
   buttonId: 'pollDelete',
   execute: async (client: Client, interaction: ButtonInteraction) => {
     if (client.verbose) console.log(`${info}Poll Message deleted!`);
@@ -12,8 +12,8 @@ export const button: Button = {
     const message: Message = interaction.message as Message;
     const pid: string = interaction.message.embeds[0].footer.text.split(' | ')[0];
 
-    if (messageInteraction != undefined && interaction.user.id != messageInteraction.user.id)
-      return interaction.reply({
+    if (messageInteraction !== undefined && interaction.user.id !== messageInteraction.user.id) {
+      interaction.reply({
         content: await interaction.getEphemeralString({
           string: 'Error.Interaction.Reserved',
           placeholders: {
@@ -22,6 +22,8 @@ export const button: Button = {
         }),
         ephemeral: true,
       });
+      return;
+    }
 
     try {
       message.delete();
@@ -40,7 +42,7 @@ export const button: Button = {
     } catch {
       /* pid not valid */
     }
-
-    return;
   },
 };
+
+export default button;

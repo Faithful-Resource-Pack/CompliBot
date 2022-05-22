@@ -1,7 +1,7 @@
 import { SlashCommand } from '@interfaces';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { CommandInteraction, MessageAttachment } from 'discord.js';
-import { Message, Client } from '@client';
+import { Message } from '@client';
 
 /**
  * Warning: key value cannot be longer than a certain value (I didn't search how much it is)
@@ -52,37 +52,35 @@ const options: {
   },
 ];
 
-export const command: SlashCommand = {
+const command: SlashCommand = {
   data: new SlashCommandBuilder()
     .setName('order')
     .setDescription('Get something special')
-    .addStringOption((option) =>
-      option
-        .setName('item')
-        .setDescription('The item you want.')
-        .addChoices(...options)
-        .setRequired(true),
-    ),
-  execute: async (interaction: CommandInteraction, client: Client) => {
+    .addStringOption((option) => option
+      .setName('item')
+      .setDescription('The item you want.')
+      .addChoices(...options)
+      .setRequired(true)),
+  execute: async (interaction: CommandInteraction) => {
     await interaction.deferReply();
     let advice: string = null;
 
-    // send an anotation following the gif
-    for (const option of options) {
-      if (option[1] === interaction.options.getString('item')) {
-        switch (option[0]) {
-          case 'soup':
-            advice = 'Gutten Appetit';
-            break;
-          case 'pizza':
-            advice = 'Buon Appetito!';
-            break;
-          case 'poop':
-            advice = ':eyes:';
-            break;
-          default:
-            break;
-        }
+    // send an annotation following the gif
+    const [found] = options.filter((option) => option.name === interaction.options.getString('item'));
+
+    if (found) {
+      switch (found.name) {
+        case 'soup':
+          advice = 'Gutten Appetit';
+          break;
+        case 'pizza':
+          advice = 'Buon Appetito!';
+          break;
+        case 'poop':
+          advice = ':eyes:';
+          break;
+        default:
+          break;
       }
     }
 
@@ -98,3 +96,5 @@ export const command: SlashCommand = {
       .then((message: Message) => message.deleteButton());
   },
 };
+
+export default command;

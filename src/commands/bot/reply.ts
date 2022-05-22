@@ -1,9 +1,9 @@
 import { SlashCommand } from '@interfaces';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { CommandInteraction } from 'discord.js';
-import { Client, Message } from '@client';
+import { Message } from '@client';
 
-export const command: SlashCommand = {
+const command: SlashCommand = {
   permissions: {
     users: [
       '207471947662098432', // Juknum
@@ -15,25 +15,27 @@ export const command: SlashCommand = {
   data: new SlashCommandBuilder()
     .setName('reply')
     .setDescription('Say something with the bot')
-    .addStringOption((option) =>
-      option.setName('sentence').setDescription('The funny thing you want the bot to say.').setRequired(true),
-    )
+    .addStringOption((option) => option.setName('sentence').setDescription('The funny thing you want the bot to say.').setRequired(true))
     .addStringOption((option) => option.setName('message').setDescription('Message ID to reply to').setRequired(true)),
-  execute: async (interaction: CommandInteraction, client: Client) => {
-    return interaction.reply({
+  execute: async (interaction: CommandInteraction) => {
+    // TODO: Fix this commands
+    interaction.reply({
       content: 'This command is temporarily disabled! (complain to Discord for breaking slash command permissions)',
       ephemeral: true,
     });
+    return;
 
     let msg: Message;
     try {
       msg = (await interaction.channel.messages.fetch(interaction.options.getString('message'))) as Message;
     } catch {
-      return interaction.reply({
+    // message can't be fetched
+      interaction.reply({
         content: "Message can't be fetched!",
         ephemeral: true,
       });
-    } // message can't be fetched
+      return;
+    }
 
     interaction
       .reply({
@@ -46,3 +48,5 @@ export const command: SlashCommand = {
     });
   },
 };
+
+export default command;

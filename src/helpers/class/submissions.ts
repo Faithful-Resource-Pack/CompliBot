@@ -1,5 +1,5 @@
-import { magnifyAttachment } from '@functions/canvas/magnify';
-import { MinecraftSorter } from '@helpers/sorter';
+import magnifyAttachment from '@functions/canvas/magnify';
+import MinecraftSorter from '@helpers/sorter';
 import {
   submissionButtonsClosedEnd,
   submissionButtonsClosed,
@@ -9,13 +9,15 @@ import {
 import { addMinutes } from '@helpers/dates';
 import { ids, parseId } from '@helpers/emojis';
 import { Client, Message, MessageEmbed } from '@client';
-import { EmbedField, MessageActionRow, MessageAttachment, TextChannel } from 'discord.js';
+import {
+  EmbedField, MessageAttachment, TextChannel,
+} from 'discord.js';
 import axios from 'axios';
 import { colors } from '@helpers/colors';
-import { TimedEmbed } from './timedEmbed';
 import { getCorrespondingCouncilChannel, getSubmissionChannelName } from '@helpers/channels';
-import { getResourcePackFromName } from '@functions/getResourcePack';
+import getResourcePackFromName from '@functions/getResourcePack';
 import { stickAttachment } from '@functions/canvas/stick';
+import { TimedEmbed } from './timedEmbed';
 
 export type SubmissionStatus = 'pending' | 'instapassed' | 'added' | 'no_council' | 'council' | 'denied' | 'invalid';
 
@@ -53,7 +55,7 @@ export class Submission extends TimedEmbed {
                 }`,
               );
 
-            if (status === 'council')
+            if (status === 'council') {
               embed.addFields(
                 {
                   name: 'Upvotes',
@@ -64,16 +66,18 @@ export class Submission extends TimedEmbed {
                   value: `${parseId(ids.downvote)} ${down > 0 ? `<@!${downvoters.join('>,\n<@!')}>` : 'None'}`,
                 },
               );
+            }
 
             channel
               .send({
                 embeds: [embed],
               })
               .then((message: Message) => {
-                if (status === 'council')
+                if (status === 'council') {
                   message.startThread({
                     name: 'Debate about that texture!',
                   });
+                }
               });
 
             this.voidVotes();
@@ -89,7 +93,7 @@ export class Submission extends TimedEmbed {
   }
 
   public getVotesUI(): [string, string] {
-    let votes = this.getVotesCount();
+    const votes = this.getVotesCount();
     return [
       `${parseId(ids.upvote)} ${votes[0]} Upvote${votes[0] > 1 ? 's' : ''}`,
       `${parseId(ids.downvote)} ${votes[1]} Downvote${votes[1] > 1 ? 's' : ''}`,
@@ -131,7 +135,7 @@ export class Submission extends TimedEmbed {
     }
 
     const embed: MessageEmbed = new MessageEmbed(message.embeds.shift()); // remove first embed (with description) & keep others with magnified imgs
-    let components: Array<MessageActionRow> = message.components;
+    let { components } = message;
 
     switch (this.getStatus()) {
       case 'no_council':
@@ -163,10 +167,9 @@ export class Submission extends TimedEmbed {
         embed.setColor(colors.yellow);
         // update status
         embed.fields = embed.fields.map((field: EmbedField) => {
-          field.value =
-            field.name === 'Status'
-              ? (field.value = this.getStatusUI().replace('%USER%', `<@!${userId}>`))
-              : field.value;
+          field.value = field.name === 'Status'
+            ? (field.value = this.getStatusUI().replace('%USER%', `<@!${userId}>`))
+            : field.value;
           return field;
         });
         // remove until field
@@ -205,7 +208,6 @@ export class Submission extends TimedEmbed {
       embeds: [embed, ...message.embeds],
       components: [...components],
     });
-    return;
   }
 
   public async postSubmissionMessage(
@@ -276,19 +278,21 @@ export class Submission extends TimedEmbed {
           }`,
         )
       ).request.res.responseUrl;
-    } catch {}
+    } catch {
+      // do nothing
+    }
 
     // magnified x16 texture in thumbnail
     const magnifiedDefault = (
       await magnifyAttachment({
-        url: url,
+        url,
         name: 'magnified_default.png',
         embed: null,
       })
     )[0];
 
     // saved attachments in a private message
-    let attachments = [
+    const attachments = [
       ...(
         await channel.send({
           files: [file, magnifiedDefault],
@@ -305,7 +309,7 @@ export class Submission extends TimedEmbed {
         embed: null,
       })
     )[0];
-    let attachment = [
+    const attachment = [
       ...(
         await channel.send({
           files: [magnifiedSubmission],
@@ -324,7 +328,7 @@ export class Submission extends TimedEmbed {
       },
       name: 'sticked.png',
     });
-    let stickedImgAttachment = [
+    const stickedImgAttachment = [
       ...(
         await channel.send({
           files: [stickedImg],
@@ -344,32 +348,29 @@ export class Submission extends TimedEmbed {
   public async createContribution(client: Client) {
     client.channels
       .fetch(this.getChannelId())
-      .then((c: TextChannel) => {
-        // get the submission message
-        return c.messages.fetch(this.getMessageId());
-      })
+      .then((c: TextChannel) => c.messages.fetch(this.getMessageId())) // get the submission message
       .then((m: Message) => {
         // collect required information to make the contribution
-        let texture: string = m.embeds[0].title
+        const texture: string = m.embeds[0].title
           .split(' ')
-          .filter((el) => el.charAt(0) === '[' && el.charAt(1) === '#' && el.slice(-1) == ']')
+          .filter((el) => el.charAt(0) === '[' && el.charAt(1) === '#' && el.slice(-1) === ']')
           .map((el) => el.slice(2, el.length - 1))[0];
-        let authors: Array<string> = m.embeds[0].fields
+        const authors: Array<string> = m.embeds[0].fields
           .filter((f) => f.name === 'Contributor(s)')[0]
           .value.split('\n')
           .map((auth) => auth.replace('<@!', '').replace('>', ''));
-        let date: number = m.createdTimestamp;
-        let ressourcePack = getResourcePackFromName(
+        const date: number = m.createdTimestamp;
+        const ressourcePack = getResourcePackFromName(
           client,
           m.embeds[0].fields.filter((f) => f.name === 'Resource Pack')[0].value.replaceAll('`', ''),
         );
-        let resolution = ressourcePack.resolution;
-        let pack = ressourcePack.slug;
+        const { resolution } = ressourcePack;
+        const pack = ressourcePack.slug;
 
         // send the contribution
         // todo: use API url here
         return axios.post(
-          `http://localhost:8000/v2/contributions`,
+          'http://localhost:8000/v2/contributions',
           {
             date,
             pack,
@@ -386,6 +387,7 @@ export class Submission extends TimedEmbed {
       })
       .then((res) => res.data) // axios data response
       .then((contribution) => {
+        console.log(contribution);
         // TODO: GITHUB PUSH TO EACH BRANCHHH + CORRESPONDING REPO
       })
       .catch(console.error);

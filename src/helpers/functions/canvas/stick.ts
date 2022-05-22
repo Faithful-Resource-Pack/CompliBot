@@ -1,4 +1,6 @@
-import { Canvas, CanvasRenderingContext2D, createCanvas, loadImage } from 'canvas';
+import {
+  Canvas, CanvasRenderingContext2D, createCanvas, loadImage,
+} from 'canvas';
 import { MessageAttachment } from 'discord.js';
 import getMeta from './getMeta';
 
@@ -10,15 +12,6 @@ interface Options {
     url: string;
   };
   name?: string;
-}
-
-export async function stickAttachment(options: Options): Promise<MessageAttachment> {
-  try {
-    const canvas = await stickCanvas(options);
-    return new MessageAttachment(canvas.toBuffer('image/png'), `${options.name ? options.name : 'sticked.png'}`);
-  } catch {
-    return null;
-  }
 }
 
 export async function stickCanvas(options: Options): Promise<Canvas> {
@@ -48,21 +41,30 @@ export async function stickCanvas(options: Options): Promise<Canvas> {
       context.drawImage(
         left.image,
         0,
-        (Math.max(left.dimensions.height, right.dimensions.height) -
-          Math.min(left.dimensions.height, right.dimensions.height)) /
-          2, // centered in height, using the highest of given images, should be 0 if both are the same height
+        (Math.max(left.dimensions.height, right.dimensions.height)
+          - Math.min(left.dimensions.height, right.dimensions.height))
+          / 2, // centered in height, using the highest of given images, should be 0 if both are the same height
       );
 
       // Draw right image
       context.drawImage(
         right.image,
         left.dimensions.width + margin,
-        (Math.max(left.dimensions.height, right.dimensions.height) -
-          Math.min(left.dimensions.height, right.dimensions.height)) /
-          2, // centered in height, using the highest of given images, should be 0 if both are the same height
+        (Math.max(left.dimensions.height, right.dimensions.height)
+          - Math.min(left.dimensions.height, right.dimensions.height))
+          / 2, // centered in height, using the highest of given images, should be 0 if both are the same height
       );
 
       return canvas;
     },
   );
+}
+
+export async function stickAttachment(options: Options): Promise<MessageAttachment> {
+  try {
+    const canvas = await stickCanvas(options);
+    return new MessageAttachment(canvas.toBuffer('image/png'), `${options.name ? options.name : 'sticked.png'}`);
+  } catch {
+    return null;
+  }
 }

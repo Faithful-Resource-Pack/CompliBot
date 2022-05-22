@@ -21,4 +21,4 @@ export const colors = {
   coin: '#ffdc16',
 } as const;
 
-export type colorType = keyof typeof colors;
+export type Color = keyof typeof colors;

@@ -1,5 +1,5 @@
 // thanks ewanhowell5195 for these types! - nick#1666
-export enum activities {
+export enum Activities {
   betrayal = '773336526917861400',
   checkers = '832013003968348200',
   chess = '832012774040141894',
@@ -15,9 +15,7 @@ export enum activities {
 export const activityOptions: {
   name: string;
   value: string;
-}[] = Object.keys(activities).map((name) => {
-  return {
-    name: name,
-    value: activities[name as keyof typeof activities],
-  };
-});
+}[] = Object.keys(Activities).map((name) => ({
+  name,
+  value: Activities[name as keyof typeof Activities],
+}));

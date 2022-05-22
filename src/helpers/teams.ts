@@ -1,5 +1,5 @@
-import { Config } from './interfaces';
 import configJson from '@json/config.json';
+import { Config } from './interfaces';
 
 const config: Config = configJson;
 
@@ -8,7 +8,7 @@ const config: Config = configJson;
  * @param {string|string[]} options.name - team name (or names) you want ids
  * @returns {string[]} - ids you searched
  */
-export const getTeamsIds = (options: { name: string | Array<string> }): Array<string> => {
+export default function getTeamsIds(options: { name: string | Array<string> }): Array<string> {
   const output: Array<string> = [];
 
   const search = (name: string): void => {
@@ -21,4 +21,4 @@ export const getTeamsIds = (options: { name: string | Array<string> }): Array<st
   else options.name.forEach((name) => search(name));
 
   return output;
-};
+}

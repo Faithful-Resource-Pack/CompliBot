@@ -6,8 +6,13 @@ import { TextChannel } from 'discord.js';
 const jiraVersionsCache = [];
 
 export async function loadJiraBedrockVersions() {
+  let status: number;
+  let versions;
+
   try {
-    var { status, data: versions } = await axios.get('https://bugs.mojang.com/rest/api/latest/project/MCPE/versions');
+    const res = await axios.get('https://bugs.mojang.com/rest/api/latest/project/MCPE/versions');
+    status = res.status;
+    versions = res.data;
   } catch (e) {
     console.log(`${warning}Failed to load Jira Minecraft Bedrock versions`);
     return;
@@ -26,8 +31,13 @@ export async function loadJiraBedrockVersions() {
 }
 
 export async function updateJiraBedrockVersions(client: Client) {
+  let status: number;
+  let versions;
+
   try {
-    var { status, data: versions } = await axios.get('https://bugs.mojang.com/rest/api/latest/project/MCPE/versions');
+    const res = await axios.get('https://bugs.mojang.com/rest/api/latest/project/MCPE/versions');
+    status = res.status;
+    versions = res.data;
   } catch (e) {
     return;
   }
@@ -40,7 +50,7 @@ export async function updateJiraBedrockVersions(client: Client) {
     if (!jiraVersionsCache.includes(version.name)) {
       jiraVersionsCache.push(version.name);
       if (!version.name.includes('Future Version')) {
-        let updateChannel = (await client.channels.cache.get('773983707299184703')) as TextChannel;
+        const updateChannel = (await client.channels.cache.get('773983707299184703')) as TextChannel;
         updateChannel.send({
           content: `A new Minecraft Bedrock version has been added to the Minecraft issue tracker: \`${version.name}\``,
         });

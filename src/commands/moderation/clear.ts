@@ -1,33 +1,32 @@
-import { SlashCommand } from '@interfaces';
+import { SlashCommand, Config } from '@interfaces';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { Collection, CommandInteraction, TextChannel } from 'discord.js';
 import { Client, Message, MessageEmbed } from '@client';
-import { Config } from '@interfaces';
 import ConfigJson from '@json/config.json';
 import { colors } from '@helpers/colors';
+
 const config: Config = ConfigJson;
 
-export const command: SlashCommand = {
+const command: SlashCommand = {
   data: new SlashCommandBuilder()
     .setName('clear')
     .setDescription('Clear a specified amount of messages')
-    .addNumberOption((option) =>
-      option.setName('amount').setDescription('The amount of messages you want to clear [0 - 100]').setRequired(true),
-    ),
+    .addNumberOption((option) => option.setName('amount').setDescription('The amount of messages you want to clear [0 - 100]').setRequired(true)),
   execute: async (interaction: CommandInteraction, client: Client) => {
     if (
       await interaction.perms({
         type: 'mod',
       })
-    )
-      return;
+    ) return;
 
     const amount: number = interaction.options.getNumber('amount', true);
-    if (amount > 100 || amount < 0)
-      return interaction.reply({
+    if (amount > 100 || amount < 0) {
+      interaction.reply({
         ephemeral: true,
         content: 'Amount must be between `0` and `100`',
       });
+      return;
+    }
 
     let messages: Collection<string, Message>;
     try {
@@ -36,10 +35,11 @@ export const command: SlashCommand = {
       });
       await (interaction.channel as TextChannel).bulkDelete(messages);
     } catch (err) {
-      return interaction.reply({
+      interaction.reply({
         content: err,
         ephemeral: true,
       });
+      return;
     }
 
     interaction.reply({
@@ -74,21 +74,24 @@ export const command: SlashCommand = {
 
     // send log into the addressed logs channel
     let logChannel: TextChannel;
-    const team: string = config.discords.filter((d) => d.id === interaction.guildId)[0].team;
+    const { team } = config.discords.filter((d) => d.id === interaction.guildId)[0];
     try {
-      if (team)
+      if (team) {
         logChannel = (await client.channels.fetch(
           config.teams.filter((t) => t.name === team)[0].channels.moderation,
         )) as any;
-      else
+      } else {
         logChannel = (await client.channels.fetch(
           config.discords.filter((d) => d.id === interaction.guildId)[0].channels.moderation,
         )) as any;
+      }
       logChannel.send({
         embeds: [embed],
       });
     } catch {
-      return;
-    } // can't fetch channel
+      // can't fetch channel
+    }
   },
 };
+
+export default command;

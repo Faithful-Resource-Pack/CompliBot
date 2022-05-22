@@ -5,9 +5,39 @@ import { Collection, MessageAttachment, User } from 'discord.js';
 /**
  * STEPS:
  *  1. Check if there is a message with an image in last X messages
- * 	2. Apply the given function on that image
+ *  2. Apply the given function on that image
  *  3. Construct result embed with result image
  */
+
+/**
+ * Check if the message has a image attached somewhere
+ * @param message Discord.Message
+ * @returns image URL
+ */
+export async function getImageFromMessage(message: Message): Promise<string> {
+  // if image is attached
+  if (message.attachments.size > 0 && message.attachments.first().url.match(/\.(jpeg|jpg|png)$/)) return message.attachments.first().url;
+  // else if the message is an embed
+  if (message.embeds[0]) {
+    // if the embeds has an image field
+    if (message.embeds[0].image) return message.embeds[0].image.url;
+    // else if the embed has a thumbnail field
+    if (message.embeds[0].thumbnail) return message.embeds[0].thumbnail.url;
+  }
+
+  // if no images attached to the first parent reply, check if there is another parent reply (recursive go brr)
+  if (message.type === 'REPLY') {
+    try {
+      await message.fetchReference();
+    } catch {
+      return null;
+    }
+
+    return getImageFromMessage(await message.fetchReference());
+  }
+
+  return null; // default value
+}
 
 /**
  * Check if there is a message with a message within the `limit` of messages in the `channel`
@@ -41,17 +71,16 @@ export async function fetchMessageImage(
   let message: Message = messages
     .sort((a, b) => b.createdTimestamp - a.createdTimestamp)
     .filter(
-      (m) =>
-        (m.attachments.size > 0 && (m.attachments.first().url.match(/\.(jpeg|jpg|png)$/) as any)) ||
+      (m) => (m.attachments.size > 0 && (m.attachments.first().url.match(/\.(jpeg|jpg|png)$/) as any))
         // TODO: definitely not the best way to do this
-        (m.embeds[0] !== undefined &&
-          ((m.embeds[0].thumbnail !== null && m.embeds[0].thumbnail.url.match(/\.(jpeg|jpg|png)$/)) ||
-            (m.embeds[0].image !== null && m.embeds[0].image.url.match(/\.(jpeg|jpg|png)$/)))),
+        || (m.embeds[0] !== undefined
+          && ((m.embeds[0].thumbnail !== null && m.embeds[0].thumbnail.url.match(/\.(jpeg|jpg|png)$/))
+            || (m.embeds[0].image !== null && m.embeds[0].image.url.match(/\.(jpeg|jpg|png)$/)))),
     )
     .first();
 
   // no need to await user interaction (a message has been found)
-  if (message !== undefined) return await getImageFromMessage(message);
+  if (message !== undefined) return getImageFromMessage(message);
 
   // no message found but we don't ask the user to provide an image
   if (!userInteraction.doInteraction) return null;
@@ -84,66 +113,34 @@ export async function fetchMessageImage(
   message = awaitedMessages
     .sort((a, b) => b.createdTimestamp - a.createdTimestamp)
     .filter(
-      (m) =>
-        (m.attachments.size > 0 && (m.attachments.first().url.match(/\.(jpeg|jpg|png)$/) as any)) ||
-        (m.embeds[0] !== undefined && (m.embeds[0].thumbnail !== null || m.embeds[0].image !== null)),
+      (m) => (m.attachments.size > 0 && (m.attachments.first().url.match(/\.(jpeg|jpg|png)$/) as any))
+        || (m.embeds[0] !== undefined && (m.embeds[0].thumbnail !== null || m.embeds[0].image !== null)),
     )
     .first();
 
   try {
     embedMessage.delete();
-  } catch {} // waiting embed already gone
-
-  if (message !== undefined) return await getImageFromMessage(message);
-  else return null;
-}
-
-/**
- * Check if the message has a image attached somewhere
- * @param message Discord.Message
- * @returns image URL
- */
-export async function getImageFromMessage(message: Message): Promise<string> {
-  // if image is attached
-  if (message.attachments.size > 0 && message.attachments.first().url.match(/\.(jpeg|jpg|png)$/))
-    return message.attachments.first().url;
-  // else if the message is an embed
-  else if (message.embeds[0]) {
-    // if the embeds has an image field
-    if (message.embeds[0].image) return message.embeds[0].image.url;
-    // else if the embed has a thumbnail field
-    else if (message.embeds[0].thumbnail) return message.embeds[0].thumbnail.url;
+  } catch {
+    // waiting embed already gone
   }
 
-  // if no images attached to the first parent reply, check if there is another parent reply (recursive go brr)
-  if (message.type === 'REPLY') {
-    try {
-      await message.fetchReference();
-    } catch {
-      return null;
-    }
-
-    return getImageFromMessage(await message.fetchReference());
-  }
-
-  return null; // default value
+  if (message !== undefined) return getImageFromMessage(message);
+  return null;
 }
 
-export type actionType = (args: any) => Promise<[MessageAttachment, MessageEmbed]>;
+export type Action = (args: any) => Promise<[MessageAttachment, MessageEmbed]>;
 export async function generalSlashCommandImage(
   interaction: CommandInteraction,
-  actionCommand: actionType,
+  actionCommand: Action,
   actionCommandParams: any,
 ): Promise<void> {
   await interaction.deferReply();
 
-  const attachmentUrl = interaction.options.getAttachment('image', false)?.url; //safe navigation operator.
-  const imageURL: string = attachmentUrl
-    ? attachmentUrl
-    : await fetchMessageImage(interaction, 10, {
-        doInteraction: true,
-        user: interaction.user,
-      });
+  const attachmentUrl = interaction.options.getAttachment('image', false)?.url; // safe navigation operator.
+  const imageURL: string = attachmentUrl || await fetchMessageImage(interaction, 10, {
+    doInteraction: true,
+    user: interaction.user,
+  });
 
   if (imageURL === null) {
     await interaction.followUp({

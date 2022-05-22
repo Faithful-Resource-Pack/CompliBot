@@ -5,9 +5,7 @@ import { normalize } from 'path';
  * @param {Array<string>} arr - the array to apply the method
  * @returns {arr<string>}
  */
-export const normalizeArray = (arr: Array<string>): Array<string> => {
-  return arr.map((e) => normalize(e));
-};
+export const normalizeArray = (arr: Array<string>): Array<string> => arr.map((e) => normalize(e));
 
 /**
  * Test if an array of string include in one of it's string the given value
@@ -20,7 +18,7 @@ export const includesNone = (arr: Array<string>, val: string): boolean => {
   let i = 0;
   while (i < arr.length && res) {
     res = !val.includes(arr[i]);
-    i++;
+    i += 1;
   }
 
   return res;
@@ -32,9 +30,7 @@ export const includesNone = (arr: Array<string>, val: string): boolean => {
  * ["test", "options"] => [["test", "test"], ["options", "options"]]
  * @param {Array<T>} arr
  */
-export const doNestedArr = (arr: Array<any>): Array<[any, any]> => {
-  return arr.map((v) => [v, v]);
-};
+export const doNestedArr = (arr: Array<any>): Array<[any, any]> => arr.map((v) => [v, v]);
 
 /**
  * Duplicate value of an array to a double nested object array
@@ -47,11 +43,7 @@ export const doNestedObj = (
 ): Array<{
   name: string;
   value: any;
-}> => {
-  return obj.map((v) => {
-    return {
-      name: v,
-      value: v,
-    };
-  });
-};
+}> => obj.map((v) => ({
+  name: v,
+  value: v,
+}));

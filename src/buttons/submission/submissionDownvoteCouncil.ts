@@ -1,10 +1,12 @@
 import { Button } from '@interfaces';
-import { Client, Message, ButtonInteraction, MessageEmbed } from '@client';
+import {
+  Client, Message, ButtonInteraction, MessageEmbed,
+} from '@client';
 import { Submission } from '@class/submissions';
 import { GuildMember, Role } from 'discord.js';
-import { getRolesIds } from '@helpers/roles';
+import getRolesIds from '@helpers/roles';
 
-export const button: Button = {
+const button: Button = {
   buttonId: 'submissionDownvoteCouncil',
   execute: async (client: Client, interaction: ButtonInteraction) => {
     await interaction.deferUpdate();
@@ -14,22 +16,22 @@ export const button: Button = {
 
     // check if member is council
     if (
-      member.roles.cache.find((role: Role) =>
-        getRolesIds({
-          name: 'council',
-          teams: ['faithful'],
-        }).includes(role.id),
-      ) === undefined
-    )
-      return interaction.reply({
+      member.roles.cache.find((role: Role) => getRolesIds({
+        name: 'council',
+        teams: ['faithful'],
+      }).includes(role.id)) === undefined
+    ) {
+      interaction.reply({
         content: 'Only council members can vote while the texture is in council!',
         ephemeral: true,
       });
+      return;
+    }
 
     // get submission, update it
     const sid: string = embed.footer.text.split(' | ')[0];
     const submission: Submission = new Submission(client.submissions.get(sid));
-    const id: string = interaction.user.id;
+    const { id } = interaction.user;
 
     if (submission.hasVotedFor('downvote', id)) submission.removeVote('downvote', id);
     else submission.addVote('downvote', id);
@@ -45,3 +47,5 @@ export const button: Button = {
     });
   },
 };
+
+export default button;

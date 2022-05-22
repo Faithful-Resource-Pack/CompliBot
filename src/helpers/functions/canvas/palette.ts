@@ -1,7 +1,7 @@
 import { MessageEmbed } from '@client';
 import { Canvas, createCanvas, loadImage } from 'canvas';
 import { MessageAttachment } from 'discord.js';
-import { ColorManager } from './colors';
+import ColorManager from './colors';
 import getMeta from './getMeta';
 
 const COOLORS_URL = 'https://coolors.co/';
@@ -17,7 +17,7 @@ const GRADIENT_WIDTH = 700;
 const GRADIENT_BAND_WIDTH = 3;
 const GRADIENT_HEIGHT = 50;
 
-export interface options {
+export interface Options {
   url: string;
   name: string;
 }
@@ -31,7 +31,7 @@ export interface AllColors {
   };
 }
 
-export async function paletteAttachment(options: options): Promise<[MessageAttachment, MessageEmbed]> {
+export async function paletteAttachment(options: Options): Promise<[MessageAttachment, MessageEmbed]> {
   return getMeta(options.url).then(async (dimension) => {
     const [width, height] = [dimension.width, dimension.height];
     const size = width * height;
@@ -46,69 +46,71 @@ export async function paletteAttachment(options: options): Promise<[MessageAttac
 
     const imageData = context.getImageData(0, 0, width, height).data;
 
-    for (let x = 0; x < dimension.width; x++)
-      for (let y = 0; y < dimension.height; y++) {
-        let index = (y * dimension.width + x) * 4;
-        let r = imageData[index];
-        let g = imageData[index + 1];
-        let b = imageData[index + 2];
-        let a = imageData[index + 3] / 255;
+    for (let x = 0; x < dimension.width; x += 1) {
+      for (let y = 0; y < dimension.height; y += 1) {
+        const index = (y * dimension.width + x) * 4;
+        const r = imageData[index];
+        const g = imageData[index + 1];
+        const b = imageData[index + 2];
+        const a = imageData[index + 3] / 255;
 
         // avoid transparent colors
         if (a !== 0) {
-          var hex = new ColorManager({
+          const hex = new ColorManager({
             rgb: {
-              r: r,
-              g: g,
-              b: b,
+              r,
+              g,
+              b,
             },
           }).toHEX().value;
 
-          if (!(hex in allColors))
+          if (!(hex in allColors)) {
             allColors[hex] = {
-              hex: hex,
+              hex,
               opacity: [],
               rgb: [r, g, b],
               count: 0,
             };
+          }
 
-          ++allColors[hex].count;
+          allColors[hex].count += 1;
           allColors[hex].opacity.push(a);
         }
       }
+    }
 
     // convert back to array
-    let colors = Object.values(allColors)
+    const colors = Object.values(allColors)
       .sort((a, b) => b.count - a.count)
       .slice(0, COLORS_TOP)
       .map((el) => el.hex);
 
     const embed = new MessageEmbed().setTitle('Palette results').setDescription('List of colors:\n');
 
-    const field_groups = [];
+    const fieldGroups = [];
     let g: number;
-    for (let i = 0; i < colors.length; i++) {
+    for (let i = 0; i < colors.length; i += 1) {
       // create 9 groups
       if (i % COLORS_PER_PALETTE === 0) {
-        field_groups.push([]);
+        fieldGroups.push([]);
         g = 0;
       }
 
       // each group has 3 lines
-      if (g % COLORS_PER_PALETTE_LINE === 0) field_groups[field_groups.length - 1].push([]);
+      if (g % COLORS_PER_PALETTE_LINE === 0) fieldGroups[fieldGroups.length - 1].push([]);
 
       // add color to latest group at the latest line
-      field_groups[field_groups.length - 1][field_groups[field_groups.length - 1].length - 1].push(colors[i]);
-      ++g;
+      fieldGroups[fieldGroups.length - 1][fieldGroups[fieldGroups.length - 1].length - 1].push(colors[i]);
+      g += 1;
     }
 
     let groupValue;
-    field_groups.forEach((group, index) => {
+    fieldGroups.forEach((group, index) => {
       groupValue = group
         .map((line) => line.map((color) => `[\`#${color}\`](${COOLORS_URL}${color})`).join(' '))
         .join(' ');
       embed.addFields({
-        name: 'Hex' + (field_groups.length > 1 ? ` part ${index + 1}` : '') + ': ',
+        name: `Hex${fieldGroups.length > 1 ? ` part ${index + 1}` : ''}: `,
         value: groupValue,
         inline: true,
       });
@@ -116,51 +118,50 @@ export async function paletteAttachment(options: options): Promise<[MessageAttac
 
     // create palette links, 9 max par link
     // make arrays of hex arrays
-    const palette_groups = [];
-    for (let i = 0; i < colors.length; ++i) {
-      if (i % COLORS_PER_PALETTE === 0) palette_groups.push([]);
-      palette_groups[palette_groups.length - 1].push(colors[i]);
+    const paletteGroups = [];
+    for (let i = 0; i < colors.length; i += 1) {
+      if (i % COLORS_PER_PALETTE === 0) paletteGroups.push([]);
+      paletteGroups[paletteGroups.length - 1].push(colors[i]);
     }
 
     // create URLs
-    const palette_urls: Array<string> = [];
+    const palletteURLs: Array<string> = [];
     let descriptionLen: number = embed.description.length;
 
     let i: number = 0;
     let stayInLoop: boolean = true;
     let link: string;
 
-    while (i < palette_groups.length && stayInLoop) {
-      link = `**[Palette${palette_groups.length > 1 ? ' part ' + (i + 1) : ''}](${COOLORS_URL}${palette_groups[i].join(
+    while (i < paletteGroups.length && stayInLoop) {
+      link = `**[Palette${paletteGroups.length > 1 ? ` part ${i + 1}` : ''}](${COOLORS_URL}${paletteGroups[i].join(
         '-',
       )})**`;
 
       if (descriptionLen + link.length + 3 > 1024) stayInLoop = false;
       else {
-        palette_urls.push(link);
+        palletteURLs.push(link);
         descriptionLen += link.length;
       }
 
-      ++i;
+      i += 1;
     }
 
     // add generate palette link && append palette to description
     embed.setDescription(
-      `Total: ${Object.values(allColors).length}\n\n` + embed.description + palette_urls.join(' - '),
+      `Total: ${Object.values(allColors).length}\n\n${embed.description}${palletteURLs.join(' - ')}`,
     );
 
     // create gradient canvas for top GRADIENT_TOP colors
-    const bandWidth =
-      Object.values(allColors).length > GRADIENT_TOP
-        ? GRADIENT_BAND_WIDTH
-        : Math.floor(GRADIENT_WIDTH / Object.values(allColors).length);
+    const bandWidth = Object.values(allColors).length > GRADIENT_TOP
+      ? GRADIENT_BAND_WIDTH
+      : Math.floor(GRADIENT_WIDTH / Object.values(allColors).length);
 
     // compute width
     const allColorsSorted = Object.values(allColors)
       .sort((a, b) => b.count - a.count)
       .slice(0, GRADIENT_TOP)
       .sort((a, b) => {
-        let [ha, sa, la] = Object.values(
+        const [ha, sa, la] = Object.values(
           new ColorManager({
             rgb: {
               r: a.rgb[0],
@@ -169,7 +170,7 @@ export async function paletteAttachment(options: options): Promise<[MessageAttac
             },
           }).toHSL(),
         );
-        let [hb, sb, lb] = Object.values(
+        const [hb, sb, lb] = Object.values(
           new ColorManager({
             rgb: {
               r: b.rgb[0],
@@ -192,7 +193,7 @@ export async function paletteAttachment(options: options): Promise<[MessageAttac
 
     allColorsSorted.forEach((color, index) => {
       ctx.fillStyle = `#${color.hex}`;
-      ctx.globalAlpha = color.opacity.reduce((a, v, i) => (a * i + v) / (i + 1)); // average alpha
+      ctx.globalAlpha = color.opacity.reduce((a, v, y) => (a * y + v) / (y + 1)); // average alpha
       ctx.fillRect(bandWidth * index, 0, bandWidth, GRADIENT_HEIGHT);
     });
 

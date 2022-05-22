@@ -5,7 +5,7 @@ export const compare = new MessageButton()
   .setStyle('PRIMARY')
   .setEmoji(parseId(ids.compare))
   .setCustomId('compare')
-  .setDisabled(true); //todo enable once compare button is made
+  .setDisabled(true); // todo enable once compare button is made
 export const palette = new MessageButton().setStyle('PRIMARY').setEmoji(parseId(ids.palette)).setCustomId('palette');
 export const magnify = new MessageButton().setStyle('PRIMARY').setEmoji(parseId(ids.magnify)).setCustomId('magnify');
 export const tile = new MessageButton().setStyle('PRIMARY').setEmoji(parseId(ids.tile)).setCustomId('tile');
@@ -19,24 +19,24 @@ export const invalidate = new MessageButton()
   .setEmoji(parseId(ids.invalid))
   .setCustomId('submissionInvalidate');
 
-export const view_votes = new MessageButton()
+export const viewVotes = new MessageButton()
   .setStyle('PRIMARY')
   .setEmoji(parseId(ids.view_votes))
   .setCustomId('submissionViewVotes');
 
-export const see_more = new MessageButton()
+export const seeMmore = new MessageButton()
   .setStyle('SECONDARY')
   .setEmoji(parseId(ids.see_more))
   .setCustomId('submissionSeeMore');
-export const see_more_end = new MessageButton()
+export const seeMoreReturn = new MessageButton()
   .setStyle('SECONDARY')
   .setEmoji(parseId(ids.see_more))
   .setCustomId('submissionSeeMoreEnd');
-export const see_less = new MessageButton()
+export const seeLess = new MessageButton()
   .setStyle('SECONDARY')
   .setEmoji(parseId(ids.see_less))
   .setCustomId('submissionSeeLess');
-export const see_less_end = new MessageButton()
+export const seeLessReturn = new MessageButton()
   .setStyle('SECONDARY')
   .setEmoji(parseId(ids.see_less))
   .setCustomId('submissionSeeLessEnd');
@@ -93,26 +93,26 @@ export const pollYesNo = new MessageActionRow().addComponents([pollUpvote, pollD
 
 export const imageButtons = new MessageActionRow().addComponents([magnify, tile, palette, compare]);
 export const submissionButtonsOpen = new MessageActionRow().addComponents([
-  see_less,
-  view_votes,
+  seeLess,
+  viewVotes,
   instapass,
   invalidate,
   deleteMessage,
 ]);
-export const submissionButtonsOpenEnd = new MessageActionRow().addComponents([see_less_end, view_votes, deleteMessage]);
+export const submissionButtonsOpenEnd = new MessageActionRow().addComponents([seeLessReturn, viewVotes, deleteMessage]);
 export const submissionButtonsClosed = new MessageActionRow().addComponents([
   magnify,
   tile,
   palette,
   compare,
-  see_more,
+  seeMmore,
 ]);
 export const submissionButtonsClosedEnd = new MessageActionRow().addComponents([
   magnify,
   tile,
   palette,
   compare,
-  see_more_end,
+  seeMoreReturn,
 ]);
 export const submissionButtonsVotes = new MessageActionRow().addComponents([upvote, downvote]);
 export const submissionButtonsVotesCouncil = new MessageActionRow().addComponents([upvoteCouncil, downvoteCouncil]);

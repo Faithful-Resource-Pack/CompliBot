@@ -1,6 +1,10 @@
 import { pollDelete, pollVotes, pollYesNo } from '@helpers/buttons';
-import { Client, CommandInteraction, Message, MessageEmbed } from '@client';
-import { MessageActionRow, MessageButton, TextChannel, EmbedField } from 'discord.js';
+import {
+  Client, CommandInteraction, Message, MessageEmbed,
+} from '@client';
+import {
+  MessageActionRow, MessageButton, TextChannel, EmbedField,
+} from 'discord.js';
 import { TimedEmbed } from './timedEmbed';
 
 export interface PollOptions {
@@ -10,10 +14,6 @@ export interface PollOptions {
   thread: boolean;
 }
 export class Poll extends TimedEmbed {
-  constructor(data?: Poll) {
-    super(data);
-  }
-
   /**
    * Update the discord message with the poll embed
    * @param {Client} client - Discord Client
@@ -32,7 +32,7 @@ export class Poll extends TimedEmbed {
     }
 
     const embed: MessageEmbed = new MessageEmbed(message.embeds[0]);
-    let components: Array<MessageActionRow> = message.components;
+    let { components } = message;
 
     if (this.getStatus() === 'ended') components = [];
     embed.fields = embed.fields.map((field: EmbedField, index: number) => {
@@ -45,30 +45,22 @@ export class Poll extends TimedEmbed {
       const votesCount: Array<number> = this.getVotesCount();
       const votes: Array<Array<string>> = this.getVotes();
 
-      field.value =
-        votesCount[index - 1] === 0
-          ? this.getStatus() === 'ended'
-            ? 'Nobody has voted.'
-            : 'No votes yet.'
-          : `> ${votesCount[index - 1]} / ${votesCount.reduce((partialSum, a) => partialSum + a, 0)} (${(
-              (votesCount[index - 1] / votesCount.reduce((partialSum, a) => partialSum + a, 0)) *
-              100
-            ).toFixed(2)}%)\n`;
+      if (votesCount[index - 1] === 0) field.value = this.getStatus() === 'ended' ? 'Nobody has voted.' : 'No votes yet.';
+      else field.value = `> ${votesCount[index - 1]} / ${votesCount.reduce((partialSum, a) => partialSum + a, 0)} (${((votesCount[index - 1] / votesCount.reduce((partialSum, a) => partialSum + a, 0)) * 100).toFixed(2)}%)\n`;
 
       if (this.isAnonymous() === false) {
         let i = 0;
 
         while (votes[index - 1][i] !== undefined && field.value.length + votes[index - 1][i].length < 1024) {
           field.value += `<@!${votes[index - 1][i]}> `;
-          i++;
+          i += 1;
         }
 
         if (
-          votes[index - 1][i] !== undefined &&
-          field.value.length + votes[index - 1][i].length > 1024 &&
-          field.value.length + ` ...`.length < 1024
-        )
-          field.value += ` ...`;
+          votes[index - 1][i] !== undefined
+          && field.value.length + votes[index - 1][i].length > 1024
+          && field.value.length + ' ...'.length < 1024
+        ) field.value += ' ...';
       }
 
       return field;
@@ -79,7 +71,6 @@ export class Poll extends TimedEmbed {
       embeds: [embed],
       components: [...components],
     });
-    return;
   }
 
   /**
@@ -99,12 +90,10 @@ export class Poll extends TimedEmbed {
       text: `${this.id} | ${embed.footer.text}`,
     });
     embed.addFields(
-      options.answersArr.map((answer: string, index: number) => {
-        return {
-          name: `${answer}`,
-          value: `No votes yet.`,
-        };
-      }),
+      options.answersArr.map((answer: string) => ({
+        name: `${answer}`,
+        value: 'No votes yet.',
+      })),
     );
 
     // votes options setup
@@ -114,8 +103,8 @@ export class Poll extends TimedEmbed {
         downvote: [],
       });
     } else {
-      let tmp = {};
-      for (let i = 0; i < options.answersArr.length; i++) tmp[i] = [];
+      const tmp = {};
+      for (let i = 0; i < options.answersArr.length; i += 1) tmp[i] = [];
       this.setVotes(tmp);
     }
 
@@ -135,7 +124,7 @@ export class Poll extends TimedEmbed {
     })) as any;
 
     if (options.question.length > 100) {
-      options.question = options.question.substring(0, 96) + '...';
+      options.question = `${options.question.substring(0, 96)}...`;
     }
 
     if (options.thread) {

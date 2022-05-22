@@ -5,8 +5,9 @@ import { ids, parseId } from '@helpers/emojis';
 import { Client, MessageEmbed } from '@client';
 import { Message, TextChannel, User } from 'discord.js';
 
-export class Automation {
+export default class Automation {
   private ticking: boolean = true;
+
   private client: Client;
 
   constructor(client: Client) {
@@ -86,7 +87,7 @@ export class Automation {
       const [up, down] = submission.getVotesCount();
 
       // remove submission from bot data after 1 month
-      let t = new Date();
+      const t = new Date();
       t.setMonth(t.getMonth() - 1);
       if (+(t.getTime() / 1000).toFixed(0) > submission.getTimeout()) {
         this.client.submissions.delete(submission.id);
@@ -118,6 +119,8 @@ export class Automation {
 
           // sends people that have voted to the submitter
           this.submissionSendVotes(submission, [up, down]);
+          break;
+
         default:
           break;
       }

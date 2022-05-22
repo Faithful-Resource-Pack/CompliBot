@@ -2,16 +2,14 @@ import { SlashCommand } from '@interfaces';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { MessageActionRow, MessageButton } from 'discord.js';
 import { ids, parseId } from '@helpers/emojis';
-import { Client, MessageEmbed, CommandInteraction } from '@client';
+import { MessageEmbed, CommandInteraction } from '@client';
 
-export const command: SlashCommand = {
+const command: SlashCommand = {
   data: new SlashCommandBuilder()
     .setName('feedback')
     .setDescription('Submits bot feedback to the developers.')
-    .addStringOption((option) =>
-      option.setName('message').setDescription('The message you wish to send').setRequired(true),
-    ),
-  execute: async (interaction: CommandInteraction, client: Client) => {
+    .addStringOption((option) => option.setName('message').setDescription('The message you wish to send').setRequired(true)),
+  execute: async (interaction: CommandInteraction) => {
     const embedPreview = new MessageEmbed()
       .setAuthor({
         name: interaction.user.tag,
@@ -63,3 +61,5 @@ export const command: SlashCommand = {
     });
   },
 };
+
+export default command;

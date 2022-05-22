@@ -1,10 +1,12 @@
 import { Button } from '@interfaces';
-import { Client, Message, ButtonInteraction, MessageEmbed } from '@client';
+import {
+  Client, Message, ButtonInteraction, MessageEmbed,
+} from '@client';
 import { GuildMember, Role } from 'discord.js';
 import { Submission } from '@class/submissions';
-import { getRolesIds } from '@helpers/roles';
+import getRolesIds from '@helpers/roles';
 
-export const button: Button = {
+const button: Button = {
   buttonId: 'submissionInvalidate',
   execute: async (client: Client, interaction: ButtonInteraction) => {
     const message: Message = interaction.message as Message;
@@ -13,18 +15,18 @@ export const button: Button = {
 
     // check if member is council
     if (
-      member.roles.cache.find((role: Role) =>
-        getRolesIds({
-          name: 'council',
-          teams: ['faithful'],
-          discords: ['dev'],
-        }).includes(role.id),
-      ) === undefined
-    )
-      return interaction.reply({
+      member.roles.cache.find((role: Role) => getRolesIds({
+        name: 'council',
+        teams: ['faithful'],
+        discords: ['dev'],
+      }).includes(role.id)) === undefined
+    ) {
+      interaction.reply({
         content: 'This interaction is reserved to council members',
         ephemeral: true,
       });
+      return;
+    }
 
     await interaction.deferUpdate();
 
@@ -37,3 +39,5 @@ export const button: Button = {
     client.submissions.set(submission.id, submission);
   },
 };
+
+export default button;

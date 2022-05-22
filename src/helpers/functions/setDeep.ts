@@ -6,7 +6,7 @@
  * @param {!mixed} value - The value you want to set it to.
  */
 
-export function setDeep(obj, path: any[], value) {
+export default function setDeep(obj, path: any[], value) {
   path.reduce((prev, curr, index) => {
     if (typeof prev[curr] === 'undefined' && index !== path.length) {
       prev[curr] = {};

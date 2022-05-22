@@ -3,7 +3,7 @@ import { createCanvas, loadImage } from 'canvas';
 import { MessageAttachment } from 'discord.js';
 import getMeta from './getMeta';
 
-type options = {
+type Options = {
   url: string;
   embed?: MessageEmbed;
   name?: string;
@@ -11,12 +11,12 @@ type options = {
   orientation?: 'portrait' | 'landscape' | 'none'; // default is none
 };
 
-export async function magnifyAttachment(options: options): Promise<[MessageAttachment, MessageEmbed]> {
+export default async function magnifyAttachment(options: Options): Promise<[MessageAttachment, MessageEmbed]> {
   return getMeta(options.url).then(async (dimension) => {
-    let factor = options.factor;
+    let { factor } = options;
 
     // If no factor was given it tries maximizing the image output size
-    if (factor == undefined) {
+    if (factor === undefined) {
       const surface = dimension.width * dimension.height;
 
       if (surface <= 256) factor = 32; // 16²px or below

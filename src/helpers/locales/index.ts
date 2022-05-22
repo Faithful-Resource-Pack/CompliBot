@@ -3,7 +3,7 @@ import commands from '@/lang/en-US/commands.json';
 import messages from '@/lang/en-US/messages.json';
 
 export const JSONFiles = ['main', 'commands', 'messages'];
-export const en_US = {
+export const enUS = {
   ...main,
   ...commands,
   ...messages,
@@ -18,7 +18,7 @@ export * from './string';
  * - [Update the language list below using](https://discord.com/developers/docs/reference#locales)
  * - [Update mapping on crowdin](https://faithful.crowdin.com/u/projects/4/apps/system/github) (select the branch > edit branch configuration > edit file filter > language mapping)
  */
-export type langs =
+export type Langs =
   | 'bg' // Bulgarian
   | 'cs' // Czech
   | 'da' // Danish

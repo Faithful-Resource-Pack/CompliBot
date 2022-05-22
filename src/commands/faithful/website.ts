@@ -4,65 +4,11 @@ import { colors } from '@helpers/colors';
 import { ids, parseId } from '@helpers/emojis';
 import { Message, MessageEmbed, CommandInteraction } from '@client';
 
-export const command: SlashCommand = {
-  servers: ['faithful', 'faithful_extra', 'classic_faithful'],
-  data: new SlashCommandBuilder()
-    .setName('website')
-    .setDescription('Displays all sites for the given resource pack.')
-    .addStringOption((option) =>
-      option.setName('name').setDescription('Name of the resource pack you want to see the sites of.').addChoices(
-        {
-          name: 'Faithful 32x',
-          value: 'faithful_32',
-        },
-        {
-          name: 'Faithful 64x',
-          value: 'faithful_64',
-        },
-        {
-          name: 'Faithful Add-ons',
-          value: 'faithful_addons',
-        },
-        {
-          name: 'Faithful Dungeons 32x',
-          value: 'faithful_dungeons_32',
-        },
-        {
-          name: 'Faithful Mods 32x',
-          value: 'faithful_mods_32',
-        },
-        {
-          name: 'Faithful Tweaks 32x',
-          value: 'faithful_tweaks_32',
-        },
-      ),
-    ),
-  execute: async (interaction: CommandInteraction) => {
-    const embed = new MessageEmbed();
-    const key: string | null = interaction.options.getString('name', false);
-    const options: boolean = key !== null;
-
-    if (options)
-      embed
-        .setTitle(`${websites[key].name} websites:`)
-        .setDescription(`${websites[key].value}`)
-        .setColor(websites[key].color)
-        .setThumbnail(websites[key].image);
-    else embed.setTitle('Websites: ').addFields(Object.values(websites));
-
-    interaction.reply({
-      embeds: [embed],
-      ephemeral: !options,
-    });
-    if (options) ((await interaction.fetchReply()) as Message).deleteButton();
-  },
-};
-
 const websites = {
   faithful_32: {
     image: 'https://database.faithfulpack.net/images/branding/logos/transparent/512/f32_logo.png',
     color: colors.c32,
-    name: `Faithful 32x`,
+    name: 'Faithful 32x',
     value: `[${parseId(ids.f32_logo)} Website](https://www.faithfulpack.net/faithful32x/latest)\n[${parseId(
       ids.curseforge,
     )} CurseForge | Java](https://www.curseforge.com/minecraft/texture-packs/faithful-32x)\n[${parseId(
@@ -116,3 +62,57 @@ const websites = {
     )} Collections](https://www.faithfulpack.net/addonCollections)`,
   },
 };
+
+const command: SlashCommand = {
+  servers: ['faithful', 'faithful_extra', 'classic_faithful'],
+  data: new SlashCommandBuilder()
+    .setName('website')
+    .setDescription('Displays all sites for the given resource pack.')
+    .addStringOption((option) => option.setName('name').setDescription('Name of the resource pack you want to see the sites of.').addChoices(
+      {
+        name: 'Faithful 32x',
+        value: 'faithful_32',
+      },
+      {
+        name: 'Faithful 64x',
+        value: 'faithful_64',
+      },
+      {
+        name: 'Faithful Add-ons',
+        value: 'faithful_addons',
+      },
+      {
+        name: 'Faithful Dungeons 32x',
+        value: 'faithful_dungeons_32',
+      },
+      {
+        name: 'Faithful Mods 32x',
+        value: 'faithful_mods_32',
+      },
+      {
+        name: 'Faithful Tweaks 32x',
+        value: 'faithful_tweaks_32',
+      },
+    )),
+  execute: async (interaction: CommandInteraction) => {
+    const embed = new MessageEmbed();
+    const key: string | null = interaction.options.getString('name', false);
+    const options: boolean = key !== null;
+
+    if (options) {
+      embed
+        .setTitle(`${websites[key].name} websites:`)
+        .setDescription(`${websites[key].value}`)
+        .setColor(websites[key].color)
+        .setThumbnail(websites[key].image);
+    } else embed.setTitle('Websites: ').addFields(Object.values(websites));
+
+    interaction.reply({
+      embeds: [embed],
+      ephemeral: !options,
+    });
+    if (options) ((await interaction.fetchReply()) as Message).deleteButton();
+  },
+};
+
+export default command;

@@ -2,7 +2,7 @@ import { SlashCommand } from '@interfaces';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { Client, CommandInteraction, MessageEmbed } from '@client';
 
-export const command: SlashCommand = {
+const command: SlashCommand = {
   data: new SlashCommandBuilder()
     .setName('help-us')
     .setDescription('Command to get infos on how to help the developers of CompliBot.'),
@@ -18,7 +18,7 @@ export const command: SlashCommand = {
           string: 'Command.HelpUs.Description',
         }),
       )
-      .setThumbnail(client.config.images + 'bot/question_mark.png');
+      .setThumbnail(`${client.config.images}bot/question_mark.png`);
 
     interaction.reply({
       embeds: [embed],
@@ -26,3 +26,5 @@ export const command: SlashCommand = {
     });
   },
 };
+
+export default command;

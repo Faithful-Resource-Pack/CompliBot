@@ -11,7 +11,9 @@ import {
   TextChannel,
   VoiceChannel,
 } from 'discord.js';
-import { Message, GuildMember, EmittingCollection, Automation } from '@client';
+import {
+  Message, GuildMember, EmittingCollection, Automation,
+} from '@client';
 import {
   Command,
   Event,
@@ -22,8 +24,8 @@ import {
   SlashCommand,
   AsyncSlashCommandBuilder,
 } from '@interfaces';
-import { getData } from '@functions/getDataFromJSON';
-import { setData } from '@functions/setDataToJSON';
+import getData from '@functions/getDataFromJSON';
+import setData from '@functions/setDataToJSON';
 import { errorHandler } from '@functions/errorHandler';
 import { err, info, success } from '@helpers/logger';
 import { Submission } from '@class/submissions';
@@ -65,24 +67,37 @@ export type Log = {
 
 class ExtendedClient extends Client {
   public verbose: boolean = false;
-  public cs: boolean = true; //cold start
+
+  public cs: boolean = true; // cold start
+
   public config: Config;
+
   public tokens: Tokens;
+
   public automation: Automation = new Automation(this);
 
   private logs: Array<Log> = [];
+
   private maxLogs: number = 50;
+
   private lastLogIndex: number = 0;
 
   public menus: Collection<string, SelectMenu> = new Collection();
+
   public buttons: Collection<string, Button> = new Collection();
+
   public events: Collection<string, Event> = new Collection();
+
   public aliases: Collection<string, Command> = new Collection();
+
   public slashCommands: Collection<string, SlashCommand> = new Collection();
 
   public submissions: EmittingCollection<string, Submission> = new EmittingCollection();
+
   public polls: EmittingCollection<string, Poll> = new EmittingCollection();
+
   public commandsProcessed: EmittingCollection<string, number> = new EmittingCollection();
+
   public moderationUsers: EmittingCollection<string, User> = new EmittingCollection();
 
   constructor(
@@ -106,23 +121,23 @@ class ExtendedClient extends Client {
     await StartClient(false, interaction);
   }
 
-  //prettier-ignore
+  // prettier-ignore
   private asciiArt() {
-    const darkColor = this.tokens.maintenance === false ? "#0026ff" : "#ff8400";
-    const lightColor = this.tokens.maintenance === false ? "#0066ff" : "#ffc400";
+    const darkColor = this.tokens.maintenance === false ? '#0026ff' : '#ff8400';
+    const lightColor = this.tokens.maintenance === false ? '#0066ff' : '#ffc400';
 
-    console.log(chalk.hex(darkColor)("\n .d8888b.                                  888 d8b ")     + chalk.hex(lightColor)("888888b.            888"));
-    console.log(chalk.hex(darkColor)("d88P  Y88b                                 888 Y8P ")       + chalk.hex(lightColor)("888  \"88b           888"));
-    console.log(chalk.hex(darkColor)("888    888                                 888     ")       + chalk.hex(lightColor)("888  .88P           888"));
-    console.log(chalk.hex(darkColor)("888         .d88b.  88888b.d88b.  88888b.  888 888 ")       + chalk.hex(lightColor)("8888888K.   .d88b.  888888 "));
-    console.log(chalk.hex(darkColor)("888        d88\"\"88b 888 \"888 \"88b 888 \"88b 888 888 ")  + chalk.hex(lightColor)("888  \"Y88b d88\"\"88b 888"));
-    console.log(chalk.hex(darkColor)("888    888 888  888 888  888  888 888  888 888 888 ")       + chalk.hex(lightColor)("888    888 888  888 888"));
-    console.log(chalk.hex(darkColor)("Y88b  d88P Y88..88P 888  888  888 888 d88P 888 888 ")       + chalk.hex(lightColor)("888   d88P Y88..88P Y88b."));
-    console.log(chalk.hex(darkColor)("\"Y8888P\"    \"Y88P\"  888  888  888 88888P\"  888 888 ")  + chalk.hex(lightColor)("8888888P\"   \"Y88P\"   \"Y888"));
-    console.log(chalk.hex(darkColor)("                                  888"));
-    console.log(chalk.hex(darkColor)("                                  888                   ")  + chalk.white.bold("Faithful Devs. 2022"));
-    console.log(chalk.hex(darkColor)("                                  888                ")  + chalk.gray.italic(this.tokens.maintenance === false ? "~ Made lovingly with pain\n" : "    Maintenance mode!\n"));
-	}
+    console.log(chalk.hex(darkColor)('\n .d8888b.                                  888 d8b ') + chalk.hex(lightColor)('888888b.            888'));
+    console.log(chalk.hex(darkColor)('d88P  Y88b                                 888 Y8P ') + chalk.hex(lightColor)('888  "88b           888'));
+    console.log(chalk.hex(darkColor)('888    888                                 888     ') + chalk.hex(lightColor)('888  .88P           888'));
+    console.log(chalk.hex(darkColor)('888         .d88b.  88888b.d88b.  88888b.  888 888 ') + chalk.hex(lightColor)('8888888K.   .d88b.  888888 '));
+    console.log(chalk.hex(darkColor)('888        d88""88b 888 "888 "88b 888 "88b 888 888 ') + chalk.hex(lightColor)('888  "Y88b d88""88b 888'));
+    console.log(chalk.hex(darkColor)('888    888 888  888 888  888  888 888  888 888 888 ') + chalk.hex(lightColor)('888    888 888  888 888'));
+    console.log(chalk.hex(darkColor)('Y88b  d88P Y88..88P 888  888  888 888 d88P 888 888 ') + chalk.hex(lightColor)('888   d88P Y88..88P Y88b.'));
+    console.log(chalk.hex(darkColor)('"Y8888P"    "Y88P"  888  888  888 88888P"  888 888 ') + chalk.hex(lightColor)('8888888P"   "Y88P"   "Y888'));
+    console.log(chalk.hex(darkColor)('                                  888'));
+    console.log(chalk.hex(darkColor)('                                  888                   ') + chalk.white.bold('Faithful Devs. 2022'));
+    console.log(chalk.hex(darkColor)('                                  888                ') + chalk.gray.italic(this.tokens.maintenance === false ? '~ Made lovingly with pain\n' : '    Maintenance mode!\n'));
+  }
 
   public async init(interaction?: CommandInteraction) {
     // pretty stuff so it doesn't print the logo upon restart
@@ -160,8 +175,8 @@ class ExtendedClient extends Client {
 
         this.loadCollections();
         this.automation.start();
-        if (this.verbose) console.log(info + `Started automated functions`);
-        if (this.verbose) console.log(info + `Init complete`);
+        if (this.verbose) console.log(`${info}Started automated functions`);
+        if (this.verbose) console.log(`${info}Init complete`);
       });
 
     // catches "kill pid" (for example: nodemon restart)
@@ -174,7 +189,7 @@ class ExtendedClient extends Client {
     process.on('uncaughtException', (error, origin) => {
       errorHandler(this, error, 'uncaughtException', origin);
     });
-    process.on('unhandledRejection', (reason, promise) => {
+    process.on('unhandledRejection', (reason) => {
       errorHandler(this, reason, 'unhandledRejection');
     });
   }
@@ -184,7 +199,7 @@ class ExtendedClient extends Client {
     this.loadCollection(this.submissions, SUBMISSIONS_FILENAME, JSON_PATH);
     this.loadCollection(this.commandsProcessed, COMMANDS_PROCESSED_FILENAME, JSON_PATH);
     this.loadCollection(this.moderationUsers, MODERATION_FILENAME, JSON_PATH);
-    if (this.verbose) console.log(info + `Loaded collections data`);
+    if (this.verbose) console.log(`${info}Loaded collections data`);
   };
 
   /**
@@ -206,10 +221,10 @@ class ExtendedClient extends Client {
       collection.set(key, obj[key]);
     });
 
-    collection.events.on('dataSet', (key: string, value: any) => {
+    collection.events.on('dataSet', () => {
       this.saveEmittingCollection(collection, filename, relative_path);
     });
-    collection.events.on('dataDeleted', (key: string) => {
+    collection.events.on('dataDeleted', () => {
       this.saveEmittingCollection(collection, filename, relative_path);
     });
   };
@@ -224,8 +239,8 @@ class ExtendedClient extends Client {
     collection: EmittingCollection<any, any>,
     filename: string,
     relative_path: string,
-  ): void => {
-    let data = {};
+  ): this => {
+    const data = {};
     [...collection.keys()].forEach((k: string) => {
       data[k] = collection.get(k);
     });
@@ -234,6 +249,8 @@ class ExtendedClient extends Client {
       relative_path,
       data: JSON.parse(JSON.stringify(data)),
     });
+
+    return this;
   };
 
   /**
@@ -258,21 +275,17 @@ class ExtendedClient extends Client {
           permissions: [],
         };
 
-        if (slashCommand.permissions.roles !== undefined)
-          for (const id of slashCommand.permissions.roles)
-            p.permissions.push({
-              id: id,
-              type: 'ROLE',
-              permission: true,
-            });
+        if (slashCommand.permissions.roles !== undefined) {
+          for (const id of slashCommand.permissions.roles) {
+            p.permissions.push({ id, type: 'ROLE', permission: true });
+          }
+        }
 
-        if (slashCommand.permissions.users !== undefined)
-          for (const id of slashCommand.permissions.users)
-            p.permissions.push({
-              id: id,
-              type: 'USER',
-              permission: true,
-            });
+        if (slashCommand.permissions.users !== undefined) {
+          for (const id of slashCommand.permissions.users) {
+            p.permissions.push({ id, type: 'USER', permission: true });
+          }
+        }
 
         fullPermissions.push(p);
       });
@@ -287,10 +300,12 @@ class ExtendedClient extends Client {
       // guilds specific slash commands
       const guildSlashCommands = await guild.commands.fetch();
 
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const fullPermissions = [...addPerms(slashCommands), ...addPerms(guildSlashCommands)];
 
-      //await this.application.commands.permissions.set({ fullPermissions: fullPermissions, guild: guild });
-      if (this.verbose) console.log(success + `Loaded slash command perms for ${guild.name}`);
+      // TODO: check if permissions are already set
+      // await this.application.commands.permissions.set({ fullPermissions: fullPermissions, guild: guild });
+      if (this.verbose) console.log(`${success}Loaded slash command perms for ${guild.name}`);
     });
   };
 
@@ -305,8 +320,7 @@ class ExtendedClient extends Client {
     }).setToken(this.tokens.token);
     rest.get(Routes.applicationCommands(this.tokens.appID)).then((data: any) => {
       const promises = [];
-      for (const command of data)
-        promises.push(rest.delete(`${Routes.applicationCommands(this.tokens.appID)}/${command.id}`));
+      for (const command of data) promises.push(rest.delete(`${Routes.applicationCommands(this.tokens.appID)}/${command.id}`));
       return Promise.all(promises).then(() => console.log(`${success}delete succeed`));
     });
   };
@@ -323,14 +337,12 @@ class ExtendedClient extends Client {
 
     const paths: Array<string> = readdirSync(slashCommandsPath);
     // use a classic for loops to force async functions to be fulfilled
-    for (let i = 0; i < paths.length; i++) {
+    for (let i = 0; i < paths.length; i += 1) {
       const dir: string = paths[i];
 
-      const commands = readdirSync(`${slashCommandsPath}/${dir}`).filter((file) =>
-        file.endsWith(process.env.NODE_ENV === 'production' ? '.js' : '.ts'),
-      );
+      const commands = readdirSync(`${slashCommandsPath}/${dir}`).filter((file) => file.endsWith(process.env.NODE_ENV === 'production' ? '.js' : '.ts'));
       for (const file of commands) {
-        const { command } = await import(`${slashCommandsPath}/${dir}/${file}`);
+        const { default: command } = await import(`${slashCommandsPath}/${dir}/${file}`);
 
         if (command.data instanceof Function) {
           this.slashCommands.set((await (command.data as AsyncSlashCommandBuilder)(this)).name, command); // AsyncSlashCommandBuilder
@@ -353,10 +365,11 @@ class ExtendedClient extends Client {
     }).setToken(this.tokens.token);
 
     // deploy commands only for dev discord when in dev mode
-    if (this.tokens.dev)
+    if (this.tokens.dev) {
       commandsArr.forEach((el) => {
         el.servers = ['dev'];
       });
+    }
 
     const guilds: {
       [guild: string]: RESTPostAPIApplicationCommandsJSONBody[];
@@ -364,35 +377,38 @@ class ExtendedClient extends Client {
       global: [],
     };
     commandsArr.forEach((el) => {
-      if (el.servers === null || el.servers === undefined) guilds['global'].push(el.command);
-      else
+      if (el.servers === null || el.servers === undefined) guilds.global.push(el.command);
+      else {
         el.servers.forEach((server) => {
           if (guilds[server] === undefined) guilds[server] = [];
           guilds[server].push(el.command);
         });
+      }
     });
 
-    for (let i = 0; i < this.config.discords.length; i++) {
+    for (let i = 0; i < this.config.discords.length; i += 1) {
       const d = this.config.discords[i];
 
       // if the client isn't in the guild, skip it
+      // eslint-disable-next-line no-continue
       if (this.guilds.cache.get(d.id) === undefined || guilds[d.name] === undefined) continue;
-      else
+      else {
         try {
-          // otherwise we add specific commands to that guild
+        // otherwise we add specific commands to that guild
           await rest.put(Routes.applicationGuildCommands(this.tokens.appID, d.id), {
             body: guilds[d.name],
           });
           console.log(`${success}Successfully added slash commands to: ${d.name}`);
-        } catch (err) {
-          console.error(err);
+        } catch (error) {
+          console.error(error);
         }
+      }
     }
 
     // we add global commands to all guilds (only if not in dev mode)
     if (!this.tokens.dev) {
       await rest.put(Routes.applicationCommands(this.tokens.appID), {
-        body: guilds['global'],
+        body: guilds.global,
       });
       console.log(`${success}Successfully added global slash commands`);
     }
@@ -425,7 +441,7 @@ class ExtendedClient extends Client {
       readdirSync(eventPath)
         .filter((file) => file.endsWith(process.env.NODE_ENV === 'production' ? '.js' : '.ts'))
         .forEach(async (file) => {
-          const { event } = await import(`${eventPath}/${file}`);
+          const { default: event } = await import(`${eventPath}/${file}`);
           this.events.set(event.name, event);
           this.on(event.name, event.run.bind(null, this));
         });
@@ -440,12 +456,10 @@ class ExtendedClient extends Client {
     const buttonPath = path.join(__dirname, '..', 'buttons');
 
     readdirSync(buttonPath).forEach(async (dir) => {
-      const buttons = readdirSync(`${buttonPath}/${dir}`).filter((file) =>
-        file.endsWith(process.env.NODE_ENV === 'production' ? '.js' : '.ts'),
-      );
+      const buttons = readdirSync(`${buttonPath}/${dir}`).filter((file) => file.endsWith(process.env.NODE_ENV === 'production' ? '.js' : '.ts'));
 
       for (const file of buttons) {
-        const { button } = await import(`${buttonPath}/${dir}/${file}`);
+        const { default: button } = await import(`${buttonPath}/${dir}/${file}`);
         this.buttons.set(button.buttonId, button);
       }
     });
@@ -459,12 +473,10 @@ class ExtendedClient extends Client {
     const menusPath = path.join(__dirname, '..', 'menus');
 
     readdirSync(menusPath).forEach(async (dir) => {
-      const menus = readdirSync(`${menusPath}/${dir}`).filter((file) =>
-        file.endsWith(process.env.NODE_ENV === 'production' ? '.js' : '.ts'),
-      );
+      const menus = readdirSync(`${menusPath}/${dir}`).filter((file) => file.endsWith(process.env.NODE_ENV === 'production' ? '.js' : '.ts'));
 
       for (const file of menus) {
-        const { menu } = await import(`${menusPath}/${dir}/${file}`);
+        const { default: menu } = await import(`${menusPath}/${dir}/${file}`);
         this.menus.set(menu.selectMenuId, menu);
       }
     });
@@ -476,7 +488,7 @@ class ExtendedClient extends Client {
    * @param {Actions} data
    */
   public storeAction(type: ActionsStr, data: Actions): void {
-    this.logs[this.lastLogIndex++ % this.maxLogs] = {
+    this.logs[this.lastLogIndex += 1 % this.maxLogs] = {
       type,
       data,
       timestamp: new Date().getTime(),

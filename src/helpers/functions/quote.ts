@@ -1,8 +1,8 @@
 import { Message, MessageEmbed } from '@client';
 import { TextChannel } from 'discord.js';
 
-export async function quote(message: Message) {
-  var embed = new MessageEmbed();
+export default async function quote(message: Message) {
+  const embed = new MessageEmbed();
 
   /**
    * Will match following Discord links:
@@ -13,13 +13,13 @@ export async function quote(message: Message) {
    * https://ptb.discord.com/channels/{guildID}/{channelID}/{messageID}
    * https://ptb.discordapp.com/channels/{guildID}/{channelID}/{messageID}
    */
-  let matches = /https:\/\/(canary\.|ptb\.)?discord(app)?\.com\/channels\/([0-9]+)\/([0-9]+)\/([0-9]+)/g.exec(
+  const matches = /https:\/\/(canary\.|ptb\.)?discord(app)?\.com\/channels\/([0-9]+)\/([0-9]+)\/([0-9]+)/g.exec(
     message.content,
   );
 
   if (matches === null) return;
 
-  let ids = [matches[3], matches[4], matches[5]];
+  const ids = [matches[3], matches[4], matches[5]];
 
   let channel: TextChannel;
   let quotedMsg: Message;
@@ -30,19 +30,19 @@ export async function quote(message: Message) {
     return; // can't fetch channel or quotedMsg : abort mission
   }
 
-  if (quotedMsg.embeds[0] != undefined) {
+  if (quotedMsg.embeds[0] !== undefined) {
     embed.setAuthor({
       name: `Embed sent by ${quotedMsg.author.tag}`,
       iconURL: 'https://database.faithfulpack.net/images/bot/quote.png',
     });
 
-    if (quotedMsg.embeds[0].title != undefined) embed.setTitle(quotedMsg.embeds[0].title);
-    if (quotedMsg.embeds[0].url != undefined) embed.setURL(quotedMsg.embeds[0].url);
-    if (quotedMsg.embeds[0].description != undefined) embed.setDescription(quotedMsg.embeds[0].description);
-    if (quotedMsg.embeds[0].image != undefined) embed.setImage(quotedMsg.embeds[0].image.url);
-    if (quotedMsg.embeds[0].fields != undefined) embed.addFields(quotedMsg.embeds[0].fields);
+    if (quotedMsg.embeds[0].title !== undefined) embed.setTitle(quotedMsg.embeds[0].title);
+    if (quotedMsg.embeds[0].url !== undefined) embed.setURL(quotedMsg.embeds[0].url);
+    if (quotedMsg.embeds[0].description !== undefined) embed.setDescription(quotedMsg.embeds[0].description);
+    if (quotedMsg.embeds[0].image !== undefined) embed.setImage(quotedMsg.embeds[0].image.url);
+    if (quotedMsg.embeds[0].fields !== undefined) embed.addFields(quotedMsg.embeds[0].fields);
 
-    if (quotedMsg.embeds[0].thumbnail != undefined) {
+    if (quotedMsg.embeds[0].thumbnail !== undefined) {
       embed.setThumbnail(quotedMsg.embeds[0].thumbnail.url);
       embed.setAuthor({
         name: `Embed sent by ${quotedMsg.author.tag}`,
@@ -51,10 +51,8 @@ export async function quote(message: Message) {
     } else embed.setThumbnail(quotedMsg.author.displayAvatarURL());
   } else {
     if (quotedMsg.attachments.size > 0) {
-      if (quotedMsg.attachments.first().url.match(/\.(jpeg|jpg|png|webp|gif)$/))
-        embed.setImage(quotedMsg.attachments.first().url);
-      else
-        embed.addField('Attachment', `[${quotedMsg.attachments.first().name}](${quotedMsg.attachments.first().url})`);
+      if (quotedMsg.attachments.first().url.match(/\.(jpeg|jpg|png|webp|gif)$/)) embed.setImage(quotedMsg.attachments.first().url);
+      else embed.addField('Attachment', `[${quotedMsg.attachments.first().name}](${quotedMsg.attachments.first().url})`);
     }
 
     embed
@@ -76,5 +74,5 @@ export async function quote(message: Message) {
     .reply({
       embeds: [embed],
     })
-    .then((message: Message) => message.deleteButton());
+    .then((m: Message) => m.deleteButton());
 }

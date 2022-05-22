@@ -6,15 +6,15 @@ import tokens from '@json/tokens.json';
 import { readFileSync } from 'fs';
 import path from 'path';
 
-//this is my 13th reason why
-export let changelogOptions = () => {
+// this is my 13th reason why
+export const changelogOptions = () => {
   const changelogStr = readFileSync(
     path.join(__dirname, '../', 'CHANGELOG.md').replace('dist\\', ''),
     'utf-8',
   ).replaceAll('\r', '');
   const allVersions = changelogStr.match(/(?<=## )([^]*?)(?=(\n## )|($))/g);
 
-  let versions = [
+  const versions = [
     {
       name: `${allVersions[1].substring(1, 7)} next`,
       value: allVersions[1].substring(1, 7),
@@ -25,7 +25,7 @@ export let changelogOptions = () => {
     },
   ];
 
-  for (let i = 2; i < allVersions.length; i++) {
+  for (let i = 2; i < allVersions.length; i += 1) {
     versions.push({
       name: allVersions[i].substring(1, 7),
       value: allVersions[i].substring(1, 7),
@@ -41,8 +41,8 @@ export let changelogOptions = () => {
 export function StartClient(coldStart: boolean = true, interaction?: CommandInteraction) {
   new Client(
     {
-      config: config,
-      tokens: tokens,
+      config,
+      tokens,
       verbose: tokens.verbose,
       allowedMentions: {
         parse: ['users', 'roles'],

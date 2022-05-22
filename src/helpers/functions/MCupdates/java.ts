@@ -3,13 +3,16 @@ import { info, warning } from '@helpers/logger';
 import { Client } from '@client';
 import { TextChannel } from 'discord.js';
 
-var minecraftVersionsCache = [];
+const minecraftVersionsCache = [];
 
 export async function loadJavaVersions() {
+  let status: number;
+  let versions;
+
   try {
-    var { status, data: versions } = await axios.get(
-      'https://launchermeta.mojang.com/mc/game/version_manifest_v2.json',
-    );
+    const res = await axios.get('https://launchermeta.mojang.com/mc/game/version_manifest_v2.json');
+    status = res.status;
+    versions = res.data;
   } catch (e) {
     console.log(`${warning}Failed to load Minecraft Java versions`);
     return;
@@ -22,7 +25,7 @@ export async function loadJavaVersions() {
 
   versions.versions.forEach((version) => {
     // uncomment to test for specific versions being released
-    //if (version.id === "22w16b") return;
+    // if (version.id === "22w16b") return;
     minecraftVersionsCache.push(version.id);
   });
 
@@ -30,10 +33,13 @@ export async function loadJavaVersions() {
 }
 
 export async function updateJavaVersions(client: Client) {
+  let status: number;
+  let versions;
+
   try {
-    var { status, data: versions } = await axios.get(
-      'https://launchermeta.mojang.com/mc/game/version_manifest_v2.json',
-    );
+    const res = await axios.get('https://launchermeta.mojang.com/mc/game/version_manifest_v2.json');
+    status = res.status;
+    versions = res.data;
   } catch (e) {
     return;
   }
@@ -46,12 +52,12 @@ export async function updateJavaVersions(client: Client) {
     if (!minecraftVersionsCache.includes(version.id)) {
       minecraftVersionsCache.push(version.id);
 
-      let updateChannel = (await client.channels.cache.get('773983707299184703')) as TextChannel;
+      const updateChannel = (await client.channels.cache.get('773983707299184703')) as TextChannel;
       let description;
 
       // TODO: Find a way to reliably fetch the article from https://www.minecraft.net/content/minecraft-net/_jcr_content.articles.grid
       if (version.id.includes('pre')) {
-        var pre = version.id.split('pre')[1];
+        let pre = version.id.split('pre')[1];
         let res;
         res = await axios.get(
           `https://www.minecraft.net/en-us/article/minecraft-${version.id
@@ -62,8 +68,8 @@ export async function updateJavaVersions(client: Client) {
           },
         );
 
-        if (res.status == 404) {
-          for (pre; pre > 1; pre--) {
+        if (res.status === 404) {
+          for (pre; pre > 1; pre -= 1) {
             res = await axios.get(
               `https://www.minecraft.net/en-us/article/minecraft-${version.id
                 .split('-')[0]
@@ -97,15 +103,14 @@ export async function updateJavaVersions(client: Client) {
         }\`\nhttps://www.minecraft.net/en-us/article/minecraft-${version.id
           .split('-')[0]
           .replace(/\./g, '-')}-release-candidate-1`;
-      } else {
-        if (version.type === 'snapshot')
-          description = `A new ${version.type} of Minecraft Java was just released: \`${
-            version.id
-          }\`\nhttps://www.minecraft.net/en-us/article/minecraft-snapshot-${version.id.slice(0, -1)}a`;
-        else if (version.type === 'release')
-          description = `A new ${version.type} of Minecraft Java was just released: \`${
-            version.id
-          }\`\nhttps://www.minecraft.net/en-us/article/minecraft-java-edition-${version.id.replace(/\./g, '-')}`;
+      } else if (version.type === 'snapshot') {
+        description = `A new ${version.type} of Minecraft Java was just released: \`${
+          version.id
+        }\`\nhttps://www.minecraft.net/en-us/article/minecraft-snapshot-${version.id.slice(0, -1)}a`;
+      } else if (version.type === 'release') {
+        description = `A new ${version.type} of Minecraft Java was just released: \`${
+          version.id
+        }\`\nhttps://www.minecraft.net/en-us/article/minecraft-java-edition-${version.id.replace(/\./g, '-')}`;
       }
 
       await updateChannel.send({

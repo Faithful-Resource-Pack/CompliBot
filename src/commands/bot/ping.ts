@@ -2,10 +2,10 @@ import { SlashCommand } from '@interfaces';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { Client, MessageEmbed, CommandInteraction } from '@client';
 
-export const command: SlashCommand = {
+const command: SlashCommand = {
   data: new SlashCommandBuilder().setName('ping').setDescription('Gets the Bot and API latency.'),
   execute: async (interaction: CommandInteraction, client: Client) => {
-    let embed = new MessageEmbed().setTitle(
+    const embed = new MessageEmbed().setTitle(
       await interaction.getEphemeralString({
         string: 'Command.Ping.Await',
       }),
@@ -52,3 +52,5 @@ export const command: SlashCommand = {
       });
   },
 };
+
+export default command;

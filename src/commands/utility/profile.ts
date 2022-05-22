@@ -1,29 +1,47 @@
 import { SlashCommand, SlashCommandI } from '@interfaces';
-import { Client, CommandInteraction, Message, MessageEmbed } from '@client';
+import {
+  Client, CommandInteraction, Message, MessageEmbed,
+} from '@client';
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { Collection, GuildMember, MessageAttachment, User } from 'discord.js';
+import {
+  Collection, GuildMember, MessageAttachment, User,
+} from 'discord.js';
 import moment from 'moment';
 import axios from 'axios';
 
-export const command: SlashCommand = {
+async function handleStatus(api: string, status: number, interaction: CommandInteraction): Promise<void> {
+  if (status === 204) {
+    interaction.reply({
+      content: await interaction.getEphemeralString({
+        string: 'Command.Profile.noContent',
+      }),
+      ephemeral: true,
+    });
+  } else if (status !== 200) {
+    interaction.reply({
+      content: (
+        await interaction.getEphemeralString({
+          string: 'Command.Profile.noResponse',
+        })
+      ).replace('%API%', `${api} `),
+      ephemeral: true,
+    });
+  }
+}
+
+const command: SlashCommand = {
   data: new SlashCommandBuilder()
     .setName('profile')
-    .setDescription(`Get the profile of a user`)
+    .setDescription('Get the profile of a user')
 
-    .addSubcommand((sub) =>
-      sub
-        .setName('minecraft')
-        .setDescription('Minecraft profile of a user')
-        .addStringOption((o) =>
-          o.setName('username').setRequired(true).setDescription('Minecraft username of profile'),
-        ),
-    )
-    .addSubcommand((sub) =>
-      sub
-        .setName('discord')
-        .setDescription('Discord profile of a user')
-        .addUserOption((o) => o.setName('user').setDescription('Username of the discord profile').setRequired(true)),
-    ),
+    .addSubcommand((sub) => sub
+      .setName('minecraft')
+      .setDescription('Minecraft profile of a user')
+      .addStringOption((o) => o.setName('username').setRequired(true).setDescription('Minecraft username of profile')))
+    .addSubcommand((sub) => sub
+      .setName('discord')
+      .setDescription('Discord profile of a user')
+      .addUserOption((o) => o.setName('user').setDescription('Username of the discord profile').setRequired(true))),
   execute: new Collection<string, SlashCommandI>()
     .set('discord', async (interaction: CommandInteraction, client: Client) => {
       const user = interaction.options.getUser('user') as User;
@@ -36,12 +54,14 @@ export const command: SlashCommand = {
           },
         })
         .then((res) => {
-          const banner: string = res.data['banner'];
+          const { banner } = res.data;
 
           if (banner) {
             const ext = banner.startsWith('a_') ? '.gif' : '.png';
             return `https://cdn.discordapp.com/banners/${user.id}/${banner}${ext}?size=1024`;
           }
+
+          return '';
         });
 
       const embed = new MessageEmbed()
@@ -75,7 +95,7 @@ export const command: SlashCommand = {
           },
           {
             name: 'Status',
-            value: guildUser.presence?.status != undefined ? guildUser.presence?.status : 'offline',
+            value: guildUser.presence?.status !== undefined ? guildUser.presence?.status : 'offline',
             inline: true,
           },
           {
@@ -98,68 +118,70 @@ export const command: SlashCommand = {
         })
         .then((message: Message) => message.deleteButton());
     })
-    .set('minecraft', async (interaction: CommandInteraction, client: Client) => {
-      const mcProfile: string = await axios
+    .set('minecraft', async (interaction: CommandInteraction) => {
+      const mcProfile = await axios
         .get(`https://api.mojang.com/users/profiles/minecraft/${interaction.options.getString('username')}`)
         .then(async (res) => {
           handleStatus('mojang', res.status, interaction);
-          if (res.statusText == 'OK') return res.data;
+          if (res.statusText === 'OK') return res.data;
+          return undefined;
         });
 
-      const UUID = mcProfile['id'];
-      const name = mcProfile['name']; //gets the name with correct capitalization - important for optifine api
+      const UUID = mcProfile.id;
+      const { name } = mcProfile; // gets the name with correct capitalization - important for optifine api
 
-      //get mojang texture data for skin texture
+      // get mojang texture data for skin texture
       const textureB64 = await axios
         .get(`https://sessionserver.mojang.com/session/minecraft/profile/${UUID}`)
-        .then((res) => {
-          return res.data['properties'] ? res.data['properties'][0]['value'].toString() : undefined;
-        });
+        .then((res) => (res.data.properties ? res.data.properties[0].value.toString() : undefined));
 
-      const textureJSON: textureJSON = JSON.parse(Buffer.from(textureB64, 'base64').toString('ascii'))['textures'];
+      const textureJSON: TextureJSON = JSON.parse(Buffer.from(textureB64, 'base64').toString('ascii')).textures;
 
       const skinData = await axios
-        .get(textureJSON['SKIN']['url'], {
+        .get(textureJSON.SKIN.url, {
           responseType: 'arraybuffer',
         })
         .then(async (res) => {
           handleStatus('mojang', res.status, interaction);
-          if (res.statusText == 'OK') return res.data;
+          if (res.statusText === 'OK') return res.data;
+          return undefined;
         });
 
       // counts the least significant bits in every 4th byte in the uuid
-      // an odd sum means alex and an even sum is steve
-      // therefore XOR-ing all the LSBs returns either 1 (alex) or 0 (steve)
+      // an odd sum means Alex and an even sum is Steve
+      // therefore XOR-ing all the LSBs returns either 1 (Alex) or 0 (Steve)
       const skinType = parseInt(UUID[7], 16) ^ parseInt(UUID[15], 16) ^ parseInt(UUID[23], 16) ^ parseInt(UUID[31], 16);
-      const modelType = textureJSON['SKIN']['metadata'] ? textureJSON['SKIN']['metadata']['model'] : 'classic';
+      const modelType = textureJSON.SKIN.metadata ? textureJSON.SKIN.metadata.model : 'classic';
 
-      //TODO: 3d rendering from side and back view in the base embed with split image method (ask nick)
+      // TODO: 3d rendering from side and back view in the base embed with split image method (ask nick)
       const baseEmbed = new MessageEmbed()
-        .setTitle(name + "'s textures")
+        .setTitle(`${name}'s textures`)
         .setThumbnail(`attachment://${name}.png`)
         .setDescription(
           [
-            `Base Skin: **${skinType == 0 ? 'steve' : 'alex'}**`,
+            `Base Skin: **${skinType === 0 ? 'steve' : 'alex'}**`,
             `Model Type: **${modelType}**`,
             `UUID: **${UUID}**`,
           ].join('\n'),
         );
 
-      let cape: [MessageEmbed, MessageAttachment];
+      let cape: [MessageEmbed, MessageAttachment] | [];
 
-      if (textureJSON['CAPE']) {
+      if (textureJSON.CAPE) {
         cape = await axios
-          .get(textureJSON['CAPE']['url'], {
+          .get(textureJSON.CAPE.url, {
             responseType: 'arraybuffer',
           })
           .then(async (res) => {
             handleStatus('mojang', res.status, interaction);
-            if (res.statusText == 'OK') {
+            if (res.statusText === 'OK') {
               return [
                 new MessageEmbed().setTitle(`${name}'s cape:`).setImage('attachment://MCcape.png'),
                 new MessageAttachment(Buffer.from(res.data), 'MCcape.png'),
               ];
             }
+
+            return [];
           });
       } else {
         cape = await axios
@@ -168,12 +190,13 @@ export const command: SlashCommand = {
           })
           .then(async (res) => {
             handleStatus('optifine', res.status, interaction);
-            if (res.statusText == 'OK') {
+            if (res.statusText === 'OK') {
               return [
                 new MessageEmbed().setTitle(`${name}'s cape:`).setImage('attachment://OFcape.png'),
                 new MessageAttachment(Buffer.from(res.data), 'OFcape.png'),
               ];
             }
+            return [];
           });
       }
 
@@ -193,26 +216,9 @@ export const command: SlashCommand = {
     }),
 };
 
-async function handleStatus(api: string, status: number, interaction: CommandInteraction) {
-  if (status == 204)
-    return interaction.reply({
-      content: await interaction.getEphemeralString({
-        string: 'Command.Profile.noContent',
-      }),
-      ephemeral: true,
-    });
-  else if (status != 200)
-    return interaction.reply({
-      content: (
-        await interaction.getEphemeralString({
-          string: 'Command.Profile.noResponse',
-        })
-      ).replace('%API%', `${api} `),
-      ephemeral: true,
-    });
-}
+export default command;
 
-interface textureJSON {
+interface TextureJSON {
   SKIN: {
     url: string;
     metadata: {

@@ -33,4 +33,4 @@ export function parseId(id: string): string {
   return `<:${Object.keys(ids).find((key) => ids[key] === id)}:${id}>`;
 }
 
-export type emojiTypes = keyof typeof ids;
+export type Emoji = keyof typeof ids;

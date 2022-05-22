@@ -1,11 +1,11 @@
+import getRolesIds from '@helpers/roles';
 import { SlashCommand } from '@interfaces';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { CommandInteraction, Message, MessageEmbed } from '@client';
 import { EmbedField } from 'discord.js';
 import { ids, parseId } from '@helpers/emojis';
-import { getRolesIds } from '@helpers/roles';
 
-export const command: SlashCommand = {
+const command: SlashCommand = {
   servers: ['faithful', 'classic_faithful'],
   permissions: {
     roles: getRolesIds({
@@ -17,19 +17,14 @@ export const command: SlashCommand = {
   data: new SlashCommandBuilder() // disable the command for @everyone (only council can do it)
     .setName('reason')
     .setDescription('Set reason for submission invalidation/deny!')
-    .addStringOption((option) =>
-      option.setName('message_id').setDescription('Submission message ID you want to add a reason.').setRequired(true),
-    )
-    .addStringOption((option) =>
-      option.setName('reason').setDescription('Reason of the invalidation/deny.').setRequired(true),
-    ),
+    .addStringOption((option) => option.setName('message_id').setDescription('Submission message ID you want to add a reason.').setRequired(true))
+    .addStringOption((option) => option.setName('reason').setDescription('Reason of the invalidation/deny.').setRequired(true)),
   execute: async (interaction: CommandInteraction) => {
     if (
       !(await interaction.perms({
         type: 'council',
       }))
-    )
-      return;
+    ) return;
 
     let isInvalidated: boolean = false;
 
@@ -44,11 +39,13 @@ export const command: SlashCommand = {
           }
         });
 
-        if (!isInvalidated)
-          return interaction.reply({
+        if (!isInvalidated) {
+          interaction.reply({
             content: `The message needs to be first invalidated using the ${parseId(ids.invalid)} button!`,
             ephemeral: true,
           });
+          return;
+        }
 
         message.edit({
           embeds: [embed],
@@ -61,7 +58,7 @@ export const command: SlashCommand = {
           ephemeral: true,
         });
       })
-      .catch((err) => {
+      .catch(() => {
         interaction.reply({
           content: 'Cannot fetch the message with the given message ID',
           ephemeral: true,
@@ -69,3 +66,5 @@ export const command: SlashCommand = {
       });
   },
 };
+
+export default command;

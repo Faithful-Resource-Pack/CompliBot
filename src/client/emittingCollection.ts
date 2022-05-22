@@ -5,7 +5,7 @@ import EventEmitter from 'events';
  * ! important note, the event should be emitted after everything
  */
 
-export class EmittingCollection<K, V> extends Collection<K, V> {
+export default class EmittingCollection<K, V> extends Collection<K, V> {
   public events: EventEmitter = new EventEmitter();
 
   public set(key: K, value: V): this {
@@ -15,7 +15,7 @@ export class EmittingCollection<K, V> extends Collection<K, V> {
   }
 
   public delete(key: K): boolean {
-    let r: boolean = super.delete(key);
+    const r: boolean = super.delete(key);
     this.events.emit('dataDeleted', key);
     return r;
   }

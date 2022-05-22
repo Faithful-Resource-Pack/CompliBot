@@ -1,5 +1,5 @@
 import config from '@json/config.json';
-import { APIEmbed } from 'discord-api-types/v10.mjs';
+import { APIEmbed } from 'discord-api-types/v10';
 import { MessageEmbed, MessageEmbedOptions } from 'discord.js';
 
 class ExtendedEmbed extends MessageEmbed {
@@ -15,4 +15,5 @@ class ExtendedEmbed extends MessageEmbed {
   }
 }
 
+// eslint-disable-next-line import/prefer-default-export
 export { ExtendedEmbed };

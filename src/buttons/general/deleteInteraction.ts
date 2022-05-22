@@ -3,7 +3,7 @@ import { info } from '@helpers/logger';
 import { Client, Message, ButtonInteraction } from '@client';
 import { MessageInteraction } from 'discord.js';
 
-export const button: Button = {
+const button: Button = {
   buttonId: 'deleteInteraction',
   execute: async (client: Client, interaction: ButtonInteraction) => {
     if (client.verbose) console.log(`${info}Interaction Message deleted!`);
@@ -11,8 +11,8 @@ export const button: Button = {
     const messageInteraction: MessageInteraction = interaction.message.interaction as MessageInteraction;
     const message: Message = interaction.message as Message;
 
-    if (messageInteraction != undefined && interaction.user.id != messageInteraction.user.id)
-      return interaction.reply({
+    if (messageInteraction !== undefined && interaction.user.id !== messageInteraction.user.id) {
+      interaction.reply({
         content: await interaction.getEphemeralString({
           string: 'Error.Interaction.Reserved',
           placeholders: {
@@ -21,14 +21,18 @@ export const button: Button = {
         }),
         ephemeral: true,
       });
+      return;
+    }
 
     let fetchedRef: boolean = false;
     try {
-      fetchedRef = (await message.fetchReference()).author.id != interaction.user.id;
-    } catch {} // ref deleted or author not matching
+      fetchedRef = (await message.fetchReference()).author.id !== interaction.user.id;
+    } catch {
+      // ref deleted or author not matching
+    }
 
-    if (message.reference !== undefined && fetchedRef)
-      return interaction.reply({
+    if (message.reference !== undefined && fetchedRef) {
+      interaction.reply({
         content: await interaction.getEphemeralString({
           string: 'Error.Interaction.Reserved',
           placeholders: {
@@ -37,11 +41,13 @@ export const button: Button = {
         }),
         ephemeral: true,
       });
+      return;
+    }
 
     try {
-      return message.delete();
+      await message.delete();
     } catch (err) {
-      return interaction.reply({
+      interaction.reply({
         content: await interaction.getEphemeralString({
           string: 'Error.Message.Deleted',
         }),
@@ -50,3 +56,5 @@ export const button: Button = {
     }
   },
 };
+
+export default button;

@@ -1,13 +1,13 @@
 import { SlashCommand } from '@interfaces';
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { CommandInteraction, MessageEmbed, Client, Message } from '@client';
+import { CommandInteraction, MessageEmbed, Message } from '@client';
 import axios from 'axios';
 
-export const command: SlashCommand = {
+const command: SlashCommand = {
   data: new SlashCommandBuilder().setName('quote').setDescription('Truly inspiring.'),
-  execute: async (interaction: CommandInteraction, client: Client) => {
-    let image = await axios.get('https://inspirobot.me/api?generate=true');
-    let embed = new MessageEmbed();
+  execute: async (interaction: CommandInteraction) => {
+    const image = await axios.get('https://inspirobot.me/api?generate=true');
+    const embed = new MessageEmbed();
     embed.setImage(image.data);
 
     interaction
@@ -18,3 +18,5 @@ export const command: SlashCommand = {
       .then((message: Message) => message.deleteButton());
   },
 };
+
+export default command;

@@ -1,52 +1,52 @@
 import { SlashCommand } from '@interfaces';
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { CommandInteraction, Guild, GuildMember, TextChannel } from 'discord.js';
+import {
+  CommandInteraction, Guild, GuildMember, TextChannel,
+} from 'discord.js';
 import { Client, Message, MessageEmbed } from '@client';
 import { colors } from '@helpers/colors';
 
-export const command: SlashCommand = {
+const command: SlashCommand = {
   data: new SlashCommandBuilder()
     .setName('kick')
     .setDescription('Kick a member from the server.')
     .addUserOption((option) => option.setName('user').setDescription('User you want to kick.').setRequired(true))
     .addStringOption((option) => option.setName('reason').setDescription('The reason behind the kick.')),
-  execute: async (interaction: CommandInteraction, client: Client) => {
+  execute: async (interaction: CommandInteraction) => {
     if (
       await interaction.perms({
         type: 'mod',
       })
-    )
-      return;
+    ) return;
 
     const reason: string = interaction.options.getString('reason');
-    let guild = await interaction.client.guilds.fetch(interaction.guildId);
-    let user = await guild.members.fetch(interaction.options.getUser('user').id);
+    const guild = await interaction.client.guilds.fetch(interaction.guildId);
+    const user = await guild.members.fetch(interaction.options.getUser('user').id);
 
     // check for team guilds & apply the kick to all teamed guilds
     // if there is no "team", only apply to the guild were the command is made
     let guildsToKick: Array<string> = [];
-    const team: string = (interaction.client as Client).config.discords.filter((d) => d.id === interaction.guildId)[0]
-      .team;
+    const { team } = (interaction.client as Client).config.discords.filter((d) => d.id === interaction.guildId)[0];
 
-    if (team)
-      guildsToKick = (interaction.client as Client).config.discords.filter((d) => d.team === team).map((d) => d.id);
-    else
-      guildsToKick = [(interaction.client as Client).config.discords.filter((d) => d.id === interaction.guildId)[0].id];
+    if (team) guildsToKick = (interaction.client as Client).config.discords.filter((d) => d.team === team).map((d) => d.id);
+    else guildsToKick = [(interaction.client as Client).config.discords.filter((d) => d.id === interaction.guildId)[0].id];
 
     // test if user can be kicked (check for permissions)
-    if (!user.kickable)
-      return await interaction.reply({
-        content: `An error occured:\n> Can't kick people above the bot!`,
+    if (!user.kickable) {
+      interaction.reply({
+        content: 'An error occurred:\n> Can\'t kick people above the bot!',
         ephemeral: true,
       });
+      return;
+    }
 
     guildsToKick.forEach(async (guildId: string) => {
-      let guild: Guild;
+      let currentGuild: Guild;
       let member: GuildMember;
 
       try {
-        guild = await interaction.client.guilds.fetch(guildId);
-        member = await guild.members.fetch(user.id);
+        currentGuild = await interaction.client.guilds.fetch(guildId);
+        member = await currentGuild.members.fetch(user.id);
       } catch {
         return;
       }
@@ -64,7 +64,7 @@ export const command: SlashCommand = {
         },
         {
           name: 'Reason',
-          value: reason ? reason : 'No reason given.',
+          value: reason || 'No reason given.',
           inline: true,
         },
       ]);
@@ -79,7 +79,7 @@ export const command: SlashCommand = {
 
     // construct logs
     const logEmbed: MessageEmbed = new MessageEmbed()
-      .setTitle(`Kicked someone`)
+      .setTitle('Kicked someone')
       .setAuthor({
         name: interaction.user.username,
         iconURL: interaction.user.avatarURL({
@@ -110,7 +110,7 @@ export const command: SlashCommand = {
         },
         {
           name: 'Reason',
-          value: reason ? reason : 'No reason given.',
+          value: reason || 'No reason given.',
           inline: true,
         },
       ])
@@ -119,20 +119,23 @@ export const command: SlashCommand = {
     // send log into the addressed logs channel
     let logChannel: TextChannel;
     try {
-      if (team)
+      if (team) {
         logChannel = (await interaction.client.channels.fetch(
           (interaction.client as Client).config.teams.filter((t) => t.name === team)[0].channels.moderation,
         )) as any;
-      else
+      } else {
         logChannel = (await interaction.client.channels.fetch(
           (interaction.client as Client).config.discords.filter((d) => d.id === interaction.guildId)[0].channels
             .moderation,
         )) as any;
+      }
       logChannel.send({
         embeds: [logEmbed],
       });
     } catch {
-      return;
-    } // can't fetch log channel;
+      // can't fetch log channel;
+    }
   },
 };
+
+export default command;

@@ -50,8 +50,8 @@ const randomSentences: Array<string> = [
   'Ouch. That hurt :(',
 ];
 
-var lastReasons = [];
-const loopLimit = 3; //how many times the same error needs to be made to trigger a loop
+const lastReasons = [];
+const loopLimit = 3; // how many times the same error needs to be made to trigger a loop
 
 export const logConstructor: Function = (
   client: Client,
@@ -59,10 +59,8 @@ export const logConstructor: Function = (
     stack: 'You requested it with /logs ¯\\_(ツ)_/¯',
   },
 ): MessageAttachment => {
-  const logTemplate = fs.readFileSync(path.join(__dirname + '/errorHandler.log').replace('dist\\', ''), {
-    encoding: 'utf-8',
-  });
-  const template = logTemplate.match(new RegExp(/\%templateStart%([\s\S]*?)%templateEnd/))[1]; // get message template
+  const logTemplate = fs.readFileSync(path.join(`${__dirname}/errorHandler.log`).replace('dist\\', ''), { encoding: 'utf-8' });
+  const template = logTemplate.match(/%templateStart%([\s\S]*?)%templateEnd/)[1]; // get message template
 
   const t = Math.floor(Math.random() * randomSentences.length);
   let logText = logTemplate
@@ -73,10 +71,8 @@ export const logConstructor: Function = (
 
   logText = logText.split('%templateStart%')[0]; // remove message template
 
-  let len: number = client.getActions().length;
-  let actions: Log[] = client.getActions().sort((a: Log, b: Log) => {
-    return a.timestamp > b.timestamp ? -1 : 1;
-  });
+  const len: number = client.getActions().length;
+  const actions: Log[] = client.getActions().sort((a: Log, b: Log) => (a.timestamp > b.timestamp ? -1 : 1));
 
   actions.forEach((log: Log, index) => {
     let tmp: string = template;
@@ -176,6 +172,7 @@ export const logConstructor: Function = (
         tmp = tmp
           .replace('%templateType%', `Slash Command (/${log.data.commandName})`)
           .replace('%templateURL%', `https://discord.com/channels/${log.data.guildId}/${log.data.channelId}`) // there is no message attached as the message could not exist yet
+          // eslint-disable-next-line no-underscore-dangle
           .replace('%templateParameters%', JSON.stringify((log.data.options as any)._hoistedOptions)) // small tricks to get all parameter
           .replace('%templateChannelType%', log.data.channel ? log.data.channel.type : 'Not relevant');
         break;
@@ -205,21 +202,21 @@ export const errorHandler: Function = async (client: Client, reason: any, type: 
   const channel = client.channels.cache.get(client.tokens.errorChannel) as TextChannel;
   if (channel === undefined) return; // avoid infinite loop when crash is outside of client
 
-  if (lastReasons.length == loopLimit) lastReasons.pop(); // pop removes an item from the end of an array
+  if (lastReasons.length === loopLimit) lastReasons.pop(); // pop removes an item from the end of an array
   lastReasons.push(reason); // push adds one to the start
 
-  //checks if every reasons are the same
-  /*if (lastReasons.every((v) => v.stack == lastReasons[0].stack) && lastReasons.length == loopLimit) {
-		if (client.verbose) console.log(`${err}Suspected crash loop detected; Restarting...`);
+  // checks if every reasons are the same
+  // if (lastReasons.every((v) => v.stack === lastReasons[0].stack) && lastReasons.length === loopLimit) {
+  //   if (client.verbose) console.log(`${err}Suspected crash loop detected; Restarting...`);
 
-		const embed = new MessageEmbed()
-			.setTitle("(Probably) Looped, crash encountered!")
-			.setFooter({ text: `Got the same error ${loopLimit} times in a row. Attempting restart...` })
-			.setDescription("```bash\n" + reason.stack + "\n```");
-		await channel.send({ embeds: [embed] });
+  //   const embed = new MessageEmbed()
+  //     .setTitle('(Probably) Looped, crash encountered!')
+  //     .setFooter({ text: `Got the same error ${loopLimit} times in a row. Attempting restart...` })
+  //     .setDescription('```bash\n' + reason.stack + '\n```');
+  //   await channel.send({ embeds: [embed] });
 
-		client.restart();
-	}*/
+  //   client.restart();
+  // }
 
   const embed = new MessageEmbed()
     .setAuthor({

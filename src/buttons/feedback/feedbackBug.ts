@@ -1,17 +1,29 @@
-import { Client, MessageEmbed, Message, ButtonInteraction } from '@client';
+import {
+  Client, MessageEmbed, Message, ButtonInteraction,
+} from '@client';
 import { Button } from '@interfaces';
 import { MessageInteraction } from 'discord.js';
 import { info } from '@helpers/logger';
 
-export const button: Button = {
+const Bug = [
+  'God i hate being a developer',
+  'I thought i fixed this yesterday',
+  'AAAAAAAAAA',
+  'Shit.',
+  "Slap a '//todo fix plz' in there.",
+  'Rule #69: Always blame Juknum',
+  'Major skill issue',
+];
+
+const button: Button = {
   buttonId: 'feedbackBug',
   execute: async (client: Client, interaction: ButtonInteraction) => {
     if (client.verbose) console.log(`${info}Bug report!`);
     const messageInteraction: MessageInteraction = interaction.message.interaction as MessageInteraction;
     const message: Message = interaction.message as Message;
 
-    if (interaction.user.id !== messageInteraction.user.id)
-      return interaction.reply({
+    if (interaction.user.id !== messageInteraction.user.id) {
+      interaction.reply({
         content: (
           await interaction.getEphemeralString({
             string: 'Error.Interaction.Reserved',
@@ -19,13 +31,15 @@ export const button: Button = {
         ).replace('%USER%', `<@!${messageInteraction.user.id}>`),
         ephemeral: true,
       });
+      return;
+    }
 
     const channelFeedback = client.channels.cache.get(
       client.config.discords.filter((d) => d.name === 'dev')[0].channels[interaction.customId],
     );
 
-    if (!channelFeedback)
-      return interaction.reply({
+    if (!channelFeedback) {
+      interaction.reply({
         content: (
           await interaction.getEphemeralString({
             string: 'Error.Channel.CacheNotFound',
@@ -33,14 +47,18 @@ export const button: Button = {
         ).replace('%CHANNEL_NAME%', '#feedback'),
         ephemeral: true,
       });
+      return;
+    }
 
-    if (!channelFeedback.isText())
-      return interaction.reply({
+    if (!channelFeedback.isText()) {
+      interaction.reply({
         content: await interaction.getEphemeralString({
           string: 'Error.Channel.NotTextChannel',
         }),
         ephemeral: true,
       });
+      return;
+    }
 
     const embedResponse = new MessageEmbed()
       .setTitle(
@@ -59,7 +77,7 @@ export const button: Button = {
       embeds: [embedResponse],
       fetchReply: true,
     })) as Message;
-    const url: string = reply.url;
+    const { url } = reply;
     const quote: string = Bug[Math.floor(Math.random() * Bug.length)];
 
     const embedFeedback = new MessageEmbed()
@@ -67,8 +85,8 @@ export const button: Button = {
         name: interaction.user.tag,
         iconURL: interaction.user.avatarURL(),
       })
-      .setTitle(`[BUG] Feedback`)
-      .setDescription(`[Jump to message](${url})\n` + '```' + message.embeds[0].description + '```' + `\n_${quote}_`)
+      .setTitle('[BUG] Feedback')
+      .setDescription(`${`[Jump to message](${url})\n\`\`\``}${message.embeds[0].description}\`\`\`\n_${quote}_`)
       .setFooter({
         text: `${interaction.guild.name}`,
       })
@@ -81,18 +99,10 @@ export const button: Button = {
 
     try {
       message.delete();
-    } catch (_err) {
+    } catch (err) {
       /* message already deleted */
     }
   },
 };
 
-const Bug = [
-  'God i hate being a developer',
-  'I thought i fixed this yesterday',
-  'AAAAAAAAAA',
-  'Shit.',
-  "Slap a '//todo fix plz' in there.",
-  'Rule #69: Always blame Juknum',
-  'Major skill issue',
-];
+export default button;

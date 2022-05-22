@@ -1,5 +1,5 @@
-import { Config } from './interfaces';
 import configJson from '@json/config.json';
+import { Config } from './interfaces';
 
 const config: Config = configJson;
 
@@ -9,8 +9,8 @@ const config: Config = configJson;
  * @param {String} guildId - the guild id to be searched
  * @param {Boolean} team - if true, the team name will be returned instead of the guild name
  */
-export const getGuildName = (guildId: string, team: boolean = false): string => {
-  let output: string = undefined;
+const getGuildName = (guildId: string, team: boolean = false): string => {
+  let output: string;
 
   config.discords.forEach((discord) => {
     if (discord.id === guildId) output = discord.name;
@@ -19,3 +19,5 @@ export const getGuildName = (guildId: string, team: boolean = false): string => 
 
   return output;
 };
+
+export default getGuildName;

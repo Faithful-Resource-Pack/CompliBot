@@ -1,8 +1,10 @@
 import { Button } from '@interfaces';
-import { Client, Message, ButtonInteraction, MessageEmbed } from '@client';
+import {
+  Client, Message, ButtonInteraction, MessageEmbed,
+} from '@client';
 import { Poll } from '@class/poll';
 
-export const button: Button = {
+const button: Button = {
   buttonId: 'pollVote',
   execute: async (client: Client, interaction: ButtonInteraction) => {
     await interaction.deferUpdate();
@@ -14,7 +16,7 @@ export const button: Button = {
     const poll: Poll = new Poll(client.polls.get(pid));
 
     const type: string = interaction.customId.replace('pollVote__', '');
-    const id: string = interaction.user.id;
+    const { id } = interaction.user;
 
     if (poll.hasVotedFor(type, id)) poll.removeVote(type, id);
     else poll.addVote(type, id);
@@ -22,11 +24,13 @@ export const button: Button = {
     await poll.updateEmbed(client);
 
     if (poll.isAnonymous()) {
-      if (poll.getStatus() === 'ended')
-        return interaction.followUp({
+      if (poll.getStatus() === 'ended') {
+        interaction.followUp({
           ephemeral: true,
           content: 'This poll has exceeded its timeout and has ended.',
         });
+        return;
+      }
       interaction.followUp({
         ephemeral: true,
         content: poll.hasVotedFor(type, id) ? 'Your vote has been counted.' : 'Your vote has been removed.',
@@ -36,3 +40,5 @@ export const button: Button = {
     client.polls.set(pid, poll);
   },
 };
+
+export default button;

@@ -3,11 +3,13 @@
 		"prefix": "net",
 		"body": [
 			"import { Event } from '@interfaces';",
-			"export const event: Event = {",
+			"const event: Event = {",
 			"\tname: \"${1:Name}\",",
 			"\trun: async (client, ${2:/* args */}) => {",
 			"\t\t${3://todo: implement event",
-			"\t},\n};"
+			"\t},\n};",
+			"\n",
+			"export default event;"
 		]
 	},
 
@@ -17,7 +19,7 @@
 			"import { SlashCommand, SyncSlashCommandBuilder } from \"@interfaces\";",
 			"import { Client, CommandInteraction, Message, MessageEmbed } from \"@client\";",
 			"import { SlashCommandBuilder } from \"@discordjs/builders\";",
-			"export const command: SlashCommand = {",
+			"const command: SlashCommand = {",
 			"\tdata: async (client: Client): Promise<SyncSlashCommandBuilder> => {",
 			"\t\t/**",
 			"\t\t * todo: implement fetched stuff here",
@@ -30,7 +32,9 @@
 			"\texecute: async (interaction: CommandInteraction, client: Client) => {",
             "\t\tif (await interaction.perms({${3}})) return;",
 			"\t\t${4://todo: implement command}",
-			"\t},\n};"
+			"\t},\n};",
+			"\n",
+			"export default command;"
 		]
 	},
 
@@ -40,7 +44,7 @@
 			"import { SlashCommand } from \"@interfaces\";",
 			"import { Client, CommandInteraction, Message, MessageEmbed } from \"@client\";",
 			"import { SlashCommandBuilder } from \"@discordjs/builders\";",
-			"export const command: SlashCommand = {",
+			"const command: SlashCommand = {",
 			"\tdata: new SlashCommandBuilder()",
 
 			"\t\t.setName(\"${1:Name}\")",
@@ -48,7 +52,9 @@
 			"\texecute: async (interaction: CommandInteraction, client: Client) => {",
             "\t\tif (await interaction.perms({${3}})) return;",
 			"\t\t${4://todo: implement command}",
-			"\t},\n};"
+			"\t},\n};",
+			"\n",
+			"export default command;"
 		]
 	},
 }

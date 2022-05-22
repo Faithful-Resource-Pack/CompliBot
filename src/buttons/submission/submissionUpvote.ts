@@ -1,8 +1,10 @@
 import { Button } from '@interfaces';
-import { Client, Message, ButtonInteraction, MessageEmbed } from '@client';
+import {
+  Client, Message, ButtonInteraction, MessageEmbed,
+} from '@client';
 import { Submission } from '@class/submissions';
 
-export const button: Button = {
+const button: Button = {
   buttonId: 'submissionUpvote',
   execute: async (client: Client, interaction: ButtonInteraction) => {
     await interaction.deferUpdate();
@@ -12,7 +14,7 @@ export const button: Button = {
     // get submission, update it
     const sid: string = embed.footer.text.split(' | ')[0];
     const submission: Submission = new Submission(client.submissions.get(sid));
-    const id: string = interaction.user.id;
+    const { id } = interaction.user;
 
     if (submission.hasVotedFor('upvote', id)) submission.removeVote('upvote', id);
     else submission.addVote('upvote', id);
@@ -28,3 +30,5 @@ export const button: Button = {
     });
   },
 };
+
+export default button;

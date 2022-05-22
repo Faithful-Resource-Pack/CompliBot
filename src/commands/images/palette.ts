@@ -5,7 +5,7 @@ import { generalSlashCommandImage } from '@functions/slashCommandImage';
 import { MessageEmbed } from '@client';
 import { paletteAttachment } from '@functions/canvas/palette';
 
-export const command: SlashCommand = {
+const command: SlashCommand = {
   data: new SlashCommandBuilder()
     .setName('palette')
     .setDescription('Get the color palette of an image.')
@@ -18,3 +18,5 @@ export const command: SlashCommand = {
     });
   },
 };
+
+export default command;

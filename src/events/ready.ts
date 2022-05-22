@@ -1,11 +1,11 @@
 import { Event } from '@interfaces';
 import { success } from '@helpers/logger';
 
-export const event: Event = {
+const event: Event = {
   name: 'ready',
   run: async (client) => {
     console.log(`${success}${client.user.tag} is online.`);
-    client.user.setActivity(`with other packs.`, {
+    client.user.setActivity('with other packs.', {
       type: 'COMPETING',
     });
 
@@ -14,3 +14,5 @@ export const event: Event = {
     });
   },
 };
+
+export default event;

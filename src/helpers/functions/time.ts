@@ -1,4 +1,4 @@
-export function stringToMs(text: string) {
+export default function stringToMs(text: string) {
   let ms = 0;
 
   const seconds = /(\d+)\s?(s|sec|seconds?)/.exec(text);

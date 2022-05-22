@@ -1,11 +1,13 @@
 import { SlashCommand } from '@interfaces';
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { CommandInteraction, GuildMember, Message, User } from 'discord.js';
-import { Client, MessageEmbed } from '@client';
-import { getRolesIds } from '@helpers/roles';
+import {
+  CommandInteraction, GuildMember, Message, User,
+} from 'discord.js';
+import { MessageEmbed } from '@client';
+import getRolesIds from '@helpers/roles';
 import moment from 'moment';
 
-export const command: SlashCommand = {
+const command: SlashCommand = {
   permissions: {
     roles: getRolesIds({
       name: ['moderators', 'trial_moderators'],
@@ -16,16 +18,13 @@ export const command: SlashCommand = {
   data: new SlashCommandBuilder()
     .setName('userinfo')
     .setDescription('Get detailed information on a specified user.')
-    .addUserOption((option) =>
-      option.setName('user').setDescription('The User to get information of.').setRequired(true),
-    ),
-  execute: async (interaction: CommandInteraction, client: Client) => {
+    .addUserOption((option) => option.setName('user').setDescription('The User to get information of.').setRequired(true)),
+  execute: async (interaction: CommandInteraction) => {
     if (
       await interaction.perms({
         type: 'mod',
       })
-    )
-      return;
+    ) return;
 
     const user = interaction.options.getUser('user') as User;
     const guildUser = interaction.guild.members.cache.get(user.id) as GuildMember;
@@ -79,8 +78,8 @@ export const command: SlashCommand = {
           name: 'Boost status',
           value: guildUser.premiumSince
             ? `Since <t:${moment(guildUser.premiumSince).utc().unix()}>\n<t:${moment(guildUser.premiumSince)
-                .utc()
-                .unix()}:R>`
+              .utc()
+              .unix()}:R>`
             : 'Not boosting',
           inline: true,
         },
@@ -103,3 +102,5 @@ export const command: SlashCommand = {
       .then((message: Message) => message.deleteButton());
   },
 };
+
+export default command;

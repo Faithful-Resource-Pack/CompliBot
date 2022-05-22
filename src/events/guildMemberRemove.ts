@@ -1,11 +1,14 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/naming-convention */
+
 import { Client, GuildMember } from '@client';
 import { Event } from '@interfaces';
 
-export const event: Event = {
+const event: Event = {
   name: 'guildMemberRemove',
   run: async (client: Client, member: GuildMember) => {
     //! do not remove, 'force' member to be casted (break if removed)
-    let _ = (member as GuildMember) instanceof GuildMember;
+    const _ = (member as GuildMember) instanceof GuildMember;
 
     member.createdTimestamp = new Date().getTime();
     member.reason = 'removed';
@@ -16,3 +19,5 @@ export const event: Event = {
     if (updateChannel) client.updateMembers(member.guild.id, updateChannel);
   },
 };
+
+export default event;

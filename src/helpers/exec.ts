@@ -8,15 +8,16 @@
 // execute a single shell command where "cmd" is a string
 export const execSync = (cmd: string, cb: Function, options: any = undefined): void => {
   // this would be way easier on a shell/bash script :P
-  const child_process = require('child_process');
+  // eslint-disable-next-line global-require
+  const childProcess = require('child_process');
   const parts = cmd.split(/\s+/g);
 
   let opt = {
     stdio: 'inherit',
   };
-  if (options !== undefined) opt = Object.assign({}, opt, options);
+  if (options !== undefined) opt = { ...opt, ...options };
 
-  const p = child_process.spawn(parts[0], parts.slice(1), opt);
+  const p = childProcess.spawn(parts[0], parts.slice(1), opt);
   p.on('exit', (code: number) => {
     let err = null;
     if (code) {
@@ -32,15 +33,13 @@ export const execSync = (cmd: string, cb: Function, options: any = undefined): v
 // execute multiple commands in series
 // this could be replaced by any flow control lib
 export const seriesSync = (cmds: Array<string>, cb: Function, options: any = undefined): void => {
-  let execNext = () => {
+  const execNext = () => {
     execSync(
       cmds.shift(),
       (err: any) => {
         if (err) cb(err);
-        else {
-          if (cmds.length) execNext();
-          else cb(null);
-        }
+        else if (cmds.length) execNext();
+        else cb(null);
       },
       options,
     );
@@ -49,28 +48,24 @@ export const seriesSync = (cmds: Array<string>, cb: Function, options: any = und
   execNext();
 };
 
-export const exec = async (cmd: string, options: any = undefined): Promise<void> => {
-  return new Promise((res, rej) => {
-    execSync(
-      cmd,
-      (err: any) => {
-        if (err === null) res(err);
-        else rej(err);
-      },
-      options,
-    );
-  });
-};
+export const exec = async (cmd: string, options: any = undefined): Promise<void> => new Promise((res, rej) => {
+  execSync(
+    cmd,
+    (err: any) => {
+      if (err === null) res(err);
+      else rej(err);
+    },
+    options,
+  );
+});
 
-export const series = async (cmds: Array<string>, options: any = undefined): Promise<void> => {
-  return new Promise((res, rej) => {
-    seriesSync(
-      cmds,
-      (err: any) => {
-        if (err === null) res(err);
-        else rej(err);
-      },
-      options,
-    );
-  });
-};
+export const series = async (cmds: Array<string>, options: any = undefined): Promise<void> => new Promise((res, rej) => {
+  seriesSync(
+    cmds,
+    (err: any) => {
+      if (err === null) res(err);
+      else rej(err);
+    },
+    options,
+  );
+});

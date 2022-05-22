@@ -2,7 +2,7 @@ import { Button, Event } from '@interfaces';
 import { Client, ButtonInteraction } from '@client';
 import { info } from '@helpers/logger';
 
-export const event: Event = {
+const event: Event = {
   name: 'buttonUsed',
   run: async (client: Client, interaction: ButtonInteraction) => {
     client.storeAction('button', interaction);
@@ -13,6 +13,8 @@ export const event: Event = {
     if (interaction.customId.startsWith('pollVote__')) button = client.buttons.get('pollVote');
     else button = client.buttons.get(interaction.customId);
 
-    if (button) return button.execute(client, interaction);
+    if (button) button.execute(client, interaction);
   },
 };
+
+export default event;

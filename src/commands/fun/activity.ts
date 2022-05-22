@@ -1,52 +1,52 @@
 import { SlashCommand } from '@interfaces';
-import { CommandInteraction, Client, VoiceChannel, VoiceBasedChannel } from 'discord.js';
+import {
+  CommandInteraction, Client, VoiceChannel, VoiceBasedChannel,
+} from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { activities, activityOptions } from '@helpers/activities';
+import { Activities, activityOptions } from '@helpers/activities';
 import axios from 'axios';
 import { MessageEmbed } from '@client';
 
-export const command: SlashCommand = {
+const command: SlashCommand = {
   data: new SlashCommandBuilder()
     .setName('activity')
-    .setDescription(`Creates an activity in a voice channel.`)
-    .addStringOption((option) =>
-      option
-        .setName('activity')
-        .setDescription('The activity option to open in voice chat')
-        .addChoices(...activityOptions)
-        .setRequired(true),
-    )
-    .addChannelOption((option) =>
-      option
-        .setName('channel')
-        .setDescription('The channel to create the activity in')
-        .addChannelTypes(2)
-        .setRequired(false),
-    ),
+    .setDescription('Creates an activity in a voice channel.')
+    .addStringOption((option) => option
+      .setName('activity')
+      .setDescription('The activity option to open in voice chat')
+      .addChoices(...activityOptions)
+      .setRequired(true))
+    .addChannelOption((option) => option
+      .setName('channel')
+      .setDescription('The channel to create the activity in')
+      .addChannelTypes(2)
+      .setRequired(false)),
   execute: async (interaction: CommandInteraction, client: Client) => {
     const guild = client.guilds.cache.get(interaction.guildId);
     const member = guild.members.cache.get(interaction.member.user.id);
     let channel = interaction.options.getChannel('channel') as VoiceChannel;
 
-    //no option for channel was provided
-    if (channel == undefined) {
-      if (member.voice.channelId == undefined)
+    // no option for channel was provided
+    if (channel === undefined) {
+      if (member.voice.channelId === undefined) {
         return interaction.reply({
           content: await interaction.getEphemeralString({
             string: 'Command.Activity.noChannel',
           }),
           ephemeral: true,
         });
-      if (member.voice.channel.type == 'GUILD_STAGE_VOICE')
+      }
+      if (member.voice.channel.type === 'GUILD_STAGE_VOICE') {
         return interaction.reply({
           content: await interaction.getEphemeralString({
             string: 'Command.Activity.stageChannel',
           }),
           ephemeral: true,
         });
+      }
       channel = member.voice.channel as VoiceBasedChannel as VoiceChannel;
     }
-    let data = await axios(`https://discord.com/api/v8/channels/${channel.id}/invites`, {
+    const data = await axios(`https://discord.com/api/v8/channels/${channel.id}/invites`, {
       data: JSON.stringify({
         max_age: 86400,
         max_uses: 0,
@@ -57,7 +57,7 @@ export const command: SlashCommand = {
       }),
       method: 'POST',
       headers: {
-        'Authorization': `Bot ${client.token}`,
+        Authorization: `Bot ${client.token}`,
         'Content-Type': 'application/json',
       },
     }).catch((e) => {
@@ -70,18 +70,19 @@ export const command: SlashCommand = {
         name: interaction.user.tag,
         iconURL: interaction.user.avatarURL(),
       })
-      .setTitle(`Click to join ${activities[parseInt(interaction.options.getString('activity'))]}`);
-    if (data && data.data['code']) {
-      embed.setURL(`https://discord.com/invite/${data.data['code']}`);
+      .setTitle(`Click to join ${Activities[parseInt(interaction.options.getString('activity'), 10)]}`);
+    if (data && data.data.code) {
+      embed.setURL(`https://discord.com/invite/${data.data.code}`);
       return interaction.reply({
         embeds: [embed],
       });
-    } else
-      return interaction.reply({
-        content: await interaction.getEphemeralString({
-          string: 'Command.Activity.unableToCreateInvite',
-        }),
-        ephemeral: true,
-      });
+    } return interaction.reply({
+      content: await interaction.getEphemeralString({
+        string: 'Command.Activity.unableToCreateInvite',
+      }),
+      ephemeral: true,
+    });
   },
 };
+
+export default command;

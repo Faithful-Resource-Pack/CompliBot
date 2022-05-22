@@ -1,4 +1,5 @@
 import { Client, Message } from '@client';
+
 interface Run {
   (client: Client, message: Message, args: string[]);
 }

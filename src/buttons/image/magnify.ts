@@ -1,13 +1,15 @@
 import { Button } from '@interfaces';
 import { info } from '@helpers/logger';
-import { Client, Message, ButtonInteraction, MessageEmbed } from '@client';
-import { magnifyAttachment } from '@functions/canvas/magnify';
+import {
+  Client, Message, ButtonInteraction, MessageEmbed,
+} from '@client';
+import magnifyAttachment from '@functions/canvas/magnify';
 import { palette } from '@helpers/buttons';
 import { getImageFromMessage } from '@functions/slashCommandImage';
 import { MessageActionRow } from 'discord.js';
 import { getSubmissionsChannels } from '@helpers/channels';
 
-export const button: Button = {
+const button: Button = {
   buttonId: 'magnify',
   execute: async (client: Client, interaction: ButtonInteraction) => {
     if (client.verbose) console.log(`${info}Image was magnified!`);
@@ -16,43 +18,46 @@ export const button: Button = {
     const url = await getImageFromMessage(message);
     const attachment = (
       await magnifyAttachment({
-        url: url,
+        url,
         name: url.split('/').at(-1),
       })
     )[0];
 
-    if (attachment == null)
+    if (attachment === null) {
       return interaction.reply({
         content: await interaction.getEphemeralString({
           string: 'Command.Images.TooBig',
         }),
         ephemeral: true,
       });
+    }
 
-    if (getSubmissionsChannels(interaction.client as Client).includes(interaction.channelId))
+    if (getSubmissionsChannels(interaction.client as Client).includes(interaction.channelId)) {
       return interaction.reply({
         embeds: [new MessageEmbed().setImage(`attachment://${attachment.name}`).setTimestamp()],
         files: [attachment],
         components: [new MessageActionRow().addComponents(palette)],
         ephemeral: true,
       });
-    else
-      return interaction
-        .reply({
-          embeds: [
-            new MessageEmbed()
-              .setImage(`attachment://${attachment.name}`)
-              .setFooter({
-                text: `${interaction.user.username} | ${interaction.user.id}`,
-              })
-              .setTimestamp(),
-          ],
-          files: [attachment],
-          components: [new MessageActionRow().addComponents(palette)],
-          fetchReply: true,
-        })
-        .then((message: Message) => {
-          message.deleteButton(true);
-        });
+    }
+    return interaction
+      .reply({
+        embeds: [
+          new MessageEmbed()
+            .setImage(`attachment://${attachment.name}`)
+            .setFooter({
+              text: `${interaction.user.username} | ${interaction.user.id}`,
+            })
+            .setTimestamp(),
+        ],
+        files: [attachment],
+        components: [new MessageActionRow().addComponents(palette)],
+        fetchReply: true,
+      })
+      .then((m: Message) => {
+        m.deleteButton(true);
+      });
   },
 };
+
+export default button;
