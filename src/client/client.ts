@@ -42,7 +42,7 @@ import { loadJiraBedrockVersions, updateJiraBedrockVersions } from '@functions/M
 
 import path from 'path';
 import chalk from 'chalk';
-import { StartClient } from '../index';
+import StartClient from '../index';
 
 const JSON_PATH = path.join(__dirname, '../../json/dynamic'); // json folder at root
 const POLLS_FILENAME = 'polls.json';
