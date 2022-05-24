@@ -117,9 +117,7 @@ export const logConstructor: Function = (
         tmp = tmp
           .replace(
             '%templateType%',
-            `Message (${log.data.author.username}, ${log.data.author.id} ${log.data.author.bot ? 'BOT' : 'USER'}, ${
-              log.data.isDeleted ? 'deleted' : 'posted'
-            }`,
+            `Message (${log.data.author ? log.data.author.username : '???'}, ${log.data.author ? log.data.author.id : '??'} ${log.data.author && log.data.author.bot ? 'BOT' : 'USER'}, ${log.data.isDeleted ? `deleted by ${log.data.whoDeleted.username}` : 'posted'})`,
           )
           .replace(
             '%templateURL%',
