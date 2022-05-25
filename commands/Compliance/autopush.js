@@ -17,7 +17,7 @@ module.exports = {
 	syntax: `${prefix}autopush [both/32/64]`,
 	example: `${prefix}autopush 32`,
 	async execute(client, message, args) {
-		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.id === '747839021421428776')) return warnUser(message, strings.command.no_permission)
+		if (!message.member.roles.cache.some(role => role.name.includes("Manager") || role.id === '747839021421428776')) return warnUser(message, strings.command.no_permission)
 
 		if (!args.length) return warnUser(message, strings.command.args.invalid.generic)
 

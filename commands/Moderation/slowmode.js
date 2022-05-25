@@ -16,7 +16,7 @@ module.exports = {
 	syntax: `${prefix}slowmode <time in seconds/off/disable/stop>`,
 	example: `${prefix}slowmode 10`,
 	async execute(client, message, args) {
-		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("Moderator") || role.id === '747839021421428776')) return warnUser(message, strings.command.no_permission)
+		if (!message.member.roles.cache.some(role => role.name.includes("Manager") || role.name.includes("Moderator") || role.id === '747839021421428776')) return warnUser(message, strings.command.no_permission)
 		if (!args.length) return warnUser(message, strings.command.args.none_given);
 
 		if (args == 'off' || args == 'disable' || args == 'stop' || args == '0') {

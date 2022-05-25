@@ -30,7 +30,7 @@ module.exports = {
 		if (!user) user = new Object()
 		if (!args.length) return showProfile(message, user)
 
-		if (args[0] !== 'username' && args[0] !== 'uuid' && args[0] !== 'show' && !message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("Moderator") || role.id === '747839021421428776'))
+		if (args[0] !== 'username' && args[0] !== 'uuid' && args[0] !== 'show' && !message.member.roles.cache.some(role => role.name.includes("Manager") || role.name.includes("Moderator") || role.id === '747839021421428776'))
 			return warnUser(message, strings.command.args.invalid.generic)
 
 		if (args[0] === 'show')
@@ -89,7 +89,7 @@ async function showProfile(message, user = undefined, memberID = 'None') {
 		.setColor(settings.colors.blue)
 		.setFooter(message.client.user.username, message.client.user.displayAvatarURL());
 
-		if (message.guild !== null && message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("Moderator")))
+		if (message.guild !== null && message.member.roles.cache.some(role => role.name.includes("Manager") || role.name.includes("Moderator")))
 			embed.addField(`Warns ${warns == 'None' ? '' : '(' + user.warns.length + ')'}`, warns)
 
 	return message.reply({ embeds: [embed] });

@@ -33,7 +33,7 @@ module.exports = {
 	async execute(client, message, args) {
 		return warnUser(message, 'NOT UPDATED TO THE NEW DATABASE SYSTEM')
 
-		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.id === '747839021421428776')) return warnUser(message, strings.command.no_permission)
+		if (!message.member.roles.cache.some(role => role.name.includes("Manager") || role.id === '747839021421428776')) return warnUser(message, strings.command.no_permission)
 
 		if (!message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) return warnUser(message, strings.command.no_permission);
 

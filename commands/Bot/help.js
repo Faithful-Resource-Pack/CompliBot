@@ -109,7 +109,7 @@ module.exports = {
 				.setDescription(`${commandCategories.join('\n')}\n\nUse \`${prefix}help [category]\` to view the commands in a category`)
 
 			// roles don't exist in DM
-			//if (message.guild !== null && message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("Moderator") || role.id === '747839021421428776')) embed.addField("Moderation", commands_moderation[0] === undefined ? "None" : commands_moderation.join('\n'))
+			//if (message.guild !== null && message.member.roles.cache.some(role => role.name.includes("Manager") || role.name.includes("Moderator") || role.id === '747839021421428776')) embed.addField("Moderation", commands_moderation[0] === undefined ? "None" : commands_moderation.join('\n'))
 			//if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD || message.author.id === uidT) embed.addField("Developer exclusive", commands_developer_exclusive[0] === undefined ? "None" : commands_developer_exclusive.join('\n'))
 		}
 
