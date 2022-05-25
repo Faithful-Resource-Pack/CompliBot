@@ -41,7 +41,7 @@ module.exports = {
 					.setTitle('Website')
 					.setDescription('https://faithfulpack.net/')
 					.setColor(settings.colors.c32)
-					.setThumbnail(settings.images.c32)
+					.setThumbnail(settings.images.logo_plain)
 
 				var githubEmbed = new MessageEmbed()
 					.setTitle('Github')

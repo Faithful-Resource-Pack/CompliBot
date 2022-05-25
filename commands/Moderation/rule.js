@@ -26,7 +26,7 @@ module.exports = {
 		switch (message.guild.id) {
 			case settings.guilds.c32.id:
 				color = settings.colors.c32
-				thumbnail = settings.images.c32;
+				thumbnail = settings.images.logo_plain;
 				break
 			case settings.guilds.c64.id:
 				color = settings.colors.c32
@@ -38,7 +38,7 @@ module.exports = {
 				break
 
 			default:
-				color = settings.colors.c32
+				color = settings.colors.logo_plain
 				break
 		}
 
