@@ -15,7 +15,17 @@ Commands are explained like so:
 - none
 
 ### Changed
-- none
+- Updated `DiscordJS` from `13.7.0` to `13.8.0`, minimum NodeJS required version is now **16.9.0**
+- If you encounter any issue with the canvas module when upgrading to Node **16.9.0** do the following:   
+  1. Clear NPM cache:
+    ```
+    npm cache clear --force
+    ```
+  2. Delete the `node_modules/canvas` folder
+  3. Re-install dependencies: (this will rebuild Canvas for node 16)
+    ```
+    npm install
+    ```
 
 ### Fixed
 - none
