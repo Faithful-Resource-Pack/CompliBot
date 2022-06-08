@@ -19,10 +19,10 @@ export async function getImageFromMessage(message: Message): Promise<string> {
   if (message.attachments.size > 0 && message.attachments.first().url.match(/\.(jpeg|jpg|png)$/)) return message.attachments.first().url;
   // else if the message is an embed
   if (message.embeds[0]) {
-    // if the embeds has an image field
-    if (message.embeds[0].image) return message.embeds[0].image.url;
     // else if the embed has a thumbnail field
     if (message.embeds[0].thumbnail) return message.embeds[0].thumbnail.url;
+    // if the embeds has an image field
+    if (message.embeds[0].image) return message.embeds[0].image.url;
   }
 
   // if no images attached to the first parent reply, check if there is another parent reply (recursive go brr)
