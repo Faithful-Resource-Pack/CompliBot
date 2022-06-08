@@ -12,7 +12,7 @@ const button: Button = {
     const sid: string = interaction.message.embeds[0].footer.text.split(' | ')[0];
 
     // additional checking for undefined embeds and footers and stuff
-    if (!message.reference && !authorId) {
+    if (!authorId) {
       interaction.reply({
         content: await interaction.getEphemeralString({
           string: 'Error.NotFound',
@@ -25,7 +25,7 @@ const button: Button = {
       return;
     }
 
-    if (!message.reference && interaction.user.id !== authorId) {
+    if (interaction.user.id !== authorId) {
       // stupid check because undefined
       interaction.reply({
         content: await interaction.getEphemeralString({

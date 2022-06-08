@@ -11,7 +11,7 @@ const button: Button = {
     const messageInteraction: MessageInteraction = interaction.message.interaction as MessageInteraction;
     const message: Message = interaction.message as Message;
 
-    if (messageInteraction !== undefined && interaction.user.id !== messageInteraction.user.id) {
+    if (messageInteraction && interaction.user.id !== messageInteraction.user.id) {
       interaction.reply({
         content: await interaction.getEphemeralString({
           string: 'Error.Interaction.Reserved',

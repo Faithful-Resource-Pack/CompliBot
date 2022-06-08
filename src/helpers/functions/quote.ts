@@ -66,13 +66,11 @@ export default async function quote(message: Message) {
 
   embed
     .setFooter({
-      text: `Quoted by ${message.author.tag}`,
+      text: `Quoted by ${message.author.tag} | ${message.author.id}`,
       iconURL: message.author.displayAvatarURL({ dynamic: true }),
     })
     .setTimestamp(quotedMsg.createdTimestamp);
   message
-    .reply({
-      embeds: [embed],
-    })
-    .then((m: Message) => m.deleteButton());
+    .reply({ embeds: [embed] })
+    .then((m: Message) => m.deleteButton(true));
 }
