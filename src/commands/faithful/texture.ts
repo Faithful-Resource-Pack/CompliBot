@@ -171,16 +171,14 @@ const command: SlashCommand = {
     }
 
     // no results
-    interaction.deleteReply();
-    interaction.followUp({
-      content: await interaction.getEphemeralString({
+    interaction.editReply({
+      content: await interaction.getString({
         string: 'Command.Texture.NotFound',
         placeholders: {
           TEXTURENAME: `\`${name}\``,
         },
       }),
-      ephemeral: true,
-    });
+    }).then((m: Message) => m.deleteButton());
   },
 };
 
