@@ -15,6 +15,7 @@ Commands are explained like so:
 - none
 
 ### Changed
+- `/stats bot` is now ephemeral.
 - Updated `DiscordJS` from `13.7.0` to `13.8.0`, minimum NodeJS required version is now **16.9.0**
 - If you encounter any issue with the canvas module when upgrading to Node **16.9.0** do the following:   
   1. Clear NPM cache:

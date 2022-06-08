@@ -4,9 +4,7 @@ import { duration } from 'moment';
 import { SlashCommand, SlashCommandI } from '@interfaces';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { Collection, Guild, version as djsVersion } from 'discord.js';
-import {
-  Client, MessageEmbed, CommandInteraction, Message,
-} from '@client';
+import { Client, MessageEmbed, CommandInteraction } from '@client';
 
 const command: SlashCommand = {
   data: new SlashCommandBuilder()
@@ -103,9 +101,8 @@ const command: SlashCommand = {
       interaction
         .reply({
           embeds: [embed],
-          fetchReply: true,
-        })
-        .then((message: Message) => message.deleteButton());
+          ephemeral: true,
+        });
     })
     .set('command', async (interaction: CommandInteraction, client: Client) => {
       // if the command ars is provided and the command does not exist in commandsProcessed:
@@ -136,9 +133,8 @@ const command: SlashCommand = {
           }),
         );
         interaction.reply({
-          ephemeral: true,
           embeds: [embed],
-          fetchReply: true,
+          ephemeral: true,
         });
       } else {
         // sorts commands by usage: 4,3,2,1
@@ -166,8 +162,8 @@ const command: SlashCommand = {
           .join('\n')}`);
 
         interaction.reply({
-          ephemeral: true,
           embeds: [embed],
+          ephemeral: true,
         });
       }
     }),
