@@ -179,11 +179,11 @@
         "%PLAYER% was doomed to fall by %AUTHOR% using %WEAPON%",
         "%PLAYER% fell too far and was finished by %AUTHOR% using %WEAPON%"
     ],
-    "Command.Modping.AfkDnd": "There %NUMBER% moderators with Do not disturb / idle statuses and they may not respond.",
+    "Command.Modping.AfkDnd": "There %VERB% %NUMBER% moderator%S% idle or in do not disturb statuses, they may not respond.",
     "Command.Modping.NoRole": "There is no role including the name \"mod\" or \"moderator\" in this server",
-    "Command.Modping.Online": "There %NUMBER% moderators online",
+    "Command.Modping.Online": "There %VERB% %NUMBER% moderator%S% online",
     "Command.Modping.Offline": "There are currently no moderators online ¯\\_(ツ)_/¯, I'm going to ping them all.",
-    "Command.Modping.Urgent": "You demanded that **all** moderators be present.\nYou must have a good reason or penalties may be taken.",
+    "Command.Modping.Urgent": "You demanded that **all** moderators to be present.\nYou must have a good reason or penalties may be taken.",
     "Command.Ping.Await": "Pinging...",
     "Command.Ping.Description": "_%QUOTE%_\n\n**Bot Latency** \n%LATENCY%ms \n**API Latency** \n%APILATENCY%ms",
     "Command.Ping.Quotes": [

@@ -1,7 +1,8 @@
 import { SlashCommand } from '@interfaces';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { CommandInteraction } from 'discord.js';
-import { MessageEmbed } from '@client';
+import { MessageEmbed, TextOptions } from '@client';
+import getRolesIds from 'helpers/roles';
 
 const command: SlashCommand = {
   data: new SlashCommandBuilder()
@@ -12,135 +13,72 @@ const command: SlashCommand = {
       .setDescription("Does it require all moderator's attention? Consequences will be handed for misuse.")
       .setRequired(false)),
   execute: async (interaction: CommandInteraction) => {
-    const urgent = interaction.options.getBoolean('urgent');
-    let modRole = interaction.guild.roles.cache.find((role) => role.name.toLocaleLowerCase().includes('mod'));
+    const urgent = interaction.options.getBoolean('urgent') ?? false;
 
-    // sorts by role hierarchy
-    interaction.guild.roles.cache
-      .filter((role) => role.name.toLocaleLowerCase().includes('mod'))
-      .forEach((role) => {
-        if (role.id === modRole.id) return false;
-        if (role.position > modRole.position) {
-          modRole = role;
-          return true;
-        }
-        return false;
-      });
+    // get moderators roles ids from the config file
+    const moderatorsRolesIds = getRolesIds({ name: ['moderators', 'trial_moderators'], discords: 'all', teams: 'all' });
 
-    if (modRole === undefined) {
+    // get the corresponding role within the guild where the interaction took place
+    const moderatorsRoles = interaction.guild.roles.cache.filter((role) => moderatorsRolesIds.includes(role.id));
+    const existingModeratorsRolesIds = interaction.guild.roles.cache.filter((role) => moderatorsRolesIds.includes(role.id)).map((role) => role.id);
+
+    // no moderators role found
+    if (moderatorsRoles.size === 0) {
       return interaction.reply({
-        content: await interaction.getEphemeralString({
-          string: 'Command.Modping.NoRole',
-        }),
+        content: await interaction.getEphemeralString({ string: 'Command.Modping.NoRole' }),
         ephemeral: true,
       });
     }
 
-    const moderatorIDs = modRole.members.map((member) => member.user.id);
-    const embed = new MessageEmbed().setAuthor({
-      name: interaction.user.tag,
-      iconURL: interaction.user.avatarURL(),
-    });
-
+    // directly ping the role if 'urgent' is set
     if (urgent) {
-      embed.setDescription(
-        await interaction.getEphemeralString({
-          string: 'Command.Modping.Urgent',
-        }),
-      );
       return interaction.reply({
-        embeds: [embed],
-        content: `<@&${modRole.id}>`,
+        embeds: [
+          new MessageEmbed()
+            .setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL({ dynamic: true }) })
+            .setDescription(await interaction.getString({ string: 'Command.Modping.Urgent' })),
+        ],
+        content: existingModeratorsRolesIds.map((id) => `<@&${id}>`).join(' '),
       });
     }
 
-    if (moderatorIDs.length > 0) {
-      const onlineModIDs: string[] = [];
-      const dndModIDs: string[] = [];
+    // get all users ids from those roles
+    const moderatorsIds = moderatorsRoles.map((role) => role.members.map((member) => member.id)).flat();
+    const onlineModeratorsIds = [];
+    const dndModeratorsIds = [];
 
-      moderatorIDs.forEach((id) => {
-        const mod = interaction.guild.members.cache.get(id);
-        const status = mod.presence ? mod.presence.status : 'offline';
+    // dispatch moderators ids to their respective status arrays
+    moderatorsIds.forEach((moderatorId) => {
+      const moderator = interaction.guild.members.cache.get(moderatorId);
 
-        if (status !== 'offline') {
-          switch (status) {
-            case 'dnd':
-            case 'idle':
-              dndModIDs.push(`<@!${id}>`);
-              break;
-            case 'online':
-            default:
-              onlineModIDs.push(`<@!${id}>`);
-              break;
-          }
-        }
-      });
-      if (onlineModIDs.length > 0) {
-        embed.setDescription(
-          await interaction.getEphemeralString({
-            string: 'Command.Modping.Online',
-            placeholders: {
-              NUMBER: `${
-                moderatorIDs.length === 1
-                  ? await interaction.getEphemeralString({
-                    string: 'General.Is',
-                  })
-                  : await interaction.getEphemeralString({
-                    string: 'General.Are',
-                  })
-              } **${onlineModIDs.length}**`,
-            },
-          }),
-        );
-        return interaction.reply({
-          embeds: [embed],
-          content: onlineModIDs.join(', '),
-        });
-      }
-      if (dndModIDs.length > 0) {
-        embed.setDescription(
-          await interaction.getEphemeralString({
-            string: 'Command.Modping.AfkDnd',
-            placeholders: {
-              NUMBER: `${
-                moderatorIDs.length === 1
-                  ? await interaction.getEphemeralString({
-                    string: 'General.Is',
-                  })
-                  : await interaction.getEphemeralString({
-                    string: 'General.Are',
-                  })
-              } **${moderatorIDs.length}**`,
-            },
-          }),
-        );
-        return interaction.reply({
-          embeds: [embed],
-          content: dndModIDs.join(', '),
-        });
-      }
-      if (dndModIDs.length + onlineModIDs.length === 0) {
-        embed.setDescription(
-          await interaction.getEphemeralString({
-            string: 'Command.Modping.Offline',
-          }),
-        );
-        return interaction.reply({
-          embeds: [embed],
-          content: `<@&${modRole.id}>`,
-        });
-      }
-    }
-    // if no one has the role somehow lol
-    embed.setDescription(
-      await interaction.getEphemeralString({
-        string: 'Command.Modping.Offline',
-      }),
-    );
-    return interaction.reply({
-      embeds: [embed],
-      content: `<@&${modRole.id}>`,
+      if (moderator?.presence?.status === 'online') onlineModeratorsIds.push(moderatorId);
+      else if (moderator?.presence?.status === 'dnd') dndModeratorsIds.push(moderatorId);
+      else if (moderator?.presence?.status === 'idle') dndModeratorsIds.push(moderatorId); // idle people are merge into dnd
     });
+
+    // generic response (written to remove duplicated code)
+    const genericReply = async (arr: String[], str: TextOptions['string'], user: boolean = true) => interaction.reply({
+      content: arr.map((id) => (user ? `<@!${id}>` : `<@&${id}>`)).join(' '),
+      embeds: [
+        new MessageEmbed()
+          .setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL({ dynamic: true }) })
+          .setDescription(await interaction.getString({
+            string: str,
+            placeholders: {
+              VERB: arr.length > 1 ? await interaction.getString({ string: 'General.Are' }) : await interaction.getString({ string: 'General.Is' }),
+              NUMBER: `**${arr.length}**`,
+              S: `${arr.length > 1 ? 's' : ''}`,
+              IGNORE_MISSING: 'true',
+            },
+          })),
+      ],
+    });
+
+    if (onlineModeratorsIds.length > 0) return genericReply(onlineModeratorsIds, 'Command.Modping.Online');
+    if (dndModeratorsIds.length > 0) return genericReply(dndModeratorsIds, 'Command.Modping.AfkDnd');
+
+    // if nobody is online/dnd ping roles
+    return genericReply(existingModeratorsRolesIds, 'Command.Modping.Offline', false);
   },
 };
 

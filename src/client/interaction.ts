@@ -29,7 +29,7 @@ declare module 'discord.js' {
     getString(options: TextOptions): Promise<string>;
   }
 }
-interface TextOptions {
+export interface TextOptions {
   string: Keys;
   placeholders?: Placeholder;
 }

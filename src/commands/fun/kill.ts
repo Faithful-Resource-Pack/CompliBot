@@ -15,7 +15,7 @@ const command: SlashCommand = {
       await interaction.getEphemeralString({
         string: 'Command.Kill.Killed',
         placeholders: {
-          IGNORE_MISSING: 'True',
+          IGNORE_MISSING: 'true',
         },
       })
     ).split('$,');
@@ -23,7 +23,7 @@ const command: SlashCommand = {
       await interaction.getEphemeralString({
         string: 'Command.Kill.KilledBy',
         placeholders: {
-          IGNORE_MISSING: 'True',
+          IGNORE_MISSING: 'true',
         },
       })
     ).split('$,');
@@ -31,7 +31,7 @@ const command: SlashCommand = {
       await interaction.getEphemeralString({
         string: 'Command.Kill.KilledByUsing',
         placeholders: {
-          IGNORE_MISSING: 'True',
+          IGNORE_MISSING: 'true',
         },
       })
     ).split('$,');

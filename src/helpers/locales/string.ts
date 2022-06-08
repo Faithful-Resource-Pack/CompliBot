@@ -1,5 +1,6 @@
-import { ids, parseId } from '@helpers/emojis';
 import path from 'path';
+import { ids, parseId } from '@helpers/emojis';
+import { err } from 'helpers/logger';
 import { Langs, enUS, JSONFiles } from '.';
 
 export type Keys = keyof typeof enUS;
@@ -20,12 +21,12 @@ export function parseString(text: string | string[], lang: string, placeholders?
   });
 
   if (placeholders && Object.keys(placeholders).length > 0) {
-    for (const key in placeholders) {
+    Object.keys(placeholders).forEach((key) => {
       if (!placeholders[key]) {
-        if (placeholders.IGNORE_MISSING.toLocaleLowerCase() === 'true') return '';
-        console.error(`No translation for key: %${key}% in language: ${lang}!`);
+        if (placeholders.IGNORE_MISSING && placeholders.IGNORE_MISSING.toLowerCase() === 'true') result = result.replaceAll(`%${key}%`, '');
+        else console.error(`${err} No translations found for key: %${key}% in language: ${lang}`);
       } else result = result.replaceAll(`%${key}%`, placeholders[key]);
-    }
+    });
   }
 
   return result;
