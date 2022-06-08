@@ -31,7 +31,8 @@ Commands are explained like so:
 
 ### Fixed
 - Fixed `/modping` command to use moderators roles from the `config.json` file instead of using the role name, removed duplicated code.
-- Fixed quoted messages not being deleted when using the delete button
+- Fixed quoted messages not being deleted when using the delete button.
+- Fixed quoted messages error showing up when the quoted message was multiple embeds
 
 ## [v2.4.0] 15/05/2022
 

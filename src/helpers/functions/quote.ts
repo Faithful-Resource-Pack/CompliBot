@@ -30,19 +30,19 @@ export default async function quote(message: Message) {
     return; // can't fetch channel or quotedMsg : abort mission
   }
 
-  if (quotedMsg.embeds[0] !== undefined) {
+  if (quotedMsg.embeds[0]) {
     embed.setAuthor({
       name: `Embed sent by ${quotedMsg.author.tag}`,
       iconURL: 'https://database.faithfulpack.net/images/bot/quote.png',
     });
 
-    if (quotedMsg.embeds[0].title !== undefined) embed.setTitle(quotedMsg.embeds[0].title);
-    if (quotedMsg.embeds[0].url !== undefined) embed.setURL(quotedMsg.embeds[0].url);
-    if (quotedMsg.embeds[0].description !== undefined) embed.setDescription(quotedMsg.embeds[0].description);
-    if (quotedMsg.embeds[0].image !== undefined) embed.setImage(quotedMsg.embeds[0].image.url);
-    if (quotedMsg.embeds[0].fields !== undefined) embed.addFields(quotedMsg.embeds[0].fields);
+    if (quotedMsg.embeds[0].title) embed.setTitle(quotedMsg.embeds[0].title);
+    if (quotedMsg.embeds[0].url) embed.setURL(quotedMsg.embeds[0].url);
+    if (quotedMsg.embeds[0].description) embed.setDescription(quotedMsg.embeds[0].description);
+    if (quotedMsg.embeds[0].image) embed.setImage(quotedMsg.embeds[0].image.url);
+    if (quotedMsg.embeds[0].fields) embed.addFields(quotedMsg.embeds[0].fields);
 
-    if (quotedMsg.embeds[0].thumbnail !== undefined) {
+    if (quotedMsg.embeds[0].thumbnail) {
       embed.setThumbnail(quotedMsg.embeds[0].thumbnail.url);
       embed.setAuthor({
         name: `Embed sent by ${quotedMsg.author.tag}`,
