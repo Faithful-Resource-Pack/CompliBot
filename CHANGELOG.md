@@ -12,7 +12,7 @@ Commands are explained like so:
 ## [v2.5.0] TBA
 
 ### Added
-- none
+- Both Optifine & Mojang cape are shown when using the `/profile minecraft` command.
 
 ### Changed
 - `<User>.displayAvatar()` now use the parameter `dynamic: true` everywhere: tell DiscordJS to use the GIF version of the avatar if available.
@@ -34,6 +34,7 @@ Commands are explained like so:
 - Fixed quoted messages not being deleted when using the delete button.
 - Fixed quoted messages error showing up when the quoted message was multiple embeds.
 - May have fixed no messages showing up when no textures are found after using `/texture` command.
+- Player without capes can now be properly shown using the `/profile minecraft` command.
 
 ## [v2.4.0] 15/05/2022
 

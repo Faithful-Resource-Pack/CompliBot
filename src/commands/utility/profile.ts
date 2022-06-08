@@ -127,8 +127,8 @@ const command: SlashCommand = {
           return undefined;
         });
 
-      const UUID = mcProfile.id;
-      const { name } = mcProfile; // gets the name with correct capitalization - important for optifine api
+      // gets the UUID & username with correct capitalization - important for optifine api
+      const { name, id: UUID } = mcProfile;
 
       // get mojang texture data for skin texture
       const textureB64 = await axios
@@ -165,47 +165,46 @@ const command: SlashCommand = {
           ].join('\n'),
         );
 
-      let cape: [MessageEmbed, MessageAttachment] | [];
+      // let cape: Array<{ embed: MessageEmbed, attachment: MessageAttachment }>;
+      const capeEmbeds: Array<MessageEmbed> = [];
+      const capeAttachments: Array<MessageAttachment> = [];
 
+      // try with Mojang cape
       if (textureJSON.CAPE) {
-        cape = await axios
-          .get(textureJSON.CAPE.url, {
-            responseType: 'arraybuffer',
-          })
-          .then(async (res) => {
-            handleStatus('mojang', res.status, interaction);
-            if (res.statusText === 'OK') {
-              return [
-                new MessageEmbed().setTitle(`${name}'s cape:`).setImage('attachment://MCcape.png'),
-                new MessageAttachment(Buffer.from(res.data), 'MCcape.png'),
-              ];
-            }
+        try {
+          await axios.get(textureJSON.CAPE.url, { responseType: 'arraybuffer' })
+            .then((res) => {
+              handleStatus('mojang', res.status, interaction);
+              if (res.statusText === 'OK') {
+                capeEmbeds.push(new MessageEmbed().setTitle(`${name}'s cape`).setImage('attachment://MCcape.png'));
+                capeAttachments.push(new MessageAttachment(Buffer.from(res.data), 'MCcape.png'));
+              }
+            });
+        } catch (e) {
+          // no cape found
+        }
+      }
 
-            return [];
-          });
-      } else {
-        cape = await axios
-          .get(`http://s.optifine.net/capes/${name}.png`, {
-            responseType: 'arraybuffer',
-          })
-          .then(async (res) => {
+      // try with OF cape
+      try {
+        await axios.get(`http://s.optifine.net/capes/${name}.png`, { responseType: 'arraybuffer' })
+          .then((res) => {
             handleStatus('optifine', res.status, interaction);
             if (res.statusText === 'OK') {
-              return [
-                new MessageEmbed().setTitle(`${name}'s cape:`).setImage('attachment://OFcape.png'),
-                new MessageAttachment(Buffer.from(res.data), 'OFcape.png'),
-              ];
+              capeEmbeds.push(new MessageEmbed().setTitle(`Optifine ${name}'s cape:`).setImage('attachment://OFcape.png'));
+              capeAttachments.push(new MessageAttachment(Buffer.from(res.data), 'OFcape.png'));
             }
-            return [];
           });
+      } catch (e) {
+        // no OF cape found
       }
 
       const MCskin: MessageAttachment = new MessageAttachment(Buffer.from(skinData), `${name}.png`);
 
-      if (cape) {
+      if (capeEmbeds.length > 0 && capeAttachments.length > 0) {
         interaction.reply({
-          embeds: [baseEmbed, cape[0]],
-          files: [MCskin, cape[1]],
+          embeds: [baseEmbed, ...capeEmbeds],
+          files: [MCskin, ...capeAttachments],
         });
       } else {
         interaction.reply({
