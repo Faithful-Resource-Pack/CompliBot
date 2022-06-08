@@ -14,11 +14,7 @@ import {
 const embedConstructor = (user: User, guildName: string, client: Client): MessageEmbed => new MessageEmbed()
   .setTitle(`Moderation notes of ${user.username}`)
   .setColor(colors.red)
-  .setThumbnail(
-    user.displayAvatarURL({
-      dynamic: true,
-    }),
-  )
+  .setThumbnail(user.displayAvatarURL({ dynamic: true }))
   .addFields(
     client.moderationUsers.get(user.id).notes[guildName].map((n) => ({
       name: `${fromTimestampToHumanReadable(n.timestamp)}`,

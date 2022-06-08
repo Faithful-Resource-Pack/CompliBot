@@ -15,6 +15,7 @@ Commands are explained like so:
 - none
 
 ### Changed
+- `<User>.displayAvatar()` now use the parameter `dynamic: true` everywhere: tell DiscordJS to use the GIF version of the avatar if available.
 - `/stats bot` is now ephemeral.
 - Updated `DiscordJS` from `13.7.0` to `13.8.0`, minimum NodeJS required version is now **16.9.0**
 - If you encounter any issue with the canvas module when upgrading to Node **16.9.0** do the following:   
@@ -66,7 +67,7 @@ Commands are explained like so:
 - "Author ID in footer Not Found!" falsely showing up in delete button in some cases
 - `/love` command erroring when no user was specified
 - Image commands erroring on `.webp` images
-- Error for already deleted message when warns shows up (when using <Message>.warns()), the message is now checked before replied, and if it is deleted, the message is sent to the channel instead of replying to the warned author's message.
+- Error for already deleted message when warns shows up (when using `<Message>.warns()`), the message is now checked before replied, and if it is deleted, the message is sent to the channel instead of replying to the warned author's message.
 - Fixed oldest supported version when selecting texture from `/texture`
 - Fixed being able to specify a role as user in `/mute` command
 

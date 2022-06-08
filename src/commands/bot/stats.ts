@@ -40,7 +40,7 @@ const command: SlashCommand = {
 
       const embed = new MessageEmbed()
         .setTitle(`${client.user.username} Stats`)
-        .setThumbnail(client.user.displayAvatarURL())
+        .setThumbnail(client.user.displayAvatarURL({ dynamic: true }))
         .addFields(
           {
             name: FieldTitles[0],

@@ -135,7 +135,7 @@ const MessageBody = {
         text: `Type ${this.tokens.prefix}help to get more information about commands. ${
           disappearing ? `This warning & original message will be deleted in ${timeout}s.` : ''
         }`,
-        iconURL: this.client.user.displayAvatarURL(),
+        iconURL: this.client.user.displayAvatarURL({ dynamic: true }),
       });
 
     let thisIsDeleted: boolean = false;

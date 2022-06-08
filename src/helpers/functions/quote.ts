@@ -46,9 +46,9 @@ export default async function quote(message: Message) {
       embed.setThumbnail(quotedMsg.embeds[0].thumbnail.url);
       embed.setAuthor({
         name: `Embed sent by ${quotedMsg.author.tag}`,
-        iconURL: quotedMsg.author.displayAvatarURL(),
+        iconURL: quotedMsg.author.displayAvatarURL({ dynamic: true }),
       });
-    } else embed.setThumbnail(quotedMsg.author.displayAvatarURL());
+    } else embed.setThumbnail(quotedMsg.author.displayAvatarURL({ dynamic: true }));
   } else {
     if (quotedMsg.attachments.size > 0) {
       if (quotedMsg.attachments.first().url.match(/\.(jpeg|jpg|png|webp|gif)$/)) embed.setImage(quotedMsg.attachments.first().url);
@@ -60,14 +60,14 @@ export default async function quote(message: Message) {
         name: `Message sent by ${quotedMsg.author.tag}`,
         iconURL: 'https://database.faithfulpack.net/images/bot/quote.png',
       })
-      .setThumbnail(quotedMsg.author.displayAvatarURL())
+      .setThumbnail(quotedMsg.author.displayAvatarURL({ dynamic: true }))
       .setDescription(quotedMsg.content);
   }
 
   embed
     .setFooter({
       text: `Quoted by ${message.author.tag}`,
-      iconURL: message.author.displayAvatarURL(),
+      iconURL: message.author.displayAvatarURL({ dynamic: true }),
     })
     .setTimestamp(quotedMsg.createdTimestamp);
   message
