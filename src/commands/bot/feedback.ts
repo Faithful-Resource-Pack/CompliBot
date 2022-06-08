@@ -15,18 +15,10 @@ const command: SlashCommand = {
         name: interaction.user.tag,
         iconURL: interaction.user.avatarURL(),
       })
-      .setTitle(
-        await interaction.getEphemeralString({
-          string: 'Command.Feedback.Preview',
-        }),
-      )
+      .setTitle(await interaction.getString({ string: 'Command.Feedback.Preview' }))
       .setDescription(interaction.options.getString('message'))
       .setTimestamp()
-      .setFooter({
-        text: await interaction.getEphemeralString({
-          string: 'Command.Feedback.ConfirmPrompt',
-        }),
-      });
+      .setFooter({ text: await interaction.getString({ string: 'Command.Feedback.ConfirmPrompt' }) });
 
     const btnCancel = new MessageButton()
       .setStyle('DANGER')
@@ -34,21 +26,13 @@ const command: SlashCommand = {
       .setCustomId('feedbackCancel');
 
     const btnBug = new MessageButton()
-      .setLabel(
-        await interaction.getEphemeralString({
-          string: 'Command.Feedback.Bug',
-        }),
-      )
+      .setLabel(await interaction.getString({ string: 'Command.Feedback.Bug' }))
       .setStyle('PRIMARY')
       .setEmoji(parseId(ids.bug))
       .setCustomId('feedbackBug');
 
     const btnSuggestion = new MessageButton()
-      .setLabel(
-        await interaction.getEphemeralString({
-          string: 'Command.Feedback.Suggestion',
-        }),
-      )
+      .setLabel(await interaction.getString({ string: 'Command.Feedback.Suggestion' }))
       .setStyle('PRIMARY')
       .setEmoji(parseId(ids.suggestion))
       .setCustomId('feedbackSuggestion');

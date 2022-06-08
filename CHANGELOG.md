@@ -35,6 +35,7 @@ Commands are explained like so:
 - Fixed quoted messages error showing up when the quoted message was multiple embeds.
 - May have fixed no messages showing up when no textures are found after using `/texture` command.
 - Player without capes can now be properly shown using the `/profile minecraft` command.
+- The `/feedback` command now use the Guild language instead of the user who sent the feedback.
 
 ## [v2.4.0] 15/05/2022
 

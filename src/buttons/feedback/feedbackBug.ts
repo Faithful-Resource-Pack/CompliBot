@@ -61,11 +61,7 @@ const button: Button = {
     }
 
     const embedResponse = new MessageEmbed()
-      .setTitle(
-        await interaction.getEphemeralString({
-          string: 'Command.Feedback.Sent',
-        }),
-      )
+      .setTitle(await interaction.getString({ string: 'Command.Feedback.Sent' }))
       .setDescription(await message.embeds[0].description)
       .setAuthor({
         name: interaction.user.tag,
