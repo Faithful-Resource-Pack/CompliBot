@@ -17,8 +17,8 @@ import { colors } from '@helpers/colors';
 import { getCorrespondingCouncilChannel, getSubmissionChannelName } from '@helpers/channels';
 import getResourcePackFromName from '@functions/getResourcePack';
 import { stickAttachment } from '@functions/canvas/stick';
-import { Contribution, Paths, Uses } from 'helpers/interfaces/firestorm';
-import pushToGithub from 'helpers/functions/pushToGithub';
+import { Contribution, Paths, Uses } from '@helpers/interfaces/firestorm';
+import pushToGithub from '@helpers/functions/pushToGithub';
 import { TimedEmbed } from './timedEmbed';
 
 export type SubmissionStatus = 'pending' | 'instapassed' | 'added' | 'no_council' | 'council' | 'denied' | 'invalid';

@@ -1,6 +1,6 @@
 import path from 'path';
 import { ids, parseId } from '@helpers/emojis';
-import { err } from 'helpers/logger';
+import { err } from '@helpers/logger';
 import { Langs, enUS, JSONFiles } from '.';
 
 export type Keys = keyof typeof enUS;

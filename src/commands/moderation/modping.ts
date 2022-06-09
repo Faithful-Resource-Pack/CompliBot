@@ -2,7 +2,7 @@ import { SlashCommand } from '@interfaces';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { CommandInteraction } from 'discord.js';
 import { MessageEmbed, TextOptions } from '@client';
-import getRolesIds from 'helpers/roles';
+import getRolesIds from '@helpers/roles';
 
 const command: SlashCommand = {
   data: new SlashCommandBuilder()

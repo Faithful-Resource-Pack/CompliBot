@@ -1,13 +1,13 @@
+import path from 'path';
+import fs from 'fs';
+import axios from 'axios';
+import child_process from 'child_process';
+import { info, warning } from '@helpers/logger';
+import { Client } from 'client';
 import {
   Contribution,
   Path, Paths, Use, Uses,
-} from 'helpers/interfaces/firestorm';
-import path from 'path';
-import fs from 'fs';
-import child_process from 'child_process';
-import { info, warning } from 'helpers/logger';
-import axios from 'axios';
-import { Client } from 'client';
+} from '@helpers/interfaces/firestorm';
 
 export default async function pushToGithub(client: Client, contribution: Contribution, paths: Paths, uses: Uses, repos: any, url: string) {
   const textureBuffer = await axios.get(url, { responseType: 'arraybuffer' }).then((res) => res.data);
