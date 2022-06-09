@@ -17,6 +17,8 @@ import { colors } from '@helpers/colors';
 import { getCorrespondingCouncilChannel, getSubmissionChannelName } from '@helpers/channels';
 import getResourcePackFromName from '@functions/getResourcePack';
 import { stickAttachment } from '@functions/canvas/stick';
+import { Contribution, Paths, Uses } from 'helpers/interfaces/firestorm';
+import pushToGithub from 'helpers/functions/pushToGithub';
 import { TimedEmbed } from './timedEmbed';
 
 export type SubmissionStatus = 'pending' | 'instapassed' | 'added' | 'no_council' | 'council' | 'denied' | 'invalid';
@@ -351,44 +353,50 @@ export class Submission extends TimedEmbed {
       .then((c: TextChannel) => c.messages.fetch(this.getMessageId())) // get the submission message
       .then((m: Message) => {
         // collect required information to make the contribution
-        const texture: string = m.embeds[0].title
+        const textureURL: string = m.embeds[0].thumbnail.url;
+        const textureId: string = m.embeds[0].title
           .split(' ')
           .filter((el) => el.charAt(0) === '[' && el.charAt(1) === '#' && el.slice(-1) === ']')
           .map((el) => el.slice(2, el.length - 1))[0];
+
         const authors: Array<string> = m.embeds[0].fields
           .filter((f) => f.name === 'Contributor(s)')[0]
           .value.split('\n')
           .map((auth) => auth.replace('<@!', '').replace('>', ''));
+
         const date: number = m.createdTimestamp;
-        const ressourcePack = getResourcePackFromName(
+        const { resolution, slug: pack } = getResourcePackFromName(
           client,
           m.embeds[0].fields.filter((f) => f.name === 'Resource Pack')[0].value.replaceAll('`', ''),
         );
-        const { resolution } = ressourcePack;
-        const pack = ressourcePack.slug;
 
-        // send the contribution
-        // todo: use API url here
-        return axios.post(
-          'http://localhost:8000/v2/contributions',
-          {
-            date,
-            pack,
-            resolution,
-            authors,
-            texture,
-          },
-          {
-            headers: {
-              bot: client.tokens.apiPassword,
-            },
-          },
-        );
+        interface ContributionSubmit extends Omit<Contribution, 'id' | 'pack'> {
+          pack: string;
+        }
+
+        const contribution: ContributionSubmit = {
+          date,
+          pack,
+          resolution,
+          authors,
+          texture: textureId,
+        };
+
+        return Promise.all([
+          client.tokens.dev
+            ? axios.post('http://localhost:8000/v2/contributions', contribution, { headers: { bot: client.tokens.apiPassword } }).then((res) => res.data)
+            : axios.post(`${client.config.apiUrl}contributions`, contribution, { headers: { bot: client.tokens.apiPassword } }).then((res) => res.data),
+          axios.get(`${client.config.apiUrl}settings/repositories.git`).then((res) => res.data),
+          axios.get(`${client.config.apiUrl}textures/${textureId}/paths`).then((res) => res.data),
+          axios.get(`${client.config.apiUrl}textures/${textureId}/uses`).then((res) => res.data),
+          textureURL,
+        ]);
       })
-      .then((res) => res.data) // axios data response
-      .then((contribution) => {
-        console.log(contribution);
-        // TODO: GITHUB PUSH TO EACH BRANCHHH + CORRESPONDING REPO
+      .then((result: [Contribution, any, Paths, Uses, string]) => {
+        const [contribution, repos, paths, uses, textureURL] = result;
+        const gitRepos = repos[contribution.pack];
+
+        pushToGithub(client, contribution, paths, uses, gitRepos, textureURL);
       })
       .catch(console.error);
   }

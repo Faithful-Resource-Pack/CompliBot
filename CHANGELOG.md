@@ -13,6 +13,7 @@ Commands are explained like so:
 
 ### Added
 - Both Optifine & Mojang cape are shown when using the `/profile minecraft` command.
+- Mostly finished submission v3 & launched an early alpha for Classic Faithful.
 
 ### Changed
 - `<User>.displayAvatar()` now use the parameter `dynamic: true` everywhere: tell DiscordJS to use the GIF version of the avatar if available.

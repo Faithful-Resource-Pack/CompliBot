@@ -17,11 +17,24 @@ const event: Event = {
 
     if (message.author.bot) return;
 
-    // test if message is in submit channel
-    if (getSubmissionsChannels(client as Client).includes(message.channelId) && !client.tokens.dev) {
+    // TODO: EARLY ALPHA FOR CLASSIC FAITHFUL
+    const tmp = [
+      '814201529032114226',
+      '909503944118648883',
+      '814209343502286899',
+    ];
+
+    if (tmp.includes(message.channelId)) {
       client.emit('textureSubmitted', (client as Client, message));
       return;
     }
+
+    // // test if message is in submit channel
+    // // TODO: remove `&& client.tokens.dev` once dev is finished
+    // if (getSubmissionsChannels(client as Client).includes(message.channelId) && client.tokens.dev) {
+    //   client.emit('textureSubmitted', (client as Client, message));
+    //   return;
+    // }
 
     quote(message);
 

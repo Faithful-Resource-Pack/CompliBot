@@ -20,11 +20,8 @@ const command: SlashCommand = {
     .addStringOption((option) => option.setName('message_id').setDescription('Submission message ID you want to add a reason.').setRequired(true))
     .addStringOption((option) => option.setName('reason').setDescription('Reason of the invalidation/deny.').setRequired(true)),
   execute: async (interaction: CommandInteraction) => {
-    if (
-      !(await interaction.perms({
-        type: 'council',
-      }))
-    ) return;
+    // TODO: fix perms
+    // if (!(await interaction.perms({ type: 'council' }))) return;
 
     let isInvalidated: boolean = false;
 

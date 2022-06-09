@@ -107,8 +107,10 @@ export const processFiles = async (
       const embed = new MessageEmbed()
         .setTitle(`Multiple textures found for \`${file.name.replace('.png', '')}\` (${rlen} results)`)
         .setThumbnail(file.url)
+        .setDescription('Select the texture that correspond to your submission')
         .setFooter({
-          text: 'Select the texture that correspond to your submission',
+          text: `Submitted by ${message.author.tag} | ${message.author.id}`,
+          iconURL: message.author.displayAvatarURL({ dynamic: true }),
         });
 
       message
