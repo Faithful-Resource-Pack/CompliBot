@@ -268,6 +268,10 @@
     "blocks/water_flow",
     "blocks/water_placeholder",
     "blocks/water_still",
-    "entity/banner/banner.tga"
+    "entity/banner/banner.tga",
+    "entity/cat/graytabby_tame.tga",
+    "entity/cat/ocelot_tame.tga",
+    "ui/arrow_left.png",
+    "ui/arrow_right.png"
   ]
 }
