@@ -79,10 +79,12 @@ export class Poll extends TimedEmbed {
       wasArchived = true;
     } catch (e) { /* not in a thread */ }
 
-    await message.edit({
-      embeds: [embed],
-      components: [...components],
-    });
+    try {
+      await message.edit({
+        embeds: [embed],
+        components: [...components],
+      });
+    } catch (e) { /* message can't be edited */ }
 
     if (wasLocked) await message.thread.setLocked(true);
     if (wasArchived) await message.thread.setArchived(true);
