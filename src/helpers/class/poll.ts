@@ -66,11 +66,26 @@ export class Poll extends TimedEmbed {
       return field;
     });
 
-    if (message.thread && message.thread.archived) return;
+    let wasLocked = false;
+    let wasArchived = false;
+
+    try {
+      await message.thread.setLocked(false);
+      wasLocked = true;
+    } catch (e) { /* not in a thread */ }
+
+    try {
+      await message.thread.setArchived(false);
+      wasArchived = true;
+    } catch (e) { /* not in a thread */ }
+
     await message.edit({
       embeds: [embed],
       components: [...components],
     });
+
+    if (wasLocked) await message.thread.setLocked(true);
+    if (wasArchived) await message.thread.setArchived(true);
   }
 
   /**
