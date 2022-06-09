@@ -263,6 +263,10 @@
     "ui/subcategory_icons/mouth",
     "ui/teams_icon",
     "ui/update_world_chunks",
-    "ui/world_upgrade"
+    "ui/world_upgrade",
+    "ui/qr_code_bees",
+    "water_flow",
+    "water_placeholder",
+    "water_still"
   ]
 }
