@@ -265,8 +265,9 @@
     "ui/update_world_chunks",
     "ui/world_upgrade",
     "ui/qr_code_bees",
-    "water_flow",
-    "water_placeholder",
-    "water_still"
+    "blocks/water_flow",
+    "blocks/water_placeholder",
+    "blocks/water_still",
+    "entity/banner/banner.tga"
   ]
 }
