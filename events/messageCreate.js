@@ -136,9 +136,9 @@ module.exports = {
       ) return submitTexture(client, message)
 
       /**
-       * EMULATED VATTIC TEXTURES BASIC AUTOREACT (FHLX's server)
+       * CLASSIC FAITHFUL BASIC AUTOREACT
        */
-      if (message.channel.id === '814209343502286899' || message.channel.id === '814201529032114226' || message.channel.id === '909503944118648883') {
+      if (message.channel.id === '814631514523435020') {
         if (!message.attachments.size) {
           if (message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) return
           var embed = new MessageEmbed()
