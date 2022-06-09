@@ -64,11 +64,16 @@ export default async function pushToGithub(client: Client, contribution: Contrib
           /* already up to date */
         }
 
+        const texturePath = path.join(basePath, repoName, `${u.assets !== null ? `assets/${u.assets}/${p.name}` : p.name}`);
+        const directoriesUntilTexture = texturePath.split('/').slice(0, -1).join('/');
+
+        // create full path to the texture if it doesn't exist
+        if (!fs.existsSync(directoriesUntilTexture)) {
+          fs.mkdirSync(directoriesUntilTexture, { recursive: true });
+        }
+
         // upload the file
-        fs.writeFileSync(
-          path.join(basePath, repoName, `${u.assets !== null ? `assets/${u.assets}/${p.name}` : p.name}`),
-          Buffer.from(textureBuffer),
-        );
+        fs.writeFileSync(texturePath, Buffer.from(textureBuffer));
 
         // commit & push
         try {
