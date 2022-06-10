@@ -92,6 +92,16 @@ export class TimedEmbed {
   }
 
   /**
+   * Get total votes for all categories
+   * @returns {number}
+   */
+  public getTotalVotes(): number {
+    return this.getVotes()
+      .map((arr) => arr.length)
+      .reduce((partialSum, a) => partialSum + a, 0);
+  }
+
+  /**
    * Add an upvote to the poll/submission
    * @param {User.id} id - the user id to add
    * @returns {this}

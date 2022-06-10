@@ -24,6 +24,14 @@ import { TimedEmbed } from './timedEmbed';
 export type SubmissionStatus = 'pending' | 'instapassed' | 'added' | 'no_council' | 'council' | 'denied' | 'invalid';
 
 export class Submission extends TimedEmbed {
+  // changing those values may break previously submitted textures
+  private readonly FIELD_TAGS = 'Tags';
+  private readonly FIELD_CONTRIBUTORS = 'Contributor(s)';
+  private readonly FIELD_RESOURCE_PACK = 'Resource Pack';
+  private readonly FIELD_VOTES = 'Votes';
+  private readonly FIELD_STATUS = 'Status';
+  private readonly FIELD_TIME = 'Until';
+
   constructor(data?: Submission) {
     super(data);
 
@@ -94,12 +102,10 @@ export class Submission extends TimedEmbed {
     return this;
   }
 
-  public getVotesUI(): [string, string] {
-    const votes = this.getVotesCount();
-    return [
-      `${parseId(ids.upvote)} ${votes[0]} Upvote${votes[0] > 1 ? 's' : ''}`,
-      `${parseId(ids.downvote)} ${votes[1]} Downvote${votes[1] > 1 ? 's' : ''}`,
-    ];
+  public getTotalVotesUI(): string {
+    const c = this.getTotalVotes();
+    if (c === 0) return 'Nobody voted yet!';
+    return `${c} ${c === 1 ? 'person' : 'people'} voted`;
   }
 
   public getStatusUI(): string {
@@ -144,21 +150,21 @@ export class Submission extends TimedEmbed {
       case 'added':
         embed.setColor(this.getStatus() === 'added' ? colors.green : colors.black);
         embed.fields = embed.fields.map((field: EmbedField) => {
-          if (field.name === 'Status') field.value = this.getStatusUI();
+          if (field.name === this.FIELD_STATUS) field.value = this.getStatusUI();
 
           return field;
         });
         // remove until field
-        embed.fields = embed.fields.filter((field: EmbedField) => field.name !== 'Until');
+        embed.fields = embed.fields.filter((field: EmbedField) => field.name !== this.FIELD_TIME);
         components = [submissionButtonsClosedEnd];
         break;
 
       case 'council':
         embed.setColor(colors.council);
         embed.fields = embed.fields.map((field: EmbedField) => {
-          if (field.name === 'Status') field.value = this.getStatusUI();
-          if (field.name === 'Until') field.value = `<t:${this.getTimeout()}>`;
-          if (field.name === 'Votes') field.value = this.getVotesUI().join(',\n');
+          if (field.name === this.FIELD_STATUS) field.value = this.getStatusUI();
+          if (field.name === this.FIELD_TIME) field.value = `<t:${this.getTimeout()}>`;
+          if (field.name === this.FIELD_VOTES) field.value = this.getTotalVotesUI();
           return field;
         });
 
@@ -169,13 +175,13 @@ export class Submission extends TimedEmbed {
         embed.setColor(colors.yellow);
         // update status
         embed.fields = embed.fields.map((field: EmbedField) => {
-          field.value = field.name === 'Status'
+          field.value = field.name === this.FIELD_STATUS
             ? (field.value = this.getStatusUI().replace('%USER%', `<@!${userId}>`))
             : field.value;
           return field;
         });
         // remove until field
-        embed.fields = embed.fields.filter((field: EmbedField) => field.name !== 'Until');
+        embed.fields = embed.fields.filter((field: EmbedField) => field.name !== this.FIELD_TIME);
         components = [submissionButtonsClosedEnd];
         break;
 
@@ -184,9 +190,9 @@ export class Submission extends TimedEmbed {
         embed.setColor(this.getStatus() === 'denied' ? colors.black : colors.red);
         embed.fields = embed.fields.map((field: EmbedField) => {
           // update status
-          if (field.name === 'Status') field.value = this.getStatusUI().replace('%USER%', `<@!${userId}>`);
+          if (field.name === this.FIELD_STATUS) field.value = this.getStatusUI().replace('%USER%', `<@!${userId}>`);
           // change until field for a reason field
-          else if (field.name === 'Until') {
+          else if (field.name === this.FIELD_TIME) {
             field.value = 'Use `/reason` to set up a reason!';
             field.name = 'Reason';
           }
@@ -203,7 +209,7 @@ export class Submission extends TimedEmbed {
 
     // always update votes
     embed.fields = embed.fields.map((field: EmbedField) => {
-      field.value = field.name === 'Votes' ? (field.value = this.getVotesUI().join(',\n')) : field.value;
+      field.value = field.name === this.FIELD_VOTES ? (field.value = this.getTotalVotesUI()) : field.value;
       return field;
     });
     await message.edit({
@@ -246,16 +252,16 @@ export class Submission extends TimedEmbed {
         iconURL: baseMessage.author.avatarURL(),
         name: baseMessage.author.username,
       })
-      .addField('Tags', texture.tags.join(', '))
-      .addField('Contributor(s)', `<@!${mentions.join('>\n<@!')}>`, true)
+      .addField(this.FIELD_TAGS, texture.tags.join(', '))
+      .addField(this.FIELD_CONTRIBUTORS, `<@!${mentions.join('>\n<@!')}>`, true)
       .addField(
-        'Resource Pack',
+        this.FIELD_RESOURCE_PACK,
         `\`${getSubmissionChannelName(baseMessage.client as Client, baseMessage.channelId)}\``,
         true,
       )
-      .addField('Votes', this.getVotesUI().join(',\n'))
-      .addField('Status', this.getStatusUI())
-      .addField('Until', `<t:${this.getTimeout()}>`, true)
+      .addField(this.FIELD_VOTES, this.getTotalVotesUI(), true)
+      .addField(this.FIELD_STATUS, this.getStatusUI(), true)
+      .addField(this.FIELD_TIME, `<t:${this.getTimeout()}>`, true)
       .setFooter({
         text: `${this.id} | ${baseMessage.author.id}`,
       }); // used to authenticate the submitter (for message deletion)
@@ -360,14 +366,14 @@ export class Submission extends TimedEmbed {
           .map((el) => el.slice(2, el.length - 1))[0];
 
         const authors: Array<string> = m.embeds[0].fields
-          .filter((f) => f.name === 'Contributor(s)')[0]
+          .filter((f) => f.name === this.FIELD_CONTRIBUTORS)[0]
           .value.split('\n')
           .map((auth) => auth.replace('<@!', '').replace('>', ''));
 
         const date: number = m.createdTimestamp;
         const { resolution, slug: pack } = getResourcePackFromName(
           client,
-          m.embeds[0].fields.filter((f) => f.name === 'Resource Pack')[0].value.replaceAll('`', ''),
+          m.embeds[0].fields.filter((f) => f.name === this.FIELD_RESOURCE_PACK)[0].value.replaceAll('`', ''),
         );
 
         interface ContributionSubmit extends Omit<Contribution, 'id' | 'pack'> {
@@ -384,8 +390,16 @@ export class Submission extends TimedEmbed {
 
         return Promise.all([
           client.tokens.dev
-            ? axios.post('http://localhost:8000/v2/contributions', contribution, { headers: { bot: client.tokens.apiPassword } }).then((res) => res.data)
-            : axios.post(`${client.config.apiUrl}contributions`, contribution, { headers: { bot: client.tokens.apiPassword } }).then((res) => res.data),
+            ? axios
+              .post('http://localhost:8000/v2/contributions', contribution, {
+                headers: { bot: client.tokens.apiPassword },
+              })
+              .then((res) => res.data)
+            : axios
+              .post(`${client.config.apiUrl}contributions`, contribution, {
+                headers: { bot: client.tokens.apiPassword },
+              })
+              .then((res) => res.data),
           axios.get(`${client.config.apiUrl}settings/repositories.git`).then((res) => res.data),
           axios.get(`${client.config.apiUrl}textures/${textureId}/paths`).then((res) => res.data),
           axios.get(`${client.config.apiUrl}textures/${textureId}/uses`).then((res) => res.data),
