@@ -3,17 +3,17 @@ module.exports = {
   env: {
     node: true,
   },
-  extends: [
-    'airbnb-base',
-    'airbnb-typescript/base',
-  ],
+  extends: ['airbnb-base', 'airbnb-typescript/base'],
   parserOptions: {
     project: './tsconfig.json',
   },
   rules: {
-    'import/extensions': ['error', {
-      json: 'always',
-    }],
+    'import/extensions': [
+      'error',
+      {
+        json: 'always',
+      },
+    ],
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-restricted-syntax': 'warn',
@@ -23,7 +23,8 @@ module.exports = {
     'import/no-cycle': 'off',
     'no-param-reassign': 'off',
     'no-await-in-loop': 'off',
-    'no-bitwise': ['error', { 'allow': ['^'] }],
+    'no-bitwise': ['error', { allow: ['^'] }],
     'linebreak-style': 'off',
+    '@typescript-eslint/lines-between-class-members': 'off',
   },
 };
