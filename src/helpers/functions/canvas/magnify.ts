@@ -24,18 +24,23 @@ export async function magnifyCanvas(options: Options): Promise<Canvas> {
       if (surface > 1024) factor = 8; // 32²px
       if (surface > 4096) factor = 4; // 64²px
       if (surface > 65636) factor = 2;
+
       // 262144 = 512²px
-      else if (surface >= 262144) factor = 1;
-    } else if (dimension.width * factor * (dimension.height * factor) > 262144) factor = 1;
+      if (surface >= 262144) factor = 1;
+    } else if (dimension.width * factor * (dimension.height * factor) > 262144) {
+      do {
+        factor /= 2;
+      } while (dimension.width * factor * (dimension.height * factor) > 262144);
+    }
 
     const [width, height] = [dimension.width * factor, dimension.height * factor];
 
     const canvas = createCanvas(
       options.orientation === undefined || options.orientation === 'none' || options.orientation === 'portrait'
-        ? width
+        ? Math.round(width)
         : Math.round(width * (16 / 9)),
       options.orientation === undefined || options.orientation === 'none' || options.orientation === 'landscape'
-        ? height
+        ? Math.round(height)
         : Math.round(height * (16 / 9)),
     );
 
@@ -49,8 +54,8 @@ export async function magnifyCanvas(options: Options): Promise<Canvas> {
       options.orientation === undefined || options.orientation === 'none' || options.orientation === 'landscape'
         ? 0
         : Math.round((height * (16 / 9)) / 4), // portrait
-      width,
-      height,
+      Math.round(width),
+      Math.round(height),
     );
 
     return canvas;

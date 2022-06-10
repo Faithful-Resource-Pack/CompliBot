@@ -1,8 +1,6 @@
-import {
-  Canvas, CanvasRenderingContext2D, createCanvas, loadImage,
-} from 'canvas';
+import { Canvas, createCanvas } from 'canvas';
 import { MessageAttachment } from 'discord.js';
-import getMeta from './getMeta';
+import { magnifyCanvas } from './magnify';
 
 interface Options {
   left: {
@@ -15,49 +13,23 @@ interface Options {
 }
 
 export async function stickCanvas(options: Options): Promise<Canvas> {
-  const [left, right] = [options.left, options.right].map((opt) => ({
-    ...opt,
-    dimensions: undefined,
-    image: undefined,
-  }));
+  return Promise.all([
+    magnifyCanvas({ url: options.left.url, factor: 32 }),
+    magnifyCanvas({ url: options.right.url, factor: 32 }),
+  ])
+    .then(([leftCanvas, rightCanvas]) => {
+      const margin = 10; // in pixels
+      const canvas = createCanvas(leftCanvas.width * 2 + margin, leftCanvas.height);
+      const context = canvas.getContext('2d');
 
-  return Promise.all([getMeta(left.url), getMeta(right.url), loadImage(left.url), loadImage(right.url)]).then(
-    ([leftMeta, rightMeta, leftImage, rightImage]) => {
-      const margin = 10;
+      console.log(leftCanvas, rightCanvas);
 
-      left.dimensions = leftMeta;
-      right.dimensions = rightMeta;
-      left.image = leftImage;
-      right.image = rightImage;
-
-      const canvas: Canvas = createCanvas(
-        left.dimensions.width + right.dimensions.width + margin,
-        Math.max(left.dimensions.height, right.dimensions.height),
-      );
-      const context: CanvasRenderingContext2D = canvas.getContext('2d');
       context.imageSmoothingEnabled = false;
-
-      // Draw left image
-      context.drawImage(
-        left.image,
-        0,
-        (Math.max(left.dimensions.height, right.dimensions.height)
-          - Math.min(left.dimensions.height, right.dimensions.height))
-          / 2, // centered in height, using the highest of given images, should be 0 if both are the same height
-      );
-
-      // Draw right image
-      context.drawImage(
-        right.image,
-        left.dimensions.width + margin,
-        (Math.max(left.dimensions.height, right.dimensions.height)
-          - Math.min(left.dimensions.height, right.dimensions.height))
-          / 2, // centered in height, using the highest of given images, should be 0 if both are the same height
-      );
+      context.drawImage(leftCanvas, 0, 0);
+      context.drawImage(rightCanvas, leftCanvas.width + margin, 0);
 
       return canvas;
-    },
-  );
+    });
 }
 
 export async function stickAttachment(options: Options): Promise<MessageAttachment> {
