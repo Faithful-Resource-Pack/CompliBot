@@ -104,7 +104,6 @@ export const submissionButtonsClosed = new MessageActionRow().addComponents([
   magnify,
   tile,
   palette,
-  compare,
   seeMmore,
 ]);
 export const submissionButtonsClosedEnd = new MessageActionRow().addComponents([
