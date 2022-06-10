@@ -1,4 +1,3 @@
-import magnifyAttachment from '@functions/canvas/magnify';
 import MinecraftSorter from '@helpers/sorter';
 import {
   submissionButtonsClosedEnd,
@@ -236,12 +235,7 @@ export class Submission extends TimedEmbed {
     return submissionMessage;
   }
 
-  public async makeSubmissionMessage(
-    baseMessage: Message,
-    file: MessageAttachment,
-    texture: any,
-  ): Promise<MessageEmbed> {
-    const files: Array<MessageAttachment> = [];
+  public async makeSubmissionMessage(baseMessage: Message, file: MessageAttachment, texture: any): Promise<MessageEmbed> {
     const mentions = [
       ...new Set([...Array.from(baseMessage.mentions.users.values()), baseMessage.author].map((user) => user.id)),
     ];
@@ -290,65 +284,18 @@ export class Submission extends TimedEmbed {
       // do nothing
     }
 
-    // magnified x16 texture in thumbnail
-    const magnifiedDefault = (
-      await magnifyAttachment({
-        url,
-        name: 'magnified_default.png',
-        embed: null,
+    const files: { [key: string]: MessageAttachment } = {};
+
+    files.thumbnail = file;
+    files.image = (
+      await channel.send({
+        files: [await stickAttachment({ leftURL: url, rightURL: files.thumbnail.url, name: 'sticked.png' })],
       })
-    )[0];
+    ).attachments.first();
 
-    // saved attachments in a private message
-    const attachments = [
-      ...(
-        await channel.send({
-          files: [file, magnifiedDefault],
-        })
-      ).attachments.values(),
-    ];
-    files.push(...attachments);
-
-    // we need to post the submission first to get an url for the getMeta() call (because if "file" come from a zip, the MessageAttachement won't have an url (it has never been posted))
-    const magnifiedSubmission = (
-      await magnifyAttachment({
-        url: attachments[0].url,
-        name: 'magnified_submission.png',
-        embed: null,
-      })
-    )[0];
-    const attachment = [
-      ...(
-        await channel.send({
-          files: [magnifiedSubmission],
-        })
-      ).attachments.values(),
-    ];
-    files.push(...attachment);
-
-    // we stick the default magnified & submission magnified together in the embed
-    const stickedImg = await stickAttachment({
-      left: {
-        url: files[1].url,
-      },
-      right: {
-        url: files[2].url,
-      },
-      name: 'sticked.png',
-    });
-    const stickedImgAttachment = [
-      ...(
-        await channel.send({
-          files: [stickedImg],
-        })
-      ).attachments.values(),
-    ];
-    files.push(...stickedImgAttachment);
-
-    // set submitted texture in image
     embed
-      .setThumbnail(files[0].url) // submitted image
-      .setImage(files[3].url); // sticked image
+      .setThumbnail(files.thumbnail.url)
+      .setImage(files.image.url);
 
     return embed;
   }

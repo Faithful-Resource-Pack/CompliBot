@@ -3,19 +3,15 @@ import { MessageAttachment } from 'discord.js';
 import { magnifyCanvas } from './magnify';
 
 interface Options {
-  left: {
-    url: string;
-  };
-  right: {
-    url: string;
-  };
+  leftURL: string;
+  rightURL: string;
   name?: string;
 }
 
 export async function stickCanvas(options: Options): Promise<Canvas> {
   return Promise.all([
-    magnifyCanvas({ url: options.left.url, factor: 32 }),
-    magnifyCanvas({ url: options.right.url, factor: 32 }),
+    magnifyCanvas({ url: options.leftURL, factor: 32 }),
+    magnifyCanvas({ url: options.rightURL, factor: 32 }),
   ])
     .then(([leftCanvas, rightCanvas]) => {
       const margin = 10; // in pixels
