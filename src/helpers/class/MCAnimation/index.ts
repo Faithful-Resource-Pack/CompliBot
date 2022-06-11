@@ -1,4 +1,4 @@
-import GIFEncoder from 'helpers/class/GIFEncoder';
+import GIFEncoder from '@class/MCAnimation/GIFEncoder';
 import { MCMETA } from '@helpers/interfaces/firestorm';
 import {
   Canvas, CanvasRenderingContext2D, createCanvas, Image, loadImage,

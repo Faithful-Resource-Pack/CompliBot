@@ -8,7 +8,7 @@ import { ISizeCalculationResult } from 'image-size/dist/types/interface';
 import { colors } from '@helpers/colors';
 import { fromTimestampToHumanReadable } from '@helpers/dates';
 import { MCMETA, Texture } from '@helpers/interfaces/firestorm';
-import MCAnimation from '@helpers/class/GIFEncoder/MCAnimation';
+import MCAnimation from '@class/MCAnimation';
 import getMeta from './canvas/getMeta';
 import magnifyAttachment from './canvas/magnify';
 
