@@ -1,16 +1,16 @@
-import { MessageEmbed } from '@client';
-import ConfigJson from '@json/config.json';
-import { Config } from '@interfaces';
 import axios from 'axios';
+import ConfigJson from '@json/config.json';
+import MinecraftSorter from '@helpers/sorter';
+import { MessageEmbed } from '@client';
+import { Config } from '@interfaces';
 import { MessageAttachment } from 'discord.js';
 import { ISizeCalculationResult } from 'image-size/dist/types/interface';
 import { colors } from '@helpers/colors';
 import { fromTimestampToHumanReadable } from '@helpers/dates';
 import { Texture } from '@helpers/interfaces/firestorm';
-import MinecraftSorter from '@helpers/sorter';
-import animateAttachment from './canvas/animate';
-import magnifyAttachment from './canvas/magnify';
 import getMeta from './canvas/getMeta';
+import magnifyAttachment from './canvas/magnify';
+import animateAttachment from './canvas/animate';
 
 export default async function getTextureMessageOptions(options: {
   texture: Texture;
@@ -22,27 +22,14 @@ export default async function getTextureMessageOptions(options: {
   const { uses } = texture;
   const { paths } = texture;
   const { contributions } = texture;
-  const animated: boolean = paths.filter((p) => p.mcmeta === true).length !== 0;
 
+  let animated: boolean = false;
   let mcmeta: any = {};
-  if (animated) {
-    const [animatedPath] = paths.filter((p) => p.mcmeta === true);
-    const animatedUse = uses.find((u) => u.id === animatedPath.use);
 
-    try {
-      mcmeta = (
-        await axios.get(
-          `https://raw.githubusercontent.com/CompliBot/Default-Java/${
-            animatedPath.versions.sort(MinecraftSorter).reverse()[0]
-          }/assets/${animatedUse.assets}/${animatedPath.name}.mcmeta`,
-        )
-      ).data;
-    } catch {
-      mcmeta = {
-        __comment: 'mcmeta file not found, please check default repository',
-      };
-    }
-  }
+  try {
+    mcmeta = (await axios.get(`${config.apiUrl}textures/${texture.id}/mcmeta`)).data;
+    animated = true;
+  } catch { /* no MCMETA file found for this texture */ }
 
   let strPack: string;
   let strIconURL: string;

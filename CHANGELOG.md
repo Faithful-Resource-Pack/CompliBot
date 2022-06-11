@@ -16,6 +16,7 @@ Commands are explained like so:
 - Mostly finished submission v3 & launched an early alpha for Classic Faithful.
 
 ### Changed
+- The `/texture` command now use the API to determine whether or not the texture is animated (has a mcmeta).
 - `<User>.displayAvatar()` now use the parameter `dynamic: true` everywhere: tell DiscordJS to use the GIF version of the avatar if available.
 - `/stats bot` is now ephemeral.
 - Updated `DiscordJS` from `13.7.0` to `13.8.0`, minimum NodeJS required version is now **16.9.0**
