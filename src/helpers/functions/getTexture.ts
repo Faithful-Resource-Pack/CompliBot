@@ -9,8 +9,8 @@ import { colors } from '@helpers/colors';
 import { fromTimestampToHumanReadable } from '@helpers/dates';
 import { MCMETA, Texture } from '@helpers/interfaces/firestorm';
 import MCAnimation from '@class/MCAnimation';
+import Magnify from '@class/Magnify';
 import getMeta from './canvas/getMeta';
-import magnifyAttachment from './canvas/magnify';
 
 export default async function getTextureMessageOptions(options: {
   texture: Texture;
@@ -150,14 +150,7 @@ export default async function getTextureMessageOptions(options: {
     const buffer = await (new MCAnimation(textureURL, mcmeta, true).createGIF());
     files.push(new MessageAttachment(buffer, 'magnified.gif'));
   } else {
-    files.push(
-      (
-        await magnifyAttachment({
-          url: textureURL,
-          name: 'magnified.png',
-        })
-      )[0],
-    );
+    files.push(await (new Magnify({ textureURL })).getAsAttachment('magnified.png', false) as MessageAttachment);
   }
 
   return [embed, files];

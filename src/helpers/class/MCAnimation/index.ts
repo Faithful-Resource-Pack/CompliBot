@@ -26,7 +26,7 @@ export default class MCAnimation {
     if (!this.mcmeta.animation) this.mcmeta.animation = {};
   }
 
-  private async load() {
+  private async init() {
     this.texture = await loadImage(this.textureURL);
 
     if (this.magnify) this.factor = getFactor(this.texture.width, this.texture.width);
@@ -105,7 +105,7 @@ export default class MCAnimation {
   }
 
   public async createGIF(): Promise<Buffer> {
-    await this.load();
+    await this.init();
 
     this.encoder = new GIFEncoder(this.texture.width * this.factor, this.texture.width * this.factor);
     this.encoder.start();

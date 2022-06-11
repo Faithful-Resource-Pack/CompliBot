@@ -1,8 +1,9 @@
+import Magnify from '@class/Magnify';
 import { SlashCommand } from '@interfaces';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { CommandInteraction, MessageEmbed } from '@client';
-import { generalSlashCommandImage } from '@functions/slashCommandImage';
-import magnifyAttachment from '@functions/canvas/magnify';
+import { fetchMessageImage } from '@functions/slashCommandImage';
+import { MessageAttachment } from 'discord.js';
 
 const command: SlashCommand = {
   data: new SlashCommandBuilder()
@@ -43,11 +44,23 @@ const command: SlashCommand = {
       .setName('factor')
       .setDescription('The scale factor the image should be enlarged by.')
       .setRequired(false)),
-  execute: (interaction: CommandInteraction) => {
-    generalSlashCommandImage(interaction, magnifyAttachment, {
-      factor: interaction.options.getNumber('factor'),
-      name: 'magnified.png',
-      embed: new MessageEmbed().setTitle('Magnified').setImage('attachment://magnified.png'),
+  execute: async (interaction: CommandInteraction) => {
+    await interaction.deferReply();
+
+    const imageURL = interaction.options.getAttachment('image', false)?.url || await fetchMessageImage(interaction, 10, { doInteraction: true, user: interaction.user });
+    const attachment: MessageAttachment | string = await (new Magnify({ textureURL: imageURL, factor: interaction.options.getNumber('factor', false) as any })).getAsAttachment();
+
+    if (typeof attachment === 'string') {
+      interaction.deleteReply();
+      return interaction.followUp({
+        content: attachment,
+        ephemeral: true,
+      });
+    }
+
+    return interaction.editReply({
+      files: [attachment],
+      embeds: [new MessageEmbed().setTitle('Magnified').setImage('attachment://magnified.png')],
     });
   },
 };

@@ -3,11 +3,11 @@ import { info } from '@helpers/logger';
 import {
   Client, Message, ButtonInteraction, MessageEmbed,
 } from '@client';
-import magnifyAttachment from '@functions/canvas/magnify';
 import { palette } from '@helpers/buttons';
 import { getImageFromMessage } from '@functions/slashCommandImage';
-import { MessageActionRow } from 'discord.js';
+import { MessageActionRow, MessageAttachment } from 'discord.js';
 import { getSubmissionsChannels } from '@helpers/channels';
+import Magnify from '@class/Magnify';
 
 const button: Button = {
   buttonId: 'magnify',
@@ -16,18 +16,11 @@ const button: Button = {
 
     const message: Message = interaction.message as Message;
     const url = await getImageFromMessage(message);
-    const attachment = (
-      await magnifyAttachment({
-        url,
-        name: url.split('/').at(-1),
-      })
-    )[0];
+    const attachment: MessageAttachment | string = await (new Magnify({ textureURL: url })).getAsAttachment(url.split('/').at(-1));
 
-    if (attachment === null) {
+    if (typeof attachment === 'string') {
       return interaction.reply({
-        content: await interaction.getEphemeralString({
-          string: 'Command.Images.TooBig',
-        }),
+        content: attachment,
         ephemeral: true,
       });
     }
