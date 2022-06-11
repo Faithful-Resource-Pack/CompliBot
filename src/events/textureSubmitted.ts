@@ -6,7 +6,7 @@ import {
 } from 'discord.js';
 import { zipToMA } from '@functions/zipToMessageAttachments';
 import axios, { AxiosResponse } from 'axios';
-import { Submission } from '@class/submissions';
+import { Submission } from '@class/TimedEmbed/Submission';
 
 export const processFiles = async (
   client: Client,

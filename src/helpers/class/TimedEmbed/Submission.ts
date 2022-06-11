@@ -32,7 +32,7 @@ import {
   Repos,
   AllRepos,
 } from '@helpers/interfaces/firestorm';
-import { TimedEmbed } from './timedEmbed';
+import { TimedEmbed } from './TimedEmbed';
 
 export type SubmissionStatus = 'pending' | 'instapassed' | 'added' | 'no_council' | 'council' | 'denied' | 'invalid';
 

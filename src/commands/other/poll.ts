@@ -1,7 +1,7 @@
 import { CommandInteraction, EmbedField } from 'discord.js';
 import { SlashCommand } from '@interfaces';
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { Poll } from '@class/poll';
+import { Poll } from '@class/TimedEmbed/Poll';
 import { addSeconds, parseDate } from '@helpers/dates';
 import { ids, parseId } from '@helpers/emojis';
 import { MessageEmbed } from '@client';

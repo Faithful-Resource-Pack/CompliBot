@@ -1,5 +1,5 @@
-import { Poll } from '@class/poll';
-import { Submission } from '@class/submissions';
+import { Poll } from '@class/TimedEmbed/Poll';
+import { Submission } from '@class/TimedEmbed/Submission';
 import { addMinutes } from '@helpers/dates';
 import { ids, parseId } from '@helpers/emojis';
 import { Client, MessageEmbed } from '@client';

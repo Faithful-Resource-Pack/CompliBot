@@ -2,7 +2,7 @@ import { Button } from '@interfaces';
 import {
   Client, Message, ButtonInteraction, MessageEmbed,
 } from '@client';
-import { Poll } from '@class/poll';
+import { Poll } from '@class/TimedEmbed/Poll';
 
 const button: Button = {
   buttonId: 'pollVote',

@@ -10,19 +10,12 @@ export type Votes = {
  */
 export class TimedEmbed {
   readonly id: string;
-
   private messageId: string;
-
   private channelId: string;
-
   private votes: Votes;
-
   private status: string = 'pending';
-
   private timeout: number = 0; // used for end of events (pending until...)
-
   private anonymous: boolean = true;
-
   private multipleAnswers: boolean = false;
 
   constructor(data?: TimedEmbed) {
@@ -252,6 +245,7 @@ export class TimedEmbed {
    * @ignore
    */
   public setStatus(...status: any): this {
+    // eslint-disable-next-line prefer-destructuring
     this.status = status[0];
     return this;
   }

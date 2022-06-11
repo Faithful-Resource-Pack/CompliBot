@@ -3,7 +3,7 @@ import {
   Client, Message, ButtonInteraction, MessageEmbed,
 } from '@client';
 import { GuildMember, Role } from 'discord.js';
-import { Submission } from '@class/submissions';
+import { Submission } from '@class/TimedEmbed/Submission';
 import getRolesIds from '@helpers/roles';
 
 const button: Button = {

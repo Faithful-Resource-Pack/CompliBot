@@ -2,7 +2,7 @@ import axios from 'axios';
 import sizeOf from 'image-size';
 import { ISizeCalculationResult } from 'image-size/dist/types/interface';
 
-export default function (imageURL: string): Promise<ISizeCalculationResult> {
+export default function getMeta(imageURL: string): Promise<ISizeCalculationResult> {
   return new Promise((resolve, reject) => {
     axios
       .get(imageURL, {

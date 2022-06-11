@@ -5,7 +5,7 @@ import {
 import {
   MessageActionRow, MessageButton, TextChannel, EmbedField,
 } from 'discord.js';
-import { TimedEmbed } from './timedEmbed';
+import { TimedEmbed } from './TimedEmbed';
 
 export interface PollOptions {
   question: string;

@@ -1,8 +1,9 @@
-import GIFEncoder from '@helpers/functions/canvas/GIFEncoder';
+import GIFEncoder from 'helpers/class/GIFEncoder';
 import { MCMETA } from '@helpers/interfaces/firestorm';
 import {
   Canvas, CanvasRenderingContext2D, createCanvas, Image, loadImage,
 } from 'canvas';
+import getFactor from 'helpers/functions/canvas/getFactor';
 
 export default class MCAnimation {
   private textureURL: string;
@@ -28,18 +29,7 @@ export default class MCAnimation {
   private async load() {
     this.texture = await loadImage(this.textureURL);
 
-    if (this.magnify) {
-      const surface = this.texture.width * this.texture.width;
-
-      if (surface <= 256) this.factor = 32; // 16²px or below
-      if (surface > 256) this.factor = 16; // 16²px
-      if (surface > 1024) this.factor = 8; // 32²px
-      if (surface > 4096) this.factor = 4; // 64²px
-      if (surface > 65636) this.factor = 2;
-
-      // 262144 = 512²px
-      if (surface >= 262144) this.factor = 1;
-    }
+    if (this.magnify) this.factor = getFactor(this.texture.width, this.texture.width);
 
     this.canvas = createCanvas(this.texture.width * this.factor, this.texture.width * this.factor);
     this.context = this.canvas.getContext('2d');

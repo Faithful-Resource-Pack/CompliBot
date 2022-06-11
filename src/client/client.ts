@@ -28,8 +28,8 @@ import getData from '@functions/getDataFromJSON';
 import setData from '@functions/setDataToJSON';
 import { errorHandler } from '@functions/errorHandler';
 import { err, info, success } from '@helpers/logger';
-import { Submission } from '@class/submissions';
-import { Poll } from '@class/poll';
+import { Submission } from '@class/TimedEmbed/Submission';
+import { Poll } from '@class/TimedEmbed/Poll';
 import { User } from '@helpers/interfaces/moderation';
 
 import { readdirSync } from 'fs';

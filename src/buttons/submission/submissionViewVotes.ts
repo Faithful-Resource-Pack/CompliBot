@@ -2,7 +2,7 @@ import { Button } from '@interfaces';
 import {
   Client, Message, ButtonInteraction, MessageEmbed,
 } from '@client';
-import { Submission } from '@class/submissions';
+import { Submission } from '@class/TimedEmbed/Submission';
 import { ids, parseId } from '@helpers/emojis';
 
 const button: Button = {
