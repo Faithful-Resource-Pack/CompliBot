@@ -1,4 +1,10 @@
+import axios from 'axios';
+import getResourcePackFromName from '@functions/getResourcePack';
 import MinecraftSorter from '@helpers/sorter';
+import path from 'path';
+import fs from 'fs';
+import child_process from 'child_process';
+import { info, warning } from '@helpers/logger';
 import {
   submissionButtonsClosedEnd,
   submissionButtonsClosed,
@@ -9,15 +15,23 @@ import { addMinutes } from '@helpers/dates';
 import { ids, parseId } from '@helpers/emojis';
 import { Client, Message, MessageEmbed } from '@client';
 import {
-  EmbedField, MessageAttachment, TextChannel,
+  EmbedField,
+  MessageAttachment,
+  TextChannel,
 } from 'discord.js';
-import axios from 'axios';
 import { colors } from '@helpers/colors';
 import { getCorrespondingCouncilChannel, getSubmissionChannelName } from '@helpers/channels';
-import getResourcePackFromName from '@functions/getResourcePack';
 import { stickAttachment } from '@functions/canvas/stick';
-import { Contribution, Paths, Uses } from '@helpers/interfaces/firestorm';
-import pushToGithub from '@helpers/functions/pushToGithub';
+import {
+  Contribution,
+  Path,
+  Paths,
+  Use,
+  Uses,
+  Usernames,
+  Repos,
+  AllRepos,
+} from '@helpers/interfaces/firestorm';
 import { TimedEmbed } from './timedEmbed';
 
 export type SubmissionStatus = 'pending' | 'instapassed' | 'added' | 'no_council' | 'council' | 'denied' | 'invalid';
@@ -30,12 +44,20 @@ export class Submission extends TimedEmbed {
   private readonly FIELD_VOTES = 'Votes';
   private readonly FIELD_STATUS = 'Status';
   private readonly FIELD_TIME = 'Until';
+  private contribution: Contribution;
+  private repos: Repos;
+  private paths: Paths;
+  private uses: Uses;
+  private textureBuffer: string;
+  private usernames: Usernames;
 
   constructor(data?: Submission) {
     super(data);
 
     // new
-    if (!data) this.setTimeout(addMinutes(new Date(), 4320));
+    if (!data) {
+      this.setTimeout(addMinutes(new Date(), 4320));
+    }
     // if (!data) this.setTimeout(addMinutes(new Date(), 1)); // for dev
   }
 
@@ -341,29 +363,148 @@ export class Submission extends TimedEmbed {
         };
 
         return Promise.all([
-          client.tokens.dev
-            ? axios
-              .post('http://localhost:8000/v2/contributions', contribution, {
-                headers: { bot: client.tokens.apiPassword },
-              })
-              .then((res) => res.data)
-            : axios
-              .post(`${client.config.apiUrl}contributions`, contribution, {
-                headers: { bot: client.tokens.apiPassword },
-              })
-              .then((res) => res.data),
+          axios
+            .post(`${client.config.apiUrl}contributions`, contribution, { headers: { bot: client.tokens.apiPassword } })
+            .then((res) => res.data),
           axios.get(`${client.config.apiUrl}settings/repositories.git`).then((res) => res.data),
           axios.get(`${client.config.apiUrl}textures/${textureId}/paths`).then((res) => res.data),
           axios.get(`${client.config.apiUrl}textures/${textureId}/uses`).then((res) => res.data),
-          textureURL,
+          axios.get(`${client.config.apiUrl}users/names`).then((res) => res.data),
+          axios.get(textureURL, { responseType: 'arraybuffer' }).then((res) => res.data),
         ]);
       })
-      .then((result: [Contribution, any, Paths, Uses, string]) => {
-        const [contribution, repos, paths, uses, textureURL] = result;
-        const gitRepos = repos[contribution.pack];
+      .then((result: [Contribution, AllRepos, Paths, Uses, Usernames, string]) => {
+        const [contribution, repos, paths, uses, usernames, textureBuffer] = result;
+        this.contribution = contribution;
+        this.repos = repos[contribution.pack];
+        this.paths = paths;
+        this.uses = uses;
+        this.usernames = usernames;
+        this.textureBuffer = textureBuffer;
 
-        pushToGithub(client, contribution, paths, uses, gitRepos, textureURL);
+        this.pushTextureToGitHub(client);
       })
       .catch(console.error);
+  }
+
+  public pushTextureToGitHub(client: Client): void {
+    // get the base paths where repos are located
+    const basePath = path.join(`${__dirname}/../../../repos/`);
+    // sort the uses by their edition
+    const usesByEditions: { [edition: string]: Use[] } = {};
+    // get the contribution contributors usernames
+    const contributorsNames = this.contribution.authors.map(
+      (id) => this.usernames.filter((user) => user.id === id)[0].username,
+    );
+
+    // if base path does not exist, create it
+    if (!fs.existsSync(basePath)) fs.mkdirSync(basePath);
+
+    // split uses by edition (each edition has it's own repo)
+    this.uses.forEach((use: Use) => {
+      if (usesByEditions[use.edition]) usesByEditions[use.edition].push(use);
+      else usesByEditions[use.edition] = [use];
+    });
+
+    // for each edition (since each edition has it's own repo)
+    Object.keys(usesByEditions).forEach((edition: string) => {
+      // get all uses Ids for that edition
+      const usesIds = usesByEditions[edition].map((use: Use) => use.id);
+
+      // get all versions for those uses
+      const versions = [
+        ...new Set(
+          this.paths
+            .filter((p: Path) => usesIds.includes(p.use))
+            .map((p: Path) => p.versions)
+            .flat(),
+        ),
+      ];
+
+      // find the corresponding repo for this use
+      const repoGit: string = this.repos[edition];
+
+      if (!repoGit) return; // if no repo found, skip this edition
+      const repoName: string = this.repos[edition].split('/').pop().replace('.git', '');
+
+      // C://Users/.../repos/repoName
+      const fullPath: string = path.join(basePath, repoName);
+
+      // if repo does not exist, clone it
+      // else stash & pull the latest version
+      if (!fs.existsSync(fullPath)) {
+        if (client.verbose) console.log(`${warning} Cloning ${repoName}`);
+        child_process.execSync(`cd "${basePath}" && git clone ${repoGit}`);
+      } else child_process.execSync(`cd "${fullPath}" && git stash && git pull`);
+
+      // for each versions, write the texture to all paths that has that version
+      versions.forEach((version: string) => {
+        // swap to the right version branch
+        try {
+          child_process.execSync(`cd "${fullPath}" && git checkout ${version}`);
+        } catch (e) {
+          /* already on branch */
+        }
+
+        // stash changes & pull latest
+        try {
+          child_process.execSync(`cd "${fullPath}" && git stash`);
+        } catch (e) {
+          /* no changes to stash */
+        }
+        // update repo to latest version
+        try {
+          child_process.execSync(`cd "${fullPath}" && git pull`);
+        } catch (e) {
+          /* already up to date */
+        }
+
+        // for each path for that version
+        this.paths
+          .filter((p: Path) => p.versions.includes(version))
+          .forEach((p: Path) => {
+            const use: Use = this.uses.find((u: Use) => u.id === p.use);
+            const texturePath = path.join(
+              basePath,
+              repoName,
+              `${use.assets !== null ? `assets/${use.assets}/${p.name}` : p.name}`,
+            );
+            const directoriesUntilTexture = texturePath.split('/').slice(0, -1).join('/');
+
+            // create full path to the texture if it doesn't exist
+            if (!fs.existsSync(directoriesUntilTexture)) {
+              fs.mkdirSync(directoriesUntilTexture, { recursive: true });
+            }
+
+            // upload the file
+            fs.writeFileSync(texturePath, Buffer.from(this.textureBuffer));
+          });
+
+        // track files
+        try {
+          child_process.execSync(`cd "${fullPath}" && git add *`);
+        } catch (e) {
+          /* all files are already added */
+        }
+
+        // commit the changes
+        try {
+          child_process.execSync(
+            `cd "${fullPath}" && git commit -m "[#${this.contribution.texture}] by: ${contributorsNames.join(', ')}"`,
+          );
+        } catch (e) {
+          /* make commit */
+        }
+
+        // push the commit
+        try {
+          child_process.execSync(`cd "${fullPath}" && git push origin ${version}`);
+        } catch (e) {
+          /* push commits */
+        }
+
+        if (client.verbose) console.log(`${info}[${repoName}] ${version} pushed: #${this.contribution.texture}`);
+      });
+    });
   }
 }
