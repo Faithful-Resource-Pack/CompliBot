@@ -55,6 +55,8 @@ export default async function pushToGithub(
 
     // find the corresponding repo for this use
     const repoGit: string = repos[edition];
+
+    if (!repoGit) return; // if no repo found, skip this edition
     const repoName: string = repos[edition].split('/').pop().replace('.git', '');
 
     // C://Users/.../repos/repoName
