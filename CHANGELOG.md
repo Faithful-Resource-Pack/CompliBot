@@ -16,6 +16,7 @@ Commands are explained like so:
 - Mostly finished submission v3 & launched an early alpha for Classic Faithful.
 
 ### Changed
+- Improved how animated textures are rendered, renamed `animate.ts` to `MCAnimation.ts` and moved it to the classes folder.
 - The `/texture` command now use the API to determine whether or not the texture is animated (has a mcmeta).
 - `<User>.displayAvatar()` now use the parameter `dynamic: true` everywhere: tell DiscordJS to use the GIF version of the avatar if available.
 - `/stats bot` is now ephemeral.

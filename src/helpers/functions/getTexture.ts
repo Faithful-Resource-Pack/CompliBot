@@ -7,10 +7,10 @@ import { MessageAttachment } from 'discord.js';
 import { ISizeCalculationResult } from 'image-size/dist/types/interface';
 import { colors } from '@helpers/colors';
 import { fromTimestampToHumanReadable } from '@helpers/dates';
-import { Texture } from '@helpers/interfaces/firestorm';
+import { MCMETA, Texture } from '@helpers/interfaces/firestorm';
+import MCAnimation from 'helpers/class/MCAnimation';
 import getMeta from './canvas/getMeta';
 import magnifyAttachment from './canvas/magnify';
-import animateAttachment from './canvas/animate';
 
 export default async function getTextureMessageOptions(options: {
   texture: Texture;
@@ -24,11 +24,11 @@ export default async function getTextureMessageOptions(options: {
   const { contributions } = texture;
 
   let animated: boolean = false;
-  let mcmeta: any = {};
+  let mcmeta: MCMETA;
 
   try {
     mcmeta = (await axios.get(`${config.apiUrl}textures/${texture.id}/mcmeta`)).data;
-    animated = true;
+    animated = !!mcmeta.animation;
   } catch { /* no MCMETA file found for this texture */ }
 
   let strPack: string;
@@ -147,14 +147,8 @@ export default async function getTextureMessageOptions(options: {
   // magnifying the texture in thumbnail
   if (animated) {
     embed.addField('MCMETA', `\`\`\`json\n${JSON.stringify(mcmeta)}\`\`\``, false);
-    files.push(
-      await animateAttachment({
-        url: textureURL,
-        magnify: true,
-        name: 'magnified.gif',
-        mcmeta,
-      }),
-    );
+    const buffer = await (new MCAnimation(textureURL, mcmeta, true).createGIF());
+    files.push(new MessageAttachment(buffer, 'magnified.gif'));
   } else {
     files.push(
       (
