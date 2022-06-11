@@ -286,7 +286,12 @@ export class Submission extends TimedEmbed {
 
     const files: { [key: string]: MessageAttachment } = {};
 
-    files.thumbnail = file;
+    // send images in a safe channel where they are stored forever
+    files.thumbnail = (
+      await channel.send({
+        files: [file],
+      })
+    ).attachments.first();
     files.image = (
       await channel.send({
         files: [await stickAttachment({ leftURL: url, rightURL: files.thumbnail.url, name: 'sticked.png' })],
