@@ -1,7 +1,7 @@
 import { MessageEmbed } from '@client';
 import { createCanvas, loadImage } from 'canvas';
 import { MessageAttachment } from 'discord.js';
-import ColorManager from './colors';
+import ColorManager from 'helpers/class/ColorManager';
 import getMeta from './getMeta';
 
 export enum MinecraftColors {

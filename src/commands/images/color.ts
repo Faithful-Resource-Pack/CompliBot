@@ -4,7 +4,7 @@ import {
 } from 'discord.js';
 import { SlashCommand, SlashCommandI } from '@interfaces';
 import { SlashCommandBuilder } from '@discordjs/builders';
-import ColorManager from '@helpers/class/colors';
+import ColorManager from 'helpers/class/ColorManager';
 import axios from 'axios';
 
 async function constructResponse(
