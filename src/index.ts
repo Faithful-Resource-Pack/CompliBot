@@ -4,6 +4,8 @@ import { CommandInteraction, Constants, Intents } from 'discord.js';
 import config from '@json/config.json';
 import tokens from '@json/tokens.json';
 
+Error.stackTraceLimit = Infinity;
+
 export default function StartClient(coldStart: boolean = true, interaction?: CommandInteraction) {
   new Client(
     {

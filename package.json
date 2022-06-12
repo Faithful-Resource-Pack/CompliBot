@@ -6,9 +6,9 @@
     "type": "commonjs",
     "scripts": {
         "eslint": "npx eslint . --ext .ts,.tsx --fix",
-        "dev": "npm run eslint && ts-node-dev --respawn -r tsconfig-paths/register src/index.ts",
+        "dev": "npm run eslint && ts-node-dev --stack-size=1024 --stack-trace-limit=1000 --respawn -r tsconfig-paths/register src/index.ts",
         "start": "node -r ts-node/register -r tsconfig-paths/register src/index.ts",
-        "start-prod": "npm run build && cross-env NODE_ENV=production node dist/src/index.js --",
+        "start-prod": "npm run build && cross-env NODE_ENV=production node --stack-size=1024 --stack-trace-limit=1000 dist/src/index.js --",
         "build": "tsc -p . && tsc-alias"
     },
     "devDependencies": {
