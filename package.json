@@ -40,7 +40,7 @@
     "meant": "^2.0.1",
     "moment": "^2.29.1",
     "node-fetch": "^3.2.3",
-    "simple-git": "^2.48.0"
+    "simple-git": "^3.7.1"
   },
   "devDependencies": {
     "eslint": "^8.8.0"
