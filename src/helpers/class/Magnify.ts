@@ -7,7 +7,8 @@ import getFactor, { canBeMagnified, MAX_SURFACE } from 'helpers/functions/canvas
 
 export interface Options {
   textureURL: string;
-  factor?: number
+  factor?: number;
+  allowSmaller?: boolean;
   orientation?: 'portrait' | 'landscape' | 'none';
 }
 
@@ -20,11 +21,13 @@ export default class Magnify {
   private width: number;
   private height: number;
   private context: CanvasRenderingContext2D;
+  private allowSmaller: boolean;
 
   constructor(options: Options) {
     this.textureURL = options.textureURL;
-    this.factor = options.factor || null;
-    this.orientation = options.orientation || 'none';
+    this.factor = options.factor ?? null;
+    this.orientation = options.orientation ?? 'none';
+    this.allowSmaller = options.allowSmaller ?? true;
   }
 
   private async init() {
@@ -39,7 +42,10 @@ export default class Magnify {
       } while (this.factor * this.texture.width * this.factor * this.texture.height > MAX_SURFACE);
     }
 
+    if (!this.allowSmaller) this.factor = Math.max(this.factor, 1);
+
     [this.width, this.height] = [this.texture.width * this.factor, this.texture.height * this.factor];
+    console.log(this.texture.width, this.texture.height, Math.max(this.factor, 1), this.width, this.height);
   }
 
   private magnify(): Canvas {

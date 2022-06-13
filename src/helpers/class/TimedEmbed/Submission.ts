@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import getResourcePackFromName from '@functions/getResourcePack';
 import MinecraftSorter from '@helpers/sorter';
 import path from 'path';
@@ -21,7 +21,7 @@ import {
 } from 'discord.js';
 import { colors } from '@helpers/colors';
 import { getCorrespondingCouncilChannel, getSubmissionChannelName } from '@helpers/channels';
-import { stickAttachment } from '@functions/canvas/stick';
+import Stick from '@class/Stick';
 import {
   Contribution,
   Path,
@@ -31,8 +31,12 @@ import {
   Usernames,
   Repos,
   AllRepos,
+  Texture,
+  MCMETA,
 } from '@helpers/interfaces/firestorm';
+import toDataURL from 'helpers/functions/toDataURL';
 import { TimedEmbed } from './TimedEmbed';
+import MCAnimation from '../MCAnimation';
 
 export type SubmissionStatus = 'pending' | 'instapassed' | 'added' | 'no_council' | 'council' | 'denied' | 'invalid';
 
@@ -257,7 +261,7 @@ export class Submission extends TimedEmbed {
     return submissionMessage;
   }
 
-  public async makeSubmissionMessage(baseMessage: Message, file: MessageAttachment, texture: any): Promise<MessageEmbed> {
+  public async makeSubmissionMessage(baseMessage: Message, file: MessageAttachment, texture: Texture): Promise<MessageEmbed> {
     const mentions = [
       ...new Set([...Array.from(baseMessage.mentions.users.values()), baseMessage.author].map((user) => user.id)),
     ];
@@ -293,15 +297,15 @@ export class Submission extends TimedEmbed {
       return embed;
     } // can't fetch channel
 
-    let url: string = 'https://raw.githubusercontent.com/Faithful-Resource-Pack/App/main/resources/transparency.png';
+    let url: string = 'https://raw.githubusercontent.com/Faithful-Resource-Pack/App/main/resources/transparency.png'; // fallback img
+    let mcmeta: MCMETA;
+    let req: AxiosResponse<any, any>;
     try {
-      url = (
-        await axios.get(
-          `${(baseMessage.client as Client).config.apiUrl}textures/${texture.id}/url/default/${
-            texture.paths[0].versions.sort(MinecraftSorter).reverse()[0]
-          }`,
-        )
-      ).request.res.responseUrl;
+      req = await axios.get(`${(baseMessage.client as Client).config.apiUrl}textures/${texture.id}/url/default/${texture.paths[0].versions.sort(MinecraftSorter).reverse()[0]}`);
+      url = req.request.res.responseUrl;
+
+      req = await axios.get(`${(baseMessage.client as Client).config.apiUrl}textures/${texture.id}/mcmeta`);
+      mcmeta = req.data;
     } catch {
       // do nothing
     }
@@ -309,16 +313,22 @@ export class Submission extends TimedEmbed {
     const files: { [key: string]: MessageAttachment } = {};
 
     // send images in a safe channel where they are stored forever
-    files.thumbnail = (
-      await channel.send({
-        files: [file],
-      })
-    ).attachments.first();
-    files.image = (
-      await channel.send({
-        files: [await stickAttachment({ leftURL: url, rightURL: files.thumbnail.url, name: 'sticked.png' })],
-      })
-    ).attachments.first();
+    files.thumbnail = (await channel.send({ files: [file] })).attachments.first();
+
+    if (mcmeta.animation) {
+      const sticked: Buffer = await (new Stick({ leftURL: url, rightURL: files.thumbnail.url })).getAsBuffer();
+      const animated = await (new MCAnimation({
+        url: toDataURL(sticked),
+        mcmeta,
+        sticked: true,
+        stickedMargin: 10,
+      }).getAsAttachment('sticked.gif'));
+
+      files.image = (await channel.send({ files: [animated] })).attachments.first();
+    } else {
+      const sticked = await (new Stick({ leftURL: url, rightURL: files.thumbnail.url })).getAsAttachment('sticked.png');
+      files.image = (await channel.send({ files: [sticked] })).attachments.first();
+    }
 
     embed
       .setThumbnail(files.thumbnail.url)

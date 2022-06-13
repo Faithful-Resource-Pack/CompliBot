@@ -32,28 +32,47 @@ npm install
 ```bash
 npm run dev
 ```
+---
+### Repository configuration:
+As we try our best to keep the branches history clean, we've set up some "settings" on the branches management; all changes needs to be first developed trough a feature specific branch, then reviewed & merged in the `ts-dev` branch, then once in a while we push all changes to the `typescript` branch (which is the one that is used by the official Discord client).
+
+
+|     branch     | protected | used for                | description                               |
+|:--------------:|:---------:|:------------------------|-------------------------------------------|
+| ``typescript`` |    yes    | CompliBot (TS)          | stable & public version of the bot        |
+|   ``ts-dev``   |           | CompliBot Nightly (TS)  | experimental & private version of the bot |
+| ``javascript`` |           | CompliBot               | first version of the bot, public          |
+|  ``crowdin``   |           | Crowdin translation     |                                           |
+|  ``I10n_ts``   |           | Crowdin translation PRs |                                           |
+
 
 ___
-### Bot config:
+### Bot configuration:
 
-> **⚠️ We won't help you re-branding the bot for any other server. If you really want to do that, then you need to figure it out yourself.**
+> **Warning**  
+> We won't help you re-branding the bot for any other server. If you really want to do that, then you need to figure it out yourself.
 
 1. Create an app on the **[Discord Developer Portal](https://discord.com/developers/)**.
 2. Go to the **Bot** tab, create a bot and copy its token.
-3. Create a file named `tokens.json` or renamed the `tokens.json.example` to that name.
+3. Create a file named `tokens.json` in the `json` repository (or copy + rename the `tokens.json.example`).
 4. Fill all field following this format:
 
 ```jsonc
 {
-  "prefix": "/", // bot prefix for non-slash commands
-  "firestormToken": "", // writting token from the firestorm library
-  "token": "" // bot token from the Discord Developer Portal
+  "prefix": "/", // bot prefix for old commands (will be removed in the future)
+  "firestormToken": "", // token of the Firestorm database (see below for instruction on how to get it)
+  "token": "", // token of the bot, from the Discord Developer Portal
+  "appID": "", // "userId" of the bot app
+  "apiPassword": "", // token access for private API calls
+  "errorChannel": "", // channel ID where to send error messages
+  "dev": boolean, // set to true to enable developer mode
+  "verbose": boolean, // set to true to enable verbose mode
+  "maintenance": boolean, // set to true to enable maintenance mode
 }
 ```
 
-### Other configs:
-
-See `config.json` for general public config.
+> **Note**  
+> See `config.json` for general public config.
 
 ### Firestorm
 This project is heavily developed around the self hosted Firestore-like database: [firestorm-db](https://github.com/TheRolfFR/firestorm-db). Feel free to check the repository of that library to easily understand how it works.

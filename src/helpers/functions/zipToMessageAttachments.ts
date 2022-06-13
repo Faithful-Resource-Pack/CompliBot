@@ -24,9 +24,7 @@ export const zipToMA = async (url: string): Promise<Array<MessageAttachment>> =>
   ).data;
 
   // get files inside the zip as an object: { "filename": "Buffer" }
-  const zipFiles: {
-    [key: string]: Buffer;
-  } = await JSZip.loadAsync(arrayBufferToBufferCycle(zip))
+  const zipFiles: { [key: string]: Buffer } = await JSZip.loadAsync(arrayBufferToBufferCycle(zip))
     .then((z) => {
       const ext = /(.png|.tga)$/;
       const promises = Object.keys(z.files)
@@ -38,18 +36,12 @@ export const zipToMA = async (url: string): Promise<Array<MessageAttachment>> =>
 
       return Promise.all(promises);
     })
-    .then(
-      (
-        res,
-      ): {
-        [key: string]: Buffer;
-      } => res.reduce((acc, val: [key: string, buff: Buffer]) => {
-        const splitted: Array<string> = val[0].split('/');
-        const key: string = splitted[splitted.length - 1];
-        acc[key] = val[1];
-        return acc;
-      }, {}),
-    );
+    .then((res): { [key: string]: Buffer } => res.reduce((acc, val: [key: string, buff: Buffer]) => {
+      const splitted: Array<string> = val[0].split('/');
+      const key: string = splitted[splitted.length - 1];
+      acc[key] = val[1];
+      return acc;
+    }, {}));
 
   // convert to MessageAttachment
   Object.keys(zipFiles).forEach((key: string) => {

@@ -12,10 +12,12 @@ import MCAnimation from '@class/MCAnimation';
 import Magnify from '@class/Magnify';
 import getMeta from './canvas/getMeta';
 
-export default async function getTextureMessageOptions(options: {
+export interface Options {
   texture: Texture;
   pack: string;
-}): Promise<[MessageEmbed, Array<MessageAttachment>]> {
+}
+
+export default async function getTextureMessageOptions(options: Options): Promise<[MessageEmbed, Array<MessageAttachment>]> {
   const config: Config = ConfigJson;
   const { texture } = options;
   const { pack } = options;
@@ -147,7 +149,7 @@ export default async function getTextureMessageOptions(options: {
   // magnifying the texture in thumbnail
   if (animated) {
     embed.addField('MCMETA', `\`\`\`json\n${JSON.stringify(mcmeta)}\`\`\``, false);
-    const buffer = await (new MCAnimation(textureURL, mcmeta, true).createGIF());
+    const buffer = await (new MCAnimation({ url: textureURL, mcmeta, magnify: true }).createGIF());
     files.push(new MessageAttachment(buffer, 'magnified.gif'));
   } else {
     files.push(await (new Magnify({ textureURL })).getAsAttachment('magnified.png', false) as MessageAttachment);
