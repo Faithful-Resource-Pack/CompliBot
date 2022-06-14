@@ -6,7 +6,7 @@ import {
 import { palette } from '@helpers/buttons';
 import { getImageFromMessage } from '@functions/slashCommandImage';
 import { MessageActionRow, MessageAttachment } from 'discord.js';
-import { getSubmissionsChannels } from '@helpers/channels';
+import { getSubmissionsChannels } from 'helpers/submissionConfig';
 import Magnify from '@class/Magnify';
 
 const button: Button = {

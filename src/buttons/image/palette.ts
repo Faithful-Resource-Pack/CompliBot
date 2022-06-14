@@ -5,7 +5,7 @@ import {
 } from '@client';
 import { paletteAttachment } from '@functions/canvas/palette';
 import { getImageFromMessage } from '@functions/slashCommandImage';
-import { getSubmissionsChannels } from '@helpers/channels';
+import { getSubmissionsChannels } from 'helpers/submissionConfig';
 
 const button: Button = {
   buttonId: 'palette',

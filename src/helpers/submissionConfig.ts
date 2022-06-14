@@ -1,4 +1,5 @@
 import { Client } from '@client';
+import { SubmissionConfigKeys } from './interfaces';
 
 export const getSubmissionsChannels = (client: Client): Array<string> => client.config.discords
   .filter((d) => d.submissionSystem !== undefined)
@@ -17,8 +18,20 @@ export const getSubmissionChannelName = (client: Client, id: string): string => 
   )[0];
 };
 
+export function getSubmissionSetting(client: Client, id: string, type: SubmissionConfigKeys): any {
+  const packName = getSubmissionChannelName(client, id);
+
+  return client.config.discords
+    .filter((d) => d.submissionSystem !== undefined)
+    .filter((d) => d.submissionSystem.submission[packName] !== undefined)
+    .map((d) => d.submissionSystem.submission[packName][type])
+    .shift();
+}
+
 export const getCorrespondingCouncilChannel = (client: Client, id: string): string => client.config.discords
   .filter((d) => d.submissionSystem !== undefined)
   .filter((d) => Object.values(d.submissionSystem.submission)
     .map((arr) => arr.channel)
-    .includes(id))[0].submissionSystem.council;
+    .includes(id))
+  .shift()
+  .submissionSystem.council;

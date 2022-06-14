@@ -24,7 +24,7 @@ export default class Stick {
   constructor(options: Options) {
     this.leftURL = options.leftURL;
     this.rightURL = options.rightURL;
-    this.margin = options.margin || 10; // in pixels
+    this.margin = options.margin || 16; // in pixels
     this.reduceOnMagnify = options.reduceOnMagnify ?? true;
   }
 

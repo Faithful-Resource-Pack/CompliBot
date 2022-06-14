@@ -33,7 +33,7 @@ export default class Automation {
   private pollCheck(p: Poll): void {
     const poll = new Poll(p); // get methods back
 
-    if (poll.isTimeout()) {
+    if (poll.isTimedOut()) {
       poll.setStatus('ended');
       poll.updateEmbed(this.client).then(() => this.client.polls.delete(poll.id));
     }
@@ -83,7 +83,7 @@ export default class Automation {
     const submission = new Submission(s); // get methods back
 
     // if it's time to check the submission
-    if (submission.isTimeout()) {
+    if (submission.isTimedOut()) {
       const [up, down] = submission.getVotesCount();
 
       // remove submission from bot data after 1 month
@@ -96,12 +96,13 @@ export default class Automation {
 
       switch (submission.getStatus()) {
         case 'pending':
+
           // check votes
           if (up >= down) {
-            submission.setStatus('council', this.client);
-            submission.setTimeout(addMinutes(new Date(), 1440)); // now + 1 day
+            submission.setStatus(submission.isCouncilEnabled() ? 'council' : 'added', this.client);
+            if (submission.isCouncilEnabled()) submission.setTimeout(addMinutes(new Date(), submission.getTimeBeforeResults())); // now
           } else {
-            submission.setStatus('no_council', this.client);
+            submission.setStatus(submission.isCouncilEnabled() ? 'no_council' : 'denied', this.client);
           }
 
           this.client.submissions.set(submission.id, submission);

@@ -7,89 +7,53 @@ import {
 import { zipToMA } from '@functions/zipToMessageAttachments';
 import axios, { AxiosResponse } from 'axios';
 import { Submission } from '@class/TimedEmbed/Submission';
+import { Texture, Textures } from 'helpers/interfaces/firestorm';
+import { choiceEmojis } from 'helpers/emojis';
+import { getSubmissionSetting } from 'helpers/submissionConfig';
 
-export const processFiles = async (
-  client: Client,
-  message: Message,
-  files: MessageAttachment[],
-  INDEX: number = 0,
-  id?: string,
-): Promise<boolean> => {
+export async function processFiles(client: Client, message: Message, files: MessageAttachment[], INDEX: number = 0, id?: string): Promise<boolean> {
   for (let index = INDEX; index < files.length; index += 1) {
     const file: MessageAttachment = files[index];
 
     let req: AxiosResponse<any, any>;
     try {
-      req = await axios.get(`${client.config.apiUrl}textures/${id || file.name.replace('.png', '')}/all`);
+      req = await axios.get(`${client.config.apiUrl}textures/${id || file.name.replace('.png', '').replace('.tga', '')}/all`);
     } catch (_err) {
-      message.warn(
-        `An API error occurred for \`${id ? `the ID ${id}` : file.name.replace('.png', '')}\`:\n\`\`\`(${
-          _err.response.data.status
-        }) ${_err.response.data.message}\`\`\``,
-      );
-
+      message.warn(`An API error occurred for \`${id ? `the ID ${id}` : file.name}\`:\n\`\`\`(${_err.response.data.status}) ${_err.response.data.message}\`\`\``);
       return false;
     }
 
     id = undefined; // reset id for next iteration (id would come from selectMenu)
-    const textures = req.data; // could be multiple textures (an array) or a single texture (an object then)
+    const APIResult: Textures | Texture = req.data; // could be multiple textures (an array) or a single texture (an object then)
 
     // no results
-    if (textures.length < 1) {
-      message.warn(`No textures found for \`${file.name.replace('.png', '')}\``, true);
+    if (Array.isArray(APIResult) && APIResult.length < 1) {
+      message.warn(`No textures found for \`${file.name.replace('.png', '').replace('.tga', '')}\``, true);
       return true;
     }
 
     // multiple results
-    if (textures.length > 1) {
+    if (Array.isArray(APIResult) && APIResult.length > 1) {
       const components: MessageActionRow[] = [];
-      const rlen: number = textures.length;
+      const rlen: number = APIResult.length;
       const MAX: number = 4;
+      const textures: Array<{ label: string; description: string; value: string }> = [];
       let max: number = 0;
 
-      for (let i = 0; i < textures.length; i += 1) {
-        textures[i] = {
-          label: `[#${textures[i].id}] (${textures[i].paths[0].versions[0]}) ${textures[i].name}`,
-          description: textures[i].paths[0].name,
-          value: `${textures[i].id}__${index}`,
-        };
-      }
-
-      const emojis: string[] = [
-        '1️⃣',
-        '2️⃣',
-        '3️⃣',
-        '4️⃣',
-        '5️⃣',
-        '6️⃣',
-        '7️⃣',
-        '8️⃣',
-        '9️⃣',
-        '🔟',
-        '🇦',
-        '🇧',
-        '🇨',
-        '🇩',
-        '🇪',
-        '🇫',
-        '🇬',
-        '🇭',
-        '🇮',
-        '🇯',
-        '🇰',
-        '🇱',
-        '🇲',
-        '🇳',
-        '🇴',
-      ];
+      APIResult.forEach((texture) => {
+        textures.push({
+          label: `[#${texture.id}] (${texture.paths[0].versions[0]}) ${texture.name}`,
+          description: texture.paths[0].name,
+          value: `${texture.id}__${index}`,
+        });
+      });
 
       do {
         const options: MessageSelectOptionData[] = [];
         for (let i = 0; i < 25; i += 1) {
           if (textures[0] !== undefined) {
-            const t = textures.shift();
-            t.emoji = emojis[i % emojis.length];
-            options.push(t);
+            const texture = textures.shift();
+            options.push({ ...texture, emoji: choiceEmojis[i % choiceEmojis.length] });
           }
         }
 
@@ -123,13 +87,17 @@ export const processFiles = async (
       return false;
     }
 
+    const isCouncilEnabled: boolean = getSubmissionSetting(client, message.channelId, 'councilEnabled');
+    const timeBeforeCouncil: number = getSubmissionSetting(client, message.channelId, 'timeBeforeCouncil');
+    const timeBeforeResults: number = getSubmissionSetting(client, message.channelId, 'timeBeforeResults');
+
     // 1 result (instance of Object OR an array of length 1) (depends if it's from ID or name)
-    const submission = new Submission();
-    await submission.postSubmissionMessage(client, message, file, textures.length ? textures[0] : textures);
+    const submission = new Submission(null, { isCouncilEnabled, timeBeforeCouncil, timeBeforeResults });
+    await submission.postSubmissionMessage(client, message, file, Array.isArray(APIResult) ? APIResult[0] : APIResult);
   }
 
   return true;
-};
+}
 
 const event: Event = {
   name: 'textureSubmitted',

@@ -10,11 +10,16 @@ export interface Config {
     };
   };
 }
+
 export interface SubmissionConfig {
   channel: string;
   slug: string;
   resolution: number;
+  timeBeforeCouncil: number;
+  timeBeforeResults: number;
+  councilEnabled: boolean;
 }
+export type SubmissionConfigKeys = keyof SubmissionConfig;
 
 export interface Discord {
   team?: string; // tell if discord guilds are teamed up (for global commands)

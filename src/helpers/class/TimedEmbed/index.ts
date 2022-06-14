@@ -254,7 +254,7 @@ export class TimedEmbed {
    * Tell if the time is over or not
    * @returns {Boolean}
    */
-  public isTimeout(): boolean {
+  public isTimedOut(): boolean {
     if (this.getTimeout() === 0) return false;
     if (this.getTimeout() < new Date().getTime() / 1000) return true;
     return false;

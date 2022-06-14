@@ -48,6 +48,9 @@
                 "council": "946558091929985055",
                 "submission": {
                     "test Pack": {
+                        "timeBeforeCouncil": 1,
+                        "timeBeforeResults": 1,
+                        "councilEnabled": false,
                         "channel": "841396215211360296",
                         "slug": "faithful_32x",
                         "resolution": 8
@@ -72,11 +75,17 @@
                 "council": "779363363158229004",
                 "submission": {
                     "Faithful 32x": {
+                        "timeBeforeCouncil": 4320,
+                        "timeBeforeResults": 1440,
+                        "councilEnabled": true,
                         "channel": "774220983044669450",
                         "slug": "faithful_32x",
                         "resolution": 32
                     },
                     "Faithful 64x": {
+                        "timeBeforeCouncil": 4320,
+                        "timeBeforeResults": 1440,
+                        "councilEnabled": true,
                         "channel": "931886877521350696",
                         "slug": "faithful_64x",
                         "resolution": 64
@@ -103,16 +112,25 @@
                 "council": "935773417993543730",
                 "submission": {
                     "Classic Faithful 32x": {
+                        "timeBeforeCouncil": 4320,
+                        "timeBeforeResults": 1440,
+                        "councilEnabled": true,
                         "channel": "814201529032114226",
                         "slug": "classic_faithful_32x",
                         "resolution": 32
                     },
                     "Classic Faithful 32x Programmer Art": {
+                        "timeBeforeCouncil": 4320,
+                        "timeBeforeResults": 1440,
+                        "councilEnabled": true,
                         "channel": "909503944118648883",
                         "slug": "classic_faithful_32x_progart",
                         "resolution": 32
                     },
                     "Classic Faithful 64x": {
+                        "timeBeforeCouncil": 4320,
+                        "timeBeforeResults": 1440,
+                        "councilEnabled": true,
                         "channel": "814209343502286899",
                         "slug": "classic_faithful_64x",
                         "resolution": 64
