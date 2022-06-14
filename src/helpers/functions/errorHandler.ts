@@ -223,6 +223,7 @@ export const errorHandler: Function = async (client: Client, reason: any, type: 
     }) // much compressed than .title() & .thumbnail()
     .setColor(colors.red)
     .setTimestamp()
+    .setDescription(`\`\`\`bash\n${reason.stack || JSON.stringify(reason)}\n\`\`\``)
     .setFooter({
       text: client.user.tag,
       iconURL: client.user.avatarURL(),
