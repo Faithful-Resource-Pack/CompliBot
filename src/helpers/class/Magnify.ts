@@ -3,7 +3,7 @@ import {
   Canvas, createCanvas, Image, loadImage,
 } from 'canvas';
 import { MessageAttachment } from 'discord.js';
-import getFactor, { canBeMagnified, MAX_SURFACE } from 'helpers/functions/canvas/getFactor';
+import getFactor, { canBeMagnified, MAX_SURFACE } from '@helpers/functions/canvas/getFactor';
 
 export interface Options {
   textureURL: string;

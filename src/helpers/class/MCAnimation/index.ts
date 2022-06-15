@@ -4,7 +4,7 @@ import {
   Canvas, CanvasRenderingContext2D, createCanvas, Image, loadImage,
 } from 'canvas';
 import { MessageAttachment } from 'discord.js';
-import getFactor from 'helpers/functions/canvas/getFactor';
+import getFactor from '@helpers/functions/canvas/getFactor';
 
 export interface Options {
   url: string;

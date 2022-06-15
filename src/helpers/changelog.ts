@@ -2,8 +2,10 @@ import { readFileSync } from 'fs';
 import path from 'path';
 
 const changelogOptions = () => {
+  // be smart, replace folder with . in order not to worry about path segment separator
+  // (which is path.sep btw)
   const changelogStr = readFileSync(
-    path.join(__dirname, '../../', 'CHANGELOG.md').replace('dist\\', ''),
+    path.join(__dirname, '..', '..', 'CHANGELOG.md').replace('dist', '.'),
     'utf-8',
   ).replaceAll('\r', '');
   const allVersions = changelogStr.match(/(?<=## )([^]*?)(?=(\n## )|($))/g);

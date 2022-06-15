@@ -34,7 +34,7 @@ import {
   Texture,
   MCMETA,
 } from '@helpers/interfaces/firestorm';
-import toDataURL from 'helpers/functions/toDataURL';
+import toDataURL from '@helpers/functions/toDataURL';
 import { TimedEmbed } from './TimedEmbed';
 import MCAnimation from '../MCAnimation';
 
