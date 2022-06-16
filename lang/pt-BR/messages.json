@@ -16,5 +16,5 @@
   "General.Yes": "Sim",
   "Success.Detailed": "Sucesso! %DETAILS%",
   "Success.General": "Sucesso!",
-  "Success.Cancel": "Cancelou %ACTION% com sucesso!"
+  "Success.Cancel": "%ACTION% cancelado!"
 }
