@@ -1,7 +1,20 @@
 {
   "Error.DevBad": "Esta parte permanece não implementada devido a incompetência. Peça aos desenvolvedores ou lide com isso.",
   "Error.General": "Erro encontrado!",
+  "Error.Message.Deleted": "Essa mensagem já foi excluída!",
   "Error.NotFound": "%THING% não encontrado!",
+  "Error.NoPermissions": "Você não tem permissão para fazer isso!",
+  "Error.Interaction.Reserved": "Essa interação é reservada ao seu dono (%USER%)",
+  "Error.Channel.CacheNotFound": "O canal %CHANNEL_NAME% não pode ser encontrado na memória transitória!",
+  "Error.Channel.NotTextChannel": "O canal de destino não é um canal de texto, a mensagem não pode ser enviada!",
+  "Error.Timeout.NoTypeGiven": "O banimento temporário dado não especifica seu tempo!\nExemplos: `30s`, `1 min`, `10 hours`, `1 day`, `1 week`, `1 month`, `1 year`",
+  "General.Are": "são",
+  "General.Cancel": "Cancelar",
+  "General.Is": "é",
+  "General.No": "Não",
+  "General.Send": "Enviar",
+  "General.Yes": "Sim",
   "Success.Detailed": "Sucesso! %DETAILS%",
-  "Success.General": "Sucesso!"
+  "Success.General": "Sucesso!",
+  "Success.Cancel": "Cancelou %ACTION% com sucesso!"
 }
