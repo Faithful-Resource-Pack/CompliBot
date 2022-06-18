@@ -9,18 +9,22 @@
         "dev": "npm run eslint && ts-node-dev --stack-size=1024 --stack-trace-limit=1000 --respawn -r tsconfig-paths/register src/index.ts",
         "start": "node -r ts-node/register -r tsconfig-paths/register src/index.ts",
         "start-prod": "npm run build && cross-env NODE_ENV=production node --stack-size=1024 --stack-trace-limit=1000 dist/src/index.js --",
-        "build": "rm -rf ./dist/ && tsc --project tsconfig.json && tsc-alias -p tsconfig.json -v"
+        "clean": "rimraf dist/",
+        "copy-files": "copyfiles -u 1 src/**/*.log dist/",
+        "build": "npm run clean && tsc --project tsconfig.json && tsc-alias -p tsconfig.json -v && npm run copy-files"
     },
     "devDependencies": {
         "@types/node": "^17.0.33",
         "@typescript-eslint/eslint-plugin": "^5.25.0",
         "@typescript-eslint/parser": "^5.25.0",
+        "copyfiles": "^2.4.1",
         "cross-env": "^7.0.3",
         "eslint": "^8.2.0",
         "eslint-config-airbnb-base": "^15.0.0",
         "eslint-config-airbnb-typescript": "^17.0.0",
         "eslint-plugin-import": "^2.25.2",
         "prettier": "^2.6.2",
+        "rimraf": "^3.0.2",
         "ts-node": "^10.7.0",
         "ts-node-dev": "^1.1.8",
         "tsc-alias": "^1.6.9",
