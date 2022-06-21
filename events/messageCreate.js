@@ -18,6 +18,7 @@ const UIDA = [
 const strings = require('../resources/strings.json')
 const settings = require('../resources/settings.json')
 
+const { quote } = require('../functions/quote')
 const { textureIDQuote } = require('../functions/textures/textureIDQuote')
 const { submitTexture } = require('../functions/textures/submission/submitTexture')
 const { inviteDetection } = require('../functions/moderation/inviteDetection')
@@ -109,30 +110,6 @@ module.exports = {
 
     else {
       if (DEV) return
-
-      /**
-       * EASTER EGGS
-       */
-      //disabled because they exist in beta bot
-      
-//       if (message.content.includes('(╯°□°）╯︵ ┻━┻')) return await message.reply({ content: '┬─┬ ノ( ゜-゜ノ) calm down bro' })
-      
-//       if (message.content.toLowerCase() === 'mhhh') {
-//         const embed = new MessageEmbed()
-//           .setDescription('```Uh-oh moment```')
-//           .setColor(settings.colors.blue)
-//           .setFooter('Swahili → English', client.user.displayAvatarURL())
-//         let msgEmbed = await message.reply({ embeds: [embed] })
-//         return addDeleteReact(msgEmbed, message)
-//       }
-
-//       if (message.content.toLowerCase() === 'hello there') {
-//         let msgEmbed
-//         if (Math.floor(Math.random() * Math.floor(5)) != 1) msgEmbed = await message.reply({ content: 'https://media1.tenor.com/images/8dc53503f5a5bb23ef12b2c83a0e1d4d/tenor.gif' })
-//         else msgEmbed = await message.reply({ content: 'https://preview.redd.it/6n6zu25c66211.png?width=960&crop=smart&auto=webp&s=62024911a6d6dd85f83a2eb305df6082f118c8d1' })
-
-//         return addDeleteReact(msgEmbed, message)
-//       }
 
       /**
        * TEXTURE ID QUOTE
