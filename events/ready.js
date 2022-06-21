@@ -23,8 +23,6 @@ const { restartAutoDestroy } = require('../functions/restartAutoDestroy')
 const { saveDB } = require('../functions/saveDB')
 const { doCheckLang } = require('../functions/strings/doCheckLang')
 const { doCheckSettings } = require('../functions/settings/doCheckSettings')
-const missingCommand = require('../commands/Compliance/missing') // you need to import the whole module, see details below
-const unhandledRejection = require('./unhandledRejection')
 
 /**
  * SCHEDULED FUNCTIONS : Texture Submission
@@ -48,14 +46,6 @@ const downloadToBot = new cron.CronJob('15 0 * * *', async () => {
 let pushToGithub = new cron.CronJob('30 0 * * *', async () => {
   await pushTextures()
   await saveDB(`Daily Backup`)
-})
-
-const updatePercentages = new cron.CronJob('45 0 * * *', async () => {
-  // you have to import the whole module so that computeAndUpdateAll calls computeAndUpdate function of the module
-  const prom = missingCommand.computeAndUpdateAll(client)
-  return prom.catch(err => {
-    unhandledRejection(client, err, prom, undefined)
-  })
 })
 
 function doMCUpdateCheck() {

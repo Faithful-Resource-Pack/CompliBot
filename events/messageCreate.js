@@ -18,7 +18,6 @@ const UIDA = [
 const strings = require('../resources/strings.json')
 const settings = require('../resources/settings.json')
 
-const { quote } = require('../functions/quote')
 const { textureIDQuote } = require('../functions/textures/textureIDQuote')
 const { submitTexture } = require('../functions/textures/submission/submitTexture')
 const { inviteDetection } = require('../functions/moderation/inviteDetection')
