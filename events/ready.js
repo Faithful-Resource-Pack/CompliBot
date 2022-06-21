@@ -5,10 +5,6 @@ const DEV = (process.env.DEV.toLowerCase() == 'true')
 const MAINTENANCE = (process.env.MAINTENANCE.toLowerCase() == 'true')
 const PREFIX = process.env.PREFIX
 
-const jiraJE = require('../functions/minecraftUpdates/jira-je')
-const jiraBE = require('../functions/minecraftUpdates/jira-be')
-const minecraft = require('../functions/minecraftUpdates/minecraft')
-
 const settings = require('../resources/settings.json')
 
 const { retrieveSubmission } = require('../functions/textures/submission/retrieveSubmission')
@@ -48,12 +44,6 @@ let pushToGithub = new cron.CronJob('30 0 * * *', async () => {
   await saveDB(`Daily Backup`)
 })
 
-function doMCUpdateCheck() {
-  jiraJE.updateJiraVersions(client)
-  jiraBE.updateJiraVersions(client)
-  minecraft.updateMCVersions(client)
-}
-
 module.exports = {
   name: 'ready',
   once: true,
@@ -90,10 +80,6 @@ module.exports = {
     downloadToBot.start()
     pushToGithub.start()
 
-    await jiraJE.loadJiraVersions()
-    await jiraBE.loadJiraVersions()
-    await minecraft.loadMCVersions()
-
     /**
      * LOOP EVENTS
      * @event doMCUpdateCheck() -> each minute | MINECRAFT UPDATE DETECTION INTERVAL
@@ -101,7 +87,6 @@ module.exports = {
      * @event checkTimeout()    -> every 30s   | MODERATION MUTE SYSTEM UPDATE INTERVAL
      */
     setInterval(() => {
-      doMCUpdateCheck()
       doCheckLang()
       doCheckSettings()
     }, 60000);
