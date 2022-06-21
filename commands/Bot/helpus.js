@@ -1,16 +1,9 @@
 const prefix = process.env.PREFIX
 
-const uidR = process.env.UIDR
-const uidJ = process.env.UIDJ
-const uidT = process.env.UIDT
-
-const DEVS = [uidR, uidJ, uidT]
-
-const { MessageEmbed } = require("discord.js")
 const strings = require('../../resources/strings.json')
+const settings = require('../../resources/settings.json')
 
-const { addDeleteReact } = require("../../helpers/addDeleteReact")
-const unhandledRejection = require("../../events/unhandledRejection")
+const { MessageEmbed } = require('discord.js')
 
 module.exports = {
 	name: 'helpus',
@@ -24,27 +17,12 @@ module.exports = {
    * @param {import('discord.js').Client} client 
    * @param {import('discord.js').Message} message
    */
-	async execute(client, message) {
-    const embed = new MessageEmbed()
-      .setTitle('Do you want to help or support us in the Compliance development?')
-      .setDescription('You love this project and you want to help the devs?\n' + 
-        'Please contact one of the devs to be invited to the development server:\n' + 
-        DEVS.map(d => `<@!${d}>`).join(', ') + '\n\n' + 
-        'You can also check us out on GitHub: https://github.com/Compliance-Resource-Pack')
-      .setThumbnail(client.user.avatarURL())
-      .setFooter(client.user.username, client.user.displayAvatarURL())
-
-    let prom
-    prom = message.reply({
-      embeds: [embed]
-    })
-    
-    prom.then(embedMessage => {
-      prom = addDeleteReact(embedMessage, message, true)
-
-      return prom
-    }).catch(error => {
-      unhandledRejection(client, error, prom, message)
-    })
-  }
+	async execute(client, message, args) {
+		const embed = new MessageEmbed()
+			.setTitle("This command has been deprecated!")
+			.setDescription("Please use the new slash command of <@929066601930706954> instead.")
+			.setColor(settings.colors.blue)
+			.setThumbnail("https://cdn.discordapp.com/avatars/929066601930706954/86f92a2870e5924a04b75cc917cb4ecd.png?size=4096")
+		return await message.reply({ embeds: [embed] })
+	}
 }

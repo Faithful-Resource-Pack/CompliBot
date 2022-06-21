@@ -1,11 +1,9 @@
 const prefix = process.env.PREFIX
-const axios = require('axios').default
 
 const strings = require('../../resources/strings.json')
 const settings = require('../../resources/settings.json')
 
 const { MessageEmbed } = require('discord.js')
-const { addDeleteReact } = require('../../helpers/addDeleteReact');
 
 module.exports = {
   name: 'quote',
@@ -14,13 +12,12 @@ module.exports = {
   guildOnly: false,
   uses: strings.command.use.anyone,
   syntax: `${prefix}quote`,
-  async execute(_client, message) {
-    const image = await axios.get('https://inspirobot.me/api?generate=true')
-
-    const embed = new MessageEmbed()
-      .setImage(image.data)
-      .setColor(settings.colors.blue)
-    const embedMessage = await message.reply({ embeds: [embed] })
-    await addDeleteReact(embedMessage, message, true);
-  }
+  async execute(client, message, args) {
+		const embed = new MessageEmbed()
+			.setTitle("This command has been deprecated!")
+			.setDescription("Please use the new slash command of <@929066601930706954> instead.")
+			.setColor(settings.colors.blue)
+			.setThumbnail("https://cdn.discordapp.com/avatars/929066601930706954/86f92a2870e5924a04b75cc917cb4ecd.png?size=4096")
+		return await message.reply({ embeds: [embed] })
+	}
 }

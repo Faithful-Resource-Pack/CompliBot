@@ -4,7 +4,6 @@ const strings = require('../../resources/strings.json')
 const settings = require('../../resources/settings.json')
 
 const { MessageEmbed } = require('discord.js')
-const { addDeleteReact } = require('../../helpers/addDeleteReact');
 
 module.exports = {
   name: 'coin',
@@ -14,14 +13,12 @@ module.exports = {
   guildOnly: false,
   uses: strings.command.use.anyone,
   syntax: `${prefix}coin`,
-  async execute(_client, message) {
-
-    const res = Math.random()
-    const embed = new MessageEmbed()
-      .setTitle(res > .5 ? 'Tails' : (res < .5 ? 'Heads' : 'Edge'))
-      .setThumbnail(res > .5 ? settings.images.coin_tails : (res < .5 ? settings.images.coin_heads : settings.images.coin_edge))
-      .setColor(settings.colors.blue)
-    const embedMessage = await message.reply({ embeds: [embed] })
-    await addDeleteReact(embedMessage, message, true);
-  }
+  async execute(client, message, args) {
+		const embed = new MessageEmbed()
+			.setTitle("This command has been deprecated!")
+			.setDescription("Please use the new slash command of <@929066601930706954> instead.")
+			.setColor(settings.colors.blue)
+			.setThumbnail("https://cdn.discordapp.com/avatars/929066601930706954/86f92a2870e5924a04b75cc917cb4ecd.png?size=4096")
+		return await message.reply({ embeds: [embed] })
+	}
 }

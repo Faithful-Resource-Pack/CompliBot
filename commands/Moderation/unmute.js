@@ -1,12 +1,9 @@
 const prefix = process.env.PREFIX
 
-const Discord  = require('discord.js')
-const strings  = require('../../resources/strings.json')
+const strings = require('../../resources/strings.json')
 const settings = require('../../resources/settings.json')
 
-const { warnUser } = require('../../helpers/warnUser')
-const { modLog } = require('../../functions/moderation/modLog')
-const { removeMutedRole } = require('../../functions/moderation/removeMutedRole')
+const { MessageEmbed } = require('discord.js')
 
 module.exports = {
 	name: 'unmute',
@@ -18,35 +15,11 @@ module.exports = {
 	syntax: `${prefix}unmute <@user> <reason>`,
 	example: `${prefix}unmute @Domi#5813 not posting memes in #general`,
 	async execute(client, message, args) {
-		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.name.includes("Moderator") || role.id === '747839021421428776')) return warnUser(message, strings.command.no_permission)
-		if (!args.length) return warnUser(message, strings.command.args.none_given)
-
-		let userID = undefined
-		try {
-			let member = message.mentions.member.first() || message.guild.members.cache.get(args[0])
-			userID = member.id
-		}
-		catch (err) {
-			userID = args[0].replace('<!@', '').replace('<@', '').replace('>', '')
-		}
-
-		if (userID.startsWith('!')) userID = userID.replace('!', '')
-
-		const reason = args.slice(1).join(' ') || 'Not Specified'
-
-		if (!userID) return await warnUser(message, strings.command.unmute.specify_user);
-
-		removeMutedRole(client, userID);
-
-		var embed = new Discord.MessageEmbed()
-			.setAuthor(message.author.tag, message.author.displayAvatarURL())
-			.setDescription(`Unmuted <@!${userID}> \nReason: ${reason}`)
-			.setColor(settings.colors.black)
-			.setTimestamp();
-
-		await message.reply({ embeds: [embed] });
-
-		modLog(client, message, userID, reason, 0, 'unmuted')
+		const embed = new MessageEmbed()
+			.setTitle("This command has been deprecated!")
+			.setDescription("Please use the new slash command of <@929066601930706954> instead.")
+			.setColor(settings.colors.blue)
+			.setThumbnail("https://cdn.discordapp.com/avatars/929066601930706954/86f92a2870e5924a04b75cc917cb4ecd.png?size=4096")
+		return await message.reply({ embeds: [embed] })
 	}
-
 }

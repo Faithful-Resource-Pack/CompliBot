@@ -4,7 +4,6 @@ const settings = require('../../resources/settings.json')
 const strings = require('../../resources/strings.json')
 
 const { MessageEmbed } = require('discord.js')
-const { warnUser } = require('../../helpers/warnUser')
 
 module.exports = {
 	name: 'clear',
@@ -15,23 +14,11 @@ module.exports = {
 	syntax: `${prefix}clear <amount>`,
 	example: `${prefix}clear 10`,
 	async execute(client, message, args) {
-		if (!message.member.roles.cache.some(role => role.name.includes("Administrator") || role.id === '747839021421428776')) return warnUser(message, strings.command.no_permission)
-
-		if (!args.length) return warnUser(message, strings.command.args.none_given)
-		if (isNaN(args)) return await message.reply({ content: strings.command.args.invalid.not_number })
-		if (args > 100) return await message.reply({ content: strings.command.clear.too_much })
-		if (args < 1) return await message.reply({ content: strings.command.clear.not_enough })
-
-		var amount = (parseInt(args, 10) + 1) > 100 ? 100 : parseInt(args, 10) + 1
-		const messages = await message.channel.messages.fetch({ limit: amount })
-		await message.channel.bulkDelete(messages);
-		var embed = new MessageEmbed()
-			.setAuthor(`${message.author.tag} bulk deleted ${args} messages!`)
-			.setColor(settings.colors.red)
-			.setThumbnail(message.author.displayAvatarURL())
-			.setDescription(`[Jump to location](${message.url})\n\n**Server**: ${message.guild}\n\n**Channel**: <#${message.channel.id}>`)
-			.setTimestamp()
-
-		await client.channels.cache.get('798676864599195655').send({ embeds: [embed] })
+		const embed = new MessageEmbed()
+			.setTitle("This command has been deprecated!")
+			.setDescription("Please use the new slash command of <@929066601930706954> instead.")
+			.setColor(settings.colors.blue)
+			.setThumbnail("https://cdn.discordapp.com/avatars/929066601930706954/86f92a2870e5924a04b75cc917cb4ecd.png?size=4096")
+		return await message.reply({ embeds: [embed] })
 	}
 };

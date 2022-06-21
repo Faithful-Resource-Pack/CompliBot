@@ -4,8 +4,6 @@ const strings = require('../../resources/strings.json')
 const settings = require('../../resources/settings.json')
 
 const { MessageEmbed } = require('discord.js')
-const { warnUser } = require('../../helpers/warnUser')
-const { addDeleteReact } = require('../../helpers/addDeleteReact');
 
 module.exports = {
   name: 'ball',
@@ -15,17 +13,12 @@ module.exports = {
   uses: strings.command.use.anyone,
   syntax: `${prefix}ball <question>`,
   example: `${prefix}ball Is Compliance the best resource pack?`,
-  async execute(_client, message, args) {
-    if (!args.length) return warnUser(message, strings.command.args.none_given)
-
-    const question = args.join(' ')
-
-    const randomIndex = Math.floor(Math.random() * Object.values(strings.command.ball.responses).length)
-    const embed = new MessageEmbed()
-      .setAuthor(message.author.username + ' asked: ' + question, message.author.displayAvatarURL())
-      .setTitle('**' + Object.values(strings.command.ball.responses)[randomIndex] + '**')
-      .setColor(settings.colors.blue)
-    const embedMessage = await message.reply({ embeds: [embed] })
-    await addDeleteReact(embedMessage, message, true);
-  }
+  async execute(client, message, args) {
+		const embed = new MessageEmbed()
+			.setTitle("This command has been deprecated!")
+			.setDescription("Please use the new slash command of <@929066601930706954> instead.")
+			.setColor(settings.colors.blue)
+			.setThumbnail("https://cdn.discordapp.com/avatars/929066601930706954/86f92a2870e5924a04b75cc917cb4ecd.png?size=4096")
+		return await message.reply({ embeds: [embed] })
+	}
 }
