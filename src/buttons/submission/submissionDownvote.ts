@@ -1,6 +1,6 @@
 import { Button } from '@interfaces';
 import {
-  Client, Message, ButtonInteraction, MessageEmbed,
+  Client, Message, ButtonInteraction, MessageEmbed, Automation,
 } from '@client';
 import { Submission } from '@class/TimedEmbed/Submission';
 
@@ -20,7 +20,7 @@ const button: Button = {
     else submission.addVote('downvote', id);
 
     await submission.updateSubmissionMessage(client, interaction.user.id);
-    client.submissions.set(submission.id, submission);
+    client.submissions.set(submission.id, Automation.cleanedSubmission(submission));
 
     interaction.followUp({
       ephemeral: true,

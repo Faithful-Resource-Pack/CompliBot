@@ -13,7 +13,9 @@ import {
 } from '@helpers/buttons';
 import { addMinutes } from '@helpers/dates';
 import { ids, parseId } from '@helpers/emojis';
-import { Client, Message, MessageEmbed } from '@client';
+import {
+  Automation, Client, Message, MessageEmbed,
+} from '@client';
 import {
   EmbedField,
   MessageAttachment,
@@ -256,7 +258,7 @@ export class Submission extends TimedEmbed {
 
     this.setChannelId(baseMessage.channel.id);
     this.setMessageId(submissionMessage);
-    client.submissions.set(this.id, this);
+    client.submissions.set(this.id, Automation.cleanedSubmission(this));
 
     return submissionMessage;
   }

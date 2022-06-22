@@ -1,6 +1,6 @@
 import { Button } from '@interfaces';
 import {
-  Client, Message, ButtonInteraction, MessageEmbed,
+  Client, Message, ButtonInteraction, MessageEmbed, Automation,
 } from '@client';
 import { GuildMember, Role } from 'discord.js';
 import { Submission } from '@class/TimedEmbed/Submission';
@@ -37,7 +37,7 @@ const button: Button = {
     submission.setStatus('instapassed', client);
     await submission.updateSubmissionMessage(client, interaction.user.id);
     await submission.createContribution(client);
-    client.submissions.set(submission.id, submission);
+    client.submissions.set(submission.id, Automation.cleanedSubmission(submission));
   },
 };
 
