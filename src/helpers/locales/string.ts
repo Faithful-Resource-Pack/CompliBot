@@ -1,11 +1,12 @@
 import path from 'path';
 import { ids, parseId } from '@helpers/emojis';
 import { err } from '@helpers/logger';
-import { Langs, enUS, JSONFiles } from '.';
+import { Langs, enUS, JSONFiles } from './index';
 
 export type Keys = keyof typeof enUS;
 
 export interface Placeholder {
+  // @ts-ignore
   [key: Capitalize<string>]: string;
 }
 
@@ -23,6 +24,7 @@ export function parseString(text: string | string[], lang: string, placeholders?
   if (placeholders && Object.keys(placeholders).length > 0) {
     Object.keys(placeholders).forEach((key) => {
       if (!placeholders[key]) {
+        // @ts-ignore
         if (placeholders.IGNORE_MISSING && placeholders.IGNORE_MISSING.toLowerCase() === 'true') result = result.replaceAll(`%${key}%`, '');
         else console.error(`${err} No translations found for key: %${key}% in language: ${lang}`);
       } else result = result.replaceAll(`%${key}%`, placeholders[key]);
