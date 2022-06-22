@@ -79,6 +79,24 @@ export default class Automation {
       .catch(null);
   }
 
+  public static cleanedSubmission(submission: Submission): Submission {
+    return {
+      ...submission,
+      FIELD_TAGS: null,
+      FIELD_CONTRIBUTORS: null,
+      FIELD_RESOURCE_PACK: null,
+      FIELD_VOTES: null,
+      FIELD_STATUS: null,
+      FIELD_TIME: null,
+      contribution: null,
+      repos: null,
+      paths: null,
+      uses: null,
+      textureBuffer: null,
+      usernames: null,
+    } as any;
+  }
+
   private submissionCheck(s: Submission): void {
     const submission = new Submission(s); // get methods back
 
@@ -104,7 +122,7 @@ export default class Automation {
             submission.setStatus('no_council', this.client);
           }
 
-          this.client.submissions.set(submission.id, submission);
+          this.client.submissions.set(submission.id, Automation.cleanedSubmission(submission));
 
           // sends people that have voted to the submitter
           this.submissionSendVotes(submission, [up, down]);
@@ -114,7 +132,7 @@ export default class Automation {
           if (up > down) submission.setStatus('added', this.client).createContribution(this.client);
           else submission.setStatus('denied', this.client);
 
-          this.client.submissions.set(submission.id, submission);
+          this.client.submissions.set(submission.id, Automation.cleanedSubmission(submission));
           submission.updateSubmissionMessage(this.client, null);
 
           // sends people that have voted to the submitter

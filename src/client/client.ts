@@ -196,7 +196,7 @@ class ExtendedClient extends Client {
 
   private loadCollections = () => {
     this.loadCollection(this.polls, POLLS_FILENAME, JSON_PATH);
-    this.loadCollection(this.submissions, SUBMISSIONS_FILENAME, JSON_PATH);
+    this.loadCollection(this.submissions, SUBMISSIONS_FILENAME, JSON_PATH, true);
     this.loadCollection(this.commandsProcessed, COMMANDS_PROCESSED_FILENAME, JSON_PATH);
     this.loadCollection(this.moderationUsers, MODERATION_FILENAME, JSON_PATH);
     if (this.verbose) console.log(`${info}Loaded collections data`);
@@ -212,13 +212,14 @@ class ExtendedClient extends Client {
     collection: EmittingCollection<any, any>,
     filename: string,
     relative_path: string,
+    fixSubmission: boolean = false,
   ): void => {
     const obj = getData({
       filename,
       relative_path,
     });
     Object.keys(obj).forEach((key: string) => {
-      collection.set(key, obj[key]);
+      collection.set(key, fixSubmission ? Automation.cleanedSubmission(obj[key]) : obj[key]);
     });
 
     collection.events.on('dataSet', () => {
