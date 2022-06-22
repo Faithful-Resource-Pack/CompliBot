@@ -100,9 +100,6 @@ export default class Automation {
   private submissionCheck(s: Submission): void {
     const submission = new Submission(s); // get methods back
 
-    // TODO: temporary solution to fix huge Submission JSON file
-    this.client.submissions.set(submission.id, Automation.cleanedSubmission(submission));
-
     // if it's time to check the submission
     if (submission.isTimeout()) {
       const [up, down] = submission.getVotesCount();
