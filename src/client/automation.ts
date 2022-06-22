@@ -142,6 +142,9 @@ export default class Automation {
         default:
           break;
       }
+
+      // TODO: temporary solution to fix huge Submission JSON file
+      this.client.submissions.set(submission.id, Automation.cleanedSubmission(submission));
     }
   }
 }
