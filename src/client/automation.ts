@@ -82,23 +82,26 @@ export default class Automation {
   public static cleanedSubmission(submission: Submission): Submission {
     return {
       ...submission,
-      FIELD_TAGS: null,
-      FIELD_CONTRIBUTORS: null,
-      FIELD_RESOURCE_PACK: null,
-      FIELD_VOTES: null,
-      FIELD_STATUS: null,
-      FIELD_TIME: null,
-      contribution: null,
-      repos: null,
-      paths: null,
-      uses: null,
-      textureBuffer: null,
-      usernames: null,
+      FIELD_TAGS: undefined,
+      FIELD_CONTRIBUTORS: undefined,
+      FIELD_RESOURCE_PACK: undefined,
+      FIELD_VOTES: undefined,
+      FIELD_STATUS: undefined,
+      FIELD_TIME: undefined,
+      contribution: undefined,
+      repos: undefined,
+      paths: undefined,
+      uses: undefined,
+      textureBuffer: undefined,
+      usernames: undefined,
     } as any;
   }
 
   private submissionCheck(s: Submission): void {
     const submission = new Submission(s); // get methods back
+
+    // TODO: temporary solution to fix huge Submission JSON file
+    this.client.submissions.set(submission.id, Automation.cleanedSubmission(submission));
 
     // if it's time to check the submission
     if (submission.isTimeout()) {
@@ -142,9 +145,6 @@ export default class Automation {
         default:
           break;
       }
-
-      // TODO: temporary solution to fix huge Submission JSON file
-      this.client.submissions.set(submission.id, Automation.cleanedSubmission(submission));
     }
   }
 }
