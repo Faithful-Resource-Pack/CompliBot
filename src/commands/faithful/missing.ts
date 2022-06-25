@@ -27,7 +27,7 @@ export const PACKS: Array<{ name: string; value: string }> = [
  * @returns {String}
  */
 export const getDisplayNameForPack = (pack: string): string => {
-	return PACKS.filter((p) => p.value === pack)[0][0];
+	return PACKS.filter((p) => p.value === pack)[0].name;
 };
 
 export const command: SlashCommand = {
