@@ -3,7 +3,7 @@ const settings = require('../resources/settings.json')
 async function manageAgreement(client, reaction, user) {
 	const reactID = reaction.emoji.id
 
-	const server = await client.guilds.cache.get('991031483089186826') || undefined
+	const server = await client.guilds.cache.get(settings.guilds.c32.id) || undefined
 	const member = server === undefined ? undefined : await server.members.cache.get(user.id)
 
 	if (member === undefined) return
