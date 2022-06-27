@@ -5,6 +5,7 @@ const settings = require('../resources/settings.json')
 
 const { editSubmission } = require('../functions/textures/submission/editSubmission')
 const { manageExtraRoles } = require('../functions/manageExtraRoles')
+const { manageAgreement } = require('../functions/manageAgreement')
 
 module.exports = {
   name: 'messageReactionAdd',
@@ -30,6 +31,11 @@ module.exports = {
       // EXTRA ROLES MANAGER
       case settings.channels.cextras_roles:
         manageExtraRoles(client, reaction, user)
+        break;
+
+      // Contributor Agreement
+      case '991031483089186826':
+        manageAgreement(client, reaction, user)
         break;
 
       // Not setup
