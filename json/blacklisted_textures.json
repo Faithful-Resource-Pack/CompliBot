@@ -283,6 +283,12 @@
     "entity/cat/graytabby_tame.tga",
     "entity/cat/ocelot_tame.tga",
     "ui/arrow_left.png",
-    "ui/arrow_right.png"
+    "ui/arrow_right.png",
+    "ui/anvil-plus.png",
+    "ui/gamerpic.png",
+    "ui/glyph_inventory.png",
+    "ui/icon_map.png",
+    "ui/multiplayer_glyph.png",
+    "ui/sidebar_icons/menu_threebars.png"
   ]
 }
