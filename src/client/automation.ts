@@ -70,12 +70,10 @@ export default class Automation {
             },
           );
 
-        user
-          .send({
-            embeds: [embed],
-          })
-          .catch(null); // DM closed
+        user.send({ embeds: [embed] }).catch(null); // DM closed
+        return user.id;
       })
+      .then((userId: string) => submission.updateSubmissionMessage(this.client, userId))
       .catch(null);
   }
 
@@ -96,15 +94,20 @@ export default class Automation {
 
       switch (submission.getStatus()) {
         case 'pending':
-
           // check votes
           if (up >= down) {
-            submission.setStatus(submission.isCouncilEnabled() ? 'council' : 'added', this.client);
-            if (submission.isCouncilEnabled()) submission.setTimeout(addMinutes(new Date(), submission.getTimeBeforeResults())); // now
+            if (submission.isCouncilEnabled()) {
+              submission.setStatus('council', this.client);
+              submission.setTimeout(addMinutes(new Date(), submission.getTimeBeforeResults())); // now + delay
+            } else {
+              submission.setStatus('added', this.client);
+              submission.createContribution(this.client);
+            }
           } else {
-            submission.setStatus(submission.isCouncilEnabled() ? 'no_council' : 'denied', this.client);
+            submission.setStatus('no_council', this.client);
           }
 
+          // save the modification
           this.client.submissions.set(submission.id, submission);
 
           // sends people that have voted to the submitter
@@ -116,7 +119,6 @@ export default class Automation {
           else submission.setStatus('denied', this.client);
 
           this.client.submissions.set(submission.id, submission);
-          submission.updateSubmissionMessage(this.client, null);
 
           // sends people that have voted to the submitter
           this.submissionSendVotes(submission, [up, down]);

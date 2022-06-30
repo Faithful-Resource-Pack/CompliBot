@@ -68,11 +68,9 @@ export class Submission extends TimedEmbed {
   constructor(data?: Submission, options?: SubmissionOptions) {
     super(data);
 
-    if (options) {
-      this.beforeCouncil = options?.timeBeforeCouncil ?? 4320;
-      this.beforeResults = options?.timeBeforeResults ?? 1440;
-      this.council = options?.isCouncilEnabled ?? true;
-    }
+    this.beforeCouncil = options?.timeBeforeCouncil ?? data.beforeCouncil ?? 4320;
+    this.beforeResults = options?.timeBeforeResults ?? data.beforeResults ?? 1440;
+    this.council = options?.isCouncilEnabled ?? data.council ?? true;
 
     // new
     if (!data) {
@@ -175,7 +173,7 @@ export class Submission extends TimedEmbed {
       case 'pending':
         return `${parseId(ids.pending)} Waiting for votes...`;
       case 'no_council':
-        return `${parseId(ids.downvote)} Not enough votes to go to council!`;
+        return `${parseId(ids.downvote)} Not enough votes to ${this.council ? 'go to council' : 'be added to the pack'}!`;
       default:
         return super.getStatusUI();
     }

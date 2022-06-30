@@ -21,7 +21,7 @@ const button: Button = {
         teams: ['faithful'],
       }).includes(role.id)) === undefined
     ) {
-      interaction.reply({
+      interaction.followUp({
         content: 'Only council members can vote while the texture is in council!',
         ephemeral: true,
       });
