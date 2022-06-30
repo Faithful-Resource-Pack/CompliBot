@@ -31,15 +31,26 @@
     "entity/enderman/enderman_eyes",
     "entity/phantom_eyes",
     "block/water_overlay",
+    "blocks/water_overlay",
     "entity/end_portal",
     "item/leather_chestplate_overlay",
     "block/debug",
     "block/debug2",
+    "blocks/debug",
+    "blocks/debug2",
     "environment/end_sky",
     "gui/title/mojangstudios",
+    "gui/title/mojang",
+    "gui/achievement/achievement_icons.png",
+    "gui/presets/chaos.png",
+    "gui/presets/delight.png",
+    "gui/presets/drought.png",
+    "gui/presets/luck.png",
+    "gui/presets/madness.png",
+    "gui/presets/water.png",
     "misc/enchanted_item_glint",
     "misc/pumpkinblur",
-    "item/copper_horn"
+    "particle/footprint"
   ],
   "bedrock": [
     "spit",
@@ -272,6 +283,13 @@
     "entity/cat/graytabby_tame.tga",
     "entity/cat/ocelot_tame.tga",
     "ui/arrow_left.png",
-    "ui/arrow_right.png"
+    "ui/arrow_right.png",
+    "ui/anvil-plus.png",
+    "ui/gamerpic.png",
+    "ui/glyph_inventory.png",
+    "ui/icon_map.png",
+    "ui/multiplayer_glyph.png",
+    "ui/sidebar_icons/menu_threebars.png",
+    "ui/xboxconversionkeyart.png"
   ]
 }
