@@ -138,7 +138,7 @@ module.exports = {
       /**
        * CLASSIC FAITHFUL BASIC AUTOREACT
        */
-      if (message.channel.id === '814631514523435020') {
+      if (message.channel.id === '814631514523435020' || message.channel.id === '995033923304308836') {
         if (!message.attachments.size) {
           if (message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) return
           var embed = new MessageEmbed()
