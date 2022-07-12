@@ -25,7 +25,11 @@ async function pushTextures(COMMIT_MESSAGE = `Autopush passed textures from ${da
 		for (let j = 0; BRANCHES_JAVA[j]; j++) {
 
 			if (checkFolder(`./texturesPush/${REPO_JAVA[i]}/${BRANCHES_JAVA[j]}/assets`)) {
-				await pushToGitHub('Faithful-Resource-Pack', REPO_JAVA[i], `${BRANCHES_JAVA[j]}`, COMMIT_MESSAGE, `./texturesPush/${REPO_JAVA[i]}/${BRANCHES_JAVA[j]}/`)
+				try {
+					await pushToGitHub('Faithful-Resource-Pack', REPO_JAVA[i], `${BRANCHES_JAVA[j]}`, COMMIT_MESSAGE, `./texturesPush/${REPO_JAVA[i]}/${BRANCHES_JAVA[j]}/`)
+				} catch(e) {
+					// branch doesn't exist, octokit causes an error
+				}
 				fs.rmdirSync(`./texturesPush/${REPO_JAVA[i]}/${BRANCHES_JAVA[j]}/assets/`, { recursive: true })
 
 				if (DEBUG) console.log(`PUSHED TO GITHUB: Faithful-Java-32x (${BRANCHES_JAVA[j]})`)

@@ -28,7 +28,8 @@ module.exports = {
 	syntax: `${prefix}hotfix <something>`,
 	async execute(client, message, args) {
 		if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD || message.author.id === uidT) {
-
+			await pushTextures()
+			await message.react(settings.emojis.upvote)
 		} else return
 	}
 }

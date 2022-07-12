@@ -1,7 +1,7 @@
 /*eslint-env node*/
 
 /**
- * ORIGINAL LINK: (Typescrit)
+ * ORIGINAL LINK: (Typescript)
  * https://dev.to/lucis/how-to-push-files-programatically-to-a-repository-using-octokit-with-typescript-1nj0
  * 
  */
