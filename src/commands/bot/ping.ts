@@ -6,7 +6,7 @@ export const command: SlashCommand = {
 	data: new SlashCommandBuilder().setName("ping").setDescription("Gets the Bot and API latency."),
 	execute: async (interaction: CommandInteraction, client: Client) => {
 		let embed = new MessageEmbed().setTitle(await interaction.getEphemeralString({ string: "Command.Ping.Await" }));
-		await interaction.reply({ embeds: [embed], ephemeral: true }).then(async () => {
+		await interaction.reply({ embeds: [embed] }).then(async () => {
 			const d: Date = new Date();
 			const quotes = (
 				await interaction.getEphemeralString({
