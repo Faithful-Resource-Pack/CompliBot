@@ -1,6 +1,5 @@
 import { Event } from "@interfaces";
 import { Client, Message, MessageEmbed } from "@client";
-import { quote } from "@functions/quote";
 import easterEgg from "@functions/canvas/isEasterEggImg";
 import { getSubmissionsChannels } from "@helpers/channels";
 
@@ -21,8 +20,6 @@ export const event: Event = {
 			client.emit("textureSubmitted", (client as Client, message));
 			return;
 		}
-
-		quote(message);
 
 		switch (message.content.toLocaleLowerCase()) {
 			case "engineer gaming":
@@ -49,7 +46,7 @@ export const event: Event = {
 					}
 				});
 				break;
-			case "monke": //cases can do this, they can overlap. Very useful
+			case "monke":
 			case "monkee":
 			case "monkey":
 				["🎷", "🐒"].forEach(async (emoji) => {
