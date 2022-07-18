@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Event } from '@interfaces';
 import { Client, Message, MessageEmbed } from '@client';
-import quote from '@functions/quote';
 import EasterEgg from '@functions/canvas/isEasterEggImg';
 import { getSubmissionsChannels } from '@helpers/channels';
 
@@ -35,8 +34,6 @@ const event: Event = {
     //   client.emit('textureSubmitted', (client as Client, message));
     //   return;
     // }
-
-    quote(message);
 
     switch (message.content.toLocaleLowerCase()) {
       case 'engineer gaming':
