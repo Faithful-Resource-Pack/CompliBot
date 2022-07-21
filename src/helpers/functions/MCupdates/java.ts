@@ -26,7 +26,7 @@ export async function loadJavaVersions() {
 		minecraftVersionsCache.push(version.id);
 	});
 
-	console.log(`${info}Loaded ${minecraftVersionsCache.length} Minecraft Java versions`); update checking due to mojang blocking requests to minecraft.net)
+	console.log(`${info}Loaded ${minecraftVersionsCache.length} Minecraft Java versions`);
 }
 
 export async function updateJavaVersions(client: Client) {
