@@ -106,24 +106,22 @@ export const getTextureMessageOptions = async (options: {
 	}
 
 	if (validURL) {
-		embed.addField("Source", `[GitHub](${textureURL})`, true);
 		embed.addField("Resolution", `${dimensions.width}×${dimensions.height}`, true);
+		embed.addField("\u200B", `[View texture online](https://webapp.faithfulpack.net/#/gallery/java/32x/latest/all/?show=${texture.id})`, true);
 
 		const displayedContributions = [
 			contributions
 				.filter((c) => strPack.includes(c.resolution.toString()) && pack === c.pack)
 				.sort((a, b) => (a.date > b.date ? -1 : 1))
 				.map((c) => {
-					let strDate: string = fromTimestampToHumanReadable(c.date);
+					let strDate: string = `<t:${Math.trunc(c.date / 1000)}:d>`;
 					let authors = c.authors.map((authorId: string) => `<@!${authorId}>`);
-					return `\`${strDate}\`\n${authors.join(", ")}`;
+					return `${strDate} — ${authors.join(", ")}`;
 				})[0],
 		];
 
-		if (contributions.length > 2)
-			displayedContributions.push("[See older contributions in the WebApp](https://webapp.faithfulpack.net/#/gallery)");
 		if (displayedContributions[0] != undefined && contributions.length && pack !== "default")
-			embed.addField("Latest contribution", displayedContributions.join("\n"));
+			embed.addField("Latest Author(s)", displayedContributions.join("\n"));
 	}
 
 	let tmp = {};
