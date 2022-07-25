@@ -11,9 +11,9 @@
 
 ___
 ### Online on:
-- [Faithful 32x](https://discord.gg/sN9YRQbBv7)
-- [Faithful 64x](https://discord.gg/Tqtwtgh)
+- [Faithful](https://discord.gg/sN9YRQbBv7)
 - [Faithful Extras](https://discord.gg/qVeDfZw)
+- [Classic Faithful](https://discord.gg/KSEhCVtg4J)
 
 ___
 ### Found an issue?
