@@ -147,7 +147,8 @@ export const command: SlashCommand = {
 					`${response[2].completion}% complete\n> ${response[1][0]}`,
 				);
 			else {
-				files.push(new MessageAttachment(response[0], `missing-${response[2].pack}-${response[2].edition}.txt`));
+				if (response[1].length !== 0)
+					files.push(new MessageAttachment(response[0], `missing-${response[2].pack}-${response[2].edition}.txt`));
 				embed2.addField(
 					`${getDisplayNameForPack(response[2].pack)} - ${response[2].edition} - ${response[2].version}`,
 					`${response[2].completion}% complete\n> ${response[1].length} textures missing.`,
