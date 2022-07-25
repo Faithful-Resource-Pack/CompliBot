@@ -239,6 +239,7 @@
     "ui/persona_key_comp",
     "entity/enchanting_table_book_shadow",
     "entity/end_portal",
+    "environment/end_sky",
     "environment/clouds",
     "models/armor/cloth_1",
     "models/armor/cloth_2",
