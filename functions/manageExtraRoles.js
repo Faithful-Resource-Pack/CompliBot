@@ -16,10 +16,6 @@ async function manageExtraRoles(client, reaction, user) {
 			if (member.roles.cache.some(r => r.id === settings.roles.addons.cextras.id)) member.roles.remove(settings.roles.addons.cextras.id)
 			else member.roles.add(settings.roles.addons.cextras.id)
 			break
-		case settings.emojis.ctweaks:
-			if (member.roles.cache.some(r => r.id === settings.roles.tweaks.cextras.id)) member.roles.remove(settings.roles.tweaks.cextras.id)
-			else member.roles.add(settings.roles.tweaks.cextras.id)
-			break
 		case settings.emojis.cmods:
 			if (member.roles.cache.some(r => r.id === settings.roles.mods.cextras.id)) member.roles.remove(settings.roles.mods.cextras.id)
 			else member.roles.add(settings.roles.mods.cextras.id)
