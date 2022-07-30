@@ -504,7 +504,10 @@ export class Submission extends TimedEmbed {
               repoName,
               `${use.assets !== null ? `assets/${use.assets}/${p.name}` : p.name}`,
             );
-            const directoriesUntilTexture = texturePath.split('/').slice(0, -1).join('/');
+            const directoriesUntilTexture = texturePath.split('\\').slice(0, -1).join('\\');
+
+            console.log(texturePath);
+            console.log(directoriesUntilTexture);
 
             // create full path to the texture if it doesn't exist
             if (!fs.existsSync(directoriesUntilTexture)) {

@@ -1,7 +1,7 @@
 {
     "images": "https://database.faithfulpack.net/images/",
-    "icon": "https://cdn.discordapp.com/avatars/929066601930706954/86f92a2870e5924a04b75cc917cb4ecd.webp?size=80",
-    "apiUrl": "https://api.faithfulpack.net/v2/",
+    "icon": "https://cdn.discordapp.com/avatars/929066601930706954/86f92a2870e5924a04b75cc917cb4ecd.webp",
+    "apiUrl": "http://localhost:8000/v2/",
     "firestormUrl": "https://database.faithfulpack.net/firestorm-test/",
     "teams": [
         {

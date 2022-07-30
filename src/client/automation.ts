@@ -97,11 +97,11 @@ export default class Automation {
           // check votes
           if (up >= down) {
             if (submission.isCouncilEnabled()) {
-              submission.setStatus('council', this.client);
-              submission.setTimeout(addMinutes(new Date(), submission.getTimeBeforeResults())); // now + delay
+              submission.setStatus('council', this.client)
+                .setTimeout(addMinutes(new Date(), submission.getTimeBeforeResults())); // now + delay
             } else {
-              submission.setStatus('added', this.client);
-              submission.createContribution(this.client);
+              submission.setStatus('added', this.client)
+                .createContribution(this.client);
             }
           } else {
             submission.setStatus('no_council', this.client);
