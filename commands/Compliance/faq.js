@@ -21,7 +21,7 @@ module.exports = {
 
 		let embed
 		// very sloppy solution, but we'll be rewriting this in the new bot soon anyway
-		if (message.guild.id == '773983706582482946') {
+		if (message.guild.id == '773983706582482946' || message.guild.id == '814198513847631944') {
 			if (args[0] == 'all') {
 				if (message.member.roles.cache.some(role => role.name.includes("Manager") || role.id === '747839021421428776')) {
 					for (let i = 0; i < FAQS.length; i++) {
