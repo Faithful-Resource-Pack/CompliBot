@@ -7,7 +7,7 @@ import { tileAttachment } from '@functions/canvas/tile';
 import { magnify, palette } from '@helpers/buttons';
 import { getImageFromMessage } from '@functions/slashCommandImage';
 import { MessageActionRow } from 'discord.js';
-import { getSubmissionsChannels } from 'helpers/submissionConfig';
+import { getSubmissionsChannels } from '@helpers/submissionConfig';
 
 const button: Button = {
   buttonId: 'tile',

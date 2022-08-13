@@ -4,7 +4,7 @@ import { Event } from '@interfaces';
 import { Client, Message, MessageEmbed } from '@client';
 import { TextChannel, User } from 'discord.js';
 import { colors } from '@helpers/colors';
-import { getSubmissionsChannels } from 'helpers/submissionConfig';
+import { getSubmissionsChannels } from '@helpers/submissionConfig';
 import getTeamsIds from '@helpers/teams';
 
 const event: Event = {

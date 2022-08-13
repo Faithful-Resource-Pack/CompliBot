@@ -7,9 +7,9 @@ import {
 import { zipToMA } from '@functions/zipToMessageAttachments';
 import axios, { AxiosResponse } from 'axios';
 import { Submission } from '@class/TimedEmbed/Submission';
-import { Texture, Textures } from 'helpers/interfaces/firestorm';
-import { choiceEmojis } from 'helpers/emojis';
-import { getSubmissionSetting } from 'helpers/submissionConfig';
+import { Texture, Textures } from '@helpers/interfaces/firestorm';
+import { choiceEmojis } from '@helpers/emojis';
+import { getSubmissionSetting } from '@helpers/submissionConfig';
 
 export async function processFiles(client: Client, message: Message, files: MessageAttachment[], INDEX: number = 0, id?: string): Promise<boolean> {
   for (let index = INDEX; index < files.length; index += 1) {

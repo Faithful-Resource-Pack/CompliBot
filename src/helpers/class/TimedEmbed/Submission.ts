@@ -23,7 +23,7 @@ import {
 import { colors } from '@helpers/colors';
 import {
   getCorrespondingCouncilChannel, getCorrespondingGuildIdFromSubmissionChannel, getSubmissionChannelName, getSubmissionSetting,
-} from 'helpers/submissionConfig';
+} from '@helpers/submissionConfig';
 import Stick from '@class/Stick';
 import {
   Contribution,
@@ -36,8 +36,8 @@ import {
   MCMETA,
 } from '@helpers/interfaces/firestorm';
 import toDataURL from '@helpers/functions/toDataURL';
-import { TimedEmbed } from '.';
-import MCAnimation from '../MCAnimation';
+import { TimedEmbed } from '@class/TimedEmbed';
+import MCAnimation from '@class/MCAnimation';
 
 export type SubmissionStatus = 'pending' | 'instapassed' | 'added' | 'no_council' | 'council' | 'denied' | 'invalid';
 
