@@ -208,11 +208,7 @@ class ExtendedClient extends Client {
    * @param filename {String}
    * @param relative_path {String}
    */
-  private loadCollection = (
-    collection: EmittingCollection<any, any>,
-    filename: string,
-    relative_path: string,
-  ): void => {
+  private loadCollection(collection: EmittingCollection<any, any>, filename: string, relative_path: string): void {
     const obj = getData({
       filename,
       relative_path,
@@ -227,7 +223,7 @@ class ExtendedClient extends Client {
     collection.events.on('dataDeleted', () => {
       this.saveEmittingCollection(collection, filename, relative_path);
     });
-  };
+  }
 
   /**
    * Save an emitting collection into a JSON file

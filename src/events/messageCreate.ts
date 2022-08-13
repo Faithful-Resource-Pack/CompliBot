@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Event } from '@interfaces';
 import { Client, Message, MessageEmbed } from '@client';
-import quote from '@functions/quote';
 import EasterEgg from '@functions/canvas/isEasterEggImg';
 import { getSubmissionsChannels } from 'helpers/submissionConfig';
 
@@ -17,26 +16,24 @@ const event: Event = {
 
     if (message.author.bot) return;
 
-    // // TODO: EARLY ALPHA FOR CLASSIC FAITHFUL
-    // const tmp = [
-    //   '814201529032114226',
-    //   '909503944118648883',
-    //   '814209343502286899',
-    // ];
+    // TODO: EARLY ALPHA FOR CLASSIC FAITHFUL
+    const tmp = [
+      '814201529032114226',
+      '909503944118648883',
+      '814209343502286899',
+    ];
 
-    // if (tmp.includes(message.channelId)) {
-    //   client.emit('textureSubmitted', (client as Client, message));
-    //   return;
-    // }
-
-    // test if message is in submit channel
-    // TODO: remove `&& client.tokens.dev` once dev is finished
-    if (getSubmissionsChannels(client as Client).includes(message.channelId) && client.tokens.dev) {
+    if (tmp.includes(message.channelId)) {
       client.emit('textureSubmitted', (client as Client, message));
       return;
     }
 
-    quote(message);
+    // // test if message is in submit channel
+    // // TODO: remove `&& client.tokens.dev` once dev is finished
+    // if (getSubmissionsChannels(client as Client).includes(message.channelId) && client.tokens.dev) {
+    //   client.emit('textureSubmitted', (client as Client, message));
+    //   return;
+    // }
 
     switch (message.content.toLocaleLowerCase()) {
       case 'engineer gaming':

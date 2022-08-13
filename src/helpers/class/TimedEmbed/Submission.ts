@@ -12,7 +12,9 @@ import {
 } from '@helpers/buttons';
 import { addMinutes } from '@helpers/dates';
 import { ids, parseId } from '@helpers/emojis';
-import { Client, Message, MessageEmbed } from '@client';
+import {
+  Automation, Client, Message, MessageEmbed,
+} from '@client';
 import {
   EmbedField,
   MessageAttachment,
@@ -33,7 +35,7 @@ import {
   Texture,
   MCMETA,
 } from '@helpers/interfaces/firestorm';
-import toDataURL from 'helpers/functions/toDataURL';
+import toDataURL from '@helpers/functions/toDataURL';
 import { TimedEmbed } from '.';
 import MCAnimation from '../MCAnimation';
 
@@ -280,7 +282,7 @@ export class Submission extends TimedEmbed {
 
     this.setChannelId(baseMessage.channel.id);
     this.setMessageId(submissionMessage);
-    client.submissions.set(this.id, this);
+    client.submissions.set(this.id, Automation.cleanedSubmission(this));
 
     return submissionMessage;
   }

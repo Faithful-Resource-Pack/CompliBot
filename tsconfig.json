@@ -21,7 +21,8 @@
 		"resolveJsonModule": true,
 		"baseUrl": "src",
 		"paths": {
-			"@client": ["../src/client"],
+			"@client": ["../src/client/index"],
+			"@client/*": ["../src/client"],
 			"@client/buttons/*": ["../src/buttons/*"],
 			"@client/commands/*": ["../src/commands/*"],
 			"@client/menus/*": ["../src/menus/*"],
@@ -35,5 +36,9 @@
 		}
 	},
 	"exclude": ["node_modules"],
-	"include": ["src"]
+	"include": ["./src/**/*"],
+        "tsc-alias": {
+         "verbose": true,
+         "resolveFullPaths": true
+        }
 }

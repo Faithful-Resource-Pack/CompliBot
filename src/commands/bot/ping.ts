@@ -13,7 +13,6 @@ const command: SlashCommand = {
     await interaction
       .reply({
         embeds: [embed],
-        ephemeral: true,
       })
       .then(async () => {
         const d: Date = new Date();

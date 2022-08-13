@@ -194,49 +194,55 @@ export const logConstructor: Function = (
 };
 
 export const errorHandler: Function = async (client: Client, reason: any, type: string) => {
-  console.error(`${err} ${reason.stack || JSON.stringify(reason)}`);
+  await (async () => {
+    console.error(`${err} ${reason.stack || JSON.stringify(reason)}`);
 
-  // get dev log channel
-  const channel = client.channels.cache.get(client.tokens.errorChannel) as TextChannel;
-  if (channel === undefined) return; // avoid infinite loop when crash is outside of client
+    // get dev log channel
+    const channel = client.channels.cache.get(client.tokens.errorChannel) as TextChannel;
+    if (channel === undefined) return; // avoid infinite loop when crash is outside of client
 
-  if (lastReasons.length === loopLimit) lastReasons.pop(); // pop removes an item from the end of an array
-  lastReasons.push(reason); // push adds one to the start
+    if (lastReasons.length === loopLimit) lastReasons.pop(); // pop removes an item from the end of an array
+    lastReasons.push(reason); // push adds one to the start
 
-  // checks if every reasons are the same
-  // if (lastReasons.every((v) => v.stack === lastReasons[0].stack) && lastReasons.length === loopLimit) {
-  //   if (client.verbose) console.log(`${err}Suspected crash loop detected; Restarting...`);
+    // checks if every reasons are the same
+    // if (lastReasons.every((v) => v.stack === lastReasons[0].stack) && lastReasons.length === loopLimit) {
+    //   if (client.verbose) console.log(`${err}Suspected crash loop detected; Restarting...`);
 
-  //   const embed = new MessageEmbed()
-  //     .setTitle('(Probably) Looped, crash encountered!')
-  //     .setFooter({ text: `Got the same error ${loopLimit} times in a row. Attempting restart...` })
-  //     .setDescription('```bash\n' + reason.stack + '\n```');
-  //   await channel.send({ embeds: [embed] });
+    //   const embed = new MessageEmbed()
+    //     .setTitle('(Probably) Looped, crash encountered!')
+    //     .setFooter({ text: `Got the same error ${loopLimit} times in a row. Attempting restart...` })
+    //     .setDescription('```bash\n' + reason.stack + '\n```');
+    //   await channel.send({ embeds: [embed] });
 
-  //   client.restart();
-  // }
+    //   client.restart();
+    // }
 
-  const embed = new MessageEmbed()
-    .setAuthor({
-      name: type,
-      iconURL: `${client.config.images}bot/error.png`,
-    }) // much compressed than .title() & .thumbnail()
-    .setColor(colors.red)
-    .setTimestamp()
-    .setDescription(`\`\`\`bash\n${reason.stack || JSON.stringify(reason)}\n\`\`\``)
-    .setFooter({
-      text: client.user.tag,
-      iconURL: client.user.avatarURL(),
+    const embed = new MessageEmbed()
+      .setAuthor({
+        name: type,
+        iconURL: `${client.config.images}bot/error.png`,
+      }) // much compressed than .title() & .thumbnail()
+      .setColor(colors.red)
+      .setTimestamp()
+      .setDescription(`\`\`\`bash\n${reason.stack || JSON.stringify(reason)}\n\`\`\``)
+      .setFooter({
+        text: client.user.tag,
+        iconURL: client.user.avatarURL(),
+      });
+
+    await channel
+      .send({
+        embeds: [embed],
+      })
+      .catch(console.error);
+    await channel
+      .send({
+        files: [logConstructor(client, reason)],
+      })
+      .catch(console.error); // send after because the file is displayed before the embed (embeds are prioritized)
+  })()
+    .catch((final_err) => {
+      // ! NEVER EVER THROW ERROR HERE, ELSE IT LOOPS
+      console.error(final_err);
     });
-
-  await channel
-    .send({
-      embeds: [embed],
-    })
-    .catch(console.error);
-  await channel
-    .send({
-      files: [logConstructor(client, reason)],
-    })
-    .catch(console.error); // send after because the file is displayed before the embed (embeds are prioritized)
 };
