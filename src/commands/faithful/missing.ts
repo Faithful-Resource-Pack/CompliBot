@@ -112,7 +112,6 @@ const command: SlashCommand = {
         if (steps.length === 1 && steps[0] === 'Next one...') steps = [];
         steps.push(step);
       }
-
       embed.fields[0].value = steps.join('\n');
       await interaction.editReply({
         embeds: [embed],

@@ -45,7 +45,6 @@ export default class Magnify {
     if (!this.allowSmaller) this.factor = Math.max(this.factor, 1);
 
     [this.width, this.height] = [this.texture.width * this.factor, this.texture.height * this.factor];
-    console.log(this.texture.width, this.texture.height, Math.max(this.factor, 1), this.width, this.height);
   }
 
   private magnify(): Canvas {

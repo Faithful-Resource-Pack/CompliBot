@@ -2,7 +2,7 @@
 import { Event } from '@interfaces';
 import { Client, Message, MessageEmbed } from '@client';
 import EasterEgg from '@functions/canvas/isEasterEggImg';
-import { getSubmissionsChannels } from '@helpers/channels';
+import { getSubmissionsChannels } from 'helpers/submissionConfig';
 
 const event: Event = {
   name: 'messageCreate',
