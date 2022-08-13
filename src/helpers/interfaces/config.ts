@@ -15,6 +15,7 @@ export interface SubmissionConfig {
   channel: string;
   slug: string;
   resolution: number;
+  contributor_role: string;
   timeBeforeCouncil: number;
   timeBeforeResults: number;
   councilEnabled: boolean;

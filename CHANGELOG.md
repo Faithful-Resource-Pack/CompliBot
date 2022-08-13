@@ -14,6 +14,9 @@ Commands are explained like so:
 ### Added
 - Both Optifine & Mojang cape are shown when using the `/profile minecraft` command.
 - Mostly finished submission v3 & launched an early alpha for Classic Faithful.
+- Submission System (v3 WIP):
+  - Contributor role is added to all contributors of a submission if the submission is approved/instapassed.
+  - Timing can now be configured trough the `config.json` file.
 
 ### Changed
 - Moved `colors.ts` from `helpers/function` to `class` and renamed it to `ColorManager.ts`.

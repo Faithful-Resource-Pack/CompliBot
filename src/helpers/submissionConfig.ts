@@ -18,6 +18,21 @@ export const getSubmissionChannelName = (client: Client, id: string): string => 
   )[0];
 };
 
+export const getCorrespondingGuildIdFromSubmissionChannel = (client: Client, id: string): string => {
+  const packName = getSubmissionChannelName(client, id);
+  return client.config.discords
+    .filter((d) => d.submissionSystem !== undefined)
+    .filter((d) => d.submissionSystem.submission[packName] !== undefined)
+    .map((d) => d.id)[0];
+};
+
+/**
+ * Get key value for the asked key field of a submission config.
+ * @param {Client} client Discord Bot Client
+ * @param {String} id channel id (submission channel id)
+ * @param {String} type field of {SubmissionConfig}
+ * @returns {String}
+ */
 export function getSubmissionSetting(client: Client, id: string, type: SubmissionConfigKeys): any {
   const packName = getSubmissionChannelName(client, id);
 

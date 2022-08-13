@@ -4,7 +4,6 @@ import MinecraftSorter from '@helpers/sorter';
 import path from 'path';
 import fs from 'fs';
 import child_process from 'child_process';
-import { info, warning } from '@helpers/logger';
 import {
   submissionButtonsClosedEnd,
   submissionButtonsClosed,
@@ -20,7 +19,9 @@ import {
   TextChannel,
 } from 'discord.js';
 import { colors } from '@helpers/colors';
-import { getCorrespondingCouncilChannel, getSubmissionChannelName } from 'helpers/submissionConfig';
+import {
+  getCorrespondingCouncilChannel, getCorrespondingGuildIdFromSubmissionChannel, getSubmissionChannelName, getSubmissionSetting,
+} from 'helpers/submissionConfig';
 import Stick from '@class/Stick';
 import {
   Contribution,
@@ -29,8 +30,6 @@ import {
   Use,
   Uses,
   Usernames,
-  Repos,
-  AllRepos,
   Texture,
   MCMETA,
 } from '@helpers/interfaces/firestorm';
@@ -56,7 +55,7 @@ const FIELD_TIME = 'Until';
 
 export class Submission extends TimedEmbed {
   private contribution: Contribution;
-  private repos: Repos;
+  private repos: string;
   private paths: Paths;
   private uses: Uses;
   private textureBuffer: string;
@@ -165,7 +164,7 @@ export class Submission extends TimedEmbed {
       case 'instapassed':
         return `${parseId(ids.instapass)} Instapassed by %USER%`;
       case 'added':
-        return `${parseId(ids.upvote)} This textures will be added in a future version!`;
+        return `${parseId(ids.upvote)} This texture will be added in a future version!`;
       case 'invalid':
         return `${parseId(ids.invalid)} Invalidated by %USER%`;
       case 'denied':
@@ -367,56 +366,62 @@ export class Submission extends TimedEmbed {
       .fetch(this.getChannelId())
       .then((c: TextChannel) => c.messages.fetch(this.getMessageId())) // get the submission message
       .then((m: Message) => {
-        // collect required information to make the contribution
-        const textureURL: string = m.embeds[0].thumbnail.url;
-        const textureId: string = m.embeds[0].title
-          .split(' ')
-          .filter((el) => el.charAt(0) === '[' && el.charAt(1) === '#' && el.slice(-1) === ']')
-          .map((el) => el.slice(2, el.length - 1))[0];
+        //! sometimes the m.embeds[0] is undefined, this is NOT a workaround
+        if (m.embeds.length !== 0) {
+          // collect required information to make the contribution
+          const textureURL: string = m.embeds[0].thumbnail.url;
+          const textureId: string = m.embeds[0].title
+            .split(' ')
+            .filter((el) => el.charAt(0) === '[' && el.charAt(1) === '#' && el.slice(-1) === ']')
+            .map((el) => el.slice(2, el.length - 1))[0];
 
-        const authors: Array<string> = m.embeds[0].fields
-          .filter((f) => f.name === FIELD_CONTRIBUTORS)[0]
-          .value.split('\n')
-          .map((auth) => auth.replace('<@!', '').replace('>', ''));
+          const authors: Array<string> = m.embeds[0].fields
+            .filter((f) => f.name === FIELD_CONTRIBUTORS)[0]
+            .value.split('\n')
+            .map((auth) => auth.replace('<@!', '').replace('>', ''));
 
-        const date: number = m.createdTimestamp;
-        const { resolution, slug: pack } = getResourcePackFromName(
-          client,
-          m.embeds[0].fields.filter((f) => f.name === FIELD_RESOURCE_PACK)[0].value.replaceAll('`', ''),
-        );
+          const date: number = m.createdTimestamp;
+          const { resolution, slug: pack } = getResourcePackFromName(
+            client,
+            m.embeds[0].fields.filter((f) => f.name === FIELD_RESOURCE_PACK)[0].value.replaceAll('`', ''),
+          );
 
-        interface ContributionSubmit extends Omit<Contribution, 'id' | 'pack'> {
-          pack: string;
+          interface ContributionSubmit extends Omit<Contribution, 'id' | 'pack'> {
+            pack: string;
+          }
+
+          const contribution: ContributionSubmit = {
+            date,
+            pack,
+            resolution,
+            authors,
+            texture: textureId,
+          };
+
+          return Promise.all([
+            axios
+              .post(`${client.config.apiUrl}contributions`, contribution, {
+                headers: { bot: client.tokens.apiPassword },
+              })
+              .then((res) => axios.get(`${client.config.apiUrl}contributions/${res.data}`))
+              .then((res) => res.data),
+            axios.get(`${client.config.apiUrl}textures/${textureId}/paths`).then((res) => res.data),
+            axios.get(`${client.config.apiUrl}textures/${textureId}/uses`).then((res) => res.data),
+            axios.get(`${client.config.apiUrl}users/names`).then((res) => res.data),
+            axios.get(textureURL, { responseType: 'arraybuffer' }).then((res) => res.data),
+          ]);
         }
 
-        const contribution: ContributionSubmit = {
-          date,
-          pack,
-          resolution,
-          authors,
-          texture: textureId,
-        };
-
-        return Promise.all([
-          axios
-            .post(`${client.config.apiUrl}contributions`, contribution, { headers: { bot: client.tokens.apiPassword } })
-            .then((res) => res.data),
-          axios.get(`${client.config.apiUrl}settings/repositories.git`).then((res) => res.data),
-          axios.get(`${client.config.apiUrl}textures/${textureId}/paths`).then((res) => res.data),
-          axios.get(`${client.config.apiUrl}textures/${textureId}/uses`).then((res) => res.data),
-          axios.get(`${client.config.apiUrl}users/names`).then((res) => res.data),
-          axios.get(textureURL, { responseType: 'arraybuffer' }).then((res) => res.data),
-        ]);
+        return [];
       })
-      .then((result: [Contribution, AllRepos, Paths, Uses, Usernames, string]) => {
-        const [contribution, repos, paths, uses, usernames, textureBuffer] = result;
+      .then((result: [Contribution, Paths, Uses, Usernames, string]) => {
+        const [contribution, paths, uses, usernames, textureBuffer] = result;
         this.contribution = contribution;
-        this.repos = repos[contribution.pack];
+        this.repos = contribution.pack;
         this.paths = paths;
         this.uses = uses;
         this.usernames = usernames;
         this.textureBuffer = textureBuffer;
-
         this.pushTextureToGitHub(client);
       })
       .catch(console.error);
@@ -424,29 +429,38 @@ export class Submission extends TimedEmbed {
 
   public pushTextureToGitHub(client: Client): void {
     // get the base paths where repos are located
-    const basePath = path.join(`${__dirname}/../../../repos/`);
-    // sort the uses by their edition
-    const usesByEditions: { [edition: string]: Use[] } = {};
+    const basePath = path.join(`${__dirname}/../../../../repos/`, this.repos);
+
     // get the contribution contributors usernames
-    const contributorsNames = this.contribution.authors.map(
-      (id) => this.usernames.filter((user) => user.id === id)[0].username,
-    );
+    const contributorsNames = this.usernames
+      .filter((u) => this.contribution.authors.includes(u.id))
+      .map((u) => u.username ?? client.users.cache.get(u.id)?.username ?? u.id);
 
-    // if base path does not exist, create it
-    if (!fs.existsSync(basePath)) fs.mkdirSync(basePath);
+    // add contributor role to the contributors
+    const guild = client.guilds.cache.get(getCorrespondingGuildIdFromSubmissionChannel(client, this.getChannelId())) ?? undefined;
+    if (guild) {
+      this.contribution.authors.forEach((id) => {
+        guild.members.cache.get(id)?.roles.add(getSubmissionSetting(client, this.getChannelId(), 'contributor_role'));
+      });
+    }
 
-    // split uses by edition (each edition has it's own repo)
-    this.uses.forEach((use: Use) => {
+    // check if the submodule has been cloned
+    try {
+      child_process.execSync('git submodule update --init --recursive --remote');
+    } catch {
+      // something went wrong F
+    }
+
+    // split & sort uses by edition (each edition has it's own repo)
+    const usesByEditions: { [edition: string]: Use[] } = {};
+    this.uses.forEach((use: Use): any => {
       if (usesByEditions[use.edition]) usesByEditions[use.edition].push(use);
       else usesByEditions[use.edition] = [use];
     });
 
-    // for each edition (since each edition has it's own repo)
     Object.keys(usesByEditions).forEach((edition: string) => {
-      // get all uses Ids for that edition
+      // Get MC version for the edition
       const usesIds = usesByEditions[edition].map((use: Use) => use.id);
-
-      // get all versions for those uses
       const versions = [
         ...new Set(
           this.paths
@@ -456,92 +470,40 @@ export class Submission extends TimedEmbed {
         ),
       ];
 
-      // find the corresponding repo for this use
-      const repoGit: string = this.repos[edition];
+      // C://Users/.../repos/<slug>/<edition> (where <slug> is the resource pack slug and <edition> is the resource pack edition)
+      const repoPath = path.join(basePath, edition);
 
-      if (!repoGit) return; // if no repo found, skip this edition
-      const repoName: string = this.repos[edition].split('/').pop().replace('.git', '');
-
-      // C://Users/.../repos/repoName
-      const fullPath: string = path.join(basePath, repoName);
-
-      // if repo does not exist, clone it
-      // else stash & pull the latest version
-      if (!fs.existsSync(fullPath)) {
-        if (client.verbose) console.log(`${warning} Cloning ${repoName}`);
-        child_process.execSync(`cd "${basePath}" && git clone ${repoGit}`);
-      } else child_process.execSync(`cd "${fullPath}" && git stash && git pull`);
-
-      // for each versions, write the texture to all paths that has that version
-      versions.forEach((version: string) => {
-        // swap to the right version branch
+      versions.forEach((ver: string) => {
         try {
-          child_process.execSync(`cd "${fullPath}" && git checkout ${version}`);
+          child_process.execSync(`cd "${repoPath}" && git stash`);
+          child_process.execSync(`cd "${repoPath}" && git checkout ${ver}`);
+          child_process.execSync(`cd "${repoPath}" && git pull`);
         } catch (e) {
-          /* already on branch */
+          // something went wrong
         }
 
-        // stash changes & pull latest
-        try {
-          child_process.execSync(`cd "${fullPath}" && git stash`);
-        } catch (e) {
-          /* no changes to stash */
-        }
-        // update repo to latest version
-        try {
-          child_process.execSync(`cd "${fullPath}" && git pull`);
-        } catch (e) {
-          /* already up to date */
-        }
+        this.paths.filter((p: Path) => p.versions.includes(ver)).forEach((p: Path) => {
+          const use: Use = this.uses.find((u: Use) => u.id === p.use);
+          const texturePath = path.join(repoPath, `${use.assets !== null ? `assets/${use.assets}/${p.name}` : p.name}`);
+          const directories = texturePath.split('\\').slice(0, -1).join('\\');
 
-        // for each path for that version
-        this.paths
-          .filter((p: Path) => p.versions.includes(version))
-          .forEach((p: Path) => {
-            const use: Use = this.uses.find((u: Use) => u.id === p.use);
-            const texturePath = path.join(
-              basePath,
-              repoName,
-              `${use.assets !== null ? `assets/${use.assets}/${p.name}` : p.name}`,
-            );
-            const directoriesUntilTexture = texturePath.split('\\').slice(0, -1).join('\\');
+          // create full path to the texture if it doesn't exist already
+          if (!fs.existsSync(directories)) {
+            fs.mkdirSync(directories, { recursive: true });
+          }
 
-            console.log(texturePath);
-            console.log(directoriesUntilTexture);
+          // write the texture to the path
+          fs.writeFileSync(texturePath, Buffer.from(this.textureBuffer));
 
-            // create full path to the texture if it doesn't exist
-            if (!fs.existsSync(directoriesUntilTexture)) {
-              fs.mkdirSync(directoriesUntilTexture, { recursive: true });
-            }
+          // track files
+          child_process.execSync(`cd "${repoPath}" && git add *`);
 
-            // upload the file
-            fs.writeFileSync(texturePath, Buffer.from(this.textureBuffer));
-          });
+          // commit the changes
+          child_process.execSync(`cd "${repoPath}" && git commit -m "[#${this.contribution.texture}] - Authors: ${contributorsNames.join(', ')}"`);
 
-        // track files
-        try {
-          child_process.execSync(`cd "${fullPath}" && git add *`);
-        } catch (e) {
-          /* all files are already added */
-        }
-
-        // commit the changes
-        try {
-          child_process.execSync(
-            `cd "${fullPath}" && git commit -m "[#${this.contribution.texture}] by: ${contributorsNames.join(', ')}"`,
-          );
-        } catch (e) {
-          /* make commit */
-        }
-
-        // push the commit
-        try {
-          child_process.execSync(`cd "${fullPath}" && git push origin ${version}`);
-        } catch (e) {
-          /* push commits */
-        }
-
-        if (client.verbose) console.log(`${info}[${repoName}] ${version} pushed: #${this.contribution.texture}`);
+          // push the changes
+          child_process.execSync(`cd "${repoPath}" && git push`);
+        });
       });
     });
   }

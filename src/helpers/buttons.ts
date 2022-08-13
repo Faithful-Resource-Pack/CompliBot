@@ -1,11 +1,6 @@
 import { MessageActionRow, MessageButton } from 'discord.js';
 import { ids, parseId } from './emojis';
 
-export const compare = new MessageButton()
-  .setStyle('PRIMARY')
-  .setEmoji(parseId(ids.compare))
-  .setCustomId('compare')
-  .setDisabled(true); // todo enable once compare button is made
 export const palette = new MessageButton().setStyle('PRIMARY').setEmoji(parseId(ids.palette)).setCustomId('palette');
 export const magnify = new MessageButton().setStyle('PRIMARY').setEmoji(parseId(ids.magnify)).setCustomId('magnify');
 export const tile = new MessageButton().setStyle('PRIMARY').setEmoji(parseId(ids.tile)).setCustomId('tile');
@@ -91,7 +86,7 @@ export const pollDelete = new MessageButton()
 export const pollVotes = [pollVote1, pollVote2, pollVote3, pollVote4, pollVote5];
 export const pollYesNo = new MessageActionRow().addComponents([pollUpvote, pollDownvote]);
 
-export const imageButtons = new MessageActionRow().addComponents([magnify, tile, palette, compare]);
+export const imageButtons = new MessageActionRow().addComponents([magnify, tile, palette]);
 export const submissionButtonsOpen = new MessageActionRow().addComponents([
   seeLess,
   viewVotes,
@@ -110,7 +105,6 @@ export const submissionButtonsClosedEnd = new MessageActionRow().addComponents([
   magnify,
   tile,
   palette,
-  compare,
   seeMoreReturn,
 ]);
 export const submissionButtonsVotes = new MessageActionRow().addComponents([upvote, downvote]);

@@ -47,11 +47,12 @@
             "submissionSystem": {
                 "council": "946558091929985055",
                 "submission": {
-                    "test Pack": {
+                    "DEV PACK": {
                         "timeBeforeCouncil": 1,
                         "timeBeforeResults": 1,
                         "councilEnabled": false,
                         "channel": "841396215211360296",
+                        "contributor_role": "1008139076819488809",
                         "slug": "faithful_32x",
                         "resolution": 8
                     }
@@ -80,6 +81,7 @@
                         "councilEnabled": true,
                         "channel": "774220983044669450",
                         "slug": "faithful_32x",
+                        "contributor_role": "782211978616635402",
                         "resolution": 32
                     },
                     "Faithful 64x": {
@@ -88,6 +90,7 @@
                         "councilEnabled": true,
                         "channel": "931886877521350696",
                         "slug": "faithful_64x",
+                        "contributor_role": "782211978616635402",
                         "resolution": 64
                     }
                 }
@@ -117,6 +120,7 @@
                         "councilEnabled": true,
                         "channel": "814201529032114226",
                         "slug": "classic_faithful_32x",
+                        "contributor_role": "814200788099530763",
                         "resolution": 32
                     },
                     "Classic Faithful 32x Programmer Art": {
@@ -124,7 +128,8 @@
                         "timeBeforeResults": 1440,
                         "councilEnabled": true,
                         "channel": "909503944118648883",
-                        "slug": "classic_faithful_32x_progart",
+                        "slug": "classic_faithful_32x_programmer_art",
+                        "contributor_role": "899913555934076949",
                         "resolution": 32
                     },
                     "Classic Faithful 64x": {
@@ -133,6 +138,7 @@
                         "councilEnabled": true,
                         "channel": "814209343502286899",
                         "slug": "classic_faithful_64x",
+                        "contributor_role": "814200788099530763",
                         "resolution": 64
                     }
                 }
