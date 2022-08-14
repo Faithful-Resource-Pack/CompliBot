@@ -32,7 +32,7 @@
         "jszip": "^3.9.1",
         "linux-os-info": "^2.0.0",
         "module-alias": "^2.2.2",
-        "moment": "^2.29.3",
+        "moment": "^2.29.4",
         "tslib": "^2.4.0"
     }
 }
