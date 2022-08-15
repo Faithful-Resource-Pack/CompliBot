@@ -69,7 +69,7 @@ export const logConstructor: Function = (
     .replace('%randomSentence%', randomSentences[t])
     .replace('%randomSentenceUnderline%', '-'.repeat(randomSentences[t].length));
 
-  logText = logText.split('%templateStart%')[0]; // remove message template
+  [logText] = logText.split('%templateStart%'); // remove message template
 
   const len: number = client.getActions().length;
   const actions: Log[] = client.getActions().sort((a: Log, b: Log) => (a.timestamp > b.timestamp ? -1 : 1));

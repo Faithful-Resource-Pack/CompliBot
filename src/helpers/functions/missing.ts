@@ -77,7 +77,7 @@ export const compute = async (
   }
 
   const versions: Array<string> = (await axios.get(`${client.tokens.apiURL}settings/versions.${edition}`)).data;
-  if (!versions.includes(version)) version = versions[0]; // latest version if versions doesn't include version (unexisting/unsupported)
+  if (!versions.includes(version)) [version] = versions; // latest version if versions doesn't include version (nonexisting/unsupported)
   await callback(`Updating packs with latest version of \`${version}\` known...`).catch((err: any) => Promise.reject(err));
 
   /**

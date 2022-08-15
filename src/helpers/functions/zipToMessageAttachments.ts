@@ -39,7 +39,7 @@ export const zipToMA = async (url: string): Promise<Array<MessageAttachment>> =>
     .then((res): { [key: string]: Buffer } => res.reduce((acc, val: [key: string, buff: Buffer]) => {
       const splitted: Array<string> = val[0].split('/');
       const key: string = splitted[splitted.length - 1];
-      acc[key] = val[1];
+      [, acc[key]] = val;
       return acc;
     }, {}));
 

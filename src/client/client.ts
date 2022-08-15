@@ -272,15 +272,11 @@ class ExtendedClient extends Client {
         };
 
         if (slashCommand.permissions.roles !== undefined) {
-          for (const id of slashCommand.permissions.roles) {
-            p.permissions.push({ id, type: 'ROLE', permission: true });
-          }
+          slashCommand.permissions.roles.forEach((id) => p.permissions.push({ id, type: 'ROLE', permission: true }));
         }
 
         if (slashCommand.permissions.users !== undefined) {
-          for (const id of slashCommand.permissions.users) {
-            p.permissions.push({ id, type: 'USER', permission: true });
-          }
+          slashCommand.permissions.users.forEach((id) => p.permissions.push({ id, type: 'USER', permission: true }));
         }
 
         fullPermissions.push(p);
@@ -316,6 +312,8 @@ class ExtendedClient extends Client {
     }).setToken(this.tokens.token);
     rest.get(Routes.applicationCommands(this.tokens.appID)).then((data: any) => {
       const promises = [];
+      // TODO: need refactor for the new permission system
+      // eslint-disable-next-line no-restricted-syntax
       for (const command of data) promises.push(rest.delete(`${Routes.applicationCommands(this.tokens.appID)}/${command.id}`));
       return Promise.all(promises).then(() => console.log(`${success}delete succeed`));
     });
@@ -336,8 +334,8 @@ class ExtendedClient extends Client {
     for (let i = 0; i < paths.length; i += 1) {
       const dir: string = paths[i];
 
-      const commands = readdirSync(`${slashCommandsPath}/${dir}`).filter((file) => file.endsWith(process.env.NODE_ENV === 'production' ? '.js' : '.ts'));
-      for (const file of commands) {
+      const commandsFiles = readdirSync(`${slashCommandsPath}/${dir}`).filter((file) => file.endsWith(process.env.NODE_ENV === 'production' ? '.js' : '.ts'));
+      commandsFiles.forEach(async (file) => {
         const { default: command } = await import(`${slashCommandsPath}/${dir}/${file}`);
 
         if (command.data instanceof Function) {
@@ -353,7 +351,7 @@ class ExtendedClient extends Client {
             command: command.data.toJSON(),
           });
         }
-      }
+      });
     }
 
     const rest = new REST({
@@ -452,12 +450,11 @@ class ExtendedClient extends Client {
     const buttonPath = path.join(__dirname, '..', 'buttons');
 
     readdirSync(buttonPath).forEach(async (dir) => {
-      const buttons = readdirSync(`${buttonPath}/${dir}`).filter((file) => file.endsWith(process.env.NODE_ENV === 'production' ? '.js' : '.ts'));
-
-      for (const file of buttons) {
+      const buttonsFiles = readdirSync(`${buttonPath}/${dir}`).filter((file) => file.endsWith(process.env.NODE_ENV === 'production' ? '.js' : '.ts'));
+      buttonsFiles.forEach(async (file) => {
         const { default: button } = await import(`${buttonPath}/${dir}/${file}`);
         this.buttons.set(button.buttonId, button);
-      }
+      });
     });
   };
 
@@ -469,12 +466,11 @@ class ExtendedClient extends Client {
     const menusPath = path.join(__dirname, '..', 'menus');
 
     readdirSync(menusPath).forEach(async (dir) => {
-      const menus = readdirSync(`${menusPath}/${dir}`).filter((file) => file.endsWith(process.env.NODE_ENV === 'production' ? '.js' : '.ts'));
-
-      for (const file of menus) {
+      const menusFiles = readdirSync(`${menusPath}/${dir}`).filter((file) => file.endsWith(process.env.NODE_ENV === 'production' ? '.js' : '.ts'));
+      menusFiles.forEach(async (file) => {
         const { default: menu } = await import(`${menusPath}/${dir}/${file}`);
         this.menus.set(menu.selectMenuId, menu);
-      }
+      });
     });
   };
 
