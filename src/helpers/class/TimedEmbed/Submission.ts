@@ -327,10 +327,10 @@ export class Submission extends TimedEmbed {
     let mcmeta: MCMETA;
     let req: AxiosResponse<any, any>;
     try {
-      req = await axios.get(`${(baseMessage.client as Client).config.apiUrl}textures/${texture.id}/url/default/${texture.paths[0].versions.sort(MinecraftSorter).reverse()[0]}`);
+      req = await axios.get(`${(baseMessage.client as Client).tokens.apiURL}textures/${texture.id}/url/default/${texture.paths[0].versions.sort(MinecraftSorter).reverse()[0]}`);
       url = req.request.res.responseUrl;
 
-      req = await axios.get(`${(baseMessage.client as Client).config.apiUrl}textures/${texture.id}/mcmeta`);
+      req = await axios.get(`${(baseMessage.client as Client).tokens.apiURL}textures/${texture.id}/mcmeta`);
       mcmeta = req.data;
     } catch {
       // do nothing
@@ -367,52 +367,52 @@ export class Submission extends TimedEmbed {
     client.channels
       .fetch(this.getChannelId())
       .then((c: TextChannel) => c.messages.fetch(this.getMessageId())) // get the submission message
-      .then((m: Message) => {
-        //! sometimes the m.embeds[0] is undefined, this is NOT a workaround
-        if (m.embeds.length !== 0) {
-          // collect required information to make the contribution
-          const textureURL: string = m.embeds[0].thumbnail.url;
-          const textureId: string = m.embeds[0].title
-            .split(' ')
-            .filter((el) => el.charAt(0) === '[' && el.charAt(1) === '#' && el.slice(-1) === ']')
-            .map((el) => el.slice(2, el.length - 1))[0];
+      .then((m: Message): any => {
+        //! sometimes the m.embeds[0] is undefined
+        // try to fetch it again
+        if (m.embeds.length === 0) return this.createContribution(client);
 
-          const authors: Array<string> = m.embeds[0].fields
-            .filter((f) => f.name === FIELD_CONTRIBUTORS)[0]
-            .value.split('\n')
-            .map((auth) => auth.replace('<@!', '').replace('>', ''));
+        // collect required information to make the contribution
+        const textureURL: string = m.embeds[0].thumbnail.url;
+        const textureId: string = m.embeds[0].title
+          .split(' ')
+          .filter((el) => el.charAt(0) === '[' && el.charAt(1) === '#' && el.slice(-1) === ']')
+          .map((el) => el.slice(2, el.length - 1))[0];
 
-          const date: number = m.createdTimestamp;
-          const { resolution, slug: pack } = getResourcePackFromName(
-            client,
-            m.embeds[0].fields.filter((f) => f.name === FIELD_RESOURCE_PACK)[0].value.replaceAll('`', ''),
-          );
+        const authors: Array<string> = m.embeds[0].fields
+          .filter((f) => f.name === FIELD_CONTRIBUTORS)[0]
+          .value.split('\n')
+          .map((auth) => auth.replace('<@!', '').replace('>', ''));
 
-          interface ContributionSubmit extends Omit<Contribution, 'id' | 'pack'> {
-            pack: string;
-          }
+        const date: number = m.createdTimestamp;
+        const { resolution, slug: pack } = getResourcePackFromName(
+          client,
+          m.embeds[0].fields.filter((f) => f.name === FIELD_RESOURCE_PACK)[0].value.replaceAll('`', ''),
+        );
 
-          const contribution: ContributionSubmit = {
-            date,
-            pack: pack.replace('programmer_art', 'progart'),
-            resolution,
-            authors,
-            texture: textureId,
-          };
-
-
-          return Promise.all([
-            axios.post(`${client.config.apiUrl}contributions`, contribution, { headers: { bot: client.tokens.apiPassword }}).then((res) => res.data),
-            axios.get(`${client.config.apiUrl}textures/${textureId}/paths`).then((res) => res.data),
-            axios.get(`${client.config.apiUrl}textures/${textureId}/uses`).then((res) => res.data),
-            axios.get(`${client.config.apiUrl}users/names`).then((res) => res.data),
-            axios.get(textureURL, { responseType: 'arraybuffer' }).then((res) => res.data),
-          ]);
+        interface ContributionSubmit extends Omit<Contribution, 'id' | 'pack'> {
+          pack: string;
         }
 
-        return [];
+        const contribution: ContributionSubmit = {
+          date,
+          pack: pack.replace('programmer_art', 'progart'),
+          resolution,
+          authors,
+          texture: textureId,
+        };
+
+        return Promise.all([
+          axios.post(`${client.tokens.apiURL}contributions`, contribution, { headers: { bot: client.tokens.apiPassword } }).then((res) => res.data),
+          axios.get(`${client.tokens.apiURL}textures/${textureId}/paths`).then((res) => res.data),
+          axios.get(`${client.tokens.apiURL}textures/${textureId}/uses`).then((res) => res.data),
+          axios.get(`${client.tokens.apiURL}users/names`).then((res) => res.data),
+          axios.get(textureURL, { responseType: 'arraybuffer' }).then((res) => res.data),
+        ]);
       })
-      .then((result: [Contribution, Paths, Uses, Usernames, string]) => {
+      .then((result: [Contribution, Paths, Uses, Usernames, string] | void) => {
+        if (!result) return; // can't happen (since we're looping to fetch the message)
+
         const [contribution, paths, uses, usernames, textureBuffer] = result;
         this.contribution = contribution;
         this.repos = contribution.pack.replace('progart', 'programmer_art');
@@ -487,10 +487,12 @@ export class Submission extends TimedEmbed {
         this.paths.filter((p: Path) => p.versions.includes(ver)).forEach((p: Path) => {
           const use: Use = this.uses.find((u: Use) => u.id === p.use);
           const texturePath = path.join(repoPath, `${use.assets !== null ? `assets/${use.assets}/${p.name}` : p.name}`);
-          const directories = texturePath.split('/').slice(0, -1).join('/')
+          const directories = texturePath.split('/').slice(0, -1).join('/');
 
           console.log(`path: ${texturePath}`);
           console.log(`dir: ${directories}`);
+
+          return;
 
           // create full path to the texture if it doesn't exist already
           if (!fs.existsSync(directories)) {

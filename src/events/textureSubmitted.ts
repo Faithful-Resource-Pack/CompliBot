@@ -17,7 +17,7 @@ export async function processFiles(client: Client, message: Message, files: Mess
 
     let req: AxiosResponse<any, any>;
     try {
-      req = await axios.get(`${client.config.apiUrl}textures/${id || file.name.replace('.png', '').replace('.tga', '')}/all`);
+      req = await axios.get(`${client.tokens.apiURL}textures/${id || file.name.replace('.png', '').replace('.tga', '')}/all`);
     } catch (_err) {
       message.warn(`An API error occurred for \`${id ? `the ID ${id}` : file.name}\`:\n\`\`\`(${_err.response.data.status}) ${_err.response.data.message}\`\`\``);
       return false;

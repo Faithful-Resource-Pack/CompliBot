@@ -49,7 +49,7 @@ export const getDisplayNameForPack = (pack: string): string => PACKS.filter((p) 
 const command: SlashCommand = {
   servers: ['faithful', 'faithful_extra', 'classic_faithful'],
   data: async (client: Client): Promise<SyncSlashCommandBuilder> => {
-    const versions = Object.values((await axios.get(`${client.config.apiUrl}settings/versions`)).data).flat();
+    const versions = Object.values((await axios.get(`${client.tokens.apiURL}settings/versions`)).data).flat();
     versions.splice(versions.indexOf('versions'), 1); // remove "versions" key id (API issue)
 
     return new SlashCommandBuilder()
@@ -183,8 +183,7 @@ const command: SlashCommand = {
           `${response[2].completion}% complete\n> ${response[1][0]}`,
         );
       } else {
-        if (response[1].length !== 0)
-          files.push(new MessageAttachment(response[0], `missing-${response[2].pack}-${response[2].edition}.txt`));
+        if (response[1].length !== 0) files.push(new MessageAttachment(response[0], `missing-${response[2].pack}-${response[2].edition}.txt`));
         embed2.addField(
           `${getDisplayNameForPack(response[2].pack)} - ${response[2].edition} - ${response[2].version}`,
           `${response[2].completion}% complete\n> ${response[1].length} textures missing.`,

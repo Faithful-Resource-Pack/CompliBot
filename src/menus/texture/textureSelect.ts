@@ -28,7 +28,7 @@ const menu: SelectMenu = {
 
     const [id, pack] = interaction.values[0].split('__');
     const [embed, files] = await getTextureMessageOptions({
-      texture: (await axios.get(`${(interaction.client as Client).config.apiUrl}textures/${id}/all`)).data,
+      texture: (await axios.get(`${(interaction.client as Client).tokens.apiURL}textures/${id}/all`)).data,
       pack,
     });
     embed.setFooter({
