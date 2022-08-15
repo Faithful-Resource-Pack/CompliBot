@@ -394,19 +394,15 @@ export class Submission extends TimedEmbed {
 
           const contribution: ContributionSubmit = {
             date,
-            pack,
+            pack: pack.replace('programmer_art', 'progart'),
             resolution,
             authors,
             texture: textureId,
           };
 
+
           return Promise.all([
-            axios
-              .post(`${client.config.apiUrl}contributions`, contribution, {
-                headers: { bot: client.tokens.apiPassword },
-              })
-              .then((res) => axios.get(`${client.config.apiUrl}contributions/${res.data}`))
-              .then((res) => res.data),
+            axios.post(`${client.config.apiUrl}contributions`, contribution, { headers: { bot: client.tokens.apiPassword }}).then((res) => res.data),
             axios.get(`${client.config.apiUrl}textures/${textureId}/paths`).then((res) => res.data),
             axios.get(`${client.config.apiUrl}textures/${textureId}/uses`).then((res) => res.data),
             axios.get(`${client.config.apiUrl}users/names`).then((res) => res.data),
@@ -419,7 +415,7 @@ export class Submission extends TimedEmbed {
       .then((result: [Contribution, Paths, Uses, Usernames, string]) => {
         const [contribution, paths, uses, usernames, textureBuffer] = result;
         this.contribution = contribution;
-        this.repos = contribution.pack;
+        this.repos = contribution.pack.replace('progart', 'programmer_art');
         this.paths = paths;
         this.uses = uses;
         this.usernames = usernames;
@@ -431,7 +427,7 @@ export class Submission extends TimedEmbed {
 
   public pushTextureToGitHub(client: Client): void {
     // get the base paths where repos are located
-    const basePath = path.join(`${__dirname}/../../../../repos/`, this.repos);
+    const basePath = path.join(`${__dirname}/../../../../repos/`, this.repos).replace('/dist/', '/');
 
     // get the contribution contributors usernames
     const contributorsNames = this.usernames
@@ -442,7 +438,11 @@ export class Submission extends TimedEmbed {
     const guild = client.guilds.cache.get(getCorrespondingGuildIdFromSubmissionChannel(client, this.getChannelId())) ?? undefined;
     if (guild) {
       this.contribution.authors.forEach((id) => {
-        guild.members.cache.get(id)?.roles.add(getSubmissionSetting(client, this.getChannelId(), 'contributor_role'));
+        try {
+          guild.members.cache.get(id)?.roles.add(getSubmissionSetting(client, this.getChannelId(), 'contributor_role'));
+        } catch {
+          // missing permissions
+        }
       });
     }
 
@@ -487,7 +487,10 @@ export class Submission extends TimedEmbed {
         this.paths.filter((p: Path) => p.versions.includes(ver)).forEach((p: Path) => {
           const use: Use = this.uses.find((u: Use) => u.id === p.use);
           const texturePath = path.join(repoPath, `${use.assets !== null ? `assets/${use.assets}/${p.name}` : p.name}`);
-          const directories = texturePath.split('\\').slice(0, -1).join('\\');
+          const directories = texturePath.split('/').slice(0, -1).join('/')
+
+          console.log(`path: ${texturePath}`);
+          console.log(`dir: ${directories}`);
 
           // create full path to the texture if it doesn't exist already
           if (!fs.existsSync(directories)) {
