@@ -492,8 +492,6 @@ export class Submission extends TimedEmbed {
           console.log(`path: ${texturePath}`);
           console.log(`dir: ${directories}`);
 
-          return;
-
           // create full path to the texture if it doesn't exist already
           if (!fs.existsSync(directories)) {
             fs.mkdirSync(directories, { recursive: true });
