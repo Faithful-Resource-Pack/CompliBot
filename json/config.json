@@ -114,27 +114,27 @@
                 "council": "935773417993543730",
                 "submission": {
                     "Classic Faithful 32x": {
-                        "timeBeforeCouncil": 0,
-                        "timeBeforeResults": 1440,
-                        "councilEnabled": false,
+                        "timeBeforeCouncil": 1440,
+                        "timeBeforeResults": 1,
+                        "councilEnabled": true,
                         "channel": "814201529032114226",
                         "slug": "classic_faithful_32x",
                         "contributor_role": "814200788099530763",
                         "resolution": 32
                     },
                     "Classic Faithful 32x Programmer Art": {
-                        "timeBeforeCouncil": 0,
-                        "timeBeforeResults": 1440,
-                        "councilEnabled": false,
+                        "timeBeforeCouncil": 1440,
+                        "timeBeforeResults": 1,
+                        "councilEnabled": true,
                         "channel": "909503944118648883",
                         "slug": "classic_faithful_32x_programmer_art",
                         "contributor_role": "899913555934076949",
                         "resolution": 32
                     },
                     "Classic Faithful 64x": {
-                        "timeBeforeCouncil": 0,
-                        "timeBeforeResults": 1440,
-                        "councilEnabled": false,
+                        "timeBeforeCouncil": 1440,
+                        "timeBeforeResults": 1,
+                        "councilEnabled": true,
                         "channel": "814209343502286899",
                         "slug": "classic_faithful_64x",
                         "contributor_role": "814200788099530763",
