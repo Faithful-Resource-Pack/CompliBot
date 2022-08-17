@@ -1,12 +1,12 @@
 import axios from 'axios';
 import ConfigJson from '@json/config.json';
+import TokensJson from '@json/tokens.json';
 import MinecraftSorter from '@helpers/sorter';
 import { MessageEmbed } from '@client';
-import { Config } from '@interfaces';
+import { Config, Tokens } from '@interfaces';
 import { MessageAttachment } from 'discord.js';
 import { ISizeCalculationResult } from 'image-size/dist/types/interface';
 import { colors } from '@helpers/colors';
-import { fromTimestampToHumanReadable } from '@helpers/dates';
 import { MCMETA, Texture } from '@helpers/interfaces/firestorm';
 import MCAnimation from '@class/MCAnimation';
 import Magnify from '@class/Magnify';
@@ -19,6 +19,7 @@ export interface Options {
 
 export default async function getTextureMessageOptions(options: Options): Promise<[MessageEmbed, Array<MessageAttachment>]> {
   const config: Config = ConfigJson;
+  const tokens: Tokens = TokensJson;
   const { texture } = options;
   const { pack } = options;
   const { uses } = texture;
@@ -29,7 +30,7 @@ export default async function getTextureMessageOptions(options: Options): Promis
   let mcmeta: MCMETA;
 
   try {
-    mcmeta = (await axios.get(`${config.apiUrl}textures/${texture.id}/mcmeta`)).data;
+    mcmeta = (await axios.get(`${tokens.apiURL}textures/${texture.id}/mcmeta`)).data;
     animated = !!mcmeta.animation;
   } catch { /* no MCMETA file found for this texture */ }
 
@@ -75,7 +76,7 @@ export default async function getTextureMessageOptions(options: Options): Promis
 
   let textureURL: string;
   try {
-    textureURL = (await axios.get(`${config.apiUrl}textures/${texture.id}/url/${pack}/latest`)).request.res.responseUrl;
+    textureURL = (await axios.get(`${tokens.apiURL}textures/${texture.id}/url/${pack}/latest`)).request.res.responseUrl;
   } catch {
     textureURL = '';
   }
@@ -97,7 +98,7 @@ export default async function getTextureMessageOptions(options: Options): Promis
 
   if (validURL) {
     embed.addField('Resolution', `${dimensions.width}×${dimensions.height}`, true);
-	embed.addField('\u200B', `[View texture online](https://webapp.faithfulpack.net/#/gallery/java/32x/latest/all/?show=${texture.id})`, true);
+    embed.addField('\u200B', `[View texture online](https://webapp.faithfulpack.net/#/gallery/java/32x/latest/all/?show=${texture.id})`, true);
 
     const displayedContributions = [
       contributions
