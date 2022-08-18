@@ -3,13 +3,17 @@ import { IHandler, IEvent } from '@interfaces';
 import { Logger, checkPermissions, Strings } from '@utils';
 
 import {
-  Collection, ChatInputCommandInteraction, CacheType, GuildMemberRoleManager,
+  Collection,
+  ChatInputCommandInteraction,
+  CacheType,
+  GuildMemberRoleManager,
 } from 'discord.js';
 
 export default {
   name: 'chatInputCommandCreate',
   run: async (client: Client, interaction: ChatInputCommandInteraction<CacheType>) => {
     Logger.log('debug', `(/) command '${interaction.commandName}' used by ${interaction.user.username}`);
+    client.log('command', interaction);
 
     if (!client.commands.has(interaction.commandName)) {
       Promise.reject(new Error(`Command ${interaction.commandName} not found.`));

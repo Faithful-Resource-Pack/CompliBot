@@ -2,7 +2,7 @@ import defaultStrings from '@langs/en-US.json';
 import { formatEmoji, LocaleString } from 'discord.js';
 import path from 'path';
 import fs from 'fs';
-import { Emojis } from './emojis';
+import { Emojis } from '@enums';
 import { Logger } from './logger';
 
 export type BaseStrings = keyof typeof defaultStrings;
@@ -15,6 +15,12 @@ export type Placeholder = {
 };
 
 export class Strings {
+  /**
+   * Get all localizations of the given key.
+   * @param {BaseStrings} key - The key from the default strings in `./langs/en-US.json`.
+   * @param {Placeholder} placeholders - The placeholders to replace inside the string.
+   * @returns {Partial<Record<LocaleString>, string>} A partial record of all strings.
+   */
   public static getAll(key: BaseStrings, placeholders?: Placeholder): Partial<Record<LocaleString, string>> {
     const locales: Partial<Record<LocaleString, string>> = {};
     const files: Array<string> = fs.readdirSync(path.join(__dirname, '../..', 'langs'));
@@ -28,13 +34,21 @@ export class Strings {
         ...JSON.load(path.join(__dirname, '../..', `langs/${file}`)), // asked language
       };
 
-      locales[locale] = this.format(dictionary[key], placeholders);
+      [locales[locale]] = [...this.format(dictionary[key], placeholders)];
     });
 
     return locales;
   }
 
-  public static get(key: BaseStrings, locale: LocaleString = 'en-US', placeholders?: Placeholder): string {
+  /**
+   * Get the corresponding string for the given key.
+   * @param {BaseStrings} key - The key from the default strings in `./langs/en-US.json`.
+   * @param {LocaleString} locale - The locale to get the string for (default 'en-US').
+   * @param {Placeholder} placeholders - The placeholders to replace inside the string.
+   * @returns {String|Array<String>} The string(s) for the given key.
+   */
+  //* Do not remove the 'any' type. Otherwise the compiler will complain in the SlashCommandBuilder (strings[] is not assignable to string).
+  public static get(key: BaseStrings, locale: LocaleString = 'en-US', placeholders?: Placeholder): any {
     let lang: typeof defaultStrings;
     const file: string = path.join(__dirname, '../..', `langs/${locale}.json`);
 
@@ -51,7 +65,13 @@ export class Strings {
     return this.format(lang[key], placeholders);
   }
 
-  public static format(str: string | Array<string>, placeholders?: Placeholder): string {
+  /**
+   * Format the given string with the given placeholders.
+   * @param {String|Array<String>} str - The string to format.
+   * @param {Placeholder} placeholders - The placeholders to replace inside the string.
+   * @returns {String|Array<String>} The formatted string(s).
+   */
+  public static format(str: string | Array<string>, placeholders?: Placeholder): string | Array<string> {
     let result: string = (typeof str === 'string' ? str : str.join('$;'))
       .replaceAll(/%EMOJI\.([A-Z_]+)%/g, (emojiName: string) => formatEmoji(Emojis[emojiName.substring(7, emojiName.length - 1).toLowerCase() as keyof typeof Emojis]));
 

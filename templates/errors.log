@@ -1,0 +1,24 @@
+    %randomSentence%
+    %randomSentenceUnderline%
+
+CompliBot crash/log report, please report this to developers!
+Date: %date%
+%stack%
+
+Actions: 
+> last 50 bots actions: slash commands, chat messages, etc...
+
+%templateStart%
+  INDEX        : %templateIndex%
+  TYPE         : %templateType%
+  LOGGED       : %templateTimestampLogged%
+  CREATED      : %templateCreatedTimestamp%
+  URL          : %templateURL%
+  CHANNEL_TYPE : %templateChannelType%
+  PARAMETERS   : %templateParameters%
+  CONTENT      : %templateContent%
+  EMBEDS       : %templateEmbeds%
+  COMPONENTS   : %templateComponents%
+
+  ---
+%templateEnd%

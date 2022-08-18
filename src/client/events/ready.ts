@@ -5,8 +5,8 @@ import { Client } from '@client';
 
 export default {
   name: 'ready',
-  run: async (client: Client) => {
-    Logger.log('info', 'Client is ready!', false);
+  run: (client: Client) => {
+    Logger.log('info', 'Client is ready!');
     client.user?.setActivity('with the bot!', { type: ActivityType.Playing });
   },
 } as IEvent;

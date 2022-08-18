@@ -7,6 +7,7 @@ declare global {
     /**
      * Load a JSON file from the given path.
      * @param {String} filepath - The path to the JSON file.
+     * @example JSON.load(path.join(__dirname, './config.json'));
      */
     load(filepath: string): any;
 
@@ -14,20 +15,24 @@ declare global {
      * Save a JSON file to the given path.
      * @param {String} filepath - The path to the JSON file.
      * @param data - The data to be saved in the file.
+     * @example JSON.save(path.join(__dirname, './config.json'));
      */
     save(filepath: string, data: any): void;
 
     /**
-     * Load the configuration JSON file from the __dirname/config directory.
-     * @param filepath - file inside the config directory
+     * Load the configuration JSON file from the `./config` directory.
+     * @param {String} filepath - file inside the config directory
      * @returns {ICommandConfig} the configuration object
+     * @example JSON.configLoad('settings.json');
+     * @example JSON.configLoad('commands/commands_name.json');
      */
     configLoad(filepath: string): ICommandConfig;
 
     /**
-     * Save the configuration JSON file to the __dirname/config directory.
-     * @param filepath - file inside the config directory
+     * Save the configuration JSON file to the `./config` directory.
+     * @param {String} filepath - file inside the config directory
      * @param {ICommandConfig} data - the configuration object to be saved
+     * @example JSON.configSave('settings.json');
      */
     configSave(filepath: string, data: ICommandConfig): void;
 

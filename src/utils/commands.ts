@@ -2,10 +2,10 @@ import path from 'path';
 import { getFileNames } from './files';
 
 /**
- *
- * @returns
+ * Gets the names of all commands that can be configured.
+ * @returns {Array<{ name: string, value: string }>} The names of all commands that can be configured.
  */
-export function getConfigurableCommands() {
+export function getConfigurableCommands(): Array<{ name: string; value: string; }> {
   const files = getFileNames(path.join(__dirname, '..', 'client', 'commands'), true);
   const blacklistedCommands = [
     'whitelist.ts',
@@ -19,6 +19,7 @@ export function getConfigurableCommands() {
 
     return true;
   })
-    .map((file) => file.slice(0, -3))
-    .map((key: string) => ({ name: key, value: key }));
+    .filter((file) => file.endsWith('.ts' || '.js'))
+    .map((file) => file.split(path.sep).pop()!.split('.')[0])
+    .map((key) => ({ name: key, value: key }));
 }
