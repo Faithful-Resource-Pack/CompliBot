@@ -16,12 +16,12 @@ export default {
     devOnly: true,
   }),
   data: new SlashCommandBuilder()
-    .setNames(Strings.getAll('debug_channel_command_name'))
-    .setDescriptions(Strings.getAll('debug_channel_command_description'))
+    .setName(Strings.get('debug_channel_command_name'))
+    .setDescription(Strings.get('debug_channel_command_description'))
     .setDMPermission(false)
     .addChannelOption((channel) => channel
-      .setNames(Strings.getAll('debug_channel_command_channel_argument_name'))
-      .setDescriptions(Strings.getAll('debug_channel_command_channel_argument_description'))
+      .setName(Strings.get('debug_channel_command_channel_argument_name'))
+      .setDescription(Strings.get('debug_channel_command_channel_argument_description'))
       .setRequired(true)),
   handler: async (interaction: ChatInputCommandInteraction) => {
     const channel = interaction.options.getChannel('channel', true);
