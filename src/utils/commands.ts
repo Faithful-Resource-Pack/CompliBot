@@ -3,8 +3,8 @@ import path from 'path';
 
 export function getConfigurableCommands() {
   const blacklistedCommands = [
-    'whitelist',
-    'blacklist',
+    'whitelist.ts',
+    'blacklist.ts',
   ];
 
   return fs.readdirSync(path.join(__dirname, '../client/commands'))
