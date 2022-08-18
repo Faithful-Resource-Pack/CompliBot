@@ -1,5 +1,3 @@
-import { Snowflake } from 'discord.js';
-
 /**
  * Emojis used in the bot.
  */
@@ -32,13 +30,4 @@ export enum Emojis {
   pending = '918186662780092537',
   flip_tiling = '942014073141334056',
   rotate_tiling = '942014072818376716',
-}
-
-/**
- * Function used to mention a custom emoji in a text message
- * @param {Snowflake} id The id of the emoji
- * @returns {String} The emoji mention
- */
-export function mentionEmoji(id: Snowflake): string {
-  return `<:${Object.keys(Emojis)[Object.values(Emojis).indexOf(id as any)]}:${id}>`;
 }

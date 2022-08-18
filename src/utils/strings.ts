@@ -1,10 +1,9 @@
 import defaultStrings from '@langs/en-US.json';
-import { LocaleString } from 'discord.js';
+import { formatEmoji, LocaleString } from 'discord.js';
 import path from 'path';
 import fs from 'fs';
-import { Emojis, mentionEmoji } from './emojis';
+import { Emojis } from './emojis';
 import { Logger } from './logger';
-import { JSONManager } from './json';
 
 export type BaseStrings = keyof typeof defaultStrings;
 
@@ -26,7 +25,7 @@ export class Strings {
       const locale: LocaleString = file.replace('.json', '') as LocaleString;
       const dictionary: typeof defaultStrings = {
         ...defaultStrings, // default strings as fallback
-        ...JSONManager.load(path.join(__dirname, '../..', `langs/${file}`)), // asked language
+        ...JSON.load(path.join(__dirname, '../..', `langs/${file}`)), // asked language
       };
 
       locales[locale] = this.format(dictionary[key], placeholders);
@@ -42,7 +41,7 @@ export class Strings {
     try {
       lang = {
         ...defaultStrings, // default strings as fallback
-        ...JSONManager.load(file), // asked language
+        ...JSON.load(file), // asked language
       };
     } catch (err) {
       Logger.log('error', `Could not load language file for ${locale} at ${file}`, err);
@@ -54,7 +53,7 @@ export class Strings {
 
   public static format(str: string | Array<string>, placeholders?: Placeholder): string {
     let result: string = (typeof str === 'string' ? str : str.join('$;'))
-      .replaceAll(/%EMOJI\.([A-Z_]+)%/g, (emojiName: string) => mentionEmoji(Emojis[emojiName.substring(7, emojiName.length - 1).toLowerCase() as keyof typeof Emojis]));
+      .replaceAll(/%EMOJI\.([A-Z_]+)%/g, (emojiName: string) => formatEmoji(Emojis[emojiName.substring(7, emojiName.length - 1).toLowerCase() as keyof typeof Emojis]));
 
     if (placeholders && Object.keys(placeholders).length > 0) {
       Object.keys(placeholders.keys).forEach((key) => {
