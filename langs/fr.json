@@ -1,0 +1,20 @@
+{
+    "whitelist_command_name": "liste-blanche",
+    "whitelist_subcommand_role_name": "rôle",
+    "whitelist_subcommand_user_name": "utilisateur",
+    
+    "whitelist_command_description": "Autorise un utilisateur/rôle spécifique à utiliser une commande",
+    "whitelist_subcommand_role_description": "Autorise un rôle spécifique à utiliser une commande.",
+    "whitelist_subcommand_user_description": "Autorise un utilisateur spécifique à utiliser une commande.",
+
+    "whitelist_subcommand_role_argument_name": "rôle",
+    "whitelist_subcommand_user_argument_name": "user",
+    "whitelist_subcommand_command_argument_name": "commande",
+
+    "whitelist_subcommand_role_argument_description": "Le rôle à autoriser.",
+    "whitelist_subcommand_user_argument_description": "L'utilisateur à autoriser.",
+    "whitelist_subcommand_command_argument_description": "La commande que l'utilisateur/le rôle/le salon pourra utiliser.",
+
+    "whitelist_command_grant_success": "%OBJECT% peut désormais utiliser la commande `/%COMMAND%`.",
+    "authorize_command_remove_success": "%OBJECT% ne peut plus utiliser la commande `/%COMMAND%`."
+}

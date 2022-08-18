@@ -9,6 +9,12 @@ Commands are explained like so:
 /notes [mandatory_parameter] (optional_parameter)
 ```
 
+## [v3.0.0] TBA
+- Complete reorganization of the repository & codebase
+- Authorization system has been implemented for each command and can be configured with `/whitelist` & `/blacklist`. (whitelist >> blacklist)
+- (WIP) Added full support for locales within commandes description & variables names.
+- Made strings synchronous, no more `await` before getting strings.
+
 ## [v2.5.0] TBA
 
 ### Added

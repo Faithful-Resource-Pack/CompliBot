@@ -3,9 +3,10 @@
 		"require": [ "tsconfig-paths/register" ]
 	},
 	"compilerOptions": {
-		"typeRoots": [ "./node_modules/@types"],
+		"typeRoots": [ "./node_modules/@types", "./types/*"],
 		"lib": ["ESNext"],
 		"module": "commonjs",
+		"strict": true,
 		"moduleResolution": "node",
 		"target": "ESNEXT",
 		"outDir": "dist",
@@ -21,24 +22,21 @@
 		"resolveJsonModule": true,
 		"baseUrl": "src",
 		"paths": {
-			"@client": ["../src/client/index"],
-			"@client/*": ["../src/client"],
-			"@client/buttons/*": ["../src/buttons/*"],
-			"@client/commands/*": ["../src/commands/*"],
-			"@client/menus/*": ["../src/menus/*"],
-			"@client/events/*": ["../src/events/*"],
-			"@functions/*": ["../src/helpers/functions/*"],
-			"@class/*": ["../src/helpers/class/*"],
-			"@helpers/*": ["../src/helpers/*"],
-			"@interfaces": ["../src/helpers/interfaces"],
-			"@json/*": ["../json/*"],
-			"@lang/*": ["../lang/*"]
+			"@utils": ["./utils/index.ts"],
+			"@interfaces": ["./interfaces/index.ts"],
+			"@overrides": ["./overrides/index.ts"],
+			
+			"@client/*": ["./client/*"],
+			"@client": ["./client/index.ts"],
+
+			"@config/*": ["../config/*"],
+			"@langs/*": ["../langs/*"],
 		}
 	},
-	"exclude": ["node_modules"],
-	"include": ["./src/**/*"],
-        "tsc-alias": {
-         "verbose": true,
-         "resolveFullPaths": true
-        }
+	"exclude": ["node_modules", "config"],
+	"include": ["src/**/*", "types/**/*"],
+	"tsc-alias": {
+		"verbose": true,
+		"resolveFullPaths": true
+	}
 }

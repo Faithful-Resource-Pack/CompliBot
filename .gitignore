@@ -1,4 +1,6 @@
 tokens.json
+settings.json
+config/commands/*
 node_modules
 .env
 src/commandsOld
