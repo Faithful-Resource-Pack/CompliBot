@@ -14,7 +14,6 @@ import {
 
 import {
   Logger,
-  JSONManager,
   Strings,
   getConfigurableCommands,
 } from '@utils';
@@ -53,7 +52,7 @@ export const setCommand = (
       break;
   }
 
-  const config = JSONManager.loadCommandConfig(command);
+  const config = JSON.configLoad(`/commands/${command}.json`);
   if (!config[typed]) config[typed] = {};
   if (!config[typed]![guildId]) config[typed]![guildId] = {};
   if (!config[typed]![guildId][option]) config[typed]![guildId][option] = [];
@@ -72,7 +71,7 @@ export const setCommand = (
     });
   }
 
-  JSONManager.saveCommandConfig(command, config);
+  JSON.configSave(`/commands/${command}.json`, config);
   Logger.log('debug', `Authorizing role ${option === 'users' ? (obj as User).username : (obj as Exclude<typeof obj, User>).name} to use command ${command}`);
 };
 
@@ -83,7 +82,7 @@ export const setCommand = (
  */
 export const listCommand = (type: 'whitelist' | 'blacklist', interaction: ChatInputCommandInteraction<CacheType>) => {
   const command = interaction.options.getString('command', true);
-  const config = JSONManager.loadCommandConfig(command);
+  const config = JSON.configLoad(`/commands/${command}.json`);
   const typed = type === 'blacklist' ? 'blacklisted' : 'whitelisted';
 
   if (!config[typed] || !config[typed]![interaction.guild?.id || '0']) {
@@ -99,7 +98,7 @@ export const listCommand = (type: 'whitelist' | 'blacklist', interaction: ChatIn
           ROLES: config[typed]![interaction.guild?.id || '0'].roles?.map((roleId) => roleMention(roleId)).join(', ') || '`N/A`',
           CHANNELS: config[typed]![interaction.guild?.id || '0'].channels?.map((roleId) => channelMention(roleId)).join(', ') || '`N/A`',
           USERS: config[typed]![interaction.guild?.id || '0'].users?.map((userId) => userMention(userId)).join(', ') || '`N/A`',
-          CODEBLOCK: JSONManager.toCodeBlocks(config[typed]![interaction.guild?.id || '0']),
+          CODEBLOCK: JSON.toCodeBlock(config[typed]![interaction.guild?.id || '0']),
         },
       }),
       ephemeral: true,

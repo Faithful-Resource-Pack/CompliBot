@@ -1,6 +1,5 @@
 import { Client } from '@client';
 import {
-  JSONManager,
   Strings,
 } from '@utils';
 import {
@@ -12,7 +11,7 @@ import {
 
 export default {
   config: () => ({
-    ...JSONManager.loadCommandConfig('debug-channel'),
+    ...JSON.configLoad('/commands/debug-channel.json'),
     devOnly: true,
   }),
   data: new SlashCommandBuilder()

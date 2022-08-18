@@ -18,7 +18,7 @@ import {
   IAsyncData,
 } from '@interfaces';
 
-import { Logger, JSONManager } from '@utils';
+import { Logger } from '@utils';
 import path from 'path';
 import fs from 'fs';
 
@@ -126,10 +126,10 @@ class ExClient extends Client {
   }
 
   public setSettings(key: keyof ISettings, value: unknown): this {
-    const json = JSONManager.load(path.join(__dirname, '../..', 'config', 'settings.json'));
+    const json = JSON.load(path.join(__dirname, '../..', 'config', 'settings.json'));
     json[key] = value;
 
-    JSONManager.save(path.join(__dirname, '../..', 'config', 'settings.json'), json);
+    JSON.save(path.join(__dirname, '../..', 'config', 'settings.json'), json);
     return this;
   }
 }
