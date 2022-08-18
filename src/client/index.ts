@@ -18,9 +18,8 @@ import {
   IAsyncData,
 } from '@interfaces';
 
-import { Logger } from '@utils';
+import { getFileNames, Logger } from '@utils';
 import path from 'path';
-import fs from 'fs';
 
 export { ExClient as Client };
 
@@ -44,7 +43,7 @@ class ExClient extends Client {
     this.login(tokens.bot)
       .catch(() => Logger.log('error', 'You did not specify the client token in the tokens.json file.'))
       .then(async () => {
-        /** await */ this.loadEvents();
+        this.loadEvents();
         await this.loadCommands();
         // this.loadCollections();
         // this.startProcesses();
@@ -68,10 +67,10 @@ class ExClient extends Client {
 
     const filepath = path.join(__dirname, 'events');
 
-    fs.readdirSync(filepath)
+    getFileNames(filepath, true)
       .filter((file) => file.endsWith('.ts' || '.js'))
       .forEach((file) => {
-        import(`${filepath}/${file}`)
+        import(file)
           .then((module) => {
             const event: IEvent = module.default;
             this.events.set(event.name, event);
@@ -87,9 +86,11 @@ class ExClient extends Client {
     const commandsGlobal: Array<RESTPostAPIApplicationCommandsJSONBody> = [];
     const commandsPrivate: Array<RESTPostAPIApplicationCommandsJSONBody> = [];
 
-    const files = fs.readdirSync(filepath).filter((file) => file.endsWith('.ts' || '.js'));
+    const files = getFileNames(filepath, true)
+      .filter((file) => file.endsWith('.ts' || '.js'));
+
     for (let i = 0; i < files.length; i += 1) {
-      const { default: command } = await import(`${filepath}/${files[i]}`);
+      const { default: command } = await import(files[i]);
 
       // if command data is async, then we need to wait for it to be loaded
       if (command.data instanceof Function) {

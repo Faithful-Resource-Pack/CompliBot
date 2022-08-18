@@ -1,7 +1,5 @@
 import { Client } from '@client';
-import {
-  Strings,
-} from '@utils';
+import { Strings } from '@utils';
 import {
   SlashCommandBuilder,
   ChatInputCommandInteraction,
@@ -11,7 +9,6 @@ import {
 
 export default {
   config: () => ({
-    ...JSON.configLoad('/commands/debug-channel.json'),
     devOnly: true,
   }),
   data: new SlashCommandBuilder()
