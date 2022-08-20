@@ -47,6 +47,11 @@
 
   "errors_argument_not_guild_text_channel": "Sorry, the specified channel must be a text channel.",
   "errors_slash_command_not_responding": "Sorry, I'm not responding to that command. Try again later.",
+
+  "eval_command_name" : "eval",
+  "eval_command_description" : "Evaluates a string of code.",
+  "eval_command_option_code_name" : "code",
+  "eval_command_option_code_description" : "The code to evaluate.",
   
   "logger_message_random_sentence": [
     "Oh no, not again!",
