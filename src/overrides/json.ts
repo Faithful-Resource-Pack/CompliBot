@@ -1,4 +1,3 @@
-import { ICommandConfig } from '@interfaces';
 import fs from 'fs';
 import path from 'path';
 
@@ -22,19 +21,19 @@ declare global {
     /**
      * Load the configuration JSON file from the `./config` directory.
      * @param {String} filepath - file inside the config directory
-     * @returns {ICommandConfig} the configuration object
+     * @returns the configuration JSON file as an object
      * @example JSON.configLoad('settings.json');
      * @example JSON.configLoad('commands/commands_name.json');
      */
-    configLoad(filepath: string): ICommandConfig;
+    configLoad(filepath: string): any;
 
     /**
      * Save the configuration JSON file to the `./config` directory.
      * @param {String} filepath - file inside the config directory
-     * @param {ICommandConfig} data - the configuration object to be saved
+     * @param data - the configuration object to be saved
      * @example JSON.configSave('settings.json');
      */
-    configSave(filepath: string, data: ICommandConfig): void;
+    configSave(filepath: string, data: any): void;
 
     /**
      * Equivalent of JSON.stringify() but adapted to Discord code-blocks.
@@ -91,7 +90,7 @@ if (!JSON.configLoad) {
 
 if (!JSON.configSave) {
   Object.defineProperty(JSON, 'configSave', {
-    value: function configSave(filepath: string, data: ICommandConfig) {
+    value: function configSave(filepath: string, data: any) {
       return JSON.save(path.join(__dirname, '../../config', filepath), data);
     },
     enumerable: false,

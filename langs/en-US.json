@@ -1,4 +1,16 @@
 {
+  "botban_command_name": "botban",
+  "botban_command_description": "Bans a user from the bot.",
+  "botban_command_subcommand_view_name": "view",
+  "botban_command_subcommand_view_description": "Views the botban list.",
+  "botban_command_subcommand_audit_name": "audit",
+  "botban_command_subcommand_audit_description": "Adds or remove a user to the botban list.",
+  "botban_command_subcommand_audit_option_user_name": "user",
+  "botban_command_subcommand_audit_option_user_description": "The user to add or remove from the botban list.",
+  "botban_command_subcommand_audit_user_banned": "User %USER% is now banned from the bot.",
+  "botban_command_subcommand_audit_user_unbanned": "User %USER% is now unbanned from the bot.",
+  "botban_command_subcommand_view_no_banned_users": "There are no banned users.",
+
   "blacklist_command_name": "blacklist",
   "blacklist_command_description": "Command to blacklist a specific role/user to use a command.",
   "blacklist_command_remove_success": "Successfully un-blacklisted %OBJECT% to use the `/%COMMAND%`.",
@@ -68,12 +80,14 @@
   "logs_command_name": "logs",
   "logs_command_description": "Get the logs of the bot client",
 
+  "permissions_banned_error": "Sorry, you are banned from using the bot.",
+  "permissions_developers_only": "Sorry, this command is only available to developers.",
+  "permissions_channel_blacklisted": "Sorry, this channel is marked as blacklisted, thus you can't run this command here.",
   "permissions_channel_not_whitelisted": "Sorry, only those channels: %CHANNELS% are whitelisted to use this command.",
   "permissions_role_not_whitelisted": "Sorry, only those roles: %ROLES% are whitelisted to use this command.",
-  "permissions_user_not_whitelisted": "Sorry, only those users: %USERS% are whitelisted to use this command.",
-  "permissions_channel_blacklisted": "Sorry, this channel is marked as blacklisted, thus you can't run this command here.",
   "permissions_role_blacklisted": "Sorry, at least one of your role is blacklisted and can't run this command.",
   "permissions_user_blacklisted": "Sorry, you are blacklisted and can't run this command.",
+  "permissions_user_not_whitelisted": "Sorry, only those users: %USERS% are whitelisted to use this command.",
 
   "whitelist_command_name": "whitelist",
   "whitelist_command_description": "Command to whitelist a specific role/user to use a command.",

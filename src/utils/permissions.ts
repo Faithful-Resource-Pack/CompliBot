@@ -1,4 +1,5 @@
 import { ICommandConfig } from '@interfaces';
+import settings from '@config/settings.json';
 import {
   channelMention,
   GuildMemberRoleManager,
@@ -18,6 +19,15 @@ import { Strings } from './strings';
  * @throw if the user is not authorized to use the command.
  */
 export async function checkPermissions(config: ICommandConfig, guildId: string, userId: string, channelId: string, roles: GuildMemberRoleManager, locale: LocaleString): Promise<void> {
+  const botbanConfig = JSON.configLoad('botban.json');
+  if (botbanConfig.banned && botbanConfig.banned.includes(userId)) {
+    return Promise.reject(new Error(Strings.get('permissions_banned_error', locale)));
+  }
+
+  if (config.devOnly && settings.developersIds.includes(userId) === false) {
+    return Promise.reject(new Error(Strings.get('permissions_developers_only', locale)));
+  }
+
   // if there is no configuration file, command is always authorized
   if (!config.whitelisted && !config.blacklisted) return Promise.resolve();
 

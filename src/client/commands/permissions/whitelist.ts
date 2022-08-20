@@ -95,9 +95,9 @@ export const listCommand = (type: 'whitelist' | 'blacklist', interaction: ChatIn
       content: Strings.get('whitelist_subcommand_list_success', interaction.locale, {
         keys: {
           COMMAND: command,
-          ROLES: config[typed]![interaction.guild?.id || '0'].roles?.map((roleId) => roleMention(roleId)).join(', ') || '`N/A`',
-          CHANNELS: config[typed]![interaction.guild?.id || '0'].channels?.map((roleId) => channelMention(roleId)).join(', ') || '`N/A`',
-          USERS: config[typed]![interaction.guild?.id || '0'].users?.map((userId) => userMention(userId)).join(', ') || '`N/A`',
+          ROLES: config[typed]![interaction.guild?.id || '0'].roles?.map((roleId: string) => roleMention(roleId)).join(', ') || '`N/A`',
+          CHANNELS: config[typed]![interaction.guild?.id || '0'].channels?.map((channelId: string) => channelMention(channelId)).join(', ') || '`N/A`',
+          USERS: config[typed]![interaction.guild?.id || '0'].users?.map((userId: string) => userMention(userId)).join(', ') || '`N/A`',
           CODEBLOCK: JSON.toCodeBlock(config[typed]![interaction.guild?.id || '0']),
         },
       }),
