@@ -27,6 +27,7 @@ import {
 import getData from '@functions/getDataFromJSON';
 import setData from '@functions/setDataToJSON';
 import { errorHandler } from '@functions/errorHandler';
+import endpointListen from '@functions/endpointListen';
 import { err, info, success } from '@helpers/logger';
 import { Submission } from '@class/TimedEmbed/Submission';
 import { Poll } from '@class/TimedEmbed/Poll';
@@ -39,7 +40,6 @@ import { SlashCommandBuilder } from '@discordjs/builders';
 
 import path from 'path';
 import chalk from 'chalk';
-import endpointListen from 'helpers/functions/endpointListen';
 import StartClient from '../index';
 
 const JSON_PATH = path.join(__dirname, '../../json/dynamic'); // json folder at root
