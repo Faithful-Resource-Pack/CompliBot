@@ -10,6 +10,8 @@ Commands are explained like so:
 ```
 
 ## [v3.0.0] TBA
+
+### Changed
 - Complete reorganization of the repository & codebase
 - Authorization system has been implemented for each command and can be configured with `/whitelist` & `/blacklist`. (whitelist >> blacklist)
 - (WIP) Added full support for locales within commandes description & variables names.
@@ -181,7 +183,6 @@ Commands are explained like so:
 ### Fixed
 - Fixed non deletable interaction: `this interaction is reserved to Bot` :)
 
----
 ## [v2.0.0] 21/02/2022
 
 ### Added

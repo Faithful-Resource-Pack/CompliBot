@@ -34,6 +34,11 @@
   "blacklist_subcommand_list_empty": "There are no blacklisted users/roles for the `/%COMMAND%` command.",
   "blacklist_subcommand_list_success": "Whitelist of `/%COMMAND%`:\n%CODEBLOCK%\nRoles: %ROLES%\nUsers: %USERS%\nChannels: %CHANNELS%",
 
+  "changelog_command_name": "changelog",
+  "changelog_command_description": "Gets a changelog version of the bot.",
+  "changelog_command_argument_version_name": "version",
+  "changelog_command_argument_version_description": "The version to fetch.",
+
   "debug_channel_command_name": "debug-channel",
   "debug_channel_command_description": "Command to setup the debug channel of the bot.",
   "debug_channel_command_channel_argument_name": "channel",
