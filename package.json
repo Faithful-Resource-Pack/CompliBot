@@ -14,6 +14,7 @@
         "build": "npm run clean && tsc --project tsconfig.json && tsc-alias -p tsconfig.json -v && npm run copy-files"
     },
     "devDependencies": {
+        "@types/express": "^4.17.13",
         "@types/node": "^17.0.33",
         "@typescript-eslint/eslint-plugin": "^5.25.0",
         "@typescript-eslint/parser": "^5.25.0",
@@ -36,10 +37,12 @@
         "@discordjs/builders": "^0.13.0",
         "@discordjs/rest": "^0.4.1",
         "axios": "^0.26.1",
+        "body-parser": "^1.20.0",
         "canvas": "^2.9.3",
         "chalk": "^4.1.2",
         "discord-api-types": "^0.30.0",
         "discord.js": "^13.8.0",
+        "express": "^4.18.1",
         "firestorm-db": "^1.10.0",
         "follow-redirects": "^1.15.0",
         "gif-encoder-2": "^1.0.5",

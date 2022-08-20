@@ -39,6 +39,7 @@ import { SlashCommandBuilder } from '@discordjs/builders';
 
 import path from 'path';
 import chalk from 'chalk';
+import endpointListen from 'helpers/functions/endpointListen';
 import StartClient from '../index';
 
 const JSON_PATH = path.join(__dirname, '../../json/dynamic'); // json folder at root
@@ -177,6 +178,8 @@ class ExtendedClient extends Client {
     process.on('unhandledRejection', (reason) => {
       errorHandler(this, reason, 'unhandledRejection');
     });
+
+    endpointListen(this);
   }
 
   private loadCollections = () => {
