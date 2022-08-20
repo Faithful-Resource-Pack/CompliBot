@@ -83,6 +83,7 @@ export class Strings {
       });
     }
 
-    return result;
+    if (typeof str === 'string') return result;
+    return result.split('$;');
   }
 }

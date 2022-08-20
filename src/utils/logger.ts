@@ -37,7 +37,7 @@ export class Logger {
         break;
 
       case 'error':
-        console.log(`[${chalk.red('ERR')}] ${message}`);
+        console.log(`[${chalk.red('ERROR')}] ${message}`);
         console.error(error);
         break;
 
@@ -87,7 +87,7 @@ export class Logger {
     const randomSentence = randomSentences[Math.floor(Math.random() * randomSentences.length)];
 
     // replace head values
-    let message = messageTemplate
+    let message = template
       .replace('%date%', new Date().toUTCString())
       .replace('%stack%', error.stack || JSON.stringify(error))
       .replace('%randomSentence%', randomSentence)
@@ -103,24 +103,15 @@ export class Logger {
     logs.forEach((log: Log, index: number) => {
       let tmp = messageTemplate;
 
-      tmp = tmp.replace('%templateIndex%', (len - index).toString());
-
-      if (Object.hasOwn(log.data, 'createdTimeStamp')) {
+      if (Object.prototype.hasOwnProperty.call(log.data, 'createdTimestamp')) {
         log.data = log.data as Exclude<LogEvent, GuildMember>; // Cast to exclude GuildMember
 
-        tmp = tmp.replace(
-          '%templateTimestampLogged%',
-          `${log.timestamp} | ${new Date(log.timestamp).toLocaleDateString('en-UK', {
-            timeZone: 'UTC',
-          })} ${new Date(log.data.createdTimestamp).toLocaleTimeString('en-US', {
-            timeZone: 'UTC',
-          })} (UTC)`,
-        )
+        tmp = tmp
           .replace(
             '%templateCreatedTimestamp%',
             `${log.data.createdTimestamp} | ${new Date(log.data.createdTimestamp).toLocaleDateString('en-UK', {
               timeZone: 'UTC',
-            })} ${new Date(log.data.createdTimestamp).toLocaleTimeString('en-US', {
+            })} ${new Date(log.data.createdTimestamp).toLocaleTimeString('en-UK', {
               timeZone: 'UTC',
             })} (UTC)`,
           );
@@ -191,7 +182,12 @@ export class Logger {
         .replace('%templateParameters%', 'N/A')
         .replace('%templateContent%', 'N/A')
         .replace('%templateEmbeds%', 'N/A')
-        .replace('%templateComponents%', 'N/A');
+        .replace('%templateComponents%', 'N/A')
+        .replace('%templateCreatedTimestamp%', 'N/A')
+        .replace('%templateIndex%', (len - index).toString())
+        .replace('%templateTimestampLogged%', `${log.timestamp} | ${new Date(log.timestamp)
+          .toLocaleDateString('en-UK', { timeZone: 'UTC' })} ${new Date(log.timestamp)
+          .toLocaleTimeString('en-UK', { timeZone: 'UTC' })} (UTC)`);
     });
 
     const buffer = Buffer.from(message, 'utf-8');

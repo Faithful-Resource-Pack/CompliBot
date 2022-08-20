@@ -59,7 +59,7 @@ class ExClient extends Client {
   public commands: Collection<string, ICommand> = new Collection();
 
   private storedLogs: Array<Log> = [];
-  private latestLogIndex: number = 0;
+  private latestLogIndex: number = -1;
   private maxLogsStored: number = 100;
 
   constructor(options: ClientOptions) {
@@ -73,7 +73,7 @@ class ExClient extends Client {
    */
   public start(): void {
     this.login(tokens.bot)
-      .catch(() => Logger.log('error', 'You did not specify the client token in the tokens.json file.'))
+      .catch((error) => Logger.log('error', 'You did not specify the client token in the tokens.json file.', error))
       .then(() => this.loadEvents())
       .then(() => this.loadCommands())
       .finally(() => Logger.log('debug', '[3/3] Client successfully started'));
@@ -150,14 +150,16 @@ class ExClient extends Client {
       Logger.log('info', 'Started refreshing application (/) commands');
 
       if (commandsPrivate.length > 0) {
-        await rest.put(Routes.applicationGuildCommands(this.settings.clientId, this.settings.devGuildId), { body: commandsPrivate });
+        await rest.put(Routes.applicationGuildCommands(this.settings.clientId, this.settings.devGuildId), { body: [...commandsGlobal, ...commandsPrivate] });
         Logger.log('debug', 'Successfully refreshed devs commands');
       }
       if (commandsGlobal.length > 0) {
         const guildIds = this.guilds.cache.map((guild) => guild.id);
         for (let i = 0; i < guildIds.length; i += 1) {
-          await rest.put(Routes.applicationGuildCommands(this.settings.clientId, guildIds[i]), { body: commandsGlobal });
-          Logger.log('debug', `Successfully refreshed publics commands for ${guildIds[i] === this.settings.devGuildId ? 'dev' : guildIds[i]}`);
+          if (this.settings.devGuildId !== guildIds[i]) {
+            await rest.put(Routes.applicationGuildCommands(this.settings.clientId, guildIds[i]), { body: commandsGlobal });
+            Logger.log('debug', `Successfully refreshed publics commands for ${guildIds[i]}`);
+          }
         }
       }
 
@@ -189,7 +191,7 @@ class ExClient extends Client {
    * @param {LogEvent} data - The data to log.
    */
   public log(type: LogStr, data: LogEvent): void {
-    this.storedLogs[this.latestLogIndex += 1 % this.maxLogsStored] = {
+    this.storedLogs[(this.latestLogIndex += 1) % this.maxLogsStored] = {
       type, data, timestamp: Date.now(),
     };
   }
