@@ -2,8 +2,8 @@ import { Client } from '@client';
 import { errorHandler } from '@functions/errorHandler';
 import express from 'express';
 import bodyParser from 'body-parser';
-import { success } from 'helpers/logger';
-import { EndpointMessage } from '../interfaces/endpointListen';
+import { success } from '@helpers/logger';
+import { EndpointMessage } from '@interfaces';
 
 async function errorPayloadHandler(client: Client, payload: EndpointMessage) {
   return errorHandler(client, payload.content, payload.type, client.tokens.endpointChannel);
