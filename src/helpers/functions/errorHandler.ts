@@ -193,12 +193,21 @@ export const logConstructor: Function = (
   return new MessageAttachment(buffer, 'stack.log');
 };
 
-export const errorHandler: Function = async (client: Client, reason: any, type: string) => {
+/**
+ * Error handler function
+ * @param client Extended Bot client running
+ * @param reason JSON error reason
+ * @param type Error type used in embed author title
+ * @param channelId Optional destination text channel ID, token error channel ID by default
+ */
+export const errorHandler: Function = async (client: Client, reason: any, type: string, channelId?: string) => {
   await (async () => {
     console.error(`${err} ${reason.stack || JSON.stringify(reason)}`);
 
     // get dev log channel
-    const channel = client.channels.cache.get(client.tokens.errorChannel) as TextChannel;
+    const targetChannelID = channelId || client.tokens.errorChannel;
+    let channel = client.channels.cache.get(targetChannelID) as TextChannel;
+    if (channel === undefined) channel = await client.channels.fetch(targetChannelID) as TextChannel; // fetch channel if not in cache
     if (channel === undefined) return; // avoid infinite loop when crash is outside of client
 
     if (lastReasons.length === loopLimit) lastReasons.pop(); // pop removes an item from the end of an array

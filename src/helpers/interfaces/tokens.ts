@@ -8,4 +8,6 @@ export interface Tokens {
   errorChannel: string; // error channel where errors are sent
   dev: boolean; // if true: instantiate command only it the bot dev discord server
   maintenance: boolean; // if true: disallow normal bot functions and update status
+  endpointChannel: string; // error endpoint channel are sent
+  endpointPort: number; // port number of bot endpoint port to receive error messages from localhost
 }

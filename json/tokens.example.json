@@ -8,5 +8,7 @@
     "errorChannel": "927617374738341959",
     "dev": true,
     "verbose": false,
-    "maintenance": false
+    "maintenance": false,
+    "endpointChannel": "123456789123456789",
+    "endpointPort": 8083
 }
