@@ -172,6 +172,32 @@
     "Here's your ping. Now let me go back to sleep."
   ],
 
+  "stats_command_name": "stats",
+  "stats_command_description": "Get statistics about the bot/commands.",
+  "stats_subcommand_bot_name": "bot",
+  "stats_subcommand_bot_description": "Get statistics about the bot.",
+  "stats_subcommand_bot_embed_footer": "Made with love",
+  "stats_subcommand_bot_embed_fields_titles": [
+    "Uptime",
+    "Guilds Count",
+    "Ram Used",
+    "Discord Library",
+    "Node.js",
+    "Total\nCommands",
+    "Commands\nProcessed",
+    "Members\nAcross Guilds",
+    "Operating System"
+  ],
+  "stats_subcommand_commands_name": "commands",
+  "stats_subcommand_commands_description": "Get statistics about a specified command or the 10 most used commands.",
+  "stats_subcommand_commands_argument_name": "command",
+  "stats_subcommand_commands_argument_description": "Specify a command to get statistics for.",
+  "stats_subcommand_commands_embed_title": "Statistics for `/%COMMAND%`",
+  "stats_subcommand_commands_embed_field_1": "Total uses",
+  "stats_subcommand_commands_embed_field_2": "Uses for this guild",
+  "stats_subcommand_commands_embed_title_top10": "Top 10 most used commands",
+  "stats_subcommand_commands_embed_description_top10": "All guilds - This guild (%GUILD%)",
+
   "whitelist_command_name": "whitelist",
   "whitelist_command_description": "Command to whitelist a specific role/user to use a command.",
   "whitelist_command_remove_success": "Successfully un-whitelisted %OBJECT% to use the `/%COMMAND%`.",

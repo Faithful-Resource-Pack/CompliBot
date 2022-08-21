@@ -1,6 +1,11 @@
 import { Client } from '@client';
 import { IHandler, IEvent } from '@interfaces';
-import { Logger, checkPermissions, Strings } from '@utils';
+import {
+  Logger,
+  checkPermissions,
+  Strings,
+  addCommandUse,
+} from '@utils';
 
 import {
   Collection,
@@ -26,9 +31,9 @@ export default {
     try {
       await checkPermissions(
         config,
-        interaction.guild!.id,
+        interaction.guildId!,
         interaction.user.id,
-        interaction.channel!.id,
+        interaction.channelId,
         interaction.member!.roles as GuildMemberRoleManager,
         interaction.locale,
       );
@@ -39,6 +44,8 @@ export default {
       });
       return;
     }
+
+    addCommandUse(interaction.commandName, interaction.guildId!);
 
     try {
     // test if there is a subcommand

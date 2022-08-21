@@ -11,7 +11,7 @@ export interface ICommand {
 export type TSyncData = SlashCommandSubcommandsOnlyBuilder | Omit<SlashCommandBuilder, 'addSubcommand' | 'addSubcommandGroup'>;
 export interface IAsyncData { (...args: any): Promise<TSyncData>; }
 
-export interface IHandler { (interaction: ChatInputCommandInteraction, client?: Client): void | Promise<void>; }
+export interface IHandler { (interaction: ChatInputCommandInteraction, client: Client): void | Promise<void>; }
 
 export interface ICommandConfig {
   devOnly?: boolean; // If true, only developers server can use this command.
@@ -27,4 +27,11 @@ export interface ICommandPermissions {
     users?: Array<string>;
     channels?: Array<string>;
   };
+}
+
+export interface ICommandsUses {
+  [key: string]: {
+    global: number;
+    guilds: { [key: string]: number };
+  }
 }
