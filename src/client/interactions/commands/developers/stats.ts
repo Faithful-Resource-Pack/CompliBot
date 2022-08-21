@@ -6,7 +6,7 @@ import {
   getCommandsUses,
   getCommandsUsesOrdered,
   getCommandUses,
-  Strings,
+  Images,
 } from '@utils';
 import {
   SlashCommandBuilder,
@@ -28,35 +28,35 @@ export default {
     const commands = getCommandsNames();
 
     return new SlashCommandBuilder()
-      .setName(Strings.get('stats_command_name'))
-      .setDescription(Strings.get('stats_command_description'))
+      .setName(String.get('stats_command_name'))
+      .setDescription(String.get('stats_command_description'))
 
       // stats bot
       .addSubcommand((subcommand) => subcommand
-        .setName(Strings.get('stats_subcommand_bot_name'))
-        .setDescription(Strings.get('stats_subcommand_bot_description')))
+        .setName(String.get('stats_subcommand_bot_name'))
+        .setDescription(String.get('stats_subcommand_bot_description')))
 
       // stats commands [command]
       .addSubcommand((subcommand) => subcommand
-        .setName(Strings.get('stats_subcommand_commands_name'))
-        .setDescription(Strings.get('stats_subcommand_commands_description'))
+        .setName(String.get('stats_subcommand_commands_name'))
+        .setDescription(String.get('stats_subcommand_commands_description'))
         .addStringOption((option) => option
-          .setName(Strings.get('stats_subcommand_commands_argument_name'))
-          .setDescription(Strings.get('stats_subcommand_commands_argument_description'))
+          .setName(String.get('stats_subcommand_commands_argument_name'))
+          .setDescription(String.get('stats_subcommand_commands_argument_description'))
           .addChoices(...commands)
           .setRequired(false)));
   },
   handler: new Collection<string, IHandler>()
-    .set(Strings.get('stats_subcommand_bot_name'), (interaction: ChatInputCommandInteraction<CacheType>, client: Client) => {
+    .set(String.get('stats_subcommand_bot_name'), (interaction: ChatInputCommandInteraction<CacheType>, client: Client) => {
       const commandsUsed = getCommandsUses();
       const osInfo: { type: string, arch: string } = releaseInfo({ mode: 'sync' }) as any;
       const membersCount = client.guilds.cache.mapValues((guild) => guild.memberCount).reduce((a, b) => a + b, 0);
 
-      const titles = Strings.get('stats_subcommand_bot_embed_fields_titles', interaction.locale);
+      const titles = String.get('stats_subcommand_bot_embed_fields_titles', interaction.locale);
       const embed = new EmbedBuilder()
-        .setTitle(`${client.user?.username} ${Strings.get('stats_command_name', interaction.locale)}`)
+        .setTitle(`${client.user?.username} ${String.get('stats_command_name', interaction.locale)}`)
         .setThumbnail(client.user?.displayAvatarURL() ?? null)
-        .setFooter({ text: Strings.get('stats_subcommand_bot_embed_footer'), iconURL: 'https://cdn.discordapp.com/emojis/799357507126427699' })
+        .setFooter({ text: String.get('stats_subcommand_bot_embed_footer'), iconURL: Images.get('bot/heart.png') })
         .addFields(
           {
             name: titles[0],
@@ -107,8 +107,8 @@ export default {
 
       interaction.reply({ embeds: [embed], ephemeral: true });
     })
-    .set(Strings.get('stats_subcommand_commands_name'), (interaction: ChatInputCommandInteraction<CacheType>) => {
-      const command = interaction.options.getString(Strings.get('stats_subcommand_commands_argument_name'));
+    .set(String.get('stats_subcommand_commands_name'), (interaction: ChatInputCommandInteraction<CacheType>) => {
+      const command = interaction.options.getString(String.get('stats_subcommand_commands_argument_name'));
 
       if (command !== null) {
         const uses = getCommandUses(command, interaction.guildId ?? undefined);
@@ -116,17 +116,17 @@ export default {
           .setTimestamp()
           .addFields(
             {
-              name: Strings.get('stats_subcommand_commands_embed_field_1', interaction.locale),
+              name: String.get('stats_subcommand_commands_embed_field_1', interaction.locale),
               value: uses.global.toString(),
               inline: true,
             },
             {
-              name: Strings.get('stats_subcommand_commands_embed_field_2', interaction.locale),
+              name: String.get('stats_subcommand_commands_embed_field_2', interaction.locale),
               value: uses.guild?.toString() ?? '0',
               inline: true,
             },
           )
-          .setTitle(Strings.get('stats_subcommand_commands_embed_title', interaction.locale, {
+          .setTitle(String.get('stats_subcommand_commands_embed_title', interaction.locale, {
             keys: {
               COMMAND: command,
             },
@@ -141,9 +141,9 @@ export default {
 
       const embed = new EmbedBuilder()
         .setTimestamp()
-        .setTitle(Strings.get('stats_subcommand_commands_embed_title_top10', interaction.locale))
+        .setTitle(String.get('stats_subcommand_commands_embed_title_top10', interaction.locale))
         .setDescription(`${
-          Strings.get('stats_subcommand_commands_embed_description_top10', interaction.locale, { keys: { GUILD: interaction.guild?.name ?? '' } })}\n${uses
+          String.get('stats_subcommand_commands_embed_description_top10', interaction.locale, { keys: { GUILD: interaction.guild?.name ?? '' } })}\n${uses
           .slice(0, 10)
           .map((stat, index) => {
             const place = `${index + 1 < 10 ? ` ${index + 1}` : index + 1}.`;

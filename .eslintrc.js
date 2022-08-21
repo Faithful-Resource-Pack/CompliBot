@@ -18,7 +18,7 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-restricted-syntax': 'warn',
     'no-prototype-builtins': 'warn',
-    'no-extend-native': ['error', { 'exceptions': [ 'Array' ] }],
+    'no-extend-native': ['error', { 'exceptions': [ 'Array', 'String' ] }],
     'prefer-destructuring': 'warn',
     'max-len': 'off',
     'import/no-cycle': 'off',

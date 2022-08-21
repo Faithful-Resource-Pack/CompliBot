@@ -4,7 +4,6 @@ import {
   SlashCommandBuilder,
 } from 'discord.js';
 
-import { Strings } from '@utils';
 import { Client } from '@client/index';
 import { Colors } from '@enums';
 import { EmbedBuilder } from '@overrides';
@@ -14,11 +13,11 @@ export default {
     devOnly: true,
   }),
   data: new SlashCommandBuilder()
-    .setName(Strings.get('eval_command_name'))
-    .setDescription(Strings.get('eval_command_description'))
+    .setName(String.get('eval_command_name'))
+    .setDescription(String.get('eval_command_description'))
     .addStringOption((option) => option
-      .setName(Strings.get('eval_command_option_code_name'))
-      .setDescription(Strings.get('eval_command_option_code_description'))
+      .setName(String.get('eval_command_option_code_name'))
+      .setDescription(String.get('eval_command_option_code_description'))
       .setRequired(true)),
   handler: async (interaction: ChatInputCommandInteraction<CacheType>, c: Client) => {
     const code = interaction.options.getString('code', true);

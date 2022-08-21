@@ -1,4 +1,3 @@
-import { Strings } from '@utils';
 import path from 'path';
 import fs from 'fs';
 import {
@@ -21,12 +20,12 @@ const changelogOptions = (): Array<{ name: string, value: string }> => fs.readFi
 export default {
   config: () => ({}),
   data: () => new SlashCommandBuilder()
-    .setName(Strings.get('changelog_command_name'))
-    .setDescription(Strings.get('changelog_command_description'))
+    .setName(String.get('changelog_command_name'))
+    .setDescription(String.get('changelog_command_description'))
     .addStringOption((string) => string
       .addChoices(...changelogOptions())
-      .setName(Strings.get('changelog_command_argument_version_name'))
-      .setDescription(Strings.get('changelog_command_argument_version_description'))
+      .setName(String.get('changelog_command_argument_version_name'))
+      .setDescription(String.get('changelog_command_argument_version_description'))
       .setRequired(true)),
   handler: async (interaction: ChatInputCommandInteraction<CacheType>) => {
     const selectedVersion = interaction.options.getString('version', true);

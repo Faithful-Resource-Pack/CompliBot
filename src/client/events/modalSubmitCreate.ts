@@ -1,6 +1,6 @@
 import { IEvent } from '@interfaces';
 import { Client } from '@client';
-import { Logger, Strings } from '@utils';
+import { Logger } from '@utils';
 import {
   ModalSubmitInteraction,
   CacheType,
@@ -24,7 +24,7 @@ export default {
     } catch (error) {
       Logger.log('error', `An error occurred while executing the modal: ${interaction.customId}`, error);
       interaction.reply({
-        content: Strings.get('errors_modal_not_responding', interaction.locale),
+        content: String.get('errors_modal_not_responding', interaction.locale),
         ephemeral: true,
       });
     }

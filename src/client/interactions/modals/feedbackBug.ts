@@ -1,6 +1,6 @@
 import { IModal } from '@interfaces';
 import { EmbedBuilder } from '@overrides';
-import { octokit, Strings, templateLoad } from '@utils';
+import { octokit, templateLoad } from '@utils';
 import { ModalSubmitInteraction, CacheType } from 'discord.js';
 
 export default {
@@ -37,8 +37,8 @@ export default {
     });
 
     const embed = new EmbedBuilder()
-      .setTitle(Strings.get('modal_feedback_generic_title', interaction.locale))
-      .setDescription(Strings.get('modal_feedback_generic_description', interaction.locale, { keys: { LINK: `${response.data.html_url}` } }))
+      .setTitle(String.get('modal_feedback_generic_title', interaction.locale))
+      .setDescription(String.get('modal_feedback_generic_description', interaction.locale, { keys: { LINK: `${response.data.html_url}` } }))
       .setTimestamp();
 
     interaction.reply({ embeds: [embed], ephemeral: true });

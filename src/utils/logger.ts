@@ -20,7 +20,6 @@ import {
 import { Colors } from '@enums';
 import { EmbedBuilder } from '@overrides';
 import { templateLoad } from './templates';
-import { Strings } from './strings';
 import { Images } from './images';
 
 /** Level of the log, defines how it is displayed */
@@ -84,7 +83,7 @@ export class Logger {
     const template: string = templateLoad('errors.log');
     const [, messageTemplate] = template.match(/%templateStart%([\s\S]*?)%templateEnd/)!;
 
-    const randomSentences = Strings.get('logger_message_random_sentence');
+    const randomSentences = String.get('logger_message_random_sentence');
     const randomSentence = randomSentences[Math.floor(Math.random() * randomSentences.length)];
 
     // replace head values

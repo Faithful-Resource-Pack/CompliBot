@@ -3,7 +3,6 @@ import { IHandler, IEvent } from '@interfaces';
 import {
   Logger,
   checkPermissions,
-  Strings,
   addCommandUse,
 } from '@utils';
 
@@ -60,7 +59,7 @@ export default {
       } catch (error) {
         Logger.log('error', `An error occurred while executing the (/) command: ${interaction.commandName}`, error);
         interaction.reply({
-          content: Strings.get('errors_slash_command_not_responding', interaction.locale),
+          content: String.get('errors_slash_command_not_responding', interaction.locale),
           ephemeral: true,
         });
       }

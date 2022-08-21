@@ -14,7 +14,6 @@ import {
 
 import {
   Logger,
-  Strings,
   getConfigurableCommands,
 } from '@utils';
 
@@ -29,7 +28,7 @@ export const setCommand = (
   type: 'blacklist' | 'whitelist',
   interaction: ChatInputCommandInteraction<CacheType>,
 ) => {
-  const command = interaction.options.getString(Strings.get(`${type}_subcommand_command_argument_name`), true);
+  const command = interaction.options.getString(String.get(`${type}_subcommand_command_argument_name`), true);
   const guildId = interaction.guild?.id || '0';
   const typed = type === 'blacklist' ? 'blacklisted' : 'whitelisted';
 
@@ -38,16 +37,16 @@ export const setCommand = (
 
   switch (option) {
     case 'roles':
-      obj = interaction.options.getRole(Strings.get(`${type}_subcommand_role_argument_name`), true);
+      obj = interaction.options.getRole(String.get(`${type}_subcommand_role_argument_name`), true);
       mentions = roleMention(obj.id);
       break;
     case 'users':
-      obj = interaction.options.getUser(Strings.get(`${type}_subcommand_user_argument_name`), true);
+      obj = interaction.options.getUser(String.get(`${type}_subcommand_user_argument_name`), true);
       mentions = userMention(obj.id);
       break;
     case 'channels':
     default:
-      obj = interaction.options.getChannel(Strings.get(`${type}_subcommand_channel_argument_name`), true);
+      obj = interaction.options.getChannel(String.get(`${type}_subcommand_channel_argument_name`), true);
       mentions = channelMention(obj.id);
       break;
   }
@@ -60,13 +59,13 @@ export const setCommand = (
   if (config[typed]![guildId][option]?.includes(obj.id)) {
     config[typed]![guildId][option]!.removeAll(obj.id);
     interaction.reply({
-      content: Strings.get(`${type}_command_remove_success`, interaction.locale, { keys: { OBJECT: mentions, COMMAND: command } }),
+      content: String.get(`${type}_command_remove_success`, interaction.locale, { keys: { OBJECT: mentions, COMMAND: command } }),
       ephemeral: true,
     });
   } else {
     config[typed]![guildId][option]!.push(obj.id);
     interaction.reply({
-      content: Strings.get(`${type}_command_grant_success`, interaction.locale, { keys: { OBJECT: mentions, COMMAND: command } }),
+      content: String.get(`${type}_command_grant_success`, interaction.locale, { keys: { OBJECT: mentions, COMMAND: command } }),
       ephemeral: true,
     });
   }
@@ -87,12 +86,12 @@ export const listCommand = (type: 'whitelist' | 'blacklist', interaction: ChatIn
 
   if (!config[typed] || !config[typed]![interaction.guild?.id || '0']) {
     interaction.reply({
-      content: Strings.get('whitelist_subcommand_list_empty', interaction.locale, { keys: { COMMAND: command } }),
+      content: String.get('whitelist_subcommand_list_empty', interaction.locale, { keys: { COMMAND: command } }),
       ephemeral: true,
     });
   } else if (config[typed]![interaction.guild?.id || '0']) {
     interaction.reply({
-      content: Strings.get('whitelist_subcommand_list_success', interaction.locale, {
+      content: String.get('whitelist_subcommand_list_success', interaction.locale, {
         keys: {
           COMMAND: command,
           ROLES: config[typed]![interaction.guild?.id || '0'].roles?.map((roleId: string) => roleMention(roleId)).join(', ') || '`N/A`',
@@ -115,61 +114,61 @@ export const buildCommand = (type: 'whitelist' | 'blacklist'): SlashCommandSubco
   const commands = getConfigurableCommands();
 
   return new SlashCommandBuilder()
-    .setName(Strings.get(`${type}_command_name`))
-    .setDescription(Strings.get(`${type}_command_description`))
+    .setName(String.get(`${type}_command_name`))
+    .setDescription(String.get(`${type}_command_description`))
 
     .setDMPermission(false)
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
 
     // whitelist role <role> <command>
     .addSubcommand((subcommand) => subcommand
-      .setName(Strings.get(`${type}_subcommand_role_name`))
-      .setDescription(Strings.get(`${type}_subcommand_role_description`))
+      .setName(String.get(`${type}_subcommand_role_name`))
+      .setDescription(String.get(`${type}_subcommand_role_description`))
       .addRoleOption((role) => role
-        .setName(Strings.get(`${type}_subcommand_role_argument_name`))
-        .setDescription(Strings.get(`${type}_subcommand_role_argument_description`))
+        .setName(String.get(`${type}_subcommand_role_argument_name`))
+        .setDescription(String.get(`${type}_subcommand_role_argument_description`))
         .setRequired(true))
       .addStringOption((string) => string
-        .setName(Strings.get(`${type}_subcommand_command_argument_name`))
-        .setDescription(Strings.get(`${type}_subcommand_command_argument_description`))
+        .setName(String.get(`${type}_subcommand_command_argument_name`))
+        .setDescription(String.get(`${type}_subcommand_command_argument_description`))
         .addChoices(...commands)
         .setRequired(true)))
 
     // whitelist user <user> <command>
     .addSubcommand((subcommand) => subcommand
-      .setName(Strings.get(`${type}_subcommand_user_name`))
-      .setDescription(Strings.get(`${type}_subcommand_user_description`))
+      .setName(String.get(`${type}_subcommand_user_name`))
+      .setDescription(String.get(`${type}_subcommand_user_description`))
       .addUserOption((user) => user
-        .setName(Strings.get(`${type}_subcommand_user_argument_name`))
-        .setDescription(Strings.get(`${type}_subcommand_user_argument_description`))
+        .setName(String.get(`${type}_subcommand_user_argument_name`))
+        .setDescription(String.get(`${type}_subcommand_user_argument_description`))
         .setRequired(true))
       .addStringOption((string) => string
-        .setName(Strings.get(`${type}_subcommand_command_argument_name`))
-        .setDescription(Strings.get(`${type}_subcommand_command_argument_description`))
+        .setName(String.get(`${type}_subcommand_command_argument_name`))
+        .setDescription(String.get(`${type}_subcommand_command_argument_description`))
         .addChoices(...commands)
         .setRequired(true)))
 
     // whitelist channel <channel> <command>
     .addSubcommand((subcommand) => subcommand
-      .setName(Strings.get(`${type}_subcommand_channel_name`))
-      .setDescription(Strings.get(`${type}_subcommand_channel_description`))
+      .setName(String.get(`${type}_subcommand_channel_name`))
+      .setDescription(String.get(`${type}_subcommand_channel_description`))
       .addChannelOption((user) => user
-        .setName(Strings.get(`${type}_subcommand_channel_argument_name`))
-        .setDescription(Strings.get(`${type}_subcommand_channel_argument_description`))
+        .setName(String.get(`${type}_subcommand_channel_argument_name`))
+        .setDescription(String.get(`${type}_subcommand_channel_argument_description`))
         .setRequired(true))
       .addStringOption((string) => string
-        .setName(Strings.get(`${type}_subcommand_command_argument_name`))
-        .setDescription(Strings.get(`${type}_subcommand_command_argument_description`))
+        .setName(String.get(`${type}_subcommand_command_argument_name`))
+        .setDescription(String.get(`${type}_subcommand_command_argument_description`))
         .addChoices(...commands)
         .setRequired(true)))
 
     // whitelist list <command>
     .addSubcommand((subcommand) => subcommand
-      .setName(Strings.get('whitelist_subcommand_list_name'))
-      .setDescription(Strings.get('whitelist_subcommand_list_description'))
+      .setName(String.get('whitelist_subcommand_list_name'))
+      .setDescription(String.get('whitelist_subcommand_list_description'))
       .addStringOption((string) => string
-        .setName(Strings.get('whitelist_subcommand_command_argument_name'))
-        .setDescription(Strings.get('whitelist_subcommand_command_argument_description'))
+        .setName(String.get('whitelist_subcommand_command_argument_name'))
+        .setDescription(String.get('whitelist_subcommand_command_argument_description'))
         .addChoices(...commands)
         .setRequired(true)));
 };
@@ -178,8 +177,8 @@ export default {
   config: () => ({}),
   data: () => buildCommand('whitelist'),
   handler: new Collection<string, IHandler>()
-    .set(Strings.get('whitelist_subcommand_role_name'), (interaction: ChatInputCommandInteraction<CacheType>) => setCommand('roles', 'whitelist', interaction))
-    .set(Strings.get('whitelist_subcommand_user_name'), (interaction: ChatInputCommandInteraction<CacheType>) => setCommand('users', 'whitelist', interaction))
-    .set(Strings.get('whitelist_subcommand_channel_name'), (interaction: ChatInputCommandInteraction<CacheType>) => setCommand('channels', 'whitelist', interaction))
+    .set(String.get('whitelist_subcommand_role_name'), (interaction: ChatInputCommandInteraction<CacheType>) => setCommand('roles', 'whitelist', interaction))
+    .set(String.get('whitelist_subcommand_user_name'), (interaction: ChatInputCommandInteraction<CacheType>) => setCommand('users', 'whitelist', interaction))
+    .set(String.get('whitelist_subcommand_channel_name'), (interaction: ChatInputCommandInteraction<CacheType>) => setCommand('channels', 'whitelist', interaction))
     .set('list', (interaction: ChatInputCommandInteraction) => listCommand('whitelist', interaction)),
 };

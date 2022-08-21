@@ -1,5 +1,5 @@
 import { ICommand } from '@interfaces';
-import { Images, Strings } from '@utils';
+import { Images } from '@utils';
 import { EmbedBuilder } from '@overrides';
 import {
   SlashCommandBuilder, ChatInputCommandInteraction, CacheType, userMention,
@@ -10,12 +10,12 @@ export default {
     ...JSON.configLoad('commands/help-us.json'),
   }),
   data: new SlashCommandBuilder()
-    .setName(Strings.get('help_us_command_name'))
-    .setDescription(Strings.get('help_us_command_description')),
+    .setName(String.get('help_us_command_name'))
+    .setDescription(String.get('help_us_command_description')),
   handler: async (interaction: ChatInputCommandInteraction<CacheType>) => {
     const embed = new EmbedBuilder()
-      .setTitle(Strings.get('help_us_embed_title', interaction.locale))
-      .setDescription(Strings.get('help_us_embed_description', interaction.locale, {
+      .setTitle(String.get('help_us_embed_title', interaction.locale))
+      .setDescription(String.get('help_us_embed_description', interaction.locale, {
         keys: {
           ROBERT: userMention('473860522710794250'),
           JUKNUM: userMention('207471947662098432'),

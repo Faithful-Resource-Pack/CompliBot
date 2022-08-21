@@ -7,7 +7,6 @@ import {
   roleMention,
   userMention,
 } from 'discord.js';
-import { Strings } from './strings';
 
 /**
  * Checks if the user is authorized to use the command.
@@ -21,11 +20,11 @@ import { Strings } from './strings';
 export async function checkPermissions(config: ICommandConfig, guildId: string, userId: string, channelId: string, roles: GuildMemberRoleManager, locale: LocaleString): Promise<void> {
   const botbanConfig = JSON.configLoad('botban.json');
   if (botbanConfig.banned && botbanConfig.banned.includes(userId)) {
-    return Promise.reject(new Error(Strings.get('permissions_banned_error', locale)));
+    return Promise.reject(new Error(String.get('permissions_banned_error', locale)));
   }
 
   if (config.devOnly && settings.developersIds.includes(userId) === false) {
-    return Promise.reject(new Error(Strings.get('permissions_developers_only', locale)));
+    return Promise.reject(new Error(String.get('permissions_developers_only', locale)));
   }
 
   // if there is no configuration file, command is always authorized
@@ -55,15 +54,15 @@ export async function checkPermissions(config: ICommandConfig, guildId: string, 
     }
 
     if (!isAuthorizedChannel && permissions.channels && permissions.channels.length > 0) {
-      return Promise.reject(new Error(Strings.get('permissions_channel_not_whitelisted', locale, { keys: { CHANNELS: permissions.channels.map((c) => channelMention(c)).join(', ') } })));
+      return Promise.reject(new Error(String.get('permissions_channel_not_whitelisted', locale, { keys: { CHANNELS: permissions.channels.map((c) => channelMention(c)).join(', ') } })));
     }
 
     if (!isAuthorizedRole && permissions.roles && permissions.roles.length > 0) {
-      return Promise.reject(new Error(Strings.get('permissions_role_not_whitelisted', locale, { keys: { ROLES: permissions.roles.map((r) => roleMention(r)).join(', ') } })));
+      return Promise.reject(new Error(String.get('permissions_role_not_whitelisted', locale, { keys: { ROLES: permissions.roles.map((r) => roleMention(r)).join(', ') } })));
     }
 
     if (!isAuthorizedUser && permissions.users && permissions.users.length > 0) {
-      if (!isAuthorizedRole) return Promise.reject(new Error(Strings.get('permissions_user_not_whitelisted', locale, { keys: { USERS: permissions.users.map((u) => userMention(u)).join(', ') } })));
+      if (!isAuthorizedRole) return Promise.reject(new Error(String.get('permissions_user_not_whitelisted', locale, { keys: { USERS: permissions.users.map((u) => userMention(u)).join(', ') } })));
     }
   }
 
@@ -87,9 +86,9 @@ export async function checkPermissions(config: ICommandConfig, guildId: string, 
     }
 
     // channel || role || user
-    if (isBlacklistedChannel) return Promise.reject(new Error(Strings.get('permissions_channel_blacklisted', locale)));
-    if (isBlacklistedRole) return Promise.reject(new Error(Strings.get('permissions_role_blacklisted', locale)));
-    if (isBlacklistedUser) return Promise.reject(new Error(Strings.get('permissions_user_blacklisted', locale)));
+    if (isBlacklistedChannel) return Promise.reject(new Error(String.get('permissions_channel_blacklisted', locale)));
+    if (isBlacklistedRole) return Promise.reject(new Error(String.get('permissions_role_blacklisted', locale)));
+    if (isBlacklistedUser) return Promise.reject(new Error(String.get('permissions_user_blacklisted', locale)));
   }
 
   return Promise.resolve();
