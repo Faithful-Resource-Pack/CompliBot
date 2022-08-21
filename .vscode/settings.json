@@ -3,7 +3,8 @@
     "complibot",
     "crowdin",
     "deletable",
-    "erroraholic"
+    "erroraholic",
+    "THEROLF"
   ],
   "[json]": {
     "editor.defaultFormatter": "vscode.json-language-features"

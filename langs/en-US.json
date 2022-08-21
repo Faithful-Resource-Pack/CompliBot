@@ -85,6 +85,11 @@
 
   "feedback_input_generic_title_label": "Give a title to your feedback",
   "feedback_input_generic_description_label": "Write your feedback here",
+
+  "help_us_command_name": "help-us",
+  "help_us_command_description": "Get information on how to help the developers of this bot.",
+  "help_us_embed_title": "Do you want to help or support us in the CompliBot development?",
+  "help_us_embed_description": "You love this project and you want to help the developers?\nPlease contact one of the developers below to be invited to the development servers:\n%ROBERT%, %JUKNUM%, %THEROLF%, %NICK%\n\nYou can also check us out on GitHub:\n> %REPO_URL%",
   
   "logger_message_random_sentence": [
     "Oh no, not again!",

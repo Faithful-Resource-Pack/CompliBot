@@ -33,7 +33,7 @@ export default {
 
       if (!config.banned || config.banned.length === 0) {
         interaction.reply({
-          content: Strings.get('botban_command_subcommand_view_no_banned_users'),
+          content: Strings.get('botban_command_subcommand_view_no_banned_users', interaction.locale),
           ephemeral: true,
         });
       } else {
@@ -45,7 +45,7 @@ export default {
     })
     .set(Strings.get('botban_command_subcommand_audit_name'), (interaction: ChatInputCommandInteraction<CacheType>) => {
       const config: { banned: Array<string> } = JSON.configLoad('botban.json');
-      const bannedUser = interaction.options.getUser(Strings.get('botban_command_subcommand_audit_option_user_name'), true).id;
+      const bannedUser = interaction.options.getUser(Strings.get('botban_command_subcommand_audit_option_user_name', interaction.locale), true).id;
       let added = false;
 
       if (!config.banned) config.banned = [];

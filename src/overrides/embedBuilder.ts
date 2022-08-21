@@ -1,4 +1,5 @@
 import { Colors } from '@enums';
+import { Images } from '@utils';
 import { EmbedBuilder, EmbedData, APIEmbed } from 'discord.js';
 
 class ExtendedEmbedBuilder extends EmbedBuilder {
@@ -10,7 +11,7 @@ class ExtendedEmbedBuilder extends EmbedBuilder {
     this.setColor(Colors.BLUE);
     this.setFooter({
       text: `CompliBot © ${new Date().getFullYear()}`,
-      iconURL: 'https://database.faithfulpack.net/images/branding/logos/transparent/512/bot_logo.png',
+      iconURL: Images.get('branding/logos/transparent/64/bot_logo.png'),
     });
   }
 }

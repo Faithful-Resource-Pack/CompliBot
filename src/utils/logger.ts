@@ -219,7 +219,7 @@ export class Logger {
       if (channel?.isTextBased()) return;
 
       const embed = new EmbedBuilder()
-        .setAuthor({ name: type, iconURL: Images.get('error') })
+        .setAuthor({ name: type, iconURL: Images.get('bot/error.png') })
         .setColor(Colors.RED)
         .setDescription(`\`\`\`bash\n${error.stack || JSON.stringify(error)}\n\`\`\``)
         .setFooter({ text: client.user!.username, iconURL: client.user?.avatarURL() ?? undefined })

@@ -4,4 +4,5 @@ export interface ISettings {
   debugChannel: string; // the channel where debug logs should be sent
   clientId: string; // client id
   devGuildId: string; // guild id for the dev guild
+  imageBaseURL: string; // base url for images
 }

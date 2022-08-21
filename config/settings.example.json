@@ -6,5 +6,6 @@
   "devGuildId": "11234567891",
   "developersIds": [
     "11234567891"
-  ]
+  ],
+  "imageBaseURL": "https://example.com/"
 }

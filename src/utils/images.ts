@@ -1,12 +1,16 @@
-import path from 'path';
+import { ISettings } from '@interfaces';
 
 export class Images {
   /**
-   * Get the images from the `./images` directory.
-   * @param {String} filepath - The filepath to the image from the `./images` directory.
+   * Get the images from the imageBaseURL setting.
+   * @param {String} filepath - The filepath to the image from the imageBaseURL setting.
    * @returns {String} The image path.
    */
   public static get(filepath: string): string {
-    return path.join(__dirname, '../../images', filepath);
+    const settings: ISettings = JSON.configLoad('settings.json');
+    const basePath = settings.imageBaseURL;
+
+    // add timestamp to prevent caching
+    return `${basePath}${filepath}?${Date.now()}`;
   }
 }
