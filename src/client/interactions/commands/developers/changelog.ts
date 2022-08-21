@@ -4,10 +4,10 @@ import fs from 'fs';
 import {
   CacheType,
   ChatInputCommandInteraction,
-  EmbedBuilder,
   SlashCommandBuilder,
   EmbedField,
 } from 'discord.js';
+import { EmbedBuilder } from '@overrides';
 
 const CHANGELOG_PATH = path.join(__dirname, '..', '..', '..', '..', '..', 'CHANGELOG.md');
 

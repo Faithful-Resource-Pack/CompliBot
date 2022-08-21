@@ -1,12 +1,13 @@
 import {
   CacheType,
   ChatInputCommandInteraction,
-  EmbedBuilder,
   SlashCommandBuilder,
 } from 'discord.js';
 
 import { Strings } from '@utils';
 import { Client } from '@client/index';
+import { Colors } from '@enums';
+import { EmbedBuilder } from '@overrides';
 
 export default {
   config: () => ({
@@ -42,6 +43,7 @@ export default {
     const evaluated = await eval(`(async () => { try { return await (async () => {${code.includes('return') ? code : `return ${code}`}})() } catch (e) { return e } })()`);
 
     const embed = new EmbedBuilder()
+      .setColor(Colors.BLUE)
       .setDescription(`\`\`\`js\n${(await clean(evaluated, c)).slice(0, 1000)}\`\`\``);
 
     interaction.reply({

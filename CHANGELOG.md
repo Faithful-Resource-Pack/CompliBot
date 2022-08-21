@@ -16,6 +16,7 @@ Commands are explained like so:
 - Permissions has been revamped and can be configured for each (/) commands trough the `/whitelist` & `/blacklist` commands.
 
 ### Changed
+- Switched to DiscordJS v14
 - Complete reorganization of the repository & codebase
   - Commands are now placed in `src/client/interaction/commands/**`
   - Override of bases class (ex: JSON & Array) are placed in `src/overrides/**` and directly imported in the `src/index.ts` file

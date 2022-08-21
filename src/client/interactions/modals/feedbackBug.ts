@@ -1,7 +1,7 @@
-import { Colors } from '@enums';
 import { IModal } from '@interfaces';
+import { EmbedBuilder } from '@overrides';
 import { octokit, Strings, templateLoad } from '@utils';
-import { ModalSubmitInteraction, CacheType, EmbedBuilder } from 'discord.js';
+import { ModalSubmitInteraction, CacheType } from 'discord.js';
 
 export default {
   id: 'feedback-bug',
@@ -37,7 +37,6 @@ export default {
     });
 
     const embed = new EmbedBuilder()
-      .setColor(Colors.BLUE)
       .setTitle(Strings.get('modal_feedback_generic_title', interaction.locale))
       .setDescription(Strings.get('modal_feedback_generic_description', interaction.locale, { keys: { LINK: `${response.data.html_url}` } }))
       .setTimestamp();

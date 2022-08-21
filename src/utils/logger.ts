@@ -9,7 +9,6 @@ import {
   AttachmentBuilder,
   ButtonInteraction,
   CommandInteraction,
-  EmbedBuilder,
   Guild,
   GuildMember,
   Message,
@@ -19,6 +18,7 @@ import {
   TextBasedChannel,
 } from 'discord.js';
 import { Colors } from '@enums';
+import { EmbedBuilder } from '@overrides';
 import { templateLoad } from './templates';
 import { Strings } from './strings';
 import { Images } from './images';
