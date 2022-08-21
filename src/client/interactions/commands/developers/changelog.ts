@@ -9,7 +9,7 @@ import {
   EmbedField,
 } from 'discord.js';
 
-const CHANGELOG_PATH = path.join(__dirname, '..', '..', '..', '..', 'CHANGELOG.md');
+const CHANGELOG_PATH = path.join(__dirname, '..', '..', '..', '..', '..', 'CHANGELOG.md');
 
 const changelogOptions = (): Array<{ name: string, value: string }> => fs.readFileSync(CHANGELOG_PATH, 'utf-8').match(/^#{2}(?!#)(.*)/gm)!
   .filter((l, index) => index >= 1)

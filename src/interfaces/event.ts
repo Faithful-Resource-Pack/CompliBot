@@ -1,6 +1,6 @@
 import { Client } from '@client';
 
 export interface IEvent {
-  name: string;
+  id: string;
   run: (client: Client, ...args: any[]) => void;
 }

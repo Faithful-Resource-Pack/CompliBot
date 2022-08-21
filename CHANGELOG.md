@@ -11,10 +11,18 @@ Commands are explained like so:
 
 ## [v3.0.0] TBA
 
+### Added
+- The bot now support modals!
+- Permissions has been revamped and can be configured for each (/) commands trough the `/whitelist` & `/blacklist` commands.
+
 ### Changed
 - Complete reorganization of the repository & codebase
+  - Commands are now placed in `src/client/interaction/commands/**`
+  - Override of bases class (ex: JSON & Array) are placed in `src/overrides/**` and directly imported in the `src/index.ts` file
+  - Some events has been renamed to fit with their primary names.
 - Authorization system has been implemented for each command and can be configured with `/whitelist` & `/blacklist`. (whitelist >> blacklist)
-- (WIP) Added full support for locales within commandes description & variables names.
+- The `/feedback` commands now use the discord modals & send the feedback directly to the GitHub repository.
+- Added partial support for locales within commandes description & variables names. ([See this PR](https://github.com/discordjs/discord.js/pull/8518))
 - Made strings synchronous, no more `await` before getting strings.
 
 ## [v2.5.0] TBA

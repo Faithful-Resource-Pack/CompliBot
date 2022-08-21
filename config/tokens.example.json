@@ -1,3 +1,4 @@
 {
-  "bot": "bot_token_from_discord_developer_portal"
+  "bot": "bot_token_from_discord_developer_portal",
+  "github": "github_personal_access_token"
 }

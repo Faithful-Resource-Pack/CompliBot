@@ -10,6 +10,7 @@ import {
   Guild,
   GuildMember,
   Message,
+  ModalSubmitInteraction,
   REST,
   RESTPostAPIApplicationCommandsJSONBody,
   Routes,
@@ -22,6 +23,7 @@ import {
   IEvent,
   ICommand,
   IAsyncData,
+  IModal,
 } from '@interfaces';
 
 import { getFileNames, Logger } from '@utils';
@@ -34,9 +36,11 @@ export type LogEvent = Message
 | ButtonInteraction
 | Guild
 | GuildMember
+| ModalSubmitInteraction
 | SelectMenuInteraction;
 
 export type LogStr = 'message'
+| 'modal'
 | 'guild'
 | 'button'
 | 'selectMenu'
@@ -57,6 +61,7 @@ class ExClient extends Client {
 
   public events: Collection<string, IEvent> = new Collection();
   public commands: Collection<string, ICommand> = new Collection();
+  public modals: Collection<string, IModal> = new Collection();
 
   private storedLogs: Array<Log> = [];
   private latestLogIndex: number = -1;
@@ -76,7 +81,8 @@ class ExClient extends Client {
       .catch((error) => Logger.log('error', 'You did not specify the client token in the tokens.json file.', error))
       .then(() => this.loadEvents())
       .then(() => this.loadCommands())
-      .finally(() => Logger.log('debug', '[3/3] Client successfully started'));
+      .then(() => this.loadModals())
+      .finally(() => Logger.log('debug', 'Client successfully loaded!'));
 
     // catches 'kill pid' (nodemon restart)
     process.on('SIGUSR1', () => this.restart());
@@ -107,19 +113,19 @@ class ExClient extends Client {
         import(file)
           .then((module) => {
             const event: IEvent = module.default;
-            this.events.set(event.name, event);
-            this.on(event.name, (...args) => event.run(this, ...args));
+            this.events.set(event.id, event);
+            this.on(event.id, (...args) => event.run(this, ...args));
           });
       });
 
-    Logger.log('debug', '[1/3] Loaded events');
+    Logger.log('debug', 'Loaded events');
   }
 
   /**
-   * Load & update slash commands from the ./commands/** directory.
+   * Load & update slash commands from the ./interactions/commands/** directory.
    */
   private async loadCommands() {
-    const filepath = path.join(__dirname, 'commands');
+    const filepath = path.join(__dirname, 'interactions/commands');
     const commandsGlobal: Array<RESTPostAPIApplicationCommandsJSONBody> = [];
     const commandsPrivate: Array<RESTPostAPIApplicationCommandsJSONBody> = [];
 
@@ -168,7 +174,26 @@ class ExClient extends Client {
       Logger.log('error', 'refreshApplicationCommands', error);
     }
 
-    Logger.log('debug', '[2/3] Loaded commands');
+    Logger.log('debug', 'Loaded commands');
+  }
+
+  /**
+   * Load & associate all modals from the ./interactions/modals/** directory.
+   */
+  private loadModals() {
+    const filepath = path.join(__dirname, 'interactions/modals');
+
+    getFileNames(filepath, true)
+      .filter((file) => file.endsWith('.ts' || '.js'))
+      .forEach((file) => {
+        import(file)
+          .then((module) => {
+            const modal: IModal = module.default;
+            this.modals.set(modal.id, modal);
+          });
+      });
+
+    Logger.log('debug', 'Loaded modals');
   }
 
   /**

@@ -3,6 +3,7 @@ import { Logger, Strings } from '@utils';
 import {
   SlashCommandBuilder,
   ChatInputCommandInteraction,
+  CacheType,
 } from 'discord.js';
 
 export default {
@@ -13,7 +14,7 @@ export default {
     .setName(Strings.get('logs_command_name'))
     .setDescription(Strings.get('logs_command_description'))
     .setDMPermission(false),
-  handler: async (interaction: ChatInputCommandInteraction, client: Client) => {
+  handler: async (interaction: ChatInputCommandInteraction<CacheType>, client: Client) => {
     await interaction.reply({ files: [Logger.buildLogFile(client)] })
       .catch((error) => Logger.log('error', 'An error occurred while sending the logs file.', error));
   },

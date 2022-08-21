@@ -6,7 +6,7 @@ import { getFileNames } from './files';
  * @returns {Array<{ name: string, value: string }>} The names of all commands that can be configured.
  */
 export function getConfigurableCommands(): Array<{ name: string; value: string; }> {
-  const files = getFileNames(path.join(__dirname, '..', 'client', 'commands'), true);
+  const files = getFileNames(path.join(__dirname, '..', 'client', 'interactions', 'commands'), true);
   const blacklistedCommands = [
     'whitelist.ts',
     'blacklist.ts',

@@ -1,3 +1,4 @@
+import { Logger } from '@utils';
 import fs from 'fs';
 import path from 'path';
 
@@ -52,7 +53,14 @@ if (!JSON.load) {
         output = JSON.parse(fs.readFileSync(filepath, 'utf8'));
       } catch (err) {
         // File does not exist.
-        console.warn(`File ${filepath} does not exist.\n${err}`);
+        console.warn(`File ${filepath} does not exist, creating it.\n${err}`);
+        try {
+          const dirs = filepath.split(path.sep).slice(0, -1).join(path.sep);
+          if (!fs.existsSync(dirs)) fs.mkdirSync(dirs, { recursive: true });
+          fs.writeFileSync(filepath, '{}');
+        } catch (error) {
+          Logger.log('error', 'Cannot create the JSON file', error);
+        }
       }
 
       return output;

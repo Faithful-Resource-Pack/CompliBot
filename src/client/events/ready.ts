@@ -4,7 +4,7 @@ import { Logger } from '@utils';
 import { Client } from '@client';
 
 export default {
-  name: 'ready',
+  id: 'ready',
   run: (client: Client) => {
     Logger.log('info', 'Client is ready!');
     client.user?.setActivity('with the bot!', { type: ActivityType.Playing });

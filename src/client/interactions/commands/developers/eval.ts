@@ -29,6 +29,7 @@ export default {
 
       return text
         .replaceAll(client.tokens.bot, '[BOT_TOKEN]')
+        .replaceAll(client.tokens.github, '[GITHUB_TOKEN]')
         .replaceAll(/`/g, `\`${String.fromCharCode(8203)}`)
         .replaceAll(/@/g, `@${String.fromCharCode(8203)}`);
     };

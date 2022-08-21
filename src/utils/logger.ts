@@ -14,6 +14,7 @@ import {
   GuildMember,
   Message,
   messageLink,
+  ModalSubmitInteraction,
   SelectMenuInteraction,
   TextBasedChannel,
 } from 'discord.js';
@@ -118,6 +119,11 @@ export class Logger {
       }
 
       switch (log.type) {
+        case 'modal':
+          log.data = log.data as ModalSubmitInteraction; // Cast to exclude GuildMember
+          tmp = tmp.replace('%templateType%', 'Modal');
+          break;
+
         case 'guildJoined':
           log.data = log.data as Guild;
           tmp = tmp.replace('%templateType%', 'Guild Joined');

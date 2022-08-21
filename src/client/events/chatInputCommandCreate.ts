@@ -10,7 +10,7 @@ import {
 } from 'discord.js';
 
 export default {
-  name: 'chatInputCommandCreate',
+  id: 'chatInputCommandCreate',
   run: async (client: Client, interaction: ChatInputCommandInteraction<CacheType>) => {
     Logger.log('debug', `(/) command '${interaction.commandName}' used by ${interaction.user.username}`);
     client.log('command', interaction);

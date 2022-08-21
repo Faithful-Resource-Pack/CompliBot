@@ -46,12 +46,45 @@
   "debug_channel_command_set_success": "Successfully set debug channel to %CHANNEL%, restart the bot to fully apply the change.",
 
   "errors_argument_not_guild_text_channel": "Sorry, the specified channel must be a text channel.",
+  "errors_modal_not_responding": "Sorry, the modal is not responding. Please try again later.",
   "errors_slash_command_not_responding": "Sorry, I'm not responding to that command. Try again later.",
 
   "eval_command_name" : "eval",
   "eval_command_description" : "Evaluates a string of code.",
   "eval_command_option_code_name" : "code",
   "eval_command_option_code_description" : "The code to evaluate.",
+
+  "feedback_command_name": "feedback",
+  "feedback_command_description": "Submits bot feedback to the developers.",
+  "feedback_command_option_type_name": "type",
+  "feedback_command_option_type_description": "What kind of feedback it is?",
+  "feedback_command_option_type_bug": "Bug",
+  "feedback_command_option_type_feature": "Feature",
+  "feedback_command_option_type_generic": "Feedback",
+
+  "feedback_modal_title_bug": "Submit a bug report",
+  "feedback_modal_title_feature": "Submit a feature request",
+  "feedback_modal_title_generic": "Submit feedback",
+
+  "feedback_input_bug_title_label": "Give a title to your bug report",
+  "feedback_input_bug_what_happened_label": "What happened?",
+  "feedback_input_bug_what_happened_placeholder": "Also tell us, what did you expect to happen?",
+  "feedback_input_bug_reproduce_label": "Steps to reproduce",
+  "feedback_input_bug_reproduce_placeholder": "What steps did you take to reproduce the bug?",
+  "feedback_input_bug_screenshots_label": "Screenshot(s)",
+  "feedback_input_bug_notes_label": "Note(s)",
+  "feedback_input_bug_notes_placeholder": "Add any other context about the problem that doesn't fit into any category here.",
+
+  "feedback_input_feature_title_label": "Give a title to your feature request",
+  "feedback_input_feature_related_label": "Is your feature request related to a problem?",
+  "feedback_input_feature_description_label": "Describe the feature you'd like",
+  "feedback_input_feature_screenshots_label": "Screenshot(s)",
+  "feedback_input_feature_screenshots_placeholder": "If you have done any concepts, feel free to add them here",
+  "feedback_input_feature_notes_label": "Notes",
+  "feedback_input_feature_notes_placeholder": "Add any other context about the request that doesn't fit into any category here",
+
+  "feedback_input_generic_title_label": "Give a title to your feedback",
+  "feedback_input_generic_description_label": "Write your feedback here",
   
   "logger_message_random_sentence": [
     "Oh no, not again!",
@@ -89,6 +122,9 @@
 
   "logs_command_name": "logs",
   "logs_command_description": "Get the logs of the bot client",
+
+  "modal_feedback_generic_title": "Feedback sent!",
+  "modal_feedback_generic_description": "The feedback has been sent to the developers. Thank you for your feedback!\n> You can check it [here on GitHub](%LINK%)",
 
   "permissions_banned_error": "Sorry, you are banned from using the bot.",
   "permissions_developers_only": "Sorry, this command is only available to developers.",
