@@ -24,7 +24,7 @@ export default {
           REPO_URL: 'https://github.com/Faithful-Resource-Pack/Discord-Bot',
         },
       }))
-      .setThumbnail(Images.get('bot/question_mark.png'));
+      .setThumbnail(Images.getAsEmbedThumbnail('bot/question_mark.png'));
 
     interaction.reply({ embeds: [embed], ephemeral: true });
   },

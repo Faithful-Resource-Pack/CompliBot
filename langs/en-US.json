@@ -48,6 +48,12 @@
   "changelog_command_argument_version_name": "version",
   "changelog_command_argument_version_description": "The version to fetch.",
 
+  "coin_command_name": "coin",
+  "coin_command_description": "Flips a coin. Will it be heads? Will it be tails? Who knows?",
+  "coin_command_result_edge": "Edge?!",
+  "coin_command_result_heads": "Heads!",
+  "coin_command_result_tails": "Tails!",
+
   "debug_channel_command_name": "debug-channel",
   "debug_channel_command_description": "Command to setup the debug channel of the bot.",
   "debug_channel_command_channel_argument_name": "channel",

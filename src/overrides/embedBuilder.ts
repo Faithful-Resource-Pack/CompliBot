@@ -11,7 +11,7 @@ class ExtendedEmbedBuilder extends EmbedBuilder {
     this.setColor(Colors.BLUE);
     this.setFooter({
       text: `CompliBot © ${new Date().getFullYear()}`,
-      iconURL: Images.get('branding/logos/transparent/64/bot_logo.png'),
+      iconURL: Images.getAsEmbedFooterOrAuthor('branding/logos/transparent/64/bot_logo.png'),
     });
   }
 }

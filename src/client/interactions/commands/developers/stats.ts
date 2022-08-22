@@ -56,7 +56,7 @@ export default {
       const embed = new EmbedBuilder()
         .setTitle(`${client.user?.username} ${String.get('stats_command_name', interaction.locale)}`)
         .setThumbnail(client.user?.displayAvatarURL() ?? null)
-        .setFooter({ text: String.get('stats_subcommand_bot_embed_footer'), iconURL: Images.get('bot/heart.png') })
+        .setFooter({ text: String.get('stats_subcommand_bot_embed_footer'), iconURL: Images.getAsEmbedFooterOrAuthor('bot/heart.png') })
         .addFields(
           {
             name: titles[0],
