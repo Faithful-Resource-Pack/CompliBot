@@ -1,4 +1,5 @@
 import { Client } from '@client';
+import { ICommand } from '@interfaces';
 import { Logger } from '@utils';
 import {
   SlashCommandBuilder,
@@ -18,4 +19,4 @@ export default {
     await interaction.reply({ files: [Logger.buildLogFile(client)] })
       .catch((error) => Logger.log('error', 'An error occurred while sending the logs file.', error));
   },
-};
+} as ICommand;

@@ -1,3 +1,4 @@
+import { ICommand } from '@interfaces';
 import {
   ActionRowBuilder,
   CacheType,
@@ -129,4 +130,4 @@ export default {
     modal.addComponents(rows);
     await interaction.showModal(modal);
   },
-};
+} as ICommand;

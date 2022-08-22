@@ -15,6 +15,15 @@ export type Placeholder = {
 };
 
 declare global {
+  interface String {
+    /**
+     * Capitalize the first letter of the string.
+     * @returns {String} The capitalized string.
+     * @example String.capitalize('hello world'); // 'Hello world'
+     */
+    capitalize(): string;
+  }
+
   interface StringConstructor {
     /**
      * Get the corresponding string for the given key.
@@ -110,6 +119,17 @@ if (!String.format) {
 
       if (typeof str === 'string') return result;
       return result.split('$;');
+    },
+    enumerable: false,
+    configurable: false,
+    writable: false,
+  });
+}
+
+if (!String.prototype.capitalize) {
+  Object.defineProperty(String.prototype, 'capitalize', {
+    value: function capitalize(): string {
+      return this.charAt(0).toUpperCase() + this.slice(1);
     },
     enumerable: false,
     configurable: false,

@@ -7,6 +7,7 @@ import {
   EmbedField,
 } from 'discord.js';
 import { EmbedBuilder } from '@overrides';
+import { ICommand } from '@interfaces';
 
 const CHANGELOG_PATH = path.join(__dirname, '..', '..', '..', '..', '..', 'CHANGELOG.md');
 
@@ -63,4 +64,4 @@ export default {
 
     interaction.reply({ embeds: [embed], ephemeral: true });
   },
-};
+} as ICommand;

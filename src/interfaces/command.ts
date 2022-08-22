@@ -4,7 +4,7 @@ import { Client } from '@client';
 
 export interface ICommand {
   config: { (): ICommandConfig };
-  data: TSyncData | IAsyncData;
+  data: (TSyncData | IAsyncData) | (() => TSyncData | IAsyncData);
   handler: Collection<string, IHandler> | IHandler;
 }
 

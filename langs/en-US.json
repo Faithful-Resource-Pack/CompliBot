@@ -1,4 +1,13 @@
 {
+  "activity_command_name": "activity",
+  "activity_command_description": "Creates an activity in a voice channel.",
+  "activity_command_option_activity_name": "activity",
+  "activity_command_option_activity_description": "The activity to open in voice chat.",
+  "activity_command_option_channel_name": "channel",
+  "activity_command_option_channel_description": "The voice channel to create the activity in.",
+  "activity_command_not_in_voice_channel":  "Please join a voice channel or add a channel argument!",
+  "activity_command_invite_title": "Click to join %ACTIVITY%",
+
   "botban_command_name": "botban",
   "botban_command_description": "Bans a user from the bot.",
   "botban_command_subcommand_view_name": "view",
@@ -45,7 +54,6 @@
   "debug_channel_command_channel_argument_description": "The channel where debug logs should be sent.",
   "debug_channel_command_set_success": "Successfully set debug channel to %CHANNEL%, restart the bot to fully apply the change.",
 
-  "errors_argument_not_guild_text_channel": "Sorry, the specified channel must be a text channel.",
   "errors_modal_not_responding": "Sorry, the modal is not responding. Please try again later.",
   "errors_slash_command_not_responding": "Sorry, I'm not responding to that command. Try again later.",
 

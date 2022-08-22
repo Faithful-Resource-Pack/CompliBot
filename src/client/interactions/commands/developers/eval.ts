@@ -7,6 +7,7 @@ import {
 import { Client } from '@client/index';
 import { Colors } from '@enums';
 import { EmbedBuilder } from '@overrides';
+import { ICommand } from '@interfaces';
 
 export default {
   config: () => ({
@@ -50,4 +51,4 @@ export default {
       embeds: [embed],
     });
   },
-};
+} as ICommand;

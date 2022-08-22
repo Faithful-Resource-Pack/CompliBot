@@ -1,4 +1,4 @@
-import { IHandler } from '@interfaces';
+import { ICommand, IHandler } from '@interfaces';
 import {
   CacheType,
   ChatInputCommandInteraction,
@@ -19,4 +19,4 @@ export default {
     .set(String.get('blacklist_subcommand_user_name'), (interaction: ChatInputCommandInteraction<CacheType>) => setCommand('users', 'blacklist', interaction))
     .set(String.get('blacklist_subcommand_channel_name'), (interaction: ChatInputCommandInteraction<CacheType>) => setCommand('channels', 'blacklist', interaction))
     .set('list', (interaction: ChatInputCommandInteraction) => listCommand('blacklist', interaction)),
-};
+} as ICommand;

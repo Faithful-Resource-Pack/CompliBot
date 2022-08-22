@@ -1,5 +1,5 @@
 import { Client } from '@client';
-import { IHandler } from '@interfaces';
+import { ICommand, IHandler } from '@interfaces';
 import { EmbedBuilder } from '@overrides';
 import {
   getCommandsNames,
@@ -157,4 +157,4 @@ export default {
 
       interaction.reply({ embeds: [embed], ephemeral: true });
     }),
-};
+} as ICommand;
