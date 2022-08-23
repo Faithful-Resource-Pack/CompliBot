@@ -39,6 +39,7 @@ export const errorHandler: Function = async (client: Client, payload: EndpointMe
       content = JSON.stringify({
         message: payload.content.message,
         code: payload.content.code,
+        stack: payload.content.stack,
       }, null, '  ');
     }
 

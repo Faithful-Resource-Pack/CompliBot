@@ -4,6 +4,7 @@ export interface EndpointMessage {
     message: string | null,
     code: number,
     err: any,
-    req: any
+    req: any,
+    stack: string,
   }
 }
