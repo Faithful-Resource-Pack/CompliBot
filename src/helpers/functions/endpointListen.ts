@@ -42,7 +42,12 @@ export const errorHandler: Function = async (client: Client, payload: EndpointMe
       }, null, '  ');
     }
 
-    const filename = `endpoint-error-${new Date().toISOString().split('T')[0]}.json`;
+    const date = new Date().toISOString().split('T')
+      .map((e, i) => (i === 1 ? e.substring(0, 8).replace(/:/g, '-') : e))
+      .map((e) => e.replace(/-/g, '_'))
+      .join('-');
+
+    const filename = `endpoint-error-${date}.json`;
 
     const embed = new MessageEmbed()
       .setAuthor({
