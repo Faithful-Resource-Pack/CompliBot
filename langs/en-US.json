@@ -213,7 +213,11 @@
     "%PLAYER% was doomed to fall by %AUTHOR% using %WEAPON%",
     "%PLAYER% fell too far and was finished by %AUTHOR% using %WEAPON%"
   ],
-  
+
+  "license_command_name": "license",
+  "license_command_description": "Shows the license of this guild.",
+  "license_command_no_license": "This guild has no license setup, use `/%SET_LICENSE_COMMAND_NAME%` to setup a license.",
+
   "logger_message_random_sentence": [
     "Oh no, not again!",
     "Well, it's unexpected...",
@@ -299,6 +303,12 @@
     "<#852223879535657010> my beloved",
     "Here's your ping. Now let me go back to sleep."
   ],
+
+  "set_license_command_name": "set-license",
+  "set_license_command_description": "Set the license of this guild",
+  "set_license_command_option_name": "text",
+  "set_license_command_option_description": "Set whatever you feel like as the license!",
+  "set_license_command_success": "The license has been set to:\n%LICENSE%",
 
   "stats_command_name": "stats",
   "stats_command_description": "Get statistics about the bot/commands.",

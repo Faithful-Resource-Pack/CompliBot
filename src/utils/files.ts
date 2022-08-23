@@ -14,7 +14,7 @@ export function getFileNames(directory: string, recursive: boolean = false): Arr
     .forEach((file) => {
       const absolute = path.join(directory, file);
 
-      if (fs.statSync(absolute).isDirectory() && recursive) return files.push(...getFileNames(absolute));
+      if (fs.statSync(absolute).isDirectory() && recursive) return files.push(...getFileNames(absolute, recursive));
       return files.push(absolute);
     });
 
