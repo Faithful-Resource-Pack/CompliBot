@@ -1,14 +1,12 @@
 import axios from 'axios';
 import {
-  CacheType,
   ChannelType,
-  ChatInputCommandInteraction,
   GuildMember,
   SlashCommandBuilder,
   VoiceChannel,
 } from 'discord.js';
 
-import { EmbedBuilder } from '@overrides';
+import { ChatInputCommandInteraction, EmbedBuilder } from '@overrides';
 import { ICommand } from '@interfaces';
 import { Client } from '@client';
 import { Activities } from '@enums';
@@ -34,7 +32,7 @@ export default {
       .setName(String.get('activity_command_option_channel_name'))
       .setDescription(String.get('activity_command_option_channel_description'))
       .addChannelTypes(ChannelType.GuildVoice)),
-  handler: async (interaction: ChatInputCommandInteraction<CacheType>, client: Client) => {
+  handler: async (interaction: ChatInputCommandInteraction, client: Client) => {
     await interaction.deferReply();
 
     const { member } = interaction;
@@ -47,7 +45,7 @@ export default {
       if (member && m.voice.channel && m.voice.channel.type === ChannelType.GuildVoice) {
         channel = m.voice.channel as VoiceChannel;
       } else {
-        interaction.followUp({ content: String.get('activity_command_not_in_voice_channel', interaction.guild?.preferredLocale) });
+        interaction.followUpDeletable({ content: String.get('activity_command_not_in_voice_channel', interaction.guild?.preferredLocale) });
         return;
       }
     }
@@ -78,11 +76,11 @@ export default {
             },
           }));
 
-        interaction.followUp({ embeds: [embed] });
+        interaction.followUpDeletable({ embeds: [embed] });
       })
       .catch((err) => {
         Logger.log('error', 'An error occurred while sending POST request to Discord API (activity)', err);
-        interaction.followUp({ content: String.get('errors_slash_command_not_responding', interaction.guild?.preferredLocale) });
+        interaction.followUpDeletable({ content: String.get('errors_slash_command_not_responding', interaction.guild?.preferredLocale) });
       });
   },
 } as ICommand;

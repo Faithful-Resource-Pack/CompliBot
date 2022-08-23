@@ -1,21 +1,16 @@
 import { Client } from '@client';
 import { IHandler, IEvent } from '@interfaces';
+import { Collection, GuildMemberRoleManager } from 'discord.js';
+import { ChatInputCommandInteraction } from '@overrides';
 import {
   Logger,
   checkPermissions,
   addCommandUse,
 } from '@utils';
 
-import {
-  Collection,
-  ChatInputCommandInteraction,
-  CacheType,
-  GuildMemberRoleManager,
-} from 'discord.js';
-
 export default {
   id: 'chatInputCommandCreate',
-  run: async (client: Client, interaction: ChatInputCommandInteraction<CacheType>) => {
+  run: async (client: Client, interaction: ChatInputCommandInteraction) => {
     Logger.log('debug', `(/) command '${interaction.commandName}' used by ${interaction.user.username}`);
     client.log('command', interaction);
 
@@ -37,7 +32,7 @@ export default {
         interaction.locale,
       );
     } catch (error) {
-      interaction.reply({
+      interaction.replyDeletable({
         content: `${(error as Error).message}`,
         ephemeral: true,
       });

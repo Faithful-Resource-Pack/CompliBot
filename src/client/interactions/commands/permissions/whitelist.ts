@@ -1,8 +1,7 @@
+import { ChatInputCommandInteraction } from '@overrides';
 import { ICommand, IHandler } from '@interfaces';
 import {
-  CacheType,
   channelMention,
-  ChatInputCommandInteraction,
   Collection,
   PermissionFlagsBits,
   roleMention,
@@ -21,12 +20,12 @@ import {
  * Edit the whitelist/blacklist of a command.
  * @param {String} option what category is edited
  * @param {String} type if it's the whitelist or the blacklist
- * @param {ChatInputCommandInteraction<CacheType>} interaction the interaction to use
+ * @param {ChatInputCommandInteraction} interaction the interaction to use
  */
 export const setCommand = (
   option: 'roles' | 'users' | 'channels',
   type: 'blacklist' | 'whitelist',
-  interaction: ChatInputCommandInteraction<CacheType>,
+  interaction: ChatInputCommandInteraction,
 ) => {
   const command = interaction.options.getString(String.get(`${type}_subcommand_command_argument_name`), true);
   const guildId = interaction.guild?.id || '0';
@@ -58,13 +57,13 @@ export const setCommand = (
 
   if (config[typed]![guildId][option]?.includes(obj.id)) {
     config[typed]![guildId][option]!.removeAll(obj.id);
-    interaction.reply({
+    interaction.replyDeletable({
       content: String.get(`${type}_command_remove_success`, interaction.locale, { keys: { OBJECT: mentions, COMMAND: command } }),
       ephemeral: true,
     });
   } else {
     config[typed]![guildId][option]!.push(obj.id);
-    interaction.reply({
+    interaction.replyDeletable({
       content: String.get(`${type}_command_grant_success`, interaction.locale, { keys: { OBJECT: mentions, COMMAND: command } }),
       ephemeral: true,
     });
@@ -77,20 +76,20 @@ export const setCommand = (
 /**
  * List the current whitelist/blacklist of a command.
  * @param {String} type if it's the whitelist or the blacklist
- * @param {ChatInputCommandInteraction<CacheType>} interaction the interaction to use
+ * @param {ChatInputCommandInteraction} interaction the interaction to use
  */
-export const listCommand = (type: 'whitelist' | 'blacklist', interaction: ChatInputCommandInteraction<CacheType>) => {
+export const listCommand = (type: 'whitelist' | 'blacklist', interaction: ChatInputCommandInteraction) => {
   const command = interaction.options.getString('command', true);
   const config = JSON.configLoad(`/commands/${command}.json`);
   const typed = type === 'blacklist' ? 'blacklisted' : 'whitelisted';
 
   if (!config[typed] || !config[typed]![interaction.guild?.id || '0']) {
-    interaction.reply({
+    interaction.replyDeletable({
       content: String.get('whitelist_subcommand_list_empty', interaction.locale, { keys: { COMMAND: command } }),
       ephemeral: true,
     });
   } else if (config[typed]![interaction.guild?.id || '0']) {
-    interaction.reply({
+    interaction.replyDeletable({
       content: String.get('whitelist_subcommand_list_success', interaction.locale, {
         keys: {
           COMMAND: command,
@@ -177,8 +176,8 @@ export default {
   config: () => ({}),
   data: () => buildCommand('whitelist'),
   handler: new Collection<string, IHandler>()
-    .set(String.get('whitelist_subcommand_role_name'), (interaction: ChatInputCommandInteraction<CacheType>) => setCommand('roles', 'whitelist', interaction))
-    .set(String.get('whitelist_subcommand_user_name'), (interaction: ChatInputCommandInteraction<CacheType>) => setCommand('users', 'whitelist', interaction))
-    .set(String.get('whitelist_subcommand_channel_name'), (interaction: ChatInputCommandInteraction<CacheType>) => setCommand('channels', 'whitelist', interaction))
+    .set(String.get('whitelist_subcommand_role_name'), (interaction: ChatInputCommandInteraction) => setCommand('roles', 'whitelist', interaction))
+    .set(String.get('whitelist_subcommand_user_name'), (interaction: ChatInputCommandInteraction) => setCommand('users', 'whitelist', interaction))
+    .set(String.get('whitelist_subcommand_channel_name'), (interaction: ChatInputCommandInteraction) => setCommand('channels', 'whitelist', interaction))
     .set('list', (interaction: ChatInputCommandInteraction) => listCommand('whitelist', interaction)),
 } as ICommand;

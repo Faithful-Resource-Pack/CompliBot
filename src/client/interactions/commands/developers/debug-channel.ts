@@ -1,8 +1,8 @@
 import { Client } from '@client';
 import { ICommand } from '@interfaces';
+import { ChatInputCommandInteraction } from '@overrides';
 import {
   SlashCommandBuilder,
-  ChatInputCommandInteraction,
   ChannelType,
   channelMention,
   TextChannel,
@@ -24,7 +24,7 @@ export default {
     const channel = interaction.options.getChannel('channel', true) as TextChannel;
     client.setSettings('debugChannel', channel.id);
 
-    interaction.reply({ content: String.get('debug_channel_command_set_success', interaction.locale, { keys: { CHANNEL: channelMention(channel.id) } }), ephemeral: true });
+    interaction.replyDeletable({ content: String.get('debug_channel_command_set_success', interaction.locale, { keys: { CHANNEL: channelMention(channel.id) } }), ephemeral: true });
     return Promise.resolve();
   },
 } as ICommand;

@@ -1,9 +1,7 @@
 import { ICommand } from '@interfaces';
 import { Images } from '@utils';
-import { EmbedBuilder } from '@overrides';
-import {
-  SlashCommandBuilder, ChatInputCommandInteraction, CacheType, userMention,
-} from 'discord.js';
+import { ChatInputCommandInteraction, EmbedBuilder } from '@overrides';
+import { SlashCommandBuilder, userMention } from 'discord.js';
 
 export default {
   config: () => ({
@@ -12,7 +10,7 @@ export default {
   data: new SlashCommandBuilder()
     .setName(String.get('help_us_command_name'))
     .setDescription(String.get('help_us_command_description')),
-  handler: async (interaction: ChatInputCommandInteraction<CacheType>) => {
+  handler: async (interaction: ChatInputCommandInteraction) => {
     const embed = new EmbedBuilder()
       .setTitle(String.get('help_us_embed_title', interaction.locale))
       .setDescription(String.get('help_us_embed_description', interaction.locale, {
@@ -26,6 +24,6 @@ export default {
       }))
       .setThumbnail(Images.getAsEmbedThumbnail('bot/question_mark.png'));
 
-    interaction.reply({ embeds: [embed], ephemeral: true });
+    interaction.replyDeletable({ embeds: [embed], ephemeral: true });
   },
 } as ICommand;

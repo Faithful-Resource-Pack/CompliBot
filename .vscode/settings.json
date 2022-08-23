@@ -3,6 +3,7 @@
     "complibot",
     "crowdin",
     "deletable",
+    "Encodable",
     "erroraholic",
     "THEROLF"
   ],

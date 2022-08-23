@@ -1,4 +1,5 @@
-import { Collection, ChatInputCommandInteraction } from 'discord.js';
+import { ChatInputCommandInteraction } from '@overrides';
+import { Collection } from 'discord.js';
 import { SlashCommandSubcommandsOnlyBuilder, SlashCommandBuilder } from '@discordjs/builders';
 import { Client } from '@client';
 

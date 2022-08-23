@@ -1,6 +1,6 @@
 import { Client } from '@client';
 import { ICommand, IHandler } from '@interfaces';
-import { EmbedBuilder } from '@overrides';
+import { ChatInputCommandInteraction, EmbedBuilder } from '@overrides';
 import {
   getCommandsNames,
   getCommandsUses,
@@ -10,8 +10,6 @@ import {
 } from '@utils';
 import {
   SlashCommandBuilder,
-  ChatInputCommandInteraction,
-  CacheType,
   Collection,
   time,
   TimestampStyles,
@@ -47,7 +45,7 @@ export default {
           .setRequired(false)));
   },
   handler: new Collection<string, IHandler>()
-    .set(String.get('stats_subcommand_bot_name'), (interaction: ChatInputCommandInteraction<CacheType>, client: Client) => {
+    .set(String.get('stats_subcommand_bot_name'), (interaction: ChatInputCommandInteraction, client: Client) => {
       const commandsUsed = getCommandsUses();
       const osInfo: { type: string, arch: string } = releaseInfo({ mode: 'sync' }) as any;
       const membersCount = client.guilds.cache.mapValues((guild) => guild.memberCount).reduce((a, b) => a + b, 0);
@@ -105,9 +103,9 @@ export default {
           },
         );
 
-      interaction.reply({ embeds: [embed], ephemeral: true });
+      interaction.replyDeletable({ embeds: [embed], ephemeral: true });
     })
-    .set(String.get('stats_subcommand_commands_name'), (interaction: ChatInputCommandInteraction<CacheType>) => {
+    .set(String.get('stats_subcommand_commands_name'), (interaction: ChatInputCommandInteraction) => {
       const command = interaction.options.getString(String.get('stats_subcommand_commands_argument_name'));
 
       if (command !== null) {
@@ -132,7 +130,7 @@ export default {
             },
           }));
 
-        interaction.reply({ embeds: [embed], ephemeral: true });
+        interaction.replyDeletable({ embeds: [embed], ephemeral: true });
         return;
       }
 
@@ -155,6 +153,6 @@ export default {
           })
           .join('\n')}`);
 
-      interaction.reply({ embeds: [embed], ephemeral: true });
+      interaction.replyDeletable({ embeds: [embed], ephemeral: true });
     }),
 } as ICommand;

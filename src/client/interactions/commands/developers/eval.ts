@@ -1,12 +1,8 @@
-import {
-  CacheType,
-  ChatInputCommandInteraction,
-  SlashCommandBuilder,
-} from 'discord.js';
+import { SlashCommandBuilder } from 'discord.js';
 
 import { Client } from '@client/index';
 import { Colors } from '@enums';
-import { EmbedBuilder } from '@overrides';
+import { ChatInputCommandInteraction, EmbedBuilder } from '@overrides';
 import { ICommand } from '@interfaces';
 
 export default {
@@ -20,7 +16,7 @@ export default {
       .setName(String.get('eval_command_option_code_name'))
       .setDescription(String.get('eval_command_option_code_description'))
       .setRequired(true)),
-  handler: async (interaction: ChatInputCommandInteraction<CacheType>, c: Client) => {
+  handler: async (interaction: ChatInputCommandInteraction, c: Client) => {
     const code = interaction.options.getString('code', true);
     const clean = async (text: any, client: Client) => {
       if (text && text.constructor.name === 'Promise') text = await text;
@@ -46,7 +42,7 @@ export default {
       .setColor(Colors.BLUE)
       .setDescription(`\`\`\`js\n${(await clean(evaluated, c)).slice(0, 1000)}\`\`\``);
 
-    interaction.reply({
+    interaction.replyDeletable({
       ephemeral: true,
       embeds: [embed],
     });

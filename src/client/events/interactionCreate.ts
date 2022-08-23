@@ -1,6 +1,6 @@
+import { Interaction } from 'discord.js';
 import { Client } from '@client';
 import { IEvent } from '@interfaces';
-import { Interaction } from 'discord.js';
 
 export default {
   id: 'interactionCreate',

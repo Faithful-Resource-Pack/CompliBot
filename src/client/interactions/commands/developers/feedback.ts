@@ -1,8 +1,7 @@
 import { ICommand } from '@interfaces';
+import { ChatInputCommandInteraction } from '@overrides';
 import {
   ActionRowBuilder,
-  CacheType,
-  ChatInputCommandInteraction,
   ModalActionRowComponentBuilder,
   ModalBuilder,
   SlashCommandBuilder,
@@ -26,7 +25,7 @@ export default {
         { name: String.get('feedback_command_option_type_generic'), value: 'generic' },
       )
       .setRequired(true)),
-  handler: async (interaction: ChatInputCommandInteraction<CacheType>) => {
+  handler: async (interaction: ChatInputCommandInteraction) => {
     const type: 'generic' | 'bug' | 'feature' = interaction.options.getString('type', true) as any;
     const modal = new ModalBuilder()
       .setCustomId(`feedback-${type}`)

@@ -1,11 +1,6 @@
 import { ICommand } from '@interfaces';
-import { EmbedBuilder } from '@overrides';
-import {
-  CacheType,
-  ChatInputCommandInteraction,
-  SlashCommandBuilder,
-  userMention,
-} from 'discord.js';
+import { ChatInputCommandInteraction, EmbedBuilder } from '@overrides';
+import { SlashCommandBuilder, userMention } from 'discord.js';
 
 export default {
   config: () => ({
@@ -20,7 +15,7 @@ export default {
     .addStringOption((option) => option
       .setName(String.get('kill_command_argument_weapon_name'))
       .setDescription(String.get('kill_command_argument_weapon_description'))),
-  handler: async (interaction: ChatInputCommandInteraction<CacheType>) => {
+  handler: async (interaction: ChatInputCommandInteraction) => {
     const targetId = interaction.options.getUser(String.get('kill_command_argument_user_name'))?.id;
     const weapon = interaction.options.getString(String.get('kill_command_argument_weapon_name'));
     const keys: { PLAYER?: string, AUTHOR?: string, WEAPON?: string } = { AUTHOR: userMention(interaction.user.id) };
@@ -43,6 +38,6 @@ export default {
       embed.setDescription(strings[Math.floor(Math.random() * strings.length)]);
     }
 
-    interaction.reply({ embeds: [embed] });
+    interaction.replyDeletable({ embeds: [embed] });
   },
 } as ICommand;

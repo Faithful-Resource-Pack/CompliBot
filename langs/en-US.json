@@ -252,6 +252,11 @@
   "modal_feedback_generic_title": "Feedback sent!",
   "modal_feedback_generic_description": "The feedback has been sent to the developers. Thank you for your feedback!\n> You can check it [here on GitHub](%LINK%)",
 
+  "order_command_name": "order",
+  "order_command_description": "Get something special",
+  "order_command_argument_order_name": "item",
+  "order_command_argument_order_description": "The item you truly want.",
+
   "permissions_banned_error": "Sorry, you are banned from using the bot.",
   "permissions_developers_only": "Sorry, this command is only available to developers.",
   "permissions_channel_blacklisted": "Sorry, this channel is marked as blacklisted, thus you can't run this command here.",

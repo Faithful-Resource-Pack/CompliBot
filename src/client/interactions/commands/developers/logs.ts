@@ -1,11 +1,8 @@
 import { Client } from '@client';
 import { ICommand } from '@interfaces';
+import { ChatInputCommandInteraction } from '@overrides';
 import { Logger } from '@utils';
-import {
-  SlashCommandBuilder,
-  ChatInputCommandInteraction,
-  CacheType,
-} from 'discord.js';
+import { SlashCommandBuilder } from 'discord.js';
 
 export default {
   config: () => ({
@@ -15,8 +12,8 @@ export default {
     .setName(String.get('logs_command_name'))
     .setDescription(String.get('logs_command_description'))
     .setDMPermission(false),
-  handler: async (interaction: ChatInputCommandInteraction<CacheType>, client: Client) => {
-    await interaction.reply({ files: [Logger.buildLogFile(client)] })
+  handler: async (interaction: ChatInputCommandInteraction, client: Client) => {
+    await interaction.replyDeletable({ files: [Logger.buildLogFile(client)] })
       .catch((error) => Logger.log('error', 'An error occurred while sending the logs file.', error));
   },
 } as ICommand;

@@ -24,9 +24,10 @@
 		"paths": {
 			"@enums": ["./enums/index.ts"],
 			"@interfaces": ["./interfaces/index.ts"],
+			"@buttons": [ "./utils/buttons.ts" ],
 			"@overrides": ["./overrides/index.ts"],
 			"@utils": ["./utils/index.ts"],
-			
+
 			"@client/*": ["./client/*"],
 			"@client": ["./client/index.ts"],
 

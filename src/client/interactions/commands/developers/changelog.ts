@@ -1,12 +1,7 @@
 import path from 'path';
 import fs from 'fs';
-import {
-  CacheType,
-  ChatInputCommandInteraction,
-  SlashCommandBuilder,
-  EmbedField,
-} from 'discord.js';
-import { EmbedBuilder } from '@overrides';
+import { SlashCommandBuilder, EmbedField } from 'discord.js';
+import { ChatInputCommandInteraction, EmbedBuilder } from '@overrides';
 import { ICommand } from '@interfaces';
 
 const CHANGELOG_PATH = path.join(__dirname, '..', '..', '..', '..', '..', 'CHANGELOG.md');
@@ -28,7 +23,7 @@ export default {
       .setName(String.get('changelog_command_argument_version_name'))
       .setDescription(String.get('changelog_command_argument_version_description'))
       .setRequired(true)),
-  handler: async (interaction: ChatInputCommandInteraction<CacheType>) => {
+  handler: async (interaction: ChatInputCommandInteraction) => {
     const selectedVersion = interaction.options.getString('version', true);
     const changelogs = fs.readFileSync(CHANGELOG_PATH, 'utf-8')
       .replaceAll('\r', '')
@@ -62,6 +57,6 @@ export default {
       .addFields(fields)
       .setFooter({ text: `${version!.name.split(' ').join(' • ')}` });
 
-    interaction.reply({ embeds: [embed], ephemeral: true });
+    interaction.replyDeletable({ embeds: [embed], ephemeral: true });
   },
 } as ICommand;

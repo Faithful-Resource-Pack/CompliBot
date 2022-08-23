@@ -1,8 +1,7 @@
 import { ICommand, IHandler } from '@interfaces';
+import { ChatInputCommandInteraction } from '@overrides';
 import {
   SlashCommandBuilder,
-  ChatInputCommandInteraction,
-  CacheType,
   Collection,
   userMention,
 } from 'discord.js';
@@ -26,22 +25,22 @@ export default {
         .setRequired(true))),
 
   handler: new Collection<string, IHandler>()
-    .set(String.get('botban_command_subcommand_view_name'), (interaction: ChatInputCommandInteraction<CacheType>) => {
+    .set(String.get('botban_command_subcommand_view_name'), (interaction: ChatInputCommandInteraction) => {
       const config = JSON.configLoad('botban.json');
 
       if (!config.banned || config.banned.length === 0) {
-        interaction.reply({
+        interaction.replyDeletable({
           content: String.get('botban_command_subcommand_view_no_banned_users', interaction.locale),
           ephemeral: true,
         });
       } else {
-        interaction.reply({
+        interaction.replyDeletable({
           content: JSON.toCodeBlock(config.banned),
           ephemeral: true,
         });
       }
     })
-    .set(String.get('botban_command_subcommand_audit_name'), (interaction: ChatInputCommandInteraction<CacheType>) => {
+    .set(String.get('botban_command_subcommand_audit_name'), (interaction: ChatInputCommandInteraction) => {
       const config: { banned: Array<string> } = JSON.configLoad('botban.json');
       const bannedUser = interaction.options.getUser(String.get('botban_command_subcommand_audit_option_user_name', interaction.locale), true).id;
       let added = false;
@@ -55,7 +54,7 @@ export default {
 
       JSON.configSave('botban.json', config);
 
-      interaction.reply({
+      interaction.replyDeletable({
         content: String.get(added ? 'botban_command_subcommand_audit_user_banned' : 'botban_command_subcommand_audit_user_unbanned', interaction.locale, {
           keys: {
             USER: userMention(bannedUser),
