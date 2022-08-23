@@ -9,11 +9,11 @@ import {
 export default {
   id: 'modalSubmitCreate',
   run: async (client: Client, interaction: ModalSubmitInteraction<CacheType>) => {
-    Logger.log('debug', `Modal submitted ${interaction.customId} used by ${interaction.user.username}`);
+    Logger.log('debug', `Modal submitted '${interaction.customId}' used by ${interaction.user.username}`);
     client.log('modal', interaction);
 
     if (!client.modals.has(interaction.customId)) {
-      Logger.log('error', `Modal ${interaction.customId} not found.`);
+      Logger.log('error', `Modal '${interaction.customId}' not found.`);
       return;
     }
 

@@ -24,6 +24,7 @@ import {
   ICommand,
   IAsyncData,
   IModal,
+  IButton,
 } from '@interfaces';
 
 import { getFileNames, Logger } from '@utils';
@@ -59,8 +60,9 @@ class ExClient extends Client {
   readonly tokens: ITokens;
   readonly settings: ISettings;
 
-  public events: Collection<string, IEvent> = new Collection();
+  public buttons: Collection<string, IButton> = new Collection();
   public commands: Collection<string, ICommand> = new Collection();
+  public events: Collection<string, IEvent> = new Collection();
   public modals: Collection<string, IModal> = new Collection();
 
   private storedLogs: Array<Log> = [];
@@ -80,6 +82,7 @@ class ExClient extends Client {
     this.login(tokens.bot)
       .catch((error) => Logger.log('error', 'You did not specify the client token in the tokens.json file.', error))
       .then(() => this.loadEvents())
+      .then(() => this.loadButtons())
       .then(() => this.loadCommands())
       .then(() => this.loadModals())
       .finally(() => Logger.log('debug', 'Client successfully loaded!'));
@@ -194,6 +197,25 @@ class ExClient extends Client {
       });
 
     Logger.log('debug', 'Loaded modals');
+  }
+
+  /**
+   * Load & associate all buttons from the ./interactions/buttons/** directory.
+   */
+  private loadButtons() {
+    const filepath = path.join(__dirname, 'interactions/buttons');
+
+    getFileNames(filepath, true)
+      .filter((file) => file.endsWith('.ts' || '.js'))
+      .forEach((file) => {
+        import(file)
+          .then((module) => {
+            const button: IButton = module.default;
+            this.buttons.set(button.id, button);
+          });
+      });
+
+    Logger.log('debug', 'Loaded buttons');
   }
 
   /**

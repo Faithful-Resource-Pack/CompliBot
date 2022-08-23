@@ -60,8 +60,10 @@
   "debug_channel_command_channel_argument_description": "The channel where debug logs should be sent.",
   "debug_channel_command_set_success": "Successfully set debug channel to %CHANNEL%, restart the bot to fully apply the change.",
 
-  "errors_modal_not_responding": "Sorry, the modal is not responding. Please try again later.",
-  "errors_slash_command_not_responding": "Sorry, I'm not responding to that command. Try again later.",
+  "errors_button_not_responding": "Sorry, the button is not responding. Please try again later or submit a bug report on our GitHub: https://github.com/Faithful-Resource-Pack/Discord-Bot/issues.",
+  "errors_button_reserved": "Sorry, this button is reserved to it's owner (%USER%)",
+  "errors_modal_not_responding": "Sorry, the modal is not responding. Please try again later or submit a bug report on our GitHub: https://github.com/Faithful-Resource-Pack/Discord-Bot/issues.",
+  "errors_slash_command_not_responding": "Sorry, the command is not responding. Please Try again later or submit a bug report on our GitHub: https://github.com/Faithful-Resource-Pack/Discord-Bot/issues.",
 
   "eval_command_name" : "eval",
   "eval_command_description" : "Evaluates a string of code.",

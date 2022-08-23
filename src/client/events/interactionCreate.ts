@@ -13,6 +13,10 @@ export default {
       client.emit('modalSubmitCreate', (client as Client, interaction));
     }
 
+    if (interaction.isButton()) {
+      client.emit('buttonCreate', (client as Client, interaction));
+    }
+
     return Promise.resolve();
   },
 } as IEvent;

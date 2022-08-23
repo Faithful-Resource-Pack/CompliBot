@@ -20,9 +20,6 @@ declare module 'discord.js' {
   }
 }
 
-// TODO check if there isn't 5 buttons already
-// TODO declare buttons somewhere
-
 function addButtonComponent(options: InteractionReplyOptions, buttonComponent: ButtonBuilder): void {
   if (options.ephemeral === true) return; // don't add the button if the message is ephemeral
 
