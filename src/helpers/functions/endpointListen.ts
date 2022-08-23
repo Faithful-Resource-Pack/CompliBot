@@ -33,14 +33,16 @@ export const errorHandler: Function = async (client: Client, payload: EndpointMe
     if (channel === undefined) channel = await client.channels.fetch(targetChannelID) as TextChannel; // fetch channel if not in cache
     if (channel === undefined) return; // avoid infinite loop when crash is outside of client
 
-    const fullContent = JSON.stringify(payload.content);
+    const fullContent = JSON.stringify(payload.content, null, '  ');
     let content = fullContent;
     if (fullContent.length > 4096) {
       content = JSON.stringify({
         message: payload.content.message,
         code: payload.content.code,
-      });
+      }, null, '  ');
     }
+
+    const filename = `endpoint-error-${new Date().toISOString().split('T')[0]}.json`;
 
     const embed = new MessageEmbed()
       .setAuthor({
@@ -62,7 +64,7 @@ export const errorHandler: Function = async (client: Client, payload: EndpointMe
       .catch(console.error);
     await channel
       .send({
-        files: [fileConstructor(fullContent)],
+        files: [fileConstructor(fullContent, filename)],
       })
       .catch(console.error); // send after because the file is displayed before the embed (embeds are prioritized)
   })()
