@@ -33,7 +33,7 @@ declare global {
      * @returns {String|Array<String>} The string(s) for the given key.
      */
     //* Do not remove the 'any' type. Otherwise the compiler will complain in the SlashCommandBuilder (strings[] is not assignable to string).
-    get(key: BaseStrings, locale?: LocaleString, placeholders?: Placeholder): any;
+    get(key: BaseStrings, locale?: LocaleString | null, placeholders?: Placeholder): any;
 
     /**
      * Get all localizations of the given key.

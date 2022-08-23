@@ -17,7 +17,7 @@ export default {
     const embed = new EmbedBuilder()
       .setColor(Colors.COIN)
       // eslint-disable-next-line no-nested-ternary
-      .setTitle(String.get(`coin_command_result_${float === 0.5 ? 'edge' : float > 0.5 ? 'heads' : 'tails'}`))
+      .setTitle(String.get(`coin_command_result_${float === 0.5 ? 'edge' : float > 0.5 ? 'heads' : 'tails'}`, interaction.guildLocale))
       .setThumbnail(float === 0.5 ? 'https://c.tenor.com/y-5nnOLoWlUAAAAC/error-red-notification.gif' : Images.getAsEmbedThumbnail(`bot/coin_${float > 0.5 ? 'heads' : 'tails'}.png`));
 
     interaction.reply({ embeds: [embed] });
