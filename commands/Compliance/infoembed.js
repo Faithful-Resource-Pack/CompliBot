@@ -39,9 +39,9 @@ module.exports = {
 			else if (args[0] === 'media') {
 				var websiteEmbed = new MessageEmbed()
 					.setTitle('Website')
-					.setDescription('https://faithfulpack.net/')
+					.setDescription('https://faithfulpack.net')
 					.setColor(settings.colors.c32)
-					.setThumbnail(settings.images.logo_plain)
+					.setThumbnail('https://raw.githubusercontent.com/Faithful-Resource-Pack/Branding/main/logos/transparent/512/plain_logo.png')
 
 				var githubEmbed = new MessageEmbed()
 					.setTitle('Github')
@@ -61,6 +61,12 @@ module.exports = {
 					.setColor(settings.colors.curseforge)
 					.setThumbnail('https://gist.githubusercontent.com/thecodewarrior/110057b210551c4ecf2c9be6d58ff824/raw/38748511ca1eb5677f009092fb3fcd71cc76cdf0/logo.png')
 
+				var modrinthEmbed = new MessageEmbed()
+					.setTitle('Modrinth')
+					.setDescription('https://modrinth.com/user/Faithful-Resource-Pack')
+					.setColor(settings.colors.modrinth)
+					.setThumbnail('https://avatars.githubusercontent.com/u/67560307')
+				
 				var planetminecraftEmbed = new MessageEmbed()
 					.setTitle('Planet Minecraft')
 					.setDescription('https://www.planetminecraft.com/member/faithful_resource_pack/')
@@ -89,7 +95,7 @@ module.exports = {
 					.setColor(settings.colors.patreon)
 					.setThumbnail('https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Patreon_logomark.svg/1024px-Patreon_logomark.svg.png')
 
-				await message.channel.send({ embeds: [websiteEmbed, githubEmbed, twitterEmbed, curseforgeEmbed, planetminecraftEmbed, mcpedlEmbed, youtubeEmbed, redditEmbed, patreonEmbed] })
+				await message.channel.send({ embeds: [websiteEmbed, githubEmbed, twitterEmbed, curseforgeEmbed, modrinthEmbed, planetminecraftEmbed, mcpedlEmbed, youtubeEmbed, redditEmbed, patreonEmbed] })
 			}
 		} else return
 	}
