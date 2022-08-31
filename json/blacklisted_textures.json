@@ -1,7 +1,5 @@
 {
   "java": [
-    "block/debug",
-    "block/debug2",
     "environment/end_sky",
     "gui/title/mojangstudios",
     "misc/unknown_pack",
@@ -38,6 +36,8 @@
     "block/debug2",
     "blocks/debug",
     "blocks/debug2",
+    "items/leather_chestplate_overlay",
+    "items/ruby",
     "environment/end_sky",
     "gui/title/mojangstudios",
     "gui/title/mojang",
