@@ -363,6 +363,19 @@
     "entity/zombie_villager2/professions/shepherd.tga",
     "entity/zombie_villager2/professions/stonemason.tga",
     "entity/zombie_villager2/professions/toolsmith.tga",
-    "entity/zombie_villager2/professions/weaponsmith.tga"
+    "entity/zombie_villager2/professions/weaponsmith.tga",
+    "ui/classrooms_icon.png",
+    "ui/xbox4.png",
+    "ui/enable_editor.png",
+    "ui/loading_bar.png",
+    "ui/recipe_book_expand_dots_in.png",
+    "ui/recipe_book_expand_dots_in_hover.png",
+    "ui/recipe_book_expand_dots_out.png",
+    "ui/recipe_book_expand_dots_out_hover.png",
+    "ui/recipe_book_side_toggle_dark.png",
+    "ui/recipe_book_side_toggle_dark_hover.png",
+    "ui/subcategory_icons/facial_hair.png",
+    "ui/subcategory_icons/skin_texture.png",
+    "ui/yellowExclamation.png"
   ]
 }
