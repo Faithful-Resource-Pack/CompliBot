@@ -1,8 +1,7 @@
 import { Client } from '@client';
 import { ICommand } from '@interfaces';
-import { ChatInputCommandInteraction } from '@overrides';
+import { ChatInputCommandInteraction, SlashCommandBuilder } from '@overrides';
 import {
-  SlashCommandBuilder,
   ChannelType,
   channelMention,
   TextChannel,
@@ -13,13 +12,14 @@ export default {
     devOnly: true,
   }),
   data: new SlashCommandBuilder()
-    .setName(String.get('debug_channel_command_name'))
-    .setDescription(String.get('debug_channel_command_description'))
-    .addChannelOption((channel) => channel
-      .setName(String.get('debug_channel_command_channel_argument_name'))
-      .setDescription(String.get('debug_channel_command_channel_argument_description'))
+    .setNames(String.getAll('debug_channel_command_name'))
+    .setDescriptions(String.getAll('debug_channel_command_description'))
+    .addChannelOptionLocalized((channel) => channel
       .addChannelTypes(ChannelType.GuildText)
-      .setRequired(true)),
+      .setRequired(true), {
+      names: String.getAll('debug_channel_command_channel_argument_name'),
+      descriptions: String.getAll('debug_channel_command_channel_argument_description'),
+    }),
   handler: async (interaction: ChatInputCommandInteraction, client: Client) => {
     const channel = interaction.options.getChannel('channel', true) as TextChannel;
     client.setSettings('debugChannel', channel.id);

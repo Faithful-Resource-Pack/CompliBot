@@ -1,6 +1,10 @@
 import { Client } from '@client';
 import { ICommand, IHandler } from '@interfaces';
-import { ChatInputCommandInteraction, EmbedBuilder } from '@overrides';
+import {
+  ChatInputCommandInteraction,
+  EmbedBuilder,
+  SlashCommandBuilder,
+} from '@overrides';
 import {
   getCommandsNames,
   getCommandsUses,
@@ -9,7 +13,6 @@ import {
   Images,
 } from '@utils';
 import {
-  SlashCommandBuilder,
   Collection,
   time,
   TimestampStyles,
@@ -26,9 +29,10 @@ export default {
     const commands = getCommandsNames();
 
     return new SlashCommandBuilder()
-      .setName(String.get('stats_command_name'))
-      .setDescription(String.get('stats_command_description'))
+      .setNames(String.getAll('stats_command_name'))
+      .setDescriptions(String.getAll('stats_command_description'))
 
+      // TODO: Add localization for subcommands
       // stats bot
       .addSubcommand((subcommand) => subcommand
         .setName(String.get('stats_subcommand_bot_name'))

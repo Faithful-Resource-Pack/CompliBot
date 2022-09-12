@@ -1,18 +1,16 @@
 import { ICommand, IHandler } from '@interfaces';
-import { ChatInputCommandInteraction } from '@overrides';
-import {
-  SlashCommandBuilder,
-  Collection,
-  userMention,
-} from 'discord.js';
+import { ChatInputCommandInteraction, SlashCommandBuilder } from '@overrides';
+import { Collection, userMention } from 'discord.js';
 
 export default {
   config: () => ({
     devOnly: true,
   }),
   data: new SlashCommandBuilder()
-    .setName(String.get('botban_command_name'))
-    .setDescription(String.get('botban_command_description'))
+    .setNames(String.getAll('botban_command_name'))
+    .setDescriptions(String.getAll('botban_command_description'))
+
+    // TODO: add subcommand localization support
     .addSubcommand((subcommand) => subcommand
       .setName(String.get('botban_command_subcommand_view_name'))
       .setDescription(String.get('botban_command_subcommand_view_description')))

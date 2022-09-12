@@ -2,11 +2,14 @@ import axios from 'axios';
 import {
   ChannelType,
   GuildMember,
-  SlashCommandBuilder,
   VoiceChannel,
 } from 'discord.js';
 
-import { ChatInputCommandInteraction, EmbedBuilder } from '@overrides';
+import {
+  ChatInputCommandInteraction,
+  EmbedBuilder,
+  SlashCommandBuilder,
+} from '@overrides';
 import { ICommand } from '@interfaces';
 import { Client } from '@client';
 import { Activities } from '@enums';
@@ -17,21 +20,23 @@ export default {
     ...JSON.configLoad('commands/activity.json'),
   }),
   data: new SlashCommandBuilder()
-    .setName(String.get('activity_command_name'))
-    .setDescription(String.get('activity_command_description'))
-    .addStringOption((option) => option
-      .setName(String.get('activity_command_option_activity_name'))
-      .setDescription(String.get('activity_command_option_activity_description'))
+    .setNames(String.getAll('activity_command_name'))
+    .setDescriptions(String.getAll('activity_command_description'))
+    .addStringOptionLocalized((option) => option
       .addChoices(...Object.keys(Activities)
         .map((name) => ({
           name: name.toLowerCase().replaceAll('_', ' '),
           value: Activities[name as keyof typeof Activities],
         })))
-      .setRequired(true))
-    .addChannelOption((option) => option
-      .setName(String.get('activity_command_option_channel_name'))
-      .setDescription(String.get('activity_command_option_channel_description'))
-      .addChannelTypes(ChannelType.GuildVoice)),
+      .setRequired(true), {
+      names: String.getAll('activity_command_option_activity_name'),
+      descriptions: String.getAll('activity_command_option_activity_description'),
+    })
+    .addChannelOptionLocalized((option) => option
+      .addChannelTypes(ChannelType.GuildVoice), {
+      names: String.getAll('activity_command_option_channel_name'),
+      descriptions: String.getAll('activity_command_option_channel_description'),
+    }),
   handler: async (interaction: ChatInputCommandInteraction, client: Client) => {
     await interaction.deferReply();
 

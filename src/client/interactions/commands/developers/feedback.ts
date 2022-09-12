@@ -1,10 +1,9 @@
 import { ICommand } from '@interfaces';
-import { ChatInputCommandInteraction } from '@overrides';
+import { ChatInputCommandInteraction, SlashCommandBuilder } from '@overrides';
 import {
   ActionRowBuilder,
   ModalActionRowComponentBuilder,
   ModalBuilder,
-  SlashCommandBuilder,
   TextInputBuilder,
   TextInputStyle,
 } from 'discord.js';
@@ -14,17 +13,18 @@ export default {
     ...JSON.configLoad('commands/feedback.json'),
   }),
   data: new SlashCommandBuilder()
-    .setName(String.get('feedback_command_name'))
-    .setDescription(String.get('feedback_command_description'))
-    .addStringOption((option) => option
-      .setName(String.get('feedback_command_option_type_name'))
-      .setDescription(String.get('feedback_command_option_type_description'))
+    .setNames(String.getAll('feedback_command_name'))
+    .setDescriptions(String.getAll('feedback_command_description'))
+    .addStringOptionLocalized((option) => option
       .addChoices(
         { name: String.get('feedback_command_option_type_bug'), value: 'bug' },
         { name: String.get('feedback_command_option_type_feature'), value: 'feature' },
         { name: String.get('feedback_command_option_type_generic'), value: 'generic' },
       )
-      .setRequired(true)),
+      .setRequired(true), {
+      names: String.getAll('feedback_command_option_type_name'),
+      descriptions: String.getAll('feedback_command_option_type_description'),
+    }),
   handler: async (interaction: ChatInputCommandInteraction) => {
     const type: 'generic' | 'bug' | 'feature' = interaction.options.getString('type', true) as any;
     const modal = new ModalBuilder()

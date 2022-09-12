@@ -1,20 +1,22 @@
 import { ICommand } from '@interfaces';
-import { ChatInputCommandInteraction, EmbedBuilder } from '@overrides';
-import { SlashCommandBuilder, userMention } from 'discord.js';
+import { ChatInputCommandInteraction, SlashCommandBuilder, EmbedBuilder } from '@overrides';
+import { userMention } from 'discord.js';
 
 export default {
   config: () => ({
     ...JSON.configLoad('commands/kill.json'),
   }),
   data: new SlashCommandBuilder()
-    .setName(String.get('kill_command_name'))
-    .setDescription(String.get('kill_command_description'))
-    .addUserOption((option) => option
-      .setName(String.get('kill_command_argument_user_name'))
-      .setDescription(String.get('kill_command_argument_user_description')))
-    .addStringOption((option) => option
-      .setName(String.get('kill_command_argument_weapon_name'))
-      .setDescription(String.get('kill_command_argument_weapon_description'))),
+    .setNames(String.getAll('kill_command_name'))
+    .setDescriptions(String.getAll('kill_command_description'))
+    .addUserOptionLocalized(null, {
+      names: String.getAll('kill_command_argument_user_name'),
+      descriptions: String.getAll('kill_command_argument_user_description'),
+    })
+    .addStringOptionLocalized(null, {
+      names: String.getAll('kill_command_argument_weapon_name'),
+      descriptions: String.getAll('kill_command_argument_weapon_description'),
+    }),
   handler: async (interaction: ChatInputCommandInteraction) => {
     const targetId = interaction.options.getUser(String.get('kill_command_argument_user_name'))?.id;
     const weapon = interaction.options.getString(String.get('kill_command_argument_weapon_name'));

@@ -1,16 +1,15 @@
 import { Colors } from '@enums';
 import { ICommand } from '@interfaces';
 import { Images } from '@utils';
-import { SlashCommandBuilder } from 'discord.js';
-import { ChatInputCommandInteraction, EmbedBuilder } from '@overrides';
+import { ChatInputCommandInteraction, EmbedBuilder, SlashCommandBuilder } from '@overrides';
 
 export default {
   config: () => ({
     ...JSON.configLoad('commands/coin.json'),
   }),
   data: new SlashCommandBuilder()
-    .setName(String.get('coin_command_name'))
-    .setDescription(String.get('coin_command_description')),
+    .setNames(String.getAll('coin_command_name'))
+    .setDescriptions(String.getAll('coin_command_description')),
   handler: async (interaction: ChatInputCommandInteraction) => {
     const float: number = Math.round(Math.random() * 100) / 100; // random number between 0 and 1
 

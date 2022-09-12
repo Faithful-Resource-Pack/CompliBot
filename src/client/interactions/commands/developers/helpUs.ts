@@ -1,15 +1,15 @@
 import { ICommand } from '@interfaces';
 import { Images } from '@utils';
-import { ChatInputCommandInteraction, EmbedBuilder } from '@overrides';
-import { SlashCommandBuilder, userMention } from 'discord.js';
+import { SlashCommandBuilder, ChatInputCommandInteraction, EmbedBuilder } from '@overrides';
+import { userMention } from 'discord.js';
 
 export default {
   config: () => ({
     ...JSON.configLoad('commands/help-us.json'),
   }),
   data: new SlashCommandBuilder()
-    .setName(String.get('help_us_command_name'))
-    .setDescription(String.get('help_us_command_description')),
+    .setNames(String.getAll('help_us_command_name'))
+    .setDescriptions(String.getAll('help_us_command_description')),
   handler: async (interaction: ChatInputCommandInteraction) => {
     const embed = new EmbedBuilder()
       .setTitle(String.get('help_us_embed_title', interaction.locale))

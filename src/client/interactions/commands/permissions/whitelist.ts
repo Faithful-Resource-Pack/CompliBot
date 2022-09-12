@@ -1,11 +1,13 @@
-import { ChatInputCommandInteraction } from '@overrides';
+import {
+  ChatInputCommandInteraction,
+  SlashCommandBuilder,
+} from '@overrides';
 import { ICommand, IHandler } from '@interfaces';
 import {
   channelMention,
   Collection,
   PermissionFlagsBits,
   roleMention,
-  SlashCommandBuilder,
   SlashCommandSubcommandsOnlyBuilder,
   User,
   userMention,
@@ -113,12 +115,11 @@ export const buildCommand = (type: 'whitelist' | 'blacklist'): SlashCommandSubco
   const commands = getConfigurableCommands();
 
   return new SlashCommandBuilder()
-    .setName(String.get(`${type}_command_name`))
-    .setDescription(String.get(`${type}_command_description`))
-
-    .setDMPermission(false)
+    .setNames(String.getAll(`${type}_command_name`))
+    .setDescriptions(String.getAll(`${type}_command_description`))
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
 
+    // TODO: Add localized subcommands support
     // whitelist role <role> <command>
     .addSubcommand((subcommand) => subcommand
       .setName(String.get(`${type}_subcommand_role_name`))

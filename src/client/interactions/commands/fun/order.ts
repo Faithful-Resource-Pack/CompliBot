@@ -1,9 +1,6 @@
 import { ICommand } from '@interfaces';
-import { ChatInputCommandInteraction } from '@overrides';
-import {
-  AttachmentBuilder,
-  SlashCommandBuilder,
-} from 'discord.js';
+import { ChatInputCommandInteraction, SlashCommandBuilder } from '@overrides';
+import { AttachmentBuilder } from 'discord.js';
 
 /**
  * Warning: key value cannot be longer than a certain value (I didn't search how much it is)
@@ -56,13 +53,14 @@ export default {
     ...JSON.configLoad('commands/order.json'),
   }),
   data: new SlashCommandBuilder()
-    .setName(String.get('order_command_name'))
-    .setDescription(String.get('order_command_description'))
-    .addStringOption((option) => option
-      .setName(String.get('order_command_argument_order_name'))
-      .setDescription(String.get('order_command_argument_order_description'))
+    .setNames(String.getAll('order_command_name'))
+    .setDescriptions(String.getAll('order_command_description'))
+    .addStringOptionLocalized((option) => option
       .addChoices(...options)
-      .setRequired(true)),
+      .setRequired(true), {
+      names: String.getAll('order_command_argument_order_name'),
+      descriptions: String.getAll('order_command_argument_order_description'),
+    }),
   handler: async (interaction: ChatInputCommandInteraction) => {
     const value: string = interaction.options.getString(String.get('order_command_argument_order_name'), true);
     const found: { value: string, name: string } = options.find((option) => option.value === value)!;

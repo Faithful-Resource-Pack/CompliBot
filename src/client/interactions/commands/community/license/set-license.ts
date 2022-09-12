@@ -1,19 +1,17 @@
 import { ICommand, IGuilds } from '@interfaces';
-import { PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
-import { ChatInputCommandInteraction } from '@overrides';
+import { PermissionFlagsBits } from 'discord.js';
+import { ChatInputCommandInteraction, SlashCommandBuilder } from '@overrides';
 
 export default {
   config: () => ({}),
   data: new SlashCommandBuilder()
-    .setDMPermission(false)
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
-    .setName(String.get('set_license_command_name'))
-    .setDescription(String.get('set_license_command_description'))
-    .addStringOption((option) => option
-      .setName(String.get('set_license_command_option_name'))
-      .setDescription(String.get('set_license_command_option_description'))
-      .setRequired(true)),
-
+    .setNames(String.getAll('set_license_command_name'))
+    .setDescriptions(String.getAll('set_license_command_description'))
+    .addStringOptionLocalized((option) => option.setRequired(true), {
+      names: String.getAll('set_license_command_option_name'),
+      descriptions: String.getAll('set_license_command_option_description'),
+    }),
   handler: async (interaction: ChatInputCommandInteraction) => {
     const guilds: IGuilds = JSON.configLoad('guilds.json');
     const guildId = interaction.guildId || '0';

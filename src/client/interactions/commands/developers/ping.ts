@@ -1,15 +1,14 @@
 import { Client } from '@client';
 import { ICommand } from '@interfaces';
-import { ChatInputCommandInteraction, EmbedBuilder } from '@overrides';
-import { SlashCommandBuilder } from 'discord.js';
+import { SlashCommandBuilder, ChatInputCommandInteraction, EmbedBuilder } from '@overrides';
 
 export default {
   config: () => ({
     ...JSON.configLoad('commands/ping.json'),
   }),
   data: new SlashCommandBuilder()
-    .setName(String.get('ping_command_name'))
-    .setDescription(String.get('ping_command_description')),
+    .setNames(String.getAll('ping_command_name'))
+    .setDescriptions(String.getAll('ping_command_description')),
   handler: async (interaction: ChatInputCommandInteraction, client: Client) => {
     const quotes: Array<string> = String.get('ping_command_quotes', interaction.locale, { keys: { YEAR: (new Date().getFullYear() + 2).toString() } });
     const quote: string = quotes[Math.floor(Math.random() * quotes.length)];

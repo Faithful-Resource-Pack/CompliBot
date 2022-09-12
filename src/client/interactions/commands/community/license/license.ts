@@ -1,15 +1,13 @@
 import { ICommand, IGuilds } from '@interfaces';
-import { SlashCommandBuilder } from 'discord.js';
-import { ChatInputCommandInteraction } from '@overrides';
+import { ChatInputCommandInteraction, SlashCommandBuilder } from '@overrides';
 
 export default {
   config: () => ({
     ...JSON.configLoad('commands/license.json'),
   }),
   data: new SlashCommandBuilder()
-    .setDMPermission(false)
-    .setName(String.get('license_command_name'))
-    .setDescription(String.get('license_command_description')),
+    .setNames(String.getAll('license_command_name'))
+    .setDescriptions(String.getAll('license_command_description')),
   handler: async (interaction: ChatInputCommandInteraction) => {
     const guilds: IGuilds = JSON.configLoad('guilds.json');
     const guildId = interaction.guildId || '0';

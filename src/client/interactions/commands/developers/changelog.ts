@@ -1,7 +1,7 @@
 import path from 'path';
 import fs from 'fs';
-import { SlashCommandBuilder, EmbedField } from 'discord.js';
-import { ChatInputCommandInteraction, EmbedBuilder } from '@overrides';
+import { EmbedField } from 'discord.js';
+import { ChatInputCommandInteraction, EmbedBuilder, SlashCommandBuilder } from '@overrides';
 import { ICommand } from '@interfaces';
 
 const CHANGELOG_PATH = path.join(__dirname, '..', '..', '..', '..', '..', 'CHANGELOG.md');
@@ -16,13 +16,14 @@ const changelogOptions = (): Array<{ name: string, value: string }> => fs.readFi
 export default {
   config: () => ({}),
   data: () => new SlashCommandBuilder()
-    .setName(String.get('changelog_command_name'))
-    .setDescription(String.get('changelog_command_description'))
-    .addStringOption((string) => string
+    .setNames(String.getAll('changelog_command_name'))
+    .setDescriptions(String.getAll('changelog_command_description'))
+    .addStringOptionLocalized((string) => string
       .addChoices(...changelogOptions())
-      .setName(String.get('changelog_command_argument_version_name'))
-      .setDescription(String.get('changelog_command_argument_version_description'))
-      .setRequired(true)),
+      .setRequired(true), {
+      names: String.getAll('changelog_command_argument_version_name'),
+      descriptions: String.getAll('changelog_command_argument_version_description'),
+    }),
   handler: async (interaction: ChatInputCommandInteraction) => {
     const selectedVersion = interaction.options.getString('version', true);
     const changelogs = fs.readFileSync(CHANGELOG_PATH, 'utf-8')

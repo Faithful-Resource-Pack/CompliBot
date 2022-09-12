@@ -1,8 +1,6 @@
-import { SlashCommandBuilder } from 'discord.js';
-
 import { Client } from '@client/index';
 import { Colors } from '@enums';
-import { ChatInputCommandInteraction, EmbedBuilder } from '@overrides';
+import { ChatInputCommandInteraction, EmbedBuilder, SlashCommandBuilder } from '@overrides';
 import { ICommand } from '@interfaces';
 
 export default {
@@ -10,12 +8,13 @@ export default {
     devOnly: true,
   }),
   data: new SlashCommandBuilder()
-    .setName(String.get('eval_command_name'))
-    .setDescription(String.get('eval_command_description'))
-    .addStringOption((option) => option
-      .setName(String.get('eval_command_option_code_name'))
-      .setDescription(String.get('eval_command_option_code_description'))
-      .setRequired(true)),
+    .setNames(String.getAll('eval_command_name'))
+    .setDescriptions(String.getAll('eval_command_description'))
+    .addStringOptionLocalized((option) => option
+      .setRequired(true), {
+      names: String.getAll('eval_command_option_code_name'),
+      descriptions: String.getAll('eval_command_option_code_description'),
+    }),
   handler: async (interaction: ChatInputCommandInteraction, c: Client) => {
     const code = interaction.options.getString('code', true);
     const clean = async (text: any, client: Client) => {

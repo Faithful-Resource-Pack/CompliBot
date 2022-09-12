@@ -92,7 +92,7 @@ if (!String.getAll) {
           ...JSON.load(path.join(__dirname, '../..', `langs/${file}`)), // asked language
         };
 
-        [locales[locale]] = [...this.format(dictionary[key], placeholders)];
+        locales[locale] = this.format(dictionary[key], placeholders);
       });
 
       return locales;
