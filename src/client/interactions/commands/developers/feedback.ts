@@ -15,7 +15,7 @@ export default {
   data: new SlashCommandBuilder()
     .setNames(String.getAll('feedback_command_name'))
     .setDescriptions(String.getAll('feedback_command_description'))
-    .addStringOptionLocalized((option) => option
+    .addLocalizedStringOption((option) => option
       .addChoices(
         { name: String.get('feedback_command_option_type_bug'), value: 'bug' },
         { name: String.get('feedback_command_option_type_feature'), value: 'feature' },

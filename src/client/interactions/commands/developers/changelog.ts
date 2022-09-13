@@ -18,7 +18,7 @@ export default {
   data: () => new SlashCommandBuilder()
     .setNames(String.getAll('changelog_command_name'))
     .setDescriptions(String.getAll('changelog_command_description'))
-    .addStringOptionLocalized((string) => string
+    .addLocalizedStringOption((string) => string
       .addChoices(...changelogOptions())
       .setRequired(true), {
       names: String.getAll('changelog_command_argument_version_name'),

@@ -8,7 +8,7 @@ export default {
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
     .setNames(String.getAll('set_license_command_name'))
     .setDescriptions(String.getAll('set_license_command_description'))
-    .addStringOptionLocalized((option) => option.setRequired(true), {
+    .addLocalizedStringOption((option) => option.setRequired(true), {
       names: String.getAll('set_license_command_option_name'),
       descriptions: String.getAll('set_license_command_option_description'),
     }),

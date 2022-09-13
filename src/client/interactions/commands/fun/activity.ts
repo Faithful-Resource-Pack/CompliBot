@@ -22,7 +22,7 @@ export default {
   data: new SlashCommandBuilder()
     .setNames(String.getAll('activity_command_name'))
     .setDescriptions(String.getAll('activity_command_description'))
-    .addStringOptionLocalized((option) => option
+    .addLocalizedStringOption((option) => option
       .addChoices(...Object.keys(Activities)
         .map((name) => ({
           name: name.toLowerCase().replaceAll('_', ' '),
@@ -32,7 +32,7 @@ export default {
       names: String.getAll('activity_command_option_activity_name'),
       descriptions: String.getAll('activity_command_option_activity_description'),
     })
-    .addChannelOptionLocalized((option) => option
+    .addLocalizedChannelOption((option) => option
       .addChannelTypes(ChannelType.GuildVoice), {
       names: String.getAll('activity_command_option_channel_name'),
       descriptions: String.getAll('activity_command_option_channel_description'),

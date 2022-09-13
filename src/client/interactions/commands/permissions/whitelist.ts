@@ -119,11 +119,9 @@ export const buildCommand = (type: 'whitelist' | 'blacklist'): SlashCommandSubco
     .setDescriptions(String.getAll(`${type}_command_description`))
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
 
-    // TODO: Add localized subcommands support
-    // whitelist role <role> <command>
-    .addSubcommand((subcommand) => subcommand
-      .setName(String.get(`${type}_subcommand_role_name`))
-      .setDescription(String.get(`${type}_subcommand_role_description`))
+    .addLocalizedSubcommand((subcommand) => subcommand
+      .setNames(String.getAll(`${type}_subcommand_role_name`))
+      .setDescriptions(String.getAll(`${type}_subcommand_role_description`))
       .addRoleOption((role) => role
         .setName(String.get(`${type}_subcommand_role_argument_name`))
         .setDescription(String.get(`${type}_subcommand_role_argument_description`))

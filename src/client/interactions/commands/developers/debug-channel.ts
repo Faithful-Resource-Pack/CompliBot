@@ -14,7 +14,7 @@ export default {
   data: new SlashCommandBuilder()
     .setNames(String.getAll('debug_channel_command_name'))
     .setDescriptions(String.getAll('debug_channel_command_description'))
-    .addChannelOptionLocalized((channel) => channel
+    .addLocalizedChannelOption((channel) => channel
       .addChannelTypes(ChannelType.GuildText)
       .setRequired(true), {
       names: String.getAll('debug_channel_command_channel_argument_name'),

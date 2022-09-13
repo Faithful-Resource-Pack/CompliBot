@@ -4,4 +4,7 @@ import './string';
 
 export { ChatInputCommandInteraction } from './discordJS/chatInputCommandInteraction';
 export { EmbedBuilder } from './discordJS/embedBuilder';
-export { SlashCommandBuilder } from './discordJS/slashCommandBuilder';
+export {
+  LocalizedSlashCommandBuilder as SlashCommandBuilder,
+  LocalizedSlashCommandSubcommandBuilder as SlashCommandSubcommandBuilder,
+} from './discordJS/slashCommandBuilders';

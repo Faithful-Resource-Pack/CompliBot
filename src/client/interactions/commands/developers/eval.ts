@@ -10,7 +10,7 @@ export default {
   data: new SlashCommandBuilder()
     .setNames(String.getAll('eval_command_name'))
     .setDescriptions(String.getAll('eval_command_description'))
-    .addStringOptionLocalized((option) => option
+    .addLocalizedStringOption((option) => option
       .setRequired(true), {
       names: String.getAll('eval_command_option_code_name'),
       descriptions: String.getAll('eval_command_option_code_description'),

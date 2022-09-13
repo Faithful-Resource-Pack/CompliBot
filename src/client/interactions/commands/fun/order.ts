@@ -55,7 +55,7 @@ export default {
   data: new SlashCommandBuilder()
     .setNames(String.getAll('order_command_name'))
     .setDescriptions(String.getAll('order_command_description'))
-    .addStringOptionLocalized((option) => option
+    .addLocalizedStringOption((option) => option
       .addChoices(...options)
       .setRequired(true), {
       names: String.getAll('order_command_argument_order_name'),

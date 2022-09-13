@@ -9,11 +9,11 @@ export default {
   data: new SlashCommandBuilder()
     .setNames(String.getAll('kill_command_name'))
     .setDescriptions(String.getAll('kill_command_description'))
-    .addUserOptionLocalized(null, {
+    .addLocalizedUserOption(null, {
       names: String.getAll('kill_command_argument_user_name'),
       descriptions: String.getAll('kill_command_argument_user_description'),
     })
-    .addStringOptionLocalized(null, {
+    .addLocalizedStringOption(null, {
       names: String.getAll('kill_command_argument_weapon_name'),
       descriptions: String.getAll('kill_command_argument_weapon_description'),
     }),
