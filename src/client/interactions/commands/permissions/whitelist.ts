@@ -87,12 +87,12 @@ export const listCommand = (type: 'whitelist' | 'blacklist', interaction: ChatIn
 
   if (!config[typed] || !config[typed]![interaction.guild?.id || '0']) {
     interaction.replyDeletable({
-      content: String.get('whitelist_subcommand_list_empty', interaction.locale, { keys: { COMMAND: command } }),
+      content: String.get(`${type}_subcommand_list_empty`, interaction.locale, { keys: { COMMAND: command } }),
       ephemeral: true,
     });
   } else if (config[typed]![interaction.guild?.id || '0']) {
     interaction.replyDeletable({
-      content: String.get('whitelist_subcommand_list_success', interaction.locale, {
+      content: String.get(`${type}_subcommand_list_success`, interaction.locale, {
         keys: {
           COMMAND: command,
           ROLES: config[typed]![interaction.guild?.id || '0'].roles?.map((roleId: string) => roleMention(roleId)).join(', ') || '`N/A`',
@@ -119,56 +119,73 @@ export const buildCommand = (type: 'whitelist' | 'blacklist'): SlashCommandSubco
     .setDescriptions(String.getAll(`${type}_command_description`))
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
 
-    .addLocalizedSubcommand((subcommand) => subcommand
-      .setNames(String.getAll(`${type}_subcommand_role_name`))
-      .setDescriptions(String.getAll(`${type}_subcommand_role_description`))
-      .addRoleOption((role) => role
-        .setName(String.get(`${type}_subcommand_role_argument_name`))
-        .setDescription(String.get(`${type}_subcommand_role_argument_description`))
-        .setRequired(true))
-      .addStringOption((string) => string
-        .setName(String.get(`${type}_subcommand_command_argument_name`))
-        .setDescription(String.get(`${type}_subcommand_command_argument_description`))
-        .addChoices(...commands)
-        .setRequired(true)))
+    // whitelist role <role> <command>
+    .addLocalizedSubcommand(
+      (subcommand) => subcommand
+        .addRoleOption((role) => role
+          .setName(String.get(`${type}_subcommand_role_argument_name`))
+          .setDescription(String.get(`${type}_subcommand_role_argument_description`))
+          .setRequired(true))
+        .addStringOption((string) => string
+          .setName(String.get(`${type}_subcommand_command_argument_name`))
+          .setDescription(String.get(`${type}_subcommand_command_argument_description`))
+          .addChoices(...commands)
+          .setRequired(true)),
+      {
+        names: String.getAll(`${type}_subcommand_role_name`),
+        descriptions: (String.getAll(`${type}_subcommand_role_description`)),
+      },
+    )
 
     // whitelist user <user> <command>
-    .addSubcommand((subcommand) => subcommand
-      .setName(String.get(`${type}_subcommand_user_name`))
-      .setDescription(String.get(`${type}_subcommand_user_description`))
-      .addUserOption((user) => user
-        .setName(String.get(`${type}_subcommand_user_argument_name`))
-        .setDescription(String.get(`${type}_subcommand_user_argument_description`))
-        .setRequired(true))
-      .addStringOption((string) => string
-        .setName(String.get(`${type}_subcommand_command_argument_name`))
-        .setDescription(String.get(`${type}_subcommand_command_argument_description`))
-        .addChoices(...commands)
-        .setRequired(true)))
+    .addLocalizedSubcommand(
+      (subcommand) => subcommand
+        .addUserOption((user) => user
+          .setName(String.get(`${type}_subcommand_user_argument_name`))
+          .setDescription(String.get(`${type}_subcommand_user_argument_description`))
+          .setRequired(true))
+        .addStringOption((string) => string
+          .setName(String.get(`${type}_subcommand_command_argument_name`))
+          .setDescription(String.get(`${type}_subcommand_command_argument_description`))
+          .addChoices(...commands)
+          .setRequired(true)),
+      {
+        names: String.getAll(`${type}_subcommand_user_name`),
+        descriptions: (String.getAll(`${type}_subcommand_user_description`)),
+      },
+    )
 
     // whitelist channel <channel> <command>
-    .addSubcommand((subcommand) => subcommand
-      .setName(String.get(`${type}_subcommand_channel_name`))
-      .setDescription(String.get(`${type}_subcommand_channel_description`))
-      .addChannelOption((user) => user
-        .setName(String.get(`${type}_subcommand_channel_argument_name`))
-        .setDescription(String.get(`${type}_subcommand_channel_argument_description`))
-        .setRequired(true))
-      .addStringOption((string) => string
-        .setName(String.get(`${type}_subcommand_command_argument_name`))
-        .setDescription(String.get(`${type}_subcommand_command_argument_description`))
-        .addChoices(...commands)
-        .setRequired(true)))
+    .addLocalizedSubcommand(
+      (subcommand) => subcommand
+        .addChannelOption((user) => user
+          .setName(String.get(`${type}_subcommand_channel_argument_name`))
+          .setDescription(String.get(`${type}_subcommand_channel_argument_description`))
+          .setRequired(true))
+        .addStringOption((string) => string
+          .setName(String.get(`${type}_subcommand_command_argument_name`))
+          .setDescription(String.get(`${type}_subcommand_command_argument_description`))
+          .addChoices(...commands)
+          .setRequired(true)),
+      {
+        names: String.getAll(`${type}_subcommand_channel_name`),
+        descriptions: (String.getAll(`${type}_subcommand_channel_description`)),
+      },
+    )
 
     // whitelist list <command>
-    .addSubcommand((subcommand) => subcommand
-      .setName(String.get('whitelist_subcommand_list_name'))
-      .setDescription(String.get('whitelist_subcommand_list_description'))
-      .addStringOption((string) => string
-        .setName(String.get('whitelist_subcommand_command_argument_name'))
-        .setDescription(String.get('whitelist_subcommand_command_argument_description'))
-        .addChoices(...commands)
-        .setRequired(true)));
+    .addLocalizedSubcommand(
+      (subcommand) => subcommand
+        .addStringOption((string) => string
+          .setName(String.get('whitelist_subcommand_command_argument_name'))
+          .setDescription(String.get('whitelist_subcommand_command_argument_description'))
+          .addChoices(...commands)
+          .setRequired(true)),
+      {
+        names: String.getAll(`${type}_subcommand_list_name`),
+        descriptions: (String.getAll(`${type}_subcommand_list_description`)),
+      },
+    );
 };
 
 export default {
