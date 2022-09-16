@@ -5,3 +5,6 @@ src/commandsOld
 json/dynamic
 dist
 config/settings.json
+config/commands/**/*.json
+config/guilds.json
+config/botban.json

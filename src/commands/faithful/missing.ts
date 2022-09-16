@@ -44,7 +44,7 @@ export const PACKS: Array<{
  * @param pack {String}
  * @returns {String}
  */
-export const getDisplayNameForPack = (pack: string): string => PACKS.filter((p) => p.value === pack)[0][0];
+export const getDisplayNameForPack = (pack: string): string => PACKS.find((el) => el.value === pack).name;
 
 const command: SlashCommand = {
   servers: ['faithful', 'faithful_extra', 'classic_faithful'],
