@@ -69,8 +69,8 @@ export class Submission extends TimedEmbed {
   constructor(data?: Submission, options?: SubmissionOptions) {
     super(data);
 
-    this.beforeCouncil = options?.timeBeforeCouncil ?? data.beforeCouncil ?? 4320;
-    this.beforeResults = options?.timeBeforeResults ?? data.beforeResults ?? 1440;
+    this.beforeCouncil = options?.timeBeforeCouncil ?? data?.beforeCouncil ?? 4320;
+    this.beforeResults = options?.timeBeforeResults ?? data?.beforeResults ?? 1440;
     this.council = options?.isCouncilEnabled ?? data.council ?? true;
 
     // new
