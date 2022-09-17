@@ -23,6 +23,7 @@ declare global {
      * Load the configuration JSON file from the `./config` directory.
      * @param {String} filepath - file inside the config directory
      * @returns the configuration JSON file as an object
+     * @warn Remember that config are bot dependent, you should configure them for each bot.
      * @example JSON.configLoad('settings.json');
      * @example JSON.configLoad('commands/commands_name.json');
      */

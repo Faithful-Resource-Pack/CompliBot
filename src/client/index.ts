@@ -1,5 +1,5 @@
-import settings from '@config/settings.json';
-import tokens from '@config/tokens.json';
+import SETTINGS from '@config/settings.json';
+import TOKENS from '@config/tokens.json';
 
 import {
   ButtonInteraction,
@@ -71,15 +71,15 @@ class ExClient extends Client {
 
   constructor(options: ClientOptions) {
     super(options);
-    this.tokens = tokens;
-    this.settings = settings;
+    this.tokens = TOKENS;
+    this.settings = SETTINGS;
   }
 
   /**
    * Start the client & load all the modules.
    */
   public start(): void {
-    this.login(tokens.bot)
+    this.login(TOKENS.bot)
       .catch((error) => Logger.log('error', 'You did not specify the client token in the tokens.json file.', error))
       .then(() => this.loadEvents())
       .then(() => this.loadButtons())

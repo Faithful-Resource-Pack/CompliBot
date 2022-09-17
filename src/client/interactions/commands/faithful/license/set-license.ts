@@ -3,7 +3,9 @@ import { PermissionFlagsBits } from 'discord.js';
 import { ChatInputCommandInteraction, SlashCommandBuilder } from '@overrides';
 
 export default {
-  config: () => ({}),
+  config: () => ({
+    devOnly: true,
+  }),
   data: new SlashCommandBuilder()
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
     .setNames(String.getAll('set_license_command_name'))

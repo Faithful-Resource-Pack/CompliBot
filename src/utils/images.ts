@@ -12,7 +12,7 @@ export class Images {
 
     // add timestamp to prevent caching
     if (filepath.includes('?')) return `${basePath}${filepath}`;
-    return `${basePath}${filepath}?${Date.now()}`;
+    return `${basePath}/${filepath}?${Date.now()}`;
   }
 
   /**

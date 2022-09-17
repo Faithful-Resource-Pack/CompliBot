@@ -255,6 +255,20 @@
   "logs_command_name": "logs",
   "logs_command_description": "Get the logs of the bot client",
 
+  "missing_command_name": "missing",
+  "missing_command_description": "Shows the missing textures for the selected resource pack.",
+  "missing_command_option_pack_name": "pack",
+  "missing_command_option_pack_description": "The resource pack to get the missing textures from.",
+  "missing_command_option_edition_name": "edition",
+  "missing_command_option_edition_description": "The game edition corresponding pack.",
+  "missing_command_option_version_name": "version",
+  "missing_command_option_version_description": "The game version corresponding pack. Latest available version by default.",
+
+  "missing_command_embed_field_steps": "Steps",
+  "missing_command_embed_step_generic": "Next...",
+  "missing_command_embed_title_step_1": "Searching for missing textures...",
+  "missing_command_embed_description_step_1": "This takes some time, please wait...",
+
   "modal_feedback_generic_title": "Feedback sent!",
   "modal_feedback_generic_description": "The feedback has been sent to the developers. Thank you for your feedback!\n> You can check it [here on GitHub](%LINK%)",
 

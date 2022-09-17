@@ -7,5 +7,6 @@
   "developersIds": [
     "11234567891"
   ],
-  "imageBaseURL": "https://example.com/"
+  "apiBaseURL": "https://api.example.com",
+  "imageBaseURL": "https://example.com"
 }

@@ -22,10 +22,12 @@
 		"resolveJsonModule": true,
 		"baseUrl": "src",
 		"paths": {
+			"@api": ["./utils/api/index.ts"],
 			"@enums": ["./enums/index.ts"],
 			"@interfaces": ["./interfaces/index.ts"],
 			"@buttons": [ "./utils/buttons.ts" ],
 			"@overrides": ["./overrides/index.ts"],
+			"@static": ["./static/index.ts"],
 			"@utils": ["./utils/index.ts"],
 
 			"@client/*": ["./client/*"],
