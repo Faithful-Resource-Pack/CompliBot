@@ -28,3 +28,9 @@
 [submodule "repos/classic_faithful_64x/bedrock"]
 	path = repos/classic_faithful_64x/bedrock
 	url = https://github.com/ClassicFaithful/64x-Jappa-Bedrock
+[submodule "repos/default/java"]
+	path = repos/default/java
+	url = https://github.com/Faithful-Pack/Default-Java
+[submodule "repos/default/bedrock"]
+	path = repos/default/bedrock
+	url = https://github.com/Faithful-Pack/Default-Bedrock
