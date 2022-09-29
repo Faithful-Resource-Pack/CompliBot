@@ -113,7 +113,7 @@ if (!String.format) {
         Object.keys(placeholders.keys).forEach((key) => {
           if (!placeholders.keys[key]) {
             if (placeholders.ignore_missing) result = result.replaceAll(`%${key}%`, '');
-          } else result = result.replaceAll(`%${key}%`, placeholders.keys[key]);
+          } else result = result.replaceAll(`%${key.toUpperCase()}%`, placeholders.keys[key]);
         });
       }
 

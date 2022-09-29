@@ -1,22 +1,27 @@
 [
   {
     "name": "Faithful 32x",
-    "value": "faithful_32x"
+    "value": "faithful_32x",
+    "editions": [ "java", "bedrock" ]
   },
   {
     "name": "Faithful 64x",
-    "value": "faithful_64x"
+    "value": "faithful_64x",
+    "editions": [ "java", "bedrock" ]
   },
   {
     "name": "Classic Faithful 32x",
-    "value": "classic_faithful_32x"
+    "value": "classic_faithful_32x",
+    "editions": [ "java", "bedrock" ]
   },
   {
     "name": "Classic Faithful 64x",
-    "value": "classic_faithful_64x"
+    "value": "classic_faithful_64x",
+    "editions": [ "java", "bedrock" ]
   },
   {
     "name": "Classic Faithful 32x Programmer Art",
-    "value": "classic_faithful_32x_progart"
+    "value": "classic_faithful_32x_progart",
+    "editions": [ "java", "bedrock" ]
   }
 ]

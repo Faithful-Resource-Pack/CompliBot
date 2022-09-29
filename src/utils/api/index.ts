@@ -9,4 +9,5 @@ export const TOKEN: ITokens['api'] = TOKENS.api;
 export {
   getAllMCVersions as MCversions,
   getAllMCEditions as MCeditions,
+  getMCVersionsFromEdition as MCversionsFromEdition,
 } from './packs';

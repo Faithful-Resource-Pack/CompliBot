@@ -20,7 +20,7 @@ import {
 import { Colors } from '@enums';
 import { EmbedBuilder } from '@overrides';
 import { templateLoad } from './templates';
-import { Images } from './images';
+import { Images } from './class/images';
 
 /** Level of the log, defines how it is displayed */
 export type LoggerLevel = 'info' | 'warn' | 'error' | 'debug';

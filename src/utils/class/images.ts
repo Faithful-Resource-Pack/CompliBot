@@ -11,7 +11,7 @@ export class Images {
     const basePath = settings.imageBaseURL;
 
     // add timestamp to prevent caching
-    if (filepath.includes('?')) return `${basePath}${filepath}`;
+    if (filepath.includes('?') || filepath.endsWith('.gif')) return `${basePath}/${filepath}`;
     return `${basePath}/${filepath}?${Date.now()}`;
   }
 
@@ -21,6 +21,7 @@ export class Images {
    * @returns {String} The image path.
    */
   public static getAsEmbedThumbnail(filepath: string): string {
+    if (filepath.endsWith('.gif')) return this.get(filepath);
     return this.get(`${filepath}?w=128&h=128&enlarge=1`);
   }
 
@@ -30,6 +31,7 @@ export class Images {
    * @returns {String} The image path.
    */
   public static getAsEmbedImage(filepath: string): string {
+    if (filepath.endsWith('.gif')) return this.get(filepath);
     return this.get(`${filepath}?w=512&h=512&enlarge=1`);
   }
 
@@ -37,6 +39,7 @@ export class Images {
    * Get the images from the imageBaseURL setting but adapted to an Embed Footer iconURL size.
    */
   public static getAsEmbedFooterOrAuthor(filepath: string): string {
+    if (filepath.endsWith('.gif')) return this.get(filepath);
     return this.get(`${filepath}?w=32&h=32&enlarge=1`);
   }
 

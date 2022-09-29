@@ -266,8 +266,14 @@
 
   "missing_command_embed_field_steps": "Steps",
   "missing_command_embed_step_generic": "Next...",
-  "missing_command_embed_title_step_1": "Searching for missing textures...",
-  "missing_command_embed_description_step_1": "This takes some time, please wait...",
+  "missing_command_embed_step_not_supported": "%RESOURCE_PACK% does not support %EDITION% edition.",
+  "missing_command_embed_step_updating": "Updating **%RESOURCE_PACK%** local repository...",
+  "missing_command_embed_step_looking_for_differences": "Looking for differences between **%RESOURCE_PACK%** and default resource pack...",
+  "missing_command_embed_step_switching_branch": "Switching to **%BRANCH%** branch...",
+  "missing_command_embed_title_searching": "Searching for missing textures...",
+  "missing_command_embed_description_searching": "This takes some time, please wait...",
+  "missing_command_embed_field_title_success": "%PACK% - %EDITION% - %VERSION%",
+  "missing_command_embed_field_value_success": "%COMPLETION%% complete\n> %COUNT% textures missing.",
 
   "modal_feedback_generic_title": "Feedback sent!",
   "modal_feedback_generic_description": "The feedback has been sent to the developers. Thank you for your feedback!\n> You can check it [here on GitHub](%LINK%)",

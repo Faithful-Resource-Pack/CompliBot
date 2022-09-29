@@ -25,10 +25,13 @@ import {
   IAsyncData,
   IModal,
   IButton,
+  TEditions,
+  IPack,
 } from '@interfaces';
 
-import { getFileNames, Logger } from '@utils';
+import { getFileNames, Logger, Repository } from '@utils';
 import path from 'path';
+import fs from 'fs';
 
 export { ExClient as Client };
 
@@ -65,6 +68,8 @@ class ExClient extends Client {
   public events: Collection<string, IEvent> = new Collection();
   public modals: Collection<string, IModal> = new Collection();
 
+  public repositories: Array<Repository> = [];
+
   private storedLogs: Array<Log> = [];
   private latestLogIndex: number = -1;
   private maxLogsStored: number = 100;
@@ -85,6 +90,7 @@ class ExClient extends Client {
       .then(() => this.loadButtons())
       .then(() => this.loadCommands())
       .then(() => this.loadModals())
+      .then(() => this.loadRepositories())
       .finally(() => Logger.log('debug', 'Client successfully loaded!'));
 
     // catches 'kill pid' (nodemon restart)
@@ -102,6 +108,36 @@ class ExClient extends Client {
   public restart(): void {
     this.destroy();
     this.start();
+  }
+
+  /**
+   * Load submodules as repositories.
+   */
+  private loadRepositories() {
+    const filepath = path.join(__dirname, '../..', '.gitmodules');
+    const content: Array<{ git: string, local: string }> = [];
+    this.repositories = [];
+
+    fs.readFileSync(filepath, 'utf8')
+      .replaceAll('\t', '')
+      .replaceAll('\r', '')
+      .split('\n')
+      .filter((line) => line.length > 0)
+      .filter((line) => !line.startsWith('[submodule'))
+      .forEach((line: string, index: number) => {
+        const i = index % 2 ? index - 1 : index;
+        if (!content[i]) content[i] = { git: '', local: '' };
+
+        if (index % 2 === 1) [, content[i].git] = line.split(' = ');
+        if (index % 2 === 0) [, content[i].local] = line.split(' = ');
+      });
+
+    content.forEach((item) => {
+      const [, name, edition] = item.local.split('/');
+      this.repositories.push(new Repository(name as IPack['value'], edition as TEditions, item.git, item.local));
+    });
+
+    Logger.log('debug', 'Loaded repositories');
   }
 
   /**
