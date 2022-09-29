@@ -19,12 +19,6 @@
 [submodule "repos/classic_faithful_64x/java"]
 	path = repos/classic_faithful_64x/java
 	url = https://github.com/ClassicFaithful/64x-Jappa.git
-[submodule "repos/classic_faithful_32x_progart/java"]
-	path = repos/classic_faithful_32x_progart/java
-	url = https://github.com/ClassicFaithful/32x-Programmer-Art.git
-[submodule "repos/classic_faithful_32x_progart/bedrock"]
-	path = repos/classic_faithful_32x_progart/bedrock
-	url = https://github.com/ClassicFaithful/32x-Programmer-Art-Bedrock.git
 [submodule "repos/classic_faithful_64x/bedrock"]
 	path = repos/classic_faithful_64x/bedrock
 	url = https://github.com/ClassicFaithful/64x-Jappa-Bedrock
@@ -34,3 +28,9 @@
 [submodule "repos/default/bedrock"]
 	path = repos/default/bedrock
 	url = https://github.com/Faithful-Pack/Default-Bedrock
+[submodule "repos/classic_faithful_32x_progart/java"]
+	path = repos/classic_faithful_32x_progart/java
+	url = https://github.com/ClassicFaithful/32x-Programmer-Art.git
+[submodule "repos/classic_faithful_32x_progart/bedrock"]
+	path = repos/classic_faithful_32x_progart/bedrock
+	url = https://github.com/ClassicFaithful/32x-Programmer-Art-Bedrock.git
