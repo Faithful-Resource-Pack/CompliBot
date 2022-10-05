@@ -12,7 +12,6 @@
 ___
 ### Online on:
 - [Faithful](https://discord.gg/sN9YRQbBv7)
-- [Faithful Extras](https://discord.gg/qVeDfZw)
 - [Classic Faithful](https://discord.gg/KSEhCVtg4J)
 
 ___
