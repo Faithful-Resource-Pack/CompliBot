@@ -10,9 +10,8 @@
 
 ___
 ### Online on:
-- [Faithful 32x](https://discord.gg/sN9YRQbBv7)
-- [Faithful 64x](https://discord.gg/Tqtwtgh)
-- [Faithful Extras](https://discord.gg/qVeDfZw)
+- [Faithful](https://discord.gg/sN9YRQbBv7)
+- [Classic Faithful](https://discord.gg/KSEhCVtg4J)
 
 ___
 ### Installation and launching:
