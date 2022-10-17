@@ -20,19 +20,8 @@ module.exports = {
 			if (args[0] === 'discords') {
 				if (message.guild.id === settings.guilds.c32.id || args[1] === '32x') {
 					await message.channel.send({ content: 'This server:\n> https://discord.gg/sN9YRQbBv7' });
-					await message.channel.send({ content: 'Faithful Extras:\n> https://discord.gg/qVeDfZw' });
 					await message.channel.send({ content: 'Classic Faithful:\n> https://discord.gg/KSEhCVtg4J' });
 					await message.channel.send({ content: 'Minecraft:\n> https://discord.gg/minecraft' });
-					await message.delete()
-				}
-				else if (message.guild.id === settings.guilds.cextras.id || args[1] === 'extras') {
-					await message.channel.send({ content: 'This server:\n> https://discord.gg/qVeDfZw' });
-					await message.channel.send({ content: 'Faithful:\n> https://discord.gg/sN9YRQbBv7' });
-					await message.channel.send({ content: 'Classic Faithful:\n> https://discord.gg/KSEhCVtg4J' });
-					await message.channel.send({ content: 'Minecraft:\n> https://discord.gg/minecraft' });
-					await message.channel.send({ content: 'Minecraft Dungeons:\n> https://discord.gg/minecraftdungeons' });
-					await message.channel.send({ content: 'Optifine:\n> https://discord.gg/3mMpcwW' });
-					await message.channel.send({ content: 'Blockbench:\n> https://discord.gg/fZQbxbg' });
 					await message.delete()
 				} else return
 			}
@@ -65,13 +54,13 @@ module.exports = {
 					.setTitle('Modrinth')
 					.setDescription('https://modrinth.com/user/Faithful-Resource-Pack')
 					.setColor(settings.colors.modrinth)
-					.setThumbnail('https://avatars.githubusercontent.com/u/67560307')
+					.setThumbnail('https://cdn-raw.modrinth.com//modrinth-new.png')
 				
 				var planetminecraftEmbed = new MessageEmbed()
 					.setTitle('Planet Minecraft')
 					.setDescription('https://www.planetminecraft.com/member/faithful_resource_pack/')
 					.setColor(settings.colors.planetminecraft)
-					.setThumbnail('https://www.planetminecraft.com/images/layout/themes/modern/planetminecraft_logo.png') // why do they not offer the logo itself smh
+					.setThumbnail('https://www.planetminecraft.com/images/layout/favicon-128.png')
 
 				var mcpedlEmbed = new MessageEmbed()
 					.setTitle('MCPEDL')
@@ -84,11 +73,13 @@ module.exports = {
 					.setDescription('https://www.youtube.com/channel/UCQFajwwCLyFKLhZsAkHSGJA')
 					.setColor(settings.colors.youtube)
 					.setThumbnail('https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/YouTube_full-color_icon_%282017%29.svg/1280px-YouTube_full-color_icon_%282017%29.svg.png')
+
 				var redditEmbed = new MessageEmbed()
 					.setTitle('Reddit')
 					.setDescription('https://www.reddit.com/r/faithfulpack/')
-					.setColor("#FF5700") // Im editing on github sorrry for hardcoding
+					.setColor("#FF5700") // Im editing on github sorry for hardcoding
 					.setThumbnail('https://www.redditinc.com/assets/images/site/reddit-logo.png')
+
 				var patreonEmbed = new MessageEmbed()
 					.setTitle('Patreon')
 					.setDescription('https://www.patreon.com/Faithful_Resource_Pack')

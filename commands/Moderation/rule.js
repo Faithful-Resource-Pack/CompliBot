@@ -46,7 +46,7 @@ module.exports = {
 
 		if (message.member.roles.cache.some(role => role.name.includes("Manager") || role.id === '747839021421428776')) {
 			if (args[0] == 'all') rule = -1;
-		} else warnUser(message, "Only Administrators can do that!")
+		} else warnUser(message, "Only Managers can do that!")
 
 		if (rule != -1) rule = parseInt(args[0], 10)
 
