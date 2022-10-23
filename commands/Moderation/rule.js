@@ -23,7 +23,7 @@ module.exports = {
 		let thumbnail = settings.images.plain;
 		let color = settings.colors.c32;
 
-		if (message.guild.id == settings.guilds.em.id) {
+		if (message.guild.id == settings.guilds.em.id)
 			thumbnail = settings.images.cf_plain;
 
 		let rule;
