@@ -66,8 +66,8 @@ module.exports = {
 				else if (RULES[i].enabled == "true" || RULES[i].enabled == true) { // only for the changes note
 					const embedExpandedRules = new Discord.MessageEmbed()
 						.setColor(color)
-						.setTitle(`A much more in-depth version of our rules, punishment appeal information, and our thought process into giving punishments can be found here`)
-						.setDescription("https://docs.faithfulpack.net/pages/moderation/expanded-server-rules")
+						.setTitle(`Were you warned or muted unfairly?`)
+						.setDescription("A much more in-depth version of our rules, punishment appeal information, and our thought process into giving punishments can be found here: https://docs.faithfulpack.net/pages/moderation/expanded-server-rules")
 
 					const embedChanges = new Discord.MessageEmbed()
 						.setTitle(`Last Update: ${RULES[i].date}`)
