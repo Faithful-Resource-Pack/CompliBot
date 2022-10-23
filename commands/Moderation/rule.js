@@ -20,27 +20,11 @@ module.exports = {
 
 		const RULES = Object.values(strings.rules)
 
-		let thumbnail = client.user.displayAvatarURL()
-		let color = settings.colors.council
+		let thumbnail = settings.images.plain;
+		let color = settings.colors.c32;
 
-		switch (message.guild.id) {
-			case settings.guilds.c32.id:
-				color = settings.colors.c32
-				thumbnail = settings.images.logo_plain;
-				break
-			case settings.guilds.c64.id:
-				color = settings.colors.c32
-				thumbnail = settings.images.c64;
-				break
-			case settings.guilds.cextras.id:
-				color = settings.colors.c32
-				thumbnail = settings.images.cextras;
-				break
-
-			default:
-				color = settings.colors.logo_plain
-				break
-		}
+		if (message.guild.id == settings.guilds.em.id) {
+			thumbnail = settings.images.cf_plain;
 
 		let rule;
 
@@ -66,7 +50,7 @@ module.exports = {
 				.setTitle(`Rules of the Faithful Discord Servers`)
 				.setColor(color)
 				.setThumbnail(thumbnail)
-				.setDescription(`**Ignoring, not knowing and/or bypassing the rules, as well as not listening to the moderators is not an excuse for misbehaving.**\nRemember, by talking in this server you're agreeing to follow these rules.`)
+				.setDescription("**Not knowing these is not an excuse for misbehaving, and you can and will be held accountable for your actions. Punishments are up to the discretion of the moderators, and harassing them is only going to make your punishment worse.**\n\nUse /modping or directly ping a moderator if rules are being broken. Please do not mini-mod!")
 			await message.channel.send({ embeds: [embed] })
 
 			for (let i = 0; i < RULES.length; i++) {
@@ -80,12 +64,17 @@ module.exports = {
 				}
 
 				else if (RULES[i].enabled == "true" || RULES[i].enabled == true) { // only for the changes note
+					const embedExpandedRules = new Discord.MessageEmbed()
+						.setColor(color)
+						.setDescription("A much more in-depth version of our rules, punishment appeal information, and our thought process into giving punishments can be found here: https://docs.faithfulpack.net/pages/moderation/expanded-server-rules.")
+
 					const embedChanges = new Discord.MessageEmbed()
 						.setTitle(`Latest changes as of the ${RULES[i].date}`)
 						.setColor(color)
-						.setDescription(RULES[i].description + '\n\n> Please understand that failing to comply to these rules will result in an adequate punishment.')
-						.setFooter(`The rules are subject to change.`, thumbnail)
+						.setDescription(RULES[i].description)
+						.setFooter(`The rules are subject to change at any time for any reason.`, thumbnail)
 
+					await message.channel.send({ embeds: [embedExpandedRules] })
 					await message.channel.send({ embeds: [embedChanges] })
 				}
 			}
