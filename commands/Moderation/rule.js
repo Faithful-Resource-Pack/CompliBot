@@ -50,7 +50,7 @@ module.exports = {
 				.setTitle(`Rules of the Faithful Discord Servers`)
 				.setColor(color)
 				.setThumbnail(thumbnail)
-				.setDescription("**Not knowing these is not an excuse for misbehaving, and you can and will be held accountable for your actions. Punishments are up to the discretion of the moderators, and harassing them is only going to make your punishment worse.**\n\nUse /modping or directly ping a moderator if rules are being broken. Please do not mini-mod!")
+				.setDescription("**Not knowing these is not an excuse for misbehaving, and you can and will be held accountable for your actions. Punishments are up to the discretion of the moderators, and harassing them is only going to make your punishment worse.**\n\n*Use /modping or directly ping a moderator if rules are being broken. Please do not mini-mod!*")
 			await message.channel.send({ embeds: [embed] })
 
 			for (let i = 0; i < RULES.length; i++) {
@@ -66,10 +66,11 @@ module.exports = {
 				else if (RULES[i].enabled == "true" || RULES[i].enabled == true) { // only for the changes note
 					const embedExpandedRules = new Discord.MessageEmbed()
 						.setColor(color)
-						.setDescription("A much more in-depth version of our rules, punishment appeal information, and our thought process into giving punishments can be found here: https://docs.faithfulpack.net/pages/moderation/expanded-server-rules.")
+						.setTitle(`A much more in-depth version of our rules, punishment appeal information, and our thought process into giving punishments can be found here`)
+						.setDescription("https://docs.faithfulpack.net/pages/moderation/expanded-server-rules")
 
 					const embedChanges = new Discord.MessageEmbed()
-						.setTitle(`Latest changes as of the ${RULES[i].date}`)
+						.setTitle(`Last Update: ${RULES[i].date}`)
 						.setColor(color)
 						.setDescription(RULES[i].description)
 						.setFooter(`The rules are subject to change at any time for any reason.`, thumbnail)
