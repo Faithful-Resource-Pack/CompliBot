@@ -17,7 +17,6 @@ export const command: SlashCommand = {
 					{ name: "Faithful 32x", value: "faithful_32" },
 					{ name: "Faithful 64x", value: "faithful_64" },
 					{ name: "Faithful Add-ons", value: "faithful_addons" },
-					{ name: "Faithful Dungeons 32x", value: "faithful_dungeons_32" },
 					{ name: "Faithful Mods 32x", value: "faithful_mods_32" },
 					{ name: "Faithful Tweaks 32x", value: "faithful_tweaks_32" },
 				),
@@ -64,16 +63,6 @@ const websites = {
 		)} CurseForge | Bedrock](https://www.curseforge.com/minecraft-bedrock/addons/faithful-64x-bedrock)\n[${parseId(
 			ids.planet_mc,
 		)} Planet Minecraft](https://www.planetminecraft.com/texture-pack/faithful-64x/)`,
-	},
-	faithful_dungeons_32: {
-		image: "https://database.faithfulpack.net/images/branding/logos/transparent/512/dungeons_logo.png",
-		color: colors.cdungeons,
-		name: "Faithful Dungeons 32x",
-		value: `[${parseId(
-			ids.dungeons_logo,
-		)} Website](https://www.faithfulpack.net/faithful32xDungeons/latest)\n[${parseId(
-			ids.curseforge,
-		)} CurseForge](https://www.curseforge.com/minecraft-dungeons/mods/faithful-dungeons)`,
 	},
 	faithful_mods_32: {
 		image: "https://database.faithfulpack.net/images/brand/logos/no%20background/512/mods_logo.png",
