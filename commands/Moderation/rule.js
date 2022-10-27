@@ -50,7 +50,7 @@ module.exports = {
 				.setTitle(`Rules of the Faithful Discord Servers`)
 				.setColor(color)
 				.setThumbnail(thumbnail)
-				.setDescription("**Not knowing these is not an excuse for misbehaving, and you can and will be held accountable for your actions. Punishments are up to the discretion of the moderators, and harassing them is only going to make your punishment worse.**\n\n*Use /modping or directly ping a moderator if rules are being broken. Please do not mini-mod!*")
+				.setDescription("**Not knowing these is not an excuse for misbehaving, and you can and will be held accountable for your actions. Punishments are up to the discretion of the moderators, and harassing them is only going to make your punishment worse.**\n\n*Use `e!modping` or directly ping an online moderator if rules are being broken. Please do not mini-mod!*")
 			await message.channel.send({ embeds: [embed] })
 
 			for (let i = 0; i < RULES.length; i++) {
