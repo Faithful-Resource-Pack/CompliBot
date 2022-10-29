@@ -279,7 +279,8 @@ class ExtendedClient extends Client {
 		// use a classic for loops to force async functions to be fulfilled
 		for (let i = 0; i < paths.length; i++) {
 			const dir: string = paths[i];
-
+			if (dir == ".DS_Store") continue;
+			
 			const commands = readdirSync(`${slashCommandsPath}/${dir}`).filter((file) => file.endsWith(".ts"));
 			for (const file of commands) {
 				const { command } = require(`${slashCommandsPath}/${dir}/${file}`);
