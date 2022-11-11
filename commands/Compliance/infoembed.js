@@ -46,7 +46,7 @@ module.exports = {
 
 				var curseforgeEmbed = new MessageEmbed()
 					.setTitle('CurseForge')
-					.setDescription('https://www.curseforge.com/members/faithful_team/projects')
+					.setDescription('https://www.curseforge.com/members/faithful_resource_pack/projects')
 					.setColor(settings.colors.curseforge)
 					.setThumbnail('https://gist.githubusercontent.com/thecodewarrior/110057b210551c4ecf2c9be6d58ff824/raw/38748511ca1eb5677f009092fb3fcd71cc76cdf0/logo.png')
 
@@ -56,7 +56,7 @@ module.exports = {
 					.setColor(settings.colors.modrinth)
 					.setThumbnail('https://cdn-raw.modrinth.com//modrinth-new.png')
 				
-				var planetminecraftEmbed = new MessageEmbed()
+				var planetMinecraftEmbed = new MessageEmbed()
 					.setTitle('Planet Minecraft')
 					.setDescription('https://www.planetminecraft.com/member/faithful_resource_pack/')
 					.setColor(settings.colors.planetminecraft)
@@ -77,7 +77,7 @@ module.exports = {
 				var redditEmbed = new MessageEmbed()
 					.setTitle('Reddit')
 					.setDescription('https://www.reddit.com/r/faithfulpack/')
-					.setColor("#FF5700") // Im editing on github sorry for hardcoding
+					.setColor(settings.colors.reddit)
 					.setThumbnail('https://www.redditinc.com/assets/images/site/reddit-logo.png')
 
 				var patreonEmbed = new MessageEmbed()
@@ -86,7 +86,7 @@ module.exports = {
 					.setColor(settings.colors.patreon)
 					.setThumbnail('https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Patreon_logomark.svg/1024px-Patreon_logomark.svg.png')
 
-				await message.channel.send({ embeds: [websiteEmbed, githubEmbed, twitterEmbed, curseforgeEmbed, modrinthEmbed, planetminecraftEmbed, mcpedlEmbed, youtubeEmbed, redditEmbed, patreonEmbed] })
+				await message.channel.send({ embeds: [websiteEmbed, githubEmbed, twitterEmbed, curseforgeEmbed, modrinthEmbed, planetMinecraftEmbed, mcpedlEmbed, youtubeEmbed, redditEmbed, patreonEmbed] })
 			}
 		} else return
 	}
