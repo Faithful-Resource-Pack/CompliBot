@@ -54,7 +54,7 @@ module.exports = {
 					.setTitle('Modrinth')
 					.setDescription('https://modrinth.com/user/Faithful-Resource-Pack')
 					.setColor(settings.colors.modrinth)
-					.setThumbnail('https://cdn-raw.modrinth.com//modrinth-new.png')
+					.setThumbnail('https://cdn-raw.modrinth.com/modrinth-new.png')
 				
 				var planetMinecraftEmbed = new MessageEmbed()
 					.setTitle('Planet Minecraft')
