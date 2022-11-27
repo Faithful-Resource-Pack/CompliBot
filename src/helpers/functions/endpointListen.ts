@@ -4,7 +4,10 @@ import bodyParser from 'body-parser';
 import { success } from '@helpers/logger';
 import { colors } from '@helpers/colors';
 import { EndpointMessage } from '@interfaces';
-import { MessageAttachment, MessageEmbed, TextChannel } from 'discord.js';
+import {
+  MessageAttachment, MessageEmbed, TextChannel, User,
+} from 'discord.js';
+import { PostMessage } from '../interfaces/endpointListen';
 
 /**
  * Returns attachment from file
@@ -91,6 +94,31 @@ export default function endpointListen(client: Client) {
     const payload = req.body as EndpointMessage;
     errorHandler(client, payload);
     res.status(200).end();
+  });
+
+  /**
+   * Gives a way to communicate between API and Bot to send embeds to users to warn them
+   * Give them updates
+   */
+  app.post('/send-embed', async (req, res) => {
+    const payload = req.body as PostMessage;
+
+    // fetch user by id
+    const user: User | undefined = await client.users.fetch(payload.destinator).catch(() => undefined);
+    if (!user) {
+      res.status(404).end();
+      return;
+    }
+
+    const { embed } = payload;
+    await user.send({ embeds: [embed] })
+      .then(() => {
+        res.status(200).end();
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(403).end();
+      });
   });
 
   app.listen(port, 'localhost', () => {

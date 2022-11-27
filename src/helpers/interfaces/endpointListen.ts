@@ -1,3 +1,5 @@
+import { MessageEmbed } from 'discord.js';
+
 export interface EndpointMessage {
   type: string,
   content: {
@@ -7,4 +9,9 @@ export interface EndpointMessage {
     req: any,
     stack: string,
   }
+}
+
+export interface PostMessage {
+  destinator: string,
+  embed: MessageEmbed
 }
