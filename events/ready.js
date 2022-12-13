@@ -12,8 +12,6 @@ const { councilSubmission } = require('../functions/textures/submission/councilS
 const { downloadResults } = require('../functions/textures/admission/downloadResults')
 const { pushTextures } = require('../functions/textures/admission/pushTextures')
 
-const { updateMembers } = require('../functions/moderation/updateMembers')
-const { syncMembers } = require('../functions/moderation/syncMembers')
 const { checkTimeout } = require('../functions/moderation/checkTimeout')
 const { restartAutoDestroy } = require('../functions/restartAutoDestroy')
 const { saveDB } = require('../functions/saveDB')
@@ -57,7 +55,7 @@ module.exports = {
     console.log(`└─────────────────────────────────────────────────────────────┘\n\n`)
 
     if (MAINTENANCE) client.user.setPresence({ activities: [{ name: 'maintenance' }], status: 'dnd' })
-    else client.user.setActivity(`${PREFIX}help`, { type: 'LISTENING' })
+    else client.user.setActivity('Pigstep', { type: 'LISTENING' })
 
     await restartAutoDestroy(client)
 
@@ -93,11 +91,5 @@ module.exports = {
     setInterval(() => {
       checkTimeout(client)
     }, 30000);
-
-    // UPDATE MEMBERS
-    updateMembers(client, settings.guilds.c32.id, settings.channels.counters.c32)
-
-    // FETCH MEMBERS DATA
-    syncMembers(client, [settings.guilds.c32.id, settings.guilds.c64.id, settings.guilds.cextras.id])
   }
 }
