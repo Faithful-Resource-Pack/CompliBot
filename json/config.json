@@ -163,5 +163,10 @@
         "classic_faithful_32_progart": {
             "java": "864660644685938688"
         }
+    },
+    "apiChannels": {
+        "dev": "939508215153045584",
+        "project-talk": "912382352712429628",
+        "addons-submission": "1058325398204727376"
     }
 }

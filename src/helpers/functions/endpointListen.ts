@@ -1,3 +1,4 @@
+import config from '@json/config.json';
 import { Client } from '@client';
 import express from 'express';
 import bodyParser from 'body-parser';
@@ -5,7 +6,7 @@ import { success } from '@helpers/logger';
 import { colors } from '@helpers/colors';
 import { EndpointMessage } from '@interfaces';
 import {
-  MessageAttachment, MessageEmbed, TextChannel, User,
+  MessageAttachment, MessageEmbed, TextBasedChannel, TextChannel, User,
 } from 'discord.js';
 import { PostMessage } from '../interfaces/endpointListen';
 
@@ -103,25 +104,63 @@ export default function endpointListen(client: Client) {
   app.post('/send-embed', async (req, res) => {
     const payload = req.body as PostMessage;
 
-    // fetch user by id
-    const user: User | undefined = await client.users.fetch(payload.destinator).catch(() => undefined);
-    if (!user) {
-      res.status(404).end();
+    //* Gather users and channels
+    let users: Array<string> = [];
+    let channels: Array<string> = [];
+    if (payload.destinations?.channels !== undefined) channels = payload.destinations?.channels;
+    if (payload.destinations?.users !== undefined) users = payload.destinations?.users;
+    if (payload.destinator !== '') users.push(payload.destinator);
+
+    //* Transform channel names into channel ids
+    channels = channels.map((c) => config.apiChannels[c] || c);
+
+    //* remove duplicates after transforming channel names into ids
+    users = users.filter((e, i, a) => a.indexOf(e) === i);
+    channels = channels.filter((e, i, a) => a.indexOf(e) === i);
+
+    //* Search users and channels
+    const sendable = await Promise.all([
+      ...users.map((u) => client.users.fetch(u)),
+      ...channels.map((c) => client.channels.fetch(c)),
+    ].flat()).catch((e) => new Error(JSON.stringify(e))) as (User | TextBasedChannel)[] | Error;
+
+    if (sendable instanceof Error) {
+      const {
+        httpStatus, name, message, method, path, code,
+      } = JSON.parse(sendable.message);
+      const m = {
+        name,
+        message,
+        method,
+        path,
+        code,
+      };
+      res.status(httpStatus).json(m).end();
       return;
     }
 
+    //* Send Embeds
     const { embed } = payload;
-    await user.send({ embeds: [embed] })
-      .then(() => {
-        res.status(200).end();
+    // we use allSettled because some users may have deactivated DMs
+    Promise.allSettled(
+      sendable.map((s) => s.send({ embeds: [embed] })),
+    )
+      .then((results) => {
+        const total = results.length;
+        const sent = results.filter((r) => r.status === 'fulfilled').length;
+        const failed = total - sent;
+        res.status(200).json({
+          total,
+          sent,
+          failed,
+        }).end();
       })
-      .catch((err) => {
-        console.error(err);
-        res.status(403).end();
+      .catch((e) => {
+        res.status(400).json(JSON.parse(JSON.stringify(e))).end();
       });
   });
 
   app.listen(port, 'localhost', () => {
-    console.log(`${success}Endpoint listening on port ${port}.`);
+    console.info(`${success}Endpoint listening on port ${port}.`);
   });
 }

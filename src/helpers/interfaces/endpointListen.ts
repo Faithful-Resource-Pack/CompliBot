@@ -11,7 +11,11 @@ export interface EndpointMessage {
   }
 }
 
+type Destinator = 'channels' | 'users';
+type DestinationsObject = { [d in Destinator]?: string[] };
+
 export interface PostMessage {
+  destinations?: DestinationsObject,
   destinator: string,
   embed: MessageEmbed
 }
