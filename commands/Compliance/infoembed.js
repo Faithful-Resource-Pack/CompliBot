@@ -18,76 +18,159 @@ module.exports = {
 	async execute(client, message, args) {
 		if (message.author.id === uidR || message.author.id === uidJ || "331073143613423616") {
 			if (args[0] === 'discords') {
-				if (message.guild.id === settings.guilds.c32.id || args[1] === '32x') {
-					await message.channel.send({ content: 'This server:\n> https://discord.gg/sN9YRQbBv7' });
-					await message.channel.send({ content: 'Classic Faithful:\n> https://discord.gg/KSEhCVtg4J' });
-					await message.channel.send({ content: 'Minecraft:\n> https://discord.gg/minecraft' });
+				if (message.guild.id === settings.guilds.c32.id || args[1] === 'main') {
+					await message.channel.send({ content: `
+**Permanent Invite Link**:
+
+https://discord.gg/sN9YRQbBv7
+
+**Classic Faithful:**
+
+https://discord.gg/KSEhCVtg4J
+
+**Minecraft:**
+
+https://discord.gg/minecraft
+					` });
 					await message.delete()
-				} else return
+				}
+
+				else if (message.guild.id === settings.guilds.em.id || args[1] === 'cf') {
+					await message.channel.send({ content: `
+**Permanent Invite Link**:
+
+https://discord.gg/KSEhCVtg4J
+
+**Main Server:**
+
+https://discord.gg/sN9YRQbBv7
+
+**Minecraft:**
+
+https://discord.gg/minecraft
+					`})
+					await message.delete()
+				}
+
+				else return
 			}
+
 			else if (args[0] === 'media') {
-				var websiteEmbed = new MessageEmbed()
-					.setTitle('Website')
-					.setDescription('https://faithfulpack.net')
+				// specific pack links
+
+				var f32Embed = new MessageEmbed()
+					.setTitle('Faithful 32x:') // these should probably be strings in the db but I'm too lazy to add it
+					.setDescription (`
+[Website](https://faithfulpack.net/faithful32x/latest)
+
+[CurseForge](https://curseforge.com/minecraft/texture-packs/faithful-32x)
+
+[Modrinth](https://modrinth.com/resourcepack/faithful-32x)
+
+[Planet Minecraft](https://planetminecraft.com/texture-pack/faithful-32x/)
+
+[Java Edition GitHub](https://github.com/faithful-resource-pack/faithful-java-32x)
+
+[Bedrock Edition GitHub](https://github.com/faithful-resource-pack/faithful-bedrock-32x)
+					`)
+					.setColor(0x00a2ff) // sorry for hardcoded colors but idk where these are stored in the db or if cf ones even exist so this is just easier
+					.setThumbnail('https://raw.githubusercontent.com/faithful-resource-pack/branding/main/logos/transparent/512/f32_logo.png')
+
+				var f64Embed = new MessageEmbed()
+					.setTitle('Faithful 64x:')
+					.setDescription (`
+[Website](https://faithfulpack.net/faithful64x/latest)
+
+[CurseForge](https://curseforge.com/minecraft/texture-packs/faithful-64x)
+
+[Modrinth](https://modrinth.com/resourcepack/faithful-64x)
+
+[Planet Minecraft](https://planetminecraft.com/texture-pack/faithful-64x/)
+
+[Java Edition GitHub](https://github.com/faithful-resource-pack/faithful-java-64x)
+
+[Bedrock Edition GitHub](https://github.com/faithful-resource-pack/faithful-bedrock-64x)
+					`)
+					.setColor(0xd8158d)
+					.setThumbnail('https://raw.githubusercontent.com/faithful-resource-pack/branding/main/logos/transparent/512/f64_logo.png')
+
+				var cf32jEmbed = new MessageEmbed()
+					.setTitle('Classic Faithful 32x Jappa:')
+					.setDescription (`
+[Website](https://faithfulpack.net/classicfaithful/32x-jappa)
+
+[CurseForge](https://curseforge.com/minecraft/texture-packs/classic-faithful-32x-jappa)
+
+[Planet Minecraft](https://planetminecraft.com/texture-pack/classic-faithful-32x)
+
+[Java Edition GitHub](https://github.com/classicfaithful/32x-jappa)
+
+[Bedrock Edition GitHub](https://github.com/classicfaithful/32x-jappa-bedrock)
+
+[Add-ons GitHub](https://github.com/classicfaithful/32x-jappa-add-ons)
+					`)
+					.setColor(0x00c756)
+					.setThumbnail('https://raw.githubusercontent.com/faithful-resource-pack/branding/main/logos/transparent/512/cf32_logo.png')
+
+				var cf32paEmbed = new MessageEmbed()
+					.setTitle('Classic Faithful 32x PA:')
+					.setDescription (`
+[Website](https://faithfulpack.net/classicfaithful/32x-programmer-art)
+
+[CurseForge](https://curseforge.com/minecraft/texture-packs/classic-faithful-32x-pa)
+
+[Planet Minecraft](https://planetminecraft.com/texture-pack/classic-faithful-32x-pa)
+
+[Java Edition GitHub](https://github.com/classicfaithful/32x-programmer-art)
+
+[Bedrock Edition GitHub](https://github.com/classicfaithful/32x-programmer-art-bedrock)
+
+[Add-ons GitHub](https://github.com/classicfaithful/32x-programmer-art-add-ons)
+					`)
+					.setColor(0xa1db12)
+					.setThumbnail('https://raw.githubusercontent.com/faithful-resource-pack/branding/main/logos/transparent/512/cf32pa_logo.png')
+
+				var cf64jEmbed = new MessageEmbed()
+					.setTitle('Classic Faithful 64x:')
+					.setDescription (`
+[Website](https://faithfulpack.net/classicfaithful/64x-jappa)
+
+[CurseForge](https://curseforge.com/minecraft/texture-packs/classic-faithful-64x)
+
+[Planet Minecraft](https://planetminecraft.com/texture-pack/classic-faithful-64x/)
+
+[Java Edition GitHub](https://github.com/classicfaithful/64x-jappa)
+					`)
+					.setColor(0x9f00cf)
+					.setThumbnail('https://raw.githubusercontent.com/faithful-resource-pack/branding/main/logos/transparent/512/cf64_logo.png')
+
+				// project nonspecific stuff goes here
+				var generalEmbed = new MessageEmbed()
+					.setTitle('You can find Faithful here:')
+					.setDescription (`
+**General**
+
+[Website](https://faithfulpack.net/) • [Main GitHub](https://github.com/faithful-resource-pack/) • [Classic Faithful GitHub](https://github.com/classicfaithful/) • [Patreon](https://www.patreon.com/faithful_resource_pack)
+
+**Listings**
+
+[CurseForge](https://curseforge.com/members/faithful_resource_pack/projects) • [Modrinth](https://modrinth.com/user/faithful-resource-pack) • [Planet Minecraft](https://planetminecraft.com/member/faithful_resource_pack/) • [MCPEDL](https://mcpedl.com/user/faithful-resource-pack/) • [Minecraft Forum](https://www.minecraftforum.net/members/faithful_resource_pack)
+
+**Media**
+
+[Twitter](https://twitter.com/faithfulpack/) • [Reddit](https://reddit.com/r/faithfulpack/) • [YouTube](https://youtube.com/@faithfulpack)
+					`)
 					.setColor(settings.colors.c32)
-					.setThumbnail('https://raw.githubusercontent.com/Faithful-Resource-Pack/Branding/main/logos/transparent/512/plain_logo.png')
+					.setThumbnail('https://raw.githubusercontent.com/faithful-resource-pack/branding/main/logos/transparent/512/plain_logo.png')
+					.setFooter (
+						text='Listings for specific packs can be found above.',
+						iconURL='https://raw.githubusercontent.com/faithful-resource-pack/branding/main/logos/transparent/512/plain_logo.png'
+					)
 
-				var githubEmbed = new MessageEmbed()
-					.setTitle('Github')
-					.setDescription('https://github.com/Faithful-Resource-Pack')
-					.setColor(settings.colors.github)
-					.setThumbnail('https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png')
-
-				var twitterEmbed = new MessageEmbed()
-					.setTitle('Twitter')
-					.setDescription('https://twitter.com/FaithfulPack')
-					.setColor(settings.colors.twitter)
-					.setThumbnail('https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Twitter-logo.svg/512px-Twitter-logo.svg.png')
-
-				var curseforgeEmbed = new MessageEmbed()
-					.setTitle('CurseForge')
-					.setDescription('https://www.curseforge.com/members/faithful_resource_pack/projects')
-					.setColor(settings.colors.curseforge)
-					.setThumbnail('https://gist.githubusercontent.com/thecodewarrior/110057b210551c4ecf2c9be6d58ff824/raw/38748511ca1eb5677f009092fb3fcd71cc76cdf0/logo.png')
-
-				var modrinthEmbed = new MessageEmbed()
-					.setTitle('Modrinth')
-					.setDescription('https://modrinth.com/user/Faithful-Resource-Pack')
-					.setColor(settings.colors.modrinth)
-					.setThumbnail('https://cdn-raw.modrinth.com/modrinth-new.png')
-				
-				var planetMinecraftEmbed = new MessageEmbed()
-					.setTitle('Planet Minecraft')
-					.setDescription('https://www.planetminecraft.com/member/faithful_resource_pack/')
-					.setColor(settings.colors.planetminecraft)
-					.setThumbnail('https://www.planetminecraft.com/images/layout/favicon-128.png')
-
-				var mcpedlEmbed = new MessageEmbed()
-					.setTitle('MCPEDL')
-					.setDescription('https://mcpedl.com/user/faithful-resource-pack/')
-					.setColor(settings.colors.mcpedl)
-					.setThumbnail('https://mcpedl.com/_nuxt/img/logo.e39b598.png')
-
-				var youtubeEmbed = new MessageEmbed()
-					.setTitle('Youtube')
-					.setDescription('https://www.youtube.com/channel/UCQFajwwCLyFKLhZsAkHSGJA')
-					.setColor(settings.colors.youtube)
-					.setThumbnail('https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/YouTube_full-color_icon_%282017%29.svg/1280px-YouTube_full-color_icon_%282017%29.svg.png')
-
-				var redditEmbed = new MessageEmbed()
-					.setTitle('Reddit')
-					.setDescription('https://www.reddit.com/r/faithfulpack/')
-					.setColor(settings.colors.reddit)
-					.setThumbnail('https://www.redditinc.com/assets/images/site/reddit-logo.png')
-
-				var patreonEmbed = new MessageEmbed()
-					.setTitle('Patreon')
-					.setDescription('https://www.patreon.com/Faithful_Resource_Pack')
-					.setColor(settings.colors.patreon)
-					.setThumbnail('https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Patreon_logomark.svg/1024px-Patreon_logomark.svg.png')
-
-				await message.channel.send({ embeds: [websiteEmbed, githubEmbed, twitterEmbed, curseforgeEmbed, modrinthEmbed, planetMinecraftEmbed, mcpedlEmbed, youtubeEmbed, redditEmbed, patreonEmbed] })
+				await message.channel.send({ embeds: [f32Embed, f64Embed, cf32jEmbed, cf32paEmbed, cf64jEmbed, generalEmbed] })
+				await message.delete()
 			}
-		} else return
+		}
+		else return
 	}
 };
