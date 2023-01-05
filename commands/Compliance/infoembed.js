@@ -74,7 +74,7 @@ https://discord.gg/minecraft
 [Bedrock Edition GitHub](https://github.com/faithful-resource-pack/faithful-bedrock-32x)
 					`)
 					.setColor(0x00a2ff) // sorry for hardcoded colors but idk where these are stored in the db or if cf ones even exist so this is just easier
-					.setThumbnail('https://raw.githubusercontent.com/faithful-resource-pack/branding/main/logos/transparent/512/f32_logo.png')
+					.setThumbnail('https://database.faithfulpack.net/images/branding/logos/transparent/512/f32_logo.png')
 
 				var f64Embed = new MessageEmbed()
 					.setTitle('Faithful 64x:')
@@ -92,7 +92,7 @@ https://discord.gg/minecraft
 [Bedrock Edition GitHub](https://github.com/faithful-resource-pack/faithful-bedrock-64x)
 					`)
 					.setColor(0xd8158d)
-					.setThumbnail('https://raw.githubusercontent.com/faithful-resource-pack/branding/main/logos/transparent/512/f64_logo.png')
+					.setThumbnail('https://database.faithfulpack.net/images/branding/logos/transparent/512/f64_logo.png')
 
 				var cf32jEmbed = new MessageEmbed()
 					.setTitle('Classic Faithful 32x Jappa:')
@@ -110,7 +110,7 @@ https://discord.gg/minecraft
 [Add-ons GitHub](https://github.com/classicfaithful/32x-jappa-add-ons)
 					`)
 					.setColor(0x00c756)
-					.setThumbnail('https://raw.githubusercontent.com/faithful-resource-pack/branding/main/logos/transparent/512/cf32_logo.png')
+					.setThumbnail('https://database.faithfulpack.net/images/branding/logos/transparent/512/cf32_logo.png')
 
 				var cf32paEmbed = new MessageEmbed()
 					.setTitle('Classic Faithful 32x PA:')
@@ -128,7 +128,7 @@ https://discord.gg/minecraft
 [Add-ons GitHub](https://github.com/classicfaithful/32x-programmer-art-add-ons)
 					`)
 					.setColor(0xa1db12)
-					.setThumbnail('https://raw.githubusercontent.com/faithful-resource-pack/branding/main/logos/transparent/512/cf32pa_logo.png')
+					.setThumbnail('https://database.faithfulpack.net/images/branding/logos/transparent/512/cf32pa_logo.png')
 
 				var cf64jEmbed = new MessageEmbed()
 					.setTitle('Classic Faithful 64x:')
@@ -142,7 +142,7 @@ https://discord.gg/minecraft
 [Java Edition GitHub](https://github.com/classicfaithful/64x-jappa)
 					`)
 					.setColor(0x9f00cf)
-					.setThumbnail('https://raw.githubusercontent.com/faithful-resource-pack/branding/main/logos/transparent/512/cf64_logo.png')
+					.setThumbnail('https://database.faithfulpack.net/images/branding/logos/transparent/512/cf64_logo.png')
 
 				// project nonspecific stuff goes here
 				var generalEmbed = new MessageEmbed()
@@ -161,10 +161,10 @@ https://discord.gg/minecraft
 [Twitter](https://twitter.com/faithfulpack/) • [Reddit](https://reddit.com/r/faithfulpack/) • [YouTube](https://youtube.com/@faithfulpack)
 					`)
 					.setColor(settings.colors.c32)
-					.setThumbnail('https://raw.githubusercontent.com/faithful-resource-pack/branding/main/logos/transparent/512/plain_logo.png')
+					.setThumbnail('https://database.faithfulpack.net/images/branding/logos/transparent/512/plain_logo.png')
 					.setFooter (
 						text='Listings for specific packs can be found above.',
-						iconURL='https://raw.githubusercontent.com/faithful-resource-pack/branding/main/logos/transparent/512/plain_logo.png'
+						iconURL='https://database.faithfulpack.net/images/branding/logos/transparent/512/plain_logo.png'
 					)
 
 				await message.channel.send({ embeds: [f32Embed, f64Embed, cf32jEmbed, cf32paEmbed, cf64jEmbed, generalEmbed] })
