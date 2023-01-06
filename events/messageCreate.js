@@ -82,6 +82,27 @@ module.exports = {
         message.channel.id === '931887174977208370' ||
         message.channel.id === settings.channels.submit_textures.cdungeons
       ) return submitTexture(client, message)
+
+      /**
+       * CLASSIC FAITHFUL ADD-ON CHANNEL REACTIONS
+       */
+      if (message.channel.id === '814631514523435020' || message.channel.id === '995033923304308836') {
+        if (!message.attachments.size) {
+          if (message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) return
+          var embed = new MessageEmbed()
+            .setColor(settings.colors.red)
+            .setTitle(strings.submission.autoreact.error_title)
+            .setDescription(strings.submission.no_file_attached)
+            .setFooter(strings.submission.autoreact.error_footer, client.user.displayAvatarURL())
+
+          const msg = await message.reply({ embeds: [embed] })
+          if (!msg.deleted) setTimeout(() => msg.delete(), 30000);
+          if (!message.deleted) setTimeout(() => message.delete(), 10);
+        } else {
+          await message.react(settings.emojis.upvote)
+          await message.react(settings.emojis.downvote)
+        }
+      }
     }
   }
 }
