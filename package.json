@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node --use_strict --trace-warnings index.js",
     "restart": "npm i --save ; npm start",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx ",
     "test": "echo \"Error: no test specified\" && exit 0"
   },
   "repository": {

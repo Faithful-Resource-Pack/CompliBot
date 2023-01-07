@@ -8,18 +8,36 @@ const LOG_DEV = ((process.env.LOG_DEV.toLowerCase() || 'false') == 'true')
 
 /**
  * @param {Discord.Client} client Discord client treating the information
- * @param {Error|any} reason The object with which the promise was rejected
+ * @param {Error|import('axios').AxiosError} error The object with which the promise was rejected
  * @param {Promise} promise The rejected promise
- * @param {import('discord.js').Message} originMessage Origin user message
+ * @param {import('discord.js').Message?} originMessage Origin user message
  */
-module.exports = function(client, reason, promise, originMessage) {
+module.exports = function(client, error, promise, originMessage) {
   const settings = require('../resources/settings.json')
 
-	if (DEV) return console.trace(reason.stack || reason)
+	if (DEV) return console.trace(error.stack || error)
 
 	const channel = client.channels.cache.get(LOG_DEV ? '875301873316413440' : '853547435782701076')
 
-	let description = `\`\`\`fix\n${reason.stack || JSON.stringify(reason)}\`\`\``
+	let eproto_error = false;
+	let content = error.stack; // stack else AxiosError else random error
+	let isJSON = false;
+	if(error.isAxiosError) {
+		content = JSON.stringify(error.toJSON());
+		eproto_error = error.code === 'EPROTO';
+		isJSON = true;
+	} else if(!content) {
+		content = JSON.stringify(error);
+		isJSON = true;
+	}
+	const syntax = isJSON ? 'json' : 'fix';
+
+	if(eproto_error) {
+		console.error(error, promise, content)
+		return
+	}
+
+	let description = `\`\`\`${syntax}\n${content}\`\`\``
 	
 	if(originMessage !== undefined && originMessage.url !== undefined) {
 		description = 'Coming from [this message](' + originMessage.url + ')\n' + description
@@ -35,7 +53,7 @@ module.exports = function(client, reason, promise, originMessage) {
 		.addField('Last messages received', links ? links : '*No messages received yet*', false) // Fix bug where embed field value must not be empty
 		.setTimestamp()
 
-  console.error(reason, promise)
+  console.error(error, promise)
 
 	channel.send({
 		embeds: [embed]
