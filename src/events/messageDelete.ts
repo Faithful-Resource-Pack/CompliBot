@@ -2,7 +2,7 @@
 
 import { Event } from '@interfaces';
 import { Client, Message, MessageEmbed } from '@client';
-import { TextChannel, User } from 'discord.js';
+import { TextChannel } from 'discord.js';
 import { colors } from '@helpers/colors';
 import { getSubmissionsChannels } from '@helpers/submissionConfig';
 import getTeamsIds from '@helpers/teams';
@@ -20,7 +20,7 @@ const event: Event = {
      */
 
     // if the message has an author object (not partial then) & the author is a bot then return
-    if (message.author && message.author.bot) return;
+    if (message.author && message.author?.bot) return;
 
     /**
      * ? Current behavior:
@@ -46,10 +46,13 @@ const event: Event = {
     });
 
     // not the best approach, but it "kinda" works (see the known issue above)
-    const auditEntry = fetchedLogs.entries.find((a) => a.extra.channel.id === message.channelId && (message.partial || a.target.id === message.author.id));
+    const auditEntry = fetchedLogs.entries.find((a) => a.extra.channel.id === message.channelId && (message.partial || a.target?.id === message.author?.id));
 
-    const executor = auditEntry ? auditEntry.executor ?? 'Unknown User' : message.author;
-    const target = auditEntry ? auditEntry.target ?? 'Unknown Target' : message.author;
+    const executor = auditEntry?.executor || message?.author || 'Unknown User';
+    const target = auditEntry?.target || message?.author || 'Unknown Target';
+    const [author, thumbnail]: [string, string | null] = typeof executor === 'string'
+      ? ['Message deleted', null]
+      : [`${executor?.tag} deleted a message`, executor.displayAvatarURL({ dynamic: true })];
 
     // BOT LOG: loose reference to message: create unique instance of the message for the logger (ask @Juknum)
     client.storeAction('message', {
@@ -60,8 +63,8 @@ const event: Event = {
     if ((client.tokens.dev || getTeamsIds({ name: 'faithful' }).includes(message.guildId)) && !getSubmissionsChannels(client).includes(message.channelId)) {
       const embed = new MessageEmbed()
         .setColor(colors.red)
-        .setAuthor({ name: typeof executor === 'string' ? 'Message deleted' : `${executor.tag} deleted a message` })
-        .setThumbnail(typeof executor === 'string' ? null : executor.displayAvatarURL({ dynamic: true }))
+        .setAuthor({ name: author })
+        .setThumbnail(thumbnail)
         .addFields([
           {
             name: 'Server',
