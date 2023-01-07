@@ -23,7 +23,7 @@
     "async-mutex": "^0.3.2",
     "axios": "^0.25.0",
     "buffer": "^6.0.3",
-    "canvas": "^2.9.3",
+    "canvas": "^2.11.0",
     "cron": "^1.8.2",
     "discord.js": "^13.3.1",
     "dotenv": "^16.0.0",
@@ -37,6 +37,6 @@
     "simple-git": "^3.7.1"
   },
   "devDependencies": {
-    "eslint": "^8.8.0"
+    "eslint": "^8.31.0"
   }
 }
