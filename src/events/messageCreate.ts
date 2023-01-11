@@ -9,7 +9,7 @@ export const event: Event = {
 		//! do not remove, 'force' message to be casted (break if removed)
 		let _ = (message as Message) instanceof Message;
 
-		let m = Object.assign({}, message); // loose reference to message: create unique instance of the message for the logger (ask @Juknum)
+		let m = Object.assign({}, message); // lose reference to message: create unique instance of the message for the logger (ask @Juknum)
 		m.isDeleted = false;
 		client.storeAction("message", m);
 
@@ -58,12 +58,20 @@ export const event: Event = {
 				});
 				break;
 			case "mhhh":
-				const embed = new MessageEmbed().setDescription("```Uh-oh moment```").setFooter({ text: "Swahili → English" });
-				message.reply({ embeds: [embed] }).then((message) => message.deleteButton(true));
+				const mhhhEmbed = new MessageEmbed()
+					.setDescription("```Uh-oh moment```")
+					.setFooter({ text: "Swahili → English" });
+				message.reply({ embeds: [mhhhEmbed] }).then((message) => message.deleteButton(true));
 				break;
 			case "hello there":
+				const helloEmbed = new MessageEmbed()
+				if (Math.floor(Math.random() * 5) != 1) { // copy and pasted the rng from the old js bot, might need some tweaks idk
+					helloEmbed.setImage("https://media1.tenor.com/images/8dc53503f5a5bb23ef12b2c83a0e1d4d/tenor.gif");
+				} else { // secret response :eyes:
+					helloEmbed.setImage("https://i.imgur.com/hAuUsnD.png")
+				}
 				message
-					.reply("https://media1.tenor.com/images/8dc53503f5a5bb23ef12b2c83a0e1d4d/tenor.gif")
+					.reply({ embeds: [helloEmbed] })
 					.then((message) => message.deleteButton(true));
 				break;
 		}
