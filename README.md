@@ -10,44 +10,56 @@
 </div>
 
 ___
-### Online on:
+
+### Online on
+
 - [Faithful 32x](https://discord.gg/sN9YRQbBv7)
 - [Faithful 64x](https://discord.gg/Tqtwtgh)
 - [Faithful Extras](https://discord.gg/qVeDfZw)
 
 ___
+
 ### Found an issue?
+
 Please submit it using our [bug tracker](https://github.com/Faithful-Resource-Pack/Discord-Bot/issues/new/choose) or by using the `/feedback <text>` command from the bot. The bug tracker is preferred but both options are valid.
 ___
-### Installation and launching:
+
+### Installation and launching
+
 1. Install **[Node.js](https://nodejs.org/)** on your machine. **Version 16.9.0 or higher is required!**
 2. Clone the repository on your machine.
 3. Open your console in the cloned repository.
 4. To complete the installation, write the following command in the console:
+
 ```bash
-npm install
+pnpm install
 ```
+
 5. After installation, you will need to **[configure the bot](#bot-config)**.
 6. To start the bot, write the following command in the console:
+
 ```bash
-npm run dev
+pnpm run dev
 ```
+
 ---
-### Repository configuration:
+
+### Repository configuration
+
 As we try our best to keep the branches history clean, we've set up some "settings" on the branches management; all changes needs to be first developed trough a feature specific branch, then reviewed & merged in the `ts-dev` branch, then once in a while we push all changes to the `typescript` branch (which is the one that is used by the official Discord client).
 
-
-|     branch     | protected | used for                | description                               |
-|:--------------:|:---------:|:------------------------|-------------------------------------------|
-| ``typescript`` |    yes    | CompliBot (TS)          | stable & public version of the bot        |
-|   ``ts-dev``   |           | CompliBot Nightly (TS)  | experimental & private version of the bot |
-| ``javascript`` |           | CompliBot               | first version of the bot, public          |
-|  ``crowdin``   |           | Crowdin translation     |                                           |
-|  ``I10n_ts``   |           | Crowdin translation PRs |                                           |
-
+|    Branch    | Version | Protected | Used for                | Description                                        |
+|:------------:|:--------|:---------:|:------------------------|----------------------------------------------------|
+| `typescript` | v2.x    |    yes    | CompliBot (TS)          | stable & public version of the bot                 |
+|   `ts-dev`   | v2.x.x  |     -     | CompliBot Nightly (TS)  | experimental & private version of the bot          |
+| `ts-dev-v3`  | v3.x    |     -     |                         | very experimental version & rewrite of the v2 & v1 |
+| `javascript` | v1.x    |     -     | CompliBot               | first version of the bot, public                   |
+|  `crowdin`   | -       |     -     | Crowdin translation     |                                                    |
+|  `I10n_ts`   | -       |     -     | Crowdin translation PRs |                                                    |
 
 ___
-### Bot configuration:
+
+### Bot configuration
 
 > **Warning**  
 > We won't help you re-branding the bot for any other server. If you really want to do that, then you need to figure it out yourself.
@@ -75,4 +87,5 @@ ___
 > See `config.json` for general public config.
 
 ### Firestorm
+
 This project is heavily developed around the self hosted Firestore-like database: [firestorm-db](https://github.com/TheRolfFR/firestorm-db). Feel free to check the repository of that library to easily understand how it works.

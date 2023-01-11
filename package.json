@@ -6,12 +6,12 @@
     "type": "commonjs",
     "scripts": {
         "eslint": "npx eslint . --ext .ts,.tsx --fix",
-        "dev": "npm run eslint && ts-node-dev --stack-size=1024 --stack-trace-limit=1000 --respawn --ignore-watch=config -r tsconfig-paths/register src/index.ts",
+        "dev": "pnpm run eslint && ts-node-dev --stack-size=1024 --stack-trace-limit=1000 --respawn --ignore-watch=config -r tsconfig-paths/register src/index.ts",
         "start": "node -r ts-node/register -r tsconfig-paths/register src/index.ts",
-        "start-prod": "npm run build && cross-env NODE_ENV=production node --stack-size=1024 --stack-trace-limit=1000 dist/src/index.js --",
+        "start-prod": "pnpm run build && cross-env NODE_ENV=production node --stack-size=1024 --stack-trace-limit=1000 dist/src/index.js --",
         "clean": "rimraf dist/",
         "copy-files": "copyfiles src/**/*.log dist/",
-        "build": "npm run clean && tsc --project tsconfig.json && tsc-alias -p tsconfig.json -v && npm run copy-files"
+        "build": "pnpm run clean && tsc --project tsconfig.json && tsc-alias -p tsconfig.json -v && pnpm run copy-files"
     },
     "devDependencies": {
         "@types/node": "^17.0.33",
