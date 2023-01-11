@@ -1,22 +1,27 @@
 # CompliBot TypeScript - Changelog
+
 > **Note**
 > This is a beta and will not be fully stable. To report any bugs, use the `/feedback` command
 
 ## How to read this changelog?
 
 Commands are explained like so:
-```
+
+```bash
 /notes [mandatory_parameter] (optional_parameter)
 ```
 
 ## [v3.0.0] TBA
 
 ### Added
+
 - The bot now support modals!
 - Permissions has been revamped and can be configured for each (/) commands trough the `/whitelist` & `/blacklist` commands.
 
 ### Changed
+
 - Switched to DiscordJS v14
+- Switched to PNPM
 - Complete reorganization of the repository & codebase
   - Commands are now placed in `src/client/interaction/commands/**`
   - Override of bases class (ex: JSON & Array) are placed in `src/overrides/**` and directly imported in the `src/index.ts` file
@@ -29,6 +34,7 @@ Commands are explained like so:
 ## [v2.5.0] TBA
 
 ### Added
+
 - Both Optifine & Mojang cape are shown when using the `/profile minecraft` command.
 - Mostly finished submission v3 & launched an early alpha for Classic Faithful.
 - Submission System (v3 WIP):
@@ -36,24 +42,29 @@ Commands are explained like so:
   - Timing can now be configured trough the `config.json` file.
 
 ### Changed
+
 - Moved `colors.ts` from `helpers/function` to `class` and renamed it to `ColorManager.ts`.
 - Improved how animated textures are rendered, renamed `animate.ts` to `MCAnimation.ts` and moved it to the classes folder.
 - The `/texture` command now use the API to determine whether or not the texture is animated (has a mcmeta).
 - `<User>.displayAvatar()` now use the parameter `dynamic: true` everywhere: tell DiscordJS to use the GIF version of the avatar if available.
 - `/stats bot` is now ephemeral.
 - Updated `DiscordJS` from `13.7.0` to `13.8.0`, minimum NodeJS required version is now **16.9.0**
-- If you encounter any issue with the canvas module when upgrading to Node **16.9.0** do the following:   
+- If you encounter any issue with the canvas module when upgrading to Node **16.9.0** do the following:
   1. Clear NPM cache:
-    ```
+
+    ```bash
     npm cache clear --force
     ```
+
   2. Delete the `node_modules/canvas` folder
   3. Re-install dependencies: (this will rebuild Canvas for node 16)
-    ```
+
+    ```bash
     npm install
     ```
 
 ### Fixed
+
 - Fixed `/modping` command to use moderators roles from the `config.json` file instead of using the role name, removed duplicated code.
 - Fixed quoted messages not being deleted when using the delete button.
 - Fixed quoted messages error showing up when the quoted message was multiple embeds.
@@ -65,13 +76,14 @@ Commands are explained like so:
 ## [v2.4.0] 15/05/2022
 
 ### Added
+
 - Support for slash command attachments in image related commands
 - Strings are now stored in multiple JSON files & translated ones should be edited on the [crowdin page](https://translate.faithfulpack.net/discord-bot)
 - You can now search for a texture without using underscores `_`
 - Added a new optional parameter to the `magnifyAttachment` function: `orientation` which could take 3 values `landscape`, `portrait` & `none`
-    - `portrait`: add margin on the top & bottom of the magnified image (unused)
-    - `landscape`: add margin on the sides (unused yet)
-    - `none`: old behavior (used when no orientation is given)
+  - `portrait`: add margin on the top & bottom of the magnified image (unused)
+  - `landscape`: add margin on the sides (unused yet)
+  - `none`: old behavior (used when no orientation is given)
 - `stickCanvas()` & `stickAttachment()` functions to stick side by side two canvas
 - Animated textures are now animated when using `/texture`.
 - MCmeta is shown when using `/texture`.
@@ -80,7 +92,8 @@ Commands are explained like so:
 - Added `/profile [discord|minecraft]` to see a user's minecraft or discord profile information
 
 ### Changed
-- The CompliBot ascii art now show up & show up with different colors when `tokens.maintenance === true`
+
+- The CompliBot ASCII art now show up & show up with different colors when `tokens.maintenance === true`
 - Submission System (v3 WIP):
   - Submitted textures can now be searched trough the database when the name is duplicated.  
   - Submitted texture is now in the thumbnail and a side by side comparaison is made in images fields
@@ -89,6 +102,7 @@ Commands are explained like so:
 - Moderation commands no longer show who executed the command
 
 ### Fixed
+
 - (previously shipped as hotfix) Poll command causing lots of errors when the poll is in a thread and the thread gets archived
 - (previously shipped as hotfix) Various errors caused by users deleting their own messages
 - (finally) Fixed slash command permissions with a temporary workaround till permissions v2 is supported by discord.js
@@ -104,12 +118,13 @@ Commands are explained like so:
 ## [v2.3.0] 12/04/2022
 
 ### Added
-- `/activity [activity] (channel)` lets you start all of discord's mini-games in a channel that your in or a specified channel can be provided. (_some activities require boosts like the game octo_) 
+
+- `/activity [activity] (channel)` lets you start all of discord's mini-games in a channel that your in or a specified channel can be provided. (_some activities require boosts like the game octo_)
 - `/stats command (command)` now returns 10 most used commands by default, you can still see per command by specifying the `command` option.
 - `/eval [code]` command for developers.
 - `/logs` for developers only, see the whole current logs information without needing a crash of the bot.
 - `/notes [add|list|edit]`, moderators can now make private notes against all users
-  - Use `/notes list [user]` to list all attached notes from that user; 
+  - Use `/notes list [user]` to list all attached notes from that user;
   > **Warning**
   > the response is public.
   - Use `/notes add [user] [note]` to add a note to a user
@@ -120,11 +135,14 @@ Commands are explained like so:
   - `/todo remove [entity|block|item|misc] [texture_id]` unimplemented as of 12/04/2022.
   
 ### Changed
+
 - Re-branded Compliance to Faithful.
 - Changed how no results are handled when using `/texture`, may solve the `Unknown Message` error + the no response at all.
 - Crash logs are now **way more** detailed and now contain information about: messages (deleted/created), slash commands, guild member (joined/removed), select menus, buttons, slash commands and guild joined.
+
 > **Warning**
 > Guild join events are untested
+
 - `/poll`:
   - Threads are now directly attached to the poll message
   - Vote can now be set to accept multiple answers trough the `allow-multiple-answer` option! (set to `false` by default)
@@ -134,6 +152,7 @@ Commands are explained like so:
 - Added texture path version to the texture select menu (avoid confusion between exact same path & name for a texture, ex: `gold_ore`)
 
 ### Fixed
+
 - Slash command permissions not working properly
 - Delete button should now be properly working again
 - Fixed some typo & added a lot of comments to describe methods/functions
@@ -141,13 +160,16 @@ Commands are explained like so:
 ## [v2.2.0] 14/03/2022
 
 ### Added
+
 - `/bean [user]` will now beans a user (moderators exclusive).
-- `/restart` to restarts the bot process for maintenance (bot developers exclusive) 
-- `/botban [view|audit]` 
-    - `/botban view [format]` command: view the bot ban list in various formats (bot developers exclusive)
-    - `/botban audit [subject] (pardon)` command: add/remove a user from the bot ban list (bot developers exclusive)
+- `/restart` to restarts the bot process for maintenance (bot developers exclusive)
+- `/botban [view|audit]`
+  - `/botban view [format]` command: view the bot ban list in various formats (bot developers exclusive)
+  - `/botban audit [subject] (pardon)` command: add/remove a user from the bot ban list (bot developers exclusive)
+
 > **Warning**
 > Being bot banned disables use of any interaction and should be used only to patch exploiting users.
+
 - `/changelog` command: Show the changelog by version.
 - `/notice` command: Give the users updates on stuff like scheduled downtime
 - `/setnotice` command: Sets the current notice (bot developers exclusive).
@@ -161,6 +183,7 @@ Commands are explained like so:
 - **Config:** added "teams" config options: This now allow us to specify global roles, channels and so on for a group of discords servers (useful for Faithful servers).
 
 ### Changed
+
 > **Warning**
 > Moved all `.json` files used to store data from `EmittingCollection` into `./json/dynamic`
 > All polls data already saved will be lost! Already saved data needs to be manually transferred (only path as changed, not the data itself).
@@ -169,10 +192,12 @@ Commands are explained like so:
 > Commands in the `faithful` folders are now only available on `faithful`, `faithful_extra` & `classic_faithful` servers;  
   > Concerned commands are: `/guidelines`, `/license`, `/missing`, `/reason`, `/texture`, `/website`.  
   > To avoid duplicated commands, kick & reinvite the bot.
+
 - Added some textures to the `blacklisted_textures.json`.
 - Messed up with the config to remove everything that was useless & compact everything else into their respective categories
 
 ### Fixed
+
 - Images buttons are now back on `/texture` embed when there is only 1 result.
 - Images buttons have been tweaked to be only present when the operations is possible/logic.
 - Fixed `polls` being automatically marked as "ended" while no timeout was given.
@@ -181,15 +206,18 @@ Commands are explained like so:
 ## [v2.1.0] 05/03/2022
 
 ### Added
+
 - `/poll` command
 - `/missing` command (for all faithful packs) [Dungeons 32x NYI]
 - `/palette` command & button command
 - Submission system (Push & Contribution creation NYI)
 
 ### Changed
+
 - Improved message quoting for messages with file attachments
 
 ### Fixed
+
 - Fixed non deletable interaction: `this interaction is reserved to Bot` :)
 
 ## [v2.0.0] 21/02/2022

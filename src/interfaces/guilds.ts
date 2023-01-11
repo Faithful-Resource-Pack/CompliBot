@@ -1,4 +1,4 @@
-import { Snowflake } from 'discord.js';
+import { ColorResolvable, Snowflake } from 'discord.js';
 
 export interface IGuilds {
   teams: Array<{
@@ -9,6 +9,26 @@ export interface IGuilds {
     [guildId: Snowflake]: {
       name: string,
       license?: string,
+      rules?: {
+        [ruleIndex: number]: IRule,
+        icon?: string,
+        color?: ColorResolvable,
+        header?: {
+          title: string,
+          description: string,
+          thumbnail?: string,
+        },
+        footer?: {
+          title: string,
+          description: string,
+        },
+      }
     }
   }
+}
+
+export interface IRule {
+  index: number,
+  title: string,
+  description: string,
 }

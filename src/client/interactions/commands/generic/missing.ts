@@ -65,8 +65,6 @@ export default {
     const edition: TEditions | 'all' = interaction.options.getString(String.get('missing_command_option_edition_name'), true) as (TEditions | 'all');
     const version: string = interaction.options.getString(String.get('missing_command_option_version_name')) || 'latest';
 
-    console.log(Images.getAsEmbedThumbnail('bot/loading.gif'));
-
     const embed: EmbedBuilder = new EmbedBuilder()
       .setTitle(String.get('missing_command_embed_title_searching'))
       .setDescription(String.get('missing_command_embed_description_searching'))

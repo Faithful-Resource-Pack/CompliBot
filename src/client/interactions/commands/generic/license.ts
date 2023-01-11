@@ -16,7 +16,7 @@ export default {
       interaction.reply({
         content: String.get('license_command_no_license', interaction.guildLocale, {
           keys: {
-            SET_LICENSE_COMMAND_NAME: String.get('set_license_command_name'),
+            SET_LICENSE_COMMAND_NAME: String.get('set_subcommand_license_name'),
           },
         }),
         ephemeral: true,

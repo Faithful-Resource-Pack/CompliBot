@@ -169,7 +169,7 @@ class ExClient extends Client {
     const commandsPrivate: Array<RESTPostAPIApplicationCommandsJSONBody> = [];
 
     const files = getFileNames(filepath, true)
-      .filter((file) => file.endsWith('.ts' || '.js'));
+      .filter((file) => file.endsWith('.ts' || '.js') && !file.includes('.params.'));
 
     for (let i = 0; i < files.length; i += 1) {
       const { default: command } = await import(`${files[i]}`);
