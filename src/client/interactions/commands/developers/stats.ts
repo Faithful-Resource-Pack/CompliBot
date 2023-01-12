@@ -45,7 +45,7 @@ export default {
         .addStringOption((option) => option
           .setName(String.get('stats_subcommand_commands_argument_name'))
           .setDescription(String.get('stats_subcommand_commands_argument_description'))
-          .addChoices(...commands)
+          .addChoices(...commands) // crash if >= 25 choices
           .setRequired(false)));
   },
   handler: new Collection<string, IHandler>()

@@ -10,7 +10,7 @@ import { getFileNames } from './files';
 export function getCommandsNames(): Array<{ name: string; value: string; }> {
   const files = getFileNames(path.join(__dirname, '..', 'client', 'interactions', 'commands'), true);
   return files
-    .filter((file) => file.endsWith('.ts' || '.js'))
+    .filter((file) => file.endsWith('.ts' || '.js') && !file.includes('.params.'))
     .map((file) => file.split(path.sep).pop()!.split('.')[0])
     .map((key) => ({ name: key, value: key }));
 }

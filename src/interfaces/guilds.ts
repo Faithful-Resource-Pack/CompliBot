@@ -9,10 +9,11 @@ export interface IGuilds {
     [guildId: Snowflake]: {
       name: string,
       license?: string,
+      color?: ColorResolvable,
       rules?: {
         [ruleIndex: number]: IRule,
         icon?: string,
-        color?: ColorResolvable,
+        channel?: Snowflake,
         header?: {
           title: string,
           description: string,
@@ -21,6 +22,10 @@ export interface IGuilds {
         footer?: {
           title: string,
           description: string,
+          footer?: {
+            text: string,
+            icon?: string,
+          }
         },
       }
     }

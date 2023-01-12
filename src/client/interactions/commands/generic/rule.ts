@@ -9,7 +9,8 @@ export default {
     .setNames(String.getAll('rule_command_name'))
     .setDescriptions(String.getAll('rule_command_description'))
     .addLocalizedIntegerOption((option) => option
-      .setRequired(true), {
+      .setRequired(true)
+      .setMinValue(1), {
       names: String.getAll('rule_command_option_rule_name'),
       descriptions: String.getAll('rule_command_option_rule_description'),
     }),
@@ -45,7 +46,7 @@ export default {
       .setDescription(rule.description);
 
     // Set color if present
-    const color = guilds.guilds[guildId].rules?.color;
+    const { color } = guilds.guilds[guildId];
     if (color !== undefined) embed.setColor(color);
 
     interaction.replyDeletable({ embeds: [embed] });
