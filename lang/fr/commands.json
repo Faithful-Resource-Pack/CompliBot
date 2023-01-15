@@ -25,7 +25,7 @@
         "Vrai",
         "Faux",
         "Je vais y réfléchir",
-        "Pourriez-vous reformulez ça ?",
+        "Pourriez-vous reformuler cela",
         "J'en suis sûr",
         "Je ne suis pas sûr",
         "Bien sûr",
@@ -78,12 +78,12 @@
     "Command.Images.NotFound.Title": "Aucune image trouvée !",
     "Command.Images.NotFound": "Aucune image n'a été trouvée dans les %NUMBER% derniers messages, veuillez en envoyer une en :\n\n- Envoyant une URL d'image\n- Attachant une image à votre message\n- Répondant à un message antérieur (peut provenir d'une chaîne)\n\n> Vous pouvez annuler ceci en envoyant n'importe quoi d'autre.",
     "Command.Images.TooBig": "La sortie excède la taille maximale de 512 px² !",
-    "Command.Images.NoImageAttached": "Aucune image n'a été envoyée, ni aucune URL valide!",
+    "Command.Images.NoImageAttached": "Aucune image n'a été envoyée et aucune URL valide n'a été donnée !",
     "Command.Images.NoResponse": "Aucune réponse n'a été donnée à temps !",
     "Command.Kill.Killed": [
         "%AUTHOR% a littéralement quitté(e) notre monde",
         "%AUTHOR% est mort(e)",
-        "%AUTHOR% n'a pas spécifié un utilisateur à tuer et est mort(e)."
+        "%AUTHOR% n'a pas spécifié un utilisateur à tuer et est mort(e)"
     ],
     "Command.Kill.KilledBy": [
         "%PLAYER% a été abattu(e) par %AUTHOR%",
