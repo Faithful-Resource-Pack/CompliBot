@@ -68,7 +68,7 @@
         "Très douteux"
     ],
     "Command.Feedback.Bug": "Bug",
-    "Command.Feedback.ConfirmPrompt": "Êtes vous sûr de vouloir envoyer ceci ? Confirmez avec les boutons ci-dessous",
+    "Command.Feedback.ConfirmPrompt": "Êtes-vous sûr de vouloir envoyer ceci ? Confirmez avec les boutons ci-dessous",
     "Command.Feedback.Preview": "Aperçu de votre retour :",
     "Command.Feedback.Sent": "%EMOJI.SEE_MORE% Retour envoyé aux développeurs !",
     "Command.Feedback.Suggestion": "Proposition",
