@@ -41,7 +41,7 @@ module.exports = {
       const commandName = args.shift().toLowerCase()
       const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName))
 
-      if (command.guildOnly && message.channel.type === 'DM') return warnUser(message, strings.bot.cant_dm)
+      if (command && command.guildOnly && message.channel.type === 'DM') return warnUser(message, strings.bot.cant_dm)
 
       lastMessages.addMessage(message)
 
