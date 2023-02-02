@@ -7,7 +7,7 @@ import { Submission } from '@class/TimedEmbed/Submission';
 const button: Button = {
   buttonId: 'submissionUpvote',
   execute: async (client: Client, interaction: ButtonInteraction) => {
-    await interaction.deferUpdate();
+    await interaction.deferUpdate().catch(() => {});
     const message: Message = interaction.message as Message;
     const embed: MessageEmbed = message.embeds[0];
 

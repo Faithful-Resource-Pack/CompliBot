@@ -70,7 +70,7 @@ export default class Automation {
             },
           );
 
-        user.send({ embeds: [embed] }).catch(null); // DM closed
+        user.send({ embeds: [embed] }).catch(() => {}); // DM closed
         return user.id;
       })
       .then((userId: string) => submission.updateSubmissionMessage(this.client, userId))
