@@ -148,15 +148,15 @@ https://discord.gg/minecraft
 				var generalEmbed = new MessageEmbed()
 					.setTitle('You can find Faithful here:')
 					.setDescription (`
-**General**
+**General:**
 
 [Website](https://faithfulpack.net/) • [Main GitHub](https://github.com/faithful-resource-pack/) • [Classic Faithful GitHub](https://github.com/classicfaithful/) • [Patreon](https://www.patreon.com/faithful_resource_pack)
 
-**Listings**
+**Listings:**
 
 [CurseForge](https://curseforge.com/members/faithful_resource_pack/projects) • [Modrinth](https://modrinth.com/user/faithful-resource-pack) • [Planet Minecraft](https://planetminecraft.com/member/faithful_resource_pack/) • [MCPEDL](https://mcpedl.com/user/faithful-resource-pack/) • [Minecraft Forum](https://www.minecraftforum.net/members/faithful_resource_pack)
 
-**Media**
+**Media:**
 
 [Twitter](https://twitter.com/faithfulpack/) • [Reddit](https://reddit.com/r/faithfulpack/) • [YouTube](https://youtube.com/@faithfulpack)
 					`)
