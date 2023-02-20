@@ -160,7 +160,11 @@
     "/assets/minecraft/textures/trims/color_palettes/netherite.png",
     "/assets/minecraft/textures/trims/color_palettes/quartz.png",
     "/assets/minecraft/textures/trims/color_palettes/redstone.png",
-    "/assets/minecraft/textures/trims/color_palettes/trim_palette.png"
+    "/assets/minecraft/textures/trims/color_palettes/trim_palette.png",
+    "/assets/minecraft/textures/trims/color_palettes/diamond_darker.png",
+    "/assets/minecraft/textures/trims/color_palettes/gold_darker.png",
+    "/assets/minecraft/textures/trims/color_palettes/iron_darker.png",
+    "/assets/minecraft/textures/trims/color_palettes/netherite_darker.png"
   ],
   "bedrock": [
     "spit",
