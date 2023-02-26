@@ -55,19 +55,17 @@ export const getTextureMessageOptions = async (options: {
 			strPack = "Faithful 64x";
 			strIconURL = config.images + "branding/logos/transparent/512/f64_logo.png";
 			break;
-
 		case "classic_faithful_32x":
 			strPack = "Classic Faithful 32x";
-			strIconURL = "https://raw.githubusercontent.com/ClassicFaithful/Branding/main/Logos/32x%20Scale/Main%2032x.png";
+			strIconURL = config.images + "branding/logos/transparent/512/cf32_logo.png";
 			break;
 		case "classic_faithful_32x_progart":
 			strPack = "Classic Faithful 32x Programmer Art";
-			strIconURL =
-				"https://raw.githubusercontent.com/ClassicFaithful/Branding/main/Logos/32x%20Scale/Programmer%20Art%2032x.png";
+			strIconURL = config.images + "branding/logos/transparent/512/cf32pa_logo.png";
 			break;
 		case "classic_faithful_64x":
 			strPack = "Classic Faithful 64x";
-			strIconURL = "https://raw.githubusercontent.com/ClassicFaithful/Branding/main/Logos/32x%20Scale/Main%2032x.png";
+			strIconURL = config.images + "branding/logos/transparent/512/cf64_logo.png";
 			break;
 
 		default:
