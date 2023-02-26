@@ -280,7 +280,7 @@ class ExtendedClient extends Client {
 		for (let i = 0; i < paths.length; i++) {
 			const dir: string = paths[i];
 			if (dir == ".DS_Store") continue;
-			
+
 			const commands = readdirSync(`${slashCommandsPath}/${dir}`).filter((file) => file.endsWith(".ts"));
 			for (const file of commands) {
 				const { command } = require(`${slashCommandsPath}/${dir}/${file}`);
@@ -375,6 +375,7 @@ class ExtendedClient extends Client {
 		const buttonPath = path.join(__dirname, "..", "buttons");
 
 		readdirSync(buttonPath).forEach(async (dir) => {
+			if (dir == ".DS_Store") return;
 			const buttons = readdirSync(`${buttonPath}/${dir}`).filter((file) => file.endsWith(".ts"));
 
 			for (const file of buttons) {
