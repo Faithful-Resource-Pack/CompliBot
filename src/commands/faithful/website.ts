@@ -16,9 +16,7 @@ export const command: SlashCommand = {
 				.addChoices(
 					{ name: "Faithful 32x", value: "faithful_32" },
 					{ name: "Faithful 64x", value: "faithful_64" },
-					{ name: "Faithful Add-ons", value: "faithful_addons" },
-					{ name: "Faithful Mods 32x", value: "faithful_mods_32" },
-					{ name: "Faithful Tweaks 32x", value: "faithful_tweaks_32" },
+					{ name: "Faithful Extras", value: "faithful_extras" },
 				),
 		),
 	execute: async (interaction: CommandInteraction) => {
@@ -52,6 +50,7 @@ const websites = {
 			ids.planet_mc,
 		)} Planet Minecraft](https://www.planetminecraft.com/texture-pack/faithful-32x/)`,
 	},
+
 	faithful_64: {
 		image: "https://database.faithfulpack.net/images/branding/logos/transparent/512/f64_logo.png",
 		color: colors.c64,
@@ -64,26 +63,15 @@ const websites = {
 			ids.planet_mc,
 		)} Planet Minecraft](https://www.planetminecraft.com/texture-pack/faithful-64x/)`,
 	},
-	faithful_mods_32: {
-		image: "https://database.faithfulpack.net/images/brand/logos/no%20background/512/mods_logo.png",
-		color: colors.cmods,
-		name: "Faithful Mods 32x",
-		value: `[${parseId(ids.mods_logo)} Mods Resource Pack picker](https://www.faithfulpack.net/mods)\n[${parseId(
+
+	faithful_extras: {
+		image: "https://database.faithfulpack.net/images/brand/logos/transparent/512/extras_logo.png",
+		color: colors.c32,
+		name: "Faithful Extras",
+		value: `[${parseId(ids.addons_logo)} Add-on Gallery](https://faithfulpack.net/addons/)\n[${parseId(
 			ids.mods_logo,
-		)} Modpacks Resource Pack presets](https://www.faithfulpack.net/modpacks)`,
-	},
-	faithful_tweaks_32: {
-		image: "https://database.faithfulpack.net/images/brand/logos/no%20background/512/tweaks_logo.png",
-		color: colors.ctweaks,
-		name: "Faithful Tweaks",
-		value: `[${parseId(ids.tweaks_logo)} Website](https://www.faithfulpack.net/tweaks)`,
-	},
-	faithful_addons: {
-		image: "https://database.faithfulpack.net/images/brand/logos/no%20background/512/addons_logo.png",
-		color: colors.caddons,
-		name: "Faithful Addons",
-		value: `[${parseId(ids.addons_logo)} All resolutions](https://www.faithfulpack.net/addons)\n[${parseId(
+		)} Mod Picker](https://www.faithfulpack.net/mods)\n[${parseId(
 			ids.addons_logo,
-		)} Collections](https://www.faithfulpack.net/addonCollections)`,
-	},
+		)} Modpack Picker](https://faithfulpack.net/modpacks)`,
+	}
 };
