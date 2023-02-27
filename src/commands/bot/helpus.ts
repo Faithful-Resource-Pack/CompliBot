@@ -5,7 +5,7 @@ import { Client, CommandInteraction, MessageEmbed } from "@client";
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
 		.setName("help-us")
-		.setDescription("Command to get infos on how to help the developers of CompliBot."),
+		.setDescription("Get information on how to help the developers of CompliBot."),
 	execute: async (interaction: CommandInteraction, client: Client) => {
 		const embed = new MessageEmbed()
 			.setTitle(await interaction.getEphemeralString({ string: "Command.HelpUs.Title" }))
