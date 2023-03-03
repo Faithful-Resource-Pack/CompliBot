@@ -54,6 +54,8 @@
     "gui/presets/madness.png",
     "gui/presets/water.png",
     "misc/enchanted_item_glint",
+    "misc/enchanted_glint_item",
+    "misc/enchanted_glint_entity",
     "misc/pumpkinblur",
     "particle/footprint",
     "entity/arrow.png",
