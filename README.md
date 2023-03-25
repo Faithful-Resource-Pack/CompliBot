@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/Faithful-Resource-Pack/Branding/main/logos/transparent/256/bot_logo.png" alt="CompliBot" align="right" height="256px">
+<img src="https://raw.githubusercontent.com/Faithful-Resource-Pack/Branding/main/logos/transparent/256/complibot_logo.png" alt="CompliBot" align="right" height="256px">
 <div align="center">
   <h1>CompliBot</h1>
   <h3>The official bot of all Faithful Resource Pack discords</h3>
