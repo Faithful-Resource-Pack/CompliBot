@@ -1,7 +1,7 @@
 <img src="https://raw.githubusercontent.com/Faithful-Resource-Pack/Branding/main/logos/transparent/256/complibot_logo.png" alt="CompliBot" align="right" height="256px">
 <div align="center">
   <h1>CompliBot</h1>
-  <h3>The official bot of all Faithful Resource Pack discords</h3>
+  <h3>The official bot for the Faithful Discord servers.</h3>
 
 ![RepoSize](https://img.shields.io/github/repo-size/Faithful-Resource-Pack/Discord-Bot)
 ![Issues](https://img.shields.io/github/issues/Faithful-Resource-Pack/Discord-Bot)
