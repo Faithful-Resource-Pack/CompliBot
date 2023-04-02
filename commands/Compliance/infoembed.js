@@ -140,6 +140,8 @@ https://discord.gg/minecraft
 [Planet Minecraft](https://planetminecraft.com/texture-pack/classic-faithful-64x/)
 
 [Java Edition GitHub](https://github.com/classicfaithful/64x-jappa)
+
+[Bedrock Edition GitHub](https://github.com/classicfaithful/64x-jappa-bedrock)
 					`)
 					.setColor(0x9f00cf)
 					.setThumbnail('https://database.faithfulpack.net/images/branding/logos/transparent/512/cf64_logo.png')
