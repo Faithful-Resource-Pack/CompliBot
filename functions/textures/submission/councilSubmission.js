@@ -42,8 +42,8 @@ async function councilSubmission(client, channelFromID, channelResultsID, channe
   })
 
   // split messages following their up/down votes (upvote > downvote)
-  let messagesUpvoted = messages.filter(message => message.upvote > message.downvote)
-  let messagesDownvoted = messages.filter(message => message.upvote <= message.downvote)
+  let messagesUpvoted = messages.filter(message => message.upvote >= message.downvote)
+  let messagesDownvoted = messages.filter(message => message.upvote < message.downvote)
 
   // send upvoted messages to #results (accepted)
   messagesUpvoted.forEach(message => {
@@ -63,7 +63,7 @@ async function councilSubmission(client, channelFromID, channelResultsID, channe
   messagesDownvoted.forEach(message => {
     let embed = message.embed
     embed.setColor(settings.colors.red)
-    embed.fields[1].value = `<:downvote:${settings.emojis.downvote}> After a council decision, this texture is not going to be added, ask them if you want to know more about it.`
+    embed.fields[1].value = `<:downvote:${settings.emojis.downvote}> This texture did not pass council voting and therefore will not be added. Ask an Art Director Council member for more information.`
 
     channelResults.send({ embeds: [embed] })
       .then(async sentMessage => {
