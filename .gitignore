@@ -8,3 +8,4 @@ config/settings.json
 config/commands/**/*.json
 config/guilds.json
 config/botban.json
+.DS_Store
