@@ -96,7 +96,12 @@ const event: Event = {
 
       // send the log embed
       const logChannel = client.channels.cache.get(logChannelId) as TextChannel;
-      await logChannel.send({ embeds: [embed] });
+
+      /* since we aren't logging stuff anymore removing this bit for now
+       * we can always add it back later by just uncommenting the line:
+       */
+
+      // await logChannel.send({ embeds: [embed] });
     }
   },
 };
