@@ -1,7 +1,7 @@
-<img src="https://raw.githubusercontent.com/Faithful-Resource-Pack/Branding/main/logos/transparent/256/bot_logo.png" alt="CompliBot" align="right" height="256px">
+<img src="https://raw.githubusercontent.com/Faithful-Resource-Pack/Branding/main/logos/transparent/256/complibot_beta_logo.png" alt="CompliBot" align="right" height="256px">
 <div align="center">
-  <h1>CompliBot</h1>
-  <h3>The official bot of all Faithful Resource Pack discords</h3>
+  <h1>CompliBot Beta</h1>
+  <h3>Experimental features for CompliBot on the Faithful Discord servers.</h3>
 
 ![RepoSize](https://img.shields.io/github/repo-size/Faithful-Resource-Pack/Discord-Bot)
 ![Issues](https://img.shields.io/github/issues/Faithful-Resource-Pack/Discord-Bot)
@@ -11,9 +11,7 @@
 
 ___
 ### Online on:
-- [Faithful 32x](https://discord.gg/sN9YRQbBv7)
-- [Faithful 64x](https://discord.gg/Tqtwtgh)
-- [Faithful Extras](https://discord.gg/qVeDfZw)
+- [Classic Faithful](https://discord.gg/KSEhCVtg4J)
 
 ___
 ### Found an issue?
@@ -22,13 +20,17 @@ ___
 ### Installation and launching:
 1. Install **[Node.js](https://nodejs.org/)** on your machine. **Version 16.9.0 or higher is required!**
 2. Clone the repository on your machine.
-3. Open your console in the cloned repository.
-4. To complete the installation, write the following command in the console:
+3. Open your console of choice in the cloned repository.
+4. Change the branch to `ts-dev` and initialize the submodules:
+```bash
+git checkout ts-dev && git submodule update --recursive --init
+```
+5. To complete the installation, install all dependencies:
 ```bash
 npm install
 ```
-5. After installation, you will need to **[configure the bot](#bot-config)**.
-6. To start the bot, write the following command in the console:
+6. After installation, you will need to **[configure the bot](#bot-config)**.
+7. To start the bot, write the following command in the console:
 ```bash
 npm run dev
 ```
@@ -40,8 +42,8 @@ As we try our best to keep the branches history clean, we've set up some "settin
 |     branch     | protected | used for                | description                               |
 |:--------------:|:---------:|:------------------------|-------------------------------------------|
 | ``typescript`` |    yes    | CompliBot (TS)          | stable & public version of the bot        |
-|   ``ts-dev``   |           | CompliBot Nightly (TS)  | experimental & private version of the bot |
-| ``javascript`` |           | CompliBot               | first version of the bot, public          |
+|   ``ts-dev``   |           | CompliBot Beta (TS)     | experimental & private version of the bot |
+| ``javascript`` |           | CompliBot Legacy (JS)   | first version of the bot, public          |
 |  ``crowdin``   |           | Crowdin translation     |                                           |
 |  ``I10n_ts``   |           | Crowdin translation PRs |                                           |
 
@@ -49,7 +51,7 @@ As we try our best to keep the branches history clean, we've set up some "settin
 ___
 ### Bot configuration:
 
-> **Warning**  
+> **Warning**
 > We won't help you re-branding the bot for any other server. If you really want to do that, then you need to figure it out yourself.
 
 1. Create an app on the **[Discord Developer Portal](https://discord.com/developers/)**.
@@ -71,7 +73,7 @@ ___
 }
 ```
 
-> **Note**  
+> **Note**
 > See `config.json` for general public config.
 
 ### Firestorm
