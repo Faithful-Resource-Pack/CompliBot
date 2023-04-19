@@ -26,11 +26,11 @@ const { doCheckSettings } = require('../functions/settings/doCheckSettings')
  */
 const submissionProcess = new cron.CronJob('0 0 * * *', async () => {
   // Faithful 32x
-  await retrieveSubmission(client, settings.channels.submit_textures.c32, settings.channels.submit_council.c32, 3)
+  await retrieveSubmission(client, settings.channels.submit_textures.c32, settings.channels.submit_council.c32, 2)
   await councilSubmission(client, settings.channels.submit_council.c32, settings.channels.submit_results.c32, settings.channels.submit_revote.c32, 1)
 
   // Faithful 64x
-  await retrieveSubmission(client, '931887174977208370', '931886877521350696', 3)
+  await retrieveSubmission(client, '931887174977208370', '931886877521350696', 2)
   await councilSubmission(client, '931886877521350696', '931887235433906276', '931887204748374096', 1)
 })
 const downloadToBot = new cron.CronJob('15 0 * * *', async () => {
