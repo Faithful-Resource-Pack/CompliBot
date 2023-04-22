@@ -37,7 +37,7 @@ export const command: SlashCommand = {
 				.setDescription (`
 **General:**
 
-[Website](https://faithfulpack.net/) • [Main GitHub](https://github.com/faithful-resource-pack/) • [Classic Faithful GitHub](https://github.com/classicfaithful/) • [Patreon](https://www.patreon.com/faithful_resource_pack)
+[Website](https://faithfulpack.net/) • [Docs](https://docs.faithfulpack.net/) • [News](https://beta.faithfulpack.net/news) • [License](https://faithfulpack.net/license) • [Translate](https://translate.faithfulpack.net/)
 
 **Listings:**
 
@@ -45,7 +45,7 @@ export const command: SlashCommand = {
 
 **Media:**
 
-[Twitter](https://twitter.com/faithfulpack/) • [Reddit](https://reddit.com/r/faithfulpack/) • [YouTube](https://youtube.com/@faithfulpack)
+[Twitter](https://twitter.com/faithfulpack/) • [Patreon](https://www.patreon.com/faithful_resource_pack) • [Reddit](https://reddit.com/r/faithfulpack/) • [Main GitHub](https://github.com/faithful-resource-pack/) • [Classic Faithful GitHub](https://github.com/classicfaithful/)
 				`)
 				.setColor(colors.c32)
 				.setThumbnail("https://database.faithfulpack.net/images/branding/logos/transparent/512/plain_logo.png")
@@ -67,7 +67,9 @@ const websites = {
 		value: `
 [Website](https://faithfulpack.net/faithful32x/latest)
 
-[CurseForge](https://curseforge.com/minecraft/texture-packs/faithful-32x)
+[Java Edition CurseForge](https://curseforge.com/minecraft/texture-packs/faithful-32x)
+
+[Bedrock Edition CurseForge](https://www.curseforge.com/minecraft-bedrock/addons/faithful-32x-bedrock)
 
 [Modrinth](https://modrinth.com/resourcepack/faithful-32x)
 
@@ -85,7 +87,9 @@ const websites = {
 		value: `
 [Website](https://faithfulpack.net/faithful64x/latest)
 
-[CurseForge](https://curseforge.com/minecraft/texture-packs/faithful-64x)
+[Java Edition CurseForge](https://curseforge.com/minecraft/texture-packs/faithful-64x)
+
+[Bedrock Edition CurseForge](https://www.curseforge.com/minecraft-bedrock/addons/faithful-64x-bedrock)
 
 [Modrinth](https://modrinth.com/resourcepack/faithful-64x)
 
@@ -128,6 +132,8 @@ const websites = {
 [Planet Minecraft](https://planetminecraft.com/texture-pack/classic-faithful-64x/)
 
 [Java Edition GitHub](https://github.com/classicfaithful/64x-jappa)
+
+[Bedrock Edition GitHub](https://github.com/classicfaithful/64x-jappa-bedrock)
 		`,
 	},
 
