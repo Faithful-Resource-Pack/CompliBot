@@ -14,24 +14,31 @@ module.exports = {
 	guildOnly: true,
 	uses: strings.command.use.anyone,
 	syntax: `${prefix}faq [keyword]`,
-	example: `${prefix}faq bot offline\n${prefix}faq submit\n\nADMINS ONLY:\n${prefix}faq all`,
+	example: `${prefix}faq bot offline\n${prefix}faq submit\n\nMANAGER ONLY:\n${prefix}faq all`,
 	async execute(client, message, args) {
-		let color = settings.colors.c32
+		let color = settings.colors.c32;
+		let embed;
+		let embedArray = [];
 
-		let embed
 		if (args[0] == 'all') {
-			if (message.member.roles.cache.some(role => role.name.includes("Manager") || role.id === '747839021421428776')) {
+			if (message.member.permissions.has(Discord.Permissions.FLAGS.ADMINISTRATOR)) {
 				for (let i = 0; i < FAQS.length; i++) {
 					embed = new Discord.MessageEmbed()
 						.setTitle(FAQS[i].question)
 						.setColor(color)
 						.setDescription(FAQS[i].answer)
-						.setFooter(`Keywords: ${Object.values(FAQS[i].keywords).join(' | ')}`)
-					await message.channel.send({ embeds: [embed] })
+						.setFooter(`Keywords: ${Object.values(FAQS[i].keywords).join(' • ')}`)
+					embedArray.push(embed);
+					if ((i+1) % 10 == 0) { // every ten faq embeds goes in one message since that's discord's limit
+						await message.channel.send({ embeds: embedArray });
+						embedArray = [];
+					}
 				}
+
+				if (embedArray !== []) await message.channel.send({ embeds: embedArray }); // sends the leftovers if exists
 				if (!message.deleted) await message.delete()
 
-			} else warnUser(message, "Only Administrators can do that!")
+			} else warnUser(message, "Only Managers can do that!")
 		} else {
 			args = args.join(' ')
 			for (let i = 0; i < FAQS.length; i++) {
@@ -41,7 +48,7 @@ module.exports = {
 						.setThumbnail(settings.images.question)
 						.setColor(settings.colors.blue)
 						.setDescription(FAQS[i].answer)
-						.setFooter(`Keywords: ${Object.values(FAQS[i].keywords).join(' | ')}`)
+						.setFooter(`Keywords: ${Object.values(FAQS[i].keywords).join(' • ')}`)
 					await message.reply({ embeds: [embed] })
 				}
 			}
