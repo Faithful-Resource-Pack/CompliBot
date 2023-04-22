@@ -33,7 +33,7 @@ export const command: SlashCommand = {
 				.setThumbnail(websites[key].image);
 		else
 			embed
-				.setTitle("You can find Faithful here:")
+				.setTitle("Useful Links:")
 				.setDescription (`
 **General:**
 
