@@ -28,14 +28,16 @@ module.exports = {
 						.setColor(color)
 						.setDescription(FAQS[i].answer)
 						.setFooter(`Keywords: ${Object.values(FAQS[i].keywords).join(' • ')}`)
+
 					embedArray.push(embed);
-					if ((i+1) % 10 == 0) { // every ten faq embeds goes in one message since that's discord's limit
+
+					if ((i+1) % 5 == 0) {
 						await message.channel.send({ embeds: embedArray });
 						embedArray = [];
 					}
 				}
 
-				if (embedArray !== []) await message.channel.send({ embeds: embedArray }); // sends the leftovers if exists
+				if (!embedArray) await message.channel.send({ embeds: embedArray }); // sends the leftovers if exists
 				if (!message.deleted) await message.delete()
 
 			} else warnUser(message, "Only Managers can do that!")
