@@ -37,7 +37,7 @@ module.exports = {
 					}
 				}
 
-				if (!embedArray) await message.channel.send({ embeds: embedArray }); // sends the leftovers if exists
+				if (embedArray.length) await message.channel.send({ embeds: embedArray }); // sends the leftovers if exists
 				if (!message.deleted) await message.delete()
 
 			} else warnUser(message, "Only Managers can do that!")
