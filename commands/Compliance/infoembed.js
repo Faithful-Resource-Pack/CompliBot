@@ -4,6 +4,8 @@ const settings = require('../../resources/settings.json')
 const strings = require('../../resources/strings.json')
 
 const { MessageEmbed } = require('discord.js')
+const { warnUser } = require('../../helpers/warnUser')
+const { Permissions } = require('discord.js');
 
 const uidR = process.env.UIDR;
 const uidJ = process.env.UIDJ;
@@ -16,7 +18,7 @@ module.exports = {
 	uses: strings.command.use.devs,
 	syntax: `${prefix}discords\n${prefix}media`,
 	async execute(client, message, args) {
-		if (message.author.id === uidR || message.author.id === uidJ || "331073143613423616") {
+		if (message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
 			if (args[0] === 'discords') {
 				if (message.guild.id === settings.guilds.c32.id || args[1] === 'main') {
 					await message.channel.send({ content: `
@@ -52,18 +54,18 @@ https://discord.gg/minecraft
 					await message.delete()
 				}
 
-				else return
+				else return warnUser(message, 'You must specify a third argument. Available options are `main` and `cf`.')
 			}
 
 			else if (args[0] === 'media') {
-				// specific pack links
-
-				var f32Embed = new MessageEmbed()
+				const f32Embed = new MessageEmbed()
 					.setTitle('Faithful 32x:') // these should probably be strings in the db but I'm too lazy to add it
 					.setDescription (`
 [Website](https://faithfulpack.net/faithful32x/latest)
 
-[CurseForge](https://curseforge.com/minecraft/texture-packs/faithful-32x)
+[Java Edition CurseForge](https://curseforge.com/minecraft/texture-packs/faithful-32x)
+
+[Bedrock Edition CurseForge](https://www.curseforge.com/minecraft-bedrock/addons/faithful-32x-bedrock)
 
 [Modrinth](https://modrinth.com/resourcepack/faithful-32x)
 
@@ -76,12 +78,14 @@ https://discord.gg/minecraft
 					.setColor(0x00a2ff) // sorry for hardcoded colors but idk where these are stored in the db or if cf ones even exist so this is just easier
 					.setThumbnail('https://database.faithfulpack.net/images/branding/logos/transparent/512/f32_logo.png')
 
-				var f64Embed = new MessageEmbed()
+				const f64Embed = new MessageEmbed()
 					.setTitle('Faithful 64x:')
 					.setDescription (`
 [Website](https://faithfulpack.net/faithful64x/latest)
 
-[CurseForge](https://curseforge.com/minecraft/texture-packs/faithful-64x)
+[Java Edition CurseForge](https://curseforge.com/minecraft/texture-packs/faithful-64x)
+
+[Bedrock Edition CurseForge](https://www.curseforge.com/minecraft-bedrock/addons/faithful-64x-bedrock)
 
 [Modrinth](https://modrinth.com/resourcepack/faithful-64x)
 
@@ -94,7 +98,7 @@ https://discord.gg/minecraft
 					.setColor(0xd8158d)
 					.setThumbnail('https://database.faithfulpack.net/images/branding/logos/transparent/512/f64_logo.png')
 
-				var cf32jEmbed = new MessageEmbed()
+				const cf32jEmbed = new MessageEmbed()
 					.setTitle('Classic Faithful 32x Jappa:')
 					.setDescription (`
 [Website](https://faithfulpack.net/classicfaithful/32x-jappa)
@@ -112,7 +116,7 @@ https://discord.gg/minecraft
 					.setColor(0x00c756)
 					.setThumbnail('https://database.faithfulpack.net/images/branding/logos/transparent/512/cf32_logo.png')
 
-				var cf32paEmbed = new MessageEmbed()
+				const cf32paEmbed = new MessageEmbed()
 					.setTitle('Classic Faithful 32x PA:')
 					.setDescription (`
 [Website](https://faithfulpack.net/classicfaithful/32x-programmer-art)
@@ -130,7 +134,7 @@ https://discord.gg/minecraft
 					.setColor(0xa1db12)
 					.setThumbnail('https://database.faithfulpack.net/images/branding/logos/transparent/512/cf32pa_logo.png')
 
-				var cf64jEmbed = new MessageEmbed()
+				const cf64jEmbed = new MessageEmbed()
 					.setTitle('Classic Faithful 64x:')
 					.setDescription (`
 [Website](https://faithfulpack.net/classicfaithful/64x-jappa)
@@ -147,12 +151,12 @@ https://discord.gg/minecraft
 					.setThumbnail('https://database.faithfulpack.net/images/branding/logos/transparent/512/cf64_logo.png')
 
 				// project nonspecific stuff goes here
-				var generalEmbed = new MessageEmbed()
-					.setTitle('You can find Faithful here:')
+				const generalEmbed = new MessageEmbed()
+					.setTitle('Useful Links:')
 					.setDescription (`
 **General:**
 
-[Website](https://faithfulpack.net/) • [Main GitHub](https://github.com/faithful-resource-pack/) • [Classic Faithful GitHub](https://github.com/classicfaithful/) • [Patreon](https://www.patreon.com/faithful_resource_pack)
+[Website](https://faithfulpack.net/) • [Docs](https://docs.faithfulpack.net/) • [News](https://beta.faithfulpack.net/news) • [License](https://faithfulpack.net/license) • [Translate](https://translate.faithfulpack.net/)
 
 **Listings:**
 
@@ -160,7 +164,7 @@ https://discord.gg/minecraft
 
 **Media:**
 
-[Twitter](https://twitter.com/faithfulpack/) • [Reddit](https://reddit.com/r/faithfulpack/) • [YouTube](https://youtube.com/@faithfulpack)
+[Twitter](https://twitter.com/faithfulpack/) • [Patreon](https://www.patreon.com/faithful_resource_pack) • [Reddit](https://reddit.com/r/faithfulpack/) • [Main GitHub](https://github.com/faithful-resource-pack/) • [Classic Faithful GitHub](https://github.com/classicfaithful/)
 					`)
 					.setColor(settings.colors.c32)
 					.setThumbnail('https://database.faithfulpack.net/images/branding/logos/transparent/512/plain_logo.png')
@@ -171,8 +175,7 @@ https://discord.gg/minecraft
 
 				await message.channel.send({ embeds: [f32Embed, f64Embed, cf32jEmbed, cf32paEmbed, cf64jEmbed, generalEmbed] })
 				await message.delete()
-			}
-		}
-		else return
+			} else return warnUser(message, 'You must specify a second argument. Available options are `discords` and `media`.')
+		} else return warnUser(message, "Only Managers can do that!")
 	}
 };
