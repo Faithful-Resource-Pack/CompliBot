@@ -156,7 +156,7 @@ https://discord.gg/minecraft
 					.setDescription (`
 **General:**
 
-[Website](https://faithfulpack.net/) • [Docs](https://docs.faithfulpack.net/) • [News](https://beta.faithfulpack.net/news) • [License](https://faithfulpack.net/license) • [Translate](https://translate.faithfulpack.net/)
+[Website](https://faithfulpack.net/) • [Docs](https://docs.faithfulpack.net/) • [News](https://faithfulpack.net/news) • [License](https://faithfulpack.net/license) • [Translate](https://translate.faithfulpack.net/)
 
 **Listings:**
 
