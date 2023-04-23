@@ -112,15 +112,19 @@
     "/assets/modmenu/fabric_icon.png",
     "/assets/modmenu/grey_fabric_icon.png",
     "/assets/modmenu/mc_icon.png",
-    "assets/forge/items/bucket_fluid.png",
-    "assets/forge/items/vanilla_bucket_cover_mask.png",
+    "/assets/forge/items/bucket_fluid.png",
+    "/assets/forge/items/vanilla_bucket_cover_mask.png",
     "/assets/realms/textures/gui/realms/images/",
     "/assets/fml/gui/forge.png",
     "/assets/fml/gui/icons.png",
     "/assets/forge/items/bucket_base.png",
     "/assets/forge/items/bucket_cover.png",
     "/assets/forge/items/bucket_fluid.png",
-    "/assets/minecraft/textures/trims/color_palettes/"
+    "/assets/minecraft/textures/trims/color_palettes/",
+    "/assets/minecraft/textures/gui/title/edition.png",
+    "/assets/minecraft/textures/gui/title/minecraft.png",
+    "/assets/minecraft/textures/gui/title/minceraft.png",
+    "/assets/realms/textures/gui/title/realms.png"
   ],
   "bedrock": [
     "spit",
