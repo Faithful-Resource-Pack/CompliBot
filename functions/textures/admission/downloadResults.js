@@ -36,7 +36,7 @@ async function downloadResults(client, channelInID) {
 
 	// keep good textures
 	messages = messages
-		.filter(message => message.embeds[0].fields[1] !== undefined && !message.embeds[0].fields[1].value.includes('is not going to be added'))
+		.filter(message => message.embeds[0].fields[1] !== undefined && !message.embeds[0].fields[1].value.includes('will not be added'))
 
 	messages.reverse() // upload them from the oldest to the newest
 
