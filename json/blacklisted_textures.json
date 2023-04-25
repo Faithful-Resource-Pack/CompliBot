@@ -389,6 +389,8 @@
     "ui/recipe_book_side_toggle_dark_hover.png",
     "ui/subcategory_icons/facial_hair.png",
     "ui/subcategory_icons/skin_texture.png",
-    "ui/yellowExclamation.png"
+    "ui/yellowExclamation.png",
+    "color_palettes/",
+    "trims/color_palettes/"
   ]
 }
