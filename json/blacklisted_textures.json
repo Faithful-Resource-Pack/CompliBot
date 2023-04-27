@@ -391,6 +391,10 @@
     "ui/subcategory_icons/skin_texture.png",
     "ui/yellowExclamation.png",
     "color_palettes/",
-    "trims/color_palettes/"
+    "trims/color_palettes/",
+    "textures/ui/tiny_agnes.png",
+    "textures/ui/banner_mob_vote.png",
+    "textures/ui/default_cast/alex.png",
+    "textures/ui/default_cast/steve.png"
   ]
 }
