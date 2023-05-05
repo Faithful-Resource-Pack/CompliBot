@@ -276,7 +276,7 @@ class ExtendedClient extends Client {
 		const commandsArr: Array<{ servers: Array<string>; command: RESTPostAPIApplicationCommandsJSONBody }> = [];
 
 		const paths: Array<string> = readdirSync(slashCommandsPath);
-		// use a classic for loops to force async functions to be fulfilled
+		// use a classic for loop to force async functions to be fulfilled
 		for (let i = 0; i < paths.length; i++) {
 			const dir: string = paths[i];
 			if (dir == ".DS_Store") continue;
@@ -393,6 +393,7 @@ class ExtendedClient extends Client {
 		const menusPath = path.join(__dirname, "..", "menus");
 
 		readdirSync(menusPath).forEach(async (dir) => {
+			if (dir == ".DS_Store") return;
 			const menus = readdirSync(`${menusPath}/${dir}`).filter((file) => file.endsWith(".ts"));
 
 			for (const file of menus) {
