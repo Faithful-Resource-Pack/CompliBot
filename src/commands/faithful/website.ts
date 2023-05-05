@@ -73,6 +73,8 @@ const websites = {
 
 [Modrinth](https://modrinth.com/resourcepack/faithful-32x)
 
+[MCPEDL](https://mcpedl.com/faithful-32x/)
+
 [Planet Minecraft](https://planetminecraft.com/texture-pack/faithful-32x/)
 
 [Java Edition GitHub](https://github.com/faithful-resource-pack/faithful-java-32x)
