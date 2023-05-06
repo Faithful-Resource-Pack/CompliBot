@@ -38,11 +38,11 @@ export async function tileCanvas(options: options): Promise<Canvas> {
 
 			const drawRotatedImage = (image: Image, x: number, y: number, scale: number, rotation: number) => {
 				context.clearRect(x, y, dimension.width, dimension.height);
-				context.setTransform(scale, 0, 0, scale, x, y); // sets scale and origin
+				context.setTransform(new DOMMatrix([scale, 0, 0, scale, x, y])); // sets scale and origin
 				context.rotate(rotation * (Math.PI / 180));
 				context.drawImage(image, -image.width / 2, -image.height / 2);
 
-				context.setTransform(); // reset context position to it's origin
+				context.setTransform(); // reset context position to its origin
 			};
 			const drawMirroredImage = (x = 0, y = 0) => {
 				context.save();
