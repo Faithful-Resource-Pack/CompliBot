@@ -1,14 +1,25 @@
 import { MessageActionRow, MessageButton } from "discord.js";
 import { ids, parseId } from "./emojis";
 
+/* TODO: uncomment once compare button is properly made
+
 export const compare = new MessageButton()
 	.setStyle("PRIMARY")
 	.setEmoji(parseId(ids.compare))
 	.setCustomId("compare")
-	.setDisabled(true); //todo enable once compare button is made
-export const palette = new MessageButton().setStyle("PRIMARY").setEmoji(parseId(ids.palette)).setCustomId("palette");
-export const magnify = new MessageButton().setStyle("PRIMARY").setEmoji(parseId(ids.magnify)).setCustomId("magnify");
-export const tile = new MessageButton().setStyle("PRIMARY").setEmoji(parseId(ids.tile)).setCustomId("tile");
+ */
+export const palette = new MessageButton()
+	.setStyle("PRIMARY")
+	.setEmoji(parseId(ids.palette))
+	.setCustomId("palette");
+export const magnify = new MessageButton()
+	.setStyle("PRIMARY")
+	.setEmoji(parseId(ids.magnify))
+	.setCustomId("magnify");
+export const tile = new MessageButton()
+	.setStyle("PRIMARY")
+	.setEmoji(parseId(ids.tile))
+	.setCustomId("tile");
 
 export const instapass = new MessageButton()
 	.setStyle("PRIMARY")
@@ -91,7 +102,12 @@ export const pollDelete = new MessageButton()
 export const pollVotes = [pollVote1, pollVote2, pollVote3, pollVote4, pollVote5];
 export const pollYesNo = new MessageActionRow().addComponents([pollUpvote, pollDownvote]);
 
-export const imageButtons = new MessageActionRow().addComponents([magnify, tile, palette, compare]);
+export const imageButtons = new MessageActionRow().addComponents([
+	magnify,
+	tile,
+	palette,
+	// compare,
+]);
 export const submissionButtonsOpen = new MessageActionRow().addComponents([
 	see_less,
 	view_votes,
@@ -99,19 +115,23 @@ export const submissionButtonsOpen = new MessageActionRow().addComponents([
 	invalidate,
 	deleteMessage,
 ]);
-export const submissionButtonsOpenEnd = new MessageActionRow().addComponents([see_less_end, view_votes, deleteMessage]);
+export const submissionButtonsOpenEnd = new MessageActionRow().addComponents([
+	see_less_end,
+	view_votes,
+	deleteMessage
+]);
 export const submissionButtonsClosed = new MessageActionRow().addComponents([
 	magnify,
 	tile,
 	palette,
-	compare,
+	// compare,
 	see_more,
 ]);
 export const submissionButtonsClosedEnd = new MessageActionRow().addComponents([
 	magnify,
 	tile,
 	palette,
-	compare,
+	// compare,
 	see_more_end,
 ]);
 export const submissionButtonsVotes = new MessageActionRow().addComponents([upvote, downvote]);
