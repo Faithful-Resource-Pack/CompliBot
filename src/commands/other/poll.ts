@@ -73,7 +73,7 @@ export const command: SlashCommand = {
 		let response: any;
 		const yesnoEmojis: Array<string> = [parseId(ids.upvote), parseId(ids.downvote)];
 		const numberEmojis: Array<string> = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"];
-		embed.addField("Answers", "None", true);
+		embed.addFields([{ name: "Answers", value: "None", inline: true }]);
 		do {
 			try {
 				const collected = await interaction.channel.awaitMessages({ filter, max: 1, time: 30000, errors: ["time"] });

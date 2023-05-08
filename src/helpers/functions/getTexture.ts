@@ -99,13 +99,17 @@ export const getTextureMessageOptions = async (options: {
 		validURL = true;
 	} catch (err) {
 		textureURL = "https://raw.githubusercontent.com/Faithful-Resource-Pack/App/main/resources/transparency.png";
-		embed.addField("Image not found", "This texture hasn't been made yet or is blacklisted!");
+		embed.addFields([
+			{ name: "Image not found", value: "This texture hasn't been made yet or is blacklisted!"}
+		]);
 		embed.setColor(colors.red);
 	}
 
 	if (validURL) {
-		embed.addField("Resolution", `${dimensions.width}×${dimensions.height}`, true);
-		embed.addField("\u200B", `[View texture online](https://webapp.faithfulpack.net/#/gallery/java/32x/latest/all/?show=${texture.id})`, true);
+		embed.addFields([
+			{ name: "Resolution", value: `${dimensions.width}×${dimensions.height}`, inline: true },
+			{ name: "\u200B", value: `[View texture online](https://webapp.faithfulpack.net/#/gallery/java/32x/latest/all/?show=${texture.id})`, inline: true },
+		]);
 
 		const displayedContributions = [
 			contributions
@@ -119,7 +123,9 @@ export const getTextureMessageOptions = async (options: {
 		];
 
 		if (displayedContributions[0] != undefined && contributions.length && pack !== "default")
-			embed.addField("Latest Author(s)", displayedContributions.join("\n"));
+			embed.addFields([
+				{ name: "Latest Author(s)", value: displayedContributions.join("\n") }
+			]);
 	}
 
 	let tmp = {};
@@ -145,17 +151,16 @@ export const getTextureMessageOptions = async (options: {
 
 	Object.keys(tmp).forEach((edition) => {
 		if (tmp[edition].length > 0) {
-			embed.addField(
-				edition.charAt(0).toLocaleUpperCase() + edition.slice(1),
-				tmp[edition].join("\n").replaceAll(" textures/", "../"),
-				false,
-			);
+			embed.addFields([{
+				name: edition.charAt(0).toLocaleUpperCase() + edition.slice(1),
+				value: tmp[edition].join("\n").replaceAll(" textures/", "../"),
+			}]);
 		}
 	});
 
 	// magnifying the texture in thumbnail
 	if (animated) {
-		embed.addField("MCMETA", `\`\`\`json\n${JSON.stringify(mcmeta)}\`\`\``, false);
+		embed.addFields([{ name: "MCMETA", value: `\`\`\`json\n${JSON.stringify(mcmeta)}\`\`\`` }]);
 		files.push(await animateAttachment({ url: textureURL, magnify: true, name: "magnified.gif", mcmeta }));
 	} else files.push((await magnifyAttachment({ url: textureURL, name: "magnified.png" }))[0]);
 

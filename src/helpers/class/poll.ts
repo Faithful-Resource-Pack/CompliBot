@@ -108,7 +108,9 @@ export class Poll extends TimedEmbed {
 			this.setVotes(tmp);
 		}
 
-		if (this.getTimeout() !== 0) embed.addField("Timeout", `<t:${this.getTimeout()}:R>`, true);
+		if (this.getTimeout() !== 0) embed.addFields([
+			{ name: "Timeout", value: `<t:${this.getTimeout()}:R>`, inline: true }
+		]);
 
 		const components: Array<MessageActionRow> = [];
 		if (options.yesno) components.push(pollYesNo);

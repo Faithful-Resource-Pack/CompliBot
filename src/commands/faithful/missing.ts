@@ -82,7 +82,9 @@ export const command: SlashCommand = {
 			.setTitle("Searching for missing textures...")
 			.setDescription("This takes some time, please wait...")
 			.setThumbnail(`${(interaction.client as Client).config.images}bot/loading.gif`)
-			.addField("Steps", "\u200b");
+			.addFields([
+				{ name: "Steps", value: "\u200b" }
+			]);
 
 		await interaction.editReply({ embeds: [embed] });
 		let steps: Array<string> = [];
@@ -142,17 +144,19 @@ export const command: SlashCommand = {
 		responses.forEach((response: MissingResult) => {
 			// no repo found for the asked pack + edition
 			if (response[0] === null)
-				embed2.addField(
-					`${getDisplayNameForPack(response[2].pack)} - ${response[2].edition} - ${response[2].version}`,
-					`${response[2].completion}% complete\n> ${response[1][0]}`,
-				);
+				embed2.addFields([{
+					name: `${getDisplayNameForPack(response[2].pack)} - ${response[2].edition} - ${response[2].version}`,
+					value: `${response[2].completion}% complete\n> ${response[1][0]}`
+				}]);
+
 			else {
 				if (response[1].length !== 0)
 					files.push(new MessageAttachment(response[0], `missing-${response[2].pack}-${response[2].edition}.txt`));
-				embed2.addField(
-					`${getDisplayNameForPack(response[2].pack)} - ${response[2].edition} - ${response[2].version}`,
-					`${response[2].completion}% complete\n> ${response[1].length} textures missing.`,
-				);
+
+				embed2.addFields([{
+					name: `${getDisplayNameForPack(response[2].pack)} - ${response[2].edition} - ${response[2].version}`,
+					value: `${response[2].completion}% complete\n> ${response[1].length} textures missing.`,
+				}]);
 			}
 		});
 

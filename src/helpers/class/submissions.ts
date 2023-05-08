@@ -229,16 +229,14 @@ export class Submission extends TimedEmbed {
 		const embed = new MessageEmbed()
 			.setTitle(`[#${texture.id}] ${texture.name}`)
 			.setAuthor({ iconURL: baseMessage.author.avatarURL(), name: baseMessage.author.username })
-			.addField("Tags", texture.tags.join(", "))
-			.addField("Contributor(s)", `<@!${mentions.join(">\n<@!")}>`, true)
-			.addField(
-				"Resource Pack",
-				`\`${getSubmissionChannelName(baseMessage.client as Client, baseMessage.channelId)}\``,
-				true,
-			)
-			.addField("Votes", this.getVotesUI().join(",\n"))
-			.addField("Status", this.getStatusUI())
-			.addField("Until", `<t:${this.getTimeout()}>`, true)
+			.addFields([
+				{ name: "Tags", value: texture.tags.join(", ") },
+				{ name: "Contributor(s)", value: `<@!${mentions.join(">\n<@!")}>`, inline: true },
+				{ name: "Resource Pack", value: `\`${getSubmissionChannelName(baseMessage.client as Client, baseMessage.channelId)}\``, inline: true },
+				{ name: "Votes", value: this.getVotesUI().join(",\n") },
+				{ name: "Status", value: this.getStatusUI() },
+				{ name: "Until", value: `<t:${this.getTimeout()}>`, inline: true },
+			])
 			.setFooter({ text: `${this.id} | ${baseMessage.author.id}` }); // used to authenticate the submitter (for message deletion)
 
 		// add description if there is one
