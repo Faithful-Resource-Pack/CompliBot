@@ -27,15 +27,14 @@ const { doCheckSettings } = require('../functions/settings/doCheckSettings')
 const submissionProcess = new cron.CronJob('0 0 * * *', async () => {
   // Faithful 32x
   await retrieveSubmission(client, settings.channels.submit_textures.c32, settings.channels.submit_council.c32, 2)
-  await councilSubmission(client, settings.channels.submit_council.c32, settings.channels.submit_results.c32, settings.channels.submit_revote.c32, 1)
-
+  await councilSubmission(client, settings.channels.submit_council.c32, settings.channels.submit_results.c32, 1)
   // Faithful 64x
-  await retrieveSubmission(client, '931887174977208370', '931886877521350696', 2)
-  await councilSubmission(client, '931886877521350696', '931887235433906276', '931887204748374096', 1)
+  await retrieveSubmission(client, settings.channels.submit_textures.c64, settings.channels.submit_council.c64, 2)
+  await councilSubmission(client, settings.channels.submit_council.c64, settings.channels.submit_results.c64, 1)
 })
 const downloadToBot = new cron.CronJob('15 0 * * *', async () => {
   await downloadResults(client, settings.channels.submit_results.c32)
-  await downloadResults(client, '931887235433906276')
+  await downloadResults(client, settings.channels.submit_results.c64)
 })
 let pushToGithub = new cron.CronJob('30 0 * * *', async () => {
   await pushTextures()

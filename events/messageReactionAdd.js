@@ -18,11 +18,10 @@ module.exports = {
       // TEXTURES SUBMISSIONS
       case settings.channels.submit_textures.c32:
       case settings.channels.submit_council.c32:
-      case settings.channels.submit_revote.c32:
       case settings.channels.submit_results.c32:
-      case '931887174977208370':
-      case '931886877521350696':
-      case '931887204748374096':
+      case settings.channels.submit_textures.c64:
+      case settings.channels.submit_council.c64:
+      case settings.channels.submit_results.c64:
       case settings.channels.submit_council.dev:
         if (reaction.message.channel.id === settings.channels.submit_council.dev && !DEV_REACTION) return
         editSubmission(client, reaction, user)

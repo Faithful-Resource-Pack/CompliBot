@@ -35,8 +35,11 @@ async function editSubmission(client, reaction, user) {
     if (!message.embeds[0].fields[1].value.includes(settings.emojis.pending) && !message.embeds[0].fields[1].value.includes('⏳'))
       EMOJIS = EMOJIS.filter(emoji => emoji !== settings.emojis.instapass && emoji !== settings.emojis.invalid && emoji !== settings.emojis.delete)
 
-    // if the message is in #council-vote #texture-revote, remove delete reaction (avoid missclick)
-    if (message.channel.id === settings.channels.submit_council.c32 || message.channel.id === settings.channels.submit_revote.c32 || message.channel.id === settings.channels.submit_council.c32 || message.channel.id === settings.channels.submit_revote.c32)
+    // if the message is in #council-vote remove delete reaction (avoid misclick)
+    if (
+      message.channel.id === settings.channels.submit_council.c32 ||
+      message.channel.id === settings.channels.submit_council.c64
+    )
       EMOJIS = EMOJIS.filter(emoji => emoji !== settings.emojis.delete)
 
     // add reacts
@@ -109,15 +112,17 @@ async function editSubmission(client, reaction, user) {
 
 async function instapass(client, message) {
   let channelOut
-  if (message.channel.id == settings.channels.submit_textures.c32 || message.channel.id == settings.channels.submit_council.c32 || message.channel.id == settings.channels.submit_revote.c32) channelOut = await client.channels.fetch(settings.channels.submit_results.c32) // obtains the channel or returns the one from cache
+  // gets 32x submissions
+  if (
+    message.channel.id == settings.channels.submit_textures.c32 ||
+    message.channel.id == settings.channels.submit_council.c32
+  ) channelOut = await client.channels.fetch(settings.channels.submit_results.c32) // obtains the channel or returns the one from cache
+
+  // gets 64x submissions
   else if (
-    message.channel.id == settings.channels.submit_textures.c64 || // OLD
-    message.channel.id == settings.channels.submit_council.c64 || // OLD
-    message.channel.id == settings.channels.submit_revote.c64 || // OLD
-    message.channel.id == '931887174977208370' ||
-    message.channel.id == '931886877521350696' ||
-    message.channel.id == '931887204748374096'
-  ) channelOut = await client.channels.fetch('931887235433906276') // obtains the channel or returns the one from cache
+    message.channel.id == settings.channels.submit_textures.c64 ||
+    message.channel.id == settings.channels.submit_council.c64
+  ) channelOut = await client.channels.fetch(settings.channels.submit_results.c64) // obtains the channel or returns the one from cache
 
   channelOut.send({
     embeds:
@@ -137,12 +142,10 @@ async function editEmbed(message) {
   let embed = message.embeds[0]
   // fix the weird bug that also apply changes to the old embed (wtf)
   if (message.channel.id == '841396215211360296') embed.setColor(settings.colors.blue)
-  else if (message.channel.id == settings.channels.submit_textures.c32 || message.channel.id == '931887174977208370')
+  else if (message.channel.id == settings.channels.submit_textures.c32 || message.channel.id == settings.channels.submit_textures.c64)
     embed.setColor(settings.colors.blue)
-  else if (message.channel.id == settings.channels.submit_council.c32 || message.channel.id == '931886877521350696')
+  else if (message.channel.id == settings.channels.submit_council.c32 || message.channel.id == settings.channels.submit_council.c64)
     embed.setColor(settings.colors.council)
-  else if (message.channel.id == settings.channels.submit_revote.c32 || message.channel.id == '931887204748374096')
-    embed.setColor(settings.colors.red)
 
   if (embed.description !== null) embed.setDescription(message.embeds[0].description.replace(`[Original Post](${message.url})\n`, ''))
 

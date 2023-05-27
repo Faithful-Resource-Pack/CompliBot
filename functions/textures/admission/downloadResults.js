@@ -19,8 +19,9 @@ var Buffer = require('buffer/').Buffer
 async function downloadResults(client, channelInID) {
 	let messages = await getMessages(client, channelInID)
 
-	let res = 32
-	if (channelInID == '931887235433906276') res = 64
+	const res = channelInID == settings.channels.submit_results.c32
+		? 32
+		: 64
 
 	// get messages from the same day
 	let delayedDate = new Date()

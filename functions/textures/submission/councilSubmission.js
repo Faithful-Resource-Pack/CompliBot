@@ -6,14 +6,12 @@ const { getMessages } = require('../../../helpers/getMessages')
  * @author Juknum
  * @param {DiscordClient} client
  * @param {String} channelFromID text-channel from where submission are retrieved
- * @param {String} channelResultsID text-channel where submission are sent (if upvote < downvote || upvote > downvote)
- * @param {String} channelRevotesID text-channel where submission are sent if downvote == upvote
+ * @param {String} channelResultsID text-channel where submission are sent
  * @param {Integer} delay delay in day from today
  */
-async function councilSubmission(client, channelFromID, channelResultsID, channelRevotesID, delay) {
+async function councilSubmission(client, channelFromID, channelResultsID, delay) {
   let messages = await getMessages(client, channelFromID)
   let channelResults = client.channels.cache.get(channelResultsID)
-  let channelRevotes = client.channels.cache.get(channelRevotesID)
 
   let delayedDate = new Date()
   delayedDate.setDate(delayedDate.getDate() - delay)

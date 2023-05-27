@@ -532,12 +532,6 @@
         }
     },
     "submission": {
-        "texture": {
-            "win_council": "The following texture has passed council voting and will be added into the pack in a future version.",
-            "defeat_council": "The following texture has not passed council voting and thus is up for revote.",
-            "win_revote": "This texture has passed community voting and thus will be added into the pack in a future version.",
-            "defeat_revote": "This texture has not passed council and community voting and thus will not be added into the pack."
-        },
         "no_file_attached": "Your submission has to have a file attached!",
         "no_folder_specified": "You need to add the texture folder of your texture between []:\n`texture_name [folder] (optional comment)`",
         "autoreact": {
