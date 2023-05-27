@@ -13,11 +13,11 @@ const { walkSync } = require('./helpers/walkSync')
 require('dotenv').config()
 
 // fetch lang & settings file at start
-const { doCheckLang } = require('./functions/strings/doCheckLang')
+// const { doCheckLang } = require('./functions/strings/doCheckLang')
 const { doCheckSettings } = require('./functions/settings/doCheckSettings')
 
 // beware you need THIS to be loaded before all the functions are used
-const langPromise = doCheckLang()
+// const langPromise = doCheckLang()
 const settingsPromise = doCheckSettings()
 
 // eslint-disable-next-line no-unused-vars
@@ -43,7 +43,7 @@ const client = new Client({
 
 module.exports.Client = client
 
-Promise.all([langPromise, settingsPromise])
+Promise.all([/* langPromise,  */settingsPromise])
 .then(() => {
 /**
  * COMMAND HANDLER
@@ -73,7 +73,7 @@ process.on('unhandledRejection', (reason, promise) => {
 })
 
 client.login(process.env.CLIENT_TOKEN).catch(console.error)
-	
+
 })
 .catch(err => {
 	console.error('An error occured while fetching lang or settings')

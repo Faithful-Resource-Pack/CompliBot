@@ -18,15 +18,16 @@ module.exports = {
 	async execute(client, message, args) {
 		if (!message.member.roles.cache.some(role => role.name.includes("Manager") || role.name.includes("Moderator") || role.id === '747839021421428776')) return warnUser(message, strings.command.no_permission)
 
-		const RULES = Object.values(strings.rules)
+		const RULES = strings.rules;
+		const RULES_INFO = strings.rules_info;
 
-		let thumbnail = settings.images.plain;
-		let color = settings.colors.c32;
-
-		if (message.guild.id == settings.guilds.em.id)
-			thumbnail = settings.images.cf_plain;
+		const thumbnail = message.guild.id == settings.guilds.em.id
+			? settings.images.cf_plain
+			: settings.images.plain;
 
 		let rule;
+		let embedArray = [];
+		let embedRule;
 
 		if (message.member.roles.cache.some(role => role.name.includes("Manager") || role.id === '747839021421428776')) {
 			if (args[0] == 'all') rule = -1;
@@ -37,7 +38,7 @@ module.exports = {
 		if (rule <= RULES.length && rule > 0) {
 			const embed = new Discord.MessageEmbed()
 				.setTitle(`${RULES[rule - 1].number} ${RULES[rule - 1].title}`)
-				.setColor(color)
+				.setColor(settings.colors.c32)
 				.setThumbnail(settings.images.rules)
 				.setDescription(RULES[rule - 1].description);
 
@@ -47,38 +48,45 @@ module.exports = {
 		else if (rule == -1) {
 
 			let embed = new Discord.MessageEmbed()
-				.setTitle(`Rules of the Faithful Discord Servers`)
-				.setColor(color)
+				.setTitle(RULES_INFO.heading.title)
+				.setColor(settings.colors.c32)
 				.setThumbnail(thumbnail)
-				.setDescription("**Not knowing these is not an excuse for misbehaving, and you can and will be held accountable for your actions. Punishments are up to the discretion of the moderators, and harassing them is only going to make your punishment worse.**\n\n*Use `e!modping` or directly ping an online moderator if rules are being broken. Please do not mini-mod!*")
+				.setDescription(RULES_INFO.heading.description)
+
 			await message.channel.send({ embeds: [embed] })
 
 			for (let i = 0; i < RULES.length; i++) {
-				if (RULES[i].date == undefined) { // skip changes note
-					let embedRule = new Discord.MessageEmbed()
-						.setColor(color)
-						.setTitle(`${RULES[i].number} ${RULES[i].title}`)
-						.setDescription(RULES[i].description)
+				embedRule = new Discord.MessageEmbed()
+					.setColor(settings.colors.c32)
+					.setTitle(`${RULES[i].number} ${RULES[i].title}`)
+					.setDescription(RULES[i].description)
 
-					await message.channel.send({ embeds: [embedRule] });
-				}
+				embedArray.push(embedRule);
 
-				else if (RULES[i].enabled == "true" || RULES[i].enabled == true) { // only for the changes note
-					const embedExpandedRules = new Discord.MessageEmbed()
-						.setColor(color)
-						.setTitle(`Were you warned or muted unfairly?`)
-						.setDescription("A much more in-depth version of our rules, punishment appeal information, and our thought process into giving punishments can be found here: https://docs.faithfulpack.net/pages/moderation/expanded-server-rules")
-
-					const embedChanges = new Discord.MessageEmbed()
-						.setTitle(`Last Update: ${RULES[i].date}`)
-						.setColor(color)
-						.setDescription(RULES[i].description)
-						.setFooter(`The rules are subject to change at any time for any reason.`, thumbnail)
-
-					await message.channel.send({ embeds: [embedExpandedRules] })
-					await message.channel.send({ embeds: [embedChanges] })
+				if ((i+1) % 5 == 0) {
+					await message.channel.send({ embeds: embedArray });
+					embedArray = [];
 				}
 			}
+
+			if (embedArray.length) await message.channel.send({ embeds: embedArray }); // sends the leftovers if exists
+
+			const embedExpandedRules = new Discord.MessageEmbed()
+				.setColor(settings.colors.c32)
+				.setTitle(RULES_INFO.expanded_rules.title)
+				.setDescription(RULES_INFO.expanded_rules.description);
+
+			let embedChanges; // needs to be declared outside the block to prevent block scope shenanigans
+
+			if (RULES_INFO.changes.enabled) { // only for the changes note
+				embedChanges = new Discord.MessageEmbed()
+					.setTitle(RULES_INFO.changes.title)
+					.setColor(settings.colors.c32)
+					.setDescription(RULES_INFO.changes.description)
+					.setFooter(`The rules are subject to change at any time for any reason.`, thumbnail)
+			}
+
+			await message.channel.send({ embeds: [embedExpandedRules, embedChanges] })
 
 			if (!message.deleted) await message.delete();
 		}

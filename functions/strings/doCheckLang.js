@@ -6,6 +6,7 @@ const { merge } = require('../../helpers/merge.js')
 /**
  * Fetch distant bot lang file into a formated local one
  * @author Juknum
+ * @deprecated strings are now stored on the bot repo locally
  */
 const doCheckLang = async () => {
 

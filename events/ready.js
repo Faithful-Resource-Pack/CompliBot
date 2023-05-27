@@ -61,7 +61,7 @@ module.exports = {
 
     if (DEV) {
       setInterval(() => {
-        doCheckLang()
+        // doCheckLang() // strings have been moved entirely to this repo
         doCheckSettings()
       }, 20000); // 20 seconds
     }
@@ -85,7 +85,7 @@ module.exports = {
      * @event checkTimeout()    -> every 30s   | MODERATION MUTE SYSTEM UPDATE INTERVAL
      */
     setInterval(() => {
-      doCheckLang()
+      // doCheckLang()
       doCheckSettings()
     }, 60000);
     setInterval(() => {
