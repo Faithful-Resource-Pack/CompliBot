@@ -312,7 +312,7 @@
             "mods": "Moderators",
             "disabled": "Nobody (disabled)"
         },
-        "parse_args": "You need to add a [-f= | --flag=] at the begining of an argument!",
+        "parse_args": "You need to add a [-f= | --flag=] at the beginning of an argument!",
         "bean": { "cant_bean_self": "You can't bean yourself!", "specify_user": "You need to specify a user to bean!" },
         "behave": { "answer": "I'm so sorry! (⌯˃̶᷄ ﹏ ˂̶᷄⌯)" },
         "say": { "empty_message": "You haven't specified a message to send." },
