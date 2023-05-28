@@ -19,9 +19,7 @@ async function quote(msg) {
 	// cancel if quote is in texture submission channel
 	if (
 		msg.channel.id === settings.channels.submit_textures.c32 ||
-		msg.channel.id === settings.channels.submit_textures.c64 || // OLD
-		msg.channel.id === '931887174977208370' ||
-		msg.channel.id === settings.channels.submit_textures.cdungeons
+		msg.channel.id === settings.channels.submit_textures.c64
 	) return
 
 	// do not quote behave command
