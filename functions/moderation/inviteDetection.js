@@ -13,13 +13,13 @@ async function inviteDetection(client, message) {
 	if (!message.content) return
 
 	let isAd = false
+	let isScam = false;
 
 	// currently only discord servers, can be expanded with more links later
 	const advertising = [
 		'discord.gg'
 	]
 
-	// not implemented yet, will be added soon
 	const scams = [
 		'bit.ly/3k5Uc81',
 		'discocrd-gift.com',
@@ -39,16 +39,23 @@ async function inviteDetection(client, message) {
 	]
 
 	if (advertising.some(a => message.content.includes(a))) isAd = true;
+	if (scams.some(s => message.content.includes(s))) isScam = true;
 
-	if (isAd && !whitelist.some(w => message.content.includes(w))) {
-		var embed = new MessageEmbed()
-			.setAuthor(`${message.author.tag} may have advertised a discord server`, message.author.displayAvatarURL())
-			.setColor(settings.colors.red)
-			.setDescription(`[Jump to message](${message.url})\n\n**Channel**: <#${message.channel.id}>\n**Server**: \`${message.guild}\`\n**User ID**: \`${message.author.id}\`\n**Date**: \`${message.createdAt.toLocaleString()}\`\n\n\`\`\`${message.content}\`\`\``)
-			.setTimestamp()
+	if (whitelist.some(w => message.content.includes(w))) return;
 
-		client.channels.cache.get(settings.channels.auto_report.c32).send({ embeds: [embed] })
-	}
+	let embed = new MessageEmbed()
+		.setColor(settings.colors.red)
+		.setDescription(`[Jump to message](${message.url})\n\n**Channel**: <#${message.channel.id}>\n**Server**: \`${message.guild}\`\n**User ID**: \`${message.author.id}\`\n**Date**: \`${message.createdAt.toLocaleString()}\`\n\n\`\`\`${message.content}\`\`\``)
+		.setTimestamp()
+
+	if (isScam) {
+		embed.setAuthor(`${message.author.tag} may be trying to scam users`, message.author.displayAvatarURL());
+		await message.delete();
+	} else if (isAd) {
+		embed.setAuthor(`${message.author.tag} may have advertised a discord server`, message.author.displayAvatarURL());
+	} else return;
+
+	client.channels.cache.get(settings.channels.auto_report.c32).send({ embeds: [embed] })
 }
 
 exports.inviteDetection = inviteDetection
