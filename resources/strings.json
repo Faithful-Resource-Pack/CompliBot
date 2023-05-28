@@ -11,7 +11,7 @@
         "changes": {
             "title": "Last Update: 23 October 2022",
             "description": "Full rewrite and added punishment guidelines/appeals.",
-            "enabled": "true"
+            "enabled": true
         }
     },
     "rules": [
