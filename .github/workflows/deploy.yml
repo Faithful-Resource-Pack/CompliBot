@@ -1,0 +1,26 @@
+name: Deploy
+
+on:
+  push:
+    branches: [javascript]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Executing remote command
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          USERNAME: ${{ secrets.USERNAME }}
+          PORT: ${{ secrets.PORT }}
+          KEY: ${{ secrets.SSH }}
+          script: |
+            cd ./CompliBot
+            git checkout javascript
+            git stash
+            git pull
+            npm install
+            pm2 delete "BOT"
+            pm2 start "node --use_strict --trace-warnings index.js" --name "BOT" --time
