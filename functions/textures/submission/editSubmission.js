@@ -4,6 +4,7 @@ const { Permissions } = require('discord.js');
 const { magnify } = require('../../../functions/textures/magnify')
 const { palette } = require('../../../functions/textures/palette')
 const { tile } = require('../tile')
+const { warnUser } = require('../../../helpers/warnUser')
 const compareFunction = require('../compare')
 
 const CANVAS_FUNCTION_PATH = '../../../functions/textures/canvas'
@@ -111,7 +112,7 @@ async function editSubmission(client, reaction, user) {
 }
 
 async function instapass(client, message) {
-  let channelOut
+  let channelOut;
   // gets submissions
   const channelObjects = Object.values(settings.submission).map(i => [i.channels.submit, i.channels.council])
   const channelArray = channelObjects.map(j => Object.values(j)).flat()
@@ -120,8 +121,8 @@ async function instapass(client, message) {
     channelOut = await client.channels.fetch(settings.submission[repoName].channels.results) // obtains the channel or returns the one from cache
   }
 
-  if (!channelOut && process.DEBUG) {
-    console.error("channelOut was not able to be fetched")
+  if (!channelOut) {
+    warnUser(message, "Result channel was not able to be fetched.");
   }
 
   channelOut.send({

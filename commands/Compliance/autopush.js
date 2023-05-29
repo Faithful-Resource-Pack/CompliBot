@@ -22,8 +22,8 @@ module.exports = {
 		if (!args.length) return warnUser(message, strings.command.args.invalid.generic)
 
 		if (args[0] == 'all') {
-			for (let repoName in settings.submission) {
-				await downloadResults(client, settings.submission[repoName].channels.results)
+			for (let packName in settings.submission) {
+				await downloadResults(client, settings.submission[packName].channels.results)
 			}
 		}
 
