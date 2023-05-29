@@ -123,6 +123,7 @@ async function instapass(client, message) {
 
   if (!channelOut) {
     warnUser(message, "Result channel was not able to be fetched.");
+    return;
   }
 
   channelOut.send({
