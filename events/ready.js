@@ -24,16 +24,28 @@ const { doCheckSettings } = require('../functions/settings/doCheckSettings')
  * - Push to GitHub process (each day at 00:15 GMT) : @function pushToGithub
  */
 const submissionProcess = new cron.CronJob('0 0 * * *', async () => {
-  // Faithful 32x
-  await retrieveSubmission(client, settings.channels.submit_textures.c32, settings.channels.submit_council.c32, 2)
-  await councilSubmission(client, settings.channels.submit_council.c32, settings.channels.submit_results.c32, 1)
-  // Faithful 64x
-  await retrieveSubmission(client, settings.channels.submit_textures.c64, settings.channels.submit_council.c64, 2)
-  await councilSubmission(client, settings.channels.submit_council.c64, settings.channels.submit_results.c64, 1)
+  for (let packName in settings.submission) {
+    await retrieveSubmission (
+      client,
+      settings.submission[packName].channels.submit,
+      settings.submission[packName].channels.council,
+      settings.submission[packName].vote_time
+    )
+    await councilSubmission (
+      client,
+      settings.submission[packName].channels.submit,
+      settings.submission[packName].channels.results,
+      settings.submission[packName].council_time
+    )
+  }
 })
 const downloadToBot = new cron.CronJob('15 0 * * *', async () => {
-  await downloadResults(client, settings.channels.submit_results.c32)
-  await downloadResults(client, settings.channels.submit_results.c64)
+  for (let packName in settings.submission) {
+    await downloadResults (
+      client,
+      settings.submission[packName].channels.results
+    )
+  }
 })
 let pushToGithub = new cron.CronJob('30 0 * * *', async () => {
   await pushTextures()

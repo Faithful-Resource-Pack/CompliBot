@@ -35,7 +35,7 @@ async function magnifyAttachment(url) {
 /**
  * Magnify image
  * @author Juknum
- * @param {DiscordMessage} message 
+ * @param {DiscordMessage} message
  * @param {String} url Image URL
  * @param {DiscordUserID} gotocomplichannel if set, the message is send to the corresponding #complibot
  * @returns Send a message with the magnified image
@@ -45,9 +45,7 @@ async function magnify(message, url, gotocomplichannel = undefined, redirectMess
 
 	let complichannel
 	if (gotocomplichannel) {
-		if (message.guild.id == settings.guilds.c32.id) complichannel = message.guild.channels.cache.get(settings.channels.complibot.c32) // C32x discord
-		if (message.guild.id == settings.guilds.c64.id) complichannel = message.guild.channels.cache.get(settings.channels.complibot.c64) // C64x discord
-		if (message.guild.id == settings.guilds.cextras.id) complichannel = message.guild.channels.cache.get(settings.channels.complibot.cextras) // CExtras discord
+		if (message.guild.id == settings.guilds.c32.id) complichannel = message.guild.channels.cache.get(settings.channels.bot_commands)
 	}
 
 	let embedMessage

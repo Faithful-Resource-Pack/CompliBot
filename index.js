@@ -12,7 +12,7 @@ const fs = require('fs')
 const { walkSync } = require('./helpers/walkSync')
 require('dotenv').config()
 
-// fetch lang & settings file at start
+// fetch settings file at start
 // const { doCheckLang } = require('./functions/strings/doCheckLang')
 const { doCheckSettings } = require('./functions/settings/doCheckSettings')
 

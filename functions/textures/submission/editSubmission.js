@@ -4,6 +4,7 @@ const { Permissions } = require('discord.js');
 const { magnify } = require('../../../functions/textures/magnify')
 const { palette } = require('../../../functions/textures/palette')
 const { tile } = require('../tile')
+const { warnUser } = require('../../../helpers/warnUser')
 const compareFunction = require('../compare')
 
 const CANVAS_FUNCTION_PATH = '../../../functions/textures/canvas'
@@ -36,11 +37,11 @@ async function editSubmission(client, reaction, user) {
       EMOJIS = EMOJIS.filter(emoji => emoji !== settings.emojis.instapass && emoji !== settings.emojis.invalid && emoji !== settings.emojis.delete)
 
     // if the message is in #council-vote remove delete reaction (avoid misclick)
-    if (
-      message.channel.id === settings.channels.submit_council.c32 ||
-      message.channel.id === settings.channels.submit_council.c64
-    )
+    const councilChannels = Object.values(settings.submission).map(i => i.channels.council);
+
+    if (councilChannels.includes(message.channel.id)) {
       EMOJIS = EMOJIS.filter(emoji => emoji !== settings.emojis.delete)
+    }
 
     // add reacts
     for (let i = 0; EMOJIS[i]; i++) await message.react(EMOJIS[i])
@@ -111,18 +112,19 @@ async function editSubmission(client, reaction, user) {
 }
 
 async function instapass(client, message) {
-  let channelOut
-  // gets 32x submissions
-  if (
-    message.channel.id == settings.channels.submit_textures.c32 ||
-    message.channel.id == settings.channels.submit_council.c32
-  ) channelOut = await client.channels.fetch(settings.channels.submit_results.c32) // obtains the channel or returns the one from cache
+  let channelOut;
+  // gets submissions
+  const channelObjects = Object.values(settings.submission).map(i => [i.channels.submit, i.channels.council])
+  const channelArray = channelObjects.map(j => Object.values(j)).flat()
 
-  // gets 64x submissions
-  else if (
-    message.channel.id == settings.channels.submit_textures.c64 ||
-    message.channel.id == settings.channels.submit_council.c64
-  ) channelOut = await client.channels.fetch(settings.channels.submit_results.c64) // obtains the channel or returns the one from cache
+  if (channelArray.includes(message.channel.id)) {
+    channelOut = await client.channels.fetch(settings.submission[repoName].channels.results) // obtains the channel or returns the one from cache
+  }
+
+  if (!channelOut) {
+    warnUser(message, "Result channel was not able to be fetched.");
+    return;
+  }
 
   channelOut.send({
     embeds:
@@ -141,10 +143,13 @@ async function instapass(client, message) {
 async function editEmbed(message) {
   let embed = message.embeds[0]
   // fix the weird bug that also apply changes to the old embed (wtf)
-  if (message.channel.id == '841396215211360296') embed.setColor(settings.colors.blue)
-  else if (message.channel.id == settings.channels.submit_textures.c32 || message.channel.id == settings.channels.submit_textures.c64)
+  const submissionChannels = Object.values(settings.submission).map(i => i.channels.submit);
+  const councilChannels = Object.values(settings.submission).map(i => i.channels.council);
+
+  if (submissionChannels.includes(message.channel.id))
     embed.setColor(settings.colors.blue)
-  else if (message.channel.id == settings.channels.submit_council.c32 || message.channel.id == settings.channels.submit_council.c64)
+
+  else if (councilChannels.includes(message.channel.id))
     embed.setColor(settings.colors.council)
 
   if (embed.description !== null) embed.setDescription(message.embeds[0].description.replace(`[Original Post](${message.url})\n`, ''))

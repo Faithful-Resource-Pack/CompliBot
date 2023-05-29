@@ -55,7 +55,7 @@ async function inviteDetection(client, message) {
 		embed.setAuthor(`${message.author.tag} may have advertised a discord server`, message.author.displayAvatarURL());
 	} else return;
 
-	client.channels.cache.get(settings.channels.auto_report.c32).send({ embeds: [embed] })
+	client.channels.cache.get(settings.channels.link_detection).send({ embeds: [embed] })
 }
 
 exports.inviteDetection = inviteDetection

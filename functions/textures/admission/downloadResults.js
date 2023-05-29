@@ -19,9 +19,13 @@ var Buffer = require('buffer/').Buffer
 async function downloadResults(client, channelInID) {
 	let messages = await getMessages(client, channelInID)
 
-	const res = channelInID == settings.channels.submit_results.c32
-		? 32
-		: 64
+	let repoKey = null; // idk what's the best initial value
+	for (let repoName in settings.submission) {
+		if (settings.submission[repoName].channels.results == channelInID) {
+		    repoKey = repoName;
+		    break;
+		}
+	  }
 
 	// get messages from the same day
 	let delayedDate = new Date()
@@ -69,21 +73,10 @@ async function downloadResults(client, channelInID) {
 			let localPath = 'undef'
 			switch (uses[j].editions[0].toLowerCase()) {
 				case "java":
-					localPath = './texturesPush/Faithful-Java-'
+					localPath = './texturesPush/' + settings.repositories.repo_name.java[repoKey]
 					break
 				case "bedrock":
-					localPath = './texturesPush/Faithful-Bedrock-'
-					break
-				default:
-					break
-			}
-
-			switch (res) {
-				case 32:
-					localPath += '32x'
-					break
-				case 64:
-					localPath += '64x'
+					localPath = './texturesPush/' +  + settings.repositories.repo_name.bedrock[repoKey];
 					break
 				default:
 					break

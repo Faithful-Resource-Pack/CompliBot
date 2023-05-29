@@ -6,30 +6,16 @@ const settings = require('../resources/settings.json')
 const { editSubmission } = require('../functions/textures/submission/editSubmission')
 
 module.exports = {
-  name: 'messageReactionAdd',
-  async execute(reaction, user) {
-    if (DEV) return
-    if (user.bot) return
-    if (reaction.message.partial) await reaction.message.fetch() // dark magic to fetch message that are sent before the start of the bot
+    name: "messageReactionAdd",
+    async execute(reaction, user) {
+        if (DEV || user.bot) return;
+        if (reaction.message.partial) await reaction.message.fetch(); // dark magic to fetch message that are sent before the start of the bot
 
-    switch (reaction.message.channel.id) {
-      // TEXTURE SUBMISSIONS
-      case settings.channels.submit_textures.c32:
-      case settings.channels.submit_council.c32:
-      case settings.channels.submit_results.c32:
+        // TEXTURE SUBMISSIONS
+        const channelArray = Object.values(settings.submission).map(i => Object.values(i.channels)).flat();
 
-      case settings.channels.submit_textures.c64:
-      case settings.channels.submit_council.c64:
-      case settings.channels.submit_results.c64:
-
-      case settings.channels.submit_council.dev:
-        if (reaction.message.channel.id === settings.channels.submit_council.dev && !DEV_REACTION) return
-        editSubmission(client, reaction, user)
-        break;
-
-      // EVERYTHING ELSE
-      default:
-        break;
-    }
-  }
-}
+        if (channelArray.includes(reaction.message.channel.id)) {
+            editSubmission(client, reaction, user);
+        }
+    },
+};

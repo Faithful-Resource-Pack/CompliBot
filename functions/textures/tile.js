@@ -10,7 +10,7 @@ const { magnify } = require('./magnify')
 /**
  * Tile an image
  * @author Juknum
- * @param {DiscordMessage} message 
+ * @param {DiscordMessage} message
  * @param {String} url Image url
  * @param {String} type Type of tiling, could be: grid, horizontal, round or plus
  * @returns Send an embed message with the tiled image
@@ -19,9 +19,7 @@ function tile(message, url, type, gotocomplichannel = undefined, redirectMessage
 
 	let complichannel
 	if (gotocomplichannel) {
-		if (message.guild.id == settings.guilds.c32.id) complichannel = message.guild.channels.cache.get(settings.channels.complibot.c32) // C32x discord
-		if (message.guild.id == settings.guilds.c64.id) complichannel = message.guild.channels.cache.get(settings.channels.complibot.c64) // C64x discord
-		if (message.guild.id == settings.guilds.cextras.id) complichannel = message.guild.channels.cache.get(settings.channels.complibot.cextras) // CExtras discord
+		if (message.guild.id == settings.guilds.c32.id) complichannel = message.guild.channels.cache.get(settings.channels.bot_commands)
 	}
 
 	getMeta(url).then(async function (dimension) {
