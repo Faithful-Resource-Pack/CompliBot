@@ -12,7 +12,7 @@ const JSON_SPACE = 0
  * @returns {Promise<Object>}
  */
 const doCheckSettings = () => {
-  return new Promise((resolve, reject) => {
+  /* return new Promise((resolve, reject) => {
     let json // = undefined
     allCollection.settings.read_raw()
     .then(res => {
@@ -29,7 +29,7 @@ const doCheckSettings = () => {
     .catch(err => {
       reject(err)
     })
-  })
+  }) */
 }
 
 exports.doCheckSettings = doCheckSettings
