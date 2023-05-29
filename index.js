@@ -43,8 +43,8 @@ const client = new Client({
 
 module.exports.Client = client
 
-Promise.all([/* langPromise,  */settingsPromise])
-.then(() => {
+/*Promise.all([ langPromise,  settingsPromise])
+.then(() => {*/
 /**
  * COMMAND HANDLER
  */
@@ -54,7 +54,7 @@ for (const file of commandFiles) {
 	const command = require(file)
 	if ('name' in command && typeof (command.name) === 'string')
 		client.commands.set(command.name, command)
-}
+//}
 
 /**
  * EVENT HANDLER
