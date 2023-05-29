@@ -10,10 +10,9 @@ const JSON_SPACE = 0
  * Fetch distant settings file into the local one
  * @author Juknum
  * @returns {Promise<Object>}
- * @todo uncomment and move new settings to db once tested
  */
 const doCheckSettings = () => {
-  /* return new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     let json // = undefined
     allCollection.settings.read_raw()
     .then(res => {
@@ -30,7 +29,7 @@ const doCheckSettings = () => {
     .catch(err => {
       reject(err)
     })
-  }) */
+  })
 }
 
 exports.doCheckSettings = doCheckSettings
