@@ -93,9 +93,9 @@ module.exports = {
      * @event doMCUpdateCheck() -> each minute | MINECRAFT UPDATE DETECTION INTERVAL
      * @event doCheckLang()     -> each minute | LANG FILE UPDATE
      */
-    setInterval(() => {
+    /*setInterval(() => {
       // doCheckLang()
       doCheckSettings()
-    }, 60000);
+    }, 60000);*/
   }
 }
