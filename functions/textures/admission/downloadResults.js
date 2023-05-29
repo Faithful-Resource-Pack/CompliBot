@@ -20,10 +20,10 @@ async function downloadResults(client, channelInID) {
 	let messages = await getMessages(client, channelInID)
 
 	let repo_key = null; // idk what's the best initial value
-	for (let i in settings.submission) {
-		if (settings.submission[i].channels.results == channelInID) {
-		  repo_key = i;
-		  break;
+	for (let repoName in settings.submission) {
+		if (settings.submission[repoName].channels.results == channelInID) {
+		    repo_key = repoName;
+		    break;
 		}
 	  }
 

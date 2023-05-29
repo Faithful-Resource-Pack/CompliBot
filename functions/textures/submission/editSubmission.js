@@ -36,9 +36,9 @@ async function editSubmission(client, reaction, user) {
       EMOJIS = EMOJIS.filter(emoji => emoji !== settings.emojis.instapass && emoji !== settings.emojis.invalid && emoji !== settings.emojis.delete)
 
     // if the message is in #council-vote remove delete reaction (avoid misclick)
-    for (let i in settings.submission) {
+    for (let repoName in settings.submission) {
       if (
-        message.channel.id === settings.submission[i].channels.council
+        message.channel.id === settings.submission[repoName].channels.council
       ) {
         EMOJIS = EMOJIS.filter(emoji => emoji !== settings.emojis.delete)
       }
@@ -115,12 +115,12 @@ async function editSubmission(client, reaction, user) {
 async function instapass(client, message) {
   let channelOut
   // gets 32x submissions
-  for (let i in settings.submission) {
+  for (let repoName in settings.submission) {
     if (
-      message.channel.id == settings.submission[i].channels.submit ||
-      message.channel.id == settings.submission[i].channels.council
+      message.channel.id == settings.submission[repoName].channels.submit ||
+      message.channel.id == settings.submission[repoName].channels.council
     ) {
-      channelOut = await client.channels.fetch(settings.submission[i].channels.results) // obtains the channel or returns the one from cache
+      channelOut = await client.channels.fetch(settings.submission[repoName].channels.results) // obtains the channel or returns the one from cache
       break;
     }
   }
@@ -142,11 +142,11 @@ async function instapass(client, message) {
 async function editEmbed(message) {
   let embed = message.embeds[0]
   // fix the weird bug that also apply changes to the old embed (wtf)
-  for (let i in settings.submission) {
-    if (message.channel.id == settings.submission[i].channels.submit)
+  for (let repoName in settings.submission) {
+    if (message.channel.id == settings.submission[repoName].channels.submit)
       embed.setColor(settings.colors.blue)
 
-    else if (message.channel.id == settings.submission[i].channels.council)
+    else if (message.channel.id == settings.submission[repoName].channels.council)
       embed.setColor(settings.colors.council)
   }
 

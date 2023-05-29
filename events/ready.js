@@ -25,26 +25,26 @@ const { doCheckSettings } = require('../functions/settings/doCheckSettings')
  * - Push to GitHub process (each day at 00:15 GMT) : @function pushToGithub
  */
 const submissionProcess = new cron.CronJob('0 0 * * *', async () => {
-  for (let i in settings.submission) {
+  for (let repoName in settings.submission) {
     await retrieveSubmission (
       client,
-      settings.submission[i].channels.submit,
-      settings.submission[i].channels.council,
-      settings.submission[i].vote_time
+      settings.submission[repoName].channels.submit,
+      settings.submission[repoName].channels.council,
+      settings.submission[repoName].vote_time
     )
     await councilSubmission (
       client,
-      settings.submission[i].channels.submit,
-      settings.submission[i].channels.results,
-      settings.submission[i].council_time
+      settings.submission[repoName].channels.submit,
+      settings.submission[repoName].channels.results,
+      settings.submission[repoName].council_time
     )
   }
 })
 const downloadToBot = new cron.CronJob('15 0 * * *', async () => {
-  for (let i in settings.submission) {
+  for (let repoName in settings.submission) {
     await downloadResults (
       client,
-      settings.submission[i].channels.results
+      settings.submission[repoName].channels.results
     )
   }
 })

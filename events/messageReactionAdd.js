@@ -13,9 +13,9 @@ module.exports = {
         if (reaction.message.partial) await reaction.message.fetch(); // dark magic to fetch message that are sent before the start of the bot
 
         // TEXTURE SUBMISSIONS
-        for (let i in settings.submission) {
+        for (let repoName in settings.submission) {
             if (
-                Object.values(settings.submission[i].channels).includes(reaction.message.channel.id)
+                Object.values(settings.submission[repoName].channels).includes(reaction.message.channel.id)
             ) {
                 editSubmission(client, reaction, user);
                 break;
