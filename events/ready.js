@@ -33,7 +33,7 @@ const submissionProcess = new cron.CronJob('0 0 * * *', async () => {
     )
     await councilSubmission (
       client,
-      settings.submission[packName].channels.submit,
+      settings.submission[packName].channels.council,
       settings.submission[packName].channels.results,
       settings.submission[packName].council_time
     )

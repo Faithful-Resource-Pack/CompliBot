@@ -92,6 +92,8 @@ async function downloadResults(client, channelInID) {
 			}
 		}
 
+		const res = repoKey.includes('32') ? 32 : 64;
+
 		const response = await fetch(textureURL)
 		const buffer = await response.arrayBuffer()
 
