@@ -76,10 +76,11 @@ module.exports = {
       /**
        * TEXTURE SUBMISSION
        */
-      if (
-        message.channel.id === settings.channels.submit_textures.c32 ||
-        message.channel.id === settings.channels.submit_textures.c64
-      ) return submitTexture(client, message)
+      for (let i of settings.submission) {
+        if (message.channel.id === settings.submission[i].channels.submit) {
+          return submitTexture(client, message)
+        }
+      }
 
       /**
        * CLASSIC FAITHFUL ADD-ON CHANNEL REACTIONS

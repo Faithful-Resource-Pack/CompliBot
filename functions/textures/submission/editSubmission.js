@@ -36,11 +36,13 @@ async function editSubmission(client, reaction, user) {
       EMOJIS = EMOJIS.filter(emoji => emoji !== settings.emojis.instapass && emoji !== settings.emojis.invalid && emoji !== settings.emojis.delete)
 
     // if the message is in #council-vote remove delete reaction (avoid misclick)
-    if (
-      message.channel.id === settings.channels.submit_council.c32 ||
-      message.channel.id === settings.channels.submit_council.c64
-    )
-      EMOJIS = EMOJIS.filter(emoji => emoji !== settings.emojis.delete)
+    for (let i in settings.submission) {
+      if (
+        message.channel.id === settings.submission[i].channels.council
+      ) {
+        EMOJIS = EMOJIS.filter(emoji => emoji !== settings.emojis.delete)
+      }
+    }
 
     // add reacts
     for (let i = 0; EMOJIS[i]; i++) await message.react(EMOJIS[i])
@@ -113,16 +115,15 @@ async function editSubmission(client, reaction, user) {
 async function instapass(client, message) {
   let channelOut
   // gets 32x submissions
-  if (
-    message.channel.id == settings.channels.submit_textures.c32 ||
-    message.channel.id == settings.channels.submit_council.c32
-  ) channelOut = await client.channels.fetch(settings.channels.submit_results.c32) // obtains the channel or returns the one from cache
-
-  // gets 64x submissions
-  else if (
-    message.channel.id == settings.channels.submit_textures.c64 ||
-    message.channel.id == settings.channels.submit_council.c64
-  ) channelOut = await client.channels.fetch(settings.channels.submit_results.c64) // obtains the channel or returns the one from cache
+  for (let i in settings.submission) {
+    if (
+      message.channel.id == settings.submission[i].channels.submit ||
+      message.channel.id == settings.submission[i].channels.council
+    ) {
+      channelOut = await client.channels.fetch(settings.submission[i].channels.results) // obtains the channel or returns the one from cache
+      break;
+    }
+  }
 
   channelOut.send({
     embeds:
@@ -141,11 +142,13 @@ async function instapass(client, message) {
 async function editEmbed(message) {
   let embed = message.embeds[0]
   // fix the weird bug that also apply changes to the old embed (wtf)
-  if (message.channel.id == '841396215211360296') embed.setColor(settings.colors.blue)
-  else if (message.channel.id == settings.channels.submit_textures.c32 || message.channel.id == settings.channels.submit_textures.c64)
-    embed.setColor(settings.colors.blue)
-  else if (message.channel.id == settings.channels.submit_council.c32 || message.channel.id == settings.channels.submit_council.c64)
-    embed.setColor(settings.colors.council)
+  for (let i in settings.submission) {
+    if (message.channel.id == settings.submission[i].channels.submit)
+      embed.setColor(settings.colors.blue)
+
+    else if (message.channel.id == settings.submission[i].channels.council)
+      embed.setColor(settings.colors.council)
+  }
 
   if (embed.description !== null) embed.setDescription(message.embeds[0].description.replace(`[Original Post](${message.url})\n`, ''))
 

@@ -19,7 +19,7 @@ var Buffer = require('buffer/').Buffer
 async function downloadResults(client, channelInID) {
 	let messages = await getMessages(client, channelInID)
 
-	const res = channelInID == settings.channels.submit_results.c32
+	const res = channelInID == settings.submission.faithful_32x.channels.results
 		? 32
 		: 64
 
