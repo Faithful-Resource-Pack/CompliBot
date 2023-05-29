@@ -47,7 +47,7 @@ export const command: SlashCommand = {
 
 [Twitter](https://twitter.com/faithfulpack/) • [Patreon](https://www.patreon.com/faithful_resource_pack) • [Reddit](https://reddit.com/r/faithfulpack/) • [Main GitHub](https://github.com/faithful-resource-pack/) • [Classic Faithful GitHub](https://github.com/classicfaithful/)
 				`)
-				.setColor(colors.c32)
+				.setColor(colors.brand)
 				.setThumbnail("https://database.faithfulpack.net/images/branding/logos/transparent/512/plain_logo.png")
 				.setFooter ({
 					text: "Listings for specific packs can be found by running /website <pack>.",
@@ -62,7 +62,7 @@ export const command: SlashCommand = {
 const websites = {
 	faithful_32: {
 		image: "https://database.faithfulpack.net/images/branding/logos/transparent/512/f32_logo.png",
-		color: 0x00a2ff, // sorry for hardcoded colors but this is how it's stored on the js bot and this is easier to port
+		color: colors.f32,
 		name: `Faithful 32x:`,
 		value: `
 [Website](https://faithfulpack.net/faithful32x/latest)
@@ -84,7 +84,7 @@ const websites = {
 
 	faithful_64: {
 		image: "https://database.faithfulpack.net/images/branding/logos/transparent/512/f64_logo.png",
-		color: 0xd8158d,
+		color: colors.f64,
 		name: "Faithful 64x:",
 		value: `
 [Website](https://faithfulpack.net/faithful64x/latest)
@@ -105,7 +105,7 @@ const websites = {
 
 	classic_faithful_32x: {
 		image: "https://database.faithfulpack.net/images/branding/logos/transparent/512/cf32_logo.png",
-		color: 0x00c756,
+		color: colors.cf32,
 		name: "Classic Faithful 32x Jappa:",
 		value: `
 [Website](https://faithfulpack.net/classicfaithful/32x-jappa)
@@ -124,7 +124,7 @@ const websites = {
 
 	classic_faithful_64x: {
 		image: "https://database.faithfulpack.net/images/branding/logos/transparent/512/cf64_logo.png",
-		color: 0x9f00cf,
+		color: colors.cf64,
 		name: "Classic Faithful 64x:",
 		value: `
 [Website](https://faithfulpack.net/classicfaithful/64x-jappa)
@@ -141,7 +141,7 @@ const websites = {
 
 	classic_faithful_32x_progart: {
 		image: "https://database.faithfulpack.net/images/branding/logos/transparent/512/cf32pa_logo.png",
-		color: 0xa1db12,
+		color: colors.cf32pa,
 		name: "Classic Faithful 32x PA:",
 		value: `
 [Website](https://faithfulpack.net/classicfaithful/32x-programmer-art)
