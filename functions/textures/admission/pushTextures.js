@@ -15,8 +15,8 @@ const settings = require('../../../resources/settings.json')
  */
 async function pushTextures(COMMIT_MESSAGE = `Autopush passed textures from ${date()}`) {
 
-	const REPO_JAVA = [settings.repositories.repo_name.java.faithful_32x, settings.repositories.repo_name.java.faithful_64x]
-	const REPO_BEDROCK = [settings.repositories.repo_name.bedrock.faithful_32x, settings.repositories.repo_name.bedrock.faithful_64x]
+	const REPO_JAVA = Object.values(settings.repositories.repo_name.java);
+	const REPO_BEDROCK = Object.values(settings.repositories.repo_name.bedrock);
 
 	const BRANCHES_JAVA = settings.versions.java
 	const BRANCHES_BEDROCK = settings.versions.bedrock
@@ -55,7 +55,7 @@ async function pushTextures(COMMIT_MESSAGE = `Autopush passed textures from ${da
 
 /**
  * Check if a directory is empty
- * @param {String} dirname 
+ * @param {String} dirname
  * @returns true if empty
  */
 const checkFolder = folderPath => {

@@ -21,7 +21,7 @@ async function downloadResults(client, channelInID) {
 
 	let repo_key = null; // idk what's the best initial value
 	for (let i in settings.submission) {
-		if (settings.submission[i].channels.results === channelInID) {
+		if (settings.submission[i].channels.results == channelInID) {
 		  repo_key = i;
 		  break;
 		}
