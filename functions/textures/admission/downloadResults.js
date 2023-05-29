@@ -19,9 +19,10 @@ var Buffer = require('buffer/').Buffer
 async function downloadResults(client, channelInID) {
 	let messages = await getMessages(client, channelInID)
 
+	let repo_key = null; // idk what's the best initial value
 	for (let i in settings.submission) {
 		if (settings.submission[i].channels.results === channelInID) {
-		  const repo_key = i;
+		  repo_key = i;
 		  break;
 		}
 	  }
