@@ -12,7 +12,6 @@ const { councilSubmission } = require('../functions/textures/submission/councilS
 const { downloadResults } = require('../functions/textures/admission/downloadResults')
 const { pushTextures } = require('../functions/textures/admission/pushTextures')
 
-const { checkTimeout } = require('../functions/moderation/checkTimeout')
 const { restartAutoDestroy } = require('../functions/restartAutoDestroy')
 const { saveDB } = require('../functions/saveDB')
 const { doCheckLang } = require('../functions/strings/doCheckLang')
@@ -81,14 +80,10 @@ module.exports = {
      * LOOP EVENTS
      * @event doMCUpdateCheck() -> each minute | MINECRAFT UPDATE DETECTION INTERVAL
      * @event doCheckLang()     -> each minute | LANG FILE UPDATE
-     * @event checkTimeout()    -> every 30s   | MODERATION MUTE SYSTEM UPDATE INTERVAL
      */
     setInterval(() => {
       // doCheckLang()
       doCheckSettings()
     }, 60000);
-    setInterval(() => {
-      checkTimeout(client)
-    }, 30000);
   }
 }
