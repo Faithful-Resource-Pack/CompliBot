@@ -19,10 +19,10 @@ var Buffer = require('buffer/').Buffer
 async function downloadResults(client, channelInID) {
 	let messages = await getMessages(client, channelInID)
 
-	let repo_key = null; // idk what's the best initial value
+	let repoKey = null; // idk what's the best initial value
 	for (let repoName in settings.submission) {
 		if (settings.submission[repoName].channels.results == channelInID) {
-		    repo_key = repoName;
+		    repoKey = repoName;
 		    break;
 		}
 	  }
@@ -73,10 +73,10 @@ async function downloadResults(client, channelInID) {
 			let localPath = 'undef'
 			switch (uses[j].editions[0].toLowerCase()) {
 				case "java":
-					localPath = './texturesPush/' + settings.repositories.repo_name.java[repo_key]
+					localPath = './texturesPush/' + settings.repositories.repo_name.java[repoKey]
 					break
 				case "bedrock":
-					localPath = './texturesPush/' +  + settings.repositories.repo_name.bedrock[repo_key];
+					localPath = './texturesPush/' +  + settings.repositories.repo_name.bedrock[repoKey];
 					break
 				default:
 					break

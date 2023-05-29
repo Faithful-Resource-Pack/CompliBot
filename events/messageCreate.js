@@ -76,10 +76,9 @@ module.exports = {
       /**
        * TEXTURE SUBMISSION
        */
-      for (let repoName in settings.submission) {
-        if (message.channel.id === settings.submission[repoName].channels.submit) {
-          return submitTexture(client, message)
-        }
+      const submissionChannels = Object.values(settings.submission).map(i => i.channels.submit);
+      if (submissionChannels.includes(message.channel.id)) {
+        return submitTexture(client, message);
       }
 
       /**

@@ -36,12 +36,10 @@ async function editSubmission(client, reaction, user) {
       EMOJIS = EMOJIS.filter(emoji => emoji !== settings.emojis.instapass && emoji !== settings.emojis.invalid && emoji !== settings.emojis.delete)
 
     // if the message is in #council-vote remove delete reaction (avoid misclick)
-    for (let repoName in settings.submission) {
-      if (
-        message.channel.id === settings.submission[repoName].channels.council
-      ) {
-        EMOJIS = EMOJIS.filter(emoji => emoji !== settings.emojis.delete)
-      }
+    const councilChannels = Object.values(settings.submission).map(i => i.channels.council);
+
+    if (councilChannels.includes(message.channel.id)) {
+      EMOJIS = EMOJIS.filter(emoji => emoji !== settings.emojis.delete)
     }
 
     // add reacts
@@ -114,15 +112,16 @@ async function editSubmission(client, reaction, user) {
 
 async function instapass(client, message) {
   let channelOut
-  // gets 32x submissions
-  for (let repoName in settings.submission) {
-    if (
-      message.channel.id == settings.submission[repoName].channels.submit ||
-      message.channel.id == settings.submission[repoName].channels.council
-    ) {
-      channelOut = await client.channels.fetch(settings.submission[repoName].channels.results) // obtains the channel or returns the one from cache
-      break;
-    }
+  // gets submissions
+  const channelObjects = Object.values(settings.submission).map(i => [i.channels.submit, i.channels.council])
+  const channelArray = channelObjects.map(j => Object.values(j)).flat()
+
+  if (channelArray.includes(message.channel.id)) {
+    channelOut = await client.channels.fetch(settings.submission[repoName].channels.results) // obtains the channel or returns the one from cache
+  }
+
+  if (!channelOut && process.DEBUG) {
+    console.error("channelOut was not able to be fetched")
   }
 
   channelOut.send({
@@ -142,13 +141,14 @@ async function instapass(client, message) {
 async function editEmbed(message) {
   let embed = message.embeds[0]
   // fix the weird bug that also apply changes to the old embed (wtf)
-  for (let repoName in settings.submission) {
-    if (message.channel.id == settings.submission[repoName].channels.submit)
-      embed.setColor(settings.colors.blue)
+  const submissionChannels = Object.values(settings.submission).map(i => i.channels.submit);
+  const councilChannels = Object.values(settings.submission).map(i => i.channels.council);
 
-    else if (message.channel.id == settings.submission[repoName].channels.council)
-      embed.setColor(settings.colors.council)
-  }
+  if (submissionChannels.includes(message.channel.id))
+    embed.setColor(settings.colors.blue)
+
+  else if (councilChannels.includes(message.channel.id))
+    embed.setColor(settings.colors.council)
 
   if (embed.description !== null) embed.setDescription(message.embeds[0].description.replace(`[Original Post](${message.url})\n`, ''))
 

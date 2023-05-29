@@ -8,18 +8,15 @@ const { editSubmission } = require('../functions/textures/submission/editSubmiss
 module.exports = {
     name: "messageReactionAdd",
     async execute(reaction, user) {
-        if (DEV) return;
-        if (user.bot) return;
+        if (DEV || user.bot) return;
         if (reaction.message.partial) await reaction.message.fetch(); // dark magic to fetch message that are sent before the start of the bot
 
         // TEXTURE SUBMISSIONS
-        for (let repoName in settings.submission) {
-            if (
-                Object.values(settings.submission[repoName].channels).includes(reaction.message.channel.id)
-            ) {
-                editSubmission(client, reaction, user);
-                break;
-            }
+        const channelObjects = Object.values(settings.submission).map(i => i.channels);
+        const channelArray = channelObjects.map(j => Object.values(j)).flat()
+
+        if (channelArray.includes(reaction.message.channel.id)) {
+            editSubmission(client, reaction, user);
         }
     },
 };
