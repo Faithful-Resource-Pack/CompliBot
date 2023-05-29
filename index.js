@@ -54,7 +54,7 @@ for (const file of commandFiles) {
 	const command = require(file)
 	if ('name' in command && typeof (command.name) === 'string')
 		client.commands.set(command.name, command)
-//}
+}
 
 /**
  * EVENT HANDLER
@@ -74,9 +74,9 @@ process.on('unhandledRejection', (reason, promise) => {
 
 client.login(process.env.CLIENT_TOKEN).catch(console.error)
 
-})
+/*})
 .catch(err => {
 	console.error('An error occured while fetching lang or settings')
 	const error = err && err.response && err.response.data ? err.response.data : err
 	console.error(error)
-})
+})*/
