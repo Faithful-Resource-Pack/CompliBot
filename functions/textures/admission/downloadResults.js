@@ -76,7 +76,7 @@ async function downloadResults(client, channelInID) {
 					localPath = './texturesPush/' + settings.repositories.repo_name.java[repoKey]
 					break
 				case "bedrock":
-					localPath = './texturesPush/' +  + settings.repositories.repo_name.bedrock[repoKey];
+					localPath = './texturesPush/' + settings.repositories.repo_name.bedrock[repoKey];
 					break
 				default:
 					break
