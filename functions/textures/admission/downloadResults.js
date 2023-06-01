@@ -19,13 +19,13 @@ var Buffer = require('buffer/').Buffer
 async function downloadResults(client, channelInID) {
 	let messages = await getMessages(client, channelInID)
 
-	let repoKey = null; // idk what's the best initial value
+	let repoKey; // declared outside loop so there's no scope issues
 	for (let repoName in settings.submission) {
 		if (settings.submission[repoName].channels.results == channelInID) {
 		    repoKey = repoName;
 		    break;
 		}
-	  }
+	}
 
 	// get messages from the same day
 	let delayedDate = new Date()
@@ -70,17 +70,7 @@ async function downloadResults(client, channelInID) {
 		let allPaths = new Array()
 		// get all paths of the texture
 		for (let j = 0; uses[j]; j++) {
-			let localPath = 'undef'
-			switch (uses[j].editions[0].toLowerCase()) {
-				case "java":
-					localPath = './texturesPush/' + settings.repositories.repo_name.java[repoKey]
-					break
-				case "bedrock":
-					localPath = './texturesPush/' + settings.repositories.repo_name.bedrock[repoKey];
-					break
-				default:
-					break
-			}
+			let localPath = './texturesPush/' + settings.repositories.repo_name[uses[j].editions[0].toLowerCase()][repoKey];
 
 			let paths = await uses[j].paths()
 
@@ -114,7 +104,7 @@ async function downloadResults(client, channelInID) {
 		allContribution.push({
 			date: textureDate,
 			resolution: res,
-			pack: res === 32 ? 'faithful_32x' : "faithful_64x",
+			pack: repoKey,
 			texture: `${textureID}`,
 			authors: textureAuthors
 		})
