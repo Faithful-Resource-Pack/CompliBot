@@ -113,12 +113,14 @@ async function editSubmission(client, reaction, user) {
 
 async function instapass(client, message) {
   let channelOut;
-  // gets submissions
-  const channelObjects = Object.values(settings.submission).map(i => [i.channels.submit, i.channels.council])
-  const channelArray = channelObjects.map(j => Object.values(j)).flat()
+  let channelArray;
 
-  if (channelArray.includes(message.channel.id)) {
-    channelOut = await client.channels.fetch(settings.submission[repoName].channels.results) // obtains the channel or returns the one from cache
+  for (let packName in settings.submission) { // need a for loop here to get the pack name properly
+    channelArray = Object.values(settings.submission[packName].channels);
+    if (channelArray.includes(message.channel.id)) { // picks up both submit and council
+      channelOut = await client.channels.fetch(settings.submission[packName].channels.results);
+      break;
+    }
   }
 
   if (!channelOut) {
