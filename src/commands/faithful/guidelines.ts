@@ -27,11 +27,11 @@ export const command: SlashCommand = {
 		),
 	execute: async (interaction: CommandInteraction) => {
 		let contents: string;
+		let choice = interaction.options.getString("choice");
 		const pack = interaction.options.getString("pack");
-		const choice = interaction.options.getString("choice");
 		const errorEmbed = new MessageEmbed()
 			.setTitle("Invalid choice!")
-			.setDescription(`\`${choice}\` is not a valid choice.`)
+			.setDescription(`\`${choice}\` is not a valid choice. Have you chosen the wrong pack or made a typo?`)
 			.setColor(colors.red);
 
 		switch (pack) {
@@ -43,19 +43,22 @@ export const command: SlashCommand = {
 				break;
 		}
 
-		if (choice) { // if someone just called the entire guidelines
-			if (!guidelineJSON.choices.map(i => i.names).flat().includes(choice)) {
+		if (choice) {
+			choice = choice.toLowerCase(); // remove case sensitivity for easier parsing
+			if (!guidelineJSON.choices.map(i => i.keywords).flat().includes(choice)) { // if it's not present anywhere escape early
 				contents = ""
 				interaction.reply({ embeds: [errorEmbed], ephemeral: true })
 				return;
 			}
 
 			for (let i of guidelineJSON.choices) {
-				if (!i.names.includes(choice)) continue;
-				if (!i[pack]) {
+				if (!i.keywords.includes(choice)) continue;
+				if (!i[pack]) { // if you pick an option that isn't present in the pack you selected
+					contents = ""
 					interaction.reply({ embeds: [errorEmbed], ephemeral: true })
+					return;
 				}
-				contents += `#${i[pack]}`;
+				contents += `#${i[pack]}`; // adds the html id specified in the json
 				break;
 			}
 		}
