@@ -1,0 +1,19 @@
+{
+    "choices": [
+        {
+            "names": ["color blending", "blending"],
+            "faithful_32x": "blending",
+            "classic_faithful_32x": "blending"
+        },
+        {
+            "names": ["no blending", "simple shading"],
+            "faithful_32x": "no-blending",
+            "classic_faithful_32x": "no-blending"
+        },
+        {
+            "names": ["aa", "antialiasing", "anti aliasing", "anti-aliasing"],
+            "faithful_32x": "anti-aliasing",
+            "classic_faithful_32x": "antialiasing"
+        }
+    ]
+}
