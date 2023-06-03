@@ -23,7 +23,7 @@ async function retrieveSubmission(client, channelFromID, channelOutID, channelIn
 		let messageDate = new Date(message.createdTimestamp);
 		return messageDate.getDate() == instapassedDate.getDate() && messageDate.getMonth() == instapassedDate.getMonth();
 	}) // only get instapassed textures
-		.filter(message => message.embed.length > 0)
+		.filter(message => message.embeds.length > 0)
 		.filter(message => message.embeds[0].fields[1] !== undefined && (message.embeds[0].fields[1].value.includes(settings.emojis.instapass)))
 
 
