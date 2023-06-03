@@ -80,6 +80,135 @@
         {
             "keywords": ["stairing", "staired pixels"],
             "classic_faithful_32x": "stairing"
+        },
+        {
+            "keywords": ["conventional upscaling", "normal upscaling", "painted upscaling", "conventional", "normal", "painted"],
+            "classic_faithful_32x": "conventional"
+        },
+        {
+            "keywords": ["smooth metal", "polished metal"],
+            "faithful_32x": "smooth-metal",
+            "classic_faithful_32x": "gem-and-metals"
+        },
+        {
+            "keywords": ["rough metal", "raw metal", "unpolished metal"],
+            "faithful_32x": "rough-metal"
+        },
+        {
+            "keywords": ["gemstones", "gems"],
+            "faithful_32x": "gems",
+            "classic_faithful_32x": "gems-and-metals"
+        },
+        {
+            "keywords": ["contiguous stones", "smooth stone"],
+            "faithful_32x": "contiguous-stones",
+            "classic_faithful_32x": "contiguous-stones"
+        },
+        {
+            "keywords": ["polished stone", "polished stones"],
+            "faithful_32x": "polished-stone",
+            "classic_faithful_32x": "polished-stone"
+        },
+        {
+            "keywords": ["rocky materials", "rocky", "rock", "distinct stones"],
+            "faithful_32x": "rocky-materials",
+            "classic_faithful_32x": "distinct-stones"
+        },
+        {
+            "keywords": ["large bricks", "stone bricks", "bricks"],
+            "classic_faithful_32x": "large-bricks"
+        },
+        {
+            "keywords": ["tiles", "small bricks"],
+            "classic_faithful_32x": "tiles"
+        },
+        {
+            "keywords": ["bark", "stems", "logs"],
+            "faithful_32x": "wood",
+            "classic_faithful_32x": "logs-and-stems"
+        },
+        {
+            "keywords": ["refined wood", "planks", "wood"],
+            "faithful_32x": "wood",
+            "classic_faithful_32x": "refined-wood"
+        },
+        {
+            "keywords": ["flowers", "foliage", "plant matter", "bushes"],
+            "faithful_32x": "flowers",
+            "classic_faithful_32x": "foliage"
+        },
+        {
+            "keywords": ["leaves", "large plants"],
+            "faithful_32x": "flowers",
+            "classic_faithful_32x": "large-plants"
+        },
+        {
+            "keywords": ["grass", "fungi"],
+            "classic_faithful_32x": "grass-fungi"
+        },
+        {
+            "keywords": ["corals"],
+            "faithful_32x": "corals"
+        },
+        {
+            "keywords": ["sand", "powder"],
+            "faithful_32x": "sands",
+            "classic_faithful_32x": "sand"
+        },
+        {
+            "keywords": ["sandstone", "slate"],
+            "classic_faithful_32x": "sandstone"
+        },
+        {
+            "keywords": ["prismarine"],
+            "classic_faithful_32x": "prismarine"
+        },
+        {
+            "keywords": ["bee nest", "beehive"],
+            "faithful_32x": "bee-nests"
+        },
+        {
+            "keywords": ["honey", "slime"],
+            "faithful_32x": "honey"
+        },
+        {
+            "keywords": ["glazed terracotta", "glaze", "terracotta"],
+            "faithful_32x": "terracotta"
+        },
+        {
+            "keywords": ["glass", "ice"],
+            "faithful_32x": "glass",
+            "classic_faithful_32x": "ice-glass"
+        },
+        {
+            "keywords": ["bone", "bones"],
+            "faithful_32x": "bones"
+        },
+        {
+            "keywords": ["cloth", "paper", "fabric", "fur"],
+            "faithful_32x": "cloth-paper",
+            "classic_faithful_32x": "fur-fabric"
+        },
+        {
+            "keywords": ["skin"],
+            "faithful_32x": "skin",
+            "classic_faithful_32x": "fur-fabric"
+        },
+        {
+            "keywords": ["doors", "trapdoors"],
+            "classic_faithful_32x": "door-trapdoor"
+        },
+        {
+            "keywords": ["creeper", "creepers"],
+            "faithful_32x": "creepers"
+        },
+        {
+            "keywords": ["fish", "fish entity"],
+            "faithful_32x": "fish"
+        },
+        {
+            "keywords": ["cylinder", "cylinder shading"],
+            "faithful_32x": "cylinders"
         }
     ]
 }

@@ -46,16 +46,14 @@ export const command: SlashCommand = {
 		if (choice) {
 			choice = choice.toLowerCase(); // remove case sensitivity for easier parsing
 			if (!guidelineJSON.choices.map(i => i.keywords).flat().includes(choice)) { // if it's not present anywhere escape early
-				contents = ""
-				interaction.reply({ embeds: [errorEmbed], ephemeral: true })
+				interaction.reply({ embeds: [errorEmbed], ephemeral: true });
 				return;
 			}
 
 			for (let i of guidelineJSON.choices) {
 				if (!i.keywords.includes(choice)) continue;
 				if (!i[pack]) { // if you pick an option that isn't present in the pack you selected
-					contents = ""
-					interaction.reply({ embeds: [errorEmbed], ephemeral: true })
+					interaction.reply({ embeds: [errorEmbed], ephemeral: true });
 					return;
 				}
 				contents += `#${i[pack]}`; // adds the html id specified in the json
