@@ -16,8 +16,7 @@ async function retrieveSubmission(client, channelFromID, channelOutID, channelIn
 	let delayedDate = new Date();
 	delayedDate.setDate(delayedDate.getDate() - delay);
 
-	let instapassedDate = new Date();
-	instapassedDate.setDate(instapassedDate.getDate); // no delay
+	let instapassedDate = new Date(); // no delay
 
 	let messagesInstapassed = messages.filter(message => {
 		let messageDate = new Date(message.createdTimestamp);
