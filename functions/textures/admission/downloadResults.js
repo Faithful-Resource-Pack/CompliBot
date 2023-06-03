@@ -17,12 +17,12 @@ var Buffer = require('buffer/').Buffer
  * @param {String} channelInID discord text channel from where the bot should download texture
  */
 async function downloadResults(client, channelInID) {
-	let messages = await getMessages(client, channelInID)
-
+	let messages = await getMessages(client, channelInID);
 	let repoKey; // declared outside loop so there's no scope issues
-	for (let repoName in settings.submission) { // since the key is used too for-in is necessary
-		if (settings.submission[repoName].channels.results == channelInID) {
-		    repoKey = repoName;
+
+	for (let [packKey, packValue] of Object.entries(settings.submission)) {
+		if (packValue.channels.results == channelInID) {
+		    repoKey = packKey;
 		    break;
 		}
 	}
@@ -87,7 +87,7 @@ async function downloadResults(client, channelInID) {
 		const response = await fetch(textureURL)
 		const buffer = await response.arrayBuffer()
 
-		// download the texture to all it's paths
+		// download the texture to all its paths
 		for (let j = 0; allPaths[j]; j++) {
 			// create full folder path
 			await fs.promises.mkdir(allPaths[j].substr(0, allPaths[j].lastIndexOf('/')), { recursive: true })
@@ -100,7 +100,7 @@ async function downloadResults(client, channelInID) {
 			})
 		}
 
-		// prepare the authors for the texture:
+		// prepare the authors for the texture
 		allContribution.push({
 			date: textureDate,
 			resolution: res,
