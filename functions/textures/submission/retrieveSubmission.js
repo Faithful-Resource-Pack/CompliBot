@@ -13,6 +13,7 @@ const { getMessages } = require('../../../helpers/getMessages')
 async function retrieveSubmission(client, channelFromID, channelOutID, channelInstapassID, delay) {
 	let messages = await getMessages(client, channelFromID)
 	let channelOut = client.channels.cache.get(channelOutID)
+	let channelInstapass = client.channels.cache.get(channelInstapassID)
 
 	let delayedDate = new Date();
 	delayedDate.setDate(delayedDate.getDate() - delay);
@@ -73,7 +74,7 @@ async function retrieveSubmission(client, channelFromID, channelOutID, channelIn
 		embed.setColor(settings.colors.green);
 		embed.fields[1].value = `<:instapass:${settings.emojis.instapass}> Instapassed`;
 
-		channelInstapassID.send({ embeds: [embed] })
+		channelInstapass.send({ embeds: [embed] })
 			.then(async sentMessage => {
 				for (const emojiID of [settings.emojis.see_more]) await sentMessage.react(client.emojis.cache.get(emojiID))
 			})
