@@ -7,6 +7,7 @@ const { getMessages } = require('../../../helpers/getMessages')
  * @param {DiscordClient} client
  * @param {String} channelFromID text-channel from where submission are retrieved
  * @param {String} channelOutID text-channel where submission are sent
+ * @param {String} channelInstapassID text-channel where instapassed textures are sent
  * @param {Integer} delay delay in day from today
  */
 async function retrieveSubmission(client, channelFromID, channelOutID, channelInstapassID, delay) {
