@@ -30,17 +30,12 @@ export const command: SlashCommand = {
 				.setRequired(true),
 		),
 	execute: async (interaction: CommandInteraction) => {
-		await interaction.deferReply();
-
 		var name = interaction.options.getString("name");
 		if (name.includes(".png")) name = name.replace(".png", "");
 		name = name.replace(/ /g, "_");
 		if (name.length < 3) {
 			// textures like "bed" exist :/
-			try {
-				interaction.deleteReply();
-			} catch {}
-			interaction.followUp({
+			interaction.reply({
 				content: "The minimum length for a texture name search is 3, please search with a longer name.",
 				ephemeral: true,
 			});
@@ -52,6 +47,19 @@ export const command: SlashCommand = {
 		 */
 		const results: Array<any> = (await axios.get(`${(interaction.client as Client).config.apiUrl}textures/${name}/all`))
 			.data;
+
+		if (!results.length) { // no results
+			const notFound = await interaction.getEphemeralString (
+				{ string: "Command.Texture.NotFound" }
+			)
+			interaction.reply({
+				content: notFound.replace("%TEXTURENAME%", `\`${name}\``),
+				ephemeral: true,
+			});
+			return;
+		}
+
+		await interaction.deferReply();
 
 		// only 1 result
 		if (results.length === 1) {
@@ -143,15 +151,5 @@ export const command: SlashCommand = {
 				.then((message: Message) => message.deleteButton());
 			return;
 		}
-
-		// no results
-		interaction.deleteReply();
-		interaction.followUp({
-			content: await interaction.getEphemeralString({
-				string: "Command.Texture.NotFound",
-				placeholders: { TEXTURENAME: `\`${name}\`` },
-			}),
-			ephemeral: true,
-		});
 	},
 };
