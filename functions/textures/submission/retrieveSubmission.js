@@ -13,30 +13,32 @@ async function retrieveSubmission(client, channelFromID, channelOutID, channelIn
 	let messages = await getMessages(client, channelFromID)
 	let channelOut = client.channels.cache.get(channelOutID)
 
-	let delayedDate = new Date()
-	delayedDate.setDate(delayedDate.getDate() - delay)
+	let delayedDate = new Date();
+	delayedDate.setDate(delayedDate.getDate() - delay);
+
+	let instapassedDate = new Date();
+	instapassedDate.setDate(instapassedDate.getDate); // no delay
+
+	let messagesInstapassed = messages.filter(message => {
+		let messageDate = new Date(message.createdTimestamp);
+		return messageDate.getDate() == instapassedDate.getDate() && messageDate.getMonth() == instapassedDate.getMonth();
+	}) // only get instapassed textures
+		.filter(message => message.embed.length > 0)
+		.filter(message => message.embeds[0].fields[1] !== undefined && (message.embeds[0].fields[1].value.includes(settings.emojis.instapass)))
+
 
 	// filter message in the right timezone
 	messages = messages.filter(message => {
 		let messageDate = new Date(message.createdTimestamp)
-		return messageDate.getDate() == delayedDate.getDate() && messageDate.getMonth() == delayedDate.getMonth()
-	})
-
-	// filter message that only have embeds & that have a pending status
-
-	messagesInstapassed = messages
-		.filter(message => message.embed.length > 0)
-		.filter(message => message.embeds[0].fields[1] !== undefined && (message.embeds[0].fields[1].value.includes(settings.emojis.instapass)))
-
-	messages = messages
+		return messageDate.getDate() == delayedDate.getDate() && messageDate.getMonth() == delayedDate.getMonth();
+	}) // only get pending submissions
 		.filter(message => message.embeds.length > 0)
 		.filter(message => message.embeds[0].fields[1] !== undefined && (message.embeds[0].fields[1].value.includes('⏳') || message.embeds[0].fields[1].value.includes(settings.emojis.pending)))
 
 	// map messages adding reacts count, embed and message (easier management like that)
 	messages = messages.map(message => {
-
-		let upvotes
-		let downvotes
+		let upvotes;
+		let downvotes;
 
 		if (message.reactions.cache.get(settings.emojis.upvote_old)) {
 			upvotes = message.reactions.cache.get(settings.emojis.upvote_old).count
@@ -54,7 +56,7 @@ async function retrieveSubmission(client, channelFromID, channelOutID, channelIn
 			message: message
 		}
 
-		return message
+		return message;
 	})
 
 	// split messages following their up/down votes (upvote >= downvote)
