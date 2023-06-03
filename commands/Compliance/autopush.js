@@ -22,8 +22,8 @@ module.exports = {
 		if (!args.length) return warnUser(message, strings.command.args.invalid.generic)
 
 		if (args[0] == 'all') {
-			for (let packName in settings.submission) {
-				await downloadResults(client, settings.submission[packName].channels.results)
+			for (let pack of Object.values(settings.submission)) {
+				await downloadResults(client, pack.channels.results)
 			}
 		}
 

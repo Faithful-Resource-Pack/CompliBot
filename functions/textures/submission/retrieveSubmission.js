@@ -7,31 +7,39 @@ const { getMessages } = require('../../../helpers/getMessages')
  * @param {DiscordClient} client
  * @param {String} channelFromID text-channel from where submission are retrieved
  * @param {String} channelOutID text-channel where submission are sent
+ * @param {String} channelInstapassID text-channel where instapassed textures are sent
  * @param {Integer} delay delay in day from today
  */
-async function retrieveSubmission(client, channelFromID, channelOutID, delay) {
+async function retrieveSubmission(client, channelFromID, channelOutID, channelInstapassID, delay) {
 	let messages = await getMessages(client, channelFromID)
 	let channelOut = client.channels.cache.get(channelOutID)
+	let channelInstapass = client.channels.cache.get(channelInstapassID)
 
-	let delayedDate = new Date()
-	delayedDate.setDate(delayedDate.getDate() - delay)
+	let delayedDate = new Date();
+	delayedDate.setDate(delayedDate.getDate() - delay);
+
+	let instapassedDate = new Date(); // no delay
+
+	let messagesInstapassed = messages.filter(message => {
+		let messageDate = new Date(message.createdTimestamp);
+		return messageDate.getDate() == instapassedDate.getDate() && messageDate.getMonth() == instapassedDate.getMonth();
+	}) // only get instapassed textures
+		.filter(message => message.embeds.length > 0)
+		.filter(message => message.embeds[0].fields[1] !== undefined && (message.embeds[0].fields[1].value.includes(settings.emojis.instapass)))
+
 
 	// filter message in the right timezone
 	messages = messages.filter(message => {
 		let messageDate = new Date(message.createdTimestamp)
-		return messageDate.getDate() == delayedDate.getDate() && messageDate.getMonth() == delayedDate.getMonth()
-	})
-
-	// filter message that only have embeds & that have a pending status
-	messages = messages
+		return messageDate.getDate() == delayedDate.getDate() && messageDate.getMonth() == delayedDate.getMonth();
+	}) // only get pending submissions
 		.filter(message => message.embeds.length > 0)
 		.filter(message => message.embeds[0].fields[1] !== undefined && (message.embeds[0].fields[1].value.includes('⏳') || message.embeds[0].fields[1].value.includes(settings.emojis.pending)))
 
 	// map messages adding reacts count, embed and message (easier management like that)
 	messages = messages.map(message => {
-
-		let upvotes
-		let downvotes
+		let upvotes;
+		let downvotes;
 
 		if (message.reactions.cache.get(settings.emojis.upvote_old)) {
 			upvotes = message.reactions.cache.get(settings.emojis.upvote_old).count
@@ -49,7 +57,7 @@ async function retrieveSubmission(client, channelFromID, channelOutID, delay) {
 			message: message
 		}
 
-		return message
+		return message;
 	})
 
 	// split messages following their up/down votes (upvote >= downvote)
@@ -59,6 +67,17 @@ async function retrieveSubmission(client, channelFromID, channelOutID, delay) {
 	// change status message
 	messagesDownvoted.forEach(message => {
 		editEmbed(message.message, `<:downvote:${settings.emojis.downvote}> Not enough upvotes!`)
+	})
+
+	messagesInstapassed.forEach(message => {
+		let embed = message.embeds[0];
+		embed.setColor(settings.colors.green);
+		embed.fields[1].value = `<:instapass:${settings.emojis.instapass}> Instapassed`;
+
+		channelInstapass.send({ embeds: [embed] })
+			.then(async sentMessage => {
+				for (const emojiID of [settings.emojis.see_more]) await sentMessage.react(client.emojis.cache.get(emojiID))
+			})
 	})
 
 	// send message to the output channel & change status
