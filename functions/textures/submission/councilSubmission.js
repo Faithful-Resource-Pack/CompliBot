@@ -39,7 +39,7 @@ async function councilSubmission(client, channelFromID, channelResultsID, delay)
     return message
   })
 
-  // split messages following their up/down votes (upvote > downvote)
+  // split messages following their up/down votes (upvote >= downvote)
   let messagesUpvoted = messages.filter(message => message.upvote >= message.downvote)
   let messagesDownvoted = messages.filter(message => message.upvote < message.downvote)
 
@@ -57,7 +57,7 @@ async function councilSubmission(client, channelFromID, channelResultsID, delay)
     editEmbed(message.message, `<:upvote:${settings.emojis.upvote}> Sent to results!`)
   })
 
-  // send upvoted messages to #results (denied)
+  // send downvoted messages to #results (denied)
   messagesDownvoted.forEach(message => {
     let embed = message.embed
     embed.setColor(settings.colors.red)

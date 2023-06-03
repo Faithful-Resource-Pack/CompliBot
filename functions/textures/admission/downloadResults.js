@@ -20,7 +20,7 @@ async function downloadResults(client, channelInID) {
 	let messages = await getMessages(client, channelInID)
 
 	let repoKey; // declared outside loop so there's no scope issues
-	for (let repoName in settings.submission) {
+	for (let repoName in settings.submission) { // since the key is used too for-in is necessary
 		if (settings.submission[repoName].channels.results == channelInID) {
 		    repoKey = repoName;
 		    break;

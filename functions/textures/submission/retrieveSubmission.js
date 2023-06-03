@@ -9,7 +9,7 @@ const { getMessages } = require('../../../helpers/getMessages')
  * @param {String} channelOutID text-channel where submission are sent
  * @param {Integer} delay delay in day from today
  */
-async function retrieveSubmission(client, channelFromID, channelOutID, delay) {
+async function retrieveSubmission(client, channelFromID, channelOutID, channelInstapassID, delay) {
 	let messages = await getMessages(client, channelFromID)
 	let channelOut = client.channels.cache.get(channelOutID)
 
@@ -23,6 +23,11 @@ async function retrieveSubmission(client, channelFromID, channelOutID, delay) {
 	})
 
 	// filter message that only have embeds & that have a pending status
+
+	messagesInstapassed = messages
+		.filter(message => message.embed.length > 0)
+		.filter(message => message.embeds[0].fields[1] !== undefined && (message.embeds[0].fields[1].value.includes(settings.emojis.instapass)))
+
 	messages = messages
 		.filter(message => message.embeds.length > 0)
 		.filter(message => message.embeds[0].fields[1] !== undefined && (message.embeds[0].fields[1].value.includes('⏳') || message.embeds[0].fields[1].value.includes(settings.emojis.pending)))
@@ -59,6 +64,17 @@ async function retrieveSubmission(client, channelFromID, channelOutID, delay) {
 	// change status message
 	messagesDownvoted.forEach(message => {
 		editEmbed(message.message, `<:downvote:${settings.emojis.downvote}> Not enough upvotes!`)
+	})
+
+	messagesInstapassed.forEach(message => {
+		let embed = message.embeds[0];
+		embed.setColor(settings.colors.green);
+		embed.fields[1].value = `<:instapass:${settings.emojis.instapass}> Instapassed`;
+
+		channelInstapassID.send({ embeds: [embed] })
+			.then(async sentMessage => {
+				for (const emojiID of [settings.emojis.see_more]) await sentMessage.react(client.emojis.cache.get(emojiID))
+			})
 	})
 
 	// send message to the output channel & change status
