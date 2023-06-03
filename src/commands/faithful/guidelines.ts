@@ -13,7 +13,7 @@ export const command: SlashCommand = {
 			option
 				.setName("pack")
 				.setDescription("The guidelines you want to view")
-				.addChoices(
+				.addChoices (
 					{ name: "Faithful 32x", value: "faithful_32x" },
 					{ name: "Classic Faithful 32x", value: "classic_faithful_32x" },
 				)
@@ -31,7 +31,7 @@ export const command: SlashCommand = {
 		const pack = interaction.options.getString("pack");
 		const errorEmbed = new MessageEmbed()
 			.setTitle("Invalid choice!")
-			.setDescription(`\`${choice}\` is not a valid choice. Have you chosen the wrong pack or made a typo?`)
+			.setDescription(`\`${choice}\` is not a valid choice for pack \`${pack}\`. Have you chosen the wrong pack or made a typo?`)
 			.setColor(colors.red);
 
 		switch (pack) {
