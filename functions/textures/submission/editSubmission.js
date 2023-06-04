@@ -87,8 +87,7 @@ async function editSubmission(client, reaction, user) {
             removeReact(message, [settings.emojis.upvote, settings.emojis.downvote])
             changeStatus(message, `<:instapass:${settings.emojis.instapass}> Instapassed`)
             instapass(client, message)
-          }
-          if (REACTION.emoji.id === settings.emojis.invalid) {
+          } else if (REACTION.emoji.id === settings.emojis.invalid) {
             removeReact(message, [settings.emojis.upvote, settings.emojis.downvote])
             changeStatus(message, `<:invalid:${settings.emojis.invalid}> Invalid`)
           }

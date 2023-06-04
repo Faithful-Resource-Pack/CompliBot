@@ -28,6 +28,11 @@ async function downloadResults(client, channelInID, instapass=false) {
 		}
 	}
 
+	messages = messages
+		.filter(message => message.embeds.length > 0)
+		.filter(message => message.embeds[0] && message.embeds[0].fields && message.embeds[0].fields[1])
+
+	let textures;
 	if (!instapass) {
 		// get messages from the same day
 		let delayedDate = new Date()
@@ -36,35 +41,34 @@ async function downloadResults(client, channelInID, instapass=false) {
 			return messageDate.getDate() == delayedDate.getDate() && messageDate.getMonth() == delayedDate.getMonth() && messageDate.getFullYear() == delayedDate.getFullYear()
 		})
 
-		messages = messages
-		.filter(message => message.embeds.length > 0)
-		.filter(message => message.embeds[0] && message.embeds[0].fields && message.embeds[0].fields[1])
-
 		// keep good textures
 		messages = messages
 			.filter(message => message.embeds[0].fields[1] !== undefined && message.embeds[0].fields[1].value.includes(settings.emojis.upvote))
 
 		messages.reverse() // upload them from the oldest to the newest
 
+		textures = messages.map(message => {
+			return {
+				url: message.embeds[0].image.url,
+				authors: message.embeds[0].fields[0].value.split('\n').map(auth => auth.replace('<@!', '').replace('>', '')),
+				date: message.createdTimestamp,
+				id: message.embeds[0].title.split(' ').filter(el => el.charAt(0) === '[' && el.charAt(1) === '#' && el.slice(-1) == "]").map(el => el.slice(2, el.length - 1))[0]
+			}
+		})
+
 	} else {
-		messages = messages.find(message => {
+		// returns the first one found since it will always be the most recent one getting pushed
+		const message = messages.find(message => {
 			message.embeds[0].fields[1].value.includes(settings.emojis.instapass)
-		}) // returns the first one found since it will always be the most recent one getting pushed
-	}
+		})
 
-	// select non already processed messages
-
-
-	// map the array for easier management
-	let textures = messages.map(message => {
-		return {
+		textures = {
 			url: message.embeds[0].image.url,
 			authors: message.embeds[0].fields[0].value.split('\n').map(auth => auth.replace('<@!', '').replace('>', '')),
 			date: message.createdTimestamp,
 			id: message.embeds[0].title.split(' ').filter(el => el.charAt(0) === '[' && el.charAt(1) === '#' && el.slice(-1) == "]").map(el => el.slice(2, el.length - 1))[0]
 		}
-	})
-
+	}
 
 	// for each texture:
 	let allContribution = new Array()
