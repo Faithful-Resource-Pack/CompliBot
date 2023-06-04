@@ -22,17 +22,17 @@ module.exports = {
 		if (!args.length) return warnUser(message, strings.command.args.invalid.generic)
 
 		if (args[0] == 'all') {
-			for (let pack of Object.values(settings.submission)) {
+			for (let pack of Object.values(settings.submission.packs)) {
 				await downloadResults(client, pack.channels.results)
 			}
 		}
 
 		else if (args[0] == "32") {
-			await downloadResults(client, settings.submission.faithful_32x.channels.results)
+			await downloadResults(client, settings.submission.packs.faithful_32x.channels.results)
 		}
 
 		else if (args[0] == '64') {
-			await downloadResults(client, settings.submission.faithful_64x.channels.results)
+			await downloadResults(client, settings.submission.packs.faithful_64x.channels.results)
 		}
 
 		else return warnUser(message, strings.command.args.invalid.generic);

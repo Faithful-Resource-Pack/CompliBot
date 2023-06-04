@@ -37,7 +37,7 @@ async function editSubmission(client, reaction, user) {
       EMOJIS = EMOJIS.filter(emoji => emoji !== settings.emojis.instapass && emoji !== settings.emojis.invalid && emoji !== settings.emojis.delete)
 
     // if the message is in #council-vote remove delete reaction (avoid misclick)
-    const councilChannels = Object.values(settings.submission).map(i => i.channels.council);
+    const councilChannels = Object.values(settings.submission.packs).map(i => i.channels.council);
 
     if (councilChannels.includes(message.channel.id)) {
       EMOJIS = EMOJIS.filter(emoji => emoji !== settings.emojis.delete)

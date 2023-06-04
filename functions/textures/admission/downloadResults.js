@@ -20,7 +20,7 @@ async function downloadResults(client, channelInID) {
 	let messages = await getMessages(client, channelInID);
 	let repoKey; // declared outside loop so there's no scope issues
 
-	for (let [packKey, packValue] of Object.entries(settings.submission)) {
+	for (let [packKey, packValue] of Object.entries(settings.submission.packs)) {
 		if (packValue.channels.results == channelInID) {
 		    repoKey = packKey;
 		    break;

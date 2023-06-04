@@ -24,7 +24,7 @@ const { doCheckSettings } = require('../functions/settings/doCheckSettings')
  * - Push to GitHub process (each day at 00:15 GMT) : @function pushToGithub
  */
 const submissionProcess = new cron.CronJob('0 0 * * *', async () => {
-  for (let pack of Object.values(settings.submission)) {
+  for (let pack of Object.values(settings.submission.packs)) {
     await retrieveSubmission (
       client,
       pack.channels.submit,
@@ -42,7 +42,7 @@ const submissionProcess = new cron.CronJob('0 0 * * *', async () => {
   }
 })
 const downloadToBot = new cron.CronJob('15 0 * * *', async () => {
-  for (let pack of Object.values(settings.submission)) {
+  for (let pack of Object.values(settings.submission.packs)) {
     await downloadResults (
       client,
       pack.channels.results
@@ -95,9 +95,9 @@ module.exports = {
      * @event doMCUpdateCheck() -> each minute | MINECRAFT UPDATE DETECTION INTERVAL
      * @event doCheckLang()     -> each minute | LANG FILE UPDATE
      */
-    /*setInterval(() => {
+    setInterval(() => {
       // doCheckLang()
       doCheckSettings()
-    }, 60000);*/
+    }, 60000);
   }
 }

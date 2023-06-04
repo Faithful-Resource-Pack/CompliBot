@@ -76,7 +76,7 @@ module.exports = {
       /**
        * TEXTURE SUBMISSION
        */
-      const submissionChannels = Object.values(settings.submission).map(i => i.channels.submit);
+      const submissionChannels = Object.values(settings.submission.packs).map(i => i.channels.submit);
       if (submissionChannels.includes(message.channel.id)) {
         return submitTexture(client, message);
       }

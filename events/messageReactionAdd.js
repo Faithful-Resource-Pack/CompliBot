@@ -12,7 +12,7 @@ module.exports = {
         if (reaction.message.partial) await reaction.message.fetch(); // dark magic to fetch message that are sent before the start of the bot
 
         // TEXTURE SUBMISSIONS
-        const channelArray = Object.values(settings.submission).map(i => Object.values(i.channels)).flat();
+        const channelArray = Object.values(settings.submission.packs).map(i => Object.values(i.channels)).flat();
 
         if (channelArray.includes(reaction.message.channel.id)) {
             editSubmission(client, reaction, user);

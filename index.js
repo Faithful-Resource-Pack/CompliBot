@@ -14,11 +14,11 @@ require('dotenv').config()
 
 // fetch settings file at start
 // const { doCheckLang } = require('./functions/strings/doCheckLang')
-//const { doCheckSettings } = require('./functions/settings/doCheckSettings')
+const { doCheckSettings } = require('./functions/settings/doCheckSettings')
 
 // beware you need THIS to be loaded before all the functions are used
 // const langPromise = doCheckLang()
-//const settingsPromise = doCheckSettings()
+const settingsPromise = doCheckSettings()
 
 // eslint-disable-next-line no-unused-vars
 const { Client, Intents, Constants, Collection } = require('discord.js')
@@ -43,40 +43,39 @@ const client = new Client({
 
 module.exports.Client = client
 
-/*Promise.all([ langPromise,  settingsPromise])
-.then(() => {*/
-/**
- * COMMAND HANDLER
- */
-const commandFiles = walkSync('./commands').filter(f => f.endsWith('.js'))
-client.commands = new Collection()
-for (const file of commandFiles) {
-	const command = require(file)
-	if ('name' in command && typeof (command.name) === 'string')
-		client.commands.set(command.name, command)
-}
+Promise.all([/* langPromise, */settingsPromise])
+.then(() => {
+	/**
+	 * COMMAND HANDLER
+	 */
+	const commandFiles = walkSync('./commands').filter(f => f.endsWith('.js'))
+	client.commands = new Collection()
+	for (const file of commandFiles) {
+		const command = require(file)
+		if ('name' in command && typeof (command.name) === 'string')
+			client.commands.set(command.name, command)
+	}
 
-/**
- * EVENT HANDLER
- * - See the /events folder
- */
-const eventsFiles = fs.readdirSync('./events').filter(f => f.endsWith('.js'))
-for (const file of eventsFiles) {
-	const event = require(`./events/${file}`)
-	if (event.once) client.once(event.name, (...args) => event.execute(...args))
-	else client.on(event.name, (...args) => event.execute(...args))
-}
+	/**
+	 * EVENT HANDLER
+	 * - See the /events folder
+	 */
+	const eventsFiles = fs.readdirSync('./events').filter(f => f.endsWith('.js'))
+	for (const file of eventsFiles) {
+		const event = require(`./events/${file}`)
+		if (event.once) client.once(event.name, (...args) => event.execute(...args))
+		else client.on(event.name, (...args) => event.execute(...args))
+	}
 
-const unhandledRejection = require('./events/unhandledRejection')
-process.on('unhandledRejection', (reason, promise) => {
-	unhandledRejection(client, reason, promise)
+	const unhandledRejection = require('./events/unhandledRejection')
+	process.on('unhandledRejection', (reason, promise) => {
+		unhandledRejection(client, reason, promise)
+	})
+
+	client.login(process.env.CLIENT_TOKEN).catch(console.error)
 })
-
-client.login(process.env.CLIENT_TOKEN).catch(console.error)
-
-/*})
 .catch(err => {
 	console.error('An error occured while fetching lang or settings')
 	const error = err && err.response && err.response.data ? err.response.data : err
 	console.error(error)
-})*/
+})
