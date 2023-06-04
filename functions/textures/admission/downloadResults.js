@@ -74,15 +74,20 @@ async function downloadResults(client, channelInID, instapass=false) {
 	}
 
 	// for each texture:
-	let allContribution = new Array()
+	let allContribution = new Array();
+	let instapassName; // there's probably a better way to get the texture name for instapassed embeds but oh well
+
 	for (let i = 0; textures[i]; i++) {
 		let textureID = textures[i].id
 		let textureURL = textures[i].url
 		let textureDate = textures[i].date
 		let textureAuthors = textures[i].authors
 
-		let texture = await texturesCollection.get(textureID)
-		let uses = await texture.uses()
+		let texture = await texturesCollection.get(textureID);
+
+		if (instapass) instapassName = texture.name;
+
+		let uses = await texture.uses();
 
 		let allPaths = new Array()
 		// get all paths of the texture
@@ -130,7 +135,7 @@ async function downloadResults(client, channelInID, instapass=false) {
 	let result = await contributionsCollection.addBulk(allContribution)
 
 	if (instapass) {
-		await pushTextures(`Instapassed texture from ${date()}`)
+		await pushTextures(`Instapassed ${instapassName} from ${date()}`)
 	}
 
 	if (process.DEBUG) console.log('ADDED CONTRIBUTIONS: ' + result.join(' '))
