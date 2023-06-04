@@ -124,12 +124,13 @@ async function instapass(client, message) {
     }
   }
 
+  const channelOut = await client.channels.fetch(channelOutID);
+
   if (!channelOut) {
     warnUser(message, "Result channel was not able to be fetched.");
     return;
   }
 
-  const channelOut = await client.channels.fetch(channelOutID);
 
   channelOut.send({
     embeds:
