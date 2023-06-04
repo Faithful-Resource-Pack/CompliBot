@@ -57,10 +57,13 @@ async function downloadResults(client, channelInID, instapass=false) {
 		})
 
 	} else {
-		// returns the first one found since it will always be the most recent one getting pushed
-		const message = messages.find(message => {
-			message.embeds[0].fields[1].value.includes(settings.emojis.instapass)
-		})
+		let message;
+		for (let msg of messages) {
+			if (msg.embeds[0].fields[1].value.includes(settings.emojis.instapass)) {
+				message = msg;
+				break;
+			}
+		}
 
 		textures = {
 			url: message.embeds[0].image.url,

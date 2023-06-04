@@ -131,7 +131,7 @@ async function instapass(client, message) {
   }
 
 
-  channelOut.send({
+  await channelOut.send({
     embeds:
       [message.embeds[0]
         .setColor(settings.colors.green)
@@ -142,8 +142,8 @@ async function instapass(client, message) {
       for (const emojiID of [settings.emojis.see_more]) await sentMessage.react(client.emojis.cache.get(emojiID))
     })
 
-  editEmbed(message);
-  downloadResults(client, channelOutID, true);
+  await editEmbed(message);
+  await downloadResults(client, channelOutID, true);
 }
 
 async function editEmbed(message) {
