@@ -6,6 +6,8 @@ const { palette } = require('../../../functions/textures/palette')
 const { tile } = require('../tile')
 const { warnUser } = require('../../../helpers/warnUser')
 const compareFunction = require('../compare')
+const { downloadResults } = require("../admission/downloadResults")
+const { changeStatus } = require('./changeStatus')
 
 const CANVAS_FUNCTION_PATH = '../../../functions/textures/canvas'
 function nocache(module) { require('fs').watchFile(require('path').resolve(module), () => { delete require.cache[require.resolve(module)] }) }
@@ -21,7 +23,7 @@ nocache(CANVAS_FUNCTION_PATH)
 async function editSubmission(client, reaction, user) {
   const message = await reaction.message.fetch()
   const member = await message.guild.members.cache.get(user.id)
-  if (member.bot === true) return
+  if (member.bot) return
   if (message.embeds.length == 0 || message.embeds[0].fields.length == 0) return
 
   const authorID = await message.embeds[0].fields[0].value.split('\n').map(el => el.replace('<@', '').replace('!', '').replace('>', ''))[0]
@@ -81,14 +83,15 @@ async function editSubmission(client, reaction, user) {
 
           await compareFunction(options)
         }
-
-        if (REACTION.emoji.id === settings.emojis.instapass && member.roles.cache.some(role => role.name.toLowerCase().includes("council") || role.name.toLowerCase().includes("admin") )) {
-          removeReact(message, [settings.emojis.upvote, settings.emojis.downvote])
-          changeStatus(message, `<:instapass:${settings.emojis.instapass}> Instapassed`)
-        }
-        if (REACTION.emoji.id === settings.emojis.invalid && member.roles.cache.some(role => role.name.toLowerCase().includes("council") || role.name.toLowerCase().includes("admin"))) {
-          removeReact(message, [settings.emojis.upvote, settings.emojis.downvote])
-          changeStatus(message, `<:invalid:${settings.emojis.invalid}> Invalid`)
+        if (member.roles.cache.some(role => role.name.toLowerCase().includes("council") || role.name.toLowerCase().includes("admin"))) {
+          if (REACTION.emoji.id === settings.emojis.instapass) {
+            removeReact(message, [settings.emojis.upvote, settings.emojis.downvote])
+            changeStatus(message, `<:instapass:${settings.emojis.instapass}> Instapassed`, settings.colors.yellow)
+            instapass(client, message)
+          } else if (REACTION.emoji.id === settings.emojis.invalid) {
+            removeReact(message, [settings.emojis.upvote, settings.emojis.downvote])
+            changeStatus(message, `<:invalid:${settings.emojis.invalid}> Invalid`, settings.colors.black)
+          }
         }
 
         // delete message only if the first author of the field 0 is the discord user who reacted, or if the user who react is admin
@@ -109,10 +112,37 @@ async function editSubmission(client, reaction, user) {
   }
 }
 
-async function changeStatus(message, string) {
-  let embed = message.embeds[0]
-  embed.fields[1].value = string
-  await message.edit({ embeds: [embed] })
+async function instapass(client, message) {
+  let channelOutID;
+  let channelArray;
+
+  for (let pack of Object.values(settings.submission.packs)) { // need a for loop here to get the pack name properly
+    channelArray = Object.values(pack.channels);
+    if (channelArray.includes(message.channel.id)) { // picks up both submit and council
+      channelOutID = pack.channels.results
+      break;
+    }
+  }
+
+  const channelOut = await client.channels.fetch(channelOutID);
+
+  if (!channelOut) {
+    warnUser(message, "Result channel was not able to be fetched.");
+    return;
+  }
+
+  await channelOut.send({
+    embeds:
+      [message.embeds[0]
+        .setColor(settings.colors.yellow)
+        .setDescription(`[Original Post](${message.url})\n${message.embeds[0].description ? message.embeds[0].description : ''}`)
+      ]
+  })
+    .then(async sentMessage => {
+      for (const emojiID of [settings.emojis.see_more]) await sentMessage.react(client.emojis.cache.get(emojiID))
+    })
+
+  await downloadResults(client, channelOutID, true);
 }
 
 async function removeReact(message, emojis) {

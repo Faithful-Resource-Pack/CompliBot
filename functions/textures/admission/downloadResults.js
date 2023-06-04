@@ -4,9 +4,10 @@ const settings = require('../../../resources/settings.json')
 
 const texturesCollection = require('../../../helpers/firestorm/texture')
 const contributionsCollection = require('../../../helpers/firestorm/contributions')
-
+const { pushTextures } = require("./pushTextures");
 const fs = require('fs')
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
+const { date } = require('../../../helpers/date.js')
 
 var Buffer = require('buffer/').Buffer
 
@@ -16,7 +17,7 @@ var Buffer = require('buffer/').Buffer
  * @param {DiscordClient} client
  * @param {String} channelInID discord text channel from where the bot should download texture
  */
-async function downloadResults(client, channelInID) {
+async function downloadResults(client, channelInID, instapass=false) {
 	let messages = await getMessages(client, channelInID);
 	let repoKey; // declared outside loop so there's no scope issues
 
@@ -27,45 +28,66 @@ async function downloadResults(client, channelInID) {
 		}
 	}
 
-	// get messages from the same day
-	let delayedDate = new Date()
-	messages = messages.filter(message => {
-		let messageDate = new Date(message.createdTimestamp)
-		return messageDate.getDate() == delayedDate.getDate() && messageDate.getMonth() == delayedDate.getMonth() && messageDate.getFullYear() == delayedDate.getFullYear()
-	})
-
-	// select non already processed messages
 	messages = messages
 		.filter(message => message.embeds.length > 0)
 		.filter(message => message.embeds[0] && message.embeds[0].fields && message.embeds[0].fields[1])
 
-	// keep good textures
-	messages = messages
-		.filter(message => message.embeds[0].fields[1] !== undefined && !message.embeds[0].fields[1].value.includes('will not be added'))
+	let textures;
+	if (!instapass) {
+		// get messages from the same day
+		let delayedDate = new Date()
+		messages = messages.filter(message => {
+			let messageDate = new Date(message.createdTimestamp)
+			return messageDate.getDate() == delayedDate.getDate() && messageDate.getMonth() == delayedDate.getMonth() && messageDate.getFullYear() == delayedDate.getFullYear()
+		})
 
-	messages.reverse() // upload them from the oldest to the newest
+		// keep good textures
+		messages = messages
+			.filter(message => message.embeds[0].fields[1] !== undefined && message.embeds[0].fields[1].value.includes(settings.emojis.upvote))
 
-	// map the array for easier management
-	let textures = messages.map(message => {
-		return {
+		messages.reverse() // upload them from the oldest to the newest
+
+		textures = messages.map(message => {
+			return {
+				url: message.embeds[0].image.url,
+				authors: message.embeds[0].fields[0].value.split('\n').map(auth => auth.replace('<@!', '').replace('>', '')),
+				date: message.createdTimestamp,
+				id: message.embeds[0].title.split(' ').filter(el => el.charAt(0) === '[' && el.charAt(1) === '#' && el.slice(-1) == "]").map(el => el.slice(2, el.length - 1))[0]
+			}
+		})
+
+	} else {
+		let message;
+		for (let msg of messages) {
+			if (msg.embeds[0].fields[1].value.includes(settings.emojis.instapass)) {
+				message = msg;
+				break;
+			}
+		}
+
+		textures = [{
 			url: message.embeds[0].image.url,
 			authors: message.embeds[0].fields[0].value.split('\n').map(auth => auth.replace('<@!', '').replace('>', '')),
 			date: message.createdTimestamp,
 			id: message.embeds[0].title.split(' ').filter(el => el.charAt(0) === '[' && el.charAt(1) === '#' && el.slice(-1) == "]").map(el => el.slice(2, el.length - 1))[0]
-		}
-	})
-
+		}];
+	}
 
 	// for each texture:
-	let allContribution = new Array()
+	let allContribution = new Array();
+	let instapassName; // there's probably a better way to get the texture name for instapassed embeds but oh well
+
 	for (let i = 0; textures[i]; i++) {
 		let textureID = textures[i].id
 		let textureURL = textures[i].url
 		let textureDate = textures[i].date
 		let textureAuthors = textures[i].authors
 
-		let texture = await texturesCollection.get(textureID)
-		let uses = await texture.uses()
+		let texture = await texturesCollection.get(textureID);
+
+		if (instapass) instapassName = texture.name;
+
+		let uses = await texture.uses();
 
 		let allPaths = new Array()
 		// get all paths of the texture
@@ -111,6 +133,11 @@ async function downloadResults(client, channelInID) {
 	}
 
 	let result = await contributionsCollection.addBulk(allContribution)
+
+	if (instapass) {
+		await pushTextures(`Instapassed ${instapassName} from ${date()}`)
+	}
+
 	if (process.DEBUG) console.log('ADDED CONTRIBUTIONS: ' + result.join(' '))
 }
 

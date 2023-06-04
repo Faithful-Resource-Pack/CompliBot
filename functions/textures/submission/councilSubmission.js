@@ -1,6 +1,7 @@
 const settings = require('../../../resources/settings.json')
 
 const { getMessages } = require('../../../helpers/getMessages')
+const { changeStatus } = require('./changeStatus')
 
 /**
  * @author Juknum
@@ -54,7 +55,7 @@ async function councilSubmission(client, channelFromID, channelResultsID, delay)
         for (const emojiID of [settings.emojis.see_more]) await sentMessage.react(client.emojis.cache.get(emojiID))
       })
 
-    editEmbed(message.message, `<:upvote:${settings.emojis.upvote}> Sent to results!`)
+    changeStatus(message.message, `<:upvote:${settings.emojis.upvote}> Sent to results!`)
   })
 
   // send downvoted messages to #results (denied)
@@ -68,18 +69,8 @@ async function councilSubmission(client, channelFromID, channelResultsID, delay)
         for (const emojiID of [settings.emojis.see_more]) await sentMessage.react(client.emojis.cache.get(emojiID))
       })
 
-    editEmbed(message.message, `<:upvote:${settings.emojis.upvote}> Sent to results!`)
+    changeStatus(message.message, `<:upvote:${settings.emojis.upvote}> Sent to results!`)
   })
-}
-
-async function editEmbed(message, string) {
-  let embed = message.embeds[0]
-  embed.fields[1].value = string
-
-  // fix the weird bug that also apply changes to the old embed (wtf)
-  embed.setColor(settings.colors.council)
-
-  await message.edit({ embeds: [embed] })
 }
 
 exports.councilSubmission = councilSubmission

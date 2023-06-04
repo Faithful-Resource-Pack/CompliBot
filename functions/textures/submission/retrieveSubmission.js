@@ -1,32 +1,21 @@
 const settings = require('../../../resources/settings.json')
 
 const { getMessages } = require('../../../helpers/getMessages')
+const { changeStatus } = require('./changeStatus')
 
 /**
  * @author Juknum
  * @param {DiscordClient} client
  * @param {String} channelFromID text-channel from where submission are retrieved
  * @param {String} channelOutID text-channel where submission are sent
- * @param {String} channelInstapassID text-channel where instapassed textures are sent
  * @param {Integer} delay delay in day from today
  */
-async function retrieveSubmission(client, channelFromID, channelOutID, channelInstapassID, delay) {
+async function retrieveSubmission(client, channelFromID, channelOutID, delay) {
 	let messages = await getMessages(client, channelFromID)
 	let channelOut = client.channels.cache.get(channelOutID)
-	let channelInstapass = client.channels.cache.get(channelInstapassID)
 
 	let delayedDate = new Date();
 	delayedDate.setDate(delayedDate.getDate() - delay);
-
-	let instapassedDate = new Date(); // no delay
-
-	let messagesInstapassed = messages.filter(message => {
-		let messageDate = new Date(message.createdTimestamp);
-		return messageDate.getDate() == instapassedDate.getDate() && messageDate.getMonth() == instapassedDate.getMonth();
-	}) // only get instapassed textures
-		.filter(message => message.embeds.length > 0)
-		.filter(message => message.embeds[0].fields[1] !== undefined && (message.embeds[0].fields[1].value.includes(settings.emojis.instapass)))
-
 
 	// filter message in the right timezone
 	messages = messages.filter(message => {
@@ -66,18 +55,7 @@ async function retrieveSubmission(client, channelFromID, channelOutID, channelIn
 
 	// change status message
 	messagesDownvoted.forEach(message => {
-		editEmbed(message.message, `<:downvote:${settings.emojis.downvote}> Not enough upvotes!`)
-	})
-
-	messagesInstapassed.forEach(message => {
-		let embed = message.embeds[0];
-		embed.setColor(settings.colors.green);
-		embed.fields[1].value = `<:instapass:${settings.emojis.instapass}> Instapassed`;
-
-		channelInstapass.send({ embeds: [embed] })
-			.then(async sentMessage => {
-				for (const emojiID of [settings.emojis.see_more]) await sentMessage.react(client.emojis.cache.get(emojiID))
-			})
+		changeStatus(message.message, `<:downvote:${settings.emojis.downvote}> Not enough upvotes!`, settings.colors.red)
 	})
 
 	// send message to the output channel & change status
@@ -94,19 +72,6 @@ async function retrieveSubmission(client, channelFromID, channelOutID, channelIn
 				for (const emojiID of EMOJIS) await sentMessage.react(client.emojis.cache.get(emojiID))
 			})
 
-		editEmbed(message.message, `<:upvote:${settings.emojis.upvote}> Sent to Council!`)
+		changeStatus(message.message, `<:upvote:${settings.emojis.upvote}> Sent to Council!`, settings.colors.green)
 	})
 }
-
-async function editEmbed(message, string) {
-	let embed = message.embeds[0]
-	embed.fields[1].value = string
-
-	// fix the weird bug that also apply changes to the old embed (wtf)
-	embed.setColor(settings.colors.blue)
-	if (embed.description !== null) embed.setDescription(message.embeds[0].description.replace(`[Original Post](${message.url})\n`, ''))
-
-	await message.edit({ embeds: [embed] })
-}
-
-exports.retrieveSubmission = retrieveSubmission
