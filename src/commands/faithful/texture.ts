@@ -36,7 +36,7 @@ export const command: SlashCommand = {
 		if (name.length < 3) {
 			// textures like "bed" exist :/
 			interaction.reply({
-				content: "The minimum length for a texture name search is 3, please search with a longer name.",
+				content: "You need at least three characters to start a texture search!",
 				ephemeral: true,
 			});
 			return;
@@ -49,11 +49,10 @@ export const command: SlashCommand = {
 			.data;
 
 		if (!results.length) { // no results
-			const notFound = await interaction.getEphemeralString (
-				{ string: "Command.Texture.NotFound" }
-			)
 			interaction.reply({
-				content: notFound.replace("%TEXTURENAME%", `\`${name}\``),
+				content: await interaction.getEphemeralString ({
+					string: "Command.Texture.NotFound", placeholders: { TEXTURENAME: `\`${name}\`` }
+				}),
 				ephemeral: true,
 			});
 			return;
