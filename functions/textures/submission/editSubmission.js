@@ -7,6 +7,7 @@ const { tile } = require('../tile')
 const { warnUser } = require('../../../helpers/warnUser')
 const compareFunction = require('../compare')
 const { downloadResults } = require("../admission/downloadResults")
+const { changeStatus } = require('./changeStatus')
 
 const CANVAS_FUNCTION_PATH = '../../../functions/textures/canvas'
 function nocache(module) { require('fs').watchFile(require('path').resolve(module), () => { delete require.cache[require.resolve(module)] }) }
@@ -85,11 +86,11 @@ async function editSubmission(client, reaction, user) {
         if (member.roles.cache.some(role => role.name.toLowerCase().includes("council") || role.name.toLowerCase().includes("admin"))) {
           if (REACTION.emoji.id === settings.emojis.instapass) {
             removeReact(message, [settings.emojis.upvote, settings.emojis.downvote])
-            changeStatus(message, `<:instapass:${settings.emojis.instapass}> Instapassed`)
+            changeStatus(message, `<:instapass:${settings.emojis.instapass}> Instapassed`, settings.colors.yellow)
             instapass(client, message)
           } else if (REACTION.emoji.id === settings.emojis.invalid) {
             removeReact(message, [settings.emojis.upvote, settings.emojis.downvote])
-            changeStatus(message, `<:invalid:${settings.emojis.invalid}> Invalid`)
+            changeStatus(message, `<:invalid:${settings.emojis.invalid}> Invalid`, settings.colors.black)
           }
         }
 
@@ -142,31 +143,7 @@ async function instapass(client, message) {
       for (const emojiID of [settings.emojis.see_more]) await sentMessage.react(client.emojis.cache.get(emojiID))
     })
 
-  await editEmbed(message);
   await downloadResults(client, channelOutID, true);
-}
-
-async function editEmbed(message) {
-  let embed = message.embeds[0]
-  // fix the weird bug that also apply changes to the old embed (wtf)
-  const submissionChannels = Object.values(settings.submission.packs).map(i => i.channels.submit);
-  const councilChannels = Object.values(settings.submission.packs).map(i => i.channels.council);
-
-  if (submissionChannels.includes(message.channel.id))
-    embed.setColor(settings.colors.blue)
-
-  else if (councilChannels.includes(message.channel.id))
-    embed.setColor(settings.colors.council)
-
-  if (embed.description !== null) embed.setDescription(message.embeds[0].description.replace(`[Original Post](${message.url})\n`, ''))
-
-  await message.edit({ embeds: [embed] })
-}
-
-async function changeStatus(message, string) {
-  let embed = message.embeds[0]
-  embed.fields[1].value = string
-  await message.edit({ embeds: [embed] })
 }
 
 async function removeReact(message, emojis) {

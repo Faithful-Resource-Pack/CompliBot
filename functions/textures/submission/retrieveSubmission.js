@@ -1,6 +1,7 @@
 const settings = require('../../../resources/settings.json')
 
 const { getMessages } = require('../../../helpers/getMessages')
+const { changeStatus } = require('./changeStatus')
 
 /**
  * @author Juknum
@@ -54,7 +55,7 @@ async function retrieveSubmission(client, channelFromID, channelOutID, delay) {
 
 	// change status message
 	messagesDownvoted.forEach(message => {
-		editEmbed(message.message, `<:downvote:${settings.emojis.downvote}> Not enough upvotes!`)
+		changeStatus(message.message, `<:downvote:${settings.emojis.downvote}> Not enough upvotes!`, settings.colors.red)
 	})
 
 	// send message to the output channel & change status
@@ -71,19 +72,6 @@ async function retrieveSubmission(client, channelFromID, channelOutID, delay) {
 				for (const emojiID of EMOJIS) await sentMessage.react(client.emojis.cache.get(emojiID))
 			})
 
-		editEmbed(message.message, `<:upvote:${settings.emojis.upvote}> Sent to Council!`)
+		changeStatus(message.message, `<:upvote:${settings.emojis.upvote}> Sent to Council!`, settings.colors.green)
 	})
 }
-
-async function editEmbed(message, string) {
-	let embed = message.embeds[0]
-	embed.fields[1].value = string
-
-	// fix the weird bug that also apply changes to the old embed (wtf)
-	embed.setColor(settings.colors.blue)
-	if (embed.description !== null) embed.setDescription(message.embeds[0].description.replace(`[Original Post](${message.url})\n`, ''))
-
-	await message.edit({ embeds: [embed] })
-}
-
-exports.retrieveSubmission = retrieveSubmission
