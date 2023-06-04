@@ -131,7 +131,6 @@ async function instapass(client, message) {
     return;
   }
 
-
   await channelOut.send({
     embeds:
       [message.embeds[0]

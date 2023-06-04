@@ -13,7 +13,9 @@ const settings = require('../../../resources/settings.json')
  * @author Juknum
  * @param {String} COMMIT_MESSAGE
  */
-async function pushTextures(COMMIT_MESSAGE = `Autopush passed textures from ${date()}`, ORGANIZATION='Faithful-Resource-Pack') {
+async function pushTextures(COMMIT_MESSAGE = `Autopush passed textures from ${date()}`) {
+	// TODO: make organization dynamic per-pack
+	const ORGANIZATION = 'Faithful-Resource-Pack'
 
 	const REPO_JAVA = Object.values(settings.repositories.repo_name.java);
 	const REPO_BEDROCK = Object.values(settings.repositories.repo_name.bedrock);
