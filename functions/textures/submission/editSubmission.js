@@ -38,7 +38,7 @@ async function editSubmission(client, reaction, user) {
       EMOJIS = EMOJIS.filter(emoji => emoji !== settings.emojis.instapass && emoji !== settings.emojis.invalid && emoji !== settings.emojis.delete)
 
     // if the message is in #council-vote remove delete reaction (avoid misclick)
-    const councilChannels = Object.values(settings.submission).map(i => i.channels.council);
+    const councilChannels = Object.values(settings.submission.packs).map(i => i.channels.council);
 
     if (councilChannels.includes(message.channel.id)) {
       EMOJIS = EMOJIS.filter(emoji => emoji !== settings.emojis.delete)
@@ -149,8 +149,8 @@ async function instapass(client, message) {
 async function editEmbed(message) {
   let embed = message.embeds[0]
   // fix the weird bug that also apply changes to the old embed (wtf)
-  const submissionChannels = Object.values(settings.submission).map(i => i.channels.submit);
-  const councilChannels = Object.values(settings.submission).map(i => i.channels.council);
+  const submissionChannels = Object.values(settings.submission.packs).map(i => i.channels.submit);
+  const councilChannels = Object.values(settings.submission.packs).map(i => i.channels.council);
 
   if (submissionChannels.includes(message.channel.id))
     embed.setColor(settings.colors.blue)
