@@ -22,7 +22,7 @@ nocache(CANVAS_FUNCTION_PATH)
 async function editSubmission(client, reaction, user) {
   const message = await reaction.message.fetch()
   const member = await message.guild.members.cache.get(user.id)
-  if (member.bot === true) return
+  if (member.bot) return
   if (message.embeds.length == 0 || message.embeds[0].fields.length == 0) return
 
   const authorID = await message.embeds[0].fields[0].value.split('\n').map(el => el.replace('<@', '').replace('!', '').replace('>', ''))[0]
@@ -134,7 +134,7 @@ async function instapass(client, message) {
   await channelOut.send({
     embeds:
       [message.embeds[0]
-        .setColor(settings.colors.green)
+        .setColor(settings.colors.yellow)
         .setDescription(`[Original Post](${message.url})\n${message.embeds[0].description ? message.embeds[0].description : ''}`)
       ]
   })
