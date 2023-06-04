@@ -29,7 +29,6 @@ const submissionProcess = new cron.CronJob('0 0 * * *', async () => {
       client,
       pack.channels.submit,
       pack.channels.council,
-      pack.channels.results,
       pack.vote_time
     )
 

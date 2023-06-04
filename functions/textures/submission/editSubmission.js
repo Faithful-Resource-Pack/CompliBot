@@ -6,6 +6,7 @@ const { palette } = require('../../../functions/textures/palette')
 const { tile } = require('../tile')
 const { warnUser } = require('../../../helpers/warnUser')
 const compareFunction = require('../compare')
+const { downloadResults } = require("../admission/downloadResults")
 
 const CANVAS_FUNCTION_PATH = '../../../functions/textures/canvas'
 function nocache(module) { require('fs').watchFile(require('path').resolve(module), () => { delete require.cache[require.resolve(module)] }) }
@@ -37,7 +38,7 @@ async function editSubmission(client, reaction, user) {
       EMOJIS = EMOJIS.filter(emoji => emoji !== settings.emojis.instapass && emoji !== settings.emojis.invalid && emoji !== settings.emojis.delete)
 
     // if the message is in #council-vote remove delete reaction (avoid misclick)
-    const councilChannels = Object.values(settings.submission.packs).map(i => i.channels.council);
+    const councilChannels = Object.values(settings.submission).map(i => i.channels.council);
 
     if (councilChannels.includes(message.channel.id)) {
       EMOJIS = EMOJIS.filter(emoji => emoji !== settings.emojis.delete)
@@ -81,14 +82,16 @@ async function editSubmission(client, reaction, user) {
 
           await compareFunction(options)
         }
-
-        if (REACTION.emoji.id === settings.emojis.instapass && member.roles.cache.some(role => role.name.toLowerCase().includes("council") || role.name.toLowerCase().includes("admin") )) {
-          removeReact(message, [settings.emojis.upvote, settings.emojis.downvote])
-          changeStatus(message, `<:instapass:${settings.emojis.instapass}> Instapassed`)
-        }
-        if (REACTION.emoji.id === settings.emojis.invalid && member.roles.cache.some(role => role.name.toLowerCase().includes("council") || role.name.toLowerCase().includes("admin"))) {
-          removeReact(message, [settings.emojis.upvote, settings.emojis.downvote])
-          changeStatus(message, `<:invalid:${settings.emojis.invalid}> Invalid`)
+        if (member.roles.cache.some(role => role.name.toLowerCase().includes("council") || role.name.toLowerCase().includes("admin"))) {
+          if (REACTION.emoji.id === settings.emojis.instapass) {
+            removeReact(message, [settings.emojis.upvote, settings.emojis.downvote])
+            changeStatus(message, `<:instapass:${settings.emojis.instapass}> Instapassed`)
+            instapass(client, message)
+          }
+          if (REACTION.emoji.id === settings.emojis.invalid) {
+            removeReact(message, [settings.emojis.upvote, settings.emojis.downvote])
+            changeStatus(message, `<:invalid:${settings.emojis.invalid}> Invalid`)
+          }
         }
 
         // delete message only if the first author of the field 0 is the discord user who reacted, or if the user who react is admin
@@ -107,6 +110,57 @@ async function editSubmission(client, reaction, user) {
         console.log(err)
       })
   }
+}
+
+async function instapass(client, message) {
+  let channelOutID;
+  let channelArray;
+
+  for (let pack of Object.values(settings.submission.packs)) { // need a for loop here to get the pack name properly
+    channelArray = Object.values(pack.channels);
+    if (channelArray.includes(message.channel.id)) { // picks up both submit and council
+      channelOutID = pack.channels.results
+      break;
+    }
+  }
+
+  if (!channelOut) {
+    warnUser(message, "Result channel was not able to be fetched.");
+    return;
+  }
+
+  const channelOut = await client.channels.fetch(channelOutID);
+
+  channelOut.send({
+    embeds:
+      [message.embeds[0]
+        .setColor(settings.colors.green)
+        .setDescription(`[Original Post](${message.url})\n${message.embeds[0].description ? message.embeds[0].description : ''}`)
+      ]
+  })
+    .then(async sentMessage => {
+      for (const emojiID of [settings.emojis.see_more]) await sentMessage.react(client.emojis.cache.get(emojiID))
+    })
+
+  editEmbed(message);
+  downloadResults(client, channelOutID, true);
+}
+
+async function editEmbed(message) {
+  let embed = message.embeds[0]
+  // fix the weird bug that also apply changes to the old embed (wtf)
+  const submissionChannels = Object.values(settings.submission).map(i => i.channels.submit);
+  const councilChannels = Object.values(settings.submission).map(i => i.channels.council);
+
+  if (submissionChannels.includes(message.channel.id))
+    embed.setColor(settings.colors.blue)
+
+  else if (councilChannels.includes(message.channel.id))
+    embed.setColor(settings.colors.council)
+
+  if (embed.description !== null) embed.setDescription(message.embeds[0].description.replace(`[Original Post](${message.url})\n`, ''))
+
+  await message.edit({ embeds: [embed] })
 }
 
 async function changeStatus(message, string) {
