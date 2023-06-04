@@ -34,7 +34,6 @@ async function pushTextures(COMMIT_MESSAGE = `Autopush passed textures from ${da
 
 				if (DEBUG) console.log(`PUSHED TO GITHUB: Faithful-Java-32x (${BRANCHES_JAVA[j]})`)
 			}
-
 		}
 	}
 

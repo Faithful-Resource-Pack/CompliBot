@@ -65,12 +65,12 @@ async function downloadResults(client, channelInID, instapass=false) {
 			}
 		}
 
-		textures = {
+		textures = [{
 			url: message.embeds[0].image.url,
 			authors: message.embeds[0].fields[0].value.split('\n').map(auth => auth.replace('<@!', '').replace('>', '')),
 			date: message.createdTimestamp,
 			id: message.embeds[0].title.split(' ').filter(el => el.charAt(0) === '[' && el.charAt(1) === '#' && el.slice(-1) == "]").map(el => el.slice(2, el.length - 1))[0]
-		}
+		}];
 	}
 
 	// for each texture:
@@ -127,12 +127,12 @@ async function downloadResults(client, channelInID, instapass=false) {
 		})
 	}
 
+	if (instapass) {
+		await pushTextures(`Instapassed texture from ${date()}`)
+	}
+
 	let result = await contributionsCollection.addBulk(allContribution)
 	if (process.DEBUG) console.log('ADDED CONTRIBUTIONS: ' + result.join(' '))
-
-	if (instapass) {
-		pushTextures(`Instapassed texture from ${date()}`)
-	}
 }
 
 exports.downloadResults = downloadResults
