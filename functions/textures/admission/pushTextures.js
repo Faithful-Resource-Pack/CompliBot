@@ -13,7 +13,7 @@ const settings = require('../../../resources/settings.json')
  * @author Juknum
  * @param {String} COMMIT_MESSAGE
  */
-async function pushTextures(COMMIT_MESSAGE = `Autopush passed textures from ${date()}`) {
+async function pushTextures(COMMIT_MESSAGE = `Autopush passed textures from ${date()}`, ORGANIZATION='Faithful-Resource-Pack') {
 
 	const REPO_JAVA = Object.values(settings.repositories.repo_name.java);
 	const REPO_BEDROCK = Object.values(settings.repositories.repo_name.bedrock);
@@ -26,7 +26,7 @@ async function pushTextures(COMMIT_MESSAGE = `Autopush passed textures from ${da
 
 			if (checkFolder(`./texturesPush/${REPO_JAVA[i]}/${BRANCHES_JAVA[j]}/assets`)) {
 				try {
-					await pushToGitHub('Faithful-Resource-Pack', REPO_JAVA[i], `${BRANCHES_JAVA[j]}`, COMMIT_MESSAGE, `./texturesPush/${REPO_JAVA[i]}/${BRANCHES_JAVA[j]}/`)
+					await pushToGitHub(ORGANIZATION, REPO_JAVA[i], `${BRANCHES_JAVA[j]}`, COMMIT_MESSAGE, `./texturesPush/${REPO_JAVA[i]}/${BRANCHES_JAVA[j]}/`)
 				} catch(e) {
 					// branch doesn't exist, octokit causes an error
 				}
@@ -41,7 +41,7 @@ async function pushTextures(COMMIT_MESSAGE = `Autopush passed textures from ${da
 		for (let j = 0; BRANCHES_BEDROCK[j]; j++) {
 
 			if (checkFolder(`./texturesPush/${REPO_BEDROCK[i]}/${BRANCHES_BEDROCK[j]}/textures`)) {
-				await pushToGitHub('Faithful-Resource-Pack', REPO_BEDROCK[i], `${BRANCHES_BEDROCK[j]}`, COMMIT_MESSAGE, `./texturesPush/${REPO_BEDROCK[i]}/${BRANCHES_BEDROCK[j]}/`)
+				await pushToGitHub(ORGANIZATION, REPO_BEDROCK[i], `${BRANCHES_BEDROCK[j]}`, COMMIT_MESSAGE, `./texturesPush/${REPO_BEDROCK[i]}/${BRANCHES_BEDROCK[j]}/`)
 				fs.rmdirSync(`./texturesPush/${REPO_BEDROCK[i]}/${BRANCHES_BEDROCK[j]}/textures/`, { recursive: true })
 
 				if (DEBUG) console.log(`PUSHED TO GITHUB: Faithful-Java-32x (${BRANCHES_BEDROCK[j]})`)

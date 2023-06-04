@@ -127,11 +127,12 @@ async function downloadResults(client, channelInID, instapass=false) {
 		})
 	}
 
+	let result = await contributionsCollection.addBulk(allContribution)
+
 	if (instapass) {
 		await pushTextures(`Instapassed texture from ${date()}`)
 	}
 
-	let result = await contributionsCollection.addBulk(allContribution)
 	if (process.DEBUG) console.log('ADDED CONTRIBUTIONS: ' + result.join(' '))
 }
 
