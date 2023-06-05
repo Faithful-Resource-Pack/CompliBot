@@ -75,3 +75,5 @@ async function retrieveSubmission(client, channelFromID, channelOutID, delay) {
 		changeStatus(message.message, `<:upvote:${settings.emojis.upvote}> Sent to Council!`, settings.colors.green)
 	})
 }
+
+exports.retrieveSubmission = retrieveSubmission
