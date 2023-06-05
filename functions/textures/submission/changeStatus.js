@@ -1,4 +1,4 @@
-/*
+/**
  * Change status of embed
  * @author Evorp
  * @param {Discord.message} message
