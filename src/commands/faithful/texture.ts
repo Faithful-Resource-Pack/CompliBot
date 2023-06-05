@@ -65,6 +65,7 @@ export const command: SlashCommand = {
 			const [embed, files] = await getTextureMessageOptions({
 				texture: results[0],
 				pack: interaction.options.getString("pack", true),
+				guild: interaction.guild
 			});
 			interaction
 				.editReply({ embeds: [embed], files: files, components: [imageButtons] })

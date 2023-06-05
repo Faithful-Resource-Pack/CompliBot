@@ -3,11 +3,10 @@ import ConfigJson from "@json/config.json";
 import { Config } from "@interfaces";
 import axios from "axios";
 import getMeta from "./canvas/getMeta";
-import { MessageAttachment } from "discord.js";
+import { MessageAttachment, Guild } from "discord.js";
 import { magnifyAttachment } from "./canvas/magnify";
 import { ISizeCalculationResult } from "image-size/dist/types/interface";
 import { colors } from "@helpers/colors";
-import { fromTimestampToHumanReadable } from "@helpers/dates";
 import { Contributions, Texture, Paths, Uses } from "@helpers/interfaces/firestorm";
 import { animateAttachment } from "./canvas/animate";
 import { MinecraftSorter } from "@helpers/sorter";
@@ -15,14 +14,17 @@ import { MinecraftSorter } from "@helpers/sorter";
 export const getTextureMessageOptions = async (options: {
 	texture: Texture;
 	pack: string;
+	guild: Guild;
 }): Promise<[MessageEmbed, Array<MessageAttachment>]> => {
 	const config: Config = ConfigJson;
 	const texture = options.texture;
 	const pack = options.pack;
+	const guild = options.guild;
 	const uses: Uses = texture.uses;
 	const paths: Paths = texture.paths;
 	const contributions: Contributions = texture.contributions;
 	const animated: boolean = paths.filter((p) => p.mcmeta === true).length !== 0;
+	const contributionJSON = (await axios.get("https://api.faithfulpack.net/v2/contributions/authors")).data
 
 	let mcmeta: any = {};
 	if (animated) {
@@ -117,7 +119,15 @@ export const getTextureMessageOptions = async (options: {
 				.sort((a, b) => (a.date > b.date ? -1 : 1))
 				.map((c) => {
 					let strDate: string = `<t:${Math.trunc(c.date / 1000)}:d>`;
-					let authors = c.authors.map((authorId: string) => `<@!${authorId}>`);
+					let authors = c.authors.map((authorId: string) => {
+						if (guild.members.cache.get(authorId)) return `<@!${authorId}>`
+
+						// this may possibly be one of the worst solutions but it somehow works
+						for (let user of contributionJSON) {
+							if (user.id == authorId) return user.username ?? 'Anonymous'
+						}
+						return 'Unknown'
+					});
 					return `${strDate} — ${authors.join(", ")}`;
 				})[0],
 		];

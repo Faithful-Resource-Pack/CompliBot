@@ -28,6 +28,7 @@ export const menu: SelectMenu = {
 		const [embed, files] = await getTextureMessageOptions({
 			texture: (await axios.get(`${(interaction.client as Client).config.apiUrl}textures/${id}/all`)).data,
 			pack: pack,
+			guild: interaction.guild
 		});
 		embed.setFooter({ iconURL: embed.footer.iconURL, text: `${embed.footer.text} | ${interaction.user.id}` });
 
