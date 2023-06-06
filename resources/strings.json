@@ -239,6 +239,7 @@
         },
         "description": {
             "autopush": "Use this command to push textures from #results to GitHub.",
+            "channelpush": "Use this command to send textures to council and result channels!",
             "ban": "Ban a user from the current Discord server",
             "clear": "Clear messages in a channel",
             "embed": "Modify an embed",

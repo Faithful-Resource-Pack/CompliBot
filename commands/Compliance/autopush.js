@@ -14,30 +14,30 @@ module.exports = {
 	category: 'Compliance',
 	guildOnly: false,
 	uses: strings.command.use.admins,
-	syntax: `${prefix}autopush [all/32/64]`,
-	example: `${prefix}autopush 32`,
+	syntax: `${prefix}autopush [all/f32/f64]`,
+	example: `${prefix}autopush f32`,
 	async execute(client, message, args) {
 		if (!message.member.roles.cache.some(role => role.name.includes("Manager") || role.id === '747839021421428776')) return warnUser(message, strings.command.no_permission)
+		if (!args.length) return warnUser(message, strings.command.args.none_given);
 
-		if (!args.length) return warnUser(message, strings.command.args.invalid.generic)
-
-		if (args[0] == 'all') {
-			for (let pack of Object.values(settings.submission.packs)) {
-				await downloadResults(client, pack.channels.results)
-			}
+		let packs;
+		switch (args[0]) {
+            case 'all':
+                packs = Object.values(settings.submission.packs);
+                break;
+            case "f32":
+                packs = [settings.submission.packs.faithful_32x]
+                break;
+            case "f64":
+                packs = [settings.submission.packs.faithful_64x]
+                break;
+            default:
+                return warnUser(message, strings.command.args.invalid.generic);
 		}
 
-		else if (args[0] == "32") {
-			await downloadResults(client, settings.submission.packs.faithful_32x.channels.results)
-		}
+		for (let pack of packs) await downloadResults(client, pack.channels.results)
 
-		else if (args[0] == '64') {
-			await downloadResults(client, settings.submission.packs.faithful_64x.channels.results)
-		}
-
-		else return warnUser(message, strings.command.args.invalid.generic);
-
-		await pushTextures(`Manual push, executed by: ${message.author.username} (${date()})`);	// Push them through GitHub
+		await pushTextures(`Manual push executed by ${message.author.username} on ${date()}`);	// Push them through GitHub
 
 		return await message.react(settings.emojis.upvote);
 	}
