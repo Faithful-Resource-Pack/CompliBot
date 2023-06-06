@@ -21,9 +21,17 @@ async function submitTexture(client, message) {
 
   // not entirely sure why the first arg exists but it seems to fix problems I had with iterating over maps
   for (let [_, attachment] of message.attachments) {
+    // break if it's not a PNG
+    if (!attachment.url.endsWith('.png')) {
+      invalidSubmission(message, strings.command.push.invalid_format);
+      continue;
+    }
     // get the texture ID
     let id = args.filter(el => el.startsWith('(#') && el.endsWith(')') && !isNaN(el.slice(2).slice(0, -1))).map(el => el.slice(2).slice(0, -1))
     id = id[0]
+
+    let search = attachment.url.split('/').slice(-1)[0].replace('.png', '')
+
     // get the description
     let description = args.join(' ').replace(`(${search})`, '').replace(`[#${id}]`, '')
 
@@ -31,14 +39,8 @@ async function submitTexture(client, message) {
     let param = {
       description: description,
     }
-    // same if it's not a PNG
-    if (!attachment.url.endsWith('.png')) {
-      invalidSubmission(message, strings.command.push.invalid_format);
-      continue;
-    }
 
     // take image url to get name of texture
-    let search = attachment.url.split('/').slice(-1)[0].replace('.png', '')
 
     // detect co-authors as mentions:
     let mentions = message.mentions.users
