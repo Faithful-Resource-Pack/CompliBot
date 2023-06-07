@@ -336,7 +336,7 @@
         "slowmode": { "too_big": "The number can't be bigger than 21600." },
         "unmute": { "specify_user": "You need to specify a user to unmute." },
         "warn": { "specify_user": "You need to specify a user to warn.", "cant_warn_self": "You can't warn yourself!" },
-        "contributos": {
+        "contributions": {
             "not_enough_args": "The `/contributors` command requires 5 arguments to be specified.",
             "texture_unknown": "Unknown texture, please check your spelling.",
             "texture_no_author": "This texture doesn't have an author.",
@@ -538,6 +538,28 @@
         "autoreact": {
             "error_title": "Auto Reaction Failed",
             "error_footer": "Submission will be removed in 30 seconds, please re-submit"
+        },
+        "status": {
+            "community": {
+                "passed": "Sent to council!",
+                "failed": "Not enough upvotes!"
+            },
+            "council": {
+                "passed": "Sent to results!",
+                "failed": "Sent to results!"
+            },
+            "results": {
+                "passed": "Will be added in a future version!",
+                "failed": "This texture did not pass council voting and therefore will not be added. Ask an Art Director Council member for more information."
+            },
+            "no_council": {
+                "passed": "Sent to results!",
+                "failed": "Not enough upvotes!"
+            },
+            "no_results": {
+                "passed": "Will be added in a future version!",
+                "failed": "This texture did not pass community voting and therefore will not be added."
+            }
         }
     },
     "warn_user": { "footer": "Type %prefix%help to get more information about commands" },

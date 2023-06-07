@@ -1,4 +1,5 @@
 const settings = require('../../../resources/settings.json')
+const strings = require('../../../resources/strings.json')
 
 const { getMessages } = require('../../../helpers/getMessages')
 const { changeStatus } = require('./changeStatus')
@@ -42,8 +43,13 @@ async function retrieveSubmission(client, channelFromID, channelOutID, toCouncil
 	const messagesDownvoted = messages.filter(message => message.upvote < message.downvote)
 
 	// split messages
+
+	const submissionChannels = Object.values(settings.submission.packs).map(i => i.channels.submit);
+	let councilDisabled = false;
+	if (submissionChannels.includes(channelFromID)) councilDisabled = true;
+
 	if (toCouncil) await sendToCouncil(client, messagesUpvoted, messagesDownvoted, channelOutID);
-	else await sendToResults(client, messagesUpvoted, messagesDownvoted, channelOutID);
+	else await sendToResults(client, messagesUpvoted, messagesDownvoted, channelOutID, councilDisabled);
 }
 
 /**
@@ -71,11 +77,11 @@ async function sendToCouncil(client, messagesUpvoted, messagesDownvoted, channel
 				for (const emojiID of EMOJIS) await sentMessage.react(client.emojis.cache.get(emojiID))
 			})
 
-		changeStatus(message.message, `<:upvote:${settings.emojis.upvote}> Sent to Council!`, settings.colors.green)
+		changeStatus(message.message, `<:upvote:${settings.emojis.upvote}> ${strings.submission.status.community.passed}`, settings.colors.green)
 	});
 
 	messagesDownvoted.forEach(message => {
-		changeStatus(message.message, `<:downvote:${settings.emojis.downvote}> Not enough upvotes!`, settings.colors.red)
+		changeStatus(message.message, `<:downvote:${settings.emojis.downvote}> ${strings.submission.status.community.failed}`, settings.colors.red)
 	})
 }
 
@@ -88,32 +94,43 @@ async function sendToCouncil(client, messagesUpvoted, messagesDownvoted, channel
  * @param {DiscordMessage[]} messagesDownvoted
  * @param {Number} channelOutID
  */
-async function sendToResults(client, messagesUpvoted, messagesDownvoted, channelOutID) {
+async function sendToResults(client, messagesUpvoted, messagesDownvoted, channelOutID, councilDisabled = false) {
 	const channelOut = client.channels.cache.get(channelOutID);
 	const EMOJIS = [settings.emojis.see_more];
+	let councilStrings = strings.submission.status;
+	let resultStrings = strings.submission.status;
+
+	if (councilDisabled) {
+		councilStrings = councilStrings.no_council
+		resultStrings = resultStrings.no_results
+
+	} else {
+		councilStrings = councilStrings.council;
+		resultStrings = resultStrings.results;
+	}
 
     messagesUpvoted.forEach((message) => {
         let embed = message.embed;
         embed.setColor(settings.colors.green);
-        embed.fields[1].value = `<:upvote:${settings.emojis.upvote}> Will be added in a future version!`;
+        embed.fields[1].value = `<:upvote:${settings.emojis.upvote}> ${resultStrings.passed}`;
 
         channelOut.send({ embeds: [embed] }).then(async (sentMessage) => {
             for (const emojiID of EMOJIS) await sentMessage.react(client.emojis.cache.get(emojiID));
         });
 
-        changeStatus(message.message, `<:upvote:${settings.emojis.upvote}> Sent to results!`);
+        changeStatus(message.message, `<:upvote:${settings.emojis.upvote}> ${councilStrings.passed}`);
     });
 
 	messagesDownvoted.forEach((message) => {
         let embed = message.embed;
         embed.setColor(settings.colors.red);
-        embed.fields[1].value = `<:downvote:${settings.emojis.downvote}> This texture did not pass council voting and therefore will not be added. Ask an Art Director Council member for more information.`;
+        embed.fields[1].value = `<:downvote:${settings.emojis.downvote}> ${resultStrings.failed}`;
 
         channelOut.send({ embeds: [embed] }).then(async (sentMessage) => {
             for (const emojiID of EMOJIS) await sentMessage.react(client.emojis.cache.get(emojiID));
         });
 
-        changeStatus(message.message, `<:upvote:${settings.emojis.upvote}> Sent to results!`);
+        changeStatus(message.message, `<:downvote:${settings.emojis.downvote}> ${resultStrings.failed}`);
     });
 }
 

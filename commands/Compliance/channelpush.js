@@ -40,7 +40,7 @@ module.exports = {
                     pack.channels.submit,
                     pack.channels.council,
                     true,
-                    pack.vote_time
+                    pack.time_to_council
                 )
             }
 
@@ -49,7 +49,7 @@ module.exports = {
                 pack.channels.council ?? pack.channels.submit,
                 pack.channels.results,
                 false,
-                pack.result_time
+                pack.time_to_results
             )
         }
 
