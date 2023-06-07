@@ -27,16 +27,20 @@ async function retrieveSubmission(client, channelFromID, channelOutID, toCouncil
 		.filter(message => message.embeds[0].fields[1] !== undefined && message.embeds[0].fields[1].value.includes(settings.emojis.pending))
 
 	// map messages adding reacts count, embed and message (easier management like that)
-	messages = messages.map((message) => {
-        message = {
-            upvote: message.reactions.cache.get(settings.emojis.upvote).count,
-            downvote: message.reactions.cache.get(settings.emojis.downvote).count,
-            embed: message.embeds[0],
-            message: message,
-        };
+	messages = messages.map(message => {
+		const upvotes = message.reactions.cache.get(settings.emojis.upvote)
+		const downvotes = message.reactions.cache.get(settings.emojis.downvote)
 
-        return message;
-    });
+		console.log(upvotes, downvotes);
+		message = {
+			upvote: upvotes.count,
+			downvote: downvotes.count,
+			embed: message.embeds[0],
+			message: message
+		}
+
+		return message;
+	})
 
 	// split messages by their votes (upvote >= downvote)
 	const messagesUpvoted = messages.filter(message => message.upvote >= message.downvote)
