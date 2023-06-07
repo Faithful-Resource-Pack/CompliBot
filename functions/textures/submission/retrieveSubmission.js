@@ -31,10 +31,9 @@ async function retrieveSubmission(client, channelFromID, channelOutID, toCouncil
 		const upvotes = message.reactions.cache.get(settings.emojis.upvote)
 		const downvotes = message.reactions.cache.get(settings.emojis.downvote)
 
-		console.log(upvotes, downvotes);
 		message = {
-			upvote: upvotes.count,
-			downvote: downvotes.count,
+			upvote: upvotes ? upvotes.count : 0,
+			downvote: downvotes ? downvotes.count : 0,
 			embed: message.embeds[0],
 			message: message
 		}
