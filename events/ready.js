@@ -8,13 +8,11 @@ const PREFIX = process.env.PREFIX
 const settings = require('../resources/settings.json')
 
 const { retrieveSubmission } = require('../functions/textures/submission/retrieveSubmission')
-const { councilSubmission } = require('../functions/textures/submission/councilSubmission')
 const { downloadResults } = require('../functions/textures/admission/downloadResults')
 const { pushTextures } = require('../functions/textures/admission/pushTextures')
 
 const { restartAutoDestroy } = require('../functions/restartAutoDestroy')
 const { saveDB } = require('../functions/saveDB')
-const { doCheckLang } = require('../functions/strings/doCheckLang')
 const { doCheckSettings } = require('../functions/settings/doCheckSettings')
 
 /**
@@ -24,79 +22,80 @@ const { doCheckSettings } = require('../functions/settings/doCheckSettings')
  * - Push to GitHub process (each day at 00:15 GMT) : @function pushToGithub
  */
 const submissionProcess = new cron.CronJob('0 0 * * *', async () => {
-  for (let pack of Object.values(settings.submission.packs)) {
-    await retrieveSubmission (
-      client,
-      pack.channels.submit,
-      pack.channels.council,
-      pack.vote_time
-    )
+    for (let pack of Object.values(settings.submission.packs)) {
+        if (pack.council_enabled) {
+            await retrieveSubmission ( // send using council format
+                client,
+                pack.channels.submit,
+                pack.channels.council,
+                true,
+                pack.vote_time
+            )
+        }
 
-    await councilSubmission (
-      client,
-      pack.channels.council,
-      pack.channels.results,
-      pack.council_time
-    )
-  }
+        await retrieveSubmission ( // if no council channel exists send from submissions directly to results
+            client,
+            pack.channels.council ?? pack.channels.submit,
+            pack.channels.results,
+            false,
+            pack.result_time
+        )
+    }
 })
 const downloadToBot = new cron.CronJob('15 0 * * *', async () => {
-  for (let pack of Object.values(settings.submission.packs)) {
-    await downloadResults (
-      client,
-      pack.channels.results
-    )
-  }
+    for (let pack of Object.values(settings.submission.packs)) {
+        await downloadResults (
+            client,
+            pack.channels.results
+        )
+    }
 })
 let pushToGithub = new cron.CronJob('30 0 * * *', async () => {
-  await pushTextures()
-  await saveDB(`Daily Backup`)
+    await pushTextures()
+    await saveDB(`Daily Backup`)
 })
 
 module.exports = {
-  name: 'ready',
-  once: true,
-  // eslint-disable-next-line no-unused-vars
-  async execute() {
-    console.log(`┌─────────────────────────────────────────────────────────────┐`)
-    console.log(`│                                                             │`)
-    console.log(`│  ─=≡Σ((( つ◕ل͜◕)つ                                           │`)
-    console.log(`│ JavaScript is a pain, but I'm fine, I hope...               │`)
-    console.log(`│                                                             │`)
-    console.log(`└─────────────────────────────────────────────────────────────┘\n\n`)
+    name: 'ready',
+    once: true,
+    // eslint-disable-next-line no-unused-vars
+    async execute() {
+        console.log(`┌─────────────────────────────────────────────────────────────┐`)
+        console.log(`│                                                             │`)
+        console.log(`│  ─=≡Σ((( つ◕ل͜◕)つ                                           │`)
+        console.log(`│ JavaScript is a pain, but I'm fine, I hope...               │`)
+        console.log(`│                                                             │`)
+        console.log(`└─────────────────────────────────────────────────────────────┘\n\n`)
 
-    if (MAINTENANCE) client.user.setPresence({ activities: [{ name: 'maintenance' }], status: 'dnd' })
-    else client.user.setActivity('Pigstep', { type: 'LISTENING' })
+        if (MAINTENANCE) client.user.setPresence({ activities: [{ name: 'maintenance' }], status: 'dnd' })
+        else client.user.setActivity('Pigstep', { type: 'LISTENING' })
 
-    await restartAutoDestroy(client)
+        await restartAutoDestroy(client)
 
-    if (DEV) {
-      setInterval(() => {
-        // doCheckLang() // strings have been moved entirely to this repo
-        doCheckSettings()
-      }, 20000); // 20 seconds
+        if (DEV) {
+            setInterval(() => {
+                doCheckSettings()
+            }, 20000); // 20 seconds
+        }
+
+        if (DEV) return
+
+        /**
+         * START TEXTURE SUBMISSION PROCESS
+         * @see submissionProcess
+         * @see downloadToBot
+         * @see pushToGithub
+         */
+        submissionProcess.start()
+        downloadToBot.start()
+        pushToGithub.start()
+
+        /**
+         * LOOP EVENTS
+         * @event doMCUpdateCheck() -> each minute | MINECRAFT UPDATE DETECTION INTERVAL
+         */
+        setInterval(() => {
+            doCheckSettings()
+        }, 60000);
     }
-
-    if (DEV) return
-
-    /**
-     * START TEXTURE SUBMISSION PROCESS
-     * @see submissionProcess
-     * @see downloadToBot
-     * @see pushToGithub
-     */
-    submissionProcess.start()
-    downloadToBot.start()
-    pushToGithub.start()
-
-    /**
-     * LOOP EVENTS
-     * @event doMCUpdateCheck() -> each minute | MINECRAFT UPDATE DETECTION INTERVAL
-     * @event doCheckLang()     -> each minute | LANG FILE UPDATE
-     */
-    setInterval(() => {
-      // doCheckLang()
-      doCheckSettings()
-    }, 60000);
-  }
 }

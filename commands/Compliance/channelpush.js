@@ -4,7 +4,6 @@ const settings = require('../../resources/settings.json');
 const strings = require('../../resources/strings.json');
 
 const { retrieveSubmission } = require('../../functions/textures/submission/retrieveSubmission')
-const { councilSubmission } = require('../../functions/textures/submission/councilSubmission')
 const { warnUser } = require('../../helpers/warnUser')
 
 module.exports = {
@@ -35,18 +34,22 @@ module.exports = {
         }
 
         for (let pack of packs) {
-            await retrieveSubmission (
-                client,
-                pack.channels.submit,
-                pack.channels.council,
-                pack.vote_time
-            )
+            if (pack.council_enabled) {
+                await retrieveSubmission ( // send using council format
+                    client,
+                    pack.channels.submit,
+                    pack.channels.council,
+                    true,
+                    pack.vote_time
+                )
+            }
 
-            await councilSubmission (
+            await retrieveSubmission ( // if no council channel exists send from submissions directly to results
                 client,
-                pack.channels.council,
+                pack.channels.council ?? pack.channels.submit,
                 pack.channels.results,
-                pack.council_time
+                false,
+                pack.result_time
             )
         }
 
