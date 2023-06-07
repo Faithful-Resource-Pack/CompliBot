@@ -92,7 +92,7 @@ async function downloadResults(client, channelInID, instapass=false) {
 		let allPaths = new Array()
 		// get all paths of the texture
 		for (let j = 0; uses[j]; j++) {
-			let localPath = './texturesPush/' + settings.repositories.repo_name[uses[j].editions[0].toLowerCase()][repoKey];
+			let localPath = './texturesPush/' + settings.repositories.repo_name[uses[j].editions[0].toLowerCase()][repoKey].repo;
 
 			let paths = await uses[j].paths()
 
