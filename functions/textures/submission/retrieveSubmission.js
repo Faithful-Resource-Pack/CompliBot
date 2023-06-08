@@ -12,7 +12,7 @@ const { changeStatus } = require('./changeStatus')
  * @param {Boolean} toCouncil true if from submissions to council, false if from council to results
  * @param {Integer} delay delay in day from today
  */
-async function retrieveSubmission(client, channelFromID, channelOutID, toCouncil, delay, councilEnabled=true) {
+async function retrieveSubmission(client, channelFromID, channelOutID, toCouncil, delay, councilDisabled=false) {
 	let messages = await getMessages(client, channelFromID)
 
 	let delayedDate = new Date();
@@ -45,7 +45,7 @@ async function retrieveSubmission(client, channelFromID, channelOutID, toCouncil
 	const messagesDownvoted = messages.filter(message => message.upvote < message.downvote)
 
 	if (toCouncil) await sendToCouncil(client, messagesUpvoted, messagesDownvoted, channelOutID)
-	else await sendToResults(client, messagesUpvoted, messagesDownvoted, channelOutID, councilEnabled)
+	else await sendToResults(client, messagesUpvoted, messagesDownvoted, channelOutID, councilDisabled)
 }
 
 /**
@@ -88,7 +88,7 @@ async function sendToCouncil(client, messagesUpvoted, messagesDownvoted, channel
  * @param {DiscordMessage[]} messagesDownvoted
  * @param {String} channelOutID
  */
-async function sendToResults(client, messagesUpvoted, messagesDownvoted, channelOutID, councilEnabled=true) {
+async function sendToResults(client, messagesUpvoted, messagesDownvoted, channelOutID, councilDisabled=false) {
 	const channelOut = client.channels.cache.get(channelOutID);
 	const EMOJIS = [settings.emojis.see_more];
 
@@ -108,7 +108,7 @@ async function sendToResults(client, messagesUpvoted, messagesDownvoted, channel
         let embed = message.embed;
         embed.setColor(settings.colors.red);
 
-		if (councilEnabled) { // don't you love having to pass a value in down like three functions just to format some strings
+		if (!councilDisabled) { // don't you love having to pass a value in down like three functions just to format some strings
 			embed.fields[1].value = `<:downvote:${settings.emojis.downvote}> This texture did not pass council voting and therefore will not be added. Ask an Art Director Council member for more information.`;
 			channelOut.send({ embeds: [embed] }).then(async (sentMessage) => {
 				for (const emojiID of EMOJIS) await sentMessage.react(client.emojis.cache.get(emojiID));

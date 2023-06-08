@@ -22,7 +22,17 @@ module.exports = {
         if (!packs[0]) return warnUser(message, strings.command.args.invalid.generic)
 
         for (let pack of packs) {
-            if (pack.council_enabled) {
+            if (pack.council_disabled) {
+                await retrieveSubmission ( // send directly to results
+                    client,
+                    pack.channels.submit,
+                    pack.channels.results,
+                    false,
+                    pack.vote_time,
+                    true
+                )
+
+            } else {
                 await retrieveSubmission ( // send to results
                     client,
                     pack.channels.council,
@@ -37,15 +47,6 @@ module.exports = {
                     pack.channels.council,
                     true,
                     pack.vote_time
-                )
-            } else {
-                await retrieveSubmission ( // send directly to results
-                    client,
-                    pack.channels.submit,
-                    pack.channels.results,
-                    false,
-                    pack.vote_time,
-                    false
                 )
             }
         }
