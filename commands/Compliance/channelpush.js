@@ -16,6 +16,7 @@ module.exports = {
 	example: `${prefix}channelpush f32`,
 	async execute(client, message, args) {
 		if (!message.member.roles.cache.some(role => role.name.includes("Manager") || role.id === '747839021421428776')) return warnUser(message, strings.command.no_permission);
+		if (!args.length) return warnUser(message, strings.command.args.none_given);
 
         let packs = [settings.submission.packs[args[0]]]
 		if (args[0] == 'all') packs = Object.values(settings.submission.packs);
