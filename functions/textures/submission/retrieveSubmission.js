@@ -38,8 +38,6 @@ async function retrieveSubmission(client, channelFromID, channelOutID, toCouncil
 			message: message
 		}
 
-		console.log(message.upvote, message.downvote);
-
 		return message;
 	})
 	// split messages by their votes (upvote >= downvote)
