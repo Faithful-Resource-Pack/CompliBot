@@ -94,28 +94,28 @@ async function sendToResults(client, messagesUpvoted, messagesDownvoted, channel
 
     messagesUpvoted.forEach((message) => {
         let embed = message.embed;
+        embed.setColor(settings.colors.green);
 		embed.fields[1].value = `<:upvote:${settings.emojis.upvote}> Will be added in a future version!`
 
         channelOut.send({ embeds: [embed] }).then(async (sentMessage) => {
             for (const emojiID of EMOJIS) await sentMessage.react(client.emojis.cache.get(emojiID));
         });
 
-        changeStatus(message.message, `<:upvote:${settings.emojis.upvote}> Sent to results!`, settings.colors.green);
+        changeStatus(message.message, `<:upvote:${settings.emojis.upvote}> Sent to results!`);
     });
 
 	messagesDownvoted.forEach((message) => {
         let embed = message.embed;
+        embed.setColor(settings.colors.red);
 
-		if (councilEnabled) {
+		if (councilEnabled) { // don't you love having to pass a value in down like three functions just to format some strings
 			embed.fields[1].value = `<:downvote:${settings.emojis.downvote}> This texture did not pass council voting and therefore will not be added. Ask an Art Director Council member for more information.`;
 			channelOut.send({ embeds: [embed] }).then(async (sentMessage) => {
 				for (const emojiID of EMOJIS) await sentMessage.react(client.emojis.cache.get(emojiID));
 			});
 
-			changeStatus(message.message, `<:downvote:${settings.emojis.downvote}> Sent to results!`, settings.colors.red);
-		} else {
-			changeStatus(message.message, `<:downvote:${settings.emojis.downvote}> Not enough upvotes!`, settings.colors.red)
-		}
+			changeStatus(message.message, `<:downvote:${settings.emojis.downvote}> Sent to results!`);
+		} else changeStatus(message.message, `<:downvote:${settings.emojis.downvote}> Not enough upvotes!`);
     });
 }
 
