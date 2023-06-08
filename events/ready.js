@@ -23,19 +23,17 @@ const { doCheckSettings } = require('../functions/settings/doCheckSettings')
  */
 const submissionProcess = new cron.CronJob('0 0 * * *', async () => {
     for (let pack of Object.values(settings.submission.packs)) {
-        if (pack.council_enabled) {
-            await retrieveSubmission ( // send using council format
-                client,
-                pack.channels.submit,
-                pack.channels.council,
-                true,
-                pack.time_to_council
-            )
-        }
-
-        await retrieveSubmission ( // if no council channel exists send from submissions directly to results
+        await retrieveSubmission ( // send to council
             client,
-            pack.channels.council ?? pack.channels.submit,
+            pack.channels.submit,
+            pack.channels.council,
+            true,
+            pack.time_to_council
+        )
+
+        await retrieveSubmission ( // send to results
+            client,
+            pack.channels.council,
             pack.channels.results,
             false,
             pack.time_to_results

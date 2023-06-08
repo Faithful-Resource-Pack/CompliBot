@@ -9,7 +9,7 @@ const { changeStatus } = require('./changeStatus')
  * @param {DiscordClient} client
  * @param {String} channelFromID text-channel from where submission are retrieved
  * @param {String} channelOutID text-channel where submission are sent
- * @param {Boolean} toCouncil if textures from channelFromID should be sent with council-like formatting or result-like formatting
+ * @param {Boolean} toCouncil true if from submissions to council, false if from council to results
  * @param {Integer} delay delay in day from today
  */
 async function retrieveSubmission(client, channelFromID, channelOutID, toCouncil, delay) {
@@ -32,37 +32,31 @@ async function retrieveSubmission(client, channelFromID, channelOutID, toCouncil
 		const downvotes = message.reactions.cache.get(settings.emojis.downvote)
 
 		message = {
-			upvote: upvotes ? upvotes.count : 0,
-			downvote: downvotes ? downvotes.count : 0,
+			upvote: upvotes ? upvotes.count : 1,
+			downvote: downvotes ? downvotes.count : 1,
 			embed: message.embeds[0],
 			message: message
 		}
 
+		console.log(message.upvote, message.downvote);
+
 		return message;
 	})
-
 	// split messages by their votes (upvote >= downvote)
 	const messagesUpvoted = messages.filter(message => message.upvote >= message.downvote)
 	const messagesDownvoted = messages.filter(message => message.upvote < message.downvote)
 
-	// split messages
-
-	const submissionChannels = Object.values(settings.submission.packs).map(i => i.channels.submit);
-	let councilDisabled = false;
-	if (submissionChannels.includes(channelFromID)) councilDisabled = true;
-
-	if (toCouncil) await sendToCouncil(client, messagesUpvoted, messagesDownvoted, channelOutID);
-	else await sendToResults(client, messagesUpvoted, messagesDownvoted, channelOutID, councilDisabled);
+	if (toCouncil) await sendToCouncil(client, messagesUpvoted, messagesDownvoted, channelOutID)
+	else await sendToResults(client, messagesUpvoted, messagesDownvoted, channelOutID)
 }
 
 /**
- * Send to a channel using council-like formatting
- * This includes council colored embeds, voting emojis, and status messages
+ * Send textures to a given council channel
  * @author Evorp
  * @param {DiscordClient} client
  * @param {DiscordMessage[]} messagesUpvoted
  * @param {DiscordMessage[]} messagesDownvoted
- * @param {Number} channelOutID
+ * @param {String} channelOutID
  */
 async function sendToCouncil(client, messagesUpvoted, messagesDownvoted, channelOutID) {
 	const channelOut = client.channels.cache.get(channelOutID);
@@ -80,60 +74,48 @@ async function sendToCouncil(client, messagesUpvoted, messagesDownvoted, channel
 				for (const emojiID of EMOJIS) await sentMessage.react(client.emojis.cache.get(emojiID))
 			})
 
-		changeStatus(message.message, `<:upvote:${settings.emojis.upvote}> ${strings.submission.status.community.passed}`, settings.colors.green)
+		changeStatus(message.message, `<:upvote:${settings.emojis.upvote}> Sent to council!`, settings.colors.green)
 	});
 
 	messagesDownvoted.forEach(message => {
-		changeStatus(message.message, `<:downvote:${settings.emojis.downvote}> ${strings.submission.status.community.failed}`, settings.colors.red)
+		changeStatus(message.message, `<:downvote:${settings.emojis.downvote}> Not enough upvotes!`, settings.colors.red)
 	})
 }
 
 /**
- * Send to a channel using result-like formatting
- * This includes dynamic colored embeds, no voting emojis, and status messages
+ * Send textures to a given result channel
  * @author Evorp
  * @param {DiscordClient} client
  * @param {DiscordMessage[]} messagesUpvoted
  * @param {DiscordMessage[]} messagesDownvoted
- * @param {Number} channelOutID
+ * @param {String} channelOutID
  */
-async function sendToResults(client, messagesUpvoted, messagesDownvoted, channelOutID, councilDisabled = false) {
+async function sendToResults(client, messagesUpvoted, messagesDownvoted, channelOutID) {
 	const channelOut = client.channels.cache.get(channelOutID);
 	const EMOJIS = [settings.emojis.see_more];
-	let councilStrings = strings.submission.status;
-	let resultStrings = strings.submission.status;
-
-	if (councilDisabled) {
-		councilStrings = councilStrings.no_council
-		resultStrings = resultStrings.no_results
-
-	} else {
-		councilStrings = councilStrings.council;
-		resultStrings = resultStrings.results;
-	}
 
     messagesUpvoted.forEach((message) => {
         let embed = message.embed;
         embed.setColor(settings.colors.green);
-        embed.fields[1].value = `<:upvote:${settings.emojis.upvote}> ${resultStrings.passed}`;
+        embed.fields[1].value = `<:upvote:${settings.emojis.upvote}> Will be added in a future version!`;
 
         channelOut.send({ embeds: [embed] }).then(async (sentMessage) => {
             for (const emojiID of EMOJIS) await sentMessage.react(client.emojis.cache.get(emojiID));
         });
 
-        changeStatus(message.message, `<:upvote:${settings.emojis.upvote}> ${councilStrings.passed}`);
+        changeStatus(message.message, `<:upvote:${settings.emojis.upvote}> Sent to results!`);
     });
 
 	messagesDownvoted.forEach((message) => {
         let embed = message.embed;
         embed.setColor(settings.colors.red);
-        embed.fields[1].value = `<:downvote:${settings.emojis.downvote}> ${resultStrings.failed}`;
+        embed.fields[1].value = `<:downvote:${settings.emojis.downvote}> This texture did not pass council voting and therefore will not be added. Ask an Art Director Council member for more information.`;
 
         channelOut.send({ embeds: [embed] }).then(async (sentMessage) => {
             for (const emojiID of EMOJIS) await sentMessage.react(client.emojis.cache.get(emojiID));
         });
 
-        changeStatus(message.message, `<:downvote:${settings.emojis.downvote}> ${resultStrings.failed}`);
+        changeStatus(message.message, `<:downvote:${settings.emojis.downvote}> Sent to results!`);
     });
 }
 

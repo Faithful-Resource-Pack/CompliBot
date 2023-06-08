@@ -14,14 +14,14 @@ const { readFile } = require('fs-extra')
 
 /**
  * Automated push through GitHub
- * @param {String} org GitHub organizatio name
+ * @param {String} org GitHub organization name
  * @param {String} repo Github repository name
  * @param {String} branch branch name
  * @param {String} commitMessage
  * @param {String} localPath
  */
 async function pushToGitHub(org, repo, branch, commitMessage, localPath) {
-	// Authentification trough CompliBot GitHub Account
+	// Authentification through CompliBot GitHub Account
 	const octo = new Octokit({
 		auth: process.env.COMPLIBOT_GIT_TOKEN,
 	})
