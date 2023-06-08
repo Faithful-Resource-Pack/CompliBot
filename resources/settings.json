@@ -7,7 +7,7 @@
                     "council": "774220983044669450",
                     "results": "780507804317384744"
                 },
-                "percentages": { "java": "778257098437558312", "bedrock": "834852328745205830" },
+                "council_disabled": false,
                 "vote_time": 2,
                 "council_time": 1
             },
@@ -17,9 +17,33 @@
                     "council": "931886877521350696",
                     "results": "931887235433906276"
                 },
-                "percentages": { "java": "932039966836535328", "bedrock": "932040163876548649" },
+                "council_disabled": false,
                 "vote_time": 2,
                 "council_time": 1
+            },
+            "classic_faithful_32x": {
+                "channels": {
+                    "submit": "814201529032114226",
+                    "results": "1116461192244891759"
+                },
+                "council_disabled": true,
+                "vote_time": 1
+            },
+            "classic_faithful_32x_progart": {
+                "channels": {
+                    "submit": "909503944118648883",
+                    "results": "1116461304832606208"
+                },
+                "council_disabled": true,
+                "vote_time": 1
+            },
+            "classic_faithful_64x": {
+                "channels": {
+                    "submit": "814209343502286899",
+                    "results": "1116461350525349888"
+                },
+                "council_disabled": true,
+                "vote_time": 1
             }
         },
         "id": "submission"
@@ -141,8 +165,50 @@
     },
     "repositories": {
         "repo_name": {
-            "java": { "faithful_32x": "Faithful-Java-32x", "faithful_64x": "Faithful-Java-64x" },
-            "bedrock": { "faithful_32x": "Faithful-Bedrock-32x", "faithful_64x": "Faithful-Bedrock-64x" }
+            "java": {
+                "faithful_32x": {
+                    "repo": "Faithful-Java-32x",
+                    "org": "Faithful-Resource-Pack"
+                },
+                "faithful_64x": {
+                    "repo": "Faithful-Java-64x",
+                    "org": "Faithful-Resource-Pack"
+                },
+                "classic_faithful_32x": {
+                    "repo": "32x-Jappa",
+                    "org": "ClassicFaithful"
+                },
+                "classic_faithful_32x_progart": {
+                    "repo": "32x-Programmer-Art",
+                    "org": "ClassicFaithful"
+                },
+                "classic_faithful_64x": {
+                    "repo": "64x-Jappa",
+                    "org": "ClassicFaithful"
+                }
+            },
+            "bedrock": {
+                "faithful_32x": {
+                    "repo": "Faithful-Bedrock-32x",
+                    "org": "Faithful-Resource-Pack"
+                },
+                "faithful_64x": {
+                    "repo": "Faithful-Bedrock-64x",
+                    "org": "Faithful-Resource-Pack"
+                },
+                "classic_faithful_32x": {
+                    "repo": "32x-Jappa-Bedrock",
+                    "org": "ClassicFaithful"
+                },
+                "classic_faithful_32x_progart": {
+                    "repo": "32x-Programmer-Art-Bedrock",
+                    "org": "ClassicFaithful"
+                },
+                "classic_faithful_64x": {
+                    "repo": "64x-Jappa-Bedrock",
+                    "org": "ClassicFaithful"
+                }
+            }
         },
         "git": {
             "default": {
@@ -222,7 +288,7 @@
     "faithful_resolutions": ["c32", "c64"],
     "versions": {
         "java": [
-            "java-latest",
+            "1.20",
             "1.19.4",
             "1.19.3",
             "1.19.2",
