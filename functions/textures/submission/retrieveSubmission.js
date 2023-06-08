@@ -11,6 +11,7 @@ const { changeStatus } = require('./changeStatus')
  * @param {String} channelOutID text-channel where submission are sent
  * @param {Boolean} toCouncil true if from submissions to council, false if from council to results
  * @param {Integer} delay delay in day from today
+ * @param {Boolean} councilDisabled whether to disable council or not (off by default)
  */
 async function retrieveSubmission(client, channelFromID, channelOutID, toCouncil, delay, councilDisabled=false) {
 	let messages = await getMessages(client, channelFromID)
@@ -87,6 +88,7 @@ async function sendToCouncil(client, messagesUpvoted, messagesDownvoted, channel
  * @param {DiscordMessage[]} messagesUpvoted
  * @param {DiscordMessage[]} messagesDownvoted
  * @param {String} channelOutID
+ * @param {Boolean} councilDisabled whether to disable council or not (off by default)
  */
 async function sendToResults(client, messagesUpvoted, messagesDownvoted, channelOutID, councilDisabled=false) {
 	const channelOut = client.channels.cache.get(channelOutID);
