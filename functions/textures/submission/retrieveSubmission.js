@@ -12,7 +12,7 @@ const { changeStatus } = require('./changeStatus')
  * @param {Boolean} toCouncil true if from submissions to council, false if from council to results
  * @param {Integer} delay delay in day from today
  */
-async function retrieveSubmission(client, channelFromID, channelOutID, toCouncil, delay) {
+async function retrieveSubmission(client, channelFromID, channelOutID, toCouncil, delay, councilEnabled=true) {
 	let messages = await getMessages(client, channelFromID)
 
 	let delayedDate = new Date();
@@ -45,7 +45,7 @@ async function retrieveSubmission(client, channelFromID, channelOutID, toCouncil
 	const messagesDownvoted = messages.filter(message => message.upvote < message.downvote)
 
 	if (toCouncil) await sendToCouncil(client, messagesUpvoted, messagesDownvoted, channelOutID)
-	else await sendToResults(client, messagesUpvoted, messagesDownvoted, channelOutID)
+	else await sendToResults(client, messagesUpvoted, messagesDownvoted, channelOutID, councilEnabled)
 }
 
 /**
@@ -88,32 +88,34 @@ async function sendToCouncil(client, messagesUpvoted, messagesDownvoted, channel
  * @param {DiscordMessage[]} messagesDownvoted
  * @param {String} channelOutID
  */
-async function sendToResults(client, messagesUpvoted, messagesDownvoted, channelOutID) {
+async function sendToResults(client, messagesUpvoted, messagesDownvoted, channelOutID, councilEnabled=true) {
 	const channelOut = client.channels.cache.get(channelOutID);
 	const EMOJIS = [settings.emojis.see_more];
 
     messagesUpvoted.forEach((message) => {
         let embed = message.embed;
-        embed.setColor(settings.colors.green);
-        embed.fields[1].value = `<:upvote:${settings.emojis.upvote}> Will be added in a future version!`;
+		embed.fields[1].value = `<:upvote:${settings.emojis.upvote}> Will be added in a future version!`
 
         channelOut.send({ embeds: [embed] }).then(async (sentMessage) => {
             for (const emojiID of EMOJIS) await sentMessage.react(client.emojis.cache.get(emojiID));
         });
 
-        changeStatus(message.message, `<:upvote:${settings.emojis.upvote}> Sent to results!`);
+        changeStatus(message.message, `<:upvote:${settings.emojis.upvote}> Sent to results!`, settings.colors.green);
     });
 
 	messagesDownvoted.forEach((message) => {
         let embed = message.embed;
-        embed.setColor(settings.colors.red);
-        embed.fields[1].value = `<:downvote:${settings.emojis.downvote}> This texture did not pass council voting and therefore will not be added. Ask an Art Director Council member for more information.`;
 
-        channelOut.send({ embeds: [embed] }).then(async (sentMessage) => {
-            for (const emojiID of EMOJIS) await sentMessage.react(client.emojis.cache.get(emojiID));
-        });
+		if (councilEnabled) {
+			embed.fields[1].value = `<:downvote:${settings.emojis.downvote}> This texture did not pass council voting and therefore will not be added. Ask an Art Director Council member for more information.`;
+			channelOut.send({ embeds: [embed] }).then(async (sentMessage) => {
+				for (const emojiID of EMOJIS) await sentMessage.react(client.emojis.cache.get(emojiID));
+			});
 
-        changeStatus(message.message, `<:downvote:${settings.emojis.downvote}> Sent to results!`);
+			changeStatus(message.message, `<:downvote:${settings.emojis.downvote}> Sent to results!`, settings.colors.red);
+		} else {
+			changeStatus(message.message, `<:downvote:${settings.emojis.downvote}> Not enough upvotes!`, settings.colors.red)
+		}
     });
 }
 

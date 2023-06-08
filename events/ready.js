@@ -23,21 +23,32 @@ const { doCheckSettings } = require('../functions/settings/doCheckSettings')
  */
 const submissionProcess = new cron.CronJob('0 0 * * *', async () => {
     for (let pack of Object.values(settings.submission.packs)) {
-        await retrieveSubmission ( // send to council
-            client,
-            pack.channels.submit,
-            pack.channels.council,
-            true,
-            pack.time_to_council
-        )
+        if (pack.council_enabled) {
+            await retrieveSubmission ( // send to results
+                client,
+                pack.channels.council,
+                pack.channels.results,
+                false,
+                pack.council_time
+            )
 
-        await retrieveSubmission ( // send to results
-            client,
-            pack.channels.council,
-            pack.channels.results,
-            false,
-            pack.time_to_results
-        )
+            await retrieveSubmission ( // send to council
+                client,
+                pack.channels.submit,
+                pack.channels.council,
+                true,
+                pack.vote_time
+            )
+        } else {
+            await retrieveSubmission ( // send directly to results
+                client,
+                pack.channels.submit,
+                pack.channels.results,
+                false,
+                pack.vote_time,
+                false
+            )
+        }
     }
 })
 const downloadToBot = new cron.CronJob('15 0 * * *', async () => {

@@ -20,20 +20,9 @@ module.exports = {
 		if (!message.member.roles.cache.some(role => role.name.includes("Manager") || role.id === '747839021421428776')) return warnUser(message, strings.command.no_permission)
 		if (!args.length) return warnUser(message, strings.command.args.none_given);
 
-		let packs;
-		switch (args[0]) {
-            case 'all':
-                packs = Object.values(settings.submission.packs);
-                break;
-            case "f32":
-                packs = [settings.submission.packs.faithful_32x]
-                break;
-            case "f64":
-                packs = [settings.submission.packs.faithful_64x]
-                break;
-            default:
-                return warnUser(message, strings.command.args.invalid.generic);
-		}
+		let packs = [settings.submission.packs[args[0]]]
+		if (args[0] == 'all') packs = Object.values(settings.submission.packs);
+        if (!packs[0]) return warnUser(message, strings.command.args.invalid.generic)
 
 		for (let pack of packs) await downloadResults(client, pack.channels.results)
 
