@@ -52,7 +52,7 @@ module.exports = function (compareOptions) {
 
   // PANIC if both search and id
   if (compareOptions.search !== undefined && compareOptions.id !== undefined)
-    return Promise.reject(new Error(`${strings.command.args.invalid.generic}\nYou can't compare an Id and a search term`))
+    return Promise.reject(new Error(`${strings.command.args.invalid.generic}\nYou can't compare an ID and a search term`))
 
   // search check
   if (compareOptions.search !== undefined) {

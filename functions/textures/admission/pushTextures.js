@@ -14,41 +14,34 @@ const settings = require('../../../resources/settings.json')
  * @param {String} COMMIT_MESSAGE
  */
 async function pushTextures(COMMIT_MESSAGE = `Autopush passed textures from ${date()}`) {
-	// TODO: make organization dynamic per-pack
-	const ORGANIZATION = 'Faithful-Resource-Pack'
-
 	const REPO_JAVA = Object.values(settings.repositories.repo_name.java);
 	const REPO_BEDROCK = Object.values(settings.repositories.repo_name.bedrock);
 
 	const BRANCHES_JAVA = settings.versions.java
 	const BRANCHES_BEDROCK = settings.versions.bedrock
 
-	for (let i = 0; REPO_JAVA[i]; i++) {
-		for (let j = 0; BRANCHES_JAVA[j]; j++) {
-
-			if (checkFolder(`./texturesPush/${REPO_JAVA[i]}/${BRANCHES_JAVA[j]}/assets`)) {
+	for (let repoKey of REPO_JAVA) {
+		for (let branch of BRANCHES_JAVA) {
+			if (checkFolder(`./texturesPush/${repoKey.repo}/${branch}/assets`)) {
 				try {
-					await pushToGitHub(ORGANIZATION, REPO_JAVA[i], `${BRANCHES_JAVA[j]}`, COMMIT_MESSAGE, `./texturesPush/${REPO_JAVA[i]}/${BRANCHES_JAVA[j]}/`)
+					await pushToGitHub(repoKey.org, repoKey.repo, `${branch}`, COMMIT_MESSAGE, `./texturesPush/${repoKey.repo}/${branch}/`)
 				} catch(e) {
 					// branch doesn't exist, octokit causes an error
 				}
-				fs.rmdirSync(`./texturesPush/${REPO_JAVA[i]}/${BRANCHES_JAVA[j]}/assets/`, { recursive: true })
-
-				if (DEBUG) console.log(`PUSHED TO GITHUB: Faithful-Java-32x (${BRANCHES_JAVA[j]})`)
+				fs.rmdirSync(`./texturesPush/${repoKey.repo}/${branch}/assets/`, { recursive: true })
 			}
+			if (DEBUG) console.log(`PUSHING: ${repoKey.repo} (${branch})`)
 		}
 	}
 
-	for (let i = 0; REPO_BEDROCK[i]; i++) {
-		for (let j = 0; BRANCHES_BEDROCK[j]; j++) {
+	for (let repoKey of REPO_BEDROCK) {
+		for (let branch of BRANCHES_BEDROCK) {
+			if (checkFolder(`./texturesPush/${repoKey.repo}/${branch}/textures`)) {
+				await pushToGitHub(repoKey.org, repoKey.repo, `${branch}`, COMMIT_MESSAGE, `./texturesPush/${repoKey.repo}/${branch}/`)
 
-			if (checkFolder(`./texturesPush/${REPO_BEDROCK[i]}/${BRANCHES_BEDROCK[j]}/textures`)) {
-				await pushToGitHub(ORGANIZATION, REPO_BEDROCK[i], `${BRANCHES_BEDROCK[j]}`, COMMIT_MESSAGE, `./texturesPush/${REPO_BEDROCK[i]}/${BRANCHES_BEDROCK[j]}/`)
-				fs.rmdirSync(`./texturesPush/${REPO_BEDROCK[i]}/${BRANCHES_BEDROCK[j]}/textures/`, { recursive: true })
-
-				if (DEBUG) console.log(`PUSHED TO GITHUB: Faithful-Java-32x (${BRANCHES_BEDROCK[j]})`)
+				fs.rmdirSync(`./texturesPush/${repoKey.repo}/${branch}/textures/`, { recursive: true })
 			}
-
+			if (DEBUG) console.log(`PUSHING: ${repoKey.repo} (${branch})`)
 		}
 	}
 

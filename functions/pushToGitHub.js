@@ -3,7 +3,7 @@
 /**
  * ORIGINAL LINK: (Typescript)
  * https://dev.to/lucis/how-to-push-files-programatically-to-a-repository-using-octokit-with-typescript-1nj0
- * 
+ *
  */
 
 const glob = require('globby')
@@ -13,15 +13,15 @@ const { Octokit } = require('@octokit/rest')
 const { readFile } = require('fs-extra')
 
 /**
- * Automated push trough GitHub
- * @param {String} org GitHub organizatio name
+ * Automated push through GitHub
+ * @param {String} org GitHub organization name
  * @param {String} repo Github repository name
  * @param {String} branch branch name
  * @param {String} commitMessage
  * @param {String} localPath
  */
 async function pushToGitHub(org, repo, branch, commitMessage, localPath) {
-	// Authentification trough CompliBot GitHub Account
+	// Authentification through CompliBot GitHub Account
 	const octo = new Octokit({
 		auth: process.env.COMPLIBOT_GIT_TOKEN,
 	})
@@ -32,7 +32,7 @@ async function pushToGitHub(org, repo, branch, commitMessage, localPath) {
 
 /**
  * Upload files to repository
- * @param {Octokit} octo 
+ * @param {Octokit} octo
  * @param {String} coursePath path from where file are uploaded
  * @param {String} org GitHub organisation
  * @param {String} repo GitHub repository of the organisation
@@ -59,11 +59,11 @@ const uploadToRepo = async (octo, coursePath, org, repo, branch, commitMessage) 
 
 /**
  * Get current commit of a branch from a repository
- * @param {Octokit} octo 
+ * @param {Octokit} octo
  * @param {String} org GitHub organisation
  * @param {String} repo GitHub repository of the organisation
  * @param {String} branch GitHub branch of the repository
- * @returns 
+ * @returns
  */
 const getCurrentCommit = async (octo, org, repo, branch) => {
 	const { data: refData } = await octo.git.getRef({
@@ -86,21 +86,21 @@ const getCurrentCommit = async (octo, org, repo, branch) => {
 /**
  * Get file as utf8 file
  * Notice that readFile's UTF8 is typed differently from Github's UTF-8
- * @param {String} filePath 
+ * @param {String} filePath
  * @returns an utf8 file
  */
 const getFileAsUTF8 = (filePath) => readFile(filePath, { encoding: 'utf8' })
 
 /**
  * Get file as binary file (used for .png files)
- * @param {String} filePath 
+ * @param {String} filePath
  * @returns a base64 file
  */
 const getFileAsBinary = (filePath) => readFile(filePath, { encoding: 'base64' })
 
 /**
  * Create blob for a file
- * @param {Octokit} octo 
+ * @param {Octokit} octo
  * @param {String} org Github organisation
  * @param {String} repo Github repository of the organisation
  * @returns data of the blob
@@ -136,12 +136,12 @@ const createBlobForFile = (octo, org, repo) => async (filePath) => {
 }
 
 /**
- * @param {Octokit} octo 
+ * @param {Octokit} octo
  * @param {String} owner GitHub organisation
  * @param {String} repo GitHub repository of the organisation
  * @param {Blob} blobs
  * @param {*} paths
- * @param {*} parentTreeSha 
+ * @param {*} parentTreeSha
  * @returns data : {owner, repo, tree, base_tree: parentTreeSha }
  */
 const createNewTree = async (octo, owner, repo, blobs = Octokit.GitCreateBlobResponse, paths, parentTreeSha) => {
@@ -163,12 +163,12 @@ const createNewTree = async (octo, owner, repo, blobs = Octokit.GitCreateBlobRes
 
 /**
  * Create a new commit
- * @param {Octokit} octo 
+ * @param {Octokit} octo
  * @param {String} org GitHub organisation
  * @param {String} repo GitHub repository of the organisation
  * @param {String} message Commit message
- * @param {*} currentTreeSha 
- * @param {*} currentCommitSha 
+ * @param {*} currentTreeSha
+ * @param {*} currentCommitSha
  */
 const createNewCommit = async (octo, org, repo, message, currentTreeSha, currentCommitSha) => (
 	await octo.git.createCommit({
@@ -181,12 +181,12 @@ const createNewCommit = async (octo, org, repo, message, currentTreeSha, current
 
 /**
  * Set branch to commit
- * @param {Octokit} octo 
+ * @param {Octokit} octo
  * @param {String} org GitHub organisation
  * @param {String} repo GitHub repository of the organisation
  * @param {String} branch GitHub branch of the repository
- * @param {*} commitSha 
- * @returns 
+ * @param {*} commitSha
+ * @returns
  */
 const setBranchToCommit = (octo, org, repo, branch, commitSha) =>
 	octo.git.updateRef({
