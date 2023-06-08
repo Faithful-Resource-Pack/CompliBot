@@ -16,12 +16,8 @@ const event: Event = {
 
     if (message.author.bot) return;
 
-    // TODO: EARLY ALPHA FOR CLASSIC FAITHFUL
-    const tmp = [
-      '814201529032114226',
-      '909503944118648883',
-      '814209343502286899',
-    ];
+    // TODO: REPLACE THIS WITH VALID CHANNEL IDS WHEN READY
+    const tmp = [];
 
     if (tmp.includes(message.channelId)) {
       client.emit('textureSubmitted', (client as Client, message));
