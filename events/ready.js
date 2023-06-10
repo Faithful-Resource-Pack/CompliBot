@@ -30,7 +30,7 @@ const submissionProcess = new cron.CronJob('0 0 * * *', async () => {
                 pack.channels.results,
                 false,
                 pack.vote_time,
-                false
+                true
             )
 
         } else {
