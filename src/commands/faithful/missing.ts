@@ -80,7 +80,7 @@ export const command: SlashCommand = {
 
 		const embed: MessageEmbed = new MessageEmbed()
 			.setTitle("Searching for missing textures...")
-			.setDescription("This takes some time, please wait...")
+			.setDescription("This can take some time, please wait...")
 			.setThumbnail(`${(interaction.client as Client).config.images}bot/loading.gif`)
 			.addFields([
 				{ name: "Steps", value: "\u200b" }
