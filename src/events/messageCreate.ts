@@ -82,7 +82,6 @@ export const event: Event = {
 			return await message.reply({ content: "┬─┬ ノ( ゜-゜ノ) calm down bro" });
 
 		const textureID = [...message.content.matchAll(/(?<=\[\#)(.*?)(?=\])/g)] ?? [];
-		console.log(textureID)
 		for (let i of textureID) {
 			if (+i[0] > 0) { // cast to number
 				try {
