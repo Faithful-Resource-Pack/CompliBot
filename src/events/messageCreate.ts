@@ -81,15 +81,20 @@ export const event: Event = {
 		if (message.content.includes("(╯°□°）╯︵ ┻━┻"))
 			return await message.reply({ content: "┬─┬ ノ( ゜-゜ノ) calm down bro" });
 
-		const textureID = (message.content.match(/(?<=\[\#)(.*?)(?=\])/) ?? [])[0];
-		if (+textureID > 0) {
-			const results = (await axios.get(`${(client as Client).config.apiUrl}textures/${textureID}/all`)).data;
-			const embed = new MessageEmbed()
-				.setTitle(`[#${textureID}] ${results.name}`)
-				.setDescription(`[View texture online](https://webapp.faithfulpack.net/#/gallery/java/32x/latest/all/?show=${textureID})`)
-				.addFields(AddPathsToEmbed(results))
+		const textureID = [...message.content.matchAll(/(?<=\[\#)(.*?)(?=\])/g)] ?? [];
+		console.log(textureID)
+		for (let i of textureID) {
+			if (+i[0] > 0) { // cast to number
+				try {
+					const results = (await axios.get(`${(client as Client).config.apiUrl}textures/${i[0]}/all`)).data;
+					const embed = new MessageEmbed()
+						.setTitle(`[#${i[0]}] ${results.name}`)
+						.setDescription(`[View texture online](https://webapp.faithfulpack.net/#/gallery/java/32x/latest/all/?show=${i[0]})`)
+						.addFields(AddPathsToEmbed(results))
 
-			message.reply({ embeds: [embed] }).then(message => message.deleteButton(true));
+					message.reply({ embeds: [embed] }).then(message => message.deleteButton(true));
+				} catch {/* texture doesn't exist */}
+			}
 		}
 
 		if (message.attachments.size > 0) {
