@@ -74,7 +74,7 @@ export const command: SlashCommand = {
 		}
 
 		// multiple results
-		else if (results.length > 1) {
+		else {
 			const components: Array<MessageActionRow> = [];
 			let rlen: number = results.length;
 			let max: number = 4; // actually 5 but - 1 because we are adding a delete button to it (the 5th one)

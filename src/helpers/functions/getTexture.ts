@@ -9,7 +9,7 @@ import { ISizeCalculationResult } from "image-size/dist/types/interface";
 import { colors } from "@helpers/colors";
 import { Contributions, Texture, Paths, Uses } from "@helpers/interfaces/firestorm";
 import { animateAttachment } from "./canvas/animate";
-import { MinecraftSorter } from "@helpers/sorter";
+import { MinecraftSorter, AddPathsToEmbed } from "@helpers/sorter";
 
 export const getTextureMessageOptions = async (options: {
 	texture: Texture;
@@ -138,35 +138,7 @@ export const getTextureMessageOptions = async (options: {
 			]);
 	}
 
-	let tmp = {};
-	uses.forEach((use) => {
-		paths
-			.filter((el) => el.use === use.id)
-			.forEach((p) => {
-				const versions = p.versions.sort(MinecraftSorter);
-				if (tmp[use.edition])
-					tmp[use.edition].push(
-						`\`[${versions.length > 1 ? `${versions[0]} — ${versions[versions.length - 1]}` : versions[0]}]\` ${
-							use.assets !== null && use.assets !== "minecraft" ? use.assets + "/" : ""
-						}${p.name}`,
-					);
-				else
-					tmp[use.edition] = [
-						`\`[${versions.length > 1 ? `${versions[0]} — ${versions[versions.length - 1]}` : versions[0]}]\` ${
-							use.assets !== null && use.assets !== "minecraft" ? use.assets + "/" : ""
-						}${p.name}`,
-					];
-			});
-	});
-
-	Object.keys(tmp).forEach((edition) => {
-		if (tmp[edition].length > 0) {
-			embed.addFields([{
-				name: edition.charAt(0).toLocaleUpperCase() + edition.slice(1),
-				value: tmp[edition].join("\n").replaceAll(" textures/", "../"),
-			}]);
-		}
-	});
+	embed.addFields(AddPathsToEmbed(texture));
 
 	// magnifying the texture in thumbnail
 	if (animated) {

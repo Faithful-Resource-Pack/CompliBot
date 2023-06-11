@@ -2,6 +2,9 @@ import { Event } from "@interfaces";
 import { Client, Message, MessageEmbed } from "@client";
 import easterEgg from "@functions/canvas/isEasterEggImg";
 import { getSubmissionsChannels } from "@helpers/channels";
+import { Paths, Uses } from "@helpers/interfaces/firestorm";
+import axios from 'axios';
+import { AddPathsToEmbed } from "@helpers/sorter";
 
 export const event: Event = {
 	name: "messageCreate",
@@ -77,6 +80,18 @@ export const event: Event = {
 		}
 		if (message.content.includes("(╯°□°）╯︵ ┻━┻"))
 			return await message.reply({ content: "┬─┬ ノ( ゜-゜ノ) calm down bro" });
+
+		const textureID = (message.content.match(/(?<=\[\#)(.*?)(?=\])/) ?? [])[0];
+		if (+textureID > 0) {
+			const results = (await axios.get(`${(client as Client).config.apiUrl}textures/${textureID}/all`)).data;
+			const embed = new MessageEmbed()
+				.setTitle(`[#${textureID}] ${results.name}`)
+				.setDescription(`[View texture online](https://webapp.faithfulpack.net/#/gallery/java/32x/latest/all/?show=${textureID})`)
+				.addFields(AddPathsToEmbed(results))
+
+			message.reply({ embeds: [embed] }).then(message => message.deleteButton(true));
+		}
+
 		if (message.attachments.size > 0) {
 			if ((await easterEgg(message.attachments.first().url, 1)) && !client.tokens.dev) {
 				const embed = new MessageEmbed()
@@ -86,6 +101,7 @@ export const event: Event = {
 					.setTimestamp(new Date(1644059063305)); // when the funny moment happened
 				message.reply({ embeds: [embed] }).then((message) => message.deleteButton(true));
 			}
+
 			if ((await easterEgg(message.attachments.first().url, 2)) && !client.tokens.dev) {
 				const embed = new MessageEmbed()
 					.setTitle('"FlIp tiLinG"')
