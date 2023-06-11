@@ -27,7 +27,7 @@ module.exports = {
     if (message.content.startsWith(PREFIX)) {
       if (MAINTENANCE && !process.env.DEVELOPERS.includes(message.author.id)) {
         const msg = await message.reply({ content: strings.command.maintenance })
-        await message.react('❌')
+        await message.react(settings.emojis.downvote)
         if (!message.deleted) setTimeout(() => msg.delete(), 30000);
       }
 
@@ -52,7 +52,7 @@ module.exports = {
           .setDescription(`${strings.command.error}\nError for the developers:\n${error}`)
 
         let msgEmbed = await message.reply({ embeds: [embed] })
-        await message.react('❌')
+        await message.react(settings.emojis.downvote)
         return addDeleteReact(msgEmbed, message, true)
       })
     }
