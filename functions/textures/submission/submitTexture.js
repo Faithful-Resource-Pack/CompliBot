@@ -30,25 +30,44 @@ async function submitTexture(client, message) {
     let id = args.filter(el => el.startsWith('(#') && el.endsWith(')') && !isNaN(el.slice(2).slice(0, -1))).map(el => el.slice(2).slice(0, -1))
     id = id[0]
 
+    // take image url to get name of texture
     let search = attachment.url.split('/').slice(-1)[0].replace('.png', '')
 
     // get the description
-    let description = args.join(' ').replace(`(${search})`, '').replace(`[#${id}]`, '')
+    let description = message.content.replace(`(${search})`, '').replace(`[#${id}]`, '')
 
     // parameters for the embed
     let param = {
       description: description,
     }
 
-    // take image url to get name of texture
+    // detect co-authors:
 
-    // detect co-authors as mentions:
+    param.authors = [message.author.id];
 
-    // regex is needed since otherwise it won't pick up authors outside of the server
+    // detect using curly bracket syntax (e.g. {Author})
+    let names = [...message.content.matchAll(/(?<=\{)(.*?)(?=\})/g)];
+
+    // map to only get the first bit and trim any whitespace so { Author } etc works
+    names = names.map(i => i[0].toLowerCase().trim());
+
+    if (names !== []) {
+      const res = await fetch(`https://api.faithfulpack.net/v2/contributions/authors`);
+      const contributionJSON = await res.json();
+      for (let user of contributionJSON) {
+        if (!user.username) continue; // if no username set it will throw an error otherwise
+        if (names.includes(user.username.toLowerCase())) {
+          param.authors.push(user.id);
+        }
+      }
+    }
+
+    // detect by ping (using regex to ensure users not in the server get included)
     let mentions = [...message.content.matchAll(/(?<=\<\@)(.*?)(?=\>)/g)];
     mentions = mentions.map(i => i[0]); // map to only get the first bit
-    param.authors = [message.author.id];
-    mentions.forEach(mention => { if (!param.authors.includes(mention)) param.authors.push(mention) })
+    mentions.forEach(mention => {
+      if (!param.authors.includes(mention)) param.authors.push(mention)
+    })
 
     let results = new Array()
 
