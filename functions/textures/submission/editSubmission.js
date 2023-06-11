@@ -83,7 +83,10 @@ async function editSubmission(client, reaction, user) {
 
           await compareFunction(options)
         }
-        if (member.roles.cache.some(role => role.name.toLowerCase().includes("council") || role.name.toLowerCase().includes("admin"))) {
+        if (
+          member.permissions.has(Permissions.FLAGS.ADMINISTRATOR) ||
+          member.roles.cache.some(role => role.name.toLowerCase().includes("council"))
+        ) {
           if (REACTION.emoji.id === settings.emojis.instapass) {
             removeReact(message, [settings.emojis.upvote, settings.emojis.downvote])
             changeStatus(message, `<:instapass:${settings.emojis.instapass}> Instapassed`, settings.colors.yellow)

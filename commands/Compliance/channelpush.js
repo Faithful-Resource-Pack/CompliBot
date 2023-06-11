@@ -1,5 +1,6 @@
 const prefix = process.env.PREFIX;
 
+const Discord = require("discord.js")
 const settings = require('../../resources/settings.json');
 const strings = require('../../resources/strings.json');
 
@@ -15,7 +16,7 @@ module.exports = {
 	syntax: `${prefix}channelpush [all/name_of_pack]`,
 	example: `${prefix}channelpush faithful_32x`,
 	async execute(client, message, args) {
-		if (!message.member.roles.cache.some(role => role.name.includes("Manager") || role.id === '747839021421428776')) return warnUser(message, strings.command.no_permission);
+		if (!message.member.permissions.has(Discord.Permissions.FLAGS.ADMINISTRATOR)) return warnUser(message, strings.command.no_permission);
 		if (!args.length) return warnUser(message, strings.command.args.none_given);
 
         let packs = [settings.submission.packs[args[0]]]

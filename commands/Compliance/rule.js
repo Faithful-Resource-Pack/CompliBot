@@ -16,7 +16,11 @@ module.exports = {
 	flags: '',
 	example: `${prefix}rule 1`,
 	async execute(client, message, args) {
-		if (!message.member.roles.cache.some(role => role.name.includes("Manager") || role.name.includes("Moderator") || role.id === '747839021421428776')) return warnUser(message, strings.command.no_permission)
+		if (
+			!message.member.permissions.has(Discord.Permissions.FLAGS.ADMINISTRATOR) || // managers
+			!message.member.permissions.has(Discord.Permissions.FLAGS.MANAGE_MESSAGES) // moderators
+		)
+			return warnUser(message, strings.command.no_permission)
 
 		const RULES = strings.rules;
 		const RULES_INFO = strings.rules_info;
@@ -29,7 +33,7 @@ module.exports = {
 		let embedArray = [];
 		let embedRule;
 
-		if (message.member.roles.cache.some(role => role.name.includes("Manager") || role.id === '747839021421428776')) {
+		if (message.member.permissions.has(Discord.Permissions.FLAGS.ADMINISTRATOR)) {
 			if (args[0] == 'all') rule = -1;
 		} else warnUser(message, "Only Managers can do that!")
 
