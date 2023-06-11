@@ -43,9 +43,12 @@ async function submitTexture(client, message) {
     // take image url to get name of texture
 
     // detect co-authors as mentions:
-    let mentions = message.mentions.users
-    param.authors = [message.author.id]
-    mentions.forEach(mention => { if (!param.authors.includes(mention.id)) param.authors.push(mention.id) })
+
+    // regex is needed since otherwise it won't pick up authors outside of the server
+    let mentions = [...message.content.matchAll(/(?<=\<\@)(.*?)(?=\>)/g)];
+    mentions = mentions.map(i => i[0]); // map to only get the first bit
+    param.authors = [message.author.id];
+    mentions.forEach(mention => { if (!param.authors.includes(mention)) param.authors.push(mention) })
 
     let results = new Array()
 
