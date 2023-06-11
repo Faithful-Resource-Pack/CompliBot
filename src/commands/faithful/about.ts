@@ -27,7 +27,7 @@ export const command: SlashCommand = {
 
 		// if nobody to search up is provided, defaults to the person who asked
 		const user = interaction.options.getUser('user') ?? interaction.user;
-		const response = (await axios.get(`${(interaction.client as Client).config.apiUrl}/users/${user.id}/contributions`)).data;
+		const response = (await axios.get(`${(interaction.client as Client).config.apiUrl}users/${user.id}/contributions`)).data;
 		const AMOUNT_TO_LOAD = 20;
 		const totalCount = response.length;
 		let textures = [];
@@ -35,7 +35,7 @@ export const command: SlashCommand = {
 		for (let i of response.slice(0, AMOUNT_TO_LOAD)) {
 			// TODO: find a better way to get the texture name by ID without fetching from the API 20 times
 			try {
-				const response2 = (await axios.get(`${(interaction.client as Client).config.apiUrl}/textures/${i.texture}`)).data;
+				const response2 = (await axios.get(`${(interaction.client as Client).config.apiUrl}textures/${i.texture}`)).data;
 				textures.push([response2.name, i.pack, i.texture]);
 			} catch {/* texture doesn't exist so we just skip it */};
 		}
