@@ -1,10 +1,5 @@
 const prefix = process.env.PREFIX
 
-const uidR = process.env.UIDR
-const uidJ = process.env.UIDJ
-const uidD = process.env.UIDD
-const uidT = process.env.UIDT
-
 const strings = require('../../resources/strings.json')
 const settings = require('../../resources/settings.json')
 
@@ -21,7 +16,7 @@ module.exports = {
 	syntax: `${prefix}reload <command>`,
 	example: `${prefix}reload magnify`,
 	async execute(client, message, args) {
-		if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD || message.author.id === uidT) {
+		if (process.env.DEVELOPERS.includes(message.author.id)) {
 			const commandName = args[0].toLowerCase();
 			const command = message.client.commands.get(commandName) || message.client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 

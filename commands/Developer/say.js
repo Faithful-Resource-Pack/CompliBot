@@ -1,10 +1,5 @@
 const prefix = process.env.PREFIX;
 
-const uidR = process.env.UIDR;
-const uidJ = process.env.UIDJ;
-const uidD = process.env.UIDD;
-const uidT = process.env.UIDT;
-
 const strings = require('../../resources/strings.json');
 
 const { warnUser } = require('../../helpers/warnUser.js');
@@ -18,7 +13,7 @@ module.exports = {
 	syntax: `${prefix}say [message] [attach a file]`,
 	example: `${prefix}say hello there`,
 	async execute(client, message, args) {
-		if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD || message.author.id === uidT) {
+		if (process.env.DEVELOPERS.includes(message.author.id)) {
 			if (!args.length) return warnUser(message, strings.command.args.none_given);
 
 			else {

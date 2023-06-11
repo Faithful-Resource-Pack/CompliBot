@@ -1,9 +1,5 @@
 const prefix = process.env.PREFIX
 
-const uidR = process.env.UIDR
-const uidJ = process.env.UIDJ
-const uidD = process.env.UIDD
-const uidT = process.env.UIDT
 
 const { saveDB } = require('../../functions/saveDB')
 const strings = require('../../resources/strings.json')
@@ -19,7 +15,7 @@ module.exports = {
   syntax: `${prefix}backup`,
   example: `${prefix}bdb`,
   async execute(_client, message, args) {
-    if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD || message.author.id === uidT) {
+    if (process.env.DEVELOPERS.includes(message.author.id)) {
 
       await saveDB(`Manual backup executed by: ${message.author.username}`)
       await message.react(settings.emojis.upvote)

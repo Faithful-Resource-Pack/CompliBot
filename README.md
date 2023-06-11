@@ -31,7 +31,7 @@ node .
 ___
 ### Bot config:
 
-**DISCLAIMER: We won't help you rebranding the bot for any other server. If you really want to do that, then you need to figure it out yourself.**
+**DISCLAIMER: We won't help you rebrand the bot for any other server. If you really want to do that, then you need to figure it out yourself.**
 
 - Create an app on the **[Discord Developer Portal](https://discord.com/developers/)**.
 - Go to the **Bot** tab, create a bot and copy its token.
@@ -43,7 +43,7 @@ ___
 |:-----------------------:|:------------------------------------------:|:-------------------------------------------------------------------------:|
 |      CLIENT_TOKEN       |                    "-"                     |  The token you copied from the Developer Portal, used to login the bot.   |
 |         PREFIX          |                    "/"                     |              This is the character used to execute commands.              |
-| UIDR, UIDJ, UIDD, UIDT  |            "123456789123456789"            |                The user ids of the four bot maintainers.                  |
+|      DEVELOPERS         |           "[123456789, 987654321]"         |          An array of user ids used for developer-only commands.           |
 |       MAINTENANCE       |                  "false"                   |    Makes all commands maintainer-only, sets status to do not disturb.     |
 |          DEBUG          |                  "false"                   |                       Shows advanced console logs.                        |
 |           DEV           |                  "false"                   | Disables certain features that are only necessary for the production bot. |
@@ -56,4 +56,4 @@ ___
 ### Other configs:
 
 - `resources/strings.js` for embed or message texts
-- `resources/settings.js` for role, channel ids, and colors
+- `resources/settings.js` for roles, channel ids, and colors

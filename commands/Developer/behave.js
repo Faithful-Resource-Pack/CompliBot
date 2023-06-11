@@ -1,10 +1,5 @@
 const prefix = process.env.PREFIX;
 
-const uidR = process.env.UIDR;
-const uidJ = process.env.UIDJ;
-const uidD = process.env.UIDD;
-const uidT = process.env.UIDT;
-
 const strings = require('../../resources/strings.json');
 
 module.exports = {
@@ -15,14 +10,14 @@ module.exports = {
 	uses: strings.command.use.devs,
 	syntax: `${prefix}behave`,
 	/**
-	 * 
+	 *
 	 * @param {Discord.Client} client Current Discord bot client
 	 * @param {Discord.Message} message Message that triggered the command
 	 * @param {String[]} args The arguments to the command
-	 * @returns 
+	 * @returns
 	 */
 	async execute(client, message, args) {
-		if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD || message.author.id === uidT) {
+		if (process.env.DEVELOPERS.includes(message.author.id)) {
 			if (args && Array.isArray(args) && args.length > 0 && args[0].includes('/channels/')) {
 				let ids
 				const link = args[0]

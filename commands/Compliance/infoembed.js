@@ -7,9 +7,6 @@ const { MessageEmbed } = require('discord.js')
 const { warnUser } = require('../../helpers/warnUser')
 const { Permissions } = require('discord.js');
 
-const uidR = process.env.UIDR;
-const uidJ = process.env.UIDJ;
-
 module.exports = {
 	name: 'infoembed',
 	description: strings.command.description.infoembed,

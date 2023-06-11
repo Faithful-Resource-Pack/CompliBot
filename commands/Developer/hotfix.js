@@ -1,11 +1,6 @@
 /* eslint-disable no-unused-vars */
 const prefix = process.env.PREFIX
 
-const uidR = process.env.UIDR
-const uidJ = process.env.UIDJ
-const uidD = process.env.UIDD
-const uidT = process.env.UIDT
-
 const fs = require('fs')
 
 const settings = require('../../resources/settings.json')
@@ -26,7 +21,7 @@ module.exports = {
 	uses: strings.command.use.devs,
 	syntax: `${prefix}hotfix <something>`,
 	async execute(client, message, args) {
-		if (message.author.id === uidR || message.author.id === uidJ || message.author.id === uidD || message.author.id === uidT) {
+		if (process.env.DEVELOPERS.includes(message.author.id)) {
 			await pushTextures()
 			await message.react(settings.emojis.upvote)
 		} else return

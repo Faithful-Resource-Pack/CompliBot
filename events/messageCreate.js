@@ -6,12 +6,6 @@ const { MessageEmbed } = require('discord.js');
 const DEV = (process.env.DEV.toLowerCase() == 'true')
 const MAINTENANCE = (process.env.MAINTENANCE.toLowerCase() == 'true')
 const PREFIX = process.env.PREFIX
-const UIDA = [
-  process.env.UIDR,
-  process.env.UIDD,
-  process.env.UIDT,
-  process.env.UIDJ
-]
 
 const strings = require('../resources/strings.json')
 const settings = require('../resources/settings.json')
@@ -31,7 +25,7 @@ module.exports = {
     if (message.author.bot) return
 
     if (message.content.startsWith(PREFIX)) {
-      if (MAINTENANCE && !UIDA.includes(message.author.id)) {
+      if (MAINTENANCE && !process.env.DEVELOPERS.includes(message.author.id)) {
         const msg = await message.reply({ content: strings.command.maintenance })
         await message.react('❌')
         if (!message.deleted) setTimeout(() => msg.delete(), 30000);
