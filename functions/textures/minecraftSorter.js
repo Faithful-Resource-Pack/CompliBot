@@ -1,9 +1,7 @@
 /**
  * Sorts a given collection of Minecraft versions
- * @param {String} a
- * @param {String} b
  */
-const MinecraftSorter = (a, b) => {
+function MinecraftSorter(a, b) {
 	const aSplit = a.split('.').map(s => parseInt(s))
 	const bSplit = b.split('.').map(s => parseInt(s))
 
