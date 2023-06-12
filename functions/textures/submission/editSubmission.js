@@ -89,11 +89,11 @@ async function editSubmission(client, reaction, user) {
         ) {
           if (REACTION.emoji.id === settings.emojis.instapass) {
             removeReact(message, [settings.emojis.upvote, settings.emojis.downvote])
-            changeStatus(message, `<:instapass:${settings.emojis.instapass}> Instapassed`, settings.colors.yellow)
+            changeStatus(message, `<:instapass:${settings.emojis.instapass}> Instapassed by <@${member.id}>!`, settings.colors.yellow)
             instapass(client, message)
           } else if (REACTION.emoji.id === settings.emojis.invalid) {
             removeReact(message, [settings.emojis.upvote, settings.emojis.downvote])
-            changeStatus(message, `<:invalid:${settings.emojis.invalid}> Invalid`, settings.colors.black)
+            changeStatus(message, `<:invalid:${settings.emojis.invalid}> Invalidated by  <@${member.id}>!`, settings.colors.red)
           }
         }
 
