@@ -3,7 +3,6 @@ const strings = require('../../../resources/strings.json')
 const choiceEmbed = require('../../../helpers/choiceEmbed')
 const textures = require('../../../helpers/firestorm/texture')
 const paths = require('../../../helpers/firestorm/texture_paths')
-const MinecraftSorter = require('../minecraftSorter')
 
 const { MessageEmbed, MessageAttachment } = require('discord.js');
 const { Permissions } = require('discord.js');
@@ -243,6 +242,25 @@ async function invalidSubmission(message, error = 'Not given') {
   } catch (error) {
     console.error(error)
   }
+}
+
+const MinecraftSorter = (a, b) => {
+  const aSplit = a.split('.').map(s => parseInt(s))
+  const bSplit = b.split('.').map(s => parseInt(s))
+
+  const upper = Math.min(aSplit.length, bSplit.length)
+  let i = 0
+  let result = 0
+  while (i < upper && result == 0) {
+    result = (aSplit[i] == bSplit[i]) ? 0 : (aSplit[i] < bSplit[i] ? -1 : 1) // each number
+    ++i
+  }
+
+  if (result != 0) return result
+
+  result = (aSplit.length == bSplit.length) ? 0 : (aSplit.length < bSplit.length ? -1 : 1) // longer length wins
+
+  return result
 }
 
 exports.submitTexture = submitTexture
