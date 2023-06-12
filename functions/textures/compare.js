@@ -2,6 +2,7 @@ const strings = require("../../resources/strings.json")
 const textures = require('../../helpers/firestorm/texture')
 const FindTexture = require('../../functions/textures/findTexture')
 const choiceEmbed = require('../../helpers/choiceEmbed')
+const MinecraftSorter = require('./minecraftSorter')
 
 const { MessageAttachment } = require('discord.js');
 const { addDeleteReact } = require('../../helpers/addDeleteReact')
@@ -302,24 +303,4 @@ module.exports = function (compareOptions) {
       })
       return resultPromise
     })
-}
-
-// eslint-disable-next-line no-unused-vars
-const MinecraftSorter = (a, b) => {
-  const aSplit = a.split('.').map(s => parseInt(s))
-  const bSplit = b.split('.').map(s => parseInt(s))
-
-  const upper = Math.min(aSplit.length, bSplit.length)
-  let i = 0
-  let result = 0
-  while (i < upper && result == 0) {
-    result = (aSplit[i] == bSplit[i]) ? 0 : (aSplit[i] < bSplit[i] ? -1 : 1) // each number
-    ++i
-  }
-
-  if (result != 0) return result
-
-  result = (aSplit.length == bSplit.length) ? 0 : (aSplit.length < bSplit.length ? -1 : 1) // longer length wins
-
-  return result
 }
