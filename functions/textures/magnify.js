@@ -6,7 +6,7 @@ const { MessageAttachment } = require('discord.js');
 const { addDeleteReact } = require('../../helpers/addDeleteReact')
 const { getMeta } = require('../../helpers/getMeta')
 
-async function magnifyAttachment(url) {
+async function magnifyAttachment(url, name='magnified.png') {
 	return getMeta(url)
 		.then(async function (dimension) {
 			let factor = 64
@@ -28,7 +28,7 @@ async function magnifyAttachment(url) {
 			canvasResultCTX.imageSmoothingEnabled = false
 			canvasResultCTX.drawImage(tmp, 0, 0, width, height)
 
-			return new MessageAttachment(canvasResult.toBuffer(), 'magnified.png')
+			return new MessageAttachment(canvasResult.toBuffer(), name)
 		})
 }
 
