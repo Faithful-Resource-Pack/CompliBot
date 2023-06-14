@@ -190,6 +190,7 @@ async function makeEmbed(client, message, texture, attachment, param = new Objec
     .setAuthor(message.author.tag, message.author.displayAvatarURL()) // TODO: add a Faithful gallery url that match his profile and show us all his recent textures
     .setColor(settings.colors.blue)
     .setTitle(`[#${texture.id}] ${texture.name}`)
+    .setURL(`https://webapp.faithfulpack.net/#/gallery/java/32x/latest/all/?show=${texture.id}`)
     .addFields(
       { name: 'Author', value: `<@!${param.authors.join('>\n<@!').toString()}>`, inline: true },
       { name: 'Status', value: `<:pending:${settings.emojis.pending}> Pending...`, inline: true },
