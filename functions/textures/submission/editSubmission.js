@@ -59,9 +59,9 @@ async function editSubmission(client, reaction, user) {
         const REACTION = collected.first()
         const USER_ID = [...collected.first().users.cache.values()].filter(user => user.bot === false).map(user => user.id)[0]
 
-        if (REACTION.emoji.id === settings.emojis.palette) palette(message, message.embeds[0].image.url, user.id)
-        else if (REACTION.emoji.id === settings.emojis.magnify) magnify(message, message.embeds[0].image.url, user.id)
-        else if (REACTION.emoji.id === settings.emojis.tile) tile(message, message.embeds[0].image.url, 'grid', user.id)
+        if (REACTION.emoji.id === settings.emojis.palette) palette(message, message.embeds[0].thumbnail.url, user.id)
+        else if (REACTION.emoji.id === settings.emojis.magnify) magnify(message, message.embeds[0].thumbnail.url, user.id)
+        else if (REACTION.emoji.id === settings.emojis.tile) tile(message, message.embeds[0].thumbnail.url, 'grid', user.id)
 
         /**
          * TODO: find why you can't have 2 textures of the same resolution in the drawer.urls (the texture isn't processed??)
@@ -70,7 +70,7 @@ async function editSubmission(client, reaction, user) {
           /** @type {MessageEmbed} */
           const embed = message.embeds[0]
 
-          const currentSubmissionUrl = embed.image.url
+          const currentSubmissionUrl = embed.thumbnail.url
           const textureTitle = embed.title
           const textureId = textureTitle.substring(textureTitle.indexOf('#') + 1, textureTitle.indexOf(']')).trim()
 
