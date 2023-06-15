@@ -1,7 +1,7 @@
 /**
  * Change status of embed
  * @author Evorp
- * @param {Discord.message} message message to edit
+ * @param {DiscordMessage} message message to edit
  * @param {String} string status to change (e.g. instapass, invalid, etc)
  * @param {String} color optionally change embed color to match with status
  */

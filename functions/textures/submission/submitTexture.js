@@ -165,9 +165,9 @@ async function submitTexture(client, message) {
   if (!message.deleted) setTimeout(() => message.delete(), 10);
 }
 
-const EMOJIS = [settings.emojis.upvote, settings.emojis.downvote, settings.emojis.see_more]
-async function makeEmbed(client, message, texture, attachment, param = new Object()) {
+const EMOJIS = [settings.emojis.upvote, settings.emojis.downvote, settings.emojis.see_more];
 
+async function makeEmbed(client, message, texture, attachment, param = new Object()) {
   /** @type {import("../../helpers/firestorm/texture_use.js").TextureUse[]} */
   let uses = await texture.uses()
   let pathText = []
@@ -225,25 +225,27 @@ async function makeEmbed(client, message, texture, attachment, param = new Objec
       break;
   }
 
-  const drawer = new CanvasDrawer();
+  // load raw image to pull from
   const rawImage = new MessageAttachment(attachment.url, `${texture.name}.png`);
   const upscaledImage = await magnifyAttachment(attachment.url, 'upscaled.png');
   let defaultImage;
+
+  // load images necessary to generate comparison
   try {
     defaultImage = await magnifyAttachment(`${defaultRepo[info.edition.toLowerCase()]}${info.version}/${info.path}`, 'default.png');
   } catch { // reference texture doesn't exist
     defaultImage = await magnifyAttachment(`${settings.repositories.raw.default[info.edition.toLowerCase()]}${info.version}/${info.path}`, 'default.png')
   }
 
-  // load images necessary to generate comparison
-  let currentImage;
+  const drawer = new CanvasDrawer();
   let imageUrls;
+
   try {
-    currentImage = await magnifyAttachment(`${settings.repositories.raw[repoKey][info.edition.toLowerCase()]}${info.version}/${info.path}`)
+    const currentImage = await magnifyAttachment(`${settings.repositories.raw[repoKey][info.edition.toLowerCase()]}${info.version}/${info.path}`)
     imageUrls = await getImages(client, [defaultImage, upscaledImage, rawImage, currentImage]);
     drawer.urls = [imageUrls[0], imageUrls[1], imageUrls[3]];
 
-  } catch { // texture doesn't exist yet
+  } catch { // texture doesn't exist yet so we just load two images in the comparison instead of three
     imageUrls = await getImages(client, [defaultImage, upscaledImage, rawImage]);
     drawer.urls = [imageUrls[0], imageUrls[1]];
   }
@@ -254,9 +256,11 @@ async function makeEmbed(client, message, texture, attachment, param = new Objec
 
   embed.setImage(comparisonUrls[0]);
   embed.setThumbnail(imageUrls[2]);
+
+  // if the texture doesn't exist yet only include the default/new caption rather than everything
   embed.setFooter(drawer.urls.length >= 3 ? "Default | New | Current": "Default | New");
 
-  // add, if provided, the description
+  // add description if exists
   if (param.description) embed.setDescription(param.description)
   // add an s to author if there are multiple authors
   if (param.authors.length > 1) embed.fields[0].name = 'Authors'
