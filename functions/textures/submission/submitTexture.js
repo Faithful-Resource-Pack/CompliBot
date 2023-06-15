@@ -4,8 +4,7 @@ const choiceEmbed = require('../../../helpers/choiceEmbed')
 const textures = require('../../../helpers/firestorm/texture')
 const paths = require('../../../helpers/firestorm/texture_paths')
 const MinecraftSorter = require('../minecraftSorter')
-const CanvasDrawer = require('../../../functions/textures/canvas')
-const Canvas = require('canvas')
+const { HorizontalStitcher } = require('../../../functions/textures/stitch')
 
 const { MessageEmbed, MessageAttachment } = require('discord.js');
 const { Permissions } = require('discord.js');
@@ -237,7 +236,8 @@ async function makeEmbed(client, message, texture, attachment, param = new Objec
     defaultImage = await magnifyAttachment(`${settings.repositories.raw.default[info.edition.toLowerCase()]}${info.version}/${info.path}`, 'default.png')
   }
 
-  const drawer = new CanvasDrawer();
+  const drawer = new HorizontalStitcher();
+  drawer.gap = 16;
   let imageUrls;
 
   try {
