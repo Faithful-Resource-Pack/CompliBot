@@ -2,8 +2,11 @@ import { Event } from "@interfaces";
 import { Client, Message, MessageEmbed } from "@client";
 import easterEgg from "@functions/canvas/isEasterEggImg";
 import { getSubmissionsChannels } from "@helpers/channels";
-import { Paths, Uses } from "@helpers/interfaces/firestorm";
+import { FullStitcher } from "@functions/canvas/stitch";
 import axios from 'axios';
+import { loadImage } from "canvas";
+import { magnify } from "@functions/canvas/magnify";
+import { MessageAttachment } from "discord.js";
 import { AddPathsToEmbed } from "@helpers/sorter";
 
 export const event: Event = {
@@ -82,17 +85,53 @@ export const event: Event = {
 			return await message.reply({ content: "┬─┬ ノ( ゜-゜ノ) calm down bro" });
 
 		const textureID = [...message.content.matchAll(/(?<=\[\#)(.*?)(?=\])/g)] ?? [];
+
+		// TODO: move this somewhere nicer
+		const PACKS = [
+			[
+				'default',
+				'faithful_32x',
+				'faithful_64x'
+			],
+			[
+				'classic_faithful_32x',
+				'classic_faithful_32x_progart',
+				'classic_faithful_64x'
+			]
+		]
+
 		for (let i of textureID) {
 			if (+i[0] > 0) { // cast to number
 				try {
 					const results = (await axios.get(`${(client as Client).config.apiUrl}textures/${i[0]}/all`)).data;
+					let stitcher = new FullStitcher();
+
+					let j = 0;
+					for (let packSet of PACKS) {
+						stitcher.urls.push(new Array());
+						for (let pack of packSet) {
+							try {
+								const textureURL = (await axios.get(`${client.config.apiUrl}textures/${i}/url/${pack}/latest`)).request.res.responseUrl;
+								stitcher.urls[j].push(textureURL);
+							} catch {/* texture hasn't been made yet */};
+						}
+						++j;
+					}
+
+					stitcher.gap = 4;
+					const stitched = await stitcher.draw();
+
+					const magnified = (await magnify({ image: await loadImage(stitched), name: 'magnified.png' }))[0];
+
 					const embed = new MessageEmbed()
 						.setTitle(`[#${i[0]}] ${results.name}`)
 						.setDescription(`[View texture online](https://webapp.faithfulpack.net/#/gallery/java/32x/latest/all/?show=${i[0]})`)
 						.addFields(AddPathsToEmbed(results))
+						.setImage('attachment://magnified.png')
 
-					message.reply({ embeds: [embed] }).then(message => message.deleteButton(true));
-				} catch {/* texture doesn't exist */}
+
+					message.reply({ embeds: [embed], files: [magnified] }).then(message => message.deleteButton(true));
+				} catch {/* texture doesn't exist or failed or whatever*/}
 			}
 		}
 

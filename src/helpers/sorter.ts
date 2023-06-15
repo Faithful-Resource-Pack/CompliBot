@@ -1,4 +1,4 @@
-import { Uses, Paths, Texture } from '@helpers/interfaces/firestorm';
+import { Texture } from '@helpers/interfaces/firestorm';
 import { EmbedFieldData } from 'discord.js';
 /**
  * Sort Minecraft Version Numbers
