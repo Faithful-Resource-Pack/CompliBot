@@ -4,6 +4,7 @@ const choiceEmbed = require('../../../helpers/choiceEmbed')
 const textures = require('../../../helpers/firestorm/texture')
 const paths = require('../../../helpers/firestorm/texture_paths')
 const MinecraftSorter = require('../minecraftSorter')
+const { HorizontalStitcher } = require('../../../functions/textures/stitch')
 
 const { MessageEmbed, MessageAttachment } = require('discord.js');
 const { Permissions } = require('discord.js');
@@ -163,9 +164,9 @@ async function submitTexture(client, message) {
   if (!message.deleted) setTimeout(() => message.delete(), 10);
 }
 
-const EMOJIS = [settings.emojis.upvote, settings.emojis.downvote, settings.emojis.see_more]
-async function makeEmbed(client, message, texture, attachment, param = new Object()) {
+const EMOJIS = [settings.emojis.upvote, settings.emojis.downvote, settings.emojis.see_more];
 
+async function makeEmbed(client, message, texture, attachment, param = new Object()) {
   /** @type {import("../../helpers/firestorm/texture_use.js").TextureUse[]} */
   let uses = await texture.uses()
   let pathText = []
@@ -180,14 +181,19 @@ async function makeEmbed(client, message, texture, attachment, param = new Objec
   }
 
   const paths = await uses[0].paths()
-  const thumbnail = {
+  const info = {
     path: paths[0].path,
     version: paths[0].versions.sort(MinecraftSorter).reverse()[0],
     edition: uses[0].editions[0]
   }
 
+  // TODO: when discord finishes name migration remove this code and just use message.author.username everywhere
+  const authorName = (message.author.discriminator == 0)
+    ? `@${message.author.username}`
+    : message.author.tag
+
   let embed = new MessageEmbed()
-    .setAuthor(message.author.tag, message.author.displayAvatarURL()) // TODO: add a Faithful gallery url that match his profile and show us all his recent textures
+    .setAuthor(authorName, message.author.displayAvatarURL()) // TODO: add a Faithful gallery url that shows all textures by a given author
     .setColor(settings.colors.blue)
     .setTitle(`[#${texture.id}] ${texture.name}`)
     .setURL(`https://webapp.faithfulpack.net/#/gallery/java/32x/latest/all/?show=${texture.id}`)
@@ -197,23 +203,66 @@ async function makeEmbed(client, message, texture, attachment, param = new Objec
       { name: '\u200B', value: pathText.toString().replace(/,/g, ''), inline: false }
     )
 
-  const attachmentThumbnail = await magnifyAttachment(`${settings.repositories.raw.default[thumbnail.edition.toLowerCase()]}${thumbnail.version}/${thumbnail.path}`)
-  const attachmentMain = new MessageAttachment(attachment.url, texture.name + '.png')
+  // determine reference image to compare against
+  let repoKey;
+  for (let [packKey, packValue] of Object.entries(settings.submission.packs)) {
+    if (packValue.channels.submit == message.channel.id) {
+      repoKey = packKey;
+      break;
+    }
+  }
+  let defaultRepo;
+  switch (repoKey) {
+    case "faithful_64x":
+      defaultRepo = settings.repositories.raw.faithful_32x;
+      break;
+    case "classic_faithful_64x":
+      defaultRepo = settings.repositories.raw.classic_faithful_32x;
+      break;
+    default:
+      defaultRepo = settings.repositories.raw.default;
+      break;
+  }
 
-  const imgMessage = await client.channels.cache.get('916766396170518608').send({files: [attachmentThumbnail, attachmentMain]})
+  // load raw image to pull from
+  const rawImage = new MessageAttachment(attachment.url, `${texture.name}.png`);
+  const upscaledImage = await magnifyAttachment(attachment.url, 'upscaled.png');
+  let defaultImage;
 
-  var imgArray = new Array()
+  // load images necessary to generate comparison
+  try {
+    defaultImage = await magnifyAttachment(`${defaultRepo[info.edition.toLowerCase()]}${info.version}/${info.path}`, 'default.png');
+  } catch { // reference texture doesn't exist
+    defaultImage = await magnifyAttachment(`${settings.repositories.raw.default[info.edition.toLowerCase()]}${info.version}/${info.path}`, 'default.png')
+  }
 
-  imgMessage.attachments.forEach(Attachment => {
-    imgArray.push(Attachment.url)
-  })
+  const drawer = new HorizontalStitcher();
+  drawer.gap = 16;
+  let imageUrls;
 
-  embed.setThumbnail(imgArray[0])
-  embed.setImage(imgArray[1])
+  try {
+    const currentImage = await magnifyAttachment(`${settings.repositories.raw[repoKey][info.edition.toLowerCase()]}${info.version}/${info.path}`)
+    imageUrls = await getImages(client, [defaultImage, upscaledImage, rawImage, currentImage]);
+    drawer.urls = [imageUrls[0], imageUrls[1], imageUrls[3]];
 
-  // add, if provided, the description
+  } catch { // texture doesn't exist yet so we just load two images in the comparison instead of three
+    imageUrls = await getImages(client, [defaultImage, upscaledImage, rawImage]);
+    drawer.urls = [imageUrls[0], imageUrls[1]];
+  }
+
+  // generate comparison and add to embed
+  const comparisonImage = new MessageAttachment(await drawer.draw(), 'compared.png');
+  const comparisonUrls = await getImages(client, [comparisonImage]);
+
+  embed.setImage(comparisonUrls[0]);
+  embed.setThumbnail(imageUrls[2]);
+
+  // if the texture doesn't exist yet only include the default/new caption rather than everything
+  embed.setFooter(drawer.urls.length >= 3 ? "Default | New | Current": "Default | New");
+
+  // add description if exists
   if (param.description) embed.setDescription(param.description)
-  // add an s to author if there is multiple authors
+  // add an s to author if there are multiple authors
   if (param.authors.length > 1) embed.fields[0].name = 'Authors'
 
   // send the embed
@@ -224,6 +273,17 @@ async function makeEmbed(client, message, texture, attachment, param = new Objec
     let e = client.emojis.cache.get(emojiID)
     await msg.react(e)
   }
+}
+
+async function getImages(client, fileArray) {
+  let imgArray = new Array();
+  const imgMessage = await client.channels.cache.get('916766396170518608').send({ files: fileArray });
+
+  imgMessage.attachments.forEach(Attachment => {
+    imgArray.push(Attachment.url)
+  });
+
+  return imgArray;
 }
 
 async function invalidSubmission(message, error = 'Not given') {

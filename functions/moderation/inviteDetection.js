@@ -48,11 +48,15 @@ async function inviteDetection(client, message) {
 		.setDescription(`[Jump to message](${message.url})\n\n**Channel**: <#${message.channel.id}>\n**Server**: \`${message.guild}\`\n**User ID**: \`${message.author.id}\`\n**Date**: \`${message.createdAt.toLocaleString()}\`\n\n\`\`\`${message.content}\`\`\``)
 		.setTimestamp()
 
+	const authorName = (message.author.discriminator == 0)
+		? `@${message.author.username}`
+		: message.author.tag
+
 	if (isScam) {
-		embed.setAuthor(`${message.author.tag} may be trying to scam users`, message.author.displayAvatarURL());
+		embed.setAuthor(`${authorName} may be trying to scam users`, message.author.displayAvatarURL());
 		await message.delete();
 	} else if (isAd) {
-		embed.setAuthor(`${message.author.tag} may have advertised a discord server`, message.author.displayAvatarURL());
+		embed.setAuthor(`${authorName} may have advertised a discord server`, message.author.displayAvatarURL());
 	} else return;
 
 	client.channels.cache.get(settings.channels.link_detection).send({ embeds: [embed] })

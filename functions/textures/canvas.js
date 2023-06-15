@@ -1,7 +1,7 @@
 const Canvas = require('canvas')
 const PromiseEvery = require('../../helpers/promiseEvery')
 
-class CanvasDrawer {
+module.exports = class CanvasDrawer {
   /**
    * @param {canvasOptions} canvasOptions Drawing canvas options
    */
@@ -114,5 +114,3 @@ class CanvasDrawer {
     })
   }
 }
-
-module.exports = CanvasDrawer

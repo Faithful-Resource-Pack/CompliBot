@@ -72,8 +72,14 @@ async function sendToCouncil(client, messagesUpvoted, messagesDownvoted, channel
 			.then(async sentMessage => {
 				for (const emojiID of EMOJIS) await sentMessage.react(client.emojis.cache.get(emojiID))
 			})
+		changeStatus(message.message, `<:upvote:${settings.emojis.upvote}> Sent to council!`, settings.colors.green);
 
-		changeStatus(message.message, `<:upvote:${settings.emojis.upvote}> Sent to council!`, settings.colors.green)
+		// fix weird bug
+		if (message.message.embeds[0].description !== null) {
+			let embed = message.message.embeds[0];
+			embed.setDescription(embed.description.replace(`[Original Post](${message.message.url})\n`, ''))
+			message.message.edit({ embeds: [embed] });
+		}
 	});
 
 	messagesDownvoted.forEach(message => {

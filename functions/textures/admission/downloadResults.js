@@ -49,7 +49,7 @@ async function downloadResults(client, channelInID, instapass=false) {
 
 		textures = messages.map(message => {
 			return {
-				url: message.embeds[0].image.url,
+				url: message.embeds[0].thumbnail.url,
 				authors: message.embeds[0].fields[0].value.split('\n').map(auth => auth.replace('<@!', '').replace('>', '')),
 				date: message.createdTimestamp,
 				id: message.embeds[0].title.split(' ').filter(el => el.charAt(0) === '[' && el.charAt(1) === '#' && el.slice(-1) == "]").map(el => el.slice(2, el.length - 1))[0]
@@ -66,12 +66,14 @@ async function downloadResults(client, channelInID, instapass=false) {
 		}
 
 		textures = [{
-			url: message.embeds[0].image.url,
+			url: message.embeds[0].thumbnail.url,
 			authors: message.embeds[0].fields[0].value.split('\n').map(auth => auth.replace('<@!', '').replace('>', '')),
 			date: message.createdTimestamp,
 			id: message.embeds[0].title.split(' ').filter(el => el.charAt(0) === '[' && el.charAt(1) === '#' && el.slice(-1) == "]").map(el => el.slice(2, el.length - 1))[0]
 		}];
 	}
+
+	console.log(textures[0].url);
 
 	// for each texture:
 	let allContribution = new Array();
