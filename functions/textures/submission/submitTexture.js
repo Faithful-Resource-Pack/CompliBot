@@ -241,7 +241,7 @@ async function makeEmbed(client, message, texture, attachment, param = new Objec
   try {
     currentImage = await magnifyAttachment(`${settings.repositories.raw[repoKey][info.edition.toLowerCase()]}${info.version}/${info.path}`)
     imageUrls = await getImages(client, [defaultImage, upscaledImage, rawImage, currentImage]);
-    drawer.urls = [imageUrls[0], imageUrls[1], imageUrls[2]];
+    drawer.urls = [imageUrls[0], imageUrls[1], imageUrls[3]];
 
   } catch { // texture doesn't exist yet
     imageUrls = await getImages(client, [defaultImage, upscaledImage, rawImage]);
@@ -250,10 +250,11 @@ async function makeEmbed(client, message, texture, attachment, param = new Objec
 
   // generate comparison and add to embed
   const comparisonImage = new MessageAttachment(await drawer.draw(), 'compared.png');
-  const comparisonUrls = await getImages(client, [comparisonImage])
+  const comparisonUrls = await getImages(client, [comparisonImage]);
 
   embed.setImage(comparisonUrls[0]);
   embed.setThumbnail(imageUrls[2]);
+  embed.setFooter(drawer.urls.length >= 3 ? "Default | New | Current": "Default | New");
 
   // add, if provided, the description
   if (param.description) embed.setDescription(param.description)
