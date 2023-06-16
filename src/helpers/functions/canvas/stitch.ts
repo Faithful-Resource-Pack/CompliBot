@@ -4,6 +4,7 @@ import { createCanvas, loadImage } from "canvas";
  * literally all this code is ripped from the js bot
  * and I genuinely have no idea how it works but it seems to be holding up
  * @param {string[]} urls array of urls
+ * @param {number} gap the gap between each texture
  */
 export class HorizontalStitcher {
 	urls = new Array();
@@ -78,6 +79,7 @@ export class HorizontalStitcher {
  * this was actual pain to make
  * @author Evorp
  * @param {string[][]} urls two-dimensional array of valid urls
+ * @param {number} gap the gap between each texture
 */
 export class FullStitcher { // not using inheritance since this is a completely different implementation and doesn't need to load images
 	urls = new Array(); // two dimensional array for adding rows and columns
@@ -148,4 +150,56 @@ export class FullStitcher { // not using inheritance since this is a completely 
 		}
 		return canvas.toBuffer();
 	}
+}
+
+import { magnify } from "@functions/canvas/magnify";
+import { Client, MessageEmbed } from "@client";
+import { MessageAttachment } from "discord.js";
+import { AddPathsToEmbed } from "@helpers/sorter";
+import axios from "axios";
+
+/**
+ * More convenient way of getting all compared textures in a nice grid without copy pasting the same code everywhere
+ * @author Evorp
+ * @param client Client used for getting config stuff
+ * @param id texture id to look up
+ * @returns pre-formatted message embed and the attachment needed in an array, in that order
+ */
+export async function textureComparison(client: Client, id: string | number): Promise<[MessageEmbed, MessageAttachment]> {
+	const results = (await axios.get(`${client.config.apiUrl}textures/${id}/all`)).data;
+	const PACKS = [
+		[
+			'default',
+			'faithful_32x',
+			'faithful_64x'
+		],
+		[
+			'classic_faithful_32x',
+			'classic_faithful_32x_progart',
+			'classic_faithful_64x'
+		]
+	]
+	let stitcher = new FullStitcher();
+	let j = 0;
+	for (let packSet of PACKS) {
+		stitcher.urls.push(new Array());
+		for (let pack of packSet) {
+			try {
+				const textureURL = (await axios.get(`${client.config.apiUrl}textures/${id}/url/${pack}/latest`)).request.res.responseUrl;
+				stitcher.urls[j].push(textureURL);
+			} catch {/* texture hasn't been made yet */};
+		}
+		++j; // can't use forEach because of scope problems (blame js)
+	}
+
+	stitcher.gap = 4;
+	const stitched = await stitcher.draw();
+	const magnified = (await magnify({ image: await loadImage(stitched), name: 'magnified.png' }))[0];
+	const embed = new MessageEmbed()
+		.setTitle(`[#${id}] ${results.name}`)
+		.setDescription(`[View texture online](https://webapp.faithfulpack.net/#/gallery/java/32x/latest/all/?show=${id})`)
+		.addFields(AddPathsToEmbed(results))
+		.setImage('attachment://magnified.png')
+
+	return [embed, magnified]
 }
