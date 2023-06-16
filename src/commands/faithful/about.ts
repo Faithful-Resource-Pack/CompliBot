@@ -7,7 +7,6 @@ function toTitleCase(str: string) {
 	return str.replace(/(^|\s)\S/g, t => t.toUpperCase());
 }
 export const command: SlashCommand = {
-	servers: ["faithful", "faithful_extra", "classic_faithful"],
 	data: new SlashCommandBuilder()
 		.setName("about")
 		.setDescription("Shows a given user's contributions")

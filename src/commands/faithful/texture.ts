@@ -8,7 +8,6 @@ import { imageButtons } from "@helpers/buttons";
 import { MinecraftSorter } from "@helpers/sorter";
 
 export const command: SlashCommand = {
-	servers: ["faithful", "faithful_extra", "classic_faithful"],
 	data: new SlashCommandBuilder()
 		.setName("texture")
 		.setDescription("Displays a specified texture from either vanilla Minecraft or Faithful.")

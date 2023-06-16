@@ -4,7 +4,6 @@ import { colors } from "@helpers/colors";
 import { Message, MessageEmbed, CommandInteraction } from "@client";
 
 export const command: SlashCommand = {
-	servers: ["faithful", "faithful_extra", "classic_faithful"],
 	data: new SlashCommandBuilder()
 		.setName("website")
 		.setDescription("Displays all sites for the given resource pack.")

@@ -3,7 +3,6 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction, Message } from "@client";
 
 export const command: SlashCommand = {
-	servers: ["faithful", "faithful_extra", "classic_faithful"],
 	data: new SlashCommandBuilder()
 		.setName("license")
 		.setDescription("Shows the license for the Faithful Resource Pack."),

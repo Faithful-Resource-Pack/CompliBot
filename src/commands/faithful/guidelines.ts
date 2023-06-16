@@ -5,7 +5,6 @@ import guidelineJSON from "@json/guidelines.json";
 import { colors } from "@helpers/colors";
 
 export const command: SlashCommand = {
-	servers: ["faithful", "faithful_extra", "classic_faithful"],
 	data: new SlashCommandBuilder()
 		.setName("guidelines")
 		.setDescription("Shows various Faithful texturing guidelines.")
