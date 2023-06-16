@@ -237,7 +237,7 @@ async function makeEmbed(client, message, texture, attachment, param = new Objec
   }
 
   const drawer = new HorizontalStitcher();
-  drawer.gap = 16;
+  drawer.gap = 32;
   let imageUrls;
 
   try {
