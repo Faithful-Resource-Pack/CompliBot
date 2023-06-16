@@ -94,8 +94,13 @@
         },
         {
             "question": "Is Faithful available for [Minecraft version/edition]?",
-            "answer": "Each pack is different: \n- Faithful 32x currently supports Bedrock Edition, and Java versions 1.6 – 1.19, 1.4 and Beta 1.7. \n- Classic Faithful 32x Jappa and PA are also available for 1.6 – 1.19 and Bedrock Edition, but are currently not complete for b1.7 – 1.5. \n- Both 64x packs only currently support the latest Minecraft Java and Bedrock version.",
+            "answer": "Each pack is different: \n- Faithful 32x currently supports Bedrock Edition, and Java versions from 1.6 to the latest release, 1.4 and Beta 1.7. \n- Classic Faithful 32x Jappa and PA are also available from 1.6 – the latest release and Bedrock Edition, but are currently not complete for b1.7 – 1.5. \n- Both 64x packs only currently support the latest Minecraft Java and Bedrock version.",
             "keywords": ["version", "versions"]
+        },
+        {
+            "question": "When will Faithful be available for [Minecraft version]?",
+            "answer": "Since Faithful is a community-driven project, progress is dependent on people submitting textures. This means that there are no hard deadlines for a given pack to be completed for a new version. However, you can usually use an [experimental build](https://database.faithfulpack.net/packs/) of the pack in the mean time, which may include missing textures. \nIf you want to help out with pack progress, read the [Contributor's Handbook](https://docs.faithfulpack.net/pages/textures/contributor-handbook) and inquire in the pack's respective Discord for more information.",
+            "keywords": ["progress", "update", "new version"]
         },
         {
             "question": "Why am I seeing missing/16x/vanilla textures while using Faithful?",
@@ -144,11 +149,11 @@
         },
         {
             "question": "How can I submit a texture to the pack? How does the approval process work?",
-            "answer": "For the main Faithful packs, please read [The Faithful Contributor's Handbook](https://docs.faithfulpack.net/pages/textures/contributor-handbook). \nTL;DR: You will need to accept the agreement in <#991031483089186826> first. To submit textures, upload them one at a time to the appropriate submission channel. Any text you include with the message will be added as a comment, and people pinged in the comment will be added as co-authors. \nTo be accepted into the pack, your texture must pass a round of community voting (lasting 2 days) and a round of private Art Director Council voting (lasting one day). \nFor Classic Faithful, the submission process is exactly the same but only takes one day of community voting and no council vote instead.",
+            "answer": "For the main Faithful packs, please read [The Faithful Contributor's Handbook](https://docs.faithfulpack.net/pages/textures/contributor-handbook). \nTL;DR: You will need to accept the agreement in <#991031483089186826> first. To submit textures, upload them to the appropriate submission channel (the file has to have the same name as the default texture), and the bot will take over from there and format it for you. Any text you include with the message will be added as a comment, and people pinged in the comment will be added as co-authors. \nFor your texture to be added to the pack, it must pass a round of community voting (lasting 2 days) and a round of private Art Director Council voting (lasting one day). \nFor Classic Faithful, the submission process is exactly the same but only takes one day of community voting and no council vote instead.",
             "keywords": ["submit", "approval"]
         },
         {
-            "question": "How can I submit my Add-on to the website?",
+            "question": "How can I submit my add-on to the website?",
             "answer": "On https://webapp.faithfulpack.net/, log in with your Discord account. Next, in the navigation bar at the top, click Add-ons and select Upload. Finally, fill out the form that you're presented with, and when you're finished, click the Submit button. Your Add-on will appear on the website when it has been reviewed and approved by an Manager.",
             "keywords": ["submit add-on", "add-on", "addon", "webapp"]
         },
@@ -173,12 +178,12 @@
             "keywords": ["modping", "moderator ping"]
         },
         {
-            "question": "What's the difference between an Add-on and a Tweak?",
+            "question": "What's the difference between an add-on and a tweak?",
             "answer": "We define the differences in the following way: \n**Tweak**: A Tweak changes existing aspects about the game. They are one-off and smaller than an Add-on – changes of multiple themes should not be grouped into one Tweak. Examples: 3D items, Consistent Bedrock. \n**Add-on**: An Add-on adds new features to the game, and/or is usually larger in scope than a Tweak. Examples: New random variations for blocks/mobs. \nAdditionally, due to technical limitations, PBR resource packs cannot reuse textures from the main Faithful pack, and therefore can function as standalone – but for the sake of simplicity, they are also considered Add-ons. \nLastly, collections of Tweaks that the author chooses not to submit individually are considered Add-ons as well.",
             "keywords": ["add-on vs tweak", "tweak vs add-on"]
         },
         {
-            "question": "How can I submit my Tweak?",
+            "question": "How can I submit my tweak?",
             "answer": "For the time being, Tweaks can be submitted as Add-ons, using the method mentioned above. A Vanilla Tweaks-styled customiser is planned for the future, but its development is currently on pause due to us having no developer for it.",
             "keywords": ["tweak", "tweaks"]
         },
