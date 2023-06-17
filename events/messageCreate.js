@@ -11,7 +11,6 @@ const strings = require('../resources/strings.json')
 const settings = require('../resources/settings.json')
 
 const { submitTexture } = require('../functions/textures/submission/submitTexture')
-const { inviteDetection } = require('../functions/moderation/inviteDetection')
 const { increase: increaseCommandProcessed } = require('../functions/commandProcess')
 
 const { addDeleteReact } = require('../helpers/addDeleteReact')
@@ -59,14 +58,6 @@ module.exports = {
 
     else {
       if (DEV) return
-
-      /**
-       * DISCORD SERVER INVITE DETECTION
-       * @warn I hope there is no other use of this link type on Discord
-       * Found more information here: https://youtu.be/-51AfyMqnpI
-       * @author RobertR11
-       */
-      inviteDetection(client, message)
 
       /**
        * TEXTURE SUBMISSION

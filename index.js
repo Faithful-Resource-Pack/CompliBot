@@ -13,7 +13,7 @@ const { walkSync } = require('./helpers/walkSync')
 require('dotenv').config()
 
 // fetch settings file at start
-const { doCheckSettings } = require('./functions/settings/doCheckSettings')
+const { doCheckSettings } = require('./functions/doCheckSettings')
 
 // beware you need THIS to be loaded before all the functions are used
 const settingsPromise = doCheckSettings()

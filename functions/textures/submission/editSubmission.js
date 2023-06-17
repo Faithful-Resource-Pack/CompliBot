@@ -9,10 +9,6 @@ const { warnUser } = require('../../../helpers/warnUser')
 const { downloadResults } = require("../admission/downloadResults")
 const { changeStatus } = require('./changeStatus')
 
-const CANVAS_FUNCTION_PATH = '../../../functions/textures/canvas'
-function nocache(module) { require('fs').watchFile(require('path').resolve(module), () => { delete require.cache[require.resolve(module)] }) }
-nocache(CANVAS_FUNCTION_PATH)
-
 /**
  * Edit the embed of the submission
  * @author Juknum

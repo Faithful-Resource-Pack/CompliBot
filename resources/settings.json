@@ -88,6 +88,7 @@
         "downvote": "918186603007078420",
         "delete": "1103485671903076403",
         "compare": "918186583176405032",
+        "view_raw": "1119109164959027291",
         "tile": "918186692307996723",
         "next_res": "918186640571256842",
         "pending": "918186662780092537",
@@ -166,48 +167,18 @@
     "repositories": {
         "repo_name": {
             "java": {
-                "faithful_32x": {
-                    "repo": "Faithful-Java-32x",
-                    "org": "Faithful-Resource-Pack"
-                },
-                "faithful_64x": {
-                    "repo": "Faithful-Java-64x",
-                    "org": "Faithful-Resource-Pack"
-                },
-                "classic_faithful_32x": {
-                    "repo": "32x-Jappa",
-                    "org": "ClassicFaithful"
-                },
-                "classic_faithful_32x_progart": {
-                    "repo": "32x-Programmer-Art",
-                    "org": "ClassicFaithful"
-                },
-                "classic_faithful_64x": {
-                    "repo": "64x-Jappa",
-                    "org": "ClassicFaithful"
-                }
+                "faithful_32x": { "repo": "Faithful-Java-32x", "org": "Faithful-Resource-Pack" },
+                "faithful_64x": { "repo": "Faithful-Java-64x", "org": "Faithful-Resource-Pack" },
+                "classic_faithful_32x": { "repo": "32x-Jappa", "org": "ClassicFaithful" },
+                "classic_faithful_32x_progart": { "repo": "32x-Programmer-Art", "org": "ClassicFaithful" },
+                "classic_faithful_64x": { "repo": "64x-Jappa", "org": "ClassicFaithful" }
             },
             "bedrock": {
-                "faithful_32x": {
-                    "repo": "Faithful-Bedrock-32x",
-                    "org": "Faithful-Resource-Pack"
-                },
-                "faithful_64x": {
-                    "repo": "Faithful-Bedrock-64x",
-                    "org": "Faithful-Resource-Pack"
-                },
-                "classic_faithful_32x": {
-                    "repo": "32x-Jappa-Bedrock",
-                    "org": "ClassicFaithful"
-                },
-                "classic_faithful_32x_progart": {
-                    "repo": "32x-Programmer-Art-Bedrock",
-                    "org": "ClassicFaithful"
-                },
-                "classic_faithful_64x": {
-                    "repo": "64x-Jappa-Bedrock",
-                    "org": "ClassicFaithful"
-                }
+                "faithful_32x": { "repo": "Faithful-Bedrock-32x", "org": "Faithful-Resource-Pack" },
+                "faithful_64x": { "repo": "Faithful-Bedrock-64x", "org": "Faithful-Resource-Pack" },
+                "classic_faithful_32x": { "repo": "32x-Jappa-Bedrock", "org": "ClassicFaithful" },
+                "classic_faithful_32x_progart": { "repo": "32x-Programmer-Art-Bedrock", "org": "ClassicFaithful" },
+                "classic_faithful_64x": { "repo": "64x-Jappa-Bedrock", "org": "ClassicFaithful" }
             }
         },
         "git": {

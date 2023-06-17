@@ -13,7 +13,7 @@ const { pushTextures } = require('../functions/textures/admission/pushTextures')
 
 const { restartAutoDestroy } = require('../functions/restartAutoDestroy')
 const { saveDB } = require('../functions/saveDB')
-const { doCheckSettings } = require('../functions/settings/doCheckSettings')
+const { doCheckSettings } = require('../functions/doCheckSettings')
 
 /**
  * SCHEDULED FUNCTIONS : Texture Submission

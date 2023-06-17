@@ -1,6 +1,6 @@
 const fs = require('fs/promises')
 const path = require('path')
-const allCollection = require('../../helpers/firestorm/all')
+const allCollection = require('../helpers/firestorm/all')
 
 const OUT_PATH = path.join(path.join(process.cwd(), 'resources/'), 'settings.json')
 const JSON_REPLACER = null
