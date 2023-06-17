@@ -212,15 +212,19 @@ async function makeEmbed(client, message, texture, attachment, param = new Objec
     }
   }
   let defaultRepo;
+  let referenceText;
   switch (repoKey) {
     case "faithful_64x":
       defaultRepo = settings.repositories.raw.faithful_32x;
+      referenceText = 'Faithful 32x'
       break;
     case "classic_faithful_64x":
       defaultRepo = settings.repositories.raw.classic_faithful_32x;
+      referenceText = 'Classic Faithful 32x Jappa'
       break;
     default:
       defaultRepo = settings.repositories.raw.default;
+      referenceText = 'Default'
       break;
   }
 
@@ -258,7 +262,7 @@ async function makeEmbed(client, message, texture, attachment, param = new Objec
   embed.setThumbnail(imageUrls[2]);
 
   // if the texture doesn't exist yet only include the default/new caption rather than everything
-  embed.setFooter(drawer.urls.length >= 3 ? "Default | New | Current": "Default | New");
+  embed.setFooter(drawer.urls.length >= 3 ? `${referenceText} | New | Current`: `${referenceText} | New`);
 
   // add description if exists
   if (param.description) embed.setDescription(param.description)
