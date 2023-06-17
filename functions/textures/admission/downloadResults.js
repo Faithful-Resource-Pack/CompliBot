@@ -73,8 +73,6 @@ async function downloadResults(client, channelInID, instapass=false) {
 		}];
 	}
 
-	console.log(textures[0].url);
-
 	// for each texture:
 	let allContribution = new Array();
 	let instapassName; // there's probably a better way to get the texture name for instapassed embeds but oh well
