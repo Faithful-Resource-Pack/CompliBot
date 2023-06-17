@@ -11,9 +11,9 @@ export const event: Event = {
 		//! do not remove, 'force' message to be casted (break if removed)
 		let _ = (message as Message) instanceof Message;
 
-		let m = Object.assign({}, message); // loose reference to message: create unique instance of the message for the logger (ask @Juknum)
+		let m = Object.assign({}, message); // lose reference to message: create unique instance of the message for the logger (ask @Juknum)
 		m.isDeleted = true;
-		m.author = message.author; // because we loose methods attached to the object :3
+		m.author = message.author; // because we lose methods attached to the object :3
 		client.storeAction("message", m);
 
 		if (message.author && message.author.bot) return;
@@ -31,7 +31,7 @@ export const event: Event = {
 				.setDescription(`[Jump to location](${message.url})\n`)
 				.setTimestamp();
 
-			const logChannelId = client.tokens.dev 
+			const logChannelId = client.tokens.dev
 				? client.config.discords.filter(d => d.name === "dev")[0].channels.moderation
 				: client.config.teams.filter(t => t.name === "faithful")[0].channels.logs;
 

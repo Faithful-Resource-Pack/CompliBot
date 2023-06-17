@@ -8,7 +8,6 @@ export const menu: SelectMenu = {
 	selectMenuId: "compareSelect",
 	execute: async (client: Client, interaction: SelectMenuInteraction) => {
 		if (client.verbose) console.log(`${info}Texture selected!`);
-        // TODO: move this somewhere nicer
 
 		const messageInteraction: MessageInteraction = interaction.message.interaction as MessageInteraction;
 		const message: Message = interaction.message as Message;

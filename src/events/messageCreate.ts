@@ -16,12 +16,6 @@ export const event: Event = {
 
 		if (message.author.bot) return;
 
-		// test if message is in submit channel
-		if (getSubmissionsChannels(client as Client).includes(message.channelId)) {
-			client.emit("textureSubmitted", (client as Client, message));
-			return;
-		}
-
 		switch (message.content.toLocaleLowerCase()) {
 			case "engineer gaming":
 				try {
@@ -80,20 +74,6 @@ export const event: Event = {
 			return await message.reply({ content: "┬─┬ ノ( ゜-゜ノ) calm down bro" });
 
 		const textureID = [...message.content.matchAll(/(?<=\[\#)(.*?)(?=\])/g)] ?? [];
-
-		// TODO: move this somewhere nicer
-		const PACKS = [
-			[
-				'default',
-				'faithful_32x',
-				'faithful_64x'
-			],
-			[
-				'classic_faithful_32x',
-				'classic_faithful_32x_progart',
-				'classic_faithful_64x'
-			]
-		]
 
 		for (let i of textureID) {
 			if (+i[0] > 0) { // cast to number
