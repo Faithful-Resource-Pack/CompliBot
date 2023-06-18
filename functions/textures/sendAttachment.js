@@ -10,11 +10,11 @@ const { warnUser } = require('../../helpers/warnUser');
  * @returns the sent message
  */
 async function sendAttachment(message, attachment, userID, embed = null) {
-    let channelID;
+    let channel;
     for (let [key, value] of Object.entries(settings.channels.bot_commands)) {
         if (message.guild.id == settings.guilds[key]) {
             // since the bot command and guild key names are the same
-            channelID = value;
+            channel = message.guild.channels.cache.get(value);
             break;
         }
     }
@@ -27,8 +27,8 @@ async function sendAttachment(message, attachment, userID, embed = null) {
         else embedMessage = await member.send({ files: [attachment] });
     } catch { // user has DMs disabled
         // no valid #bot-commands was found, unnecessary info if using DMs so I put it here
-        if (!channelID) return warnUser(message, `You aren't in a valid server!`);
-        embedMessage = await channelID.send({ content: `<@!${userID}>`, embeds: [embed], files: [attachment] });
+        if (!channel) return warnUser(message, `You aren't in a valid server!`);
+        embedMessage = await channel.send({ content: `<@!${userID}>`, embeds: [embed], files: [attachment] });
     }
 
     addDeleteReact(embedMessage, message, true);
