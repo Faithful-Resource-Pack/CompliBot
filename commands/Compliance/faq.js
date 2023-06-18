@@ -16,7 +16,7 @@ module.exports = {
 	syntax: `${prefix}faq [keyword]`,
 	example: `${prefix}faq bot offline\n${prefix}faq submit\n\nMANAGER ONLY:\n${prefix}faq all`,
 	async execute(client, message, args) {
-		let color = settings.colors.c32;
+		let color = settings.colors.brand;
 		let embed;
 		let embedArray = [];
 

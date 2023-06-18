@@ -1,10 +1,9 @@
 const Canvas = require('canvas')
-const settings = require('../../resources/settings.json')
-const strings = require('../../resources/strings.json')
 
 const { MessageAttachment } = require('discord.js');
 const { addDeleteReact } = require('../../helpers/addDeleteReact')
-const { getMeta } = require('../../helpers/getMeta')
+const { getMeta } = require('../../helpers/getMeta');
+const { sendAttachment } = require('./sendAttachment');
 
 async function magnifyAttachment(url, name='magnified.png') {
 	return getMeta(url)
@@ -37,30 +36,17 @@ async function magnifyAttachment(url, name='magnified.png') {
  * @author Juknum
  * @param {DiscordMessage} message
  * @param {String} url Image URL
- * @param {DiscordUserID} gotocomplichannel if set, the message is send to the corresponding #complibot
+ * @param {DiscordUserID} userID if set, the message is send to the corresponding #complibot
  * @returns Send a message with the magnified image
  */
-async function magnify(message, url, gotocomplichannel = undefined, redirectMessage = undefined) {
+async function magnify(message, url, userID = false) {
 	const attachment = await magnifyAttachment(url)
 
-	let complichannel
-	if (gotocomplichannel) {
-		if (message.guild.id == settings.guilds.c32.id) complichannel = message.guild.channels.cache.get(settings.channels.bot_commands)
+	if (userID) await sendAttachment(message, attachment, userID);
+	else {
+		const embedMessage = await message.reply({ files: [attachment] });
+		await addDeleteReact(embedMessage, message, true);
 	}
-
-	let embedMessage
-	if (gotocomplichannel) {
-		try {
-			const member = await message.guild.members.cache.get(gotocomplichannel)
-			embedMessage = await member.send({ files: [attachment] });
-		} catch (e) {
-			embedMessage = await complichannel.send({ content: `<@!${gotocomplichannel}>`, files: [attachment] });
-		}
-	}
-	else embedMessage = await message.reply({ files: [attachment] });
-
-	if (redirectMessage) addDeleteReact(embedMessage, redirectMessage, true)
-	else addDeleteReact(embedMessage, message, true)
 
 	return attachment;
 }

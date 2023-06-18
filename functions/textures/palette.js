@@ -6,6 +6,7 @@ const { MessageEmbed, MessageAttachment } = require('discord.js');
 const { getMeta } = require('../../helpers/getMeta')
 const { warnUser } = require('../../helpers/warnUser')
 const { addDeleteReact } = require('../../helpers/addDeleteReact')
+const { sendAttachment } = require('./sendAttachment');
 
 const COLORS_PER_PALETTE = 9
 const COLORS_PER_PALETTE_LINE = 3
@@ -24,16 +25,10 @@ const GRADIENT_HEIGHT = 50
  * @author Juknum
  * @param {Discord.Message} message
  * @param {String} url - Image URL
- * @param {DiscordUserID} gotocomplichannel if set, the message is send to the corresponding #complibot
+ * @param {DiscordUserID} userID if set, the message is send to the corresponding #complibot
  * @returns Send an embed message with the color palette of the given URL
  */
-async function palette(message, url, gotocomplichannel = undefined, redirectMessage = undefined) {
-
-	let complichannel
-	if (gotocomplichannel) {
-		if (message.guild.id == settings.guilds.c32.id) complichannel = message.guild.channels.cache.get(settings.channels.bot_commands)
-	}
-
+async function palette(message, url, userID) {
 	getMeta(url).then(async function (dimension) {
 		var sizeOrigin = dimension.width * dimension.height
 
@@ -175,31 +170,14 @@ async function palette(message, url, gotocomplichannel = undefined, redirectMess
 		// create the attachement
 		const colorImageAttachment = new MessageAttachment(colorCanvas.toBuffer(), 'colors.png');
 
-		let embedMessage
-		if (gotocomplichannel) {
-			try {
-				const member = await message.guild.members.cache.get(gotocomplichannel)
-				embedMessage = await member.send({
-					embeds: [embed],
-					files: [colorImageAttachment]
-				})
-			} catch (e) {
-				embedMessage = await complichannel.send({
-					content: `<@!${gotocomplichannel}>`,
-					embeds: [embed],
-					files: [colorImageAttachment]
-				})
-			}
-		}
+		if (userID) await sendAttachment(message, colorImageAttachment, userID, embed)
 		else {
-			embedMessage = await message.reply({
+			const embedMessage = await message.reply({
 				embeds: [embed],
 				files: [colorImageAttachment]
 			})
+			addDeleteReact(embedMessage, message, true)
 		}
-
-		if (redirectMessage) addDeleteReact(embedMessage, redirectMessage, true)
-		else addDeleteReact(embedMessage, message, true)
 	})
 }
 

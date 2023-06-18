@@ -48,36 +48,21 @@
         },
         "id": "submission"
     },
-    "channels": { "link_detection": "829047608781176853", "bot_commands": "794137845408595978", "id": "channels" },
+    "channels": {
+        "bot_commands": {
+            "faithful": "794137845408595978",
+            "classic_faithful": "814213074864046100"
+        },
+        "id": "channels"
+    },
     "guilds": {
-        "em": { "id": "814198513847631944" },
-        "cdevs": { "id": "720677267424018526" },
-        "cextras": { "id": "614160586032414845" },
-        "c32": { "id": "773983706582482946" },
-        "c64": { "id": "747574286356840609" },
+        "faithful": "773983706582482946",
+        "classic_faithful": "814198513847631944",
+        "dev": "720677267424018526",
         "id": "guilds"
     },
     "emojis": {
-        "planetMC": "863132124333080576",
-        "curseforge": "863132124306472980",
-        "c64": "863126350700871710",
-        "c32": "863126354458837002",
-        "caddons": "962443509963579482",
-        "ctweaks": "962443511330930759",
-        "cmods": "962443510986969088",
-        "cdungeons": "962443509896458321",
-        "magnify_old": "851223281997447168",
-        "invalid_old": "851223282002165760",
-        "instapass_old": "851223281654300724",
-        "see_less_old": "851223282199560212",
         "see_more_old": "851223282241503262",
-        "palette_old": "851223282371002388",
-        "upvote_old": "851223282086313985",
-        "downvote_old": "851223281825742879",
-        "delete_old": "851223281831116870",
-        "compare_old": "851223281330683906",
-        "tile_old": "851223282199167006",
-        "next_res_old": "851223281771479111",
         "magnify": "918186631226339339",
         "invalid": "918186621323579433",
         "instapass": "918186611794137168",
@@ -117,26 +102,19 @@
         "id": "emojis"
     },
     "images": {
-        "vanilla": "https://database.faithfulpack.net/images/bot/texture_16x.png",
-        "quote": "https://database.faithfulpack.net/images/bot/quote.png",
         "question": "https://database.faithfulpack.net/images/bot/question_mark.png",
         "warning": "https://database.faithfulpack.net/images/bot/warning.png",
         "error": "https://database.faithfulpack.net/images/bot/error.png",
-        "loading": "https://database.faithfulpack.net/images/bot/loading.gif",
         "rules": "https://database.faithfulpack.net/images/bot/rules.png",
-        "coin_heads": "https://database.faithfulpack.net/images/bot/coin_heads.png",
-        "coin_edge": "https://database.faithfulpack.net/images/bot/coin_edge.png",
-        "coin_tails": "https://database.faithfulpack.net/images/bot/coin_tails.png",
-        "c32": "https://database.faithfulpack.net/images/branding/logos/transparent/512/f32_logo.png",
         "plain": "https://raw.githubusercontent.com/Faithful-Resource-Pack/Branding/main/logos/transparent/128/plain_logo.png",
         "cf_plain": "https://raw.githubusercontent.com/Faithful-Resource-Pack/Branding/main/logos/transparent/128/cf_plain_logo.png",
-        "c64": "https://database.faithfulpack.net/images/branding/logos/transparent/512/f64_logo.png",
-        "caddons": "https://database.faithfulpack.net/images/branding/logos/transparent/512/addons_logo.png",
-        "cextras": "https://database.faithfulpack.net/images/branding/logos/transparent/512/extras_logo.png",
-        "ctweaks": "https://database.faithfulpack.net/images/branding/logos/transparent/512/tweaks_logo.png",
-        "cmods": "https://database.faithfulpack.net/images/branding/logos/transparent/512/mods_logo.png",
-        "cdungeons": "https://database.faithfulpack.net/images/branding/logos/transparent/512/dungeons_logo.png",
-        "bot": "https://database.faithfulpack.net/images/brand/logos/no%20background/512/CompliBot.png",
+        "faithful_32x": "https://database.faithfulpack.net/images/branding/logos/transparent/512/f32_logo.png",
+        "faithful_64x": "https://database.faithfulpack.net/images/branding/logos/transparent/512/f64_logo.png",
+        "faithful_addons": "https://database.faithfulpack.net/images/branding/logos/transparent/512/addons_logo.png",
+        "faithful_extras": "https://database.faithfulpack.net/images/branding/logos/transparent/512/extras_logo.png",
+        "faithful_tweaks": "https://database.faithfulpack.net/images/branding/logos/transparent/512/tweaks_logo.png",
+        "faithful_mods": "https://database.faithfulpack.net/images/branding/logos/transparent/512/mods_logo.png",
+        "bot": "https://database.faithfulpack.net/images/branding/logos/transparent/512/complibot_logo.png",
         "id": "images"
     },
     "roles": {
@@ -167,18 +145,48 @@
     "repositories": {
         "repo_name": {
             "java": {
-                "faithful_32x": { "repo": "Faithful-Java-32x", "org": "Faithful-Resource-Pack" },
-                "faithful_64x": { "repo": "Faithful-Java-64x", "org": "Faithful-Resource-Pack" },
-                "classic_faithful_32x": { "repo": "32x-Jappa", "org": "ClassicFaithful" },
-                "classic_faithful_32x_progart": { "repo": "32x-Programmer-Art", "org": "ClassicFaithful" },
-                "classic_faithful_64x": { "repo": "64x-Jappa", "org": "ClassicFaithful" }
+                "faithful_32x": {
+                    "repo": "Faithful-Java-32x",
+                    "org": "Faithful-Resource-Pack"
+                },
+                "faithful_64x": {
+                    "repo": "Faithful-Java-64x",
+                    "org": "Faithful-Resource-Pack"
+                },
+                "classic_faithful_32x": {
+                    "repo": "32x-Jappa",
+                    "org": "ClassicFaithful"
+                },
+                "classic_faithful_32x_progart": {
+                    "repo": "32x-Programmer-Art",
+                    "org": "ClassicFaithful"
+                },
+                "classic_faithful_64x": {
+                    "repo": "64x-Jappa",
+                    "org": "ClassicFaithful"
+                }
             },
             "bedrock": {
-                "faithful_32x": { "repo": "Faithful-Bedrock-32x", "org": "Faithful-Resource-Pack" },
-                "faithful_64x": { "repo": "Faithful-Bedrock-64x", "org": "Faithful-Resource-Pack" },
-                "classic_faithful_32x": { "repo": "32x-Jappa-Bedrock", "org": "ClassicFaithful" },
-                "classic_faithful_32x_progart": { "repo": "32x-Programmer-Art-Bedrock", "org": "ClassicFaithful" },
-                "classic_faithful_64x": { "repo": "64x-Jappa-Bedrock", "org": "ClassicFaithful" }
+                "faithful_32x": {
+                    "repo": "Faithful-Bedrock-32x",
+                    "org": "Faithful-Resource-Pack"
+                },
+                "faithful_64x": {
+                    "repo": "Faithful-Bedrock-64x",
+                    "org": "Faithful-Resource-Pack"
+                },
+                "classic_faithful_32x": {
+                    "repo": "32x-Jappa-Bedrock",
+                    "org": "ClassicFaithful"
+                },
+                "classic_faithful_32x_progart": {
+                    "repo": "32x-Programmer-Art-Bedrock",
+                    "org": "ClassicFaithful"
+                },
+                "classic_faithful_64x": {
+                    "repo": "64x-Jappa-Bedrock",
+                    "org": "ClassicFaithful"
+                }
             }
         },
         "git": {
@@ -290,12 +298,12 @@
         "black": "#000000",
         "council": "#9c3848",
         "green": "#4caf50",
-        "c32": "#76c945",
-        "c64": "#76c945",
-        "caddons": "#6d6163",
-        "ctweaks": "#658430",
-        "cmods": "#349687",
-        "cdungeons": "#df7c2b",
+        "brand": "#76c945",
+        "f32": "#00a2ff",
+        "f64": "#d8158d",
+        "cf32": "#00c756",
+        "cf64": "#9f00cf",
+        "cf32pa": "#a1db12",
         "twitter": "#1da0f2",
         "youtube": "#ff0000",
         "patreon": "#f96754",

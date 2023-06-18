@@ -6,6 +6,7 @@ const { addDeleteReact } = require('../../helpers/addDeleteReact')
 const { getMeta } = require('../../helpers/getMeta')
 const { warnUser } = require('../../helpers/warnUser')
 const { magnify } = require('./magnify')
+const { sendAttachment } = require('./sendAttachment');
 
 /**
  * Tile an image
@@ -13,15 +14,10 @@ const { magnify } = require('./magnify')
  * @param {DiscordMessage} message
  * @param {String} url Image url
  * @param {String} type Type of tiling, could be: grid, horizontal, round or plus
+ * @param {DiscordUserID} userID if set, the message is send to the corresponding #bot-commands
  * @returns Send an embed message with the tiled image
  */
-function tile(message, url, type, gotocomplichannel = undefined, redirectMessage = undefined) {
-
-	let complichannel
-	if (gotocomplichannel) {
-		if (message.guild.id == settings.guilds.c32.id) complichannel = message.guild.channels.cache.get(settings.channels.bot_commands)
-	}
-
+function tile(message, url, type, userID) {
 	getMeta(url).then(async function (dimension) {
 		// aliases of type
 		if (type == undefined || type == 'g') type = 'grid'
@@ -132,23 +128,17 @@ function tile(message, url, type, gotocomplichannel = undefined, redirectMessage
 			canvasContext.clearRect(0, dimension.height * 2, dimension.width, dimension.height) // bottom left
 		}
 
-		const attachment = new MessageAttachment(canvas.toBuffer(), 'tiled.png')
-		let embedMessage
-		if (gotocomplichannel) {
-			try {
-				const member = await message.guild.members.cache.get(gotocomplichannel)
-				embedMessage = await member.send({ files: [attachment] })
-			} catch (e) {
-				embedMessage = await complichannel.send({ content: `<@!${gotocomplichannel}>`, files: [attachment] })
-			}
-		}
+		const attachment = new MessageAttachment(canvas.toBuffer(), 'tiled.png');
+
+		let embedMessage;
+		if (userID) embedMessage = await sendAttachment(message, attachment, userID);
 		else {
-			embedMessage = await message.reply({ files: [attachment] })
+			embedMessage = await message.reply({ files: [attachment] });
+			addDeleteReact(embedMessage, message, true);
 		}
-		addDeleteReact(embedMessage, message, true, redirectMessage)
 
 		if (dimension.width <= 512 && dimension.height <= 512) {
-			// avoid an issue that also makes the bot magnify its own image in dm's
+			// avoid an issue that also makes the bot magnify its own image in DMs
 			// probably unfixable due to the texture submission reactions
 			if (embedMessage.channel.type === 'DM') return
 

@@ -25,7 +25,7 @@ module.exports = {
 		const RULES = strings.rules;
 		const RULES_INFO = strings.rules_info;
 
-		const thumbnail = message.guild.id == settings.guilds.em.id
+		const thumbnail = message.guild.id == settings.guilds.classic_faithful
 			? settings.images.cf_plain
 			: settings.images.plain;
 
@@ -42,7 +42,7 @@ module.exports = {
 		if (rule <= RULES.length && rule > 0) {
 			const embed = new Discord.MessageEmbed()
 				.setTitle(`${RULES[rule - 1].number} ${RULES[rule - 1].title}`)
-				.setColor(settings.colors.c32)
+				.setColor(settings.colors.brand)
 				.setThumbnail(settings.images.rules)
 				.setDescription(RULES[rule - 1].description);
 
@@ -53,7 +53,7 @@ module.exports = {
 
 			let embed = new Discord.MessageEmbed()
 				.setTitle(RULES_INFO.heading.title)
-				.setColor(settings.colors.c32)
+				.setColor(settings.colors.brand)
 				.setThumbnail(thumbnail)
 				.setDescription(RULES_INFO.heading.description)
 
@@ -61,7 +61,7 @@ module.exports = {
 
 			for (let i = 0; i < RULES.length; i++) {
 				embedRule = new Discord.MessageEmbed()
-					.setColor(settings.colors.c32)
+					.setColor(settings.colors.brand)
 					.setTitle(`${RULES[i].number} ${RULES[i].title}`)
 					.setDescription(RULES[i].description)
 
@@ -76,7 +76,7 @@ module.exports = {
 			if (embedArray.length) await message.channel.send({ embeds: embedArray }); // sends the leftovers if exists
 
 			const embedExpandedRules = new Discord.MessageEmbed()
-				.setColor(settings.colors.c32)
+				.setColor(settings.colors.brand)
 				.setTitle(RULES_INFO.expanded_rules.title)
 				.setDescription(RULES_INFO.expanded_rules.description);
 
@@ -85,7 +85,7 @@ module.exports = {
 			if (RULES_INFO.changes.enabled) { // only for the changes note
 				embedChanges = new Discord.MessageEmbed()
 					.setTitle(RULES_INFO.changes.title)
-					.setColor(settings.colors.c32)
+					.setColor(settings.colors.brand)
 					.setDescription(RULES_INFO.changes.description)
 					.setFooter(`The rules are subject to change at any time for any reason.`, thumbnail)
 			}
