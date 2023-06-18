@@ -11,10 +11,10 @@ const { warnUser } = require('../../helpers/warnUser');
  */
 async function sendAttachment(message, attachment, userID, embed = null) {
     let channel;
-    for (let [key, value] of Object.entries(settings.channels.bot_commands)) {
-        if (message.guild.id == settings.guilds[key]) {
+    for (let [key, value] of Object.entries(settings.guilds)) {
+        if (message.guild.id == value) {
             // since the bot command and guild key names are the same
-            channel = message.guild.channels.cache.get(value);
+            channel = message.guild.channels.cache.get(settings.channels.bot_commands[key]);
             break;
         }
     }
