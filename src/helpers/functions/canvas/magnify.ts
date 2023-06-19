@@ -1,5 +1,5 @@
 import { MessageEmbed } from "@client";
-import { createCanvas, loadImage, Image } from "canvas";
+import { createCanvas, loadImage, Image } from "@napi-rs/canvas";
 import { MessageAttachment } from "discord.js";
 import getMeta from "./getMeta";
 import { ISizeCalculationResult } from "image-size/dist/types/interface";

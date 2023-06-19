@@ -1,4 +1,4 @@
-import { Canvas, CanvasRenderingContext2D, createCanvas, loadImage } from "canvas";
+import { Canvas, SKRSContext2D, createCanvas, loadImage } from "@napi-rs/canvas";
 import { MessageAttachment } from "discord.js";
 import getMeta from "./getMeta";
 
@@ -41,7 +41,7 @@ export async function stickCanvas(options: Options): Promise<Canvas> {
 				left.dimensions.width + right.dimensions.width + margin,
 				Math.max(left.dimensions.height, right.dimensions.height),
 			);
-			const context: CanvasRenderingContext2D = canvas.getContext("2d");
+			const context: SKRSContext2D = canvas.getContext("2d");
 			context.imageSmoothingEnabled = false;
 
 			// Draw left image

@@ -1,4 +1,4 @@
-import { createCanvas, loadImage } from "canvas";
+import { createCanvas, loadImage } from "@napi-rs/canvas";
 
 /**
  * literally all this code is ripped from the js bot
@@ -70,7 +70,7 @@ export class HorizontalStitcher {
 			}
 		}
 
-		return canvas.toBuffer();
+		return canvas.toBuffer("image/png");
 	}
 }
 
@@ -148,7 +148,7 @@ export class FullStitcher { // not using inheritance since this is a completely 
 				}
 			}
 		}
-		return canvas.toBuffer();
+		return canvas.toBuffer('image/png');
 	}
 }
 

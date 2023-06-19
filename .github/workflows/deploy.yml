@@ -20,6 +20,6 @@ jobs:
                       cd ./"CompliBot (TS)"
                       git stash
                       git pull
-                      npm install
+                      pnpm install
                       pm2 delete "BOT (TS)"
-                      pm2 start "npm run start" --name "BOT (TS)"
+                      pm2 start "pnpm start" --name "BOT (TS)"

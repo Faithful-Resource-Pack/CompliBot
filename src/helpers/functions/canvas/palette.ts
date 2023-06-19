@@ -1,5 +1,5 @@
 import { MessageEmbed } from "@client";
-import { Canvas, createCanvas, loadImage } from "canvas";
+import { Canvas, createCanvas, loadImage } from "@napi-rs/canvas";
 import { MessageAttachment } from "discord.js";
 import { ColorManager } from "./colors";
 import getMeta from "./getMeta";

@@ -1,5 +1,5 @@
 import { MessageEmbed } from "@client";
-import { Canvas, createCanvas, CanvasRenderingContext2D, loadImage, Image } from "canvas";
+import { Canvas, SKRSContext2D, createCanvas, loadImage, Image } from "@napi-rs/canvas";
 import { MessageAttachment } from "discord.js";
 import getMeta from "./getMeta";
 
@@ -31,7 +31,7 @@ export async function tileCanvas(options: options): Promise<Canvas> {
 				return Promise.reject("Output exceeds the maximum of 512 x 512px²!");
 
 			let canvas: Canvas = createCanvas(dimension.width * 3, dimension.height * 3);
-			let context: CanvasRenderingContext2D = canvas.getContext("2d");
+			let context: SKRSContext2D = canvas.getContext("2d");
 
 			context.imageSmoothingEnabled = false;
 			let imageToDraw = await loadImage(options.url);

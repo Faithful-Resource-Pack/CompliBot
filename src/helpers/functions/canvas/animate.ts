@@ -1,4 +1,4 @@
-import { Canvas, CanvasRenderingContext2D, createCanvas, loadImage } from "canvas";
+import { Canvas, SKRSContext2D, createCanvas, loadImage } from "@napi-rs/canvas";
 import { MessageAttachment } from "discord.js";
 import getMeta from "./getMeta";
 import GIFEncoder from "./GIFEncoder";
@@ -30,12 +30,12 @@ export async function animateAttachment(options: Options): Promise<MessageAttach
 
 		const baseIMG = await loadImage(options.url);
 		const baseCanvas: Canvas = createCanvas(dimensions.width, dimensions.height);
-		const baseContext: CanvasRenderingContext2D = baseCanvas.getContext("2d");
+		const baseContext: SKRSContext2D = baseCanvas.getContext("2d");
 		baseContext.imageSmoothingEnabled = false;
 		baseContext.drawImage(baseIMG, 0, 0, baseCanvas.width, baseCanvas.height);
 
 		const canvas: Canvas = createCanvas(dimensions.width, dimensions.height);
-		const context: CanvasRenderingContext2D = canvas.getContext("2d");
+		const context: SKRSContext2D = canvas.getContext("2d");
 		context.imageSmoothingEnabled = false;
 
 		// ! TODO: Width & Height properties from MCMETA are not supported yet
