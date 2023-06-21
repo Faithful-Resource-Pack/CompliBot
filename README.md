@@ -9,27 +9,29 @@
 [![Crowdin](https://badges.crowdin.net/e/1602cfd1a52793da79736586c4493097/localized.svg)](https://faithful.crowdin.com/discord-bot)
 </div>
 
-___
+---
+
 ### Online on:
 - [Faithful](https://discord.gg/sN9YRQbBv7)
 - [Classic Faithful](https://discord.gg/KSEhCVtg4J)
 
-___
+---
+
 ### Found an issue?
 Please submit it using our [bug tracker](https://github.com/Faithful-Resource-Pack/Discord-Bot/issues/new/choose) or by using the `/feedback <text>` command from the bot. The bug tracker is preferred but both options are valid.
-___
-### Installation and launching:
-1. Install **[Node.js](https://nodejs.org/)** on your machine. **Version 16.9.0 or higher is required!**
-2. Clone the repository on your machine.
-3. Open your console in the cloned repository.
-4. To complete the installation, write the following command in the console:
+---
+
+## Requirements
+- NodeJS 18+ https://nodejs.org
+- pnpm (`corepack enable` + `corepack prepare pnpm@latest --activate`)
+
+## Running
+
 ```bash
-npm install
+pnpm install
 ```
-5. After installation, you will need to **[configure the bot](#bot-config)**.
-6. To start the bot, write the following command in the console:
 ```bash
-npm run dev
+pnpm dev
 ```
 
 ___
