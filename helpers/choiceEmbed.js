@@ -1,4 +1,3 @@
-const asyncTools = require('./asyncTools')
 const settings = require('../resources/settings.json')
 const strings = require('../resources/strings.json')
 
@@ -90,7 +89,7 @@ module.exports = function (message, params, user) {
     // reply to the sent message
     /** @type {Discord.Message} */
     let embedMessage = await sendPromise;
-    await asyncTools.react(embedMessage, emojis)
+    for (let emoji of emojis) await embedMessage.react(emoji)
     await addDeleteReact(embedMessage, message, true)
     const filter_num = (reaction, user) => user.id === message.author.id && emojis.includes(reaction.emoji.name)
 

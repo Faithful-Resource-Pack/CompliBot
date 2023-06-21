@@ -4,7 +4,6 @@ const prefix = process.env.PREFIX
 const strings = require('../../resources/strings.json')
 //const colors     = require('../../resources/colors')
 //const settings   = require('../../resources/settings')
-//const asyncTools = require('../../helpers/asyncTools')
 
 const { animate } = require('../../functions/textures/animate')
 const { warnUser } = require('../../helpers/warnUser')
@@ -118,24 +117,24 @@ module.exports = {
 						}
 						catch (err) {
 							warnUser(mcmetaMessage, 'This is not a valid JSON Object.').then(async () => {
-								if (!message.deleted) asyncTools.react(message,'❌');
+								if (!message.deleted) await message.react('❌');
 								if (!embedMessage.deleted) await embedMessage.delete();
 							});
 							return;
 						}
 
-						asyncTools.react(mcmetaMessage, '⌛');
+						await mcmetaMessage.react('⌛');
 						if (valURL) return animate(message, mcmeta, valURL);
 						else return previousImage(message, mcmeta);
 					} else {
 						warnUser(mcmetaMessage, 'Wrong format given!').then(async () => {
-							if (!message.deleted) asyncTools.react(message, '❌');
+							if (!message.deleted) await message.react('❌');
 							if (!embedMessage.deleted) await embedMessage.delete();
-						});	
+						});
 					}
 				})
-				.catch(() => {
-					if (!embedMessage.deleted && !mcmetaMessage) asyncTools.react(embedMessage, '🚫');
+				.catch(async () => {
+					if (!embedMessage.deleted && !mcmetaMessage) await embedMessage.react('🚫');
 				})
 
 		}
