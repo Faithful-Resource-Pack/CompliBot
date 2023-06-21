@@ -11,14 +11,15 @@
 
 ---
 
-### Online on:
+## Online on:
 - [Faithful](https://discord.gg/sN9YRQbBv7)
 - [Classic Faithful](https://discord.gg/KSEhCVtg4J)
 
 ---
 
-### Found an issue?
+## Found an issue?
 Please submit it using our [bug tracker](https://github.com/Faithful-Resource-Pack/Discord-Bot/issues/new/choose) or by using the `/feedback <text>` command from the bot. The bug tracker is preferred but both options are valid.
+
 ---
 
 ## Requirements
