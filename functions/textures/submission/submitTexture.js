@@ -133,7 +133,9 @@ async function submitTexture(client, message) {
           let uses = await results[i].uses()
           let paths = await uses[0].paths()
 
-          choice.push(`\`[#${results[i].id}]\` ${results[i].name.replace(search, `**${search}**`).replace(/_/g, '\\_')} — ${paths[0].path.replace(search, `**${search}**`).replace(/_/g, '\\_')}`)
+          choice.push(`\`[#${results[i].id}]\` ${results[i].name.replace(search, `**${search}**`)
+            .replace(/_/g, '\\_')} — ${paths[0].path.replace(search, `**${search}**`)
+            .replace(/_/g, '\\_')}`)
         }
 
         //if (!waitEmbedMessage.deleted) await waitEmbedMessage.delete();
@@ -161,7 +163,6 @@ async function submitTexture(client, message) {
       }
     }
   }
-  if (!message.deleted) setTimeout(() => message.delete(), 10);
 }
 
 const EMOJIS = [settings.emojis.upvote, settings.emojis.downvote, settings.emojis.see_more];
@@ -271,6 +272,7 @@ async function makeEmbed(client, message, texture, attachment, param = new Objec
 
   // send the embed
   const msg = await message.channel.send({ embeds: [embed] });
+  if (!message.deleted) await message.delete();
 
   // add reactions to the embed
   for (const emojiID of EMOJIS) {
