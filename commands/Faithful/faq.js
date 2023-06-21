@@ -10,7 +10,7 @@ const FAQS = Object.values(strings.faq)
 module.exports = {
 	name: 'faq',
 	answer: strings.command.description.faq,
-	category: 'Compliance',
+	category: 'Faithful',
 	guildOnly: true,
 	uses: strings.command.use.anyone,
 	syntax: `${prefix}faq [keyword]`,

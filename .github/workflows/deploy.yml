@@ -21,6 +21,6 @@ jobs:
             git checkout javascript
             git stash
             git pull
-            npm install
+            pnpm install
             pm2 delete "BOT"
             pm2 start "node --use_strict --trace-warnings index.js" --name "BOT" --time

@@ -7,7 +7,8 @@
     "start": "node --use_strict --trace-warnings index.js",
     "restart": "npm i --save ; npm start",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx ",
-    "test": "echo \"Error: no test specified\" && exit 0"
+    "test": "echo \"Error: no test specified\" && exit 0",
+    "dev": "npx nodemon ."
   },
   "repository": {
     "type": "git",
@@ -35,6 +36,7 @@
     "http": "0.0.1-security",
     "image-size": "^1.0.1",
     "node-fetch": "^3.2.3",
+    "nodemon": "^2.0.22",
     "simple-git": "^3.7.1"
   },
   "devDependencies": {

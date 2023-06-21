@@ -12,7 +12,7 @@ const { warnUser } = require('../../helpers/warnUser')
 module.exports = {
 	name: 'autopush',
 	description: strings.command.description.autopush,
-	category: 'Compliance',
+	category: 'Developer',
 	guildOnly: false,
 	uses: strings.command.use.admins,
 	syntax: `${prefix}autopush [all/name_of_pack]`,

@@ -10,7 +10,7 @@ const { Permissions } = require('discord.js');
 module.exports = {
 	name: 'infoembed',
 	description: strings.command.description.infoembed,
-	category: 'Compliance',
+	category: 'Faithful',
 	guildOnly: true,
 	uses: strings.command.use.devs,
 	syntax: `${prefix}discords\n${prefix}media`,

@@ -10,7 +10,7 @@ const { warnUser } = require('../../helpers/warnUser')
 module.exports = {
 	name: 'channelpush',
 	description: strings.command.description.channelpush,
-	category: 'Compliance',
+	category: 'Developer',
 	guildOnly: false,
 	uses: strings.command.use.admins,
 	syntax: `${prefix}channelpush [all/name_of_pack]`,

@@ -14,7 +14,7 @@ module.exports = {
 	name: 'animate',
 	aliases: ['play'],
 	description: strings.command.description.animate,
-	category: 'Minecraft',
+	category: 'Faithful',
 	guildOnly: false,
 	uses: strings.command.use.anyone,
 	//syntax: `${prefix}animate [-c | -m] [-u | file attached]`,

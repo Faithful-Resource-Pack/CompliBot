@@ -1,6 +1,5 @@
 const prefix = process.env.PREFIX
 
-
 const { saveDB } = require('../../functions/saveDB')
 const strings = require('../../resources/strings.json')
 const settings = require('../../resources/settings.json')

@@ -16,7 +16,7 @@ module.exports = {
 	async execute(client, message, args) {
 		if (process.env.DEVELOPERS.includes(message.author.id)) {
 			await message.reply({ content: 'Shutting down...' });
-			await process.exit();
+			process.exit();
 		}
 		else {
 			var embed = new MessageEmbed()

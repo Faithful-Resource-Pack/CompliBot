@@ -9,7 +9,7 @@ module.exports = {
 	name: 'rule',
 	aliases: ['rules'],
 	description: strings.command.description.rules,
-	category: 'Compliance',
+	category: 'Faithful',
 	guildOnly: true,
 	uses: strings.command.use.mods,
 	syntax: `${prefix}rule <n>`,

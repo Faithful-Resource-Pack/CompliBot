@@ -8,24 +8,25 @@
 ![PullRequests](https://img.shields.io/github/issues-pr/Faithful-Resource-Pack/Discord-Bot)
 </div>
 
-___
-### Online on:
+---
+
+## Online on:
 - [Faithful](https://discord.gg/sN9YRQbBv7)
 - [Classic Faithful](https://discord.gg/KSEhCVtg4J)
 
-___
-### Installation and launching:
-- Install **[Node.js](https://nodejs.org/)** on your machine. **Version 16.6 or higher is required!**
-- Clone the repository on your machine.
-- Open your console in the cloned repository.
-- To complete the installation, write the following command in the console:
-```console
-npm install
+---
+
+## Requirements
+- NodeJS 18+ https://nodejs.org
+- pnpm (`corepack enable` + `corepack prepare pnpm@latest --activate`)
+
+## Running
+
+```bash
+pnpm install
 ```
-- After installation, you will need to **[configure the bot](#bot-config)**.
-- To start the bot, write the following command in the console:
-```console
-node .
+```bash
+pnpm dev
 ```
 
 ___
