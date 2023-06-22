@@ -27,7 +27,7 @@ module.exports = {
 						.setTitle(FAQS[i].question)
 						.setColor(color)
 						.setDescription(FAQS[i].answer)
-						.setFooter({ text: `Keywords: ${Object.values(FAQS[i].keywords).join(' • ')}` })
+						.setFooter(`Keywords: ${Object.values(FAQS[i].keywords).join(' • ')}`)
 
 					embedArray.push(embed);
 
@@ -38,7 +38,7 @@ module.exports = {
 				}
 
 				if (embedArray.length) await message.channel.send({ embeds: embedArray }); // sends the leftovers if exists
-				if (message.deletable) await message.delete()
+				if (!message.deleted) await message.delete()
 
 			} else warnUser(message, "Only Managers can do that!")
 		} else {
@@ -50,7 +50,7 @@ module.exports = {
 						.setThumbnail(settings.images.question)
 						.setColor(settings.colors.blue)
 						.setDescription(FAQS[i].answer)
-						.setFooter({ text: `Keywords: ${Object.values(FAQS[i].keywords).join(' • ')}` })
+						.setFooter(`Keywords: ${Object.values(FAQS[i].keywords).join(' • ')}`)
 					await message.reply({ embeds: [embed] })
 				}
 			}

@@ -20,7 +20,7 @@ module.exports = {
 		}
 		else {
 			var embed = new MessageEmbed()
-				.setAuthor({ name: client.user.username, iconURL: client.user.displayAvatarURL() })
+				.setAuthor(client.user.username, client.user.displayAvatarURL())
 				.setDescription(`Banned <@${message.author.id}> \nReason: trying to stop me lmao`)
 				.setColor(settings.colors.blue)
 				.setTimestamp();

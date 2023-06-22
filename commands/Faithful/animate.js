@@ -99,7 +99,7 @@ module.exports = {
 				.setColor(settings.colors.blue)
 				.setTitle('Waiting for MCMETA config:')
 				.setDescription('Please, send a message following this example:\n\\`\\`\\`json //mcmeta file content here \\`\\`\\`\nYou should obtain something like this: ```//mcmeta file content here```')
-				.setFooter({ text: 'The bot will stop searching for message if 🚫 is added to this message.' });
+				.setFooter('The bot will stop searching for message if 🚫 is added to this message.');
 
 			const embedMessage = await message.reply({embeds: [embed]});
 
@@ -110,15 +110,15 @@ module.exports = {
 					mcmetaMessage = msg.first();
 
 					if ((mcmetaMessage.content.startsWith('```json') || mcmetaMessage.content.startsWith('```')) && mcmetaMessage.content.endsWith('```')) {
-						if (embedMessage.deletable) await embedMessage.delete();
+						if (!embedMessage.deleted) await embedMessage.delete();
 
 						try {
 							mcmeta = JSON.parse(mcmetaMessage.content.replace('```json', '').replace('```', '').replace('```', ''))
 						}
 						catch (err) {
 							warnUser(mcmetaMessage, 'This is not a valid JSON Object.').then(async () => {
-								if (message.deletable) await message.react('❌');
-								if (embedMessage.deletable) await embedMessage.delete();
+								if (!message.deleted) await message.react('❌');
+								if (!embedMessage.deleted) await embedMessage.delete();
 							});
 							return;
 						}
@@ -128,13 +128,13 @@ module.exports = {
 						else return previousImage(message, mcmeta);
 					} else {
 						warnUser(mcmetaMessage, 'Wrong format given!').then(async () => {
-							if (message.deletable) await message.react('❌');
-							if (embedMessage.deletable) await embedMessage.delete();
+							if (!message.deleted) await message.react('❌');
+							if (!embedMessage.deleted) await embedMessage.delete();
 						});
 					}
 				})
 				.catch(async () => {
-					if (embedMessage.deletable && !mcmetaMessage) await embedMessage.react('🚫');
+					if (!embedMessage.deleted && !mcmetaMessage) await embedMessage.react('🚫');
 				})
 
 		}
