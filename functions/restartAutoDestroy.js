@@ -10,7 +10,7 @@ function sleep(ms) {
 }
 
 /**
- * 
+ *
  * @param {import('discord.js').Client} client Discord client
  */
 exports.restartAutoDestroy = async function (client) {
@@ -35,7 +35,7 @@ exports.restartAutoDestroy = async function (client) {
         if (index != -1) {
           emb.spliceFields(index, 1, { name: name, value: value, inline: false })
         } else {
-          emb.addField(name, value, false)
+          emb.addFields([{ name: name, value: value, inline: false }])
         }
         await msg.edit({ embeds: [emb] })
         await sleep(1000)

@@ -138,7 +138,7 @@ async function submitTexture(client, message) {
             .replace(/_/g, '\\_')}`)
         }
 
-        //if (!waitEmbedMessage.deleted) await waitEmbedMessage.delete();
+        //if (waitEmbedMessage.deletable) await waitEmbedMessage.delete();
         choiceEmbed(message, {
           title: `${results.length} results, react to choose one!`,
           description: strings.command.texture.search_description,
@@ -155,10 +155,10 @@ async function submitTexture(client, message) {
       }
       else if (results.length == 1) {
         await makeEmbed(client, message, results[0], attachment, param)
-        //if (!waitEmbedMessage.deleted) await waitEmbedMessage.delete()
+        //if (waitEmbedMessage.deletable) await waitEmbedMessage.delete()
       }
       else {
-        //if (!waitEmbedMessage.deleted) await waitEmbedMessage.delete()
+        //if (waitEmbedMessage.deletable) await waitEmbedMessage.delete()
         await invalidSubmission(message, strings.command.texture.does_not_exist + '\n' + search)
       }
     }
@@ -194,15 +194,16 @@ async function makeEmbed(client, message, texture, attachment, param = new Objec
     : message.author.tag
 
   let embed = new MessageEmbed()
-    .setAuthor(authorName, message.author.displayAvatarURL()) // TODO: add a Faithful gallery url that shows all textures by a given author
+    // TODO: add a Faithful gallery url that shows all textures by a given author
+    .setAuthor({ name: authorName, iconURL: message.author.displayAvatarURL() })
     .setColor(settings.colors.blue)
     .setTitle(`[#${texture.id}] ${texture.name}`)
     .setURL(`https://webapp.faithfulpack.net/#/gallery/java/32x/latest/all/?show=${texture.id}`)
-    .addFields(
+    .addFields([
       { name: 'Author', value: `<@!${param.authors.join('>\n<@!').toString()}>`, inline: true },
       { name: 'Status', value: `<:pending:${settings.emojis.pending}> Pending...`, inline: true },
       { name: '\u200B', value: pathText.toString().replace(/,/g, ''), inline: false }
-    )
+    ])
 
   // determine reference image to compare against
   let repoKey;
@@ -263,7 +264,7 @@ async function makeEmbed(client, message, texture, attachment, param = new Objec
   embed.setThumbnail(imageUrls[2]);
 
   // if the texture doesn't exist yet only include the default/new caption rather than everything
-  embed.setFooter(drawer.urls.length >= 3 ? `${referenceText} | New | Current`: `${referenceText} | New`);
+  embed.setFooter({ text: drawer.urls.length >= 3 ? `${referenceText} | New | Current`: `${referenceText} | New` });
 
   // add description if exists
   if (param.description) embed.setDescription(param.description)
@@ -272,7 +273,7 @@ async function makeEmbed(client, message, texture, attachment, param = new Objec
 
   // send the embed
   const msg = await message.channel.send({ embeds: [embed] });
-  if (!message.deleted) await message.delete();
+  if (message.deletable) await message.delete();
 
   // add reactions to the embed
   for (const emojiID of EMOJIS) {
@@ -298,15 +299,18 @@ async function invalidSubmission(message, error = 'Not given') {
 
   try {
     var embed = new MessageEmbed()
-      .setAuthor(message.author.tag, message.author.displayAvatarURL())
+      .setAuthor({ name: message.author.tag, iconURL: message.author.displayAvatarURL() })
       .setColor(settings.colors.red)
       .setTitle(strings.submission.autoreact.error_title)
-      .setFooter(strings.submission.autoreact.error_footer, message.client.user.displayAvatarURL())
+      .setFooter({
+        text: strings.submission.autoreact.error_footer,
+        iconURL: message.client.user.displayAvatarURL()
+      })
       .setDescription(error)
 
     const msg = await message.reply({ embeds: [embed] });
-    if (!msg.deleted) setTimeout(() => msg.delete(), 30000);
-    if (!message.deleted) setTimeout(() => message.delete(), 30010);
+    if (msg.deletable) setTimeout(() => msg.delete(), 30000);
+    if (message.deletable) setTimeout(() => message.delete(), 30010);
   } catch (error) {
     console.error(error)
   }

@@ -73,7 +73,7 @@ async function palette(message, url, userID) {
 			.setTitle('Palette results')
 			.setColor(settings.colors.blue)
 			.setDescription(`List of colors:\n`)
-			.setFooter(`Total: ${Object.values(allColors).length}`)
+			.setFooter({ text: `Total: ${Object.values(allColors).length}` })
 
 		const field_groups = []
 		let i

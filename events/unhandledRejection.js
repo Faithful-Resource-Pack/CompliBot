@@ -38,7 +38,7 @@ module.exports = function(client, error, promise, originMessage) {
 	}
 
 	let description = `\`\`\`${syntax}\n${content}\`\`\``
-	
+
 	if(originMessage !== undefined && originMessage.url !== undefined) {
 		description = 'Coming from [this message](' + originMessage.url + ')\n' + description
 	}
@@ -50,7 +50,11 @@ module.exports = function(client, error, promise, originMessage) {
 		.setTitle('Unhandled Rejection')
 		.setDescription(description)
 		.setColor(settings.colors.red)
-		.addField('Last messages received', links ? links : '*No messages received yet*', false) // Fix bug where embed field value must not be empty
+		.addFields([{
+			name: 'Last messages received',
+			value: links ? links : '*No messages received yet*',
+			inline: false
+		}]) // Fix bug where embed field value must not be empty
 		.setTimestamp()
 
   console.error(error, promise)
