@@ -6,29 +6,27 @@ const { getMeta } = require('../../helpers/getMeta');
 const { sendAttachment } = require('./sendAttachment');
 
 async function magnifyAttachment(url, name='magnified.png') {
-	return getMeta(url)
-		.then(async function (dimension) {
-			let factor = 64
-			const surface = dimension.width * dimension.height
+	const dimension = await getMeta(url)
+	let factor = 64
+	const surface = dimension.width * dimension.height
 
-			if (surface == 256) factor = 32
-			if (surface > 256) factor = 16
-			if (surface > 1024) factor = 8
-			if (surface > 4096) factor = 4
-			if (surface > 65636) factor = 2
-			if (surface > 262144) factor = 1
+	if (surface == 256) factor = 32
+	if (surface > 256) factor = 16
+	if (surface > 1024) factor = 8
+	if (surface > 4096) factor = 4
+	if (surface > 65636) factor = 2
+	if (surface > 262144) factor = 1
 
-			const width = dimension.width * factor
-			const height = dimension.height * factor
-			let canvasResult = Canvas.createCanvas(width, height)
-			let canvasResultCTX = canvasResult.getContext('2d')
+	const width = dimension.width * factor
+	const height = dimension.height * factor
+	let canvasResult = Canvas.createCanvas(width, height)
+	let canvasResultCTX = canvasResult.getContext('2d')
 
-			const tmp = await Canvas.loadImage(url).catch(err => { console.trace(err); return Promise.reject(err) })
-			canvasResultCTX.imageSmoothingEnabled = false
-			canvasResultCTX.drawImage(tmp, 0, 0, width, height)
+	const tmp = await Canvas.loadImage(url).catch(err => { console.trace(err); return Promise.reject(err) })
+	canvasResultCTX.imageSmoothingEnabled = false
+	canvasResultCTX.drawImage(tmp, 0, 0, width, height)
 
-			return new MessageAttachment(canvasResult.toBuffer(), name)
-		})
+	return new MessageAttachment(canvasResult.toBuffer(), name)
 }
 
 /**
