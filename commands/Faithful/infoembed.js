@@ -168,10 +168,10 @@ https://discord.gg/minecraft
 				`)
 				.setColor(settings.colors.brand)
 				.setThumbnail('https://database.faithfulpack.net/images/branding/logos/transparent/512/plain_logo.png')
-				.setFooter (
-					text='Listings for specific packs can be found above.',
-					iconURL='https://database.faithfulpack.net/images/branding/logos/transparent/512/plain_logo.png'
-				)
+				.setFooter ({
+					text: 'Listings for specific packs can be found above.',
+					iconURL: 'https://database.faithfulpack.net/images/branding/logos/transparent/512/plain_logo.png'
+			})
 
 			await message.channel.send({ embeds: [f32Embed, f64Embed, cf32jEmbed, cf32paEmbed, cf64jEmbed, generalEmbed] })
 			await message.delete()

@@ -87,12 +87,15 @@ module.exports = {
 					.setTitle(RULES_INFO.changes.title)
 					.setColor(settings.colors.brand)
 					.setDescription(RULES_INFO.changes.description)
-					.setFooter(`The rules are subject to change at any time for any reason.`, thumbnail)
+					.setFooter({
+						text:`The rules are subject to change at any time for any reason.`,
+						iconURL: thumbnail
+					})
 			}
 
 			await message.channel.send({ embeds: [embedExpandedRules, embedChanges] })
 
-			if (!message.deleted) await message.delete();
+			if (message.deletable) await message.delete();
 		}
 
 		// number is out of range

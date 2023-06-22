@@ -104,7 +104,7 @@ async function editSubmission(client, reaction, user) {
 
     })
     .catch(async err => {
-      if (!message.deleted) {
+      if (message.deletable) {
         removeReact(message, EMOJIS)
         await message.react(client.emojis.cache.get(settings.emojis.see_more))
       }

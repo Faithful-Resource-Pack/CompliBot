@@ -54,8 +54,8 @@ module.exports = function (message, params, user) {
       .setColor(params.color)
 
     embed = params.imageURL
-      ? embed.setFooter(params.footer, params.imageURL)
-      : embed.setFooter(params.footer)
+      ? embed.setFooter({ text: params.footer, iconURL: params.imageURL})
+      : embed.setFooter({ text: params.footer })
 
     // popositions object
     let propObj
@@ -78,7 +78,11 @@ module.exports = function (message, params, user) {
 
     if (description.length >= 2048) {
       description = description.slice(0, 2048)
-      embed.addField('⚠️ WARNING', 'The amount of textures is too much for Discord to show, further textures cannot be displayed!', true)
+      embed.addFields([{
+        text: '⚠️ WARNING',
+        value: 'The amount of textures is too much for Discord to show, further textures cannot be displayed!',
+        inline: true
+      }])
     }
 
     embed.setDescription(description)
