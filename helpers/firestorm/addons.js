@@ -1,6 +1,6 @@
-const firestorm = require('.')
+const firestorm = require(".");
 
-require('./firestorm_config')()
+require("./firestorm_config")();
 
 /**
  * @typedef {Object} Addons
@@ -18,4 +18,4 @@ require('./firestorm_config')()
  * @property {Object} downloads download_name: [link1, link2, ...] (how should I explain that?)
  */
 
-module.exports = firestorm.collection('addons')
+module.exports = firestorm.collection("addons");

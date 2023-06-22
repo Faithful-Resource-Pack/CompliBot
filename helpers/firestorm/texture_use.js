@@ -1,9 +1,9 @@
-const firestorm = require('.')
-const animations = require('./animations')
-const texture = require('./texture')
-const texture_paths = require('./texture_paths')
+const firestorm = require(".");
+const animations = require("./animations");
+const texture = require("./texture");
+const texture_paths = require("./texture_paths");
 
-require('./firestorm_config')()
+require("./firestorm_config")();
 
 /**
  * @typedef {Object} TextureUse
@@ -15,24 +15,26 @@ require('./firestorm_config')()
  * @property {Function} animation // get the animation for this texture
  */
 
-module.exports = firestorm.collection('uses', el => {
-  /** @returns {Promise<Texture>} */
-  el.texture = function () {
-    return texture.get(el.textureID)
-  }
+module.exports = firestorm.collection("uses", (el) => {
+	/** @returns {Promise<Texture>} */
+	el.texture = function () {
+		return texture.get(el.textureID);
+	};
 
-  /** @returns {Promise<TexturePath[]>} */
-  el.paths = function () {
-    return texture_paths.search([{
-      field: 'useID',
-      criteria: '==',
-      value: el[firestorm.ID_FIELD]
-    }])
-  }
+	/** @returns {Promise<TexturePath[]>} */
+	el.paths = function () {
+		return texture_paths.search([
+			{
+				field: "useID",
+				criteria: "==",
+				value: el[firestorm.ID_FIELD],
+			},
+		]);
+	};
 
-  el.animation = function () {
-    return animations.get(el[firestorm.ID_FIELD])
-  }
+	el.animation = function () {
+		return animations.get(el[firestorm.ID_FIELD]);
+	};
 
-  return el
-})
+	return el;
+});

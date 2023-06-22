@@ -8,7 +8,8 @@
     "restart": "npm i --save ; npm start",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx ",
     "test": "echo \"Error: no test specified\" && exit 0",
-    "dev": "npx nodemon ."
+    "dev": "node .",
+    "prettier": "prettier \"{*.js,!(node*)**/*.js}\" --config .prettierrc --write"
   },
   "repository": {
     "type": "git",
@@ -37,6 +38,7 @@
     "image-size": "^1.0.2",
     "node-fetch": "^3.3.1",
     "nodemon": "^2.0.22",
+    "prettier": "^2.8.8",
     "simple-git": "^3.19.0"
   },
   "devDependencies": {

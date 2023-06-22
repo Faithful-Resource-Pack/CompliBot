@@ -8,20 +8,20 @@
  */
 
 // Libraries
-const fs = require('fs')
-const { walkSync } = require('./helpers/walkSync')
-require('dotenv').config()
+const fs = require("fs");
+const { walkSync } = require("./helpers/walkSync");
+require("dotenv").config();
 
 // fetch settings file at start
-const { doCheckSettings } = require('./functions/doCheckSettings')
+const { doCheckSettings } = require("./functions/doCheckSettings");
 
 // beware you need THIS to be loaded before all the functions are used
-const settingsPromise = doCheckSettings()
+const settingsPromise = doCheckSettings();
 
 // eslint-disable-next-line no-unused-vars
-const { Client, Intents, Constants, Collection } = require('discord.js')
+const { Client, Intents, Constants, Collection } = require("discord.js");
 const client = new Client({
-	allowedMentions: { parse: ['users', 'roles'], repliedUser: false }, // remove this line to die instantly ~JackDotJS 2021
+	allowedMentions: { parse: ["users", "roles"], repliedUser: false }, // remove this line to die instantly ~JackDotJS 2021
 	restTimeOffset: 0,
 	partials: Object.values(Constants.PartialTypes),
 	intents: [
@@ -35,45 +35,44 @@ const client = new Client({
 		Intents.FLAGS.GUILD_MESSAGE_TYPING,
 		Intents.FLAGS.DIRECT_MESSAGES,
 		Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
-		Intents.FLAGS.DIRECT_MESSAGE_TYPING
-	]
-})
+		Intents.FLAGS.DIRECT_MESSAGE_TYPING,
+	],
+});
 
-module.exports.Client = client
+module.exports.Client = client;
 
 Promise.all([settingsPromise])
-.then(() => {
-	/**
-	 * COMMAND HANDLER
-	 */
-	const commandFiles = walkSync('./commands').filter(f => f.endsWith('.js'))
-	client.commands = new Collection()
-	for (const file of commandFiles) {
-		const command = require(file)
-		if ('name' in command && typeof (command.name) === 'string')
-			client.commands.set(command.name, command)
-	}
+	.then(() => {
+		/**
+		 * COMMAND HANDLER
+		 */
+		const commandFiles = walkSync("./commands").filter((f) => f.endsWith(".js"));
+		client.commands = new Collection();
+		for (const file of commandFiles) {
+			const command = require(file);
+			if ("name" in command && typeof command.name === "string") client.commands.set(command.name, command);
+		}
 
-	/**
-	 * EVENT HANDLER
-	 * - See the /events folder
-	 */
-	const eventsFiles = fs.readdirSync('./events').filter(f => f.endsWith('.js'))
-	for (const file of eventsFiles) {
-		const event = require(`./events/${file}`)
-		if (event.once) client.once(event.name, (...args) => event.execute(...args))
-		else client.on(event.name, (...args) => event.execute(...args))
-	}
+		/**
+		 * EVENT HANDLER
+		 * - See the /events folder
+		 */
+		const eventsFiles = fs.readdirSync("./events").filter((f) => f.endsWith(".js"));
+		for (const file of eventsFiles) {
+			const event = require(`./events/${file}`);
+			if (event.once) client.once(event.name, (...args) => event.execute(...args));
+			else client.on(event.name, (...args) => event.execute(...args));
+		}
 
-	const unhandledRejection = require('./events/unhandledRejection')
-	process.on('unhandledRejection', (reason, promise) => {
-		unhandledRejection(client, reason, promise)
+		const unhandledRejection = require("./events/unhandledRejection");
+		process.on("unhandledRejection", (reason, promise) => {
+			unhandledRejection(client, reason, promise);
+		});
+
+		client.login(process.env.CLIENT_TOKEN).catch(console.error);
 	})
-
-	client.login(process.env.CLIENT_TOKEN).catch(console.error)
-})
-.catch(err => {
-	console.error('An error occured while fetching lang or settings')
-	const error = err && err.response && err.response.data ? err.response.data : err
-	console.error(error)
-})
+	.catch((err) => {
+		console.error("An error occured while fetching lang or settings");
+		const error = err && err.response && err.response.data ? err.response.data : err;
+		console.error(error);
+	});

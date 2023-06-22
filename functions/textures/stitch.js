@@ -1,4 +1,4 @@
-const { loadImage, createCanvas } = require('canvas');
+const { loadImage, createCanvas } = require("canvas");
 
 /**
  * I genuinely have no idea how this works but it seems to be holding up
@@ -14,26 +14,30 @@ class HorizontalStitcher {
 			try {
 				let tmp = await loadImage(url);
 				loadedImages.push(tmp);
-			} catch {/* image doesn't exist yet */}
+			} catch {
+				/* image doesn't exist yet */
+			}
 		}
 		return loadedImages;
 	}
 
 	async draw() {
 		const images = await this.loadImages();
-		const biggestImage = images.map((can) => {
-			return { w: can.naturalWidth, h: can.naturalHeight };
-		}).sort((a, b) => b.h * b.w - a.h * a.w)[0];
+		const biggestImage = images
+			.map((can) => {
+				return { w: can.naturalWidth, h: can.naturalHeight };
+			})
+			.sort((a, b) => b.h * b.w - a.h * a.w)[0];
 
 		const mappedImages = images.map((img) => {
-			const ctx = createCanvas(img.naturalWidth, img.naturalHeight).getContext('2d')
-            ctx.drawImage(img, 0, 0)
+			const ctx = createCanvas(img.naturalWidth, img.naturalHeight).getContext("2d");
+			ctx.drawImage(img, 0, 0);
 
 			return {
 				image: img,
-				data: ctx.getImageData(0, 0, img.naturalWidth, img.naturalHeight).data
-			}
-		})
+				data: ctx.getImageData(0, 0, img.naturalWidth, img.naturalHeight).data,
+			};
+		});
 
 		if (!biggestImage) return; // if the image isn't loaded properly return early
 
@@ -42,7 +46,7 @@ class HorizontalStitcher {
 		const canvasWidth = biggestImage.w * images.length;
 		const canvasHeight = biggestImage.h;
 
-		const canvas = createCanvas(canvasWidth + (this.gap * (mappedImages.length - 1)), canvasHeight);
+		const canvas = createCanvas(canvasWidth + this.gap * (mappedImages.length - 1), canvasHeight);
 		const ctx = canvas.getContext("2d");
 
 		let textureImage, textureImageData, scale, xOffset, pixelIndex, r, g, b, a;
@@ -77,8 +81,9 @@ class HorizontalStitcher {
  * this was actual pain to make
  * @author Evorp
  * @param {string[][]} urls two-dimensional array of valid urls
-*/
-class FullStitcher { // not using inheritance since this is a completely different implementation and doesn't need to load images
+ */
+class FullStitcher {
+	// not using inheritance since this is a completely different implementation and doesn't need to load images
 	urls = new Array(); // two dimensional array for adding rows and columns
 	gap = 0;
 
@@ -101,27 +106,29 @@ class FullStitcher { // not using inheritance since this is a completely differe
 		}
 
 		// most of the code from here on out is pretty similar to HorizontalStitcher() but just going the other direction
-		const biggestImage = images.map((can) => {
-			return { w: can.naturalWidth, h: can.naturalHeight };
-		}).sort((a, b) => b.h * b.w - a.h * a.w)[0];
+		const biggestImage = images
+			.map((can) => {
+				return { w: can.naturalWidth, h: can.naturalHeight };
+			})
+			.sort((a, b) => b.h * b.w - a.h * a.w)[0];
 
 		const mappedImages = images.map((img) => {
-			const ctx = createCanvas(img.naturalWidth, img.naturalHeight).getContext('2d')
-            ctx.drawImage(img, 0, 0)
+			const ctx = createCanvas(img.naturalWidth, img.naturalHeight).getContext("2d");
+			ctx.drawImage(img, 0, 0);
 
 			return {
 				image: img,
-				data: ctx.getImageData(0, 0, img.naturalWidth, img.naturalHeight).data
-			}
-		})
+				data: ctx.getImageData(0, 0, img.naturalWidth, img.naturalHeight).data,
+			};
+		});
 
 		const referenceHeight = biggestImage.h;
 
 		const canvasHeight = biggestImage.h * images.length;
 		const canvasWidth = biggestImage.w;
 
-		const canvas = createCanvas(canvasWidth + this.gap, canvasHeight + (this.gap * (mappedImages.length - 1)));
-		const ctx = canvas.getContext('2d');
+		const canvas = createCanvas(canvasWidth + this.gap, canvasHeight + this.gap * (mappedImages.length - 1));
+		const ctx = canvas.getContext("2d");
 
 		let textureImage, textureImageData, scale, yOffset, pixelIndex, r, g, b, a;
 
@@ -150,4 +157,4 @@ class FullStitcher { // not using inheritance since this is a completely differe
 }
 
 exports.HorizontalStitcher = HorizontalStitcher;
-exports.FullStitcher = FullStitcher
+exports.FullStitcher = FullStitcher;

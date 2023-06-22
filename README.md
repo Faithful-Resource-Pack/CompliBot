@@ -30,7 +30,7 @@ pnpm dev
 ```
 
 ___
-### Bot config:
+## Bot config:
 
 **DISCLAIMER: We won't help you rebrand the bot for any other server. If you really want to do that, then you need to figure it out yourself.**
 
@@ -56,5 +56,5 @@ ___
 
 ### Other configs:
 
-- `resources/strings.js` for embed or message texts
-- `resources/settings.js` for roles, channel ids, and colors
+- `resources/strings.json` for embed or message texts
+- `resources/settings.json` for roles, channel ids, and colors

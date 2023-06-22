@@ -1,8 +1,8 @@
-const firestorm = require('.')
-const texture = require('./texture')
-const users = require('./users')
+const firestorm = require(".");
+const texture = require("./texture");
+const users = require("./users");
 
-require('./firestorm_config')()
+require("./firestorm_config")();
 
 /**
  * @typedef {Object} Contribution
@@ -14,16 +14,16 @@ require('./firestorm_config')()
  * @property {Function} texture texture assiocated to this contribution
  */
 
-module.exports = firestorm.collection('contributions', el => {
-  /** @returns {Promise<import('./texture').Texture>} */
-  el.getContributors = function () {
-    return users.searchKeys(el.contributors || [])
-  }
+module.exports = firestorm.collection("contributions", (el) => {
+	/** @returns {Promise<import('./texture').Texture>} */
+	el.getContributors = function () {
+		return users.searchKeys(el.contributors || []);
+	};
 
-  /** @returns {Promise<import('./texture').Texture>} */
-  el.texture = function () {
-    return texture.get(el.textureID)
-  }
+	/** @returns {Promise<import('./texture').Texture>} */
+	el.texture = function () {
+		return texture.get(el.textureID);
+	};
 
-  return el
-})
+	return el;
+});

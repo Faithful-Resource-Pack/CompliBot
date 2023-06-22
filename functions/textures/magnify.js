@@ -1,32 +1,35 @@
-const Canvas = require('canvas')
+const Canvas = require("canvas");
 
-const { MessageAttachment } = require('discord.js');
-const { addDeleteReact } = require('../../helpers/addDeleteReact')
-const { getMeta } = require('../../helpers/getMeta');
-const { sendAttachment } = require('./sendAttachment');
+const { MessageAttachment } = require("discord.js");
+const { addDeleteReact } = require("../../helpers/addDeleteReact");
+const { getMeta } = require("../../helpers/getMeta");
+const { sendAttachment } = require("./sendAttachment");
 
-async function magnifyAttachment(url, name='magnified.png') {
-	const dimension = await getMeta(url)
-	let factor = 64
-	const surface = dimension.width * dimension.height
+async function magnifyAttachment(url, name = "magnified.png") {
+	const dimension = await getMeta(url);
+	let factor = 64;
+	const surface = dimension.width * dimension.height;
 
-	if (surface == 256) factor = 32
-	if (surface > 256) factor = 16
-	if (surface > 1024) factor = 8
-	if (surface > 4096) factor = 4
-	if (surface > 65636) factor = 2
-	if (surface > 262144) factor = 1
+	if (surface == 256) factor = 32;
+	if (surface > 256) factor = 16;
+	if (surface > 1024) factor = 8;
+	if (surface > 4096) factor = 4;
+	if (surface > 65636) factor = 2;
+	if (surface > 262144) factor = 1;
 
-	const width = dimension.width * factor
-	const height = dimension.height * factor
-	let canvasResult = Canvas.createCanvas(width, height)
-	let canvasResultCTX = canvasResult.getContext('2d')
+	const width = dimension.width * factor;
+	const height = dimension.height * factor;
+	let canvasResult = Canvas.createCanvas(width, height);
+	let canvasResultCTX = canvasResult.getContext("2d");
 
-	const tmp = await Canvas.loadImage(url).catch(err => { console.trace(err); return Promise.reject(err) })
-	canvasResultCTX.imageSmoothingEnabled = false
-	canvasResultCTX.drawImage(tmp, 0, 0, width, height)
+	const tmp = await Canvas.loadImage(url).catch((err) => {
+		console.trace(err);
+		return Promise.reject(err);
+	});
+	canvasResultCTX.imageSmoothingEnabled = false;
+	canvasResultCTX.drawImage(tmp, 0, 0, width, height);
 
-	return new MessageAttachment(canvasResult.toBuffer(), name)
+	return new MessageAttachment(canvasResult.toBuffer(), name);
 }
 
 /**
@@ -38,7 +41,7 @@ async function magnifyAttachment(url, name='magnified.png') {
  * @returns Send a message with the magnified image
  */
 async function magnify(message, url, userID = false) {
-	const attachment = await magnifyAttachment(url)
+	const attachment = await magnifyAttachment(url);
 
 	if (userID) await sendAttachment(message, attachment, userID);
 	else {
@@ -52,4 +55,4 @@ async function magnify(message, url, userID = false) {
 module.exports = {
 	magnify: magnify,
 	magnifyAttachment: magnifyAttachment,
-}
+};

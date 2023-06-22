@@ -1,7 +1,7 @@
-require('dotenv').config()
-const firestorm = require('./index')
+require("dotenv").config();
+const firestorm = require("./index");
 
 module.exports = function () {
-  firestorm.address(process.env.FIRESTORM_URL)
-  firestorm.token(process.env.FIRESTORM_TOKEN)
-}
+	firestorm.address(process.env.FIRESTORM_URL);
+	firestorm.token(process.env.FIRESTORM_TOKEN);
+};

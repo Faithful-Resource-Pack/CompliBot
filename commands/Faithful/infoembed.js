@@ -1,25 +1,27 @@
 const prefix = process.env.PREFIX;
 
-const settings = require('../../resources/settings.json')
-const strings = require('../../resources/strings.json')
+const settings = require("../../resources/settings.json");
+const strings = require("../../resources/strings.json");
 
-const { MessageEmbed } = require('discord.js')
-const { warnUser } = require('../../helpers/warnUser')
-const { Permissions } = require('discord.js');
+const { MessageEmbed } = require("discord.js");
+const { warnUser } = require("../../helpers/warnUser");
+const { Permissions } = require("discord.js");
 
 module.exports = {
-	name: 'infoembed',
+	name: "infoembed",
 	description: strings.command.description.infoembed,
-	category: 'Faithful',
+	category: "Faithful",
 	guildOnly: true,
 	uses: strings.command.use.devs,
 	syntax: `${prefix}discords\n${prefix}media`,
 	async execute(client, message, args) {
-		if (!message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) return warnUser(message, "Only Managers can do that!");
+		if (!message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR))
+			return warnUser(message, "Only Managers can use this command!");
 
-		if (args[0] === 'discords') {
-			if (message.guild.id === settings.guilds.faithful || args[1] == 'main') {
-				await message.channel.send({ content: `
+		if (args[0] === "discords") {
+			if (message.guild.id === settings.guilds.faithful || args[1] == "main") {
+				await message.channel.send({
+					content: `
 **Permanent Invite Link**:
 
 https://discord.gg/sN9YRQbBv7
@@ -31,12 +33,12 @@ https://discord.gg/KSEhCVtg4J
 **Minecraft:**
 
 https://discord.gg/minecraft
-				` });
-				await message.delete()
-			}
-
-			else if (message.guild.id === settings.guilds.classic_faithful || args[1] == 'cf') {
-				await message.channel.send({ content: `
+				`,
+				});
+				await message.delete();
+			} else if (message.guild.id === settings.guilds.classic_faithful || args[1] == "cf") {
+				await message.channel.send({
+					content: `
 **Permanent Invite Link**:
 
 https://discord.gg/KSEhCVtg4J
@@ -48,17 +50,15 @@ https://discord.gg/sN9YRQbBv7
 **Minecraft:**
 
 https://discord.gg/minecraft
-				`})
-				await message.delete()
-			}
-
-			else return warnUser(message, 'You must specify a third argument. Available options are `main` and `cf`.')
-		}
-
-		else if (args[0] === 'media') {
+				`,
+				});
+				await message.delete();
+			} else return warnUser(message, "You must specify a third argument. Available options are `main` and `cf`.");
+		} else if (args[0] === "media") {
 			const f32Embed = new MessageEmbed()
-				.setTitle('Faithful 32x:')
-				.setDescription (`
+				.setTitle("Faithful 32x:")
+				.setDescription(
+					`
 [Website](https://faithfulpack.net/faithful32x/latest)
 
 [Java Edition CurseForge](https://curseforge.com/minecraft/texture-packs/faithful-32x)
@@ -74,13 +74,15 @@ https://discord.gg/minecraft
 [Java Edition GitHub](https://github.com/faithful-resource-pack/faithful-java-32x)
 
 [Bedrock Edition GitHub](https://github.com/faithful-resource-pack/faithful-bedrock-32x)
-				`)
+				`,
+				)
 				.setColor(settings.colors.f32)
-				.setThumbnail('https://database.faithfulpack.net/images/branding/logos/transparent/512/f32_logo.png')
+				.setThumbnail("https://database.faithfulpack.net/images/branding/logos/transparent/512/f32_logo.png");
 
 			const f64Embed = new MessageEmbed()
-				.setTitle('Faithful 64x:')
-				.setDescription (`
+				.setTitle("Faithful 64x:")
+				.setDescription(
+					`
 [Website](https://faithfulpack.net/faithful64x/latest)
 
 [Java Edition CurseForge](https://curseforge.com/minecraft/texture-packs/faithful-64x)
@@ -94,13 +96,15 @@ https://discord.gg/minecraft
 [Java Edition GitHub](https://github.com/faithful-resource-pack/faithful-java-64x)
 
 [Bedrock Edition GitHub](https://github.com/faithful-resource-pack/faithful-bedrock-64x)
-				`)
+				`,
+				)
 				.setColor(settings.colors.f64)
-				.setThumbnail('https://database.faithfulpack.net/images/branding/logos/transparent/512/f64_logo.png')
+				.setThumbnail("https://database.faithfulpack.net/images/branding/logos/transparent/512/f64_logo.png");
 
 			const cf32jEmbed = new MessageEmbed()
-				.setTitle('Classic Faithful 32x Jappa:')
-				.setDescription (`
+				.setTitle("Classic Faithful 32x Jappa:")
+				.setDescription(
+					`
 [Website](https://faithfulpack.net/classicfaithful/32x-jappa)
 
 [CurseForge](https://curseforge.com/minecraft/texture-packs/classic-faithful-32x-jappa)
@@ -112,13 +116,15 @@ https://discord.gg/minecraft
 [Bedrock Edition GitHub](https://github.com/classicfaithful/32x-jappa-bedrock)
 
 [Add-ons GitHub](https://github.com/classicfaithful/32x-jappa-add-ons)
-				`)
+				`,
+				)
 				.setColor(settings.colors.cf32)
-				.setThumbnail('https://database.faithfulpack.net/images/branding/logos/transparent/512/cf32_logo.png')
+				.setThumbnail("https://database.faithfulpack.net/images/branding/logos/transparent/512/cf32_logo.png");
 
 			const cf32paEmbed = new MessageEmbed()
-				.setTitle('Classic Faithful 32x PA:')
-				.setDescription (`
+				.setTitle("Classic Faithful 32x PA:")
+				.setDescription(
+					`
 [Website](https://faithfulpack.net/classicfaithful/32x-programmer-art)
 
 [CurseForge](https://curseforge.com/minecraft/texture-packs/classic-faithful-32x-pa)
@@ -130,13 +136,15 @@ https://discord.gg/minecraft
 [Bedrock Edition GitHub](https://github.com/classicfaithful/32x-programmer-art-bedrock)
 
 [Add-ons GitHub](https://github.com/classicfaithful/32x-programmer-art-add-ons)
-				`)
+				`,
+				)
 				.setColor(settings.colors.cf32pa)
-				.setThumbnail('https://database.faithfulpack.net/images/branding/logos/transparent/512/cf32pa_logo.png')
+				.setThumbnail("https://database.faithfulpack.net/images/branding/logos/transparent/512/cf32pa_logo.png");
 
 			const cf64jEmbed = new MessageEmbed()
-				.setTitle('Classic Faithful 64x:')
-				.setDescription (`
+				.setTitle("Classic Faithful 64x:")
+				.setDescription(
+					`
 [Website](https://faithfulpack.net/classicfaithful/64x-jappa)
 
 [CurseForge](https://curseforge.com/minecraft/texture-packs/classic-faithful-64x)
@@ -146,14 +154,16 @@ https://discord.gg/minecraft
 [Java Edition GitHub](https://github.com/classicfaithful/64x-jappa)
 
 [Bedrock Edition GitHub](https://github.com/classicfaithful/64x-jappa-bedrock)
-				`)
+				`,
+				)
 				.setColor(settings.colors.cf64)
-				.setThumbnail('https://database.faithfulpack.net/images/branding/logos/transparent/512/cf64_logo.png')
+				.setThumbnail("https://database.faithfulpack.net/images/branding/logos/transparent/512/cf64_logo.png");
 
 			// project nonspecific stuff goes here
 			const generalEmbed = new MessageEmbed()
-				.setTitle('Useful Links:')
-				.setDescription (`
+				.setTitle("Useful Links:")
+				.setDescription(
+					`
 **General:**
 
 [Website](https://faithfulpack.net/) • [Docs](https://docs.faithfulpack.net/) • [News](https://faithfulpack.net/news) • [License](https://faithfulpack.net/license) • [Translate](https://translate.faithfulpack.net/)
@@ -165,16 +175,18 @@ https://discord.gg/minecraft
 **Media:**
 
 [Twitter](https://twitter.com/faithfulpack/) • [Patreon](https://www.patreon.com/faithful_resource_pack) • [Reddit](https://reddit.com/r/faithfulpack/) • [Main GitHub](https://github.com/faithful-resource-pack/) • [Classic Faithful GitHub](https://github.com/classicfaithful/)
-				`)
+				`,
+				)
 				.setColor(settings.colors.brand)
-				.setThumbnail('https://database.faithfulpack.net/images/branding/logos/transparent/512/plain_logo.png')
-				.setFooter ({
-					text: 'Listings for specific packs can be found above.',
-					iconURL: 'https://database.faithfulpack.net/images/branding/logos/transparent/512/plain_logo.png'
-			})
+				.setThumbnail("https://database.faithfulpack.net/images/branding/logos/transparent/512/plain_logo.png")
+				.setFooter({
+					text: "Listings for specific packs can be found above.",
+					iconURL: "https://database.faithfulpack.net/images/branding/logos/transparent/512/plain_logo.png",
+				});
 
-			await message.channel.send({ embeds: [f32Embed, f64Embed, cf32jEmbed, cf32paEmbed, cf64jEmbed, generalEmbed] })
-			await message.delete()
-		} else return warnUser(message, 'You must specify a second argument. Available options are `discords` and `media`.')
-	}
+			await message.channel.send({ embeds: [f32Embed, f64Embed, cf32jEmbed, cf32paEmbed, cf64jEmbed, generalEmbed] });
+			await message.delete();
+		} else
+			return warnUser(message, "You must specify a second argument. Available options are `discords` and `media`.");
+	},
 };

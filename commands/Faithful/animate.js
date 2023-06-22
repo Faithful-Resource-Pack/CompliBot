@@ -1,20 +1,20 @@
-const prefix = process.env.PREFIX
+const prefix = process.env.PREFIX;
 
 //const Discord    = require('discord.js')
-const strings = require('../../resources/strings.json')
+const strings = require("../../resources/strings.json");
 //const colors     = require('../../resources/colors')
 //const settings   = require('../../resources/settings')
 
-const { animate } = require('../../functions/textures/animate')
-const { warnUser } = require('../../helpers/warnUser')
+const { animate } = require("../../functions/textures/animate");
+const { warnUser } = require("../../helpers/warnUser");
 //const { parseArgs } = require('../../helpers/parseArgs')
 //const { jsonContributionsJava, jsonContributionsBedrock } = require('../../helpers/fileHandler')
 
 module.exports = {
-	name: 'animate',
-	aliases: ['play'],
+	name: "animate",
+	aliases: ["play"],
 	description: strings.command.description.animate,
-	category: 'Faithful',
+	category: "Faithful",
 	guildOnly: false,
 	uses: strings.command.use.anyone,
 	//syntax: `${prefix}animate [-c | -m] [-u | file attached]`,
@@ -23,7 +23,6 @@ module.exports = {
 	//syntax: `${prefix}animate [file attached]`,
 	example: `${prefix}animate + file attached`,
 	async execute(client, message, args) {
-
 		message.channel.sendTyping();
 
 		let valURL;
@@ -33,7 +32,6 @@ module.exports = {
 		if (valURL) animate(message, mcmeta, valURL);
 		else previousImage(message, mcmeta);
 
-
 		//args = parseArgs(message, args);
 
 		//let haveMCMETA = false;
@@ -42,7 +40,7 @@ module.exports = {
 		//let valCustom;
 		//let mcmetaMessage;
 
-		/*for (var i in args) {
+		/*for (let i in args) {
 			if (args[i].startsWith('-c=') || args[i].startsWith('--custom=')) {
 				valCustom = args[i].replace('-c=', '').replace('--custom=', '');
 				if (typeof valCustom === 'string' && valCustom.toLowerCase() == 'true') haveCustom = true;
@@ -141,9 +139,8 @@ module.exports = {
 		else if (haveCustom && haveMCMETA) {
 			return warnUser(message, 'You can\'t specify both args at once.');
 		}*/
-
-	}
-}
+	},
+};
 
 async function previousImage(message, mcmeta) {
 	/**
@@ -151,38 +148,44 @@ async function previousImage(message, mcmeta) {
 	 * Right now this function is using a workaround for something that was broken by discord.js v13 and may possibly work again in the future.
 	 */
 
-	var found = false;
-	//var messages = [];
-	var list_messages = await message.channel.messages.fetch({ limit: 10 });
-	var lastMsg = list_messages.sort((a, b) => b.createdTimestamp - a.createdTimestamp).filter((m) => m.attachments.size > 0 || m.embeds[0] != undefined).first();
+	let found = false;
+	//let messages = [];
+	const list_messages = await message.channel.messages.fetch({ limit: 10 });
+	const lastMsg = list_messages
+		.sort((a, b) => b.createdTimestamp - a.createdTimestamp)
+		.filter((m) => m.attachments.size > 0 || m.embeds[0] != undefined)
+		.first();
 	//messages.push(...list_messages.array());
 
-	//for (var i in messages) {
-	//var msg = messages[i]
-	var url = '';
+	//for (let i in messages) {
+	//let msg = messages[i]
+	let url = "";
 	try {
 		if (lastMsg.attachments.size > 0) {
 			found = true;
 			url = lastMsg.attachments.first().url;
 			//break;
-		}
-		else if (lastMsg.embeds[0] != undefined && lastMsg.embeds[0] != null && lastMsg.embeds[0].image) {
+		} else if (lastMsg.embeds[0] != undefined && lastMsg.embeds[0] != null && lastMsg.embeds[0].image) {
 			found = true;
 			url = lastMsg.embeds[0].image.url;
 			//break;
-		}
-		else if (lastMsg.content.startsWith('https://') || lastMsg.content.startsWith('http://')) {
-			if (lastMsg.content.endsWith('.png') || lastMsg.content.endsWith('.jpeg') || lastMsg.content.endsWith('.jpg') || lastMsg.content.endsWith('.gif')) {
+		} else if (lastMsg.content.startsWith("https://") || lastMsg.content.startsWith("http://")) {
+			if (
+				lastMsg.content.endsWith(".png") ||
+				lastMsg.content.endsWith(".jpeg") ||
+				lastMsg.content.endsWith(".jpg") ||
+				lastMsg.content.endsWith(".gif")
+			) {
 				found = true;
 				url = lastMsg.content;
 				//break;
 			}
 		}
 	} catch (e) {
-		return warnUser(message, strings.command.image.not_found_in_10_last)
+		return warnUser(message, strings.command.image.not_found_in_10_last);
 	}
 	//}
 
 	if (found) await animate(message, mcmeta, url);
-	else return warnUser(message, strings.command.image.not_found_in_10_last)
+	else return warnUser(message, strings.command.image.not_found_in_10_last);
 }
