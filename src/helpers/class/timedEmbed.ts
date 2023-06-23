@@ -5,6 +5,11 @@ export type Votes = {
 	[key: string]: Array<string>;
 };
 
+interface AllVotes {
+	upvote: number,
+	downvote: number
+}
+
 /**
  * Parent class for Poll & Submissions since most of the code here is needed for both classes
  */
@@ -79,6 +84,18 @@ export class TimedEmbed {
 	 */
 	public getVotesCount(): Array<number> {
 		return this.getVotes().map((arr) => arr.length);
+	}
+
+	public getVoteNames() {
+		return Object.keys(this.votes);
+	}
+
+	public getAllVotes() {
+		let total: AllVotes = { upvote: 0, downvote: 0 };
+		for (let [key, value] of Object.entries(this.votes)) {
+			total[key] = value.length;
+		}
+		return total;
 	}
 
 	/**

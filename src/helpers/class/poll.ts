@@ -33,12 +33,31 @@ export class Poll extends TimedEmbed {
 
 		const embed: MessageEmbed = new MessageEmbed(message.embeds[0]);
 		let components: Array<MessageActionRow> = message.components;
+		let isYesno: boolean = false;
 
 		if (this.getStatus() === "ended") components = [];
+		if (this.getVoteNames()[0] == 'upvote') isYesno = true;
+		let bestOption = [0, ''];
+
 		embed.fields = embed.fields.map((field: EmbedField, index: number) => {
 			if (index === 0) return field;
-			if (field.name === "Timeout") {
-				if (this.getStatus() === "ended") field.value = `Ended <t:${this.getTimeout()}:R>`;
+			const val: number = parseInt(field.value.substring(2, 3));
+			if (!Number.isNaN(val)) { // if it can't be casted to a number no votes have been made yet
+				if ((bestOption[0] as number) < val) {
+					bestOption[0] = val;
+					bestOption[1] = isYesno
+						? `This vote ${this.getAllVotes().upvote > this.getAllVotes().downvote? 'has': 'has not'} passed!`
+						: `Option **${field.name}** won!`
+				} else if ((bestOption[0] as number) === val) {
+					bestOption[1] = "This vote was a tie!"
+				}
+			}
+			if (field.name === "Status") {
+				if (this.getStatus() === "ended") {
+					field.value = '';
+					if (bestOption[1] !== '') field.value = `${bestOption[1]}\n\n`
+					field.value += `*Ended <t:${this.getTimeout()}:R>*`;
+				}
 				return field;
 			}
 
@@ -94,7 +113,7 @@ export class Poll extends TimedEmbed {
 		embed.setTitle(options.question);
 		embed.setFooter({ text: `${this.id} | ${embed.footer.text}` });
 		embed.addFields(
-			options.answersArr.map((answer: string, index: number) => {
+			options.answersArr.map((answer: string) => {
 				return { name: `${answer}`, value: `No votes yet.` };
 			}),
 		);
@@ -109,7 +128,7 @@ export class Poll extends TimedEmbed {
 		}
 
 		if (this.getTimeout() !== 0) embed.addFields([
-			{ name: "Timeout", value: `<t:${this.getTimeout()}:R>`, inline: true }
+			{ name: "Status", value: `*Will end <t:${this.getTimeout()}:R>*`, inline: true }
 		]);
 
 		const components: Array<MessageActionRow> = [];
