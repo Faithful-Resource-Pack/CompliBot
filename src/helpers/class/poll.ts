@@ -46,7 +46,11 @@ export class Poll extends TimedEmbed {
 				if ((bestOption[0] as number) < val) {
 					bestOption[0] = val;
 					bestOption[1] = isYesno
-						? `This vote ${this.getAllVotes().upvote > this.getAllVotes().downvote? 'has': 'has not'} passed!`
+						? `This vote ${this.getAllVotes().upvote > this.getAllVotes().downvote
+							? 'has passed!'
+							: this.getAllVotes().upvote == this.getAllVotes().downvote
+								? 'has tied!'
+								: 'has not passed!'}`
 						: `Option **${field.name}** won!`
 				} else if ((bestOption[0] as number) === val) {
 					bestOption[1] = "This vote was a tie!"
