@@ -197,7 +197,7 @@ export async function textureComparison(client: Client, id: string | number): Pr
 	const magnified = (await magnify({ image: await loadImage(stitched), name: 'magnified.png' }))[0];
 	const embed = new MessageEmbed()
 		.setTitle(`[#${id}] ${results.name}`)
-		.setDescription(`[View texture online](https://webapp.faithfulpack.net/#/gallery/java/32x/latest/all/?show=${id})`)
+		.setURL(`https://webapp.faithfulpack.net/#/gallery/java/32x/latest/all/?show=${id}`)
 		.addFields(AddPathsToEmbed(results))
 		.setImage('attachment://magnified.png')
 

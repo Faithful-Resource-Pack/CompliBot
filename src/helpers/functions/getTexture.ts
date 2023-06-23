@@ -108,10 +108,11 @@ export const getTextureMessageOptions = async (options: {
 	}
 
 	if (validURL) {
-		embed.addFields([
-			{ name: "Resolution", value: `${dimensions.width}×${dimensions.height}`, inline: true },
-			{ name: "\u200B", value: `[View texture online](https://webapp.faithfulpack.net/#/gallery/java/32x/latest/all/?show=${texture.id})`, inline: true },
-		]);
+		embed
+			.setURL(`https://webapp.faithfulpack.net/#/gallery/java/32x/latest/all/?show=${texture.id})`)
+			.addFields([
+				{ name: "Resolution", value: `${dimensions.width}×${dimensions.height}`, inline: true },
+			]);
 
 		const displayedContributions = [
 			contributions
