@@ -37,7 +37,7 @@ async function instapass(client, message) {
 		],
 	});
 
-	await sentMessage.react(client.emojis.cache.get(emojiID));
+	await sentMessage.react(settings.emojis.see_more);
 	await downloadResults(client, channelOutID, true);
 }
 

@@ -8,25 +8,16 @@ const { Buffer } = require("buffer");
  * @param {String} imageURL Image URL
  * @returns Promise (resolve)
  */
-function getMeta(imageURL) {
-	return new Promise(function (resolve, reject) {
-		axios
-			.get(imageURL, { responseType: "arraybuffer" })
-			.then((response) => {
-				const data = response.data;
-				const buf = Buffer.from(data, "base64");
+async function getMeta(imageURL) {
+	const response = await axios.get(imageURL, { responseType: "arraybuffer" })
+	const data = response.data;
+	const buf = Buffer.from(data, "base64");
 
-				// fixes bug where buf was equal to undefined
-				if (!buf) {
-					reject(new Error("Buffer for getMeta invalid: " + buf));
-					return;
-				}
+	// fixes bug where buf was equal to undefined
+	if (!buf) throw new Error("Buffer for getMeta invalid: " + buf);
 
-				const size = sizeOf(buf);
-				resolve(size);
-			})
-			.catch(reject);
-	});
+	const size = sizeOf(buf);
+	return size;
 }
 
 exports.getMeta = getMeta;

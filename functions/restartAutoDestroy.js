@@ -1,12 +1,10 @@
 const { readFile, writeFile } = require("fs").promises;
 const { join } = require("path");
 
-function sleep(ms) {
-	return new Promise((resolve) => {
-		setTimeout(() => {
-			resolve(ms);
-		}, ms);
-	});
+async function sleep(ms) {
+	setTimeout(() => {
+		return ms;
+	}, ms);
 }
 
 /**
