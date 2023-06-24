@@ -15,5 +15,3 @@ module.exports = async () => {
 	const settings = await allCollection.settings.read_raw();
 	return fs.writeFile(OUT_PATH, JSON.stringify(settings, JSON_REPLACER, JSON_SPACE), { flag: "w", encoding: "utf-8" });
 };
-
-exports.doCheckSettings = doCheckSettings;
