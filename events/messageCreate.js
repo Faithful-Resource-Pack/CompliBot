@@ -10,11 +10,11 @@ const PREFIX = process.env.PREFIX;
 const strings = require("../resources/strings.json");
 const settings = require("../resources/settings.json");
 
-const { submitTexture } = require("../functions/textures/submission/submitTexture");
+const submitTexture = require("../functions/textures/submission/submitTexture");
 const { increase: increaseCommandProcessed } = require("../functions/commandProcess");
 
-const { addDeleteReact } = require("../helpers/addDeleteReact");
-const { warnUser } = require("../helpers/warnUser");
+const addDeleteReact = require("../helpers/addDeleteReact");
+const warnUser = require("../helpers/warnUser");
 
 module.exports = {
 	name: "messageCreate",
@@ -40,7 +40,8 @@ module.exports = {
 				client.commands.find((cmd) => cmd.aliases && cmd.aliases.includes(commandName));
 
 			if (!command) return; // stops a dev error being thrown every single time a message starts with a slash
-			if (command && command.guildOnly && message.channel.type === "DM") return warnUser(message, strings.bot.cant_dm);
+			if (command && command.guildOnly && message.channel.type === "DM")
+				return warnUser(message, strings.bot.cant_dm);
 
 			lastMessages.addMessage(message);
 
@@ -66,13 +67,18 @@ module.exports = {
 			/**
 			 * TEXTURE SUBMISSION
 			 */
-			const submissionChannels = Object.values(settings.submission.packs).map((i) => i.channels.submit);
+			const submissionChannels = Object.values(settings.submission.packs).map(
+				(i) => i.channels.submit,
+			);
 			if (submissionChannels.includes(message.channel.id)) return submitTexture(client, message);
 
 			/**
 			 * CLASSIC FAITHFUL ADD-ON CHANNEL REACTIONS
 			 */
-			if (message.channel.id === "814631514523435020" || message.channel.id === "995033923304308836") {
+			if (
+				message.channel.id === "814631514523435020" ||
+				message.channel.id === "995033923304308836"
+			) {
 				if (!message.attachments.size) {
 					if (message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) return;
 					const embed = new MessageEmbed()

@@ -1,12 +1,12 @@
-const Canvas = require("canvas");
+const { createCanvas, loadImage } = require("canvas");
 const settings = require("../../resources/settings.json");
 const strings = require("../../resources/strings.json");
 
 const { MessageEmbed, MessageAttachment } = require("discord.js");
-const { getMeta } = require("../../helpers/getMeta");
-const { warnUser } = require("../../helpers/warnUser");
-const { addDeleteReact } = require("../../helpers/addDeleteReact");
-const { sendAttachment } = require("./sendAttachment");
+const getMeta = require("../../helpers/getMeta");
+const warnUser = require("../../helpers/warnUser");
+const addDeleteReact = require("../../helpers/addDeleteReact");
+const sendAttachment = require("./sendAttachment");
 
 const COLORS_PER_PALETTE = 9;
 const COLORS_PER_PALETTE_LINE = 3;
@@ -28,16 +28,16 @@ const GRADIENT_HEIGHT = 50;
  * @param {DiscordUserID} userID if set, the message is send to the corresponding #complibot
  * @returns Send an embed message with the color palette of the given URL
  */
-async function palette(message, url, userID) {
+module.exports = async function palette(message, url, userID) {
 	const dimension = await getMeta(url);
 	const sizeOrigin = dimension.width * dimension.height;
 
 	if (sizeOrigin > 262144) return warnUser(message, strings.command.image.too_big);
 
-	let canvas = Canvas.createCanvas(dimension.width, dimension.height).getContext("2d");
+	let canvas = createCanvas(dimension.width, dimension.height).getContext("2d");
 	const allColors = {};
 
-	const temp = await Canvas.loadImage(url);
+	const temp = await loadImage(url);
 	canvas.drawImage(temp, 0, 0);
 
 	let image = canvas.getImageData(0, 0, dimension.width, dimension.height).data;
@@ -56,7 +56,8 @@ async function palette(message, url, userID) {
 			// avoid transparent colors
 			if (a !== 0) {
 				let hex = rgbToHex(r, g, b);
-				if (!(hex in allColors)) allColors[hex] = { hex: hex, opacity: [], rgb: [r, g, b], count: 0 };
+				if (!(hex in allColors))
+					allColors[hex] = { hex: hex, opacity: [], rgb: [r, g, b], count: 0 };
 				++allColors[hex].count;
 				allColors[hex].opacity.push(a);
 			}
@@ -91,7 +92,9 @@ async function palette(message, url, userID) {
 		}
 
 		// add color to latest group latest line
-		field_groups[field_groups.length - 1][field_groups[field_groups.length - 1].length - 1].push(colors[i]);
+		field_groups[field_groups.length - 1][field_groups[field_groups.length - 1].length - 1].push(
+			colors[i],
+		);
 
 		++g;
 	}
@@ -99,7 +102,11 @@ async function palette(message, url, userID) {
 	let groupValue;
 	field_groups.forEach((group, index) => {
 		groupValue = group
-			.map((line) => line.map((color) => `[\`${color}\`](https://coolors.co/${color.replace("#", "")})`).join(" "))
+			.map((line) =>
+				line
+					.map((color) => `[\`${color}\`](https://coolors.co/${color.replace("#", "")})`)
+					.join(" "),
+			)
 			.join(" ");
 		embed.addFields({
 			name: "Hex" + (field_groups.length > 1 ? ` part ${index + 1}` : "") + ": ",
@@ -128,9 +135,9 @@ async function palette(message, url, userID) {
 	let stayInLoop = true;
 	let link;
 	while (i < palette_groups.length && stayInLoop) {
-		link = `**[Palette${palette_groups.length > 1 ? " part " + (i + 1) : ""}](${COOLORS_URL}${palette_groups[i].join(
-			"-",
-		)})** `;
+		link = `**[Palette${
+			palette_groups.length > 1 ? " part " + (i + 1) : ""
+		}](${COOLORS_URL}${palette_groups[i].join("-")})** `;
 
 		if (descriptionLength + link.length + 3 > 1024) {
 			stayInLoop = false;
@@ -169,7 +176,7 @@ async function palette(message, url, userID) {
 		});
 
 	const canvasWidth = bandWidth * allColorsSorted.length;
-	const colorCanvas = Canvas.createCanvas(canvasWidth, GRADIENT_HEIGHT);
+	const colorCanvas = createCanvas(canvasWidth, GRADIENT_HEIGHT);
 	const ctx = colorCanvas.getContext("2d");
 
 	allColorsSorted.forEach((color, index) => {
@@ -189,12 +196,14 @@ async function palette(message, url, userID) {
 		});
 		addDeleteReact(embedMessage, message, true);
 	}
-}
+};
 
 function rgbToHex(r, g, b) {
 	return (
 		"#" +
-		((r | (1 << 8)).toString(16).slice(1) + (g | (1 << 8)).toString(16).slice(1) + (b | (1 << 8)).toString(16).slice(1))
+		((r | (1 << 8)).toString(16).slice(1) +
+			(g | (1 << 8)).toString(16).slice(1) +
+			(b | (1 << 8)).toString(16).slice(1))
 	);
 }
 
@@ -241,5 +250,3 @@ function rgbToHsl(r, g, b) {
 
 	return [h, s, l];
 }
-
-exports.palette = palette;

@@ -3,7 +3,7 @@ const strings = require("../resources/strings.json");
 const prefix = process.env.PREFIX;
 
 const { MessageEmbed } = require("discord.js");
-const { addDeleteReact } = require("./addDeleteReact");
+const addDeleteReact = require("./addDeleteReact");
 
 /**
  * Reply to a user with an embed, use to warn a user
@@ -11,7 +11,7 @@ const { addDeleteReact } = require("./addDeleteReact");
  * @param {Discord.Message} message
  * @param {String} text
  */
-async function warnUser(message, text) {
+module.exports = async function warnUser(message, text) {
 	const embed = new MessageEmbed()
 		.setColor(settings.colors.red)
 		.setThumbnail(settings.images.warning)
@@ -27,6 +27,4 @@ async function warnUser(message, text) {
 	else embedMessage = await message.channel.send({ embeds: [embed] });
 
 	addDeleteReact(embedMessage, message, true);
-}
-
-exports.warnUser = warnUser;
+};

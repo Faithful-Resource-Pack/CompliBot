@@ -1,13 +1,12 @@
 const prefix = process.env.PREFIX;
 
-//const Discord    = require('discord.js')
+//const { MessageEmbed } = require('discord.js')
 const strings = require("../../resources/strings.json");
-//const colors     = require('../../resources/colors')
-//const settings   = require('../../resources/settings')
+//const settings = require('../../resources/settings.json')
 
-const { animate } = require("../../functions/textures/animate");
-const { warnUser } = require("../../helpers/warnUser");
-//const { parseArgs } = require('../../helpers/parseArgs')
+const animate = require("../../functions/textures/animate");
+const warnUser = require("../../helpers/warnUser");
+//const parseArgs = require('../../helpers/parseArgs')
 //const { jsonContributionsJava, jsonContributionsBedrock } = require('../../helpers/fileHandler')
 
 module.exports = {
@@ -93,7 +92,7 @@ module.exports = {
 
 		}*/
 		/*else if (haveCustom && !haveMCMETA) {
-			let embed = new Discord.MessageEmbed()
+			let embed = new MessageEmbed()
 				.setColor(settings.colors.blue)
 				.setTitle('Waiting for MCMETA config:')
 				.setDescription('Please, send a message following this example:\n\\`\\`\\`json //mcmeta file content here \\`\\`\\`\nYou should obtain something like this: ```//mcmeta file content here```')
@@ -165,7 +164,11 @@ async function previousImage(message, mcmeta) {
 			found = true;
 			url = lastMsg.attachments.first().url;
 			//break;
-		} else if (lastMsg.embeds[0] != undefined && lastMsg.embeds[0] != null && lastMsg.embeds[0].image) {
+		} else if (
+			lastMsg.embeds[0] != undefined &&
+			lastMsg.embeds[0] != null &&
+			lastMsg.embeds[0].image
+		) {
 			found = true;
 			url = lastMsg.embeds[0].image.url;
 			//break;

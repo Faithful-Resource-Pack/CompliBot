@@ -17,16 +17,19 @@ module.exports = {
 	 * @returns
 	 */
 	async execute(client, message, args) {
-		if (!process.env.DEVELOPERS.includes(message.author.id)) return await message.reply({ content: "lol no" });
+		if (!process.env.DEVELOPERS.includes(message.author.id))
+			return await message.reply({ content: "lol no" });
 
 		if (args && Array.isArray(args) && args.length > 0 && args[0].includes("/channels/")) {
 			let ids;
 			const link = args[0];
 			const url = new URL(link).pathname;
-			if (link.startsWith("https://canary.discord.com/channels/")) ids = url.replace("/channels/", "").split("/");
+			if (link.startsWith("https://canary.discord.com/channels/"))
+				ids = url.replace("/channels/", "").split("/");
 			else if (link.startsWith("https://discord.com/channels/"))
 				ids = url.replace("/channels/", "").replace("message", "").split("/");
-			else if (link.startsWith("https://discordapp.com/channels/")) ids = url.replace("/channels/", "").split("/");
+			else if (link.startsWith("https://discordapp.com/channels/"))
+				ids = url.replace("/channels/", "").split("/");
 			else return await message.reply({ content: strings.command.behave.answer });
 
 			/** @type {Discord.TextChannel} */

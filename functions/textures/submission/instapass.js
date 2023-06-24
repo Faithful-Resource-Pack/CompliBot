@@ -1,7 +1,7 @@
 const settings = require("../../../resources/settings.json");
 
-const { downloadResults } = require("../admission/downloadResults");
-const { warnUser } = require("../../../helpers/warnUser");
+const downloadResults = require("../admission/downloadResults");
+const warnUser = require("../../../helpers/warnUser");
 
 /**
  * Instapass a given texture embed
@@ -9,7 +9,7 @@ const { warnUser } = require("../../../helpers/warnUser");
  * @param {DiscordMessage} message embed to instapass
  * @returns
  */
-async function instapass(client, message) {
+module.exports = async function instapass(client, message) {
 	let channelOutID;
 	let channelArray;
 
@@ -32,13 +32,13 @@ async function instapass(client, message) {
 			message.embeds[0]
 				.setColor(settings.colors.yellow)
 				.setDescription(
-					`[Original Post](${message.url})\n${message.embeds[0].description ? message.embeds[0].description : ""}`,
+					`[Original Post](${message.url})\n${
+						message.embeds[0].description ? message.embeds[0].description : ""
+					}`,
 				),
 		],
 	});
 
 	await sentMessage.react(settings.emojis.see_more);
 	await downloadResults(client, channelOutID, true);
-}
-
-exports.instapass = instapass;
+};

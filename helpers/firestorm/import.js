@@ -2,7 +2,12 @@
 /* eslint-disable no-unexpected-multiline */
 /* eslint-disable no-constant-condition */
 require("dotenv").config();
-const { jsonModeration, jsonContributionsJava, jsonContributionsBedrock, jsonProfiles } = require("../fileHandler");
+const {
+	jsonModeration,
+	jsonContributionsJava,
+	jsonContributionsBedrock,
+	jsonProfiles,
+} = require("../fileHandler");
 
 /**
  * @typedef {Object} User
@@ -181,7 +186,11 @@ const build_from_files = async function () {
 			contrib[res].author.forEach((id) => {
 				/** @type {Contribution} */
 				const myDate = (contrib[res].date || "01/01/2021").split("/");
-				const time = new Date(myDate[2] || "1970", myDate[1] - 1 || "0", myDate[0] || "1").getTime();
+				const time = new Date(
+					myDate[2] || "1970",
+					myDate[1] - 1 || "0",
+					myDate[0] || "1",
+				).getTime();
 
 				const cb = {
 					contributorID: id,
@@ -275,7 +284,11 @@ const build_from_files = async function () {
 			contrib[res].author.forEach((id) => {
 				/** @type {Contribution} */
 				const myDate = (contrib[res].date || "01/01/2021").split("/");
-				const time = new Date(myDate[2] || "1970", myDate[1] - 1 || "0", myDate[0] || "1").getTime();
+				const time = new Date(
+					myDate[2] || "1970",
+					myDate[1] - 1 || "0",
+					myDate[0] || "1",
+				).getTime();
 
 				const cb = {
 					contributorID: id,

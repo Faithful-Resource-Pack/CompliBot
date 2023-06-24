@@ -5,10 +5,9 @@ const textures = require("../../../helpers/firestorm/texture");
 const paths = require("../../../helpers/firestorm/texture_paths");
 const MinecraftSorter = require("../minecraftSorter");
 const { HorizontalStitcher } = require("../../../functions/textures/stitch");
-
-const { MessageEmbed, MessageAttachment } = require("discord.js");
-const { Permissions } = require("discord.js");
 const { magnifyAttachment } = require("../magnify");
+
+const { MessageEmbed, MessageAttachment, Permissions } = require("discord.js");
 
 /**
  * Check if the given texture exist, and embed it if true
@@ -16,9 +15,10 @@ const { magnifyAttachment } = require("../magnify");
  * @param {DiscordClient} client
  * @param {DiscordMessage} message
  */
-async function submitTexture(client, message) {
+module.exports = async function submitTexture(client, message) {
 	// break if no file is attached
-	if (message.attachments.size == 0) return invalidSubmission(message, strings.command.push.image_not_attached);
+	if (message.attachments.size == 0)
+		return invalidSubmission(message, strings.command.push.image_not_attached);
 	let args = message.content.split(" ");
 
 	// not entirely sure why the first arg exists but it seems to fix problems I had with iterating over maps
@@ -150,7 +150,9 @@ async function submitTexture(client, message) {
 					choice.push(
 						`\`[#${results[i].id}]\` ${results[i].name
 							.replace(search, `**${search}**`)
-							.replace(/_/g, "\\_")} — ${paths[0].path.replace(search, `**${search}**`).replace(/_/g, "\\_")}`,
+							.replace(/_/g, "\\_")} — ${paths[0].path
+							.replace(search, `**${search}**`)
+							.replace(/_/g, "\\_")}`,
 					);
 				}
 
@@ -177,7 +179,7 @@ async function submitTexture(client, message) {
 			}
 		}
 	}
-}
+};
 
 const EMOJIS = [settings.emojis.upvote, settings.emojis.downvote, settings.emojis.see_more];
 
@@ -188,7 +190,9 @@ async function makeEmbed(client, message, texture, attachment, param = new Objec
 
 	for (let i = 0; uses[i]; i++) {
 		let localPath = await uses[i].paths();
-		pathText.push(`**${uses[i].editions[0].charAt(0).toUpperCase() + uses[i].editions[0].slice(1)}**\n`);
+		pathText.push(
+			`**${uses[i].editions[0].charAt(0).toUpperCase() + uses[i].editions[0].slice(1)}**\n`,
+		);
 		for (let k = 0; localPath[k]; k++) {
 			let versions = localPath[k].versions.sort(MinecraftSorter);
 			pathText.push(`\`[${versions[0]}+]\` ${localPath[k].path} \n`);
@@ -203,7 +207,8 @@ async function makeEmbed(client, message, texture, attachment, param = new Objec
 	};
 
 	// TODO: when discord finishes name migration remove this code and just use message.author.username everywhere
-	const authorName = message.author.discriminator == 0 ? `@${message.author.username}` : message.author.tag;
+	const authorName =
+		message.author.discriminator == 0 ? `@${message.author.username}` : message.author.tag;
 
 	let embed = new MessageEmbed()
 		// TODO: add a Faithful gallery url that shows all textures by a given author
@@ -256,7 +261,9 @@ async function makeEmbed(client, message, texture, attachment, param = new Objec
 	} catch {
 		// reference texture doesn't exist
 		defaultImage = await magnifyAttachment(
-			`${settings.repositories.raw.default[info.edition.toLowerCase()]}${info.version}/${info.path}`,
+			`${settings.repositories.raw.default[info.edition.toLowerCase()]}${info.version}/${
+				info.path
+			}`,
 			"default.png",
 		);
 	}
@@ -267,7 +274,9 @@ async function makeEmbed(client, message, texture, attachment, param = new Objec
 
 	try {
 		const currentImage = await magnifyAttachment(
-			`${settings.repositories.raw[repoKey][info.edition.toLowerCase()]}${info.version}/${info.path}`,
+			`${settings.repositories.raw[repoKey][info.edition.toLowerCase()]}${info.version}/${
+				info.path
+			}`,
 		);
 		imageUrls = await getImages(client, [defaultImage, upscaledImage, rawImage, currentImage]);
 		drawer.urls = [imageUrls[0], imageUrls[1], imageUrls[3]];
@@ -285,7 +294,9 @@ async function makeEmbed(client, message, texture, attachment, param = new Objec
 	embed.setThumbnail(imageUrls[2]);
 
 	// if the texture doesn't exist yet only include the default/new caption rather than everything
-	embed.setFooter({ text: drawer.urls.length >= 3 ? `${referenceText} | New | Current` : `${referenceText} | New` });
+	embed.setFooter({
+		text: drawer.urls.length >= 3 ? `${referenceText} | New | Current` : `${referenceText} | New`,
+	});
 
 	// add description if exists
 	if (param.description) embed.setDescription(param.description);
@@ -305,7 +316,9 @@ async function makeEmbed(client, message, texture, attachment, param = new Objec
 
 async function getImages(client, fileArray) {
 	let imgArray = new Array();
-	const imgMessage = await client.channels.cache.get("916766396170518608").send({ files: fileArray });
+	const imgMessage = await client.channels.cache
+		.get("916766396170518608")
+		.send({ files: fileArray });
 
 	imgMessage.attachments.forEach((Attachment) => {
 		imgArray.push(Attachment.url);
@@ -316,7 +329,8 @@ async function getImages(client, fileArray) {
 
 async function invalidSubmission(message, error = "Not given") {
 	if (message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) return; // allow admins to talk in submit channels
-	if (message.member.roles.cache.some((role) => role.name.toLowerCase().includes("council"))) return; // allow council to talk in submission channels
+	if (message.member.roles.cache.some((role) => role.name.toLowerCase().includes("council")))
+		return; // allow council to talk in submission channels
 
 	try {
 		const embed = new MessageEmbed()
@@ -336,5 +350,3 @@ async function invalidSubmission(message, error = "Not given") {
 		console.error(error);
 	}
 }
-
-exports.submitTexture = submitTexture;

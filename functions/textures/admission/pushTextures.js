@@ -2,8 +2,8 @@
 
 const fs = require("fs");
 
-const { pushToGitHub } = require("../../pushToGitHub");
-const { date } = require("../../../helpers/date.js");
+const pushToGitHub = require("../../pushToGitHub");
+const date = require("../../../helpers/date.js");
 
 const DEBUG = process.DEBUG == "true" ? true : false;
 const settings = require("../../../resources/settings.json");
@@ -13,7 +13,9 @@ const settings = require("../../../resources/settings.json");
  * @author Juknum
  * @param {String} COMMIT_MESSAGE
  */
-async function pushTextures(COMMIT_MESSAGE = `Autopush passed textures from ${date()}`) {
+module.exports = async function pushTextures(
+	COMMIT_MESSAGE = `Autopush passed textures from ${date()}`,
+) {
 	const REPO_JAVA = Object.values(settings.repositories.repo_name.java);
 	const REPO_BEDROCK = Object.values(settings.repositories.repo_name.bedrock);
 
@@ -56,7 +58,7 @@ async function pushTextures(COMMIT_MESSAGE = `Autopush passed textures from ${da
 			if (DEBUG) console.log(`PUSHING: ${repoKey.repo} (${branch})`);
 		}
 	}
-}
+};
 
 /**
  * Check if a directory is empty
@@ -69,5 +71,3 @@ const checkFolder = (folderPath) => {
 	const isFolderExist = fs.existsSync(folderPath);
 	return isFolderExist;
 };
-
-exports.pushTextures = pushTextures;

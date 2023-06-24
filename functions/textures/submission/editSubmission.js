@@ -2,11 +2,11 @@ const settings = require("../../../resources/settings.json");
 
 const { Permissions } = require("discord.js");
 const { magnify } = require("../magnify");
-const { palette } = require("../palette");
-const { tile } = require("../tile");
-const { viewRaw } = require("../viewRaw");
-const { instapass } = require("./instapass");
-const { changeStatus } = require("./changeStatus");
+const palette = require("../palette");
+const tile = require("../tile");
+const viewRaw = require("../viewRaw");
+const instapass = require("./instapass");
+const changeStatus = require("./changeStatus");
 
 /**
  * Reaction features for submissions
@@ -15,7 +15,7 @@ const { changeStatus } = require("./changeStatus");
  * @param {DiscordReaction} reaction
  * @param {DiscordUser} user
  */
-async function editSubmission(client, reaction, user) {
+module.exports = async function editSubmission(client, reaction, user) {
 	const message = await reaction.message.fetch();
 	const member = await message.guild.members.cache.get(user.id);
 	if (member.bot) return;
@@ -25,7 +25,11 @@ async function editSubmission(client, reaction, user) {
 		.split("\n")
 		.map((el) => el.replace("<@", "").replace("!", "").replace(">", ""))[0];
 
-	if (reaction.emoji.id !== settings.emojis.see_more && reaction.emoji.id !== settings.emojis.see_more_old) return;
+	if (
+		reaction.emoji.id !== settings.emojis.see_more &&
+		reaction.emoji.id !== settings.emojis.see_more_old
+	)
+		return;
 
 	reaction.remove().catch((err) => {
 		if (process.DEBUG) console.error(err);
@@ -46,7 +50,9 @@ async function editSubmission(client, reaction, user) {
 	if (!message.embeds[0].fields[1].value.includes(settings.emojis.pending))
 		EMOJIS = EMOJIS.filter(
 			(emoji) =>
-				emoji !== settings.emojis.instapass && emoji !== settings.emojis.invalid && emoji !== settings.emojis.delete,
+				emoji !== settings.emojis.instapass &&
+				emoji !== settings.emojis.invalid &&
+				emoji !== settings.emojis.delete,
 		);
 
 	// if the message is in #council-vote remove delete reaction (avoid misclick)
@@ -128,7 +134,7 @@ async function editSubmission(client, reaction, user) {
 
 			console.log(err);
 		});
-}
+};
 
 async function removeReact(message, emojis) {
 	for (let i = 0; emojis[i]; i++) {
@@ -140,5 +146,3 @@ async function removeReact(message, emojis) {
 			});
 	}
 }
-
-exports.editSubmission = editSubmission;

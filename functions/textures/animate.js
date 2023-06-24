@@ -4,9 +4,9 @@ const GIFEncoderFixed = require("../../modified_libraries/GIFEncoder");
 const strings = require("../../resources/strings.json");
 
 const { MessageAttachment } = require("discord.js");
-const { getMeta } = require("../../helpers/getMeta");
-const { warnUser } = require("../../helpers/warnUser");
-const { addDeleteReact } = require("../../helpers/addDeleteReact");
+const getMeta = require("../../helpers/getMeta");
+const warnUser = require("../../helpers/warnUser");
+const addDeleteReact = require("../../helpers/addDeleteReact");
 
 // "magnify" the output GIF (the output will be to small)
 let FACTOR = 8;
@@ -17,11 +17,12 @@ let FACTOR = 8;
  * @param {Object} valMCMETA MCMETA object
  * @param {String} valURL Image URL
  */
-async function animate(message, valMCMETA, valURL) {
+module.exports = async function animate(message, valMCMETA, valURL) {
 	let texture = [];
 
 	const dimension = await getMeta(valURL);
-	if (dimension.width == dimension.height) return warnUser(message, strings.command.image.cant_animate);
+	if (dimension.width == dimension.height)
+		return warnUser(message, strings.command.image.cant_animate);
 	if (dimension.width * FACTOR > 4096) return warnUser(message, strings.command.image.too_wide);
 	if (dimension.width * FACTOR > 1024) FACTOR = 1;
 
@@ -124,7 +125,8 @@ async function animate(message, valMCMETA, valURL) {
 					canvas.height, // dWidth, dHeight
 				);
 
-				if (limit == frametime) encoder.setDelay(50); // frames count == frametime -> time of 1 frame == 1 tick -> 50ms
+				if (limit == frametime)
+					encoder.setDelay(50); // frames count == frametime -> time of 1 frame == 1 tick -> 50ms
 				else encoder.setDelay(500);
 				encoder.addFrame(context);
 			}
@@ -160,7 +162,7 @@ async function animate(message, valMCMETA, valURL) {
 
 	const embedMessage = await message.reply({ files: [attachment] });
 	addDeleteReact(embedMessage, message, true);
-}
+};
 
 /**
  * Magnify image Canvas before making the GIF
@@ -203,5 +205,3 @@ async function sizeUP(valURL, dimension) {
 
 	return canvasOUT;
 }
-
-exports.animate = animate;

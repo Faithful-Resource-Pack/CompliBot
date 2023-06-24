@@ -1,13 +1,13 @@
 const prefix = process.env.PREFIX;
 
-const Discord = require("discord.js");
+const { Permissions } = require("discord.js");
 const settings = require("../../resources/settings.json");
 const strings = require("../../resources/strings.json");
 
-const { date } = require("../../helpers/date");
-const { pushTextures } = require("../../functions/textures/admission/pushTextures");
-const { downloadResults } = require("../../functions/textures/admission/downloadResults");
-const { warnUser } = require("../../helpers/warnUser");
+const date = require("../../helpers/date");
+const pushTextures = require("../../functions/textures/admission/pushTextures");
+const downloadResults = require("../../functions/textures/admission/downloadResults");
+const warnUser = require("../../helpers/warnUser");
 
 module.exports = {
 	name: "autopush",
@@ -18,7 +18,7 @@ module.exports = {
 	syntax: `${prefix}autopush [all/name_of_pack]`,
 	example: `${prefix}autopush faithful_32x`,
 	async execute(client, message, args) {
-		if (!message.member.permissions.has(Discord.Permissions.FLAGS.ADMINISTRATOR))
+		if (!message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR))
 			return warnUser(message, strings.command.no_permission);
 		if (!args.length) return warnUser(message, strings.command.args.none_given);
 

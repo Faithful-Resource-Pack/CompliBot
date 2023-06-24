@@ -1,8 +1,7 @@
 const settings = require("../../../resources/settings.json");
-const strings = require("../../../resources/strings.json");
 
-const { getMessages } = require("../../../helpers/getMessages");
-const { changeStatus } = require("./changeStatus");
+const getMessages = require("../../../helpers/getMessages");
+const changeStatus = require("./changeStatus");
 
 /**
  * @author Juknum
@@ -13,7 +12,14 @@ const { changeStatus } = require("./changeStatus");
  * @param {Integer} delay delay in day from today
  * @param {Boolean} councilDisabled whether to disable council or not (off by default)
  */
-async function retrieveSubmission(client, channelFromID, channelOutID, toCouncil, delay, councilDisabled = false) {
+module.exports = async function retrieveSubmission(
+	client,
+	channelFromID,
+	channelOutID,
+	toCouncil,
+	delay,
+	councilDisabled = false,
+) {
 	let messages = await getMessages(client, channelFromID);
 
 	let delayedDate = new Date();
@@ -23,7 +29,10 @@ async function retrieveSubmission(client, channelFromID, channelOutID, toCouncil
 	messages = messages
 		.filter((message) => {
 			let messageDate = new Date(message.createdTimestamp);
-			return messageDate.getDate() == delayedDate.getDate() && messageDate.getMonth() == delayedDate.getMonth();
+			return (
+				messageDate.getDate() == delayedDate.getDate() &&
+				messageDate.getMonth() == delayedDate.getMonth()
+			);
 		}) // only get pending submissions
 		.filter((message) => message.embeds.length > 0)
 		.filter(
@@ -51,8 +60,9 @@ async function retrieveSubmission(client, channelFromID, channelOutID, toCouncil
 	const messagesDownvoted = messages.filter((message) => message.upvote < message.downvote);
 
 	if (toCouncil) await sendToCouncil(client, messagesUpvoted, messagesDownvoted, channelOutID);
-	else await sendToResults(client, messagesUpvoted, messagesDownvoted, channelOutID, councilDisabled);
-}
+	else
+		await sendToResults(client, messagesUpvoted, messagesDownvoted, channelOutID, councilDisabled);
+};
 
 /**
  * Send textures to a given council channel
@@ -72,23 +82,35 @@ async function sendToCouncil(client, messagesUpvoted, messagesDownvoted, channel
 				message.embed
 					.setColor(settings.colors.council)
 					.setDescription(
-						`[Original Post](${message.message.url})\n${message.embed.description ? message.embed.description : ""}`,
+						`[Original Post](${message.message.url})\n${
+							message.embed.description ? message.embed.description : ""
+						}`,
 					),
 			],
 		});
 		for (const emojiID of EMOJIS) await sentMessage.react(client.emojis.cache.get(emojiID));
-		changeStatus(message.message, `<:upvote:${settings.emojis.upvote}> Sent to council!`, settings.colors.green);
+		changeStatus(
+			message.message,
+			`<:upvote:${settings.emojis.upvote}> Sent to council!`,
+			settings.colors.green,
+		);
 
 		// fix weird bug where the "original post" link shows up on the original post and links to itself
 		if (message.message.embeds[0].description !== null) {
 			let embed = message.message.embeds[0];
-			embed.setDescription(embed.description.replace(`[Original Post](${message.message.url})\n`, ""));
+			embed.setDescription(
+				embed.description.replace(`[Original Post](${message.message.url})\n`, ""),
+			);
 			message.message.edit({ embeds: [embed] });
 		}
 	}
 
 	for (let message of messagesDownvoted) {
-		changeStatus(message.message, `<:downvote:${settings.emojis.downvote}> Not enough upvotes!`, settings.colors.red);
+		changeStatus(
+			message.message,
+			`<:downvote:${settings.emojis.downvote}> Not enough upvotes!`,
+			settings.colors.red,
+		);
 	}
 }
 
@@ -101,7 +123,13 @@ async function sendToCouncil(client, messagesUpvoted, messagesDownvoted, channel
  * @param {String} channelOutID
  * @param {Boolean} councilDisabled whether to disable council or not (off by default)
  */
-async function sendToResults(client, messagesUpvoted, messagesDownvoted, channelOutID, councilDisabled = false) {
+async function sendToResults(
+	client,
+	messagesUpvoted,
+	messagesDownvoted,
+	channelOutID,
+	councilDisabled = false,
+) {
 	const channelOut = client.channels.cache.get(channelOutID);
 	const EMOJIS = [settings.emojis.see_more];
 
@@ -127,8 +155,7 @@ async function sendToResults(client, messagesUpvoted, messagesDownvoted, channel
 			for (const emojiID of EMOJIS) await sentMessage.react(client.emojis.cache.get(emojiID));
 
 			changeStatus(message.message, `<:downvote:${settings.emojis.downvote}> Sent to results!`);
-		} else changeStatus(message.message, `<:downvote:${settings.emojis.downvote}> Not enough upvotes!`);
+		} else
+			changeStatus(message.message, `<:downvote:${settings.emojis.downvote}> Not enough upvotes!`);
 	}
 }
-
-exports.retrieveSubmission = retrieveSubmission;

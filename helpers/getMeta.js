@@ -1,4 +1,4 @@
-const axios = require("axios");
+const { get } = require("axios");
 const sizeOf = require("image-size");
 const { Buffer } = require("buffer");
 
@@ -8,8 +8,8 @@ const { Buffer } = require("buffer");
  * @param {String} imageURL Image URL
  * @returns Promise (resolve)
  */
-async function getMeta(imageURL) {
-	const response = await axios.get(imageURL, { responseType: "arraybuffer" });
+module.exports = async function getMeta(imageURL) {
+	const response = await get(imageURL, { responseType: "arraybuffer" });
 	const data = response.data;
 	const buf = Buffer.from(data, "base64");
 
@@ -18,6 +18,4 @@ async function getMeta(imageURL) {
 
 	const size = sizeOf(buf);
 	return size;
-}
-
-exports.getMeta = getMeta;
+};

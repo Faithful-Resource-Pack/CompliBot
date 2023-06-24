@@ -1,5 +1,5 @@
 const client = require("../index").Client;
-const cron = require("cron");
+const { CronJob } = require("cron");
 
 const DEV = process.env.DEV.toLowerCase() == "true";
 const MAINTENANCE = process.env.MAINTENANCE.toLowerCase() == "true";
@@ -7,12 +7,11 @@ const fetchSettings = require("../functions/fetchSettings");
 
 const settings = require("../resources/settings.json");
 
-const { retrieveSubmission } = require("../functions/textures/submission/retrieveSubmission");
-const { downloadResults } = require("../functions/textures/admission/downloadResults");
-const { pushTextures } = require("../functions/textures/admission/pushTextures");
-
-const { restartAutoDestroy } = require("../functions/restartAutoDestroy");
-const { saveDB } = require("../functions/saveDB");
+const retrieveSubmission = require("../functions/textures/submission/retrieveSubmission");
+const downloadResults = require("../functions/textures/admission/downloadResults");
+const pushTextures = require("../functions/textures/admission/pushTextures");
+const restartAutoDestroy = require("../functions/restartAutoDestroy");
+const saveDB = require("../functions/saveDB");
 
 /**
  * SCHEDULED FUNCTIONS : Texture Submission
@@ -20,7 +19,7 @@ const { saveDB } = require("../functions/saveDB");
  * - Download process (each day at 00:10 GMT)       : @function downloadToBot
  * - Push to GitHub process (each day at 00:15 GMT) : @function pushToGithub
  */
-const submissionProcess = new cron.CronJob("0 0 * * *", async () => {
+const submissionProcess = new CronJob("0 0 * * *", async () => {
 	for (let pack of Object.values(settings.submission.packs)) {
 		if (pack.council_disabled) {
 			await retrieveSubmission(
@@ -53,12 +52,12 @@ const submissionProcess = new cron.CronJob("0 0 * * *", async () => {
 		}
 	}
 });
-const downloadToBot = new cron.CronJob("15 0 * * *", async () => {
+const downloadToBot = new CronJob("15 0 * * *", async () => {
 	for (let pack of Object.values(settings.submission.packs)) {
 		await downloadResults(client, pack.channels.results);
 	}
 });
-let pushToGithub = new cron.CronJob("30 0 * * *", async () => {
+let pushToGithub = new CronJob("30 0 * * *", async () => {
 	await pushTextures();
 	await saveDB(`Daily Backup`);
 });
@@ -75,7 +74,8 @@ module.exports = {
 		console.log(`│                                                             │`);
 		console.log(`└─────────────────────────────────────────────────────────────┘\n\n`);
 
-		if (MAINTENANCE) client.user.setPresence({ activities: [{ name: "maintenance" }], status: "dnd" });
+		if (MAINTENANCE)
+			client.user.setPresence({ activities: [{ name: "maintenance" }], status: "dnd" });
 		else client.user.setActivity("Pigstep", { type: "LISTENING" });
 
 		await restartAutoDestroy(client);

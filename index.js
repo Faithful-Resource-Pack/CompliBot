@@ -1,21 +1,18 @@
 /* eslint-env node */
 
 /**
- * COMPLIBOT INDEX FILE:
+ * COMPLIBOT LEGACY INDEX FILE:
  * - Developed by and for the Faithful Community.
  * - Please read our license first.
  * - If you find any bugs, please use our bug tracker
  */
 
 // Libraries
-const fs = require("fs");
-const { walkSync } = require("./helpers/walkSync");
+const { readdirSync } = require("fs");
+const walkSync = require("./helpers/walkSync");
 require("dotenv").config();
 
-// fetch settings file at start
 const fetchSettings = require("./functions/fetchSettings");
-
-// beware you need THIS to be loaded before all the functions are used
 const settingsPromise = fetchSettings();
 
 // eslint-disable-next-line no-unused-vars
@@ -39,10 +36,11 @@ const client = new Client({
 	],
 });
 
-module.exports.Client = client;
+exports.Client = client;
 
 Promise.all([settingsPromise])
 	.then(() => {
+		// you can't use async/await without a function (pain) so we have to use .then()
 		/**
 		 * COMMAND HANDLER
 		 */
@@ -50,14 +48,15 @@ Promise.all([settingsPromise])
 		client.commands = new Collection();
 		for (const file of commandFiles) {
 			const command = require(file);
-			if ("name" in command && typeof command.name === "string") client.commands.set(command.name, command);
+			if ("name" in command && typeof command.name === "string")
+				client.commands.set(command.name, command);
 		}
 
 		/**
 		 * EVENT HANDLER
 		 * - See the /events folder
 		 */
-		const eventsFiles = fs.readdirSync("./events").filter((f) => f.endsWith(".js"));
+		const eventsFiles = readdirSync("./events").filter((f) => f.endsWith(".js"));
 		for (const file of eventsFiles) {
 			const event = require(`./events/${file}`);
 			if (event.once) client.once(event.name, (...args) => event.execute(...args));

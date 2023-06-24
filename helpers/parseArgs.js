@@ -1,4 +1,4 @@
-const { warnUser } = require("./warnUser");
+const warnUser = require("./warnUser");
 const strings = require("../resources/strings.json");
 
 /**
@@ -7,7 +7,7 @@ const strings = require("../resources/strings.json");
  * @param {Array} args Array of String
  * @returns parsed args
  */
-function parseArgs(message, args) {
+module.exports = function parseArgs(message, args) {
 	for (let i = 0; i < args.length; i++) {
 		if (args[i].startsWith("-")) {
 			for (let j = i + 1; j < args.length; j++) {
@@ -23,6 +23,4 @@ function parseArgs(message, args) {
 	}
 
 	return args.filter((a) => a !== "");
-}
-
-exports.parseArgs = parseArgs;
+};

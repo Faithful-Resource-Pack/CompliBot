@@ -1,5 +1,5 @@
-const { addDeleteReact } = require("../../helpers/addDeleteReact");
-const { sendAttachment } = require("./sendAttachment");
+const addDeleteReact = require("../../helpers/addDeleteReact");
+const sendAttachment = require("./sendAttachment");
 
 /**
  * Sends raw image
@@ -9,7 +9,7 @@ const { sendAttachment } = require("./sendAttachment");
  * @param {DiscordUserID} userID if set, the message is send to the corresponding #complibot
  * @returns Send a message with the raw image
  */
-async function viewRaw(message, url, userID) {
+module.exports = async function viewRaw(message, url, userID) {
 	const attachment = url;
 	if (userID) await sendAttachment(message, attachment, userID);
 	else {
@@ -18,5 +18,4 @@ async function viewRaw(message, url, userID) {
 	}
 
 	return attachment;
-}
-exports.viewRaw = viewRaw;
+};

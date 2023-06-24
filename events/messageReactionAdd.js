@@ -1,9 +1,8 @@
 const client = require("../index").Client;
 const DEV = process.env.DEV.toLowerCase() == "true";
-const DEV_REACTION = (process.env.DEV_REACTION || false) == "true";
 const settings = require("../resources/settings.json");
 
-const { editSubmission } = require("../functions/textures/submission/editSubmission");
+const editSubmission = require("../functions/textures/submission/editSubmission");
 
 module.exports = {
 	name: "messageReactionAdd",

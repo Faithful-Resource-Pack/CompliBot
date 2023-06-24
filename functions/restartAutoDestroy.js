@@ -11,7 +11,7 @@ async function sleep(ms) {
  *
  * @param {import('discord.js').Client} client Discord client
  */
-exports.restartAutoDestroy = async function (client) {
+module.exports = async function (client) {
 	try {
 		const buffer = await readFile(join(process.cwd(), "json", "restart_message.txt"));
 		const ids = buffer.toString("utf-8").split("\n");
@@ -25,7 +25,8 @@ exports.restartAutoDestroy = async function (client) {
 
 		for (let i = 5; i > 0; --i) {
 			const name = "Reboot successful";
-			const value = "This message will self-destruct in " + String(i) + " second" + (i > 1 ? "s" : "");
+			const value =
+				"This message will self-destruct in " + String(i) + " second" + (i > 1 ? "s" : "");
 			const index = emb.fields.map((fi) => fi.name).indexOf(name);
 			if (index != -1) {
 				emb.spliceFields(index, 1, { name: name, value: value, inline: false });

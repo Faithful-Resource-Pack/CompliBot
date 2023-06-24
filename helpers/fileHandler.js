@@ -5,8 +5,8 @@
  * @brief File made to safely handle files and json more particularly.
  * Goal is to have dynamic paths
  */
-const fs = require("fs");
-const os = require("os");
+const { readFileSync, mkdirSync, writeFileSync } = require("fs");
+const { platform } = require("os");
 
 const { exec, execSync } = require("child_process");
 const { dirname, normalize, join } = require("path");
@@ -27,7 +27,7 @@ const JSON_PATH_CONTRIBUTIONS_BEDROCK = "./json/contributors/bedrock.json";
 const JSON_PATH_PROFILES = "./json/profiles.json";
 const JSON_DEFAULT_PROFILES = [];
 
-const OUT_NULL = os.platform() == "win32" ? "NUL" : "/dev/null";
+const OUT_NULL = platform() == "win32" ? "NUL" : "/dev/null";
 
 /* eslint-disable no-empty */
 function __prep() {
@@ -210,7 +210,7 @@ class FileHandler {
 			if (!lock) {
 				// if no lock, go on, take the file and get out
 				try {
-					let res = fs.readFileSync(this.filepath);
+					let res = readFileSync(this.filepath);
 
 					if (this.isJson) res = JSON.parse(res);
 
@@ -253,7 +253,7 @@ class FileHandler {
 				.then(() => {
 					// wow you have the lock, now get the file, release and get out
 					try {
-						let res = fs.readFileSync(this.filepath);
+						let res = readFileSync(this.filepath);
 
 						if (this.isJson) res = JSON.parse(res);
 
@@ -285,14 +285,15 @@ class FileHandler {
 	 */
 	write(content) {
 		// create the folders recusively if not existing
-		fs.mkdirSync(dirname(this.filepath), { recursive: true });
+		mkdirSync(dirname(this.filepath), { recursive: true });
 
 		// this content is transformed in JSON if needed
-		if (content !== "string" && this.isJson) content = JSON.stringify(content, JSON_WRITE_REPLACER, JSON_WRITE_SPACES);
+		if (content !== "string" && this.isJson)
+			content = JSON.stringify(content, JSON_WRITE_REPLACER, JSON_WRITE_SPACES);
 
 		return new Promise((resolve, reject) => {
 			try {
-				fs.writeFileSync(join(process.cwd(), normalize(this.filepath)), content, { flag: "w" });
+				writeFileSync(join(process.cwd(), normalize(this.filepath)), content, { flag: "w" });
 
 				// write and release
 				this.release();
@@ -307,8 +308,10 @@ class FileHandler {
 
 module.exports = {
 	FileHandler: FileHandler,
-
-	jsonContributionsBedrock: new FileHandler(JSON_PATH_CONTRIBUTIONS_BEDROCK, JSON_DEFAULT_CONTRIBUTIONS),
+	jsonContributionsBedrock: new FileHandler(
+		JSON_PATH_CONTRIBUTIONS_BEDROCK,
+		JSON_DEFAULT_CONTRIBUTIONS,
+	),
 	jsonContributionsJava: new FileHandler(JSON_PATH_CONTRIBUTIONS_JAVA, JSON_DEFAULT_CONTRIBUTIONS),
 	jsonModeration: new FileHandler(JSON_PATH_MODERATION, JSON_DEFAULT_MODERATION, true, false),
 	jsonProfiles: new FileHandler(JSON_PATH_PROFILES, JSON_DEFAULT_PROFILES),

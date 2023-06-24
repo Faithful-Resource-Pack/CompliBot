@@ -3,9 +3,8 @@ const prefix = process.env.PREFIX;
 const settings = require("../../resources/settings.json");
 const strings = require("../../resources/strings.json");
 
-const { MessageEmbed } = require("discord.js");
-const { warnUser } = require("../../helpers/warnUser");
-const { Permissions } = require("discord.js");
+const warnUser = require("../../helpers/warnUser");
+const { Permissions, MessageEmbed } = require("discord.js");
 
 module.exports = {
 	name: "infoembed",
@@ -53,7 +52,11 @@ https://discord.gg/minecraft
 				`,
 				});
 				await message.delete();
-			} else return warnUser(message, "You must specify a third argument. Available options are `main` and `cf`.");
+			} else
+				return warnUser(
+					message,
+					"You must specify a third argument. Available options are `main` and `cf`.",
+				);
 		} else if (args[0] === "media") {
 			const f32Embed = new MessageEmbed()
 				.setTitle("Faithful 32x:")
@@ -77,7 +80,9 @@ https://discord.gg/minecraft
 				`,
 				)
 				.setColor(settings.colors.f32)
-				.setThumbnail("https://database.faithfulpack.net/images/branding/logos/transparent/512/f32_logo.png");
+				.setThumbnail(
+					"https://database.faithfulpack.net/images/branding/logos/transparent/512/f32_logo.png",
+				);
 
 			const f64Embed = new MessageEmbed()
 				.setTitle("Faithful 64x:")
@@ -99,7 +104,9 @@ https://discord.gg/minecraft
 				`,
 				)
 				.setColor(settings.colors.f64)
-				.setThumbnail("https://database.faithfulpack.net/images/branding/logos/transparent/512/f64_logo.png");
+				.setThumbnail(
+					"https://database.faithfulpack.net/images/branding/logos/transparent/512/f64_logo.png",
+				);
 
 			const cf32jEmbed = new MessageEmbed()
 				.setTitle("Classic Faithful 32x Jappa:")
@@ -119,7 +126,9 @@ https://discord.gg/minecraft
 				`,
 				)
 				.setColor(settings.colors.cf32)
-				.setThumbnail("https://database.faithfulpack.net/images/branding/logos/transparent/512/cf32_logo.png");
+				.setThumbnail(
+					"https://database.faithfulpack.net/images/branding/logos/transparent/512/cf32_logo.png",
+				);
 
 			const cf32paEmbed = new MessageEmbed()
 				.setTitle("Classic Faithful 32x PA:")
@@ -139,7 +148,9 @@ https://discord.gg/minecraft
 				`,
 				)
 				.setColor(settings.colors.cf32pa)
-				.setThumbnail("https://database.faithfulpack.net/images/branding/logos/transparent/512/cf32pa_logo.png");
+				.setThumbnail(
+					"https://database.faithfulpack.net/images/branding/logos/transparent/512/cf32pa_logo.png",
+				);
 
 			const cf64jEmbed = new MessageEmbed()
 				.setTitle("Classic Faithful 64x:")
@@ -157,7 +168,9 @@ https://discord.gg/minecraft
 				`,
 				)
 				.setColor(settings.colors.cf64)
-				.setThumbnail("https://database.faithfulpack.net/images/branding/logos/transparent/512/cf64_logo.png");
+				.setThumbnail(
+					"https://database.faithfulpack.net/images/branding/logos/transparent/512/cf64_logo.png",
+				);
 
 			// project nonspecific stuff goes here
 			const generalEmbed = new MessageEmbed()
@@ -178,15 +191,23 @@ https://discord.gg/minecraft
 				`,
 				)
 				.setColor(settings.colors.brand)
-				.setThumbnail("https://database.faithfulpack.net/images/branding/logos/transparent/512/plain_logo.png")
+				.setThumbnail(
+					"https://database.faithfulpack.net/images/branding/logos/transparent/512/plain_logo.png",
+				)
 				.setFooter({
 					text: "Listings for specific packs can be found above.",
-					iconURL: "https://database.faithfulpack.net/images/branding/logos/transparent/512/plain_logo.png",
+					iconURL:
+						"https://database.faithfulpack.net/images/branding/logos/transparent/512/plain_logo.png",
 				});
 
-			await message.channel.send({ embeds: [f32Embed, f64Embed, cf32jEmbed, cf32paEmbed, cf64jEmbed, generalEmbed] });
+			await message.channel.send({
+				embeds: [f32Embed, f64Embed, cf32jEmbed, cf32paEmbed, cf64jEmbed, generalEmbed],
+			});
 			await message.delete();
 		} else
-			return warnUser(message, "You must specify a second argument. Available options are `discords` and `media`.");
+			return warnUser(
+				message,
+				"You must specify a second argument. Available options are `discords` and `media`.",
+			);
 	},
 };

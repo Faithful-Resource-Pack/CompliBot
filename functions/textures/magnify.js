@@ -1,9 +1,9 @@
-const Canvas = require("canvas");
+const { createCanvas, loadImage } = require("canvas");
 
 const { MessageAttachment } = require("discord.js");
-const { addDeleteReact } = require("../../helpers/addDeleteReact");
-const { getMeta } = require("../../helpers/getMeta");
-const { sendAttachment } = require("./sendAttachment");
+const addDeleteReact = require("../../helpers/addDeleteReact");
+const getMeta = require("../../helpers/getMeta");
+const sendAttachment = require("./sendAttachment");
 
 async function magnifyAttachment(url, name = "magnified.png") {
 	const dimension = await getMeta(url);
@@ -19,10 +19,10 @@ async function magnifyAttachment(url, name = "magnified.png") {
 
 	const width = dimension.width * factor;
 	const height = dimension.height * factor;
-	let canvasResult = Canvas.createCanvas(width, height);
+	let canvasResult = createCanvas(width, height);
 	let canvasResultCTX = canvasResult.getContext("2d");
 
-	const tmp = await Canvas.loadImage(url).catch((err) => {
+	const tmp = await loadImage(url).catch((err) => {
 		console.trace(err);
 		return Promise.reject(err);
 	});

@@ -3,8 +3,8 @@ const prefix = process.env.PREFIX;
 const strings = require("../../resources/strings.json");
 const settings = require("../../resources/settings.json");
 
-const { warnUser } = require("../../helpers/warnUser");
-const { walkSync } = require("../../helpers/walkSync");
+const warnUser = require("../../helpers/warnUser");
+const walkSync = require("../../helpers/walkSync");
 
 module.exports = {
 	name: "reload",
@@ -22,7 +22,8 @@ module.exports = {
 				message.client.commands.get(commandName) ||
 				message.client.commands.find((cmd) => cmd.aliases && cmd.aliases.includes(commandName));
 
-			if (!command) return warnUser(message, `There is no command with name or alias \`${commandName}\`!`);
+			if (!command)
+				return warnUser(message, `There is no command with name or alias \`${commandName}\`!`);
 
 			const commandPath = walkSync("./commands")
 				.filter((file) => file.includes(command.name))[0]

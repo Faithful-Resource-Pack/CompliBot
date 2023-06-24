@@ -7,19 +7,37 @@ const settings = require("../resources/settings.json");
  * @param {Boolean} deleteAuthorMessage If author message is delete with it
  * @param {import('discord.js').Message} redirectMessage message it is redirected from
  */
-async function addDeleteReact(sentMessage, authorMessage, deleteAuthorMessage = false, redirectMessage = undefined) {
+module.exports = async function addDeleteReact(
+	sentMessage,
+	authorMessage,
+	deleteAuthorMessage = false,
+	redirectMessage = undefined,
+) {
 	if (sentMessage.channel.type === "DM") return;
 
 	await sentMessage.react(settings.emojis.delete);
 
 	const filter = (reaction, user) => {
 		if (redirectMessage)
-			return !user.bot && [settings.emojis.delete].includes(reaction.emoji.id) && user.id === redirectMessage.author.id;
+			return (
+				!user.bot &&
+				[settings.emojis.delete].includes(reaction.emoji.id) &&
+				user.id === redirectMessage.author.id
+			);
 		else
-			return !user.bot && [settings.emojis.delete].includes(reaction.emoji.id) && user.id === authorMessage.author.id;
+			return (
+				!user.bot &&
+				[settings.emojis.delete].includes(reaction.emoji.id) &&
+				user.id === authorMessage.author.id
+			);
 	};
 	try {
-		const collected = await sentMessage.awaitReactions({ filter, max: 1, time: 60000, errors: ["time"] });
+		const collected = await sentMessage.awaitReactions({
+			filter,
+			max: 1,
+			time: 60000,
+			errors: ["time"],
+		});
 		const reaction = collected.first();
 		if (reaction.emoji.id !== settings.emojis.delete) {
 			return;
@@ -43,6 +61,4 @@ async function addDeleteReact(sentMessage, authorMessage, deleteAuthorMessage = 
 			if (deleteReaction !== undefined) await deleteReaction.remove().catch(() => {}); // FIX for undefined delete reaction remove
 		}
 	}
-}
-
-exports.addDeleteReact = addDeleteReact;
+};

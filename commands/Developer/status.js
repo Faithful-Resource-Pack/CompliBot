@@ -3,7 +3,7 @@ const prefix = process.env.PREFIX;
 const strings = require("../../resources/strings.json");
 const settings = require("../../resources/settings.json");
 
-const { warnUser } = require("../../helpers/warnUser");
+const warnUser = require("../../helpers/warnUser");
 
 const activity = ["PLAYING", "STREAMING", "LISTENING", "WATCHING", "CUSTOM_STATUS", "COMPETING"];
 const presence = ["online", "idle", "dnd"];
@@ -17,7 +17,8 @@ module.exports = {
 	uses: strings.command.use.devs,
 	syntax: `${prefix}status <activity> <presence> <status>`,
 	async execute(client, message, args) {
-		if (!process.env.DEVELOPERS.includes(message.author.id)) return warnUser(message, strings.command.no_permission);
+		if (!process.env.DEVELOPERS.includes(message.author.id))
+			return warnUser(message, strings.command.no_permission);
 
 		if (!args.length) return warnUser(message, strings.command.args.none_given);
 

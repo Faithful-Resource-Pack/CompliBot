@@ -1,11 +1,11 @@
 const prefix = process.env.PREFIX;
 
-const Discord = require("discord.js");
+const { Permissions } = require("discord.js");
 const settings = require("../../resources/settings.json");
 const strings = require("../../resources/strings.json");
 
-const { retrieveSubmission } = require("../../functions/textures/submission/retrieveSubmission");
-const { warnUser } = require("../../helpers/warnUser");
+const retrieveSubmission = require("../../functions/textures/submission/retrieveSubmission");
+const warnUser = require("../../helpers/warnUser");
 
 module.exports = {
 	name: "channelpush",
@@ -16,7 +16,7 @@ module.exports = {
 	syntax: `${prefix}channelpush [all/name_of_pack]`,
 	example: `${prefix}channelpush faithful_32x`,
 	async execute(client, message, args) {
-		if (!message.member.permissions.has(Discord.Permissions.FLAGS.ADMINISTRATOR))
+		if (!message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR))
 			return warnUser(message, strings.command.no_permission);
 		if (!args.length) return warnUser(message, strings.command.args.none_given);
 

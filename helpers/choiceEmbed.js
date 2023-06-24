@@ -2,7 +2,7 @@ const settings = require("../resources/settings.json");
 const strings = require("../resources/strings.json");
 
 const { MessageEmbed } = require("discord.js");
-const { addDeleteReact } = require("./addDeleteReact");
+const addDeleteReact = require("./addDeleteReact");
 
 /**
  * @typedef {Object} ChoiceParameter
@@ -94,7 +94,8 @@ module.exports = async function (message, params, user) {
 	let embedMessage = await sendPromise;
 	for (let emoji of emojis) await embedMessage.react(emoji);
 	// await addDeleteReact(embedMessage, message, true);
-	const filter_num = (reaction, user) => user.id === message.author.id && emojis.includes(reaction.emoji.name);
+	const filter_num = (reaction, user) =>
+		user.id === message.author.id && emojis.includes(reaction.emoji.name);
 
 	const collected = await awaitReactionTweaked(
 		embedMessage,
@@ -129,7 +130,9 @@ module.exports = async function (message, params, user) {
  */
 async function awaitReactionTweaked(messageToReact, options, botId) {
 	const collected = await messageToReact.awaitReactions(options);
-	const filtered = collected.filter((reac) => reac.users.cache.size != 1 || reac.users.cache.first().id !== botId);
+	const filtered = collected.filter(
+		(reac) => reac.users.cache.size != 1 || reac.users.cache.first().id !== botId,
+	);
 	if (filtered.size != 0) return collected;
 	else {
 		awaitReactionTweaked(messageToReact, options, botId);

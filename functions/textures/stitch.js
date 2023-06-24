@@ -127,7 +127,10 @@ class FullStitcher {
 		const canvasHeight = biggestImage.h * images.length;
 		const canvasWidth = biggestImage.w;
 
-		const canvas = createCanvas(canvasWidth + this.gap, canvasHeight + this.gap * (mappedImages.length - 1));
+		const canvas = createCanvas(
+			canvasWidth + this.gap,
+			canvasHeight + this.gap * (mappedImages.length - 1),
+		);
 		const ctx = canvas.getContext("2d");
 
 		let textureImage, textureImageData, scale, yOffset, pixelIndex, r, g, b, a;
@@ -156,5 +159,7 @@ class FullStitcher {
 	}
 }
 
-exports.HorizontalStitcher = HorizontalStitcher;
-exports.FullStitcher = FullStitcher;
+module.exports = {
+	HorizontalStitcher: HorizontalStitcher,
+	FullStitcher: FullStitcher,
+}

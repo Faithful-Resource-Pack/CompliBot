@@ -1,13 +1,13 @@
-const { getMessages } = require("../../../helpers/getMessages");
+const getMessages = require("../../../helpers/getMessages");
 
 const settings = require("../../../resources/settings.json");
 
 const texturesCollection = require("../../../helpers/firestorm/texture");
 const contributionsCollection = require("../../../helpers/firestorm/contributions");
-const { pushTextures } = require("./pushTextures");
+const pushTextures = require("./pushTextures");
 const fs = require("fs");
 const fetch = (...args) => import("node-fetch").then(({ default: fetch }) => fetch(...args));
-const { date } = require("../../../helpers/date.js");
+const date = require("../../../helpers/date.js");
 
 const Buffer = require("buffer/").Buffer;
 
@@ -17,7 +17,7 @@ const Buffer = require("buffer/").Buffer;
  * @param {DiscordClient} client
  * @param {String} channelInID discord text channel from where the bot should download texture
  */
-async function downloadResults(client, channelInID, instapass = false) {
+module.exports = async function downloadResults(client, channelInID, instapass = false) {
 	let messages = await getMessages(client, channelInID);
 	let repoKey; // declared outside loop so there's no scope issues
 
@@ -30,7 +30,9 @@ async function downloadResults(client, channelInID, instapass = false) {
 
 	messages = messages
 		.filter((message) => message.embeds.length > 0)
-		.filter((message) => message.embeds[0] && message.embeds[0].fields && message.embeds[0].fields[1]);
+		.filter(
+			(message) => message.embeds[0] && message.embeds[0].fields && message.embeds[0].fields[1],
+		);
 
 	let textures;
 	if (!instapass) {
@@ -48,7 +50,8 @@ async function downloadResults(client, channelInID, instapass = false) {
 		// keep good textures
 		messages = messages.filter(
 			(message) =>
-				message.embeds[0].fields[1] !== undefined && message.embeds[0].fields[1].value.includes(settings.emojis.upvote),
+				message.embeds[0].fields[1] !== undefined &&
+				message.embeds[0].fields[1].value.includes(settings.emojis.upvote),
 		);
 
 		messages.reverse(); // upload them from the oldest to the newest
@@ -56,7 +59,9 @@ async function downloadResults(client, channelInID, instapass = false) {
 		textures = messages.map((message) => {
 			return {
 				url: message.embeds[0].thumbnail.url,
-				authors: message.embeds[0].fields[0].value.split("\n").map((auth) => auth.replace("<@!", "").replace(">", "")),
+				authors: message.embeds[0].fields[0].value
+					.split("\n")
+					.map((auth) => auth.replace("<@!", "").replace(">", "")),
 				date: message.createdTimestamp,
 				id: message.embeds[0].title
 					.split(" ")
@@ -76,7 +81,9 @@ async function downloadResults(client, channelInID, instapass = false) {
 		textures = [
 			{
 				url: message.embeds[0].thumbnail.url,
-				authors: message.embeds[0].fields[0].value.split("\n").map((auth) => auth.replace("<@!", "").replace(">", "")),
+				authors: message.embeds[0].fields[0].value
+					.split("\n")
+					.map((auth) => auth.replace("<@!", "").replace(">", "")),
 				date: message.createdTimestamp,
 				id: message.embeds[0].title
 					.split(" ")
@@ -106,7 +113,8 @@ async function downloadResults(client, channelInID, instapass = false) {
 		// get all paths of the texture
 		for (let j = 0; uses[j]; j++) {
 			let localPath =
-				"./texturesPush/" + settings.repositories.repo_name[uses[j].editions[0].toLowerCase()][repoKey].repo;
+				"./texturesPush/" +
+				settings.repositories.repo_name[uses[j].editions[0].toLowerCase()][repoKey].repo;
 
 			let paths = await uses[j].paths();
 
@@ -114,7 +122,8 @@ async function downloadResults(client, channelInID, instapass = false) {
 			for (let k = 0; paths[k]; k++) {
 				let versions = paths[k].versions;
 				// for each version of each path
-				for (let l = 0; versions[l]; l++) allPaths.push(`${localPath}/${versions[l]}/${paths[k].path}`);
+				for (let l = 0; versions[l]; l++)
+					allPaths.push(`${localPath}/${versions[l]}/${paths[k].path}`);
 			}
 		}
 
@@ -126,9 +135,11 @@ async function downloadResults(client, channelInID, instapass = false) {
 		// download the texture to all its paths
 		for (let j = 0; allPaths[j]; j++) {
 			// create full folder path
-			await fs.promises.mkdir(allPaths[j].substr(0, allPaths[j].lastIndexOf("/")), { recursive: true }).catch((err) => {
-				if (process.DEBUG) console.error(err);
-			});
+			await fs.promises
+				.mkdir(allPaths[j].substr(0, allPaths[j].lastIndexOf("/")), { recursive: true })
+				.catch((err) => {
+					if (process.DEBUG) console.error(err);
+				});
 
 			// write texture to the corresponding path
 			fs.writeFile(allPaths[j], Buffer.from(buffer), function (err) {
@@ -154,6 +165,4 @@ async function downloadResults(client, channelInID, instapass = false) {
 	}
 
 	if (process.DEBUG) console.log("ADDED CONTRIBUTIONS: " + result.join(" "));
-}
-
-exports.downloadResults = downloadResults;
+};

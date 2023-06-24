@@ -1,6 +1,6 @@
 const settings = require("../../resources/settings.json");
-const { addDeleteReact } = require("../../helpers/addDeleteReact");
-const { warnUser } = require("../../helpers/warnUser");
+const addDeleteReact = require("../../helpers/addDeleteReact");
+const warnUser = require("../../helpers/warnUser");
 
 /**
  * Helper function for reaction menu in submissions
@@ -9,7 +9,7 @@ const { warnUser } = require("../../helpers/warnUser");
  * @param {DiscordUserID} userID if set, the message is send to the corresponding #bot-commands
  * @returns the sent message
  */
-async function sendAttachment(message, attachment, userID, embed = null) {
+module.exports = async function sendAttachment(message, attachment, userID, embed = null) {
 	let embedMessage;
 	try {
 		// try to send in DMs
@@ -27,12 +27,15 @@ async function sendAttachment(message, attachment, userID, embed = null) {
 			}
 		}
 		if (!channel) return warnUser(message, `You aren't in a valid server!`);
-		if (embed) embedMessage = await channel.send({ content: `<@!${userID}>`, embeds: [embed], files: [attachment] });
+		if (embed)
+			embedMessage = await channel.send({
+				content: `<@!${userID}>`,
+				embeds: [embed],
+				files: [attachment],
+			});
 		else embedMessage = await channel.send({ content: `<@!${userID}>`, files: [attachment] });
 	}
 
 	addDeleteReact(embedMessage, message, true);
 	return embedMessage;
-}
-
-exports.sendAttachment = sendAttachment;
+};

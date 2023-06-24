@@ -6,7 +6,7 @@
  * @param {Integer} limit Max amount of message fetch
  * @returns Returns an Array of all fetched messages
  */
-async function getMessages(client, id, limit = 130) {
+module.exports = async function getMessages(client, id, limit = 130) {
 	if (typeof limit !== "number") return new Array();
 
 	let channel;
@@ -41,6 +41,4 @@ async function getMessages(client, id, limit = 130) {
 	}
 
 	return sum_messages;
-}
-
-exports.getMessages = getMessages;
+};

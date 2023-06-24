@@ -1,12 +1,12 @@
-const Canvas = require("canvas");
+const { createCanvas, loadImage } = require("canvas");
 const settings = require("../../resources/settings.json");
 
 const { MessageAttachment } = require("discord.js");
-const { addDeleteReact } = require("../../helpers/addDeleteReact");
-const { getMeta } = require("../../helpers/getMeta");
-const { warnUser } = require("../../helpers/warnUser");
+const addDeleteReact = require("../../helpers/addDeleteReact");
+const getMeta = require("../../helpers/getMeta");
+const warnUser = require("../../helpers/warnUser");
 const { magnify } = require("./magnify");
-const { sendAttachment } = require("./sendAttachment");
+const sendAttachment = require("./sendAttachment");
 
 /**
  * Tile an image
@@ -17,7 +17,7 @@ const { sendAttachment } = require("./sendAttachment");
  * @param {DiscordUserID} userID if set, the message is send to the corresponding #bot-commands
  * @returns Send an embed message with the tiled image
  */
-async function tile(message, url, type, userID) {
+module.exports = async function tile(message, url, type, userID) {
 	const dimension = await getMeta(url);
 	// aliases of type
 	if (type == undefined || type == "g") type = "grid";
@@ -48,10 +48,10 @@ async function tile(message, url, type, userID) {
 	 *  x x x
 	 */
 	if (type == "grid") {
-		canvas = Canvas.createCanvas(dimension.width * 3, dimension.height * 3);
+		canvas = createCanvas(dimension.width * 3, dimension.height * 3);
 		canvasContext = canvas.getContext("2d");
 
-		const temp = await Canvas.loadImage(url);
+		const temp = await loadImage(url);
 		for (i = 0; i < 3; i++) {
 			for (j = 0; j < 3; j++) {
 				canvasContext.drawImage(temp, i * dimension.width, j * dimension.height);
@@ -64,10 +64,10 @@ async function tile(message, url, type, userID) {
 		 *  . x .
 		 *  . x .
 		 */
-		canvas = Canvas.createCanvas(dimension.width, dimension.height * 3);
+		canvas = createCanvas(dimension.width, dimension.height * 3);
 		canvasContext = canvas.getContext("2d");
 
-		const temp = await Canvas.loadImage(url);
+		const temp = await loadImage(url);
 		for (i = 0; i < 3; i++) {
 			for (j = 0; j < 3; j++) {
 				canvasContext.drawImage(temp, i * dimension.width, j * dimension.height);
@@ -80,10 +80,10 @@ async function tile(message, url, type, userID) {
 		 *  x x x
 		 *  . . .
 		 */
-		canvas = Canvas.createCanvas(dimension.width * 3, dimension.height);
+		canvas = createCanvas(dimension.width * 3, dimension.height);
 		canvasContext = canvas.getContext("2d");
 
-		const temp = await Canvas.loadImage(url);
+		const temp = await loadImage(url);
 		for (i = 0; i < 3; i++) {
 			for (j = 0; j < 3; j++) {
 				canvasContext.drawImage(temp, i * dimension.width, j * dimension.height);
@@ -96,10 +96,10 @@ async function tile(message, url, type, userID) {
 		 *  x . x
 		 *  x x x
 		 */
-		canvas = Canvas.createCanvas(dimension.width * 3, dimension.height * 3);
+		canvas = createCanvas(dimension.width * 3, dimension.height * 3);
 		canvasContext = canvas.getContext("2d");
 
-		const temp = await Canvas.loadImage(url);
+		const temp = await loadImage(url);
 		for (i = 0; i < 3; i++) {
 			for (j = 0; j < 3; j++) {
 				canvasContext.drawImage(temp, i * dimension.width, j * dimension.height);
@@ -113,10 +113,10 @@ async function tile(message, url, type, userID) {
 		 *  x x x
 		 *  . x .
 		 */
-		canvas = Canvas.createCanvas(dimension.width * 3, dimension.height * 3);
+		canvas = createCanvas(dimension.width * 3, dimension.height * 3);
 		canvasContext = canvas.getContext("2d");
 
-		const temp = await Canvas.loadImage(url);
+		const temp = await loadImage(url);
 		for (i = 0; i < 3; i++) {
 			for (j = 0; j < 3; j++) {
 				canvasContext.drawImage(temp, i * dimension.width, j * dimension.height);
@@ -124,7 +124,12 @@ async function tile(message, url, type, userID) {
 		}
 		canvasContext.clearRect(0, 0, dimension.width, dimension.height); // top left
 		canvasContext.clearRect(dimension.width * 2, 0, dimension.width, dimension.height); // top right
-		canvasContext.clearRect(dimension.width * 2, dimension.height * 2, dimension.width, dimension.height); // bottom right
+		canvasContext.clearRect(
+			dimension.width * 2,
+			dimension.height * 2,
+			dimension.width,
+			dimension.height,
+		); // bottom right
 		canvasContext.clearRect(0, dimension.height * 2, dimension.width, dimension.height); // bottom left
 	}
 
@@ -146,16 +151,32 @@ async function tile(message, url, type, userID) {
 
 		const filter = (reaction, user) => {
 			if (redirectMessage)
-				return [settings.emojis.magnify].includes(reaction.emoji.id) && user.id === redirectMessage.author.id;
-			else return [settings.emojis.magnify].includes(reaction.emoji.id) && user.id === message.author.id;
+				return (
+					[settings.emojis.magnify].includes(reaction.emoji.id) &&
+					user.id === redirectMessage.author.id
+				);
+			else
+				return (
+					[settings.emojis.magnify].includes(reaction.emoji.id) && user.id === message.author.id
+				);
 		};
 
 		try {
-			const collected = await embedMessage.awaitReactions({ filter, max: 1, time: 60000, errors: ["time"] });
+			const collected = await embedMessage.awaitReactions({
+				filter,
+				max: 1,
+				time: 60000,
+				errors: ["time"],
+			});
 			const reaction = collected.first();
 			if (reaction.emoji.id === settings.emojis.magnify) {
 				if (redirectMessage)
-					return magnify(embedMessage, embedMessage.attachments.first().url, undefined, redirectMessage);
+					return magnify(
+						embedMessage,
+						embedMessage.attachments.first().url,
+						undefined,
+						redirectMessage,
+					);
 				else return magnify(embedMessage, embedMessage.attachments.first().url);
 			}
 		} catch {
@@ -166,6 +187,4 @@ async function tile(message, url, type, userID) {
 			}
 		}
 	}
-}
-
-exports.tile = tile;
+};

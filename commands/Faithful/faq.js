@@ -1,9 +1,9 @@
 const prefix = process.env.PREFIX;
 
-const Discord = require("discord.js");
+const { Permissions, MessageEmbed } = require("discord.js");
 const settings = require("../../resources/settings.json");
 const strings = require("../../resources/strings.json");
-const { warnUser } = require("../../helpers/warnUser");
+const warnUser = require("../../helpers/warnUser");
 
 const FAQS = Object.values(strings.faq);
 
@@ -21,9 +21,9 @@ module.exports = {
 		let embedArray = [];
 
 		if (args[0] == "all") {
-			if (message.member.permissions.has(Discord.Permissions.FLAGS.ADMINISTRATOR)) {
+			if (message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
 				for (let i = 0; i < FAQS.length; i++) {
-					embed = new Discord.MessageEmbed()
+					embed = new MessageEmbed()
 						.setTitle(FAQS[i].question)
 						.setColor(color)
 						.setDescription(FAQS[i].answer)
@@ -44,7 +44,7 @@ module.exports = {
 			args = args.join(" ");
 			for (let i = 0; i < FAQS.length; i++) {
 				if (Object.values(FAQS[i].keywords).includes(args.toLowerCase())) {
-					embed = new Discord.MessageEmbed()
+					embed = new MessageEmbed()
 						.setTitle(`FAQ: ${FAQS[i].question}`)
 						.setThumbnail(settings.images.question)
 						.setColor(settings.colors.blue)
@@ -54,7 +54,8 @@ module.exports = {
 				}
 			}
 
-			if (embed === undefined) return warnUser(message, "This keyword does not exist or is not attributed!");
+			if (embed === undefined)
+				return warnUser(message, "This keyword does not exist or is not attributed!");
 		}
 	},
 };

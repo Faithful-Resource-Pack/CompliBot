@@ -5,10 +5,10 @@ const fs = require("fs");
 
 const settings = require("../../resources/settings.json");
 const allCollection = require("../../helpers/firestorm/all");
-const { retrieveSubmission } = require("../../functions/textures/submission/retrieveSubmission");
-const { downloadResults } = require("../../functions/textures/admission/downloadResults");
-const { pushTextures } = require("../../functions/textures/admission/pushTextures");
-const { saveDB } = require("../../functions/saveDB");
+const retrieveSubmission = require("../../functions/textures/submission/retrieveSubmission");
+const downloadResults = require("../../functions/textures/admission/downloadResults");
+const pushTextures = require("../../functions/textures/admission/pushTextures");
+const saveDB = require("../../functions/saveDB");
 
 const strings = require("../../resources/strings.json");
 

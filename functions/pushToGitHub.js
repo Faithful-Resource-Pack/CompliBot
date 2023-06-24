@@ -7,7 +7,7 @@
  */
 
 const glob = require("globby");
-const path = require("path");
+const { normalize, relative } = require("path");
 
 const { Octokit } = require("@octokit/rest");
 const { readFile } = require("fs-extra");
@@ -20,7 +20,7 @@ const { readFile } = require("fs-extra");
  * @param {String} commitMessage
  * @param {String} localPath
  */
-async function pushToGitHub(org, repo, branch, commitMessage, localPath) {
+module.exports = async function pushToGitHub(org, repo, branch, commitMessage, localPath) {
 	// Authentification through CompliBot GitHub Account
 	const octo = new Octokit({
 		auth: process.env.COMPLIBOT_GIT_TOKEN,
@@ -28,7 +28,7 @@ async function pushToGitHub(org, repo, branch, commitMessage, localPath) {
 
 	// Upload files to repo:
 	await uploadToRepo(octo, localPath, org, repo, branch, commitMessage);
-}
+};
 
 /**
  * Upload files to repository
@@ -45,10 +45,24 @@ const uploadToRepo = async (octo, coursePath, org, repo, branch, commitMessage) 
 	if (!filesPaths) return;
 	const filesBlobs = await Promise.all(filesPaths.map(createBlobForFile(octo, org, repo))); // suspected problem on createBlobForFile which fails and give undefined
 	const pathsForBlobs = filesPaths.map((fullPath) =>
-		path.normalize(path.relative(coursePath, fullPath)).replace(/\\/g, "/"),
+		normalize(relative(coursePath, fullPath)).replace(/\\/g, "/"),
 	);
-	const newTree = await createNewTree(octo, org, repo, filesBlobs, pathsForBlobs, currentCommit.treeSha);
-	const newCommit = await createNewCommit(octo, org, repo, commitMessage, newTree.sha, currentCommit.commitSha);
+	const newTree = await createNewTree(
+		octo,
+		org,
+		repo,
+		filesBlobs,
+		pathsForBlobs,
+		currentCommit.treeSha,
+	);
+	const newCommit = await createNewCommit(
+		octo,
+		org,
+		repo,
+		commitMessage,
+		newTree.sha,
+		currentCommit.commitSha,
+	);
 	await setBranchToCommit(octo, org, repo, branch, newCommit.sha);
 };
 
@@ -139,7 +153,14 @@ const createBlobForFile = (octo, org, repo) => async (filePath) => {
  * @param {*} parentTreeSha
  * @returns data : {owner, repo, tree, base_tree: parentTreeSha }
  */
-const createNewTree = async (octo, owner, repo, blobs = Octokit.GitCreateBlobResponse, paths, parentTreeSha) => {
+const createNewTree = async (
+	octo,
+	owner,
+	repo,
+	blobs = Octokit.GitCreateBlobResponse,
+	paths,
+	parentTreeSha,
+) => {
 	const tree = blobs.map(({ sha }, index) => ({
 		path: paths[index],
 		mode: `100644`,
@@ -192,5 +213,3 @@ const setBranchToCommit = (octo, org, repo, branch, commitSha) =>
 		ref: `heads/${branch}`,
 		sha: commitSha,
 	});
-
-exports.pushToGitHub = pushToGitHub;
