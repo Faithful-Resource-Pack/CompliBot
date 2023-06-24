@@ -9,7 +9,7 @@ const { Buffer } = require("buffer");
  * @returns Promise (resolve)
  */
 async function getMeta(imageURL) {
-	const response = await axios.get(imageURL, { responseType: "arraybuffer" })
+	const response = await axios.get(imageURL, { responseType: "arraybuffer" });
 	const data = response.data;
 	const buf = Buffer.from(data, "base64");
 

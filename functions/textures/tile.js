@@ -58,13 +58,12 @@ async function tile(message, url, type, userID) {
 			}
 		}
 	} else if (type == "vertical") {
-
-	/**
-	 * Follows this pattern:
-	 *  . x .
-	 *  . x .
-	 *  . x .
-	 */
+		/**
+		 * Follows this pattern:
+		 *  . x .
+		 *  . x .
+		 *  . x .
+		 */
 		canvas = Canvas.createCanvas(dimension.width, dimension.height * 3);
 		canvasContext = canvas.getContext("2d");
 
@@ -75,13 +74,12 @@ async function tile(message, url, type, userID) {
 			}
 		}
 	} else if (type == "horizontal") {
-
-	/**
-	 * Follows this pattern:
-	 *  . . .
-	 *  x x x
-	 *  . . .
-	 */
+		/**
+		 * Follows this pattern:
+		 *  . . .
+		 *  x x x
+		 *  . . .
+		 */
 		canvas = Canvas.createCanvas(dimension.width * 3, dimension.height);
 		canvasContext = canvas.getContext("2d");
 
@@ -92,13 +90,12 @@ async function tile(message, url, type, userID) {
 			}
 		}
 	} else if (type == "round") {
-
-	/**
-	 * Follows this pattern:
-	 *  x x x
-	 *  x . x
-	 *  x x x
-	 */
+		/**
+		 * Follows this pattern:
+		 *  x x x
+		 *  x . x
+		 *  x x x
+		 */
 		canvas = Canvas.createCanvas(dimension.width * 3, dimension.height * 3);
 		canvasContext = canvas.getContext("2d");
 
@@ -110,13 +107,12 @@ async function tile(message, url, type, userID) {
 		}
 		canvasContext.clearRect(dimension.width, dimension.height, dimension.width, dimension.height);
 	} else if (type == "plus") {
-
-	/**
-	 * Follows this pattern:
-	 *  . x .
-	 *  x x x
-	 *  . x .
-	 */
+		/**
+		 * Follows this pattern:
+		 *  . x .
+		 *  x x x
+		 *  . x .
+		 */
 		canvas = Canvas.createCanvas(dimension.width * 3, dimension.height * 3);
 		canvasContext = canvas.getContext("2d");
 

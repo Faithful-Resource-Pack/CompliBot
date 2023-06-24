@@ -13,10 +13,10 @@ const { walkSync } = require("./helpers/walkSync");
 require("dotenv").config();
 
 // fetch settings file at start
-const { doCheckSettings } = require("./functions/doCheckSettings");
+const fetchSettings = require("./functions/fetchSettings");
 
 // beware you need THIS to be loaded before all the functions are used
-const settingsPromise = doCheckSettings();
+const settingsPromise = fetchSettings();
 
 // eslint-disable-next-line no-unused-vars
 const { Client, Intents, Constants, Collection } = require("discord.js");

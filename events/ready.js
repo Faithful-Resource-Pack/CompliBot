@@ -3,7 +3,7 @@ const cron = require("cron");
 
 const DEV = process.env.DEV.toLowerCase() == "true";
 const MAINTENANCE = process.env.MAINTENANCE.toLowerCase() == "true";
-const PREFIX = process.env.PREFIX;
+const fetchSettings = require("../functions/fetchSettings");
 
 const settings = require("../resources/settings.json");
 
@@ -13,7 +13,6 @@ const { pushTextures } = require("../functions/textures/admission/pushTextures")
 
 const { restartAutoDestroy } = require("../functions/restartAutoDestroy");
 const { saveDB } = require("../functions/saveDB");
-const { doCheckSettings } = require("../functions/doCheckSettings");
 
 /**
  * SCHEDULED FUNCTIONS : Texture Submission
@@ -83,7 +82,7 @@ module.exports = {
 
 		if (DEV) {
 			setInterval(() => {
-				doCheckSettings();
+				fetchSettings();
 			}, 20000); // 20 seconds
 		}
 
@@ -104,7 +103,7 @@ module.exports = {
 		 * @event doMCUpdateCheck() -> each minute | MINECRAFT UPDATE DETECTION INTERVAL
 		 */
 		setInterval(() => {
-			doCheckSettings();
+			fetchSettings();
 		}, 60000);
 	},
 };

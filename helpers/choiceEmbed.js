@@ -128,9 +128,8 @@ module.exports = async function (message, params, user) {
  * @returns {Promise<Discord.Collection<string, Discord.MessageReaction>>}
  */
 async function awaitReactionTweaked(messageToReact, options, botId) {
-	const collected = await messageToReact.awaitReactions(options)
-	const filtered = collected.filter(
-		(reac) => reac.users.cache.size != 1 || reac.users.cache.first().id !== botId);
+	const collected = await messageToReact.awaitReactions(options);
+	const filtered = collected.filter((reac) => reac.users.cache.size != 1 || reac.users.cache.first().id !== botId);
 	if (filtered.size != 0) return collected;
 	else {
 		awaitReactionTweaked(messageToReact, options, botId);

@@ -11,22 +11,9 @@ const JSON_SPACE = 0;
  * @author Juknum
  * @returns {Promise<Object>}
  */
-const doCheckSettings = () => {
-	return new Promise((resolve, reject) => {
-		let json; // = undefined
-		allCollection.settings
-			.read_raw()
-			.then((res) => {
-				json = res;
-				return fs.writeFile(OUT_PATH, JSON.stringify(res, JSON_REPLACER, JSON_SPACE), { flag: "w", encoding: "utf-8" });
-			})
-			.then(() => {
-				resolve(json);
-			})
-			.catch((err) => {
-				reject(err);
-			});
-	});
+module.exports = async () => {
+	const settings = await allCollection.settings.read_raw();
+	return fs.writeFile(OUT_PATH, JSON.stringify(settings, JSON_REPLACER, JSON_SPACE), { flag: "w", encoding: "utf-8" });
 };
 
 exports.doCheckSettings = doCheckSettings;
