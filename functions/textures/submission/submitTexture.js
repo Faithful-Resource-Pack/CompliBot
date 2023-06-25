@@ -169,7 +169,6 @@ module.exports = async function submitTexture(client, message) {
 					.catch((message, error) => {
 						if (process.env.DEBUG) console.error(message, error);
 					});
-				continue;
 			} else if (results.length == 1) {
 				await makeEmbed(client, message, results[0], attachment, param);
 				//if (waitEmbedMessage.deletable) await waitEmbedMessage.delete()

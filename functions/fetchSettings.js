@@ -12,6 +12,7 @@ const JSON_SPACE = 0;
  * @returns {Promise<Object>}
  */
 module.exports = async () => {
+	if (process.env.FETCH_SETTINGS != "true") return;
 	const settings = await allCollection.settings.read_raw();
 	return writeFile(OUT_PATH, JSON.stringify(settings, JSON_REPLACER, JSON_SPACE), {
 		flag: "w",
