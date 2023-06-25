@@ -9,7 +9,7 @@ import { ISizeCalculationResult } from "image-size/dist/types/interface";
 import { colors } from "@helpers/colors";
 import { Contributions, Texture, Paths, Uses } from "@helpers/interfaces/firestorm";
 import { animateAttachment } from "./canvas/animate";
-import { MinecraftSorter, AddPathsToEmbed } from "@helpers/sorter";
+import { FormatName, MinecraftSorter, AddPathsToEmbed } from "@helpers/sorter";
 
 export const getTextureMessageOptions = async (options: {
 	texture: Texture;
@@ -44,38 +44,7 @@ export const getTextureMessageOptions = async (options: {
 		}
 	}
 
-	let strPack: string;
-	let strIconURL: string;
-
-	// TODO: use API here
-	switch (pack) {
-		case "faithful_32x":
-			strPack = "Faithful 32x";
-			strIconURL = config.images + "branding/logos/transparent/512/f32_logo.png";
-			break;
-		case "faithful_64x":
-			strPack = "Faithful 64x";
-			strIconURL = config.images + "branding/logos/transparent/512/f64_logo.png";
-			break;
-		case "classic_faithful_32x":
-			strPack = "Classic Faithful 32x";
-			strIconURL = config.images + "branding/logos/transparent/512/cf32_logo.png";
-			break;
-		case "classic_faithful_32x_progart":
-			strPack = "Classic Faithful 32x Programmer Art";
-			strIconURL = config.images + "branding/logos/transparent/512/cf32pa_logo.png";
-			break;
-		case "classic_faithful_64x":
-			strPack = "Classic Faithful 64x";
-			strIconURL = config.images + "branding/logos/transparent/512/cf64_logo.png";
-			break;
-
-		default:
-		case "default":
-			strPack = "Minecraft Default";
-			strIconURL = config.images + "bot/texture_16x.png";
-			break;
-	}
+	const [strPack, strIconURL] = FormatName(pack);
 
 	const files: Array<MessageAttachment> = [];
 	const embed = new MessageEmbed().setTitle(`[#${texture.id}] ${texture.name}`).setFooter({

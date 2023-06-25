@@ -74,15 +74,12 @@ export const event: Event = {
 		const textureID = [...message.content.matchAll(/(?<=\[\#)(.*?)(?=\])/g)] ?? [];
 
 		for (let i of textureID) {
-			if (+i[0] > 0) {
-				// cast to number
-				try {
-					const [embed, magnified] = await textureComparison(client, i[0]);
+			try {
+				const [embed, magnified] = await textureComparison(client, i[0]);
 
-					message.reply({ embeds: [embed], files: [magnified] }).then((message) => message.deleteButton(true));
-				} catch {
-					/* texture doesn't exist or failed or whatever*/
-				}
+				message.reply({ embeds: [embed], files: [magnified] }).then((message) => message.deleteButton(true));
+			} catch {
+				/* texture doesn't exist or failed or whatever*/
 			}
 		}
 

@@ -155,7 +155,7 @@ export class FullStitcher { // not using inheritance since this is a completely 
 import { magnify } from "@functions/canvas/magnify";
 import { Client, MessageEmbed } from "@client";
 import { MessageAttachment } from "discord.js";
-import { AddPathsToEmbed } from "@helpers/sorter";
+import { FormatName, AddPathsToEmbed } from "@helpers/sorter";
 import axios from "axios";
 
 /**
@@ -165,8 +165,10 @@ import axios from "axios";
  * @param id texture id to look up
  * @returns pre-formatted message embed and the attachment needed in an array, in that order
  */
-export async function textureComparison(client: Client, id: string | number): Promise<[MessageEmbed, MessageAttachment]> {
+export async function textureComparison(client: Client, id: number | string): Promise<[MessageEmbed, MessageAttachment]> {
+	const isTemplate: boolean = typeof id == 'string' && id.toLowerCase() == "template";
 	const results = (await axios.get(`${client.config.apiUrl}textures/${id}/all`)).data;
+
 	const PACKS = [
 		[
 			'default',
@@ -179,13 +181,18 @@ export async function textureComparison(client: Client, id: string | number): Pr
 			'classic_faithful_64x'
 		]
 	]
+
 	let stitcher = new FullStitcher();
 	let j = 0;
 	for (let packSet of PACKS) {
 		stitcher.urls.push(new Array());
 		for (let pack of packSet) {
 			try {
-				const textureURL = (await axios.get(`${client.config.apiUrl}textures/${id}/url/${pack}/latest`)).request.res.responseUrl;
+				let textureURL: string;
+				if (isTemplate) {
+					const [_, strIconURL] = FormatName(pack, '64');
+					textureURL = strIconURL;
+				} else textureURL = (await axios.get(`${client.config.apiUrl}textures/${id}/url/${pack}/latest`)).request.res.responseUrl;
 				stitcher.urls[j].push(textureURL);
 			} catch {/* texture hasn't been made yet */};
 		}
@@ -196,10 +203,17 @@ export async function textureComparison(client: Client, id: string | number): Pr
 	const stitched = await stitcher.draw();
 	const magnified = (await magnify({ image: await loadImage(stitched), name: 'magnified.png' }))[0];
 	const embed = new MessageEmbed()
-		.setTitle(`[#${id}] ${results.name}`)
-		.setURL(`https://webapp.faithfulpack.net/#/gallery/java/32x/latest/all/?show=${id}`)
-		.addFields(AddPathsToEmbed(results))
 		.setImage('attachment://magnified.png')
+
+	if (isTemplate)
+		embed
+			.setTitle(`Comparison Template`)
+	else
+		embed
+			.setTitle(`[#${id}] ${results.name}`)
+			.setURL(`https://webapp.faithfulpack.net/#/gallery/java/32x/latest/all/?show=${id}`)
+			.addFields(AddPathsToEmbed(results))
+			.setFooter({ text: "Use [#template] for more information!" })
 
 	return [embed, magnified]
 }
