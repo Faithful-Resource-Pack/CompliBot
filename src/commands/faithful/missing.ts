@@ -154,7 +154,7 @@ export const command: SlashCommand = {
 
 				embed2.addFields([{
 					name: `${getDisplayNameForPack(response[2].pack)} - ${response[2].edition} - ${response[2].version}`,
-					value: `${response[2].completion}% complete\n> ${response[1].length} textures missing.`,
+					value: `${response[2].completion}% complete\n> ${response[1].length} textures missing of ${response[2].total} total.`,
 				}]);
 			}
 		});

@@ -17,6 +17,7 @@ export interface MissingOptions {
 	edition: string;
 	pack: string;
 	version: string;
+	total?: number;
 }
 export type MissingResult = [Buffer, Array<string>, MissingOptions];
 export type MissingResults = Array<MissingResult>;
@@ -177,7 +178,7 @@ export const compute = async (
 	);
 	const progress: number = Math.round(10000 - (diffResult.length / texturesDefault.length) * 10000) / 100;
 
-	return [buffResult, diffResult, { completion: progress, edition: edition, pack: pack, version: version }];
+	return [buffResult, diffResult, { completion: progress, edition: edition, pack: pack, version: version, total: texturesDefault.length }];
 };
 
 export const getAllFilesFromDir = (dir: string, filter = []): Array<string> => {
