@@ -1,5 +1,5 @@
-import { Texture } from '@helpers/interfaces/firestorm';
-import { EmbedFieldData } from 'discord.js';
+import { Texture } from "@helpers/interfaces/firestorm";
+import { EmbedFieldData } from "discord.js";
 /**
  * Sort Minecraft Version Numbers
  * Use this function as a filter for the sort() method:
@@ -56,4 +56,4 @@ export const AddPathsToEmbed: any = (texture: Texture): EmbedFieldData[] => {
 	});
 
 	return final;
-}
+};
