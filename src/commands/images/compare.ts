@@ -29,7 +29,7 @@ export const command: SlashCommand = {
 			return;
 		}
 
-		const results: Array<any> = (await axios.get(`${(interaction.client as Client).config.apiUrl}textures/${name}/all`)).data;
+		const results: Array<any> = (await axios.get(`${(interaction.client as Client).tokens.apiUrl}textures/${name}/all`)).data;
 
 		if (!results.length) { // no results
 			interaction.reply({

@@ -44,7 +44,7 @@ export const command: SlashCommand = {
 		/**
 		 * TODO: find a fix for this Error: connect ETIMEDOUT 172.67.209.9:443 at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1161:16)
 		 */
-		const results: Array<any> = (await axios.get(`${(interaction.client as Client).config.apiUrl}textures/${name}/all`))
+		const results: Array<any> = (await axios.get(`${(interaction.client as Client).tokens.apiUrl}textures/${name}/all`))
 			.data;
 
 		if (!results.length) { // no results

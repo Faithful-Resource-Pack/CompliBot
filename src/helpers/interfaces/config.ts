@@ -1,6 +1,5 @@
 export interface Config {
 	firestormUrl: string;
-	apiUrl: string;
 	images: string;
 	teams: Array<Team>;
 	discords: Array<Discord>;

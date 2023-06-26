@@ -167,7 +167,7 @@ import axios from "axios";
  */
 export async function textureComparison(client: Client, id: number | string): Promise<[MessageEmbed, MessageAttachment]> {
 	const isTemplate: boolean = typeof id == 'string' && id.toLowerCase() == "template";
-	const results = (await axios.get(`${client.config.apiUrl}textures/${id}/all`)).data;
+	const results = (await axios.get(`${client.tokens.apiUrl}textures/${id}/all`)).data;
 
 	const PACKS = [
 		[
@@ -192,7 +192,7 @@ export async function textureComparison(client: Client, id: number | string): Pr
 				if (isTemplate) {
 					const [_, strIconURL] = FormatName(pack, '64');
 					textureURL = strIconURL;
-				} else textureURL = (await axios.get(`${client.config.apiUrl}textures/${id}/url/${pack}/latest`)).request.res.responseUrl;
+				} else textureURL = (await axios.get(`${client.tokens.apiUrl}textures/${id}/url/${pack}/latest`)).request.res.responseUrl;
 				stitcher.urls[j].push(textureURL);
 			} catch {/* texture hasn't been made yet */};
 		}

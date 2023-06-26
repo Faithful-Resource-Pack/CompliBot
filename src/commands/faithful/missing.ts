@@ -32,7 +32,7 @@ export const getDisplayNameForPack = (pack: string): string => {
 
 export const command: SlashCommand = {
 	data: async (client: Client): Promise<SyncSlashCommandBuilder> => {
-		let versions = Object.values((await axios.get(`${client.config.apiUrl}settings/versions`)).data).flat();
+		let versions = Object.values((await axios.get(`${client.tokens.apiUrl}settings/versions`)).data).flat();
 		versions.splice(versions.indexOf("versions"), 1); // remove "versions" key id (API issue)
 
 		return new SlashCommandBuilder()

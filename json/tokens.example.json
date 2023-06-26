@@ -3,6 +3,7 @@
     "firestormToken": "bing",
     "token": "chilling",
     "appID": "botID",
+    "apiUrl": "https://api.faithfulpack.net/v2/",
     "apiPassword": "test",
     "errorChannel": "927617374738341959",
     "dev": true,

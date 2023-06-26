@@ -1,6 +1,6 @@
 import { MessageEmbed } from "@client";
-import ConfigJson from "@json/config.json";
-import { Config } from "@interfaces";
+import TokenJson from "@json/tokens.json";
+import { Tokens } from "@interfaces";
 import axios from "axios";
 import getMeta from "./canvas/getMeta";
 import { MessageAttachment, Guild } from "discord.js";
@@ -16,7 +16,7 @@ export const getTextureMessageOptions = async (options: {
 	pack: string;
 	guild: Guild;
 }): Promise<[MessageEmbed, Array<MessageAttachment>]> => {
-	const config: Config = ConfigJson;
+	const tokens: Tokens = TokenJson;
 	const texture = options.texture;
 	const pack = options.pack;
 	const guild = options.guild;
@@ -54,7 +54,7 @@ export const getTextureMessageOptions = async (options: {
 
 	let textureURL: string;
 	try {
-		textureURL = (await axios.get(`${config.apiUrl}textures/${texture.id}/url/${pack}/latest`)).request.res.responseUrl;
+		textureURL = (await axios.get(`${tokens.apiUrl}textures/${texture.id}/url/${pack}/latest`)).request.res.responseUrl;
 	} catch {
 		textureURL = "";
 	}

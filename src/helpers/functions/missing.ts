@@ -28,7 +28,7 @@ export const computeAll = async (
 	version: string,
 	callback: Function,
 ): Promise<MissingResults> => {
-	const editions: Array<string> = (await axios.get(`${client.config.apiUrl}textures/editions`)).data;
+	const editions: Array<string> = (await axios.get(`${client.tokens.apiUrl}textures/editions`)).data;
 
 	return Promise.all(
 		editions.map(async (edition: string) => {
@@ -43,7 +43,7 @@ export const computeAndUpdateAll = async (
 	version: string,
 	callback: Function,
 ): Promise<MissingResults> => {
-	const editions: Array<string> = (await axios.get(`${client.config.apiUrl}textures/editions`)).data;
+	const editions: Array<string> = (await axios.get(`${client.tokens.apiUrl}textures/editions`)).data;
 
 	return Promise.all(
 		editions.map(async (edition: string) => {
@@ -96,7 +96,7 @@ export const compute = async (
 ): Promise<MissingResult> => {
 	if (callback === undefined) callback = async () => {};
 
-	const repo = (await axios.get(`${client.config.apiUrl}settings/repositories.git`)).data;
+	const repo = (await axios.get(`${client.tokens.apiUrl}settings/repositories.git`)).data;
 	const repoDefault = repo.default[edition];
 	const repoRequest = repo[pack][edition];
 
@@ -129,7 +129,7 @@ export const compute = async (
 		await exec(`git clone ${repoRequest} .`, { cwd: tmpDirPathRequest });
 	}
 
-	const versions: Array<string> = (await axios.get(`${client.config.apiUrl}settings/versions.${edition}`)).data;
+	const versions: Array<string> = (await axios.get(`${client.tokens.apiUrl}settings/versions.${edition}`)).data;
 	if (!versions.includes(version)) version = versions[0]; // latest version if versions doesn't include version (unexisting/unsupported)
 	await callback(`Updating packs with latest version of \`${version}\` known...`).catch((err: any) =>
 		Promise.reject(err),
