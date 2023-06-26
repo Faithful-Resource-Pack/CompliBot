@@ -125,8 +125,8 @@ export const command: SlashCommand = {
 			} while (results.length !== 0 && _max++ < max);
 
 			const embed = new MessageEmbed()
-				.setTitle(`${rlen} results`)
-				.setFooter({ text: "Some results may be hidden, if you don't see them, be more specific" });
+				.setTitle(`${rlen} results found`)
+				.setDescription(`If you can't what you're looking for, please be more specific!`);
 
 			await interaction
 				.editReply({ embeds: [embed], components: components })

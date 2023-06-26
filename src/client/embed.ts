@@ -8,7 +8,6 @@ class ExtendedEmbed extends MessageEmbed {
 		if (data) return; // do not override existing data
 
 		this.setColor("BLURPLE");
-		this.setFooter({ text: "CompliBot", iconURL: config.icon });
 	}
 }
 

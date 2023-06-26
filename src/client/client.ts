@@ -26,7 +26,6 @@ import { getData } from "@functions/getDataFromJSON";
 import { setData } from "@functions/setDataToJSON";
 import { errorHandler } from "@functions/errorHandler";
 import { err, info, success } from "@helpers/logger";
-import { Submission } from "@class/submissions";
 import { Poll } from "@class/poll";
 import { User } from "@helpers/interfaces/moderation";
 
@@ -41,18 +40,10 @@ import { StartClient } from "index";
 
 const JSON_PATH = path.join(__dirname, "../../json/dynamic"); // json folder at root
 const POLLS_FILENAME = "polls.json";
-const SUBMISSIONS_FILENAME = "submissions.json";
 const COMMANDS_PROCESSED_FILENAME = "commandsProcessed.json";
 const MODERATION_FILENAME = "moderation.json";
 
-export type ActionsStr =
-	| "message"
-	| "slashCommand"
-	| "button"
-	| "selectMenu"
-	| "guildMemberUpdate"
-	| "textureSubmitted"
-	| "guildJoined";
+export type ActionsStr = "message" | "slashCommand" | "button" | "selectMenu" | "guildMemberUpdate" | "guildJoined";
 export type Actions = Message | GuildMember | Guild | ButtonInteraction | SelectMenuInteraction | CommandInteraction;
 export type Log = {
 	type: ActionsStr;
@@ -76,7 +67,6 @@ class ExtendedClient extends Client {
 	public aliases: Collection<string, Command> = new Collection();
 	public slashCommands: Collection<string, SlashCommand> = new Collection();
 
-	public submissions: EmittingCollection<string, Submission> = new EmittingCollection();
 	public polls: EmittingCollection<string, Poll> = new EmittingCollection();
 	public commandsProcessed: EmittingCollection<string, number> = new EmittingCollection();
 	public moderationUsers: EmittingCollection<string, User> = new EmittingCollection();
@@ -158,7 +148,6 @@ class ExtendedClient extends Client {
 
 	private loadCollections = () => {
 		this.loadCollection(this.polls, POLLS_FILENAME, JSON_PATH);
-		this.loadCollection(this.submissions, SUBMISSIONS_FILENAME, JSON_PATH);
 		this.loadCollection(this.commandsProcessed, COMMANDS_PROCESSED_FILENAME, JSON_PATH);
 		this.loadCollection(this.moderationUsers, MODERATION_FILENAME, JSON_PATH);
 		if (this.verbose) console.log(info + `Loaded collections data`);

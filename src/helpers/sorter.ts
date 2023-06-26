@@ -91,6 +91,5 @@ export const FormatName = (pack: string, size: string = "512"): string[] => {
 			strIconURL = ConfigJson.images + "bot/texture_16x.png?w=64"; // have to redefine since the directory is different
 			break;
 	}
-	return [strPack, strIconURL]
-
-}
+	return [strPack, strIconURL];
+};

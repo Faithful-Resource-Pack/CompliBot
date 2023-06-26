@@ -1,10 +1,8 @@
 import { Button } from "@interfaces";
 import { info } from "@helpers/logger";
 import { Client, Message, ButtonInteraction, MessageEmbed } from "@client";
-import { imageButtons } from "@helpers/buttons";
 import { paletteAttachment } from "@functions/canvas/palette";
 import { getImageFromMessage } from "@functions/slashCommandImage";
-import { getSubmissionsChannels } from "@helpers/channels";
 
 export const button: Button = {
 	buttonId: "palette",
@@ -24,25 +22,18 @@ export const button: Button = {
 				ephemeral: true,
 			});
 
-		if (getSubmissionsChannels(interaction.client as Client).includes(interaction.channelId))
-			return interaction.reply({
-				embeds: [new MessageEmbed(embed).setTimestamp()],
+		return interaction
+			.reply({
+				embeds: [
+					new MessageEmbed(embed)
+						.setFooter({ text: `${interaction.user.username} | ${interaction.user.id}` })
+						.setTimestamp(),
+				],
 				files: [attachment],
-				ephemeral: true,
+				fetchReply: true,
+			})
+			.then((message: Message) => {
+				message.deleteButton(true);
 			});
-		else
-			return interaction
-				.reply({
-					embeds: [
-						new MessageEmbed(embed)
-							.setFooter({ text: `${interaction.user.username} | ${interaction.user.id}` })
-							.setTimestamp(),
-					],
-					files: [attachment],
-					fetchReply: true,
-				})
-				.then((message: Message) => {
-					message.deleteButton(true);
-				});
 	},
 };

@@ -3,7 +3,6 @@ import { Client, Message, MessageEmbed } from "@client";
 import { TextChannel } from "discord.js";
 import { colors } from "@helpers/colors";
 import { getTeamsIds } from "@helpers/teams";
-import { getSubmissionsChannels } from "@helpers/channels";
 
 export const event: Event = {
 	name: "messageDelete",
@@ -18,10 +17,7 @@ export const event: Event = {
 
 		if (message.author && message.author.bot) return;
 
-		if (
-			(client.tokens.dev || getTeamsIds({ name: "faithful" }).includes(message.guild.id)) &&
-			!getSubmissionsChannels(client).includes(message.channelId)
-		) {
+		if (client.tokens.dev || getTeamsIds({ name: "faithful" }).includes(message.guild.id)) {
 			const embed = new MessageEmbed()
 				.setAuthor({ name: `${message.author.tag} deleted a message` })
 				.setColor(colors.red)

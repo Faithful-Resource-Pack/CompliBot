@@ -5,7 +5,6 @@ import { tileAttachment } from "@functions/canvas/tile";
 import { magnify, palette } from "@helpers/buttons";
 import { getImageFromMessage } from "@functions/slashCommandImage";
 import { MessageActionRow } from "discord.js";
-import { getSubmissionsChannels } from "@helpers/channels";
 
 export const button: Button = {
 	buttonId: "tile",
@@ -27,28 +26,20 @@ export const button: Button = {
 				ephemeral: true,
 			});
 
-		if (getSubmissionsChannels(interaction.client as Client).includes(interaction.channelId))
-			return interaction.reply({
-				embeds: [new MessageEmbed().setImage(`attachment://${attachment.name}`).setTimestamp()],
+		return interaction
+			.reply({
+				embeds: [
+					new MessageEmbed()
+						.setImage(`attachment://${attachment.name}`)
+						.setFooter({ text: `${interaction.user.username} | ${interaction.user.id}` })
+						.setTimestamp(),
+				],
 				files: [attachment],
-				components: [new MessageActionRow().addComponents(magnify)],
-				ephemeral: true,
+				components: [new MessageActionRow().addComponents(magnify, palette)],
+				fetchReply: true,
+			})
+			.then((message: Message) => {
+				message.deleteButton(true);
 			});
-		else
-			return interaction
-				.reply({
-					embeds: [
-						new MessageEmbed()
-							.setImage(`attachment://${attachment.name}`)
-							.setFooter({ text: `${interaction.user.username} | ${interaction.user.id}` })
-							.setTimestamp(),
-					],
-					files: [attachment],
-					components: [new MessageActionRow().addComponents(magnify, palette)],
-					fetchReply: true,
-				})
-				.then((message: Message) => {
-					message.deleteButton(true);
-				});
 	},
 };

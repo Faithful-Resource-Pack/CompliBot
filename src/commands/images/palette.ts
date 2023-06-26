@@ -15,6 +15,7 @@ export const command: SlashCommand = {
 			factor: interaction.options.getNumber("factor"),
 			name: "magnified.png",
 			embed: new MessageEmbed().setTitle("Magnified").setImage("attachment://magnified.png"),
+			hideButtons: true,
 		});
 	},
 };

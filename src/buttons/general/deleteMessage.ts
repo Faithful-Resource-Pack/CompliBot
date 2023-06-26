@@ -39,12 +39,5 @@ export const button: Button = {
 				ephemeral: true,
 			});
 		}
-
-		// try deleting submission from json file if sid is valid
-		try {
-			client.submissions.delete(sid);
-		} catch {
-			/* sid not valid */
-		}
 	},
 };

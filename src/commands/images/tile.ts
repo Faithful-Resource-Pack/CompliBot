@@ -8,7 +8,6 @@ export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
 		.setName("tile")
 		.setDescription("Tile an image")
-
 		.addStringOption((option) =>
 			option
 				.setName("type")

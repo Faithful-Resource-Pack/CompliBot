@@ -1,7 +1,6 @@
 import { Event } from "@interfaces";
 import { Client, Message, MessageEmbed } from "@client";
 import easterEgg from "@functions/canvas/isEasterEggImg";
-import { getSubmissionsChannels } from "@helpers/channels";
 import { textureComparison } from "@functions/canvas/stitch";
 
 export const event: Event = {

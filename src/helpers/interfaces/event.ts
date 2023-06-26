@@ -7,7 +7,6 @@ interface CustomEvents extends ClientEvents {
 	selectMenuUsed: any;
 	/** @deprecated slash commands interaction should be used */
 	oldCommandUsed: any;
-	textureSubmitted: any;
 }
 
 interface Run {

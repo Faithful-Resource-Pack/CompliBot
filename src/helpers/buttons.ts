@@ -21,37 +21,6 @@ export const tile = new MessageButton()
 	.setEmoji(parseId(ids.tile))
 	.setCustomId("tile");
 
-export const instapass = new MessageButton()
-	.setStyle("PRIMARY")
-	.setEmoji(parseId(ids.instapass))
-	.setCustomId("submissionInstapass");
-export const invalidate = new MessageButton()
-	.setStyle("PRIMARY")
-	.setEmoji(parseId(ids.invalid))
-	.setCustomId("submissionInvalidate");
-
-export const view_votes = new MessageButton()
-	.setStyle("PRIMARY")
-	.setEmoji(parseId(ids.view_votes))
-	.setCustomId("submissionViewVotes");
-
-export const see_more = new MessageButton()
-	.setStyle("SECONDARY")
-	.setEmoji(parseId(ids.see_more))
-	.setCustomId("submissionSeeMore");
-export const see_more_end = new MessageButton()
-	.setStyle("SECONDARY")
-	.setEmoji(parseId(ids.see_more))
-	.setCustomId("submissionSeeMoreEnd");
-export const see_less = new MessageButton()
-	.setStyle("SECONDARY")
-	.setEmoji(parseId(ids.see_less))
-	.setCustomId("submissionSeeLess");
-export const see_less_end = new MessageButton()
-	.setStyle("SECONDARY")
-	.setEmoji(parseId(ids.see_less))
-	.setCustomId("submissionSeeLessEnd");
-
 export const deleteMessage = new MessageButton()
 	.setStyle("DANGER")
 	.setEmoji(parseId(ids.delete))
@@ -60,23 +29,6 @@ export const deleteInteraction = new MessageButton()
 	.setStyle("DANGER")
 	.setEmoji(parseId(ids.delete))
 	.setCustomId("deleteInteraction");
-
-export const upvote = new MessageButton()
-	.setStyle("SUCCESS")
-	.setEmoji(parseId(ids.upvote))
-	.setCustomId("submissionUpvote");
-export const downvote = new MessageButton()
-	.setStyle("DANGER")
-	.setEmoji(parseId(ids.downvote))
-	.setCustomId("submissionDownvote");
-export const upvoteCouncil = new MessageButton()
-	.setStyle("SUCCESS")
-	.setEmoji(parseId(ids.upvote))
-	.setCustomId("submissionUpvoteCouncil");
-export const downvoteCouncil = new MessageButton()
-	.setStyle("DANGER")
-	.setEmoji(parseId(ids.downvote))
-	.setCustomId("submissionDownvoteCouncil");
 
 // ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"];
 export const pollVote1 = new MessageButton().setStyle("PRIMARY").setEmoji("1️⃣").setCustomId("pollVote__0");
@@ -108,31 +60,3 @@ export const imageButtons = new MessageActionRow().addComponents([
 	palette,
 	// compare,
 ]);
-export const submissionButtonsOpen = new MessageActionRow().addComponents([
-	see_less,
-	view_votes,
-	instapass,
-	invalidate,
-	deleteMessage,
-]);
-export const submissionButtonsOpenEnd = new MessageActionRow().addComponents([
-	see_less_end,
-	view_votes,
-	deleteMessage
-]);
-export const submissionButtonsClosed = new MessageActionRow().addComponents([
-	magnify,
-	tile,
-	palette,
-	// compare,
-	see_more,
-]);
-export const submissionButtonsClosedEnd = new MessageActionRow().addComponents([
-	magnify,
-	tile,
-	palette,
-	// compare,
-	see_more_end,
-]);
-export const submissionButtonsVotes = new MessageActionRow().addComponents([upvote, downvote]);
-export const submissionButtonsVotesCouncil = new MessageActionRow().addComponents([upvoteCouncil, downvoteCouncil]);

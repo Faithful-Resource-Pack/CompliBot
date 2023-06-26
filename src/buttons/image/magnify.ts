@@ -5,7 +5,6 @@ import { magnifyAttachment } from "@functions/canvas/magnify";
 import { palette } from "@helpers/buttons";
 import { getImageFromMessage } from "@functions/slashCommandImage";
 import { MessageActionRow } from "discord.js";
-import { getSubmissionsChannels } from "@helpers/channels";
 
 export const button: Button = {
 	buttonId: "magnify",
@@ -27,28 +26,21 @@ export const button: Button = {
 				ephemeral: true,
 			});
 
-		if (getSubmissionsChannels(interaction.client as Client).includes(interaction.channelId))
-			return interaction.reply({
-				embeds: [new MessageEmbed().setImage(`attachment://${attachment.name}`).setTimestamp()],
+
+		return interaction
+			.reply({
+				embeds: [
+					new MessageEmbed()
+						.setImage(`attachment://${attachment.name}`)
+						.setFooter({ text: `${interaction.user.username} | ${interaction.user.id}` })
+						.setTimestamp(),
+				],
 				files: [attachment],
 				components: [new MessageActionRow().addComponents(palette)],
-				ephemeral: true,
+				fetchReply: true,
+			})
+			.then((message: Message) => {
+				message.deleteButton(true);
 			});
-		else
-			return interaction
-				.reply({
-					embeds: [
-						new MessageEmbed()
-							.setImage(`attachment://${attachment.name}`)
-							.setFooter({ text: `${interaction.user.username} | ${interaction.user.id}` })
-							.setTimestamp(),
-					],
-					files: [attachment],
-					components: [new MessageActionRow().addComponents(palette)],
-					fetchReply: true,
-				})
-				.then((message: Message) => {
-					message.deleteButton(true);
-				});
 	},
 };
