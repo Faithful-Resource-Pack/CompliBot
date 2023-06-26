@@ -3,7 +3,6 @@ const lastMessages = require("../functions/lastMessages");
 
 const { MessageEmbed } = require("discord.js");
 
-const DEV = process.env.DEV.toLowerCase() == "true";
 const MAINTENANCE = process.env.MAINTENANCE.toLowerCase() == "true";
 const PREFIX = process.env.PREFIX;
 
@@ -62,8 +61,6 @@ module.exports = {
 				return addDeleteReact(msgEmbed, message, true);
 			}
 		} else {
-			if (DEV) return;
-
 			/**
 			 * TEXTURE SUBMISSION
 			 */
