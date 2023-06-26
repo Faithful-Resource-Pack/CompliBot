@@ -25,7 +25,10 @@ export const event: Event = {
 				.addFields([
 					{ name: "Server", value: message.guild.name, inline: true },
 					{ name: "Channel", value: `<#${message.channel.id}>`, inline: true },
-					{ name: "Message Content", value: `\`\`\`${message.content.replaceAll("```", "'''")}\`\`\`` },
+					{
+						name: "Message Content",
+						value: `\`\`\`${message.content.replaceAll("```", "'''")}\`\`\``,
+					},
 				])
 				.setDescription(`[Jump to location](${message.url})\n`)
 				.setTimestamp();

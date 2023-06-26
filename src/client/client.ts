@@ -43,8 +43,20 @@ const POLLS_FILENAME = "polls.json";
 const COMMANDS_PROCESSED_FILENAME = "commandsProcessed.json";
 const MODERATION_FILENAME = "moderation.json";
 
-export type ActionsStr = "message" | "slashCommand" | "button" | "selectMenu" | "guildMemberUpdate" | "guildJoined";
-export type Actions = Message | GuildMember | Guild | ButtonInteraction | SelectMenuInteraction | CommandInteraction;
+export type ActionsStr =
+	| "message"
+	| "slashCommand"
+	| "button"
+	| "selectMenu"
+	| "guildMemberUpdate"
+	| "guildJoined";
+export type Actions =
+	| Message
+	| GuildMember
+	| Guild
+	| ButtonInteraction
+	| SelectMenuInteraction
+	| CommandInteraction;
 export type Log = {
 	type: ActionsStr;
 	data: any;
@@ -71,7 +83,10 @@ class ExtendedClient extends Client {
 	public commandsProcessed: EmittingCollection<string, number> = new EmittingCollection();
 	public moderationUsers: EmittingCollection<string, User> = new EmittingCollection();
 
-	constructor(data: ClientOptions & { verbose: boolean; config: Config; tokens: Tokens }, coldStart: boolean = true) {
+	constructor(
+		data: ClientOptions & { verbose: boolean; config: Config; tokens: Tokens },
+		coldStart: boolean = true,
+	) {
 		super(data);
 		this.verbose = data.verbose;
 		this.config = data.config;
@@ -209,7 +224,9 @@ class ExtendedClient extends Client {
 			this.slashCommands.forEach(async (slashCommand: SlashCommand) => {
 				if (slashCommand.permissions === undefined) return; // no permissions set
 
-				const command = commands.find((c) => c.name === (slashCommand.data as SlashCommandBuilder).name);
+				const command = commands.find(
+					(c) => c.name === (slashCommand.data as SlashCommandBuilder).name,
+				);
 				if (command === undefined) return; // command not found
 
 				const p = { id: command.id, permissions: [] };
@@ -252,7 +269,9 @@ class ExtendedClient extends Client {
 		rest.get(Routes.applicationCommands(this.tokens.appID)).then((data: any) => {
 			const promises = [];
 			for (const command of data)
-				promises.push(rest.delete(`${Routes.applicationCommands(this.tokens.appID)}/${command.id}`));
+				promises.push(
+					rest.delete(`${Routes.applicationCommands(this.tokens.appID)}/${command.id}`),
+				);
 			return Promise.all(promises).then(() => console.log(`${success}delete succeed`));
 		});
 	};
@@ -262,7 +281,10 @@ class ExtendedClient extends Client {
 	 */
 	public async loadSlashCommands(): Promise<void> {
 		const slashCommandsPath = path.join(__dirname, "..", "commands");
-		const commandsArr: Array<{ servers: Array<string>; command: RESTPostAPIApplicationCommandsJSONBody }> = [];
+		const commandsArr: Array<{
+			servers: Array<string>;
+			command: RESTPostAPIApplicationCommandsJSONBody;
+		}> = [];
 
 		const paths: Array<string> = readdirSync(slashCommandsPath);
 		// use a classic for loop to force async functions to be fulfilled
@@ -270,12 +292,17 @@ class ExtendedClient extends Client {
 			const dir: string = paths[i];
 			if (dir == ".DS_Store") continue;
 
-			const commands = readdirSync(`${slashCommandsPath}/${dir}`).filter((file) => file.endsWith(".ts"));
+			const commands = readdirSync(`${slashCommandsPath}/${dir}`).filter((file) =>
+				file.endsWith(".ts"),
+			);
 			for (const file of commands) {
 				const { command } = require(`${slashCommandsPath}/${dir}/${file}`);
 
 				if (command.data instanceof Function) {
-					this.slashCommands.set((await (command.data as AsyncSlashCommandBuilder)(this)).name, command); // AsyncSlashCommandBuilder
+					this.slashCommands.set(
+						(await (command.data as AsyncSlashCommandBuilder)(this)).name,
+						command,
+					); // AsyncSlashCommandBuilder
 					commandsArr.push({
 						servers: command.servers,
 						command: (await (command.data as AsyncSlashCommandBuilder)(this)).toJSON(),
@@ -313,7 +340,9 @@ class ExtendedClient extends Client {
 			else
 				try {
 					// otherwise we add specific commands to that guild
-					await rest.put(Routes.applicationGuildCommands(this.tokens.appID, d.id), { body: guilds[d.name] });
+					await rest.put(Routes.applicationGuildCommands(this.tokens.appID, d.id), {
+						body: guilds[d.name],
+					});
 					console.log(`${success}Successfully added slash commands to: ${d.name}`);
 				} catch (err) {
 					console.error(err);

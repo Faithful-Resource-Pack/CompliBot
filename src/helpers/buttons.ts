@@ -31,11 +31,26 @@ export const deleteInteraction = new MessageButton()
 	.setCustomId("deleteInteraction");
 
 // ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"];
-export const pollVote1 = new MessageButton().setStyle("PRIMARY").setEmoji("1️⃣").setCustomId("pollVote__0");
-export const pollVote2 = new MessageButton().setStyle("PRIMARY").setEmoji("2️⃣").setCustomId("pollVote__1");
-export const pollVote3 = new MessageButton().setStyle("PRIMARY").setEmoji("3️⃣").setCustomId("pollVote__2");
-export const pollVote4 = new MessageButton().setStyle("PRIMARY").setEmoji("4️⃣").setCustomId("pollVote__3");
-export const pollVote5 = new MessageButton().setStyle("PRIMARY").setEmoji("5️⃣").setCustomId("pollVote__4");
+export const pollVote1 = new MessageButton()
+	.setStyle("PRIMARY")
+	.setEmoji("1️⃣")
+	.setCustomId("pollVote__0");
+export const pollVote2 = new MessageButton()
+	.setStyle("PRIMARY")
+	.setEmoji("2️⃣")
+	.setCustomId("pollVote__1");
+export const pollVote3 = new MessageButton()
+	.setStyle("PRIMARY")
+	.setEmoji("3️⃣")
+	.setCustomId("pollVote__2");
+export const pollVote4 = new MessageButton()
+	.setStyle("PRIMARY")
+	.setEmoji("4️⃣")
+	.setCustomId("pollVote__3");
+export const pollVote5 = new MessageButton()
+	.setStyle("PRIMARY")
+	.setEmoji("5️⃣")
+	.setCustomId("pollVote__4");
 
 export const pollUpvote = new MessageButton()
 	.setStyle("SUCCESS")

@@ -13,7 +13,9 @@ export const getTeamsIds = (options: { name: string | Array<string> }): Array<st
 
 	const search = (name: string): void => {
 		output.push(
-			...config.discords.filter((discord) => discord.team !== undefined && discord.team !== name).map((d) => d.team),
+			...config.discords
+				.filter((discord) => discord.team !== undefined && discord.team !== name)
+				.map((d) => d.team),
 		);
 	};
 

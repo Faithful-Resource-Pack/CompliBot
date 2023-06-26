@@ -33,15 +33,23 @@ export const AddPathsToEmbed: any = (texture: Texture): EmbedFieldData[] => {
 				const versions = p.versions.sort(MinecraftSorter);
 				if (tmp[use.edition])
 					tmp[use.edition].push(
-						`\`[${versions.length > 1 ? `${versions[0]} — ${versions[versions.length - 1]}` : versions[0]}]\` ${
-							use.assets !== null && use.assets !== "minecraft" ? use.assets + "/" : ""
-						}${p.name}`,
+						`\`[${
+							versions.length > 1
+								? `${versions[0]} — ${versions[versions.length - 1]}`
+								: versions[0]
+						}]\` ${use.assets !== null && use.assets !== "minecraft" ? use.assets + "/" : ""}${
+							p.name
+						}`,
 					);
 				else
 					tmp[use.edition] = [
-						`\`[${versions.length > 1 ? `${versions[0]} — ${versions[versions.length - 1]}` : versions[0]}]\` ${
-							use.assets !== null && use.assets !== "minecraft" ? use.assets + "/" : ""
-						}${p.name}`,
+						`\`[${
+							versions.length > 1
+								? `${versions[0]} — ${versions[versions.length - 1]}`
+								: versions[0]
+						}]\` ${use.assets !== null && use.assets !== "minecraft" ? use.assets + "/" : ""}${
+							p.name
+						}`,
 					];
 			});
 	});

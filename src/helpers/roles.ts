@@ -41,7 +41,12 @@ export const getRolesIds = (options: {
 			options.discords.forEach((discord) =>
 				output.push(
 					...config.discords
-						.filter((d) => d.roles !== undefined && d.roles[options.name as string] !== undefined && d.name === discord)
+						.filter(
+							(d) =>
+								d.roles !== undefined &&
+								d.roles[options.name as string] !== undefined &&
+								d.name === discord,
+						)
 						.map((d) => d.roles[options.name as string]),
 				),
 			);
@@ -50,7 +55,9 @@ export const getRolesIds = (options: {
 				(options.discords as Array<string>).forEach((discord) =>
 					output.push(
 						...config.discords
-							.filter((d) => d.roles !== undefined && d.roles[name] !== undefined && d.name === discord)
+							.filter(
+								(d) => d.roles !== undefined && d.roles[name] !== undefined && d.name === discord,
+							)
 							.map((d) => d.roles[name]),
 					),
 				),
@@ -80,7 +87,12 @@ export const getRolesIds = (options: {
 			options.teams.forEach((team) =>
 				output.push(
 					...config.teams
-						.filter((t) => t.roles !== undefined && t.roles[options.name as string] !== undefined && t.name === team)
+						.filter(
+							(t) =>
+								t.roles !== undefined &&
+								t.roles[options.name as string] !== undefined &&
+								t.name === team,
+						)
 						.map((t) => t.roles[options.name as string])
 						.flat(),
 				),
@@ -90,7 +102,9 @@ export const getRolesIds = (options: {
 				(options.teams as Array<string>).forEach((team) =>
 					output.push(
 						...config.teams
-							.filter((t) => t.roles !== undefined && t.roles[name] !== undefined && t.name === team)
+							.filter(
+								(t) => t.roles !== undefined && t.roles[name] !== undefined && t.name === team,
+							)
 							.map((t) => t.roles[name])
 							.flat(),
 					),

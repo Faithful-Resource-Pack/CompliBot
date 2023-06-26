@@ -12,6 +12,8 @@ export enum activities {
 	wordsnacks = "879863976006127627",
 	youtube = "880218394199220334",
 }
-export const activityOptions: { name: string; value: string }[] = Object.keys(activities).map((name) => {
-	return { name: name, value: activities[name as keyof typeof activities] };
-});
+export const activityOptions: { name: string; value: string }[] = Object.keys(activities).map(
+	(name) => {
+		return { name: name, value: activities[name as keyof typeof activities] };
+	},
+);

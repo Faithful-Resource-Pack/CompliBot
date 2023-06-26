@@ -21,10 +21,9 @@ export const event: Event = {
 			// try if there is a subcommand
 			interaction.options.getSubcommand();
 			// execute it if so
-			(command.execute as Collection<string, SlashCommandI>).get(interaction.options.getSubcommand())(
-				interaction,
-				client,
-			);
+			(command.execute as Collection<string, SlashCommandI>).get(
+				interaction.options.getSubcommand(),
+			)(interaction, client);
 		} catch (_err) {
 			// not a subcommand
 			try {

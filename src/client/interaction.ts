@@ -1,4 +1,9 @@
-import { ButtonInteraction, CommandInteraction, Interaction, SelectMenuInteraction } from "discord.js";
+import {
+	ButtonInteraction,
+	CommandInteraction,
+	Interaction,
+	SelectMenuInteraction,
+} from "discord.js";
 import { string, keys, Placeholder } from "@helpers/locales";
 import {
 	checkPermissions, //<- hover over me (i know this is stupid its a jsdoc thing where you cant carry shit)

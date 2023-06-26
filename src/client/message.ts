@@ -36,7 +36,9 @@ const MessageBody = {
 			this.components.at(-1).components.length < 5 && //check there aren't 5 buttons
 			this.components.at(-1).components[0].type === "BUTTON" //checks there isn't a select menu
 		) {
-			this.components.at(-1).addComponents([isMessage === true ? deleteMessage : deleteInteraction]);
+			this.components
+				.at(-1)
+				.addComponents([isMessage === true ? deleteMessage : deleteInteraction]);
 
 			return this.edit({
 				components: [...this.components],
@@ -45,7 +47,9 @@ const MessageBody = {
 		return this.edit({
 			components: [
 				...this.components,
-				new MessageActionRow().addComponents([isMessage === true ? deleteMessage : deleteInteraction]),
+				new MessageActionRow().addComponents([
+					isMessage === true ? deleteMessage : deleteInteraction,
+				]),
 			],
 		});
 	},

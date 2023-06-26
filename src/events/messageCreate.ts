@@ -58,12 +58,11 @@ export const event: Event = {
 				message.reply({ embeds: [mhhhEmbed] }).then((message) => message.deleteButton(true));
 				break;
 			case "hello there":
-				const helloEmbed = new MessageEmbed()
-					.setImage (
-						Math.floor(Math.random() * 4) == 1 // why can't TS/JS just have a normal randint() function
-							? "https://i.imgur.com/hAuUsnD.png"
-							: "https://media1.tenor.com/images/8dc53503f5a5bb23ef12b2c83a0e1d4d/tenor.gif"
-					);
+				const helloEmbed = new MessageEmbed().setImage(
+					Math.floor(Math.random() * 4) == 1 // why can't TS/JS just have a normal randint() function
+						? "https://i.imgur.com/hAuUsnD.png"
+						: "https://media1.tenor.com/images/8dc53503f5a5bb23ef12b2c83a0e1d4d/tenor.gif",
+				);
 				message.reply({ embeds: [helloEmbed] }).then((message) => message.deleteButton(true));
 				break;
 		}
@@ -76,7 +75,9 @@ export const event: Event = {
 			try {
 				const [embed, magnified] = await textureComparison(client, i[0]);
 
-				message.reply({ embeds: [embed], files: [magnified] }).then((message) => message.deleteButton(true));
+				message
+					.reply({ embeds: [embed], files: [magnified] })
+					.then((message) => message.deleteButton(true));
 			} catch {
 				/* texture doesn't exist or failed or whatever*/
 			}
@@ -86,7 +87,9 @@ export const event: Event = {
 			if ((await easterEgg(message.attachments.first().url, 1)) && !client.tokens.dev) {
 				const embed = new MessageEmbed()
 					.setTitle('"rOtAte tiLinG"')
-					.setImage("https://cdn.discordapp.com/attachments/923370825762078720/939476550749913138/tiled.png")
+					.setImage(
+						"https://cdn.discordapp.com/attachments/923370825762078720/939476550749913138/tiled.png",
+					)
 					.setFooter({ text: "Nick.#1666" })
 					.setTimestamp(new Date(1644059063305)); // when the funny moment happened
 				message.reply({ embeds: [embed] }).then((message) => message.deleteButton(true));
@@ -95,7 +98,9 @@ export const event: Event = {
 			if ((await easterEgg(message.attachments.first().url, 2)) && !client.tokens.dev) {
 				const embed = new MessageEmbed()
 					.setTitle('"FlIp tiLinG"')
-					.setImage("https://cdn.discordapp.com/attachments/923370825762078720/940676536330223676/tiled.png")
+					.setImage(
+						"https://cdn.discordapp.com/attachments/923370825762078720/940676536330223676/tiled.png",
+					)
 					.setFooter({ text: "Nick.#1666 - again" })
 					.setTimestamp(new Date(1644345162257)); // when the funny moment happened again
 				message.reply({ embeds: [embed] }).then((message) => message.deleteButton(true));
