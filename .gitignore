@@ -10,5 +10,4 @@ firestore.json
 bot.service
 tokens.json
 resources/settings.json
-src/Commands/Bot/test.ts
 commands/Developer/test.js
