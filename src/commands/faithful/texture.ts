@@ -20,6 +20,7 @@ export const command: SlashCommand = {
 				.setDescription("Resource pack of the texture you are searching for.")
 				.addChoices(
 					{ name: "Vanilla 16x", value: "default" },
+					{ name: "Vanilla Programmer Art", value: "progart" },
 					{ name: "Faithful 32x", value: "faithful_32x" },
 					{ name: "Faithful 64x", value: "faithful_64x" },
 					{ name: "Classic Faithful 32x Jappa", value: "classic_faithful_32x" },
