@@ -240,6 +240,10 @@ async function makeEmbed(client, message, texture, attachment, param = new Objec
 			defaultRepo = settings.repositories.raw.classic_faithful_32x;
 			referenceText = "Classic Faithful 32x Jappa";
 			break;
+		case "classic_faithful_32x_progart":
+			defaultRepo = settings.repositories.raw.progart;
+			referenceText = "Programmer Art";
+			break;
 		default:
 			defaultRepo = settings.repositories.raw.default;
 			referenceText = "Default";
