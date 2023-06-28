@@ -7,6 +7,7 @@ import axios from "axios";
 function toTitleCase(str: string) {
 	return str.replace(/(^|\s)\S/g, t => t.toUpperCase());
 }
+
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
 		.setName("about")
@@ -43,7 +44,7 @@ export const command: SlashCommand = {
 					`${(interaction.client as Client).tokens.apiUrl}textures/${(data as any).texture}`
 				)).data;
 				textureData.push([ data, response ]);
-				if (i % 5 == 0) // so it's not spamming message edits
+				if (i % 10 == 0) // so it's not spamming message edits
 					await interaction.editReply({ embeds: [
 						loadingEmbed.setDescription(`${baseDescription}\n${i} textures searched of ${userData.length} total.`)
 					] })
