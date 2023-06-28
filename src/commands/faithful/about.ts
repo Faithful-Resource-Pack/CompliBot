@@ -1,6 +1,7 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { Message, MessageEmbed, CommandInteraction, Client } from "@client";
+import { MessageAttachment } from "discord.js";
 import axios from "axios";
 
 function toTitleCase(str: string) {
@@ -17,43 +18,57 @@ export const command: SlashCommand = {
 				.setRequired(false)
 		),
 	execute: async (interaction: CommandInteraction) => {
-		// TODO: use pages to load more than 20 textures at once without the bot crashing
+		await interaction.deferReply();
+		// used for loading times
+		const baseDescription = "This can take some time, please wait...";
+
 		const loadingEmbed = new MessageEmbed()
 			.setTitle("Searching for contributions...")
-			.setDescription("This can take some time, please wait...")
+			.setDescription(baseDescription)
 			.setThumbnail(`${(interaction.client as Client).config.images}bot/loading.gif`)
-		await interaction.reply({ embeds: [loadingEmbed] })
+
+		await interaction
+			.editReply({ embeds: [loadingEmbed] })
+			.then((message: Message) =>	message.deleteButton());
 
 		// if nobody to search up is provided, defaults to the person who asked
 		const user = interaction.options.getUser('user') ?? interaction.user;
-		const response = (await axios.get(`${(interaction.client as Client).tokens.apiUrl}users/${user.id}/contributions`)).data;
-		const AMOUNT_TO_LOAD = 20;
-		const totalCount = response.length;
-		let textures = [];
+		const userData = (await axios.get(`${(interaction.client as Client).tokens.apiUrl}users/${user.id}/contributions`)).data;
 
-		for (let i of response.slice(0, AMOUNT_TO_LOAD)) {
-			// TODO: find a better way to get the texture name by ID without fetching from the API 20 times
+		let textureData = [];
+		let i = 0;
+		for (let data of Object.values(userData)) {
 			try {
-				const response2 = (await axios.get(`${(interaction.client as Client).tokens.apiUrl}textures/${i.texture}`)).data;
-				textures.push([response2.name, i.pack, i.texture]);
-			} catch {/* texture doesn't exist so we just skip it */};
+				const response = (await axios.get(
+					`${(interaction.client as Client).tokens.apiUrl}textures/${(data as any).texture}`
+				)).data;
+				textureData.push([ data, response ]);
+				if (i % 5 == 0) // so it's not spamming message edits
+					await interaction.editReply({ embeds: [
+						loadingEmbed.setDescription(`${baseDescription}\n${i} textures searched of ${userData.length} total.`)
+					] })
+			} catch {/* texture doesn't exist so just skip it */};
+			++i;
 		}
 
-		const formatted = textures.map(value => [
-			`[\`${value[0]}\`](https://webapp.faithfulpack.net/?#/gallery?show=${value[2]})`,
-			toTitleCase(value[1].replace(/_/g, ' '))
-		].join(' — '));
+		let packCount = {};
 
-		const moreContributions = totalCount >= AMOUNT_TO_LOAD
-			? `\n*...${totalCount - AMOUNT_TO_LOAD} more ${(totalCount-AMOUNT_TO_LOAD) == 1 ? "contribution" : "contributions"} not shown*`
-			: "";
+		const textBuf = Buffer.from(
+			textureData
+				.map((data) => {
+					const packName = toTitleCase(data[0].pack.replace(/_/g, ' '))
+					packCount[packName] = (packCount[packName] ?? 0) + 1;
+					return `${packName}: [#${data[1].id}] ${data[1].name}`
+				})
+				.join("\n")
+		);
 
+		const files = new MessageAttachment(textBuf, 'about.txt');
 		const finalEmbed = new MessageEmbed()
-			.setTitle(`${user.username} has **${totalCount}** ${totalCount == 1 ? "contribution" : "contributions"}`)
-			.setDescription(`${formatted.join('\n')}${moreContributions}`)
+			.setTitle(`@${user.username} has ${userData.length} ${userData.length == 1 ? "contribution" : "contributions"}!`)
+			.setDescription((Object.entries(packCount).map(i => i.join(": "))).join("\n"))
 
 		await interaction
-			.editReply({embeds: [finalEmbed]})
-			.then((message: Message) => message.deleteButton());
+			.editReply({embeds: [finalEmbed], files: [files]})
 	}
 };
