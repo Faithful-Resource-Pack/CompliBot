@@ -176,9 +176,13 @@ export async function textureComparison(client: Client, id: number | string): Pr
 			'faithful_64x'
 		],
 		[
+			'default',
 			'classic_faithful_32x',
-			'classic_faithful_32x_progart',
 			'classic_faithful_64x'
+		],
+		[
+			'progart',
+			'classic_faithful_32x_progart'
 		]
 	]
 
