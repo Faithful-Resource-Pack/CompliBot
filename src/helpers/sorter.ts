@@ -93,10 +93,13 @@ export const FormatName = (pack: string, size: string = "512"): string[] => {
 			strPack = "Classic Faithful 64x";
 			strIconURL += "cf64_logo.png";
 			break;
+		case "progart":
+			strPack = "Default Programmer Art";
+			strIconURL = ConfigJson.images + "bot/progart.png?w=64"; // have to redefine since the directory is different
+			break;
 		default:
-		case "default":
-			strPack = "Minecraft Default";
-			strIconURL = ConfigJson.images + "bot/texture_16x.png?w=64"; // have to redefine since the directory is different
+			strPack = "Default Jappa";
+			strIconURL = ConfigJson.images + "bot/default.png?w=64";
 			break;
 	}
 	return [strPack, strIconURL];
