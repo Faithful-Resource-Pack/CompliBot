@@ -18,7 +18,7 @@ export const command: SlashCommand = {
 		),
 	execute: async (interaction: CommandInteraction) => {
 		let contents: string;
-		const pack = interaction.options.getString("pack", false)
+		const pack = interaction.options.getString("pack", true)
 		switch (pack) {
 			case "faithful_32x":
 				contents = "https://docs.google.com/document/d/1OXGHKiYJej0qvNgZWfFuYauyL1OjpL31usgK4dwuIkI/";
