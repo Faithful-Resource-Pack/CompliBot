@@ -9,9 +9,14 @@ export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
 		.setName("setnotice")
 		.setDescription("Set the bots notice")
-		.addStringOption((option) => option.setName("title").setDescription("Title of the new notice").setRequired(true))
 		.addStringOption((option) =>
-			option.setName("description").setDescription("Description of the new notice").setRequired(true),
+			option.setName("title").setDescription("Title of the new notice").setRequired(true),
+		)
+		.addStringOption((option) =>
+			option
+				.setName("description")
+				.setDescription("Description of the new notice")
+				.setRequired(true),
 		),
 	execute: async (interaction: CommandInteraction, client: Client) => {
 		if (
@@ -26,7 +31,14 @@ export const command: SlashCommand = {
 			title: await interaction.options.getString("title"),
 			description: await interaction.options.getString("description").split("\n"), // TODO: make this a multiline input when it is released!
 		};
-		setData({ data: newNotice, filename: "notice.json", relative_path: path.join(__dirname + "../../../../json/") });
-		interaction.reply({ content: `Notice set as:\n\`\`\`json\n${JSON.stringify(newNotice)}\`\`\``, ephemeral: true });
+		setData({
+			data: newNotice,
+			filename: "notice.json",
+			relative_path: path.join(__dirname + "../../../../json/"),
+		});
+		interaction.reply({
+			content: `Notice set as:\n\`\`\`json\n${JSON.stringify(newNotice)}\`\`\``,
+			ephemeral: true,
+		});
 	},
 };

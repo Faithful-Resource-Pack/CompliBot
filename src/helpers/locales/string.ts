@@ -6,9 +6,14 @@ export interface Placeholder {
 	[key: Capitalize<string>]: string;
 }
 
-export async function string(country_code: langs, key: keys, placeholders?: Placeholder): Promise<string> {
+export async function string(
+	country_code: langs,
+	key: keys,
+	placeholders?: Placeholder,
+): Promise<string> {
 	let lang: {};
-	for (let i = 0; JSONFiles[i]; i++) lang = { ...lang, ...(await import(`@/lang/en-US/${JSONFiles[i]}.json`)) }; // fallback
+	for (let i = 0; JSONFiles[i]; i++)
+		lang = { ...lang, ...(await import(`@/lang/en-US/${JSONFiles[i]}.json`)) }; // fallback
 
 	if (country_code !== "en-GB" && country_code !== "en-US")
 		// because the fallback is already IN ENGLISH
@@ -22,7 +27,11 @@ export async function string(country_code: langs, key: keys, placeholders?: Plac
 	return parseString(lang[key], country_code, placeholders);
 }
 
-export function parseString(text: string | string[], lang: string, placeholders?: Placeholder): string {
+export function parseString(
+	text: string | string[],
+	lang: string,
+	placeholders?: Placeholder,
+): string {
 	if (text === undefined) return "!Translation Missing!"; // just in case
 
 	let result: string = typeof text === "string" ? text : text.join("$,"); // merge arrays into 1 string

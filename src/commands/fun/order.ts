@@ -11,11 +11,17 @@ import { Message, Client } from "@client";
  * !! .webp extension aren't rendering inside Discord
  */
 const options: { name: string; value: string }[] = [
-	{ name: "pizza", value: "https://i0.wp.com/metro.co.uk/wp-content/uploads/2016/02/pizza-cheese.gif" },
+	{
+		name: "pizza",
+		value: "https://i0.wp.com/metro.co.uk/wp-content/uploads/2016/02/pizza-cheese.gif",
+	},
 	{ name: "soup", value: "https://c.tenor.com/45SSoTETymIAAAAS/sopita-de-fideo-noodle.gif" },
 	{ name: "burger", value: "https://c.tenor.com/tdFqDJemKpUAAAAC/mcdonalds-big-mac.gif" },
 	{ name: "poop", value: "https://media.tenor.com/QA6mPKs100UAAAAC/caught-in.gif" },
-	{ name: "66", value: "https://media1.tenor.com/images/fb7250a2ef993a37e9c7f48af760821c/tenor.gif" },
+	{
+		name: "66",
+		value: "https://media1.tenor.com/images/fb7250a2ef993a37e9c7f48af760821c/tenor.gif",
+	},
 	{ name: "help", value: "https://c.tenor.com/yi5btxWVAwwAAAAS/help-shouting.gif" },
 	{ name: "ice", value: "https://c.tenor.com/ySPd8qwdV7QAAAAC/frozen-ice.gif" },
 	{ name: "fire", value: "https://i.giphy.com/media/Qre4feuyNhiYIzD7hC/200.gif" },
@@ -60,6 +66,8 @@ export const command: SlashCommand = {
 			interaction.options.getString("item"),
 			interaction.options.getString("item"),
 		);
-		interaction.editReply({ content: advice, files: [gif] }).then((message: Message) => message.deleteButton());
+		interaction
+			.editReply({ content: advice, files: [gif] })
+			.then((message: Message) => message.deleteButton());
 	},
 };

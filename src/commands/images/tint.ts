@@ -14,7 +14,9 @@ export const command: SlashCommand = {
 				.addChoices(...mcColorsOptions)
 				.setRequired(true),
 		)
-		.addAttachmentOption((o) => o.setName("image").setDescription("The image to tint").setRequired(false)),
+		.addAttachmentOption((o) =>
+			o.setName("image").setDescription("The image to tint").setRequired(false),
+		),
 	execute: async (interaction: CommandInteraction, client: Client) => {
 		generalSlashCommandImage(interaction, multiplyAttachment, {
 			color: interaction.options.getString("color"),

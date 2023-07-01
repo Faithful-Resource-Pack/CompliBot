@@ -21,7 +21,9 @@ export const command: SlashCommand = {
 					{ name: "plus", value: "plus" },
 				),
 		)
-		.addAttachmentOption((o) => o.setName("image").setDescription("The image to tile").setRequired(false))
+		.addAttachmentOption((o) =>
+			o.setName("image").setDescription("The image to tile").setRequired(false),
+		)
 		.addStringOption((option) =>
 			option
 				.setName("random")

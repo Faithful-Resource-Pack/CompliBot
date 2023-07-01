@@ -37,7 +37,9 @@ export const command: SlashCommand = {
 				});
 			if (member.voice.channel.type == "GUILD_STAGE_VOICE")
 				return interaction.reply({
-					content: await interaction.getEphemeralString({ string: "Command.Activity.stageChannel" }),
+					content: await interaction.getEphemeralString({
+						string: "Command.Activity.stageChannel",
+					}),
 					ephemeral: true,
 				});
 			channel = member.voice.channel as VoiceBasedChannel as VoiceChannel;
@@ -69,7 +71,9 @@ export const command: SlashCommand = {
 			return interaction.reply({ embeds: [embed] });
 		} else
 			return interaction.reply({
-				content: await interaction.getEphemeralString({ string: "Command.Activity.unableToCreateInvite" }),
+				content: await interaction.getEphemeralString({
+					string: "Command.Activity.unableToCreateInvite",
+				}),
 				ephemeral: true,
 			});
 	},

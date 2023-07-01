@@ -31,7 +31,9 @@ export interface AllColors {
 	};
 }
 
-export async function paletteAttachment(options: options): Promise<[MessageAttachment, MessageEmbed]> {
+export async function paletteAttachment(
+	options: options,
+): Promise<[MessageAttachment, MessageEmbed]> {
 	return getMeta(options.url).then(async (dimension) => {
 		const [width, height] = [dimension.width, dimension.height];
 		const size = width * height;
@@ -58,7 +60,8 @@ export async function paletteAttachment(options: options): Promise<[MessageAttac
 				if (a !== 0) {
 					var hex = new ColorManager({ rgb: { r: r, g: g, b: b } }).toHEX().value;
 
-					if (!(hex in allColors)) allColors[hex] = { hex: hex, opacity: [], rgb: [r, g, b], count: 0 };
+					if (!(hex in allColors))
+						allColors[hex] = { hex: hex, opacity: [], rgb: [r, g, b], count: 0 };
 
 					++allColors[hex].count;
 					allColors[hex].opacity.push(a);
@@ -71,7 +74,9 @@ export async function paletteAttachment(options: options): Promise<[MessageAttac
 			.slice(0, COLORS_TOP)
 			.map((el) => el.hex);
 
-		const embed = new MessageEmbed().setTitle("Palette results").setDescription("List of colors:\n");
+		const embed = new MessageEmbed()
+			.setTitle("Palette results")
+			.setDescription("List of colors:\n");
 
 		const field_groups = [];
 		let g: number;
@@ -86,7 +91,9 @@ export async function paletteAttachment(options: options): Promise<[MessageAttac
 			if (g % COLORS_PER_PALETTE_LINE === 0) field_groups[field_groups.length - 1].push([]);
 
 			// add color to latest group at the latest line
-			field_groups[field_groups.length - 1][field_groups[field_groups.length - 1].length - 1].push(colors[i]);
+			field_groups[field_groups.length - 1][field_groups[field_groups.length - 1].length - 1].push(
+				colors[i],
+			);
 			++g;
 		}
 
@@ -119,9 +126,9 @@ export async function paletteAttachment(options: options): Promise<[MessageAttac
 		let link: string;
 
 		while (i < palette_groups.length && stayInLoop) {
-			link = `**[Palette${palette_groups.length > 1 ? " part " + (i + 1) : ""}](${COOLORS_URL}${palette_groups[i].join(
-				"-",
-			)})**`;
+			link = `**[Palette${
+				palette_groups.length > 1 ? " part " + (i + 1) : ""
+			}](${COOLORS_URL}${palette_groups[i].join("-")})**`;
 
 			if (descriptionLen + link.length + 3 > 1024) stayInLoop = false;
 			else {
@@ -134,7 +141,9 @@ export async function paletteAttachment(options: options): Promise<[MessageAttac
 
 		// add generate palette link && append palette to description
 		embed.setDescription(
-			`Total: ${Object.values(allColors).length}\n\n` + embed.description + palette_urls.join(" - "),
+			`Total: ${Object.values(allColors).length}\n\n` +
+				embed.description +
+				palette_urls.join(" - "),
 		);
 
 		// create gradient canvas for top GRADIENT_TOP colors
@@ -148,12 +157,17 @@ export async function paletteAttachment(options: options): Promise<[MessageAttac
 			.sort((a, b) => b.count - a.count)
 			.slice(0, GRADIENT_TOP)
 			.sort((a, b) => {
-				let [ha, sa, la] = Object.values(new ColorManager({ rgb: { r: a.rgb[0], g: a.rgb[1], b: a.rgb[2] } }).toHSL());
-				let [hb, sb, lb] = Object.values(new ColorManager({ rgb: { r: b.rgb[0], g: b.rgb[1], b: b.rgb[2] } }).toHSL());
+				let [ha, sa, la] = Object.values(
+					new ColorManager({ rgb: { r: a.rgb[0], g: a.rgb[1], b: a.rgb[2] } }).toHSL(),
+				);
+				let [hb, sb, lb] = Object.values(
+					new ColorManager({ rgb: { r: b.rgb[0], g: b.rgb[1], b: b.rgb[2] } }).toHSL(),
+				);
 
 				if (sa <= GRADIENT_SAT_THRESHOLD && sb > GRADIENT_SAT_THRESHOLD) return -1;
 				if (sa > GRADIENT_SAT_THRESHOLD && sb <= GRADIENT_SAT_THRESHOLD) return 1;
-				if (sa <= GRADIENT_SAT_THRESHOLD && sb <= GRADIENT_SAT_THRESHOLD) return la > lb ? 1 : -(la < lb);
+				if (sa <= GRADIENT_SAT_THRESHOLD && sb <= GRADIENT_SAT_THRESHOLD)
+					return la > lb ? 1 : -(la < lb);
 				if (Math.abs(ha - hb) > GRADIENT_HUE_DIFF) return ha > hb ? 1 : -(ha < hb);
 
 				return la > lb ? 1 : -(la < lb);

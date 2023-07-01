@@ -17,7 +17,9 @@ export const command: SlashCommand = {
 			.setTitle(await interaction.getEphemeralString({ string: "Command.Feedback.Preview" }))
 			.setDescription(interaction.options.getString("message"))
 			.setTimestamp()
-			.setFooter({ text: await interaction.getEphemeralString({ string: "Command.Feedback.ConfirmPrompt" }) });
+			.setFooter({
+				text: await interaction.getEphemeralString({ string: "Command.Feedback.ConfirmPrompt" }),
+			});
 
 		const btnCancel = new MessageButton()
 			.setStyle("DANGER")

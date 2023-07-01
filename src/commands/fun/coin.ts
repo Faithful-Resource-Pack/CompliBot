@@ -27,6 +27,8 @@ export const command: SlashCommand = {
 			)
 			.setColor(colors.coin);
 
-		interaction.reply({ embeds: [embed], fetchReply: true }).then((message: Message) => message.deleteButton());
+		interaction
+			.reply({ embeds: [embed], fetchReply: true })
+			.then((message: Message) => message.deleteButton());
 	},
 };

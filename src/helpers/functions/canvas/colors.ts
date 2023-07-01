@@ -83,9 +83,9 @@ export class ColorManager {
 
 	toHEXA(): HEXA {
 		return {
-			value: `${this.b10b16(this.color.r)}${this.b10b16(this.color.g)}${this.b10b16(this.color.b)}${this.b10b16(
-				+(this.color.a * 255).toFixed(0),
-			)}`,
+			value: `${this.b10b16(this.color.r)}${this.b10b16(this.color.g)}${this.b10b16(
+				this.color.b,
+			)}${this.b10b16(+(this.color.a * 255).toFixed(0))}`,
 		} as HEXA;
 	}
 
@@ -194,10 +194,18 @@ export class ColorManager {
 
 		// from cmyk to rgba
 		if (options.cmyk) {
-			options.cmyk.c = +((options.cmyk.c > 100 ? 100 : options.cmyk.c < 0 ? 0 : options.cmyk.c) / 100).toFixed(2);
-			options.cmyk.m = +((options.cmyk.m > 100 ? 100 : options.cmyk.m < 0 ? 0 : options.cmyk.m) / 100).toFixed(2);
-			options.cmyk.y = +((options.cmyk.y > 100 ? 100 : options.cmyk.y < 0 ? 0 : options.cmyk.y) / 100).toFixed(2);
-			options.cmyk.k = +((options.cmyk.k > 100 ? 100 : options.cmyk.k < 0 ? 0 : options.cmyk.k) / 100).toFixed(2);
+			options.cmyk.c = +(
+				(options.cmyk.c > 100 ? 100 : options.cmyk.c < 0 ? 0 : options.cmyk.c) / 100
+			).toFixed(2);
+			options.cmyk.m = +(
+				(options.cmyk.m > 100 ? 100 : options.cmyk.m < 0 ? 0 : options.cmyk.m) / 100
+			).toFixed(2);
+			options.cmyk.y = +(
+				(options.cmyk.y > 100 ? 100 : options.cmyk.y < 0 ? 0 : options.cmyk.y) / 100
+			).toFixed(2);
+			options.cmyk.k = +(
+				(options.cmyk.k > 100 ? 100 : options.cmyk.k < 0 ? 0 : options.cmyk.k) / 100
+			).toFixed(2);
 
 			this.color = {
 				r: +(255 * (1 - options.cmyk.c) * (1 - options.cmyk.k)).toFixed(0),
@@ -310,8 +318,12 @@ export class ColorManager {
 		// from hsv to rgba
 		if (options.hsv) {
 			options.hsv.h = +(options.hsv.h % 360).toFixed(2);
-			options.hsv.s = +((options.hsv.s > 100 ? 100 : options.hsv.s < 0 ? 0 : options.hsv.s) / 100).toFixed(2);
-			options.hsv.v = +((options.hsv.v > 100 ? 100 : options.hsv.v < 0 ? 0 : options.hsv.v) / 100).toFixed(2);
+			options.hsv.s = +(
+				(options.hsv.s > 100 ? 100 : options.hsv.s < 0 ? 0 : options.hsv.s) / 100
+			).toFixed(2);
+			options.hsv.v = +(
+				(options.hsv.v > 100 ? 100 : options.hsv.v < 0 ? 0 : options.hsv.v) / 100
+			).toFixed(2);
 
 			let h: number = options.hsv.h / 60;
 			let c: number = options.hsv.v * options.hsv.s;
@@ -324,8 +336,12 @@ export class ColorManager {
 		// from hsl to rgba
 		if (options.hsl) {
 			options.hsl.h = +(options.hsl.h % 360).toFixed(2);
-			options.hsl.s = +((options.hsl.s > 100 ? 100 : options.hsl.s < 0 ? 0 : options.hsl.s) / 100).toFixed(2);
-			options.hsl.l = +((options.hsl.l > 100 ? 100 : options.hsl.l < 0 ? 0 : options.hsl.l) / 100).toFixed(2);
+			options.hsl.s = +(
+				(options.hsl.s > 100 ? 100 : options.hsl.s < 0 ? 0 : options.hsl.s) / 100
+			).toFixed(2);
+			options.hsl.l = +(
+				(options.hsl.l > 100 ? 100 : options.hsl.l < 0 ? 0 : options.hsl.l) / 100
+			).toFixed(2);
 
 			let h: number = options.hsl.h / 60;
 			let c: number = (1 - Math.abs(2 * options.hsl.l - 1)) * options.hsl.s;

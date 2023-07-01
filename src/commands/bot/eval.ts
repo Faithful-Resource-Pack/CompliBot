@@ -15,7 +15,9 @@ export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
 		.setName("eval")
 		.setDescription("Evaluates a string of code.")
-		.addStringOption((option) => option.setName("code").setDescription("The code to evaluate.").setRequired(true)),
+		.addStringOption((option) =>
+			option.setName("code").setDescription("The code to evaluate.").setRequired(true),
+		),
 	execute: async (interaction: CommandInteraction) => {
 		if (
 			await interaction.perms({
@@ -56,7 +58,10 @@ export const command: SlashCommand = {
 			ephemeral: true,
 			embeds: [
 				new MessageEmbed().setDescription(
-					`\`\`\`js\n${(await clean(evaluated, interaction.client as Client)).slice(0, 4085)}\`\`\``,
+					`\`\`\`js\n${(await clean(evaluated, interaction.client as Client)).slice(
+						0,
+						4085,
+					)}\`\`\``,
 				),
 			],
 		});

@@ -12,12 +12,12 @@ export const command: SlashCommand = {
 		.setDescription("Compare a given texture.")
 		.addStringOption((option) =>
 			option
-				.setName('texture')
-				.setDescription('The texture to compare (use [#id] syntax to compare by id).')
-				.setRequired(true)
+				.setName("texture")
+				.setDescription("The texture to compare (use [#id] syntax to compare by id).")
+				.setRequired(true),
 		),
 	execute: async (interaction: CommandInteraction) => {
-		let name = interaction.options.getString('texture');
+		let name = interaction.options.getString("texture");
 		if (name.includes(".png")) name = name.replace(".png", "");
 		name = name.replace(/ /g, "_");
 		if (name.length < 3) {
@@ -29,12 +29,16 @@ export const command: SlashCommand = {
 			return;
 		}
 
-		const results: Array<any> = (await axios.get(`${(interaction.client as Client).tokens.apiUrl}textures/${name}/all`)).data;
+		const results: Array<any> = (
+			await axios.get(`${(interaction.client as Client).tokens.apiUrl}textures/${name}/all`)
+		).data;
 
-		if (!results.length) { // no results
+		if (!results.length) {
+			// no results
 			interaction.reply({
-				content: await interaction.getEphemeralString ({
-					string: "Command.Texture.NotFound", placeholders: { TEXTURENAME: `\`${name}\`` }
+				content: await interaction.getEphemeralString({
+					string: "Command.Texture.NotFound",
+					placeholders: { TEXTURENAME: `\`${name}\`` },
 				}),
 				ephemeral: true,
 			});
@@ -48,15 +52,13 @@ export const command: SlashCommand = {
 		// only one result
 		if (results.length === 1) {
 			texture = results[0];
-			const [embed, magnified] = await textureComparison((interaction.client as Client), texture.id);
+			const [embed, magnified] = await textureComparison(interaction.client as Client, texture.id);
 
 			interaction
 				.editReply({ embeds: [embed], files: [magnified] })
-				.then((message: Message) => message.deleteButton(true))
+				.then((message: Message) => message.deleteButton(true));
 			return;
-		}
-
-		else {
+		} else {
 			const components: Array<MessageActionRow> = [];
 			let rlen: number = results.length;
 			let max: number = 4; // actually 5 but - 1 because we are adding a delete button to it (the 5th one)
@@ -65,11 +67,11 @@ export const command: SlashCommand = {
 			// parsing everything correctly
 			for (let i = 0; i < results.length; i++) {
 				results[i] = {
-					label: `[#${results[i].id}] (${results[i].paths[0].versions.sort(MinecraftSorter).reverse()[0]}) ${
-						results[i].name
-					}`,
+					label: `[#${results[i].id}] (${
+						results[i].paths[0].versions.sort(MinecraftSorter).reverse()[0]
+					}) ${results[i].name}`,
 					description: results[i].paths[0].name,
-					value: results[i].id
+					value: results[i].id,
 				};
 			}
 

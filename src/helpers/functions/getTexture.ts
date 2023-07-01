@@ -24,7 +24,9 @@ export const getTextureMessageOptions = async (options: {
 	const paths: Paths = texture.paths;
 	const contributions: Contributions = texture.contributions;
 	const animated: boolean = paths.filter((p) => p.mcmeta === true).length !== 0;
-	const contributionJSON = (await axios.get("https://api.faithfulpack.net/v2/contributions/authors")).data
+	const contributionJSON = (
+		await axios.get("https://api.faithfulpack.net/v2/contributions/authors")
+	).data;
 
 	let mcmeta: any = {};
 	if (animated) {
@@ -54,7 +56,8 @@ export const getTextureMessageOptions = async (options: {
 
 	let textureURL: string;
 	try {
-		textureURL = (await axios.get(`${tokens.apiUrl}textures/${texture.id}/url/${pack}/latest`)).request.res.responseUrl;
+		textureURL = (await axios.get(`${tokens.apiUrl}textures/${texture.id}/url/${pack}/latest`))
+			.request.res.responseUrl;
 	} catch {
 		textureURL = "";
 	}
@@ -69,9 +72,10 @@ export const getTextureMessageOptions = async (options: {
 		dimensions = await getMeta(textureURL);
 		validURL = true;
 	} catch (err) {
-		textureURL = "https://raw.githubusercontent.com/Faithful-Resource-Pack/App/main/resources/transparency.png";
+		textureURL =
+			"https://raw.githubusercontent.com/Faithful-Resource-Pack/App/main/resources/transparency.png";
 		embed.addFields([
-			{ name: "Image not found", value: "This texture hasn't been made yet or is blacklisted!"}
+			{ name: "Image not found", value: "This texture hasn't been made yet or is blacklisted!" },
 		]);
 		embed.setColor(colors.red);
 	}
@@ -90,22 +94,20 @@ export const getTextureMessageOptions = async (options: {
 				.map((c) => {
 					let strDate: string = `<t:${Math.trunc(c.date / 1000)}:d>`;
 					let authors = c.authors.map((authorId: string) => {
-						if (guild.members.cache.get(authorId)) return `<@!${authorId}>`
+						if (guild.members.cache.get(authorId)) return `<@!${authorId}>`;
 
 						// this may possibly be one of the worst solutions but it somehow works
 						for (let user of contributionJSON) {
-							if (user.id == authorId) return user.username ?? 'Anonymous'
+							if (user.id == authorId) return user.username ?? "Anonymous";
 						}
-						return 'Unknown'
+						return "Unknown";
 					});
 					return `${strDate} — ${authors.join(", ")}`;
 				})[0],
 		];
 
 		if (displayedContributions[0] != undefined && contributions.length && pack !== "default")
-			embed.addFields([
-				{ name: "Latest Author(s)", value: displayedContributions.join("\n") }
-			]);
+			embed.addFields([{ name: "Latest Author(s)", value: displayedContributions.join("\n") }]);
 	}
 
 	embed.addFields(AddPathsToEmbed(texture));
@@ -113,7 +115,9 @@ export const getTextureMessageOptions = async (options: {
 	// magnifying the texture in thumbnail
 	if (animated) {
 		embed.addFields([{ name: "MCMETA", value: `\`\`\`json\n${JSON.stringify(mcmeta)}\`\`\`` }]);
-		files.push(await animateAttachment({ url: textureURL, magnify: true, name: "magnified.gif", mcmeta }));
+		files.push(
+			await animateAttachment({ url: textureURL, magnify: true, name: "magnified.gif", mcmeta }),
+		);
 	} else files.push((await magnifyAttachment({ url: textureURL, name: "magnified.png" }))[0]);
 
 	return [embed, files];

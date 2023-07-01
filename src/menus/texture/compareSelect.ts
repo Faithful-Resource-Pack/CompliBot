@@ -9,20 +9,23 @@ export const menu: SelectMenu = {
 	execute: async (client: Client, interaction: SelectMenuInteraction) => {
 		if (client.verbose) console.log(`${info}Texture selected!`);
 
-		const messageInteraction: MessageInteraction = interaction.message.interaction as MessageInteraction;
+		const messageInteraction: MessageInteraction = interaction.message
+			.interaction as MessageInteraction;
 		const message: Message = interaction.message as Message;
 
 		if (interaction.user.id !== messageInteraction.user.id)
 			return interaction.reply({
-				content: (await interaction.getEphemeralString({ string: "Error.Interaction.Reserved" })).replace(
-					"%USER%",
-					`<@!${messageInteraction.user.id}>`,
-				),
+				content: (
+					await interaction.getEphemeralString({ string: "Error.Interaction.Reserved" })
+				).replace("%USER%", `<@!${messageInteraction.user.id}>`),
 				ephemeral: true,
 			});
 		else interaction.deferReply();
 
-		const [embed, magnified] = await textureComparison((interaction.client as Client), interaction.values[0]);
+		const [embed, magnified] = await textureComparison(
+			interaction.client as Client,
+			interaction.values[0],
+		);
 
 		try {
 			message.delete();

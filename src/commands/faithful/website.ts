@@ -29,7 +29,8 @@ export const command: SlashCommand = {
 			.setColor(media[key].color)
 			.setThumbnail(media[key].thumbnail);
 
-		interaction.reply({ embeds: [embed], fetchReply: true })
+		interaction
+			.reply({ embeds: [embed], fetchReply: true })
 			.then((message: Message) => message.deleteButton());
 	},
 };

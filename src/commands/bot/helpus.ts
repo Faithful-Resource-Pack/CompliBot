@@ -9,7 +9,9 @@ export const command: SlashCommand = {
 	execute: async (interaction: CommandInteraction, client: Client) => {
 		const embed = new MessageEmbed()
 			.setTitle(await interaction.getEphemeralString({ string: "Command.HelpUs.Title" }))
-			.setDescription(await interaction.getEphemeralString({ string: "Command.HelpUs.Description" }))
+			.setDescription(
+				await interaction.getEphemeralString({ string: "Command.HelpUs.Description" }),
+			)
 			.setThumbnail(client.config.images + "bot/question_mark.png");
 
 		interaction.reply({ embeds: [embed], ephemeral: true });

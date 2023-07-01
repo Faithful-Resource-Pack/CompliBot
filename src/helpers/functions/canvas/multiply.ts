@@ -31,10 +31,15 @@ export enum mcColors {
 	DyeBlack = "#1D1D21",
 }
 
-export const mcColorsOptions: { name: string; value: string }[] = Object.keys(mcColors).map((name) => {
-	//a cheeky regex for formatting
-	return { name: name.replace(/([a-z])([A-Z])/g, "$1 $2"), value: mcColors[name as keyof typeof mcColors] };
-});
+export const mcColorsOptions: { name: string; value: string }[] = Object.keys(mcColors).map(
+	(name) => {
+		//a cheeky regex for formatting
+		return {
+			name: name.replace(/([a-z])([A-Z])/g, "$1 $2"),
+			value: mcColors[name as keyof typeof mcColors],
+		};
+	},
+);
 
 type options = {
 	url: string;
@@ -43,7 +48,9 @@ type options = {
 	color: string;
 };
 
-export async function multiplyAttachment(options: options): Promise<[MessageAttachment, MessageEmbed]> {
+export async function multiplyAttachment(
+	options: options,
+): Promise<[MessageAttachment, MessageEmbed]> {
 	return await getMeta(options.url).then(async (dimension) => {
 		const canvas = createCanvas(dimension.width, dimension.height);
 		const context = canvas.getContext("2d");
@@ -72,7 +79,10 @@ export async function multiplyAttachment(options: options): Promise<[MessageAtta
 
 		await context.putImageData(data, 0, 0);
 		return [
-			new MessageAttachment(canvas.toBuffer("image/png"), `${options.name ? options.name : "tinted.png"}`),
+			new MessageAttachment(
+				canvas.toBuffer("image/png"),
+				`${options.name ? options.name : "tinted.png"}`,
+			),
 			options.embed,
 		];
 	});

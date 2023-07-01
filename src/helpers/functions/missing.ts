@@ -28,7 +28,8 @@ export const computeAll = async (
 	version: string,
 	callback: Function,
 ): Promise<MissingResults> => {
-	const editions: Array<string> = (await axios.get(`${client.tokens.apiUrl}textures/editions`)).data;
+	const editions: Array<string> = (await axios.get(`${client.tokens.apiUrl}textures/editions`))
+		.data;
 
 	return Promise.all(
 		editions.map(async (edition: string) => {
@@ -43,7 +44,8 @@ export const computeAndUpdateAll = async (
 	version: string,
 	callback: Function,
 ): Promise<MissingResults> => {
-	const editions: Array<string> = (await axios.get(`${client.tokens.apiUrl}textures/editions`)).data;
+	const editions: Array<string> = (await axios.get(`${client.tokens.apiUrl}textures/editions`))
+		.data;
 
 	return Promise.all(
 		editions.map(async (edition: string) => {
@@ -63,7 +65,9 @@ export const computeAndUpdate = async (
 		if (client !== null) {
 			let channel: AnyChannel;
 			try {
-				channel = await client.channels.fetch(client.config.packProgress[results[2].pack][results[2].edition]);
+				channel = await client.channels.fetch(
+					client.config.packProgress[results[2].pack][results[2].edition],
+				);
 			} catch {
 				return;
 			} // channel can't be fetch, abort mission!
@@ -115,24 +119,28 @@ export const compute = async (
 	// CLONE REPO IF NOT ALREADY CLONED
 	let exists: boolean = existsSync(tmpDirPathDefault);
 	if (!exists) {
-		await callback(`Downloading default ${edition} pack...`).catch((err: any) => Promise.reject(err));
+		await callback(`Downloading default ${edition} pack...`).catch((err: any) =>
+			Promise.reject(err),
+		);
 		mkdir(tmpDirPathDefault);
 		await exec(`git clone ${repoDefault} .`, { cwd: tmpDirPathDefault });
 	}
 
 	exists = existsSync(tmpDirPathRequest);
 	if (!exists) {
-		await callback(`Downloading \`${getDisplayNameForPack(pack)}\` (${edition}) pack...`).catch((err: any) =>
-			Promise.reject(err),
+		await callback(`Downloading \`${getDisplayNameForPack(pack)}\` (${edition}) pack...`).catch(
+			(err: any) => Promise.reject(err),
 		);
 		mkdir(tmpDirPathRequest);
 		await exec(`git clone ${repoRequest} .`, { cwd: tmpDirPathRequest });
 	}
 
-	const versions: Array<string> = (await axios.get(`${client.tokens.apiUrl}settings/versions.${edition}`)).data;
+	const versions: Array<string> = (
+		await axios.get(`${client.tokens.apiUrl}settings/versions.${edition}`)
+	).data;
 	if (!versions.includes(version)) version = versions[0]; // latest version if versions doesn't include version (unexisting/unsupported)
-	await callback(`Updating packs with latest version of \`${version}\` known...`).catch((err: any) =>
-		Promise.reject(err),
+	await callback(`Updating packs with latest version of \`${version}\` known...`).catch(
+		(err: any) => Promise.reject(err),
 	);
 
 	/**
@@ -152,13 +160,14 @@ export const compute = async (
 	]).catch((err) => Promise.reject(err));
 
 	await callback("Searching for differences...").catch((err) => Promise.reject(err));
-	const editionFilter = edition === "java" ? normalizeArray(BLACKLIST.java) : normalizeArray(BLACKLIST.bedrock);
+	const editionFilter =
+		edition === "java" ? normalizeArray(BLACKLIST.java) : normalizeArray(BLACKLIST.bedrock);
 
-	const texturesDefault: Array<string> = getAllFilesFromDir(tmpDirPathDefault, editionFilter).map((f) =>
-		normalize(f).replace(tmpDirPathDefault, ""),
+	const texturesDefault: Array<string> = getAllFilesFromDir(tmpDirPathDefault, editionFilter).map(
+		(f) => normalize(f).replace(tmpDirPathDefault, ""),
 	);
-	const texturesRequest: Array<string> = getAllFilesFromDir(tmpDirPathRequest, editionFilter).map((f) =>
-		normalize(f).replace(tmpDirPathRequest, ""),
+	const texturesRequest: Array<string> = getAllFilesFromDir(tmpDirPathRequest, editionFilter).map(
+		(f) => normalize(f).replace(tmpDirPathRequest, ""),
 	);
 
 	// instead of looping in the check array for each checked element, we directly check if the
@@ -176,9 +185,20 @@ export const compute = async (
 			.replace(/\/textures\//g, ""),
 		"utf8",
 	);
-	const progress: number = Math.round(10000 - (diffResult.length / texturesDefault.length) * 10000) / 100;
+	const progress: number =
+		Math.round(10000 - (diffResult.length / texturesDefault.length) * 10000) / 100;
 
-	return [buffResult, diffResult, { completion: progress, edition: edition, pack: pack, version: version, total: texturesDefault.length }];
+	return [
+		buffResult,
+		diffResult,
+		{
+			completion: progress,
+			edition: edition,
+			pack: pack,
+			version: version,
+			total: texturesDefault.length,
+		},
+	];
 };
 
 export const getAllFilesFromDir = (dir: string, filter = []): Array<string> => {
@@ -190,7 +210,8 @@ export const getAllFilesFromDir = (dir: string, filter = []): Array<string> => {
 		if (!file.includes(".git")) {
 			if (stat && stat.isDirectory()) res = res.concat(getAllFilesFromDir(file, filter));
 			else {
-				if ((file.endsWith(".png") || file.endsWith(".tga")) && includesNone(filter, file)) res.push(file);
+				if ((file.endsWith(".png") || file.endsWith(".tga")) && includesNone(filter, file))
+					res.push(file);
 			}
 		}
 	});

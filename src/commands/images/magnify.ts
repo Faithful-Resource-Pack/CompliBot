@@ -8,7 +8,9 @@ export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
 		.setName("magnify")
 		.setDescription("Magnify an image.")
-		.addAttachmentOption((o) => o.setName("image").setDescription("The image to magnify").setRequired(false))
+		.addAttachmentOption((o) =>
+			o.setName("image").setDescription("The image to magnify").setRequired(false),
+		)
 		.addNumberOption((num) => {
 			return num
 				.addChoices(

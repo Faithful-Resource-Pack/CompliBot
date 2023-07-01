@@ -29,7 +29,9 @@ export const button: Button = {
 				});
 			interaction.followUp({
 				ephemeral: true,
-				content: poll.hasVotedFor(type, id) ? "Your vote has been counted." : "Your vote has been removed.",
+				content: poll.hasVotedFor(type, id)
+					? "Your vote has been counted."
+					: "Your vote has been removed.",
 			});
 		}
 

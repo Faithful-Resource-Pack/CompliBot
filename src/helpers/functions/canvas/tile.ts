@@ -16,7 +16,10 @@ export async function tileAttachment(options: options): Promise<[MessageAttachme
 	try {
 		const canvas = await tileCanvas(options);
 		return [
-			new MessageAttachment(canvas.toBuffer("image/png"), `${options.name ? options.name : "tiled.png"}`),
+			new MessageAttachment(
+				canvas.toBuffer("image/png"),
+				`${options.name ? options.name : "tiled.png"}`,
+			),
 			options.embed,
 		];
 	} catch (err) {
@@ -36,7 +39,13 @@ export async function tileCanvas(options: options): Promise<Canvas> {
 			context.imageSmoothingEnabled = false;
 			let imageToDraw = await loadImage(options.url);
 
-			const drawRotatedImage = (image: Image, x: number, y: number, scale: number, rotation: number) => {
+			const drawRotatedImage = (
+				image: Image,
+				x: number,
+				y: number,
+				scale: number,
+				rotation: number,
+			) => {
 				context.clearRect(x, y, dimension.width, dimension.height);
 				context.setTransform(new DOMMatrix([scale, 0, 0, scale, x, y])); // sets scale and origin
 				context.rotate(rotation * (Math.PI / 180));
@@ -95,10 +104,19 @@ export async function tileCanvas(options: options): Promise<Canvas> {
 			if (options.shape === "hollow")
 				context.clearRect(dimension.width, dimension.height, dimension.width, dimension.height); // middle middle
 
-			if (options.shape === "plus" || options.shape === "horizontal" || options.shape === "vertical") {
+			if (
+				options.shape === "plus" ||
+				options.shape === "horizontal" ||
+				options.shape === "vertical"
+			) {
 				context.clearRect(0, 0, dimension.width, dimension.height); // top left
 				context.clearRect(dimension.width * 2, 0, dimension.width, dimension.height); // top right
-				context.clearRect(dimension.width * 2, dimension.height * 2, dimension.width, dimension.height); // bottom right
+				context.clearRect(
+					dimension.width * 2,
+					dimension.height * 2,
+					dimension.width,
+					dimension.height,
+				); // bottom right
 				context.clearRect(0, dimension.height * 2, dimension.width, dimension.height); // bottom left
 			}
 

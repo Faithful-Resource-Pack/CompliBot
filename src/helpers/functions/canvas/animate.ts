@@ -52,13 +52,16 @@ export async function animateAttachment(options: Options): Promise<MessageAttach
 				const frame = MCMETA.animation.frames[i];
 
 				if (typeof frame === "number") frames.push({ index: frame, duration: frametime });
-				if (typeof frame === "object") frames.push({ index: frame.index || 1, duration: frame.time || frametime });
+				if (typeof frame === "object")
+					frames.push({ index: frame.index || 1, duration: frame.time || frametime });
 				else frames.push({ index: i, duration: frametime });
 			}
 		}
 
 		// MCMETA.animation.frames is not defined
-		else for (let i = 0; i < dimensions.height / dimensions.width; i++) frames.push({ index: i, duration: frametime });
+		else
+			for (let i = 0; i < dimensions.height / dimensions.width; i++)
+				frames.push({ index: i, duration: frametime });
 
 		// Draw frames
 		const encoder = new GIFEncoder(dimensions.width, dimensions.width);
@@ -132,6 +135,9 @@ export async function animateAttachment(options: Options): Promise<MessageAttach
 			}
 
 		encoder.finish();
-		return new MessageAttachment(encoder.out.getData(), options.name ? options.name : "animation.gif");
+		return new MessageAttachment(
+			encoder.out.getData(),
+			options.name ? options.name : "animation.gif",
+		);
 	});
 }

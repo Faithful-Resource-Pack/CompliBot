@@ -26,7 +26,6 @@ export const button: Button = {
 				ephemeral: true,
 			});
 
-
 		return interaction
 			.reply({
 				embeds: [

@@ -34,10 +34,16 @@ export const command: SlashCommand = {
 				.setName("audit")
 				.setDescription("change the banlist")
 				.addUserOption((userOpt) => {
-					return userOpt.setName("subject").setDescription("The user to affect from using the bot").setRequired(true);
+					return userOpt
+						.setName("subject")
+						.setDescription("The user to affect from using the bot")
+						.setRequired(true);
 				})
 				.addBooleanOption((bool) => {
-					return bool.setName("pardon").setDescription("Weather to undo an oopsie or not").setRequired(false);
+					return bool
+						.setName("pardon")
+						.setDescription("Weather to undo an oopsie or not")
+						.setRequired(false);
 				});
 		}),
 	execute: new Collection<string, SlashCommandI>()
@@ -60,7 +66,9 @@ export const command: SlashCommand = {
 				victimID == "473860522710794250" || //RobertR11
 				victimID == "601501288978448411" //Nick.
 			)
-				return interaction.followUp(await interaction.getEphemeralString({ string: "Command.Botban.view.unbannable" }));
+				return interaction.followUp(
+					await interaction.getEphemeralString({ string: "Command.Botban.view.unbannable" }),
+				);
 
 			if (interaction.options.getBoolean("pardon")) {
 				banlist.ids.filter(async (v) => {
@@ -72,12 +80,21 @@ export const command: SlashCommand = {
 			writeFileSync(join(__dirname, "../../../json/botbans.json"), JSON.stringify(banlist));
 
 			interaction.followUp({
-				content: `Bot-${interaction.options.getBoolean("revoke") ? "Unbanned" : "Banned"} <@${victimID}>`,
+				content: `Bot-${
+					interaction.options.getBoolean("revoke") ? "Unbanned" : "Banned"
+				} <@${victimID}>`,
 				ephemeral: true,
 			});
 			const embed: MessageEmbed = new MessageEmbed()
-				.setTitle(`${interaction.options.getBoolean("revoke") ? "Removed" : "Added"} <@${victimID}> to botban list`)
-				.setAuthor({ name: interaction.user.username, iconURL: interaction.user.avatarURL({ dynamic: true }) })
+				.setTitle(
+					`${
+						interaction.options.getBoolean("revoke") ? "Removed" : "Added"
+					} <@${victimID}> to botban list`,
+				)
+				.setAuthor({
+					name: interaction.user.username,
+					iconURL: interaction.user.avatarURL({ dynamic: true }),
+				})
 				.setColor(colors.red)
 				.addFields([
 					{ name: "Server", value: `\`${interaction.guild.name}\``, inline: true },
@@ -119,7 +136,10 @@ export const command: SlashCommand = {
 
 			switch (interaction.options.getString("format")) {
 				case "json":
-					return interaction.followUp({ files: [new MessageAttachment(buffer, "bans.json")], ephemeral: true });
+					return interaction.followUp({
+						files: [new MessageAttachment(buffer, "bans.json")],
+						ephemeral: true,
+					});
 				case "emb":
 					const emb = new MessageEmbed()
 						.setTitle("Botbanned IDs:")
@@ -132,7 +152,10 @@ export const command: SlashCommand = {
 					return interaction.followUp({ embeds: [pingEmb], ephemeral: true });
 				case "txt":
 				default:
-					interaction.followUp({ files: [new MessageAttachment(txtBuff, "bans.txt")], ephemeral: true });
+					interaction.followUp({
+						files: [new MessageAttachment(txtBuff, "bans.txt")],
+						ephemeral: true,
+					});
 					break;
 			}
 		}),

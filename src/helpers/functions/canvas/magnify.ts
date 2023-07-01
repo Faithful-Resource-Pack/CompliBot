@@ -16,17 +16,21 @@ type options = {
 /**
  * magnification from an image url
  */
-export async function magnifyAttachment(options: options): Promise<[MessageAttachment, MessageEmbed]> {
+export async function magnifyAttachment(
+	options: options,
+): Promise<[MessageAttachment, MessageEmbed]> {
 	return getMeta(options.url).then(async (dimension) => {
 		return await magnify(options, dimension);
 	});
 }
 
-
 /**
  * magnification from pre-loaded image (can't be MessageAttachment, has to be Image)
  */
-export async function magnify(options: options, dimension?: ISizeCalculationResult): Promise<[MessageAttachment, MessageEmbed]> {
+export async function magnify(
+	options: options,
+	dimension?: ISizeCalculationResult,
+): Promise<[MessageAttachment, MessageEmbed]> {
 	let factor = options.factor;
 	if (!dimension) {
 		dimension = { width: options.image.width, height: options.image.height };
@@ -46,15 +50,17 @@ export async function magnify(options: options, dimension?: ISizeCalculationResu
 	} else if (dimension.width * factor * (dimension.height * factor) > 262144) factor = 1;
 
 	const [width, height] = [dimension.width * factor, dimension.height * factor];
-	const imageToDraw = options.url
-		? await loadImage(options.url)
-		: options.image;
+	const imageToDraw = options.url ? await loadImage(options.url) : options.image;
 
 	const canvas = createCanvas(
-		options.orientation === undefined || options.orientation === "none" || options.orientation === "portrait"
+		options.orientation === undefined ||
+			options.orientation === "none" ||
+			options.orientation === "portrait"
 			? width
 			: width * (16 / 9),
-		options.orientation === undefined || options.orientation === "none" || options.orientation === "landscape"
+		options.orientation === undefined ||
+			options.orientation === "none" ||
+			options.orientation === "landscape"
 			? height
 			: height * (16 / 9),
 	);
@@ -63,10 +69,14 @@ export async function magnify(options: options, dimension?: ISizeCalculationResu
 	context.imageSmoothingEnabled = false;
 	context.drawImage(
 		imageToDraw,
-		options.orientation === undefined || options.orientation === "none" || options.orientation === "portrait"
+		options.orientation === undefined ||
+			options.orientation === "none" ||
+			options.orientation === "portrait"
 			? 0
 			: (width * (16 / 9)) / 4, // landscape
-		options.orientation === undefined || options.orientation === "none" || options.orientation === "landscape"
+		options.orientation === undefined ||
+			options.orientation === "none" ||
+			options.orientation === "landscape"
 			? 0
 			: (height * (16 / 9)) / 4, // portrait
 		width,
@@ -74,7 +84,10 @@ export async function magnify(options: options, dimension?: ISizeCalculationResu
 	);
 
 	return [
-		new MessageAttachment(canvas.toBuffer("image/png"), `${options.name ? options.name : "magnified.png"}`),
+		new MessageAttachment(
+			canvas.toBuffer("image/png"),
+			`${options.name ? options.name : "magnified.png"}`,
+		),
 		options.embed,
 	];
 }

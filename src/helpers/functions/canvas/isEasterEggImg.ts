@@ -37,4 +37,5 @@ export default easterEgg;
 //de funny
 const gamerUrl =
 	"https://cdn.discordapp.com/attachments/923370825762078720/939888814028111992/grass_block_side_overlay.png";
-const trolling = "https://cdn.discordapp.com/attachments/923370825762078720/940676512368177172/unknown.png";
+const trolling =
+	"https://cdn.discordapp.com/attachments/923370825762078720/940676512368177172/unknown.png";

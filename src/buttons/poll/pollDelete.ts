@@ -8,7 +8,8 @@ export const button: Button = {
 	execute: async (client: Client, interaction: ButtonInteraction) => {
 		if (client.verbose) console.log(`${info}Poll Message deleted!`);
 
-		const messageInteraction: MessageInteraction = interaction.message.interaction as MessageInteraction;
+		const messageInteraction: MessageInteraction = interaction.message
+			.interaction as MessageInteraction;
 		const message: Message = interaction.message as Message;
 		const pid: string = interaction.message.embeds[0].footer.text.split(" | ")[0];
 

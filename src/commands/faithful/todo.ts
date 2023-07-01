@@ -18,16 +18,20 @@ export const command: SlashCommand = {
 		),
 	execute: async (interaction: CommandInteraction) => {
 		let contents: string;
-		const pack = interaction.options.getString("pack", true)
+		const pack = interaction.options.getString("pack", true);
 		switch (pack) {
 			case "faithful_32x":
-				contents = "https://docs.google.com/document/d/1OXGHKiYJej0qvNgZWfFuYauyL1OjpL31usgK4dwuIkI/";
+				contents =
+					"https://docs.google.com/document/d/1OXGHKiYJej0qvNgZWfFuYauyL1OjpL31usgK4dwuIkI/";
 				break;
 			case "classic_faithful_32x":
-				contents = "https://docs.google.com/document/d/1lw5EvJhVbubNPm3ZiOXAr8Aos9gCkmz-rh03uIMuqY0/";
+				contents =
+					"https://docs.google.com/document/d/1lw5EvJhVbubNPm3ZiOXAr8Aos9gCkmz-rh03uIMuqY0/";
 				break;
 		}
 
-		interaction.reply({ content: contents, fetchReply: true }).then((message: Message) => message.deleteButton());
+		interaction
+			.reply({ content: contents, fetchReply: true })
+			.then((message: Message) => message.deleteButton());
 	},
 };

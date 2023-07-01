@@ -52,7 +52,10 @@ type permissionCode = [boolean, boolean, boolean];
  */
 
 //TODO: use a bearer token for v2 in the future. This is a temporary workaround
-export function checkPermissions(interaction: CommandInteraction, permissions: permissionOptions): permissionCode {
+export function checkPermissions(
+	interaction: CommandInteraction,
+	permissions: permissionOptions,
+): permissionCode {
 	let code: permissionCode = [true, true, true];
 
 	let type = permissions.type ? permissions.type : "config";
@@ -68,7 +71,12 @@ export function checkPermissions(interaction: CommandInteraction, permissions: p
 		case "dev":
 			type = "config";
 			permissions = {
-				users: ["207471947662098432", "173336582265241601", "601501288978448411", "473860522710794250"],
+				users: [
+					"207471947662098432",
+					"173336582265241601",
+					"601501288978448411",
+					"473860522710794250",
+				],
 			};
 			break;
 		case "mod":
@@ -82,14 +90,17 @@ export function checkPermissions(interaction: CommandInteraction, permissions: p
 	}
 
 	// no userIDs in config so this applies to all
-	if (permissions.users && !permissions.users.includes(interaction.user.id)) code[permissionCodeEnum.users] = false;
+	if (permissions.users && !permissions.users.includes(interaction.user.id))
+		code[permissionCodeEnum.users] = false;
 
 	if (type == "id") {
 		if (permissions.servers && !permissions.servers.includes(interaction.guildId))
 			code[permissionCodeEnum.servers] = false;
 		if (
 			permissions.roles &&
-			!(interaction.member.roles as GuildMemberRoleManager).cache.some((r) => permissions.roles.includes(r.id))
+			!(interaction.member.roles as GuildMemberRoleManager).cache.some((r) =>
+				permissions.roles.includes(r.id),
+			)
 		)
 			code[permissionCodeEnum.roles] = false;
 	}

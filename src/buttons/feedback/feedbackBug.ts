@@ -7,15 +7,15 @@ export const button: Button = {
 	buttonId: "feedbackBug",
 	execute: async (client: Client, interaction: ButtonInteraction) => {
 		if (client.verbose) console.log(`${info}Bug report!`);
-		const messageInteraction: MessageInteraction = interaction.message.interaction as MessageInteraction;
+		const messageInteraction: MessageInteraction = interaction.message
+			.interaction as MessageInteraction;
 		const message: Message = interaction.message as Message;
 
 		if (interaction.user.id !== messageInteraction.user.id)
 			return interaction.reply({
-				content: (await interaction.getEphemeralString({ string: "Error.Interaction.Reserved" })).replace(
-					"%USER%",
-					`<@!${messageInteraction.user.id}>`,
-				),
+				content: (
+					await interaction.getEphemeralString({ string: "Error.Interaction.Reserved" })
+				).replace("%USER%", `<@!${messageInteraction.user.id}>`),
 				ephemeral: true,
 			});
 
@@ -25,10 +25,9 @@ export const button: Button = {
 
 		if (!channelFeedback)
 			return interaction.reply({
-				content: (await interaction.getEphemeralString({ string: "Error.Channel.CacheNotFound" })).replace(
-					"%CHANNEL_NAME%",
-					"#feedback",
-				),
+				content: (
+					await interaction.getEphemeralString({ string: "Error.Channel.CacheNotFound" })
+				).replace("%CHANNEL_NAME%", "#feedback"),
 				ephemeral: true,
 			});
 
@@ -44,14 +43,23 @@ export const button: Button = {
 			.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL() })
 			.setTimestamp();
 
-		const reply: Message = (await interaction.reply({ embeds: [embedResponse], fetchReply: true })) as Message;
+		const reply: Message = (await interaction.reply({
+			embeds: [embedResponse],
+			fetchReply: true,
+		})) as Message;
 		const url: string = reply.url;
 		const quote: string = Bug[Math.floor(Math.random() * Bug.length)];
 
 		const embedFeedback = new MessageEmbed()
 			.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL() })
 			.setTitle(`[BUG] Feedback`)
-			.setDescription(`[Jump to message](${url})\n` + "```" + message.embeds[0].description + "```" + `\n_${quote}_`)
+			.setDescription(
+				`[Jump to message](${url})\n` +
+					"```" +
+					message.embeds[0].description +
+					"```" +
+					`\n_${quote}_`,
+			)
 			.setFooter({ text: `${interaction.guild.name}` })
 			.setTimestamp()
 			.setColor("RED");

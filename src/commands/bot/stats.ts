@@ -10,13 +10,18 @@ export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
 		.setName("stats")
 		.setDescription("Gets statistics about the bot or commands.")
-		.addSubcommand((subcommand) => subcommand.setName("bot").setDescription("Statistics about the bot."))
+		.addSubcommand((subcommand) =>
+			subcommand.setName("bot").setDescription("Statistics about the bot."),
+		)
 		.addSubcommand((subcommand) =>
 			subcommand
 				.setName("command")
 				.setDescription("Returns top 10 most used commands.")
 				.addStringOption((option) =>
-					option.setName("command").setDescription("Returns usage for a specific command.").setRequired(false),
+					option
+						.setName("command")
+						.setDescription("Returns usage for a specific command.")
+						.setRequired(false),
 				),
 		),
 	execute: new Collection<string, SlashCommandI>()
@@ -33,9 +38,9 @@ export const command: SlashCommand = {
 			if (os.platform() == "linux") version = linuxOs({ mode: "sync" }).pretty_name;
 			else version = os.version();
 
-			const FieldTitles = (await interaction.getEphemeralString({ string: "Command.Stats.Embed.FieldTitles" })).split(
-				"$,",
-			);
+			const FieldTitles = (
+				await interaction.getEphemeralString({ string: "Command.Stats.Embed.FieldTitles" })
+			).split("$,");
 
 			const embed = new MessageEmbed()
 				.setTitle(`${client.user.username} Stats`)
@@ -60,7 +65,9 @@ export const command: SlashCommand = {
 					text: await interaction.getEphemeralString({ string: "Command.Stats.Footer" }),
 					iconURL: "https://cdn.discordapp.com/emojis/799357507126427699",
 				});
-			interaction.reply({ embeds: [embed], fetchReply: true }).then((message: Message) => message.deleteButton());
+			interaction
+				.reply({ embeds: [embed], fetchReply: true })
+				.then((message: Message) => message.deleteButton());
 		})
 		.set("command", async (interaction: CommandInteraction, client: Client) => {
 			//if the command ars is provided and the command does not exist in commandsProcessed:
@@ -84,7 +91,9 @@ export const command: SlashCommand = {
 						string: "Command.Stats.Usage",
 						placeholders: {
 							COMMAND: interaction.options.getString("command"),
-							USE: client.commandsProcessed.get(interaction.options.getString("command")).toString() ?? "0",
+							USE:
+								client.commandsProcessed.get(interaction.options.getString("command")).toString() ??
+								"0",
 						},
 					}),
 				);
@@ -96,7 +105,8 @@ export const command: SlashCommand = {
 
 				const embed = new MessageEmbed()
 					.setTimestamp()
-					.setTitle(await interaction.getEphemeralString({ string: "Command.Stats.Top10" })).setDescription(`
+					.setTitle(await interaction.getEphemeralString({ string: "Command.Stats.Top10" }))
+					.setDescription(`
 ${data[0]
 	.slice(0, data[0].length > 10 ? 10 : data[0].length)
 	.map((key: any, index: any) => {

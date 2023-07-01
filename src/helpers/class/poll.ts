@@ -36,30 +36,33 @@ export class Poll extends TimedEmbed {
 		let isYesno: boolean = false;
 
 		if (this.getStatus() === "ended") components = [];
-		if (this.getVoteNames()[0] == 'upvote') isYesno = true;
-		let bestOption = [0, ''];
+		if (this.getVoteNames()[0] == "upvote") isYesno = true;
+		let bestOption = [0, ""];
 
 		embed.fields = embed.fields.map((field: EmbedField, index: number) => {
 			if (index === 0) return field;
 			const val: number = parseInt(field.value.substring(2, 3));
-			if (!Number.isNaN(val)) { // if it can't be casted to a number no votes have been made yet
+			if (!Number.isNaN(val)) {
+				// if it can't be casted to a number no votes have been made yet
 				if ((bestOption[0] as number) < val) {
 					bestOption[0] = val;
 					bestOption[1] = isYesno
-						? `This vote ${this.getAllVotes().upvote > this.getAllVotes().downvote
-							? 'has passed!'
-							: this.getAllVotes().upvote == this.getAllVotes().downvote
-								? 'has tied!'
-								: 'has not passed!'}`
-						: `Option **${field.name}** won!`
+						? `This vote ${
+								this.getAllVotes().upvote > this.getAllVotes().downvote
+									? "has passed!"
+									: this.getAllVotes().upvote == this.getAllVotes().downvote
+									? "has tied!"
+									: "has not passed!"
+						  }`
+						: `Option **${field.name}** won!`;
 				} else if ((bestOption[0] as number) === val) {
-					bestOption[1] = "This vote was a tie!"
+					bestOption[1] = "This vote was a tie!";
 				}
 			}
 			if (field.name === "Status") {
 				if (this.getStatus() === "ended") {
-					field.value = '';
-					if (bestOption[1] !== '') field.value = `${bestOption[1]}\n\n`
+					field.value = "";
+					if (bestOption[1] !== "") field.value = `${bestOption[1]}\n\n`;
 					field.value += `*Ended <t:${this.getTimeout()}:R>*`;
 				}
 				return field;
@@ -73,7 +76,10 @@ export class Poll extends TimedEmbed {
 					? this.getStatus() === "ended"
 						? "Nobody has voted."
 						: "No votes yet."
-					: `> ${votesCount[index - 1]} / ${votesCount.reduce((partialSum, a) => partialSum + a, 0)} (${(
+					: `> ${votesCount[index - 1]} / ${votesCount.reduce(
+							(partialSum, a) => partialSum + a,
+							0,
+					  )} (${(
 							(votesCount[index - 1] / votesCount.reduce((partialSum, a) => partialSum + a, 0)) *
 							100
 					  ).toFixed(2)}%)\n`;
@@ -81,7 +87,10 @@ export class Poll extends TimedEmbed {
 			if (this.isAnonymous() === false) {
 				let i = 0;
 
-				while (votes[index - 1][i] !== undefined && field.value.length + votes[index - 1][i].length < 1024) {
+				while (
+					votes[index - 1][i] !== undefined &&
+					field.value.length + votes[index - 1][i].length < 1024
+				) {
 					field.value += `<@!${votes[index - 1][i]}> `;
 					i++;
 				}
@@ -131,9 +140,10 @@ export class Poll extends TimedEmbed {
 			this.setVotes(tmp);
 		}
 
-		if (this.getTimeout() !== 0) embed.addFields([
-			{ name: "Status", value: `*Will end <t:${this.getTimeout()}:R>*`, inline: true }
-		]);
+		if (this.getTimeout() !== 0)
+			embed.addFields([
+				{ name: "Status", value: `*Will end <t:${this.getTimeout()}:R>*`, inline: true },
+			]);
 
 		const components: Array<MessageActionRow> = [];
 		if (options.yesno) components.push(pollYesNo);

@@ -12,7 +12,10 @@ export const command: SlashCommand = {
 		.setName("texture")
 		.setDescription("Displays a specified texture from either vanilla Minecraft or Faithful.")
 		.addStringOption((option) =>
-			option.setName("name").setDescription("Name of the texture you are searching for.").setRequired(true),
+			option
+				.setName("name")
+				.setDescription("Name of the texture you are searching for.")
+				.setRequired(true),
 		)
 		.addStringOption((option) =>
 			option
@@ -45,13 +48,16 @@ export const command: SlashCommand = {
 		/**
 		 * TODO: find a fix for this Error: connect ETIMEDOUT 172.67.209.9:443 at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1161:16)
 		 */
-		const results: Array<any> = (await axios.get(`${(interaction.client as Client).tokens.apiUrl}textures/${name}/all`))
-			.data;
+		const results: Array<any> = (
+			await axios.get(`${(interaction.client as Client).tokens.apiUrl}textures/${name}/all`)
+		).data;
 
-		if (!results.length) { // no results
+		if (!results.length) {
+			// no results
 			interaction.reply({
-				content: await interaction.getEphemeralString ({
-					string: "Command.Texture.NotFound", placeholders: { TEXTURENAME: `\`${name}\`` }
+				content: await interaction.getEphemeralString({
+					string: "Command.Texture.NotFound",
+					placeholders: { TEXTURENAME: `\`${name}\`` },
 				}),
 				ephemeral: true,
 			});
@@ -65,7 +71,7 @@ export const command: SlashCommand = {
 			const [embed, files] = await getTextureMessageOptions({
 				texture: results[0],
 				pack: interaction.options.getString("pack", true),
-				guild: interaction.guild
+				guild: interaction.guild,
 			});
 			interaction
 				.editReply({ embeds: [embed], files: files, components: [imageButtons] })
@@ -83,9 +89,9 @@ export const command: SlashCommand = {
 			// parsing everything correctly
 			for (let i = 0; i < results.length; i++) {
 				results[i] = {
-					label: `[#${results[i].id}] (${results[i].paths[0].versions.sort(MinecraftSorter).reverse()[0]}) ${
-						results[i].name
-					}`,
+					label: `[#${results[i].id}] (${
+						results[i].paths[0].versions.sort(MinecraftSorter).reverse()[0]
+					}) ${results[i].name}`,
 					description: results[i].paths[0].name,
 					value: `${results[i].id}__${interaction.options.getString("pack", true)}`,
 				};

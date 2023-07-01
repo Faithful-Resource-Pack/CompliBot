@@ -32,7 +32,9 @@ export const getDisplayNameForPack = (pack: string): string => {
 
 export const command: SlashCommand = {
 	data: async (client: Client): Promise<SyncSlashCommandBuilder> => {
-		let versions = Object.values((await axios.get(`${client.tokens.apiUrl}settings/versions`)).data).flat();
+		let versions = Object.values(
+			(await axios.get(`${client.tokens.apiUrl}settings/versions`)).data,
+		).flat();
 		versions.splice(versions.indexOf("versions"), 1); // remove "versions" key id (API issue)
 
 		return new SlashCommandBuilder()
@@ -75,15 +77,15 @@ export const command: SlashCommand = {
 				? false
 				: interaction.options.getBoolean("update_channels");
 		const version: string =
-			interaction.options.getString("version") === null ? "latest" : interaction.options.getString("version");
+			interaction.options.getString("version") === null
+				? "latest"
+				: interaction.options.getString("version");
 
 		const embed: MessageEmbed = new MessageEmbed()
 			.setTitle("Searching for missing textures...")
 			.setDescription("This can take some time, please wait...")
 			.setThumbnail(`${(interaction.client as Client).config.images}bot/loading.gif`)
-			.addFields([
-				{ name: "Steps", value: "\u200b" }
-			]);
+			.addFields([{ name: "Steps", value: "\u200b" }]);
 
 		await interaction.editReply({ embeds: [embed] });
 		let steps: Array<string> = [];
@@ -103,7 +105,8 @@ export const command: SlashCommand = {
 			let errMessage: string = (err as Error).message;
 			if (!errMessage) {
 				console.error(err);
-				errMessage = "An error occured when launching missing command. Please check console error output for more info";
+				errMessage =
+					"An error occured when launching missing command. Please check console error output for more info";
 			}
 
 			return [null, [errMessage], options];
@@ -113,26 +116,41 @@ export const command: SlashCommand = {
 
 		if (edition === "all") {
 			if (updateChannels)
-				responses = await computeAndUpdateAll(interaction.client as Client, pack, version, stepCallback).catch(
-					(err) => {
-						return [catchErr(err, { completion: 0, pack: pack, version: version, edition: edition })];
-					},
-				);
+				responses = await computeAndUpdateAll(
+					interaction.client as Client,
+					pack,
+					version,
+					stepCallback,
+				).catch((err) => {
+					return [catchErr(err, { completion: 0, pack: pack, version: version, edition: edition })];
+				});
 			else
-				responses = await computeAll(interaction.client as Client, pack, version, stepCallback).catch((err) => {
+				responses = await computeAll(
+					interaction.client as Client,
+					pack,
+					version,
+					stepCallback,
+				).catch((err) => {
 					return [catchErr(err, { completion: 0, pack: pack, version: version, edition: edition })];
 				});
 		} else {
 			if (updateChannels)
 				responses = [
-					await computeAndUpdate(interaction.client as Client, pack, edition, version, stepCallback).catch((err) =>
+					await computeAndUpdate(
+						interaction.client as Client,
+						pack,
+						edition,
+						version,
+						stepCallback,
+					).catch((err) =>
 						catchErr(err, { completion: 0, pack: pack, version: version, edition: edition }),
 					),
 				];
 			else
 				responses = [
-					await compute(interaction.client as Client, pack, edition, version, stepCallback).catch((err) =>
-						catchErr(err, { completion: 0, pack: pack, version: version, edition: edition }),
+					await compute(interaction.client as Client, pack, edition, version, stepCallback).catch(
+						(err) =>
+							catchErr(err, { completion: 0, pack: pack, version: version, edition: edition }),
 					),
 				];
 		}
@@ -143,19 +161,31 @@ export const command: SlashCommand = {
 		responses.forEach((response: MissingResult) => {
 			// no repo found for the asked pack + edition
 			if (response[0] === null)
-				embed2.addFields([{
-					name: `${getDisplayNameForPack(response[2].pack)} - ${response[2].edition} - ${response[2].version}`,
-					value: `${response[2].completion}% complete\n> ${response[1][0]}`
-				}]);
-
+				embed2.addFields([
+					{
+						name: `${getDisplayNameForPack(response[2].pack)} - ${response[2].edition} - ${
+							response[2].version
+						}`,
+						value: `${response[2].completion}% complete\n> ${response[1][0]}`,
+					},
+				]);
 			else {
 				if (response[1].length !== 0)
-					files.push(new MessageAttachment(response[0], `missing-${response[2].pack}-${response[2].edition}.txt`));
+					files.push(
+						new MessageAttachment(
+							response[0],
+							`missing-${response[2].pack}-${response[2].edition}.txt`,
+						),
+					);
 
-				embed2.addFields([{
-					name: `${getDisplayNameForPack(response[2].pack)} - ${response[2].edition} - ${response[2].version}`,
-					value: `${response[2].completion}% complete\n> ${response[1].length} textures missing of ${response[2].total} total.`,
-				}]);
+				embed2.addFields([
+					{
+						name: `${getDisplayNameForPack(response[2].pack)} - ${response[2].edition} - ${
+							response[2].version
+						}`,
+						value: `${response[2].completion}% complete\n> ${response[1].length} textures missing of ${response[2].total} total.`,
+					},
+				]);
 			}
 		});
 

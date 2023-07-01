@@ -6,8 +6,8 @@ export type Votes = {
 };
 
 interface AllVotes {
-	upvote: number,
-	downvote: number
+	upvote: number;
+	downvote: number;
 }
 
 /**

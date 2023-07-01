@@ -9,7 +9,9 @@ export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
 		.setName("palette")
 		.setDescription("Get the color palette of an image.")
-		.addAttachmentOption((o) => o.setName("image").setDescription("The image to palette").setRequired(false)),
+		.addAttachmentOption((o) =>
+			o.setName("image").setDescription("The image to palette").setRequired(false),
+		),
 	execute: async (interaction: CommandInteraction) => {
 		generalSlashCommandImage(interaction, paletteAttachment, {
 			factor: interaction.options.getNumber("factor"),

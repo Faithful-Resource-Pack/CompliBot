@@ -1,8 +1,4 @@
-import {
-	MessageAttachment,
-	MessageEmbed,
-	TextChannel,
-} from "discord.js";
+import { MessageAttachment, MessageEmbed, TextChannel } from "discord.js";
 import { Client } from "@client";
 import fs from "fs";
 import { err } from "@helpers/logger";
@@ -51,7 +47,9 @@ export const logConstructor: Function = (
 	client: Client,
 	reason: any = { stack: "You requested it with /logs ¯\\_(ツ)_/¯" },
 ): MessageAttachment => {
-	const logTemplate = fs.readFileSync(path.join(__dirname + "/errorHandler.log"), { encoding: "utf-8" });
+	const logTemplate = fs.readFileSync(path.join(__dirname + "/errorHandler.log"), {
+		encoding: "utf-8",
+	});
 	const template = logTemplate.match(new RegExp(/\%templateStart%([\s\S]*?)%templateEnd/))[1]; // get message template
 
 	const t = Math.floor(Math.random() * randomSentences.length);
@@ -75,20 +73,25 @@ export const logConstructor: Function = (
 					log.type === "slashCommand"
 						? `${log.type} (${log.data.commandName})`
 						: log.type === "guildMemberUpdate"
-						? `${log.type} | ${log.data.user.username} ${log.data.reason === "added" ? "joined" : "left"} ${
-								log.data.guild.name
-						  }`
+						? `${log.type} | ${log.data.user.username} ${
+								log.data.reason === "added" ? "joined" : "left"
+						  } ${log.data.guild.name}`
 						: log.type === "message"
 						? `${log.type} [${log.data.isDeleted ? "deleted" : "created"}] | ${
-							log.data.author ? (log.data.author.bot ? "BOT" : "USER") : "Unknown (likely bot)"
+								log.data.author ? (log.data.author.bot ? "BOT" : "USER") : "Unknown (likely bot)"
 						  } | ${log.data.author ? log.data.author.username : "Unknown"}`
 						: log.type,
 				)
 				.replace(
 					"%templateCreatedTimestamp%",
-					`${log.data.createdTimestamp} | ${new Date(log.data.createdTimestamp).toLocaleDateString("en-UK", {
+					`${log.data.createdTimestamp} | ${new Date(log.data.createdTimestamp).toLocaleDateString(
+						"en-UK",
+						{
+							timeZone: "UTC",
+						},
+					)} ${new Date(log.data.createdTimestamp).toLocaleTimeString("en-US", {
 						timeZone: "UTC",
-					})} ${new Date(log.data.createdTimestamp).toLocaleTimeString("en-US", { timeZone: "UTC" })} (UTC)`,
+					})} (UTC)`,
 				)
 				.replace(
 					"%templateURL%",
@@ -120,7 +123,10 @@ export const logConstructor: Function = (
 						? "Not relevant"
 						: "Unknown",
 				)
-				.replace("%templateEmbeds%", log.data.embeds?.length > 0 ? `${JSON.stringify(log.data.embeds)}` : "None")
+				.replace(
+					"%templateEmbeds%",
+					log.data.embeds?.length > 0 ? `${JSON.stringify(log.data.embeds)}` : "None",
+				)
 				.replace(
 					"%templateComponents%",
 					log.data.components?.length > 0 ? `${JSON.stringify(log.data.components)}` : "None",

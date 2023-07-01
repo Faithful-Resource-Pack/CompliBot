@@ -7,12 +7,17 @@ export const command: SlashCommand = {
 		.setName("kill")
 		.setDescription("Kill someone you tag, be careful with weapons!")
 		.addUserOption((user) => user.setName("user").setDescription("User to be killed."))
-		.addStringOption((string) => string.setName("weapon").setDescription("Weapon to kill the user with.")),
+		.addStringOption((string) =>
+			string.setName("weapon").setDescription("Weapon to kill the user with."),
+		),
 	execute: async (interaction: CommandInteraction) => {
 		let embed = new MessageEmbed();
 
 		const killed = (
-			await interaction.getEphemeralString({ string: "Command.Kill.Killed", placeholders: { IGNORE_MISSING: "True" } })
+			await interaction.getEphemeralString({
+				string: "Command.Kill.Killed",
+				placeholders: { IGNORE_MISSING: "True" },
+			})
 		).split("$,");
 		const killed_by = (
 			await interaction.getEphemeralString({
@@ -43,9 +48,14 @@ export const command: SlashCommand = {
 				);
 		} else
 			embed.setDescription(
-				killed[Math.floor(Math.random() * killed.length)].replace("%AUTHOR%", interaction.member.user.username),
+				killed[Math.floor(Math.random() * killed.length)].replace(
+					"%AUTHOR%",
+					interaction.member.user.username,
+				),
 			);
 
-		interaction.reply({ embeds: [embed], fetchReply: true }).then((message: Message) => message.deleteButton());
+		interaction
+			.reply({ embeds: [embed], fetchReply: true })
+			.then((message: Message) => message.deleteButton());
 	},
 };

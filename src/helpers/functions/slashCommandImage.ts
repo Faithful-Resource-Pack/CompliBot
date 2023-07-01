@@ -39,7 +39,8 @@ export async function fetchMessageImage(
 				(m.attachments.size > 0 && (m.attachments.first().url.match(/\.(jpeg|jpg|png)$/) as any)) ||
 				// TODO: definitely not the best way to do this
 				(m.embeds[0] !== undefined &&
-					((m.embeds[0].thumbnail !== null && m.embeds[0].thumbnail.url.match(/\.(jpeg|jpg|png)$/)) ||
+					((m.embeds[0].thumbnail !== null &&
+						m.embeds[0].thumbnail.url.match(/\.(jpeg|jpg|png)$/)) ||
 						(m.embeds[0].image !== null && m.embeds[0].image.url.match(/\.(jpeg|jpg|png)$/)))),
 		)
 		.first();
@@ -54,11 +55,17 @@ export async function fetchMessageImage(
 	const embed = new MessageEmbed()
 		.setTitle(await interaction.getEphemeralString({ string: "Command.Images.NotFound.Title" }))
 		.setDescription(
-			await interaction.getEphemeralString({ string: "Command.Images.NotFound", placeholders: { NUMBER: `${limit}` } }),
+			await interaction.getEphemeralString({
+				string: "Command.Images.NotFound",
+				placeholders: { NUMBER: `${limit}` },
+			}),
 		);
 
 	const embedMessage: Message = (await interaction.editReply({ embeds: [embed] })) as Message;
-	const awaitedMessages: Collection<string, Message<boolean>> = await interaction.channel.awaitMessages({
+	const awaitedMessages: Collection<
+		string,
+		Message<boolean>
+	> = await interaction.channel.awaitMessages({
 		filter: (m: Message) => m.author.id === userInteraction.user.id,
 		max: 1,
 		time: 30000, // 30s
@@ -69,7 +76,8 @@ export async function fetchMessageImage(
 		.filter(
 			(m) =>
 				(m.attachments.size > 0 && (m.attachments.first().url.match(/\.(jpeg|jpg|png)$/) as any)) ||
-				(m.embeds[0] !== undefined && (m.embeds[0].thumbnail !== null || m.embeds[0].image !== null)),
+				(m.embeds[0] !== undefined &&
+					(m.embeds[0].thumbnail !== null || m.embeds[0].image !== null)),
 		)
 		.first();
 
@@ -153,9 +161,7 @@ export async function generalSlashCommandImage(
 		.editReply({
 			files: [attachment],
 			embeds: [embed],
-			components: [
-				actionCommandParams.hideButtons ? null : imageButtons
-			],
+			components: [actionCommandParams.hideButtons ? null : imageButtons],
 		})
 		.then((message: Message) => {
 			message.deleteButton();

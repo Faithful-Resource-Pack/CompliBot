@@ -6,7 +6,9 @@ async function loadImages(urls: string[]) {
 		try {
 			let tmp = await loadImage(url);
 			loadedImages.push(tmp);
-		} catch {/* image doesn't exist yet */}
+		} catch {
+			/* image doesn't exist yet */
+		}
 	}
 	return loadedImages;
 }
@@ -19,19 +21,21 @@ async function loadImages(urls: string[]) {
  */
 export async function horizontalStitcher(urls: string[], gap: number = 0) {
 	const images = await loadImages(urls);
-	const biggestImage = images.map((can) => {
-		return { w: can.naturalWidth, h: can.naturalHeight };
-	}).sort((a, b) => b.h * b.w - a.h * a.w)[0];
+	const biggestImage = images
+		.map((can) => {
+			return { w: can.naturalWidth, h: can.naturalHeight };
+		})
+		.sort((a, b) => b.h * b.w - a.h * a.w)[0];
 
 	const mappedImages = images.map((img) => {
-		const ctx = createCanvas(img.naturalWidth, img.naturalHeight).getContext('2d')
-		ctx.drawImage(img, 0, 0)
+		const ctx = createCanvas(img.naturalWidth, img.naturalHeight).getContext("2d");
+		ctx.drawImage(img, 0, 0);
 
 		return {
 			image: img,
-			data: ctx.getImageData(0, 0, img.naturalWidth, img.naturalHeight).data
-		}
-	})
+			data: ctx.getImageData(0, 0, img.naturalWidth, img.naturalHeight).data,
+		};
+	});
 
 	if (!biggestImage) return; // if the image isn't loaded properly return early
 
@@ -40,10 +44,18 @@ export async function horizontalStitcher(urls: string[], gap: number = 0) {
 	const canvasWidth = biggestImage.w * images.length;
 	const canvasHeight = biggestImage.h;
 
-	const canvas = createCanvas(canvasWidth + (gap * (mappedImages.length - 1)), canvasHeight);
+	const canvas = createCanvas(canvasWidth + gap * (mappedImages.length - 1), canvasHeight);
 	const ctx = canvas.getContext("2d");
 
-	let textureImage: any, textureImageData: any, scale: any, xOffset: any, pixelIndex: any, r: any, g: any, b: any, a: any;
+	let textureImage: any,
+		textureImageData: any,
+		scale: any,
+		xOffset: any,
+		pixelIndex: any,
+		r: any,
+		g: any,
+		b: any,
+		a: any;
 
 	for (let texIndex = 0; texIndex < mappedImages.length; ++texIndex) {
 		textureImage = mappedImages[texIndex].image;
@@ -75,11 +87,11 @@ export async function horizontalStitcher(urls: string[], gap: number = 0) {
  * @author Evorp
  * @param {string[][]} urls two-dimensional array of valid urls
  * @param {number} gap the gap between each texture
-*/
+ */
 export async function fullStitcher(urls: string[][], gap: number = 0) {
 	let resultArray = [];
 	for (let images of urls) {
-		const result = await horizontalStitcher(images, gap)
+		const result = await horizontalStitcher(images, gap);
 		resultArray.push(result);
 	}
 
@@ -92,29 +104,39 @@ export async function fullStitcher(urls: string[][], gap: number = 0) {
 	}
 
 	// most of the code from here on out is pretty similar to horizontalStitcher() but just going the other direction
-	const biggestImage = images.map((can) => {
-		return { w: can.naturalWidth, h: can.naturalHeight };
-	}).sort((a, b) => b.h * b.w - a.h * a.w)[0];
+	const biggestImage = images
+		.map((can) => {
+			return { w: can.naturalWidth, h: can.naturalHeight };
+		})
+		.sort((a, b) => b.h * b.w - a.h * a.w)[0];
 
 	const mappedImages = images.map((img) => {
-		const ctx = createCanvas(img.naturalWidth, img.naturalHeight).getContext('2d')
-		ctx.drawImage(img, 0, 0)
+		const ctx = createCanvas(img.naturalWidth, img.naturalHeight).getContext("2d");
+		ctx.drawImage(img, 0, 0);
 
 		return {
 			image: img,
-			data: ctx.getImageData(0, 0, img.naturalWidth, img.naturalHeight).data
-		}
-	})
+			data: ctx.getImageData(0, 0, img.naturalWidth, img.naturalHeight).data,
+		};
+	});
 
 	const referenceHeight = biggestImage.h;
 
 	const canvasHeight = biggestImage.h * images.length;
 	const canvasWidth = biggestImage.w;
 
-	const canvas = createCanvas(canvasWidth + gap, canvasHeight + (gap * (mappedImages.length - 1)));
-	const ctx = canvas.getContext('2d');
+	const canvas = createCanvas(canvasWidth + gap, canvasHeight + gap * (mappedImages.length - 1));
+	const ctx = canvas.getContext("2d");
 
-	let textureImage: any, textureImageData: any, scale: any, yOffset: any, pixelIndex: any, r: any, g: any, b: any, a: any;
+	let textureImage: any,
+		textureImageData: any,
+		scale: any,
+		yOffset: any,
+		pixelIndex: any,
+		r: any,
+		g: any,
+		b: any,
+		a: any;
 
 	for (let texIndex = 0; texIndex < mappedImages.length; ++texIndex) {
 		textureImage = mappedImages[texIndex].image;
@@ -136,7 +158,7 @@ export async function fullStitcher(urls: string[][], gap: number = 0) {
 			}
 		}
 	}
-	return canvas.toBuffer('image/png');
+	return canvas.toBuffer("image/png");
 }
 
 import { magnify } from "@functions/canvas/magnify";
@@ -152,28 +174,20 @@ import axios from "axios";
  * @param id texture id to look up
  * @returns pre-formatted message embed and the attachment needed in an array, in that order
  */
-export async function textureComparison(client: Client, id: number | string): Promise<[MessageEmbed, MessageAttachment]> {
-	const isTemplate: boolean = typeof id == 'string' && id.toLowerCase() == "template";
+export async function textureComparison(
+	client: Client,
+	id: number | string,
+): Promise<[MessageEmbed, MessageAttachment]> {
+	const isTemplate: boolean = typeof id == "string" && id.toLowerCase() == "template";
 	const results = (await axios.get(`${client.tokens.apiUrl}textures/${id}/all`)).data;
 
 	const PACKS = [
-		[
-			'default',
-			'faithful_32x',
-			'faithful_64x'
-		],
-		[
-			'default',
-			'classic_faithful_32x',
-			'classic_faithful_64x'
-		],
-		[
-			'progart',
-			'classic_faithful_32x_progart'
-		]
-	]
+		["default", "faithful_32x", "faithful_64x"],
+		["default", "classic_faithful_32x", "classic_faithful_64x"],
+		["progart", "classic_faithful_32x_progart"],
+	];
 
-	let urls = []
+	let urls = [];
 	let j = 0;
 	for (let packSet of PACKS) {
 		urls.push(new Array());
@@ -181,29 +195,30 @@ export async function textureComparison(client: Client, id: number | string): Pr
 			try {
 				let textureURL: string;
 				if (isTemplate) {
-					const [_, strIconURL] = FormatName(pack, '64');
+					const [_, strIconURL] = FormatName(pack, "64");
 					textureURL = strIconURL;
-				} else textureURL = (await axios.get(`${client.tokens.apiUrl}textures/${id}/url/${pack}/latest`)).request.res.responseUrl;
+				} else
+					textureURL = (await axios.get(`${client.tokens.apiUrl}textures/${id}/url/${pack}/latest`))
+						.request.res.responseUrl;
 				urls[j].push(textureURL);
-			} catch {/* texture hasn't been made yet */};
+			} catch {
+				/* texture hasn't been made yet */
+			}
 		}
 		++j; // can't use forEach because of scope problems (blame js)
 	}
 
-	const stitched = await fullStitcher(urls, 4)
-	const magnified = (await magnify({ image: await loadImage(stitched), name: 'magnified.png' }))[0];
-	const embed = new MessageEmbed()
-		.setImage('attachment://magnified.png')
+	const stitched = await fullStitcher(urls, 4);
+	const magnified = (await magnify({ image: await loadImage(stitched), name: "magnified.png" }))[0];
+	const embed = new MessageEmbed().setImage("attachment://magnified.png");
 
-	if (isTemplate)
-		embed
-			.setTitle(`Comparison Template`)
+	if (isTemplate) embed.setTitle(`Comparison Template`);
 	else
 		embed
 			.setTitle(`[#${id}] ${results.name}`)
 			.setURL(`https://webapp.faithfulpack.net/#/gallery/java/32x/latest/all/?show=${id}`)
 			.addFields(AddPathsToEmbed(results))
-			.setFooter({ text: "Use [#template] for more information!" })
+			.setFooter({ text: "Use [#template] for more information!" });
 
-	return [embed, magnified]
+	return [embed, magnified];
 }

@@ -14,20 +14,34 @@ export const command: SlashCommand = {
 			option.setName("question").setDescription("Write the question here.").setRequired(true),
 		)
 		.addNumberOption((option) =>
-			option.setName("answers").setDescription("How many answers does the poll have? (Max: 5)").setRequired(true),
+			option
+				.setName("answers")
+				.setDescription("How many answers does the poll have? (Max: 5)")
+				.setRequired(true),
 		)
 		.addStringOption((option) =>
-			option.setName("timeout").setDescription("Timeout for the vote. (schema: 3 min, 10 h, 1 year)").setRequired(true),
+			option
+				.setName("timeout")
+				.setDescription("Timeout for the vote. (schema: 3 min, 10 h, 1 year)")
+				.setRequired(true),
 		)
-		.addBooleanOption((option) => option.setName("anonymous").setDescription("Should votes be anonymous?"))
-		.addBooleanOption((option) => option.setName("thread").setDescription("Do you want a thread for this question?"))
 		.addBooleanOption((option) =>
-			option.setName("allow-multiple-answers").setDescription("When set to true, users can vote for multiple answers."),
+			option.setName("anonymous").setDescription("Should votes be anonymous?"),
+		)
+		.addBooleanOption((option) =>
+			option.setName("thread").setDescription("Do you want a thread for this question?"),
+		)
+		.addBooleanOption((option) =>
+			option
+				.setName("allow-multiple-answers")
+				.setDescription("When set to true, users can vote for multiple answers."),
 		)
 		.addBooleanOption((option) =>
 			option
 				.setName("yesno")
-				.setDescription("Do you want to use the YES/NO format? Will force 2 answers to be provided."),
+				.setDescription(
+					"Do you want to use the YES/NO format? Will force 2 answers to be provided.",
+				),
 		)
 		.addStringOption((option) =>
 			option.setName("description").setDescription("Add more information about your poll here."),
@@ -40,7 +54,8 @@ export const command: SlashCommand = {
 		const yesno: boolean = interaction.options.getBoolean("yesno", false) === true ? true : false;
 		const thread: boolean = interaction.options.getBoolean("thread", false) === true ? true : false;
 		const description: string = interaction.options.getString("description", false);
-		const anonymous: boolean = interaction.options.getBoolean("anonymous", false) === true ? true : false;
+		const anonymous: boolean =
+			interaction.options.getBoolean("anonymous", false) === true ? true : false;
 
 		const _count: number = interaction.options.getNumber("answers", true);
 		const answersCount: number = yesno ? 2 : _count > 5 ? 5 : _count < 2 ? 2 : _count;
@@ -76,7 +91,12 @@ export const command: SlashCommand = {
 		embed.addFields([{ name: "Answers", value: "None", inline: true }]);
 		do {
 			try {
-				const collected = await interaction.channel.awaitMessages({ filter, max: 1, time: 30000, errors: ["time"] });
+				const collected = await interaction.channel.awaitMessages({
+					filter,
+					max: 1,
+					time: 30000,
+					errors: ["time"],
+				});
 				answersArr.push(collected.first().content);
 				try {
 					collected.first().delete();
@@ -92,7 +112,10 @@ export const command: SlashCommand = {
 				embed.fields.map((field: EmbedField) => {
 					if (field.name === "Answers")
 						field.value = answersArr
-							.map((answer: string, index: number) => `${yesno ? yesnoEmojis[index] : numberEmojis[index]} ${answer}`)
+							.map(
+								(answer: string, index: number) =>
+									`${yesno ? yesnoEmojis[index] : numberEmojis[index]} ${answer}`,
+							)
 							.join("\n");
 					return field;
 				}),
