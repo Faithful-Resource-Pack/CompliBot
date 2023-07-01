@@ -1,11 +1,9 @@
 const prefix = process.env.PREFIX;
 
 const { Permissions, MessageEmbed } = require("discord.js");
-const settings = require("../../resources/settings.json");
+const { colors } = require("../../resources/settings.json");
 const strings = require("../../resources/strings.json");
 const warnUser = require("../../helpers/warnUser");
-
-const FAQS = Object.values(strings.faq);
 
 module.exports = {
 	name: "faq",
@@ -16,46 +14,30 @@ module.exports = {
 	syntax: `${prefix}faq [keyword]`,
 	example: `${prefix}faq bot offline\n${prefix}faq submit\n\nMANAGER ONLY:\n${prefix}faq all`,
 	async execute(client, message, args) {
-		let color = settings.colors.brand;
-		let embed;
+		if (!message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR))
+			return warnUser(message, "Only Managers can use this command!");
+
 		let embedArray = [];
 
-		if (args[0] == "all") {
-			if (message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
-				for (let i = 0; i < FAQS.length; i++) {
-					embed = new MessageEmbed()
-						.setTitle(FAQS[i].question)
-						.setColor(color)
-						.setDescription(FAQS[i].answer)
-						.setFooter({ text: `Keywords: ${Object.values(FAQS[i].keywords).join(" • ")}` });
+		let i = 0;
+		for (let faq of strings.faq) {
+			embedArray.push(
+				new MessageEmbed()
+					.setTitle(faq.question)
+					.setColor(colors.brand)
+					.setDescription(faq.answer)
+					.setFooter({ text: `Keywords: ${faq.keywords.join(" • ")}` }),
+			);
 
-					embedArray.push(embed);
-
-					if ((i + 1) % 5 == 0) {
-						await message.channel.send({ embeds: embedArray });
-						embedArray = [];
-					}
-				}
-
-				if (embedArray.length) await message.channel.send({ embeds: embedArray }); // sends the leftovers if exists
-				if (message.deletable) await message.delete();
-			} else warnUser(message, "Only Managers can do that!");
-		} else {
-			args = args.join(" ");
-			for (let i = 0; i < FAQS.length; i++) {
-				if (Object.values(FAQS[i].keywords).includes(args.toLowerCase())) {
-					embed = new MessageEmbed()
-						.setTitle(`FAQ: ${FAQS[i].question}`)
-						.setThumbnail(settings.images.question)
-						.setColor(settings.colors.blue)
-						.setDescription(FAQS[i].answer)
-						.setFooter({ text: `Keywords: ${Object.values(FAQS[i].keywords).join(" • ")}` });
-					await message.reply({ embeds: [embed] });
-				}
+			if ((i + 1) % 5 == 0) {
+				// groups the embeds in batches of 5 to reduce API spam
+				await message.channel.send({ embeds: embedArray });
+				embedArray = [];
 			}
-
-			if (embed === undefined)
-				return warnUser(message, "This keyword does not exist or is not attributed!");
+			++i;
 		}
+
+		if (embedArray.length) await message.channel.send({ embeds: embedArray }); // sends the leftovers if exists
+		if (message.deletable) await message.delete();
 	},
 };
