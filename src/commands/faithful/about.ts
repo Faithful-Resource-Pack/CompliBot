@@ -54,7 +54,6 @@ export const command: SlashCommand = {
 
 		let packCount = {};
 		let files: MessageAttachment[] | undefined;
-		console.log(textureData);
 		if (textureData.length) {
 			const textBuf = Buffer.from(
 				textureData
