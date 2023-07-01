@@ -82,7 +82,7 @@ export const getTextureMessageOptions = async (options: {
 
 	if (validURL) {
 		embed
-			.setURL(`https://webapp.faithfulpack.net/#/gallery/java/32x/latest/all/?show=${texture.id})`)
+			.setURL(`https://webapp.faithfulpack.net/#/gallery/java/32x/latest/all/?show=${texture.id}`)
 			.addFields([
 				{ name: "Resolution", value: `${dimensions.width}×${dimensions.height}`, inline: true },
 			]);
