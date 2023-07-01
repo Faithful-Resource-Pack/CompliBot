@@ -53,23 +53,26 @@ export const command: SlashCommand = {
 		}
 
 		let packCount = {};
+		let files: MessageAttachment[] | undefined;
+		console.log(textureData);
+		if (textureData.length) {
+			const textBuf = Buffer.from(
+				textureData
+					.map((data) => {
+						const packName = toTitleCase(data[0].pack.replace(/_/g, ' '))
+						packCount[packName] = (packCount[packName] ?? 0) + 1;
+						return `${packName}: [#${data[1].id}] ${data[1].name}`
+					})
+					.join("\n")
+			);
+			files = [new MessageAttachment(textBuf, 'about.txt')];
+		}
 
-		const textBuf = Buffer.from(
-			textureData
-				.map((data) => {
-					const packName = toTitleCase(data[0].pack.replace(/_/g, ' '))
-					packCount[packName] = (packCount[packName] ?? 0) + 1;
-					return `${packName}: [#${data[1].id}] ${data[1].name}`
-				})
-				.join("\n")
-		);
-
-		const files = new MessageAttachment(textBuf, 'about.txt');
 		const finalEmbed = new MessageEmbed()
 			.setTitle(`@${user.username} has ${userData.length} ${userData.length == 1 ? "contribution" : "contributions"}!`)
 			.setDescription((Object.entries(packCount).map(i => i.join(": "))).join("\n"))
 
 		await interaction
-			.editReply({embeds: [finalEmbed], files: [files]})
+			.editReply({embeds: [finalEmbed], files: files})
 	}
 };
