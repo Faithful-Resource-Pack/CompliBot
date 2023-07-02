@@ -87,30 +87,32 @@ export const getTextureMessageOptions = async (options: {
 				{ name: "Resolution", value: `${dimensions.width}×${dimensions.height}`, inline: true },
 			]);
 
-		const mainContribution = allContributions
-			.filter((c) => strPack.includes(c.resolution.toString()) && pack === c.pack)
-			.sort((a, b) => (a.date > b.date ? -1 : 1))[0]
+		if (pack !== "default" && allContributions.length) {
+			const mainContribution = allContributions
+				.filter((c) => strPack.includes(c.resolution.toString()) && pack === c.pack)
+				.sort((a, b) => (a.date > b.date ? -1 : 1))[0]
 
-		let strDate: string = `<t:${Math.trunc(mainContribution.date / 1000)}:d>`;
-		let authors = mainContribution.authors.map((authorId: string) => {
-			if (guild.members.cache.get(authorId)) return `<@!${authorId}>`;
+			let strDate: string = `<t:${Math.trunc(mainContribution.date / 1000)}:d>`;
+			let authors = mainContribution.authors.map((authorId: string) => {
+				if (guild.members.cache.get(authorId)) return `<@!${authorId}>`;
 
-			// this may possibly be one of the worst solutions but it somehow works
-			for (let user of contributionJSON) {
-				if (user.id == authorId) return user.username ?? "Anonymous";
+				// this may possibly be one of the worst solutions but it somehow works
+				for (let user of contributionJSON) {
+					if (user.id == authorId) return user.username ?? "Anonymous";
+				}
+				return "Unknown";
+			});
+
+			const displayContribution = `${strDate} — ${authors.join(", ")}`;
+
+			if (displayContribution != undefined) {
+				embed.addFields([{
+					name: authors.length == 1
+						? "Latest Author"
+						: "Latest Authors",
+					value: displayContribution
+				}]);
 			}
-			return "Unknown";
-		});
-
-		const displayContribution = `${strDate} — ${authors.join(", ")}`;
-
-		if (displayContribution != undefined && allContributions.length && pack !== "default") {
-			embed.addFields([{
-				name: authors.length == 1
-					? "Latest Author"
-					: "Latest Authors",
-				value: displayContribution
-			}]);
 		}
 	}
 
