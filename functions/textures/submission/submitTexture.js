@@ -55,7 +55,7 @@ module.exports = async function submitTexture(client, message) {
 		// map to only get the first bit and trim any whitespace so { Author } etc works
 		names = names.map((i) => i[0].toLowerCase().trim());
 
-		if (names !== []) {
+		if (names.length) {
 			const res = await fetch(`https://api.faithfulpack.net/v2/contributions/authors`);
 			const contributionJSON = await res.json();
 			for (let user of contributionJSON) {
