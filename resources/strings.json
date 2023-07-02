@@ -198,9 +198,9 @@
             "keywords": ["fps", "lag", "performance"]
         },
         {
-            "question": "A texture I made passed voting, how do I get the Contributor role?",
-            "answer": "While automating this process is planned in the future, for the time being simply ping an online Manager. The same process goes for getting the Add-on Maker role.",
-            "keywords": ["roles", "role", "contributor"]
+            "question": "How do I get the translator role?",
+            "answer": "Visit [our Crowdin](https://translate.faithfulpack.net) and see if you can help translate our Discord bot or webapp. However, please don't translate anything from the current site, since it's currently getting rewritten and your hard work may get replaced later otherwise. Once your translations get accepted, ping an online Manager to add the role.",
+            "keywords": ["crowdin", "translator", "translation"]
         },
         {
             "question": "How can I use Faithful textures in my own projects?",
