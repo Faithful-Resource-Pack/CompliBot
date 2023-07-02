@@ -7,7 +7,7 @@ import { MessageAttachment, Guild } from "discord.js";
 import { magnifyAttachment } from "./canvas/magnify";
 import { ISizeCalculationResult } from "image-size/dist/types/interface";
 import { colors } from "@helpers/colors";
-import { Contributions, Texture, Paths, Uses } from "@helpers/interfaces/firestorm";
+import { Contributions, Texture, Paths, Uses, Contribution } from "@helpers/interfaces/firestorm";
 import { animateAttachment } from "./canvas/animate";
 import { FormatName, MinecraftSorter, AddPathsToEmbed } from "@helpers/sorter";
 
@@ -87,11 +87,14 @@ export const getTextureMessageOptions = async (options: {
 				{ name: "Resolution", value: `${dimensions.width}×${dimensions.height}`, inline: true },
 			]);
 
+		let mainContribution: Contribution;
 		if (allContributions.length) {
-			const mainContribution = allContributions
+			mainContribution = allContributions
 				.filter((c) => strPack.includes(c.resolution.toString()) && pack === c.pack)
 				.sort((a, b) => (a.date > b.date ? -1 : 1))[0];
+		}
 
+		if (mainContribution) {
 			let strDate: string = `<t:${Math.trunc(mainContribution.date / 1000)}:d>`;
 			let authors = mainContribution.authors.map((authorId: string) => {
 				if (guild.members.cache.get(authorId)) return `<@!${authorId}>`;
