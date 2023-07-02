@@ -22,7 +22,7 @@ export const getTextureMessageOptions = async (options: {
 	const guild = options.guild;
 	const uses: Uses = texture.uses;
 	const paths: Paths = texture.paths;
-	const contributions: Contributions = texture.contributions;
+	const allContributions: Contributions = texture.contributions;
 	const animated: boolean = paths.filter((p) => p.mcmeta === true).length !== 0;
 	const contributionJSON = (
 		await axios.get("https://api.faithfulpack.net/v2/contributions/authors")
@@ -87,27 +87,31 @@ export const getTextureMessageOptions = async (options: {
 				{ name: "Resolution", value: `${dimensions.width}×${dimensions.height}`, inline: true },
 			]);
 
-		const displayedContributions = [
-			contributions
-				.filter((c) => strPack.includes(c.resolution.toString()) && pack === c.pack)
-				.sort((a, b) => (a.date > b.date ? -1 : 1))
-				.map((c) => {
-					let strDate: string = `<t:${Math.trunc(c.date / 1000)}:d>`;
-					let authors = c.authors.map((authorId: string) => {
-						if (guild.members.cache.get(authorId)) return `<@!${authorId}>`;
+		const mainContribution = allContributions
+			.filter((c) => strPack.includes(c.resolution.toString()) && pack === c.pack)
+			.sort((a, b) => (a.date > b.date ? -1 : 1))[0]
 
-						// this may possibly be one of the worst solutions but it somehow works
-						for (let user of contributionJSON) {
-							if (user.id == authorId) return user.username ?? "Anonymous";
-						}
-						return "Unknown";
-					});
-					return `${strDate} — ${authors.join(", ")}`;
-				})[0],
-		];
+		let strDate: string = `<t:${Math.trunc(mainContribution.date / 1000)}:d>`;
+		let authors = mainContribution.authors.map((authorId: string) => {
+			if (guild.members.cache.get(authorId)) return `<@!${authorId}>`;
 
-		if (displayedContributions[0] != undefined && contributions.length && pack !== "default")
-			embed.addFields([{ name: "Latest Author(s)", value: displayedContributions.join("\n") }]);
+			// this may possibly be one of the worst solutions but it somehow works
+			for (let user of contributionJSON) {
+				if (user.id == authorId) return user.username ?? "Anonymous";
+			}
+			return "Unknown";
+		});
+
+		const displayContribution = `${strDate} — ${authors.join(", ")}`;
+
+		if (displayContribution != undefined && allContributions.length && pack !== "default") {
+			embed.addFields([{
+				name: authors.length == 1
+					? "Latest Author"
+					: "Latest Authors",
+				value: displayContribution
+			}]);
+		}
 	}
 
 	embed.addFields(AddPathsToEmbed(texture));
