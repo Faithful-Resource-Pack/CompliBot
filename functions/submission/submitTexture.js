@@ -135,6 +135,12 @@ async function getAuthors(message) {
 	return authors;
 }
 
+/**
+ * Logic for handling an invalid submission
+ * @author Juknum
+ * @param {DiscordMessage} message message to check permissions of
+ * @param {String?} error optional error message
+ */
 async function invalidSubmission(message, error = "Not given") {
 	// allow managers and council to talk in submit channels
 	if (
