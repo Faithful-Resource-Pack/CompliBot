@@ -36,7 +36,7 @@ module.exports = {
 			const commandName = args.shift().toLowerCase();
 			const command =
 				client.commands.get(commandName) ||
-				client.commands.find((cmd) => cmd?.aliases.includes(commandName));
+				client.commands.find((cmd) => cmd.aliases?.includes(commandName));
 
 			if (!command) return; // stops a dev error being thrown every single time a message starts with a slash
 			if (command?.guildOnly && message.channel.type === "DM")
