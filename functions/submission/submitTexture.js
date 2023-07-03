@@ -78,11 +78,15 @@ module.exports = async function submitTexture(client, message) {
 			let texture = await textures
 				.get(id)
 				.catch((err) => invalidSubmission(message, strings.command.push.unknown_id + err));
-			return await makeEmbed(client, message, texture, attachment, param);
+			await makeEmbed(client, message, texture, attachment, param);
+			continue;
 		}
 
 		// if there's no search and no id the submission can't be valid
-		if (!search) return await invalidSubmission(message, strings.command.texture.no_name_given);
+		if (!search) {
+			await invalidSubmission(message, strings.command.texture.no_name_given);
+			continue;
+		}
 
 		// partial texture name (_sword, _axe -> diamond_sword, diamond_axe...)
 		if (search.startsWith("_") || search.endsWith("_")) {
@@ -133,8 +137,14 @@ module.exports = async function submitTexture(client, message) {
 			}
 		}
 
-		if (!results.length) return await invalidSubmission(message, strings.command.texture.does_not_exist + "\n" + search);
-		else if (results.length == 1) return await makeEmbed(client, message, results[0], attachment, param);
+		if (!results.length) {
+			await invalidSubmission(message, strings.command.texture.does_not_exist + "\n" + search);
+			continue;
+		}
+		else if (results.length == 1) {
+			await makeEmbed(client, message, results[0], attachment, param);
+			continue;
+		}
 
 		let choice = [];
 
