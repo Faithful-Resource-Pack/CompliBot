@@ -17,6 +17,9 @@ module.exports = {
 		if (!message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR))
 			return warnUser(message, "Only Managers can use this command!");
 
+		// quality of life feature
+		if (args[0] != "all") return;
+
 		let embedArray = [];
 
 		let i = 0;
