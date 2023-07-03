@@ -1,7 +1,6 @@
-const getMessages = require("../../helpers/getMessages");
-
 const settings = require("../../resources/settings.json");
 
+const getMessages = require("../../helpers/getMessages");
 const texturesCollection = require("../../helpers/firestorm/texture");
 const contributionsCollection = require("../../helpers/firestorm/contributions");
 const pushTextures = require("./pushTextures");
@@ -13,7 +12,7 @@ const Buffer = require("buffer/").Buffer;
 
 /**
  * Download textures from the given text channel
- * @author Juknum
+ * @author Juknum, Evorp
  * @param {DiscordClient} client
  * @param {String} channelInID discord text channel from where the bot should download texture
  */
@@ -103,8 +102,7 @@ module.exports = async function downloadResults(client, channelInID, instapass =
 			for (let path of paths) {
 				let versions = path.versions;
 				// for each version of each path
-				for (let version of versions)
-					allPaths.push(`${localPath}/${version}/${path.path}`);
+				for (let version of versions) allPaths.push(`${localPath}/${version}/${path.path}`);
 			}
 		}
 
@@ -150,7 +148,9 @@ module.exports = async function downloadResults(client, channelInID, instapass =
 				// fetch user with role info since you need it for adding roles
 				const user = guild.members.cache.get(author);
 				if (!user.roles.cache.has(role)) await user.roles.add(role);
-			} catch {/* contributor can't be found or role can't be added */}
+			} catch {
+				/* contributor can't be found or role can't be added */
+			}
 		}
 	}
 

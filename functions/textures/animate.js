@@ -4,7 +4,7 @@ const GIFEncoderFixed = require("../../modified_libraries/GIFEncoder");
 const strings = require("../../resources/strings.json");
 
 const { MessageAttachment } = require("discord.js");
-const getMeta = require("./getMeta");
+const getDimensions = require("./getDimensions");
 const warnUser = require("../../helpers/warnUser");
 const addDeleteReact = require("../../helpers/addDeleteReact");
 
@@ -20,7 +20,7 @@ let FACTOR = 8;
 module.exports = async function animate(message, valMCMETA, valURL) {
 	let texture = [];
 
-	const dimension = await getMeta(valURL);
+	const dimension = await getDimensions(valURL);
 	if (dimension.width == dimension.height)
 		return warnUser(message, strings.command.image.cant_animate);
 	if (dimension.width * FACTOR > 4096) return warnUser(message, strings.command.image.too_wide);

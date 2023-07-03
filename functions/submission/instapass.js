@@ -5,6 +5,7 @@ const warnUser = require("../../helpers/warnUser");
 
 /**
  * Instapass a given texture embed
+ * @author Evorp
  * @param {DiscordClient} client discord client
  * @param {DiscordMessage} message embed to instapass
  * @returns
@@ -31,11 +32,7 @@ module.exports = async function instapass(client, message) {
 		embeds: [
 			message.embeds[0]
 				.setColor(settings.colors.yellow)
-				.setDescription(
-					`[Original Post](${message.url})\n${
-						message.embeds[0].description ? message.embeds[0].description : ""
-					}`,
-				),
+				.setDescription(`[Original Post](${message.url})\n${message.embeds[0].description ?? ""}`),
 		],
 	});
 

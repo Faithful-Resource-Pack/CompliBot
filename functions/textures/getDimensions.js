@@ -3,18 +3,18 @@ const sizeOf = require("image-size");
 const { Buffer } = require("buffer");
 
 /**
- * Get Meta of an image
+ * Get dimensions of an image
  * @author Juknum
  * @param {String} imageURL Image URL
  * @returns Promise (resolve)
  */
-module.exports = async function getMeta(imageURL) {
+module.exports = async function getDimensions(imageURL) {
 	const response = await get(imageURL, { responseType: "arraybuffer" });
 	const data = response.data;
 	const buf = Buffer.from(data, "base64");
 
 	// fixes bug where buf was equal to undefined
-	if (!buf) throw new Error("Buffer for getMeta invalid: " + buf);
+	if (!buf) throw new Error("Buffer for getDimensions invalid: " + buf);
 
 	const size = sizeOf(buf);
 	return size;

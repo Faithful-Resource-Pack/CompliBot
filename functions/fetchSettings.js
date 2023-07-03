@@ -7,7 +7,7 @@ const JSON_REPLACER = null;
 const JSON_SPACE = 0;
 
 /**
- * Fetch distant settings file into the local one
+ * Fetch settings file from the VPS into resources/settings.json
  * @author Juknum
  * @returns {Promise<Object>}
  */

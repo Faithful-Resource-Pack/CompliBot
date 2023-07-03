@@ -1,10 +1,13 @@
-// spawn a child process and execute shell command
-// borrowed from https://github.com/mout/mout/ build script
-// borowed from Miller Medeiros on https://gist.github.com/millermedeiros/4724047
-// released under MIT License
-// version: 0.1.0 (2021/08/13)
+/**
+ * spawn a child process and execute shell command
+ * borrowed from https://github.com/mout/mout/ build script
+ * borrowed from Miller Medeiros on https://gist.github.com/millermedeiros/4724047
+ * released under MIT License
+ * version: 0.1.0 (2021/08/13)
+ */
 
 // execute a single shell command where "cmd" is a string
+
 exports.exec = function (cmd, cb, options = undefined) {
 	// this would be way easier on a shell/bash script :P
 	const child_process = require("child_process");

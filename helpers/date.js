@@ -1,11 +1,20 @@
 /**
  * Get today's date as a string
- * @returns {String} dd/mm/yyyy
+ * @author Juknum, Evorp
+ * @param {String?} format format to send date as
  */
-module.exports = function date() {
+module.exports = function date(format = "dmy") {
 	const today = new Date();
 	const dd = String(today.getDate()).padStart(2, "0");
-	const mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+	const mm = String(today.getMonth() + 1).padStart(2, "0"); // January is 0!
 	const yyyy = today.getFullYear();
-	return `${dd}/${mm}/${yyyy}`;
+
+	switch (format) {
+		case "dmy":
+			return `${dd}/${mm}/${yyyy}`;
+		case "mdy":
+			return `${mm}/${dd}/${yyyy}`;
+		case "ymd":
+			return `${yyyy}/${mm}/${dd}`;
+	}
 };

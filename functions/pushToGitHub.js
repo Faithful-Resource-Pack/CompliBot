@@ -13,7 +13,7 @@ const { Octokit } = require("@octokit/rest");
 const { readFile } = require("fs-extra");
 
 /**
- * Automated push through GitHub
+ * Premade function for pushing directly to GitHub
  * @param {String} org GitHub organization name
  * @param {String} repo Github repository name
  * @param {String} branch branch name

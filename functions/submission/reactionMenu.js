@@ -9,7 +9,7 @@ const instapass = require("./instapass");
 const changeStatus = require("./changeStatus");
 
 /**
- * Reaction features for submissions
+ * Opens reaction tray, listens for reaction, and closes tray
  * @author Juknum
  * @param {DiscordClient} client
  * @param {DiscordReaction} reaction
@@ -71,7 +71,8 @@ module.exports = async function reactionMenu(client, reaction, user) {
 	};
 
 	// await reaction from the user
-	const collected = await message.awaitReactions({ filter, max: 1, time: 30000, errors: ["time"] })
+	const collected = await message
+		.awaitReactions({ filter, max: 1, time: 30000, errors: ["time"] })
 		.catch(async (err) => {
 			if (message.deletable) {
 				removeReact(message, EMOJIS);

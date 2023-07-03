@@ -3,7 +3,7 @@ const settings = require("../../resources/settings.json");
 const strings = require("../../resources/strings.json");
 
 const { MessageEmbed, MessageAttachment } = require("discord.js");
-const getMeta = require("./getMeta");
+const getDimensions = require("./getDimensions");
 const warnUser = require("../../helpers/warnUser");
 const addDeleteReact = require("../../helpers/addDeleteReact");
 const sendAttachment = require("./sendAttachment");
@@ -29,7 +29,7 @@ const GRADIENT_HEIGHT = 50;
  * @returns Send an embed message with the color palette of the given URL
  */
 module.exports = async function palette(message, url, userID) {
-	const dimension = await getMeta(url);
+	const dimension = await getDimensions(url);
 	const sizeOrigin = dimension.width * dimension.height;
 
 	if (sizeOrigin > 262144) return warnUser(message, strings.command.image.too_big);

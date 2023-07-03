@@ -2,11 +2,11 @@ const { createCanvas, loadImage } = require("canvas");
 
 const { MessageAttachment } = require("discord.js");
 const addDeleteReact = require("../../helpers/addDeleteReact");
-const getMeta = require("./getMeta");
+const getDimensions = require("./getDimensions");
 const sendAttachment = require("./sendAttachment");
 
 async function magnifyAttachment(url, name = "magnified.png") {
-	const dimension = await getMeta(url);
+	const dimension = await getDimensions(url);
 	let factor = 64;
 	const surface = dimension.width * dimension.height;
 

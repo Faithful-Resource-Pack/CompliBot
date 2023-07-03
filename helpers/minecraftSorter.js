@@ -1,5 +1,6 @@
 /**
  * Sorts a given collection of Minecraft versions
+ * @author TheRolf
  */
 module.exports = function (a, b) {
 	const aSplit = a.split(".").map((s) => parseInt(s));

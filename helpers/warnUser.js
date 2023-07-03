@@ -6,7 +6,7 @@ const { MessageEmbed } = require("discord.js");
 const addDeleteReact = require("./addDeleteReact");
 
 /**
- * Reply to a user with an embed, use to warn a user
+ * Sends pre-formatted red embed with warning sign
  * @author Juknum
  * @param {Discord.Message} message
  * @param {String} text

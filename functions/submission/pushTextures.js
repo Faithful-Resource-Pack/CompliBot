@@ -10,7 +10,7 @@ const DEBUG = process.DEBUG == "true" ? true : false;
 /**
  * Push files from local storage to GitHub
  * @author Juknum
- * @param {String} COMMIT_MESSAGE
+ * @param {String?} COMMIT_MESSAGE
  */
 module.exports = async function pushTextures(
 	COMMIT_MESSAGE = `Autopush passed textures from ${date()}`,

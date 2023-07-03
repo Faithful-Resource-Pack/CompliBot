@@ -72,6 +72,6 @@ Promise.all([settingsPromise])
 	})
 	.catch((err) => {
 		console.error("An error occured while fetching lang or settings");
-		const error = err && err.response && err.response.data ? err.response.data : err;
+		const error = err?.response?.data ?? err;
 		console.error(error);
 	});

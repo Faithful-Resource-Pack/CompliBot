@@ -3,7 +3,7 @@ const settings = require("../../resources/settings.json");
 
 const { MessageAttachment } = require("discord.js");
 const addDeleteReact = require("../../helpers/addDeleteReact");
-const getMeta = require("./getMeta");
+const getDimensions = require("./getDimensions");
 const warnUser = require("../../helpers/warnUser");
 const { magnify } = require("./magnify");
 const sendAttachment = require("./sendAttachment");
@@ -18,7 +18,7 @@ const sendAttachment = require("./sendAttachment");
  * @returns Send an embed message with the tiled image
  */
 module.exports = async function tile(message, url, type, userID) {
-	const dimension = await getMeta(url);
+	const dimension = await getDimensions(url);
 	// aliases of type
 	if (type == undefined || type == "g") type = "grid";
 	if (type == "v") type = "vertical";

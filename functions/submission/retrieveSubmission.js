@@ -4,13 +4,14 @@ const getMessages = require("../../helpers/getMessages");
 const changeStatus = require("./changeStatus");
 
 /**
+ * Send submissions older than a given delay to a new channel
  * @author Juknum
  * @param {DiscordClient} client
- * @param {String} channelFromID text-channel from where submission are retrieved
- * @param {String} channelOutID text-channel where submission are sent
+ * @param {String} channelFromID channel from where submissions are retrieved
+ * @param {String} channelOutID channel where submissions are sent
  * @param {Boolean} toCouncil true if from submissions to council, false if from council to results
- * @param {Integer} delay delay in day from today
- * @param {Boolean} councilDisabled whether to disable council or not (off by default)
+ * @param {Integer} delay delay in days from today
+ * @param {Boolean?} councilDisabled disable the use of council-related strings in embeds
  */
 module.exports = async function retrieveSubmission(
 	client,
@@ -58,8 +59,15 @@ module.exports = async function retrieveSubmission(
 	const messagesUpvoted = messages.filter((message) => message.upvote >= message.downvote);
 	const messagesDownvoted = messages.filter((message) => message.upvote < message.downvote);
 
-	if (toCouncil) return await sendToCouncil(client, messagesUpvoted, messagesDownvoted, channelOutID);
-	return await sendToResults(client, messagesUpvoted, messagesDownvoted, channelOutID, councilDisabled);
+	if (toCouncil)
+		return await sendToCouncil(client, messagesUpvoted, messagesDownvoted, channelOutID);
+	return await sendToResults(
+		client,
+		messagesUpvoted,
+		messagesDownvoted,
+		channelOutID,
+		councilDisabled,
+	);
 };
 
 /**
@@ -80,9 +88,7 @@ async function sendToCouncil(client, messagesUpvoted, messagesDownvoted, channel
 				message.embed
 					.setColor(settings.colors.council)
 					.setDescription(
-						`[Original Post](${message.message.url})\n${
-							message.embed.description ? message.embed.description : ""
-						}`,
+						`[Original Post](${message.message.url})\n${message.embed.description ?? ""}`,
 					),
 			],
 		});

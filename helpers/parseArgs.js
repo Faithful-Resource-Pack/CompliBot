@@ -2,7 +2,7 @@ const warnUser = require("./warnUser");
 const strings = require("../resources/strings.json");
 
 /**
- *
+ * @author Juknum
  * @param {DiscordMessage} message Discord Message
  * @param {Array} args Array of String
  * @returns parsed args

@@ -1,6 +1,7 @@
 const settings = require("../../resources/settings.json");
 const strings = require("../../resources/strings.json");
-const choiceEmbed = require("./choiceEmbed");
+const choiceEmbed = require("../../helpers/choiceEmbed");
+const getImages = require("../../helpers/getImages");
 const textures = require("../../helpers/firestorm/texture");
 const paths = require("../../helpers/firestorm/texture_paths");
 const minecraftSorter = require("../../helpers/minecraftSorter");
@@ -10,10 +11,10 @@ const { magnifyAttachment } = require("../textures/magnify");
 const { MessageEmbed, MessageAttachment, Permissions } = require("discord.js");
 
 /**
- * Check if the given texture exist, and embed it if true
- * @author Juknum
+ * Get submission information and create embed
+ * @author Juknum, Evorp
  * @param {DiscordClient} client
- * @param {DiscordMessage} message
+ * @param {DiscordMessage} message message to check and embed
  */
 module.exports = async function submitTexture(client, message) {
 	// break if no file is attached
@@ -50,8 +51,9 @@ module.exports = async function submitTexture(client, message) {
 		param.authors = [message.author.id];
 
 		// detect using curly bracket syntax (e.g. {Author})
-		let names = [...message.content.matchAll(/(?<=\{)(.*?)(?=\})/g)]
-			.map((i) => i[0].toLowerCase().trim());
+		const names = [...message.content.matchAll(/(?<=\{)(.*?)(?=\})/g)].map((i) =>
+			i[0].toLowerCase().trim(),
+		);
 
 		if (names.length) {
 			const res = await fetch(`https://api.faithfulpack.net/v2/contributions/authors`);
@@ -65,8 +67,7 @@ module.exports = async function submitTexture(client, message) {
 		}
 
 		// detect by ping (using regex to ensure users not in the server get included)
-		let mentions = [...message.content.matchAll(/(?<=\<\@)(.*?)(?=\>)/g)];
-		mentions = mentions.map((i) => i[0]); // map to only get the first bit
+		const mentions = [...message.content.matchAll(/(?<=\<\@)(.*?)(?=\>)/g)].map((i) => i[0]); // map to only get the first bit
 		mentions.forEach((mention) => {
 			if (!param.authors.includes(mention)) param.authors.push(mention);
 		});
@@ -140,8 +141,7 @@ module.exports = async function submitTexture(client, message) {
 		if (!results.length) {
 			await invalidSubmission(message, strings.command.texture.does_not_exist + "\n" + search);
 			continue;
-		}
-		else if (results.length == 1) {
+		} else if (results.length == 1) {
 			await makeEmbed(client, message, results[0], attachment, param);
 			continue;
 		}
@@ -167,8 +167,7 @@ module.exports = async function submitTexture(client, message) {
 			description: strings.command.texture.search_description,
 			footer: `${message.client.user.username}`,
 			propositions: choice,
-		})
-		.catch((message, error) => {
+		}).catch((message, error) => {
 			if (process.env.DEBUG) console.error(message, error);
 		});
 
@@ -179,19 +178,26 @@ module.exports = async function submitTexture(client, message) {
 
 const EMOJIS = [settings.emojis.upvote, settings.emojis.downvote, settings.emojis.see_more];
 
+/**
+ * Make a submission embed using texture information
+ * @author Juknum, Evorp
+ * @param {DiscordClient} client
+ * @param {DiscordMessage} message used for channel and author information
+ * @param {MinecraftTexture} texture texture information
+ * @param {MessageAttachment} attachment raw texture to embed
+ * @param {Object} param additional info (e.g. description, coauthors)
+ */
 async function makeEmbed(client, message, texture, attachment, param = new Object()) {
 	/** @type {import("../../helpers/firestorm/texture_use.js").TextureUse[]} */
 	let uses = await texture.uses();
 	let pathText = [];
 
-	for (let i = 0; uses[i]; i++) {
-		let localPath = await uses[i].paths();
-		pathText.push(
-			`**${uses[i].editions[0].charAt(0).toUpperCase() + uses[i].editions[0].slice(1)}**\n`,
-		);
-		for (let k = 0; localPath[k]; k++) {
-			let versions = localPath[k].versions.sort(minecraftSorter);
-			pathText.push(`\`[${versions[0]}+]\` ${localPath[k].path} \n`);
+	for (let use of uses) {
+		let localPath = await use.paths();
+		pathText.push(`**${use.editions[0].charAt(0).toUpperCase() + use.editions[0].slice(1)}**\n`);
+		for (let path of localPath) {
+			let versions = path.versions.sort(minecraftSorter);
+			pathText.push(`\`[${versions[0]}+]\` ${path.path} \n`);
 		}
 	}
 
@@ -227,23 +233,18 @@ async function makeEmbed(client, message, texture, attachment, param = new Objec
 		}
 	}
 	let defaultRepo;
-	let referenceText;
 	switch (repoKey) {
 		case "faithful_64x":
 			defaultRepo = settings.repositories.raw.faithful_32x;
-			referenceText = "Faithful 32x";
 			break;
 		case "classic_faithful_64x":
 			defaultRepo = settings.repositories.raw.classic_faithful_32x;
-			referenceText = "Classic Faithful 32x Jappa";
 			break;
 		case "classic_faithful_32x_progart":
 			defaultRepo = settings.repositories.raw.progart;
-			referenceText = "Programmer Art";
 			break;
 		default:
 			defaultRepo = settings.repositories.raw.default;
-			referenceText = "Default";
 			break;
 	}
 
@@ -295,35 +296,18 @@ async function makeEmbed(client, message, texture, attachment, param = new Objec
 
 	// if the texture doesn't exist yet only include the default/new caption rather than everything
 	embed.setFooter({
-		text: drawer.urls.length >= 3 ? `${referenceText} | New | Current` : `${referenceText} | New`,
+		text: drawer.urls.length >= 3 ? "Reference | New | Current" : "Reference | New",
 	});
 
-	// add description if exists
 	if (param.description) embed.setDescription(param.description);
-	// add an s to author if there are multiple authors
 	if (param.authors.length > 1) embed.fields[0].name = "Authors";
 
-	// send the embed
 	const msg = await message.channel.send({ embeds: [embed] });
 
-	// add reactions to the embed
 	for (const emojiID of EMOJIS) {
 		let e = client.emojis.cache.get(emojiID);
 		await msg.react(e);
 	}
-}
-
-async function getImages(client, ...fileArray) {
-	let imgArray = new Array();
-	const imgMessage = await client.channels.cache
-		.get("916766396170518608")
-		.send({ files: fileArray });
-
-	imgMessage.attachments.forEach((Attachment) => {
-		imgArray.push(Attachment.url);
-	});
-
-	return imgArray;
 }
 
 async function invalidSubmission(message, error = "Not given") {

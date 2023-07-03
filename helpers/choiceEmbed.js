@@ -1,5 +1,5 @@
-const settings = require("../../resources/settings.json");
-const strings = require("../../resources/strings.json");
+const settings = require("../resources/settings.json");
+const strings = require("../resources/strings.json");
 
 const { MessageEmbed } = require("discord.js");
 
@@ -22,6 +22,7 @@ const { MessageEmbed } = require("discord.js");
  */
 
 /**
+ * Create embed with reactions for when the user has to pick between multiple valid options
  * @author TheRolf
  * @param {Discord.Message} message Received message
  * @param {ChoiceParameter} params Settings
@@ -127,7 +128,7 @@ module.exports = async function (message, params, user) {
  * @returns {Promise<Discord.Collection<string, Discord.MessageReaction>>}
  */
 async function awaitReactionTweaked(messageToReact, options, botId) {
-	const collected = await messageToReact.awaitReactions(options)
+	const collected = await messageToReact.awaitReactions(options);
 	const filtered = collected.filter(
 		(reac) => reac.users.cache.size != 1 || reac.users.cache.first().id !== botId,
 	);

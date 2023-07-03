@@ -52,7 +52,7 @@ module.exports = function (client, error, promise, originMessage) {
 		.addFields([
 			{
 				name: "Last messages received",
-				value: links ? links : "*No messages received yet*",
+				value: links ?? "*No messages received yet*",
 				inline: false,
 			},
 		]) // Fix bug where embed field value must not be empty
