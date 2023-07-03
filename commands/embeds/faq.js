@@ -10,9 +10,9 @@ module.exports = {
 	answer: strings.command.description.faq,
 	category: "Faithful",
 	guildOnly: true,
-	uses: strings.command.use.anyone,
-	syntax: `${prefix}faq [keyword]`,
-	example: `${prefix}faq bot offline\n${prefix}faq submit\n\nMANAGER ONLY:\n${prefix}faq all`,
+	uses: strings.command.use.admins,
+	syntax: `${prefix}faq all`,
+	example: `${prefix}faq all`,
 	async execute(client, message, args) {
 		if (!message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR))
 			return warnUser(message, "Only Managers can use this command!");

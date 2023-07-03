@@ -1,19 +1,14 @@
-/* eslint-env node */
-
 /**
  * COMPLIBOT LEGACY INDEX FILE:
  * - Developed by and for the Faithful Community.
  * - Please read our license first.
- * - If you find any bugs, please use our bug tracker
+ * - If you find any bugs, please use our GitHub issues tracker
  */
 
-// Libraries
+require("dotenv").config();
 const { readdirSync } = require("fs");
 const walkSync = require("./helpers/walkSync");
-require("dotenv").config();
-
 const fetchSettings = require("./functions/fetchSettings");
-const settingsPromise = fetchSettings();
 
 // eslint-disable-next-line no-unused-vars
 const { Client, Intents, Constants, Collection } = require("discord.js");
@@ -38,9 +33,10 @@ const client = new Client({
 
 exports.Client = client;
 
-Promise.all([settingsPromise])
+fetchSettings()
 	.then(() => {
-		// you can't use async/await without a function (pain) so we have to use .then()
+		// you can't use async/await without a function so .then is necessary
+
 		/**
 		 * COMMAND HANDLER
 		 */
