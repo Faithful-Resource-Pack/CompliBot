@@ -1,6 +1,7 @@
 const settings = require("../../resources/settings.json");
 const strings = require("../../resources/strings.json");
 const choiceEmbed = require("../../helpers/choiceEmbed");
+const getDimensions = require("../textures/getDimensions");
 const getImages = require("../../helpers/getImages");
 const textures = require("../../helpers/firestorm/texture");
 const paths = require("../../helpers/firestorm/texture_paths");
@@ -151,11 +152,12 @@ module.exports = async function submitTexture(client, message) {
 		for (let result of results) {
 			let uses = await result.uses();
 			let paths = await uses[0].paths();
+			let version = paths[0].versions.sort(minecraftSorter)[0];
 
 			choice.push(
 				`\`[#${result.id}]\` ${result.name
 					.replace(search, `**${search}**`)
-					.replace(/_/g, "\\_")} — ${paths[0].path
+					.replace(/_/g, "\\_")}\n> \`[${version}+]\` ${paths[0].path
 					.replace(search, `**${search}**`)
 					.replace(/_/g, "\\_")}`,
 			);
@@ -224,80 +226,88 @@ async function makeEmbed(client, message, texture, attachment, param = new Objec
 			{ name: "\u200B", value: pathText.toString().replace(/,/g, ""), inline: false },
 		]);
 
-	// determine reference image to compare against
-	let repoKey;
-	for (let [packKey, packValue] of Object.entries(settings.submission.packs)) {
-		if (packValue.channels.submit == message.channel.id) {
-			repoKey = packKey;
-			break;
-		}
-	}
-	let defaultRepo;
-	switch (repoKey) {
-		case "faithful_64x":
-			defaultRepo = settings.repositories.raw.faithful_32x;
-			break;
-		case "classic_faithful_64x":
-			defaultRepo = settings.repositories.raw.classic_faithful_32x;
-			break;
-		case "classic_faithful_32x_progart":
-			defaultRepo = settings.repositories.raw.progart;
-			break;
-		default:
-			defaultRepo = settings.repositories.raw.default;
-			break;
-	}
-
 	// load raw image to pull from
 	const rawImage = new MessageAttachment(attachment.url, `${texture.name}.png`);
-	const upscaledImage = await magnifyAttachment(attachment.url, "upscaled.png");
-	let defaultImage;
 
-	// load images necessary to generate comparison
-	try {
-		defaultImage = await magnifyAttachment(
-			`${defaultRepo[info.edition.toLowerCase()]}${info.version}/${info.path}`,
-			"default.png",
-		);
-	} catch {
-		// reference texture doesn't exist
-		defaultImage = await magnifyAttachment(
-			`${settings.repositories.raw.default[info.edition.toLowerCase()]}${info.version}/${
-				info.path
-			}`,
-			"default.png",
-		);
+	const dimensions = await getDimensions(attachment.url);
+	if (dimensions.width * dimensions.height <= 262144) {
+		// determine reference image to compare against
+		let repoKey;
+		for (let [packKey, packValue] of Object.entries(settings.submission.packs)) {
+			if (packValue.channels.submit == message.channel.id) {
+				repoKey = packKey;
+				break;
+			}
+		}
+		let defaultRepo;
+		switch (repoKey) {
+			case "faithful_64x":
+				defaultRepo = settings.repositories.raw.faithful_32x;
+				break;
+			case "classic_faithful_64x":
+				defaultRepo = settings.repositories.raw.classic_faithful_32x;
+				break;
+			case "classic_faithful_32x_progart":
+				defaultRepo = settings.repositories.raw.progart;
+				break;
+			default:
+				defaultRepo = settings.repositories.raw.default;
+				break;
+		}
+		const upscaledImage = await magnifyAttachment(attachment.url, "upscaled.png");
+		let defaultImage;
+
+		// load images necessary to generate comparison
+		try {
+			defaultImage = await magnifyAttachment(
+				`${defaultRepo[info.edition.toLowerCase()]}${info.version}/${info.path}`,
+				"default.png",
+			);
+		} catch {
+			// reference texture doesn't exist
+			defaultImage = await magnifyAttachment(
+				`${settings.repositories.raw.default[info.edition.toLowerCase()]}${info.version}/${
+					info.path
+				}`,
+				"default.png",
+			);
+		}
+
+		const drawer = new HorizontalStitcher();
+		drawer.gap = 32;
+		let imageUrls;
+
+		try {
+			const currentImage = await magnifyAttachment(
+				`${settings.repositories.raw[repoKey][info.edition.toLowerCase()]}${info.version}/${
+					info.path
+				}`,
+			);
+			imageUrls = await getImages(client, defaultImage, upscaledImage, rawImage, currentImage);
+			drawer.urls = [imageUrls[0], imageUrls[1], imageUrls[3]];
+		} catch {
+			// texture doesn't exist yet so we just load two images in the comparison instead of three
+			imageUrls = await getImages(client, defaultImage, upscaledImage, rawImage);
+			drawer.urls = [imageUrls[0], imageUrls[1]];
+		}
+
+		// generate comparison and add to embed
+		const comparisonImage = new MessageAttachment(await drawer.draw(), "compared.png");
+		const comparisonUrls = await getImages(client, comparisonImage);
+
+		embed.setImage(comparisonUrls[0]);
+		embed.setThumbnail(imageUrls[2]);
+		// if the texture doesn't exist yet only include the default/new caption rather than everything
+		embed.setFooter({
+			text: drawer.urls.length >= 3 ? "Reference | New | Current" : "Reference | New",
+		});
+	} else {
+		// image is too big so we just add it directly to the embed without comparison
+		const [imageUrl] = await getImages(client, attachment);
+		embed.setImage(imageUrl);
+		embed.setThumbnail(imageUrl);
+		embed.setFooter({ text: "This texture is too big to create a comparison image!" });
 	}
-
-	const drawer = new HorizontalStitcher();
-	drawer.gap = 32;
-	let imageUrls;
-
-	try {
-		const currentImage = await magnifyAttachment(
-			`${settings.repositories.raw[repoKey][info.edition.toLowerCase()]}${info.version}/${
-				info.path
-			}`,
-		);
-		imageUrls = await getImages(client, defaultImage, upscaledImage, rawImage, currentImage);
-		drawer.urls = [imageUrls[0], imageUrls[1], imageUrls[3]];
-	} catch {
-		// texture doesn't exist yet so we just load two images in the comparison instead of three
-		imageUrls = await getImages(client, defaultImage, upscaledImage, rawImage);
-		drawer.urls = [imageUrls[0], imageUrls[1]];
-	}
-
-	// generate comparison and add to embed
-	const comparisonImage = new MessageAttachment(await drawer.draw(), "compared.png");
-	const comparisonUrls = await getImages(client, comparisonImage);
-
-	embed.setImage(comparisonUrls[0]);
-	embed.setThumbnail(imageUrls[2]);
-
-	// if the texture doesn't exist yet only include the default/new caption rather than everything
-	embed.setFooter({
-		text: drawer.urls.length >= 3 ? "Reference | New | Current" : "Reference | New",
-	});
 
 	if (param.description) embed.setDescription(param.description);
 	if (param.authors.length > 1) embed.fields[0].name = "Authors";
