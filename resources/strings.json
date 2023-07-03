@@ -222,7 +222,8 @@
         "texture": {
             "searching": "Searching for your texture, please wait...",
             "does_not_exist": "The specified texture/folder doesn't exist!",
-            "search_description": "Choose one texture using emoji reactions.\nIf you don't see what you're looking for, be more specific.\n"
+            "search_description": "Choose one texture using emoji reactions.\nIf you don't see what you're looking for, be more specific.\n",
+            "no_name_given": "You didn't provide a texture name!"
         },
         "description": {
             "autopush": "Use this command to push textures from #results to GitHub.",

@@ -1,13 +1,13 @@
-const getMessages = require("../../../helpers/getMessages");
+const getMessages = require("../../helpers/getMessages");
 
-const settings = require("../../../resources/settings.json");
+const settings = require("../../resources/settings.json");
 
-const texturesCollection = require("../../../helpers/firestorm/texture");
-const contributionsCollection = require("../../../helpers/firestorm/contributions");
+const texturesCollection = require("../../helpers/firestorm/texture");
+const contributionsCollection = require("../../helpers/firestorm/contributions");
 const pushTextures = require("./pushTextures");
 const fs = require("fs");
 const fetch = (...args) => import("node-fetch").then(({ default: fetch }) => fetch(...args));
-const date = require("../../../helpers/date.js");
+const date = require("../../helpers/date.js");
 
 const Buffer = require("buffer/").Buffer;
 

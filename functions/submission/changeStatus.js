@@ -7,6 +7,7 @@
  */
 module.exports = async function changeStatus(message, string, color = null) {
 	let embed = message.embeds[0];
+	// fields[1] is always the status field in submissions
 	embed.fields[1].value = string;
 	embed.color = color ?? embed.color;
 	await message.edit({ embeds: [embed] });

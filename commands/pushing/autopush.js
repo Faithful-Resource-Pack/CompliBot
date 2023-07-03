@@ -5,8 +5,8 @@ const settings = require("../../resources/settings.json");
 const strings = require("../../resources/strings.json");
 
 const date = require("../../helpers/date");
-const pushTextures = require("../../functions/textures/admission/pushTextures");
-const downloadResults = require("../../functions/textures/admission/downloadResults");
+const pushTextures = require("../../functions/submission/pushTextures");
+const downloadResults = require("../../functions/submission/downloadResults");
 const warnUser = require("../../helpers/warnUser");
 
 module.exports = {

@@ -9,7 +9,7 @@ const PREFIX = process.env.PREFIX;
 const strings = require("../resources/strings.json");
 const settings = require("../resources/settings.json");
 
-const submitTexture = require("../functions/textures/submission/submitTexture");
+const submitTexture = require("../functions/submission/submitTexture");
 const { increase: increaseCommandProcessed } = require("../functions/commandProcess");
 
 const addDeleteReact = require("../helpers/addDeleteReact");

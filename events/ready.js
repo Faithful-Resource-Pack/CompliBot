@@ -7,9 +7,9 @@ const fetchSettings = require("../functions/fetchSettings");
 
 const settings = require("../resources/settings.json");
 
-const retrieveSubmission = require("../functions/textures/submission/retrieveSubmission");
-const downloadResults = require("../functions/textures/admission/downloadResults");
-const pushTextures = require("../functions/textures/admission/pushTextures");
+const retrieveSubmission = require("../functions/submission/retrieveSubmission");
+const downloadResults = require("../functions/submission/downloadResults");
+const pushTextures = require("../functions/submission/pushTextures");
 const restartAutoDestroy = require("../functions/restartAutoDestroy");
 const saveDB = require("../functions/saveDB");
 

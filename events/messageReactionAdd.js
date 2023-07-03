@@ -1,7 +1,7 @@
 const client = require("../index").Client;
 const settings = require("../resources/settings.json");
 
-const editSubmission = require("../functions/textures/submission/editSubmission");
+const reactionMenu = require("../functions/submission/reactionMenu");
 
 module.exports = {
 	name: "messageReactionAdd",
@@ -15,7 +15,7 @@ module.exports = {
 			.flat();
 
 		if (channelArray.includes(reaction.message.channel.id)) {
-			editSubmission(client, reaction, user);
+			reactionMenu(client, reaction, user);
 		}
 	},
 };

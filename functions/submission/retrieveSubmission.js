@@ -1,6 +1,6 @@
-const settings = require("../../../resources/settings.json");
+const settings = require("../../resources/settings.json");
 
-const getMessages = require("../../../helpers/getMessages");
+const getMessages = require("../../helpers/getMessages");
 const changeStatus = require("./changeStatus");
 
 /**
@@ -46,22 +46,20 @@ module.exports = async function retrieveSubmission(
 		const upvotes = message.reactions.cache.get(settings.emojis.upvote);
 		const downvotes = message.reactions.cache.get(settings.emojis.downvote);
 
-		message = {
-			upvote: upvotes ? upvotes.count : 1,
-			downvote: downvotes ? downvotes.count : 1,
+		return {
+			upvote: upvotes?.count ?? 1,
+			downvote: downvotes?.count ?? 1,
 			embed: message.embeds[0],
 			message: message,
 		};
-
-		return message;
 	});
+
 	// split messages by their votes (upvote >= downvote)
 	const messagesUpvoted = messages.filter((message) => message.upvote >= message.downvote);
 	const messagesDownvoted = messages.filter((message) => message.upvote < message.downvote);
 
-	if (toCouncil) await sendToCouncil(client, messagesUpvoted, messagesDownvoted, channelOutID);
-	else
-		await sendToResults(client, messagesUpvoted, messagesDownvoted, channelOutID, councilDisabled);
+	if (toCouncil) return await sendToCouncil(client, messagesUpvoted, messagesDownvoted, channelOutID);
+	return await sendToResults(client, messagesUpvoted, messagesDownvoted, channelOutID, councilDisabled);
 };
 
 /**

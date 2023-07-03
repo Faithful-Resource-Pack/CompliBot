@@ -12,7 +12,7 @@ module.exports = async function getMessages(client, id, limit = 130) {
 	let channel;
 	try {
 		channel = await client.channels.cache.get(id);
-	} catch (_err) {
+	} catch {
 		return new Array();
 	}
 

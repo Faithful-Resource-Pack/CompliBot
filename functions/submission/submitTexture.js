@@ -1,11 +1,11 @@
-const settings = require("../../../resources/settings.json");
-const strings = require("../../../resources/strings.json");
-const choiceEmbed = require("../../../helpers/choiceEmbed");
-const textures = require("../../../helpers/firestorm/texture");
-const paths = require("../../../helpers/firestorm/texture_paths");
-const MinecraftSorter = require("../minecraftSorter");
-const { HorizontalStitcher } = require("../../../functions/textures/stitch");
-const { magnifyAttachment } = require("../magnify");
+const settings = require("../../resources/settings.json");
+const strings = require("../../resources/strings.json");
+const choiceEmbed = require("./choiceEmbed");
+const textures = require("../../helpers/firestorm/texture");
+const paths = require("../../helpers/firestorm/texture_paths");
+const minecraftSorter = require("../../helpers/minecraftSorter");
+const { HorizontalStitcher } = require("../textures/stitch");
+const { magnifyAttachment } = require("../textures/magnify");
 
 const { MessageEmbed, MessageAttachment, Permissions } = require("discord.js");
 
@@ -38,7 +38,7 @@ module.exports = async function submitTexture(client, message) {
 		let search = attachment.url.split("/").slice(-1)[0].replace(".png", "");
 
 		// get the description
-		let description = message.content.replace(`(${search})`, "").replace(`[#${id}]`, "");
+		let description = message.content.replace(`(#${id})`, "");
 
 		// parameters for the embed
 		let param = {
@@ -50,10 +50,8 @@ module.exports = async function submitTexture(client, message) {
 		param.authors = [message.author.id];
 
 		// detect using curly bracket syntax (e.g. {Author})
-		let names = [...message.content.matchAll(/(?<=\{)(.*?)(?=\})/g)];
-
-		// map to only get the first bit and trim any whitespace so { Author } etc works
-		names = names.map((i) => i[0].toLowerCase().trim());
+		let names = [...message.content.matchAll(/(?<=\{)(.*?)(?=\})/g)]
+			.map((i) => i[0].toLowerCase().trim());
 
 		if (names.length) {
 			const res = await fetch(`https://api.faithfulpack.net/v2/contributions/authors`);
@@ -80,20 +78,51 @@ module.exports = async function submitTexture(client, message) {
 			let texture = await textures
 				.get(id)
 				.catch((err) => invalidSubmission(message, strings.command.push.unknown_id + err));
-			await makeEmbed(client, message, texture, attachment, param);
+			return await makeEmbed(client, message, texture, attachment, param);
 		}
-		// no id given, search texture
-		else if (!id && search) {
-			/*
-            const waitEmbed = new Discord.MessageEmbed()
-                .setTitle('Loading')
-                .setDescription(string('command.texture.searching'))
-                .setColor(settings.colors.blue)
-            const waitEmbedMessage = await message.reply({embeds: [waitEmbed]});
-            */
 
-			// partial texture name (_sword, _axe -> diamond_sword, diamond_axe...)
-			if (search.startsWith("_") || search.endsWith("_")) {
+		// if there's no search and no id the submission can't be valid
+		if (!search) return await invalidSubmission(message, strings.command.texture.no_name_given);
+
+		// partial texture name (_sword, _axe -> diamond_sword, diamond_axe...)
+		if (search.startsWith("_") || search.endsWith("_")) {
+			results = await textures.search([
+				{
+					field: "name",
+					criteria: "includes",
+					value: search,
+				},
+			]);
+		}
+		// looking for path + texture (block/stone -> stone)
+		else if (search.startsWith("/") || search.endsWith("/")) {
+			results = await paths.search([
+				{
+					field: "path",
+					criteria: "includes",
+					value: search,
+				},
+			]);
+			// transform paths results into textures
+			let output = new Array();
+			for (let i = 0; results[i]; i++) {
+				let use = await results[i].use();
+				output.push(await textures.get(use.textureID));
+			}
+			results = output;
+		}
+		// looking for all exact matches (stone -> stone.png)
+		else {
+			results = await textures.search([
+				{
+					field: "name",
+					criteria: "==",
+					value: search,
+				},
+			]);
+
+			if (!results.length) {
+				// no equal result, searching with includes
 				results = await textures.search([
 					{
 						field: "name",
@@ -102,81 +131,38 @@ module.exports = async function submitTexture(client, message) {
 					},
 				]);
 			}
-			// looking for path + texture (block/stone -> stone)
-			else if (search.startsWith("/") || search.endsWith("/")) {
-				results = await paths.search([
-					{
-						field: "path",
-						criteria: "includes",
-						value: search,
-					},
-				]);
-				// transform paths results into textures
-				let output = new Array();
-				for (let i = 0; results[i]; i++) {
-					let use = await results[i].use();
-					output.push(await textures.get(use.textureID));
-				}
-				results = output;
-			}
-			// looking for all exact matches (stone -> stone.png)
-			else {
-				results = await textures.search([
-					{
-						field: "name",
-						criteria: "==",
-						value: search,
-					},
-				]);
-
-				if (results.length == 0) {
-					// no equal result, searching with includes
-					results = await textures.search([
-						{
-							field: "name",
-							criteria: "includes",
-							value: search,
-						},
-					]);
-				}
-			}
-
-			if (results.length > 1) {
-				let choice = [];
-				for (let i = 0; results[i]; i++) {
-					let uses = await results[i].uses();
-					let paths = await uses[0].paths();
-
-					choice.push(
-						`\`[#${results[i].id}]\` ${results[i].name
-							.replace(search, `**${search}**`)
-							.replace(/_/g, "\\_")} — ${paths[0].path
-							.replace(search, `**${search}**`)
-							.replace(/_/g, "\\_")}`,
-					);
-				}
-
-				//if (waitEmbedMessage.deletable) await waitEmbedMessage.delete();
-				choiceEmbed(message, {
-					title: `${results.length} results, react to choose one!`,
-					description: strings.command.texture.search_description,
-					footer: `${message.client.user.username}`,
-					propositions: choice,
-				})
-					.then((choice) => {
-						makeEmbed(client, message, results[choice.index], attachment, param);
-					})
-					.catch((message, error) => {
-						if (process.env.DEBUG) console.error(message, error);
-					});
-			} else if (results.length == 1) {
-				await makeEmbed(client, message, results[0], attachment, param);
-				//if (waitEmbedMessage.deletable) await waitEmbedMessage.delete()
-			} else {
-				//if (waitEmbedMessage.deletable) await waitEmbedMessage.delete()
-				await invalidSubmission(message, strings.command.texture.does_not_exist + "\n" + search);
-			}
 		}
+
+		if (!results.length) return await invalidSubmission(message, strings.command.texture.does_not_exist + "\n" + search);
+		else if (results.length == 1) return await makeEmbed(client, message, results[0], attachment, param);
+
+		let choice = [];
+
+		for (let result of results) {
+			let uses = await result.uses();
+			let paths = await uses[0].paths();
+
+			choice.push(
+				`\`[#${result.id}]\` ${result.name
+					.replace(search, `**${search}**`)
+					.replace(/_/g, "\\_")} — ${paths[0].path
+					.replace(search, `**${search}**`)
+					.replace(/_/g, "\\_")}`,
+			);
+		}
+
+		//if (waitEmbedMessage.deletable) await waitEmbedMessage.delete();
+		const userChoice = await choiceEmbed(message, {
+			title: `${results.length} results, react to choose one!`,
+			description: strings.command.texture.search_description,
+			footer: `${message.client.user.username}`,
+			propositions: choice,
+		})
+		.catch((message, error) => {
+			if (process.env.DEBUG) console.error(message, error);
+		});
+
+		await makeEmbed(client, message, results[userChoice.index], attachment, param);
 	}
 };
 
@@ -193,7 +179,7 @@ async function makeEmbed(client, message, texture, attachment, param = new Objec
 			`**${uses[i].editions[0].charAt(0).toUpperCase() + uses[i].editions[0].slice(1)}**\n`,
 		);
 		for (let k = 0; localPath[k]; k++) {
-			let versions = localPath[k].versions.sort(MinecraftSorter);
+			let versions = localPath[k].versions.sort(minecraftSorter);
 			pathText.push(`\`[${versions[0]}+]\` ${localPath[k].path} \n`);
 		}
 	}
@@ -201,7 +187,7 @@ async function makeEmbed(client, message, texture, attachment, param = new Objec
 	const paths = await uses[0].paths();
 	const info = {
 		path: paths[0].path,
-		version: paths[0].versions.sort(MinecraftSorter).reverse()[0],
+		version: paths[0].versions.sort(minecraftSorter).reverse()[0],
 		edition: uses[0].editions[0],
 	};
 
@@ -281,17 +267,17 @@ async function makeEmbed(client, message, texture, attachment, param = new Objec
 				info.path
 			}`,
 		);
-		imageUrls = await getImages(client, [defaultImage, upscaledImage, rawImage, currentImage]);
+		imageUrls = await getImages(client, defaultImage, upscaledImage, rawImage, currentImage);
 		drawer.urls = [imageUrls[0], imageUrls[1], imageUrls[3]];
 	} catch {
 		// texture doesn't exist yet so we just load two images in the comparison instead of three
-		imageUrls = await getImages(client, [defaultImage, upscaledImage, rawImage]);
+		imageUrls = await getImages(client, defaultImage, upscaledImage, rawImage);
 		drawer.urls = [imageUrls[0], imageUrls[1]];
 	}
 
 	// generate comparison and add to embed
 	const comparisonImage = new MessageAttachment(await drawer.draw(), "compared.png");
-	const comparisonUrls = await getImages(client, [comparisonImage]);
+	const comparisonUrls = await getImages(client, comparisonImage);
 
 	embed.setImage(comparisonUrls[0]);
 	embed.setThumbnail(imageUrls[2]);
@@ -317,7 +303,7 @@ async function makeEmbed(client, message, texture, attachment, param = new Objec
 	}
 }
 
-async function getImages(client, fileArray) {
+async function getImages(client, ...fileArray) {
 	let imgArray = new Array();
 	const imgMessage = await client.channels.cache
 		.get("916766396170518608")

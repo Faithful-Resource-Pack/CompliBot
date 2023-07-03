@@ -1,7 +1,7 @@
-const settings = require("../../../resources/settings.json");
+const settings = require("../../resources/settings.json");
 
-const downloadResults = require("../admission/downloadResults");
-const warnUser = require("../../../helpers/warnUser");
+const downloadResults = require("./downloadResults");
+const warnUser = require("../../helpers/warnUser");
 
 /**
  * Instapass a given texture embed

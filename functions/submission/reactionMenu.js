@@ -1,10 +1,10 @@
-const settings = require("../../../resources/settings.json");
+const settings = require("../../resources/settings.json");
 
 const { Permissions } = require("discord.js");
-const { magnify } = require("../magnify");
-const palette = require("../palette");
-const tile = require("../tile");
-const viewRaw = require("../viewRaw");
+const { magnify } = require("../textures/magnify");
+const palette = require("../textures/palette");
+const tile = require("../textures/tile");
+const viewRaw = require("../textures/viewRaw");
 const instapass = require("./instapass");
 const changeStatus = require("./changeStatus");
 
@@ -15,7 +15,7 @@ const changeStatus = require("./changeStatus");
  * @param {DiscordReaction} reaction
  * @param {DiscordUser} user
  */
-module.exports = async function editSubmission(client, reaction, user) {
+module.exports = async function reactionMenu(client, reaction, user) {
 	const message = await reaction.message.fetch();
 	const member = await message.guild.members.cache.get(user.id);
 	if (member.bot) return;
@@ -71,61 +71,7 @@ module.exports = async function editSubmission(client, reaction, user) {
 	};
 
 	// await reaction from the user
-	message
-		.awaitReactions({ filter, max: 1, time: 30000, errors: ["time"] })
-		.then(async (collected) => {
-			const REACTION = collected.first();
-			const USER_ID = [...collected.first().users.cache.values()]
-				.filter((user) => user.bot === false)
-				.map((user) => user.id)[0];
-
-			switch (REACTION.emoji.id) {
-				case settings.emojis.magnify:
-					magnify(message, message.embeds[0].thumbnail.url, user.id);
-					break;
-				case settings.emojis.palette:
-					palette(message, message.embeds[0].thumbnail.url, user.id);
-					break;
-				case settings.emojis.tile:
-					tile(message, message.embeds[0].thumbnail.url, "grid", user.id);
-					break;
-				case settings.emojis.view_raw:
-					viewRaw(message, message.embeds[0].thumbnail.url, user.id);
-					break;
-			}
-
-			if (
-				member.permissions.has(Permissions.FLAGS.ADMINISTRATOR) ||
-				member.roles.cache.some((role) => role.name.toLowerCase().includes("council"))
-			) {
-				if (REACTION.emoji.id === settings.emojis.instapass) {
-					removeReact(message, [settings.emojis.upvote, settings.emojis.downvote]);
-					changeStatus(
-						message,
-						`<:instapass:${settings.emojis.instapass}> Instapassed by <@${member.id}>`,
-						settings.colors.yellow,
-					);
-					instapass(client, message);
-				} else if (REACTION.emoji.id === settings.emojis.invalid) {
-					removeReact(message, [settings.emojis.upvote, settings.emojis.downvote]);
-					changeStatus(
-						message,
-						`<:invalid:${settings.emojis.invalid}> Invalidated by <@${member.id}>`,
-						settings.colors.red,
-					);
-				}
-			}
-
-			// delete message only if the first author of the field 0 is the discord user who reacted, or if the user who react is admin
-			if (
-				REACTION.emoji.id === settings.emojis.delete &&
-				(USER_ID === authorID || member.permissions.has(Permissions.FLAGS.ADMINISTRATOR))
-			)
-				return await message.delete();
-
-			removeReact(message, EMOJIS);
-			await message.react(client.emojis.cache.get(settings.emojis.see_more));
-		})
+	const collected = await message.awaitReactions({ filter, max: 1, time: 30000, errors: ["time"] })
 		.catch(async (err) => {
 			if (message.deletable) {
 				removeReact(message, EMOJIS);
@@ -134,6 +80,58 @@ module.exports = async function editSubmission(client, reaction, user) {
 
 			console.log(err);
 		});
+
+	const REACTION = collected.first();
+	const USER_ID = [...collected.first().users.cache.values()]
+		.filter((user) => user.bot === false)
+		.map((user) => user.id)[0];
+
+	switch (REACTION.emoji.id) {
+		case settings.emojis.magnify:
+			magnify(message, message.embeds[0].thumbnail.url, user.id);
+			break;
+		case settings.emojis.palette:
+			palette(message, message.embeds[0].thumbnail.url, user.id);
+			break;
+		case settings.emojis.tile:
+			tile(message, message.embeds[0].thumbnail.url, "grid", user.id);
+			break;
+		case settings.emojis.view_raw:
+			viewRaw(message, message.embeds[0].thumbnail.url, user.id);
+			break;
+	}
+
+	if (
+		member.permissions.has(Permissions.FLAGS.ADMINISTRATOR) ||
+		member.roles.cache.some((role) => role.name.toLowerCase().includes("council"))
+	) {
+		if (REACTION.emoji.id === settings.emojis.instapass) {
+			removeReact(message, [settings.emojis.upvote, settings.emojis.downvote]);
+			changeStatus(
+				message,
+				`<:instapass:${settings.emojis.instapass}> Instapassed by <@${member.id}>`,
+				settings.colors.yellow,
+			);
+			instapass(client, message);
+		} else if (REACTION.emoji.id === settings.emojis.invalid) {
+			removeReact(message, [settings.emojis.upvote, settings.emojis.downvote]);
+			changeStatus(
+				message,
+				`<:invalid:${settings.emojis.invalid}> Invalidated by <@${member.id}>`,
+				settings.colors.red,
+			);
+		}
+	}
+
+	// delete message only if the first author of the field 0 is the discord user who reacted, or if the user who react is admin
+	if (
+		REACTION.emoji.id === settings.emojis.delete &&
+		(USER_ID === authorID || member.permissions.has(Permissions.FLAGS.ADMINISTRATOR))
+	)
+		return await message.delete();
+
+	removeReact(message, EMOJIS);
+	await message.react(client.emojis.cache.get(settings.emojis.see_more));
 };
 
 async function removeReact(message, emojis) {

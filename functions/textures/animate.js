@@ -4,7 +4,7 @@ const GIFEncoderFixed = require("../../modified_libraries/GIFEncoder");
 const strings = require("../../resources/strings.json");
 
 const { MessageAttachment } = require("discord.js");
-const getMeta = require("../../helpers/getMeta");
+const getMeta = require("./getMeta");
 const warnUser = require("../../helpers/warnUser");
 const addDeleteReact = require("../../helpers/addDeleteReact");
 
