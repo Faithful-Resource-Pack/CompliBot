@@ -208,28 +208,20 @@
             "keywords": ["permission", "usage", "distribution"]
         }
     ],
-    "bot": { "error": "Action failed", "cant_dm": "I can't execute this command inside DM's!" },
+    "bot": { "error": "Action Failed", "cant_dm": "I can't execute this command inside DMs!" },
     "command": {
-        "error": "One of my developers made an error while coding this command! Don't worry, the error is not on your side. Please contact <@207471947662098432>, <@473860522710794250> or <@173336582265241601>",
+        "error": "One of my developers made an error while making this command! Don't worry, the error is not on your side. Please contact <@360249987927638016>, <@473860522710794250> or <@173336582265241601>",
         "maintenance": "I'm currently in maintenance, please try again later.",
         "args": {
             "none_given": "You did not provide any arguments.",
-            "invalid": {
-                "generic": "You did not provide valid arguments."
-            }
+            "invalid": "You did not provide valid arguments."
         },
         "no_permission": "You don't have the permission to do that.",
-        "texture": {
-            "searching": "Searching for your texture, please wait...",
-            "does_not_exist": "The specified texture/folder doesn't exist!",
-            "search_description": "Choose one texture using emoji reactions.\nIf you don't see what you're looking for, be more specific.\n",
-            "no_name_given": "You didn't provide a texture name!"
-        },
         "description": {
             "autopush": "Use this command to push textures from #results to GitHub.",
             "channelpush": "Use this command to send textures to council and result channels!",
             "behave": "(⌯˃̶᷄ ﹏ ˂̶᷄⌯)",
-            "hotfix": "Fix something, may change at anytime",
+            "hotfix": "Developer-only command to quickly fix something. No defined single use, may change at any time.",
             "infoembed": "Generates infoembed embeds for #downloads-and-links",
             "reload": "Reloads a command",
             "say": "Make the bot send any message you specify",
@@ -253,19 +245,21 @@
             "disabled": "Nobody (disabled)"
         },
         "parse_args": "You need to add a [-f= | --flag=] at the beginning of an argument!",
-        "behave": { "answer": "I'm so sorry! (⌯˃̶᷄ ﹏ ˂̶᷄⌯)" },
-        "push": {
-            "image_not_attached": "You didn't attach any image! ",
-            "invalid_format": "Please provide a .png file, `.zip`, `.rar` and `.7zip` files are not supported yet.",
-            "unknown_id": "It seems that this ID does not exist\n"
-        }
+        "behave": { "answer": "I'm so sorry! (⌯˃̶᷄ ﹏ ˂̶᷄⌯)" }
     },
     "submission": {
-        "no_file_attached": "Your submission has to have a file attached!",
+        "searching": "Searching for your texture, please wait...",
+        "search_description": "Choose one texture using emoji reactions.\nIf you don't see what you're looking for, be more specific.\n",
         "autoreact": {
             "error_title": "Auto Reaction Failed",
             "error_footer": "Submission will be removed in 30 seconds, please re-submit!"
-        }
+        },
+        "no_file_attached": "Your submission has to have a file attached!",
+        "image_not_attached": "You didn't attach an image! ",
+        "invalid_format": "Please provide a valid `.png` file. Other file formats like `.zip` or `.tga` are not supported yet.",
+        "unknown_id": "Please choose a valid texture ID!\n",
+        "does_not_exist": "The specified texture or folder doesn't exist!",
+        "no_name_given": "You didn't provide a texture name!"
     },
     "warn_user": { "footer": "Type %prefix%help to get more information about commands" },
     "choice_embed": {

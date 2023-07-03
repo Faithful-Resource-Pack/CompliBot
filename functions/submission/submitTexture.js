@@ -20,47 +20,47 @@ const { MessageEmbed, MessageAttachment, Permissions } = require("discord.js");
 module.exports = async function submitTexture(client, message) {
 	// break if no file is attached
 	if (message.attachments.size == 0)
-		return invalidSubmission(message, strings.command.push.image_not_attached);
+		return invalidSubmission(message, strings.submission.image_not_attached);
 	let args = message.content.split(" ");
 
 	// not entirely sure why the first arg exists but it seems to fix problems I had with iterating over maps
 	for (let [_, attachment] of message.attachments) {
 		// break if it's not a PNG
 		if (!attachment.url.endsWith(".png")) {
-			invalidSubmission(message, strings.command.push.invalid_format);
+			invalidSubmission(message, strings.submission.invalid_format);
 			continue;
 		}
 		// get the texture ID
 		let id = args
 			.filter((el) => el.startsWith("(#") && el.endsWith(")") && !isNaN(el.slice(2).slice(0, -1)))
-			.map((el) => el.slice(2).slice(0, -1));
-		id = id[0];
+			.map((el) => el.slice(2).slice(0, -1))[0];
 
 		// take image url to get name of texture
-		let search = attachment.url.split("/").slice(-1)[0].replace(".png", "");
-
-		// get the description
-		let description = message.content.replace(`(#${id})`, "");
+		const search = attachment.url.split("/").slice(-1)[0].replace(".png", "");
 
 		// parameters for the embed
 		let param = {
-			description: description,
+			description: message.content.replace(`(#${id})`, ""),
 		};
 
-		// detect co-authors:
+		/**
+		 * CO-AUTHOR DETECTION SYSTEM
+		 */
 
 		param.authors = [message.author.id];
 
-		// detect using curly bracket syntax (e.g. {Author})
+		// regex to detect text between curly brackets
 		const names = [...message.content.matchAll(/(?<=\{)(.*?)(?=\})/g)].map((i) =>
 			i[0].toLowerCase().trim(),
 		);
 
 		if (names.length) {
+			// fetch all contributors and check if their username matches the one in curly brackets
 			const res = await fetch(`https://api.faithfulpack.net/v2/contributions/authors`);
 			const contributionJSON = await res.json();
 			for (let user of contributionJSON) {
-				if (!user.username) continue; // if no username set it will throw an error otherwise
+				// if no username set it will throw an error otherwise
+				if (!user.username) continue;
 				if (names.includes(user.username.toLowerCase())) {
 					param.authors.push(user.id);
 				}
@@ -75,18 +75,22 @@ module.exports = async function submitTexture(client, message) {
 
 		let results = new Array();
 
+		/**
+		 * TEXTURE SEARCHING SYSTEM
+		 */
+
 		// priority to ids -> faster
 		if (id) {
 			let texture = await textures
 				.get(id)
-				.catch((err) => invalidSubmission(message, strings.command.push.unknown_id + err));
+				.catch((err) => invalidSubmission(message, strings.submission.unknown_id + err));
 			await makeEmbed(client, message, texture, attachment, param);
 			continue;
 		}
 
 		// if there's no search and no id the submission can't be valid
 		if (!search) {
-			await invalidSubmission(message, strings.command.texture.no_name_given);
+			await invalidSubmission(message, strings.submission.no_name_given);
 			continue;
 		}
 
@@ -140,8 +144,9 @@ module.exports = async function submitTexture(client, message) {
 		}
 
 		if (!results.length) {
-			await invalidSubmission(message, strings.command.texture.does_not_exist + "\n" + search);
+			await invalidSubmission(message, strings.submission.does_not_exist + "\n" + search);
 			continue;
+
 		} else if (results.length == 1) {
 			await makeEmbed(client, message, results[0], attachment, param);
 			continue;
@@ -166,7 +171,7 @@ module.exports = async function submitTexture(client, message) {
 		//if (waitEmbedMessage.deletable) await waitEmbedMessage.delete();
 		const userChoice = await choiceEmbed(message, {
 			title: `${results.length} results, react to choose one!`,
-			description: strings.command.texture.search_description,
+			description: strings.submission.search_description,
 			footer: `${message.client.user.username}`,
 			propositions: choice,
 		}).catch((message, error) => {
@@ -199,7 +204,7 @@ async function makeEmbed(client, message, texture, attachment, param = new Objec
 		pathText.push(`**${use.editions[0].charAt(0).toUpperCase() + use.editions[0].slice(1)}**\n`);
 		for (let path of localPath) {
 			let versions = path.versions.sort(minecraftSorter);
-			pathText.push(`\`[${versions[0]}+]\` ${path.path} \n`);
+			pathText.push(`\`[${versions[0]}+]\` ${path.path}\n`);
 		}
 	}
 
@@ -231,6 +236,10 @@ async function makeEmbed(client, message, texture, attachment, param = new Objec
 
 	const dimensions = await getDimensions(attachment.url);
 	if (dimensions.width * dimensions.height <= 262144) {
+		/**
+		 * COMPARISON IMAGE GENERATOR
+		 */
+
 		// determine reference image to compare against
 		let repoKey;
 		for (let [packKey, packValue] of Object.entries(settings.submission.packs)) {
@@ -239,6 +248,7 @@ async function makeEmbed(client, message, texture, attachment, param = new Objec
 				break;
 			}
 		}
+
 		let defaultRepo;
 		switch (repoKey) {
 			case "faithful_64x":
@@ -264,7 +274,7 @@ async function makeEmbed(client, message, texture, attachment, param = new Objec
 				"default.png",
 			);
 		} catch {
-			// reference texture doesn't exist
+			// reference texture doesn't exist so we use the default repo
 			defaultImage = await magnifyAttachment(
 				`${settings.repositories.raw.default[info.edition.toLowerCase()]}${info.version}/${
 					info.path
@@ -286,7 +296,7 @@ async function makeEmbed(client, message, texture, attachment, param = new Objec
 			imageUrls = await getImages(client, defaultImage, upscaledImage, rawImage, currentImage);
 			drawer.urls = [imageUrls[0], imageUrls[1], imageUrls[3]];
 		} catch {
-			// texture doesn't exist yet so we just load two images in the comparison instead of three
+			// texture being submitted is a new texture, so there's nothing to compare against
 			imageUrls = await getImages(client, defaultImage, upscaledImage, rawImage);
 			drawer.urls = [imageUrls[0], imageUrls[1]];
 		}
@@ -299,7 +309,7 @@ async function makeEmbed(client, message, texture, attachment, param = new Objec
 		embed.setThumbnail(imageUrls[2]);
 		// if the texture doesn't exist yet only include the default/new caption rather than everything
 		embed.setFooter({
-			text: drawer.urls.length >= 3 ? "Reference | New | Current" : "Reference | New",
+			text: drawer.urls.length == 3 ? "Reference | New | Current" : "Reference | New",
 		});
 	} else {
 		// image is too big so we just add it directly to the embed without comparison
@@ -321,9 +331,12 @@ async function makeEmbed(client, message, texture, attachment, param = new Objec
 }
 
 async function invalidSubmission(message, error = "Not given") {
-	if (message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) return; // allow admins to talk in submit channels
-	if (message.member.roles.cache.some((role) => role.name.toLowerCase().includes("council")))
-		return; // allow council to talk in submission channels
+	// allow managers and council to talk in submit channels
+	if (
+		message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR) ||
+		message.member.roles.cache.some((role) => role.name.toLowerCase().includes("council"))
+	)
+		return;
 
 	try {
 		const embed = new MessageEmbed()
