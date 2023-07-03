@@ -99,36 +99,37 @@ module.exports = async function reactionMenu(client, reaction, user) {
 		case settings.emojis.view_raw:
 			viewRaw(message, message.embeds[0].thumbnail.url, user.id);
 			break;
+		case settings.emojis.delete:
+			// delete message only if the first author of the field 0 is the discord user who reacted, or if the user who react is admin
+			if (USER_ID === authorID || member.permissions.has(Permissions.FLAGS.ADMINISTRATOR))
+				await message.delete();
+			break;
 	}
 
 	if (
 		member.permissions.has(Permissions.FLAGS.ADMINISTRATOR) ||
 		member.roles.cache.some((role) => role.name.toLowerCase().includes("council"))
 	) {
-		if (REACTION.emoji.id === settings.emojis.instapass) {
-			removeReact(message, [settings.emojis.upvote, settings.emojis.downvote]);
-			changeStatus(
-				message,
-				`<:instapass:${settings.emojis.instapass}> Instapassed by <@${member.id}>`,
-				settings.colors.yellow,
-			);
-			instapass(client, message);
-		} else if (REACTION.emoji.id === settings.emojis.invalid) {
-			removeReact(message, [settings.emojis.upvote, settings.emojis.downvote]);
-			changeStatus(
-				message,
-				`<:invalid:${settings.emojis.invalid}> Invalidated by <@${member.id}>`,
-				settings.colors.red,
-			);
+		switch (REACTION.emoji.id) {
+			case settings.emojis.instapass:
+				removeReact(message, [settings.emojis.upvote, settings.emojis.downvote]);
+				changeStatus(
+					message,
+					`<:instapass:${settings.emojis.instapass}> Instapassed by <@${member.id}>`,
+					settings.colors.yellow,
+				);
+				instapass(client, message);
+				break;
+			case settings.emojis.invalid:
+				removeReact(message, [settings.emojis.upvote, settings.emojis.downvote]);
+				changeStatus(
+					message,
+					`<:invalid:${settings.emojis.invalid}> Invalidated by <@${member.id}>`,
+					settings.colors.red,
+				);
+				break;
 		}
 	}
-
-	// delete message only if the first author of the field 0 is the discord user who reacted, or if the user who react is admin
-	if (
-		REACTION.emoji.id === settings.emojis.delete &&
-		(USER_ID === authorID || member.permissions.has(Permissions.FLAGS.ADMINISTRATOR))
-	)
-		return await message.delete();
 
 	removeReact(message, EMOJIS);
 	await message.react(client.emojis.cache.get(settings.emojis.see_more));

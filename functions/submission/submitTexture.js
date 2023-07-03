@@ -174,6 +174,7 @@ module.exports = async function submitTexture(client, message) {
 
 		await makeEmbed(client, message, results[userChoice.index], attachment, param);
 	}
+	if (message.deletable) await message.delete();
 };
 
 const EMOJIS = [settings.emojis.upvote, settings.emojis.downvote, settings.emojis.see_more];
@@ -304,7 +305,6 @@ async function makeEmbed(client, message, texture, attachment, param = new Objec
 
 	// send the embed
 	const msg = await message.channel.send({ embeds: [embed] });
-	if (message.deletable) await message.delete();
 
 	// add reactions to the embed
 	for (const emojiID of EMOJIS) {
