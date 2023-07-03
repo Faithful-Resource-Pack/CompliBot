@@ -32,7 +32,7 @@ module.exports = async function downloadResults(client, channelInID, instapass =
 	messages = messages
 		.filter((message) => message.embeds.length > 0)
 		.filter(
-			(message) => message.embeds[0] && message.embeds[0].fields && message.embeds[0].fields[1],
+			(message) => message?.embeds[0]?.fields[1],
 		);
 
 	let textures;

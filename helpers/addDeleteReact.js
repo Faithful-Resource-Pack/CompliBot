@@ -47,16 +47,16 @@ module.exports = async function addDeleteReact(
 		if (redirectMessage) {
 			if (deleteAuthorMessage) {
 				redirectMessage = await redirectMessage.fetch(true).catch(() => {}); // fix for unknown message
-				if (redirectMessage && redirectMessage.deletable) await redirectMessage.delete();
+				if (redirectMessage?.deletable) await redirectMessage.delete();
 			}
 		} else if (deleteAuthorMessage) {
 			authorMessage = await authorMessage.fetch(true).catch(() => {}); // fix for unknown message
-			if (authorMessage && authorMessage.deletable) await authorMessage.delete();
+			if (authorMessage?.deletable) await authorMessage.delete();
 		}
 	} catch {
 		// only error cause is timeout, so delete the
 		sentMessage = await sentMessage.fetch(true).catch(() => {}); // fix for unknown message
-		if (sentMessage && sentMessage.deletable) {
+		if (sentMessage?.deletable) {
 			const deleteReaction = sentMessage.reactions.cache.get(settings.emojis.delete);
 			if (deleteReaction !== undefined) await deleteReaction.remove().catch(() => {}); // FIX for undefined delete reaction remove
 		}
