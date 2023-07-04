@@ -82,28 +82,14 @@ export async function horizontalStitcher(urls: string[], gap: number = 0) {
 }
 
 /**
- * basically just extends horizontalStitcher to work with multiple rows rather than appending everything sideways
- * this was actual pain to make
+ * vertical version of horizontalStitcher
  * @author Evorp
  * @param {string[][]} urls two-dimensional array of valid urls
  * @param {number} gap the gap between each texture
  */
-export async function fullStitcher(urls: string[][], gap: number = 0) {
-	let resultArray = [];
-	for (let images of urls) {
-		const result = await horizontalStitcher(images, gap);
-		resultArray.push(result);
-	}
-
-	if (!resultArray[1]) return resultArray[0]; // breaks early if CF isn't available or vice versa
-
-	let images = [];
-	for (let image of resultArray) {
-		let tmp = await loadImage(image);
-		images.push(tmp);
-	}
-
-	// most of the code from here on out is pretty similar to horizontalStitcher() but just going the other direction
+export async function verticalStitcher(urls: string[], gap: number = 0) {
+	// most of the code is pretty similar to horizontalStitcher() but just going the other direction
+	const images = await loadImages(urls);
 	const biggestImage = images
 		.map((can) => {
 			return { w: can.naturalWidth, h: can.naturalHeight };
@@ -208,7 +194,14 @@ export async function textureComparison(
 		++j; // can't use forEach because of scope problems (blame js)
 	}
 
-	const stitched = await fullStitcher(urls, 4);
+	let stitchedArray = [];
+	for (let url of urls) {
+		const stitched = await horizontalStitcher(url, url.length == 3 ? 4 : 2);
+		stitchedArray.push(stitched);
+	}
+
+	const stitched = await verticalStitcher(stitchedArray, 4);
+
 	const magnified = (await magnify({ image: await loadImage(stitched), name: "magnified.png" }))[0];
 	const embed = new MessageEmbed().setImage("attachment://magnified.png");
 
