@@ -15,10 +15,9 @@ module.exports = async function instapass(client, message) {
 	let channelArray;
 
 	for (let pack of Object.values(settings.submission.packs)) {
-		// need a for loop here to get the pack name properly
+		// picks up instapassing in both community and council phases
 		channelArray = Object.values(pack.channels);
 		if (channelArray.includes(message.channel.id)) {
-			// picks up both submit and council
 			channelOutID = pack.channels.results;
 			break;
 		}

@@ -9,8 +9,8 @@
             "description": "A much more in-depth version of our rules, punishment appeal information, and our thought process into giving punishments can be found here: https://docs.faithfulpack.net/pages/moderation/expanded-server-rules"
         },
         "changes": {
-            "title": "Last Update: 23 October 2022",
-            "description": "Full rewrite and added punishment guidelines/appeals.",
+            "title": "Last Update: 4 July 2023",
+            "description": "Disallow politics and clean up some grammar.",
             "enabled": true
         }
     },
@@ -23,7 +23,7 @@
         {
             "number": "2️⃣",
             "title": "Use Common Sense",
-            "description": "This is the generic “don’t be an idiot” rule. Other prohibited actions include raiding or brigading other servers, using hate speech or slurs, jokes about tragedies or other sensitive topics, and spreading misinformation."
+            "description": "This is the generic \"don’t be an idiot\" rule. Prohibited actions include raiding or brigading other servers, using hate speech or slurs, joking about tragedies or other sensitive topics, and spreading misinformation."
         },
         {
             "number": "3️⃣",
@@ -38,22 +38,22 @@
         {
             "number": "5️⃣",
             "title": "Try to Not Annoy Others",
-            "description": "This includes overly (reply) pinging, sending loud audio or seizure-inducing videos without a spoiler/disclaimer, and abusing nicknames, reactions, or spoilers. Don’t [ask to ask](https://dontasktoask.com), (e.g. I have a question), just ask your question directly to save everybody time."
+            "description": "This includes overly (reply) pinging, sending loud audio or seizure-inducing videos without a spoiler/disclaimer, and abusing nicknames, reactions, or spoilers. Don’t [ask to ask](https://dontasktoask.com), instead just ask your question directly to save everybody time."
         },
         {
             "number": "6️⃣",
             "title": "Don’t Clutter Chats",
-            "description": "While short tangents are fine, we have multiple chats for a reason, so please use them as intended. Spamming random things, including emojis and stickers, or starting a chat chain contributes nothing to a conversation and causes a mess."
+            "description": "While short tangents are fine, we have multiple channels for a reason, so please use them as intended. Spamming random things, including emojis and stickers, or starting a chat chain contributes nothing to a conversation and only causes a mess."
         },
         {
             "number": "7️⃣",
             "title": "Avoid NSFW and NSFL Content",
-            "description": "This includes, but is not limited to pornography, gore, overly gross content, etc. If you think it’s against the rules it probably will be. DM a moderator for approval if you’re very unsure."
+            "description": "This includes, but is not limited to pornography, gore, and overly gross content; if you think it’s against the rules it probably will be. DM a moderator for approval if you’re very unsure."
         },
         {
             "number": "8️⃣",
-            "title": "Stay Civil around Controversial Topics",
-            "description": "While topics surrounding politics, religion, firearms, etc, aren’t entirely prohibited, don't start arguments for the sake of it. When having productive discussions, ensure that it doesn't become a fight and that a moderator is available."
+            "title": "Stay Away From Political Discussion",
+            "description": "General discussion about real-life events is still allowed from a more neutral perspective. If you really want to discuss politics, take it to a DM or another server."
         },
         {
             "number": "9️⃣",

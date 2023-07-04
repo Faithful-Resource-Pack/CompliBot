@@ -4,11 +4,11 @@ const getMessages = require("../../helpers/getMessages");
 const texturesCollection = require("../../helpers/firestorm/texture");
 const contributionsCollection = require("../../helpers/firestorm/contributions");
 const pushTextures = require("./pushTextures");
-const fs = require("fs");
 const fetch = (...args) => import("node-fetch").then(({ default: fetch }) => fetch(...args));
 const date = require("../../helpers/date.js");
 
 const Buffer = require("buffer/").Buffer;
+const { promises, writeFile } = require("fs");
 
 /**
  * Download textures from the given text channel
@@ -31,9 +31,7 @@ module.exports = async function downloadResults(client, channelInID, instapass =
 	// removes non-submission messages
 	messages = messages
 		.filter((message) => message.embeds.length > 0)
-		.filter(
-			(message) => message?.embeds[0]?.fields[1],
-		);
+		.filter((message) => message?.embeds[0]?.fields[1]);
 
 	let textures;
 	if (!instapass) {
@@ -106,31 +104,29 @@ module.exports = async function downloadResults(client, channelInID, instapass =
 			}
 		}
 
-		const res = repoKey.includes("32") ? 32 : 64;
-
 		const response = await fetch(texture.url);
 		const buffer = await response.arrayBuffer();
 
 		// download the texture to all its paths
 		for (let path of allPaths) {
 			// create full folder path
-			await fs.promises
+			await promises
 				.mkdir(path.substr(0, path.lastIndexOf("/")), { recursive: true })
 				.catch((err) => {
 					if (process.DEBUG) console.error(err);
 				});
 
 			// write texture to the corresponding path
-			fs.writeFile(path, Buffer.from(buffer), function (err) {
-				if (err && process.DEBUG == "true") return console.error(err);
-				else if (process.DEBUG == "true") return console.log(`ADDED TO: ${path}`);
+			writeFile(path, Buffer.from(buffer), (err) => {
+				if (process.DEBUG == "true")
+					return err ? console.error(err) : console.log(`ADDED TO: ${path}`);
 			});
 		}
 
 		// prepare the authors for the texture
 		allContribution.push({
 			date: texture.date,
-			resolution: res,
+			resolution: repoKey.includes("32") ? 32 : 64,
 			pack: repoKey,
 			texture: `${texture.id}`,
 			authors: texture.authors,
