@@ -73,7 +73,7 @@
     "Command.Feedback.Sent": "%EMOJI.SEE_MORE% Feedback sent to developers!",
     "Command.Feedback.Suggestion": "Suggestion",
     "Command.Feedback.Title": "Feedback",
-    "Command.HelpUs.Description": "Do you love this project and want to help the developers?\nPlease contact one of the developers below to be invited to the development servers:\n<@!473860522710794250>, <@!207471947662098432>, or <@!173336582265241601>\n\nYou can also check us out on GitHub:\n> https://github.com/Faithful-Resource-Pack/Discord-Bot",
+    "Command.HelpUs.Description": "Do you love this project and want to help the developers?\nPlease contact one of the developers below to be invited to the development servers:\n<@!473860522710794250>, <@!360249987927638016>, or <@!173336582265241601>\n\nYou can also check us out on GitHub:\n> https://github.com/Faithful-Resource-Pack/Discord-Bot",
     "Command.HelpUs.Title": "Do you want to help or support us in the CompliBot development?",
     "Command.Images.NotFound.Title": "No images found!",
     "Command.Images.NotFound": "No images were found in the last %NUMBER% messages, please submit one using the following:\n\n- Sending an image URL\n- Attaching one to your message\n- Reply to a previous message (can be chained)\n\n> You can cancel this by sending anything else.",

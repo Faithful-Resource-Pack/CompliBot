@@ -61,8 +61,8 @@ export const command: SlashCommand = {
 			const victimID = interaction.options.getUser("subject").id;
 			if (
 				victimID == client.user.id || //self
-				victimID == "207471947662098432" || //Juknum
-				victimID == "173336582265241601" || //The Rolf
+				victimID == "360249987927638016" || //Evorp
+				victimID == "173336582265241601" || //TheRolf
 				victimID == "473860522710794250" || //RobertR11
 				victimID == "601501288978448411" //Nick.
 			)

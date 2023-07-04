@@ -5,7 +5,7 @@ import { Client, CommandInteraction, MessageEmbed } from "@client";
 export const command: SlashCommand = {
 	permissions: {
 		users: [
-			"207471947662098432", // Juknum
+			"360249987927638016", // Evorp
 			"173336582265241601", // TheRolf
 			"473860522710794250", // RobertR11
 			"601501288978448411", // Nick

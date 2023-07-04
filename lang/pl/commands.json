@@ -73,7 +73,7 @@
   "Command.Feedback.Sent": "%EMOJI.SEE_MORE% Opinia wysłana do deweloperów!",
   "Command.Feedback.Suggestion": "Sugestia",
   "Command.Feedback.Title": "Informacja zwrotna",
-  "Command.HelpUs.Description": "Lubisz ten projekt i chcesz pomóc deweloperom?\nSkontakuj się z jednym z deweloperów aby otrzymać zaproszenie na serwer dla deweloperów:\n<@!473860522710794250>, <@!207471947662098432>, <@!173336582265241601>, <@!601501288978448411>\n\nMożesz też sprawdzić naszą stronę GitHub:\n> https://github.com/Faithful-Resource-Pack/Discord-Bot",
+  "Command.HelpUs.Description": "Lubisz ten projekt i chcesz pomóc deweloperom?\nSkontakuj się z jednym z deweloperów aby otrzymać zaproszenie na serwer dla deweloperów:\n<@!473860522710794250>, <@!360249987927638016>, <@!173336582265241601>, <@!601501288978448411>\n\nMożesz też sprawdzić naszą stronę GitHub:\n> https://github.com/Faithful-Resource-Pack/Discord-Bot",
   "Command.HelpUs.Title": "Chcesz nam pomóc albo nas wspierać w rozwoju CompliBot?",
   "Command.Images.NotFound.Title": "Nie znaleziono obrazów!",
   "Command.Images.NotFound": "Nie znaleziono obrazów w ostatnich %NUMBER% wiadomościach, proszę przesłać jeden przez:\n\n- Wysyłanie adresu URL obrazu\n- Dołączanie jednego do Twojej wiadomości\n- Odpowiedź do poprzedniej wiadomości (może być łańcuchowa)\n\n> Możesz to anulować poprzez wysyłanie cokolwiek innego.",

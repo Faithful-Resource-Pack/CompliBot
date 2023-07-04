@@ -2,12 +2,12 @@ import { getRolesIds } from "@helpers/roles";
 import { CommandInteraction, GuildMemberRoleManager } from "discord.js";
 
 export interface permissionOptions {
-	/* 
-    type sets weather checkPermissions 
+	/*
+    type sets weather checkPermissions
     should use the config or ids to
     run its checks. By default set to
     "config" as its most used.
-    
+
     IF TYPE IS CONFIG:
         it will use names
         instead of ids and look them up in
@@ -72,7 +72,7 @@ export function checkPermissions(
 			type = "config";
 			permissions = {
 				users: [
-					"207471947662098432",
+					"360249987927638016",
 					"173336582265241601",
 					"601501288978448411",
 					"473860522710794250",
