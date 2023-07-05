@@ -16,7 +16,7 @@ const changeStatus = require("./changeStatus");
  * @param {DiscordUser} user
  */
 module.exports = async function reactionMenu(client, reaction, user) {
-	if (reaction.emoji.id !== settings.emojis.see_more)	return;
+	if (reaction.emoji.id !== settings.emojis.see_more) return;
 
 	const message = await reaction.message.fetch();
 	const member = await message.guild.members.cache.get(user.id);

@@ -144,8 +144,9 @@ async function getAuthors(message) {
 async function invalidSubmission(message, error = "Not given") {
 	// allow managers and council to talk in submit channels
 	if (
-		message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR) ||
-		message.member.roles.cache.some((role) => role.name.toLowerCase().includes("council"))
+		(message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR) ||
+			message.member.roles.cache.some((role) => role.name.toLowerCase().includes("council"))) &&
+		error == strings.submission.image_not_attached
 	)
 		return;
 
