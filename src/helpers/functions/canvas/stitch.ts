@@ -163,6 +163,7 @@ import axios from "axios";
 export async function textureComparison(
 	client: Client,
 	id: number | string,
+	set: string = "all",
 ): Promise<[MessageEmbed, MessageAttachment]> {
 	const isTemplate: boolean = typeof id == "string" && id.toLowerCase() == "template";
 	const results = (await axios.get(`${client.tokens.apiUrl}textures/${id}/all`)).data;
@@ -173,9 +174,28 @@ export async function textureComparison(
 		["progart", "classic_faithful_32x_progart"],
 	];
 
+	let displayed: string[][];
+	switch (set) {
+		case "main":
+			displayed = [PACKS[0]];
+			break;
+		case "cf jappa":
+			displayed = [PACKS[1]];
+			break;
+		case "cfpa":
+			displayed = [PACKS[2]];
+			break;
+		case "jappa":
+			displayed = [PACKS[0], PACKS[1]];
+			break;
+		default:
+			displayed = PACKS;
+			break;
+	}
+
 	let urls = [];
 	let j = 0;
-	for (let packSet of PACKS) {
+	for (let packSet of displayed) {
 		urls.push(new Array());
 		for (let pack of packSet) {
 			try {

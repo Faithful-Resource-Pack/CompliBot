@@ -22,10 +22,8 @@ export const menu: SelectMenu = {
 			});
 		else interaction.deferReply();
 
-		const [embed, magnified] = await textureComparison(
-			interaction.client as Client,
-			interaction.values[0],
-		);
+		const [id, display] = interaction.values[0].split("__");
+		const [embed, magnified] = await textureComparison(interaction.client as Client, id, display);
 
 		try {
 			message.delete();

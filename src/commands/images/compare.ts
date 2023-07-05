@@ -15,9 +15,23 @@ export const command: SlashCommand = {
 				.setName("texture")
 				.setDescription("The texture to compare (use [#id] syntax to compare by id).")
 				.setRequired(true),
+		)
+		.addStringOption((option) =>
+			option
+				.setName("display")
+				.setDescription("Which set of packs you want to display (default is everything).")
+				.addChoices(
+					{ name: "Main", value: "main" },
+					{ name: "Classic Faithful Jappa", value: "cf jappa" },
+					{ name: "Classic Faithful Programmer Art", value: "cfpa" },
+					{ name: "Jappa", value: "jappa" },
+					{ name: "All", value: "all" },
+				)
+				.setRequired(false),
 		),
 	execute: async (interaction: CommandInteraction) => {
-		let name = interaction.options.getString("texture");
+		let name = interaction.options.getString("texture", true);
+		const display = interaction.options.getString("display", false) ?? "all";
 		if (name.includes(".png")) name = name.replace(".png", "");
 		name = name.replace(/ /g, "_");
 		if (name.length < 3) {
@@ -52,7 +66,11 @@ export const command: SlashCommand = {
 		// only one result
 		if (results.length === 1) {
 			texture = results[0];
-			const [embed, magnified] = await textureComparison(interaction.client as Client, texture.id);
+			const [embed, magnified] = await textureComparison(
+				interaction.client as Client,
+				texture.id,
+				display,
+			);
 
 			interaction
 				.editReply({ embeds: [embed], files: [magnified] })
@@ -71,7 +89,7 @@ export const command: SlashCommand = {
 						results[i].paths[0].versions.sort(MinecraftSorter).reverse()[0]
 					}) ${results[i].name}`,
 					description: results[i].paths[0].name,
-					value: results[i].id,
+					value: `${results[i].id}__${display}`,
 				};
 			}
 
@@ -133,7 +151,6 @@ export const command: SlashCommand = {
 			await interaction
 				.editReply({ embeds: [embed], components: components })
 				.then((message: Message) => message.deleteButton());
-			return;
 		}
 	},
 };
