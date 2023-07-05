@@ -3,14 +3,6 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { Client, CommandInteraction, MessageEmbed } from "@client";
 
 export const command: SlashCommand = {
-	permissions: {
-		users: [
-			"360249987927638016", // Evorp
-			"173336582265241601", // TheRolf
-			"473860522710794250", // RobertR11
-			"601501288978448411", // Nick
-		],
-	},
 	servers: ["dev"],
 	data: new SlashCommandBuilder()
 		.setName("eval")
