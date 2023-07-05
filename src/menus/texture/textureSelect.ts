@@ -32,9 +32,10 @@ export const menu: SelectMenu = {
 			pack: pack,
 			guild: interaction.guild,
 		});
+
 		embed.setFooter({
-			iconURL: embed.footer.iconURL,
 			text: `${embed.footer.text} | ${interaction.user.id}`,
+			iconURL: embed.footer.iconURL,
 		});
 
 		try {

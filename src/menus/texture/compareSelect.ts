@@ -25,6 +25,11 @@ export const menu: SelectMenu = {
 		const [id, display] = interaction.values[0].split("__");
 		const [embed, magnified] = await textureComparison(interaction.client as Client, id, display);
 
+		embed.setFooter({
+			text: `${embed.footer.text} | ${interaction.user.id}`,
+			iconURL: embed.footer.iconURL,
+		});
+
 		try {
 			message.delete();
 		} catch (err) {
