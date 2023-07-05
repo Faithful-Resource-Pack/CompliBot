@@ -1,8 +1,8 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { Client, CommandInteraction, MessageEmbed, Message } from "@client";
-import { MessageSelectMenu, MessageActionRow, MessageSelectOptionData } from "discord.js";
 import { textureComparison } from "@functions/canvas/stitch";
+import { MessageSelectMenu, MessageActionRow, MessageSelectOptionData } from "discord.js";
 import axios from "axios";
 import { MinecraftSorter } from "@helpers/sorter";
 
@@ -61,20 +61,17 @@ export const command: SlashCommand = {
 
 		await interaction.deferReply();
 
-		let texture: any | any[];
-
 		// only one result
 		if (results.length === 1) {
-			texture = results[0];
 			const [embed, magnified] = await textureComparison(
 				interaction.client as Client,
-				texture.id,
+				results[0].id,
 				display,
 			);
 
 			interaction
 				.editReply({ embeds: [embed], files: [magnified] })
-				.then((message: Message) => message.deleteButton(true));
+				.then((message: Message) => message.deleteButton());
 			return;
 		} else {
 			const components: Array<MessageActionRow> = [];

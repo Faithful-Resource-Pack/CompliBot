@@ -155,7 +155,6 @@ export const command: SlashCommand = {
 			await interaction
 				.editReply({ embeds: [embed], components: components })
 				.then((message: Message) => message.deleteButton());
-			return;
 		}
 	},
 };
