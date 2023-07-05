@@ -19,18 +19,16 @@ module.exports = async function reactionMenu(client, reaction, user) {
 	const message = await reaction.message.fetch();
 	const member = await message.guild.members.cache.get(user.id);
 	if (member.bot) return;
-	if (message.embeds.length == 0 || message.embeds[0].fields.length == 0) return;
+	if (!message.embeds.length || !message.embeds[0].fields.length) return;
 
+	// first author in the author field is always the person who submitted
 	const authorID = await message.embeds[0].fields[0].value
 		.split("\n")
 		.map((el) => el.replace("<@", "").replace("!", "").replace(">", ""))[0];
 
-	if (
-		reaction.emoji.id !== settings.emojis.see_more &&
-		reaction.emoji.id !== settings.emojis.see_more_old
-	)
-		return;
+	if (reaction.emoji.id !== settings.emojis.see_more)	return;
 
+	// remove the arrow emoji and generate the tray
 	reaction.remove().catch((err) => {
 		if (process.DEBUG) console.error(err);
 	});
@@ -46,7 +44,7 @@ module.exports = async function reactionMenu(client, reaction, user) {
 		settings.emojis.view_raw,
 	];
 
-	// if the message does not have up/down vote react, remove INSTAPASS & INVALID from the emojis list (already instapassed or votes flushed)
+	// if the submission isn't pending, instapassing/invalid won't do anything so we remove those
 	if (!message.embeds[0].fields[1].value.includes(settings.emojis.pending))
 		EMOJIS = EMOJIS.filter(
 			(emoji) =>
@@ -55,14 +53,13 @@ module.exports = async function reactionMenu(client, reaction, user) {
 				emoji !== settings.emojis.delete,
 		);
 
-	// if the message is in #council-vote remove delete reaction (avoid misclick)
+	// if the submission is in council remove delete reaction (avoid misclick)
 	const councilChannels = Object.values(settings.submission.packs).map((i) => i.channels.council);
-
 	if (councilChannels.includes(message.channel.id)) {
 		EMOJIS = EMOJIS.filter((emoji) => emoji !== settings.emojis.delete);
 	}
 
-	// add reacts
+	// actually react
 	for (let emoji of EMOJIS) await message.react(emoji);
 
 	// make the filter
@@ -82,33 +79,35 @@ module.exports = async function reactionMenu(client, reaction, user) {
 			console.log(err);
 		});
 
+	// if there's no reaction collected just reset the message and return early
 	const REACTION = collected?.first();
-
 	if (!REACTION) {
 		if (message.deletable) {
 			removeReact(message, EMOJIS);
 			await message.react(client.emojis.cache.get(settings.emojis.see_more));
 		}
-
 		return;
 	}
 
-	const USER_ID = [...collected.first().users.cache.values()]
+	// get the user id from the person who reacted to check permissions
+	const USER_ID = [...REACTION.users.cache.values()]
 		.filter((user) => user.bot === false)
 		.map((user) => user.id)[0];
 
+	// image-related emojis and deletion
+	const image = message.embeds[0].thumbnail.url;
 	switch (REACTION.emoji.id) {
 		case settings.emojis.magnify:
-			magnify(message, message.embeds[0].thumbnail.url, user.id);
+			magnify(message, image, user.id);
 			break;
 		case settings.emojis.palette:
-			palette(message, message.embeds[0].thumbnail.url, user.id);
+			palette(message, image, user.id);
 			break;
 		case settings.emojis.tile:
-			tile(message, message.embeds[0].thumbnail.url, "grid", user.id);
+			tile(message, image, "grid", user.id);
 			break;
 		case settings.emojis.view_raw:
-			viewRaw(message, message.embeds[0].thumbnail.url, user.id);
+			viewRaw(message, image, user.id);
 			break;
 		case settings.emojis.delete:
 			// delete message only if the first author of the field 0 is the discord user who reacted, or if the user who react is admin
@@ -117,12 +116,14 @@ module.exports = async function reactionMenu(client, reaction, user) {
 			break;
 	}
 
+	// instapass and invalid need role checks
 	if (
 		member.permissions.has(Permissions.FLAGS.ADMINISTRATOR) ||
 		member.roles.cache.some((role) => role.name.toLowerCase().includes("council"))
 	) {
 		switch (REACTION.emoji.id) {
 			case settings.emojis.instapass:
+				// flush votes (you still need to clear the reaction menu afterwards)
 				removeReact(message, [settings.emojis.upvote, settings.emojis.downvote]);
 				changeStatus(
 					message,
@@ -142,17 +143,18 @@ module.exports = async function reactionMenu(client, reaction, user) {
 		}
 	}
 
+	// reset reactions
 	removeReact(message, EMOJIS);
 	await message.react(client.emojis.cache.get(settings.emojis.see_more));
 };
 
 async function removeReact(message, emojis) {
-	for (let i = 0; emojis[i]; i++) {
+	for (let emoji of emojis) {
 		await message.reactions.cache
-			.get(emojis[i])
+			.get(emoji)
 			.remove()
 			.catch((err) => {
-				if (process.DEBUG) console.error(`Can't remove emoji: ${emojis[i]}\n${err}`);
+				if (process.DEBUG) console.error(`Can't remove emoji: ${emoji}\n${err}`);
 			});
 	}
 }

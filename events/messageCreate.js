@@ -23,7 +23,7 @@ module.exports = {
 		if (message.author.bot) return;
 
 		/**
-		 * COMMAND EXECUTOR
+		 * COMMAND HANDLER
 		 */
 		if (message.content.startsWith(PREFIX)) {
 			if (MAINTENANCE && !process.env.DEVELOPERS.includes(message.author.id)) {
@@ -54,7 +54,7 @@ module.exports = {
 					.setColor(settings.colors.red)
 					.setTitle(strings.bot.error)
 					.setThumbnail(settings.images.error)
-					.setDescription(`${strings.command.error}\nError for the developers:\n${error}`);
+					.setDescription(`${strings.command.error}\nError for the developers:\n\`\`\`${error}\`\`\``);
 
 				let msgEmbed = await message.reply({ embeds: [embed] });
 				await message.react(settings.emojis.downvote);
