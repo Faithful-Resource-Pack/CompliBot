@@ -16,17 +16,16 @@ const changeStatus = require("./changeStatus");
  * @param {DiscordUser} user
  */
 module.exports = async function reactionMenu(client, reaction, user) {
+	if (reaction.emoji.id !== settings.emojis.see_more)	return;
+
 	const message = await reaction.message.fetch();
 	const member = await message.guild.members.cache.get(user.id);
-	if (member.bot) return;
-	if (!message.embeds.length || !message.embeds[0].fields.length) return;
+	if (member.bot || !message.embeds[0]?.fields?.length) return;
 
 	// first author in the author field is always the person who submitted
 	const authorID = await message.embeds[0].fields[0].value
 		.split("\n")
 		.map((el) => el.replace("<@", "").replace("!", "").replace(">", ""))[0];
-
-	if (reaction.emoji.id !== settings.emojis.see_more)	return;
 
 	// remove the arrow emoji and generate the tray
 	reaction.remove().catch((err) => {
