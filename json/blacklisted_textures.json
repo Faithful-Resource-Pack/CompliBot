@@ -155,6 +155,7 @@
         "entity/cape_invisible",
         "entity/char",
         "entity/horse/",
+        "entity/iron_golem/iron_golem.png",
         "entity/lead_rope",
         "entity/loyalty_rope",
         "entity/pig/pigzombie",
