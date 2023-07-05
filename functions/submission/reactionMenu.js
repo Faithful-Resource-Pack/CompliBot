@@ -82,7 +82,17 @@ module.exports = async function reactionMenu(client, reaction, user) {
 			console.log(err);
 		});
 
-	const REACTION = collected.first();
+	const REACTION = collected?.first();
+
+	if (!REACTION) {
+		if (message.deletable) {
+			removeReact(message, EMOJIS);
+			await message.react(client.emojis.cache.get(settings.emojis.see_more));
+		}
+
+		return;
+	}
+
 	const USER_ID = [...collected.first().users.cache.values()]
 		.filter((user) => user.bot === false)
 		.map((user) => user.id)[0];
