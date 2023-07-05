@@ -21,7 +21,7 @@ export const command: SlashCommand = {
 				.setName("display")
 				.setDescription("Which set of packs you want to display (default is everything).")
 				.addChoices(
-					{ name: "Main", value: "main" },
+					{ name: "Faithful", value: "main" },
 					{ name: "Classic Faithful Jappa", value: "cf jappa" },
 					{ name: "Classic Faithful Programmer Art", value: "cfpa" },
 					{ name: "Jappa", value: "jappa" },
