@@ -81,10 +81,16 @@ export const event: Event = {
 
 		for (let arg of textureID) {
 			let id: string | number;
-			let display: string;
+			let display = "all";
 
-			if (!isNaN(Number(arg)) || arg.toLowerCase().trim() == "template") id = arg;
-			else {
+			let split = arg.toLowerCase().split(" ");
+			console.log(split);
+			if (split[0] == "template") {
+				id = split[0];
+				if (split.length > 1) display = split[1];
+			} else if (!isNaN(Number(arg))) {
+				id = arg;
+			} else {
 				id = arg.match(/\d+/g)[0];
 				display = arg
 					.match(/[a-zA-Z]+/g)[0]
