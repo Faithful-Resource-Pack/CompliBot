@@ -176,16 +176,20 @@ export async function textureComparison(
 
 	let displayed: string[][];
 	switch (set) {
-		case "main":
+		case "faithful":
+		case "f":
 			displayed = [PACKS[0]];
 			break;
-		case "cf jappa":
+		case "cfjappa":
+		case "cfj":
 			displayed = [PACKS[1]];
 			break;
 		case "cfpa":
+		case "cfp":
 			displayed = [PACKS[2]];
 			break;
 		case "jappa":
+		case "j":
 			displayed = [PACKS[0], PACKS[1]];
 			break;
 		default:
@@ -225,7 +229,14 @@ export async function textureComparison(
 	const magnified = (await magnify({ image: await loadImage(stitched), name: "magnified.png" }))[0];
 	const embed = new MessageEmbed().setImage("attachment://magnified.png");
 
-	if (isTemplate) embed.setTitle(`Comparison Template`);
+	if (isTemplate)
+		embed.setTitle(`Comparison Template`).addFields([
+			{
+				name: "Add these suffixes to display only a specific group of textures!",
+				value:
+					"\n- F: Show only Faithful textures\n- CFJ: Show only Classic Faithful Jappa textures\n- CFPA: Show only Classic Faithful Programmer Art textures\n- J: Show only Jappa textures",
+			},
+		]);
 	else
 		embed
 			.setTitle(`[#${id}] ${results.name}`)
