@@ -83,14 +83,19 @@ export const event: Event = {
 			let id: string | number;
 			let display = "all";
 
-			let split = arg.toLowerCase().split(" ");
-			console.log(split);
+			// check for [#template]
+			const split = arg.toLowerCase().split(" ");
 			if (split[0] == "template") {
 				id = split[0];
+				// check for template + display
 				if (split.length > 1) display = split[1];
+
 			} else if (!isNaN(Number(arg))) {
+				// if no display is passed in
 				id = arg;
+
 			} else {
+				// display is passed in so parse them separately
 				id = arg.match(/\d+/g)[0];
 				display = arg
 					.match(/[a-zA-Z]+/g)[0]
