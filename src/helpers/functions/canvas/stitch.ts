@@ -185,7 +185,8 @@ export async function textureComparison(
 			displayed = [PACKS[1]];
 			break;
 		case "cfpa":
-		case "cfp":
+		case "pa":
+		case "p":
 			displayed = [PACKS[2]];
 			break;
 		case "jappa":
@@ -234,7 +235,7 @@ export async function textureComparison(
 			{
 				name: "Add these suffixes to display only a specific group of textures!",
 				value:
-					"\n- F: Show only Faithful textures\n- CFJ: Show only Classic Faithful Jappa textures\n- CFPA: Show only Classic Faithful Programmer Art textures\n- J: Show only Jappa textures",
+					"\n- F: Show only Faithful textures\n- CFJ: Show only Classic Faithful Jappa textures\n- CFPA: Show only Classic Faithful Programmer Art textures\n- J: Show only Jappa textures\n- P: Show only Programmer Art textures (currently the same as CFPA)",
 			},
 		]);
 	else
