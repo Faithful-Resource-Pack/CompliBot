@@ -1,4 +1,4 @@
-// ! TODO IMPORTANT is it still usefull ?
+// ! TODO IMPORTANT is it still useful ?
 
 const firestorm = require("./index");
 const all = require("./all");

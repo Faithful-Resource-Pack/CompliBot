@@ -19,10 +19,9 @@ module.exports = {
 			process.exit();
 		} else {
 			const embed = new MessageEmbed()
-				.setAuthor({ name: client.user.username, iconURL: client.user.displayAvatarURL() })
-				.setDescription(`Banned <@${message.author.id}> \nReason: trying to stop me lmao`)
+				.setTitle(`@${message.author.username} has been banned`)
+				.addFields({ name: "Reason", value: "trying to stop me lmao" })
 				.setColor(settings.colors.blue)
-				.setTimestamp();
 			await message.reply({ embeds: [embed] });
 		}
 	},
