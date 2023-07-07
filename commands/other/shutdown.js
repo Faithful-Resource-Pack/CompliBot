@@ -21,7 +21,7 @@ module.exports = {
 			const embed = new MessageEmbed()
 				.setTitle(`@${message.author.username} has been banned`)
 				.addFields({ name: "Reason", value: "trying to stop me lmao" })
-				.setColor(settings.colors.blue)
+				.setColor(settings.colors.blue);
 			await message.reply({ embeds: [embed] });
 		}
 	},

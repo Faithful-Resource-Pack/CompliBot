@@ -14,10 +14,10 @@ const restartAutoDestroy = require("../functions/restartAutoDestroy");
 const saveDB = require("../functions/saveDB");
 
 /**
- * SCHEDULED FUNCTIONS : Texture Submission
- * - Global process (each day at 00:00 GMT)         : @function submissionProcess
- * - Download process (each day at 00:10 GMT)       : @function downloadToBot
- * - Push to GitHub process (each day at 00:15 GMT) : @function pushToGithub
+ * Send submission messages to their respective channels
+ * Runs each day at midnight CE(S)T
+ * @author Evorp
+ * @see retrieveSubmission
  */
 const submissionProcess = new CronJob("0 0 * * *", async () => {
 	for (let pack of Object.values(settings.submission.packs)) {
@@ -52,12 +52,26 @@ const submissionProcess = new CronJob("0 0 * * *", async () => {
 		}
 	}
 });
+/**
+ * Download passed textures
+ * Runs each day at 00:15 CE(S)T
+ * @author Evorp
+ * @see downloadResults
+ */
 const downloadToBot = new CronJob("15 0 * * *", async () => {
 	for (let pack of Object.values(settings.submission.packs)) {
 		await downloadResults(client, pack.channels.results);
 	}
 });
-let pushToGithub = new CronJob("30 0 * * *", async () => {
+
+/**
+ * Push downloaded textures to GitHub, and back up DB
+ * Runs each day at 00:30 CE(S)T
+ * @author Evorp, Juknum
+ * @see pushTextures
+ * @see saveDB
+ */
+const pushToGithub = new CronJob("30 0 * * *", async () => {
 	await pushTextures();
 	await saveDB(`Daily Backup`);
 });
@@ -65,7 +79,6 @@ let pushToGithub = new CronJob("30 0 * * *", async () => {
 module.exports = {
 	name: "ready",
 	once: true,
-	// eslint-disable-next-line no-unused-vars
 	async execute() {
 		console.log(`┌─────────────────────────────────────────────────────────────┐`);
 		console.log(`│                                                             │`);
@@ -90,9 +103,6 @@ module.exports = {
 
 		/**
 		 * START TEXTURE SUBMISSION PROCESS
-		 * @see submissionProcess
-		 * @see downloadToBot
-		 * @see pushToGithub
 		 */
 		submissionProcess.start();
 		downloadToBot.start();
@@ -100,10 +110,9 @@ module.exports = {
 
 		/**
 		 * LOOP EVENTS
-		 * @event doMCUpdateCheck() -> each minute | MINECRAFT UPDATE DETECTION INTERVAL
 		 */
 		setInterval(() => {
 			fetchSettings();
-		}, 60000);
+		}, 60000); // each minute
 	},
 };
