@@ -44,9 +44,11 @@ export const command: SlashCommand = {
 		} catch {
 			const finalEmbed = new MessageEmbed()
 				.setTitle(`@${user.username} has no contributions!`)
-				.setDescription("No webapp profile was found for this user. If this data looks incorrect, register at https://webapp.faithfulpack.net.")
+				.setDescription(
+					"No webapp profile was found for this user. If this data looks incorrect, register at https://webapp.faithfulpack.net.",
+				);
 
-			await interaction.editReply({ embeds: [finalEmbed] })
+			return await interaction.editReply({ embeds: [finalEmbed] });
 		}
 
 		let textureData = [];

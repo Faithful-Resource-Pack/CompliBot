@@ -89,11 +89,9 @@ export const event: Event = {
 				id = split[0];
 				// check for template + display
 				if (split.length > 1) display = split[1];
-
 			} else if (!isNaN(Number(arg))) {
 				// if no display is passed in
 				id = arg;
-
 			} else {
 				// display is passed in so parse them separately
 				id = arg.match(/\d+/g)[0];
