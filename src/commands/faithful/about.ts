@@ -34,11 +34,20 @@ export const command: SlashCommand = {
 
 		// if nobody to search up is provided, defaults to the person who asked
 		const user = interaction.options.getUser("user") ?? interaction.user;
-		const userData = (
-			await axios.get(
-				`${(interaction.client as Client).tokens.apiUrl}users/${user.id}/contributions`,
-			)
-		).data;
+		let userData: any;
+		try {
+			userData = (
+				await axios.get(
+					`${(interaction.client as Client).tokens.apiUrl}users/${user.id}/contributions`,
+				)
+			).data;
+		} catch {
+			const finalEmbed = new MessageEmbed()
+				.setTitle(`@${user.username} has no contributions!`)
+				.setDescription("No webapp profile was found for this user. If this data looks incorrect, register at https://webapp.faithfulpack.net.")
+
+			await interaction.editReply({ embeds: [finalEmbed] })
+		}
 
 		let textureData = [];
 		let i = 0;
