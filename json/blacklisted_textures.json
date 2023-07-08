@@ -399,6 +399,8 @@
         "textures/ui/control_gray.png",
         "textures/ui/jens_shocked.png",
         "textures/ui/sign_in_prompts_my_content.png",
-        "textures/ui/warning_sad_steve.png"
+        "textures/ui/warning_sad_steve.png",
+        "textures/ui/white_highlight_slot.png",
+        "textures/ui/recolorable_background.png"
     ]
 }
