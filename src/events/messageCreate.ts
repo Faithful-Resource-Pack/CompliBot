@@ -77,26 +77,27 @@ export const event: Event = {
 		 * @see textureComparison()
 		 */
 
-		let textureID = [...message.content.matchAll(/(?<=\[\#)(.*?)(?=\])/g)].map((i) => i[0]);
+		const results = message.content.match(/(?<=\[\#)(.*?)(?=\])/g);
 
-		for (let arg of textureID) {
+		if (!results || typeof results !== 'object') return;
+
+		for (let result of results) {
 			let id: string | number;
 			let display = "all";
 
 			// check for [#template]
-			const split = arg.toLowerCase().split(" ");
-			if (split[0] == "template") {
-				id = split[0];
+			const split = result.toLowerCase().split(" ");
+			if (split.includes("template")) {
+				id = "template";
 				// check for template + display
-				if (split.length > 1) display = split[1];
-			} else if (!isNaN(Number(arg))) {
+				if (split.length > 1) display = split.find((arg) => arg != "template");
+			} else if (!isNaN(Number(result))) {
 				// if no display is passed in
-				id = arg;
+				id = result;
 			} else {
 				// display is passed in so parse them separately
-				id = arg.match(/\d+/g)[0];
-				display = arg
-					.match(/[a-zA-Z]+/g)[0]
+				id = (result?.match(/\d+/g) ?? [''])[0];
+				display = (result?.match(/[a-zA-Z]+/g) ?? [''])[0]
 					.toLowerCase()
 					.trim();
 			}
