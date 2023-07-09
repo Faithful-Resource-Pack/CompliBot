@@ -1,5 +1,5 @@
 import { MessageEmbed } from "@client";
-import { Canvas, SKRSContext2D, createCanvas, loadImage, Image } from "@napi-rs/canvas";
+import { Canvas, SKRSContext2D, createCanvas, loadImage, Image, DOMMatrix } from "@napi-rs/canvas";
 import { MessageAttachment } from "discord.js";
 import getMeta from "./getMeta";
 
