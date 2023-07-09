@@ -75,9 +75,9 @@ module.exports = async function submitTexture(client, message) {
 			let version = paths[0].versions.sort(minecraftSorter)[0];
 
 			choice.push(
-				`\`[#${result.id}]\` ${result.name
-					.replace(search, `**${search}**`)
-					.replace(/_/g, "\\_")}\n> \`[${version}+]\` ${paths[0].path
+				`**[#${result.id}] ${result.name
+					.replace(search, `${search}`)
+					.replace(/_/g, "\\_")}**\n> \`[${version}+]\` ${paths[0].path
 					.replace(search, `**${search}**`)
 					.replace(/_/g, "\\_")}`,
 			);
