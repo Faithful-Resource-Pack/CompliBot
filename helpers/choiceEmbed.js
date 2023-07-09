@@ -2,6 +2,7 @@ const settings = require("../resources/settings.json");
 const strings = require("../resources/strings.json");
 
 const { MessageEmbed } = require("discord.js");
+const addDeleteReact = require("./addDeleteReact");
 
 /**
  * @typedef {Object} ChoiceParameter
@@ -11,7 +12,7 @@ const { MessageEmbed } = require("discord.js");
  * @property {String?} footer Embed footer
  * @property {String?} imageURL Embed footer image URL
  * @property {Number?} [max=1] Max number of emojis
- * @property {Number?} [timeout=60000] Timeout in ms,
+ * @property {Number?} [timeout=60000] Timeout in ms
  */
 
 /**
@@ -34,12 +35,12 @@ module.exports = async function (message, params, user) {
 	const DEFAULT = {
 		title: strings.choice_embed.title,
 		description: strings.choice_embed.description,
-		footer: "chooseEmbed",
+		footer: "Choice Embed",
 		color: settings.colors.blue,
 		max: 1,
 		separator: " — ",
 		imageURL: message.client.user.displayAvatarURL(),
-		timeout: 60000,
+		timeout: 30000,
 	};
 
 	// generate choice embed
@@ -47,14 +48,14 @@ module.exports = async function (message, params, user) {
 
 	params = Object.assign({}, DEFAULT, params);
 
-	if (!params.propositions) reject(new Error("No proposition in object"));
+	if (!params.propositions) throw new Error("No proposition in object");
 
 	let embed = new MessageEmbed().setTitle(params.title).setColor(params.color);
 
 	if (params.imageURL) embed = embed.setFooter({ text: params.footer, iconURL: params.imageURL });
 	else embed = embed.setFooter({ text: params.footer });
 
-	// popositions object
+	// propositions object
 	let propObj;
 	if (Array.isArray(params.propositions)) {
 		propObj = {};
@@ -94,14 +95,16 @@ module.exports = async function (message, params, user) {
 	// send message and add reactions
 	const embed_message = await sendPromise;
 	let embedMessage = embed_message;
-	for (let emoji of emojis) embedMessage.react(emoji);
+	for (let emoji of emojis) await embedMessage.react(emoji);
+
+	if (embedMessage.deletable) setTimeout(() => embedMessage.delete(), params.timeout);
 
 	// filter passed into the reaction waiting function
 	const filter_num = (reaction, user) =>
 		user.id === message.author.id && emojis.includes(reaction.emoji.name);
 
 	// wait for a user to react and store their choice
-	const collected = await awaitReactionTweaked(
+	const collected = await getChoice(
 		embedMessage,
 		{ filter_num, max: params.max, time: params.timeout, errors: ["time"] },
 		embedMessage.author.id,
@@ -122,18 +125,18 @@ module.exports = async function (message, params, user) {
 };
 
 /**
- * @param {Discord.Message} messageToReact Message to react to
+ * @param {DiscordMessage} messageToReact Message to react to
  * @param {import("discord.js").AwaitReactionsOptions} options Await reactions options
- * @param {String} botId bot ID to filter reactions from
+ * @param {String} botID bot ID to filter reactions from
  * @returns {Promise<Discord.Collection<string, Discord.MessageReaction>>}
  */
-async function awaitReactionTweaked(messageToReact, options, botId) {
+async function getChoice(messageToReact, options, botID) {
 	const collected = await messageToReact.awaitReactions(options);
 	const filtered = collected.filter(
-		(reac) => reac.users.cache.size != 1 || reac.users.cache.first().id !== botId,
+		(reac) => reac.users.cache.size != 1 || reac.users.cache.first().id !== botID,
 	);
 	// break condition
 	if (filtered.size) return collected;
 	// recursively run function until a user has reacted
-	return await awaitReactionTweaked(messageToReact, options, botId);
+	return await getChoice(messageToReact, options, botID);
 }

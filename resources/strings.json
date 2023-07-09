@@ -259,7 +259,8 @@
 		"invalid_format": "Please provide a valid `.png` file. Other file formats like `.zip` or `.tga` are not supported yet.",
 		"unknown_id": "Please choose a valid texture ID!\n",
 		"does_not_exist": "The specified texture or folder doesn't exist!",
-		"no_name_given": "You didn't provide a texture name!"
+		"no_name_given": "You didn't provide a texture name!",
+		"timed_out": "You didn't select a valid texture in time!"
 	},
 	"warn_user": { "footer": "Type %prefix%help to get more information about commands" },
 	"choice_embed": {

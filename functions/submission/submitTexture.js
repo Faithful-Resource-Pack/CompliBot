@@ -62,6 +62,7 @@ module.exports = async function submitTexture(client, message) {
 		if (!results.length) {
 			await invalidSubmission(message, strings.submission.does_not_exist + "\n" + search);
 			continue;
+
 		} else if (results.length == 1) {
 			await makeEmbed(client, message, results[0], attachment, param);
 			continue;
@@ -92,9 +93,14 @@ module.exports = async function submitTexture(client, message) {
 			if (process.env.DEBUG) console.error(message, error);
 		});
 
+		if (!userChoice) {
+			await invalidSubmission(message, strings.submission.timed_out)
+			continue;
+		}
+
 		await makeEmbed(client, message, results[userChoice.index], attachment, param);
 	}
-	// once all textures in image are done iterating the message is "safe" to delete
+	// once everything is done iterating the message is "safe" to delete
 	// since the choiceEmbed relies on the original message not being deleted
 	if (message.deletable) await message.delete();
 };
@@ -166,7 +172,6 @@ async function invalidSubmission(message, error = "Not given") {
 
 		const msg = await message.reply({ embeds: [embed] });
 		if (msg.deletable) setTimeout(() => msg.delete(), 30000);
-		if (message.deletable) setTimeout(() => message.delete(), 30010);
 	} catch (error) {
 		console.error(error);
 	}
