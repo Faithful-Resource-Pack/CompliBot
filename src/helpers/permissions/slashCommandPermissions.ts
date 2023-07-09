@@ -2,28 +2,29 @@ import { getRolesIds } from "@helpers/roles";
 import { CommandInteraction, GuildMemberRoleManager } from "discord.js";
 
 export interface permissionOptions {
-	/*
-    type sets weather checkPermissions
-    should use the config or ids to
-    run its checks. By default set to
-    "config" as its most used.
-
-    IF TYPE IS CONFIG:
-        it will use names
-        instead of ids and look them up in
-        `config.json`.
-
-        ? servers: ["dev", "faithful"] => ["720677267424018526", "773983706582482946"]
-        ? roles: ["trial_moderators"] => ["890728061128036353", "890729435395936286", "938859628144513024"]
-        roles have different roles for different servers so it will check all of them.
-
-        !users is an exception to this and will still be tied to ids
-    IF TYPE IS ID:
-        it wont perform any lookup and ids
-        will stay the same.
-
-    added presets for an easier time
-    */
+	/**
+	 * type sets whether checkPermissions
+	 * should use the config or ids to
+	 * run its checks. By default set to
+	 * "config" as its most used.
+	 *
+	 * IF TYPE IS CONFIG:
+	 *     it will use names
+	 *     instead of ids and look them up in
+	 *     `config.json`.
+	 *
+	 *     ? servers: ["dev", "faithful"] => ["720677267424018526", "773983706582482946"]
+	 *     ? roles: ["trial_moderators"] => ["890728061128036353", "890729435395936286", "938859628144513024"]
+	 *     roles have different roles for different servers so it will check all of them.
+	 *
+	 *     !users is an exception to this and will still be tied to ids
+	 *
+	 * IF TYPE IS ID:
+	 *     it wont perform any lookup and ids
+	 *     will stay the same.
+	 *
+	 * added presets for an easier time
+	 */
 	type?: "id" | "config" | "dev" | "mod" | "council";
 
 	servers?: Array<string>; //will only use ids if type == id

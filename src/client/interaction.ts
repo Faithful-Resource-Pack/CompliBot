@@ -1,15 +1,10 @@
-import {
-	ButtonInteraction,
-	CommandInteraction,
-	Interaction,
-	SelectMenuInteraction,
-} from "discord.js";
+import { ButtonInteraction, CommandInteraction, SelectMenuInteraction } from "discord.js";
 import { string, keys, Placeholder } from "@helpers/locales";
 import {
 	checkPermissions, //<- hover over me (i know this is stupid its a jsdoc thing where you cant carry shit)
 	permissionCodeEnum,
 	permissionOptions,
-} from "@helpers/permissions v2/slashCommandPermissions";
+} from "@helpers/permissions/slashCommandPermissions";
 
 declare module "discord.js" {
 	interface CommandInteraction {

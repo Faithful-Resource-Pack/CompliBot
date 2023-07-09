@@ -11,41 +11,41 @@ const config: Config = ConfigJson;
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
 		.setName("botban")
-		.setDescription("Manages the banlist *(devs naughty list :D).")
-		.addSubcommand((view) => {
-			return view
+		.setDescription("Manages the ban list (devs naughty list :D).")
+		.addSubcommand((view) =>
+			view
 				.setName("view")
-				.setDescription("view the banlist")
-				.addStringOption((str) => {
-					return str
+				.setDescription("View the ban list")
+				.addStringOption((option) =>
+					option
 						.setName("format")
+						.setDescription("The format the ban list should be displayed in.")
 						.setRequired(false)
-						.setDescription("The format the banlist should be displayed.")
 						.addChoices(
 							{ name: "Json", value: "json" },
 							{ name: "Embed", value: "emb" },
 							{ name: "Text", value: "txt" },
 							{ name: "Mentions", value: "ment" },
-						);
-				});
-		})
-		.addSubcommand((audit) => {
-			return audit
+						),
+				),
+		)
+		.addSubcommand((audit) =>
+			audit
 				.setName("audit")
 				.setDescription("change the banlist")
-				.addUserOption((userOpt) => {
-					return userOpt
+				.addUserOption((option) =>
+					option
 						.setName("subject")
-						.setDescription("The user to affect from using the bot")
-						.setRequired(true);
-				})
-				.addBooleanOption((bool) => {
-					return bool
+						.setDescription("The user to edit the permissions of.")
+						.setRequired(true),
+				)
+				.addBooleanOption((option) =>
+					option
 						.setName("pardon")
-						.setDescription("Weather to undo an oopsie or not")
-						.setRequired(false);
-				});
-		}),
+						.setDescription("Whether to undo an oopsie or not.")
+						.setRequired(false),
+				),
+		),
 	execute: new Collection<string, SlashCommandI>()
 		.set("audit", async (interaction: CommandInteraction, client: Client) => {
 			if (
@@ -71,7 +71,7 @@ export const command: SlashCommand = {
 				);
 
 			if (interaction.options.getBoolean("pardon")) {
-				banlist.ids.filter(async (v) => {
+				banlist.ids.filter(async (v: string) => {
 					return v != victimID; //removes only the id of the victim
 				});
 			} else {
