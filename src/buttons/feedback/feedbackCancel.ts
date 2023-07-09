@@ -18,9 +18,7 @@ export const button: Button = {
 			});
 
 		await interaction.reply({
-			content: (
-				await interaction.getEphemeralString({ string: "Success.Cancel" })
-			).replace(
+			content: (await interaction.getEphemeralString({ string: "Success.Cancel" })).replace(
 				"%ACTION%",
 				await interaction.getEphemeralString({ string: "Command.Feedback.Title" }),
 			),

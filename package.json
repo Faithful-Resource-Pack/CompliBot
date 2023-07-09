@@ -10,9 +10,9 @@
         "prettier": "prettier \"{,!(node_modules)/**/}*.ts\" --config .prettierrc --write"
     },
     "devDependencies": {
-        "prettier": "^2.8.8",
+        "prettier": "^3.0.0",
         "ts-node": "^10.9.1",
-        "ts-node-dev": "^1.1.8",
+        "ts-node-dev": "^2.0.0",
         "tsc-alias": "^1.8.7",
         "tsconfig-paths": "^4.2.0",
         "typescript": "^5.1.6"
