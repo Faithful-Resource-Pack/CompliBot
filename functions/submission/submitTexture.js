@@ -62,7 +62,6 @@ module.exports = async function submitTexture(client, message) {
 		if (!results.length) {
 			await invalidSubmission(message, strings.submission.does_not_exist + "\n" + search);
 			continue;
-
 		} else if (results.length == 1) {
 			await makeEmbed(client, message, results[0], attachment, param);
 			continue;
@@ -94,7 +93,7 @@ module.exports = async function submitTexture(client, message) {
 		});
 
 		if (!userChoice) {
-			await invalidSubmission(message, strings.submission.timed_out)
+			await invalidSubmission(message, strings.submission.timed_out);
 			continue;
 		}
 
@@ -156,21 +155,21 @@ async function invalidSubmission(message, error = "Not given") {
 	)
 		return;
 
-	try {
-		// TODO: when discord finishes name migration remove this code and just use message.author.username everywhere
-		const authorName =
-			message.author.discriminator == 0 ? `@${message.author.username}` : message.author.tag;
-		const embed = new MessageEmbed()
-			.setAuthor({ name: authorName, iconURL: message.author.displayAvatarURL() })
-			.setColor(settings.colors.red)
-			.setTitle(strings.submission.autoreact.error_title)
-			.setFooter({
-				text: strings.submission.autoreact.error_footer,
-				iconURL: message.client.user.displayAvatarURL(),
-			})
-			.setDescription(error);
+	// TODO: when discord finishes name migration remove this code and just use message.author.username everywhere
+	const authorName =
+		message.author.discriminator == 0 ? `@${message.author.username}` : message.author.tag;
+	const embed = new MessageEmbed()
+		.setAuthor({ name: authorName, iconURL: message.author.displayAvatarURL() })
+		.setColor(settings.colors.red)
+		.setTitle(strings.submission.autoreact.error_title)
+		.setDescription(error)
+		.setFooter({
+			text: strings.submission.autoreact.error_footer,
+			iconURL: message.client.user.displayAvatarURL(),
+		});
 
-		const msg = await message.reply({ embeds: [embed] });
+	try {
+		const msg = await message.channel.send({ embeds: [embed] });
 		if (msg.deletable) setTimeout(() => msg.delete(), 30000);
 	} catch (error) {
 		console.error(error);

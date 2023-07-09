@@ -252,7 +252,7 @@
 		"search_description": "Choose one texture using emoji reactions.\nIf you don't see what you're looking for, be more specific.\n",
 		"autoreact": {
 			"error_title": "Auto Reaction Failed",
-			"error_footer": "Submission will be removed in 30 seconds, please re-submit!"
+			"error_footer": "This message will self-destruct in 30 seconds, please re-submit!"
 		},
 		"no_file_attached": "Your submission has to have a file attached!",
 		"image_not_attached": "You didn't attach an image! ",
