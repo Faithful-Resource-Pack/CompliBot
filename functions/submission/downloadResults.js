@@ -4,11 +4,11 @@ const getMessages = require("../../helpers/getMessages");
 const texturesCollection = require("../../helpers/firestorm/texture");
 const contributionsCollection = require("../../helpers/firestorm/contributions");
 const pushTextures = require("./pushTextures");
-const fetch = (...args) => import("node-fetch").then(({ default: fetch }) => fetch(...args));
 const date = require("../../helpers/date.js");
 
 const Buffer = require("buffer/").Buffer;
 const { promises, writeFile } = require("fs");
+const { default: axios } = require("axios");
 
 /**
  * Download textures from the given text channel
@@ -104,8 +104,8 @@ module.exports = async function downloadResults(client, channelInID, instapass =
 			}
 		}
 
-		const response = await fetch(texture.url);
-		const buffer = await response.arrayBuffer();
+		// get the texture image itself as a buffer
+		const buffer = (await axios.get(texture.url, { responseType: "arraybuffer" })).data;
 
 		// download the texture to all its paths
 		for (let path of allPaths) {
@@ -126,7 +126,7 @@ module.exports = async function downloadResults(client, channelInID, instapass =
 		// prepare the authors for the texture
 		allContribution.push({
 			date: texture.date,
-			resolution: repoKey.includes("32") ? 32 : 64,
+			resolution: repoKey.includes("32") ? 32 : 64, // stupid workaround but it works
 			pack: repoKey,
 			texture: `${texture.id}`,
 			authors: texture.authors,
@@ -152,9 +152,6 @@ module.exports = async function downloadResults(client, channelInID, instapass =
 
 	let result = await contributionsCollection.addBulk(allContribution);
 
-	if (instapass) {
-		await pushTextures(`Instapassed ${instapassName} from ${date()}`);
-	}
-
+	if (instapass) await pushTextures(`Instapassed ${instapassName} from ${date()}`);
 	if (process.DEBUG) console.log("ADDED CONTRIBUTIONS: " + result.join(" "));
 };
