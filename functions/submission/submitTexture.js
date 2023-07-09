@@ -109,8 +109,8 @@ async function getAuthors(message) {
 	let authors = [message.author.id];
 
 	// regex to detect text between curly brackets
-	const names = [...message.content.matchAll(/(?<=\{)(.*?)(?=\})/g)].map((i) =>
-		i[0].toLowerCase().trim(),
+	const names = (message.content.match(/(?<=\{)(.*?)(?=\})/g) ?? []).map((name) =>
+		name.toLowerCase().trim(),
 	);
 
 	if (names.length) {
@@ -127,7 +127,7 @@ async function getAuthors(message) {
 	}
 
 	// detect by ping (using regex to ensure users not in the server get included)
-	const mentions = [...message.content.matchAll(/(?<=\<\@)(.*?)(?=\>)/g)].map((i) => i[0]); // map to only get the first bit
+	const mentions = message.content.match(/(?<=\<\@)(.*?)(?=\>)/g) ?? [];
 	mentions.forEach((mention) => {
 		if (!authors.includes(mention)) authors.push(mention);
 	});

@@ -186,7 +186,10 @@ module.exports = async function palette(message, url, userID) {
 	});
 
 	// create the attachement
-	const colorImageAttachment = new MessageAttachment(colorCanvas.toBuffer("image/png"), "colors.png");
+	const colorImageAttachment = new MessageAttachment(
+		colorCanvas.toBuffer("image/png"),
+		"colors.png",
+	);
 
 	if (userID) await sendAttachment(message, colorImageAttachment, userID, embed);
 	else {
