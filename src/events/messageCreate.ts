@@ -79,7 +79,7 @@ export const event: Event = {
 
 		const results = message.content.match(/(?<=\[\#)(.*?)(?=\])/g);
 
-		if (!results || typeof results !== 'object') return;
+		if (!results || typeof results !== "object") return;
 
 		for (let result of results) {
 			let id: string | number;
@@ -96,10 +96,8 @@ export const event: Event = {
 				id = result;
 			} else {
 				// display is passed in so parse them separately
-				id = (result?.match(/\d+/g) ?? [''])[0];
-				display = (result?.match(/[a-zA-Z]+/g) ?? [''])[0]
-					.toLowerCase()
-					.trim();
+				id = (result?.match(/\d+/g) ?? [""])[0];
+				display = (result?.match(/[a-zA-Z]+/g) ?? [""])[0].toLowerCase().trim();
 			}
 
 			try {
