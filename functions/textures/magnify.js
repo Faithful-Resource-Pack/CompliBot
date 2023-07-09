@@ -1,4 +1,4 @@
-const { createCanvas, loadImage } = require("canvas");
+const { createCanvas, loadImage } = require("@napi-rs/canvas");
 
 const { MessageAttachment } = require("discord.js");
 const addDeleteReact = require("../../helpers/addDeleteReact");
@@ -29,7 +29,7 @@ async function magnifyAttachment(url, name = "magnified.png") {
 	canvasResultCTX.imageSmoothingEnabled = false;
 	canvasResultCTX.drawImage(tmp, 0, 0, width, height);
 
-	return new MessageAttachment(canvasResult.toBuffer(), name);
+	return new MessageAttachment(canvasResult.toBuffer("image/png"), name);
 }
 
 /**

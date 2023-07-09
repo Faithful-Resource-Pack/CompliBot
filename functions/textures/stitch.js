@@ -1,4 +1,4 @@
-const { loadImage, createCanvas } = require("canvas");
+const { loadImage, createCanvas } = require("@napi-rs/canvas");
 
 /**
  * I genuinely have no idea how this works but it seems to be holding up
@@ -72,7 +72,7 @@ class HorizontalStitcher {
 			}
 		}
 
-		return canvas.toBuffer();
+		return canvas.toBuffer("image/png");
 	}
 }
 
@@ -155,7 +155,7 @@ class FullStitcher {
 				}
 			}
 		}
-		return canvas.toBuffer();
+		return canvas.toBuffer("image/png");
 	}
 }
 

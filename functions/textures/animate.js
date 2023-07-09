@@ -1,4 +1,4 @@
-const Canvas = require("canvas");
+const Canvas = require("@napi-rs/canvas");
 const GIFEncoderFixed = require("../../modified_libraries/GIFEncoder");
 
 const strings = require("../../resources/strings.json");

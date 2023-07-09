@@ -1,4 +1,4 @@
-const { createCanvas, loadImage } = require("canvas");
+const { createCanvas, loadImage } = require("@napi-rs/canvas");
 const settings = require("../../resources/settings.json");
 
 const { MessageAttachment } = require("discord.js");
@@ -133,7 +133,7 @@ module.exports = async function tile(message, url, type, userID) {
 		canvasContext.clearRect(0, dimension.height * 2, dimension.width, dimension.height); // bottom left
 	}
 
-	const attachment = new MessageAttachment(canvas.toBuffer(), "tiled.png");
+	const attachment = new MessageAttachment(canvas.toBuffer("image/png"), "tiled.png");
 
 	let embedMessage;
 	if (userID) embedMessage = await sendAttachment(message, attachment, userID);
