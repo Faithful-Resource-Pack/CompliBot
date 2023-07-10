@@ -45,7 +45,7 @@ export const command: SlashCommand = {
 		}
 
 		if (choice) {
-			choice = choice.toLowerCase(); // remove case sensitivity for easier parsing
+			choice = choice.toLocaleLowerCase(); // remove case sensitivity for easier parsing
 			if (
 				!guidelineJSON.choices
 					.map((i) => i.keywords)

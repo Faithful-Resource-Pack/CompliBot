@@ -68,6 +68,7 @@ export const event: Event = {
 				message.reply({ embeds: [helloEmbed] }).then((message) => message.deleteButton(true));
 				break;
 		}
+
 		if (message.content.includes("(╯°□°）╯︵ ┻━┻"))
 			return await message.reply({ content: "┬─┬ ノ( ゜-゜ノ) calm down bro" });
 
@@ -77,27 +78,26 @@ export const event: Event = {
 		 * @see textureComparison()
 		 */
 
-		const results = message.content.match(/(?<=\[\#)(.*?)(?=\])/g);
-
-		if (!results || typeof results !== "object") return;
+		const results = message.content.match(/(?<=\[\#)(.*?)(?=\])/g) ?? [];
+		if (!results.length) return;
 
 		for (let result of results) {
 			let id: string | number;
 			let display = "all";
 
 			// check for [#template]
-			const split = result.toLowerCase().split(" ");
+			const split = result.toLocaleLowerCase().split(" ");
 			if (split.includes("template")) {
 				id = "template";
 				// check for template + display
-				if (split.length > 1) display = split.find((arg) => arg != "template");
+				if (split.length > 1) display = split.find((arg) => arg !== "template");
 			} else if (!isNaN(Number(result))) {
 				// if no display is passed in
 				id = result;
 			} else {
 				// display is passed in so parse them separately
 				id = (result?.match(/\d+/g) ?? [""])[0];
-				display = (result?.match(/[a-zA-Z]+/g) ?? [""])[0].toLowerCase().trim();
+				display = (result?.match(/[a-zA-Z]+/g) ?? [""])[0].toLocaleLowerCase().trim();
 			}
 
 			try {
