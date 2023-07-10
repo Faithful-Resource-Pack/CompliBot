@@ -9,7 +9,7 @@ import { ISizeCalculationResult } from "image-size/dist/types/interface";
 import { colors } from "@helpers/colors";
 import { Contributions, Texture, Paths, Uses, Contribution } from "@helpers/interfaces/firestorm";
 import { animateAttachment } from "./canvas/animate";
-import { FormatName, MinecraftSorter, AddPathsToEmbed } from "@helpers/sorter";
+import { formatName, minecraftSorter, addPathsToEmbed } from "@helpers/sorter";
 
 export const getTextureMessageOptions = async (options: {
 	texture: Texture;
@@ -37,7 +37,7 @@ export const getTextureMessageOptions = async (options: {
 			mcmeta = (
 				await axios.get(
 					`https://raw.githubusercontent.com/CompliBot/Default-Java/${
-						animatedPath.versions.sort(MinecraftSorter).reverse()[0]
+						animatedPath.versions.sort(minecraftSorter).reverse()[0]
 					}/assets/${animatedUse.assets}/${animatedPath.name}.mcmeta`,
 				)
 			).data;
@@ -46,7 +46,7 @@ export const getTextureMessageOptions = async (options: {
 		}
 	}
 
-	const [strPack, strIconURL] = FormatName(pack);
+	const [strPack, strIconURL] = formatName(pack);
 
 	const files: Array<MessageAttachment> = [];
 	const embed = new MessageEmbed().setTitle(`[#${texture.id}] ${texture.name}`).setFooter({
@@ -119,7 +119,7 @@ export const getTextureMessageOptions = async (options: {
 		}
 	}
 
-	embed.addFields(AddPathsToEmbed(texture));
+	embed.addFields(addPathsToEmbed(texture));
 
 	// magnifying the texture in thumbnail
 	if (animated) {

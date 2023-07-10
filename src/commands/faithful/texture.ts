@@ -5,7 +5,7 @@ import { getTextureMessageOptions } from "@functions/getTexture";
 import { MessageActionRow, MessageSelectMenu, MessageSelectOptionData } from "discord.js";
 import axios from "axios";
 import { imageButtons } from "@helpers/buttons";
-import { MinecraftSorter } from "@helpers/sorter";
+import { minecraftSorter } from "@helpers/sorter";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -90,7 +90,7 @@ export const command: SlashCommand = {
 			for (let i = 0; i < results.length; i++) {
 				results[i] = {
 					label: `[#${results[i].id}] (${
-						results[i].paths[0].versions.sort(MinecraftSorter).reverse()[0]
+						results[i].paths[0].versions.sort(minecraftSorter).reverse()[0]
 					}) ${results[i].name}`,
 					description: results[i].paths[0].name,
 					value: `${results[i].id}__${interaction.options.getString("pack", true)}`,

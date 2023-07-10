@@ -150,7 +150,7 @@ export async function verticalStitcher(urls: string[], gap: number = 0) {
 import { magnify } from "@functions/canvas/magnify";
 import { Client, MessageEmbed } from "@client";
 import { MessageAttachment } from "discord.js";
-import { FormatName, AddPathsToEmbed } from "@helpers/sorter";
+import { formatName, addPathsToEmbed } from "@helpers/sorter";
 import axios from "axios";
 
 /**
@@ -163,7 +163,7 @@ import axios from "axios";
 export async function textureComparison(
 	client: Client,
 	id: number | string,
-	set: string = "all",
+	display: string = "all",
 ): Promise<[MessageEmbed, MessageAttachment]> {
 	const isTemplate: boolean = typeof id == "string" && id.toLowerCase() == "template";
 	const results = (await axios.get(`${client.tokens.apiUrl}textures/${id}/all`)).data;
@@ -175,7 +175,7 @@ export async function textureComparison(
 	];
 
 	let displayed: string[][];
-	switch (set) {
+	switch (display) {
 		case "faithful":
 		case "f":
 			displayed = [PACKS[0]];
@@ -206,7 +206,7 @@ export async function textureComparison(
 			try {
 				let textureURL: string;
 				if (isTemplate) {
-					const [_, strIconURL] = FormatName(pack, "64");
+					const [_, strIconURL] = formatName(pack, "64");
 					textureURL = strIconURL;
 				} else
 					textureURL = (await axios.get(`${client.tokens.apiUrl}textures/${id}/url/${pack}/latest`))
@@ -235,14 +235,19 @@ export async function textureComparison(
 			{
 				name: "Add these suffixes to display only a specific group of textures!",
 				value:
-					"\n- F: Show only Faithful textures\n- CFJ: Show only Classic Faithful Jappa textures\n- CFPA: Show only Classic Faithful Programmer Art textures\n- J: Show only Jappa textures\n- P: Show only Programmer Art textures (currently the same as CFPA)",
+					"\
+					\n- F: Show only Faithful textures \
+					\n- CFJ: Show only Classic Faithful Jappa textures \
+					\n- CFPA: Show only Classic Faithful Programmer Art textures \
+					\n- J: Show only Jappa textures \
+					\n- P: Show only Programmer Art textures (currently the same as CFPA)",
 			},
 		]);
 	else
 		embed
 			.setTitle(`[#${id}] ${results.name}`)
 			.setURL(`https://webapp.faithfulpack.net/#/gallery/java/32x/latest/all/?show=${id}`)
-			.addFields(AddPathsToEmbed(results))
+			.addFields(addPathsToEmbed(results))
 			.setFooter({ text: "Use [#template] for more information!" });
 
 	return [embed, magnified];

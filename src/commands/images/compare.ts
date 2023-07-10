@@ -4,7 +4,7 @@ import { Client, CommandInteraction, MessageEmbed, Message } from "@client";
 import { textureComparison } from "@functions/canvas/stitch";
 import { MessageSelectMenu, MessageActionRow, MessageSelectOptionData } from "discord.js";
 import axios from "axios";
-import { MinecraftSorter } from "@helpers/sorter";
+import { minecraftSorter } from "@helpers/sorter";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -83,7 +83,7 @@ export const command: SlashCommand = {
 			for (let i = 0; i < results.length; i++) {
 				results[i] = {
 					label: `[#${results[i].id}] (${
-						results[i].paths[0].versions.sort(MinecraftSorter).reverse()[0]
+						results[i].paths[0].versions.sort(minecraftSorter).reverse()[0]
 					}) ${results[i].name}`,
 					description: results[i].paths[0].name,
 					value: `${results[i].id}__${display}`,

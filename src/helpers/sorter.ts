@@ -7,7 +7,7 @@ import ConfigJson from "@json/config.json";
  * Use this function as a filter for the sort() method:
  * [].sort(MinecraftSorter)
  */
-export const MinecraftSorter: any = (a: string, b: string) => {
+export const minecraftSorter = (a: string, b: string) => {
 	const _a = a.split(".").map((s) => parseInt(s));
 	const _b = b.split(".").map((s) => parseInt(s));
 
@@ -24,13 +24,13 @@ export const MinecraftSorter: any = (a: string, b: string) => {
 	return _a.length == _b.length ? 0 : _a.length < _b.length ? -1 : 1; // longer length wins
 };
 
-export const AddPathsToEmbed: any = (texture: Texture): EmbedFieldData[] => {
+export const addPathsToEmbed = (texture: Texture): EmbedFieldData[] => {
 	let tmp = {};
 	texture.uses.forEach((use) => {
 		texture.paths
 			.filter((el) => el.use === use.id)
 			.forEach((p) => {
-				const versions = p.versions.sort(MinecraftSorter);
+				const versions = p.versions.sort(minecraftSorter);
 				if (tmp[use.edition])
 					tmp[use.edition].push(
 						`\`[${
@@ -68,7 +68,7 @@ export const AddPathsToEmbed: any = (texture: Texture): EmbedFieldData[] => {
 	return final;
 };
 
-export const FormatName = (pack: string, size: string = "512"): string[] => {
+export const formatName = (pack: string, size: string = "512"): string[] => {
 	// TODO: use API here
 	let strPack: string;
 	let strIconURL = ConfigJson.images + `branding/logos/transparent/${size}/`;

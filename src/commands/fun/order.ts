@@ -43,7 +43,7 @@ export const command: SlashCommand = {
 		await interaction.deferReply();
 		let advice: string = null;
 
-		// send an anotation following the gif
+		// send an annotation following the gif
 		for (const option of options) {
 			if (option[1] === interaction.options.getString("item")) {
 				switch (option[0]) {
