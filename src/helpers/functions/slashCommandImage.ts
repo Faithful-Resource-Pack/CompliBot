@@ -12,12 +12,7 @@ import { Collection, MessageAttachment, User } from "discord.js";
 /**
  * Check if there is a message with a message within the `limit` of messages in the `channel`
  * Do a await message if the userInteraction.doInteraction is set to true
- * @param interaction {TextChannel}
- * @param limit {Number}
- * @param userInteraction.doInteraction {boolean}
- * @param userInteraction.user {User}
- * @param userInteraction.time {Number}
- * @returns {Promise<string>} image url
+ * @returns image url
  */
 export async function fetchMessageImage(
 	interaction: CommandInteraction,
@@ -91,20 +86,16 @@ export async function fetchMessageImage(
 
 /**
  * Check if the message has a image attached somewhere
- * @param message Discord.Message
  * @returns image URL
  */
 export async function getImageFromMessage(message: Message): Promise<string> {
-	// if image is attached
-	if (message.attachments.size > 0 && message.attachments.first().url.match(/\.(jpeg|jpg|png)$/))
+	// prioritize thumbnails for /texture and similar
+	if (message?.embeds[0])
+		return message.embeds[0].thumbnail?.url ?? message.embeds[0].image.url;
+
+	// for general images
+	else if (message.attachments.size > 0 && message.attachments.first().url.match(/\.(jpeg|jpg|png)$/))
 		return message.attachments.first().url;
-	// else if the message is an embed
-	else if (message.embeds[0]) {
-		// if the embeds has an image field
-		if (message.embeds[0].image) return message.embeds[0].image.url;
-		// else if the embed has a thumbnail field
-		else if (message.embeds[0].thumbnail) return message.embeds[0].thumbnail.url;
-	}
 
 	// if no images attached to the first parent reply, check if there is another parent reply (recursive go brr)
 	if (message.type === "REPLY") {
