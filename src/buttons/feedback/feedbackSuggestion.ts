@@ -38,7 +38,7 @@ export const button: Button = {
 		const embedResponse = new MessageEmbed()
 			.setTitle(await interaction.getEphemeralString({ string: "Command.Feedback.Sent" }))
 			.setDescription(await message.embeds[0].description)
-			.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL() })
+			.setAuthor({ name: interaction.user.username, iconURL: interaction.user.avatarURL() })
 			.setTimestamp();
 
 		const reply: Message = (await interaction.reply({
@@ -52,7 +52,7 @@ export const button: Button = {
 		);
 
 		const embedFeedback = new MessageEmbed()
-			.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL() })
+			.setAuthor({ name: interaction.user.username, iconURL: interaction.user.avatarURL() })
 			.setTitle(`[SUGGESTION] Feedback`)
 			.setDescription(
 				`[Jump to message](${url})\n` +

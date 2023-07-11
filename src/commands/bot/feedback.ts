@@ -13,7 +13,7 @@ export const command: SlashCommand = {
 		),
 	execute: async (interaction: CommandInteraction, client: Client) => {
 		const embedPreview = new MessageEmbed()
-			.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL() })
+			.setAuthor({ name: interaction.user.username, iconURL: interaction.user.avatarURL() })
 			.setTitle(await interaction.getEphemeralString({ string: "Command.Feedback.Preview" }))
 			.setDescription(interaction.options.getString("message"))
 			.setTimestamp()

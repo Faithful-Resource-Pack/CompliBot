@@ -64,7 +64,7 @@ export const command: SlashCommand = {
 			return undefined;
 		});
 		const embed = new MessageEmbed()
-			.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL() })
+			.setAuthor({ name: interaction.user.username, iconURL: interaction.user.avatarURL() })
 			.setTitle(`Click to join ${activities[parseInt(interaction.options.getString("activity"))]}`);
 		if (data && data.data["code"]) {
 			embed.setURL(`https://discord.com/invite/${data.data["code"]}`);

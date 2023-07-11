@@ -164,7 +164,7 @@ export const errorHandler: Function = async (client: Client, reason: any, type: 
 		.setAuthor({ name: type, iconURL: `${client.config.images}bot/error.png` }) // much compressed than .title() & .thumbnail()
 		.setColor(colors.red)
 		.setTimestamp()
-		.setFooter({ text: client.user.tag, iconURL: client.user.avatarURL() });
+		.setFooter({ text: client.user.username, iconURL: client.user.avatarURL() });
 
 	await channel.send({ embeds: [embed] }).catch(console.error);
 	await channel.send({ files: [logConstructor(client, reason)] }).catch(console.error); // send after because the file is displayed before the embed (embeds are prioritized)
