@@ -1,11 +1,11 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { Client, CommandInteraction, Message, MessageEmbed } from "@client";
+import { CommandInteraction, Message, MessageEmbed } from "@client";
 import { getTextureMessageOptions } from "@functions/getTexture";
 import { MessageActionRow, MessageSelectMenu, MessageSelectOptionData } from "discord.js";
-import axios from "axios";
 import { imageButtons } from "@helpers/buttons";
 import { minecraftSorter } from "@helpers/sorter";
+import parseTextureName from "@functions/parseTextureName";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -34,23 +34,7 @@ export const command: SlashCommand = {
 		),
 	execute: async (interaction: CommandInteraction) => {
 		var name = interaction.options.getString("name");
-		if (name.includes(".png")) name = name.replace(".png", "");
-		name = name.replace(/ /g, "_");
-		if (name.length < 3) {
-			// textures like "bed" exist :/
-			interaction.reply({
-				content: "You need at least three characters to start a texture search!",
-				ephemeral: true,
-			});
-			return;
-		}
-
-		/**
-		 * TODO: find a fix for this Error: connect ETIMEDOUT 172.67.209.9:443 at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1161:16)
-		 */
-		const results: Array<any> = (
-			await axios.get(`${(interaction.client as Client).tokens.apiUrl}textures/${name}/all`)
-		).data;
+		const results = await parseTextureName(name, interaction);
 
 		if (!results.length) {
 			// no results

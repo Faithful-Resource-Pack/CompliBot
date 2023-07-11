@@ -3,8 +3,8 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { Client, CommandInteraction, MessageEmbed, Message } from "@client";
 import { textureComparison } from "@functions/canvas/stitch";
 import { MessageSelectMenu, MessageActionRow, MessageSelectOptionData } from "discord.js";
-import axios from "axios";
 import { minecraftSorter } from "@helpers/sorter";
+import parseTextureName from "@functions/parseTextureName";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -30,22 +30,10 @@ export const command: SlashCommand = {
 				.setRequired(false),
 		),
 	execute: async (interaction: CommandInteraction) => {
-		let name = interaction.options.getString("texture", true);
 		const display = interaction.options.getString("display", false) ?? "all";
-		if (name.includes(".png")) name = name.replace(".png", "");
-		name = name.replace(/ /g, "_");
-		if (name.length < 3) {
-			// textures like "bed" exist :/
-			interaction.reply({
-				content: "You need at least three characters to start a texture search!",
-				ephemeral: true,
-			});
-			return;
-		}
 
-		const results: Array<any> = (
-			await axios.get(`${(interaction.client as Client).tokens.apiUrl}textures/${name}/all`)
-		).data;
+		const name = interaction.options.getString("texture", true);
+		const results = await parseTextureName(name, interaction);
 
 		if (!results.length) {
 			// no results
