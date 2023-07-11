@@ -5,6 +5,7 @@ import {
 	permissionCodeEnum,
 	permissionOptions,
 } from "@helpers/permissions/slashCommandPermissions";
+import { MessageEmbed } from "@client";
 
 declare module "discord.js" {
 	interface CommandInteraction {
@@ -49,18 +50,22 @@ async function perms(options: permissionOptions): Promise<boolean> {
 	let output: string = "";
 
 	if (!code[permissionCodeEnum.users])
-		output += "\n\t" + (await this.getEphemeralString({ string: "Permissions.temp.user" }));
+		output += "\n" + (await this.getEphemeralString({ string: "Permissions.temp.user" }));
 	if (!code[permissionCodeEnum.servers])
-		output += "\n\t" + (await this.getEphemeralString({ string: "Permissions.temp.server" }));
+		output += "\n" + (await this.getEphemeralString({ string: "Permissions.temp.server" }));
 	if (!code[permissionCodeEnum.roles])
-		output += "\n\t" + (await this.getEphemeralString({ string: "Permissions.temp.role" }));
+		output += "\n" + (await this.getEphemeralString({ string: "Permissions.temp.role" }));
 
 	if (!code.every((v) => v == true)) {
 		await this.reply({
-			content:
-				(await this.getEphemeralString({ string: "Permissions.temp.template" })) +
-				output +
-				(await this.getEphemeralString({ string: "Permissions.temp.notice" })),
+			embeds: [
+				new MessageEmbed()
+					.setTitle(await this.getEphemeralString({ string: "Permissions.temp.template" }))
+					.setDescription(output)
+					.setFooter({
+						text: await this.getEphemeralString({ string: "Permissions.temp.notice" }),
+					}),
+			],
 			ephemeral: true,
 		});
 		return true;

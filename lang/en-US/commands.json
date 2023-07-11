@@ -234,8 +234,8 @@
     "Command.Stats.NotFound": "The command `%COMMAND%` doesn't exist!",
     "Command.Texture.NotFound": "No results for this texture name: %TEXTURENAME%",
     "Permissions.temp.template": "You are not permitted to run this command:",
-    "Permissions.temp.user": "You need to be a specific user to run this command",
-    "Permissions.temp.role": "You need a specific role to run this command",
-    "Permissions.temp.server": "You must be in a specific server to run this command",
-    "Permissions.temp.notice": "\n\n*(This is a temporary fix for Discord's new permissions v2 system, which broke the previous permissions system. The new system will soon be adopted)"
+    "Permissions.temp.user": "You need to be a specific user to run this command!",
+    "Permissions.temp.role": "You need a specific role to run this command!",
+    "Permissions.temp.server": "You must be in a specific server to run this command!",
+    "Permissions.temp.notice": "This is a temporary fix for Discord's permissions v2 system, which we have not fully adopted yet."
 }
