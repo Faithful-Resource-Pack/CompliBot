@@ -70,7 +70,7 @@ export const event: Event = {
 		}
 
 		if (message.content.includes("(╯°□°）╯︵ ┻━┻"))
-			return await message.reply({ content: "┬─┬ ノ( ゜-゜ノ) calm down bro" });
+			await message.reply({ content: "┬─┬ ノ( ゜-゜ノ) calm down bro" });
 
 		/**
 		 * texture ID quoting
@@ -80,6 +80,7 @@ export const event: Event = {
 
 		const results = message.content.match(/(?<=\[\#)(.*?)(?=\])/g) ?? [];
 		if (!results.length) return;
+		message.channel.sendTyping();
 
 		for (let result of results) {
 			let id: string | number;
