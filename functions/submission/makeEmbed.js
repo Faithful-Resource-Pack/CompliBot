@@ -44,13 +44,9 @@ module.exports = async function makeEmbed(
 		edition: uses[0].editions[0],
 	};
 
-	// TODO: when discord finishes name migration remove this code and just use message.author.username everywhere
-	const authorName =
-		message.author.discriminator == 0 ? `@${message.author.username}` : message.author.tag;
-
 	let embed = new MessageEmbed()
 		// TODO: add a Faithful gallery url that shows all textures by a given author
-		.setAuthor({ name: authorName, iconURL: message.author.displayAvatarURL() })
+		.setAuthor({ name: message.author.username, iconURL: message.author.displayAvatarURL() })
 		.setColor(settings.colors.blue)
 		.setTitle(`[#${texture.id}] ${texture.name}`)
 		.setURL(`https://webapp.faithfulpack.net/#/gallery/java/32x/latest/all/?show=${texture.id}`)

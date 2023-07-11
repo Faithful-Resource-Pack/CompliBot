@@ -155,11 +155,8 @@ async function invalidSubmission(message, error = "Not given") {
 	)
 		return;
 
-	// TODO: when discord finishes name migration remove this code and just use message.author.username everywhere
-	const authorName =
-		message.author.discriminator == 0 ? `@${message.author.username}` : message.author.tag;
 	const embed = new MessageEmbed()
-		.setAuthor({ name: authorName, iconURL: message.author.displayAvatarURL() })
+		.setAuthor({ name: message.author.username, iconURL: message.author.displayAvatarURL() })
 		.setColor(settings.colors.red)
 		.setTitle(strings.submission.autoreact.error_title)
 		.setDescription(error)
