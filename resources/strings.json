@@ -17,6 +17,7 @@
 			"reload": "Reloads a command",
 			"say": "Make the bot send any message you specify",
 			"shutdown": "Stops the bot",
+			"magnify": "Resize an image.",
 			"status": "Changes the bot's status: \n**Activity**:\nPLAYING, STREAMING, LISTENING, WATCHING, COMPETING, CUSTOM_STATUS (does not work)\n**Presence**:\nonline, idle, dnd",
 			"animate": "Animates a texture."
 		},
