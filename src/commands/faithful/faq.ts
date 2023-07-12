@@ -18,13 +18,12 @@ export const command: SlashCommand = {
 		if (choice == "all") {
 			if (
 				await interaction.perms({
-					type: "manager"
+					type: "manager",
 				})
 			)
 				return;
 
-			interaction.reply({ content: "** **", ephemeral: true, fetchReply: true })
-				.then((message: Message) => message.delete());
+			interaction.reply({ content: "** **", ephemeral: true });
 
 			let embedArray = [];
 			let i = 0;
@@ -35,8 +34,8 @@ export const command: SlashCommand = {
 						.setTitle(faq.question)
 						.setDescription(faq.answer)
 						.setColor(colors.brand)
-						.setFooter({ text: `Keywords: ${faq.keywords.join(" • ")}` })
-				)
+						.setFooter({ text: `Keywords: ${faq.keywords.join(" • ")}` }),
+				);
 
 				if ((i + 1) % 5 == 0) {
 					// groups the embeds in batches of 5 to reduce API spam

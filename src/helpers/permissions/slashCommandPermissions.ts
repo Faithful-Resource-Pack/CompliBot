@@ -90,7 +90,7 @@ export function checkPermissions(
 			type = "config";
 			permissions = {
 				roles: ["manager"],
-			}
+			};
 		default:
 			break;
 	}

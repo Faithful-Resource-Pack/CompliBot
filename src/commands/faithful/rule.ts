@@ -12,7 +12,8 @@ export const command: SlashCommand = {
 			option
 				.setName("number")
 				.setDescription("Which rule to view")
-				.addChoices( // using the value as an array index
+				.addChoices(
+					// using the value as an array index
 					{ name: "1", value: "0" },
 					{ name: "2", value: "1" },
 					{ name: "3", value: "2" },
@@ -33,13 +34,19 @@ export const command: SlashCommand = {
 		if (choice == "all") {
 			if (await interaction.perms({ type: "manager" })) return;
 
-			interaction.reply({ content: "** **", ephemeral: true, fetchReply: true })
-				.then((message: Message) => message.delete());
+			interaction.reply({ content: "** **", ephemeral: true });
 
 			// I hate this so much but there's not much I can do
-			const thumbnail = interaction.guildId == (interaction.client as Client).config.discords.find((obj) => obj.name == "classic_faithful").id
-				? `${(interaction.client as Client).config.images}branding/logos/transparent/128/cf_plain_logo.png`
-				: `${(interaction.client as Client).config.images}branding/logos/transparent/128/plain_logo.png`;
+			const thumbnail =
+				interaction.guildId ==
+				(interaction.client as Client).config.discords.find((obj) => obj.name == "classic_faithful")
+					.id
+					? `${
+							(interaction.client as Client).config.images
+					  }branding/logos/transparent/128/cf_plain_logo.png`
+					: `${
+							(interaction.client as Client).config.images
+					  }branding/logos/transparent/128/plain_logo.png`;
 			let embedArray = [];
 			let i = 0;
 
@@ -49,17 +56,17 @@ export const command: SlashCommand = {
 						.setTitle(ruleStrings.rules_info.heading.title)
 						.setDescription(ruleStrings.rules_info.heading.description)
 						.setColor(colors.brand)
-						.setThumbnail(thumbnail)
-				]
-			})
+						.setThumbnail(thumbnail),
+				],
+			});
 
 			for (let rule of ruleStrings.rules) {
 				embedArray.push(
 					new MessageEmbed()
 						.setTitle(rule.title)
 						.setDescription(rule.description)
-						.setColor(colors.brand)
-				)
+						.setColor(colors.brand),
+				);
 
 				if ((i + 1) % 5 == 0) {
 					await interaction.channel.send({ embeds: embedArray });
@@ -91,14 +98,16 @@ export const command: SlashCommand = {
 		}
 
 		const ruleChoice = ruleStrings.rules[choice];
-		return await interaction.reply({
-			embeds: [
-				new MessageEmbed()
-					.setTitle(ruleChoice.title)
-					.setDescription(ruleChoice.description)
-					.setThumbnail(`${(interaction.client as Client).config.images}bot/rules.png`)
-			],
-			fetchReply: true,
-		}).then((message: Message) => message.deleteButton())
+		return await interaction
+			.reply({
+				embeds: [
+					new MessageEmbed()
+						.setTitle(ruleChoice.title)
+						.setDescription(ruleChoice.description)
+						.setThumbnail(`${(interaction.client as Client).config.images}bot/rules.png`),
+				],
+				fetchReply: true,
+			})
+			.then((message: Message) => message.deleteButton());
 	},
 };
