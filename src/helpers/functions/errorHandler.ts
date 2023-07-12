@@ -138,7 +138,7 @@ export const logConstructor: Function = (
 };
 
 export const errorHandler: Function = async (client: Client, reason: any, type: string) => {
-	console.error(`${err} ${reason.stack || JSON.stringify(reason)}`);
+	console.error(`${err} ${reason?.stack ?? reason ?? "No reason provided!"}`);
 
 	// get dev log channel
 	const channel = client.channels.cache.get(client.tokens.errorChannel) as TextChannel;

@@ -23,7 +23,8 @@ export const command: SlashCommand = {
 			)
 				return;
 
-			interaction.reply({ content: "** **", ephemeral: true })
+			interaction.reply({ content: "** **", ephemeral: true, fetchReply: true })
+				.then((message: Message) => message.delete());
 
 			let embedArray = [];
 			let i = 0;
