@@ -1,71 +1,4 @@
 {
-	"rules_info": {
-		"heading": {
-			"title": "Rules of the Faithful Discord Servers",
-			"description": "**Not knowing these is not an excuse for misbehaving, and you can and will be held accountable for your actions. Punishments are up to the discretion of the moderators, and harassing them is only going to make your punishment worse.**\n\n*Use `e!modping` or directly ping an online moderator if rules are being broken. Please do not mini-mod!*"
-		},
-		"expanded_rules": {
-			"title": "Were you warned or muted unfairly?",
-			"description": "A much more in-depth version of our rules, punishment appeal information, and our thought process into giving punishments can be found here: https://docs.faithfulpack.net/pages/moderation/expanded-server-rules"
-		},
-		"changes": {
-			"title": "Last Update: 4 July 2023",
-			"description": "Disallow politics and clean up some grammar.",
-			"enabled": true
-		}
-	},
-	"rules": [
-		{
-			"number": "1️⃣",
-			"title": "Read & Follow Discord’s Terms of Service and Community Guidelines",
-			"description": "You can find them at https://discord.com/terms and https://discord.com/guidelines respectively. This includes misuse of client modifications (e.g. message loggers) and discussion or promotion of illegal activity."
-		},
-		{
-			"number": "2️⃣",
-			"title": "Use Common Sense",
-			"description": "This is the generic \"don’t be an idiot\" rule. Prohibited actions include raiding or brigading other servers, using hate speech or slurs, joking about tragedies or other sensitive topics, and spreading misinformation."
-		},
-		{
-			"number": "3️⃣",
-			"title": "Speak English",
-			"description": "People and by extension moderators can't know what you're saying otherwise, as this is an English-speaking server. Please use a [translator](https://www.deepl.com/translator) if you cannot fluently understand English."
-		},
-		{
-			"number": "4️⃣",
-			"title": "Be Constructive and Polite",
-			"description": "Give constructive criticism people can use to improve their work, not just say that something is ugly or bad. Swearing is allowed within reason, however don’t cross the line into harassment."
-		},
-		{
-			"number": "5️⃣",
-			"title": "Try to Not Annoy Others",
-			"description": "This includes overly (reply) pinging, sending loud audio or seizure-inducing videos without a spoiler/disclaimer, and abusing nicknames, reactions, or spoilers. Don’t [ask to ask](https://dontasktoask.com), instead just ask your question directly to save everybody time."
-		},
-		{
-			"number": "6️⃣",
-			"title": "Don’t Clutter Chats",
-			"description": "While short tangents are fine, we have multiple channels for a reason, so please use them as intended. Spamming random things, including emojis and stickers, or starting a chat chain contributes nothing to a conversation and only causes a mess."
-		},
-		{
-			"number": "7️⃣",
-			"title": "Avoid NSFW and NSFL Content",
-			"description": "This includes, but is not limited to pornography, gore, and overly gross content; if you think it’s against the rules it probably will be. DM a moderator for approval if you’re very unsure."
-		},
-		{
-			"number": "8️⃣",
-			"title": "Stay Away From Political Discussion",
-			"description": "General discussion about real-life events is still allowed from a more neutral perspective. If you really want to discuss politics, take it to a DM or another server."
-		},
-		{
-			"number": "9️⃣",
-			"title": "No Unsolicited Promoting or Advertising",
-			"description": "Any sort of advertising that is not in context or clearly solicited is disallowed. Spamming or DM messaging advertisements will get you reported to Discord and banned from the servers."
-		},
-		{
-			"number": "🔟",
-			"title": "Don’t Leak Private Information",
-			"description": "What happens in private channels stays in those channels; keep any confidential information you may have private. Doxxing will get you reported to Discord and banned from the servers."
-		}
-	],
 	"bot": { "error": "Action Failed", "cant_dm": "I can't execute this command inside DMs!" },
 	"command": {
 		"error": "One of my developers made an error while making this command! Don't worry, the error is not on your side. Please contact <@360249987927638016>, <@473860522710794250> or <@173336582265241601>",
@@ -85,7 +18,6 @@
 			"say": "Make the bot send any message you specify",
 			"shutdown": "Stops the bot",
 			"status": "Changes the bot's status: \n**Activity**:\nPLAYING, STREAMING, LISTENING, WATCHING, COMPETING, CUSTOM_STATUS (does not work)\n**Presence**:\nonline, idle, dnd",
-			"rules": "Generates rule embeds for #rules",
 			"animate": "Animates a texture."
 		},
 		"image": {
