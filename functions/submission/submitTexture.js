@@ -168,6 +168,7 @@ async function invalidSubmission(message, error = "Not given") {
 	try {
 		const msg = await message.channel.send({ embeds: [embed] });
 		if (msg.deletable) setTimeout(() => msg.delete(), 30000);
+		if (message.deletable) setTimeout(() => message.delete(), 30010);
 	} catch (error) {
 		console.error(error);
 	}
