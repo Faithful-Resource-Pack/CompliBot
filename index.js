@@ -1,5 +1,5 @@
 /**
- * COMPLIBOT LEGACY INDEX FILE:
+ * COMPLIBOT SUBMISSIONS INDEX FILE:
  * - Developed by and for the Faithful Community.
  * - Please read our license first.
  * - If you find any bugs, please use our GitHub issues tracker
