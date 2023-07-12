@@ -1,7 +1,7 @@
 <img src="https://raw.githubusercontent.com/Faithful-Resource-Pack/Branding/main/logos/transparent/256/complibot_legacy_logo.png" alt="CompliBot" align="right" height="256px">
 <div align="center">
-  <h1>CompliBot Legacy</h1>
-  <h3>Legacy features for the Faithful Discord servers.</h3>
+  <h1>CompliBot Submissions</h1>
+  <h3>Automated texture pushing and submitting for the Faithful Discord servers.</h3>
 
 ![RepoSize](https://img.shields.io/github/repo-size/Faithful-Resource-Pack/Discord-Bot)
 ![Issues](https://img.shields.io/github/issues/Faithful-Resource-Pack/Discord-Bot)
