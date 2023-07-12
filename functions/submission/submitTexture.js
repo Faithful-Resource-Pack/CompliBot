@@ -150,8 +150,7 @@ async function invalidSubmission(message, error = "Not given") {
 	// allow managers and council to talk in submit channels
 	if (
 		(message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR) ||
-			message.member.roles.cache.some((role) => role.name.toLowerCase().includes("council"))) &&
-		error == strings.submission.image_not_attached
+			message.member.roles.cache.some((role) => role.name.toLowerCase().includes("council")))
 	)
 		return;
 
@@ -168,7 +167,7 @@ async function invalidSubmission(message, error = "Not given") {
 	try {
 		const msg = await message.channel.send({ embeds: [embed] });
 		if (msg.deletable) setTimeout(() => msg.delete(), 30000);
-		if (message.deletable && error == strings.submission.image_not_attached) setTimeout(() => message.delete(), 30010);
+		if (message.deletable) setTimeout(() => message.delete(), 30010);
 	} catch (error) {
 		console.error(error);
 	}
