@@ -78,7 +78,7 @@ module.exports = async function (message, params, user) {
 		description = description.slice(0, 2048);
 		embed.addFields([
 			{
-				text: "⚠️ WARNING",
+				name: "⚠️ WARNING",
 				value: "There are too many textures for Discord to display!",
 				inline: true,
 			},
