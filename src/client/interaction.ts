@@ -13,7 +13,7 @@ declare module "discord.js" {
 		getString(options: TextOptions): Promise<string>;
 		/**
 		 * @see {@link checkPermissions} for implementation details
-		 * @example if (await interaction.perms({ servers: ["faithful", "dev"], roles: ["council", "administrator"]})) return;
+		 * @example if (await interaction.perms({ servers: ["faithful", "dev"], roles: ["council", "manager"]})) return;
 		 */
 		perms(options: permissionOptions): Promise<boolean>;
 	}

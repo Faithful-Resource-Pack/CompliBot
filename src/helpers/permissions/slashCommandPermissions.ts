@@ -25,7 +25,7 @@ export interface permissionOptions {
 	 *
 	 * added presets for an easier time
 	 */
-	type?: "id" | "config" | "dev" | "mod" | "council";
+	type?: "id" | "config" | "dev" | "mod" | "council" | "manager";
 
 	servers?: Array<string>; //will only use ids if type == id
 	roles?: Array<string>; //will only use ids if type == id
@@ -49,7 +49,7 @@ type permissionCode = [boolean, boolean, boolean];
  * @returns returns a permission code (see: {@link permissionCode}) containing information
  * about which checks passed. Useful for determining what to reply when checks dont pass.
  *
- * @example checkPermissions(interaction, { servers: ["faithful", "dev"], roles: ["council", "administrator"]})
+ * @example checkPermissions(interaction, { servers: ["faithful", "dev"], roles: ["council", "manager"]})
  */
 
 //TODO: use a bearer token for v2 in the future. This is a temporary workaround
@@ -86,6 +86,11 @@ export function checkPermissions(
 				roles: ["moderators", "trial_moderators"],
 			};
 			break;
+		case "manager":
+			type = "config";
+			permissions = {
+				roles: ["manager"],
+			}
 		default:
 			break;
 	}

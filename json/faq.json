@@ -1,0 +1,142 @@
+[
+    {
+        "question": "What is Faithful? How did it come to be?",
+        "answer": "Faithful is a project spanning several Minecraft resource packs bearing the same name. The aim of Faithful is to provide a higher-resolution experience while still maintaining the look and feel of the vanilla textures. \nFaithful was originally started by Vattic in 2010, and since then he has given the current Faithful Administration the authority to maintain and update the pack officially.",
+        "keywords": ["faithful", "about"]
+    },
+    {
+        "question": "What were the Compliance and Emulated Vattic projects?",
+        "answer": "The Faithful project was initially called Compliance, prior to when we had received approval from Vattic to continue Faithful under his brand. In addition, Classic Faithful was an entirely separate project called Emulated Vattic Textures (EM for short), but merged with the Faithful Project and adopted the Classic Faithful name during the Faithful rebrand. \nEssentially, Faithful and Compliance are one and the same, and Classic Faithful and Emulated Vattic are one and the same.",
+        "keywords": ["compliance", "emulated vattic", "em", "rebrand"]
+    },
+    {
+        "question": "Who is Kraineff, who is Vattic, and why are there two Faithfuls?",
+        "answer": "After Vattic created the original Faithful 32x32 in 2010, he eventually was forced to abandon the project in 2016 due to uncontrollable and unfortunate circumstances in his life. A few months after, an artist named Kraineff (also known as xMrVizzy) claimed that Vattic passed control of the pack to him, and continued Faithful, seemingly officially. \nWhile Kraineff made increasingly questionable decisions and people started questioning his legitimacy, after a breaking point in November 2020 all of his contributors left him behind to start their own project, called Compliance. Around a month later, these contributors gained contact with Vattic, confirming their suspicions that Vattic never authorized Kraineff to continue Faithful, essentially meaning that Kraineff had been profiting off a stolen name for over 4 years and had been lying about ownership the whole time. If you're interested in this part of the story, you should watch [this video](https://www.youtube.com/watch?v=kgZYBTlwaVs) for more information. \nHowever, afterwards when it was clear that Kraineff was never going to willingly relinquish the Faithful name to the now-official Compliance project, the Compliance project rebranded to Faithful in April 2022, causing there to be two Faithfuls.",
+        "keywords": ["kraineff", "vattic", "vizzy", "xmrvizzy"]
+    },
+    {
+        "question": "Where can I download Faithful?",
+        "answer": "You can always find the latest release of Faithful by clicking these links: \n[Faithful 32x](https://faithfulpack.net/faithful32x/latest) • [Faithful 64x](https://faithfulpack.net/faithful64x/latest) \nDownloads for each Classic Faithful pack are listed in regular pages rather than periodic updates, each of which you can find here: \n[Classic Faithful 32x Jappa](https://faithfulpack.net/classicfaithful/32x-jappa) • [Classic Faithful 32x Programmer Art](https://faithfulpack.net/classicfaithful/32x-programmer-art) • [Classic Faithful 64x](https://faithfulpack.net/classicfaithful/64x-jappa)",
+        "keywords": ["downloads", "download"]
+    },
+    {
+        "question": "How do I install Faithful/any resource pack?",
+        "answer": "We recommend giving [this Minecraft Wiki page](https://minecraft.fandom.com/wiki/Tutorials/Loading_a_resource_pack) a read. Add-ons and tweaks work in exactly the same way, except by applying them on top of the given base pack rather than alone.",
+        "keywords": ["installation", "install"]
+    },
+    {
+        "question": "Is Faithful available for [Minecraft version/edition]?",
+        "answer": "Each pack is different: \n- Faithful 32x currently supports Bedrock Edition, and Java versions from 1.6 to the latest release, 1.4 and Beta 1.7. \n- Classic Faithful 32x Jappa and PA are also available from 1.6 – the latest release and Bedrock Edition, but are currently not complete for b1.7 – 1.5. \n- Both 64x packs only currently support the latest Minecraft Java and Bedrock version.",
+        "keywords": ["version", "versions"]
+    },
+    {
+        "question": "When will Faithful be available for [Minecraft version]?",
+        "answer": "Since Faithful is a community-driven project, progress is dependent on people submitting textures. This means that there are no hard deadlines for a given pack to be completed for a new version. However, you can usually use an [experimental build](https://database.faithfulpack.net/packs/) of the pack in the mean time, which may include missing textures. \nIf you want to help out with pack progress, read the [Contributor's Handbook](https://docs.faithfulpack.net/pages/textures/contributor-handbook) and inquire in the pack's respective Discord for more information.",
+        "keywords": ["progress", "update", "new version"]
+    },
+    {
+        "question": "Why am I seeing missing/16x/vanilla textures while using Faithful?",
+        "answer": "You're most likely using an incomplete pack. Currently, the only 100% finished packs are both Faithful 32x and Classic Faithful 32x (Jappa and PA) for Java Edition. You can see each pack's completion at the top of the channel list of their respective servers. If you want to help to get rid of these missing textures, you can help Faithful out by making a texture!",
+        "keywords": ["missing textues", "missing texture"]
+    },
+    {
+        "question": "Will Faithful ever be available on the Bedrock Edition Marketplace?",
+        "answer": "Unfortunately, getting resource packs onto the marketplace is a lengthy and complicated process, and a free pack hasn't been published to the marketplace yet. As well as this, community packs are disallowed from the marketplace, as there would be no fair way to compensate everyone involved otherwise monetarily. We would like to eventually release Faithful on the marketplace if possible, but if releasing a free resource pack on the marketplace is not possible, we will not release Faithful there.",
+        "keywords": ["marketplace", "bedrock"]
+    },
+    {
+        "question": "What Faithful listings are official?",
+        "answer": "Each pack has listings on our [website](https://faithfulpack.net), [CurseForge](https://www.curseforge.com/members/faithful_resource_pack/projects), and [Planet Minecraft](https://www.planetminecraft.com/member/faithful_resource_pack/), and some are on [Modrinth](https://modrinth.com/user/Faithful-Resource-Pack) and [MCPEDL](https://mcpedl.com/user/faithful-resource-pack/) too. You can also find our other media and each download link organized by pack in <#774391640306745374>. \n**Downloads from any other sites are unofficial, unsupported and could be dangerous!** Remember to stay safe on the internet.",
+        "keywords": ["listings", "vendors"]
+    },
+    {
+        "question": "What's the difference between Faithful and Classic Faithful?",
+        "answer": "The difference is in the art style, not in the textures that are being upscaled. Faithful has a more modern, detailed approach to redrawing textures, while Classic Faithful attempts to follow Vattic's art style from the original Faithful 32x32 as closely as possible, opting for a more brushed, smooth appearance.",
+        "keywords": [
+            "faithful vs classic faithful",
+            "classic faithful vs faithful",
+            "classic faithful",
+            "cf difference"
+        ]
+    },
+    {
+        "question": "What are Jappa and Programmer Art textures?",
+        "answer": "*JAPPA* is the online nickname of Jasper Boerstra, Minecraft's lead artist and the author of the majority of textures used in versions 1.14 and newer. The \"new\" Minecraft textures are often called Jappa textures in his honour. \nProgrammer Art (oftentimes abbreviated as \"progart\" or \"PA\") is the name given by Mojang and used by the Minecraft artist community for the old textures, used in Minecraft prior to release 1.14. It's also the name of the built-in resource pack featured in newer versions that contains the old textures.\n*Whether a texture is Jappa or Programmer Art is not related to its pixel resolution (e.g. 16x16, 32x, 64x).*",
+        "keywords": ["jappa vs programmer art", "programmer art vs jappa"]
+    },
+    {
+        "question": "What is the difference between 16x, 32x, and 64x?",
+        "answer": "\"32x\" means the textures, as a base, are 32 by 32 pixels (rather than default's 16 by 16 pixels). \"64x\" means the textures are 64 by 64 pixels. Higher numbers mean higher resolution textures. While these values are technically arbitrary, anything other than powers of two can cause issues in-game. \n*The pixel resolution of the textures aren't related to whether they are \"Jappa\" or \"Programmer Art\".*",
+        "keywords": ["16x vs 32x", "32x vs 64x", "16x vs 64x", "resolution"]
+    },
+    {
+        "question": "But I don't like the new Minecraft textures! Faithful Programmer Art when?",
+        "answer": "You can use [Classic Faithful 32x Programmer Art](https://faithfulpack.net/classicfaithful/32x-programmer-art). There are plans for a dedicated Faithful Programmer Art pack in the future, but for the time being all main Faithful packs are based off the newest, \"Jappa\" textures.",
+        "keywords": ["programmer art", "progart", "prog art"]
+    },
+    {
+        "question": "I've found a bug in Faithful! Where do I report it?",
+        "answer": "Please post any bug reports and/or opinions about the pack in <#774246985448030209> or report them as an issue on the appropriate GitHub repository. \n[Faithful GitHub](https://github.com/Faithful-Resource-Pack) • [Classic Faithful GitHub](https://github.com/ClassicFaithful)",
+        "keywords": ["bug", "bugs", "issue", "feedback"]
+    },
+    {
+        "question": "How can I submit a texture to the pack? How does the approval process work?",
+        "answer": "For the main Faithful packs, please read [The Faithful Contributor's Handbook](https://docs.faithfulpack.net/pages/textures/contributor-handbook). \nTL;DR: You will need to accept the agreement in <#991031483089186826> first. To submit textures, upload them to the appropriate submission channel (the file has to have the same name as the default texture), and the bot will take over from there and format it for you. Any text you include with the message will be added as a comment, and people pinged in the comment will be added as co-authors. \nFor your texture to be added to the pack, it must pass a round of community voting (lasting 2 days) and a round of private Art Director Council voting (lasting one day). \nFor Classic Faithful, the submission process is exactly the same but only takes one day of community voting and no council vote instead.",
+        "keywords": ["submit", "approval"]
+    },
+    {
+        "question": "How can I submit my add-on to the website?",
+        "answer": "On https://webapp.faithfulpack.net/, log in with your Discord account. Next, in the navigation bar at the top, click Add-ons and select Upload. Finally, fill out the form that you're presented with, and when you're finished, click the Submit button. Your Add-on will appear on the website when it has been reviewed and approved by an Manager.",
+        "keywords": ["submit add-on", "add-on", "addon", "webapp"]
+    },
+    {
+        "question": "Does Faithful support mods?",
+        "answer": "Yes, you can find mod support for the 32x version of the pack at https://www.faithfulpack.net/mods or https://www.faithfulpack.net/modpacks. Please note, however, that the textures may be outdated and that development is not very active at the moment, and that 64x is not supported at all right now. \nIf you want to contribute to Faithful Mods, please reach out in <#1025645837247848458> for more information.",
+        "keywords": ["mod support", "mods", "mod"]
+    },
+    {
+        "question": "CompliBot is offline! What do I do?",
+        "answer": "If the bot ever goes offline without previous notice from the developers, please ping __one__ of the online bot devs (<@473860522710794250>, <@360249987927638016>, or <@173336582265241601>) and alert them of the issue.",
+        "keywords": ["bot offline", "bot dead", "bot down"]
+    },
+    {
+        "question": "I have found a bug in CompliBot or Wynem and I want to request a fix and/or give feedback, how do I do it?",
+        "answer": "If you find any bugs with CompliBot and/or have any requests, you can use the `/feedback` command to send feedback directly to the bot developers. For Wynem, you can use `e!suggest`. You can also report any CompliBot related problems directly by making an issue on the [GitHub repository](https://github.com/Faithful-Resource-Pack/Discord-Bot).",
+        "keywords": ["bot bug", "bot bugs", "bot issue"]
+    },
+    {
+        "question": "I need help from a moderator!",
+        "answer": "You can use Wynem's `e!modping` command to call an online Moderator to help. We kindly ask not to misuse the command.",
+        "keywords": ["modping", "moderator ping"]
+    },
+    {
+        "question": "What's the difference between an add-on and a tweak?",
+        "answer": "We define the differences in the following way: \n**Tweak**: A Tweak changes existing aspects about the game. They are one-off and smaller than an Add-on – changes of multiple themes should not be grouped into one Tweak. Examples: 3D items, Consistent Bedrock. \n**Add-on**: An Add-on adds new features to the game, and/or is usually larger in scope than a Tweak. Examples: New random variations for blocks/mobs. \nAdditionally, due to technical limitations, PBR resource packs cannot reuse textures from the main Faithful pack, and therefore can function as standalone – but for the sake of simplicity, they are also considered Add-ons. \nLastly, collections of Tweaks that the author chooses not to submit individually are considered Add-ons as well.",
+        "keywords": ["add-on vs tweak", "tweak vs add-on"]
+    },
+    {
+        "question": "How can I submit my tweak?",
+        "answer": "For the time being, Tweaks can be submitted as Add-ons, using the method mentioned above. A Vanilla Tweaks-styled customiser is planned for the future, but its development is currently on pause due to us having no developer for it.",
+        "keywords": ["tweak", "tweaks"]
+    },
+    {
+        "question": "How do I submit a texture for a mod?",
+        "answer": "For the time being, contact a Manager to receive further instructions. There are plans in the future to make this process easier to do.",
+        "keywords": ["submit mod"]
+    },
+    {
+        "question": "Will Faithful affect my FPS?",
+        "answer": "The short answer is no. While ludicrously high-resolution packs may cause a minor decrease (well above the scope of the Faithful project), in general shaders are the major graphics-related culprit for causing large amounts of lag, not resource packs. When a resource pack claims to boost FPS, there's a good chance it's completely lying or it will cause a very marginal increase at best.",
+        "keywords": ["fps", "lag", "performance"]
+    },
+    {
+        "question": "How do I get the translator role?",
+        "answer": "Visit [our Crowdin](https://translate.faithfulpack.net) and see if you can help translate our Discord bot or webapp. However, please don't translate anything from the current site, since it's currently getting rewritten and your hard work may get replaced later otherwise. Once your translations get accepted, ping an online Manager to add the role.",
+        "keywords": ["crowdin", "translator", "translation"]
+    },
+    {
+        "question": "How can I use Faithful textures in my own projects?",
+        "answer": "First, read [our license](https://faithfulpack.net/license) to see that your project meets our terms (no monetization, giving clear credit, etc). If it meets all the terms and conditions, no further permission is required.",
+        "keywords": ["permission", "usage", "distribution"]
+    }
+]

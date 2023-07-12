@@ -53,16 +53,14 @@ export const command: SlashCommand = {
 					.includes(choice)
 			) {
 				// if it's not present anywhere escape early
-				interaction.reply({ embeds: [errorEmbed], ephemeral: true });
-				return;
+				return interaction.reply({ embeds: [errorEmbed], ephemeral: true });
 			}
 
 			for (let i of guidelineJSON.choices) {
 				if (!i.keywords.includes(choice)) continue;
 				if (!i[pack]) {
 					// if you pick an option that isn't present in the pack you selected
-					interaction.reply({ embeds: [errorEmbed], ephemeral: true });
-					return;
+					return interaction.reply({ embeds: [errorEmbed], ephemeral: true });
 				}
 				contents += `#${i[pack]}`; // adds the html id specified in the json
 				break;
