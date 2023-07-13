@@ -6,6 +6,8 @@ const { HorizontalStitcher } = require("../textures/stitch");
 const { magnifyAttachment } = require("../textures/magnify");
 
 const { MessageEmbed, MessageAttachment } = require("discord.js");
+const { imgButtons } = require("../../helpers/buttons");
+
 const EMOJIS = [settings.emojis.upvote, settings.emojis.downvote, settings.emojis.see_more];
 
 /**
@@ -148,7 +150,10 @@ module.exports = async function makeEmbed(
 	if (param.description) embed.setDescription(param.description);
 	if (param.authors.length > 1) embed.fields[0].name = "Authors";
 
-	const msg = await message.channel.send({ embeds: [embed] });
+	const msg = await message.channel.send({
+		embeds: [embed],
+		components: [imgButtons],
+	});
 
 	for (const emojiID of EMOJIS) {
 		let e = client.emojis.cache.get(emojiID);

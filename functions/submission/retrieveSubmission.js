@@ -3,6 +3,8 @@ const settings = require("../../resources/settings.json");
 const getMessages = require("../../helpers/getMessages");
 const changeStatus = require("./changeStatus");
 
+const { imgButtons } = require("../../helpers/buttons");
+
 /**
  * Send submissions older than a given delay to a new channel
  * @author Juknum
@@ -91,6 +93,7 @@ async function sendToCouncil(client, messagesUpvoted, messagesDownvoted, channel
 						`[Original Post](${message.message.url})\n${message.embed.description ?? ""}`,
 					),
 			],
+			components: [imgButtons],
 		});
 		for (const emojiID of EMOJIS) await sentMessage.react(client.emojis.cache.get(emojiID));
 		changeStatus(
@@ -135,15 +138,13 @@ async function sendToResults(
 	councilDisabled = false,
 ) {
 	const channelOut = client.channels.cache.get(channelOutID);
-	const EMOJIS = [settings.emojis.see_more];
 
 	for (let message of messagesUpvoted) {
 		let embed = message.embed;
 		embed.setColor(settings.colors.green);
 		embed.fields[1].value = `<:upvote:${settings.emojis.upvote}> Will be added in a future version!`;
 
-		const sentMessage = await channelOut.send({ embeds: [embed] });
-		for (const emojiID of EMOJIS) await sentMessage.react(client.emojis.cache.get(emojiID));
+		await channelOut.send({ embeds: [embed], components: [imgButtons] });
 
 		changeStatus(message.message, `<:upvote:${settings.emojis.upvote}> Sent to results!`);
 	}
@@ -155,8 +156,7 @@ async function sendToResults(
 		if (!councilDisabled) {
 			// don't you love having to pass a value in down like three functions just to format some strings
 			embed.fields[1].value = `<:downvote:${settings.emojis.downvote}> This texture did not pass council voting and therefore will not be added. Ask an Art Director Council member for more information.`;
-			const sentMessage = await channelOut.send({ embeds: [embed] });
-			for (const emojiID of EMOJIS) await sentMessage.react(client.emojis.cache.get(emojiID));
+			await channelOut.send({ embeds: [embed], components: [imgButtons] });
 
 			changeStatus(message.message, `<:downvote:${settings.emojis.downvote}> Sent to results!`);
 		} else

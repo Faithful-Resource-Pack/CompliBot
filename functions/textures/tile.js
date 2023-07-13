@@ -1,23 +1,15 @@
 const { createCanvas, loadImage } = require("@napi-rs/canvas");
-const settings = require("../../resources/settings.json");
-
-const { MessageAttachment } = require("discord.js");
-const addDeleteReact = require("../../helpers/addDeleteReact");
 const getDimensions = require("./getDimensions");
-const warnUser = require("../../helpers/warnUser");
-const { magnify } = require("./magnify");
-const sendAttachment = require("./sendAttachment");
 
 /**
  * Tile an image
  * @author Juknum
- * @param {DiscordMessage} message
+ * @param {DiscordInteraction} interaction
  * @param {String} url Image url
- * @param {String} type Type of tiling, could be: grid, horizontal, round or plus
- * @param {DiscordUserID} userID if set, the message is send to the corresponding #bot-commands
- * @returns Send an embed message with the tiled image
+ * @param {String?} type Type of tiling, could be: grid, horizontal, round or plus
+ * @returns tiled image as a buffer
  */
-module.exports = async function tile(message, url, type, userID) {
+module.exports = async function tile(interaction, url, type = "grid") {
 	const dimension = await getDimensions(url);
 	// aliases of type
 	if (type == undefined || type == "g") type = "grid";
@@ -27,15 +19,18 @@ module.exports = async function tile(message, url, type, userID) {
 	if (type == "p") type = "plus";
 
 	const sizeResult = dimension.width * dimension.height * 3;
-	if (sizeResult > 262144)
-		return warnUser(
-			message,
-			"The output picture will be too big!\nMaximum output allowed: 512 x 512 px²\nYours is: " +
+	if (sizeResult > 262144) {
+		interaction.reply({
+			content:
+				"The output picture will be too big!\nMaximum output allowed: 512 x 512 px²\nYours is: " +
 				dimension.width * 3 +
 				" x " +
 				dimension.height * 3 +
 				" px²",
-		);
+			ephemeral: true,
+		});
+		return null;
+	}
 
 	let canvas;
 	let canvasContext;
@@ -133,58 +128,5 @@ module.exports = async function tile(message, url, type, userID) {
 		canvasContext.clearRect(0, dimension.height * 2, dimension.width, dimension.height); // bottom left
 	}
 
-	const attachment = new MessageAttachment(canvas.toBuffer("image/png"), "tiled.png");
-
-	let embedMessage;
-	if (userID) embedMessage = await sendAttachment(message, attachment, userID);
-	else {
-		embedMessage = await message.reply({ files: [attachment] });
-		addDeleteReact(embedMessage, message, true);
-	}
-
-	if (dimension.width <= 512 && dimension.height <= 512) {
-		// avoid an issue that also makes the bot magnify its own image in DMs
-		// probably unfixable due to the texture submission reactions
-		if (embedMessage.channel.type === "DM") return;
-
-		embedMessage.react(settings.emojis.magnify);
-
-		const filter = (reaction, user) => {
-			if (redirectMessage)
-				return (
-					[settings.emojis.magnify].includes(reaction.emoji.id) &&
-					user.id === redirectMessage.author.id
-				);
-			else
-				return (
-					[settings.emojis.magnify].includes(reaction.emoji.id) && user.id === message.author.id
-				);
-		};
-
-		try {
-			const collected = await embedMessage.awaitReactions({
-				filter,
-				max: 1,
-				time: 60000,
-				errors: ["time"],
-			});
-			const reaction = collected.first();
-			if (reaction.emoji.id === settings.emojis.magnify) {
-				if (redirectMessage)
-					return magnify(
-						embedMessage,
-						embedMessage.attachments.first().url,
-						undefined,
-						redirectMessage,
-					);
-				else return magnify(embedMessage, embedMessage.attachments.first().url);
-			}
-		} catch {
-			try {
-				await embedMessage.reactions.cache.get(settings.emojis.magnify).remove();
-			} catch (err) {
-				/* Message already deleted */
-			}
-		}
-	}
+	return canvas.toBuffer("image/png");
 };
