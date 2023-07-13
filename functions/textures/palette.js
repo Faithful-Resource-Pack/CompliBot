@@ -23,16 +23,17 @@ const GRADIENT_HEIGHT = 50;
 /**
  * Get an color palette from a image
  * @author Juknum
- * @param {Discord.Message} message
+ * @param {DiscordInteraction} interaction
  * @param {String} url - Image URL
  * @param {DiscordUserID} userID if set, the message is send to the corresponding #complibot
  * @returns Send an embed message with the color palette of the given URL
  */
-module.exports = async function palette(message, url, userID) {
+module.exports = async function palette(interaction, url, userID) {
 	const dimension = await getDimensions(url);
 	const sizeOrigin = dimension.width * dimension.height;
 
-	if (sizeOrigin > 262144) return warnUser(message, strings.command.image.too_big);
+	if (sizeOrigin > 262144)
+		return await interaction.reply({ content: strings.command.image.too_big, ephemeral: true });
 
 	let canvas = createCanvas(dimension.width, dimension.height).getContext("2d");
 	const allColors = {};
@@ -191,14 +192,11 @@ module.exports = async function palette(message, url, userID) {
 		"colors.png",
 	);
 
-	if (userID) await sendAttachment(message, colorImageAttachment, userID, embed);
-	else {
-		const embedMessage = await message.reply({
-			embeds: [embed],
-			files: [colorImageAttachment],
-		});
-		addDeleteReact(embedMessage, message, true);
-	}
+	return await interaction.reply({
+		embeds: [embed],
+		files: [colorImageAttachment],
+		ephemeral: true,
+	});
 };
 
 function rgbToHex(r, g, b) {

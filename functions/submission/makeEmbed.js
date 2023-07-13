@@ -5,33 +5,11 @@ const minecraftSorter = require("../../helpers/minecraftSorter");
 const { HorizontalStitcher } = require("../textures/stitch");
 const { magnifyAttachment } = require("../textures/magnify");
 
-const { MessageEmbed, MessageButton, MessageAttachment } = require("discord.js");
-const { MessageActionRow } = require("discord.js");
+const { MessageEmbed, MessageAttachment } = require("discord.js");
+const { imgButtons } = require("../../helpers/buttons");
+
 const EMOJIS = [settings.emojis.upvote, settings.emojis.downvote, settings.emojis.see_more];
 
-const imgButtons = [
-	new MessageActionRow.addComponents(
-		new MessageButton()
-			.setStyle("PRIMARY")
-			.setEmoji(settings.emojis.magnify)
-			.setCustomId("magnify"),
-
-		new MessageButton()
-			.setStyle("PRIMARY")
-			.setEmoji(settings.emojis.tile)
-			.setCustomId("tile"),
-
-		new MessageButton()
-			.setStyle("PRIMARY")
-			.setEmoji(settings.emojis.palette)
-			.setCustomId("palette"),
-
-		new MessageButton()
-			.setStyle("PRIMARY")
-			.setEmoji(settings.emojis.view_raw)
-			.setCustomId("view_raw"),
-	)
-]
 /**
  * Make a submission embed using existing texture information
  * @author Juknum, Evorp
@@ -174,7 +152,7 @@ module.exports = async function makeEmbed(
 
 	const msg = await message.channel.send({
 		embeds: [embed],
-		components: [imgButtons]
+		components: [imgButtons],
 	});
 
 	for (const emojiID of EMOJIS) {
