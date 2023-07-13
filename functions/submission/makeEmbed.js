@@ -5,9 +5,33 @@ const minecraftSorter = require("../../helpers/minecraftSorter");
 const { HorizontalStitcher } = require("../textures/stitch");
 const { magnifyAttachment } = require("../textures/magnify");
 
-const { MessageEmbed, MessageAttachment } = require("discord.js");
+const { MessageEmbed, MessageButton, MessageAttachment } = require("discord.js");
+const { MessageActionRow } = require("discord.js");
 const EMOJIS = [settings.emojis.upvote, settings.emojis.downvote, settings.emojis.see_more];
 
+const imgButtons = [
+	new MessageActionRow.addComponents(
+		new MessageButton()
+			.setStyle("PRIMARY")
+			.setEmoji(settings.emojis.magnify)
+			.setCustomId("magnify"),
+
+		new MessageButton()
+			.setStyle("PRIMARY")
+			.setEmoji(settings.emojis.tile)
+			.setCustomId("tile"),
+
+		new MessageButton()
+			.setStyle("PRIMARY")
+			.setEmoji(settings.emojis.palette)
+			.setCustomId("palette"),
+
+		new MessageButton()
+			.setStyle("PRIMARY")
+			.setEmoji(settings.emojis.view_raw)
+			.setCustomId("view_raw"),
+	)
+]
 /**
  * Make a submission embed using existing texture information
  * @author Juknum, Evorp
@@ -148,7 +172,10 @@ module.exports = async function makeEmbed(
 	if (param.description) embed.setDescription(param.description);
 	if (param.authors.length > 1) embed.fields[0].name = "Authors";
 
-	const msg = await message.channel.send({ embeds: [embed] });
+	const msg = await message.channel.send({
+		embeds: [embed],
+		components: [imgButtons]
+	});
 
 	for (const emojiID of EMOJIS) {
 		let e = client.emojis.cache.get(emojiID);

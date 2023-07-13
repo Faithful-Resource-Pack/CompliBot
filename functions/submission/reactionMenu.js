@@ -1,10 +1,6 @@
 const settings = require("../../resources/settings.json");
 
 const { Permissions } = require("discord.js");
-const { magnify } = require("../textures/magnify");
-const palette = require("../textures/palette");
-const tile = require("../textures/tile");
-const viewRaw = require("../textures/viewRaw");
 const instapass = require("./instapass");
 const changeStatus = require("./changeStatus");
 
@@ -96,18 +92,6 @@ module.exports = async function reactionMenu(client, reaction, user) {
 	// image-related emojis and deletion
 	const image = message.embeds[0].thumbnail.url;
 	switch (REACTION.emoji.id) {
-		case settings.emojis.magnify:
-			magnify(message, image, user.id);
-			break;
-		case settings.emojis.palette:
-			palette(message, image, user.id);
-			break;
-		case settings.emojis.tile:
-			tile(message, image, "grid", user.id);
-			break;
-		case settings.emojis.view_raw:
-			viewRaw(message, image, user.id);
-			break;
 		case settings.emojis.delete:
 			// delete message only if the first author of the field 0 is the discord user who reacted, or if the user who react is admin
 			if (USER_ID === authorID || member.permissions.has(Permissions.FLAGS.ADMINISTRATOR))
