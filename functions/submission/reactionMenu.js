@@ -16,12 +16,23 @@ module.exports = async function reactionMenu(client, reaction, user) {
 
 	const message = await reaction.message.fetch();
 	const member = await message.guild.members.cache.get(user.id);
+
 	if (member.bot || !message.embeds[0]?.fields?.length) return;
 
 	// first author in the author field is always the person who submitted
 	const authorID = await message.embeds[0].fields[0].value
-		.split("\n")
-		.map((el) => el.replace("<@", "").replace("!", "").replace(">", ""))[0];
+		.split("\n")[0].replace(/\D+/g, "");
+
+	if ( // break early if the user doesn't have permission or the submission isn't pending
+		(
+			!member.permissions.has(Permissions.FLAGS.ADMINISTRATOR) &&
+			!member.roles.cache.some((role) => role.name.toLowerCase().includes("council")) &&
+			authorID !== user.id
+		) || !message.embeds[0].fields[1].value.includes(settings.emojis.pending)
+	)
+		return reaction.users.remove(user.id).catch((err) => {
+			if (process.DEBUG) console.error(err);
+		});
 
 	// remove the arrow emoji and generate the tray
 	reaction.remove().catch((err) => {
@@ -33,26 +44,20 @@ module.exports = async function reactionMenu(client, reaction, user) {
 		settings.emojis.delete,
 		settings.emojis.instapass,
 		settings.emojis.invalid,
-		settings.emojis.magnify,
-		settings.emojis.palette,
-		settings.emojis.tile,
-		settings.emojis.view_raw,
 	];
-
-	// if the submission isn't pending, instapassing/invalid won't do anything so we remove those
-	if (!message.embeds[0].fields[1].value.includes(settings.emojis.pending))
-		EMOJIS = EMOJIS.filter(
-			(emoji) =>
-				emoji !== settings.emojis.instapass &&
-				emoji !== settings.emojis.invalid &&
-				emoji !== settings.emojis.delete,
-		);
 
 	// if the submission is in council remove delete reaction (avoid misclick)
 	const councilChannels = Object.values(settings.submission.packs).map((i) => i.channels.council);
 	if (councilChannels.includes(message.channel.id)) {
 		EMOJIS = EMOJIS.filter((emoji) => emoji !== settings.emojis.delete);
 	}
+
+	// remove instapass/invalid if just the author is reacting
+	if (
+		!member.permissions.has(Permissions.FLAGS.ADMINISTRATOR) &&
+		!member.roles.cache.some((role) => role.name.toLowerCase().includes("council"))
+	)
+	EMOJIS = EMOJIS.filter((emoji) => emoji !== settings.emojis.instapass && emoji !== settings.emojis.invalid)
 
 	// actually react
 	for (let emoji of EMOJIS) await message.react(emoji);
@@ -89,15 +94,10 @@ module.exports = async function reactionMenu(client, reaction, user) {
 		.filter((user) => user.bot === false)
 		.map((user) => user.id)[0];
 
-	// image-related emojis and deletion
-	const image = message.embeds[0].thumbnail.url;
-	switch (REACTION.emoji.id) {
-		case settings.emojis.delete:
-			// delete message only if the first author of the field 0 is the discord user who reacted, or if the user who react is admin
-			if (USER_ID === authorID || member.permissions.has(Permissions.FLAGS.ADMINISTRATOR))
-				await message.delete();
-			break;
-	}
+	if (REACTION.emoji.id == settings.emojis.delete &&
+		(USER_ID === authorID || member.permissions.has(Permissions.FLAGS.ADMINISTRATOR))
+	)
+		await message.delete();
 
 	// instapass and invalid need role checks
 	if (
