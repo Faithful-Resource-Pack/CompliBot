@@ -3,7 +3,6 @@ const { createCanvas, loadImage } = require("@napi-rs/canvas");
 const { MessageAttachment } = require("discord.js");
 const addDeleteReact = require("../../helpers/addDeleteReact");
 const getDimensions = require("./getDimensions");
-const sendAttachment = require("./sendAttachment");
 
 async function magnifyAttachment(url, name = "magnified.png") {
 	const dimension = await getDimensions(url);
@@ -37,18 +36,13 @@ async function magnifyAttachment(url, name = "magnified.png") {
  * @author Juknum
  * @param {DiscordMessage} message
  * @param {String} url Image URL
- * @param {DiscordUserID} userID if set, the message is send to the corresponding #complibot
  * @returns Send a message with the magnified image
  */
-async function magnify(message, url, userID = false) {
+async function magnify(message, url) {
 	const attachment = await magnifyAttachment(url);
 
-	if (userID) await sendAttachment(message, attachment, userID);
-	else {
-		const embedMessage = await message.reply({ files: [attachment] });
-		await addDeleteReact(embedMessage, message, true);
-	}
-
+	const embedMessage = await message.reply({ files: [attachment] });
+	await addDeleteReact(embedMessage, message, true);
 	return attachment;
 }
 

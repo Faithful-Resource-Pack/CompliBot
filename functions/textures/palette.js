@@ -4,9 +4,6 @@ const strings = require("../../resources/strings.json");
 
 const { MessageEmbed, MessageAttachment } = require("discord.js");
 const getDimensions = require("./getDimensions");
-const warnUser = require("../../helpers/warnUser");
-const addDeleteReact = require("../../helpers/addDeleteReact");
-const sendAttachment = require("./sendAttachment");
 
 const COLORS_PER_PALETTE = 9;
 const COLORS_PER_PALETTE_LINE = 3;
@@ -21,14 +18,13 @@ const GRADIENT_BAND_WIDTH = 3;
 const GRADIENT_HEIGHT = 50;
 
 /**
- * Get an color palette from a image
+ * Get the color palette from an image url ephemerally
  * @author Juknum
- * @param {DiscordInteraction} interaction
- * @param {String} url - Image URL
- * @param {DiscordUserID} userID if set, the message is send to the corresponding #complibot
+ * @param {DiscordInteraction} interaction discord interaction to respond to
+ * @param {String} url Image URL
  * @returns Send an embed message with the color palette of the given URL
  */
-module.exports = async function palette(interaction, url, userID) {
+module.exports = async function palette(interaction, url) {
 	const dimension = await getDimensions(url);
 	const sizeOrigin = dimension.width * dimension.height;
 
@@ -55,7 +51,7 @@ module.exports = async function palette(interaction, url, userID) {
 			a = image[index + 3] / 255;
 
 			// avoid transparent colors
-			if (a !== 0) {
+			if (a) {
 				let hex = rgbToHex(r, g, b);
 				if (!(hex in allColors))
 					allColors[hex] = { hex: hex, opacity: [], rgb: [r, g, b], count: 0 };
@@ -214,10 +210,10 @@ function rgbToHex(r, g, b) {
  * Assumes r, g, and b are contained in the set [0, 255] and
  * returns h, s, and v in the set [0, 1].
  *
- * @param   Number  r       The red color value
- * @param   Number  g       The green color value
- * @param   Number  b       The blue color value
- * @return  Number[]        The HSL representation
+ * @param {Number} r The red color value
+ * @param {Number} g The green color value
+ * @param {Number} b The blue color value
+ * @return {Number[]} The HSL representation
  */
 function rgbToHsl(r, g, b) {
 	(r /= 255), (g /= 255), (b /= 255);

@@ -1,12 +1,5 @@
 const { createCanvas, loadImage } = require("@napi-rs/canvas");
-const settings = require("../../resources/settings.json");
-
-const { MessageAttachment } = require("discord.js");
-const addDeleteReact = require("../../helpers/addDeleteReact");
 const getDimensions = require("./getDimensions");
-const warnUser = require("../../helpers/warnUser");
-const { magnify } = require("./magnify");
-const sendAttachment = require("./sendAttachment");
 
 /**
  * Tile an image
