@@ -6,10 +6,11 @@ const changeStatus = require("./changeStatus");
 
 /**
  * Opens reaction tray, listens for reaction, and closes tray
- * @author Juknum
+ * @author Evorp, Juknum
  * @param {DiscordClient} client
  * @param {DiscordReaction} reaction
- * @param {DiscordUser} user
+ * @param {DiscordUser} user person who reacted
+ * @see interactionCreate (where all button stuff is handled)
  */
 module.exports = async function reactionMenu(client, reaction, user) {
 	if (reaction.emoji.id !== settings.emojis.see_more) return;
@@ -20,15 +21,14 @@ module.exports = async function reactionMenu(client, reaction, user) {
 	if (member.bot || !message.embeds[0]?.fields?.length) return;
 
 	// first author in the author field is always the person who submitted
-	const authorID = await message.embeds[0].fields[0].value
-		.split("\n")[0].replace(/\D+/g, "");
+	const authorID = await message.embeds[0].fields[0].value.split("\n")[0].replace(/\D+/g, "");
 
-	if ( // break early if the user doesn't have permission or the submission isn't pending
-		(
-			!member.permissions.has(Permissions.FLAGS.ADMINISTRATOR) &&
+	if (
+		// break early if the user doesn't have permission or the submission isn't pending
+		(!member.permissions.has(Permissions.FLAGS.ADMINISTRATOR) &&
 			!member.roles.cache.some((role) => role.name.toLowerCase().includes("council")) &&
-			authorID !== user.id
-		) || !message.embeds[0].fields[1].value.includes(settings.emojis.pending)
+			authorID !== user.id) ||
+		!message.embeds[0].fields[1].value.includes(settings.emojis.pending)
 	)
 		return reaction.users.remove(user.id).catch((err) => {
 			if (process.DEBUG) console.error(err);
@@ -57,7 +57,9 @@ module.exports = async function reactionMenu(client, reaction, user) {
 		!member.permissions.has(Permissions.FLAGS.ADMINISTRATOR) &&
 		!member.roles.cache.some((role) => role.name.toLowerCase().includes("council"))
 	)
-	EMOJIS = EMOJIS.filter((emoji) => emoji !== settings.emojis.instapass && emoji !== settings.emojis.invalid)
+		EMOJIS = EMOJIS.filter(
+			(emoji) => emoji !== settings.emojis.instapass && emoji !== settings.emojis.invalid,
+		);
 
 	// actually react
 	for (let emoji of EMOJIS) await message.react(emoji);
@@ -94,7 +96,8 @@ module.exports = async function reactionMenu(client, reaction, user) {
 		.filter((user) => user.bot === false)
 		.map((user) => user.id)[0];
 
-	if (REACTION.emoji.id == settings.emojis.delete &&
+	if (
+		REACTION.emoji.id == settings.emojis.delete &&
 		(USER_ID === authorID || member.permissions.has(Permissions.FLAGS.ADMINISTRATOR))
 	)
 		await message.delete();
