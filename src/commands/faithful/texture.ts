@@ -14,7 +14,7 @@ export const command: SlashCommand = {
 		.addStringOption((option) =>
 			option
 				.setName("name")
-				.setDescription("Name of the texture you are searching for.")
+				.setDescription("Name or ID of the texture you are searching for.")
 				.setRequired(true),
 		)
 		.addStringOption((option) =>

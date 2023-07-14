@@ -13,7 +13,7 @@ export const command: SlashCommand = {
 		.addStringOption((option) =>
 			option
 				.setName("texture")
-				.setDescription("The texture to compare.")
+				.setDescription("Name or ID of the texture you want to compare.")
 				.setRequired(true),
 		)
 		.addStringOption((option) =>

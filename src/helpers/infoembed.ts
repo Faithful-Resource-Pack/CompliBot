@@ -1,8 +1,8 @@
 import { colors } from "./colors";
 import { parseId, ids } from "./emojis";
 
-// sorry for the questionable indentation
-// the tabs cause issues otherwise with the formatting
+// sorry for the questionable indentation and formatting
+// blame prettier for most of it but also discord sometimes rendering whitespace weirdly
 export const media = {
 	faithful_32x: {
 		thumbnail:
@@ -12,9 +12,13 @@ export const media = {
 		description: `
 [${parseId(ids.faithful_logo)} Website](https://faithfulpack.net/faithful32x/latest)
 
-[${parseId(ids.curseforge)} Java Edition CurseForge](https://curseforge.com/minecraft/texture-packs/faithful-32x)
+[${parseId(
+			ids.curseforge,
+		)} Java Edition CurseForge](https://curseforge.com/minecraft/texture-packs/faithful-32x)
 
-[${parseId(ids.curseforge)} Bedrock Edition CurseForge](https://www.curseforge.com/minecraft-bedrock/addons/faithful-32x-bedrock)
+[${parseId(
+			ids.curseforge,
+		)} Bedrock Edition CurseForge](https://www.curseforge.com/minecraft-bedrock/addons/faithful-32x-bedrock)
 
 [${parseId(ids.modrinth)} Modrinth](https://modrinth.com/resourcepack/faithful-32x)
 
@@ -22,9 +26,13 @@ export const media = {
 
 [${parseId(ids.pmc)} Planet Minecraft](https://planetminecraft.com/texture-pack/faithful-32x/)
 
-[${parseId(ids.github)} Java Edition GitHub](https://github.com/faithful-resource-pack/faithful-java-32x)
+[${parseId(
+			ids.github,
+		)} Java Edition GitHub](https://github.com/faithful-resource-pack/faithful-java-32x)
 
-[${parseId(ids.github)} Bedrock Edition GitHub](https://github.com/faithful-resource-pack/faithful-bedrock-32x)`,
+[${parseId(
+			ids.github,
+		)} Bedrock Edition GitHub](https://github.com/faithful-resource-pack/faithful-bedrock-32x)`,
 	},
 
 	faithful_64x: {
@@ -35,17 +43,25 @@ export const media = {
 		description: `
 [${parseId(ids.faithful_logo)} Website](https://faithfulpack.net/faithful64x/latest)
 
-[${parseId(ids.curseforge)} Java Edition CurseForge](https://curseforge.com/minecraft/texture-packs/faithful-64x)
+[${parseId(
+			ids.curseforge,
+		)} Java Edition CurseForge](https://curseforge.com/minecraft/texture-packs/faithful-64x)
 
-[${parseId(ids.curseforge)} Bedrock Edition CurseForge](https://www.curseforge.com/minecraft-bedrock/addons/faithful-64x-bedrock)
+[${parseId(
+			ids.curseforge,
+		)} Bedrock Edition CurseForge](https://www.curseforge.com/minecraft-bedrock/addons/faithful-64x-bedrock)
 
 [${parseId(ids.modrinth)} Modrinth](https://modrinth.com/resourcepack/faithful-64x)
 
 [${parseId(ids.pmc)} Planet Minecraft](https://planetminecraft.com/texture-pack/faithful-64x/)
 
-[${parseId(ids.github)} Java Edition GitHub](https://github.com/faithful-resource-pack/faithful-java-64x)
+[${parseId(
+			ids.github,
+		)} Java Edition GitHub](https://github.com/faithful-resource-pack/faithful-java-64x)
 
-[${parseId(ids.github)} Bedrock Edition GitHub](https://github.com/faithful-resource-pack/faithful-bedrock-64x)
+[${parseId(
+			ids.github,
+		)} Bedrock Edition GitHub](https://github.com/faithful-resource-pack/faithful-bedrock-64x)
     `,
 	},
 
@@ -57,13 +73,19 @@ export const media = {
 		description: `
 [${parseId(ids.faithful_logo)} Website](https://faithfulpack.net/classicfaithful/32x-jappa)
 
-[${parseId(ids.curseforge)} CurseForge](https://curseforge.com/minecraft/texture-packs/classic-faithful-32x-jappa)
+[${parseId(
+			ids.curseforge,
+		)} CurseForge](https://curseforge.com/minecraft/texture-packs/classic-faithful-32x-jappa)
 
-[${parseId(ids.pmc)} Planet Minecraft](https://planetminecraft.com/texture-pack/classic-faithful-32x)
+[${parseId(
+			ids.pmc,
+		)} Planet Minecraft](https://planetminecraft.com/texture-pack/classic-faithful-32x)
 
 [${parseId(ids.github)} Java Edition GitHub](https://github.com/classicfaithful/32x-jappa)
 
-[${parseId(ids.github)} Bedrock Edition GitHub](https://github.com/classicfaithful/32x-jappa-bedrock)
+[${parseId(
+			ids.github,
+		)} Bedrock Edition GitHub](https://github.com/classicfaithful/32x-jappa-bedrock)
 
 [${parseId(ids.github)} Add-ons GitHub](https://github.com/classicfaithful/32x-jappa-add-ons)
     `,
@@ -77,15 +99,23 @@ export const media = {
 		description: `
 [${parseId(ids.faithful_logo)} Website](https://faithfulpack.net/classicfaithful/32x-programmer-art)
 
-[${parseId(ids.curseforge)} CurseForge](https://curseforge.com/minecraft/texture-packs/classic-faithful-32x-pa)
+[${parseId(
+			ids.curseforge,
+		)} CurseForge](https://curseforge.com/minecraft/texture-packs/classic-faithful-32x-pa)
 
-[${parseId(ids.pmc)} Planet Minecraft](https://planetminecraft.com/texture-pack/classic-faithful-32x-pa)
+[${parseId(
+			ids.pmc,
+		)} Planet Minecraft](https://planetminecraft.com/texture-pack/classic-faithful-32x-pa)
 
 [${parseId(ids.github)} Java Edition GitHub](https://github.com/classicfaithful/32x-programmer-art)
 
-[${parseId(ids.github)} Bedrock Edition GitHub](https://github.com/classicfaithful/32x-programmer-art-bedrock)
+[${parseId(
+			ids.github,
+		)} Bedrock Edition GitHub](https://github.com/classicfaithful/32x-programmer-art-bedrock)
 
-[${parseId(ids.github)} Add-ons GitHub](https://github.com/classicfaithful/32x-programmer-art-add-ons)
+[${parseId(
+			ids.github,
+		)} Add-ons GitHub](https://github.com/classicfaithful/32x-programmer-art-add-ons)
     `,
 	},
 
@@ -97,13 +127,19 @@ export const media = {
 		description: `
 [${parseId(ids.faithful_logo)} Website](https://faithfulpack.net/classicfaithful/64x-jappa)
 
-[${parseId(ids.curseforge)} CurseForge](https://curseforge.com/minecraft/texture-packs/classic-faithful-64x)
+[${parseId(
+			ids.curseforge,
+		)} CurseForge](https://curseforge.com/minecraft/texture-packs/classic-faithful-64x)
 
-[${parseId(ids.pmc)} Planet Minecraft](https://planetminecraft.com/texture-pack/classic-faithful-64x/)
+[${parseId(
+			ids.pmc,
+		)} Planet Minecraft](https://planetminecraft.com/texture-pack/classic-faithful-64x/)
 
 [${parseId(ids.github)} Java Edition GitHub](https://github.com/classicfaithful/64x-jappa)
 
-[${parseId(ids.github)} Bedrock Edition GitHub](https://github.com/classicfaithful/64x-jappa-bedrock)
+[${parseId(
+			ids.github,
+		)} Bedrock Edition GitHub](https://github.com/classicfaithful/64x-jappa-bedrock)
     `,
 	},
 

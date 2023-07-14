@@ -32,7 +32,9 @@ export const command: SlashCommand = {
 			case "all":
 				if (await interaction.perms({ type: "manager" })) return;
 				await interaction.reply({ content: "** **", ephemeral: true });
-				return await interaction.channel.send({ content: `### Faithful:\nhttps://discord.gg/sN9YRQbBv7\n### Classic Faithful:\nhttps://discord.gg/KSEhCVtg4J\n### Minecraft:\nhttps://discord.gg/minecraft` });
+				return await interaction.channel.send({
+					content: `### Faithful:\nhttps://discord.gg/sN9YRQbBv7\n### Classic Faithful:\nhttps://discord.gg/KSEhCVtg4J\n### Minecraft:\nhttps://discord.gg/minecraft`,
+				});
 		}
 
 		await interaction.reply({ content: contents });

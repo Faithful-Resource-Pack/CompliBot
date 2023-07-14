@@ -18,7 +18,7 @@ export const command: SlashCommand = {
 					{ name: "Classic Faithful 32x Jappa", value: "classic_faithful_32x" },
 					{ name: "Classic Faithful 32x Programmer Art", value: "classic_faithful_32x_progart" },
 					{ name: "Classic Faithful 64x", value: "classic_faithful_64x" },
-					{ name: "All", value: "all" }
+					{ name: "All", value: "all" },
 				),
 		),
 	execute: async (interaction: CommandInteraction) => {
@@ -34,8 +34,8 @@ export const command: SlashCommand = {
 						.setTitle(i.title)
 						.setDescription(i.description)
 						.setColor(i.color)
-						.setThumbnail(i.thumbnail)
-				)
+						.setThumbnail(i.thumbnail),
+				);
 			}
 
 			return await interaction.channel.send({ embeds: embedArray });
