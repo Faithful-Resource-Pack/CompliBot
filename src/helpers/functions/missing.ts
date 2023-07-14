@@ -61,34 +61,33 @@ export const computeAndUpdate = async (
 	version: string,
 	callback: Function,
 ): Promise<MissingResult> => {
-	return compute(client, pack, edition, version, callback).then(async (results) => {
-		if (client !== null) {
-			let channel: AnyChannel;
-			try {
-				channel = await client.channels.fetch(
-					client.config.packProgress[results[2].pack][results[2].edition],
+	const results = await compute(client, pack, edition, version, callback);
+	if (client !== null) {
+		let channel: AnyChannel;
+		try {
+			channel = await client.channels.fetch(
+				client.config.packProgress[results[2].pack][results[2].edition],
+			);
+		} catch {
+			return;
+		} // channel can't be fetch, abort mission!
+
+		// you may add differents pattern depending on the channel type using the switch below
+		switch (channel.type) {
+			case "GUILD_VOICE":
+				await (channel as VoiceChannel).setName(
+					`${getDisplayNameForPack(results[2].pack)} | ${
+						results[2].edition.charAt(0).toUpperCase() + results[2].edition.substr(1)
+					}: ${results[2].completion}%`,
 				);
-			} catch {
-				return;
-			} // channel can't be fetch, abort mission!
+				break;
 
-			// you may add differents pattern depending on the channel type using the switch below
-			switch (channel.type) {
-				case "GUILD_VOICE":
-					await (channel as VoiceChannel).setName(
-						`${getDisplayNameForPack(results[2].pack)} | ${
-							results[2].edition.charAt(0).toUpperCase() + results[2].edition.substr(1)
-						}: ${results[2].completion}%`,
-					);
-					break;
-
-				default:
-					break;
-			}
+			default:
+				break;
 		}
+	}
 
-		return results;
-	});
+	return results;
 };
 
 export const compute = async (

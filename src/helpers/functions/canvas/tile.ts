@@ -28,7 +28,7 @@ export async function tileAttachment(options: options): Promise<[MessageAttachme
 }
 
 export async function tileCanvas(options: options): Promise<Canvas> {
-	const dimension = await getDimensions(options.url)
+	const dimension = await getDimensions(options.url);
 	if (dimension.width * dimension.height * 3 > 262144)
 		return Promise.reject("Output exceeds the maximum of 512 x 512px²!");
 

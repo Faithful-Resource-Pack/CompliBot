@@ -151,13 +151,14 @@ class ExtendedClient extends Client {
 		process.on("SIGUSR2", () => this.restart());
 
 		process.on("disconnect", (code: number) => {
-			errorHandler(this, code, "disconnect");
+			if (code !== undefined) errorHandler(this, code, "disconnect");
 		});
 		process.on("uncaughtException", (error, origin) => {
-			errorHandler(this, error, "uncaughtException", origin);
+			if (error) errorHandler(this, error, "uncaughtException", origin);
 		});
 		process.on("unhandledRejection", (reason, promise) => {
-			errorHandler(this, reason, "unhandledRejection");
+			// fixes weird error when you occasionally restart the bot
+			if (reason) errorHandler(this, reason, "unhandledRejection");
 		});
 	}
 

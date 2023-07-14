@@ -153,7 +153,7 @@ export async function generalSlashCommandImage(
 		.editReply({
 			files: [attachment],
 			embeds: [embed],
-			components: [actionCommandParams.hideButtons ? null : imageButtons],
+			components: actionCommandParams.hideButtons ? null : [imageButtons],
 		})
 		.then((message: Message) => {
 			message.deleteButton();

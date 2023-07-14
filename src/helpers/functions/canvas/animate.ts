@@ -11,7 +11,7 @@ interface Options {
 }
 
 export async function animateAttachment(options: Options): Promise<MessageAttachment> {
-	const dimension = await getDimensions(options.url)
+	const dimension = await getDimensions(options.url);
 	if (options.magnify) {
 		let factor: number = 1;
 		const surface = dimension.width * dimension.width;

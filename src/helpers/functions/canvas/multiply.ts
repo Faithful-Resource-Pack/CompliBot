@@ -51,7 +51,7 @@ type options = {
 export async function multiplyAttachment(
 	options: options,
 ): Promise<[MessageAttachment, MessageEmbed]> {
-	const dimension = await getDimensions(options.url)
+	const dimension = await getDimensions(options.url);
 	const canvas = createCanvas(dimension.width, dimension.height);
 	const context = canvas.getContext("2d");
 

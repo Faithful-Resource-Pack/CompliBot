@@ -34,7 +34,7 @@ export interface AllColors {
 export async function paletteAttachment(
 	options: options,
 ): Promise<[MessageAttachment, MessageEmbed]> {
-	const dimension = await getDimensions(options.url)
+	const dimension = await getDimensions(options.url);
 	const [width, height] = [dimension.width, dimension.height];
 	const size = width * height;
 	if (size > 262144) return [null, new MessageEmbed()];
@@ -74,9 +74,7 @@ export async function paletteAttachment(
 		.slice(0, COLORS_TOP)
 		.map((el) => el.hex);
 
-	const embed = new MessageEmbed()
-		.setTitle("Palette results")
-		.setDescription("List of colors:\n");
+	const embed = new MessageEmbed().setTitle("Palette results").setDescription("List of colors:\n");
 
 	const field_groups = [];
 	let g: number;
@@ -100,7 +98,7 @@ export async function paletteAttachment(
 	let groupValue: any;
 	field_groups.forEach((group, index) => {
 		groupValue = group
-			.map((line) => line.map((color) => `[\`#${color}\`](${COOLORS_URL}${color})`).join(" "))
+			.map((line: any[]) => line.map((color: string) => `[\`#${color}\`](${COOLORS_URL}${color})`).join(" "))
 			.join(" ");
 		embed.addFields({
 			name: "Hex" + (field_groups.length > 1 ? ` part ${index + 1}` : "") + ": ",
@@ -141,9 +139,7 @@ export async function paletteAttachment(
 
 	// add generate palette link && append palette to description
 	embed.setDescription(
-		`Total: ${Object.values(allColors).length}\n\n` +
-			embed.description +
-			palette_urls.join(" - "),
+		`Total: ${Object.values(allColors).length}\n\n` + embed.description + palette_urls.join(" - "),
 	);
 
 	// create gradient canvas for top GRADIENT_TOP colors

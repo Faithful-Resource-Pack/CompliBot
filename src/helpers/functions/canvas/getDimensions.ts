@@ -7,5 +7,5 @@ export default async function (imageURL: string): Promise<ISizeCalculationResult
 	const data = response.data;
 	const buf = Buffer.from(data, "base64");
 	const size = sizeOf(buf);
-	return (size);
+	return size;
 }
