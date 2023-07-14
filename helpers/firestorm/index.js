@@ -326,7 +326,7 @@ module.exports = {
 	/**
 	 * @param {String} newValue The new address value
 	 */
-	address: function (newValue = undefined) {
+	address(newValue = undefined) {
 		if (newValue) _address = newValue;
 
 		return _address;
@@ -335,7 +335,7 @@ module.exports = {
 	/**
 	 * @param {String} newValue The new write token
 	 */
-	token: function (newValue = undefined) {
+	token(newValue = undefined) {
 		if (newValue) _token = newValue;
 
 		return _token;
@@ -344,7 +344,7 @@ module.exports = {
 	 * @param {String} name Collection name to get
 	 * @param {Function?} addMethods Additional methods and data to add to the objects
 	 */
-	collection: function (name, addMethods = (el) => el) {
+	collection(name, addMethods = (el) => el) {
 		return new Collection(name, addMethods);
 	},
 
@@ -352,7 +352,7 @@ module.exports = {
 	 *
 	 * @param {String} name Table name to get
 	 */
-	table: function (name) {
+	table(name) {
 		return this.collection(name);
 	},
 

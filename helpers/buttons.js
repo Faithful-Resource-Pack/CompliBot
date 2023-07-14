@@ -35,9 +35,9 @@ const imgButtons = new MessageActionRow().addComponents([
 ]);
 
 module.exports = {
-	magnifyButton: magnifyButton,
-	tileButton: tileButton,
-	paletteButton: paletteButton,
-	viewRawButton: viewRawButton,
-	imgButtons: imgButtons,
+	magnifyButton,
+	tileButton,
+	paletteButton,
+	viewRawButton,
+	imgButtons,
 };

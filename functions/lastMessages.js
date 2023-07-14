@@ -6,11 +6,11 @@ const lastMessagesURLs = [];
 let lastMesssageIndex = 0;
 
 module.exports = {
-	addMessage: function (message) {
+	addMessage(message) {
 		lastMessagesURLs[lastMesssageIndex] = message.url;
 		lastMesssageIndex = (lastMesssageIndex + 1) % NB_MESSAGES_MEMORY;
 	},
-	getLastMessages: function () {
+	getLastMessages() {
 		return lastMessagesURLs;
 	},
 };

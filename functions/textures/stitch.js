@@ -160,6 +160,6 @@ class FullStitcher {
 }
 
 module.exports = {
-	HorizontalStitcher: HorizontalStitcher,
-	FullStitcher: FullStitcher,
+	HorizontalStitcher,
+	FullStitcher,
 };

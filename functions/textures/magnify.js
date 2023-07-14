@@ -47,6 +47,6 @@ async function magnify(message, url) {
 }
 
 module.exports = {
-	magnify: magnify,
-	magnifyAttachment: magnifyAttachment,
+	magnify,
+	magnifyAttachment,
 };

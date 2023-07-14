@@ -307,7 +307,7 @@ class FileHandler {
 }
 
 module.exports = {
-	FileHandler: FileHandler,
+	FileHandler,
 	jsonContributionsBedrock: new FileHandler(
 		JSON_PATH_CONTRIBUTIONS_BEDROCK,
 		JSON_DEFAULT_CONTRIBUTIONS,

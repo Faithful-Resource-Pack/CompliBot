@@ -339,6 +339,7 @@ const build_from_files = async function () {
 build_from_files();
 
 module.exports = {
+	save,
 	build: build_from_files,
 	AllContributions: all_contributions,
 	AllContributors: all_contributors,
@@ -347,5 +348,4 @@ module.exports = {
 	AllUsers: all_users,
 	AllPaths: all_paths,
 	AllAnimations: all_animations,
-	save: save,
 };

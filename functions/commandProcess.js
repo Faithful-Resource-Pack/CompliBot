@@ -32,23 +32,21 @@ const __loadNumber = function () {
 };
 
 module.exports = {
-	increase: function () {
-		return __loadNumber().then(() => {
-			number = number + 1;
-
-			if (number === 1 || number % SAVE_EVERY === 0) {
-				const folderCreate = existsSync(COUNTER_FOLDER)
-					? Promise.resolve()
-					: mkdir(COUNTER_FOLDER, { recursive: true });
-				return folderCreate
-					.then(() => writeFile(COUNTER_FILE_PATH, "" + number))
-					.catch((e) => {
-						console.error(e);
-					});
-			}
-		});
+	async increase() {
+		await __loadNumber();
+		number += 1;
+		if (number === 1 || number % SAVE_EVERY === 0) {
+			const folderCreate = existsSync(COUNTER_FOLDER)
+				? Promise.resolve()
+				: mkdir(COUNTER_FOLDER, { recursive: true });
+			return folderCreate
+				.then(() => writeFile(COUNTER_FILE_PATH, "" + number))
+				.catch((e) => {
+					console.error(e);
+				});
+		}
 	},
-	get: function () {
+	get() {
 		return __loadNumber();
 	},
 };
