@@ -2,7 +2,7 @@ import { MessageEmbed } from "@client";
 import { Canvas, createCanvas, loadImage } from "@napi-rs/canvas";
 import { MessageAttachment } from "discord.js";
 import { ColorManager } from "./colors";
-import getMeta from "./getMeta";
+import getDimensions from "./getDimensions";
 
 const COOLORS_URL = "https://coolors.co/";
 
@@ -34,7 +34,7 @@ export interface AllColors {
 export async function paletteAttachment(
 	options: options,
 ): Promise<[MessageAttachment, MessageEmbed]> {
-	return getMeta(options.url).then(async (dimension) => {
+	return getDimensions(options.url).then(async (dimension) => {
 		const [width, height] = [dimension.width, dimension.height];
 		const size = width * height;
 		if (size > 262144) return [null, new MessageEmbed()];

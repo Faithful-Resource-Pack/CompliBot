@@ -1,6 +1,6 @@
 import { Canvas, SKRSContext2D, createCanvas, loadImage } from "@napi-rs/canvas";
 import { MessageAttachment } from "discord.js";
-import getMeta from "./getMeta";
+import getDimensions from "./getDimensions";
 import GIFEncoder from "./GIFEncoder";
 
 interface Options {
@@ -11,7 +11,7 @@ interface Options {
 }
 
 export async function animateAttachment(options: Options): Promise<MessageAttachment> {
-	return getMeta(options.url).then(async (dimensions) => {
+	return getDimensions(options.url).then(async (dimensions) => {
 		if (options.magnify === true) {
 			let factor: number = 1;
 			const surface = dimensions.width * dimensions.width;

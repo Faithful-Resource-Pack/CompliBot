@@ -2,7 +2,7 @@ import { MessageEmbed } from "@client";
 import { createCanvas, loadImage } from "@napi-rs/canvas";
 import { MessageAttachment } from "discord.js";
 import { ColorManager } from "./colors";
-import getMeta from "./getMeta";
+import getDimensions from "./getDimensions";
 
 export enum mcColors {
 	Foliage = "#5BAB46",
@@ -51,7 +51,7 @@ type options = {
 export async function multiplyAttachment(
 	options: options,
 ): Promise<[MessageAttachment, MessageEmbed]> {
-	return await getMeta(options.url).then(async (dimension) => {
+	return await getDimensions(options.url).then(async (dimension) => {
 		const canvas = createCanvas(dimension.width, dimension.height);
 		const context = canvas.getContext("2d");
 

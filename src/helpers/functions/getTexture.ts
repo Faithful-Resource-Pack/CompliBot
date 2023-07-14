@@ -2,7 +2,7 @@ import { MessageEmbed } from "@client";
 import TokenJson from "@json/tokens.json";
 import { Tokens } from "@interfaces";
 import axios from "axios";
-import getMeta from "./canvas/getMeta";
+import getDimensions from "./canvas/getDimensions";
 import { MessageAttachment, Guild } from "discord.js";
 import { magnifyAttachment } from "./canvas/magnify";
 import { ISizeCalculationResult } from "image-size/dist/types/interface";
@@ -69,7 +69,7 @@ export const getTextureMessageOptions = async (options: {
 	let validURL: boolean = false;
 	let dimensions: ISizeCalculationResult;
 	try {
-		dimensions = await getMeta(textureURL);
+		dimensions = await getDimensions(textureURL);
 		validURL = true;
 	} catch (err) {
 		textureURL =

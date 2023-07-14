@@ -1,7 +1,7 @@
 import { MessageEmbed } from "@client";
 import { createCanvas, loadImage, Image } from "@napi-rs/canvas";
 import { MessageAttachment } from "discord.js";
-import getMeta from "./getMeta";
+import getDimensions from "./getDimensions";
 import { ISizeCalculationResult } from "image-size/dist/types/interface";
 
 type options = {
@@ -19,7 +19,7 @@ type options = {
 export async function magnifyAttachment(
 	options: options,
 ): Promise<[MessageAttachment, MessageEmbed]> {
-	return getMeta(options.url).then(async (dimension) => {
+	return getDimensions(options.url).then(async (dimension) => {
 		return await magnify(options, dimension);
 	});
 }

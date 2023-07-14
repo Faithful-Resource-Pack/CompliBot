@@ -1,6 +1,6 @@
 import { Canvas, SKRSContext2D, createCanvas, loadImage } from "@napi-rs/canvas";
 import { MessageAttachment } from "discord.js";
-import getMeta from "./getMeta";
+import getDimensions from "./getDimensions";
 
 interface Options {
 	left: {
@@ -32,8 +32,8 @@ export async function stickCanvas(options: Options): Promise<Canvas> {
 	}));
 
 	return Promise.all([
-		getMeta(left.url),
-		getMeta(right.url),
+		getDimensions(left.url),
+		getDimensions(right.url),
 		loadImage(left.url),
 		loadImage(right.url),
 	]).then(([leftMeta, rightMeta, leftImage, rightImage]) => {

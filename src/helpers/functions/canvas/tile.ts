@@ -1,7 +1,7 @@
 import { MessageEmbed } from "@client";
 import { Canvas, SKRSContext2D, createCanvas, loadImage, Image, DOMMatrix } from "@napi-rs/canvas";
 import { MessageAttachment } from "discord.js";
-import getMeta from "./getMeta";
+import getDimensions from "./getDimensions";
 
 export type tileShape = "grid" | "vertical" | "horizontal" | "hollow" | "plus";
 interface options {
@@ -28,7 +28,7 @@ export async function tileAttachment(options: options): Promise<[MessageAttachme
 }
 
 export async function tileCanvas(options: options): Promise<Canvas> {
-	return getMeta(options.url)
+	return getDimensions(options.url)
 		.then(async (dimension) => {
 			if (dimension.width * dimension.height * 3 > 262144)
 				return Promise.reject("Output exceeds the maximum of 512 x 512px²!");
