@@ -3,25 +3,6 @@ import { colors } from "./colors";
 // sorry for the questionable indentation
 // the tabs cause issues otherwise with the formatting
 export const media = {
-	all: {
-		thumbnail:
-			"https://database.faithfulpack.net/images/branding/logos/transparent/512/plain_logo.png",
-		color: colors.brand,
-		title: "Useful Links:",
-		description: `
-**General:**
-
-[Website](https://faithfulpack.net/) • [Docs](https://docs.faithfulpack.net/) • [News](https://faithfulpack.net/news) • [License](https://faithfulpack.net/license) • [Translate](https://translate.faithfulpack.net/)
-
-**Listings:**
-
-[CurseForge](https://curseforge.com/members/faithful_resource_pack/projects) • [Modrinth](https://modrinth.com/user/faithful-resource-pack) • [Planet Minecraft](https://planetminecraft.com/member/faithful_resource_pack/) • [MCPEDL](https://mcpedl.com/user/faithful-resource-pack/) • [Minecraft Forum](https://www.minecraftforum.net/members/faithful_resource_pack)
-
-**Media:**
-
-[Twitter](https://twitter.com/faithfulpack/) • [Patreon](https://www.patreon.com/faithful_resource_pack) • [Reddit](https://reddit.com/r/faithfulpack/) • [Main GitHub](https://github.com/faithful-resource-pack/) • [Classic Faithful GitHub](https://github.com/classicfaithful/)`,
-	},
-
 	faithful_32x: {
 		thumbnail:
 			"https://database.faithfulpack.net/images/branding/logos/transparent/512/f32_logo.png",
@@ -87,24 +68,6 @@ export const media = {
     `,
 	},
 
-	classic_faithful_64x: {
-		thumbnail:
-			"https://database.faithfulpack.net/images/branding/logos/transparent/512/cf64_logo.png",
-		color: colors.cf64,
-		title: "Classic Faithful 64x:",
-		description: `
-[Website](https://faithfulpack.net/classicfaithful/64x-jappa)
-
-[CurseForge](https://curseforge.com/minecraft/texture-packs/classic-faithful-64x)
-
-[Planet Minecraft](https://planetminecraft.com/texture-pack/classic-faithful-64x/)
-
-[Java Edition GitHub](https://github.com/classicfaithful/64x-jappa)
-
-[Bedrock Edition GitHub](https://github.com/classicfaithful/64x-jappa-bedrock)
-    `,
-	},
-
 	classic_faithful_32x_progart: {
 		thumbnail:
 			"https://database.faithfulpack.net/images/branding/logos/transparent/512/cf32pa_logo.png",
@@ -123,6 +86,43 @@ export const media = {
 
 [Add-ons GitHub](https://github.com/classicfaithful/32x-programmer-art-add-ons)
     `,
+	},
+
+	classic_faithful_64x: {
+		thumbnail:
+			"https://database.faithfulpack.net/images/branding/logos/transparent/512/cf64_logo.png",
+		color: colors.cf64,
+		title: "Classic Faithful 64x:",
+		description: `
+[Website](https://faithfulpack.net/classicfaithful/64x-jappa)
+
+[CurseForge](https://curseforge.com/minecraft/texture-packs/classic-faithful-64x)
+
+[Planet Minecraft](https://planetminecraft.com/texture-pack/classic-faithful-64x/)
+
+[Java Edition GitHub](https://github.com/classicfaithful/64x-jappa)
+
+[Bedrock Edition GitHub](https://github.com/classicfaithful/64x-jappa-bedrock)
+    `,
+	},
+
+	general: {
+		thumbnail:
+			"https://database.faithfulpack.net/images/branding/logos/transparent/512/plain_logo.png",
+		color: colors.brand,
+		title: "Useful Links:",
+		description: `
+**General:**
+
+[Website](https://faithfulpack.net/) • [Docs](https://docs.faithfulpack.net/) • [News](https://faithfulpack.net/news) • [License](https://faithfulpack.net/license) • [Translate](https://translate.faithfulpack.net/)
+
+**Listings:**
+
+[CurseForge](https://curseforge.com/members/faithful_resource_pack/projects) • [Modrinth](https://modrinth.com/user/faithful-resource-pack) • [Planet Minecraft](https://planetminecraft.com/member/faithful_resource_pack/) • [MCPEDL](https://mcpedl.com/user/faithful-resource-pack/) • [Minecraft Forum](https://www.minecraftforum.net/members/faithful_resource_pack)
+
+**Media:**
+
+[Twitter](https://twitter.com/faithfulpack/) • [Patreon](https://www.patreon.com/faithful_resource_pack) • [Reddit](https://reddit.com/r/faithfulpack/) • [Main GitHub](https://github.com/faithful-resource-pack/) • [Classic Faithful GitHub](https://github.com/classicfaithful/)`,
 	},
 } as const;
 

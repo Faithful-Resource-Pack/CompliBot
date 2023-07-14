@@ -6,7 +6,7 @@ import { Message, MessageEmbed, CommandInteraction } from "@client";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
-		.setName("website")
+		.setName("media")
 		.setDescription("Displays all sites for the given resource pack.")
 		.addStringOption((option) =>
 			option
@@ -18,10 +18,28 @@ export const command: SlashCommand = {
 					{ name: "Classic Faithful 32x Jappa", value: "classic_faithful_32x" },
 					{ name: "Classic Faithful 32x Programmer Art", value: "classic_faithful_32x_progart" },
 					{ name: "Classic Faithful 64x", value: "classic_faithful_64x" },
+					{ name: "All", value: "all" }
 				),
 		),
 	execute: async (interaction: CommandInteraction) => {
-		const key: string = interaction.options.getString("name", false) ?? "all";
+		const key: string = interaction.options.getString("name", false) ?? "general";
+
+		if (key === "all") {
+			if (await interaction.perms({ type: "manager" })) return;
+			interaction.reply({ content: "** **", ephemeral: true });
+			let embedArray: MessageEmbed[] = [];
+			for (let i of Object.values(media)) {
+				embedArray.push(
+					new MessageEmbed()
+						.setTitle(i.title)
+						.setDescription(i.description)
+						.setColor(i.color)
+						.setThumbnail(i.thumbnail)
+				)
+			}
+
+			return await interaction.channel.send({ embeds: embedArray });
+		}
 
 		const embed = new MessageEmbed()
 			.setTitle(media[key].title)
