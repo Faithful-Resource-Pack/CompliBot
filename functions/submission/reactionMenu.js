@@ -100,7 +100,7 @@ module.exports = async function reactionMenu(client, reaction, user) {
 		REACTION.emoji.id == settings.emojis.delete &&
 		(USER_ID === authorID || member.permissions.has(Permissions.FLAGS.ADMINISTRATOR))
 	)
-		await message.delete();
+		return await message.delete();
 
 	// instapass and invalid need role checks
 	if (
