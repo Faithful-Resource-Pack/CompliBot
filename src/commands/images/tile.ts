@@ -12,7 +12,7 @@ export const command: SlashCommand = {
 			option
 				.setName("type")
 				.setDescription("How the image should be tiled.")
-				.setRequired(true)
+				.setRequired(false)
 				.addChoices(
 					{ name: "grid", value: "grid" },
 					{ name: "vertical", value: "vertical" },
@@ -36,7 +36,7 @@ export const command: SlashCommand = {
 		),
 	execute: async (interaction: CommandInteraction) => {
 		const random = interaction.options.getString("random");
-		const shape: tileShape = interaction.options.getString("type", true) as tileShape;
+		const shape: tileShape = (interaction.options.getString("type") ?? "grid") as tileShape;
 
 		generalSlashCommandImage(interaction, tileAttachment, {
 			factor: interaction.options.getNumber("factor"),
