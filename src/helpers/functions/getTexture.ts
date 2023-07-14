@@ -67,9 +67,10 @@ export const getTextureMessageOptions = async (options: {
 
 	// test if url isn't a 404
 	let validURL: boolean = false;
-	let dimensions: ISizeCalculationResult;
+	let dimension: ISizeCalculationResult;
 	try {
-		dimensions = await getDimensions(textureURL);
+		// getDimensions also validates a url
+		dimension = await getDimensions(textureURL);
 		validURL = true;
 	} catch (err) {
 		textureURL =
@@ -84,7 +85,7 @@ export const getTextureMessageOptions = async (options: {
 		embed
 			.setURL(`https://webapp.faithfulpack.net/#/gallery/java/32x/latest/all/?show=${texture.id}`)
 			.addFields([
-				{ name: "Resolution", value: `${dimensions.width}×${dimensions.height}`, inline: true },
+				{ name: "Resolution", value: `${dimension.width}×${dimension.height}`, inline: true },
 			]);
 
 		let mainContribution: Contribution;

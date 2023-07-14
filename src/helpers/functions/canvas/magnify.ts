@@ -19,9 +19,8 @@ type options = {
 export async function magnifyAttachment(
 	options: options,
 ): Promise<[MessageAttachment, MessageEmbed]> {
-	return getDimensions(options.url).then(async (dimension) => {
-		return await magnify(options, dimension);
-	});
+	const dimension = await getDimensions(options.url)
+	return await magnify(options, dimension);
 }
 
 /**

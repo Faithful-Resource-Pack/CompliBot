@@ -51,39 +51,38 @@ type options = {
 export async function multiplyAttachment(
 	options: options,
 ): Promise<[MessageAttachment, MessageEmbed]> {
-	return await getDimensions(options.url).then(async (dimension) => {
-		const canvas = createCanvas(dimension.width, dimension.height);
-		const context = canvas.getContext("2d");
+	const dimension = await getDimensions(options.url)
+	const canvas = createCanvas(dimension.width, dimension.height);
+	const context = canvas.getContext("2d");
 
-		context.imageSmoothingEnabled = false;
-		const imageToDraw = await loadImage(options.url as string);
+	context.imageSmoothingEnabled = false;
+	const imageToDraw = await loadImage(options.url as string);
 
-		context.drawImage(imageToDraw, 0, 0, dimension.width, dimension.height);
-		context.globalCompositeOperation = "multiply";
+	context.drawImage(imageToDraw, 0, 0, dimension.width, dimension.height);
+	context.globalCompositeOperation = "multiply";
 
-		context.fillStyle = options.color;
-		context.fillRect(0, 0, dimension.width, dimension.height);
+	context.fillStyle = options.color;
+	context.fillRect(0, 0, dimension.width, dimension.height);
 
-		var data = context.getImageData(0, 0, dimension.width, dimension.height);
+	var data = context.getImageData(0, 0, dimension.width, dimension.height);
 
-		for (let i = 0; i < data.data.length; i += 4) {
-			const red = data.data[i];
-			const green = data.data[i + 1];
-			const blue = data.data[i + 2];
+	for (let i = 0; i < data.data.length; i += 4) {
+		const red = data.data[i];
+		const green = data.data[i + 1];
+		const blue = data.data[i + 2];
 
-			const hex = new ColorManager({ rgb: { r: red, g: green, b: blue } }).toHEX().value;
-			if (hex.toUpperCase() == options.color.substring(1)) {
-				data.data[i + 3] = 0;
-			}
+		const hex = new ColorManager({ rgb: { r: red, g: green, b: blue } }).toHEX().value;
+		if (hex.toUpperCase() == options.color.substring(1)) {
+			data.data[i + 3] = 0;
 		}
+	}
 
-		await context.putImageData(data, 0, 0);
-		return [
-			new MessageAttachment(
-				canvas.toBuffer("image/png"),
-				`${options.name ? options.name : "tinted.png"}`,
-			),
-			options.embed,
-		];
-	});
+	await context.putImageData(data, 0, 0);
+	return [
+		new MessageAttachment(
+			canvas.toBuffer("image/png"),
+			`${options.name ? options.name : "tinted.png"}`,
+		),
+		options.embed,
+	];
 }
