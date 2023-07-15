@@ -58,7 +58,7 @@ export const command: SlashCommand = {
 			);
 
 			interaction
-				.editReply({ embeds: [embed], files: [magnified] })
+				.editReply({ embeds: [embed], files: magnified ? [magnified] : null })
 				.then((message: Message) => message.deleteButton());
 			return;
 		} else {

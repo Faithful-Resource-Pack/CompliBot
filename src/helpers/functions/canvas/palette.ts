@@ -98,7 +98,9 @@ export async function paletteAttachment(
 	let groupValue: any;
 	field_groups.forEach((group, index) => {
 		groupValue = group
-			.map((line: any[]) => line.map((color: string) => `[\`#${color}\`](${COOLORS_URL}${color})`).join(" "))
+			.map((line: any[]) =>
+				line.map((color: string) => `[\`#${color}\`](${COOLORS_URL}${color})`).join(" "),
+			)
 			.join(" ");
 		embed.addFields({
 			name: "Hex" + (field_groups.length > 1 ? ` part ${index + 1}` : "") + ": ",

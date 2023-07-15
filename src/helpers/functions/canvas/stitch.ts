@@ -1,5 +1,11 @@
 import { createCanvas, loadImage } from "@napi-rs/canvas";
 
+/**
+ * loads a texture url as a canvas image
+ * @author Evorp
+ * @param urls texture urls to load
+ * @returns array of canvas images
+ */
 async function loadImages(urls: string[]) {
 	let loadedImages = [];
 	for (let url of urls) {
@@ -14,8 +20,9 @@ async function loadImages(urls: string[]) {
 }
 
 /**
- * literally all this code is ripped from the js bot
- * and I genuinely have no idea how it works but it seems to be holding up
+ * stitches an arbitrary number of textures together
+ * most of this code is ripped from the JS bot
+ * @author Evorp
  * @param {string[]} urls array of urls
  * @param {number} gap the gap between each texture
  */
@@ -84,7 +91,7 @@ export async function horizontalStitcher(urls: string[], gap: number = 0) {
 /**
  * vertical version of horizontalStitcher
  * @author Evorp
- * @param {string[][]} urls two-dimensional array of valid urls
+ * @param {string[]} urls array of urls
  * @param {number} gap the gap between each texture
  */
 export async function verticalStitcher(urls: string[], gap: number = 0) {
@@ -152,6 +159,7 @@ import { Client, MessageEmbed } from "@client";
 import { MessageAttachment } from "discord.js";
 import { formatName, addPathsToEmbed } from "@helpers/sorter";
 import axios from "axios";
+import getDimensions from "./getDimensions";
 
 /**
  * More convenient way of getting all compared textures in a nice grid without copy pasting the same code everywhere
@@ -196,6 +204,27 @@ export async function textureComparison(
 		default:
 			displayed = PACKS;
 			break;
+	}
+
+	if (!isTemplate) {
+		try {
+			const defaultURL = (
+				await axios.get(`${client.tokens.apiUrl}textures/${id}/url/default/latest`)
+			).request.res.responseUrl;
+
+			const dimension = await getDimensions(defaultURL);
+			if (dimension.width * dimension.height * displayed.flat().length > 262144) {
+				return [
+					new MessageEmbed()
+						.setTitle("Output will be too big")
+						.setDescription(
+							"Try specifying which set of packs you want to view to reduce the total image size.",
+						)
+						.setFooter({ text: "Use [#template] for more information!" }),
+					null,
+				];
+			}
+		} catch {}
 	}
 
 	let urls = [];

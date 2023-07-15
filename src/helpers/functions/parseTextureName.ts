@@ -5,12 +5,7 @@ export default async function parseTextureName(
 	name: string,
 	interaction: CommandInteraction,
 ): Promise<any[]> {
-	name = name
-		.toLowerCase()
-		.trim()
-		.replace(".png", "")
-		.replace("#", "")
-		.replace(/ /g, "_")
+	name = name.toLowerCase().trim().replace(".png", "").replace("#", "").replace(/ /g, "_");
 
 	if (name.length < 3) {
 		interaction.reply({

@@ -39,7 +39,7 @@ export const menu: SelectMenu = {
 		}
 
 		interaction
-			.editReply({ embeds: [embed], files: [magnified] })
+			.editReply({ embeds: [embed], files: magnified ? [magnified] : null })
 			.then((message: Message) => message.deleteButton(true));
 	},
 };
