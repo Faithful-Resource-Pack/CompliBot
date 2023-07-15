@@ -5,11 +5,14 @@ export default async function parseTextureName(
 	name: string,
 	interaction: CommandInteraction,
 ): Promise<any[]> {
-	if (name.includes(".png")) name = name.replace(".png", "");
-	name = name.replace(/ /g, "_").toLowerCase();
+	name = name
+		.toLowerCase()
+		.trim()
+		.replace(".png", "")
+		.replace("#", "")
+		.replace(/ /g, "_")
 
 	if (name.length < 3) {
-		// textures like "bed" exist :/
 		interaction.reply({
 			content: "You need at least three characters to start a texture search!",
 			ephemeral: true,
