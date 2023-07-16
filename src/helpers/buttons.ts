@@ -1,13 +1,10 @@
 import { MessageActionRow, MessageButton } from "discord.js";
 import { ids, parseId } from "./emojis";
 
-/* TODO: uncomment once compare button is properly made
-
 export const compare = new MessageButton()
 	.setStyle("PRIMARY")
 	.setEmoji(parseId(ids.compare))
-	.setCustomId("compare")
- */
+	.setCustomId("compare");
 export const palette = new MessageButton()
 	.setStyle("PRIMARY")
 	.setEmoji(parseId(ids.palette))
@@ -69,9 +66,4 @@ export const pollDelete = new MessageButton()
 export const pollVotes = [pollVote1, pollVote2, pollVote3, pollVote4, pollVote5];
 export const pollYesNo = new MessageActionRow().addComponents([pollUpvote, pollDownvote]);
 
-export const imageButtons = new MessageActionRow().addComponents([
-	magnify,
-	tile,
-	palette,
-	// compare,
-]);
+export const imageButtons = new MessageActionRow().addComponents([magnify, tile, palette]);

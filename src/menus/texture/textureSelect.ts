@@ -1,7 +1,7 @@
 import { Client, Message, SelectMenuInteraction } from "@client";
 import { SelectMenu } from "@interfaces";
 import { info } from "@helpers/logger";
-import { imageButtons } from "@helpers/buttons";
+import { imageButtons, compare } from "@helpers/buttons";
 import { MessageInteraction } from "discord.js";
 import { getTextureMessageOptions } from "@functions/getTexture";
 import axios from "axios";
@@ -47,7 +47,11 @@ export const menu: SelectMenu = {
 		}
 
 		interaction
-			.editReply({ embeds: [embed], files: files, components: [imageButtons] })
+			.editReply({
+				embeds: [embed],
+				files: files,
+				components: [imageButtons.addComponents([compare])],
+			})
 			.then((message: Message) => message.deleteButton(true));
 	},
 };

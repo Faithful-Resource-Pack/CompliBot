@@ -1,8 +1,5 @@
 import { Poll } from "@class/poll";
-import { addMinutes } from "@helpers/dates";
-import { ids, parseId } from "@helpers/emojis";
-import { Client, MessageEmbed } from "@client";
-import { Message, TextChannel, User } from "discord.js";
+import { Client } from "@client";
 
 export class Automation {
 	private ticking: boolean = true;

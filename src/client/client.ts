@@ -1,12 +1,10 @@
 import {
-	ApplicationCommand,
 	ButtonInteraction,
 	Client,
 	ClientOptions,
 	Collection,
 	CommandInteraction,
 	Guild,
-	GuildApplicationCommandPermissionData,
 	SelectMenuInteraction,
 	TextChannel,
 	VoiceChannel,
@@ -32,7 +30,6 @@ import { User } from "@helpers/interfaces/moderation";
 import { readdirSync } from "fs";
 import { REST } from "@discordjs/rest";
 import { RESTPostAPIApplicationCommandsJSONBody, Routes } from "discord-api-types/v10";
-import { SlashCommandBuilder } from "@discordjs/builders";
 
 import path from "path";
 import chalk from "chalk";

@@ -3,7 +3,7 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction, Message, MessageEmbed } from "@client";
 import { getTextureMessageOptions } from "@functions/getTexture";
 import { MessageActionRow, MessageSelectMenu, MessageSelectOptionData } from "discord.js";
-import { imageButtons } from "@helpers/buttons";
+import { compare, imageButtons } from "@helpers/buttons";
 import { minecraftSorter } from "@helpers/sorter";
 import parseTextureName from "@functions/parseTextureName";
 
@@ -58,7 +58,11 @@ export const command: SlashCommand = {
 				guild: interaction.guild,
 			});
 			interaction
-				.editReply({ embeds: [embed], files: files, components: [imageButtons] })
+				.editReply({
+					embeds: [embed],
+					files: files,
+					components: [imageButtons.addComponents([compare])],
+				})
 				.then((message: Message) => message.deleteButton());
 			return;
 		}
