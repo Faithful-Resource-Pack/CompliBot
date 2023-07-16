@@ -67,3 +67,9 @@ export const pollVotes = [pollVote1, pollVote2, pollVote3, pollVote4, pollVote5]
 export const pollYesNo = new MessageActionRow().addComponents([pollUpvote, pollDownvote]);
 
 export const imageButtons = new MessageActionRow().addComponents([magnify, tile, palette]);
+export const textureButtons = new MessageActionRow().addComponents([
+	magnify,
+	tile,
+	palette,
+	compare,
+]);

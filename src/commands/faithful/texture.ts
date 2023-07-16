@@ -3,7 +3,7 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction, Message, MessageEmbed } from "@client";
 import { getTextureMessageOptions } from "@functions/getTexture";
 import { MessageActionRow, MessageSelectMenu, MessageSelectOptionData } from "discord.js";
-import { compare, imageButtons } from "@helpers/buttons";
+import { textureButtons } from "@helpers/buttons";
 import { minecraftSorter } from "@helpers/sorter";
 import parseTextureName from "@functions/parseTextureName";
 
@@ -61,7 +61,7 @@ export const command: SlashCommand = {
 				.editReply({
 					embeds: [embed],
 					files: files,
-					components: [imageButtons.addComponents([compare])],
+					components: [textureButtons],
 				})
 				.then((message: Message) => message.deleteButton());
 			return;

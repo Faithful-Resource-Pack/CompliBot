@@ -12,7 +12,7 @@ export default async function parseTextureName(
 			content: "You need at least three characters to start a texture search!",
 			ephemeral: true,
 		});
-		return;
+		return [];
 	}
 
 	/**
