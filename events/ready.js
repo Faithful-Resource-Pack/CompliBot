@@ -89,7 +89,7 @@ module.exports = {
 
 		if (MAINTENANCE)
 			client.user.setPresence({ activities: [{ name: "maintenance" }], status: "dnd" });
-		else client.user.setActivity("Pigstep", { type: "LISTENING" });
+		else client.user.setActivity("submissions", { type: "LISTENING" });
 
 		await restartAutoDestroy(client);
 
