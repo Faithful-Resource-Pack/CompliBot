@@ -26,7 +26,9 @@ export const command: SlashCommand = {
 
 		if (key === "all") {
 			if (await interaction.perms({ type: "manager" })) return;
-			interaction.reply({ content: "** **", ephemeral: true });
+			interaction
+				.reply({ content: "** **", fetchReply: true, })
+				.then((message: Message) => message.delete());;
 			let embedArray: MessageEmbed[] = [];
 			for (let i of Object.values(media)) {
 				embedArray.push(

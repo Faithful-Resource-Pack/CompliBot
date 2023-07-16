@@ -22,7 +22,7 @@ export const command: SlashCommand = {
 			return;
 
 		interaction
-			.reply({ content: ".", fetchReply: true })
+			.reply({ content: "** **", fetchReply: true, })
 			.then((message: Message) => message.delete());
 
 		interaction.channel.send({ content: interaction.options.getString("sentence", true) });

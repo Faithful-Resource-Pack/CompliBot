@@ -34,8 +34,9 @@ export const command: SlashCommand = {
 		} // message can't be fetched
 
 		interaction
-			.reply({ content: ".", fetchReply: true })
+			.reply({ content: "** **", fetchReply: true })
 			.then((message: Message) => message.delete());
+
 		msg.reply({ content: interaction.options.getString("sentence", true) });
 	},
 };

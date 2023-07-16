@@ -34,7 +34,9 @@ export const command: SlashCommand = {
 		if (choice == "all") {
 			if (await interaction.perms({ type: "manager" })) return;
 
-			interaction.reply({ content: "** **", ephemeral: true });
+			interaction
+				.reply({ content: "** **", fetchReply: true })
+				.then((message: Message) => message.delete());
 
 			// I hate this so much but there's not much I can do
 			const thumbnail =
