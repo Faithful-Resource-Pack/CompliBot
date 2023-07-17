@@ -72,10 +72,7 @@ export const command: SlashCommand = {
 
 		const edition: string = interaction.options.getString("edition", true);
 		const pack: string = interaction.options.getString("pack", true);
-		const version: string =
-			interaction.options.getString("version") === null
-				? "latest"
-				: interaction.options.getString("version");
+		const version: string = interaction.options.getString("version") ?? "latest";
 
 		const updateChannels = version === "latest";
 
@@ -113,44 +110,20 @@ export const command: SlashCommand = {
 		let responses: MissingResults;
 
 		if (edition === "all") {
-			if (updateChannels)
-				responses = await computeAndUpdateAll(
-					interaction.client as Client,
-					pack,
-					version,
-					stepCallback,
-				).catch((err) => {
-					return [catchErr(err, { completion: 0, pack: pack, version: version, edition: edition })];
-				});
-			else
-				responses = await computeAll(
-					interaction.client as Client,
-					pack,
-					version,
-					stepCallback,
-				).catch((err) => {
-					return [catchErr(err, { completion: 0, pack: pack, version: version, edition: edition })];
-				});
+			const callback: Function = updateChannels ? computeAndUpdateAll : computeAll;
+			responses = await callback(interaction.client as Client, pack, version, stepCallback).catch(
+				(err: any) => [
+					catchErr(err, { completion: 0, pack: pack, version: version, edition: edition }),
+				],
+			);
 		} else {
-			if (updateChannels)
-				responses = [
-					await computeAndUpdate(
-						interaction.client as Client,
-						pack,
-						edition,
-						version,
-						stepCallback,
-					).catch((err) =>
+			const callback: Function = updateChannels ? computeAndUpdate : compute;
+			responses = [
+				await callback(interaction.client as Client, pack, edition, version, stepCallback).catch(
+					(err: any) =>
 						catchErr(err, { completion: 0, pack: pack, version: version, edition: edition }),
-					),
-				];
-			else
-				responses = [
-					await compute(interaction.client as Client, pack, edition, version, stepCallback).catch(
-						(err) =>
-							catchErr(err, { completion: 0, pack: pack, version: version, edition: edition }),
-					),
-				];
+				),
+			];
 		}
 
 		const files: Array<MessageAttachment> = [];
