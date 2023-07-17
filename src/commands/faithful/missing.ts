@@ -113,7 +113,7 @@ export const command: SlashCommand = {
 		if (edition === "all") {
 			// you can edit the function being called so you don't need like 50 different if statements with the same args
 			const updateCallback: Function = updateChannels ? computeAndUpdateAll : computeAll;
-			responses = await updateCallback().catch(
+			responses = await updateCallback(interaction.client as Client, pack, version, stepCallback).catch(
 				(err: any) => [
 					catchErr(err, { completion: 0, pack: pack, version: version, edition: edition }),
 				],
