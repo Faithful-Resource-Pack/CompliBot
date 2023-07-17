@@ -9,12 +9,7 @@ const warnUser = require("../../helpers/warnUser");
 
 module.exports = {
 	name: "channelpush",
-	description: strings.command.description.channelpush,
-	category: "Developer",
 	guildOnly: false,
-	uses: strings.command.use.admins,
-	syntax: `${prefix}channelpush [all/name_of_pack]`,
-	example: `${prefix}channelpush faithful_32x`,
 	async execute(client, message, args) {
 		if (!message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR))
 			return warnUser(message, strings.command.no_permission);

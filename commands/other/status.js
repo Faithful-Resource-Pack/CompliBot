@@ -11,16 +11,15 @@ const presence = ["online", "idle", "dnd"];
 module.exports = {
 	name: "status",
 	aliases: ["presence", "activity"],
-	description: strings.command.description.status,
-	category: "Developer",
 	guildOnly: false,
-	uses: strings.command.use.devs,
-	syntax: `${prefix}status <activity> <presence> <status>`,
 	async execute(client, message, args) {
 		if (!process.env.DEVELOPERS.includes(message.author.id))
 			return warnUser(message, strings.command.no_permission);
 
 		if (!args.length) return warnUser(message, strings.command.args.none_given);
+
+		// since args is converted to lowercase in the handler we need to undo that
+		args[0] = args[0].toUpperCase();
 
 		if (activity.includes(args[0]) && presence.includes(args[1])) {
 			client.user.setPresence({
@@ -32,8 +31,8 @@ module.exports = {
 				],
 				status: args[1],
 			});
+			return await message.react(settings.emojis.upvote);
 		}
-
-		await message.react(settings.emojis.upvote);
+		return await message.react(settings.emojis.downvote);
 	},
 };

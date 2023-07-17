@@ -12,15 +12,7 @@ const warnUser = require("../../helpers/warnUser");
 module.exports = {
 	name: "animate",
 	aliases: ["play"],
-	description: strings.command.description.animate,
-	category: "Faithful",
 	guildOnly: false,
-	uses: strings.command.use.anyone,
-	//syntax: `${prefix}animate [-c | -m] [-u | file attached]`,
-	//flags: '-c | --custom : Boolean, set to false by default, set true if you want to give custom mcmeta settings.\n-m | --mcmeta : String, give texture name to find mcmeta, if none exist, default settings will be applied.',
-	//example: `${prefix}animate + file attached\n${prefix}animate --mcmeta=true + file attached\n${prefix}play -u=https://discord.com/channels/.../.../...`,
-	//syntax: `${prefix}animate [file attached]`,
-	example: `${prefix}animate + file attached`,
 	async execute(client, message, args) {
 		message.channel.sendTyping();
 

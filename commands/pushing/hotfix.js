@@ -15,11 +15,7 @@ const strings = require("../../resources/strings.json");
 module.exports = {
 	name: "hotfix",
 	aliases: ["fix"],
-	description: strings.command.description.hotfix,
-	category: "Developer",
 	guildOnly: false,
-	uses: strings.command.use.devs,
-	syntax: `${prefix}hotfix <something>`,
 	async execute(client, message, args) {
 		if (!process.env.DEVELOPERS.includes(message.author.id)) return;
 

@@ -9,12 +9,7 @@ const walkSync = require("../../helpers/walkSync");
 module.exports = {
 	name: "reload",
 	aliases: ["r"],
-	description: strings.command.description.reload,
-	category: "Developer",
 	guildOnly: false,
-	uses: strings.command.use.devs,
-	syntax: `${prefix}reload <command>`,
-	example: `${prefix}reload magnify`,
 	async execute(client, message, args) {
 		if (process.env.DEVELOPERS.includes(message.author.id)) {
 			const commandName = args[0].toLowerCase();

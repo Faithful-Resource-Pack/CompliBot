@@ -8,19 +8,6 @@
 			"invalid": "You did not provide valid arguments."
 		},
 		"no_permission": "You don't have the permission to do that.",
-		"description": {
-			"autopush": "Use this command to push textures from #results to GitHub.",
-			"channelpush": "Use this command to send textures to council and result channels!",
-			"behave": "(⌯˃̶᷄ ﹏ ˂̶᷄⌯)",
-			"hotfix": "Developer-only command to quickly fix something. No defined single use, may change at any time.",
-			"infoembed": "Generates infoembed embeds for #downloads-and-links",
-			"reload": "Reloads a command",
-			"say": "Make the bot send any message you specify",
-			"shutdown": "Stops the bot",
-			"magnify": "Resize an image.",
-			"status": "Changes the bot's status: \n**Activity**:\nPLAYING, STREAMING, LISTENING, WATCHING, COMPETING, CUSTOM_STATUS (does not work)\n**Presence**:\nonline, idle, dnd",
-			"animate": "Animates a texture."
-		},
 		"image": {
 			"not_found_in_10_last": "No image found in 10 previous messages.",
 			"too_big": "The input picture is too big!",

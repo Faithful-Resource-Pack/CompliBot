@@ -11,12 +11,7 @@ const warnUser = require("../../helpers/warnUser");
 
 module.exports = {
 	name: "autopush",
-	description: strings.command.description.autopush,
-	category: "Developer",
 	guildOnly: false,
-	uses: strings.command.use.admins,
-	syntax: `${prefix}autopush [all/name_of_pack]`,
-	example: `${prefix}autopush faithful_32x`,
 	async execute(client, message, args) {
 		if (!message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR))
 			return warnUser(message, strings.command.no_permission);

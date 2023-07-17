@@ -4,18 +4,7 @@ const strings = require("../../resources/strings.json");
 
 module.exports = {
 	name: "behave",
-	description: strings.command.description.behave,
-	category: "Developer",
 	guildOnly: false,
-	uses: strings.command.use.devs,
-	syntax: `${prefix}behave`,
-	/**
-	 *
-	 * @param {Discord.Client} client Current Discord bot client
-	 * @param {Discord.Message} message Message that triggered the command
-	 * @param {String[]} args The arguments to the command
-	 * @returns
-	 */
 	async execute(client, message, args) {
 		if (!process.env.DEVELOPERS.includes(message.author.id))
 			return await message.reply({ content: "lol no" });

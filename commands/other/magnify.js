@@ -8,11 +8,7 @@ const { magnify } = require("../../functions/textures/magnify");
 module.exports = {
 	name: "magnify",
 	aliases: ["m", "z"],
-	description: strings.command.description.magnify,
-	category: "Faithful",
 	guildOnly: false,
-	uses: strings.command.use.anyone,
-	example: `${prefix}m + file attached`,
 	async execute(client, message, args) {
 		let DATA;
 
