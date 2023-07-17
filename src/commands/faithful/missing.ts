@@ -72,14 +72,12 @@ export const command: SlashCommand = {
 
 		const edition: string = interaction.options.getString("edition", true);
 		const pack: string = interaction.options.getString("pack", true);
-		const updateChannels: boolean =
-			interaction.options.getBoolean("update_channels") === null
-				? false
-				: interaction.options.getBoolean("update_channels");
 		const version: string =
 			interaction.options.getString("version") === null
 				? "latest"
 				: interaction.options.getString("version");
+
+		const updateChannels = version === "latest";
 
 		const embed: MessageEmbed = new MessageEmbed()
 			.setTitle("Searching for missing textures...")

@@ -69,20 +69,17 @@ export const computeAndUpdate = async (
 				client.config.packProgress[results[2].pack][results[2].edition],
 			);
 		} catch {
-			return;
-		} // channel can't be fetch, abort mission!
+			/* channel doesn't exist or can't be fetched */
+		}
 
-		// you may add differents pattern depending on the channel type using the switch below
+		// you can add different patterns depending on the channel type
 		switch (channel.type) {
 			case "GUILD_VOICE":
-				await (channel as VoiceChannel).setName(
-					`${getDisplayNameForPack(results[2].pack)} | ${
-						results[2].edition.charAt(0).toUpperCase() + results[2].edition.substr(1)
-					}: ${results[2].completion}%`,
-				);
-				break;
+				const pattern = /[.\d+]+(?!.*[.\d+])/;
+				if ((channel.name.match(pattern) ?? [""])[0] == results[2].completion.toString()) break;
 
-			default:
+				const updatedName = channel.name.replace(pattern, results[2].completion.toString());
+				await (channel as VoiceChannel).setName(updatedName);
 				break;
 		}
 	}
