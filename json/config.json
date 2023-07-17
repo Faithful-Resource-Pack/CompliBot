@@ -84,15 +84,15 @@
             "java": "932039966836535328",
             "bedrock": "932040163876548649"
         },
-        "classic_faithful_32": {
+        "classic_faithful_32x": {
             "java": "948984052080337007",
             "bedrock": "969062076226105354"
         },
-        "classic_faithful_64": {
+        "classic_faithful_64x": {
             "java": "914224818226856027",
             "bedrock": "1092281589037281332"
         },
-        "classic_faithful_32_progart": {
+        "classic_faithful_32x_progart": {
             "java": "864660644685938688",
             "bedrock": "1003524521107660800"
         }
