@@ -54,6 +54,9 @@ export const computeAndUpdateAll = async (
 	);
 };
 
+/**
+ * same interface as compute but updates the VCs too
+ */
 export const computeAndUpdate = async (
 	client: Client,
 	pack: string,
@@ -87,6 +90,9 @@ export const computeAndUpdate = async (
 	return results;
 };
 
+/**
+ * this is the main computing function that all the other ones use internally
+ */
 export const compute = async (
 	client: Client,
 	pack: string,

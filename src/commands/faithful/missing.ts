@@ -86,6 +86,7 @@ export const command: SlashCommand = {
 		let steps: Array<string> = [];
 
 		let stepCallback = async (step: string) => {
+			// when in the computing function this function is called when a step is being executed
 			if (step === "") steps = ["Next one..."];
 			else {
 				if (steps.length === 1 && steps[0] === "Next one...") steps = [];
@@ -110,16 +111,18 @@ export const command: SlashCommand = {
 		let responses: MissingResults;
 
 		if (edition === "all") {
-			const callback: Function = updateChannels ? computeAndUpdateAll : computeAll;
-			responses = await callback(interaction.client as Client, pack, version, stepCallback).catch(
+			// you can edit the function being called so you don't need like 50 different if statements with the same args
+			const updateCallback: Function = updateChannels ? computeAndUpdateAll : computeAll;
+			responses = await updateCallback().catch(
 				(err: any) => [
 					catchErr(err, { completion: 0, pack: pack, version: version, edition: edition }),
 				],
 			);
 		} else {
-			const callback: Function = updateChannels ? computeAndUpdate : compute;
+			// the args and error handling here change so we can't just switch out the args
+			const updateCallback: Function = updateChannels ? computeAndUpdate : compute;
 			responses = [
-				await callback(interaction.client as Client, pack, edition, version, stepCallback).catch(
+				await updateCallback(interaction.client as Client, pack, edition, version, stepCallback).catch(
 					(err: any) =>
 						catchErr(err, { completion: 0, pack: pack, version: version, edition: edition }),
 				),
@@ -162,8 +165,8 @@ export const command: SlashCommand = {
 			}
 		});
 
-		return interaction.editReply({ embeds: [embed2], files: files }).then((message: Message) => {
-			message.deleteButton();
-		});
+		return interaction
+			.editReply({ embeds: [embed2], files: files })
+			.then((message: Message) => message.deleteButton());
 	},
 };
