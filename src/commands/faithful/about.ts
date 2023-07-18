@@ -93,7 +93,7 @@ export const command: SlashCommand = {
 
 		const finalEmbed = new MessageEmbed()
 			.setTitle(
-				`@${user.username} has ${userData.length} ${
+				`${user.username} has ${userData.length} ${
 					userData.length == 1 ? "contribution" : "contributions"
 				}!`,
 			)
