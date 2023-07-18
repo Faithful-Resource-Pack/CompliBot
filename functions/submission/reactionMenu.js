@@ -13,12 +13,24 @@ const changeStatus = require("./changeStatus");
  * @see interactionCreate (where all button stuff is handled)
  */
 module.exports = async function reactionMenu(client, reaction, user) {
-	if (reaction.emoji.id !== settings.emojis.see_more) return;
-
 	const message = await reaction.message.fetch();
 	const member = await message.guild.members.cache.get(user.id);
+	if (member.bot) return;
 
-	if (member.bot || !message.embeds[0]?.fields?.length) return;
+	let EMOJIS = [
+		settings.emojis.see_less,
+		settings.emojis.delete,
+		settings.emojis.instapass,
+		settings.emojis.invalid,
+	];
+
+	// if you don't check to close tray first, the bot won't listen for reactions upon restart
+	if (reaction.emoji.id == settings.emojis.see_less) {
+		removeReact(message, EMOJIS);
+		await message.react(client.emojis.cache.get(settings.emojis.see_more));
+	}
+
+	if (reaction.emoji.id !== settings.emojis.see_more || !message.embeds[0]?.fields?.length) return;
 
 	// first author in the author field is always the person who submitted
 	const authorID = await message.embeds[0].fields[0].value.split("\n")[0].replace(/\D+/g, "");
@@ -38,13 +50,6 @@ module.exports = async function reactionMenu(client, reaction, user) {
 	reaction.remove().catch((err) => {
 		if (process.DEBUG) console.error(err);
 	});
-
-	let EMOJIS = [
-		settings.emojis.see_less,
-		settings.emojis.delete,
-		settings.emojis.instapass,
-		settings.emojis.invalid,
-	];
 
 	// if the submission is in council remove delete reaction (avoid misclick)
 	const councilChannels = Object.values(settings.submission.packs).map((i) => i.channels.council);
@@ -109,27 +114,25 @@ module.exports = async function reactionMenu(client, reaction, user) {
 	) {
 		switch (REACTION.emoji.id) {
 			case settings.emojis.instapass:
-				// flush votes (you still need to clear the reaction menu afterwards)
-				removeReact(message, [settings.emojis.upvote, settings.emojis.downvote]);
+				// flush votes and reaction menu
+				removeReact(message, [settings.emojis.upvote, settings.emojis.downvote, ...EMOJIS]);
 				changeStatus(
 					message,
 					`<:instapass:${settings.emojis.instapass}> Instapassed by <@${member.id}>`,
 					settings.colors.yellow,
 				);
-				instapass(client, message);
-				break;
+				return instapass(client, message);
 			case settings.emojis.invalid:
-				removeReact(message, [settings.emojis.upvote, settings.emojis.downvote]);
-				changeStatus(
+				removeReact(message, [settings.emojis.upvote, settings.emojis.downvote, ...EMOJIS]);
+				return changeStatus(
 					message,
 					`<:invalid:${settings.emojis.invalid}> Invalidated by <@${member.id}>`,
 					settings.colors.red,
 				);
-				break;
 		}
 	}
 
-	// reset reactions
+	// reset reactions if nothing happened
 	removeReact(message, EMOJIS);
 	await message.react(client.emojis.cache.get(settings.emojis.see_more));
 };
@@ -138,9 +141,9 @@ async function removeReact(message, emojis) {
 	for (let emoji of emojis) {
 		await message.reactions.cache
 			.get(emoji)
-			.remove()
-			.catch((err) => {
-				if (process.DEBUG) console.error(`Can't remove emoji: ${emoji}\n${err}`);
+			?.remove()
+			?.catch((err) => {
+				/* reaction can't be removed */
 			});
 	}
 }

@@ -10,4 +10,4 @@ module.exports = class GIFEncoderFixed extends GIFEncoder {
 	findClosest(c) {
 		return 0;
 	}
-}
+};
