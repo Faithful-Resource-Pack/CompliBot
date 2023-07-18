@@ -1,11 +1,9 @@
-const prefix = process.env.PREFIX;
-
 const strings = require("../../resources/strings.json");
 const settings = require("../../resources/settings.json");
 
 const warnUser = require("../../helpers/warnUser");
 
-const activity = ["PLAYING", "STREAMING", "LISTENING", "WATCHING", "CUSTOM_STATUS", "COMPETING"];
+const activity = ["PLAYING", "STREAMING", "LISTENING", "WATCHING", "COMPETING", "NONE"];
 const presence = ["online", "idle", "dnd"];
 
 module.exports = {
@@ -20,8 +18,8 @@ module.exports = {
 
 		// since args is converted to lowercase in the handler we need to undo that
 		args[0] = args[0].toUpperCase();
-
 		if (activity.includes(args[0]) && presence.includes(args[1])) {
+			if (args[0] == "NONE") args[0] = "CUSTOM";
 			client.user.setPresence({
 				activities: [
 					{
