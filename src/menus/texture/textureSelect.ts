@@ -46,8 +46,6 @@ export const menu: SelectMenu = {
 			});
 		}
 
-		interaction
-			.editReply(replyOptions)
-			.then((message: Message) => message.deleteButton(true));
+		interaction.editReply(replyOptions).then((message: Message) => message.deleteButton(true));
 	},
 };

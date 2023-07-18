@@ -57,9 +57,7 @@ export const command: SlashCommand = {
 				pack: interaction.options.getString("pack", true),
 				guild: interaction.guild,
 			});
-			interaction
-				.editReply(replyOptions)
-				.then((message: Message) => message.deleteButton());
+			interaction.editReply(replyOptions).then((message: Message) => message.deleteButton());
 			return;
 		}
 

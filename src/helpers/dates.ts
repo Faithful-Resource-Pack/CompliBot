@@ -36,7 +36,7 @@ export const parseDate = (d: string): number => {
 		return parseInt(d, 10) * 7 * 86400;
 	if (d.endsWith("d") || d.endsWith("day") || d.endsWith("days")) return parseInt(d, 10) * 86400;
 	if (d.endsWith("h") || d.endsWith("hours") || d.endsWith("hour")) return parseInt(d, 10) * 3600;
-	if (d.endsWith("m") || d.endsWith("minute") || d.endsWith("minutes"))
+	if (d.endsWith("m") || d.endsWith("min") || d.endsWith("minute") || d.endsWith("minutes"))
 		return parseInt(d, 10) * 60;
 	if (d.endsWith("s") || d.endsWith("second") || d.endsWith("seconds")) return parseInt(d, 10);
 
