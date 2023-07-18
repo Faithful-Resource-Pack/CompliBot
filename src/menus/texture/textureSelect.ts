@@ -25,7 +25,7 @@ export const menu: SelectMenu = {
 		else interaction.deferReply();
 
 		const [id, pack] = interaction.values[0].split("__");
-		const [embed, files] = await getTextureMessageOptions({
+		const replyOptions = await getTextureMessageOptions({
 			texture: (
 				await axios.get(`${(interaction.client as Client).tokens.apiUrl}textures/${id}/all`)
 			).data,
@@ -33,9 +33,9 @@ export const menu: SelectMenu = {
 			guild: interaction.guild,
 		});
 
-		embed.setFooter({
-			text: `${embed.footer.text} | ${interaction.user.id}`,
-			iconURL: embed.footer.iconURL,
+		replyOptions.embeds[0].setFooter({
+			text: `${replyOptions.embeds[0].footer.text} | ${interaction.user.id}`,
+			iconURL: replyOptions.embeds[0].footer.iconURL,
 		});
 
 		try {
@@ -47,11 +47,7 @@ export const menu: SelectMenu = {
 		}
 
 		interaction
-			.editReply({
-				embeds: [embed],
-				files: files,
-				components: [textureButtons],
-			})
+			.editReply(replyOptions)
 			.then((message: Message) => message.deleteButton(true));
 	},
 };

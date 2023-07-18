@@ -235,7 +235,7 @@ export async function textureComparison(
 			try {
 				let textureURL: string;
 				if (isTemplate) {
-					const [_, strIconURL] = formatName(pack, "64");
+					const strIconURL = formatName(pack, "64")[1];
 					textureURL = strIconURL;
 				} else
 					textureURL = (await axios.get(`${client.tokens.apiUrl}textures/${id}/url/${pack}/latest`))

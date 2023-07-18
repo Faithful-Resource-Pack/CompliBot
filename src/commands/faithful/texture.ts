@@ -52,17 +52,13 @@ export const command: SlashCommand = {
 
 		// only 1 result
 		if (results.length === 1) {
-			const [embed, files] = await getTextureMessageOptions({
+			const replyOptions = await getTextureMessageOptions({
 				texture: results[0],
 				pack: interaction.options.getString("pack", true),
 				guild: interaction.guild,
 			});
 			interaction
-				.editReply({
-					embeds: [embed],
-					files: files,
-					components: [textureButtons],
-				})
+				.editReply(replyOptions)
 				.then((message: Message) => message.deleteButton());
 			return;
 		}

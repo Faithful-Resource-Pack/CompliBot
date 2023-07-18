@@ -10,12 +10,13 @@ import { colors } from "@helpers/colors";
 import { Contributions, Texture, Paths, Uses, Contribution } from "@helpers/interfaces/firestorm";
 import { animateAttachment } from "./canvas/animate";
 import { formatName, minecraftSorter, addPathsToEmbed } from "@helpers/sorter";
+import { textureButtons } from "@helpers/buttons";
 
 export const getTextureMessageOptions = async (options: {
 	texture: Texture;
 	pack: string;
 	guild: Guild;
-}): Promise<[MessageEmbed, Array<MessageAttachment>]> => {
+}): Promise<any> => {
 	const tokens: Tokens = TokenJson;
 	const texture = options.texture;
 	const pack = options.pack;
@@ -130,5 +131,5 @@ export const getTextureMessageOptions = async (options: {
 		);
 	} else files.push((await magnifyAttachment({ url: textureURL, name: "magnified.png" }))[0]);
 
-	return [embed, files];
+	return { embeds: [embed], files: files, components: validURL ? [textureButtons] : null };
 };
