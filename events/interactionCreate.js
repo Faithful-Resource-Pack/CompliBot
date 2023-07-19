@@ -19,6 +19,7 @@ module.exports = {
 			case "tileButton":
 				// tile + magnify
 				const tileBuffer = await tile(interaction, image);
+				if (!tileBuffer) return;
 				return await interaction.reply({
 					files: [await magnifyAttachment(tileBuffer)],
 					ephemeral: true,
