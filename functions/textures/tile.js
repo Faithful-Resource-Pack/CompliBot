@@ -1,6 +1,7 @@
 const { createCanvas, loadImage } = require("@napi-rs/canvas");
 const getDimensions = require("./getDimensions");
-
+const { MessageEmbed } = require("discord.js");
+const settings = require("../../resources/settings.json");
 /**
  * Tile an image
  * @author Juknum
@@ -21,12 +22,16 @@ module.exports = async function tile(interaction, url, type = "grid") {
 	const sizeResult = dimension.width * dimension.height * 3;
 	if (sizeResult > 262144) {
 		interaction.reply({
-			content:
-				"The output picture will be too big!\nMaximum output allowed: 512 x 512 px²\nYours is: " +
-				dimension.width * 3 +
-				" x " +
-				dimension.height * 3 +
-				" px²",
+			embeds: [
+				new MessageEmbed()
+					.setTitle(`The output picture will be too big!`)
+					.setDescription(
+						`Maximum output allowed: 512 x 512 px²\nYours is: ${dimension.width * 3}x ${
+							dimension.height * 3
+						}px²`,
+					)
+					.setColor(settings.colors.blue),
+			],
 			ephemeral: true,
 		});
 		return null;

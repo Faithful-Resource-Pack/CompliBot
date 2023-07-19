@@ -1,6 +1,10 @@
 const { magnifyAttachment } = require("../functions/textures/magnify");
 const tile = require("../functions/textures/tile");
 const palette = require("../functions/textures/palette");
+const { MessageEmbed } = require("discord.js");
+
+const strings = require("../resources/strings.json");
+const settings = require("../resources/settings.json");
 
 module.exports = {
 	name: "interactionCreate",
@@ -34,7 +38,13 @@ module.exports = {
 				});
 			default:
 				return await interaction.reply({
-					content: "This button doesn't have an event set up yet!",
+					embeds: [
+						new MessageEmbed()
+							.setTitle(strings.bot.error)
+							.setThumbnail(settings.images.error)
+							.setDescription("This button doesn't have an event set up yet!")
+							.setColor(settings.colors.red),
+					],
 					ephemeral: true,
 				});
 		}
