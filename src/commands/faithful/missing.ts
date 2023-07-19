@@ -2,15 +2,7 @@ import { SlashCommand, SyncSlashCommandBuilder } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { Client, CommandInteraction, MessageEmbed } from "@client";
 import { Message, MessageAttachment } from "discord.js";
-import {
-	compute,
-	computeAll,
-	computeAndUpdate,
-	computeAndUpdateAll,
-	MissingOptions,
-	MissingResult,
-	MissingResults,
-} from "@functions/missing";
+import { compute, MissingOptions, MissingResult } from "@functions/missing";
 import axios from "axios";
 import { doNestedObj } from "@helpers/arrays";
 
@@ -70,7 +62,11 @@ export const command: SlashCommand = {
 	execute: async (interaction: CommandInteraction) => {
 		await interaction.deferReply();
 
-		const edition: string = interaction.options.getString("edition", true);
+		let editions: Array<string> = [interaction.options.getString("edition", true)];
+		if (editions[0] == "all")
+			editions = (
+				await axios.get(`${(interaction.client as Client).tokens.apiUrl}textures/editions`)
+			).data;
 		const pack: string = interaction.options.getString("pack", true);
 		const version: string = interaction.options.getString("version") ?? "latest";
 
@@ -87,7 +83,7 @@ export const command: SlashCommand = {
 
 		let stepCallback = async (step: string) => {
 			// when in the computing function this function is called when a step is being executed
-			if (step === "") steps = ["Next one..."];
+			if (!step) steps = ["Next one..."];
 			else {
 				if (steps.length === 1 && steps[0] === "Next one...") steps = [];
 				steps.push(step);
@@ -108,33 +104,23 @@ export const command: SlashCommand = {
 			return [null, [errMessage], options];
 		};
 
-		let responses: MissingResults;
+		let responses: MissingResult[];
 
-		if (edition === "all") {
-			// you can edit the function being called so you don't need like 50 different if statements with the same args
-			const updateCallback: Function = updateChannels ? computeAndUpdateAll : computeAll;
-			responses = await updateCallback(
-				interaction.client as Client,
-				pack,
-				version,
-				stepCallback,
-			).catch((err: any) => [
-				catchErr(err, { completion: 0, pack: pack, version: version, edition: edition }),
-			]);
-		} else {
-			// the args and error handling here change so we can't just switch out the args
-			const updateCallback: Function = updateChannels ? computeAndUpdate : compute;
-			responses = [
-				await updateCallback(
-					interaction.client as Client,
-					pack,
-					edition,
-					version,
-					stepCallback,
-				).catch((err: any) =>
-					catchErr(err, { completion: 0, pack: pack, version: version, edition: edition }),
-				),
-			];
+		for (let edition of editions) {
+			try {
+				responses.push(
+					await compute(
+						interaction.client as Client,
+						pack,
+						edition,
+						version,
+						updateChannels,
+						stepCallback,
+					),
+				);
+			} catch (err) {
+				catchErr(err, { completion: 0, pack: pack, version: version, edition: edition });
+			}
 		}
 
 		const files: Array<MessageAttachment> = [];

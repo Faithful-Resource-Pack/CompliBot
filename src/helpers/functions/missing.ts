@@ -20,84 +20,16 @@ export interface MissingOptions {
 	total?: number;
 }
 export type MissingResult = [Buffer, Array<string>, MissingOptions];
-export type MissingResults = Array<MissingResult>;
-
-export const computeAll = async (
-	client: Client,
-	pack: string,
-	version: string,
-	callback: Function,
-): Promise<MissingResults> => {
-	const editions: Array<string> = (await axios.get(`${client.tokens.apiUrl}textures/editions`))
-		.data;
-
-	return Promise.all(
-		editions.map(async (edition: string) => {
-			return await compute(client, pack, edition, version, callback);
-		}),
-	);
-};
-
-export const computeAndUpdateAll = async (
-	client: Client,
-	pack: string,
-	version: string,
-	callback: Function,
-): Promise<MissingResults> => {
-	const editions: Array<string> = (await axios.get(`${client.tokens.apiUrl}textures/editions`))
-		.data;
-
-	return Promise.all(
-		editions.map(async (edition: string) => {
-			return await computeAndUpdate(client, pack, edition, version, callback);
-		}),
-	);
-};
 
 /**
- * same interface as compute but updates the VCs too
- */
-export const computeAndUpdate = async (
-	client: Client,
-	pack: string,
-	edition: string,
-	version: string,
-	callback: Function,
-): Promise<MissingResult> => {
-	const results = await compute(client, pack, edition, version, callback);
-	if (client !== null) {
-		let channel: AnyChannel;
-		try {
-			channel = await client.channels.fetch(
-				client.config.packProgress[results[2].pack][results[2].edition],
-			);
-		} catch {
-			/* channel doesn't exist or can't be fetched */
-		}
-
-		// you can add different patterns depending on the channel type
-		switch (channel.type) {
-			case "GUILD_VOICE":
-				const pattern = /[.\d+]+(?!.*[.\d+])/;
-				if ((channel.name.match(pattern) ?? [""])[0] == results[2].completion.toString()) break;
-
-				const updatedName = channel.name.replace(pattern, results[2].completion.toString());
-				await (channel as VoiceChannel).setName(updatedName);
-				break;
-		}
-	}
-
-	return results;
-};
-
-/**
- * this is the main computing function that all the other ones use internally
+ * computes difference between repos and optionally updates progress VCs
  */
 export const compute = async (
 	client: Client,
 	pack: string,
 	edition: string,
 	version: string,
+	updateChannels: boolean,
 	callback: Function,
 ): Promise<MissingResult> => {
 	if (callback === undefined) callback = async () => {};
@@ -189,6 +121,26 @@ export const compute = async (
 	);
 	const progress: number =
 		Math.round(10000 - (diffResult.length / texturesDefault.length) * 10000) / 100;
+
+	if (client !== null && updateChannels) {
+		let channel: AnyChannel;
+		try {
+			channel = await client.channels.fetch(client.config.packProgress[pack][edition]);
+		} catch {
+			/* channel doesn't exist or can't be fetched */
+		}
+
+		// you can add different patterns depending on the channel type
+		switch (channel.type) {
+			case "GUILD_VOICE":
+				const match = (channel.name.match(/[.\d+]+(?!.*[.\d+])/) ?? [""])[0];
+				if (match == progress.toString() || !match) break;
+
+				const updatedName = channel.name.replace(match, progress.toString());
+				await (channel as VoiceChannel).setName(updatedName);
+				break;
+		}
+	}
 
 	return [
 		buffResult,
