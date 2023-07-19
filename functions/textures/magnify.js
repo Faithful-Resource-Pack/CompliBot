@@ -4,8 +4,20 @@ const { MessageAttachment } = require("discord.js");
 const addDeleteReact = require("../../helpers/addDeleteReact");
 const getDimensions = require("./getDimensions");
 
-async function magnifyAttachment(url, name = "magnified.png") {
-	const dimension = await getDimensions(url);
+async function magnifyAttachment(origin, name = "magnified.png") {
+	let dimension;
+
+	const tmp = await loadImage(origin).catch((err) => {
+		console.trace(err);
+		return Promise.reject(err);
+	});
+
+	if (typeof origin == "string") {
+		dimension = await getDimensions(origin);
+	} else {
+		dimension = { width: tmp.width, height: tmp.height };
+	}
+
 	let factor = 64;
 	const surface = dimension.width * dimension.height;
 
@@ -21,10 +33,6 @@ async function magnifyAttachment(url, name = "magnified.png") {
 	let canvasResult = createCanvas(width, height);
 	let canvasResultCTX = canvasResult.getContext("2d");
 
-	const tmp = await loadImage(url).catch((err) => {
-		console.trace(err);
-		return Promise.reject(err);
-	});
 	canvasResultCTX.imageSmoothingEnabled = false;
 	canvasResultCTX.drawImage(tmp, 0, 0, width, height);
 

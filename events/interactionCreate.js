@@ -1,6 +1,3 @@
-const { MessageActionRow } = require("discord.js");
-const { magnifyButton } = require("../helpers/buttons");
-
 const { magnifyAttachment } = require("../functions/textures/magnify");
 const tile = require("../functions/textures/tile");
 const palette = require("../functions/textures/palette");
@@ -20,9 +17,10 @@ module.exports = {
 					ephemeral: true,
 				});
 			case "tileButton":
+				// tile + magnify
+				const tileBuffer = await tile(interaction, image);
 				return await interaction.reply({
-					files: [await tile(interaction, image)],
-					components: [new MessageActionRow().addComponents(magnifyButton)],
+					files: [await magnifyAttachment(tileBuffer)],
 					ephemeral: true,
 				});
 			case "paletteButton":
