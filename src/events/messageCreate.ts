@@ -53,39 +53,24 @@ export const event: Event = {
 					}
 				});
 				break;
+			case "mhhh":
+				const mhhhEmbed = new MessageEmbed()
+					.setDescription("```Uh-oh moment```")
+					.setFooter({ text: "Swahili → English" });
+				message.reply({ embeds: [mhhhEmbed] }).then((message) => message.deleteButton(true));
+				break;
 			case "hello there":
-				message
-					.reply({
-						embeds: [
-							new MessageEmbed().setImage(
-								Math.floor(Math.random() * 4) == 1 // why can't TS/JS just have a normal randint() function
-									? "https://i.imgur.com/hAuUsnD.png"
-									: "https://media1.tenor.com/images/8dc53503f5a5bb23ef12b2c83a0e1d4d/tenor.gif",
-							),
-						],
-					})
-					.then((message) => message.deleteButton());
+				const helloEmbed = new MessageEmbed().setImage(
+					Math.floor(Math.random() * 4) == 1 // why can't TS/JS just have a normal randint() function
+						? "https://i.imgur.com/hAuUsnD.png"
+						: "https://media1.tenor.com/images/8dc53503f5a5bb23ef12b2c83a0e1d4d/tenor.gif",
+				);
+				message.reply({ embeds: [helloEmbed] }).then((message) => message.deleteButton(true));
 				break;
 		}
 
 		if (message.content.includes("(╯°□°）╯︵ ┻━┻"))
 			await message.reply({ content: "┬─┬ ノ( ゜-゜ノ) calm down bro" });
-
-		if (message.mentions.has(client.user.id)) await message.react("1131383751713243277");
-
-		if (message.content.toLocaleLowerCase().includes("mhhh")) {
-			message
-				.reply({
-					embeds: [
-						new MessageEmbed()
-							.setDescription("```Uh-oh moment```")
-							.setFooter({ text: "Swahili → English" }),
-					],
-				})
-				.then((message) => message.deleteButton());
-		}
-
-		if (message.content.toLocaleLowerCase().includes("forgor")) await message.react("💀");
 
 		/**
 		 * texture ID quoting
