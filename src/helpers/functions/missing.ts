@@ -183,7 +183,7 @@ export const compute = async (
 			!texturesDefault.includes(i) &&
 			!i.endsWith("huge_chungus.png") &&
 			!editionFilter.includes(i) &&
-			i.replace(/\\/g, "/").startsWith("/assets/"),
+			i.replace(/\\/g, "/").startsWith("/assets/minecraft/textures"),
 	);
 
 	const buffResult: Buffer = Buffer.from(
