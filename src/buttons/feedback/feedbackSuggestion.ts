@@ -37,7 +37,7 @@ export const button: Button = {
 
 		const embedResponse = new MessageEmbed()
 			.setTitle(await interaction.getEphemeralString({ string: "Command.Feedback.Sent" }))
-			.setDescription(await message.embeds[0].description)
+			.setDescription(message.embeds[0].description)
 			.setAuthor({ name: interaction.user.username, iconURL: interaction.user.avatarURL() })
 			.setTimestamp();
 
