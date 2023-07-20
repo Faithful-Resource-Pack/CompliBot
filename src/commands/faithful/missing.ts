@@ -65,6 +65,12 @@ export const command: SlashCommand = {
 					.setDescription("The Minecraft version.")
 					.addChoices(...doNestedObj(versions))
 					.setRequired(false),
+			)
+			.addBooleanOption((option) =>
+				option
+					.setName("nonvanilla")
+					.setDescription("Show nonvanilla textures in addition to the missing list.")
+					.setRequired(false),
 			);
 	},
 	execute: async (interaction: CommandInteraction) => {
@@ -159,6 +165,15 @@ export const command: SlashCommand = {
 							`missing-${response[2].pack}-${response[2].edition}.txt`,
 						),
 					);
+
+				if (response[3]?.length && interaction.options.getBoolean("nonvanilla", false)) {
+					files.push(
+						new MessageAttachment(
+							response[3],
+							`nonvanilla-${response[2].pack}-${response[2].edition}.txt`,
+						),
+					);
+				}
 
 				embed2.addFields([
 					{
