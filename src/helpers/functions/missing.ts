@@ -179,11 +179,12 @@ export const compute = async (
 	// get texture that aren't in the check object
 	const diffResult: Array<string> = texturesDefault.filter((v) => !check[v]);
 	const nonvanillaTextures = texturesRequest.filter(
-		(i) =>
-			!texturesDefault.includes(i) &&
-			!i.endsWith("huge_chungus.png") &&
-			!editionFilter.includes(i) &&
-			i.replace(/\\/g, "/").startsWith("/assets/minecraft/textures"),
+		(texture) =>
+			!texturesDefault.includes(texture) &&
+			!texture.endsWith("huge_chungus.png") &&
+			!editionFilter.includes(texture) &&
+			(texture.replace(/\\/g, "/").startsWith("/assets/minecraft/textures") ||
+				texture.replace(/\\/g, "/").startsWith("/assets/realms")),
 	);
 
 	const buffResult: Buffer = Buffer.from(
