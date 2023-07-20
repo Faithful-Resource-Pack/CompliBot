@@ -165,17 +165,11 @@ export const compute = async (
 	const editionFilter =
 		edition === "java" ? normalizeArray(BLACKLIST.java) : normalizeArray(BLACKLIST.bedrock);
 
-	const requestResultsRaw = getAllFilesFromDir(tmpDirPathRequest, editionFilter);
-
-	const texturesDefault: Array<string> = getAllFilesFromDir(
-		tmpDirPathDefault,
-		editionFilter,
-	)[0].map((f) => normalize(f).replace(tmpDirPathDefault, ""));
-	const texturesRequest: Array<string> = requestResultsRaw[0].map((f) =>
-		normalize(f).replace(tmpDirPathRequest, ""),
+	const texturesDefault: Array<string> = getAllFilesFromDir(tmpDirPathDefault, editionFilter).map(
+		(f) => normalize(f).replace(tmpDirPathDefault, ""),
 	);
-	const nonvanilla: Array<string> = requestResultsRaw[1].map((f) =>
-		normalize(f).replace(tmpDirPathRequest, ""),
+	const texturesRequest: Array<string> = getAllFilesFromDir(tmpDirPathRequest, editionFilter).map(
+		(f) => normalize(f).replace(tmpDirPathRequest, ""),
 	);
 
 	// instead of looping in the check array for each checked element, we directly check if the
@@ -184,6 +178,7 @@ export const compute = async (
 
 	// get texture that aren't in the check object
 	const diffResult: Array<string> = texturesDefault.filter((v) => !check[v]);
+	const nonvanillaTextures = texturesDefault.filter((v) => check[v] && !v.endsWith("huge_chungus.png"));
 
 	const buffResult: Buffer = Buffer.from(
 		diffResult
@@ -195,7 +190,7 @@ export const compute = async (
 	);
 
 	const nonvanillaResult: Buffer = Buffer.from(
-		nonvanilla
+		nonvanillaTextures
 			.join("\n")
 			.replace(/\\/g, "/")
 			.replace(/\/assets\/minecraft/g, "")
@@ -220,24 +215,20 @@ export const compute = async (
 	];
 };
 
-export const getAllFilesFromDir = (dir: string, filter = []): string[][] => {
-	let filtered = [];
-	let extras = [];
+export const getAllFilesFromDir = (dir: string, filter = []): Array<string> => {
+	let res = [];
 	readdirSync(dir).forEach((file) => {
 		file = normalize(join(dir, file));
 		const stat = statSync(file);
 
 		if (!file.includes(".git")) {
-			if (stat?.isDirectory()) filtered = filtered.concat(getAllFilesFromDir(file, filter));
+			if (stat?.isDirectory()) res = res.concat(getAllFilesFromDir(file, filter));
 			else {
-				if (file.endsWith(".png") || file.endsWith(".tga")) {
-					if (includesNone(filter, file)) filtered.push(file);
-					// the funny
-					else if (!file.endsWith("huge_chungus.png")) extras.push(file);
-				}
+				if ((file.endsWith(".png") || file.endsWith(".tga")) && includesNone(filter, file))
+					res.push(file);
 			}
 		}
 	});
 
-	return [filtered, extras];
+	return res;
 };
