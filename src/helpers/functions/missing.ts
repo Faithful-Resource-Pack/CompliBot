@@ -19,7 +19,7 @@ export interface MissingOptions {
 	version: string;
 	total?: number;
 }
-export type MissingResult = [Buffer, Array<string>, MissingOptions];
+export type MissingResult = [Buffer, Array<string>, MissingOptions, Buffer?];
 export type MissingResults = Array<MissingResult>;
 
 export const computeAll = async (
@@ -165,11 +165,17 @@ export const compute = async (
 	const editionFilter =
 		edition === "java" ? normalizeArray(BLACKLIST.java) : normalizeArray(BLACKLIST.bedrock);
 
-	const texturesDefault: Array<string> = getAllFilesFromDir(tmpDirPathDefault, editionFilter).map(
-		(f) => normalize(f).replace(tmpDirPathDefault, ""),
+	const requestResultsRaw = getAllFilesFromDir(tmpDirPathRequest, editionFilter);
+
+	const texturesDefault: Array<string> = getAllFilesFromDir(
+		tmpDirPathDefault,
+		editionFilter,
+	)[0].map((f) => normalize(f).replace(tmpDirPathDefault, ""));
+	const texturesRequest: Array<string> = requestResultsRaw[0].map((f) =>
+		normalize(f).replace(tmpDirPathRequest, ""),
 	);
-	const texturesRequest: Array<string> = getAllFilesFromDir(tmpDirPathRequest, editionFilter).map(
-		(f) => normalize(f).replace(tmpDirPathRequest, ""),
+	const nonvanilla: Array<string> = requestResultsRaw[1].map((f) =>
+		normalize(f).replace(tmpDirPathRequest, ""),
 	);
 
 	// instead of looping in the check array for each checked element, we directly check if the
@@ -187,6 +193,16 @@ export const compute = async (
 			.replace(/\/textures\//g, ""),
 		"utf8",
 	);
+
+	const nonvanillaResult: Buffer = Buffer.from(
+		nonvanilla
+			.join("\n")
+			.replace(/\\/g, "/")
+			.replace(/\/assets\/minecraft/g, "")
+			.replace(/\/textures\//g, ""),
+		"utf8",
+	);
+
 	const progress: number =
 		Math.round(10000 - (diffResult.length / texturesDefault.length) * 10000) / 100;
 
@@ -200,23 +216,28 @@ export const compute = async (
 			version: version,
 			total: texturesDefault.length,
 		},
+		nonvanillaResult,
 	];
 };
 
-export const getAllFilesFromDir = (dir: string, filter = []): Array<string> => {
-	let res = [];
+export const getAllFilesFromDir = (dir: string, filter = []): string[][] => {
+	let filtered = [];
+	let extras = [];
 	readdirSync(dir).forEach((file) => {
 		file = normalize(join(dir, file));
 		const stat = statSync(file);
 
 		if (!file.includes(".git")) {
-			if (stat && stat.isDirectory()) res = res.concat(getAllFilesFromDir(file, filter));
+			if (stat?.isDirectory()) filtered = filtered.concat(getAllFilesFromDir(file, filter));
 			else {
-				if ((file.endsWith(".png") || file.endsWith(".tga")) && includesNone(filter, file))
-					res.push(file);
+				if (file.endsWith(".png") || file.endsWith(".tga")) {
+					if (includesNone(filter, file)) filtered.push(file);
+					// the funny
+					else if (!file.endsWith("huge_chungus.png")) extras.push(file);
+				}
 			}
 		}
 	});
 
-	return res;
+	return [filtered, extras];
 };
