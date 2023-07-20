@@ -178,7 +178,9 @@ export const compute = async (
 
 	// get texture that aren't in the check object
 	const diffResult: Array<string> = texturesDefault.filter((v) => !check[v]);
-	const nonvanillaTextures = texturesDefault.filter((v) => check[v] && !v.endsWith("huge_chungus.png"));
+	const nonvanillaTextures = texturesRequest.filter(i =>
+		!texturesDefault.includes(i) && !i.endsWith("huge_chungus.png") && !editionFilter.includes(i)
+	);
 
 	const buffResult: Buffer = Buffer.from(
 		diffResult
