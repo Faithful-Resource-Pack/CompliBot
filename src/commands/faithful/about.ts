@@ -45,7 +45,7 @@ export const command: SlashCommand = {
 			const finalEmbed = new MessageEmbed()
 				.setTitle(`${user.username} has no contributions!`)
 				.setDescription(
-					"No webapp profile was found for this user. If this data looks incorrect, register at https://webapp.faithfulpack.net.",
+					"No database profile was found for this user. If this data looks incorrect, register at https://webapp.faithfulpack.net.",
 				);
 
 			return await interaction.editReply({ embeds: [finalEmbed] });
