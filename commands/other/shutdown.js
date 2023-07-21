@@ -1,6 +1,3 @@
-const prefix = process.env.PREFIX;
-
-const strings = require("../../resources/strings.json");
 const settings = require("../../resources/settings.json");
 
 const { MessageEmbed } = require("discord.js");
@@ -11,11 +8,17 @@ module.exports = {
 	guildOnly: false,
 	async execute(client, message, args) {
 		if (process.env.DEVELOPERS.includes(message.author.id)) {
-			await message.reply({ content: "Shutting down..." });
+			await message.reply({ embeds: [
+				new MessageEmbed()
+					.setTitle("Shutting down..." )
+					.setColor(settings.colors.blue),
+				],
+			});
+			await message.react(settings.emojis.upvote);
 			process.exit();
 		} else {
 			const embed = new MessageEmbed()
-				.setTitle(`@${message.author.username} has been banned`)
+				.setDescription(`<@${message.author.id}> has been banned`)
 				.addFields({ name: "Reason", value: "trying to stop me lmao" })
 				.setColor(settings.colors.blue);
 			await message.reply({ embeds: [embed] });
