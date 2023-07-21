@@ -70,16 +70,21 @@ export async function tileCanvas(options: options): Promise<Canvas> {
 	 */
 
 	if (options?.random == "rotation") {
-		const angles = [0, 90, 180, 270];
+		// grid to get all possible rotation states matched with each other
+		const angles = [
+			[0, 180, 0,],
+			[90, 0, 270,],
+			[0, 0, 0,],
+		];
+
 		for (let x = 0; x < 3; x++) {
 			for (let y = 0; y < 3; y++) {
-				let angle = angles[Math.floor(Math.random() * angles.length)];
 				drawRotatedImage(
 					imageToDraw,
 					x * dimension.width + dimension.width / 2,
 					y * dimension.height + dimension.height / 2,
 					1,
-					angle,
+					angles[y][x],
 				);
 			}
 		}
