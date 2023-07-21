@@ -43,7 +43,7 @@ export const command: SlashCommand = {
 			).data;
 		} catch {
 			const finalEmbed = new MessageEmbed()
-				.setTitle(`@${user.username} has no contributions!`)
+				.setTitle(`${user.username} has no contributions!`)
 				.setDescription(
 					"No webapp profile was found for this user. If this data looks incorrect, register at https://webapp.faithfulpack.net.",
 				);
