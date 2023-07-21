@@ -72,9 +72,9 @@ export async function tileCanvas(options: options): Promise<Canvas> {
 	if (options?.random == "rotation") {
 		// grid to get all possible rotation states matched with each other
 		const angles = [
-			[0, 180, 0,],
-			[90, 0, 270,],
-			[0, 0, 0,],
+			[0, 180, 0],
+			[90, 0, 270],
+			[0, 0, 0],
 		];
 
 		for (let x = 0; x < 3; x++) {
