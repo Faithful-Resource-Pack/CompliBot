@@ -182,6 +182,7 @@ export const compute = async (
 		(texture) =>
 			!texturesDefault.includes(texture) &&
 			!texture.endsWith("huge_chungus.png") &&
+			!editionFilter.includes(texture) &&
 			(texture.replace(/\\/g, "/").startsWith("/assets/minecraft/textures") ||
 				texture.replace(/\\/g, "/").startsWith("/assets/realms") ||
 				texture.replace(/\\/g, "/").startsWith("/textures")),
