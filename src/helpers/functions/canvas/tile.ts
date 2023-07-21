@@ -50,7 +50,7 @@ export async function tileCanvas(options: options): Promise<Canvas> {
 		context.rotate(rotation * (Math.PI / 180));
 		context.drawImage(image, -image.width / 2, -image.height / 2);
 
-		context.setTransform(); // reset context position to its origin
+		context.restore(); // reset context position to its origin
 	};
 	const drawMirroredImage = (x = 0, y = 0) => {
 		context.save();
@@ -69,11 +69,11 @@ export async function tileCanvas(options: options): Promise<Canvas> {
 	 *  x x x	     x x x      . x .     . x .     . . .
 	 */
 
-	if (options.random && options.random === "rotation") {
+	if (options?.random == "rotation") {
 		const angles = [0, 90, 180, 270];
 		for (let x = 0; x < 3; x++) {
 			for (let y = 0; y < 3; y++) {
-				var angle = angles[Math.floor(Math.random() * angles.length)];
+				let angle = angles[Math.floor(Math.random() * angles.length)];
 				drawRotatedImage(
 					imageToDraw,
 					x * dimension.width + dimension.width / 2,
@@ -89,7 +89,7 @@ export async function tileCanvas(options: options): Promise<Canvas> {
 	else
 		for (let x = 0; x < 3; x++) {
 			for (let y = 0; y < 3; y++) {
-				if (options.random && options.random === "flip" && Math.random() < 0.5) {
+				if (options?.random == "flip" && Math.random() < 0.5) {
 					drawMirroredImage(x * dimension.width, y * dimension.height);
 				} else context.drawImage(imageToDraw, x * dimension.width, y * dimension.height);
 			}
