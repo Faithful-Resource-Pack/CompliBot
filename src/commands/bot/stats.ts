@@ -5,6 +5,7 @@ import { Collection, Guild, version as djsVersion } from "discord.js";
 import { Client, MessageEmbed, CommandInteraction, Message } from "@client";
 import os from "os";
 import linuxOs from "linux-os-info";
+import settings from "@json/dynamic/settings.json";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -63,7 +64,7 @@ export const command: SlashCommand = {
 				)
 				.setFooter({
 					text: await interaction.getEphemeralString({ string: "Command.Stats.Footer" }),
-					iconURL: `${client.config.images}bot/heart.png`,
+					iconURL: settings.images.heart,
 				});
 			interaction
 				.reply({ embeds: [embed], fetchReply: true })
