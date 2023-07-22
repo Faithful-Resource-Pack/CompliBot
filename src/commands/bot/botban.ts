@@ -1,12 +1,9 @@
-import { Config, SlashCommand, SlashCommandI } from "@interfaces";
+import { SlashCommand, SlashCommandI } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { Client, MessageEmbed, CommandInteraction } from "@client";
 import { Collection, MessageAttachment, TextChannel } from "discord.js";
-import ConfigJson from "@json/config.json";
-import { colors } from "@helpers/colors";
 import { readFileSync, writeFileSync } from "fs";
 import { join } from "path";
-const config: Config = ConfigJson;
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -85,39 +82,6 @@ export const command: SlashCommand = {
 				} <@${victimID}>`,
 				ephemeral: true,
 			});
-			const embed: MessageEmbed = new MessageEmbed()
-				.setTitle(
-					`${
-						interaction.options.getBoolean("revoke") ? "Removed" : "Added"
-					} <@${victimID}> to botban list`,
-				)
-				.setAuthor({
-					name: interaction.user.username,
-					iconURL: interaction.user.avatarURL({ dynamic: true }),
-				})
-				.setColor(colors.red)
-				.addFields([
-					{ name: "Server", value: `\`${interaction.guild.name}\``, inline: true },
-					{ name: "Channel", value: `${interaction.channel}`, inline: true },
-				])
-				.setTimestamp();
-
-			// send log into the addressed logs channel
-			let logChannel: TextChannel;
-			const team: string = config.discords.filter((d) => d.id === interaction.guildId)[0].team;
-			try {
-				if (team)
-					logChannel = (await client.channels.fetch(
-						config.teams.filter((t) => t.name === team)[0].channels.moderation,
-					)) as any;
-				else
-					logChannel = (await client.channels.fetch(
-						config.discords.filter((d) => d.id === interaction.guildId)[0].channels.moderation,
-					)) as any;
-				logChannel.send({ embeds: [embed] });
-			} catch {
-				return;
-			} // can't fetch channel
 		})
 		.set("view", async (interaction: CommandInteraction, client: Client) => {
 			if (
