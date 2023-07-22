@@ -38,9 +38,7 @@
             "channels": {
                 "todo": "962086355243004004",
                 "updateMember": "897476033136189460",
-                "moderation": "798676864599195655",
-                "feedbackBug": "938475927887839243",
-                "feedbackSuggestion": "938475860938342440"
+                "moderation": "798676864599195655"
             },
             "roles": {
                 "manager": "747839021421428776",

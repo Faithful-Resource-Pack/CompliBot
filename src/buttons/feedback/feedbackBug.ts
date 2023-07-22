@@ -2,6 +2,7 @@ import { Client, MessageEmbed, Message, ButtonInteraction } from "@client";
 import { Button } from "@interfaces";
 import { MessageInteraction } from "discord.js";
 import { info } from "@helpers/logger";
+import settings from "@json/dynamic/settings.json"
 
 export const button: Button = {
 	buttonId: "feedbackBug",
@@ -19,9 +20,7 @@ export const button: Button = {
 				ephemeral: true,
 			});
 
-		const channelFeedback = client.channels.cache.get(
-			client.config.discords.filter((d) => d.name === "dev")[0].channels[interaction.customId],
-		);
+		const channelFeedback = client.channels.cache.get(settings.channels.feedback.bug);
 
 		if (!channelFeedback)
 			return interaction.reply({
