@@ -1,13 +1,7 @@
 export interface Config {
-	firestormUrl: string;
 	images: string;
 	teams: Array<Team>;
 	discords: Array<Discord>;
-	packProgress: {
-		[pack_slug: string]: {
-			[edition: string]: string;
-		};
-	};
 }
 
 export interface Discord {

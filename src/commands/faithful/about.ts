@@ -3,6 +3,7 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { Message, MessageEmbed, CommandInteraction, Client } from "@client";
 import { MessageAttachment } from "discord.js";
 import axios from "axios";
+import settings from "@json/dynamic/settings.json";
 
 function toTitleCase(str: string) {
 	return str.replace(/(^|\s)\S/g, (t) => t.toUpperCase());
@@ -26,7 +27,7 @@ export const command: SlashCommand = {
 		const loadingEmbed = new MessageEmbed()
 			.setTitle("Searching for contributions...")
 			.setDescription(baseDescription)
-			.setThumbnail(`${(interaction.client as Client).config.images}bot/loading.gif`);
+			.setThumbnail(settings.images.loading);
 
 		await interaction
 			.editReply({ embeds: [loadingEmbed] })

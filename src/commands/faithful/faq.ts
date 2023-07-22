@@ -3,6 +3,7 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction, Message, MessageEmbed, Client } from "@client";
 import { colors } from "@helpers/colors";
 import faqStrings from "@json/faq.json";
+import settings from "@json/dynamic/settings.json";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -72,7 +73,7 @@ export const command: SlashCommand = {
 		const faqEmbed = new MessageEmbed()
 			.setTitle(faqChoice.question)
 			.setDescription(faqChoice.answer)
-			.setThumbnail(`${(interaction.client as Client).config.images}bot/question_mark.png`)
+			.setThumbnail(settings.images.question)
 			.setFooter({ text: `Keywords: ${faqChoice.keywords.join(" • ")}` });
 
 		interaction

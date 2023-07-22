@@ -13,6 +13,7 @@ import {
 } from "@functions/missing";
 import axios from "axios";
 import { doNestedObj } from "@helpers/arrays";
+import settings from "@json/dynamic/settings.json";
 
 export const PACKS: Array<{ name: string; value: string }> = [
 	{ name: "Faithful 32x", value: "faithful_32x" },
@@ -85,7 +86,7 @@ export const command: SlashCommand = {
 		const embed: MessageEmbed = new MessageEmbed()
 			.setTitle("Searching for missing textures...")
 			.setDescription("This can take some time, please wait...")
-			.setThumbnail(`${(interaction.client as Client).config.images}bot/loading.gif`)
+			.setThumbnail(settings.images.loading)
 			.addFields([{ name: "Steps", value: "\u200b" }]);
 
 		await interaction.editReply({ embeds: [embed] });

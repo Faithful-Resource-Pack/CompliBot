@@ -1,12 +1,12 @@
 import { colors } from "./colors";
 import { parseId, ids } from "./emojis";
+import settings from "@json/dynamic/settings.json";
 
 // sorry for the questionable indentation and formatting
 // blame prettier for most of it but also discord sometimes rendering whitespace weirdly
 export const media = {
 	faithful_32x: {
-		thumbnail:
-			"https://database.faithfulpack.net/images/branding/logos/transparent/512/f32_logo.png",
+		thumbnail: settings.images.faithful_32x,
 		color: colors.f32,
 		title: `Faithful 32x:`,
 		description: `
@@ -36,8 +36,7 @@ export const media = {
 	},
 
 	faithful_64x: {
-		thumbnail:
-			"https://database.faithfulpack.net/images/branding/logos/transparent/512/f64_logo.png",
+		thumbnail: settings.images.faithful_64x,
 		color: colors.f64,
 		title: "Faithful 64x:",
 		description: `
@@ -66,8 +65,7 @@ export const media = {
 	},
 
 	classic_faithful_32x: {
-		thumbnail:
-			"https://database.faithfulpack.net/images/branding/logos/transparent/512/cf32_logo.png",
+		thumbnail: settings.images.classic_faithful_32x,
 		color: colors.cf32,
 		title: "Classic Faithful 32x Jappa:",
 		description: `
@@ -92,8 +90,7 @@ export const media = {
 	},
 
 	classic_faithful_32x_progart: {
-		thumbnail:
-			"https://database.faithfulpack.net/images/branding/logos/transparent/512/cf32pa_logo.png",
+		thumbnail: settings.images.classic_faithful_32x_progart,
 		color: colors.cf32pa,
 		title: "Classic Faithful 32x PA:",
 		description: `
@@ -120,8 +117,7 @@ export const media = {
 	},
 
 	classic_faithful_64x: {
-		thumbnail:
-			"https://database.faithfulpack.net/images/branding/logos/transparent/512/cf64_logo.png",
+		thumbnail: settings.images.classic_faithful_64x,
 		color: colors.cf64,
 		title: "Classic Faithful 64x:",
 		description: `

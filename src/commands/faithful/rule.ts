@@ -3,6 +3,7 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction, Message, MessageEmbed, Client } from "@client";
 import { colors } from "@helpers/colors";
 import ruleStrings from "@json/rules.json";
+import settings from "@json/dynamic/settings.json";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -41,14 +42,10 @@ export const command: SlashCommand = {
 			// I hate this so much but there's not much I can do
 			const thumbnail =
 				interaction.guildId ==
-				(interaction.client as Client).config.discords.find((obj) => obj.name == "classic_faithful")
-					.id
-					? `${
-							(interaction.client as Client).config.images
-					  }branding/logos/transparent/128/cf_plain_logo.png`
-					: `${
-							(interaction.client as Client).config.images
-					  }branding/logos/transparent/128/plain_logo.png`;
+				(interaction.client as Client).config.discords.find(
+					(obj) => obj.name == "classic_faithful").id
+						? settings.images.cf_plain
+						: settings.images.plain
 			let embedArray = [];
 			let i = 0;
 
@@ -106,7 +103,7 @@ export const command: SlashCommand = {
 					new MessageEmbed()
 						.setTitle(ruleChoice.title)
 						.setDescription(ruleChoice.description)
-						.setThumbnail(`${(interaction.client as Client).config.images}bot/rules.png`),
+						.setThumbnail(settings.images.rules),
 				],
 				fetchReply: true,
 			})

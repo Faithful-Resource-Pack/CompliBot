@@ -1,6 +1,7 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { Client, CommandInteraction, MessageEmbed } from "@client";
+import settings from "@json/dynamic/settings.json";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -12,7 +13,7 @@ export const command: SlashCommand = {
 			.setDescription(
 				await interaction.getEphemeralString({ string: "Command.HelpUs.Description" }),
 			)
-			.setThumbnail(client.config.images + "bot/question_mark.png");
+			.setThumbnail(settings.images.question);
 
 		interaction.reply({ embeds: [embed], ephemeral: true });
 	},

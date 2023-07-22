@@ -5,6 +5,7 @@ import config from "@json/config.json";
 import tokens from "@json/tokens.json";
 import { deleteInteraction, deleteMessage } from "@helpers/buttons";
 import { colors } from "@helpers/colors";
+import settings from "@json/dynamic/settings.json";
 
 declare module "discord.js" {
 	interface Message {
@@ -64,7 +65,7 @@ const MessageBody = {
 		if (this.channel.type === "DM") return;
 
 		// react using the trash can emoji
-		await this.react(ids.delete).catch((err) => {
+		await this.react(ids.delete).catch((err: any) => {
 			console.trace(err);
 		});
 
@@ -124,7 +125,7 @@ const MessageBody = {
 
 		const embed = new MessageEmbed()
 			.setColor(colors.red)
-			.setThumbnail(`${this.config.images}bot/warning.png`)
+			.setThumbnail(settings.images.error)
 			.setTitle("Action failed")
 			.setDescription(text)
 			.setFooter({
