@@ -1,5 +1,6 @@
 import { Event } from "@interfaces";
 import { success } from "@helpers/logger";
+import { fetchSettings } from "@helpers/fetchSettings";
 
 export const event: Event = {
 	name: "ready",
@@ -7,8 +8,6 @@ export const event: Event = {
 		console.log(`${success}${client.user.username} is online!`);
 		client.user.setActivity(`commands`, { type: "LISTENING" });
 
-		client.config.discords.forEach((guild) => {
-			if (guild.channels.updateMember) client.updateMembers(guild.id, guild.channels.updateMember);
-		});
+		await fetchSettings(client);
 	},
 };

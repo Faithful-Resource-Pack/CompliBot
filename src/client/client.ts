@@ -383,42 +383,6 @@ class ExtendedClient extends Client {
 	public getAction(): Array<Log> {
 		return this.logs;
 	}
-
-	/**
-	 * Update Guild Member when used
-	 * @author Juknum
-	 * @param guildID guild ID to be updated
-	 * @param channelID channel ID from the fetched guild ID to be updated
-	 */
-	public async updateMembers(guildID: string, channelID: string): Promise<void> {
-		if (this.tokens.dev) return; // disabled for devs instances
-		if (!guildID || !channelID) return;
-
-		let guild: Guild;
-		let channel: TextChannel | VoiceChannel;
-
-		try {
-			guild = await this.guilds.fetch(guildID);
-			channel = (await guild.channels.fetch(channelID)) as any;
-		} catch {
-			return;
-		}
-
-		/**
-		 * DISCLAIMER:
-		 * - Discord API limits bots to modify channels name only twice each 10 minutes
-		 * > this below won't fails nor return any errors, the operation is only delayed (not if client is restarted)
-		 */
-		switch (channel.type) {
-			case "GUILD_VOICE":
-				await channel.setName(`Members: ${guild.memberCount}`);
-				break;
-			case "GUILD_TEXT":
-			default:
-				await channel.setName(`members-${guild.memberCount}`);
-				break;
-		}
-	}
 }
 
 export { ExtendedClient };
