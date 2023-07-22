@@ -35,11 +35,6 @@
         {
             "name": "dev",
             "id": "720677267424018526",
-            "channels": {
-                "todo": "962086355243004004",
-                "updateMember": "897476033136189460",
-                "moderation": "798676864599195655"
-            },
             "roles": {
                 "manager": "747839021421428776",
                 "council": "936043191977787452",
@@ -50,26 +45,12 @@
         {
             "name": "faithful",
             "team": "faithful",
-            "id": "773983706582482946",
-            "channels": {
-                "updateMember": "774333964101615637"
-            }
-        },
-        {
-            "name": "faithful_extra",
-            "team": "faithful",
-            "id": "614160586032414845",
-            "channels": {
-                "updateMember": "802854096779477002"
-            }
+            "id": "773983706582482946"
         },
         {
             "name": "classic_faithful",
             "team": "faithful",
-            "id": "814198513847631944",
-            "channels": {
-                "updateMember": "814246773459255328"
-            }
+            "id": "814198513847631944"
         }
     ]
 }
