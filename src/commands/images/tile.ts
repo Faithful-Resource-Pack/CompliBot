@@ -10,6 +10,16 @@ export const command: SlashCommand = {
 		.setDescription("Tile an image")
 		.addStringOption((option) =>
 			option
+				.setName("random")
+				.setDescription("Should individual tiles be randomly rotated?")
+				.setRequired(false)
+				.addChoices(
+					{ name: "rotation", value: "rotation" },
+					{ name: "flip", value: "flip" }, // only horizontal because mc doesn't use vertical flipping
+				),
+		)
+		.addStringOption((option) =>
+			option
 				.setName("type")
 				.setDescription("How the image should be tiled.")
 				.setRequired(false)
@@ -23,16 +33,6 @@ export const command: SlashCommand = {
 		)
 		.addAttachmentOption((o) =>
 			o.setName("image").setDescription("The image to tile").setRequired(false),
-		)
-		.addStringOption((option) =>
-			option
-				.setName("random")
-				.setDescription("Should individual tiles be randomly rotated?")
-				.setRequired(false)
-				.addChoices(
-					{ name: "rotation", value: "rotation" },
-					{ name: "flip", value: "flip" }, // only horizontal because mc doesn't use vertical flipping
-				),
 		),
 	execute: async (interaction: CommandInteraction) => {
 		const random = interaction.options.getString("random");
