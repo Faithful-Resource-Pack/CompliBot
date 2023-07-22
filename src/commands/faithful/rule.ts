@@ -41,11 +41,9 @@ export const command: SlashCommand = {
 
 			// I hate this so much but there's not much I can do
 			const thumbnail =
-				interaction.guildId ==
-				(interaction.client as Client).config.discords.find(
-					(obj) => obj.name == "classic_faithful").id
-						? settings.images.cf_plain
-						: settings.images.plain
+				interaction.guildId == settings.guilds.classic_faithful
+					? settings.images.cf_plain
+					: settings.images.plain;
 			let embedArray = [];
 			let i = 0;
 

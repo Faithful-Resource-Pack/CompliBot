@@ -15,7 +15,6 @@ export const command: SlashCommand = {
 	execute: async (interaction: CommandInteraction) => {
 		const choice = interaction.options.getString("keyword", true).toLocaleLowerCase().trim();
 
-		console.log(choice);
 		if (choice == "all") {
 			if (
 				await interaction.perms({
