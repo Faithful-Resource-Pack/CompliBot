@@ -6,6 +6,7 @@ import { Client } from "@client";
 import { AnyChannel, VoiceChannel } from "discord.js";
 import { join, normalize } from "path";
 import { includesNone, normalizeArray } from "@helpers/arrays";
+import settings from "@json/dynamic/settings.json";
 
 import os from "os";
 import BLACKLIST from "@json/blacklisted_textures.json";
@@ -69,7 +70,7 @@ export const computeAndUpdate = async (
 		let channel: AnyChannel;
 		try {
 			channel = await client.channels.fetch(
-				client.config.packProgress[results[2].pack][results[2].edition],
+				settings.channels.pack_progress[results[2].pack][results[2].edition],
 			);
 		} catch {
 			/* channel doesn't exist or can't be fetched */

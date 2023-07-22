@@ -5,6 +5,7 @@ import { err } from "@helpers/logger";
 import { colors } from "@helpers/colors";
 import { Log } from "client/client";
 import path from "path";
+import settings from "@json/dynamic/settings.json";
 
 const randomSentences: Array<string> = [
 	"Oh no, not again!",
@@ -161,7 +162,7 @@ export const errorHandler: Function = async (client: Client, reason: any, type: 
 	}*/
 
 	const embed = new MessageEmbed()
-		.setAuthor({ name: type, iconURL: `${client.config.images}bot/error.png` }) // much compressed than .title() & .thumbnail()
+		.setAuthor({ name: type, iconURL: settings.images.error }) // much compressed than .title() & .thumbnail()
 		.setColor(colors.red)
 		.setTimestamp()
 		.setFooter({ text: client.user.username, iconURL: client.user.avatarURL() });

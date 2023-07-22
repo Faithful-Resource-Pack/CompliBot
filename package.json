@@ -5,7 +5,7 @@
     "main": "src/index.ts",
     "type": "commonjs",
     "scripts": {
-        "dev": "ts-node-dev --respawn -r tsconfig-paths/register src/index.ts",
+        "dev": "ts-node-dev --respawn -r tsconfig-paths/register  --ignore-watch json/dynamic/ src/index.ts",
         "start": "node -r ts-node/register -r tsconfig-paths/register src/index.ts",
         "prettier": "prettier \"{,!(node_modules)/**/}*.ts\" --config .prettierrc --write"
     },
