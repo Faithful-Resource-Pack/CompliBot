@@ -1,4 +1,5 @@
 export interface Config {
+	images: string;
 	teams: Array<Team>;
 	discords: Array<Discord>;
 }
