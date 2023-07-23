@@ -1,6 +1,5 @@
 import { Texture } from "@helpers/interfaces/firestorm";
 import { EmbedFieldData } from "discord.js";
-import ConfigJson from "@json/config.json";
 
 /**
  * Sort Minecraft Version Numbers
@@ -71,7 +70,7 @@ export const addPathsToEmbed = (texture: Texture): EmbedFieldData[] => {
 export const formatName = (pack: string, size: string = "512"): string[] => {
 	// TODO: use API here
 	let strPack: string;
-	let strIconURL = ConfigJson.images + `branding/logos/transparent/${size}/`;
+	let strIconURL = `https://database.faithfulpack.net/images/branding/logos/transparent/${size}/`;
 	switch (pack) {
 		case "faithful_32x":
 			strPack = "Faithful 32x";
@@ -95,11 +94,11 @@ export const formatName = (pack: string, size: string = "512"): string[] => {
 			break;
 		case "progart":
 			strPack = "Default Programmer Art";
-			strIconURL = ConfigJson.images + "bot/progart.png?w=64"; // have to redefine since the directory is different
+			strIconURL = `https://database.faithfulpack.net/images/bot/progart.png?w=64`; // have to redefine since the directory is different
 			break;
 		default:
 			strPack = "Default Jappa";
-			strIconURL = ConfigJson.images + "bot/default.png?w=64";
+			strIconURL = `https://database.faithfulpack.net/images/bot/default.png?w=64`;
 			break;
 	}
 	return [strPack, strIconURL];
