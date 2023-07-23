@@ -69,7 +69,7 @@ export const addPathsToEmbed = (texture: Texture): EmbedFieldData[] => {
 };
 
 export const formatName = (pack: string, size: string = "512"): string[] => {
-	// TODO: migrate from old config (ideally move to API if possible)
+	// TODO: use API here
 	let strPack: string;
 	let strIconURL = ConfigJson.images + `branding/logos/transparent/${size}/`;
 	switch (pack) {

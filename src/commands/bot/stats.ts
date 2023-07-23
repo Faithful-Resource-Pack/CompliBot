@@ -27,7 +27,7 @@ export const command: SlashCommand = {
 	execute: new Collection<string, SlashCommandI>()
 		.set("bot", async (interaction: CommandInteraction, client: Client) => {
 			let sumMembers = 0;
-			let version: string;
+			let version;
 
 			client.guilds.cache.each((guild: Guild) => {
 				sumMembers += guild.memberCount;
@@ -43,7 +43,7 @@ export const command: SlashCommand = {
 			).split("$,");
 
 			const embed = new MessageEmbed()
-				.setTitle(`${client.user.username}'s Statistics`)
+				.setTitle(`${client.user.username} Stats`)
 				.setThumbnail(client.user.displayAvatarURL())
 				.addFields(
 					{ name: FieldTitles[0], value: client.tokens.prefix, inline: true },
@@ -63,14 +63,14 @@ export const command: SlashCommand = {
 				)
 				.setFooter({
 					text: await interaction.getEphemeralString({ string: "Command.Stats.Footer" }),
-					iconURL: `${client.config.images}bot/heart.png`,
+					iconURL: "https://cdn.discordapp.com/emojis/799357507126427699",
 				});
 			interaction
 				.reply({ embeds: [embed], fetchReply: true })
 				.then((message: Message) => message.deleteButton());
 		})
 		.set("command", async (interaction: CommandInteraction, client: Client) => {
-			//if the command args are provided and the command does not exist in commandsProcessed:
+			//if the command ars is provided and the command does not exist in commandsProcessed:
 			if (
 				interaction.options.getString("command") &&
 				client.commandsProcessed.get(interaction.options.getString("command")) === undefined
