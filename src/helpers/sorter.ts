@@ -68,7 +68,7 @@ export const addPathsToEmbed = (texture: Texture): EmbedFieldData[] => {
 };
 
 export const formatName = (pack: string, size: string = "512"): string[] => {
-	// TODO: use API here
+	// TODO: migrate from old config (ideally move to API if possible)
 	let strPack: string;
 	let strIconURL = `https://database.faithfulpack.net/images/branding/logos/transparent/${size}/`;
 	switch (pack) {

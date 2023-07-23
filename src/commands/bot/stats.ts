@@ -28,7 +28,7 @@ export const command: SlashCommand = {
 	execute: new Collection<string, SlashCommandI>()
 		.set("bot", async (interaction: CommandInteraction, client: Client) => {
 			let sumMembers = 0;
-			let version;
+			let version: string;
 
 			client.guilds.cache.each((guild: Guild) => {
 				sumMembers += guild.memberCount;
@@ -44,7 +44,7 @@ export const command: SlashCommand = {
 			).split("$,");
 
 			const embed = new MessageEmbed()
-				.setTitle(`${client.user.username} Stats`)
+				.setTitle(`${client.user.username}'s Statistics`)
 				.setThumbnail(client.user.displayAvatarURL())
 				.addFields(
 					{ name: FieldTitles[0], value: client.tokens.prefix, inline: true },
@@ -71,7 +71,7 @@ export const command: SlashCommand = {
 				.then((message: Message) => message.deleteButton());
 		})
 		.set("command", async (interaction: CommandInteraction, client: Client) => {
-			//if the command ars is provided and the command does not exist in commandsProcessed:
+			//if the command args are provided and the command does not exist in commandsProcessed:
 			if (
 				interaction.options.getString("command") &&
 				client.commandsProcessed.get(interaction.options.getString("command")) === undefined
