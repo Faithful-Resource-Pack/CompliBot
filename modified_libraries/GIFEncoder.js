@@ -1,5 +1,3 @@
-/* eslint-disable no-redeclare */
-
 const GIFEncoder = require("gif-encoder-2");
 
 /**

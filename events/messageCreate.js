@@ -17,7 +17,6 @@ const { deleteButton } = require("../helpers/buttons");
 
 module.exports = {
 	name: "messageCreate",
-	// eslint-disable-next-line no-unused-vars
 	async execute(message) {
 		// Ignore bot messages
 		if (message.author.bot) return;

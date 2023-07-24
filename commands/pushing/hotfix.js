@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 const prefix = process.env.PREFIX;
 
 const fs = require("fs");

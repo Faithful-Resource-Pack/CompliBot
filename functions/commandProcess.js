@@ -2,7 +2,6 @@ const { resolve } = require("path");
 const { existsSync } = require("fs");
 const { readFile, mkdir, writeFile } = require("fs/promises");
 
-// eslint-disable-next-line no-undef
 const COUNTER_FOLDER = resolve(__dirname, "..", "json");
 const COUNTER_FILE_PATH = resolve(COUNTER_FOLDER, "commandsProcessed.txt");
 const SAVE_EVERY = 20; // save file every n messages sent

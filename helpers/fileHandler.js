@@ -1,6 +1,3 @@
-/*eslint no-undef: "error" */
-/*eslint-env node*/
-
 /**
  * @brief File made to safely handle files and json more particularly.
  * Goal is to have dynamic paths
@@ -29,7 +26,6 @@ const JSON_DEFAULT_PROFILES = [];
 
 const OUT_NULL = platform() == "win32" ? "NUL" : "/dev/null";
 
-/* eslint-disable no-empty */
 function __prep() {
 	try {
 		// remove everything

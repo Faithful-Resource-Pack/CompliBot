@@ -1,3 +1,9 @@
+require("dotenv").config();
+const { readdirSync } = require("fs");
+const walkSync = require("./helpers/walkSync");
+const fetchSettings = require("./functions/fetchSettings");
+const { Client, Intents, Constants, Collection } = require("discord.js");
+
 /**
  * COMPLIBOT SUBMISSIONS INDEX FILE:
  * - Developed by and for the Faithful Community.
@@ -5,13 +11,6 @@
  * - If you find any bugs, please use our GitHub issues tracker
  */
 
-require("dotenv").config();
-const { readdirSync } = require("fs");
-const walkSync = require("./helpers/walkSync");
-const fetchSettings = require("./functions/fetchSettings");
-
-// eslint-disable-next-line no-unused-vars
-const { Client, Intents, Constants, Collection } = require("discord.js");
 const client = new Client({
 	allowedMentions: { parse: ["users", "roles"], repliedUser: false }, // remove this line to die instantly ~JackDotJS 2021
 	restTimeOffset: 0,

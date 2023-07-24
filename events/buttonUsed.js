@@ -59,7 +59,7 @@ module.exports = {
                         new MessageEmbed()
                             .setTitle(strings.bot.error)
                             .setThumbnail(settings.images.error)
-                            .setDescription("This button doesn't have an event set up yet!")
+                            .setDescription(strings.command.missing_interaction.replace("%INTERACTION%", "button"))
                             .setColor(settings.colors.red),
                     ],
                     ephemeral: true,

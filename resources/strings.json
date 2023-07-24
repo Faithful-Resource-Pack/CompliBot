@@ -1,5 +1,9 @@
 {
-	"bot": { "error": "Action Failed", "cant_dm": "I can't execute this command inside DMs!" },
+	"bot": {
+		"error": "Action Failed",
+		"cant_dm": "I can't execute this command inside DMs!",
+		"missing_interaction": "This %INTERACTION% doesn't have an event set up yet!"
+	},
 	"command": {
 		"error": "One of my developers made an error while making this command! Don't worry, the error is not on your side. Please contact <@360249987927638016>, <@473860522710794250> or <@173336582265241601>",
 		"maintenance": "I'm currently in maintenance, please try again later.",

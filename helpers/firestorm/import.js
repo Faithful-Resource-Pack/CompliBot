@@ -1,6 +1,3 @@
-/* eslint-disable no-unreachable */
-/* eslint-disable no-unexpected-multiline */
-/* eslint-disable no-constant-condition */
 require("dotenv").config();
 const {
 	jsonModeration,
@@ -87,7 +84,6 @@ let all_users = [];
 let all_minecraft = [];
 
 /** @type {Texture[]} */
-// eslint-disable-next-line no-unused-vars
 let all_optifine = [];
 
 /** @type {TextureUse[]} */
