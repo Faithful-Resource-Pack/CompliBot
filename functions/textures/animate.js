@@ -160,7 +160,10 @@ module.exports = async function animate(message, valMCMETA, valURL) {
 	// Send result:
 	const attachment = new MessageAttachment(encoder.out.getData(), "output.gif");
 
-	await message.reply({ files: [attachment], components: [new MessageActionRow().addComponents(deleteButton)] });
+	await message.reply({
+		files: [attachment],
+		components: [new MessageActionRow().addComponents(deleteButton)],
+	});
 };
 
 /**

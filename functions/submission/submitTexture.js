@@ -161,7 +161,10 @@ async function invalidSubmission(message, error = "Not given") {
 		});
 
 	try {
-		const args = { embeds: [embed], components: [new MessageActionRow().addComponents(deleteButton)] };
+		const args = {
+			embeds: [embed],
+			components: [new MessageActionRow().addComponents(deleteButton)],
+		};
 		let msg;
 		if (message.deletable) {
 			msg = await message.reply(args);

@@ -88,7 +88,10 @@ module.exports = async function (message, params, user) {
 
 	embed.setDescription(description);
 
-	const args = { embeds: [embed], components: [new MessageActionRow().addComponents(deleteButton)] };
+	const args = {
+		embeds: [embed],
+		components: [new MessageActionRow().addComponents(deleteButton)],
+	};
 
 	// create promise to send message
 	const sendPromise = message !== undefined ? message.reply(args) : user.send(args);

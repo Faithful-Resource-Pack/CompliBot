@@ -14,7 +14,8 @@ module.exports = {
 		if (!interaction.isButton()) return;
 		const message = interaction.message;
 		const image =
-			interaction.message?.embeds[0]?.thumbnail?.url ?? interaction.message.attachments.first()?.url;
+			interaction.message?.embeds[0]?.thumbnail?.url ??
+			interaction.message.attachments.first()?.url;
 
 		switch (interaction.customId) {
 			case "magnifyButton":
@@ -44,7 +45,7 @@ module.exports = {
 					original = await message.channel.messages.fetch(message.reference.messageId);
 
 				// if there's no way to determine the author we can assume anyone can delete it
-				if (!original || (original.author.id == interaction.user.id)) return await message.delete();
+				if (!original || original.author.id == interaction.user.id) return await message.delete();
 				return await interaction.reply({
 					content: "Only the person who called this message can delete it!",
 					ephemeral: true,

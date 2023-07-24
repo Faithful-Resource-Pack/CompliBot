@@ -17,7 +17,10 @@ module.exports = async function warnUser(message, text) {
 		.setTitle(strings.bot.error)
 		.setDescription(text);
 
-	const args = { embeds: [embed], components: [new MessageActionRow().addComponents(deleteButton)] }
+	const args = {
+		embeds: [embed],
+		components: [new MessageActionRow().addComponents(deleteButton)],
+	};
 	if (message.deletable) await message.reply(args);
 	else await message.channel.send(args);
 };
