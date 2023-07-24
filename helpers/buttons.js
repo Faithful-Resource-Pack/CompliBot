@@ -27,6 +27,11 @@ const viewRawButton = new MessageButton()
 	.setEmoji(settings.emojis.view_raw)
 	.setCustomId("viewRawButton");
 
+const deleteButton = new MessageButton()
+	.setStyle("DANGER")
+	.setEmoji(settings.emojis.delete)
+	.setCustomId("deleteButton");
+
 const imgButtons = new MessageActionRow().addComponents([
 	magnifyButton,
 	tileButton,
@@ -40,4 +45,5 @@ module.exports = {
 	paletteButton,
 	viewRawButton,
 	imgButtons,
+	deleteButton
 };

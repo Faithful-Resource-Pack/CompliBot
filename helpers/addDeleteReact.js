@@ -6,6 +6,7 @@ const settings = require("../resources/settings.json");
  * @param {import('discord.js').Message} authorMessage message the bot has respond to
  * @param {Boolean} deleteAuthorMessage If author message is delete with it
  * @param {import('discord.js').Message} redirectMessage message it is redirected from
+ * @deprecated use a MessageActionRow() with the delete button
  */
 module.exports = async function addDeleteReact(
 	sentMessage,

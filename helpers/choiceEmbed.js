@@ -1,8 +1,9 @@
+const { MessageActionRow } = require("discord.js");
 const settings = require("../resources/settings.json");
 const strings = require("../resources/strings.json");
 
 const { MessageEmbed } = require("discord.js");
-const addDeleteReact = require("./addDeleteReact");
+const { deleteButton } = require("./buttons");
 
 /**
  * @typedef {Object} ChoiceParameter
@@ -87,7 +88,7 @@ module.exports = async function (message, params, user) {
 
 	embed.setDescription(description);
 
-	const args = { embeds: [embed] };
+	const args = { embeds: [embed], components: [new MessageActionRow().addComponents(deleteButton)] };
 
 	// create promise to send message
 	const sendPromise = message !== undefined ? message.reply(args) : user.send(args);

@@ -11,7 +11,7 @@ const warnUser = require("../../helpers/warnUser");
 
 module.exports = {
 	name: "animate",
-	aliases: ["play"],
+	aliases: ["play", "a"],
 	guildOnly: false,
 	async execute(client, message, args) {
 		message.channel.sendTyping();

@@ -1,7 +1,7 @@
 const client = require("../index").Client;
 const lastMessages = require("../functions/lastMessages");
 
-const { MessageEmbed } = require("discord.js");
+const { MessageEmbed, MessageActionRow } = require("discord.js");
 
 const MAINTENANCE = process.env.MAINTENANCE.toLowerCase() == "true";
 const PREFIX = process.env.PREFIX;
@@ -12,8 +12,8 @@ const settings = require("../resources/settings.json");
 const submitTexture = require("../functions/submission/submitTexture");
 const { increase: increaseCommandProcessed } = require("../functions/commandProcess");
 
-const addDeleteReact = require("../helpers/addDeleteReact");
 const warnUser = require("../helpers/warnUser");
+const { deleteButton } = require("../helpers/buttons");
 
 module.exports = {
 	name: "messageCreate",
@@ -58,9 +58,8 @@ module.exports = {
 						`${strings.command.error}\nError for the developers:\n\`\`\`${error}\`\`\``,
 					);
 
-				let msgEmbed = await message.reply({ embeds: [embed] });
+				await message.reply({ embeds: [embed], components: [new MessageActionRow().addComponents(deleteButton)] });
 				await message.react(settings.emojis.downvote);
-				return addDeleteReact(msgEmbed, message, true);
 			}
 		} else {
 			/**
@@ -90,8 +89,7 @@ module.exports = {
 							iconURL: client.user.displayAvatarURL(),
 						});
 
-					const msg = await message.reply({ embeds: [embed] });
-					addDeleteReact(msg, message, true);
+					const msg = await message.reply({ embeds: [embed], components: [new MessageActionRow().addComponents(deleteButton)] });
 					if (msg.deletable) setTimeout(() => msg.delete(), 30000);
 					if (message.deletable) setTimeout(() => message.delete(), 10);
 				} else {
