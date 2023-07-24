@@ -67,7 +67,7 @@ export const addPathsToEmbed = (texture: Texture): EmbedFieldData[] => {
 	return final;
 };
 
-export const formatName = (pack: string, size: string = "512"): string[] => {
+export const formatName = (pack: string, size: string = "512"): [string, string] => {
 	// TODO: migrate from old config (ideally move to API if possible)
 	let strPack: string;
 	let strIconURL = `https://database.faithfulpack.net/images/branding/logos/transparent/${size}/`;
@@ -94,11 +94,12 @@ export const formatName = (pack: string, size: string = "512"): string[] => {
 			break;
 		case "progart":
 			strPack = "Default Programmer Art";
-			strIconURL = `https://database.faithfulpack.net/images/bot/progart.png?w=64`; // have to redefine since the directory is different
+			// have to redefine since root directory is different
+			strIconURL = `https://database.faithfulpack.net/images/bot/progart.png?w=${size}`;
 			break;
 		default:
 			strPack = "Default Jappa";
-			strIconURL = `https://database.faithfulpack.net/images/bot/default.png?w=64`;
+			strIconURL = `https://database.faithfulpack.net/images/bot/default.png?w=${size}`;
 			break;
 	}
 	return [strPack, strIconURL];

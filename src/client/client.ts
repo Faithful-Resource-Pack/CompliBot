@@ -163,7 +163,7 @@ class ExtendedClient extends Client {
 		this.loadCollection(this.polls, POLLS_FILENAME, JSON_PATH);
 		this.loadCollection(this.commandsProcessed, COMMANDS_PROCESSED_FILENAME, JSON_PATH);
 		this.loadCollection(this.moderationUsers, MODERATION_FILENAME, JSON_PATH);
-		if (this.verbose) console.log(info + `Loaded collections data`);
+		if (this.verbose) console.log(info + `Loaded collection data`);
 	};
 
 	/**

@@ -4,10 +4,7 @@ import { Message, MessageEmbed, CommandInteraction, Client } from "@client";
 import { MessageAttachment } from "discord.js";
 import axios from "axios";
 import settings from "@json/dynamic/settings.json";
-
-function toTitleCase(str: string) {
-	return str.replace(/(^|\s)\S/g, (t) => t.toUpperCase());
-}
+import { formatName } from "@helpers/sorter";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -83,7 +80,7 @@ export const command: SlashCommand = {
 			const textBuf = Buffer.from(
 				textureData
 					.map((data) => {
-						const packName = toTitleCase(data[0].pack.replace(/_/g, " "));
+						const packName = formatName(data[0].pack)[0];
 						packCount[packName] = (packCount[packName] ?? 0) + 1;
 						return `${packName}: [#${data[1].id}] ${data[1].name}`;
 					})

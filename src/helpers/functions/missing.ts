@@ -1,7 +1,7 @@
 import { exec, series } from "@helpers/exec";
 import { existsSync, readdirSync, statSync } from "fs";
 import { mkdir } from "fs/promises";
-import { getDisplayNameForPack } from "@client/commands/faithful/missing";
+import { formatName } from "@helpers/sorter";
 import { Client } from "@client";
 import { AnyChannel, VoiceChannel } from "discord.js";
 import { join, normalize } from "path";
@@ -111,7 +111,7 @@ export const compute = async (
 	if (repoRequest === undefined)
 		return [
 			null,
-			[`${getDisplayNameForPack(pack)} doesn't support ${edition} edition.`],
+			[`${formatName(pack)[0]} doesn't support ${edition} edition.`],
 			{ completion: 0, pack: pack, edition: edition, version: version },
 		];
 
@@ -131,7 +131,7 @@ export const compute = async (
 
 	exists = existsSync(tmpDirPathRequest);
 	if (!exists) {
-		await callback(`Downloading \`${getDisplayNameForPack(pack)}\` (${edition}) pack...`).catch(
+		await callback(`Downloading \`${formatName(pack)[0]}\` (${edition}) pack...`).catch(
 			(err: any) => Promise.reject(err),
 		);
 		mkdir(tmpDirPathRequest);

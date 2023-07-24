@@ -26,7 +26,7 @@ export const getTextureMessageOptions = async (options: {
 	const allContributions: Contributions = texture.contributions;
 	const animated: boolean = paths.filter((p) => p.mcmeta === true).length !== 0;
 	const contributionJSON = (
-		await axios.get("https://api.faithfulpack.net/v2/contributions/authors")
+		await axios.get(`${tokens.apiUrl}contributions/authors`)
 	).data;
 
 	let mcmeta: any = {};

@@ -14,22 +14,7 @@ import {
 import axios from "axios";
 import { doNestedObj } from "@helpers/arrays";
 import settings from "@json/dynamic/settings.json";
-
-export const PACKS: Array<{ name: string; value: string }> = [
-	{ name: "Faithful 32x", value: "faithful_32x" },
-	{ name: "Faithful 64x", value: "faithful_64x" },
-	{ name: "Classic Faithful 32x Jappa", value: "classic_faithful_32x" },
-	{ name: "Classic Faithful 32x Programmer Art", value: "classic_faithful_32x_progart" },
-	{ name: "Classic Faithful 64x", value: "classic_faithful_64x" },
-];
-/**
- * Get the displayed name for the value property
- * @param pack {String}
- * @returns {String}
- */
-export const getDisplayNameForPack = (pack: string): string => {
-	return PACKS.filter((p) => p.value === pack)[0].name;
-};
+import { formatName } from "@helpers/sorter";
 
 export const command: SlashCommand = {
 	data: async (client: Client): Promise<SyncSlashCommandBuilder> => {
@@ -45,7 +30,13 @@ export const command: SlashCommand = {
 				option
 					.setName("pack")
 					.setDescription("The resource pack.")
-					.addChoices(...PACKS)
+					.addChoices(
+						{ name: "Faithful 32x", value: "faithful_32x" },
+						{ name: "Faithful 64x", value: "faithful_64x" },
+						{ name: "Classic Faithful 32x Jappa", value: "classic_faithful_32x" },
+						{ name: "Classic Faithful 32x Programmer Art", value: "classic_faithful_32x_progart" },
+						{ name: "Classic Faithful 64x", value: "classic_faithful_64x" }
+					)
 					.setRequired(true),
 			)
 			.addStringOption((option) =>
@@ -152,7 +143,7 @@ export const command: SlashCommand = {
 			if (response[0] === null)
 				embed2.addFields([
 					{
-						name: `${getDisplayNameForPack(response[2].pack)} - ${response[2].edition} - ${
+						name: `${formatName(response[2].pack)[0]} - ${response[2].edition} - ${
 							response[2].version
 						}`,
 						value: `${response[2].completion}% complete\n> ${response[1][0]}`,
@@ -178,7 +169,7 @@ export const command: SlashCommand = {
 
 				embed2.addFields([
 					{
-						name: `${getDisplayNameForPack(response[2].pack)} - ${response[2].edition} - ${
+						name: `${formatName(response[2].pack)[0]} - ${response[2].edition} - ${
 							response[2].version
 						}`,
 						value: `${response[2].completion}% complete\n> ${response[1].length} ${
