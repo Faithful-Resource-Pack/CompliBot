@@ -13,7 +13,7 @@ const settings = require("../resources/settings.json");
  * @see interactionCreate
  */
 module.exports = {
-    name: "buttonUsed",
+    name: "selectMenuUsed",
     async execute(interaction) {
         const message = interaction.message;
         switch (interaction.customId) {
