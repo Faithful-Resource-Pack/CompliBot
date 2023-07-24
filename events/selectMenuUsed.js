@@ -23,7 +23,7 @@ module.exports = {
                         new MessageEmbed()
                             .setTitle(strings.bot.error)
                             .setThumbnail(settings.images.error)
-                            .setDescription(strings.command.missing_interaction.replace("%INTERACTION%", "selection menu"))
+                            .setDescription(strings.bot.missing_interaction.replace("%INTERACTION%", "selection menu"))
                             .setColor(settings.colors.red),
                     ],
                     ephemeral: true,
