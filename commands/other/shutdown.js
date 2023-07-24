@@ -8,11 +8,8 @@ module.exports = {
 	guildOnly: false,
 	async execute(client, message, args) {
 		if (process.env.DEVELOPERS.includes(message.author.id)) {
-			await message.reply({ embeds: [
-				new MessageEmbed()
-					.setTitle("Shutting down..." )
-					.setColor(settings.colors.blue),
-				],
+			await message.reply({
+				embeds: [new MessageEmbed().setTitle("Shutting down...").setColor(settings.colors.blue)],
 			});
 			await message.react(settings.emojis.upvote);
 			process.exit();
