@@ -7,7 +7,7 @@ export interface Discord {
 	team?: string; // tell if discord guilds are teamed up (for global commands)
 	name: string;
 	id: string;
-	channels: { [updateMember: string]: string };
+	channels?: { [channel: string]: string };
 	roles?: { [role: string]: string };
 }
 
