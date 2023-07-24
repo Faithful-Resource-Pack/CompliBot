@@ -1,6 +1,8 @@
 import { Event } from "@interfaces";
 import { Client, Message, MessageEmbed } from "@client";
 import { textureComparison } from "@functions/canvas/stitch";
+import settings from "@json/dynamic/settings.json";
+import { Pack } from "@helpers/interfaces/submission";
 
 export const event: Event = {
 	name: "messageCreate",
@@ -13,6 +15,12 @@ export const event: Event = {
 		client.storeAction("message", m);
 
 		if (message.author.bot) return;
+
+		const submissionChannels = Object.values(settings.submission.packs).map(
+			(i: Pack) => i.channels.submit,
+		);
+		// returns early if you're in a submission channel
+		if (submissionChannels.includes(message.channel.id)) return;
 
 		/**
 		 * easter eggs
