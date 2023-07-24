@@ -18,18 +18,15 @@ module.exports = async function submitTexture(client, message) {
 	// break if no file is attached
 	if (!message.attachments.size)
 		return invalidSubmission(message, strings.submission.image_not_attached);
-	let args = message.content.split(" ");
 
-	// not entirely sure why the first arg exists but it seems to fix problems I had with iterating over maps
-	for (let [_, attachment] of message.attachments) {
-		// break if it's not a PNG
+	for (let attachment of message.attachments.values()) {
 		if (!attachment.url.endsWith(".png")) {
 			invalidSubmission(message, strings.submission.invalid_format);
 			continue;
 		}
 
 		// try and get the texture id from the message contents
-		let id = (message.content.match(/(?<=\[\#)(.*?)(?=\])/) ?? [""])[0];
+		let id = (message.content.match(/(?<=\[\#)(.*?)(?=\])/) ?? ["no id"])[0];
 
 		// get authors and description for embed
 		let param = {
