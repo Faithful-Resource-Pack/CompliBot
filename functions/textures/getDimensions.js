@@ -1,4 +1,3 @@
-const { get } = require("axios");
 const sizeOf = require("image-size");
 const { Buffer } = require("buffer");
 
@@ -9,8 +8,8 @@ const { Buffer } = require("buffer");
  * @returns Promise (resolve)
  */
 module.exports = async function getDimensions(imageURL) {
-	const response = await get(imageURL, { responseType: "arraybuffer" });
-	const data = response.data;
+	const response = await fetch(imageURL);
+	const data = await response.arrayBuffer();
 	const buf = Buffer.from(data, "base64");
 
 	// fixes bug where buf was equal to undefined

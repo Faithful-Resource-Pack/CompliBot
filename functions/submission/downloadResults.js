@@ -8,7 +8,6 @@ const date = require("../../helpers/date.js");
 
 const Buffer = require("buffer/").Buffer;
 const { promises, writeFile } = require("fs");
-const { default: axios } = require("axios");
 
 /**
  * Download textures from the given text channel
@@ -105,7 +104,8 @@ module.exports = async function downloadResults(client, channelInID, instapass =
 		}
 
 		// get the texture image itself as a buffer
-		const buffer = (await axios.get(texture.url, { responseType: "arraybuffer" })).data;
+		const res = await fetch(texture.url);
+		const buffer = await res.arrayBuffer();
 
 		// download the texture to all its paths
 		for (let path of allPaths) {
