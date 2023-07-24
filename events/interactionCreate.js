@@ -12,6 +12,6 @@ module.exports = {
 	name: "interactionCreate",
 	async execute(interaction) {
 		if (interaction.isButton()) return client.emit("buttonUsed", interaction);
-		else if (interaction.isSelectMenu()) return client.emit("selectMenuUsed", interaction);
+		// if (interaction.isSelectMenu()) return client.emit("selectMenuUsed", interaction);
 	},
 };
