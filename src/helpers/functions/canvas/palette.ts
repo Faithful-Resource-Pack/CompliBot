@@ -34,8 +34,7 @@ export interface AllColors {
 export async function paletteAttachment(
 	options: options,
 ): Promise<[MessageAttachment, MessageEmbed]> {
-	const dimension = await getDimensions(options.url);
-	const [width, height] = [dimension.width, dimension.height];
+	const { width, height } = await getDimensions(options.url);
 	const size = width * height;
 	if (size > 262144) return [null, new MessageEmbed()];
 
@@ -44,21 +43,21 @@ export async function paletteAttachment(
 	const allColors: AllColors = {};
 
 	const imageToDraw = await loadImage(options.url);
-	context.drawImage(imageToDraw, 0, 0, width, height);
+	context.drawImage(imageToDraw, 0, 0);
 
 	const imageData = context.getImageData(0, 0, width, height).data;
 
-	for (let x = 0; x < dimension.width; x++)
-		for (let y = 0; y < dimension.height; y++) {
-			let index = (y * dimension.width + x) * 4;
+	for (let x = 0; x < width; x++)
+		for (let y = 0; y < height; y++) {
+			let index = (y * width + x) * 4;
 			let r = imageData[index];
 			let g = imageData[index + 1];
 			let b = imageData[index + 2];
 			let a = imageData[index + 3] / 255;
 
 			// avoid transparent colors
-			if (a !== 0) {
-				var hex = new ColorManager({ rgb: { r: r, g: g, b: b } }).toHEX().value;
+			if (a) {
+				let hex = new ColorManager({ rgb: { r: r, g: g, b: b } }).toHEX().value;
 
 				if (!(hex in allColors))
 					allColors[hex] = { hex: hex, opacity: [], rgb: [r, g, b], count: 0 };

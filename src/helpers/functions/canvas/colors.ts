@@ -102,19 +102,26 @@ export class ColorManager {
 			s: number,
 			l: number = (max + min) / 2;
 
-		if (diff == 0) h = 0;
-		else if (max == r) h = ((g - b) / diff) % 6;
-		else if (max == g) h = (b - r) / diff + 2;
-		else h = (r - g) / diff + 4;
-		h *= 60;
-		if (h < 0) h += 360;
+		if (diff == 0) {
+			h = s = 0; // achromatic
+		} else {
+			s = l > 0.5 ? diff / (2 - max - min) : diff / (max + min);
 
-		l = (max + min) / 2;
+			switch (max) {
+				case r:
+					h = (g - b) / diff + (g < b ? 6 : 0);
+					break;
+				case g:
+					h = (b - r) / diff + 2;
+					break;
+				case b:
+					h = (r - g) / diff + 4;
+					break;
+			}
 
-		if (diff == 0) s = 0;
-		else s = diff / (1 - Math.abs(2 * l - 1));
+		}
 
-		return { h: +h.toFixed(0), s: +(s * 100).toFixed(1), l: +(l * 100).toFixed(1) } as HSL;
+		return { h: h /= 6, s: s, l: l } as HSL;
 	}
 
 	toHSV(): HSV {
