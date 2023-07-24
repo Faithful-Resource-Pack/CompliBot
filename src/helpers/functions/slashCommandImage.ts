@@ -89,14 +89,14 @@ export async function fetchMessageImage(
  * @returns image URL
  */
 export async function getImageFromMessage(message: Message): Promise<string> {
-	// prioritize thumbnails for /texture and similar
-	if (message?.embeds[0]) return message.embeds[0].thumbnail?.url ?? message.embeds[0].image.url;
-	// for general images
-	else if (
-		message.attachments.size > 0 &&
-		message.attachments.first().url.match(/\.(jpeg|jpg|png)$/)
-	)
-		return message.attachments.first().url;
+	// priorities: thumbnail -> image -> attachment
+	// thumbnail is prioritized so /texture embeds etc work properly
+	const result =
+		message.embeds?.[0]?.thumbnail?.url ??
+		message.embeds?.[0]?.image?.url ??
+		message.attachments?.first()?.url;
+
+	if (result) return result;
 
 	// if no images attached to the first parent reply, check if there is another parent reply (recursive go brr)
 	if (message.type === "REPLY") {

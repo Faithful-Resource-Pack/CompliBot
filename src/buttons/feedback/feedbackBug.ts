@@ -2,7 +2,7 @@ import { Client, MessageEmbed, Message, ButtonInteraction } from "@client";
 import { Button } from "@interfaces";
 import { MessageInteraction } from "discord.js";
 import { info } from "@helpers/logger";
-import settings from "@json/dynamic/settings.json"
+import settings from "@json/dynamic/settings.json";
 
 export const button: Button = {
 	buttonId: "feedbackBug",

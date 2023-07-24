@@ -90,23 +90,27 @@ export class ColorManager {
 	}
 
 	toHSL(): HSL {
-		let r: number = this.color.r / 255;
-		let g: number = this.color.g / 255;
-		let b: number = this.color.b / 255;
+		// gets as float between 0 and 1
+		const r: number = this.color.r / 255;
+		const g: number = this.color.g / 255;
+		const b: number = this.color.b / 255;
 
-		let max = Math.max(r, g, b);
-		let min = Math.min(r, g, b);
-		let diff = max - min;
+		const max = Math.max(r, g, b);
+		const min = Math.min(r, g, b);
+		const diff = max - min;
 
-		let h: number,
-			s: number,
-			l: number = (max + min) / 2;
+		let h: number;
+		let s: number;
 
-		if (diff == 0) {
-			h = s = 0; // achromatic
-		} else {
+		// average brightness across all three channels
+		let l: number = (max + min) / 2;
+
+		// all color channels are equal so it's grayscale
+		if (!diff) h = s = 0;
+		else {
 			s = l > 0.5 ? diff / (2 - max - min) : diff / (max + min);
 
+			// calculates hue based off the brightest channel
 			switch (max) {
 				case r:
 					h = (g - b) / diff + (g < b ? 6 : 0);
@@ -118,10 +122,12 @@ export class ColorManager {
 					h = (r - g) / diff + 4;
 					break;
 			}
-
 		}
 
-		return { h: h /= 6, s: s, l: l } as HSL;
+		// converts hue to match the other channels
+		h /= 6;
+
+		return { h, s, l } as HSL;
 	}
 
 	toHSV(): HSV {
