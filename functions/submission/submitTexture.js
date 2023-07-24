@@ -5,7 +5,7 @@ const textures = require("../../helpers/firestorm/texture");
 const getTexture = require("../../helpers/getTexture");
 const minecraftSorter = require("../../helpers/minecraftSorter");
 const makeEmbed = require("./makeEmbed");
-
+const addDeleteReact = require("../../helpers/addDeleteReact");
 const { MessageEmbed, Permissions } = require("discord.js");
 
 /**
@@ -165,9 +165,10 @@ async function invalidSubmission(message, error = "Not given") {
 
 	try {
 		const msg = await message.channel.send({ embeds: [embed] });
+		addDeleteReact(msg);
 		if (msg.deletable) setTimeout(() => msg.delete(), 30000);
 		if (message.deletable) setTimeout(() => message.delete(), 30010);
-	} catch (error) {
-		console.error(error);
+	} catch {
+		// message deleted before timeout or there's no author message
 	}
 }

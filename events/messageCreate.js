@@ -81,6 +81,7 @@ module.exports = {
 				if (!message.attachments.size) {
 					if (message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) return;
 					const embed = new MessageEmbed()
+						.setAuthor({ name: message.author.username, iconURL: message.author.displayAvatarURL() })
 						.setColor(settings.colors.red)
 						.setTitle(strings.submission.autoreact.error_title)
 						.setDescription(strings.submission.no_file_attached)
@@ -90,6 +91,7 @@ module.exports = {
 						});
 
 					const msg = await message.reply({ embeds: [embed] });
+					addDeleteReact(msg, message, true);
 					if (msg.deletable) setTimeout(() => msg.delete(), 30000);
 					if (message.deletable) setTimeout(() => message.delete(), 10);
 				} else {
