@@ -14,19 +14,12 @@
 			"too_wide": "The input picture is too wide!",
 			"cant_animate": "This texture can't be animated."
 		},
-		"use": {
-			"anyone": "Anyone",
-			"devs": "Bot Developers",
-			"admins": "Managers",
-			"mods": "Moderators",
-			"disabled": "Nobody (disabled)"
-		},
 		"parse_args": "You need to add a [-f= | --flag=] at the beginning of an argument!",
-		"behave": { "answer": "I'm so sorry! (⌯˃̶᷄ ﹏ ˂̶᷄⌯)" }
+		"behave": "I'm so sorry! (⌯˃̶᷄ ﹏ ˂̶᷄⌯)"
 	},
 	"submission": {
 		"searching": "Searching for your texture, please wait...",
-		"search_description": "Choose one texture using emoji reactions.\nIf you don't see what you're looking for, be more specific.\n",
+		"search_description": "Choose one texture using emoji reactions.\nIf you don't see what you're looking for, try submitting by texture ID.\n",
 		"autoreact": {
 			"error_title": "Auto Reaction Failed",
 			"error_footer": "This message will self-destruct in 30 seconds, please re-submit!"
@@ -39,9 +32,8 @@
 		"no_name_given": "You didn't provide a texture name!",
 		"timed_out": "You didn't select a valid texture in time!"
 	},
-	"warn_user": { "footer": "Type %prefix%help to get more information about commands" },
 	"choice_embed": {
-		"title": "Choose proposition",
+		"title": "Pick a choice",
 		"description": "Please choose one result using the associated reaction.\n"
 	}
 }

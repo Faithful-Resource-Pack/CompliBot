@@ -28,28 +28,26 @@ module.exports = async function submitTexture(client, message) {
 			continue;
 		}
 
-		// get the texture ID
-		let id = args
-			.filter((el) => el.startsWith("(#") && el.endsWith(")") && !isNaN(el.slice(2).slice(0, -1)))
-			.map((el) => el.slice(2).slice(0, -1))[0];
-
-		// take image url to get name of texture
-		const search = attachment.url.split("/").slice(-1)[0].replace(".png", "");
+		// try and get the texture id from the message contents
+		let id = (message.content.match(/(?<=\[\#)(.*?)(?=\])/) ?? [""])[0];
 
 		// get authors and description for embed
 		let param = {
-			description: message.content.replace(`(#${id})`, ""),
+			description: message.content.replace(`[#${id}]`, ""),
 			authors: await getAuthors(message),
 		};
 
 		// priority to ids -> faster
-		if (id) {
+		if (!isNaN(Number(id))) {
 			let texture = await textures
 				.get(id)
 				.catch((err) => invalidSubmission(message, strings.submission.unknown_id + err));
 			await makeEmbed(client, message, texture, attachment, param);
 			continue;
 		}
+
+		// if there's no id, take image url to get name of texture
+		const search = attachment.url.split("/").slice(-1)[0].replace(".png", "");
 
 		// if there's no search and no id the submission can't be valid
 		if (!search) {

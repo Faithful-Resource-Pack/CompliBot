@@ -1,6 +1,5 @@
 const settings = require("../resources/settings.json");
 const strings = require("../resources/strings.json");
-const prefix = process.env.PREFIX;
 
 const { MessageEmbed } = require("discord.js");
 const addDeleteReact = require("./addDeleteReact");
@@ -16,11 +15,7 @@ module.exports = async function warnUser(message, text) {
 		.setColor(settings.colors.red)
 		.setThumbnail(settings.images.warning)
 		.setTitle(strings.bot.error)
-		.setDescription(text)
-		.setFooter({
-			text: strings.warn_user.footer.replace("%prefix%", prefix),
-			iconURL: message.client.user.displayAvatarURL(),
-		});
+		.setDescription(text);
 
 	let embedMessage;
 	if (message.deletable) embedMessage = await message.reply({ embeds: [embed] });

@@ -19,7 +19,7 @@ module.exports = {
 				ids = url.replace("/channels/", "").replace("message", "").split("/");
 			else if (link.startsWith("https://discordapp.com/channels/"))
 				ids = url.replace("/channels/", "").split("/");
-			else return await message.reply({ content: strings.command.behave.answer });
+			else return await message.reply({ content: strings.command.behave });
 
 			/** @type {Discord.TextChannel} */
 			const channel = message.guild.channels.cache.get(ids[1]);
@@ -29,9 +29,9 @@ module.exports = {
 			await message.delete();
 
 			// reply to link message
-			return await messageToBehave.reply({ content: strings.command.behave.answer });
+			return await messageToBehave.reply({ content: strings.command.behave });
 		}
 
-		return await message.reply({ content: strings.command.behave.answer });
+		return await message.reply({ content: strings.command.behave });
 	},
 };

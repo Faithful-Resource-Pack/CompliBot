@@ -48,14 +48,14 @@ module.exports = async function (message, params, user) {
 
 	params = Object.assign({}, DEFAULT, params);
 
-	if (!params.propositions) throw new Error("No proposition in object");
+	if (!params.propositions) throw new Error("No choices given");
 
 	let embed = new MessageEmbed().setTitle(params.title).setColor(params.color);
 
 	if (params.imageURL) embed = embed.setFooter({ text: params.footer, iconURL: params.imageURL });
 	else embed = embed.setFooter({ text: params.footer });
 
-	// propositions object
+	// choice object
 	let propObj;
 	if (Array.isArray(params.propositions)) {
 		propObj = {};
