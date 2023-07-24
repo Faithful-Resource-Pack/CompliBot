@@ -15,6 +15,7 @@ const settings = require("../resources/settings.json");
 module.exports = {
     name: "buttonUsed",
     async execute(interaction) {
+        return // remove this when stuff is added later
         const message = interaction.message;
         switch (interaction.customId) {
             default:
