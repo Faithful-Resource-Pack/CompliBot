@@ -42,8 +42,8 @@ export const doNestedArr = (arr: Array<any>): Array<[any, any]> => {
  * ["test", "options"] => [["test", "test"], ["options", "options"]]
  * @param {Array<T>} arr
  */
-export const doNestedObj = (obj: Array<any>): Array<{ name: string; value: any }> => {
-	return obj.map((v) => {
+export const doNestedObj = (arr: Array<any>): Array<{ name: string; value: any }> => {
+	return arr.map((v) => {
 		return { name: v, value: v };
 	});
 };
