@@ -80,10 +80,7 @@ module.exports = {
 				if (!message.attachments.size) {
 					if (message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) return;
 					const embed = new MessageEmbed()
-						.setAuthor({
-							name: message.author.username,
-							iconURL: message.author.displayAvatarURL(),
-						})
+						.setThumbnail(settings.images.warning)
 						.setColor(settings.colors.red)
 						.setTitle(strings.submission.autoreact.error_title)
 						.setDescription(strings.submission.no_file_attached)

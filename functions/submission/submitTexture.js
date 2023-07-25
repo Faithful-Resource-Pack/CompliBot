@@ -104,9 +104,9 @@ async function invalidSubmission(message, error = "Not given") {
 		return;
 
 	const embed = new MessageEmbed()
-		.setAuthor({ name: message.author.username, iconURL: message.author.displayAvatarURL() })
 		.setColor(settings.colors.red)
 		.setTitle(strings.submission.autoreact.error_title)
+		.setThumbnail(settings.images.warning)
 		.setDescription(error)
 		.setFooter({
 			text: strings.submission.autoreact.error_footer,
@@ -116,9 +116,9 @@ async function invalidSubmission(message, error = "Not given") {
 	try {
 		let msg;
 		if (message.deletable) {
-			msg = await message.reply({ embeds: embed });
+			msg = await message.reply({ embeds: [embed] });
 			setTimeout(() => message.delete(), 30010);
-		} else msg = await message.channel.send({ embeds: embed });
+		} else msg = await message.channel.send({ embeds: [embed] });
 		if (msg.deletable) {
 			addDeleteButton(msg);
 			setTimeout(() => msg.delete(), 30000);
