@@ -2,7 +2,7 @@ const { createCanvas, loadImage } = require("@napi-rs/canvas");
 
 const { MessageAttachment } = require("discord.js");
 const getDimensions = require("./getDimensions");
-const { deleteButton } = require("../../helpers/buttons");
+const addDeleteButton = require("../../helpers/addDeleteButton");
 
 async function magnifyAttachment(origin, name = "magnified.png") {
 	let dimension;
