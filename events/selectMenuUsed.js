@@ -37,10 +37,8 @@ module.exports = {
 						// "complete" interaction and immediately delete message
 						const followUp = await interaction.editReply({ content: "** **" });
 						if (followUp.deletable) await followUp.delete();
-
 						if (choiceMessage.deletable) await choiceMessage.delete();
-						// only delete message if this is the last attachment being submitted
-						if (index >= attachments.length - 1) await message.delete();
+
 						return await makeEmbed(client, message, texture, attachments[index], param);
 					}
 				}

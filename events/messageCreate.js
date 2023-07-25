@@ -12,7 +12,7 @@ const settings = require("../resources/settings.json");
 const submitTexture = require("../functions/submission/submitTexture");
 const { increase: increaseCommandProcessed } = require("../functions/commandProcess");
 
-const { addDeleteButton } = require("../helpers/addDeleteButton");
+const addDeleteButton = require("../helpers/addDeleteButton");
 const warnUser = require("../helpers/warnUser");
 
 module.exports = {
