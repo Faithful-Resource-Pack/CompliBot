@@ -1,12 +1,13 @@
 const settings = require("../../resources/settings.json");
 const strings = require("../../resources/strings.json");
-const choiceEmbed = require("../../helpers/choiceEmbed");
+const choiceEmbed = require("./choiceEmbed");
 const textures = require("../../helpers/firestorm/texture");
 const getTexture = require("../../helpers/getTexture");
 const minecraftSorter = require("../../helpers/minecraftSorter");
+const getAuthors = require("./getAuthors");
 const makeEmbed = require("./makeEmbed");
-const { deleteButton } = require("../../helpers/buttons");
-const { MessageEmbed, Permissions, MessageActionRow } = require("discord.js");
+const addDeleteButton = require("../../helpers/addDeleteButton");
+const { MessageEmbed, Permissions } = require("discord.js");
 
 /**
  * Get submission information and create embed
@@ -19,24 +20,30 @@ module.exports = async function submitTexture(client, message) {
 	if (!message.attachments.size)
 		return invalidSubmission(message, strings.submission.image_not_attached);
 
+	// needs to be set to -1 since we initialize it to zero directly after
+	let attachmentIndex = -1;
+	let ongoingMenu;
 	for (let attachment of message.attachments.values()) {
+		// need to update index here since it can skip loops early otherwise
+		++attachmentIndex;
+
 		if (!attachment.url.endsWith(".png")) {
 			invalidSubmission(message, strings.submission.invalid_format);
 			continue;
 		}
 
 		// try and get the texture id from the message contents
-		let id = (message.content.match(/(?<=\[\#)(.*?)(?=\])/) ?? ["no id"])[0];
+		const id = (message.content.match(/(?<=\[\#)(.*?)(?=\])/) ?? ["no id"])[0];
 
 		// get authors and description for embed
-		let param = {
+		const param = {
 			description: message.content.replace(`[#${id}]`, ""),
 			authors: await getAuthors(message),
 		};
 
 		// priority to ids -> faster
 		if (!isNaN(Number(id))) {
-			let texture = await textures
+			const texture = await textures
 				.get(id)
 				.catch((err) => invalidSubmission(message, strings.submission.unknown_id + err));
 			await makeEmbed(client, message, texture, attachment, param);
@@ -62,78 +69,24 @@ module.exports = async function submitTexture(client, message) {
 			continue;
 		}
 
-		// create choice embed if multiple textures
-		let choice = [];
+		ongoingMenu = true;
+		let mappedResults = [];
 		for (let result of results) {
-			let uses = await result.uses();
-			let paths = await uses[0].paths();
-			let version = paths[0].versions.sort(minecraftSorter)[0];
+			const uses = await result.uses();
+			const paths = await uses[0].paths();
+			const version = paths[0].versions.sort(minecraftSorter).reverse()[0];
 
-			choice.push(
-				`**[#${result.id}] ${result.name
-					.replace(search, `${search}`)
-					.replace(/_/g, "\\_")}**\n> \`[${version}+]\` ${paths[0].path
-					.replace(search, `**${search}**`)
-					.replace(/_/g, "\\_")}`,
-			);
+			mappedResults.push({
+				label: `[#${result.id}] (${version}) ${result.name}`,
+				description: paths[0].path,
+				value: `${result.id}__${attachmentIndex}`,
+			});
 		}
 
-		const userChoice = await choiceEmbed(message, {
-			title: `${results.length} results, react to choose one!`,
-			description: strings.submission.search_description,
-			footer: `${message.client.user.username}`,
-			propositions: choice,
-		}).catch((message, error) => {
-			if (process.env.DEBUG) console.error(message, error);
-		});
-
-		if (!userChoice) {
-			await invalidSubmission(message, strings.submission.timed_out);
-			continue;
-		}
-
-		await makeEmbed(client, message, results[userChoice.index], attachment, param);
+		await choiceEmbed(message, mappedResults);
 	}
-	// once everything is done iterating the message is "safe" to delete
-	// since the choiceEmbed relies on the original message not being deleted
-	if (message.deletable) await message.delete();
+	if (!ongoingMenu && message.deletable) await message.delete();
 };
-
-/**
- * Detects co-authors from pings and curly bracket syntax in a given message
- * @author Evorp
- * @param {DiscordMessage} message
- * @returns array of author's discord IDs
- */
-async function getAuthors(message) {
-	let authors = [message.author.id];
-
-	// regex to detect text between curly brackets
-	const names = (message.content.match(/(?<=\{)(.*?)(?=\})/g) ?? []).map((name) =>
-		name.toLowerCase().trim(),
-	);
-
-	if (names.length) {
-		// fetch all contributors and check if their username matches the one in curly brackets
-		const res = await fetch(`https://api.faithfulpack.net/v2/contributions/authors`);
-		const contributionJSON = await res.json();
-		for (let user of contributionJSON) {
-			// if no username set it will throw an error otherwise
-			if (!user.username) continue;
-
-			if (names.includes(user.username.toLowerCase()) && !authors.includes(user.id))
-				authors.push(user.id);
-		}
-	}
-
-	// detect by ping (using regex to ensure users not in the server get included)
-	const mentions = message.content.match(/(?<=\<\@)(.*?)(?=\>)/g) ?? [];
-	mentions.forEach((mention) => {
-		if (!authors.includes(mention)) authors.push(mention);
-	});
-
-	return authors;
-}
 
 /**
  * Logic for handling an invalid submission
@@ -161,16 +114,15 @@ async function invalidSubmission(message, error = "Not given") {
 		});
 
 	try {
-		const args = {
-			embeds: [embed],
-			components: [new MessageActionRow().addComponents(deleteButton)],
-		};
 		let msg;
 		if (message.deletable) {
-			msg = await message.reply(args);
+			msg = await message.reply({ embeds: embed });
 			setTimeout(() => message.delete(), 30010);
-		} else msg = await message.channel.send(args);
-		if (msg.deletable) setTimeout(() => msg.delete(), 30000);
+		} else msg = await message.channel.send({ embeds: embed });
+		if (msg.deletable) {
+			addDeleteButton(msg);
+			setTimeout(() => msg.delete(), 30000);
+		}
 	} catch {
 		// message deleted before timeout or there's no author message
 	}

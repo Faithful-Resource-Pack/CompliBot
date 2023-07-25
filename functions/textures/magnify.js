@@ -1,6 +1,6 @@
 const { createCanvas, loadImage } = require("@napi-rs/canvas");
 
-const { MessageAttachment, MessageActionRow } = require("discord.js");
+const { MessageAttachment } = require("discord.js");
 const getDimensions = require("./getDimensions");
 const { deleteButton } = require("../../helpers/buttons");
 
@@ -49,10 +49,8 @@ async function magnifyAttachment(origin, name = "magnified.png") {
 async function magnify(message, url) {
 	const attachment = await magnifyAttachment(url);
 
-	await message.reply({
-		files: [attachment],
-		components: [new MessageActionRow().addComponents(deleteButton)],
-	});
+	await message.reply({ files: [attachment] });
+	addDeleteButton(message);
 	return attachment;
 }
 

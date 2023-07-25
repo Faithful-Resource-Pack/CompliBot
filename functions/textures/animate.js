@@ -3,10 +3,10 @@ const GIFEncoderFixed = require("../../modified_libraries/GIFEncoder");
 
 const strings = require("../../resources/strings.json");
 
-const { MessageAttachment, MessageActionRow } = require("discord.js");
+const { MessageAttachment } = require("discord.js");
 const getDimensions = require("./getDimensions");
 const warnUser = require("../../helpers/warnUser");
-const { deleteButton } = require("../../helpers/buttons");
+const addDeleteButton = require("../../helpers/addDeleteButton");
 
 // "magnify" the output GIF (the output will be to small)
 let FACTOR = 8;
@@ -160,10 +160,8 @@ module.exports = async function animate(message, valMCMETA, valURL) {
 	// Send result:
 	const attachment = new MessageAttachment(encoder.out.getData(), "output.gif");
 
-	await message.reply({
-		files: [attachment],
-		components: [new MessageActionRow().addComponents(deleteButton)],
-	});
+	const embedMessage = await message.reply({ files: [attachment] });
+	addDeleteButton(embedMessage);
 };
 
 /**

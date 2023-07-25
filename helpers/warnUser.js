@@ -2,7 +2,7 @@ const settings = require("../resources/settings.json");
 const strings = require("../resources/strings.json");
 
 const { MessageEmbed, MessageActionRow } = require("discord.js");
-const { deleteButton } = require("./buttons");
+const addDeleteButton = require("./addDeleteButton");
 
 /**
  * Sends pre-formatted red embed with warning sign
@@ -17,10 +17,9 @@ module.exports = async function warnUser(message, text) {
 		.setTitle(strings.bot.error)
 		.setDescription(text);
 
-	const args = {
-		embeds: [embed],
-		components: [new MessageActionRow().addComponents(deleteButton)],
-	};
-	if (message.deletable) await message.reply(args);
-	else await message.channel.send(args);
+	let embedMessage;
+	if (message.deletable) embedMessage = await message.reply({ embeds: [embed] });
+	else embedMessage = await message.channel.send({ embeds: [embed] });
+
+	addDeleteButton(embedMessage);
 };
