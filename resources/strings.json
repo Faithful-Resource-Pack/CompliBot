@@ -35,9 +35,5 @@
 		"does_not_exist": "The specified texture or folder doesn't exist!",
 		"no_name_given": "You didn't provide a texture name!",
 		"timed_out": "You didn't select a valid texture in time!"
-	},
-	"choice_embed": {
-		"title": "Pick a choice",
-		"description": "Please choose one result using the associated reaction.\n"
 	}
 }
