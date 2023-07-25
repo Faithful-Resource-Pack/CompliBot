@@ -35,7 +35,7 @@ module.exports = async function pushTextures(
 				} catch (e) {
 					// branch doesn't exist, octokit causes an error
 				}
-				fs.rmdirSync(`./texturesPush/${repoKey.repo}/${branch}/assets/`, { recursive: true });
+				fs.rmdirSync(`./texturesPush/${repoKey.repo}/${branch}/`, { recursive: true });
 			}
 			if (DEBUG) console.log(`PUSHING: ${repoKey.repo} (${branch})`);
 		}
@@ -52,7 +52,7 @@ module.exports = async function pushTextures(
 					`./texturesPush/${repoKey.repo}/${branch}/`,
 				);
 
-				fs.rmdirSync(`./texturesPush/${repoKey.repo}/${branch}/textures/`, { recursive: true });
+				fs.rmdirSync(`./texturesPush/${repoKey.repo}/${branch}/`, { recursive: true });
 			}
 			if (DEBUG) console.log(`PUSHING: ${repoKey.repo} (${branch})`);
 		}
