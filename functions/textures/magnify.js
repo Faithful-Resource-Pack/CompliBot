@@ -4,7 +4,12 @@ const { MessageAttachment } = require("discord.js");
 const getDimensions = require("./getDimensions");
 const addDeleteButton = require("../../helpers/addDeleteButton");
 
-async function magnifyAttachment(origin, name = "magnified.png") {
+/**
+ * base logic, returns buffer
+ * @param {String} origin url to magnify
+ * @returns {Buffer} buffer for magnified image
+ */
+async function magnifyBuffer(origin) {
 	let dimension;
 
 	const tmp = await loadImage(origin).catch((err) => {
@@ -35,8 +40,18 @@ async function magnifyAttachment(origin, name = "magnified.png") {
 
 	canvasResultCTX.imageSmoothingEnabled = false;
 	canvasResultCTX.drawImage(tmp, 0, 0, width, height);
+	return { magnified: canvasResult.toBuffer("image/png"), width, height };
+}
 
-	return new MessageAttachment(canvasResult.toBuffer("image/png"), name);
+/**
+ * returns discord attachment
+ * @param {String} origin url to magnify
+ * @param {String?} name name, defaults to "magnified.png"
+ * @returns {MessageAttachment} magnified file
+ */
+async function magnifyAttachment(origin, name = "magnified.png") {
+	const { magnified } = await magnifyBuffer(origin);
+	return new MessageAttachment(magnified, name);
 }
 
 /**
@@ -57,4 +72,5 @@ async function magnify(message, url) {
 module.exports = {
 	magnify,
 	magnifyAttachment,
+	magnifyBuffer,
 };
