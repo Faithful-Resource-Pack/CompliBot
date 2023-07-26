@@ -2,7 +2,6 @@ const settings = require("../../resources/settings.json");
 
 const downloadResults = require("./downloadResults");
 const warnUser = require("../../helpers/warnUser");
-const { imgButtons } = require("../../helpers/buttons");
 
 /**
  * Instapass a given texture embed
@@ -26,7 +25,7 @@ module.exports = async function instapass(client, message) {
 
 	const channelOut = await client.channels.fetch(channelOutID);
 
-	if (!channelOut) return warnUser(message, "Result channel was not able to be fetched.");
+	if (!channelOut) return warnUser(message, "Result channel was not able to be fetched!");
 
 	await channelOut.send({
 		embeds: [
@@ -34,7 +33,7 @@ module.exports = async function instapass(client, message) {
 				.setColor(settings.colors.yellow)
 				.setDescription(`[Original Post](${message.url})\n${message.embeds[0].description ?? ""}`),
 		],
-		components: [imgButtons],
+		components: [...message.components],
 	});
 
 	await downloadResults(client, channelOutID, true);

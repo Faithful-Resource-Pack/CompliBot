@@ -3,8 +3,6 @@ const settings = require("../../resources/settings.json");
 const getMessages = require("../../helpers/getMessages");
 const changeStatus = require("./changeStatus");
 
-const { imgButtons } = require("../../helpers/buttons");
-
 /**
  * Send submissions older than a given delay to a new channel
  * @author Juknum
@@ -50,6 +48,7 @@ module.exports = async function retrieveSubmission(
 			upvote: message.reactions.cache.get(settings.emojis.upvote),
 			downvote: message.reactions.cache.get(settings.emojis.downvote),
 			embed: message.embeds[0],
+			components: [...message.components],
 			message: message,
 		};
 	});
@@ -94,7 +93,7 @@ async function sendToCouncil(client, messagesUpvoted, messagesDownvoted, channel
 						`[Original Post](${message.message.url})\n${message.embed.description ?? ""}`,
 					),
 			],
-			components: [imgButtons],
+			components: message.components,
 		});
 		for (const emojiID of EMOJIS) await sentMessage.react(client.emojis.cache.get(emojiID));
 		changeStatus(
@@ -147,9 +146,10 @@ async function sendToResults(
 		).toFixed(2);
 		let embed = message.embed;
 		embed.setColor(settings.colors.green);
-		embed.fields[1].value = `<:upvote:${settings.emojis.upvote}> Will be added in a future version! (${upvotePercentage}% upvoted)`;
+		embed.fields[1].value = `<:upvote:${settings.emojis.upvote}> Will be added in a future version!`;
+		if (!isNaN(upvotePercentage)) embed.fields[1].value += ` (${upvotePercentage}% upvoted)`;
 
-		await channelOut.send({ embeds: [embed], components: [imgButtons] });
+		await channelOut.send({ embeds: [embed], components: message.components });
 
 		changeStatus(message.message, `<:upvote:${settings.emojis.upvote}> Sent to results!`);
 	}
@@ -164,7 +164,8 @@ async function sendToResults(
 				((message.upvote.count - 1) * 100) /
 				(message.upvote.count - 1 + (message.downvote.count - 1))
 			).toFixed(2);
-			embed.fields[1].value = `<:downvote:${settings.emojis.downvote}> This texture did not pass council voting and therefore will not be added. (${upvotePercentage}% upvoted)`;
+			embed.fields[1].value = `<:downvote:${settings.emojis.downvote}> This texture did not pass council voting and therefore will not be added.`;
+			if (!isNaN(upvotePercentage)) embed.fields[1].value += ` (${upvotePercentage}% upvoted)`;
 			const paths = embed.fields[2];
 			const users = await message.downvote.users.fetch();
 			embed.fields[2] = {
@@ -177,7 +178,7 @@ async function sendToResults(
 				inline: true,
 			};
 			embed.fields.push(paths);
-			await channelOut.send({ embeds: [embed], components: [imgButtons] });
+			await channelOut.send({ embeds: [embed], components: message.components });
 
 			changeStatus(message.message, `<:downvote:${settings.emojis.downvote}> Sent to results!`);
 		} else

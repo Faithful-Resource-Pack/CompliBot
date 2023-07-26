@@ -1,7 +1,10 @@
 const { magnifyAttachment } = require("../functions/textures/magnify");
 const tile = require("../functions/textures/tile");
 const palette = require("../functions/textures/palette");
+const difference = require("../functions/textures/difference");
 
+const textures = require("../helpers/firestorm/texture");
+const minecraftSorter = require("../helpers/minecraftSorter");
 const { MessageEmbed } = require("discord.js");
 
 const strings = require("../resources/strings.json");
@@ -38,10 +41,66 @@ module.exports = {
 				// since there's multiple components in palette it's easier to reply there
 				return palette(interaction, image);
 			case "viewRawButton":
-				return await interaction.reply({
-					files: [image],
+			case "diffButton":
+				// finding which pack the channel "belongs" to
+				let repoKey;
+				for (let [packKey, packValue] of Object.entries(settings.submission.packs)) {
+					if (Object.values(packValue.channels).includes(message.channel.id)) {
+						repoKey = packKey;
+						break;
+					}
+				}
+
+				const id = (message.embeds?.[0]?.title?.match(/(?<=\[\#)(.*?)(?=\])/) ?? [null])[0];
+				if (!id) return;
+				const texture = await textures.get(id);
+				const uses = await texture.uses();
+				const paths = await uses[0].paths();
+				const info = {
+					path: paths[0].path,
+					version: paths[0].versions.sort(minecraftSorter).reverse()[0],
+					edition: uses[0].editions[0],
+				};
+				const currentUrl = `${settings.repositories.raw[repoKey][info.edition.toLowerCase()]}${
+					info.version
+				}/${info.path}`;
+				const proposedUrl = message.embeds[0].thumbnail?.url;
+
+				if (proposedUrl && currentUrl) {
+					await interaction.deferReply({ ephemeral: true });
+					const diff = await difference(proposedUrl, currentUrl);
+					if (!diff) {
+						return await interaction.editReply({
+							embeds: [
+								new MessageEmbed()
+									.setTitle(strings.bot.error)
+									.setDescription("There is no existing texture to find the difference of!")
+									.setColor(settings.colors.red)
+									.setThumbnail(settings.images.error),
+							],
+							ephemeral: true,
+						});
+					}
+					return await interaction.editReply({
+						embeds: [
+							new MessageEmbed()
+								.setTitle("Image Difference")
+								.setDescription(
+									"- Blue: Changed pixels\n- Green: Added pixels\n- Red: Removed pixels",
+								)
+								.setColor(settings.colors.blue)
+								.setImage("attachment://diff.png"),
+						],
+						files: [diff],
+						ephemeral: true,
+					});
+				}
+
+				return await interaction.editReply({
+					content: "something went wrong",
 					ephemeral: true,
 				});
+
 			case "deleteButton":
 				let original;
 				if (message?.reference && message.deletable) {

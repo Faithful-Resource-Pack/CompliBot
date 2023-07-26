@@ -16,22 +16,26 @@ const settings = require("../../resources/settings.json");
  * @param {Number?} tolerance difference between colors considered acceptable
  * @returns {MessageAttachment} compared image
  */
-module.exports = async function compare(firstUrl, secondUrl, tolerance=2) {
+module.exports = async function difference(firstUrl, secondUrl, tolerance = 5) {
 	let mappedUrls = [];
-
+	let invalidUrl = false;
 	for (let url of [firstUrl, secondUrl]) {
-		const { magnified, width, height } = await magnifyBuffer(url);
-		if (width * height > 262144) return "bruh";
-		const temp = await loadImage(magnified);
+		const temp = await magnifyBuffer(url).catch(() => {
+			invalidUrl = true;
+		});
+		if (invalidUrl) return null;
+		const { magnified, width, height } = temp;
+		if (width * height > 262144) return null;
+		const img = await loadImage(magnified);
 		const canvas = createCanvas(width, height);
 		const ctx = canvas.getContext("2d");
-		ctx.drawImage(temp, 0, 0);
+		ctx.drawImage(img, 0, 0);
 		const pixels = ctx.getImageData(0, 0, width, height).data;
 		mappedUrls.push({ pixels, width, height });
 	}
 
-	const finalWidth = Math.max(...mappedUrls.map(i => i.width));
-	const finalHeight = Math.max(...mappedUrls.map(i => i.height));
+	const finalWidth = Math.max(...mappedUrls.map((i) => i.width));
+	const finalHeight = Math.max(...mappedUrls.map((i) => i.height));
 	const length = finalWidth * finalHeight * 4;
 
 	const blue = await hexToArr(settings.colors.blue);
@@ -90,12 +94,12 @@ module.exports = async function compare(firstUrl, secondUrl, tolerance=2) {
 	const out = createCanvas(finalWidth, finalHeight);
 	out.getContext("2d").putImageData(new ImageData(buff, finalWidth, finalHeight), 0, 0);
 	const finalBuffer = out.toBuffer("image/png");
-	return new MessageAttachment(finalBuffer, "compared.png");
+	return new MessageAttachment(finalBuffer, "diff.png");
 };
 
 async function hexToArr(hex) {
 	hex = hex.replace("#", "");
-	// hack I found on stackoverflow
+	// hack I found on stackoverflow to split into groups of two
 	const splitHex = hex.match(/.{1,2}/g);
 	const finalArr = splitHex.map((i) => parseInt(`0x${i}`));
 	// add alpha

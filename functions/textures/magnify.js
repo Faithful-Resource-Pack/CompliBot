@@ -1,4 +1,4 @@
-const { createCanvas, loadImage } = require("@napi-rs/canvas");
+const { createCanvas, loadImage, Image } = require("@napi-rs/canvas");
 
 const { MessageAttachment } = require("discord.js");
 const getDimensions = require("./getDimensions");
@@ -6,22 +6,16 @@ const addDeleteButton = require("../../helpers/addDeleteButton");
 
 /**
  * base logic, returns buffer
- * @param {String} origin url to magnify
+ * @param {String | Image} origin url to magnify
  * @returns {Buffer} buffer for magnified image
  */
 async function magnifyBuffer(origin) {
-	let dimension;
+	const tmp = await loadImage(origin).catch((err) => Promise.reject(err));
 
-	const tmp = await loadImage(origin).catch((err) => {
-		console.trace(err);
-		return Promise.reject(err);
-	});
-
-	if (typeof origin == "string") {
-		dimension = await getDimensions(origin);
-	} else {
-		dimension = { width: tmp.width, height: tmp.height };
-	}
+	const dimension =
+		typeof origin == "string"
+			? await getDimensions(origin)
+			: { width: tmp.width, height: tmp.height };
 
 	let factor = 64;
 	const surface = dimension.width * dimension.height;
@@ -45,7 +39,7 @@ async function magnifyBuffer(origin) {
 
 /**
  * returns discord attachment
- * @param {String} origin url to magnify
+ * @param {String | Image} origin url to magnify
  * @param {String?} name name, defaults to "magnified.png"
  * @returns {MessageAttachment} magnified file
  */

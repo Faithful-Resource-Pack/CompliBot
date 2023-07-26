@@ -19,8 +19,9 @@ const { promises, writeFile } = require("fs");
 module.exports = async function downloadResults(client, channelResultID, instapass = false) {
 	let messages = await getMessages(client, channelResultID);
 	const channel = client.channels.cache.get(channelResultID);
-	let repoKey; // declared outside loop so there's no scope issues
 
+	// finding which pack the channel "belongs" to
+	let repoKey;
 	for (let [packKey, packValue] of Object.entries(settings.submission.packs)) {
 		if (packValue.channels.results == channelResultID) {
 			repoKey = packKey;

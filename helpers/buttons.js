@@ -22,28 +22,33 @@ const paletteButton = new MessageButton()
 	.setEmoji(settings.emojis.palette)
 	.setCustomId("paletteButton");
 
-const viewRawButton = new MessageButton()
+const diffButton = new MessageButton()
 	.setStyle("PRIMARY")
-	.setEmoji(settings.emojis.view_raw)
-	.setCustomId("viewRawButton");
+	.setEmoji(settings.emojis.diff)
+	.setCustomId("diffButton");
 
 const deleteButton = new MessageButton()
 	.setStyle("DANGER")
 	.setEmoji(settings.emojis.delete)
 	.setCustomId("deleteButton");
 
-const imgButtons = new MessageActionRow().addComponents([
+const imageButtons = new MessageActionRow().addComponents([
 	magnifyButton,
 	tileButton,
 	paletteButton,
-	viewRawButton,
+]);
+
+const submissionButtons = new MessageActionRow().addComponents([
+	...imageButtons.components,
+	diffButton,
 ]);
 
 module.exports = {
 	magnifyButton,
 	tileButton,
 	paletteButton,
-	viewRawButton,
-	imgButtons,
+	diffButton,
+	imageButtons,
+	submissionButtons,
 	deleteButton,
 };

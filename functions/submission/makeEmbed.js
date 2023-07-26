@@ -6,7 +6,7 @@ const { HorizontalStitcher } = require("../textures/stitch");
 const { magnifyAttachment } = require("../textures/magnify");
 
 const { MessageEmbed, MessageAttachment } = require("discord.js");
-const { imgButtons } = require("../../helpers/buttons");
+const { imageButtons, submissionButtons } = require("../../helpers/buttons");
 
 const EMOJIS = [settings.emojis.upvote, settings.emojis.downvote, settings.emojis.see_more];
 
@@ -29,6 +29,7 @@ module.exports = async function makeEmbed(
 	/** @type {import("../../helpers/firestorm/texture_use.js").TextureUse[]} */
 	let uses = await texture.uses();
 	let pathText = [];
+	let imgButtons;
 
 	for (let use of uses) {
 		let localPath = await use.paths();
@@ -60,8 +61,8 @@ module.exports = async function makeEmbed(
 
 	// load raw image to pull from
 	const rawImage = new MessageAttachment(attachment.url, `${texture.name}.png`);
-
 	const dimensions = await getDimensions(attachment.url);
+
 	if (dimensions.width * dimensions.height <= 262144) {
 		/**
 		 * COMPARISON IMAGE GENERATOR
@@ -122,10 +123,12 @@ module.exports = async function makeEmbed(
 			);
 			imageUrls = await getImages(client, defaultImage, upscaledImage, rawImage, currentImage);
 			drawer.urls = [imageUrls[0], imageUrls[1], imageUrls[3]];
+			imgButtons = [submissionButtons];
 		} catch {
 			// texture being submitted is a new texture, so there's nothing to compare against
 			imageUrls = await getImages(client, defaultImage, upscaledImage, rawImage);
 			drawer.urls = [imageUrls[0], imageUrls[1]];
+			imgButtons = [imageButtons];
 		}
 
 		// generate comparison and add to embed
@@ -142,9 +145,12 @@ module.exports = async function makeEmbed(
 	} else {
 		// image is too big so we just add it directly to the embed without comparison
 		const [imageUrl] = await getImages(client, attachment);
-		embed.setImage(imageUrl);
-		embed.setThumbnail(imageUrl);
-		embed.setFooter({ text: "This texture is too big to create a comparison image!" });
+		embed
+			.setImage(imageUrl)
+			.setThumbnail(imageUrl)
+			.setFooter({ text: "This texture is too big to create a comparison image!" });
+
+		imgButtons = [imageButtons];
 	}
 
 	if (param.description) embed.setDescription(param.description);
@@ -152,7 +158,7 @@ module.exports = async function makeEmbed(
 
 	const msg = await message.channel.send({
 		embeds: [embed],
-		components: [imgButtons],
+		components: imgButtons,
 	});
 
 	for (const emojiID of EMOJIS) {
