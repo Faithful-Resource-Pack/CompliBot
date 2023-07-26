@@ -43,12 +43,12 @@ module.exports = async function reactionMenu(client, reaction, user) {
 		!message.embeds[0].fields[1].value.includes(settings.emojis.pending)
 	)
 		return reaction.users.remove(user.id).catch((err) => {
-			if (process.DEBUG) console.error(err);
+			if (process.env.DEBUG == "true") console.error(err);
 		});
 
 	// remove the arrow emoji and generate the tray
 	reaction.remove().catch((err) => {
-		if (process.DEBUG) console.error(err);
+		if (process.env.DEBUG == "true") console.error(err);
 	});
 
 	// if the submission is in council remove delete reaction (avoid misclick)

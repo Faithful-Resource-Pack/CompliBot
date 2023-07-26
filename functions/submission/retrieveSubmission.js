@@ -46,20 +46,21 @@ module.exports = async function retrieveSubmission(
 
 	// map messages adding reacts count, embed and message (easier management like that)
 	messages = messages.map((message) => {
-		const upvotes = message.reactions.cache.get(settings.emojis.upvote);
-		const downvotes = message.reactions.cache.get(settings.emojis.downvote);
-
 		return {
-			upvote: upvotes?.count ?? 1,
-			downvote: downvotes?.count ?? 1,
+			upvote: message.reactions.cache.get(settings.emojis.upvote),
+			downvote: message.reactions.cache.get(settings.emojis.downvote),
 			embed: message.embeds[0],
 			message: message,
 		};
 	});
 
 	// split messages by their votes (upvote >= downvote)
-	const messagesUpvoted = messages.filter((message) => message.upvote >= message.downvote);
-	const messagesDownvoted = messages.filter((message) => message.upvote < message.downvote);
+	const messagesUpvoted = messages.filter(
+		(message) => message.upvote.count >= message.downvote.count,
+	);
+	const messagesDownvoted = messages.filter(
+		(message) => message.upvote.count < message.downvote.count,
+	);
 
 	if (toCouncil)
 		return await sendToCouncil(client, messagesUpvoted, messagesDownvoted, channelOutID);
@@ -140,9 +141,13 @@ async function sendToResults(
 	const channelOut = client.channels.cache.get(channelOutID);
 
 	for (let message of messagesUpvoted) {
+		const upvotePercentage = (
+			((message.upvote.count - 1) * 100) /
+			(message.upvote.count - 1 + (message.downvote.count - 1))
+		).toFixed(2);
 		let embed = message.embed;
 		embed.setColor(settings.colors.green);
-		embed.fields[1].value = `<:upvote:${settings.emojis.upvote}> Will be added in a future version!`;
+		embed.fields[1].value = `<:upvote:${settings.emojis.upvote}> Will be added in a future version! (${upvotePercentage}% upvoted)`;
 
 		await channelOut.send({ embeds: [embed], components: [imgButtons] });
 
@@ -153,9 +158,25 @@ async function sendToResults(
 		let embed = message.embed;
 		embed.setColor(settings.colors.red);
 
+		// don't you love having to pass a value in down like three functions just to format some strings
 		if (!councilDisabled) {
-			// don't you love having to pass a value in down like three functions just to format some strings
-			embed.fields[1].value = `<:downvote:${settings.emojis.downvote}> This texture did not pass council voting and therefore will not be added. Ask an Art Director Council member for more information.`;
+			const upvotePercentage = (
+				((message.upvote.count - 1) * 100) /
+				(message.upvote.count - 1 + (message.downvote.count - 1))
+			).toFixed(2);
+			embed.fields[1].value = `<:downvote:${settings.emojis.downvote}> This texture did not pass council voting and therefore will not be added. (${upvotePercentage}% upvoted)`;
+			const paths = embed.fields[2];
+			const users = await message.downvote.users.fetch();
+			embed.fields[2] = {
+				name: "Council Downvotes",
+				value: `<@!${users
+					.map((user) => user.id)
+					.filter((user) => user !== client.user.id)
+					.join(">\n<@!")
+					.toString()}>`,
+				inline: true,
+			};
+			embed.fields.push(paths);
 			await channelOut.send({ embeds: [embed], components: [imgButtons] });
 
 			changeStatus(message.message, `<:downvote:${settings.emojis.downvote}> Sent to results!`);

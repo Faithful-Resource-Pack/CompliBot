@@ -10,18 +10,19 @@ const Buffer = require("buffer/").Buffer;
 const { promises, writeFile } = require("fs");
 
 /**
- * Download textures from the given text channel
+ * Download textures from a given channel to all its paths locally
  * @author Juknum, Evorp
  * @param {DiscordClient} client
- * @param {String} channelInID discord text channel from where the bot should download texture
+ * @param {String} channelResultID result channel to download from
+ * @param {Boolean?} instapass whether to push the texture directly after downloading
  */
-module.exports = async function downloadResults(client, channelInID, instapass = false) {
-	let messages = await getMessages(client, channelInID);
-	const channel = client.channels.cache.get(channelInID);
+module.exports = async function downloadResults(client, channelResultID, instapass = false) {
+	let messages = await getMessages(client, channelResultID);
+	const channel = client.channels.cache.get(channelResultID);
 	let repoKey; // declared outside loop so there's no scope issues
 
 	for (let [packKey, packValue] of Object.entries(settings.submission.packs)) {
-		if (packValue.channels.results == channelInID) {
+		if (packValue.channels.results == channelResultID) {
 			repoKey = packKey;
 			break;
 		}
@@ -113,12 +114,12 @@ module.exports = async function downloadResults(client, channelInID, instapass =
 			await promises
 				.mkdir(path.substr(0, path.lastIndexOf("/")), { recursive: true })
 				.catch((err) => {
-					if (process.DEBUG) console.error(err);
+					if (process.env.DEBUG == "true") console.error(err);
 				});
 
 			// write texture to the corresponding path
 			writeFile(path, Buffer.from(buffer), (err) => {
-				if (process.DEBUG == "true")
+				if (process.env.DEBUG == "true")
 					return err ? console.error(err) : console.log(`ADDED TO: ${path}`);
 			});
 		}
@@ -153,5 +154,5 @@ module.exports = async function downloadResults(client, channelInID, instapass =
 	let result = await contributionsCollection.addBulk(allContribution);
 
 	if (instapass) await pushTextures(`Instapassed ${instapassName} from ${date()}`);
-	if (process.DEBUG) console.log("ADDED CONTRIBUTIONS: " + result.join(" "));
+	if (process.env.DEBUG == "true") console.log("ADDED CONTRIBUTIONS: " + result.join(" "));
 };

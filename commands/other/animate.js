@@ -1,5 +1,3 @@
-const prefix = process.env.PREFIX;
-
 //const { MessageEmbed } = require('discord.js')
 const strings = require("../../resources/strings.json");
 //const settings = require('../../resources/settings.json')

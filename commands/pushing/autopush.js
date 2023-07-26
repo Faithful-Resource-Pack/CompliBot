@@ -1,5 +1,3 @@
-const prefix = process.env.PREFIX;
-
 const { Permissions } = require("discord.js");
 const settings = require("../../resources/settings.json");
 const strings = require("../../resources/strings.json");

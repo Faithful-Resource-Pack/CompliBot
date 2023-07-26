@@ -1,5 +1,3 @@
-const prefix = process.env.PREFIX;
-
 const strings = require("../../resources/strings.json");
 
 const warnUser = require("../../helpers/warnUser.js");

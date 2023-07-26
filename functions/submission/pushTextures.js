@@ -5,7 +5,7 @@ const date = require("../../helpers/date.js");
 
 const pushToGitHub = require("../pushToGitHub");
 
-const DEBUG = process.DEBUG == "true" ? true : false;
+const DEBUG = process.env.DEBUG == "true";
 
 /**
  * Push files from local storage to GitHub
