@@ -2,19 +2,19 @@ const { writeFile } = require("fs/promises");
 const { join } = require("path");
 const allCollection = require("../helpers/firestorm/all");
 
-const OUT_PATH = join(join(process.cwd(), "resources/"), "settings.json");
-const JSON_REPLACER = null;
-const JSON_SPACE = 0;
 
 /**
- * Fetch settings file from the VPS into resources/settings.json
+ * Download remote settings file
  * @author Juknum
+ * @param {Boolean?} format whether to format the setting file being downloaded
  * @returns {Promise<Object>}
  */
-module.exports = async () => {
-	if (process.env.FETCH_SETTINGS != "true") return;
+module.exports = async (format = false) => {
+	if (process.env.FETCH_SETTINGS !== "true") return;
 	const settings = await allCollection.settings.read_raw();
-	return writeFile(OUT_PATH, JSON.stringify(settings, JSON_REPLACER, JSON_SPACE), {
+	const OUT_PATH = join(join(process.cwd(), "resources/"), "settings.json");
+	const space = format ? 4 : 0;
+	return writeFile(OUT_PATH, JSON.stringify(settings, null, space), {
 		flag: "w",
 		encoding: "utf-8",
 	});

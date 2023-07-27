@@ -95,7 +95,8 @@ module.exports = {
 
 		if (DEV) {
 			setInterval(() => {
-				fetchSettings();
+				// format the settings for easier viewing
+				fetchSettings(true);
 			}, 20000); // 20 seconds
 		}
 

@@ -23,7 +23,9 @@ module.exports = async function difference(firstUrl, secondUrl, tolerance = 5) {
 		const temp = await magnifyBuffer(url).catch(() => {
 			invalidUrl = true;
 		});
+		// null values are handled in the button code itself
 		if (invalidUrl) return null;
+		// we can only destructure once we check for null for some reason
 		const { magnified, width, height } = temp;
 		if (width * height > 262144) return null;
 		const img = await loadImage(magnified);
@@ -38,10 +40,12 @@ module.exports = async function difference(firstUrl, secondUrl, tolerance = 5) {
 	const finalHeight = Math.max(...mappedUrls.map((i) => i.height));
 	const length = finalWidth * finalHeight * 4;
 
-	const blue = await hexToArr(settings.colors.blue);
-	const green = await hexToArr(settings.colors.green);
-	const red = await hexToArr(settings.colors.red);
+	// need to convert from hex to [r, g, b, a]
+	const blue = hexToArr(settings.colors.blue);
+	const green = hexToArr(settings.colors.green);
+	const red = hexToArr(settings.colors.red);
 
+	// this part is pretty much all ewan so don't ask me how it works
 	const buff = new Uint8ClampedArray(finalWidth * finalHeight * 4);
 
 	for (let i = 0; i < length; i += 4) {
@@ -91,13 +95,21 @@ module.exports = async function difference(firstUrl, secondUrl, tolerance = 5) {
 		}
 	}
 
+	// convert the edited buffer to a canvas
 	const out = createCanvas(finalWidth, finalHeight);
 	out.getContext("2d").putImageData(new ImageData(buff, finalWidth, finalHeight), 0, 0);
 	const finalBuffer = out.toBuffer("image/png");
+	// convert the canvas to a MessageAttachment
 	return new MessageAttachment(finalBuffer, "diff.png");
 };
 
-async function hexToArr(hex) {
+/**
+ * converts from hex string to array of rgba numbers
+ * @author Evorp
+ * @param {String} hex
+ * @returns {Number[]}
+ */
+function hexToArr(hex) {
 	hex = hex.replace("#", "");
 	// hack I found on stackoverflow to split into groups of two
 	const splitHex = hex.match(/.{1,2}/g);
