@@ -2,6 +2,7 @@ const settings = require("../../resources/settings.json");
 
 const getMessages = require("../../helpers/getMessages");
 const changeStatus = require("./changeStatus");
+const { imageButtons } = require("../../helpers/buttons");
 
 /**
  * Send submissions older than a given delay to a new channel
@@ -149,7 +150,7 @@ async function sendToResults(
 		embed.fields[1].value = `<:upvote:${settings.emojis.upvote}> Will be added in a future version!`;
 		if (!isNaN(upvotePercentage)) embed.fields[1].value += ` (${upvotePercentage}% upvoted)`;
 
-		await channelOut.send({ embeds: [embed], components: message.components });
+		await channelOut.send({ embeds: [embed], components: [imageButtons] });
 
 		changeStatus(message.message, `<:upvote:${settings.emojis.upvote}> Sent to results!`);
 	}
