@@ -1,5 +1,4 @@
 const { MessageEmbed } = require("discord.js");
-const lastMessages = require("../functions/lastMessages");
 
 // Environment vars
 const DEV = process.env.DEV.toLowerCase() == "true";
@@ -42,20 +41,10 @@ module.exports = function (client, error, promise, originMessage) {
 		description = "Coming from [this message](" + originMessage.url + ")\n" + description;
 	}
 
-	const array = lastMessages.getLastMessages();
-	const links = array.map((e, i) => `[Message ${i}](${e})`).join(" ");
-
 	const embed = new MessageEmbed()
 		.setTitle("Unhandled Rejection")
 		.setDescription(description)
 		.setColor(settings.colors.red)
-		.addFields([
-			{
-				name: "Last messages received",
-				value: links ?? "*No messages received yet*",
-				inline: false,
-			},
-		]) // Fix bug where embed field value must not be empty
 		.setTimestamp();
 
 	console.error(error, promise);

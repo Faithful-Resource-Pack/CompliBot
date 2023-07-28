@@ -1,5 +1,4 @@
 const client = require("../index").Client;
-const lastMessages = require("../functions/lastMessages");
 
 const { MessageEmbed } = require("discord.js");
 
@@ -39,8 +38,6 @@ module.exports = {
 			if (!command) return; // stops a dev error being thrown every single time a message starts with a slash
 			if (command?.guildOnly && message.channel.type === "DM")
 				return warnUser(message, strings.bot.cant_dm);
-
-			lastMessages.addMessage(message);
 
 			try {
 				await command.execute(client, message, args);

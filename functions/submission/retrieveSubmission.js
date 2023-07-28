@@ -5,7 +5,7 @@ const changeStatus = require("./changeStatus");
 const { imageButtons } = require("../../helpers/buttons");
 
 /**
- * @typedef MappedMessage each parameter should be self-explanatory
+ * @typedef {Object} MappedMessage
  * @property {import("discord.js").MessageReaction} upvote
  * @property {import("discord.js").MessageReaction} downvote
  * @property {import("discord.js").MessageEmbed} embed

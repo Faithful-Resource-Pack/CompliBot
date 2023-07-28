@@ -2,7 +2,7 @@ const textures = require("./firestorm/texture");
 const paths = require("./firestorm/texture_paths");
 
 /**
- * @typedef MinecraftTexture
+ * @typedef {Object} MinecraftTexture
  * @property {String} name main texture name
  * @property {String | Number} id texture id
  * @property {String[]} type texture tags
