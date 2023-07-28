@@ -17,8 +17,7 @@ module.exports = function parseArgs(message, args) {
 					args[j] = "";
 				}
 			}
-		} else if (args[i] != "")
-			warnUser(message, strings.command.parse_args);
+		} else if (args[i] != "") warnUser(message, strings.command.parse_args);
 	}
 
 	return args.filter((a) => a !== "");
