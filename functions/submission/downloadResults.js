@@ -71,10 +71,7 @@ module.exports = async function downloadResults(client, channelResultID, instapa
 				.split("\n")
 				.map((auth) => auth.replace("<@!", "").replace(">", "")),
 			date: message.createdTimestamp,
-			id: message.embeds[0].title
-				.split(" ")
-				.filter((el) => el.charAt(0) === "[" && el.charAt(1) === "#" && el.slice(-1) == "]")
-				.map((el) => el.slice(2, el.length - 1))[0],
+			id: message.embeds[0].title.match(/(?<=\[\#)(.*?)(?=\])/),
 		};
 	});
 
