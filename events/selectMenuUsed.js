@@ -25,7 +25,7 @@ module.exports = {
 					if (message.deletable && message.author.id == interaction.user.id) {
 						// "complete" interaction and immediately delete message
 						// can't be ephemeral because you can't force-delete those?
-						const followUp = await interaction.reply({ content: "** **" });
+						const followUp = await interaction.reply({ content: "** **", fetchReply: true });
 						if (followUp.deletable) await followUp.delete();
 
 						const [id, index] = interaction.values[0].split("__");
