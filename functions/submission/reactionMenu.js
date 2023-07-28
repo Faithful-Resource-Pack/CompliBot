@@ -3,7 +3,7 @@ const settings = require("../../resources/settings.json");
 const { Permissions } = require("discord.js");
 const instapass = require("./instapass");
 const changeStatus = require("./changeStatus");
-
+const DEBUG = process.env.DEBUG.toLowerCase() == "true";
 /**
  * Opens reaction tray, listens for reaction, and closes tray
  * @author Evorp, Juknum
@@ -43,12 +43,12 @@ module.exports = async function reactionMenu(client, reaction, user) {
 		!message.embeds[0].fields[1].value.includes(settings.emojis.pending)
 	)
 		return reaction.users.remove(user.id).catch((err) => {
-			if (process.env.DEBUG == "true") console.error(err);
+			if (DEBUG) console.error(err);
 		});
 
 	// remove the arrow emoji and generate the tray
 	reaction.remove().catch((err) => {
-		if (process.env.DEBUG == "true") console.error(err);
+		if (DEBUG) console.error(err);
 	});
 
 	// if the submission is in council remove delete reaction (avoid misclick)

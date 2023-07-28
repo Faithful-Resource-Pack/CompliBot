@@ -5,6 +5,7 @@ const texturesCollection = require("../../helpers/firestorm/texture");
 const contributionsCollection = require("../../helpers/firestorm/contributions");
 const pushTextures = require("./pushTextures");
 const date = require("../../helpers/date.js");
+const DEBUG = process.env.DEBUG.toLowerCase() == "true";
 
 const Buffer = require("buffer/").Buffer;
 const { promises, writeFile } = require("fs");
@@ -112,12 +113,12 @@ module.exports = async function downloadResults(client, channelResultID, instapa
 			await promises
 				.mkdir(path.substr(0, path.lastIndexOf("/")), { recursive: true })
 				.catch((err) => {
-					if (process.env.DEBUG == "true") console.error(err);
+					if (DEBUG) console.error(err);
 				});
 
 			// write texture to the corresponding path
 			writeFile(path, Buffer.from(buffer), (err) => {
-				if (process.env.DEBUG == "true")
+				if (DEBUG)
 					return err ? console.error(err) : console.log(`ADDED TO: ${path}`);
 			});
 		}
@@ -152,5 +153,5 @@ module.exports = async function downloadResults(client, channelResultID, instapa
 	let result = await contributionsCollection.addBulk(allContribution);
 
 	if (instapass) await pushTextures(`Instapassed ${instapassName} from ${date()}`);
-	if (process.env.DEBUG == "true") console.log("ADDED CONTRIBUTIONS: " + result.join(" "));
+	if (DEBUG) console.log("ADDED CONTRIBUTIONS: " + result.join(" "));
 };

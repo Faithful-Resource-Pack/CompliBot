@@ -17,8 +17,7 @@ module.exports = {
 	guildOnly: false,
 	async execute(client, message, args) {
 		if (!process.env.DEVELOPERS.includes(message.author.id)) return;
-
-		await pushTextures();
+		// put code here on the vps when editing
 		await message.react(settings.emojis.upvote);
 	},
 };

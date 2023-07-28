@@ -3,7 +3,7 @@ const lastMessages = require("../functions/lastMessages");
 
 // Environment vars
 const DEV = process.env.DEV.toLowerCase() == "true";
-const LOG_DEV = process.env.LOG_DEV == "true";
+const LOG_DEV = process.env.LOG_DEV.toLowerCase() == "true";
 
 /**
  * @param {import("discord.js").Client} client Discord client treating the information

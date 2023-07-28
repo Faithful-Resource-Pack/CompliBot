@@ -5,7 +5,7 @@ const {
 	jsonContributionsBedrock,
 	jsonProfiles,
 } = require("../fileHandler");
-
+const DEBUG = process.env.DEBUG.toLowerCase() == "true";
 /**
  * @typedef {Object} User
  * @property {Number} userID
@@ -118,7 +118,7 @@ const save = function () {
 const build_from_files = async function () {
 	if (wasBuilt) return module.exports;
 
-	if (process.env.DEBUG == "true") console.log("Started build of database");
+	if (DEBUG) console.log("Started build of database");
 
 	const old_profiles = await jsonProfiles.read(false, false);
 	// getting contributors done
@@ -326,10 +326,10 @@ const build_from_files = async function () {
 	});
 
 	wasBuilt = true;
-	// if(process.env.DEBUG == "true") console.log(module.exports)
+	// if(DEBUG) console.log(module.exports)
 	const res = await save();
 	console.log(module.exports);
-	if (process.env.DEBUG == "true") console.log("Ended build of database");
+	if (DEBUG) console.log("Ended build of database");
 };
 
 build_from_files();
