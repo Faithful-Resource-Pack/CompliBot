@@ -4,13 +4,13 @@ require("./firestorm_config")();
 /**
  * @typedef {Object} Texture
  * @property {String} name Texture friendly name
- * @property {() => Promise<import('./texture_use').TextureUse[]} uses All texture uses
- * @property {(res: String?) => Promise<import('./contributions').Contribution[]} contributions All contributions for this texture
- * @property {(String) => Promise<import('./contributions').Contribution>} lastContribution Last contribution for this texture
+ * @property {() => Promise<import("./texture_use").TextureUse[]} uses All texture uses
+ * @property {(res: String?) => Promise<import("./contributions").Contribution[]} contributions All contributions for this texture
+ * @property {(String) => Promise<import("./contributions").Contribution>} lastContribution Last contribution for this texture
  */
 
 module.exports = firestorm.collection("textures", (el) => {
-	/** @returns {Promise<import('./texture_use').TextureUse[]> */
+	/** @returns {Promise<import("./texture_use").TextureUse[]> */
 	el.uses = function () {
 		const texture_use = require("./texture_use");
 
@@ -23,7 +23,7 @@ module.exports = firestorm.collection("textures", (el) => {
 		]);
 	};
 
-	/** @returns {Promise<import('./contributions').Contribution[]>} */
+	/** @returns {Promise<import("./contributions").Contribution[]>} */
 	el.contributions = function (res = undefined) {
 		const contributions = require("./contributions");
 
@@ -45,7 +45,7 @@ module.exports = firestorm.collection("textures", (el) => {
 		return contributions.search(s);
 	};
 
-	/** @returns {Promise<import('./contributions').Contribution>} */
+	/** @returns {Promise<import("./contributions").Contribution>} */
 	el.lastContribution = function (res) {
 		return new Promise((resolve, reject) => {
 			el.contributions(res)

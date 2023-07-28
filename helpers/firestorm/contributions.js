@@ -15,12 +15,12 @@ require("./firestorm_config")();
  */
 
 module.exports = firestorm.collection("contributions", (el) => {
-	/** @returns {Promise<import('./texture').Texture>} */
+	/** @returns {Promise<import("./texture").Texture>} */
 	el.getContributors = function () {
 		return users.searchKeys(el.contributors || []);
 	};
 
-	/** @returns {Promise<import('./texture').Texture>} */
+	/** @returns {Promise<import("./texture").Texture>} */
 	el.texture = function () {
 		return texture.get(el.textureID);
 	};

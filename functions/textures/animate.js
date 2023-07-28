@@ -171,9 +171,9 @@ module.exports = async function animate(message, valMCMETA, valURL) {
  * @returns {Promise<Canvas>} a sized up Canvas Context
  */
 async function sizeUP(valURL, dimension) {
-	/*let contextIN  = Canvas.createCanvas(dimension.width, dimension.height).getContext('2d')
+	/*let contextIN  = Canvas.createCanvas(dimension.width, dimension.height).getContext("2d")
 	let canvasOUT  = Canvas.createCanvas(dimension.width * FACTOR, dimension.height * FACTOR)
-	let contextOUT = canvasOUT.getContext('2d')
+	let contextOUT = canvasOUT.getContext("2d")
 
 	let temp = await Canvas.loadImage(valURL)
 	contextIN.drawImage(temp, 0, 0)

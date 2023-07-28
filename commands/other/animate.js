@@ -1,11 +1,11 @@
 //const { MessageEmbed } = require("discord.js")
 const strings = require("../../resources/strings.json");
-//const settings = require('../../resources/settings.json')
+//const settings = require("../../resources/settings.json")
 
 const animate = require("../../functions/textures/animate");
 const warnUser = require("../../helpers/warnUser");
-//const parseArgs = require('../../helpers/parseArgs')
-//const { jsonContributionsJava, jsonContributionsBedrock } = require('../../helpers/fileHandler')
+//const parseArgs = require("../../helpers/parseArgs")
+//const { jsonContributionsJava, jsonContributionsBedrock } = require("../../helpers/fileHandler")
 
 module.exports = {
 	name: "animate",
@@ -30,13 +30,13 @@ module.exports = {
 		//let mcmetaMessage;
 
 		/*for (let i in args) {
-			if (args[i].startsWith('-c=') || args[i].startsWith('--custom=')) {
-				valCustom = args[i].replace('-c=', '').replace('--custom=', '');
-				if (typeof valCustom === 'string' && valCustom.toLowerCase() == 'true') haveCustom = true;
+			if (args[i].startsWith("-c=") || args[i].startsWith("--custom=")) {
+				valCustom = args[i].replace("-c=", "").replace("--custom=", "");
+				if (typeof valCustom === "string" && valCustom.toLowerCase() == "true") haveCustom = true;
 			}
-			if (args[i].startsWith('-m=') || args[i].startsWith('--mcmeta=')) {
+			if (args[i].startsWith("-m=") || args[i].startsWith("--mcmeta=")) {
 				haveMCMETA = true;
-				valMCMETA  = args[i].replace('-m=', '').replace('--mcmeta=', '');
+				valMCMETA  = args[i].replace("-m=", "").replace("--mcmeta=", "");
 			}
 		}
 
@@ -77,56 +77,56 @@ module.exports = {
 				if (valURL) return animate(message, textures[index].mcmeta, valURL);
 				else return previousImage(message, textures[index].mcmeta);
 			}
-			else if (index == -1) return warnUser(message, 'Texture not found.');
-			else if (!textures[index].animated) return warnUser(message, 'This texture is not animated by default, please use `-c=true` instead and provide a MCMETA config.');
+			else if (index == -1) return warnUser(message, "Texture not found.");
+			else if (!textures[index].animated) return warnUser(message, "This texture is not animated by default, please use `-c=true` instead and provide a MCMETA config.");
 
 		}*/
 		/*else if (haveCustom && !haveMCMETA) {
 			let embed = new MessageEmbed()
 				.setColor(settings.colors.blue)
-				.setTitle('Waiting for MCMETA config:')
-				.setDescription('Please, send a message following this example:\n\\`\\`\\`json //mcmeta file content here \\`\\`\\`\nYou should obtain something like this: ```//mcmeta file content here```')
-				.setFooter({ text: 'The bot will stop searching for message if 🚫 is added to this message.' });
+				.setTitle("Waiting for MCMETA config:")
+				.setDescription("Please, send a message following this example:\n\\`\\`\\`json //mcmeta file content here \\`\\`\\`\nYou should obtain something like this: ```//mcmeta file content here```")
+				.setFooter({ text: "The bot will stop searching for message if 🚫 is added to this message." });
 
 			const embedMessage = await message.reply({embeds: [embed]});
 
 			const msgFilter = m => m.author.id === message.author.id;
 
-			embedMessage.channel.awaitMessages(msgFilter, { max: 1, time: 60000, errors: ['time'] })
+			embedMessage.channel.awaitMessages(msgFilter, { max: 1, time: 60000, errors: ["time"] })
 				.then(async msg => {
 					mcmetaMessage = msg.first();
 
-					if ((mcmetaMessage.content.startsWith('```json') || mcmetaMessage.content.startsWith('```')) && mcmetaMessage.content.endsWith('```')) {
+					if ((mcmetaMessage.content.startsWith("```json") || mcmetaMessage.content.startsWith("```")) && mcmetaMessage.content.endsWith("```")) {
 						if (embedMessage.deletable) await embedMessage.delete();
 
 						try {
-							mcmeta = JSON.parse(mcmetaMessage.content.replace('```json', '').replace('```', '').replace('```', ''))
+							mcmeta = JSON.parse(mcmetaMessage.content.replace("```json", "").replace("```", "").replace("```", ""))
 						}
 						catch (err) {
-							warnUser(mcmetaMessage, 'This is not a valid JSON Object.').then(async () => {
-								if (message.deletable) await message.react('❌');
+							warnUser(mcmetaMessage, "This is not a valid JSON Object.").then(async () => {
+								if (message.deletable) await message.react("❌");
 								if (embedMessage.deletable) await embedMessage.delete();
 							});
 							return;
 						}
 
-						await mcmetaMessage.react('⌛');
+						await mcmetaMessage.react("⌛");
 						if (valURL) return animate(message, mcmeta, valURL);
 						else return previousImage(message, mcmeta);
 					} else {
-						warnUser(mcmetaMessage, 'Wrong format given!').then(async () => {
-							if (message.deletable) await message.react('❌');
+						warnUser(mcmetaMessage, "Wrong format given!").then(async () => {
+							if (message.deletable) await message.react("❌");
 							if (embedMessage.deletable) await embedMessage.delete();
 						});
 					}
 				})
 				.catch(async () => {
-					if (embedMessage.deletable && !mcmetaMessage) await embedMessage.react('🚫');
+					if (embedMessage.deletable && !mcmetaMessage) await embedMessage.react("🚫");
 				})
 
 		}
 		else if (haveCustom && haveMCMETA) {
-			return warnUser(message, 'You can\'t specify both args at once.');
+			return warnUser(message, "You can\'t specify both args at once.");
 		}*/
 	},
 };

@@ -11,7 +11,7 @@ require("./firestorm_config")();
  */
 
 module.exports = firestorm.collection("animation", (el) => {
-	/** @returns {Promise<import('./texture_use').TextureUse>} */
+	/** @returns {Promise<import("./texture_use").TextureUse>} */
 	el.use = function () {
 		return texture_use.get(el.useID);
 	};

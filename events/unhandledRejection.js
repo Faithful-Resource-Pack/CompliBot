@@ -6,7 +6,7 @@ const LOG_DEV = process.env.LOG_DEV.toLowerCase() == "true";
 
 /**
  * @param {import("discord.js").Client} client Discord client treating the information
- * @param {Error | import('axios').AxiosError} error The object with which the promise was rejected
+ * @param {Error | import("axios").AxiosError} error The object with which the promise was rejected
  * @param {Promise} promise The rejected promise
  * @param {import("discord.js").Message?} originMessage Origin user message
  */

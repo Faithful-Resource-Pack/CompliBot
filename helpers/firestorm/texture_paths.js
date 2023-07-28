@@ -7,19 +7,19 @@ require("./firestorm_config")();
  * @property {Number} useID // use id of this path
  * @property {String} path // path itself
  * @property {String[]} versions // minecraft versions (any edition)
- * @property {() => Promise<import('./texture_use').TextureUse>} use // get the use from the path
- * @property {() => Promise<import('./texture').Texture>)} texture // get the texture from the path
+ * @property {() => Promise<import("./texture_use").TextureUse>} use // get the use from the path
+ * @property {() => Promise<import("./texture").Texture>)} texture // get the texture from the path
  */
 
 module.exports = firestorm.collection("paths", (el) => {
-	/** @returns {Promise<import('./texture_use').TextureUse>} */
+	/** @returns {Promise<import("./texture_use").TextureUse>} */
 	el.use = function () {
 		const texture_use = require("./texture_use");
 
 		return texture_use.get(el.useID);
 	};
 
-	/** @returns {Promise<import('./texture').Texture>} */
+	/** @returns {Promise<import("./texture").Texture>} */
 	el.texture = function () {
 		return new Promise((resolve, reject) => {
 			el.use()

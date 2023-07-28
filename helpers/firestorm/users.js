@@ -21,7 +21,7 @@ require("./firestorm_config")();
  */
 
 module.exports = firestorm.collection("users", (el) => {
-	/** @returns {Promise<import('./contributions').Contribution[]>} */
+	/** @returns {Promise<import("./contributions").Contribution[]>} */
 	el.contributions = function () {
 		return contributions.search([
 			{
