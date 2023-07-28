@@ -1,10 +1,10 @@
 /**
  * Fetch messages from a Discord channel
  * @author Juknum
- * @param {DiscordClient} client
+ * @param {import("discord.js").Client} client
  * @param {String} id channel where messages are fetched from
- * @param {Integer} limit max amount of message fetched (default is 130)
- * @returns Returns an Array of all fetched messages
+ * @param {Number} limit max amount of message fetched (default is 130)
+ * @returns {Promise<import("discord.js").Message[]>} Returns an Array of all fetched messages
  */
 module.exports = async function getMessages(client, id, limit = 130) {
 	if (typeof limit !== "number") return new Array();

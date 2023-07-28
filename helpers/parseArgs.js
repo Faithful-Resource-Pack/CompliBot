@@ -3,9 +3,9 @@ const strings = require("../resources/strings.json");
 
 /**
  * @author Juknum
- * @param {DiscordMessage} message Discord Message
+ * @param {import("discord.js").Message} message Discord Message
  * @param {Array} args Array of String
- * @returns parsed args
+ * @returns {String[]} parsed args
  */
 module.exports = function parseArgs(message, args) {
 	for (let i = 0; i < args.length; i++) {
@@ -17,9 +17,8 @@ module.exports = function parseArgs(message, args) {
 					args[j] = "";
 				}
 			}
-		} else if (args[i] != "") {
+		} else if (args[i] != "")
 			warnUser(message, strings.command.parse_args);
-		}
 	}
 
 	return args.filter((a) => a !== "");

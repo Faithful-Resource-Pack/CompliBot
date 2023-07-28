@@ -9,7 +9,7 @@ const SAVE_EVERY = 20; // save file every n messages sent
 let number = undefined;
 
 /**
- * @returns {Promise<number>}
+ * @returns {Promise<Number>}
  */
 const __loadNumber = function () {
 	let prom;

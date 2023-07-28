@@ -1,8 +1,8 @@
 /**
  * Detects co-authors from pings and curly bracket syntax in a given message
  * @author Evorp
- * @param {DiscordMessage} message
- * @returns array of author's discord IDs
+ * @param {import("discord.js").Message} message
+ * @returns {Promise<String[]>} array of author's discord IDs
  */
 module.exports = async function getAuthors(message) {
 	let authors = [message.author.id];

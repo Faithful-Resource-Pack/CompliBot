@@ -12,8 +12,8 @@ const { MessageEmbed, Permissions } = require("discord.js");
 /**
  * Get submission information and create embed
  * @author Juknum, Evorp
- * @param {DiscordClient} client
- * @param {DiscordMessage} message message to check and embed
+ * @param {import("discord.js").Client} client
+ * @param {import("discord.js").Message} message message to check and embed
  */
 module.exports = async function submitTexture(client, message) {
 	// break if no file is attached
@@ -91,7 +91,7 @@ module.exports = async function submitTexture(client, message) {
 /**
  * Logic for handling an invalid submission
  * @author Juknum
- * @param {DiscordMessage} message message to check permissions of
+ * @param {import("discord.js").Message} message message to check permissions of
  * @param {String?} error optional error message
  */
 async function invalidSubmission(message, error = "Not given") {

@@ -19,7 +19,7 @@ module.exports = {
 				ids = url.replace("/channels/", "").split("/");
 			else return await message.reply({ content: strings.command.behave });
 
-			/** @type {Discord.TextChannel} */
+			/** @type {import("discord.js").TextChannel} */
 			const channel = message.guild.channels.cache.get(ids[1]);
 			const messageToBehave = await channel.messages.fetch(ids[2]);
 

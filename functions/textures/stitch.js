@@ -2,7 +2,7 @@ const { loadImage, createCanvas } = require("@napi-rs/canvas");
 
 /**
  * I genuinely have no idea how this works but it seems to be holding up
- * @param {string[]} urls array of urls
+ * @param {String[]} urls array of urls
  */
 class HorizontalStitcher {
 	urls = new Array();
@@ -80,7 +80,7 @@ class HorizontalStitcher {
  * basically just extends HorizontalStitcher to work with multiple rows rather than appending everything sideways
  * this was actual pain to make
  * @author Evorp
- * @param {string[][]} urls two-dimensional array of valid urls
+ * @param {String[][]} urls two-dimensional array of valid urls
  */
 class FullStitcher {
 	// not using inheritance since this is a completely different implementation and doesn't need to load images

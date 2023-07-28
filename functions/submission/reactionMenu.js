@@ -7,9 +7,9 @@ const changeStatus = require("./changeStatus");
 /**
  * Opens reaction tray, listens for reaction, and closes tray
  * @author Evorp, Juknum
- * @param {DiscordClient} client
- * @param {DiscordReaction} reaction
- * @param {DiscordUser} user person who reacted
+ * @param {import("discord.js").Client} client
+ * @param {import("discord.js").MessageReaction} reaction
+ * @param {import("discord.js").User} user person who reacted
  * @see interactionCreate (where all button stuff is handled)
  */
 module.exports = async function reactionMenu(client, reaction, user) {
@@ -33,7 +33,7 @@ module.exports = async function reactionMenu(client, reaction, user) {
 	if (reaction.emoji.id !== settings.emojis.see_more || !message.embeds[0]?.fields?.length) return;
 
 	// first author in the author field is always the person who submitted
-	const authorID = await message.embeds[0].fields[0].value.split("\n")[0].replace(/\D+/g, "");
+	const authorID = message.embeds[0].fields[0].value.split("\n")[0].replace(/\D+/g, "");
 
 	if (
 		// break early if the user doesn't have permission or the submission isn't pending

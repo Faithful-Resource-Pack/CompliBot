@@ -5,9 +5,18 @@ const changeStatus = require("./changeStatus");
 const { imageButtons } = require("../../helpers/buttons");
 
 /**
+ * @typedef MappedMessage each parameter should be self-explanatory
+ * @property {import("discord.js").MessageReaction} upvote
+ * @property {import("discord.js").MessageReaction} downvote
+ * @property {import("discord.js").MessageEmbed} embed
+ * @property {import("discord.js").MessageComponent[]} components
+ * @property {import("discord.js").Message} message
+ */
+
+/**
  * Send submissions older than a given delay to a new channel
  * @author Juknum
- * @param {DiscordClient} client
+ * @param {import("discord.js").Client} client
  * @param {String} channelFromID channel from where submissions are retrieved
  * @param {String} channelOutID channel where submissions are sent
  * @param {Boolean} toCouncil true if from submissions to council, false if from council to results
@@ -55,9 +64,12 @@ module.exports = async function retrieveSubmission(
 	});
 
 	// split messages by their votes (upvote >= downvote)
+	/** @type {MappedMessage[]} */
 	const messagesUpvoted = messages.filter(
 		(message) => message.upvote.count >= message.downvote.count,
 	);
+
+	/** @type {MappedMessage[]} */
 	const messagesDownvoted = messages.filter(
 		(message) => message.upvote.count < message.downvote.count,
 	);
@@ -76,9 +88,9 @@ module.exports = async function retrieveSubmission(
 /**
  * Send textures to a given council channel
  * @author Evorp
- * @param {DiscordClient} client
- * @param {DiscordMessage[]} messagesUpvoted
- * @param {DiscordMessage[]} messagesDownvoted
+ * @param {import("discord.js").Client} client
+ * @param {MappedMessage[]} messagesUpvoted
+ * @param {MappedMessage[]} messagesDownvoted
  * @param {String} channelOutID
  */
 async function sendToCouncil(client, messagesUpvoted, messagesDownvoted, channelOutID) {
@@ -125,9 +137,9 @@ async function sendToCouncil(client, messagesUpvoted, messagesDownvoted, channel
 /**
  * Send textures to a given result channel
  * @author Evorp
- * @param {DiscordClient} client
- * @param {DiscordMessage[]} messagesUpvoted
- * @param {DiscordMessage[]} messagesDownvoted
+ * @param {import("discord.js").Client} client
+ * @param {MappedMessage[]} messagesUpvoted
+ * @param {MappedMessage[]} messagesDownvoted
  * @param {String} channelOutID
  * @param {Boolean} councilDisabled whether to disable council or not (off by default)
  */

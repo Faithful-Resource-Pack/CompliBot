@@ -13,11 +13,11 @@ const EMOJIS = [settings.emojis.upvote, settings.emojis.downvote, settings.emoji
 /**
  * Make a submission embed using existing texture information
  * @author Juknum, Evorp
- * @param {DiscordClient} client
- * @param {DiscordMessage} message used for channel and author information
- * @param {MinecraftTexture} texture texture information
- * @param {MessageAttachment} attachment raw texture to embed
- * @param {Object} param additional info (e.g. description, coauthors)
+ * @param {import("discord.js").Client} client
+ * @param {import("discord.js").Message} message used for channel and author information
+ * @param {import("../../helpers/getTexture").MinecraftTexture} texture texture information
+ * @param {import("discord.js").MessageAttachment} attachment raw texture to embed
+ * @param {{ description: String?, authors: String[] }} param additional info (e.g. description, coauthors)
  */
 module.exports = async function makeEmbed(
 	client,
@@ -27,6 +27,7 @@ module.exports = async function makeEmbed(
 	param = new Object(),
 ) {
 	/** @type {import("../../helpers/firestorm/texture_use.js").TextureUse[]} */
+	console.log(texture);
 	let uses = await texture.uses();
 	let pathText = [];
 	let imgButtons;

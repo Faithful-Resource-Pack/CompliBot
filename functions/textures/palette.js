@@ -19,11 +19,10 @@ const GRADIENT_BAND_WIDTH = 3;
 const GRADIENT_HEIGHT = 50;
 
 /**
- * Get the color palette from an image url ephemerally
- * @author Juknum
- * @param {DiscordInteraction} interaction discord interaction to respond to
+ * Sends an ephemeral message with the palette of a given image url
+ * @author Juknum, Evorp
+ * @param {import("discord.js").MessageComponentInteraction} interaction discord interaction to respond to
  * @param {String} url Image URL
- * @returns Send an embed message with the color palette of the given URL
  */
 module.exports = async function palette(interaction, url) {
 	const dimension = await getDimensions(url);

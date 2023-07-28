@@ -13,8 +13,8 @@ let FACTOR = 8;
 
 /**
  * Convert Image to GIF following MCMETA file
- * @param {DiscordMessage} message Discord message
- * @param {Object} valMCMETA MCMETA object
+ * @param {import("discord.js").Message} message Discord message
+ * @param {Object | undefined} valMCMETA MCMETA object
  * @param {String} valURL Image URL
  */
 module.exports = async function animate(message, valMCMETA, valURL) {
@@ -167,8 +167,8 @@ module.exports = async function animate(message, valMCMETA, valURL) {
 /**
  * Magnify image Canvas before making the GIF
  * @param {String} valURL Image URL
- * @param {Object} dimension dimension: {width, height}
- * @returns a sized up Canvas Context
+ * @param {{ width: number, height: number }} dimension dimension: {width, height}
+ * @returns {Promise<Canvas>} a sized up Canvas Context
  */
 async function sizeUP(valURL, dimension) {
 	/*let contextIN  = Canvas.createCanvas(dimension.width, dimension.height).getContext('2d')

@@ -9,7 +9,7 @@ async function sleep(ms) {
 
 /**
  *
- * @param {import('discord.js').Client} client Discord client
+ * @param {import("discord.js").Client} client Discord client
  */
 module.exports = async function (client) {
 	try {

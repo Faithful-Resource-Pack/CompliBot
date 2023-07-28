@@ -5,7 +5,7 @@ const { Buffer } = require("buffer");
  * Get dimensions of an image
  * @author Juknum
  * @param {String} imageURL Image URL
- * @returns Promise (resolve)
+ * @returns {Promise<{width: number, height: number}>}
  */
 module.exports = async function getDimensions(imageURL) {
 	const response = await fetch(imageURL);

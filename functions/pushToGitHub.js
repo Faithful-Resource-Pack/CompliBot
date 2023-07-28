@@ -70,7 +70,7 @@ const uploadToRepo = async (octo, coursePath, org, repo, branch, commitMessage) 
  * @param {String} org GitHub organisation
  * @param {String} repo GitHub repository of the organisation
  * @param {String} branch GitHub branch of the repository
- * @returns
+ * @returns {Promise<{commitSha: String, treeSha: String}>}
  */
 const getCurrentCommit = async (octo, org, repo, branch) => {
 	const { data: refData } = await octo.git.getRef({
@@ -202,7 +202,6 @@ const createNewCommit = async (octo, org, repo, message, currentTreeSha, current
  * @param {String} repo GitHub repository of the organisation
  * @param {String} branch GitHub branch of the repository
  * @param {*} commitSha
- * @returns
  */
 const setBranchToCommit = (octo, org, repo, branch, commitSha) =>
 	octo.git.updateRef({

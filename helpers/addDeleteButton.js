@@ -4,7 +4,7 @@ const { deleteButton } = require("./buttons");
 /**
  * Add delete button to bot message
  * @author Evorp
- * @param {DiscordMessage} message message sent by bot
+ * @param {import("discord.js").Message} message message sent by bot
  */
 module.exports = async function addDeleteButton(message) {
 	// Based off the TypeScript version

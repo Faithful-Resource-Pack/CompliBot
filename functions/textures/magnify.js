@@ -7,7 +7,7 @@ const addDeleteButton = require("../../helpers/addDeleteButton");
 /**
  * base logic, returns buffer
  * @param {String | Image} origin url to magnify
- * @returns {Buffer} buffer for magnified image
+ * @returns {Promise<Buffer>} buffer for magnified image
  */
 async function magnifyBuffer(origin) {
 	const tmp = await loadImage(origin).catch((err) => Promise.reject(err));
@@ -41,7 +41,7 @@ async function magnifyBuffer(origin) {
  * returns discord attachment
  * @param {String | Image} origin url to magnify
  * @param {String?} name name, defaults to "magnified.png"
- * @returns {MessageAttachment} magnified file
+ * @returns {Promise<MessageAttachment>} magnified file
  */
 async function magnifyAttachment(origin, name = "magnified.png") {
 	const { magnified } = await magnifyBuffer(origin);
@@ -49,11 +49,11 @@ async function magnifyAttachment(origin, name = "magnified.png") {
 }
 
 /**
- * Magnify image
+ * Sends message with magnified image
  * @author Juknum
- * @param {DiscordMessage} message
- * @param {String} url Image URL
- * @returns Send a message with the magnified image
+ * @param {import("discord.js").Message} message message to reply to
+ * @param {String} url
+ * @returns {Promise<MessageAttachment>} the attachment that was sent
  */
 async function magnify(message, url) {
 	const attachment = await magnifyAttachment(url);

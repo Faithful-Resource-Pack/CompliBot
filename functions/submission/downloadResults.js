@@ -12,7 +12,7 @@ const { promises, writeFile } = require("fs");
 /**
  * Download textures from a given channel to all its paths locally
  * @author Juknum, Evorp
- * @param {DiscordClient} client
+ * @param {import("discord.js").Client} client
  * @param {String} channelResultID result channel to download from
  * @param {Boolean?} instapass whether to push the texture directly after downloading
  */

@@ -5,10 +5,10 @@ const settings = require("../../resources/settings.json");
 /**
  * Tile an image
  * @author Juknum
- * @param {DiscordInteraction} interaction
+ * @param {import("discord.js").MessageComponentInteraction} interaction
  * @param {String} url Image url
  * @param {String?} type Type of tiling, could be: grid, horizontal, round or plus
- * @returns tiled image as a buffer
+ * @returns {Promise<Buffer?>} tiled image as a buffer
  */
 module.exports = async function tile(interaction, url, type = "grid") {
 	const dimension = await getDimensions(url);

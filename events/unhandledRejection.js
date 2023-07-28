@@ -6,17 +6,17 @@ const DEV = process.env.DEV.toLowerCase() == "true";
 const LOG_DEV = process.env.LOG_DEV == "true";
 
 /**
- * @param {Discord.Client} client Discord client treating the information
- * @param {Error|import('axios').AxiosError} error The object with which the promise was rejected
+ * @param {import("discord.js").Client} client Discord client treating the information
+ * @param {Error | import('axios').AxiosError} error The object with which the promise was rejected
  * @param {Promise} promise The rejected promise
- * @param {import('discord.js').Message?} originMessage Origin user message
+ * @param {import("discord.js").Message?} originMessage Origin user message
  */
 module.exports = function (client, error, promise, originMessage) {
 	const settings = require("../resources/settings.json");
 
 	if (DEV) return console.trace(error.stack || error);
 
-	const channel = client.channels.cache.get(LOG_DEV ? "875301873316413440" : "853547435782701076");
+	const channel = client.channels.cache.get(LOG_DEV ? "867499014085148682" : "853547435782701076");
 
 	let eproto_error = false;
 	let content = error.stack; // stack else AxiosError else random error

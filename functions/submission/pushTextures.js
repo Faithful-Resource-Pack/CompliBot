@@ -62,7 +62,7 @@ module.exports = async function pushTextures(
 /**
  * Check if a directory is empty
  * @param {String} dirname
- * @returns true if empty
+ * @returns {Boolean} true if empty
  */
 const checkFolder = (folderPath) => {
 	if (!folderPath) throw Error("folder path is required!");

@@ -6,9 +6,8 @@ const warnUser = require("../../helpers/warnUser");
 /**
  * Instapass a given texture embed
  * @author Evorp
- * @param {DiscordClient} client discord client
- * @param {DiscordMessage} message embed to instapass
- * @returns
+ * @param {import("discord.js").Client} client discord client
+ * @param {import("discord.js").Message} message embed to instapass
  */
 module.exports = async function instapass(client, message) {
 	let channelOutID;

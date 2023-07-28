@@ -1,13 +1,13 @@
 const settings = require("../resources/settings.json");
 const strings = require("../resources/strings.json");
 
-const { MessageEmbed, MessageActionRow } = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 const addDeleteButton = require("./addDeleteButton");
 
 /**
  * Sends pre-formatted red embed with warning sign
  * @author Juknum
- * @param {Discord.Message} message
+ * @param {import("discord.js").Message} message
  * @param {String} text
  */
 module.exports = async function warnUser(message, text) {

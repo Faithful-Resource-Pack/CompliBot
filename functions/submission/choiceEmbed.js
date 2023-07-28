@@ -14,7 +14,7 @@ const strings = require("../../resources/strings.json");
 /**
  * Selection menu for dealing with multiple valid options
  * @author Evorp
- * @param {DiscordMessage} message message to reply to
+ * @param {import("discord.js").Message} message message to reply to
  * @param {Choice[]} choices pre-mapped choices
  */
 module.exports = async function choiceEmbed(message, choices) {

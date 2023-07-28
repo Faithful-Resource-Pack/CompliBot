@@ -52,9 +52,9 @@ class FileHandler {
 	/**
 	 *
 	 * @param {String} filepath Path to the file from here
-	 * @param {String} defaultValue default parsed value
-	 * @param {Boolean} isJson Auto parse value if JSON
-	 * @param {Boolean} pull Pulling last version before modification
+	 * @param {String?} defaultValue default parsed value
+	 * @param {Boolean?} isJson Auto parse value if JSON
+	 * @param {Boolean?} pull Pulling last version before modification
 	 */
 	constructor(filepath, defaultValue = "", isJson = true, pull = true) {
 		this.filepath = filepath;

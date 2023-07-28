@@ -1,9 +1,9 @@
 /**
  * Convert MessageAttachment objects into sendable URLs
  * @author RobertR11, Evorp
- * @param {DiscordClient} client
- * @param {...MessageAttachment} fileArray files to commit
- * @returns array of image urls from #submission-spam
+ * @param {import("discord.js").Client} client
+ * @param {import("discord.js").MessageAttachment[]} fileArray files to commit
+ * @returns {Promise<String[]>} array of image urls from #submission-spam
  */
 module.exports = async function getImages(client, ...fileArray) {
 	let imgArray = new Array();

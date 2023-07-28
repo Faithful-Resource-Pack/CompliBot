@@ -2,10 +2,20 @@ const textures = require("./firestorm/texture");
 const paths = require("./firestorm/texture_paths");
 
 /**
+ * @typedef MinecraftTexture
+ * @property {String} name main texture name
+ * @property {String | Number} id texture id
+ * @property {String[]} type texture tags
+ * @property {Function} uses async function to get all uses
+ * @property {Function} contributions
+ * @property {Function} lastContribution
+ */
+
+/**
  * Search for a given texture and return details
  * @author Juknum
  * @param {String} search texture name to search for
- * @returns array of results
+ * @returns {Promise<MinecraftTexture>} array of results
  */
 module.exports = async function getTexture(search) {
 	let results;
