@@ -23,8 +23,10 @@ module.exports = {
 						choiceMessage.reference.messageId,
 					);
 					if (message.deletable && message.author.id == interaction.user.id) {
-						// sends the "thinking" message
+						// "complete" interaction and immediately delete message
 						await interaction.deferReply();
+						const followUp = await interaction.editReply({ content: "** **" });
+						if (followUp.deletable) await followUp.delete();
 						const [id, index] = interaction.values[0].split("__");
 						const attachments = Array.from(message.attachments.values());
 
@@ -34,9 +36,6 @@ module.exports = {
 						};
 
 						const texture = await textures.get(id);
-						// "complete" interaction and immediately delete message
-						const followUp = await interaction.editReply({ content: "** **" });
-						if (followUp.deletable) await followUp.delete();
 						if (choiceMessage.deletable) await choiceMessage.delete();
 
 						return await makeEmbed(client, message, texture, attachments[index], param);
