@@ -2,7 +2,6 @@ const { writeFile } = require("fs/promises");
 const { join } = require("path");
 const allCollection = require("../helpers/firestorm/all");
 
-
 /**
  * Download remote settings file
  * @author Juknum

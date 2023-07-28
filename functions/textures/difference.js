@@ -25,9 +25,8 @@ module.exports = async function difference(firstUrl, secondUrl, tolerance = 5) {
 		});
 		// null values are handled in the button code itself
 		if (invalidUrl) return null;
-		// we can only destructure once we check for null for some reason
+		// we can only destructure once we check for null
 		const { magnified, width, height } = temp;
-		if (width * height > 262144) return null;
 		const img = await loadImage(magnified);
 		const canvas = createCanvas(width, height);
 		const ctx = canvas.getContext("2d");
@@ -36,6 +35,7 @@ module.exports = async function difference(firstUrl, secondUrl, tolerance = 5) {
 		mappedUrls.push({ pixels, width, height });
 	}
 
+	// if the images are somehow uneven at this point we can just take the biggest one
 	const finalWidth = Math.max(...mappedUrls.map((i) => i.width));
 	const finalHeight = Math.max(...mappedUrls.map((i) => i.height));
 	const length = finalWidth * finalHeight * 4;

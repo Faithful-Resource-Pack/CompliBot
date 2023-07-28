@@ -52,7 +52,8 @@ module.exports = {
 				}
 
 				const id = (message.embeds?.[0]?.title?.match(/(?<=\[\#)(.*?)(?=\])/) ?? [null])[0];
-				if (!id) return;
+				if (!id) break;
+				await interaction.deferReply({ ephemeral: true });
 				const texture = await textures.get(id);
 				const uses = await texture.uses();
 				const paths = await uses[0].paths();
@@ -66,8 +67,7 @@ module.exports = {
 				}/${info.path}`;
 				const proposedUrl = message.embeds[0].thumbnail?.url;
 
-				if (proposedUrl && currentUrl) {
-					await interaction.deferReply({ ephemeral: true });
+				if (proposedUrl) {
 					const diff = await difference(proposedUrl, currentUrl);
 					if (!diff) {
 						return await interaction.editReply({
