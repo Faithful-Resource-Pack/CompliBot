@@ -5,11 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node --use_strict --trace-warnings index.js",
-    "restart": "npm i --save ; npm start",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx ",
-    "test": "echo \"Error: no test specified\" && exit 0",
-    "dev": "node .",
-    "prettier": "prettier \"{*.js,!(node*)**/*.js}\" --config .prettierrc --write"
+    "prettier": "prettier \"{*.js,!(node*)**/*.js}\" --config .prettierrc --write",
+    "dev": "node ."
   },
   "repository": {
     "type": "git",
@@ -20,7 +17,7 @@
   "bugs": {
     "url": "https://github.com/Faithful-Resource-Pack/Discord-Bot/issues"
   },
-  "homepage": "https://github.com/Faithful-Resource-Pack/Discord-Bot#readme",
+  "homepage": "https://github.com/Faithful-Resource-Pack/Discord-Bot/tree/javascript#readme",
   "dependencies": {
     "@napi-rs/canvas": "^0.1.41",
     "@octokit/rest": "^19.0.13",

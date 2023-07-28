@@ -10,7 +10,6 @@ const settings = require("../resources/settings.json");
 const retrieveSubmission = require("../functions/submission/retrieveSubmission");
 const downloadResults = require("../functions/submission/downloadResults");
 const pushTextures = require("../functions/submission/pushTextures");
-const restartAutoDestroy = require("../functions/restartAutoDestroy");
 const saveDB = require("../functions/saveDB");
 
 /**
@@ -90,8 +89,6 @@ module.exports = {
 		if (MAINTENANCE)
 			client.user.setPresence({ activities: [{ name: "maintenance" }], status: "dnd" });
 		else client.user.setActivity("for submissions", { type: "WATCHING" });
-
-		await restartAutoDestroy(client);
 
 		if (DEV) {
 			setInterval(() => {
