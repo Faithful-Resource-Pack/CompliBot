@@ -24,9 +24,10 @@ module.exports = {
 					);
 					if (message.deletable && message.author.id == interaction.user.id) {
 						// "complete" interaction and immediately delete message
-						await interaction.deferReply();
-						const followUp = await interaction.editReply({ content: "** **" });
+						// can't be ephemeral because you can't force-delete those?
+						const followUp = await interaction.reply({ content: "** **" });
 						if (followUp.deletable) await followUp.delete();
+
 						const [id, index] = interaction.values[0].split("__");
 						const attachments = Array.from(message.attachments.values());
 
