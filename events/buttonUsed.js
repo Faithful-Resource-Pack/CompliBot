@@ -67,37 +67,30 @@ module.exports = {
 				}/${info.path}`;
 				const proposedUrl = message.embeds[0].thumbnail?.url;
 
-				if (proposedUrl) {
-					const diff = await difference(proposedUrl, currentUrl);
-					if (!diff) {
-						return await interaction.editReply({
-							embeds: [
-								new MessageEmbed()
-									.setTitle(strings.bot.error)
-									.setDescription("There is no existing texture to find the difference of!")
-									.setColor(settings.colors.red)
-									.setThumbnail(settings.images.error),
-							],
-							ephemeral: true,
-						});
-					}
+				const diff = await difference(currentUrl, proposedUrl);
+				if (!diff || !proposedUrl) {
 					return await interaction.editReply({
 						embeds: [
 							new MessageEmbed()
-								.setTitle("Image Difference")
-								.setDescription(
-									"- Blue: Changed pixels\n- Green: Added pixels\n- Red: Removed pixels",
-								)
-								.setColor(settings.colors.blue)
-								.setImage("attachment://diff.png"),
+								.setTitle(strings.bot.error)
+								.setDescription("There is no existing texture to find the difference of!")
+								.setColor(settings.colors.red)
+								.setThumbnail(settings.images.error),
 						],
-						files: [diff],
 						ephemeral: true,
 					});
 				}
-
 				return await interaction.editReply({
-					content: "something went wrong",
+					embeds: [
+						new MessageEmbed()
+							.setTitle("Image Difference")
+							.setDescription(
+								"- Blue: Changed pixels\n- Green: Added pixels\n- Red: Removed pixels",
+							)
+							.setColor(settings.colors.blue)
+							.setImage("attachment://diff.png"),
+					],
+					files: [diff],
 					ephemeral: true,
 				});
 
