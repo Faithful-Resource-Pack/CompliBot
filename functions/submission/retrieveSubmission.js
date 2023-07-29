@@ -68,12 +68,12 @@ module.exports = async function retrieveSubmission(
 	// split messages by their votes (upvote >= downvote)
 	/** @type {MappedMessage[]} */
 	const messagesUpvoted = messages.filter(
-		(message) => message.upvote.count >= message.downvote.count,
+		(message) => (message.upvote?.count ?? 1) >= (message.downvote?.count ?? 1),
 	);
 
 	/** @type {MappedMessage[]} */
 	const messagesDownvoted = messages.filter(
-		(message) => message.upvote.count < message.downvote.count,
+		(message) => (message.upvote?.count ?? 1) < (message.downvote?.count ?? 1),
 	);
 
 	if (toCouncil)
