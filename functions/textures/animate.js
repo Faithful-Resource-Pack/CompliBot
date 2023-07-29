@@ -1,14 +1,14 @@
-const Canvas = require("@napi-rs/canvas");
-const GIFEncoderFixed = require("../../modified_libraries/GIFEncoder");
-
 const strings = require("../../resources/strings.json");
 
+const { createCanvas, loadImage } = require("@napi-rs/canvas");
+const GIFEncoder = require("./GIFEncoder");
 const { MessageAttachment } = require("discord.js");
+
 const getDimensions = require("./getDimensions");
 const warnUser = require("../../helpers/warnUser");
 const addDeleteButton = require("../../helpers/addDeleteButton");
 
-// "magnify" the output GIF (the output will be to small)
+// "magnify" the output GIF (the output will be too small)
 let FACTOR = 8;
 
 /**
@@ -32,7 +32,7 @@ module.exports = async function animate(message, valMCMETA, valURL) {
 
 	// NOTE: Width & Height properties from MCMETA aren't supported
 
-	let canvas = Canvas.createCanvas(texture.width, texture.width);
+	let canvas = createCanvas(texture.width, texture.width);
 	let context = canvas.getContext("2d");
 
 	let MCMETA = typeof valMCMETA === "object" ? valMCMETA : { animation: {} };
@@ -78,7 +78,7 @@ module.exports = async function animate(message, valMCMETA, valURL) {
 	}
 
 	// Draw frames:
-	const encoder = new GIFEncoderFixed(texture.width, texture.width);
+	const encoder = new GIFEncoder(texture.width, texture.width);
 	encoder.start();
 	encoder.setTransparent(true);
 
@@ -171,11 +171,12 @@ module.exports = async function animate(message, valMCMETA, valURL) {
  * @returns {Promise<Canvas>} a sized up Canvas Context
  */
 async function sizeUP(valURL, dimension) {
-	/*let contextIN  = Canvas.createCanvas(dimension.width, dimension.height).getContext("2d")
-	let canvasOUT  = Canvas.createCanvas(dimension.width * FACTOR, dimension.height * FACTOR)
+	/*
+	let contextIN  = createCanvas(dimension.width, dimension.height).getContext("2d")
+	let canvasOUT  = createCanvas(dimension.width * FACTOR, dimension.height * FACTOR)
 	let contextOUT = canvasOUT.getContext("2d")
 
-	let temp = await Canvas.loadImage(valURL)
+	let temp = await loadImage(valURL)
 	contextIN.drawImage(temp, 0, 0)
 	let image = contextIN.getImageData(0, 0, dimension.width, dimension.height).data
 
@@ -192,14 +193,15 @@ async function sizeUP(valURL, dimension) {
 			contextOUT.fillStyle = `rgba(${r},${g},${b},${a})`
 			contextOUT.fillRect(x * FACTOR, y * FACTOR, FACTOR, FACTOR)
 		}
-	}*/
+	}
+	*/
 
 	const width = dimension.width * FACTOR;
 	const height = dimension.height * FACTOR;
-	let canvasOUT = Canvas.createCanvas(width, height);
+	let canvasOUT = createCanvas(width, height);
 	let contextOUT = canvasOUT.getContext("2d");
 
-	let temp = await Canvas.loadImage(valURL);
+	let temp = await loadImage(valURL);
 	contextOUT.imageSmoothingEnabled = false;
 	contextOUT.drawImage(temp, 0, 0, width, height);
 
