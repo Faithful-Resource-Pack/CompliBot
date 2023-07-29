@@ -12,8 +12,12 @@ export async function loadImages(urls: string[][]): Promise<Canvas[][]> {
 	for (let row of urls) {
 		loadedImages[i] = [];
 		for (let url of row) {
-			let tmp = await loadImage(url);
-			loadedImages[i].push(tmp);
+			try {
+				let tmp = await loadImage(url);
+				loadedImages[i].push(tmp);
+			} catch {
+				/* texture hasn't been made yet or is invalid */
+			}
 		}
 		++i;
 	}
@@ -105,43 +109,35 @@ export async function textureComparison(
 	}
 
 	if (!isTemplate) {
-		try {
-			const defaultURL: string = `${client.tokens.apiUrl}textures/${id}/url/default/latest`;
+		const defaultURL: string = `${client.tokens.apiUrl}textures/${id}/url/default/latest`;
 
-			const dimension = await getDimensions(defaultURL);
-			if (dimension.width * dimension.height * displayed.flat().length > 262144) {
-				return [
-					new MessageEmbed()
-						.setTitle("Output will be too big!")
-						.setDescription(
-							"Try specifying which set of packs you want to view to reduce the total image size.",
-						)
-						.setFooter({ text: "Use [#template] for more information!" }),
-					null,
-				];
-			}
-		} catch {}
+		const dimension = await getDimensions(defaultURL);
+		if (dimension.width * dimension.height * displayed.flat().length > 262144) {
+			return [
+				new MessageEmbed()
+					.setTitle("Output will be too big!")
+					.setDescription(
+						"Try specifying which set of packs you want to view to reduce the total image size.",
+					)
+					.setFooter({ text: "Use [#template] for more information!" }),
+				null,
+			];
+		}
 	}
 
 	// get texture urls
 	let urls = [];
-	let j = 0;
+	let i = 0;
 	for (let packSet of displayed) {
 		urls.push([]);
 		for (let pack of packSet) {
-			try {
-				let textureURL: string;
-				if (isTemplate) {
-					const strIconURL = formatName(pack, "64")[1];
-					textureURL = strIconURL;
-				} else
-					textureURL = `${client.tokens.apiUrl}textures/${id}/url/${pack}/latest`;
-				urls[j].push(textureURL);
-			} catch {
-				/* texture hasn't been made yet */
-			}
+			urls[i].push(
+				isTemplate
+					? formatName(pack, "64")[1]
+					: `${client.tokens.apiUrl}textures/${id}/url/${pack}/latest`,
+			);
 		}
-		++j; // can't use forEach because of scope problems (blame js)
+		++i; // can't use forEach because of scope problems (blame js)
 	}
 
 	const loadedImages = await loadImages(urls);
