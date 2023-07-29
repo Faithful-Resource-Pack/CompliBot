@@ -1,156 +1,53 @@
-import { createCanvas, loadImage } from "@napi-rs/canvas";
+import { Canvas, createCanvas, loadImage } from "@napi-rs/canvas";
 
 /**
- * loads a texture url as a canvas image
+ * loads 2d array of texture urls as canvas images
  * @author Evorp
- * @param urls texture urls to load
- * @returns array of canvas images
+ * @param urls 2d array of urls to load
+ * @returns
  */
-async function loadImages(urls: string[]) {
+export async function loadImages(urls: string[][]): Promise<Canvas[][]> {
 	let loadedImages = [];
-	for (let url of urls) {
-		try {
+	let i = 0; // forEach() causes a lot of issues with variable scope
+	for (let row of urls) {
+		loadedImages[i] = [];
+		for (let url of row) {
 			let tmp = await loadImage(url);
-			loadedImages.push(tmp);
-		} catch {
-			/* image doesn't exist yet */
+			loadedImages[i].push(tmp);
 		}
+		++i;
 	}
 	return loadedImages;
 }
 
 /**
- * stitches an arbitrary number of textures together
- * most of this code is ripped from the JS bot
- * @author Evorp
- * @param {string[]} urls array of urls
- * @param {number} gap the gap between each texture
+ * @author EwanHowell
+ * @param images pre-loaded canvas images
+ * @param gap optionally specify pixel gap
+ * @returns canvas buffer with stitched image
  */
-export async function horizontalStitcher(urls: string[], gap: number = 0) {
-	const images = await loadImages(urls);
-	const biggestImage = images
-		.map((can) => {
-			return { w: can.naturalWidth, h: can.naturalHeight };
-		})
-		.sort((a, b) => b.h * b.w - a.h * a.w)[0];
-
-	const mappedImages = images.map((img) => {
-		const ctx = createCanvas(img.naturalWidth, img.naturalHeight).getContext("2d");
-		ctx.drawImage(img, 0, 0);
-
-		return {
-			image: img,
-			data: ctx.getImageData(0, 0, img.naturalWidth, img.naturalHeight).data,
-		};
-	});
-
-	if (!biggestImage) return; // if the image isn't loaded properly return early
-
-	const referenceWidth = biggestImage.w;
-
-	const canvasWidth = biggestImage.w * images.length;
-	const canvasHeight = biggestImage.h;
-
-	const canvas = createCanvas(canvasWidth + gap * (mappedImages.length - 1), canvasHeight);
+export async function stitch(images: Canvas[][], gap: number = 0) {
+	const img = images.flat().reduce((a, e) => (a.width > e.width ? a : e), { width: 0, height: 0 });
+	const length = images.reduce((a, e) => Math.max(a, e.length), 0);
+	const vGap = (length - 1) * gap;
+	const hGap = (images.length - 1) * gap;
+	const width = length * img.width;
+	const height = images.length * img.height;
+	const tileWidth = Math.floor(width / length);
+	const tileHeight = Math.floor(height / images.length);
+	const canvas = new Canvas(tileWidth * length + vGap, tileHeight * images.length + hGap);
 	const ctx = canvas.getContext("2d");
-
-	let textureImage: any,
-		textureImageData: any,
-		scale: any,
-		xOffset: any,
-		pixelIndex: any,
-		r: any,
-		g: any,
-		b: any,
-		a: any;
-
-	for (let texIndex = 0; texIndex < mappedImages.length; ++texIndex) {
-		textureImage = mappedImages[texIndex].image;
-		textureImageData = mappedImages[texIndex].data;
-
-		scale = Math.floor(referenceWidth / textureImage.naturalWidth);
-		xOffset = referenceWidth * texIndex;
-		if (texIndex != 0) xOffset += gap * texIndex;
-		for (let x = 0; x < textureImage.naturalWidth; ++x) {
-			for (let y = 0; y < textureImage.naturalHeight; ++y) {
-				pixelIndex = (y * textureImage.naturalWidth + x) * 4;
-				r = textureImageData[pixelIndex];
-				g = textureImageData[pixelIndex + 1];
-				b = textureImageData[pixelIndex + 2];
-				a = textureImageData[pixelIndex + 3] / 255;
-
-				ctx.fillStyle = "rgba(" + r + "," + g + "," + b + "," + a + ")";
-				ctx.fillRect(xOffset + x * scale, y * scale, scale, scale);
-			}
+	ctx.imageSmoothingEnabled = false;
+	for (let y = 0; y < images.length; y++)
+		for (let x = 0; x < images[y].length; x++) {
+			ctx.drawImage(
+				images[y][x],
+				x * tileWidth + x * gap,
+				y * tileHeight + y * gap,
+				tileWidth,
+				tileHeight,
+			);
 		}
-	}
-
-	return canvas.toBuffer("image/png");
-}
-
-/**
- * vertical version of horizontalStitcher
- * @author Evorp
- * @param {string[]} urls array of urls
- * @param {number} gap the gap between each texture
- */
-export async function verticalStitcher(urls: string[], gap: number = 0) {
-	// most of the code is pretty similar to horizontalStitcher() but just going the other direction
-	const images = await loadImages(urls);
-	const biggestImage = images
-		.map((can) => {
-			return { w: can.naturalWidth, h: can.naturalHeight };
-		})
-		.sort((a, b) => b.h * b.w - a.h * a.w)[0];
-
-	const mappedImages = images.map((img) => {
-		const ctx = createCanvas(img.naturalWidth, img.naturalHeight).getContext("2d");
-		ctx.drawImage(img, 0, 0);
-
-		return {
-			image: img,
-			data: ctx.getImageData(0, 0, img.naturalWidth, img.naturalHeight).data,
-		};
-	});
-
-	const referenceHeight = biggestImage.h;
-
-	const canvasHeight = biggestImage.h * images.length;
-	const canvasWidth = biggestImage.w;
-
-	const canvas = createCanvas(canvasWidth + gap, canvasHeight + gap * (mappedImages.length - 1));
-	const ctx = canvas.getContext("2d");
-
-	let textureImage: any,
-		textureImageData: any,
-		scale: any,
-		yOffset: any,
-		pixelIndex: any,
-		r: any,
-		g: any,
-		b: any,
-		a: any;
-
-	for (let texIndex = 0; texIndex < mappedImages.length; ++texIndex) {
-		textureImage = mappedImages[texIndex].image;
-		textureImageData = mappedImages[texIndex].data;
-
-		scale = Math.floor(referenceHeight / textureImage.naturalHeight);
-		yOffset = referenceHeight * texIndex;
-		if (texIndex != 0) yOffset += gap * texIndex;
-		for (let y = 0; y < textureImage.naturalHeight; ++y) {
-			for (let x = 0; x < textureImage.naturalWidth; ++x) {
-				pixelIndex = (y * textureImage.naturalWidth + x) * 4;
-				r = textureImageData[pixelIndex];
-				g = textureImageData[pixelIndex + 1];
-				b = textureImageData[pixelIndex + 2];
-				a = textureImageData[pixelIndex + 3] / 255;
-
-				ctx.fillStyle = "rgba(" + r + "," + g + "," + b + "," + a + ")";
-				ctx.fillRect(x * scale, yOffset + y * scale, scale, scale);
-			}
-		}
-	}
 	return canvas.toBuffer("image/png");
 }
 
@@ -160,6 +57,7 @@ import { MessageAttachment } from "discord.js";
 import { formatName, addPathsToEmbed } from "@helpers/sorter";
 import axios from "axios";
 import getDimensions from "./getDimensions";
+import { Texture } from "@helpers/interfaces/firestorm";
 
 /**
  * More convenient way of getting all compared textures in a nice grid without copy pasting the same code everywhere
@@ -174,7 +72,7 @@ export async function textureComparison(
 	display: string = "all",
 ): Promise<[MessageEmbed, MessageAttachment]> {
 	const isTemplate: boolean = typeof id == "string" && id.toLowerCase() == "template";
-	const results = (await axios.get(`${client.tokens.apiUrl}textures/${id}/all`)).data;
+	const result: Texture = (await axios.get(`${client.tokens.apiUrl}textures/${id}/all`)).data;
 
 	const PACKS = [
 		["default", "faithful_32x", "faithful_64x"],
@@ -208,7 +106,7 @@ export async function textureComparison(
 
 	if (!isTemplate) {
 		try {
-			const defaultURL = (
+			const defaultURL: string = (
 				await axios.get(`${client.tokens.apiUrl}textures/${id}/url/default/latest`)
 			).request.res.responseUrl;
 
@@ -227,6 +125,7 @@ export async function textureComparison(
 		} catch {}
 	}
 
+	// get texture urls
 	let urls = [];
 	let j = 0;
 	for (let packSet of displayed) {
@@ -248,13 +147,9 @@ export async function textureComparison(
 		++j; // can't use forEach because of scope problems (blame js)
 	}
 
-	let stitchedArray = [];
-	for (let url of urls) {
-		const stitched = await horizontalStitcher(url, url.length == 3 ? 4 : 2);
-		stitchedArray.push(stitched);
-	}
-
-	const stitched = await verticalStitcher(stitchedArray, 4);
+	const loadedImages = await loadImages(urls);
+	const longestRow = loadedImages.reduce((acc, item) => Math.max(acc, item.length), 0);
+	const stitched = await stitch(loadedImages, longestRow == 3 ? 4 : 2);
 
 	const magnified = (await magnify({ image: await loadImage(stitched), name: "magnified.png" }))[0];
 	const embed = new MessageEmbed().setImage("attachment://magnified.png");
@@ -274,9 +169,9 @@ export async function textureComparison(
 		]);
 	else
 		embed
-			.setTitle(`[#${id}] ${results.name}`)
+			.setTitle(`[#${result.id}] ${result.name}`)
 			.setURL(`https://webapp.faithfulpack.net/#/gallery/java/32x/latest/all/?show=${id}`)
-			.addFields(addPathsToEmbed(results))
+			.addFields(addPathsToEmbed(result))
 			.setFooter({ text: "Use [#template] for more information!" });
 
 	return [embed, magnified];

@@ -25,9 +25,7 @@ export const getTextureMessageOptions = async (options: {
 	const paths: Paths = texture.paths;
 	const allContributions: Contributions = texture.contributions;
 	const animated: boolean = paths.filter((p) => p.mcmeta === true).length !== 0;
-	const contributionJSON = (
-		await axios.get(`${tokens.apiUrl}contributions/authors`)
-	).data;
+	const contributionJSON = (await axios.get(`${tokens.apiUrl}contributions/authors`)).data;
 
 	let mcmeta: any = {};
 	if (animated) {
