@@ -7,7 +7,7 @@ const addDeleteButton = require("../../helpers/addDeleteButton");
 /**
  * base logic, returns buffer
  * @param {String | Image} origin url to magnify
- * @returns {Promise<Buffer>} buffer for magnified image
+ * @returns {Promise<{ magnified: Buffer, width: Number, height: Number }>} buffer for magnified image
  */
 async function magnifyBuffer(origin) {
 	const tmp = await loadImage(origin).catch((err) => Promise.reject(err));

@@ -5,10 +5,11 @@ const minecraftSorter = require("../../helpers/minecraftSorter");
 const getImages = require("../../helpers/getImages");
 const { imageButtons, submissionButtons } = require("../../helpers/buttons");
 const getDimensions = require("../textures/getDimensions");
-const { HorizontalStitcher } = require("../textures/stitch");
-const { magnifyAttachment } = require("../textures/magnify");
+const stitch = require("../textures/stitch");
+const { magnifyBuffer, magnifyAttachment } = require("../textures/magnify");
 
 const { MessageEmbed, MessageAttachment } = require("discord.js");
+const { loadImage } = require("@napi-rs/canvas");
 
 /**
  * Make a submission embed using existing texture information
@@ -69,6 +70,7 @@ module.exports = async function makeEmbed(
 	 */
 	if (dimensions.width * dimensions.height <= 262144) {
 		if (DEBUG) console.log(`Generating comparison image for texture: ${texture.name}`);
+
 		// determine reference image to compare against
 		let repoKey;
 		for (let [packKey, packValue] of Object.entries(settings.submission.packs)) {
@@ -93,55 +95,54 @@ module.exports = async function makeEmbed(
 				defaultRepo = settings.repositories.raw.default;
 				break;
 		}
-		const upscaledImage = await magnifyAttachment(attachment.url, "upscaled.png");
+		const upscaledImage = await loadImage(attachment.url);
 		let defaultImage;
 
 		// load images necessary to generate comparison
 		try {
-			defaultImage = await magnifyAttachment(
+			defaultImage = await loadImage(
 				`${defaultRepo[info.edition.toLowerCase()]}${info.version}/${info.path}`,
-				"default.png",
 			);
 		} catch {
 			// reference texture doesn't exist so we use the default repo
-			defaultImage = await magnifyAttachment(
+			defaultImage = await loadImage(
 				`${settings.repositories.raw.default[info.edition.toLowerCase()]}${info.version}/${
 					info.path
 				}`,
-				"default.png",
 			);
 		}
 
-		const drawer = new HorizontalStitcher();
-		drawer.gap = 32;
-		let imageUrls;
+		/** @type {import("@napi-rs/canvas").Image[] */
+		let images = [defaultImage, upscaledImage];
+
+		let gap = 2;
+		if (dimensions.width == 64 || dimensions.height == 64) gap = 4;
 
 		try {
-			const currentImage = await magnifyAttachment(
+			const currentImage = await loadImage(
 				`${settings.repositories.raw[repoKey][info.edition.toLowerCase()]}${info.version}/${
 					info.path
 				}`,
 			);
-			imageUrls = await getImages(client, defaultImage, upscaledImage, rawImage, currentImage);
-			drawer.urls = [imageUrls[0], imageUrls[1], imageUrls[3]];
+			images.push(currentImage);
 			imgButtons = [submissionButtons];
 		} catch {
 			// texture being submitted is a new texture, so there's nothing to compare against
-			imageUrls = await getImages(client, defaultImage, upscaledImage, rawImage);
-			drawer.urls = [imageUrls[0], imageUrls[1]];
 			imgButtons = [imageButtons];
 		}
 
-		// generate comparison and add to embed
-		const comparisonImage = new MessageAttachment(await drawer.draw(), "compared.png");
-		const comparisonUrls = await getImages(client, comparisonImage);
+		const stitched = await stitch(images, gap);
 
-		embed.setImage(comparisonUrls[0]);
-		embed.setThumbnail(imageUrls[2]);
+		// generate comparison and add to embed
+		const comparisonImage = await magnifyAttachment(stitched, "compared.png");
+		const [thumbnailUrl, comparedUrl] = await getImages(client, rawImage, comparisonImage);
+
+		embed.setImage(comparedUrl);
+		embed.setThumbnail(thumbnailUrl);
 
 		// if the texture doesn't exist yet only include the default/new caption rather than everything
 		embed.setFooter({
-			text: drawer.urls.length == 3 ? "Reference | New | Current" : "Reference | New",
+			text: images.length == 3 ? "Reference | New | Current" : "Reference | New",
 		});
 	} else {
 		// image is too big so we just add it directly to the embed without comparison
