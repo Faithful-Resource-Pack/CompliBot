@@ -36,7 +36,7 @@ module.exports = {
 				client.commands.find((cmd) => cmd.aliases?.includes(commandName));
 
 			if (!command) return; // stops a dev error being thrown every single time a message starts with a slash
-			if (command?.guildOnly && message.channel.type === "DM")
+			if (command.guildOnly && message.channel.type === "DM")
 				return warnUser(message, strings.bot.cant_dm);
 
 			try {

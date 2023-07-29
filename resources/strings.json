@@ -5,20 +5,27 @@
 		"missing_interaction": "This %INTERACTION% doesn't have an event set up yet!"
 	},
 	"command": {
-		"error": "One of my developers made an error while making this command! Don't worry, the error is not on your side. Please contact <@360249987927638016>, <@473860522710794250> or <@173336582265241601>",
-		"maintenance": "I'm currently in maintenance, please try again later.",
+		"error": "One of my developers made an error while making this command! Don't worry, the error is not on your side. Please contact <@360249987927638016>, <@473860522710794250>, or <@173336582265241601> if this keeps occurring.",
+		"maintenance": "I'm currently under maintenance, please try again later.",
 		"args": {
 			"none_given": "You did not provide any arguments.",
-			"invalid": "You did not provide valid arguments."
+			"invalid": "You did not provide valid arguments.",
+			"parse": "You need to add a [-f= | --flag=] at the beginning of an argument!"
 		},
 		"no_permission": "You don't have the permission to do that.",
 		"image": {
 			"not_found_in_10_last": "No image found in 10 previous messages.",
+			"not_attached": {
+				"message": "This message does not have any image attached.",
+				"id": "This ID does not have any image attached."
+			},
+			"url": "The message URL needs to be from the same channel. Don't ask why, I don't know myself.",
+			"invalid_extension": "Image extension is not supported",
+			"no_reply_attachment": "This reply does not have any image attached.",
 			"too_big": "The input picture is too big!",
 			"too_wide": "The input picture is too wide!",
 			"cant_animate": "This texture can't be animated."
 		},
-		"parse_args": "You need to add a [-f= | --flag=] at the beginning of an argument!",
 		"behave": "I'm so sorry! (⌯˃̶᷄ ﹏ ˂̶᷄⌯)"
 	},
 	"submission": {
@@ -33,7 +40,6 @@
 		"invalid_format": "Please provide a valid `.png` file. Other file formats like `.zip` or `.tga` are not supported yet.",
 		"unknown_id": "Please choose a valid texture ID!\n",
 		"does_not_exist": "The specified texture or folder doesn't exist!",
-		"no_name_given": "You didn't provide a texture name!",
-		"timed_out": "You didn't select a valid texture in time!"
+		"no_name_given": "You didn't provide a texture name!"
 	}
 }

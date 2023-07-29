@@ -9,29 +9,30 @@ module.exports = {
 	aliases: ["r"],
 	guildOnly: false,
 	async execute(client, message, args) {
-		if (process.env.DEVELOPERS.includes(message.author.id)) {
-			const commandName = args[0].toLowerCase();
-			const command =
-				message.client.commands.get(commandName) ||
-				message.client.commands.find((cmd) => cmd.aliases?.includes(commandName));
+		if (!process.env.DEVELOPERS.includes(message.author.id))
+			return warnUser(message, strings.command.no_permission);
 
-			if (!command)
-				return warnUser(message, `There is no command with name or alias \`${commandName}\`!`);
+		const commandName = args[0].toLowerCase();
+		const command =
+			message.client.commands.get(commandName) ||
+			message.client.commands.find((cmd) => cmd.aliases?.includes(commandName));
 
-			const commandPath = walkSync("./commands")
-				.filter((file) => file.includes(command.name))[0]
-				.replace("./commands/", "../");
+		if (!command)
+			return warnUser(message, `There is no command with name or alias \`${commandName}\`!`);
 
-			delete require.cache[require.resolve(commandPath)];
+		const commandPath = walkSync("./commands")
+			.filter((file) => file.includes(command.name))[0]
+			.replace("./commands/", "../");
 
-			try {
-				const newCommand = require(commandPath);
-				message.client.commands.set(newCommand.name, newCommand);
-				await message.react(settings.emojis.upvote);
-			} catch (error) {
-				console.error(error);
-				await message.react(settings.emojis.downvote);
-			}
-		} else return warnUser(message, strings.command.no_permission);
+		delete require.cache[require.resolve(commandPath)];
+
+		try {
+			const newCommand = require(commandPath);
+			message.client.commands.set(newCommand.name, newCommand);
+			await message.react(settings.emojis.upvote);
+		} catch (error) {
+			console.error(error);
+			await message.react(settings.emojis.downvote);
+		}
 	},
 };

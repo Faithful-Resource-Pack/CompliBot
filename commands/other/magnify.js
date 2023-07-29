@@ -55,7 +55,7 @@ module.exports = {
 					} else return warnUser(message, strings.command.image.not_attached.message);
 				})
 				.catch(() => {
-					return warnUser(message, strings.command.url.same_channel_only);
+					return warnUser(message, strings.command.image.url);
 				});
 		}
 

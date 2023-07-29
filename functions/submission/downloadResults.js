@@ -33,9 +33,7 @@ module.exports = async function downloadResults(client, channelResultID, instapa
 	if (DEBUG) console.log(`Starting texture download for pack: ${repoKey}`);
 
 	// removes non-submission messages
-	messages = messages
-		.filter((message) => message.embeds.length > 0)
-		.filter((message) => message?.embeds[0]?.fields[1]);
+	messages = messages.filter((message) => message.embeds?.[0]?.fields?.[1]);
 
 	let textures;
 	if (!instapass) {
@@ -78,9 +76,10 @@ module.exports = async function downloadResults(client, channelResultID, instapa
 		};
 	});
 
-	// for each texture:
+	// holds all contributions from the day
 	let allContribution = new Array();
-	let instapassName; // there's probably a better way to get the texture name for instapassed embeds but oh well
+	// used in the instapass commit message if applicable
+	let instapassName;
 
 	for (let texture of textures) {
 		if (!isNaN(Number(texture.id))) {
@@ -89,16 +88,18 @@ module.exports = async function downloadResults(client, channelResultID, instapa
 		}
 
 		const textureInfo = await texturesCollection.get(texture.id);
-		if (instapass) instapassName = textureInfo.name; // used in the commit message later
+		if (instapass) instapassName = textureInfo.name;
 
 		const uses = await textureInfo.uses();
 
 		let allPaths = new Array();
 		// get all paths of the texture
 		for (let use of uses) {
-			let localPath =
-				"./texturesPush/" +
-				settings.repositories.repo_name[use.editions[0].toLowerCase()][repoKey]?.repo;
+			const edition = use.editions[0].toLowerCase();
+			const folder = settings.repositories.repo_name[edition][repoKey]?.repo;
+			if (!folder && DEBUG)
+				console.log(`GitHub repository not found for pack and edition: ${repoKey} ${edition}`);
+			const basePath = `./texturesPush/${folder}`;
 
 			const paths = await use.paths();
 
@@ -106,7 +107,7 @@ module.exports = async function downloadResults(client, channelResultID, instapa
 			for (let path of paths) {
 				const versions = path.versions;
 				// for each version of each path
-				for (let version of versions) allPaths.push(`${localPath}/${version}/${path.path}`);
+				for (let version of versions) allPaths.push(`${basePath}/${version}/${path.path}`);
 			}
 		}
 

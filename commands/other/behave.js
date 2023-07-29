@@ -7,7 +7,7 @@ module.exports = {
 		if (!process.env.DEVELOPERS.includes(message.author.id))
 			return await message.reply({ content: "lol no" });
 
-		if (args?.length && args[0].includes("/channels/")) {
+		if (args?.[0]?.includes("/channels/")) {
 			let ids;
 			const link = args[0];
 			const url = new URL(link).pathname;
