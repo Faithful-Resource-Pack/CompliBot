@@ -1,4 +1,4 @@
-import { Canvas, createCanvas, loadImage } from "@napi-rs/canvas";
+import { Canvas, loadImage } from "@napi-rs/canvas";
 
 /**
  * loads 2d array of texture urls as canvas images
@@ -106,15 +106,13 @@ export async function textureComparison(
 
 	if (!isTemplate) {
 		try {
-			const defaultURL: string = (
-				await axios.get(`${client.tokens.apiUrl}textures/${id}/url/default/latest`)
-			).request.res.responseUrl;
+			const defaultURL: string = `${client.tokens.apiUrl}textures/${id}/url/default/latest`;
 
 			const dimension = await getDimensions(defaultURL);
 			if (dimension.width * dimension.height * displayed.flat().length > 262144) {
 				return [
 					new MessageEmbed()
-						.setTitle("Output will be too big")
+						.setTitle("Output will be too big!")
 						.setDescription(
 							"Try specifying which set of packs you want to view to reduce the total image size.",
 						)
@@ -129,7 +127,7 @@ export async function textureComparison(
 	let urls = [];
 	let j = 0;
 	for (let packSet of displayed) {
-		urls.push(new Array());
+		urls.push([]);
 		for (let pack of packSet) {
 			try {
 				let textureURL: string;
@@ -137,8 +135,7 @@ export async function textureComparison(
 					const strIconURL = formatName(pack, "64")[1];
 					textureURL = strIconURL;
 				} else
-					textureURL = (await axios.get(`${client.tokens.apiUrl}textures/${id}/url/${pack}/latest`))
-						.request.res.responseUrl;
+					textureURL = `${client.tokens.apiUrl}textures/${id}/url/${pack}/latest`;
 				urls[j].push(textureURL);
 			} catch {
 				/* texture hasn't been made yet */
@@ -148,6 +145,7 @@ export async function textureComparison(
 	}
 
 	const loadedImages = await loadImages(urls);
+
 	const longestRow = loadedImages.reduce((acc, item) => Math.max(acc, item.length), 0);
 	const stitched = await stitch(loadedImages, longestRow == 3 ? 4 : 2);
 
