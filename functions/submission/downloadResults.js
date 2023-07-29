@@ -82,7 +82,7 @@ module.exports = async function downloadResults(client, channelResultID, instapa
 	let instapassName;
 
 	for (let texture of textures) {
-		if (!isNaN(Number(texture.id))) {
+		if (isNaN(Number(texture.id))) {
 			if (DEBUG) console.error(`Non-numerical texture ID found: ${texture.id}`);
 			continue;
 		}
