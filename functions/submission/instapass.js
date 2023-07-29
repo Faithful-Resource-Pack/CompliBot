@@ -2,6 +2,7 @@ const settings = require("../../resources/settings.json");
 
 const downloadResults = require("./downloadResults");
 const warnUser = require("../../helpers/warnUser");
+const DEBUG = process.env.DEBUG.toLowerCase() == "true";
 
 /**
  * Instapass a given texture embed
@@ -34,4 +35,5 @@ module.exports = async function instapass(client, message) {
 	});
 
 	await downloadResults(client, channelOutID, true);
+	if (DEBUG) console.log(`Texture instapassed: ${message.embeds[0].title}`);
 };

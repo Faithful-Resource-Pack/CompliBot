@@ -1,12 +1,16 @@
 const settings = require("../../resources/settings.json");
 const strings = require("../../resources/strings.json");
+const DEBUG = process.env.DEBUG.toLowerCase() == "true";
+
 const choiceEmbed = require("./choiceEmbed");
-const textures = require("../../helpers/firestorm/texture");
-const getTexture = require("../../helpers/getTexture");
-const minecraftSorter = require("../../helpers/minecraftSorter");
-const getAuthors = require("./getAuthors");
 const makeEmbed = require("./makeEmbed");
 const addDeleteButton = require("../../helpers/addDeleteButton");
+
+const textures = require("../../helpers/firestorm/texture");
+const getTexture = require("../../helpers/getTexture");
+const getAuthors = require("./getAuthors");
+const minecraftSorter = require("../../helpers/minecraftSorter");
+
 const { MessageEmbed, Permissions } = require("discord.js");
 
 /**
@@ -26,6 +30,8 @@ module.exports = async function submitTexture(client, message) {
 	for (let attachment of message.attachments.values()) {
 		// need to update index here since it can skip loops early otherwise
 		++attachmentIndex;
+
+		if (DEBUG) console.log("Texture submitted");
 
 		if (!attachment.url.endsWith(".png")) {
 			invalidSubmission(message, strings.submission.invalid_format);
@@ -95,6 +101,7 @@ module.exports = async function submitTexture(client, message) {
  * @param {String?} error optional error message
  */
 async function invalidSubmission(message, error = "Not given") {
+	if (DEBUG) console.log(`Submission cancelled with reason: ${error}`);
 	// allow managers and council to talk in submit channels
 	if (
 		(message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR) ||

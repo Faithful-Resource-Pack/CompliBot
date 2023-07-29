@@ -1,14 +1,14 @@
 const settings = require("../../resources/settings.json");
-const getDimensions = require("../textures/getDimensions");
-const getImages = require("../../helpers/getImages");
+const DEBUG = process.env.DEBUG.toLowerCase() == "true";
+
 const minecraftSorter = require("../../helpers/minecraftSorter");
+const getImages = require("../../helpers/getImages");
+const { imageButtons, submissionButtons } = require("../../helpers/buttons");
+const getDimensions = require("../textures/getDimensions");
 const { HorizontalStitcher } = require("../textures/stitch");
 const { magnifyAttachment } = require("../textures/magnify");
 
 const { MessageEmbed, MessageAttachment } = require("discord.js");
-const { imageButtons, submissionButtons } = require("../../helpers/buttons");
-
-const EMOJIS = [settings.emojis.upvote, settings.emojis.downvote, settings.emojis.see_more];
 
 /**
  * Make a submission embed using existing texture information
@@ -27,15 +27,15 @@ module.exports = async function makeEmbed(
 	param = new Object(),
 ) {
 	/** @type {import("../../helpers/firestorm/texture_use.js").TextureUse[]} */
-	let uses = await texture.uses();
+	const uses = await texture.uses();
 	let pathText = [];
 	let imgButtons;
 
 	for (let use of uses) {
-		let localPath = await use.paths();
+		const localPath = await use.paths();
 		pathText.push(`**${use.editions[0].charAt(0).toUpperCase() + use.editions[0].slice(1)}**\n`);
 		for (let path of localPath) {
-			let versions = path.versions.sort(minecraftSorter);
+			const versions = path.versions.sort(minecraftSorter);
 			pathText.push(`\`[${versions[0]}+]\` ${path.path}\n`);
 		}
 	}
@@ -47,7 +47,7 @@ module.exports = async function makeEmbed(
 		edition: uses[0].editions[0],
 	};
 
-	let embed = new MessageEmbed()
+	const embed = new MessageEmbed()
 		// TODO: add a Faithful gallery url that shows all textures by a given author
 		.setAuthor({ name: message.author.username, iconURL: message.author.displayAvatarURL() })
 		.setColor(settings.colors.blue)
@@ -63,11 +63,12 @@ module.exports = async function makeEmbed(
 	const rawImage = new MessageAttachment(attachment.url, `${texture.name}.png`);
 	const dimensions = await getDimensions(attachment.url);
 
+	/**
+	 * COMPARISON IMAGE GENERATOR
+	 * should probably be its own function but oh well
+	 */
 	if (dimensions.width * dimensions.height <= 262144) {
-		/**
-		 * COMPARISON IMAGE GENERATOR
-		 */
-
+		if (DEBUG) console.log(`Generating comparison image for texture: ${texture.name}`);
 		// determine reference image to compare against
 		let repoKey;
 		for (let [packKey, packValue] of Object.entries(settings.submission.packs)) {
@@ -161,8 +162,14 @@ module.exports = async function makeEmbed(
 		components: imgButtons,
 	});
 
-	for (const emojiID of EMOJIS) {
-		let e = client.emojis.cache.get(emojiID);
+	for (const emojiID of [
+		settings.emojis.upvote,
+		settings.emojis.downvote,
+		settings.emojis.see_more,
+	]) {
+		const e = client.emojis.cache.get(emojiID);
 		await msg.react(e);
 	}
+
+	if (DEBUG) console.log(`Finished submission embed for texture: ${texture.name}`);
 };

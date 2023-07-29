@@ -51,7 +51,9 @@ module.exports = {
 					}
 				}
 
-				const id = (message.embeds?.[0]?.title?.match(/(?<=\[\#)(.*?)(?=\])/) ?? ["NO ID FOUND"])[0];
+				const id = (message.embeds?.[0]?.title?.match(/(?<=\[\#)(.*?)(?=\])/) ?? [
+					"NO ID FOUND",
+				])[0];
 				if (!id) break;
 				await interaction.deferReply({ ephemeral: true });
 				const texture = await textures.get(id);

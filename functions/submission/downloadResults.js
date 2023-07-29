@@ -29,6 +29,7 @@ module.exports = async function downloadResults(client, channelResultID, instapa
 			break;
 		}
 	}
+
 	if (DEBUG) console.log(`Starting texture download for pack: ${repoKey}`);
 
 	// removes non-submission messages
@@ -82,7 +83,11 @@ module.exports = async function downloadResults(client, channelResultID, instapa
 	let instapassName; // there's probably a better way to get the texture name for instapassed embeds but oh well
 
 	for (let texture of textures) {
-		if (!isNaN(Number(texture.id))) continue;
+		if (!isNaN(Number(texture.id))) {
+			if (DEBUG) console.error(`Non-numerical texture ID found: ${texture.id}`);
+			continue;
+		}
+
 		const textureInfo = await texturesCollection.get(texture.id);
 		if (instapass) instapassName = textureInfo.name; // used in the commit message later
 
@@ -139,7 +144,6 @@ module.exports = async function downloadResults(client, channelResultID, instapa
 
 		// if the pack doesn't have a designated role
 		if (!role) continue;
-
 		for (let author of texture.authors) {
 			try {
 				// fetch user with role info since you need it for adding roles
@@ -154,5 +158,5 @@ module.exports = async function downloadResults(client, channelResultID, instapa
 	let result = await contributionsCollection.addBulk(allContribution);
 
 	if (instapass) await pushTextures(`Instapassed ${instapassName} from ${date()}`);
-	if (DEBUG) console.log("ADDED CONTRIBUTIONS: " + result.join(" "));
+	if (DEBUG) console.log("Added contributions: " + result.join(" "));
 };

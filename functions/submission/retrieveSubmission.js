@@ -4,6 +4,8 @@ const getMessages = require("../../helpers/getMessages");
 const changeStatus = require("./changeStatus");
 const { imageButtons } = require("../../helpers/buttons");
 
+const DEBUG = process.env.DEBUG.toLowerCase() == "true";
+
 /**
  * @typedef {Object} MappedMessage
  * @property {import("discord.js").MessageReaction} upvote
@@ -94,8 +96,10 @@ module.exports = async function retrieveSubmission(
  * @param {String} channelOutID
  */
 async function sendToCouncil(client, messagesUpvoted, messagesDownvoted, channelOutID) {
+	/** @type {import("discord.js").TextChannel} */
 	const channelOut = client.channels.cache.get(channelOutID);
 	const EMOJIS = [settings.emojis.upvote, settings.emojis.downvote, settings.emojis.see_more];
+	if (DEBUG) console.log(`Sending textures to: ${channelOut.name}`);
 
 	for (let message of messagesUpvoted) {
 		const sentMessage = await channelOut.send({
@@ -150,7 +154,9 @@ async function sendToResults(
 	channelOutID,
 	councilDisabled = false,
 ) {
+	/** @type {import("discord.js").TextChannel} */
 	const channelOut = client.channels.cache.get(channelOutID);
+	if (DEBUG) console.log(`Sending textures to: ${channelOut.name}`);
 
 	for (let message of messagesUpvoted) {
 		const upvotePercentage = (
