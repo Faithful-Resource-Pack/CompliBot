@@ -27,7 +27,6 @@ module.exports = async function makeEmbed(
 	param = new Object(),
 ) {
 	/** @type {import("../../helpers/firestorm/texture_use.js").TextureUse[]} */
-	console.log(texture);
 	let uses = await texture.uses();
 	let pathText = [];
 	let imgButtons;

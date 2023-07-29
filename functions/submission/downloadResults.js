@@ -29,6 +29,7 @@ module.exports = async function downloadResults(client, channelResultID, instapa
 			break;
 		}
 	}
+	if (DEBUG) console.log(`Starting texture download for pack: ${repoKey}`);
 
 	// removes non-submission messages
 	messages = messages
@@ -72,7 +73,7 @@ module.exports = async function downloadResults(client, channelResultID, instapa
 				.split("\n")
 				.map((auth) => auth.replace("<@!", "").replace(">", "")),
 			date: message.createdTimestamp,
-			id: message.embeds[0].title.match(/(?<=\[\#)(.*?)(?=\])/),
+			id: (message.embeds[0].title.match(/(?<=\[\#)(.*?)(?=\])/) ?? ["NO ID FOUND"])[0],
 		};
 	});
 
@@ -81,10 +82,11 @@ module.exports = async function downloadResults(client, channelResultID, instapa
 	let instapassName; // there's probably a better way to get the texture name for instapassed embeds but oh well
 
 	for (let texture of textures) {
-		let textureInfo = await texturesCollection.get(texture.id);
+		if (!isNaN(Number(texture.id))) continue;
+		const textureInfo = await texturesCollection.get(texture.id);
 		if (instapass) instapassName = textureInfo.name; // used in the commit message later
 
-		let uses = await textureInfo.uses();
+		const uses = await textureInfo.uses();
 
 		let allPaths = new Array();
 		// get all paths of the texture
@@ -93,11 +95,11 @@ module.exports = async function downloadResults(client, channelResultID, instapa
 				"./texturesPush/" +
 				settings.repositories.repo_name[use.editions[0].toLowerCase()][repoKey]?.repo;
 
-			let paths = await use.paths();
+			const paths = await use.paths();
 
 			// for all paths
 			for (let path of paths) {
-				let versions = path.versions;
+				const versions = path.versions;
 				// for each version of each path
 				for (let version of versions) allPaths.push(`${localPath}/${version}/${path.path}`);
 			}
@@ -118,8 +120,7 @@ module.exports = async function downloadResults(client, channelResultID, instapa
 
 			// write texture to the corresponding path
 			writeFile(path, Buffer.from(buffer), (err) => {
-				if (DEBUG)
-					return err ? console.error(err) : console.log(`ADDED TO: ${path}`);
+				if (DEBUG) return err ? console.error(err) : console.log(`ADDED TO: ${path}`);
 			});
 		}
 

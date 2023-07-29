@@ -21,11 +21,9 @@ module.exports = async function instapass(client, message) {
 			break;
 		}
 	}
-
+	// this is why we send the channel rather than the pack into downloadResults()
 	const channelOut = await client.channels.fetch(channelOutID);
-
 	if (!channelOut) return warnUser(message, "Result channel was not able to be fetched!");
-
 	await channelOut.send({
 		embeds: [
 			message.embeds[0]

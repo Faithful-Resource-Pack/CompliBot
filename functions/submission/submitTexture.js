@@ -33,7 +33,7 @@ module.exports = async function submitTexture(client, message) {
 		}
 
 		// try and get the texture id from the message contents
-		const id = (message.content.match(/(?<=\[\#)(.*?)(?=\])/) ?? ["no id"])[0];
+		const id = (message.content.match(/(?<=\[\#)(.*?)(?=\])/) ?? ["NO ID FOUND"])[0];
 
 		// get authors and description for embed
 		const param = {
