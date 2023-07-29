@@ -18,9 +18,14 @@ export default async function parseTextureName(
 	/**
 	 * TODO: find a fix for this Error: connect ETIMEDOUT 172.67.209.9:443 at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1161:16)
 	 */
-	const results = (
-		await axios.get(`${(interaction.client as Client).tokens.apiUrl}textures/${name}/all`)
-	).data;
+	let results: any;
+	try {
+		results = (
+			await axios.get(`${(interaction.client as Client).tokens.apiUrl}textures/${name}/all`)
+		).data;
+	} catch {
+		return [];
+	}
 
 	// if you search by texture id it returns a single object, so you need to cast to an array
 	return !isNaN(Number(name)) ? [results] : results;
