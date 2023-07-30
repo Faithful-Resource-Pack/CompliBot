@@ -3,7 +3,7 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { Client, MessageEmbed, CommandInteraction, Message } from "@client";
 
 export const command: SlashCommand = {
-	data: new SlashCommandBuilder().setName("ping").setDescription("Gets the Bot and API latency."),
+	data: new SlashCommandBuilder().setName("ping").setDescription("Check the bot and API latency."),
 	execute: async (interaction: CommandInteraction, client: Client) => {
 		let embed = new MessageEmbed().setTitle(
 			await interaction.getEphemeralString({ string: "Command.Ping.Await" }),
@@ -30,7 +30,9 @@ export const command: SlashCommand = {
 				);
 
 			try {
-				interaction.editReply({ embeds: [embed] }).then((message: Message) => message.deleteButton());
+				interaction
+					.editReply({ embeds: [embed] })
+					.then((message: Message) => message.deleteButton());
 			} catch (err) {
 				console.error(err);
 			}
