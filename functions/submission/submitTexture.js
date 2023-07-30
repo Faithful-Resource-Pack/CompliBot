@@ -31,7 +31,8 @@ module.exports = async function submitTexture(client, message) {
 		// need to update index here since it can skip loops early otherwise
 		++attachmentIndex;
 
-		if (DEBUG) console.log("Texture submitted");
+		if (DEBUG)
+			console.log(`Texture submitted: ${attachmentIndex + 1} of ${message.attachments.size}`);
 
 		if (!attachment.url.endsWith(".png")) {
 			invalidSubmission(message, strings.submission.invalid_format);
@@ -101,7 +102,6 @@ module.exports = async function submitTexture(client, message) {
  * @param {String?} error optional error message
  */
 async function invalidSubmission(message, error = "Not given") {
-	if (DEBUG) console.log(`Submission cancelled with reason: ${error}`);
 	// allow managers and council to talk in submit channels
 	if (
 		(message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR) ||
@@ -109,6 +109,8 @@ async function invalidSubmission(message, error = "Not given") {
 		error == strings.submission.image_not_attached
 	)
 		return;
+
+	if (DEBUG) console.log(`Submission cancelled with reason: ${error}`);
 
 	const embed = new MessageEmbed()
 		.setColor(settings.colors.red)

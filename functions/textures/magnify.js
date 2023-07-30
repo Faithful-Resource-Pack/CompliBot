@@ -24,7 +24,7 @@ async function magnifyBuffer(origin) {
 	if (surface > 256) factor = 16;
 	if (surface > 1024) factor = 8;
 	if (surface > 4096) factor = 4;
-	if (surface > 65636) factor = 2;
+	if (surface > 65536) factor = 2;
 	if (surface > 262144) factor = 1;
 
 	const width = dimension.width * factor;

@@ -62,13 +62,13 @@ module.exports = async function makeEmbed(
 
 	// load raw image to pull from
 	const rawImage = new MessageAttachment(attachment.url, `${texture.name}.png`);
-	const dimensions = await getDimensions(attachment.url);
+	const dimension = await getDimensions(attachment.url);
 
 	/**
 	 * COMPARISON IMAGE GENERATOR
 	 * should probably be its own function but oh well
 	 */
-	if (dimensions.width * dimensions.height <= 262144) {
+	if (dimension.width * dimension.height <= 262144) {
 		if (DEBUG) console.log(`Generating comparison image for texture: ${texture.name}`);
 
 		// determine reference image to compare against
@@ -115,9 +115,6 @@ module.exports = async function makeEmbed(
 		/** @type {import("@napi-rs/canvas").Image[] */
 		let images = [defaultImage, upscaledImage];
 
-		let gap = 2;
-		if (dimensions.width == 64 || dimensions.height == 64) gap = 4;
-
 		try {
 			const currentImage = await loadImage(
 				`${settings.repositories.raw[repoKey][info.edition.toLowerCase()]}${info.version}/${
@@ -131,7 +128,7 @@ module.exports = async function makeEmbed(
 			imgButtons = [imageButtons];
 		}
 
-		const stitched = await stitch(images, gap);
+		const stitched = await stitch(images);
 
 		// generate comparison and add to embed
 		const comparisonImage = await magnifyAttachment(stitched, "compared.png");
