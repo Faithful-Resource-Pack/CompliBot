@@ -20,7 +20,7 @@ export async function animateAttachment(options: Options): Promise<MessageAttach
 		if (surface > 256) factor = 16; // 16²px
 		if (surface > 1024) factor = 8; // 32²px
 		if (surface > 4096) factor = 4; // 64²px
-		if (surface > 65636) factor = 2;
+		if (surface > 65536) factor = 2;
 		// 262144 = 512²px
 		else if (surface >= 262144) factor = 1;
 
