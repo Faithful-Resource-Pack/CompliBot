@@ -52,13 +52,8 @@ export const button: Button = {
 		const embedFeedback = new MessageEmbed()
 			.setAuthor({ name: interaction.user.username, iconURL: interaction.user.avatarURL() })
 			.setTitle(`[BUG] Feedback`)
-			.setDescription(
-				`[Jump to message](${url})\n` +
-					"```" +
-					message.embeds[0].description +
-					"```" +
-					`\n_${quote}_`,
-			)
+			.setURL(url)
+			.setDescription(`\`\`\`${message.embeds[0].description}\`\`\`\n_${quote}_`)
 			.setFooter({ text: `${interaction.guild.name}` })
 			.setTimestamp()
 			.setColor("RED");
