@@ -160,8 +160,8 @@ async function sendToResults(
 
 	for (let message of messagesUpvoted) {
 		const upvotePercentage = (
-			((message.upvote.count - 1) * 100) /
-			(message.upvote.count - 1 + (message.downvote.count - 1))
+			((message.upvote?.count - 1) * 100) /
+			(message.upvote?.count - 1 + (message.downvote?.count - 1))
 		).toFixed(2);
 		let embed = message.embed;
 		embed.setColor(settings.colors.green);
@@ -180,8 +180,8 @@ async function sendToResults(
 		// don't you love having to pass a value in down like three functions just to format some strings
 		if (!councilDisabled) {
 			const upvotePercentage = (
-				((message.upvote.count - 1) * 100) /
-				(message.upvote.count - 1 + (message.downvote.count - 1))
+				((message.upvote?.count - 1) * 100) /
+				(message.upvote?.count - 1 + (message.downvote?.count - 1))
 			).toFixed(2);
 			embed.fields[1].value = `<:downvote:${settings.emojis.downvote}> This texture did not pass council voting and therefore will not be added.`;
 			if (!isNaN(upvotePercentage)) embed.fields[1].value += ` (${upvotePercentage}% upvoted)`;
