@@ -1,6 +1,6 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { Client, MessageEmbed, CommandInteraction } from "@client";
+import { Client, MessageEmbed, CommandInteraction, Message } from "@client";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder().setName("ping").setDescription("Gets the Bot and API latency."),
@@ -30,7 +30,7 @@ export const command: SlashCommand = {
 				);
 
 			try {
-				interaction.editReply({ embeds: [embed] });
+				interaction.editReply({ embeds: [embed] }).then((message: Message) => message.deleteButton());
 			} catch (err) {
 				console.error(err);
 			}
