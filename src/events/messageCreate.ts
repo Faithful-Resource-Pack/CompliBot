@@ -103,7 +103,6 @@ export const event: Event = {
 
 		const results = message.content.match(/(?<=\[\#)(.*?)(?=\])/g) ?? [];
 		if (!results.length) return;
-		message.channel.sendTyping();
 
 		for (let result of results) {
 			let id: string | number;
@@ -125,6 +124,7 @@ export const event: Event = {
 			}
 
 			try {
+				message.channel.sendTyping();
 				const [embed, magnified] = await textureComparison(client, id, display);
 				message
 					.reply({ embeds: [embed], files: [magnified] })
