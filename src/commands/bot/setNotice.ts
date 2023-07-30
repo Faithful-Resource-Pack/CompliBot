@@ -28,8 +28,8 @@ export const command: SlashCommand = {
 
 		const newNotice: notice = {
 			unix: +Date.now(),
-			title: await interaction.options.getString("title"),
-			description: await interaction.options.getString("description").split("\n"), // TODO: make this a multiline input when it is released!
+			title: interaction.options.getString("title"),
+			description: interaction.options.getString("description").split("\n"), // TODO: make this a multiline input when it is released!
 		};
 		setData({
 			data: newNotice,

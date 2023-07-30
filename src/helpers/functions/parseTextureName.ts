@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CommandInteraction, Client } from "@client";
+import { CommandInteraction, Client, Message } from "@client";
 
 export default async function parseTextureName(
 	name: string,
@@ -8,16 +8,14 @@ export default async function parseTextureName(
 	name = name.toLowerCase().trim().replace(".png", "").replace("#", "").replace(/ /g, "_");
 
 	if (name.length < 3) {
-		interaction.reply({
-			content: "You need at least three characters to start a texture search!",
-			ephemeral: true,
-		});
+		interaction
+			.editReply({
+				content: "You need at least three characters to start a texture search!",
+			})
+			.then((message: Message) => message.deleteButton());
 		return;
 	}
 
-	/**
-	 * TODO: find a fix for this Error: connect ETIMEDOUT 172.67.209.9:443 at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1161:16)
-	 */
 	let results: any;
 	try {
 		results = (

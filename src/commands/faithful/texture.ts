@@ -1,9 +1,8 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction, Message, MessageEmbed } from "@client";
+import { CommandInteraction, MessageEmbed, Message } from "@client";
 import { getTextureMessageOptions } from "@functions/getTexture";
 import { MessageActionRow, MessageSelectMenu, MessageSelectOptionData } from "discord.js";
-import { textureButtons } from "@helpers/buttons";
 import { minecraftSorter } from "@helpers/sorter";
 import parseTextureName from "@functions/parseTextureName";
 
@@ -33,7 +32,10 @@ export const command: SlashCommand = {
 				.setRequired(true),
 		),
 	execute: async (interaction: CommandInteraction) => {
-		var name = interaction.options.getString("name");
+		const name = interaction.options.getString("name");
+
+		// sometimes it takes too long otherwise
+		await interaction.deferReply();
 		const results = await parseTextureName(name, interaction);
 
 		// returned early in parseTextureName()
@@ -41,16 +43,15 @@ export const command: SlashCommand = {
 
 		if (!results.length) {
 			// no results
-			return interaction.reply({
-				content: await interaction.getEphemeralString({
-					string: "Command.Texture.NotFound",
-					placeholders: { TEXTURENAME: `\`${name}\`` },
-				}),
-				ephemeral: true,
-			});
+			return interaction
+				.editReply({
+					content: await interaction.getEphemeralString({
+						string: "Command.Texture.NotFound",
+						placeholders: { TEXTURENAME: `\`${name}\`` },
+					}),
+				})
+				.then((message: Message) => message.deleteButton());
 		}
-
-		await interaction.deferReply();
 
 		// only 1 result
 		if (results.length === 1) {

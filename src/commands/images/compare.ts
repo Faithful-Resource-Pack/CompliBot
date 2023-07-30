@@ -31,8 +31,10 @@ export const command: SlashCommand = {
 		),
 	execute: async (interaction: CommandInteraction) => {
 		const display = interaction.options.getString("display", false) ?? "all";
-
 		const name = interaction.options.getString("texture", true);
+
+		// sometimes it takes too long otherwise
+		await interaction.deferReply();
 		const results = await parseTextureName(name, interaction);
 
 		// returned early in parseTextureName()
@@ -40,16 +42,15 @@ export const command: SlashCommand = {
 
 		if (!results.length) {
 			// no results
-			return interaction.reply({
-				content: await interaction.getEphemeralString({
-					string: "Command.Texture.NotFound",
-					placeholders: { TEXTURENAME: `\`${name}\`` },
-				}),
-				ephemeral: true,
-			});
+			return interaction
+				.editReply({
+					content: await interaction.getEphemeralString({
+						string: "Command.Texture.NotFound",
+						placeholders: { TEXTURENAME: `\`${name}\`` },
+					}),
+				})
+				.then((message: Message) => message.deleteButton());
 		}
-
-		await interaction.deferReply();
 
 		// only one result
 		if (results.length === 1) {
