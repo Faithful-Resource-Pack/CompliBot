@@ -31,17 +31,14 @@ export async function fetchMessageImage(
 		.sort((a, b) => b.createdTimestamp - a.createdTimestamp)
 		.filter(
 			(m) =>
-				(m.attachments.size > 0 && (m.attachments.first().url.match(/\.(jpeg|jpg|png)$/) as any)) ||
-				// TODO: definitely not the best way to do this
-				(m.embeds[0] !== undefined &&
-					((m.embeds[0].thumbnail !== null &&
-						m.embeds[0].thumbnail.url.match(/\.(jpeg|jpg|png)$/)) ||
-						(m.embeds[0].image !== null && m.embeds[0].image.url.match(/\.(jpeg|jpg|png)$/)))),
+				m.attachments?.first()?.url?.match(/\.(jpeg|jpg|png)$/) as any ||
+				m.embeds[0]?.thumbnail?.url?.match(/\.(jpeg|jpg|png)$/) ||
+				m.embeds[0]?.image?.url?.match(/\.(jpeg|jpg|png)$/)
 		)
 		.first();
 
 	// no need to await user interaction (a message has been found)
-	if (message !== undefined) return await getImageFromMessage(message);
+	if (message) return await getImageFromMessage(message);
 
 	// no message found but we don't ask the user to provide an image
 	if (!userInteraction.doInteraction) return null;
