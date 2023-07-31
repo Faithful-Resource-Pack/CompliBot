@@ -215,11 +215,11 @@ class ExtendedClient extends Client {
 		console.log(`${success}deleting / commands`);
 
 		const rest = new REST({ version: "9" }).setToken(this.tokens.token);
-		rest.get(Routes.applicationCommands(this.tokens.appID)).then((data: any) => {
+		rest.get(Routes.applicationCommands(this.user.id)).then((data: any) => {
 			const promises = [];
 			for (const command of data)
 				promises.push(
-					rest.delete(`${Routes.applicationCommands(this.tokens.appID)}/${command.id}`),
+					rest.delete(`${Routes.applicationCommands(this.user.id)}/${command.id}`),
 				);
 			return Promise.all(promises).then(() => console.log(`${success}delete succeed`));
 		});
@@ -289,7 +289,7 @@ class ExtendedClient extends Client {
 			else
 				try {
 					// otherwise we add specific commands to that guild
-					await rest.put(Routes.applicationGuildCommands(this.tokens.appID, d.id), {
+					await rest.put(Routes.applicationGuildCommands(this.user.id, d.id), {
 						body: guilds[d.name],
 					});
 					console.log(`${success}Successfully added slash commands to: ${d.name}`);
@@ -300,7 +300,7 @@ class ExtendedClient extends Client {
 
 		// we add global commands to all guilds (only if not in dev mode)
 		if (!this.tokens.dev) {
-			await rest.put(Routes.applicationCommands(this.tokens.appID), { body: guilds["global"] });
+			await rest.put(Routes.applicationCommands(this.user.id), { body: guilds["global"] });
 			console.log(`${success}Successfully added global slash commands`);
 		}
 	}

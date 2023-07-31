@@ -3,7 +3,6 @@ export interface Tokens {
 	token: string;
 	prefix: string;
 	apiUrl: string;
-	appID: string; // bot id
 	apiPassword: string; // for api authentification
 	errorChannel: string; // error channel where errors are sent
 	dev: boolean; // if true: instantiate command only it the bot dev discord server
