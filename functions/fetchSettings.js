@@ -10,7 +10,7 @@ const allCollection = require("../helpers/firestorm/all");
 module.exports = async (format = false) => {
 	if (process.env.FETCH_SETTINGS.toLowerCase() !== "true") return;
 	const settings = await allCollection.settings.read_raw();
-	const OUT_PATH = join(join(process.cwd(), "resources/"), "settings.json");
+	const OUT_PATH = join(process.cwd(), "resources", "settings.json");
 	const space = format ? 4 : 0;
 	return writeFile(OUT_PATH, JSON.stringify(settings, null, space), {
 		flag: "w",
