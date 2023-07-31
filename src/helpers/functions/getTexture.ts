@@ -18,12 +18,8 @@ export const getTextureMessageOptions = async (options: {
 	guild: Guild;
 }): Promise<any> => {
 	const tokens: Tokens = TokenJson;
-	const texture = options.texture;
-	const pack = options.pack;
-	const guild = options.guild;
-	const uses: Uses = texture.uses;
-	const paths: Paths = texture.paths;
-	const allContributions: Contributions = texture.contributions;
+	const { texture, pack, guild } = options;
+	const { uses, paths, contributions: allContributions } = texture;
 	const animated: boolean = paths.filter((p) => p.mcmeta === true).length !== 0;
 	const contributionJSON = (await axios.get(`${tokens.apiUrl}contributions/authors`)).data;
 
@@ -41,7 +37,7 @@ export const getTextureMessageOptions = async (options: {
 				)
 			).data;
 		} catch {
-			mcmeta = { __comment: "mcmeta file not found, please check default repository" };
+			mcmeta = { __comment: "MCMETA file not found, please check default repository!" };
 		}
 	}
 
