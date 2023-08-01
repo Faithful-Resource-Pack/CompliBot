@@ -18,16 +18,14 @@ export const command: SlashCommand = {
 		)
 		.addStringOption((option) =>
 			option
-				.setName("display")
+				.setName("pack")
 				.setDescription("Which set of packs you want to display (default is everything).")
 				.addChoices(
 					{ name: "Faithful", value: "faithful" },
 					{ name: "Classic Faithful Jappa", value: "cfjappa" },
 					{ name: "Classic Faithful Programmer Art", value: "cfpa" },
-					{ name: "Jappa", value: "jappa" },
-					{ name: "All", value: "all" },
 				)
-				.setRequired(false),
+				.setRequired(true),
 		)
 		.addNumberOption((num) => {
 			return num
@@ -43,7 +41,7 @@ export const command: SlashCommand = {
 				.setRequired(false);
 		}),
 	execute: async (interaction: CommandInteraction) => {
-		const display = interaction.options.getString("display", false) ?? "all";
+		const display = interaction.options.getString("pack", true);
 		const name = interaction.options.getString("texture", true);
 		const framerate = interaction.options.getNumber("framerate", false) ?? 1;
 

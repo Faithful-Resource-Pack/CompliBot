@@ -11,30 +11,7 @@ interface Options {
 	url: string;
 	mcmeta?: Object;
 	framerate?: 4 | 3 | 2 | 1 | 0.5;
-}
-
-/**
- * loads 2d array of texture urls as canvas images
- * @author Evorp
- * @param urls 2d array of urls to load
- * @returns
- */
-export async function loadImages(urls: string[][]): Promise<Canvas[][]> {
-	let loadedImages = [];
-	let i = 0; // forEach() causes a lot of issues with variable scope
-	for (let row of urls) {
-		loadedImages[i] = [];
-		for (let url of row) {
-			try {
-				let tmp = await loadImage(url);
-				loadedImages[i].push(tmp);
-			} catch {
-				/* texture hasn't been made yet or is invalid */
-			}
-		}
-		++i;
-	}
-	return loadedImages;
+	pack?: "faithful" | "cfjappa" | "cfpa";
 }
 
 /**
@@ -121,7 +98,6 @@ export async function cycleComparison(
 	display: string = "all",
     framerate: number = 1,
 ): Promise<[MessageEmbed, MessageAttachment]> {
-	const isTemplate: boolean = typeof id == "string" && id.toLowerCase() == "template";
 	const result: Texture = (await axios.get(`${client.tokens.apiUrl}textures/${id}/all`)).data;
 
 	const PACKS = [
@@ -134,47 +110,17 @@ export async function cycleComparison(
 	let displayedCount: number; // This is the number of textures that will be displayed in the embed
 	switch (display) {
 		case "faithful":
-		case "f":
 			displayed = [PACKS[0]];
 			displayedCount = 3;
 			break;
 		case "cfjappa":
-		case "cfj":
 			displayed = [PACKS[1]];
 			displayedCount = 3;
 			break;
 		case "cfpa":
-		case "pa":
-		case "p":
 			displayed = [PACKS[2]];
 			displayedCount = 2;
 			break;
-		case "jappa":
-		case "j":
-			displayed = [PACKS[0], PACKS[1]];
-			displayedCount = 6;
-			break;
-		default:
-			displayed = PACKS;
-			displayedCount = 8;
-			break;
-	}
-
-	if (!isTemplate) {
-		const defaultURL: string = `${client.tokens.apiUrl}textures/${id}/url/default/latest`;
-
-		const dimension = await getDimensions(defaultURL);
-		if (dimension.width * dimension.height > 262144) {
-			return [
-				new MessageEmbed()
-					.setTitle("Output will be too big!")
-					.setDescription(
-						"Try specifying which set of packs you want to view to reduce the total image size.",
-					)
-					.setFooter({ text: "Use [#template] for more information!" }),
-				null,
-			];
-		}
 	}
 
 	// get texture urls
@@ -184,9 +130,7 @@ export async function cycleComparison(
 		urls.push([]);
 		for (let pack of packSet) {
 			urls[i].push(
-				isTemplate
-					? formatName(pack, "64")[1]
-					: `${client.tokens.apiUrl}textures/${id}/url/${pack}/latest`,
+				`${client.tokens.apiUrl}textures/${id}/url/${pack}/latest`,
 			);
 		}
 		++i; // can't use forEach because of scope problems (blame js)
@@ -196,25 +140,11 @@ export async function cycleComparison(
 	const giffed = await imagesToGIF(magnifiedImages, framerate);
 	const embed = new MessageEmbed().setImage("attachment://animation.gif");
 
-	if (isTemplate)
-		embed.setTitle(`Comparison Template`).addFields([
-			{
-				name: "Add these suffixes to display only a specific group of textures!",
-				value:
-					"\
-					\n- F: Show only Faithful textures \
-					\n- CFJ: Show only Classic Faithful Jappa textures \
-					\n- CFPA: Show only Classic Faithful Programmer Art textures \
-					\n- J: Show only Jappa textures \
-					\n- P: Show only Programmer Art textures (currently the same as CFPA)",
-			},
-		]);
-	else
-		embed
-			.setTitle(`[#${result.id}] ${result.name}`)
-			.setURL(`https://webapp.faithfulpack.net/#/gallery/java/32x/latest/all/?show=${id}`)
-			.addFields(addPathsToEmbed(result))
-			.setFooter({ text: "Use [#template] for more information!" });
+	embed
+		.setTitle(`[#${result.id}] ${result.name}`)
+		.setURL(`https://webapp.faithfulpack.net/#/gallery/java/32x/latest/all/?show=${id}`)
+		.addFields(addPathsToEmbed(result))
+		.setFooter({ text: "Use [#template] for more information!" });
 
 	return [embed, giffed];
 }
