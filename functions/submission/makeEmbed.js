@@ -40,9 +40,9 @@ module.exports = async function makeEmbed(
 			// show range of versions if multiple exist
 			// otherwise just push the first one (e.g. bedrock, texture only in one version)
 			pathText.push(
-				versions.length > 1
-					? `\`[${versions[0]} — ${versions[versions.length - 1]}]\` ${path.path}\n`
-					: `\`[${versions[0]}]\` ${path.path}\n`,
+				`\`[${
+					versions.length > 1 ? `${versions[0]} — ${versions[versions.length - 1]}` : versions[0]
+				}]\` ${path.path}\n`,
 			);
 		}
 	}
@@ -84,9 +84,11 @@ module.exports = async function makeEmbed(
 		});
 
 		imgButtons = hasReference ? [submissionButtons] : [imageButtons];
-
 	} else {
-		if (DEBUG) console.log(`Texture is too big to generate comparison, loading directly instead: ${texture.name}`);
+		if (DEBUG)
+			console.log(
+				`Texture is too big to generate comparison, loading directly instead: ${texture.name}`,
+			);
 
 		// image is too big so we just add it directly to the embed without comparison
 		const [imageUrl] = await getImages(client, attachment);

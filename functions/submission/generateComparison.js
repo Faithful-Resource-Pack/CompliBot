@@ -69,5 +69,8 @@ module.exports = async function generateComparison(message, attachment, info) {
 
 	// actually stitch the generated images
 	const stitched = await stitch(images);
-	return { comparisonImage: await magnifyAttachment(stitched, "compared.png"), hasReference: images.length == 3 };
-}
+	return {
+		comparisonImage: await magnifyAttachment(stitched, "compared.png"),
+		hasReference: images.length == 3,
+	};
+};
