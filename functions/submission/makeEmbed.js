@@ -37,7 +37,13 @@ module.exports = async function makeEmbed(
 		pathText.push(`**${use.editions[0].charAt(0).toUpperCase() + use.editions[0].slice(1)}**\n`);
 		for (let path of localPath) {
 			const versions = path.versions.sort(minecraftSorter);
-			pathText.push(`\`[${versions[0]}+]\` ${path.path}\n`);
+			// show range of versions if multiple exist
+			// otherwise just push the first one (e.g. bedrock, texture only in one version)
+			pathText.push(
+				versions.length > 1
+					? `\`[${versions[0]} — ${versions[versions.length - 1]}]\` ${path.path}\n`
+					: `\`[${versions[0]}]\` ${path.path}\n`,
+			);
 		}
 	}
 
@@ -49,7 +55,6 @@ module.exports = async function makeEmbed(
 	};
 
 	const embed = new MessageEmbed()
-		// TODO: add a Faithful gallery url that shows all textures by a given author
 		.setAuthor({ name: message.author.username, iconURL: message.author.displayAvatarURL() })
 		.setColor(settings.colors.blue)
 		.setTitle(`[#${texture.id}] ${texture.name}`)

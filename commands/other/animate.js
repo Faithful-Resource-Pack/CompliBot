@@ -154,11 +154,7 @@ async function previousImage(message, mcmeta) {
 			found = true;
 			url = lastMsg.attachments.first().url;
 			//break;
-		} else if (
-			lastMsg.embeds[0] != undefined &&
-			lastMsg.embeds[0] != null &&
-			lastMsg.embeds[0].image
-		) {
+		} else if (lastMsg.embeds?.[0]?.image) {
 			found = true;
 			url = lastMsg.embeds[0].image.url;
 			//break;
