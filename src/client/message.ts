@@ -126,7 +126,7 @@ const MessageBody = {
 		const embed = new MessageEmbed()
 			.setColor(colors.red)
 			.setThumbnail(settings.images.error)
-			.setTitle("Action failed")
+			.setTitle("Action failed!")
 			.setDescription(text)
 			.setFooter({
 				text: `Type ${this.tokens.prefix}help to get more information about commands. ${

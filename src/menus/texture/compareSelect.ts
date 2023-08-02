@@ -20,26 +20,27 @@ export const menu: SelectMenu = {
 				).replace("%USER%", `<@!${messageInteraction.user.id}>`),
 				ephemeral: true,
 			});
-		else interaction.deferReply();
+		else interaction.deferUpdate();
 
 		const [id, display] = interaction.values[0].split("__");
 		const [embed, magnified] = await textureComparison(interaction.client as Client, id, display);
 
-		embed.setFooter({
-			text: `${embed.footer.text} | ${interaction.user.id}`,
-			iconURL: embed.footer.iconURL,
-		});
+		if (embed.footer)
+			embed.setFooter({
+				text: `${embed.footer.text} | ${interaction.user.id}`,
+				iconURL: embed.footer.iconURL,
+			});
 
 		try {
 			message.delete();
 		} catch (err) {
-			interaction.editReply({
+			interaction.channel.send({
 				content: await interaction.getEphemeralString({ string: "Error.Message.Deleted" }),
 			});
 		}
 
-		interaction
-			.editReply({ embeds: [embed], files: magnified ? [magnified] : null })
+		interaction.channel
+			.send({ embeds: [embed], files: magnified ? [magnified] : null })
 			.then((message: Message) => message.deleteButton(true));
 	},
 };

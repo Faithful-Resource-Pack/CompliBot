@@ -1,5 +1,6 @@
 import axios from "axios";
-import { CommandInteraction, Client, Message } from "@client";
+import { CommandInteraction, Client, Message, MessageEmbed } from "@client";
+import { colors } from "@helpers/colors";
 
 export default async function parseTextureName(
 	name: string,
@@ -10,7 +11,12 @@ export default async function parseTextureName(
 	if (name.length < 3) {
 		interaction
 			.editReply({
-				content: "You need at least three characters to start a texture search!",
+				embeds: [
+					new MessageEmbed()
+						.setTitle("Action failed!")
+						.setDescription("You need at least three characters to start a texture search!")
+						.setColor(colors.red),
+				],
 			})
 			.then((message: Message) => message.deleteButton());
 		return;

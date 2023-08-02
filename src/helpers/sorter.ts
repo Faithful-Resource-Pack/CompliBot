@@ -81,7 +81,7 @@ export const formatName = (pack: string, size: string = "512"): [string, string]
 			strIconURL += "f64_logo.png";
 			break;
 		case "classic_faithful_32x":
-			strPack = "Classic Faithful 32x";
+			strPack = "Classic Faithful 32x Jappa";
 			strIconURL += "cf32_logo.png";
 			break;
 		case "classic_faithful_32x_progart":

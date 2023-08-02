@@ -61,57 +61,53 @@ export const getTextureMessageOptions = async (options: {
 	embed.setImage(`attachment://magnified.${animated ? "gif" : "png"}`);
 
 	// test if url isn't a 404
-	let validURL: boolean = false;
 	let dimension: ISizeCalculationResult;
 	try {
 		// getDimensions also validates a url
 		dimension = await getDimensions(textureURL);
-		validURL = true;
 	} catch (err) {
-		textureURL =
-			"https://raw.githubusercontent.com/Faithful-Resource-Pack/App/main/resources/transparency.png";
-		embed.addFields([
-			{ name: "Image not found", value: "This texture hasn't been made yet or is blacklisted!" },
-		]);
-		embed.setColor(colors.red);
+		const errorEmbed = new MessageEmbed()
+			.setTitle("Image not found!")
+			.setDescription(`\`${texture.name}\` hasn't been made for ${strPack} yet or is blacklisted!`)
+			.setColor(colors.red);
+		// missing texture so we break early
+		return { embeds: [errorEmbed] };
 	}
 
-	if (validURL) {
-		embed
-			.setURL(`https://webapp.faithfulpack.net/#/gallery/java/32x/latest/all/?show=${texture.id}`)
-			.addFields([
-				{ name: "Resolution", value: `${dimension.width}×${dimension.height}`, inline: true },
-			]);
+	embed
+		.setURL(`https://webapp.faithfulpack.net/#/gallery/java/32x/latest/all/?show=${texture.id}`)
+		.addFields([
+			{ name: "Resolution", value: `${dimension.width}×${dimension.height}`, inline: true },
+		]);
 
-		let mainContribution: Contribution;
-		if (allContributions.length) {
-			mainContribution = allContributions
-				.filter((c) => strPack.includes(c.resolution.toString()) && pack === c.pack)
-				.sort((a, b) => (a.date > b.date ? -1 : 1))[0];
-		}
+	let mainContribution: Contribution;
+	if (allContributions.length) {
+		mainContribution = allContributions
+			.filter((c) => strPack.includes(c.resolution.toString()) && pack === c.pack)
+			.sort((a, b) => (a.date > b.date ? -1 : 1))[0];
+	}
 
-		if (mainContribution) {
-			let strDate: string = `<t:${Math.trunc(mainContribution.date / 1000)}:d>`;
-			let authors = mainContribution.authors.map((authorId: string) => {
-				if (guild.members.cache.get(authorId)) return `<@!${authorId}>`;
+	if (mainContribution) {
+		let strDate: string = `<t:${Math.trunc(mainContribution.date / 1000)}:d>`;
+		let authors = mainContribution.authors.map((authorId: string) => {
+			if (guild.members.cache.get(authorId)) return `<@!${authorId}>`;
 
-				// this may possibly be one of the worst solutions but it somehow works
-				for (let user of contributionJSON) {
-					if (user.id == authorId) return user.username ?? "Anonymous";
-				}
-				return "Unknown";
-			});
-
-			const displayContribution = `${strDate} — ${authors.join(", ")}`;
-
-			if (displayContribution != undefined) {
-				embed.addFields([
-					{
-						name: authors.length == 1 ? "Latest Author" : "Latest Authors",
-						value: displayContribution,
-					},
-				]);
+			// this may possibly be one of the worst solutions but it somehow works
+			for (let user of contributionJSON) {
+				if (user.id == authorId) return user.username ?? "Anonymous";
 			}
+			return "Unknown";
+		});
+
+		const displayContribution = `${strDate} — ${authors.join(", ")}`;
+
+		if (displayContribution != undefined) {
+			embed.addFields([
+				{
+					name: authors.length == 1 ? "Latest Author" : "Latest Authors",
+					value: displayContribution,
+				},
+			]);
 		}
 	}
 
@@ -125,5 +121,5 @@ export const getTextureMessageOptions = async (options: {
 		);
 	} else files.push((await magnifyAttachment({ url: textureURL, name: "magnified.png" }))[0]);
 
-	return { embeds: [embed], files: files, components: validURL ? [textureButtons] : null };
+	return { embeds: [embed], files: files, components: [textureButtons] };
 };

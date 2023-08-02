@@ -218,9 +218,7 @@ class ExtendedClient extends Client {
 		rest.get(Routes.applicationCommands(this.user.id)).then((data: any) => {
 			const promises = [];
 			for (const command of data)
-				promises.push(
-					rest.delete(`${Routes.applicationCommands(this.user.id)}/${command.id}`),
-				);
+				promises.push(rest.delete(`${Routes.applicationCommands(this.user.id)}/${command.id}`));
 			return Promise.all(promises).then(() => console.log(`${success}delete succeed`));
 		});
 	};
