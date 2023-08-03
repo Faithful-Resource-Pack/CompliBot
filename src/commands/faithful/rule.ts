@@ -30,6 +30,7 @@ export const command: SlashCommand = {
 				.setRequired(true),
 		),
 	execute: async (interaction: CommandInteraction) => {
+		const baseUrl = "https://docs.faithfulpack.net/pages/manuals/expanded-server-rules";
 		const choice = interaction.options.getString("number", true);
 
 		if (choice == "all") {
@@ -39,7 +40,6 @@ export const command: SlashCommand = {
 				.reply({ content: "** **", fetchReply: true })
 				.then((message: Message) => message.delete());
 
-			// I hate this so much but there's not much I can do
 			const thumbnail =
 				interaction.guildId == settings.guilds.classic_faithful
 					? settings.images.cf_plain
@@ -53,19 +53,21 @@ export const command: SlashCommand = {
 						.setTitle(ruleStrings.rules_info.heading.title)
 						.setDescription(ruleStrings.rules_info.heading.description)
 						.setColor(colors.brand)
-						.setThumbnail(thumbnail),
+						.setThumbnail(thumbnail)
+						.setURL(baseUrl),
 				],
 			});
 
 			for (let rule of ruleStrings.rules) {
+				++i;
 				embedArray.push(
 					new MessageEmbed()
 						.setTitle(rule.title)
 						.setDescription(rule.description)
-						.setColor(colors.brand),
+						.setColor(colors.brand)
 				);
 
-				if ((i + 1) % 5 == 0) {
+				if (i % 5 == 0) {
 					await interaction.channel.send({ embeds: embedArray });
 					embedArray = [];
 				}
@@ -101,7 +103,8 @@ export const command: SlashCommand = {
 					new MessageEmbed()
 						.setTitle(ruleChoice.title)
 						.setDescription(ruleChoice.description)
-						.setThumbnail(settings.images.rules),
+						.setThumbnail(settings.images.rules)
+						.setURL(`${baseUrl}#${Number(choice) + 1}`),
 				],
 				fetchReply: true,
 			})

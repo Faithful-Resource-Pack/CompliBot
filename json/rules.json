@@ -1,16 +1,16 @@
 {
 	"rules_info": {
 		"heading": {
-			"title": "Rules of the Faithful Discord Servers",
-			"description": "**Not knowing these is not an excuse for misbehaving, and you can and will be held accountable for your actions. Punishments are up to the discretion of the moderators, and harassing them is only going to make your punishment worse.**\n\n*Use `e!modping` or directly ping an online moderator if rules are being broken. Please do not mini-mod!*"
+			"title": "Faithful Discord Server Rules",
+			"description": "Not knowing these is not an excuse for misbehaving, and you can and will be held accountable for your actions. Punishments are up to the discretion of the moderators, and harassing them is only going to make your punishment worse.\n\n*Use `e!modping` or directly ping an online moderator if rules are being broken. **Please do not mini-mod!***"
 		},
 		"expanded_rules": {
 			"title": "Were you warned or muted unfairly?",
-			"description": "A much more in-depth version of our rules, punishment appeal information, and our thought process into giving punishments can be found here: https://docs.faithfulpack.net/pages/moderation/expanded-server-rules"
+			"description": "A much more in-depth version of our rules, punishment appeal information, and our thought process into giving punishments can be found here: https://docs.faithfulpack.net/pages/manuals/expanded-server-rules"
 		},
 		"changes": {
-			"title": "Last Update: 4 July 2023",
-			"description": "Disallow politics and clean up some grammar.",
+			"title": "Last Update: 3 August 2023",
+			"description": "Update expanded rule link and switch bots.",
 			"enabled": true
 		}
 	},
