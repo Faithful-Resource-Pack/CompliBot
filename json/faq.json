@@ -31,7 +31,7 @@
     },
     {
         "question": "When will Faithful be available for [Minecraft version]?",
-        "answer": "Since Faithful is a community-driven project, progress is dependent on people submitting textures. This means that there are no hard deadlines for a given pack to be completed for a new version. However, you can usually use an [experimental build](https://database.faithfulpack.net/packs/) of the pack in the mean time, which may include missing textures. \nIf you want to help out with pack progress, read the [Contributor's Handbook](https://docs.faithfulpack.net/pages/textures/contributor-handbook) and inquire in the pack's respective Discord for more information.",
+        "answer": "Since Faithful is a community-driven project, progress is dependent on people submitting textures. This means that there are no hard deadlines for a given pack to be completed for a new version. However, you can usually use an [experimental build](https://database.faithfulpack.net/packs/) of the pack in the mean time, which may include missing textures. \nIf you want to help out with pack progress, read the [Contributor's Handbook](https://docs.faithfulpack.net/pages/manuals/contributor-handbook) and inquire in the pack's respective Discord for more information.",
         "keywords": ["progress", "update", "new version"]
     },
     {
@@ -81,7 +81,7 @@
     },
     {
         "question": "How can I submit a texture to the pack? How does the approval process work?",
-        "answer": "For the main Faithful packs, please read [The Faithful Contributor's Handbook](https://docs.faithfulpack.net/pages/textures/contributor-handbook). \nTL;DR: You will need to accept the agreement in <#991031483089186826> first. To submit textures, upload them to the appropriate submission channel (the file has to have the same name as the default texture), and the bot will take over from there and format it for you. Any text you include with the message will be added as a comment, and people pinged in the comment will be added as co-authors. \nFor your texture to be added to the pack, it must pass a round of community voting (lasting 2 days) and a round of private Art Director Council voting (lasting one day). \nFor Classic Faithful, the submission process is exactly the same but only takes one day of community voting and no council vote instead.",
+        "answer": "For the main Faithful packs, please read [The Faithful Contributor's Handbook](https://docs.faithfulpack.net/pages/manuals/contributor-handbook). \nTL;DR: You will need to accept the agreement in <#991031483089186826> first. To submit textures, upload them to the appropriate submission channel (the file has to have the same name as the default texture), and the bot will take over from there and format it for you. Any text you include with the message will be added as a comment, and people pinged in the comment will be added as co-authors. \nFor your texture to be added to the pack, it must pass a round of community voting (lasting 2 days) and a round of private Art Director Council voting (lasting one day). \nFor Classic Faithful, the submission process is exactly the same but only takes one day of community voting and no council vote instead.",
         "keywords": ["submit", "approval"]
     },
     {

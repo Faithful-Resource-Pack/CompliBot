@@ -5,6 +5,7 @@ import { textureComparison } from "@functions/canvas/stitch";
 import { MessageSelectMenu, MessageActionRow, MessageSelectOptionData } from "discord.js";
 import { minecraftSorter } from "@helpers/sorter";
 import parseTextureName from "@functions/parseTextureName";
+import { colors } from "@helpers/colors";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -44,10 +45,17 @@ export const command: SlashCommand = {
 			// no results
 			return interaction
 				.editReply({
-					content: await interaction.getEphemeralString({
-						string: "Command.Texture.NotFound",
-						placeholders: { TEXTURENAME: `\`${name}\`` },
-					}),
+					embeds: [
+						new MessageEmbed()
+							.setTitle("No results found!")
+							.setDescription(
+								await interaction.getEphemeralString({
+									string: "Command.Texture.NotFound",
+									placeholders: { TEXTURENAME: `\`${name}\`` },
+								}),
+							)
+							.setColor(colors.red),
+					],
 				})
 				.then((message: Message) => message.deleteButton());
 		}

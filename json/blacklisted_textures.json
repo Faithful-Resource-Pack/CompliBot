@@ -126,7 +126,8 @@
         "/assets/minecraft/textures/gui/title/edition.png",
         "/assets/minecraft/textures/gui/title/minecraft.png",
         "/assets/minecraft/textures/gui/title/minceraft.png",
-        "/assets/realms/textures/gui/title/realms.png"
+        "/assets/realms/textures/gui/title/realms.png",
+        "/assets/minecraft/textures/gui/title/realms.png"
     ],
     "bedrock": [
         "spit",
@@ -410,6 +411,7 @@
         "textures/ui/sidebar_icons/Minions_packicon_0.jpg",
         "textures/ui/sidebar_icons/Sonic_packicon.jpg",
         "textures/ui/sidebar_icons/Star_Wars_packicon_0.jpg",
-        "textures/ui/sidebar_icons/WDW-Magic-Kingdom-Adventure_packicon_0.jpg"
+        "textures/ui/sidebar_icons/WDW-Magic-Kingdom-Adventure_packicon_0.jpg",
+        "textures/ui/purpleBorder.png"
     ]
 }

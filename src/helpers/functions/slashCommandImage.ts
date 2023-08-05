@@ -31,9 +31,9 @@ export async function fetchMessageImage(
 		.sort((a, b) => b.createdTimestamp - a.createdTimestamp)
 		.filter(
 			(m) =>
-				m.attachments?.first()?.url?.match(/\.(jpeg|jpg|png)$/) as any ||
+				(m.attachments?.first()?.url?.match(/\.(jpeg|jpg|png)$/) as any) ||
 				m.embeds[0]?.thumbnail?.url?.match(/\.(jpeg|jpg|png)$/) ||
-				m.embeds[0]?.image?.url?.match(/\.(jpeg|jpg|png)$/)
+				m.embeds[0]?.image?.url?.match(/\.(jpeg|jpg|png)$/),
 		)
 		.first();
 
