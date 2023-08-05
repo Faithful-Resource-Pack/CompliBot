@@ -135,7 +135,7 @@ export const command: SlashCommand = {
 				}
 
 			const menu = new MessageSelectMenu()
-				.setCustomId(`compareSelect_${_max}`)
+				.setCustomId(`cycleSelect_${_max}`)
 				.setPlaceholder("Select a texture!")
 				.addOptions(options);
 

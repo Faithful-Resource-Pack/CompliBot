@@ -123,20 +123,24 @@ export async function cycleComparison(
 		["progart", "classic_faithful_32x_progart"],
 	];
 
+	let packText: string;
 	let displayed: string[][];
 	let displayedCount: number; // This is the number of textures that will be displayed in the embed
 	switch (display) {
 		case "faithful":
 			displayed = [PACKS[0]];
 			displayedCount = 3;
+			packText = "Faithful";
 			break;
 		case "cfjappa":
 			displayed = [PACKS[1]];
 			displayedCount = 3;
+			packText = "Classic Faithful Jappa";
 			break;
 		case "cfpa":
 			displayed = [PACKS[2]];
 			displayedCount = 2;
+			packText = "Classic Faithful Programmer Art";
 			break;
 	}
 
@@ -164,6 +168,7 @@ export async function cycleComparison(
 	embed
 		.setTitle(`[#${result.id}] ${result.name}`)
 		.setURL(`https://webapp.faithfulpack.net/#/gallery/java/32x/latest/all/?show=${id}`)
-		.addFields(addPathsToEmbed(result));
+		.addFields(addPathsToEmbed(result))
+		.addFields({ name: 'Pack', value: `${packText}`});
 	return [embed, giffed];
 }
