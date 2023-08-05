@@ -5,15 +5,16 @@ import { cycleComparison } from "@functions/canvas/cycle";
 import { MessageSelectMenu, MessageActionRow, MessageSelectOptionData } from "discord.js";
 import { minecraftSorter } from "@helpers/sorter";
 import parseTextureName from "@functions/parseTextureName";
+import { colors } from "@helpers/colors";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
 		.setName("cycle")
-		.setDescription("Cycles through a given texture.")
+		.setDescription("Cycle through each resolution of a given texture as a GIF.")
 		.addStringOption((option) =>
 			option
 				.setName("texture")
-				.setDescription("Name or ID of the texture you want to compare.")
+				.setDescription("Name or ID of the texture you want to cycle through.")
 				.setRequired(true),
 		)
 		.addStringOption((option) =>
@@ -27,19 +28,12 @@ export const command: SlashCommand = {
 				)
 				.setRequired(true),
 		)
-		.addNumberOption((num) => {
-			return num
-				.addChoices(
-					{ name: "0.25s", value: 4 },
-					{ name: "0.5s", value: 2 },
-					{ name: "1s", value: 1 },
-					{ name: "2s", value: 0.5 },
-					{ name: "4s", value: 0.25 },
-				)
+		.addNumberOption((option) =>
+			option
 				.setName("framerate")
 				.setDescription("The number of seconds between each frame.")
-				.setRequired(false);
-		}),
+				.setRequired(false),
+		),
 	execute: async (interaction: CommandInteraction) => {
 		const display = interaction.options.getString("pack", true);
 		const name = interaction.options.getString("texture", true);
@@ -56,17 +50,24 @@ export const command: SlashCommand = {
 			// no results
 			return interaction
 				.editReply({
-					content: await interaction.getEphemeralString({
-						string: "Command.Texture.NotFound",
-						placeholders: { TEXTURENAME: `\`${name}\`` },
-					}),
+					embeds: [
+						new MessageEmbed()
+							.setTitle("No results found!")
+							.setDescription(
+								await interaction.getEphemeralString({
+									string: "Command.Texture.NotFound",
+									placeholders: { TEXTURENAME: `\`${name}\`` },
+								}),
+							)
+							.setColor(colors.red),
+					],
 				})
 				.then((message: Message) => message.deleteButton());
 		}
 
 		// only one result
 		if (results.length === 1) {
-			const [embed, giffed] = await cycleComparison(
+			const [embed, cycled] = await cycleComparison(
 				interaction.client as Client,
 				results[0].id,
 				display,
@@ -74,7 +75,7 @@ export const command: SlashCommand = {
 			);
 
 			return interaction
-				.editReply({ embeds: [embed], files: giffed ? [giffed] : null })
+				.editReply({ embeds: [embed], files: cycled ? [cycled] : null })
 				.then((message: Message) => message.deleteButton());
 		}
 		const components: Array<MessageActionRow> = [];

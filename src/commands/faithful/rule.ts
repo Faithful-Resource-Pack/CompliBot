@@ -64,7 +64,7 @@ export const command: SlashCommand = {
 					new MessageEmbed()
 						.setTitle(rule.title)
 						.setDescription(rule.description)
-						.setColor(colors.brand)
+						.setColor(colors.brand),
 				);
 
 				if (i % 5 == 0) {

@@ -14,25 +14,15 @@ type options = {
 };
 
 /**
- * magnification from an image url
- */
-export async function magnifyAttachment(
-	options: options,
-): Promise<[MessageAttachment, MessageEmbed]> {
-	const dimension = await getDimensions(options.url);
-	return await magnify(options, dimension);
-}
-
-/**
  * magnification from pre-loaded image (can't be MessageAttachment, has to be Image)
+ * returns image buffer directly rather than a MessageAttachment()
  */
-export async function magnify(
-	options: options,
-	dimension?: ISizeCalculationResult,
-): Promise<[MessageAttachment, MessageEmbed]> {
+export async function magnifyBuffer(options: options, dimension?: ISizeCalculationResult) {
 	let factor = options.factor;
 	if (!dimension) {
-		dimension = { width: options.image.width, height: options.image.height };
+		dimension = options.url
+			? await getDimensions(options.url)
+			: (dimension = { width: options.image.width, height: options.image.height });
 	}
 
 	// If no factor was given it tries maximizing the image output size
@@ -82,11 +72,30 @@ export async function magnify(
 		height,
 	);
 
+	return canvas.toBuffer("image/png");
+}
+
+/**
+ * magnification from an image url
+ */
+export async function magnifyAttachment(
+	options: options,
+): Promise<[MessageAttachment, MessageEmbed]> {
+	const dimension = await getDimensions(options.url);
+	return await magnify(options, dimension);
+}
+
+/**
+ * magnification from pre-loaded image (can't be MessageAttachment, has to be Image)
+ */
+export async function magnify(
+	options: options,
+	dimension?: ISizeCalculationResult,
+): Promise<[MessageAttachment, MessageEmbed]> {
+	const buf = await magnifyBuffer(options, dimension);
+
 	return [
-		new MessageAttachment(
-			canvas.toBuffer("image/png"),
-			`${options.name ? options.name : "magnified.png"}`,
-		),
+		new MessageAttachment(buf, `${options.name ? options.name : "magnified.png"}`),
 		options.embed,
 	];
 }

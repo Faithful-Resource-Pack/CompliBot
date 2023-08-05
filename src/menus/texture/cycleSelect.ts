@@ -23,7 +23,7 @@ export const menu: SelectMenu = {
 		else interaction.deferUpdate();
 
 		const [id, display] = interaction.values[0].split("__");
-		const [embed, giffed] = await cycleComparison(interaction.client as Client, id, display);
+		const [embed, cycled] = await cycleComparison(interaction.client as Client, id, display);
 
 		if (embed.footer)
 			embed.setFooter({
@@ -40,7 +40,7 @@ export const menu: SelectMenu = {
 		}
 
 		interaction.channel
-			.send({ embeds: [embed], files: giffed ? [giffed] : null })
+			.send({ embeds: [embed], files: cycled ? [cycled] : null })
 			.then((message: Message) => message.deleteButton(true));
 	},
 };
