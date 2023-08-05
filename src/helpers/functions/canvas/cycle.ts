@@ -4,13 +4,15 @@ import getDimensions from "./getDimensions";
 import GIFEncoder from "./GIFEncoder";
 import { Client, MessageEmbed } from "@client";
 import { formatName, addPathsToEmbed } from "@helpers/sorter";
+import TokenJson from "@json/tokens.json";
 import axios from "axios";
 import { Texture } from "@helpers/interfaces/firestorm";
+import { magnify } from "@functions/canvas/magnify";
 
 interface Options {
 	url: string;
 	mcmeta?: Object;
-	framerate?: 4 | 3 | 2 | 1 | 0.5;
+	framerate?: 4 | 2 | 1 | 0.5 | 0.25;
 	pack?: "faithful" | "cfjappa" | "cfpa";
 }
 
@@ -22,34 +24,48 @@ interface Options {
  * @returns array of canvas images that have been magnified
  */
 export async function miniMagnify(
-	imageURLs: string[],
+	imageURLs: string[][],
 	count: number,
 ): Promise<Canvas[]> {
-	let factor: number[];
-	let canvas: Canvas[];
-	let context: SKRSContext2D[];
-	for (let i = 0; i <= (count-1); i++) {
-		const dimension = await getDimensions(imageURLs[i]);
-		const surface = dimension.width * dimension.height;
+	let factor: number[] = [0];
+	let canvas: Canvas[] = [createCanvas(1,1)];
+	let context: SKRSContext2D[] = [canvas[0].getContext("2d")];
+	for (let i = 0; i < count; i++) {
+		const dimension = await getDimensions(imageURLs[0][i]);
+		const width = dimension.width;
+		const height = dimension.height;
+		const surface = width * height;
+		
+		if (surface <= 256) {
+			factor[i] = 32; // 16²px or below
+		}
+		if (surface > 256) {
+			factor[i] = 16; // 16²px
+		}	
+		if (surface > 1024) {
+			factor[i] = 8; // 32²px
+		}
+		if (surface > 4096) {
+			factor[i] = 4; // 64²px
+		}
+		if (surface > 65536) {
+			factor[i] = 2; // 128²px
+		}
+		else if (surface > 262144) {
+			factor[i] = 1; // 256²px
+		}
 
-		if (surface <= 256) factor[i-1] = 32; // 16²px or below
-		if (surface > 256) factor[i] = 16; // 16²px
-		if (surface > 1024) factor[i] = 8; // 32²px
-		if (surface > 4096) factor[i] = 4; // 64²px
-		if (surface > 65536) factor[i] = 2; // 128²px
-		else factor[i] = 1; // 256²px
-
-		const [width, height] = [dimension.width * factor[i], dimension.height * factor[i]];
-		const imageToDraw = await loadImage(imageURLs[i]);
-		canvas[i] = createCanvas(width,height);
+		const [newWidth, newHeight] = [width * factor[i], height * factor[i]];
+		const imageToDraw = await loadImage(imageURLs[0][i]);
+		canvas[i] = createCanvas(newWidth,newHeight);
 		context[i] = canvas[i].getContext("2d");
 		context[i].imageSmoothingEnabled = false;
 		context[i].drawImage(
 			imageToDraw,
 			0,
 			0,
-			width,
-			height,
+			newWidth,
+			newHeight,
 		);
 	}
 
@@ -70,7 +86,7 @@ export async function imagesToGIF(
 	const encoder = new GIFEncoder(512, 512);
 	encoder.start();
 	encoder.setTransparent(true);
-	encoder.setDelay(framerate);
+	encoder.setFrameRate(framerate);
 	for (let i = 0; i < canvas.length; i++)
 		{
 			const context = canvas[i].getContext("2d");
@@ -95,10 +111,11 @@ export async function imagesToGIF(
 export async function cycleComparison(
 	client: Client,
 	id: number | string,
-	display: string = "all",
+	display: string,
     framerate: number = 1,
 ): Promise<[MessageEmbed, MessageAttachment]> {
-	const result: Texture = (await axios.get(`${client.tokens.apiUrl}textures/${id}/all`)).data;
+	const tokens = TokenJson;
+	const result: Texture = (await axios.get(`${tokens.apiUrl}textures/${id}/all`)).data;
 
 	const PACKS = [
 		["default", "faithful_32x", "faithful_64x"],
@@ -137,14 +154,16 @@ export async function cycleComparison(
 	}
 
 	const magnifiedImages = await miniMagnify(urls, displayedCount);
+	// for (i = 0; i < displayedCount; i++) {
+	// 	const magnifiedImages = (await magnify({ image: await loadImage(urls[i]), name: "magnified.png" }))[0];
+	// }
+	// const magnified = (await magnify({ image: await loadImage(stitched), name: "magnified.png" }))[0];
 	const giffed = await imagesToGIF(magnifiedImages, framerate);
 	const embed = new MessageEmbed().setImage("attachment://animation.gif");
 
 	embed
 		.setTitle(`[#${result.id}] ${result.name}`)
 		.setURL(`https://webapp.faithfulpack.net/#/gallery/java/32x/latest/all/?show=${id}`)
-		.addFields(addPathsToEmbed(result))
-		.setFooter({ text: "Use [#template] for more information!" });
-
+		.addFields(addPathsToEmbed(result));
 	return [embed, giffed];
 }

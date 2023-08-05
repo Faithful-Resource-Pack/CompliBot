@@ -19,7 +19,7 @@ export const command: SlashCommand = {
 		.addStringOption((option) =>
 			option
 				.setName("pack")
-				.setDescription("Which set of packs you want to display (default is everything).")
+				.setDescription("Which set of packs you want to display.")
 				.addChoices(
 					{ name: "Faithful", value: "faithful" },
 					{ name: "Classic Faithful Jappa", value: "cfjappa" },
@@ -30,11 +30,11 @@ export const command: SlashCommand = {
 		.addNumberOption((num) => {
 			return num
 				.addChoices(
-					{ name: "0.5s", value: 0.5 },
+					{ name: "0.25s", value: 4 },
+					{ name: "0.5s", value: 2 },
 					{ name: "1s", value: 1 },
-					{ name: "2s", value: 2 },
-					{ name: "3s", value: 3 },
-					{ name: "4s", value: 4 },
+					{ name: "2s", value: 0.5 },
+					{ name: "4s", value: 0.25 },
 				)
 				.setName("framerate")
 				.setDescription("The number of seconds between each frame.")
