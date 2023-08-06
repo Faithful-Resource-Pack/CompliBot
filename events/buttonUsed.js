@@ -9,6 +9,7 @@ const { MessageEmbed } = require("discord.js");
 
 const strings = require("../resources/strings.json");
 const settings = require("../resources/settings.json");
+const getPackByChannel = require("../functions/submission/getPackByChannel");
 
 /**
  * "fake" event created to split up the generic interaction event
@@ -43,13 +44,7 @@ module.exports = {
 			case "viewRawButton":
 			case "diffButton":
 				// finding which pack the channel "belongs" to
-				let repoKey;
-				for (let [packKey, packValue] of Object.entries(settings.submission.packs)) {
-					if (Object.values(packValue.channels).includes(message.channel.id)) {
-						repoKey = packKey;
-						break;
-					}
-				}
+				const repoKey = await getPackByChannel(message.channel.id);
 
 				const id = (message.embeds?.[0]?.title?.match(/(?<=\[\#)(.*?)(?=\])/) ?? [
 					"NO ID FOUND",

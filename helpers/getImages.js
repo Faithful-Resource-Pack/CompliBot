@@ -6,7 +6,6 @@
  * @returns {Promise<String[]>} array of image urls from #submission-spam
  */
 module.exports = async function getImages(client, ...fileArray) {
-	console.log(fileArray);
 	let imgArray = new Array();
 	const imgMessage = await client.channels.cache
 		.get("916766396170518608")

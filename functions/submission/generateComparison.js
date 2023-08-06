@@ -2,25 +2,17 @@ const settings = require("../../resources/settings.json");
 const stitch = require("../textures/stitch");
 const { magnifyAttachment } = require("../textures/magnify");
 const { loadImage } = require("@napi-rs/canvas");
+const getPackByChannel = require("./getPackByChannel");
 
 /**
  * @author Evorp
- * @param {import("discord.js").Message} message
- * @param {import("discord.js").MessageAttachment} attachment
- * @param {{path: String, version: String, edition: String}} info
- * @returns {Promise<{comparisonImage: MessageAttachment, hasReference: Boolean}>}
+ * @param {String} channelID used to determine which pack you're submitting to
+ * @param {import("discord.js").MessageAttachment} attachment raw texture being submitted
+ * @param {{path: String, version: String, edition: String}} info used for searching for references/current
+ * @returns {Promise<{comparisonImage: MessageAttachment, hasReference: Boolean}>} compared texture and info
  */
-module.exports = async function generateComparison(message, attachment, info) {
-	/**
-	 * FINDING REFERENCE
-	 */
-	let repoKey;
-	for (let [packKey, packValue] of Object.entries(settings.submission.packs)) {
-		if (packValue.channels.submit == message.channel.id) {
-			repoKey = packKey;
-			break;
-		}
-	}
+module.exports = async function generateComparison(channelID, attachment, info) {
+	const repoKey = await getPackByChannel(channelID, "submit");
 
 	let defaultRepo;
 	switch (repoKey) {

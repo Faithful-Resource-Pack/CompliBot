@@ -72,7 +72,7 @@ module.exports = async function makeEmbed(
 	// generate comparison image if possible
 	if (dimension.width * dimension.height <= 262144) {
 		if (DEBUG) console.log(`Generating comparison image for texture: ${texture.name}`);
-		const { comparisonImage, hasReference } = await generateComparison(message, attachment, info);
+		const { comparisonImage, hasReference } = await generateComparison(message.channel.id, attachment, info);
 		// send to #submission-spam for permanent urls
 		const [thumbnailUrl, comparedUrl] = await getImages(client, rawImage, comparisonImage);
 

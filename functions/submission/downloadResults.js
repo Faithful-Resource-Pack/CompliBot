@@ -9,6 +9,7 @@ const DEBUG = process.env.DEBUG.toLowerCase() == "true";
 
 const Buffer = require("buffer/").Buffer;
 const { promises, writeFile } = require("fs");
+const getPackByChannel = require("./getPackByChannel");
 
 /**
  * Download textures from a given channel to all its paths locally
@@ -20,15 +21,7 @@ const { promises, writeFile } = require("fs");
 module.exports = async function downloadResults(client, channelResultID, instapass = false) {
 	let messages = await getMessages(client, channelResultID);
 	const channel = client.channels.cache.get(channelResultID);
-
-	// finding which pack the channel "belongs" to
-	let repoKey;
-	for (let [packKey, packValue] of Object.entries(settings.submission.packs)) {
-		if (packValue.channels.results == channelResultID) {
-			repoKey = packKey;
-			break;
-		}
-	}
+	const repoKey = await getPackByChannel(channelResultID, "results");
 
 	if (DEBUG) console.log(`Starting texture download for pack: ${repoKey}`);
 

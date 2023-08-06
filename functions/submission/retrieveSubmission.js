@@ -185,9 +185,10 @@ async function sendToResults(
 			).toFixed(2);
 			embed.fields[1].value = `<:downvote:${settings.emojis.downvote}> This texture did not pass council voting and therefore will not be added.`;
 			if (!isNaN(upvotePercentage)) embed.fields[1].value += ` (${upvotePercentage}% upvoted)`;
-			const paths = embed.fields[2];
 			const users = await message.downvote.users.fetch();
-			embed.fields[2] = {
+
+			// add council downvotes field between the status and path fields
+			embed.fields.splice(2, 0, {
 				name: "Council Downvotes",
 				value: `<@!${users
 					.map((user) => user.id)
@@ -195,8 +196,7 @@ async function sendToResults(
 					.join(">\n<@!")
 					.toString()}>`,
 				inline: true,
-			};
-			embed.fields.push(paths);
+			});
 			await channelOut.send({ embeds: [embed], components: message.components });
 
 			changeStatus(message.message, `<:downvote:${settings.emojis.downvote}> Sent to results!`);
