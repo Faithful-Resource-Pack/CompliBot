@@ -73,17 +73,23 @@ module.exports = async function makeEmbed(
 	if (dimension.width * dimension.height <= 262144) {
 		if (DEBUG) console.log(`Generating comparison image for texture: ${texture.name}`);
 		const { comparisonImage, hasReference } = await generateComparison(message, attachment, info);
+		// send to #submission-spam for permanent urls
 		const [thumbnailUrl, comparedUrl] = await getImages(client, rawImage, comparisonImage);
 
 		embed.setImage(comparedUrl);
 		embed.setThumbnail(thumbnailUrl);
 
+		/**
+		 * hasReference has three states:
+		 * null if reference checking failed,
+		 * false if no current texture exists,
+		 * true if all three exist
+		 */
 		if (hasReference !== null)
-			// if the texture doesn't exist yet only include the default/new caption rather than everything
 			embed.setFooter({
 				text: hasReference ? "Reference | New | Current" : "Reference | New",
 			});
-		else embed.setFooter({ text: "Something went wrong fetching the reference texture!" })
+		else embed.setFooter({ text: "Something went wrong fetching the reference texture!" });
 
 		imgButtons = hasReference ? [submissionButtons] : [imageButtons];
 	} else {

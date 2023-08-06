@@ -11,7 +11,9 @@ const { loadImage } = require("@napi-rs/canvas");
  * @returns {Promise<{comparisonImage: MessageAttachment, hasReference: Boolean}>}
  */
 module.exports = async function generateComparison(message, attachment, info) {
-	// determine reference image to compare against
+	/**
+	 * FINDING REFERENCE
+	 */
 	let repoKey;
 	for (let [packKey, packValue] of Object.entries(settings.submission.packs)) {
 		if (packValue.channels.submit == message.channel.id) {
@@ -38,22 +40,27 @@ module.exports = async function generateComparison(message, attachment, info) {
 
 	const upscaledImage = await loadImage(attachment.url);
 
+	/**
+	 * IMAGE LOADING
+	 */
+
 	/** @type {import("@napi-rs/canvas").Image[]} */
 	let images = [];
 
-	// load images necessary to generate comparison
 	try {
-		images.push(await loadImage(
-			`${defaultRepo[info.edition.toLowerCase()]}${info.version}/${info.path}`,
-		));
+		images.push(
+			await loadImage(`${defaultRepo[info.edition.toLowerCase()]}${info.version}/${info.path}`),
+		);
 	} catch {
 		// reference texture doesn't exist so we use the default repo
 		try {
-			images.push(defaultImage = await loadImage(
-				`${settings.repositories.raw.default[info.edition.toLowerCase()]}${info.version}/${
-					info.path
-				}`,
-			));
+			images.push(
+				await loadImage(
+					`${settings.repositories.raw.default[info.edition.toLowerCase()]}${info.version}/${
+						info.path
+					}`,
+				),
+			);
 		} catch {
 			// default texture doesn't exist either
 		}
@@ -62,24 +69,29 @@ module.exports = async function generateComparison(message, attachment, info) {
 	images.push(upscaledImage);
 
 	try {
-		const currentImage = await loadImage(
-			`${settings.repositories.raw[repoKey][info.edition.toLowerCase()]}${info.version}/${
-				info.path
-			}`,
+		images.push(
+			await loadImage(
+				`${settings.repositories.raw[repoKey][info.edition.toLowerCase()]}${info.version}/${
+					info.path
+				}`,
+			),
 		);
-		images.push(currentImage);
 	} catch {
 		// texture being submitted is a new texture, so there's nothing to compare against
 	}
 
+	// return early if the reference texture couldn't be fetched
 	if (images.length == 1) {
 		const img = await loadImage(images[0]);
 		return {
 			comparisonImage: await magnifyAttachment(img, "magnified.png"),
-			hasReference: null
-		}
+			hasReference: null,
+		};
 	}
-	// actually stitch the generated images
+
+	/**
+	 * STITCH LOADED IMAGES
+	 */
 	const stitched = await stitch(images);
 	return {
 		comparisonImage: await magnifyAttachment(stitched, "compared.png"),
