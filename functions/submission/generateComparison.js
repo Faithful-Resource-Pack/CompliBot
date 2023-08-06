@@ -37,24 +37,29 @@ module.exports = async function generateComparison(message, attachment, info) {
 	}
 
 	const upscaledImage = await loadImage(attachment.url);
-	let defaultImage;
+
+	/** @type {import("@napi-rs/canvas").Image[]} */
+	let images = [];
 
 	// load images necessary to generate comparison
 	try {
-		defaultImage = await loadImage(
+		images.push(await loadImage(
 			`${defaultRepo[info.edition.toLowerCase()]}${info.version}/${info.path}`,
-		);
+		));
 	} catch {
 		// reference texture doesn't exist so we use the default repo
-		defaultImage = await loadImage(
-			`${settings.repositories.raw.default[info.edition.toLowerCase()]}${info.version}/${
-				info.path
-			}`,
-		);
+		try {
+			images.push(defaultImage = await loadImage(
+				`${settings.repositories.raw.default[info.edition.toLowerCase()]}${info.version}/${
+					info.path
+				}`,
+			));
+		} catch {
+			// default texture doesn't exist either
+		}
 	}
 
-	/** @type {import("@napi-rs/canvas").Image[]} */
-	let images = [defaultImage, upscaledImage];
+	images.push(upscaledImage);
 
 	try {
 		const currentImage = await loadImage(
@@ -67,6 +72,13 @@ module.exports = async function generateComparison(message, attachment, info) {
 		// texture being submitted is a new texture, so there's nothing to compare against
 	}
 
+	if (images.length == 1) {
+		const img = await loadImage(images[0]);
+		return {
+			comparisonImage: await magnifyAttachment(img, "magnified.png"),
+			hasReference: null
+		}
+	}
 	// actually stitch the generated images
 	const stitched = await stitch(images);
 	return {

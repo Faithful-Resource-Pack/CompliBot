@@ -78,10 +78,12 @@ module.exports = async function makeEmbed(
 		embed.setImage(comparedUrl);
 		embed.setThumbnail(thumbnailUrl);
 
-		// if the texture doesn't exist yet only include the default/new caption rather than everything
-		embed.setFooter({
-			text: hasReference ? "Reference | New | Current" : "Reference | New",
-		});
+		if (hasReference !== null)
+			// if the texture doesn't exist yet only include the default/new caption rather than everything
+			embed.setFooter({
+				text: hasReference ? "Reference | New | Current" : "Reference | New",
+			});
+		else embed.setFooter({ text: "Something went wrong fetching the reference texture!" })
 
 		imgButtons = hasReference ? [submissionButtons] : [imageButtons];
 	} else {
