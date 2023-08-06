@@ -43,7 +43,8 @@ export async function imagesToGIF(images: Image[], framerate: number): Promise<M
 		const ctx = canvas.getContext("2d");
 		ctx.imageSmoothingEnabled = false;
 		ctx.drawImage(image, 0, 0, finalWidth, finalHeight);
-		encoder.setDelay(100 * framerate);
+		// interface takes ms but our framerate is in seconds
+		encoder.setDelay(1000 * framerate);
 		encoder.addFrame(ctx);
 	}
 	encoder.finish();
