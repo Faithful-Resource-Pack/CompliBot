@@ -88,7 +88,8 @@ export async function cycleComparison(
 	const embed = new MessageEmbed()
 		.setTitle(`[#${result.id}] ${result.name}`)
 		.setURL(`https://webapp.faithfulpack.net/#/gallery/java/32x/latest/all/?show=${id}`)
-		.addFields({ name: "Packs", value: packText }, ...addPathsToEmbed(result));
+		.addFields(addPathsToEmbed(result))
+		.setFooter({ text: packText });
 
 	let images = [];
 	for (let pack of displayed) {

@@ -1,7 +1,7 @@
 import { Client, Message, SelectMenuInteraction, MessageEmbed } from "@client";
 import { SelectMenu } from "@interfaces";
 import { info } from "@helpers/logger";
-import { MessageInteraction } from "discord.js";
+import { MessageEmbedFooter, MessageInteraction } from "discord.js";
 import { textureComparison } from "@functions/canvas/stitch";
 
 export const menu: SelectMenu = {
@@ -25,11 +25,16 @@ export const menu: SelectMenu = {
 		const [id, display] = interaction.values[0].split("__");
 		const [embed, magnified] = await textureComparison(interaction.client as Client, id, display);
 
-		if (embed.footer)
-			embed.setFooter({
-				text: `${embed.footer.text} | ${interaction.user.id}`,
-				iconURL: embed.footer.iconURL,
-			});
+		(embed as MessageEmbed).setFooter(
+			embed.footer
+				? {
+						text: `${embed.footer.text} | ${interaction.user.id}`,
+						iconURL: (embed.footer as MessageEmbedFooter).iconURL,
+				  }
+				: {
+						text: interaction.user.id,
+				  },
+		);
 
 		try {
 			message.delete();

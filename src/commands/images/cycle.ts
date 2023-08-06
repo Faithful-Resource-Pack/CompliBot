@@ -31,7 +31,7 @@ export const command: SlashCommand = {
 		.addNumberOption((option) =>
 			option
 				.setName("framerate")
-				.setDescription("The number of seconds between each frame.")
+				.setDescription("Seconds between each frame (default is 1).")
 				.setRequired(false),
 		),
 	execute: async (interaction: CommandInteraction) => {

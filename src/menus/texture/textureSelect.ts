@@ -1,7 +1,6 @@
 import { Client, Message, MessageEmbed, SelectMenuInteraction } from "@client";
 import { SelectMenu } from "@interfaces";
 import { info } from "@helpers/logger";
-import { textureButtons } from "@helpers/buttons";
 import { MessageEmbedFooter, MessageInteraction, MessageOptions } from "discord.js";
 import { getTextureMessageOptions } from "@functions/getTexture";
 import axios from "axios";
@@ -33,11 +32,16 @@ export const menu: SelectMenu = {
 			guild: interaction.guild,
 		});
 
-		if (replyOptions.embeds[0].footer)
-			(replyOptions.embeds[0] as MessageEmbed).setFooter({
-				text: `${replyOptions.embeds[0].footer.text} | ${interaction.user.id}`,
-				iconURL: (replyOptions.embeds[0].footer as MessageEmbedFooter).iconURL,
-			});
+		(replyOptions.embeds[0] as MessageEmbed).setFooter(
+			replyOptions.embeds[0].footer
+				? {
+						text: `${replyOptions.embeds[0].footer.text} | ${interaction.user.id}`,
+						iconURL: (replyOptions.embeds[0].footer as MessageEmbedFooter).iconURL,
+				  }
+				: {
+						text: interaction.user.id,
+				  },
+		);
 
 		try {
 			message.delete();
