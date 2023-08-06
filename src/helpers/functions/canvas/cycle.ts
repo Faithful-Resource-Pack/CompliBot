@@ -37,13 +37,13 @@ export async function imagesToGIF(images: Image[], framerate: number): Promise<M
 	const encoder = new GIFEncoder(finalWidth, finalHeight);
 	encoder.start();
 	encoder.setTransparent(true);
-	encoder.setFrameRate(framerate);
 	for (let image of images) {
 		// converting the Image() object to a Canvas() object
 		const canvas = createCanvas(finalWidth, finalHeight);
 		const ctx = canvas.getContext("2d");
 		ctx.imageSmoothingEnabled = false;
 		ctx.drawImage(image, 0, 0, finalWidth, finalHeight);
+		encoder.setDelay(100 * framerate);
 		encoder.addFrame(ctx);
 	}
 	encoder.finish();
