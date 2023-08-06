@@ -21,9 +21,9 @@ const getPackByChannel = require("./getPackByChannel");
 module.exports = async function downloadResults(client, channelResultID, instapass = false) {
 	let messages = await getMessages(client, channelResultID);
 	const channel = client.channels.cache.get(channelResultID);
-	const repoKey = await getPackByChannel(channelResultID, "results");
+	const packName = await getPackByChannel(channelResultID, "results");
 
-	if (DEBUG) console.log(`Starting texture download for pack: ${repoKey}`);
+	if (DEBUG) console.log(`Starting texture download for pack: ${packName}`);
 
 	// removes non-submission messages
 	messages = messages.filter((message) => message.embeds?.[0]?.fields?.[1]);
@@ -89,9 +89,9 @@ module.exports = async function downloadResults(client, channelResultID, instapa
 		// get all paths of the texture
 		for (let use of uses) {
 			const edition = use.editions[0].toLowerCase();
-			const folder = settings.repositories.repo_name[edition][repoKey]?.repo;
+			const folder = settings.repositories.repo_name[edition][packName]?.repo;
 			if (!folder && DEBUG)
-				console.log(`GitHub repository not found for pack and edition: ${repoKey} ${edition}`);
+				console.log(`GitHub repository not found for pack and edition: ${packName} ${edition}`);
 			const basePath = `./texturesPush/${folder}`;
 
 			const paths = await use.paths();
@@ -126,15 +126,15 @@ module.exports = async function downloadResults(client, channelResultID, instapa
 		// prepare the authors for the texture
 		allContribution.push({
 			date: texture.date,
-			resolution: repoKey.includes("32") ? 32 : 64, // stupid workaround but it works
-			pack: repoKey,
+			resolution: Number(packName.match(/\d+/)[0]), // stupid workaround but it works
+			pack: packName,
 			texture: `${texture.id}`,
 			authors: texture.authors,
 		});
 
 		// add contributor role to authors if possible
 		const guild = client.guilds.cache.get(channel.guildId);
-		const role = settings.submission.packs[repoKey].contributor_role;
+		const role = settings.submission.packs[packName].contributor_role;
 
 		// if the pack doesn't have a designated role
 		if (!role) continue;

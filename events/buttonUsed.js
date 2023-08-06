@@ -43,8 +43,7 @@ module.exports = {
 				return palette(interaction, image);
 			case "viewRawButton":
 			case "diffButton":
-				// finding which pack the channel "belongs" to
-				const repoKey = await getPackByChannel(message.channel.id);
+				const packName = await getPackByChannel(message.channel.id);
 
 				const id = (message.embeds?.[0]?.title?.match(/(?<=\[\#)(.*?)(?=\])/) ?? [
 					"NO ID FOUND",
@@ -59,7 +58,7 @@ module.exports = {
 					version: paths[0].versions.sort(minecraftSorter).reverse()[0],
 					edition: uses[0].editions[0],
 				};
-				const currentUrl = `${settings.repositories.raw[repoKey][info.edition.toLowerCase()]}${
+				const currentUrl = `${settings.repositories.raw[packName][info.edition.toLowerCase()]}${
 					info.version
 				}/${info.path}`;
 				const proposedUrl = message.embeds[0].thumbnail?.url;

@@ -6,16 +6,14 @@ const getPackByChannel = require("./getPackByChannel");
 
 /**
  * @author Evorp
- * @param {String} channelID used to determine which pack you're submitting to
+ * @param {String} pack pack to compare against (e.g. faithful_32x, classic_faithful_64x)
  * @param {import("discord.js").MessageAttachment} attachment raw texture being submitted
  * @param {{path: String, version: String, edition: String}} info used for searching for references/current
  * @returns {Promise<{comparisonImage: MessageAttachment, hasReference: Boolean}>} compared texture and info
  */
-module.exports = async function generateComparison(channelID, attachment, info) {
-	const repoKey = await getPackByChannel(channelID, "submit");
-
+module.exports = async function generateComparison(pack, attachment, info) {
 	let defaultRepo;
-	switch (repoKey) {
+	switch (pack) {
 		case "faithful_64x":
 			defaultRepo = settings.repositories.raw.faithful_32x;
 			break;
@@ -63,7 +61,7 @@ module.exports = async function generateComparison(channelID, attachment, info) 
 	try {
 		images.push(
 			await loadImage(
-				`${settings.repositories.raw[repoKey][info.edition.toLowerCase()]}${info.version}/${
+				`${settings.repositories.raw[pack][info.edition.toLowerCase()]}${info.version}/${
 					info.path
 				}`,
 			),

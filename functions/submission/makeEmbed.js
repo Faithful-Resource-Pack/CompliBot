@@ -3,6 +3,7 @@ const DEBUG = process.env.DEBUG.toLowerCase() == "true";
 
 const minecraftSorter = require("../../helpers/minecraftSorter");
 
+const getPackByChannel = require("./getPackByChannel");
 const getDimensions = require("../textures/getDimensions");
 const getImages = require("../../helpers/getImages");
 const generateComparison = require("./generateComparison");
@@ -26,8 +27,11 @@ module.exports = async function makeEmbed(
 	attachment,
 	param = new Object(),
 ) {
+	const packName = await getPackByChannel(message.channel.id, "submit");
+
 	/** @type {import("../../helpers/firestorm/texture_use.js").TextureUse[]} */
 	const uses = await texture.uses();
+
 	let pathText = [];
 	let imgButtons;
 
@@ -46,6 +50,14 @@ module.exports = async function makeEmbed(
 			);
 		}
 	}
+
+	// add previous contributions
+	if (param.description.startsWith("+"))
+		param.authors.push(
+			...(await texture.contributions())
+				.filter((i) => i.pack == packName)
+				.sort((a, b) => (a.date > b.date ? -1 : 1))[0].authors,
+		);
 
 	const paths = await uses[0].paths();
 	const info = {
@@ -72,7 +84,7 @@ module.exports = async function makeEmbed(
 	// generate comparison image if possible
 	if (dimension.width * dimension.height <= 262144) {
 		if (DEBUG) console.log(`Generating comparison image for texture: ${texture.name}`);
-		const { comparisonImage, hasReference } = await generateComparison(message.channel.id, attachment, info);
+		const { comparisonImage, hasReference } = await generateComparison(packName, attachment, info);
 		// send to #submission-spam for permanent urls
 		const [thumbnailUrl, comparedUrl] = await getImages(client, rawImage, comparisonImage);
 

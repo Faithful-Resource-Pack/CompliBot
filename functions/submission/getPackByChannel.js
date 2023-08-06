@@ -11,8 +11,7 @@ module.exports = async function getPackByChannel(channelID, channelType = "all")
 	for (let [packKey, packValue] of Object.entries(settings.submission.packs)) {
 		if (packValue.channels?.[channelType] == channelID) {
 			return packKey;
-		}
-		else if (Object.values(packValue.channels).includes(channelID) && channelType == "all") {
+		} else if (Object.values(packValue.channels).includes(channelID) && channelType == "all") {
 			return packKey;
 		}
 	}
