@@ -54,7 +54,7 @@ export async function animateAttachment(options: Options): Promise<MessageAttach
 			if (typeof frame === "number") frames.push({ index: frame, duration: frametime });
 			if (typeof frame === "object")
 				frames.push({ index: frame.index || 1, duration: frame.time || frametime });
-			else frames.push({ index: i, duration: frametime });
+			else if (typeof frame !== "number" && typeof frame !== "object") frames.push({ index: i, duration: frametime });
 		}
 	}
 
@@ -68,16 +68,14 @@ export async function animateAttachment(options: Options): Promise<MessageAttach
 	encoder.start();
 	encoder.setTransparent(true);
 
-	context.globalCompositeOperation = "copy";
-
 	// interpolation
 	if (MCMETA.animation.interpolate) {
 		let limit: number = frametime;
-
 		for (let i = 0; i < frames.length; i++) {
 			for (let y = 1; y <= limit; y++) {
 				context.clearRect(0, 0, canvas.width, canvas.height);
 				context.globalAlpha = 1;
+				context.globalCompositeOperation = "copy";
 
 				// frame i (always 100% opacity)
 				context.drawImage(
@@ -93,6 +91,7 @@ export async function animateAttachment(options: Options): Promise<MessageAttach
 				);
 
 				context.globalAlpha = ((100 / frametime) * y) / 100;
+				context.globalCompositeOperation = "source-atop";
 
 				// frame i + 1 (transition)
 				context.drawImage(
@@ -106,7 +105,6 @@ export async function animateAttachment(options: Options): Promise<MessageAttach
 					canvas.width,
 					canvas.width, // dWidth, dHeight
 				);
-
 				encoder.addFrame(context);
 			}
 		}
