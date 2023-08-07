@@ -104,7 +104,8 @@ module.exports = async function reactionMenu(client, reaction, user) {
 
 	if (
 		REACTION.emoji.id == settings.emojis.delete &&
-		(USER_ID === authorID || member.permissions.has(Permissions.FLAGS.ADMINISTRATOR))
+		(USER_ID === authorID || member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) &&
+		message.deletable
 	)
 		return await message.delete();
 
