@@ -73,6 +73,11 @@ export const command: SlashCommand = {
 		}
 
 		// multiple results
-		return await textureChoiceEmbed(interaction, "textureSelect", results, interaction.options.getString("pack"));
+		return await textureChoiceEmbed(
+			interaction,
+			"textureSelect",
+			results,
+			interaction.options.getString("pack"),
+		);
 	},
 };

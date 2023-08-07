@@ -79,6 +79,11 @@ export const command: SlashCommand = {
 		}
 
 		// multiple results
-		return await textureChoiceEmbed(interaction, "cycleSelect", results, `${display}__${framerate}`);
+		return await textureChoiceEmbed(
+			interaction,
+			"cycleSelect",
+			results,
+			`${display}__${framerate}`,
+		);
 	},
 };

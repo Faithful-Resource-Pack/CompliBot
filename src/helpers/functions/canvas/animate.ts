@@ -41,15 +41,11 @@ export async function animateAttachment(options: Options): Promise<MessageAttach
 	return await animate(options, dimension, baseCanvas);
 }
 
-
-
-
 export async function animate(
 	options: Options,
 	dimension: ISizeCalculationResult,
 	baseCanvas: Canvas,
-	): Promise<MessageAttachment> {
-
+): Promise<MessageAttachment> {
 	const canvas: Canvas = createCanvas(dimension.width, dimension.height);
 	const context: SKRSContext2D = canvas.getContext("2d");
 	context.imageSmoothingEnabled = false;
