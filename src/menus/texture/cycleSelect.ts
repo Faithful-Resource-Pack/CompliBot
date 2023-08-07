@@ -22,8 +22,8 @@ export const menu: SelectMenu = {
 			});
 		else interaction.deferUpdate();
 
-		const [id, display] = interaction.values[0].split("__");
-		const [embed, cycled] = await cycleComparison(interaction.client as Client, id, display);
+		const [id, display, framerate] = interaction.values[0].split("__");
+		const [embed, cycled] = await cycleComparison(interaction.client as Client, id, display, Number(framerate));
 
 		(embed as MessageEmbed).setFooter(
 			embed.footer
