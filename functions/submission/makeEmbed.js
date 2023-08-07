@@ -103,7 +103,10 @@ module.exports = async function makeEmbed(
 			embed.setFooter({
 				text: hasReference ? "Reference | New | Current" : "Reference | New",
 			});
-		else embed.setFooter({ text: "Something went wrong fetching the reference texture!" });
+		else {
+			embed.setFooter({ text: "Something went wrong fetching the reference texture!" });
+			embed.setColor(settings.colors.red);
+		}
 
 		imgButtons = hasReference ? [submissionButtons] : [imageButtons];
 	} else {
