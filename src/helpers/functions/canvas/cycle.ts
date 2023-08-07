@@ -7,7 +7,7 @@ import axios from "axios";
 import { Texture } from "@helpers/interfaces/firestorm";
 
 /**
- * Turns a 2d array of canvas images into a gif
+ * Turn array of canvas images into a gif
  * @author Superboxer47, EwanHowell, Evorp
  * @param images canvas images to stitch together
  * @param framerate framerate of the gif
@@ -22,8 +22,8 @@ export async function imagesToGIF(images: Image[], framerate: number): Promise<M
 	// magnify all images to an equal size
 	let finalWidth: number;
 	let finalHeight: number;
-	const maxWidth = 512;
-	const maxHeight = 512;
+	const maxWidth = 1024;
+	const maxHeight = 1024;
 	const maxAspect = maxWidth / maxHeight;
 	const aspect = biggestImage.width / biggestImage.height;
 	if (maxAspect < aspect) {
