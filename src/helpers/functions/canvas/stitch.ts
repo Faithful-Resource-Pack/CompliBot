@@ -1,30 +1,6 @@
 import { Canvas, loadImage } from "@napi-rs/canvas";
 
 /**
- * loads 2d array of texture urls as canvas images
- * @author Evorp
- * @param urls 2d array of urls to load
- * @returns
- */
-export async function loadImages(urls: string[][]): Promise<Canvas[][]> {
-	let loadedImages = [];
-	let i = 0; // forEach() causes a lot of issues with variable scope
-	for (let row of urls) {
-		loadedImages[i] = [];
-		for (let url of row) {
-			try {
-				let tmp = await loadImage(url);
-				loadedImages[i].push(tmp);
-			} catch {
-				/* texture hasn't been made yet or is invalid */
-			}
-		}
-		++i;
-	}
-	return loadedImages;
-}
-
-/**
  * @author EwanHowell
  * @param images pre-loaded canvas images
  * @param gap optionally specify pixel gap
@@ -126,21 +102,22 @@ export async function textureComparison(
 	}
 
 	// get texture urls
-	let urls = [];
+	let loadedImages = [];
 	let i = 0;
 	for (let packSet of displayed) {
-		urls.push([]);
+		loadedImages.push([]);
 		for (let pack of packSet) {
-			urls[i].push(
-				isTemplate
-					? formatName(pack, "64")[1]
-					: `${client.tokens.apiUrl}textures/${id}/url/${pack}/latest`,
-			);
+			const imgUrl = isTemplate
+				? formatName(pack, "64")[1]
+				: `${client.tokens.apiUrl}textures/${id}/url/${pack}/latest`;
+			try {
+				loadedImages[i].push(await loadImage(imgUrl));
+			} catch {
+				// image doesn't exist yet
+			}
 		}
 		++i; // can't use forEach because of scope problems (blame js)
 	}
-
-	const loadedImages = await loadImages(urls);
 
 	const longestRow = loadedImages.reduce((acc, item) => Math.max(acc, item.length), 0);
 	const stitched = await stitch(loadedImages, longestRow == 3 ? 4 : 2);

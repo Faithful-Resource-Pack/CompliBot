@@ -8,7 +8,7 @@ export default async function parseTextureName(
 ): Promise<any[]> {
 	name = name.toLowerCase().trim().replace(".png", "").replace("#", "").replace(/ /g, "_");
 
-	if (name.length < 3) {
+	if (name.length < 3 && isNaN(Number(name))) {
 		interaction
 			.editReply({
 				embeds: [
