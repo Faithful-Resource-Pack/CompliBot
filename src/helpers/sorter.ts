@@ -30,26 +30,13 @@ export const addPathsToEmbed = (texture: Texture): EmbedFieldData[] => {
 			.filter((el) => el.use === use.id)
 			.forEach((p) => {
 				const versions = p.versions.sort(minecraftSorter);
-				if (tmp[use.edition])
-					tmp[use.edition].push(
-						`\`[${
-							versions.length > 1
-								? `${versions[0]} — ${versions[versions.length - 1]}`
-								: versions[0]
-						}]\` ${use.assets !== null && use.assets !== "minecraft" ? use.assets + "/" : ""}${
-							p.name
-						}`,
-					);
-				else
-					tmp[use.edition] = [
-						`\`[${
-							versions.length > 1
-								? `${versions[0]} — ${versions[versions.length - 1]}`
-								: versions[0]
-						}]\` ${use.assets !== null && use.assets !== "minecraft" ? use.assets + "/" : ""}${
-							p.name
-						}`,
-					];
+				const versionRange = `\`[${
+					versions.length > 1 ? `${versions[0]} — ${versions[versions.length - 1]}` : versions[0]
+				}]\``;
+				console.log(use.assets, p.name);
+				const formatted = `${versionRange} ${use.assets !== null && !p.name.startsWith("assets") ? `assets/${use.assets}/` : ``}${p.name}`;
+				if (tmp[use.edition]) tmp[use.edition].push(formatted);
+				else tmp[use.edition] = [formatted];
 			});
 	});
 
@@ -59,7 +46,7 @@ export const addPathsToEmbed = (texture: Texture): EmbedFieldData[] => {
 		if (tmp[edition].length > 0) {
 			final.push({
 				name: edition.charAt(0).toLocaleUpperCase() + edition.slice(1),
-				value: tmp[edition].join("\n").replaceAll(" textures/", "../"),
+				value: tmp[edition].join("\n"),
 			});
 		}
 	});
