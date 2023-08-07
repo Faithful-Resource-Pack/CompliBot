@@ -1,13 +1,15 @@
-import { Canvas, SKRSContext2D, createCanvas, loadImage } from "@napi-rs/canvas";
+import { Canvas, SKRSContext2D, createCanvas, loadImage, Image } from "@napi-rs/canvas";
 import { MessageAttachment } from "discord.js";
 import getDimensions from "./getDimensions";
 import GIFEncoder from "./GIFEncoder";
+import { ISizeCalculationResult } from "image-size/dist/types/interface";
 
 interface Options {
 	url: string;
 	mcmeta?: Object;
 	name?: string;
 	magnify?: boolean;
+	image?: Image;
 }
 
 export async function animateAttachment(options: Options): Promise<MessageAttachment> {
@@ -34,11 +36,23 @@ export async function animateAttachment(options: Options): Promise<MessageAttach
 	baseContext.imageSmoothingEnabled = false;
 	baseContext.drawImage(baseIMG, 0, 0, baseCanvas.width, baseCanvas.height);
 
+	// ! TODO: Width & Height properties from MCMETA are not supported yet
+
+	return await animate(options, dimension, baseCanvas);
+}
+
+
+
+
+export async function animate(
+	options: Options,
+	dimension: ISizeCalculationResult,
+	baseCanvas: Canvas,
+	): Promise<MessageAttachment> {
+
 	const canvas: Canvas = createCanvas(dimension.width, dimension.height);
 	const context: SKRSContext2D = canvas.getContext("2d");
 	context.imageSmoothingEnabled = false;
-
-	// ! TODO: Width & Height properties from MCMETA are not supported yet
 
 	const MCMETA: any = typeof options.mcmeta === "object" ? options.mcmeta : { animation: {} };
 	if (!MCMETA.animation) MCMETA.animation = {};
@@ -51,10 +65,17 @@ export async function animateAttachment(options: Options): Promise<MessageAttach
 		for (let i = 0; i < MCMETA.animation.frames.length; i++) {
 			const frame = MCMETA.animation.frames[i];
 
-			if (typeof frame === "number") frames.push({ index: frame, duration: frametime });
-			if (typeof frame === "object")
-				frames.push({ index: frame.index || 1, duration: frame.time || frametime });
-			else if (typeof frame !== "number" && typeof frame !== "object") frames.push({ index: i, duration: frametime });
+			switch (typeof frame) {
+				case "number":
+					frames.push({ index: frame, duration: frametime });
+					break;
+				case "object":
+					frames.push({ index: frame.index || 1, duration: frame.time || frametime });
+					break;
+				default:
+					frames.push({ index: i, duration: frametime });
+					break;
+			}
 		}
 	}
 
