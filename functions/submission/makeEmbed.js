@@ -52,12 +52,14 @@ module.exports = async function makeEmbed(
 	}
 
 	// add previous contributions
-	if (param.description.startsWith("+"))
-		param.authors.push(
-			...(await texture.contributions())
-				.filter((i) => i.pack == packName)
-				.sort((a, b) => (a.date > b.date ? -1 : 1))[0].authors,
-		);
+	if (param.description.startsWith("+")) {
+		const allContributions = (await texture.contributions()).filter((i) => i?.pack == packName);
+		if (allContributions.length) {
+			const lastContribution = allContributions.sort((a, b) => (a.date > b.date ? -1 : 1))[0];
+			for (let author of lastContribution.authors)
+				if (!param.authors.includes(author)) param.authors.push(author);
+		}
+	}
 
 	const paths = await uses[0].paths();
 	const info = {
