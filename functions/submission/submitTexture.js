@@ -123,16 +123,17 @@ async function invalidSubmission(message, error = "Not given") {
 		});
 
 	try {
-		let msg;
-		if (message.deletable) {
-			msg = await message.reply({ embeds: [embed] });
-			setTimeout(() => message.delete(), 30010);
-		} else msg = await message.channel.send({ embeds: [embed] });
-		if (msg.deletable) {
-			addDeleteButton(msg);
-			setTimeout(() => msg.delete(), 30000);
-		}
+		const msg = message.deletable
+			? await message.reply({ embeds: [embed] })
+			: await message.channel.send({ embeds: [embed] });
+
+		if (msg.deletable) addDeleteButton(msg);
+
+		setTimeout(() => {
+			if (msg.deletable) msg.delete();
+			if (message.deletable) message.delete();
+		}, 30000);
 	} catch {
-		// message deleted before timeout or there's no author message
+		// message couldn't be deleted
 	}
 }
