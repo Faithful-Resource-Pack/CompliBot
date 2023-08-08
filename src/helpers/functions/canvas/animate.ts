@@ -40,7 +40,6 @@ export async function animateAttachment(options: Options): Promise<MessageAttach
 	baseContext.drawImage(baseIMG, 0, 0, baseCanvas.width, baseCanvas.height);
 
 	// ! TODO: Width & Height properties from MCMETA are not supported yet
-
 	return await animate(options, options.mcmeta, dimension, baseCanvas);
 }
 
@@ -69,20 +68,15 @@ export async function animateImage(options: Options): Promise<[MessageAttachment
 	baseContext.imageSmoothingEnabled = false;
 	baseContext.drawImage(baseIMG, 0, 0, baseCanvas.width, baseCanvas.height);
 
-	// Creating a constant mcmeta which gets set to the mcmeta of the supplied style by getting it from the mainMCMETA.json
-	// If the mcmeta of a style changes in the future, its mcmeta in the json will need to be changed manually
-
 	const mcmeta = mcmetaList[style];
 
-	// If you want the full explanation for this, go to the animate function, but this version is just used as a flag for an embed
 	const frametime = (mcmeta as any).animation?.frametime || 1;
-	const capped = frametime > 30;
 
 	if (style !== "none")
 		embed.addFields([
 			{ name: "MCMETA", value: `\`\`\`json\n${JSON.stringify(mcmeta, null, 4)}\`\`\`` },
 		]);
-	if (capped) embed.setFooter({ text: "Frametime was capped to save computing power" });
+	if (frametime > 30) embed.setFooter({ text: "Frametime capped to save computing power" });
 	return [await animate(options, mcmeta, dimension, baseCanvas), embed];
 }
 
@@ -96,19 +90,20 @@ export async function animate(
 	const context: SKRSContext2D = canvas.getContext("2d");
 	context.imageSmoothingEnabled = false;
 	let ratio = Math.round(dimension.height / dimension.width);
-	if (ratio < 1) ratio = 1; // This is if someone threw in a really wide image, which they shouldn't, but it would try to do a remainder with 0 and probably cause issues, so this is just a failsafe
+	if (ratio < 1) ratio = 1; // failsafe for wide images
 
 	mcmeta = typeof mcmeta === "object" ? mcmeta : { animation: {} };
 	if (!mcmeta.animation) mcmeta.animation = {};
 
 	let frametime: number = mcmeta.animation.frametime || 1;
-	// Prismarine alone would take 6600 iterations without a cap, so we cap it at 30 to save computing power and time
+
+	// prismarine would take 6600 iterations without a cap which isn't great for performance
 	if (frametime > 30) frametime = 30;
 
 	const frames = [];
 
 	// MCMETA.animation.frames is defined
-	if (mcmeta.animation.frames.length > 0) {
+	if (mcmeta.animation.frames?.length) {
 		for (let i = 0; i < mcmeta.animation.frames.length; i++) {
 			const frame = mcmeta.animation.frames[i];
 
