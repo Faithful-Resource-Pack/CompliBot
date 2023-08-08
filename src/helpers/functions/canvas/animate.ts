@@ -1,15 +1,18 @@
 import { Canvas, SKRSContext2D, createCanvas, loadImage, Image } from "@napi-rs/canvas";
-import { MessageAttachment } from "discord.js";
+import { MessageAttachment, MessageEmbed } from "discord.js";
 import getDimensions from "./getDimensions";
 import GIFEncoder from "./GIFEncoder";
 import { ISizeCalculationResult } from "image-size/dist/types/interface";
+import mcmetaList from "@json/mcmetas.json";
 
 interface Options {
 	url: string;
 	mcmeta?: Object;
 	name?: string;
 	magnify?: boolean;
+	embed?: MessageEmbed;
 	image?: Image;
+	style?: keyof typeof mcmetaList;
 }
 
 export async function animateAttachment(options: Options): Promise<MessageAttachment> {
@@ -38,28 +41,76 @@ export async function animateAttachment(options: Options): Promise<MessageAttach
 
 	// ! TODO: Width & Height properties from MCMETA are not supported yet
 
-	return await animate(options, dimension, baseCanvas);
+	return await animate(options, options.mcmeta, dimension, baseCanvas);
+}
+
+/**
+ * Takes in an image and an optional style and will animate the image with the style
+ * @author Superboxer47
+ * @param options options for the animation
+ * @returns animated gif of the provided image as a MessageAttachment and an Embed
+ */
+
+export async function animateImage(options: Options): Promise<[MessageAttachment, MessageEmbed]> {
+	const dimension = await getDimensions(options.url);
+	const style = options.style;
+	const embed = options.embed;
+
+	// Setting the width and height of the canvas to max
+	const maxWidth = 512;
+	const aspect = dimension.height / dimension.width;
+	dimension.height = maxWidth * aspect;
+	dimension.width = maxWidth;
+
+	// Making the baseCanvas to be animated
+	const baseIMG = await loadImage(options.url);
+	const baseCanvas: Canvas = createCanvas(dimension.width, dimension.height);
+	const baseContext: SKRSContext2D = baseCanvas.getContext("2d");
+	baseContext.imageSmoothingEnabled = false;
+	baseContext.drawImage(baseIMG, 0, 0, baseCanvas.width, baseCanvas.height);
+
+	// Creating a constant mcmeta which gets set to the mcmeta of the supplied style by getting it from the mainMCMETA.json
+	// If the mcmeta of a style changes in the future, its mcmeta in the json will need to be changed manually
+
+	const mcmeta = mcmetaList[style];
+
+	// If you want the full explanation for this, go to the animate function, but this version is just used as a flag for an embed
+	const frametime = (mcmeta as any).animation?.frametime || 1;
+	const capped = frametime > 30;
+
+	if (style !== "none")
+		embed.addFields([
+			{ name: "MCMETA", value: `\`\`\`json\n${JSON.stringify(mcmeta, null, 4)}\`\`\`` },
+		]);
+	if (capped) embed.setFooter({ text: "Frametime was capped to save computing power" });
+	return [await animate(options, mcmeta, dimension, baseCanvas), embed];
 }
 
 export async function animate(
 	options: Options,
+	mcmeta: any,
 	dimension: ISizeCalculationResult,
 	baseCanvas: Canvas,
 ): Promise<MessageAttachment> {
 	const canvas: Canvas = createCanvas(dimension.width, dimension.height);
 	const context: SKRSContext2D = canvas.getContext("2d");
 	context.imageSmoothingEnabled = false;
+	let ratio = Math.round(dimension.height / dimension.width);
+	if (ratio < 1) ratio = 1; // This is if someone threw in a really wide image, which they shouldn't, but it would try to do a remainder with 0 and probably cause issues, so this is just a failsafe
 
-	const MCMETA: any = typeof options.mcmeta === "object" ? options.mcmeta : { animation: {} };
-	if (!MCMETA.animation) MCMETA.animation = {};
+	mcmeta = typeof mcmeta === "object" ? mcmeta : { animation: {} };
+	if (!mcmeta.animation) mcmeta.animation = {};
 
-	const frametime: number = MCMETA.animation.frametime || 1;
+	let frametime: number = mcmeta.animation.frametime || 1;
+	// Prismarine alone would take 6600 iterations without a cap, so we cap it at 30 to save computing power and time
+	if (frametime > 30) frametime = 30;
+
 	const frames = [];
 
 	// MCMETA.animation.frames is defined
-	if (Array.isArray(MCMETA.animation.frames) && MCMETA.animation.frames.length > 0) {
-		for (let i = 0; i < MCMETA.animation.frames.length; i++) {
-			const frame = MCMETA.animation.frames[i];
+	if (mcmeta.animation.frames.length > 0) {
+		for (let i = 0; i < mcmeta.animation.frames.length; i++) {
+			const frame = mcmeta.animation.frames[i];
 
 			switch (typeof frame) {
 				case "number":
@@ -86,7 +137,7 @@ export async function animate(
 	encoder.setTransparent(true);
 
 	// interpolation
-	if (MCMETA.animation.interpolate) {
+	if (mcmeta.animation.interpolate) {
 		let limit: number = frametime;
 		for (let i = 0; i < frames.length; i++) {
 			for (let y = 1; y <= limit; y++) {
@@ -98,7 +149,7 @@ export async function animate(
 				context.drawImage(
 					baseCanvas, // image
 					0,
-					dimension.width * frames[i].index, // sx, sy
+					dimension.width * (frames[i].index % ratio), // sx, sy
 					dimension.width,
 					dimension.width, // sWidth, sHeight
 					0,
@@ -114,7 +165,7 @@ export async function animate(
 				context.drawImage(
 					baseCanvas, // image
 					0,
-					dimension.width * frames[(i + 1) % frames.length].index, // sx, sy
+					dimension.width * (frames[(i + 1) % frames.length].index % ratio), // sx, sy
 					dimension.width,
 					dimension.width, // sWidth, sHeight
 					0,
@@ -136,7 +187,7 @@ export async function animate(
 			context.drawImage(
 				baseCanvas, // image
 				0,
-				dimension.width * frames[i].index, // sx, sy
+				dimension.width * (frames[i].index % ratio), // sx, sy
 				dimension.width,
 				dimension.width, // sWidth, sHeight
 				0,
@@ -145,7 +196,7 @@ export async function animate(
 				canvas.width, // dWidth, dHeight
 			);
 
-			encoder.setDelay(50 * (frames[i].duration === 1 ? 3 : frames[i].duration));
+			encoder.setDelay(50 * frames[i].duration);
 			encoder.addFrame(context);
 		}
 
