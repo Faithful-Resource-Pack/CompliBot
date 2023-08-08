@@ -3,7 +3,7 @@ import { MessageAttachment, MessageEmbed } from "discord.js";
 import getDimensions from "./getDimensions";
 import GIFEncoder from "./GIFEncoder";
 import { ISizeCalculationResult } from "image-size/dist/types/interface";
-import mainMCMETA from "@json/MCMETAs.json";
+import mcmetaList from "@json/mcmetas.json";
 
 interface Options {
 	url: string;
@@ -12,7 +12,7 @@ interface Options {
 	magnify?: boolean;
 	embed?: MessageEmbed;
 	image?: Image;
-	style?: "prismarine" | "fire" | "flowing_lava" | "still_lava" | "magma" | "none";
+	style?: keyof typeof mcmetaList;
 }
 
 export async function animateAttachment(options: Options): Promise<MessageAttachment> {
@@ -72,7 +72,7 @@ export async function animateImage(options: Options): Promise<[MessageAttachment
 	// Creating a constant mcmeta which gets set to the mcmeta of the supplied style by getting it from the mainMCMETA.json
 	// If the mcmeta of a style changes in the future, its mcmeta in the json will need to be changed manually
 
-	const mcmeta = mainMCMETA[style];
+	const mcmeta = mcmetaList[style];
 
 	// If you want the full explanation for this, go to the animate function, but this version is just used as a flag for an embed
 	const frametime = (mcmeta as any).animation?.frametime || 1;
@@ -82,7 +82,7 @@ export async function animateImage(options: Options): Promise<[MessageAttachment
 		embed.addFields([
 			{ name: "MCMETA", value: `\`\`\`json\n${JSON.stringify(mcmeta, null, 4)}\`\`\`` },
 		]);
-	if (capped) embed.setFooter({ text: "Frametime capped at 30 to save computing power" });
+	if (capped) embed.setFooter({ text: "Frametime was capped to save computing power" });
 	return [await animate(options, mcmeta, dimension, baseCanvas), embed];
 }
 
@@ -102,17 +102,13 @@ export async function animate(
 	if (!mcmeta.animation) mcmeta.animation = {};
 
 	let frametime: number = mcmeta.animation.frametime || 1;
-	/*
-	 ** This next piece of code may seem arbitrary, but it serves a good purpose. Prismarine is the main offender but there may be more in the future. Prismarine has a frametime of 300 and 22 frames.
-	 ** This means the for loop for interpolation will get run 300 times per frame, so it needs to run 6600 times. This slows down the bot and can even crash it, plus who needs that slow of an animation?
-	 ** The next piece of code checks if the frametime is over 30, and if it is, sets it to 30. This lowers the time in the for loop for any longer frametime animations, saving computing power.
-	 */
+	// Prismarine alone would take 6600 iterations without a cap, so we cap it at 30 to save computing power and time
 	if (frametime > 30) frametime = 30;
 
 	const frames = [];
 
 	// MCMETA.animation.frames is defined
-	if (Array.isArray(mcmeta.animation.frames) && mcmeta.animation.frames.length > 0) {
+	if (mcmeta.animation.frames.length > 0) {
 		for (let i = 0; i < mcmeta.animation.frames.length; i++) {
 			const frame = mcmeta.animation.frames[i];
 
