@@ -13,24 +13,26 @@ export const command: SlashCommand = {
 				.setName("style")
 				.setDescription("The style of animation to use (Default is None)")
 				.addChoices(
-					{ name: "Prismarine", value: "Prismarine" },
-					{ name: "Fire", value: "Fire" },
-					{ name: "Flowing Lava", value: "Flowing Lava" },
-					{ name: "Still Lava", value: "Still Lava" },
-					{ name: "Magma", value: "Magma" },
-					{ name: "None", value: "None"}
+					{ name: "Prismarine", value: "prismarine" },
+					{ name: "Fire", value: "fire" },
+					{ name: "Flowing Lava", value: "flowing_lava" },
+					{ name: "Still Lava", value: "still_lava" },
+					{ name: "Magma", value: "magma" },
+					{ name: "None", value: "none" },
 				)
 				.setRequired(false),
 		)
 		.addAttachmentOption((o) =>
-		o.setName("image").setDescription("The tilesheet to animate").setRequired(false),
+			o.setName("image").setDescription("The tilesheet to animate").setRequired(false),
 		),
 	execute: (interaction: CommandInteraction) => {
-		const style = interaction.options.getString("style", false) ?? "None";
+		const style = interaction.options.getString("style", false) ?? "none";
 		generalSlashCommandImage(interaction, animateImage, {
 			style: style,
 			name: "animated.gif",
-			embed: new MessageEmbed().setTitle(`Animated ${style === "None" ? 'with no style' : `as ${style}`}`).setImage("attachment://animated.gif"),
+			embed: new MessageEmbed()
+				.setTitle(`Animated ${style === "none" ? "with no style" : `as ${style}`}`)
+				.setImage("attachment://animated.gif"),
 		});
 	},
 };

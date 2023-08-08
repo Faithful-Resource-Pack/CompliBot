@@ -3,12 +3,7 @@ import { MessageAttachment, MessageEmbed } from "discord.js";
 import getDimensions from "./getDimensions";
 import GIFEncoder from "./GIFEncoder";
 import { ISizeCalculationResult } from "image-size/dist/types/interface";
-import prismarineMCMETA from "@json/MCMETAs/prismarineMCMETA.json";
-import fireMCMETA from "@json/MCMETAs/fireMCMETA.json";
-import lavaFlowMCMETA from "@json/MCMETAs/lava_flowMCMETA.json";
-import lavaStillMCMETA from "@json/MCMETAs/lava_stillMCMETA.json";
-import magmaMCMETA from "@json/MCMETAs/magmaMCMETA.json";
-import blankMCMETA from "@json/MCMETAs/blank_animationMCMETA.json";
+import mainMCMETA from "@json/MCMETAs.json";
 
 interface Options {
 	url: string;
@@ -17,7 +12,7 @@ interface Options {
 	magnify?: boolean;
 	embed?: MessageEmbed;
 	image?: Image;
-	style?: "Prismarine" | "Fire" | "Flowing Lava" | "Still Lava" | "Magma" | "None";
+	style?: "prismarine" | "fire" | "flowing_lava" | "still_lava" | "magma" | "none";
 }
 
 export async function animateAttachment(options: Options): Promise<MessageAttachment> {
@@ -56,13 +51,10 @@ export async function animateAttachment(options: Options): Promise<MessageAttach
  * @returns animated gif of the provided image as a MessageAttachment and an Embed
  */
 
-export async function animateImage(
-	options: Options,
-): Promise<[MessageAttachment, MessageEmbed]> {
+export async function animateImage(options: Options): Promise<[MessageAttachment, MessageEmbed]> {
 	const dimension = await getDimensions(options.url);
 	const style = options.style;
 	const embed = options.embed;
-	let mcmeta: any = {};
 
 	// Setting the width and height of the canvas to max
 	const maxWidth = 512;
@@ -77,43 +69,25 @@ export async function animateImage(
 	baseContext.imageSmoothingEnabled = false;
 	baseContext.drawImage(baseIMG, 0, 0, baseCanvas.width, baseCanvas.height);
 
-	// Setting the MCMETA to the style selected from the loaded JSONs
-	// If the MCMETA of a style changes in the future, its respective JSON will need to be updated manually
+	// Creating a constant mcmeta which gets set to the mcmeta of the supplied style by getting it from the mainMCMETA.json
+	// If the mcmeta of a style changes in the future, its mcmeta in the json will need to be changed manually
 
-	switch (style) {
-		case "Prismarine":
-			mcmeta = prismarineMCMETA;
-			break;
-		case "Fire":
-			mcmeta = fireMCMETA;
-			break;
-		case "Flowing Lava":
-			mcmeta = lavaFlowMCMETA;
-			break;
-		case "Still Lava":
-			mcmeta = lavaStillMCMETA;
-			break;
-		case "Magma":
-			mcmeta = magmaMCMETA;
-			break;
-		default:
-			mcmeta = blankMCMETA;
-			break;
-	}
-	
+	const mcmeta = mainMCMETA.style[style];
+
 	// If you want the full explanation for this, go to the animate function, but this version is just used as a flag for an embed
+	// This seems like a roundabout way but you can't do this directly on mcmeta because the code still believes it could be any style option
 	const MCMETA: any = typeof mcmeta === "object" ? mcmeta : { animation: {} };
 	if (!MCMETA.animation) MCMETA.animation = {};
 	let frametime: number = MCMETA.animation.frametime || 1;
 	let capped: boolean;
 	if (frametime > 30) capped = true;
 
-	if (mcmeta != blankMCMETA) embed.addFields([{ name: "MCMETA", value: `\`\`\`json\n${JSON.stringify(mcmeta, null, 4)}\`\`\`` }]);
-	if (capped) embed.setFooter({ text: "Frametime capped at 30 to save computing power"});
-	return [
-		await animate(options, mcmeta, dimension, baseCanvas),
-		embed,
-	]
+	if (style !== "none")
+		embed.addFields([
+			{ name: "MCMETA", value: `\`\`\`json\n${JSON.stringify(mcmeta, null, 4)}\`\`\`` },
+		]);
+	if (capped) embed.setFooter({ text: "Frametime capped at 30 to save computing power" });
+	return [await animate(options, mcmeta, dimension, baseCanvas), embed];
 }
 
 export async function animate(
@@ -122,7 +96,6 @@ export async function animate(
 	dimension: ISizeCalculationResult,
 	baseCanvas: Canvas,
 ): Promise<MessageAttachment> {
-
 	const canvas: Canvas = createCanvas(dimension.width, dimension.height);
 	const context: SKRSContext2D = canvas.getContext("2d");
 	context.imageSmoothingEnabled = false;
@@ -133,11 +106,11 @@ export async function animate(
 	if (!MCMETA.animation) MCMETA.animation = {};
 
 	let frametime: number = MCMETA.animation.frametime || 1;
-	/* 
-	** This next piece of code may seem arbitrary, but it serves a good purpose. Prismarine is the main offendor but there may be more in the future. Prismarine has a frametime of 300 and 22 frames.
-	** This means the for loop for interpolation will get run 300 times per frame, so it needs to run 6600 times. This slows down the bot and can even crash it, plus who needs that slow of an animation?
-	** The next piece of code checks if the frametime is over 30, and if it is, sets it to 30. This lowers the time in the for loop for any longer frametime animations, saving computing power.
-	*/ 
+	/*
+	 ** This next piece of code may seem arbitrary, but it serves a good purpose. Prismarine is the main offender but there may be more in the future. Prismarine has a frametime of 300 and 22 frames.
+	 ** This means the for loop for interpolation will get run 300 times per frame, so it needs to run 6600 times. This slows down the bot and can even crash it, plus who needs that slow of an animation?
+	 ** The next piece of code checks if the frametime is over 30, and if it is, sets it to 30. This lowers the time in the for loop for any longer frametime animations, saving computing power.
+	 */
 	if (frametime > 30) frametime = 30;
 
 	const frames = [];
@@ -179,7 +152,7 @@ export async function animate(
 				context.clearRect(0, 0, canvas.width, canvas.height);
 				context.globalAlpha = 1;
 				context.globalCompositeOperation = "copy";
-				
+
 				// frame i (always 100% opacity)
 				context.drawImage(
 					baseCanvas, // image
