@@ -121,7 +121,7 @@ export async function animate(
 	mcmeta: any,
 	dimension: ISizeCalculationResult,
 	baseCanvas: Canvas,
-	): Promise<MessageAttachment> {
+): Promise<MessageAttachment> {
 
 	const canvas: Canvas = createCanvas(dimension.width, dimension.height);
 	const context: SKRSContext2D = canvas.getContext("2d");
