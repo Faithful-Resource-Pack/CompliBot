@@ -1,5 +1,4 @@
 {
-    "style": {
         "prismarine": {
             "animation": {
               "frametime": 300,
@@ -132,5 +131,4 @@
         "none": {
             "animation": {}
         }
-    }
 }

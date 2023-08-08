@@ -72,15 +72,11 @@ export async function animateImage(options: Options): Promise<[MessageAttachment
 	// Creating a constant mcmeta which gets set to the mcmeta of the supplied style by getting it from the mainMCMETA.json
 	// If the mcmeta of a style changes in the future, its mcmeta in the json will need to be changed manually
 
-	const mcmeta = mainMCMETA.style[style];
+	const mcmeta = mainMCMETA[style];
 
 	// If you want the full explanation for this, go to the animate function, but this version is just used as a flag for an embed
-	// This seems like a roundabout way but you can't do this directly on mcmeta because the code still believes it could be any style option
-	const MCMETA: any = typeof mcmeta === "object" ? mcmeta : { animation: {} };
-	if (!MCMETA.animation) MCMETA.animation = {};
-	let frametime: number = MCMETA.animation.frametime || 1;
-	let capped: boolean;
-	if (frametime > 30) capped = true;
+	const frametime = (mcmeta as any).animation?.frametime || 1;
+	const capped = frametime > 30;
 
 	if (style !== "none")
 		embed.addFields([
@@ -99,13 +95,13 @@ export async function animate(
 	const canvas: Canvas = createCanvas(dimension.width, dimension.height);
 	const context: SKRSContext2D = canvas.getContext("2d");
 	context.imageSmoothingEnabled = false;
-	let ratio: number = Math.round(dimension.height / dimension.width);
+	let ratio = Math.round(dimension.height / dimension.width);
 	if (ratio < 1) ratio = 1; // This is if someone threw in a really wide image, which they shouldn't, but it would try to do a remainder with 0 and probably cause issues, so this is just a failsafe
 
-	const MCMETA: any = typeof mcmeta === "object" ? mcmeta : { animation: {} };
-	if (!MCMETA.animation) MCMETA.animation = {};
+	mcmeta = typeof mcmeta === "object" ? mcmeta : { animation: {} };
+	if (!mcmeta.animation) mcmeta.animation = {};
 
-	let frametime: number = MCMETA.animation.frametime || 1;
+	let frametime: number = mcmeta.animation.frametime || 1;
 	/*
 	 ** This next piece of code may seem arbitrary, but it serves a good purpose. Prismarine is the main offender but there may be more in the future. Prismarine has a frametime of 300 and 22 frames.
 	 ** This means the for loop for interpolation will get run 300 times per frame, so it needs to run 6600 times. This slows down the bot and can even crash it, plus who needs that slow of an animation?
@@ -116,9 +112,9 @@ export async function animate(
 	const frames = [];
 
 	// MCMETA.animation.frames is defined
-	if (Array.isArray(MCMETA.animation.frames) && MCMETA.animation.frames.length > 0) {
-		for (let i = 0; i < MCMETA.animation.frames.length; i++) {
-			const frame = MCMETA.animation.frames[i];
+	if (Array.isArray(mcmeta.animation.frames) && mcmeta.animation.frames.length > 0) {
+		for (let i = 0; i < mcmeta.animation.frames.length; i++) {
+			const frame = mcmeta.animation.frames[i];
 
 			switch (typeof frame) {
 				case "number":
@@ -145,7 +141,7 @@ export async function animate(
 	encoder.setTransparent(true);
 
 	// interpolation
-	if (MCMETA.animation.interpolate) {
+	if (mcmeta.animation.interpolate) {
 		let limit: number = frametime;
 		for (let i = 0; i < frames.length; i++) {
 			for (let y = 1; y <= limit; y++) {
