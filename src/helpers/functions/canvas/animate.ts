@@ -1,7 +1,8 @@
 import { Canvas, SKRSContext2D, createCanvas, loadImage, Image } from "@napi-rs/canvas";
-import { MessageAttachment } from "discord.js";
+import { MessageAttachment, MessageEmbed } from "discord.js";
 import getDimensions from "./getDimensions";
 import GIFEncoder from "./GIFEncoder";
+import axios from "axios";
 import { ISizeCalculationResult } from "image-size/dist/types/interface";
 
 interface Options {
@@ -9,7 +10,9 @@ interface Options {
 	mcmeta?: Object;
 	name?: string;
 	magnify?: boolean;
+	embed?: MessageEmbed;
 	image?: Image;
+	style?: "Prismarine" | "Fire" | "Flowing Lava" | "Still Lava" | "Magma";
 }
 
 export async function animateAttachment(options: Options): Promise<MessageAttachment> {
@@ -38,22 +41,111 @@ export async function animateAttachment(options: Options): Promise<MessageAttach
 
 	// ! TODO: Width & Height properties from MCMETA are not supported yet
 
-	return await animate(options, dimension, baseCanvas);
+	return await animate(options, options.mcmeta, dimension, baseCanvas);
+}
+
+/**
+ * Takes in an image and an optional style and will animate the image with the style
+ * @author Superboxer47
+ * @param options options for the animation
+ * @returns animated gif of the provided image as a MessageAttachment and an Embed
+ */
+
+export async function animateImage(
+	options: Options,
+): Promise<[MessageAttachment, MessageEmbed]> {
+	const dimension = await getDimensions(options.url);
+	const style = options.style;
+	const embed = options.embed;
+	let mcmeta: any = {};
+	let pathName: string = "";
+
+	// Setting the width and height of the canvas to max
+	const maxWidth = 512;
+	const aspect = dimension.height / dimension.width;
+	dimension.height = maxWidth * aspect;
+	dimension.width = maxWidth;
+
+	// Making the baseCanvas to be animated
+	const baseIMG = await loadImage(options.url);
+	const baseCanvas: Canvas = createCanvas(dimension.width, dimension.height);
+	const baseContext: SKRSContext2D = baseCanvas.getContext("2d");
+	baseContext.imageSmoothingEnabled = false;
+	baseContext.drawImage(baseIMG, 0, 0, baseCanvas.width, baseCanvas.height);
+
+	// Setting the pathName to be used from the style selected
+
+	switch (style) {
+		case "Prismarine":
+			pathName = "prismarine";
+			break;
+		case "Fire":
+			pathName = "fire_0";
+			break;
+		case "Flowing Lava":
+			pathName = "lava_flow";
+			break;
+		case "Still Lava":
+			pathName = "lava_still";
+			break;
+		case "Magma":
+			pathName = "magma";
+			break;
+		default:
+			pathName = "nether_portal" // This is an animated texture with no additional details like frames or frametime, so it's a good default
+			break;
+	}
+
+	// Getting the mcmeta file from the default repository
+	try {
+		mcmeta = (
+			await axios.get(
+				`https://raw.githubusercontent.com/CompliBot/Default-Java/1.20.1/assets/
+				minecraft/textures/block/${pathName}.png.mcmeta`,
+			)
+		).data;
+	} catch {
+		mcmeta = { __comment: "MCMETA file not found, please check default repository!" };
+	}
+	
+	// If you want the full explanation for this, go to the animate function, but this version is just used as a flag for an embed
+	const MCMETA: any = typeof mcmeta === "object" ? mcmeta : { animation: {} };
+	if (!MCMETA.animation) MCMETA.animation = {};
+	let frametime: number = MCMETA.animation.frametime || 1;
+	let capped: boolean;
+	if (frametime > 30) capped = true;
+
+	if (pathName !== "nether_portal") embed.addFields([{ name: "MCMETA", value: `\`\`\`json\n${JSON.stringify(mcmeta, null, 4)}\`\`\`` }]);
+	if (capped) embed.setFooter({ text: "Frametime capped at 30 to save computing power"});
+	return [
+		await animate(options, mcmeta, dimension, baseCanvas),
+		embed,
+	]
 }
 
 export async function animate(
 	options: Options,
+	mcmeta: any,
 	dimension: ISizeCalculationResult,
 	baseCanvas: Canvas,
-): Promise<MessageAttachment> {
+	): Promise<MessageAttachment> {
+
 	const canvas: Canvas = createCanvas(dimension.width, dimension.height);
 	const context: SKRSContext2D = canvas.getContext("2d");
 	context.imageSmoothingEnabled = false;
+	const ratio = Math.round(dimension.height / dimension.width);
 
-	const MCMETA: any = typeof options.mcmeta === "object" ? options.mcmeta : { animation: {} };
+	const MCMETA: any = typeof mcmeta === "object" ? mcmeta : { animation: {} };
 	if (!MCMETA.animation) MCMETA.animation = {};
 
-	const frametime: number = MCMETA.animation.frametime || 1;
+	let frametime: number = MCMETA.animation.frametime || 1;
+	/* 
+	** This next piece of code may seem arbitrary, but it serves a good purpose. Prismarine is the main offendor but there may be more in the future. Prismarine has a frametime of 300 and 22 frames.
+	** This means the for loop for interpolation will get run 300 times per frame, so it needs to run 6600 times. This slows down the bot and can even crash it, plus who needs that slow of an animation?
+	** The next piece of code checks if the frametime is over 30, and if it is, sets it to 30. This lowers the time in the for loop for any longer frametime animations, saving computing power.
+	*/ 
+	if (frametime > 30) frametime = 30;
+
 	const frames = [];
 
 	// MCMETA.animation.frames is defined
@@ -93,12 +185,12 @@ export async function animate(
 				context.clearRect(0, 0, canvas.width, canvas.height);
 				context.globalAlpha = 1;
 				context.globalCompositeOperation = "copy";
-
+				
 				// frame i (always 100% opacity)
 				context.drawImage(
 					baseCanvas, // image
 					0,
-					dimension.width * frames[i].index, // sx, sy
+					dimension.width * (frames[i].index % ratio), // sx, sy
 					dimension.width,
 					dimension.width, // sWidth, sHeight
 					0,
@@ -114,7 +206,7 @@ export async function animate(
 				context.drawImage(
 					baseCanvas, // image
 					0,
-					dimension.width * frames[(i + 1) % frames.length].index, // sx, sy
+					dimension.width * (frames[(i + 1) % frames.length].index % ratio), // sx, sy
 					dimension.width,
 					dimension.width, // sWidth, sHeight
 					0,
@@ -136,7 +228,7 @@ export async function animate(
 			context.drawImage(
 				baseCanvas, // image
 				0,
-				dimension.width * frames[i].index, // sx, sy
+				dimension.width * (frames[i].index % ratio), // sx, sy
 				dimension.width,
 				dimension.width, // sWidth, sHeight
 				0,
@@ -145,7 +237,7 @@ export async function animate(
 				canvas.width, // dWidth, dHeight
 			);
 
-			encoder.setDelay(50 * (frames[i].duration === 1 ? 3 : frames[i].duration));
+			encoder.setDelay(50 * frames[i].duration);
 			encoder.addFrame(context);
 		}
 
