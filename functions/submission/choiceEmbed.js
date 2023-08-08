@@ -2,14 +2,6 @@ const { MessageEmbed, MessageActionRow, MessageSelectMenu } = require("discord.j
 const addDeleteButton = require("../../helpers/addDeleteButton");
 
 const settings = require("../../resources/settings.json");
-const strings = require("../../resources/strings.json");
-
-/**
- * @typedef {Object} Choice
- * @property {String} label choice title
- * @property {String} description subtitle
- * @property {String} value value being sent to selectMenuUsed
- */
 
 /**
  * Selection menu for dealing with multiple valid options
