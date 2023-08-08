@@ -2,8 +2,13 @@ import { Canvas, SKRSContext2D, createCanvas, loadImage, Image } from "@napi-rs/
 import { MessageAttachment, MessageEmbed } from "discord.js";
 import getDimensions from "./getDimensions";
 import GIFEncoder from "./GIFEncoder";
-import axios from "axios";
 import { ISizeCalculationResult } from "image-size/dist/types/interface";
+import prismarineMCMETA from "@json/MCMETAs/prismarineMCMETA.json";
+import fireMCMETA from "@json/MCMETAs/fireMCMETA.json";
+import lavaFlowMCMETA from "@json/MCMETAs/lava_flowMCMETA.json";
+import lavaStillMCMETA from "@json/MCMETAs/lava_stillMCMETA.json";
+import magmaMCMETA from "@json/MCMETAs/magmaMCMETA.json";
+import blankMCMETA from "@json/MCMETAs/blank_animationMCMETA.json";
 
 interface Options {
 	url: string;
@@ -12,7 +17,7 @@ interface Options {
 	magnify?: boolean;
 	embed?: MessageEmbed;
 	image?: Image;
-	style?: "Prismarine" | "Fire" | "Flowing Lava" | "Still Lava" | "Magma";
+	style?: "Prismarine" | "Fire" | "Flowing Lava" | "Still Lava" | "Magma" | "None";
 }
 
 export async function animateAttachment(options: Options): Promise<MessageAttachment> {
@@ -58,7 +63,6 @@ export async function animateImage(
 	const style = options.style;
 	const embed = options.embed;
 	let mcmeta: any = {};
-	let pathName: string = "";
 
 	// Setting the width and height of the canvas to max
 	const maxWidth = 512;
@@ -73,39 +77,28 @@ export async function animateImage(
 	baseContext.imageSmoothingEnabled = false;
 	baseContext.drawImage(baseIMG, 0, 0, baseCanvas.width, baseCanvas.height);
 
-	// Setting the pathName to be used from the style selected
+	// Setting the MCMETA to the style selected from the loaded JSONs
+	// If the MCMETA of a style changes in the future, its respective JSON will need to be updated manually
 
 	switch (style) {
 		case "Prismarine":
-			pathName = "prismarine";
+			mcmeta = prismarineMCMETA;
 			break;
 		case "Fire":
-			pathName = "fire_0";
+			mcmeta = fireMCMETA;
 			break;
 		case "Flowing Lava":
-			pathName = "lava_flow";
+			mcmeta = lavaFlowMCMETA;
 			break;
 		case "Still Lava":
-			pathName = "lava_still";
+			mcmeta = lavaStillMCMETA;
 			break;
 		case "Magma":
-			pathName = "magma";
+			mcmeta = magmaMCMETA;
 			break;
 		default:
-			pathName = "nether_portal" // This is an animated texture with no additional details like frames or frametime, so it's a good default
+			mcmeta = blankMCMETA;
 			break;
-	}
-
-	// Getting the mcmeta file from the default repository
-	try {
-		mcmeta = (
-			await axios.get(
-				`https://raw.githubusercontent.com/CompliBot/Default-Java/1.20.1/assets/
-				minecraft/textures/block/${pathName}.png.mcmeta`,
-			)
-		).data;
-	} catch {
-		mcmeta = { __comment: "MCMETA file not found, please check default repository!" };
 	}
 	
 	// If you want the full explanation for this, go to the animate function, but this version is just used as a flag for an embed
@@ -115,7 +108,7 @@ export async function animateImage(
 	let capped: boolean;
 	if (frametime > 30) capped = true;
 
-	if (pathName !== "nether_portal") embed.addFields([{ name: "MCMETA", value: `\`\`\`json\n${JSON.stringify(mcmeta, null, 4)}\`\`\`` }]);
+	if (mcmeta != blankMCMETA) embed.addFields([{ name: "MCMETA", value: `\`\`\`json\n${JSON.stringify(mcmeta, null, 4)}\`\`\`` }]);
 	if (capped) embed.setFooter({ text: "Frametime capped at 30 to save computing power"});
 	return [
 		await animate(options, mcmeta, dimension, baseCanvas),
@@ -133,7 +126,8 @@ export async function animate(
 	const canvas: Canvas = createCanvas(dimension.width, dimension.height);
 	const context: SKRSContext2D = canvas.getContext("2d");
 	context.imageSmoothingEnabled = false;
-	const ratio = Math.round(dimension.height / dimension.width);
+	let ratio: number = Math.round(dimension.height / dimension.width);
+	if (ratio < 1) ratio = 1; // This is if someone threw in a really wide image, which they shouldn't, but it would try to do a remainder with 0 and probably cause issues, so this is just a failsafe
 
 	const MCMETA: any = typeof mcmeta === "object" ? mcmeta : { animation: {} };
 	if (!MCMETA.animation) MCMETA.animation = {};
