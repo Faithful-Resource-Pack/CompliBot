@@ -52,7 +52,7 @@ module.exports = async function retrieveSubmission(
 			(message) =>
 				message.embeds[0].fields[1] !== undefined &&
 				message.embeds[0].fields[1].value.includes(settings.emojis.pending),
-		);
+		).reverse(); // upload from oldest to newest
 
 	// map messages adding reacts count, embed and message (easier management like that)
 	messages = messages.map((message) => {
