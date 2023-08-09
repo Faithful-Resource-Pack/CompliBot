@@ -31,7 +31,7 @@ module.exports = async function downloadResults(client, channelResultID, instapa
 	let textures;
 	if (!instapass) {
 		// get messages from the same day
-		let delayedDate = new Date();
+		const delayedDate = new Date();
 		messages = messages.filter((message) => {
 			let messageDate = new Date(message.createdTimestamp);
 			return (
@@ -83,10 +83,9 @@ module.exports = async function downloadResults(client, channelResultID, instapa
 		const textureInfo = await texturesCollection.get(texture.id);
 		if (instapass) instapassName = textureInfo.name;
 
+		// push all the texture's paths into array
 		const uses = await textureInfo.uses();
-
 		let allPaths = [];
-		// get all paths of the texture
 		for (let use of uses) {
 			const edition = use.editions[0].toLowerCase();
 			const folder = settings.repositories.repo_name[edition][packName]?.repo;
@@ -108,11 +107,11 @@ module.exports = async function downloadResults(client, channelResultID, instapa
 		const res = await fetch(texture.url);
 		const buffer = await res.arrayBuffer();
 
-		// download the texture to all its paths
+		// use those generated paths to create the full path
 		for (let path of allPaths) {
 			// create full folder path
 			await promises
-				.mkdir(path.substr(0, path.lastIndexOf("/")), { recursive: true })
+				.mkdir(path.substring(0, path.lastIndexOf("/")), { recursive: true })
 				.catch((err) => {
 					if (DEBUG) console.error(err);
 				});

@@ -12,11 +12,10 @@ const DEBUG = process.env.DEBUG.toLowerCase() == "true";
  */
 module.exports = async function instapass(client, message) {
 	let channelOutID;
-	let channelArray;
 
 	for (let pack of Object.values(settings.submission.packs)) {
 		// picks up instapassing in both community and council phases
-		channelArray = Object.values(pack.channels);
+		const channelArray = Object.values(pack.channels);
 		if (channelArray.includes(message.channel.id)) {
 			channelOutID = pack.channels.results;
 			break;

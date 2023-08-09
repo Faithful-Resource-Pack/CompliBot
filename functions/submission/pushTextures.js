@@ -35,7 +35,7 @@ module.exports = async function pushTextures(
 				} catch (e) {
 					// branch doesn't exist, octokit causes an error
 				}
-				fs.rmdirSync(`./texturesPush/${packGithub.repo}/${branch}/`, { recursive: true });
+				fs.rm(`./texturesPush/${packGithub.repo}/${branch}/`, { recursive: true });
 			}
 		}
 	}
@@ -52,7 +52,7 @@ module.exports = async function pushTextures(
 					`./texturesPush/${packGithub.repo}/${branch}/`,
 				);
 
-				fs.rmdirSync(`./texturesPush/${packGithub.repo}/${branch}/`, { recursive: true });
+				fs.rm(`./texturesPush/${packGithub.repo}/${branch}/`, { recursive: true });
 			}
 		}
 	}

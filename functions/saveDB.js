@@ -5,7 +5,7 @@ const pushToGitHub = require("../functions/pushToGitHub");
 const { join } = require("path");
 
 /**
- * Save the Database distant files to local, then push them to the JSON repository (using allCollection as base)
+ * push all database files to github (using allCollection as base)
  * @author Juknum
  * @param {String} commitMessage
  */
@@ -15,7 +15,7 @@ module.exports = async function saveDB(commitMessage) {
 	mkdirSync(folderPath, { recursive: true });
 
 	for (const [key, collection] of Object.entries(allCollection)) {
-		let text = JSON.stringify(await collection.read_raw(), null, 0);
+		const text = JSON.stringify(await collection.read_raw(), null, 0);
 		writeFileSync(join(folderPath, key + ".json"), text, { flag: "w+", encoding: "utf-8" });
 	}
 
