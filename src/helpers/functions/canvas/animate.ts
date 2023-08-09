@@ -73,9 +73,9 @@ export async function animateImage(options: Options): Promise<[MessageAttachment
 
 	if (style !== "none")
 		embed.addFields([
-			{ name: "MCMETA", value: `\`\`\`json\n${JSON.stringify(mcmeta, null, 4)}\`\`\`` },
+			{ name: "MCMETA", value: `\`\`\`json\n${JSON.stringify(mcmeta, null, 2)}\`\`\`` },
 		]);
-	if (frametime > 30) embed.setFooter({ text: "Frametime capped to save computing power" });
+	if (frametime > 15) embed.setFooter({ text: "Frametime reduced for optimization" });
 	return [await animate(options, mcmeta, dimension, baseCanvas), embed];
 }
 
@@ -97,7 +97,7 @@ export async function animate(
 	let frametime: number = mcmeta.animation.frametime || 1;
 
 	// prismarine would take 6600 iterations without a cap which isn't great for performance
-	if (frametime > 30) frametime = 30;
+	if (frametime > 15) frametime = 15;
 
 	const frames = [];
 
