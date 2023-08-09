@@ -22,7 +22,7 @@ module.exports = async function pushTextures(
 
 	for (let packGithub of GITHUB_JAVA) {
 		for (let branch of BRANCHES_JAVA) {
-			if (checkFolder(`./texturesPush/${packGithub.repo}/${branch}/assets`)) {
+			if (checkFolder(`./texturesPush/${packGithub.repo}/${branch}`)) {
 				if (DEBUG) console.log(`PUSHING: ${packGithub.repo} (${branch})`);
 				try {
 					await pushToGitHub(
@@ -42,7 +42,7 @@ module.exports = async function pushTextures(
 
 	for (let packGithub of GITHUB_BEDROCK) {
 		for (let branch of BRANCHES_BEDROCK) {
-			if (checkFolder(`./texturesPush/${packGithub.repo}/${branch}/textures`)) {
+			if (checkFolder(`./texturesPush/${packGithub.repo}/${branch}`)) {
 				if (DEBUG) console.log(`PUSHING: ${packGithub.repo} (${branch})`);
 				await pushToGitHub(
 					packGithub.org,
