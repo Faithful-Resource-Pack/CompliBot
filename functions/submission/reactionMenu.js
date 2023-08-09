@@ -8,16 +8,16 @@ const DEBUG = process.env.DEBUG.toLowerCase() == "true";
  * Opens reaction tray, listens for reaction, and closes tray
  * @author Evorp, Juknum
  * @param {import("discord.js").Client} client
- * @param {import("discord.js").MessageReaction} reaction
+ * @param {import("discord.js").MessageReaction} menuReaction
  * @param {import("discord.js").User} user person who reacted
  * @see interactionCreate (where all button stuff is handled)
  */
-module.exports = async function reactionMenu(client, reaction, user) {
-	const message = await reaction.message.fetch();
+module.exports = async function reactionMenu(client, menuReaction, user) {
+	const message = await menuReaction.message.fetch();
 	const member = await message.guild.members.cache.get(user.id);
 	if (member.bot) return;
 
-	let EMOJIS = [
+	let trayReactions = [
 		settings.emojis.see_less,
 		settings.emojis.delete,
 		settings.emojis.instapass,
@@ -25,12 +25,12 @@ module.exports = async function reactionMenu(client, reaction, user) {
 	];
 
 	// if you don't check to close tray first, the bot won't listen for reactions upon restart
-	if (reaction.emoji.id == settings.emojis.see_less) {
-		removeReact(message, EMOJIS);
+	if (menuReaction.emoji.id == settings.emojis.see_less) {
+		removeReact(message, trayReactions);
 		await message.react(client.emojis.cache.get(settings.emojis.see_more));
 	}
 
-	if (reaction.emoji.id !== settings.emojis.see_more || !message.embeds[0]?.fields?.length) return;
+	if (menuReaction.emoji.id !== settings.emojis.see_more || !message.embeds[0]?.fields?.length) return;
 	if (DEBUG) console.log(`Reaction tray opened by: ${user.username}`);
 
 	// first author in the author field is always the person who submitted
@@ -43,19 +43,19 @@ module.exports = async function reactionMenu(client, reaction, user) {
 			authorID !== user.id) ||
 		!message.embeds[0].fields[1].value.includes(settings.emojis.pending)
 	)
-		return reaction.users.remove(user.id).catch((err) => {
+		return menuReaction.users.remove(user.id).catch((err) => {
 			if (DEBUG) console.error(err);
 		});
 
 	// remove the arrow emoji and generate the tray
-	reaction.remove().catch((err) => {
+	menuReaction.remove().catch((err) => {
 		if (DEBUG) console.error(err);
 	});
 
 	// if the submission is in council remove delete reaction (avoid misclick)
 	const councilChannels = Object.values(settings.submission.packs).map((i) => i.channels.council);
 	if (councilChannels.includes(message.channel.id)) {
-		EMOJIS = EMOJIS.filter((emoji) => emoji !== settings.emojis.delete);
+		trayReactions = trayReactions.filter((emoji) => emoji !== settings.emojis.delete);
 	}
 
 	// remove instapass/invalid if just the author is reacting
@@ -63,16 +63,16 @@ module.exports = async function reactionMenu(client, reaction, user) {
 		!member.permissions.has(Permissions.FLAGS.ADMINISTRATOR) &&
 		!member.roles.cache.some((role) => role.name.toLowerCase().includes("council"))
 	)
-		EMOJIS = EMOJIS.filter(
+		trayReactions = trayReactions.filter(
 			(emoji) => emoji !== settings.emojis.instapass && emoji !== settings.emojis.invalid,
 		);
 
 	// actually react
-	for (let emoji of EMOJIS) await message.react(emoji);
+	for (let emoji of trayReactions) await message.react(emoji);
 
 	// make the filter
 	const filter = (REACT, USER) => {
-		return EMOJIS.includes(REACT.emoji.id) && USER.id === user.id;
+		return trayReactions.includes(REACT.emoji.id) && USER.id === user.id;
 	};
 
 	// await reaction from the user
@@ -80,30 +80,31 @@ module.exports = async function reactionMenu(client, reaction, user) {
 		.awaitReactions({ filter, max: 1, time: 30000, errors: ["time"] })
 		.catch(async (err) => {
 			if (message.deletable) {
-				removeReact(message, EMOJIS);
+				removeReact(message, trayReactions);
 				await message.react(client.emojis.cache.get(settings.emojis.see_more));
 			}
 
 			console.log(err);
 		});
 
+	const actionReaction = collected?.first();
+
 	// if there's no reaction collected just reset the message and return early
-	const REACTION = collected?.first();
-	if (!REACTION) {
+	if (!actionReaction) {
 		if (message.deletable) {
-			removeReact(message, EMOJIS);
+			removeReact(message, trayReactions);
 			await message.react(client.emojis.cache.get(settings.emojis.see_more));
 		}
 		return;
 	}
 
 	// get the user id from the person who reacted to check permissions
-	const USER_ID = [...REACTION.users.cache.values()]
-		.filter((user) => user.bot === false)
+	const USER_ID = [...actionReaction.users.cache.values()]
+		.filter((user) => !user.bot)
 		.map((user) => user.id)[0];
 
 	if (
-		REACTION.emoji.id == settings.emojis.delete &&
+		actionReaction.emoji.id == settings.emojis.delete &&
 		(USER_ID === authorID || member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) &&
 		message.deletable
 	)
@@ -114,10 +115,10 @@ module.exports = async function reactionMenu(client, reaction, user) {
 		member.permissions.has(Permissions.FLAGS.ADMINISTRATOR) ||
 		member.roles.cache.some((role) => role.name.toLowerCase().includes("council"))
 	) {
-		switch (REACTION.emoji.id) {
+		switch (actionReaction.emoji.id) {
 			case settings.emojis.instapass:
 				// flush votes and reaction menu
-				removeReact(message, [settings.emojis.upvote, settings.emojis.downvote, ...EMOJIS]);
+				removeReact(message, [settings.emojis.upvote, settings.emojis.downvote, ...trayReactions]);
 				changeStatus(
 					message,
 					`<:instapass:${settings.emojis.instapass}> Instapassed by <@${member.id}>`,
@@ -125,7 +126,7 @@ module.exports = async function reactionMenu(client, reaction, user) {
 				);
 				return instapass(client, message);
 			case settings.emojis.invalid:
-				removeReact(message, [settings.emojis.upvote, settings.emojis.downvote, ...EMOJIS]);
+				removeReact(message, [settings.emojis.upvote, settings.emojis.downvote, ...trayReactions]);
 				return changeStatus(
 					message,
 					`<:invalid:${settings.emojis.invalid}> Invalidated by <@${member.id}>`,
@@ -135,10 +136,16 @@ module.exports = async function reactionMenu(client, reaction, user) {
 	}
 
 	// reset reactions if nothing happened
-	removeReact(message, EMOJIS);
+	removeReact(message, trayReactions);
 	await message.react(client.emojis.cache.get(settings.emojis.see_more));
 };
 
+/**
+ * remove a given set of reactions
+ * @author Juknum
+ * @param {import("discord.js").Message} message
+ * @param {String} emojis
+ */
 async function removeReact(message, emojis) {
 	for (let emoji of emojis) {
 		await message.reactions.cache
