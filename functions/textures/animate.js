@@ -2,148 +2,132 @@ const strings = require("../../resources/strings.json");
 
 const { createCanvas, loadImage } = require("@napi-rs/canvas");
 const GIFEncoder = require("./GIFEncoder");
-const { MessageAttachment } = require("discord.js");
-
 const getDimensions = require("./getDimensions");
-const warnUser = require("../../helpers/warnUser");
-const addDeleteButton = require("../../helpers/addDeleteButton");
 
-// "magnify" the output GIF (the output will be too small)
-let FACTOR = 8;
+async function animateAttachment(url, mcmeta, magnify = false) {
+	const dimension = await getDimensions(url);
+	if (magnify) {
+		let factor = 64;
+		const surface = dimension.height * dimension.width;
 
-/**
- * Convert Image to GIF following MCMETA file
- * @param {import("discord.js").Message} message Discord message
- * @param {Object | undefined} valMCMETA MCMETA object
- * @param {String} valURL Image URL
- */
-module.exports = async function animate(message, valMCMETA, valURL) {
-	let texture = [];
+		if (surface == 256) factor = 32; // 16²px or below
+		if (surface > 256) factor = 16; // 16²px
+		if (surface > 1024) factor = 8; // 32²px
+		if (surface > 4096) factor = 4; // 64²px
+		if (surface > 65536) factor = 2;
+		// 262144 = 512²px
+		else if (surface >= 262144) factor = 1;
 
-	const dimension = await getDimensions(valURL);
-	if (dimension.width == dimension.height)
-		return warnUser(message, strings.command.image.cant_animate);
-	if (dimension.width * FACTOR > 4096) return warnUser(message, strings.command.image.too_wide);
-	if (dimension.width * FACTOR > 1024) FACTOR = 1;
+		dimension.width *= factor;
+		dimension.height *= factor;
+	}
 
-	texture.canvas = await sizeUP(valURL, dimension);
-	texture.width = dimension.width * FACTOR;
-	texture.height = dimension.height * FACTOR;
+	const baseImage = await loadImage(url);
+	const baseCanvas = createCanvas(dimension.width, dimension.height);
+	const baseContext = baseCanvas.getContext("2d");
+	baseContext.imageSmoothingEnabled = false;
+	baseContext.drawImage(baseImage, 0, 0, baseCanvas.width, baseCanvas.height);
 
-	// NOTE: Width & Height properties from MCMETA aren't supported
+	return await animate(baseCanvas, mcmeta, dimension);
+}
 
-	let canvas = createCanvas(texture.width, texture.width);
-	let context = canvas.getContext("2d");
+async function animate(baseCanvas, mcmeta, dimension) {
+	const canvas = createCanvas(dimension.width, dimension.height);
+	const context = canvas.getContext("2d");
+	context.imageSmoothingEnabled = false;
+	let ratio = Math.round(dimension.height / dimension.width);
+	if (ratio < 1) ratio = 1;
 
-	let MCMETA = typeof valMCMETA === "object" ? valMCMETA : { animation: {} };
-	if (!MCMETA.animation) MCMETA.animation = {};
+	mcmeta = typeof mcmeta === "object" ? mcmeta : { animation: {} };
+	if (!mcmeta.animation) mcmeta.animation = {};
 
-	// Initialization:
-	let frametime = MCMETA.animation.frametime || 1;
-	let frames = [];
+	let frametime = mcmeta.animation.frametime || 1;
+	if (frametime > 15) frametime = 15;
 
-	// MCMETA.animation.frames is defined
-	if (Array.isArray(MCMETA.animation.frames) && MCMETA.animation.frames.length > 0) {
-		for (let i = 0; i < MCMETA.animation.frames.length; i++) {
-			const frame = MCMETA.animation.frames[i];
+	const frames = [];
 
-			if (typeof frame === "number") {
-				frames.push({
-					index: frame,
-					duration: frametime,
-				});
-			} else if (typeof frame === "object") {
-				frames.push({
-					index: frame.index || i,
-					duration: frame.time || frametime,
-				});
-			}
-			// If wrong frames support is given
-			else {
-				frames.push({
-					index: i,
-					duration: frametime,
-				});
+	if (mcmeta.animation.frames?.length) {
+		// add frames in specified order if possible
+		for (let i = 0; i < mcmeta.animation.frames.length; i++) {
+			const frame = mcmeta.animation.frames[i];
+			switch (typeof frame) {
+				case "number":
+					frames.push({ index: frame, duration: frametime });
+					break;
+				case "object":
+					frames.push({ index: frame.index || i, duration: frame.time || frametime });
+					break;
+				// If wrong frames support is given
+				default:
+					frames.push({ index: i, duration: frametime });
+					break;
 			}
 		}
-	}
-	// MCMETA.animation.frames is not defined
-	else {
-		for (let i = 0; i < texture.height / texture.width; i++) {
-			frames.push({
-				index: i,
-				duration: frametime,
-			});
+	} else {
+		// just animate directly downwards if nothing specified
+		for (let i = 0; i < dimension.height / dimension.width; i++) {
+			frames.push({ index: i, duration: frametime });
 		}
 	}
 
 	// Draw frames:
-	const encoder = new GIFEncoder(texture.width, texture.width);
+	const encoder = new GIFEncoder(dimension.width, dimension.width);
 	encoder.start();
 	encoder.setTransparent(true);
 
 	context.globalCompositeOperation = "copy";
 
-	if (MCMETA.animation.interpolate) {
-		let ratio = 0;
-
+	if (mcmeta.animation.interpolate) {
 		let limit = frametime;
-		if (limit >= 100) limit /= 10;
-
 		for (let i = 0; i < frames.length; i++) {
 			for (let y = 1; y <= limit; y++) {
 				context.clearRect(0, 0, canvas.width, canvas.height);
-				context.imageSmoothingEnabled = texture.width > canvas.width;
 				context.globalAlpha = 1;
+				context.globalCompositeOperation = "copy";
 
-				// frame i (always 100%)
+				// frame i (always 100% opacity)
 				context.drawImage(
-					texture.canvas, // image
+					baseCanvas, // image
 					0,
-					texture.width * frames[i].index, // sx, sy
-					texture.width,
-					texture.width, // sWidth, sHeight
+					dimension.width * (frames[i].index % ratio), // sx, sy
+					dimension.width,
+					dimension.width, // sWidth, sHeight
 					0,
 					0, // dx, dy
 					canvas.width,
 					canvas.height, // dWidth, dHeight
 				);
 
-				ratio = (100 / frametime) * y;
-				context.globalAlpha = ratio / 100;
+				context.globalAlpha = ((100 / frametime) * y) / 100;
+				context.globalCompositeOperation = "source-atop";
 
-				// frame i + 1 (follow the ratio)
+				// frame i + 1 (transition)
 				context.drawImage(
-					texture.canvas, // image
+					baseCanvas, // image
 					0,
-					texture.width * frames[(i + 1) % frames.length].index, // sx, sy
-					texture.width,
-					texture.width, // sWidth, sHeight
+					dimension.width * (frames[(i + 1) % frames.length].index % ratio), // sx, sy
+					dimension.width,
+					dimension.width, // sWidth, sHeight
 					0,
 					0, // dx, dy
 					canvas.width,
 					canvas.height, // dWidth, dHeight
 				);
-
-				if (limit == frametime)
-					encoder.setDelay(50); // frames count == frametime -> time of 1 frame == 1 tick -> 50ms
-				else encoder.setDelay(500);
 				encoder.addFrame(context);
 			}
 		}
 	} else {
 		for (let i = 0; i < frames.length; i++) {
 			context.clearRect(0, 0, canvas.width, canvas.height);
-			context.imageSmoothingEnabled = texture.width > canvas.width;
 			context.globalAlpha = 1;
 
-			// see: https://media.prod.mdn.mozit.cloud/attachments/2012/07/09/225/46ffb06174df7c077c89ff3055e6e524/Canvas_drawimage.jpg
+			// see: https://mdn.dev/archives/media/attachments/2012/07/09/225/46ffb06174df7c077c89ff3055e6e524/Canvas_drawimage.jpg
 			context.drawImage(
-				texture.canvas, // image
+				baseCanvas, // image
 				0,
-				texture.width * frames[i].index, // sx, sy
-				texture.width,
-				texture.width, // sWidth, sHeight
+				dimension.width * (frames[i].index % ratio), // sx, sy
+				dimension.width,
+				dimension.width, // sWidth, sHeight
 				0,
 				0, // dx, dy
 				canvas.width,
@@ -156,54 +140,10 @@ module.exports = async function animate(message, valMCMETA, valURL) {
 	}
 
 	encoder.finish();
-
-	// Send result:
-	const attachment = new MessageAttachment(encoder.out.getData(), "output.gif");
-
-	const embedMessage = await message.reply({ files: [attachment] });
-	addDeleteButton(embedMessage);
-};
-
-/**
- * Magnify image Canvas before making the GIF
- * @param {String} valURL Image URL
- * @param {{ width: number, height: number }} dimension dimension: {width, height}
- * @returns {Promise<Canvas>} a sized up Canvas Context
- */
-async function sizeUP(valURL, dimension) {
-	/*
-	let contextIN  = createCanvas(dimension.width, dimension.height).getContext("2d")
-	let canvasOUT  = createCanvas(dimension.width * FACTOR, dimension.height * FACTOR)
-	let contextOUT = canvasOUT.getContext("2d")
-
-	let temp = await loadImage(valURL)
-	contextIN.drawImage(temp, 0, 0)
-	let image = contextIN.getImageData(0, 0, dimension.width, dimension.height).data
-
-	let i, r, g, b, a
-
-	for (let x = 0; x < dimension.width; x++) {
-		for (let y = 0; y < dimension.height; y++) {
-			i = (y * dimension.width + x) * 4
-			r = image[i]
-			g = image[i+1]
-			b = image[i+2]
-			a = image[i+3]/255
-
-			contextOUT.fillStyle = `rgba(${r},${g},${b},${a})`
-			contextOUT.fillRect(x * FACTOR, y * FACTOR, FACTOR, FACTOR)
-		}
-	}
-	*/
-
-	const width = dimension.width * FACTOR;
-	const height = dimension.height * FACTOR;
-	let canvasOUT = createCanvas(width, height);
-	let contextOUT = canvasOUT.getContext("2d");
-
-	let temp = await loadImage(valURL);
-	contextOUT.imageSmoothingEnabled = false;
-	contextOUT.drawImage(temp, 0, 0, width, height);
-
-	return canvasOUT;
+	return encoder.out.getData();
 }
+
+module.exports = {
+	animateAttachment,
+	animate,
+};
