@@ -115,7 +115,9 @@ export const getTextureMessageOptions = async (options: {
 
 	// magnifying the texture in thumbnail
 	if (animated) {
-		embed.addFields([{ name: "MCMETA", value: `\`\`\`json\n${JSON.stringify(mcmeta, null, 2)}\`\`\`` }]);
+		embed.addFields([
+			{ name: "MCMETA", value: `\`\`\`json\n${JSON.stringify(mcmeta, null, 2)}\`\`\`` },
+		]);
 		files.push(
 			await animateAttachment({ url: textureURL, magnify: true, name: "magnified.gif", mcmeta }),
 		);

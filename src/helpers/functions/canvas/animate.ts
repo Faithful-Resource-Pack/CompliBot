@@ -75,7 +75,7 @@ export async function animateImage(options: Options): Promise<[MessageAttachment
 		embed.addFields([
 			{ name: "MCMETA", value: `\`\`\`json\n${JSON.stringify(mcmeta, null, 2)}\`\`\`` },
 		]);
-	if (frametime > 15) embed.setFooter({ text: "Frametime reduced for optimization" });
+	if (frametime > 15) embed.setFooter({ text: "Frametime reduced for optimization!" });
 	return [await animate(options, mcmeta, dimension, baseCanvas), embed];
 }
 
@@ -101,11 +101,10 @@ export async function animate(
 
 	const frames = [];
 
-	// add frames in specified order if possible
-	if (mcmeta.animation.frames?.length)
+	if (mcmeta.animation.frames?.length) {
+		// add frames in specified order if possible
 		for (let i = 0; i < mcmeta.animation.frames.length; i++) {
 			const frame = mcmeta.animation.frames[i];
-
 			switch (typeof frame) {
 				case "number":
 					frames.push({ index: frame, duration: frametime });
@@ -118,10 +117,12 @@ export async function animate(
 					break;
 			}
 		}
-	// just animate directly downwards if nothing specified
-	else
-		for (let i = 0; i < dimension.height / dimension.width; i++)
+	} else {
+		// just animate directly downwards if nothing specified
+		for (let i = 0; i < dimension.height / dimension.width; i++) {
 			frames.push({ index: i, duration: frametime });
+		}
+	}
 
 	// Draw frames
 	const encoder = new GIFEncoder(dimension.width, dimension.width);
@@ -167,10 +168,7 @@ export async function animate(
 				encoder.addFrame(context);
 			}
 		}
-	}
-
-	// no interpolation
-	else
+	} else {
 		for (let i = 0; i < frames.length; i++) {
 			context.clearRect(0, 0, dimension.width, dimension.height);
 			context.globalAlpha = 1;
@@ -190,6 +188,7 @@ export async function animate(
 			encoder.setDelay(50 * frames[i].duration);
 			encoder.addFrame(context);
 		}
+	}
 
 	encoder.finish();
 	return new MessageAttachment(
