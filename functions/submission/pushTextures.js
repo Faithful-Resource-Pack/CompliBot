@@ -23,6 +23,7 @@ module.exports = async function pushTextures(
 	for (let packGithub of GITHUB_JAVA) {
 		for (let branch of BRANCHES_JAVA) {
 			if (checkFolder(`./texturesPush/${packGithub.repo}/${branch}/assets`)) {
+				if (DEBUG) console.log(`PUSHING: ${packGithub.repo} (${branch})`);
 				try {
 					await pushToGitHub(
 						packGithub.org,
@@ -36,13 +37,13 @@ module.exports = async function pushTextures(
 				}
 				fs.rmdirSync(`./texturesPush/${packGithub.repo}/${branch}/`, { recursive: true });
 			}
-			if (DEBUG) console.log(`PUSHING: ${packGithub.repo} (${branch})`);
 		}
 	}
 
 	for (let packGithub of GITHUB_BEDROCK) {
 		for (let branch of BRANCHES_BEDROCK) {
 			if (checkFolder(`./texturesPush/${packGithub.repo}/${branch}/textures`)) {
+				if (DEBUG) console.log(`PUSHING: ${packGithub.repo} (${branch})`);
 				await pushToGitHub(
 					packGithub.org,
 					packGithub.repo,
@@ -53,7 +54,6 @@ module.exports = async function pushTextures(
 
 				fs.rmdirSync(`./texturesPush/${packGithub.repo}/${branch}/`, { recursive: true });
 			}
-			if (DEBUG) console.log(`PUSHING: ${packGithub.repo} (${branch})`);
 		}
 	}
 };

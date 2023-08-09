@@ -10,10 +10,9 @@ const LOG_DEV = process.env.LOG_DEV.toLowerCase() == "true";
  * @param {Promise} promise The rejected promise
  * @param {import("discord.js").Message?} originMessage Origin user message
  */
-module.exports = function (client, error, promise, originMessage) {
+module.exports = function unhandledRejection(client, error, promise, originMessage) {
+	if (DEV) return console.trace(error.stack ?? error);
 	const settings = require("../resources/settings.json");
-
-	if (DEV) return console.trace(error.stack || error);
 
 	const channel = client.channels.cache.get(LOG_DEV ? "867499014085148682" : "853547435782701076");
 
@@ -49,9 +48,6 @@ module.exports = function (client, error, promise, originMessage) {
 
 	console.error(error, promise);
 
-	channel
-		.send({
-			embeds: [embed],
-		})
-		.catch(console.error); // DO NOT DELETE THIS CATCH, IT AVOIDS INFINITE LOOP IF THIS PROMISE REJECTS
+	// DO NOT DELETE THIS CATCH, IT AVOIDS INFINITE LOOP IF THIS PROMISE REJECTS
+	channel.send({ embeds: [embed] }).catch(console.error);
 };

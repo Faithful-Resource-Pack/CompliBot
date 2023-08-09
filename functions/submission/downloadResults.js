@@ -119,14 +119,14 @@ module.exports = async function downloadResults(client, channelResultID, instapa
 
 			// write texture to the corresponding path
 			writeFile(path, Buffer.from(buffer), (err) => {
-				if (DEBUG) return err ? console.error(err) : console.log(`ADDED TO: ${path}`);
+				if (DEBUG) return err ? console.error(err) : console.log(`Added texture to path: ${path}`);
 			});
 		}
 
 		// prepare the authors for the texture
 		allContribution.push({
 			date: texture.date,
-			resolution: Number(packName.match(/\d+/)[0]), // stupid workaround but it works
+			resolution: Number((packName.match(/\d+/) ?? [32])[0]), // stupid workaround but it works
 			pack: packName,
 			texture: `${texture.id}`,
 			authors: texture.authors,
@@ -149,8 +149,16 @@ module.exports = async function downloadResults(client, channelResultID, instapa
 		}
 	}
 
-	let result = await contributionsCollection.addBulk(allContribution);
+	let contributionResults;
+	try {
+		contributionResults = await contributionsCollection.addBulk(allContribution);
+	} catch {
+		// couldn't add contributions (probably because in dev mode)
+	}
 
 	if (instapass) await pushTextures(`Instapassed ${instapassName} from ${date()}`);
-	if (DEBUG) console.log("Added contributions: " + result.join(" "));
+	if (DEBUG)
+		contributionResults
+			? console.log(`Added contributions: ${contributionResults}`)
+			: console.log(`Couldn't add contributions for pack: ${packName}`);
 };
