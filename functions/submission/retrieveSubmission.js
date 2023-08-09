@@ -48,11 +48,7 @@ module.exports = async function retrieveSubmission(
 			);
 		}) // only get pending submissions
 		.filter((message) => message.embeds.length > 0)
-		.filter(
-			(message) =>
-				message.embeds[0].fields[1] !== undefined &&
-				message.embeds[0].fields[1].value.includes(settings.emojis.pending),
-		)
+		.filter((message) => message.embeds[0].fields[1]?.value?.includes(settings.emojis.pending))
 		.reverse(); // upload from oldest to newest
 
 	// map messages adding reacts count, embed and message (easier management like that)

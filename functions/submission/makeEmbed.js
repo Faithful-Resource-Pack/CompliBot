@@ -25,7 +25,7 @@ module.exports = async function makeEmbed(
 	message,
 	texture,
 	attachment,
-	param = new Object(),
+	param = {},
 ) {
 	const packName = await getPackByChannel(message.channel.id, "submit");
 

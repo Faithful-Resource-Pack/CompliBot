@@ -70,7 +70,7 @@ module.exports = async function downloadResults(client, channelResultID, instapa
 	});
 
 	// holds all contributions from the day
-	let allContribution = new Array();
+	let allContribution = [];
 	// used in the instapass commit message if applicable
 	let instapassName;
 
@@ -85,7 +85,7 @@ module.exports = async function downloadResults(client, channelResultID, instapa
 
 		const uses = await textureInfo.uses();
 
-		let allPaths = new Array();
+		let allPaths = [];
 		// get all paths of the texture
 		for (let use of uses) {
 			const edition = use.editions[0].toLowerCase();

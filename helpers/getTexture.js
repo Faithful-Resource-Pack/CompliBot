@@ -39,7 +39,7 @@ module.exports = async function getTexture(search) {
 			},
 		]);
 		// transform paths results into textures
-		let output = new Array();
+		let output = [];
 		for (let result of results) {
 			let use = await result.use();
 			output.push(await textures.get(use.textureID));

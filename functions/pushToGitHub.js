@@ -41,7 +41,9 @@ const uploadToRepo = async (octo, coursePath, org, repo, branch, commitMessage) 
 	const currentCommit = await getCurrentCommit(octo, org, repo, branch);
 	const filesPaths = await glob(coursePath);
 	if (!filesPaths) return;
-	const filesBlobs = await Promise.all(filesPaths.map(createBlobForFile(octo, org, repo))); // suspected problem on createBlobForFile which fails and give undefined
+
+	// suspected problem on createBlobForFile which fails and give undefined
+	const filesBlobs = await Promise.all(filesPaths.map(createBlobForFile(octo, org, repo)));
 	const pathsForBlobs = filesPaths.map((fullPath) =>
 		normalize(relative(coursePath, fullPath)).replace(/\\/g, "/"),
 	);

@@ -12,8 +12,8 @@ module.exports = async function getDimensions(imageURL) {
 	const data = await response.arrayBuffer();
 	const buf = Buffer.from(data, "base64");
 
-	// fixes bug where buf was equal to undefined
-	if (!buf) throw new Error("Buffer for getDimensions invalid: " + buf);
+	// fixes bug where buf was undefined
+	if (!buf) throw new Error(`Buffer for getDimensions invalid: ${buf}`);
 
 	const size = sizeOf(buf);
 	return size;

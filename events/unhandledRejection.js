@@ -36,7 +36,7 @@ module.exports = function unhandledRejection(client, error, promise, originMessa
 
 	let description = `\`\`\`${syntax}\n${content}\`\`\``;
 
-	if (originMessage !== undefined && originMessage.url !== undefined) {
+	if (originMessage?.url !== undefined) {
 		description = "Coming from [this message](" + originMessage.url + ")\n" + description;
 	}
 
