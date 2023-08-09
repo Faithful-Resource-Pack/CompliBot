@@ -6,7 +6,7 @@ require("./firestorm_config")();
 /**
  * @typedef {Object} User
  * @property {Number} userID Discord ID
- * @property {String?} username Minecraft userbame
+ * @property {String?} username Minecraft username
  * @property {String[]} type User type on server
  * @property {String} uuid User minecraft id
  * @property {Object[]} media Array of all media linked to that user
