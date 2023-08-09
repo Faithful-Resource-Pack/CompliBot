@@ -9,8 +9,7 @@
 		"maintenance": "I'm currently under maintenance, please try again later.",
 		"args": {
 			"none_given": "You did not provide any arguments.",
-			"invalid": "You did not provide valid arguments.",
-			"parse": "You need to add a [-f= | --flag=] at the beginning of an argument!"
+			"invalid": "You did not provide valid arguments."
 		},
 		"no_permission": "You don't have the permission to do that.",
 		"image": {
