@@ -44,12 +44,11 @@ export async function animateAttachment(options: Options): Promise<MessageAttach
 }
 
 /**
- * Takes in an image and an optional style and will animate the image with the style
+ * animate image with specified style
  * @author Superboxer47
  * @param options options for the animation
- * @returns animated gif of the provided image as a MessageAttachment and an Embed
+ * @returns animated gif of the provided image
  */
-
 export async function animateImage(options: Options): Promise<[MessageAttachment, MessageEmbed]> {
 	const dimension = await getDimensions(options.url);
 	const style = options.style;
@@ -102,8 +101,8 @@ export async function animate(
 
 	const frames = [];
 
-	// MCMETA.animation.frames is defined
-	if (mcmeta.animation.frames?.length) {
+	// add frames in specified order if possible
+	if (mcmeta.animation.frames?.length)
 		for (let i = 0; i < mcmeta.animation.frames.length; i++) {
 			const frame = mcmeta.animation.frames[i];
 
@@ -119,9 +118,7 @@ export async function animate(
 					break;
 			}
 		}
-	}
-
-	// MCMETA.animation.frames is not defined
+	// just animate directly downwards if nothing specified
 	else
 		for (let i = 0; i < dimension.height / dimension.width; i++)
 			frames.push({ index: i, duration: frametime });
@@ -131,7 +128,6 @@ export async function animate(
 	encoder.start();
 	encoder.setTransparent(true);
 
-	// interpolation
 	if (mcmeta.animation.interpolate) {
 		let limit: number = frametime;
 		for (let i = 0; i < frames.length; i++) {

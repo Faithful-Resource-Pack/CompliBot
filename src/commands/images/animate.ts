@@ -31,7 +31,7 @@ export const command: SlashCommand = {
 			style: style,
 			name: "animated.gif",
 			embed: new MessageEmbed()
-				.setTitle(`Animated ${style === "none" ? "with no style" : `as ${style}`}`)
+				.setTitle(`Animated ${style === "none" ? "" : `as ${style}`}`)
 				.setImage("attachment://animated.gif"),
 		});
 	},
