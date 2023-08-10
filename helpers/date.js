@@ -1,12 +1,13 @@
 /**
  * Get today's date as a string
  * @author Juknum, Evorp
- * @param {String?} format format to send date as
+ * @param {"ymd" | "dmy" | "mdy"?} format format to send date as
  */
 module.exports = function date(format = "dmy") {
 	const today = new Date();
-	const dd = String(today.getDate()).padStart(2, "0");
-	const mm = String(today.getMonth() + 1).padStart(2, "0"); // January is 0!
+	// adding one for days and months since it starts at zero
+	const dd = String(today.getDate() + 1).padStart(2, "0");
+	const mm = String(today.getMonth() + 1).padStart(2, "0");
 	const yyyy = today.getFullYear();
 
 	switch (format) {

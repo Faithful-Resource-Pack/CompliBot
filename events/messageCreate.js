@@ -20,7 +20,7 @@ module.exports = {
 		if (message.author.bot) return;
 
 		/**
-		 * COMMAND HANDLER
+		 * LEGACY PREFIX COMMAND HANDLER
 		 */
 		if (message.content.startsWith(PREFIX)) {
 			if (MAINTENANCE && !process.env.DEVELOPERS.includes(message.author.id)) {
