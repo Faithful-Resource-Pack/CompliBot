@@ -6,8 +6,6 @@ import {
 	CommandInteraction,
 	Guild,
 	SelectMenuInteraction,
-	TextChannel,
-	VoiceChannel,
 } from "discord.js";
 import { Message, GuildMember, EmittingCollection, Automation } from "@client";
 import {
@@ -25,7 +23,6 @@ import { setData } from "@functions/setDataToJSON";
 import { errorHandler } from "@functions/errorHandler";
 import { err, info, success } from "@helpers/logger";
 import { Poll } from "@class/poll";
-import { User } from "@helpers/interfaces/moderation";
 
 import { readdirSync } from "fs";
 import { REST } from "@discordjs/rest";
@@ -38,7 +35,6 @@ import { StartClient } from "index";
 const JSON_PATH = path.join(__dirname, "../../json/dynamic"); // json folder at root
 const POLLS_FILENAME = "polls.json";
 const COMMANDS_PROCESSED_FILENAME = "commandsProcessed.json";
-const MODERATION_FILENAME = "moderation.json";
 
 export type ActionsStr =
 	| "message"
@@ -78,7 +74,6 @@ class ExtendedClient extends Client {
 
 	public polls: EmittingCollection<string, Poll> = new EmittingCollection();
 	public commandsProcessed: EmittingCollection<string, number> = new EmittingCollection();
-	public moderationUsers: EmittingCollection<string, User> = new EmittingCollection();
 
 	constructor(
 		data: ClientOptions & { verbose: boolean; config: Config; tokens: Tokens },
@@ -93,8 +88,8 @@ class ExtendedClient extends Client {
 
 	public async restart(interaction?: CommandInteraction): Promise<void> {
 		console.log(`${info}Restarting bot...`);
-		await this.destroy();
-		await StartClient(false, interaction);
+		this.destroy();
+		StartClient(false, interaction);
 	}
 
 	//prettier-ignore
@@ -118,9 +113,8 @@ class ExtendedClient extends Client {
 	public async init(interaction?: CommandInteraction) {
 		// pretty stuff so it doesnt print the logo upon restart
 		if (!this.cs) {
-			console.clear();
-			console.log(`\n\n${success}Restarted`);
-			if (interaction) interaction.editReply("Reboot suceeded");
+			console.log(`${success}Restarted`);
+			if (interaction) interaction.editReply("Reboot succeeded!");
 		} else this.asciiArt();
 
 		// login client
@@ -139,13 +133,14 @@ class ExtendedClient extends Client {
 
 				this.loadCollections();
 				this.automation.start();
-				if (this.verbose) console.log(info + `Started automated functions`);
 				if (this.verbose) console.log(info + `Init complete`);
 			});
 
-		// catches "kill pid" (for example: nodemon restart)
+		// I know this restarting stuff kinda sucks but you can't guarantee which one is triggered
+		// might depend on the OS maybe?
 		process.on("SIGUSR1", () => this.restart());
 		process.on("SIGUSR2", () => this.restart());
+		process.on("SIGTERM", () => this.restart());
 
 		process.on("disconnect", (code: number) => {
 			if (code !== undefined) errorHandler(this, code, "disconnect");
@@ -153,16 +148,17 @@ class ExtendedClient extends Client {
 		process.on("uncaughtException", (error, origin) => {
 			if (error) errorHandler(this, error, "uncaughtException", origin);
 		});
-		process.on("unhandledRejection", (reason, promise) => {
+		process.on("unhandledRejection", (reason) => {
 			// fixes weird error when you occasionally restart the bot
 			if (reason) errorHandler(this, reason, "unhandledRejection");
 		});
+
+		return this;
 	}
 
 	private loadCollections = () => {
 		this.loadCollection(this.polls, POLLS_FILENAME, JSON_PATH);
 		this.loadCollection(this.commandsProcessed, COMMANDS_PROCESSED_FILENAME, JSON_PATH);
-		this.loadCollection(this.moderationUsers, MODERATION_FILENAME, JSON_PATH);
 		if (this.verbose) console.log(info + `Loaded collection data`);
 	};
 
