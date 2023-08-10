@@ -1,6 +1,6 @@
 const strings = require("../../resources/strings.json");
 
-const warnUser = require("../../helpers/warnUser.js");
+const warnUser = require("../../helpers/warnUser");
 
 module.exports = {
 	name: "say",

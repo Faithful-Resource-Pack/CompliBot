@@ -1,7 +1,7 @@
 const fs = require("fs");
 
 const settings = require("../../resources/settings.json");
-const date = require("../../helpers/date.js");
+const formattedDate = require("../../helpers/formattedDate");
 
 const pushToGitHub = require("../pushToGitHub");
 const DEBUG = process.env.DEBUG.toLowerCase() == "true";
@@ -12,7 +12,7 @@ const DEBUG = process.env.DEBUG.toLowerCase() == "true";
  * @param {String?} commitMessage
  */
 module.exports = async function pushTextures(
-	commitMessage = `Autopush passed textures from ${date()}`,
+	commitMessage = `Autopush passed textures from ${formattedDate()}`,
 ) {
 	const GITHUB_JAVA = Object.values(settings.repositories.repo_name.java);
 	const GITHUB_BEDROCK = Object.values(settings.repositories.repo_name.bedrock);

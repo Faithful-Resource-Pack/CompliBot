@@ -4,7 +4,7 @@ const getMessages = require("../../helpers/getMessages");
 const texturesCollection = require("../../helpers/firestorm/texture");
 const contributionsCollection = require("../../helpers/firestorm/contributions");
 const pushTextures = require("./pushTextures");
-const date = require("../../helpers/date.js");
+const formattedDate = require("../../helpers/formattedDate");
 const DEBUG = process.env.DEBUG.toLowerCase() == "true";
 
 const Buffer = require("buffer/").Buffer;
@@ -155,7 +155,7 @@ module.exports = async function downloadResults(client, channelResultID, instapa
 		// couldn't add contributions (probably because in dev mode)
 	}
 
-	if (instapass) await pushTextures(`Instapassed ${instapassName} from ${date()}`);
+	if (instapass) await pushTextures(`Instapassed ${instapassName} from ${formattedDate()}`);
 	if (DEBUG)
 		contributionResults
 			? console.log(`Added contributions: ${contributionResults}`)

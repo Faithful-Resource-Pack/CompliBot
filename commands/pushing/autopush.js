@@ -2,7 +2,7 @@ const { Permissions } = require("discord.js");
 const settings = require("../../resources/settings.json");
 const strings = require("../../resources/strings.json");
 
-const date = require("../../helpers/date");
+const formattedDate = require("../../helpers/formattedDate");
 const pushTextures = require("../../functions/submission/pushTextures");
 const downloadResults = require("../../functions/submission/downloadResults");
 const warnUser = require("../../helpers/warnUser");
@@ -21,7 +21,7 @@ module.exports = {
 
 		for (let pack of packs) await downloadResults(client, pack.channels.results);
 
-		await pushTextures(`Manual push executed by ${message.author.username} on ${date()}`); // Push them through GitHub
+		await pushTextures(`Manual push executed by ${message.author.username} on ${formattedDate()}`); // Push them through GitHub
 
 		return await message.react(settings.emojis.upvote);
 	},
