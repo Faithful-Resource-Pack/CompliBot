@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node --use_strict --trace-warnings index.js",
     "prettier": "prettier \"{*.js,!(node*)**/*.js}\" --config .prettierrc --write",
-    "dev": "node ."
+    "dev": "nodemon --ignore resources/"
   },
   "repository": {
     "type": "git",
@@ -33,6 +33,7 @@
     "globby": "^11.1.0",
     "http": "0.0.1-security",
     "image-size": "^1.0.2",
+    "nodemon": "^3.0.1",
     "prettier": "^3.0.0",
     "simple-git": "^3.19.1"
   }

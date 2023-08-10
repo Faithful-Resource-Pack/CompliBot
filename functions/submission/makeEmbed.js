@@ -20,13 +20,7 @@ const { MessageEmbed, MessageAttachment } = require("discord.js");
  * @param {import("discord.js").MessageAttachment} attachment raw texture to embed
  * @param {{ description: String?, authors: String[] }} param additional info (e.g. description, coauthors)
  */
-module.exports = async function makeEmbed(
-	client,
-	message,
-	texture,
-	attachment,
-	param = {},
-) {
+module.exports = async function makeEmbed(client, message, texture, attachment, param = {}) {
 	const packName = await getPackByChannel(message.channel.id, "submit");
 
 	/** @type {import("../../helpers/firestorm/texture_use.js").TextureUse[]} */

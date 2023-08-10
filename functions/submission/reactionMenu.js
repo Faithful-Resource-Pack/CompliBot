@@ -30,7 +30,8 @@ module.exports = async function reactionMenu(client, menuReaction, user) {
 		await message.react(client.emojis.cache.get(settings.emojis.see_more));
 	}
 
-	if (menuReaction.emoji.id !== settings.emojis.see_more || !message.embeds[0]?.fields?.length) return;
+	if (menuReaction.emoji.id !== settings.emojis.see_more || !message.embeds[0]?.fields?.length)
+		return;
 	if (DEBUG) console.log(`Reaction tray opened by: ${user.username}`);
 
 	// first author in the author field is always the person who submitted
