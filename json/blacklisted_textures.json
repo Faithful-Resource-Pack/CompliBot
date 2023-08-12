@@ -127,7 +127,14 @@
         "/assets/minecraft/textures/gui/title/minecraft.png",
         "/assets/minecraft/textures/gui/title/minceraft.png",
         "/assets/realms/textures/gui/title/realms.png",
-        "/assets/minecraft/textures/gui/title/realms.png"
+        "/assets/minecraft/textures/gui/title/realms.png",
+        "/assets/minecraft/textures/gui/realms/no_realms.png",
+        "assets/minecraft/textures/gui/realms/adventure.png",
+        "assets/minecraft/textures/gui/realms/experience.png",
+        "assets/minecraft/textures/gui/realms/inspiration.png",
+        "assets/minecraft/textures/gui/realms/new_world.png",
+        "assets/minecraft/textures/gui/realms/survival_spawn.png",
+        "assets/minecraft/textures/gui/realms/upload.png"
     ],
     "bedrock": [
         "spit",
