@@ -134,7 +134,9 @@
         "assets/minecraft/textures/gui/realms/inspiration.png",
         "assets/minecraft/textures/gui/realms/new_world.png",
         "assets/minecraft/textures/gui/realms/survival_spawn.png",
-        "assets/minecraft/textures/gui/realms/upload.png"
+        "assets/minecraft/textures/gui/realms/upload.png",
+        "assets/minecraft/textures/gui/sprites/backup/changes.png",
+        "assets/minecraft/textures/gui/sprites/backup/changes_highlighted.png"
     ],
     "bedrock": [
         "spit",
