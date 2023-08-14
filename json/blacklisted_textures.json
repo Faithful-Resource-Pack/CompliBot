@@ -136,7 +136,8 @@
         "assets/minecraft/textures/gui/realms/survival_spawn.png",
         "assets/minecraft/textures/gui/realms/upload.png",
         "assets/minecraft/textures/gui/sprites/backup/changes.png",
-        "assets/minecraft/textures/gui/sprites/backup/changes_highlighted.png"
+        "assets/minecraft/textures/gui/sprites/backup/changes_highlighted.png",
+        "assets/minecraft/textures/gui/sprites/hud/crosshair.png"
     ],
     "bedrock": [
         "spit",
