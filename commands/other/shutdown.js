@@ -11,7 +11,6 @@ module.exports = {
 			await message.reply({
 				embeds: [new MessageEmbed().setTitle("Shutting down...").setColor(settings.colors.blue)],
 			});
-			await message.react(settings.emojis.upvote);
 			process.exit();
 		} else {
 			const embed = new MessageEmbed()
