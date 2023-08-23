@@ -68,7 +68,7 @@ export const command: SlashCommand = {
 						try {
 							data = (
 								await axios.get(
-									`${(interaction.client as Client).tokens.apiUrl}/textures/${ids
+									`${(interaction.client as Client).tokens.apiUrl}textures/${ids
 										.filter((v, i, a) => a.indexOf(v) === i)
 										.join(",")}`,
 								)
