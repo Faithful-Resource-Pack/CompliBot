@@ -1,7 +1,8 @@
 import { Button } from "@interfaces";
 import { info } from "@helpers/logger";
-import { Client, Message, ButtonInteraction } from "@client";
+import { Client, Message, ButtonInteraction, MessageEmbed } from "@client";
 import { textureComparison } from "@functions/canvas/stitch";
+import { MessageEmbedFooter } from "discord.js";
 
 export const button: Button = {
 	buttonId: "compare",
@@ -13,6 +14,20 @@ export const button: Button = {
 
 		await interaction.deferReply();
 		const [embed, magnified] = await textureComparison(client, ids[0]);
+
+		(embed as MessageEmbed).setFooter(
+			embed.footer
+				? {
+						text: `${embed.footer.text} | ${interaction.user.id}`,
+						iconURL: (embed.footer as MessageEmbedFooter).iconURL,
+				  }
+				: {
+						text: interaction.user.id,
+				  },
+		);
+
+		embed.setTimestamp();
+
 		return interaction
 			.editReply({
 				embeds: [embed],
