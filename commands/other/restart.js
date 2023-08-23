@@ -12,6 +12,7 @@ module.exports = {
 			await message.reply({
 				embeds: [new MessageEmbed().setTitle("Restarting...").setColor(settings.colors.blue)],
 			});
+			client.destroy();
 			fetchSettings()
 				.then(() => startBot())
 				.catch(() =>
@@ -19,7 +20,7 @@ module.exports = {
 						embeds: [
 							new MessageEmbed()
 								.setTitle("Something went wrong when restarting the bot!")
-                                .setDescription("This error is likely related to fetching `settings.json`")
+								.setDescription("This error is likely related to fetching `settings.json`")
 								.setColor(settings.colors.red)
 								.setThumbnail(settings.images.error),
 						],

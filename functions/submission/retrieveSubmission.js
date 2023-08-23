@@ -3,6 +3,7 @@ const settings = require("../../resources/settings.json");
 const getMessages = require("../../helpers/getMessages");
 const changeStatus = require("./changeStatus");
 const { imageButtons } = require("../../helpers/buttons");
+const { MessageEmbed } = require("discord.js");
 
 const DEBUG = process.env.DEBUG.toLowerCase() == "true";
 
@@ -73,13 +74,16 @@ module.exports = async function retrieveSubmission(
 		(message) => (message.upvote?.count ?? 1) < (message.downvote?.count ?? 1),
 	);
 
-	if (toCouncil)
-		return await sendToCouncil(client, messagesUpvoted, messagesDownvoted, channelOutID);
+	/** @type {import("discord.js").TextChannel} */
+	const channelOut = client.channels.cache.get(channelOutID);
+	if (DEBUG) console.log(`Sending textures to: ${channelOut.name}`);
+
+	if (toCouncil) return await sendToCouncil(client, messagesUpvoted, messagesDownvoted, channelOut);
 	return await sendToResults(
 		client,
 		messagesUpvoted,
 		messagesDownvoted,
-		channelOutID,
+		channelOut,
 		councilDisabled,
 	);
 };
@@ -90,43 +94,34 @@ module.exports = async function retrieveSubmission(
  * @param {import("discord.js").Client} client
  * @param {MappedMessage[]} messagesUpvoted
  * @param {MappedMessage[]} messagesDownvoted
- * @param {String} channelOutID
+ * @param {import("discord.js").TextChannel} channelOut
  */
-async function sendToCouncil(client, messagesUpvoted, messagesDownvoted, channelOutID) {
-	/** @type {import("discord.js").TextChannel} */
-	const channelOut = client.channels.cache.get(channelOutID);
+async function sendToCouncil(client, messagesUpvoted, messagesDownvoted, channelOut) {
 	const EMOJIS = [settings.emojis.upvote, settings.emojis.downvote, settings.emojis.see_more];
-	if (DEBUG) console.log(`Sending textures to: ${channelOut.name}`);
 
 	for (let message of messagesUpvoted) {
+		const councilEmbed = new MessageEmbed(message.embed)
+			.setColor(settings.colors.council)
+			.setDescription(
+				`[Original Post](${message.message.url})\n${message.embed.description ?? ""}`,
+			);
+
 		const sentMessage = await channelOut.send({
-			embeds: [
-				message.embed
-					.setColor(settings.colors.council)
-					.setDescription(
-						`[Original Post](${message.message.url})\n${message.embed.description ?? ""}`,
-					),
-			],
+			embeds: [councilEmbed],
 			components: message.components,
 		});
+
 		for (const emojiID of EMOJIS) await sentMessage.react(client.emojis.cache.get(emojiID));
+
 		changeStatus(
 			message.message,
 			`<:upvote:${settings.emojis.upvote}> Sent to council!`,
 			settings.colors.green,
 		);
-
-		// fix weird bug where the "original post" link shows up on the original post and links to itself
-		if (message.message.embeds[0].description !== null) {
-			let embed = message.message.embeds[0];
-			embed.setDescription(
-				embed.description.replace(`[Original Post](${message.message.url})\n`, ""),
-			);
-			message.message.edit({ embeds: [embed] });
-		}
 	}
 
 	for (let message of messagesDownvoted) {
+		// not sent anywhere, returned early instead
 		changeStatus(
 			message.message,
 			`<:downvote:${settings.emojis.downvote}> Not enough upvotes!`,
@@ -141,51 +136,53 @@ async function sendToCouncil(client, messagesUpvoted, messagesDownvoted, channel
  * @param {import("discord.js").Client} client
  * @param {MappedMessage[]} messagesUpvoted
  * @param {MappedMessage[]} messagesDownvoted
- * @param {String} channelOutID
+ * @param {import("discord.js").TextChannel} channelOut
  * @param {Boolean} councilDisabled whether to disable council or not (off by default)
  */
 async function sendToResults(
 	client,
 	messagesUpvoted,
 	messagesDownvoted,
-	channelOutID,
+	channelOut,
 	councilDisabled = false,
 ) {
-	/** @type {import("discord.js").TextChannel} */
-	const channelOut = client.channels.cache.get(channelOutID);
-	if (DEBUG) console.log(`Sending textures to: ${channelOut.name}`);
-
 	for (let message of messagesUpvoted) {
-		const upvotePercentage = (
-			((message.upvote?.count - 1) * 100) /
-			(message.upvote?.count - 1 + (message.downvote?.count - 1))
-		).toFixed(2);
-		let embed = message.embed;
-		embed.setColor(settings.colors.green);
-		embed.fields[1].value = `<:upvote:${settings.emojis.upvote}> Will be added in a future version!`;
-		if (!isNaN(upvotePercentage)) embed.fields[1].value += ` (${upvotePercentage}% upvoted)`;
+		const resultEmbed = new MessageEmbed(message.embed).setColor(settings.colors.green);
+		resultEmbed.fields[1].value = `<:upvote:${
+			settings.emojis.upvote
+		}> Will be added in a future version! ${getPercentage(message.upvote, message.downvote)}`;
 
-		await channelOut.send({ embeds: [embed], components: [imageButtons] });
+		// if we're coming straight from submissions
+		if (!resultEmbed.description?.startsWith("[Original Post]("))
+			resultEmbed.setDescription(
+				`[Original Post](${message.message.url})\n${message.embed.description ?? ""}`,
+			);
 
-		changeStatus(message.message, `<:upvote:${settings.emojis.upvote}> Sent to results!`);
+		await channelOut.send({ embeds: [resultEmbed], components: [imageButtons] });
+
+		changeStatus(
+			message.message,
+			`<:upvote:${settings.emojis.upvote}> Sent to results!`,
+			settings.colors.green,
+		);
 	}
 
 	for (let message of messagesDownvoted) {
-		let embed = message.embed;
-		embed.setColor(settings.colors.red);
-
 		// don't you love having to pass a value in down like three functions just to format some strings
 		if (!councilDisabled) {
-			const upvotePercentage = (
-				((message.upvote?.count - 1) * 100) /
-				(message.upvote?.count - 1 + (message.downvote?.count - 1))
-			).toFixed(2);
-			embed.fields[1].value = `<:downvote:${settings.emojis.downvote}> This texture did not pass council voting and therefore will not be added.`;
-			if (!isNaN(upvotePercentage)) embed.fields[1].value += ` (${upvotePercentage}% upvoted)`;
+			message.embed.setColor(settings.colors.red);
+			const resultEmbed = new MessageEmbed(message.embed);
+			resultEmbed.fields[1].value = `<:downvote:${
+				settings.emojis.downvote
+			}> This texture did not pass council voting and therefore will not be added. ${getPercentage(
+				message.upvote,
+				message.downvote,
+			)}`;
+
 			const users = await message.downvote.users.fetch();
 
 			// add council downvotes field between the status and path fields
-			embed.fields.splice(2, 0, {
+			resultEmbed.fields.splice(2, 0, {
 				name: "Council Downvotes",
 				value: `<@!${users
 					.map((user) => user.id)
@@ -194,10 +191,33 @@ async function sendToResults(
 					.toString()}>`,
 				inline: true,
 			});
-			await channelOut.send({ embeds: [embed], components: message.components });
 
-			changeStatus(message.message, `<:downvote:${settings.emojis.downvote}> Sent to results!`);
+			await channelOut.send({ embeds: [resultEmbed], components: message.components });
+
+			changeStatus(
+				message.message,
+				`<:downvote:${settings.emojis.downvote}> Sent to results!`,
+				settings.colors.red,
+			);
 		} else
-			changeStatus(message.message, `<:downvote:${settings.emojis.downvote}> Not enough upvotes!`);
+			changeStatus(
+				message.message,
+				`<:downvote:${settings.emojis.downvote}> Not enough upvotes!`,
+				settings.colors.red,
+			);
 	}
+}
+
+/**
+ * Calculates percentage of upvotes and returns a formatted string
+ * @author Evorp, Juknum
+ * @param {import("discord.js").MessageReaction} upvotes upvote objects
+ * @param {import("discord.js").MessageReaction} downvotes downvote objects
+ * @returns {String} formatted string (or an empty string if not possible)
+ */
+function getPercentage(upvotes, downvotes) {
+	const upvotePercentage =
+		((upvotes?.count - 1) * 100) / (upvotes?.count - 1 + (downvotes.count - 1));
+	if (isNaN(upvotePercentage)) return "";
+	return `(${upvotePercentage}% upvoted)`;
 }
