@@ -5,6 +5,7 @@ import { MessageAttachment } from "discord.js";
 import axios from "axios";
 import settings from "@json/dynamic/settings.json";
 import { formatName } from "@helpers/sorter";
+import { Contribution, Texture } from "@helpers/interfaces/firestorm";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -32,9 +33,9 @@ export const command: SlashCommand = {
 
 		// if nobody to search up is provided, defaults to the person who asked
 		const user = interaction.options.getUser("user") ?? interaction.user;
-		let userData: any;
+		let contributionData: Contribution[] = [];
 		try {
-			userData = (
+			contributionData = (
 				await axios.get(
 					`${(interaction.client as Client).tokens.apiUrl}users/${user.id}/contributions`,
 				)
@@ -49,40 +50,48 @@ export const command: SlashCommand = {
 			return await interaction.editReply({ embeds: [finalEmbed] });
 		}
 
-		let textureData = [];
-		let i = 0;
-		for (let data of Object.values(userData)) {
-			try {
-				const response = (
-					await axios.get(
-						`${(interaction.client as Client).tokens.apiUrl}textures/${(data as any).texture}`,
-					)
-				).data;
-				textureData.push([data, response]);
-				if (i % 10 == 0)
-					// so it's not spamming message edits
-					await interaction.editReply({
-						embeds: [
-							loadingEmbed.setDescription(
-								`${baseDescription}\n${i} textures searched of ${userData.length} total.`,
-							),
-						],
-					});
-			} catch {
-				/* texture doesn't exist so just skip it */
-			}
-			++i;
-		}
+		contributionData.sort((a: Contribution, b: Contribution) => b.date - a.date);
+		const textureData: Texture[] = (
+			await Promise.all(
+				contributionData
+					// convert to ids
+					.map((texture: Contribution) => texture.texture)
+					// convert to 30-long nested arrays
+					.reduce((acc: string[][], cur: string, index: number) => {
+						if (index % 30 === 0) {
+							acc.push([]);
+						}
+						acc[acc.length - 1].push(cur);
+						return acc;
+					}, [])
+					.map(
+						async (ids: string[]) =>
+							// optimize array search by deleting double
+							(
+								await axios.get(
+									`${(interaction.client as Client).tokens.apiUrl}/textures/${ids
+										.filter((v, i, a) => a.indexOf(v) === i)
+										.join(",")}`,
+								)
+							).data,
+					),
+			)
+		).flat();
+
+		// merge the two objects by id
+		const finalData = contributionData.map((contribution: Contribution) => {
+			return {...contribution, ...textureData.find((val) => val.id == contribution.texture), }
+		});
 
 		let packCount = {};
 		let files: MessageAttachment[] | undefined;
-		if (textureData.length) {
+		if (finalData.length) {
 			const textBuf = Buffer.from(
-				textureData
-					.map((data) => {
-						const packName = formatName(data[0].pack)[0];
+				finalData
+					.map((data: Contribution & Texture) => {
+						const packName = formatName(data.pack)[0];
 						packCount[packName] = (packCount[packName] ?? 0) + 1;
-						return `${packName}: [#${data[1].id}] ${data[1].name}`;
+						return `${packName}: [#${data.texture}] ${data.name}`;
 					})
 					.join("\n"),
 			);
@@ -91,8 +100,8 @@ export const command: SlashCommand = {
 
 		const finalEmbed = new MessageEmbed()
 			.setTitle(
-				`${user.username} has ${userData.length} ${
-					userData.length == 1 ? "contribution" : "contributions"
+				`${user.username} has ${finalData.length} ${
+					finalData.length == 1 ? "contribution" : "contributions"
 				}!`,
 			)
 			.setDescription(
