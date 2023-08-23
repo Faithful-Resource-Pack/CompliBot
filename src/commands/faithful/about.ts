@@ -81,7 +81,7 @@ export const command: SlashCommand = {
 
 		// merge the two objects by id
 		const finalData = contributionData.map((contribution: Contribution) => {
-			return { ...contribution, ...textureData.find((val) => val.id == contribution.texture) };
+			return { ...contribution, ...textureData.find((val) => val?.id == contribution.texture) };
 		});
 
 		let packCount = {};
