@@ -76,7 +76,12 @@ export async function animateImage(options: Options): Promise<[MessageAttachment
 			{ name: "MCMETA", value: `\`\`\`json\n${JSON.stringify(mcmeta, null, 2)}\`\`\`` },
 		]);
 	if (frametime > 15) embed.setFooter({ text: "Frametime reduced for optimization!" });
-	return [await animate(options, mcmeta, dimension, baseCanvas), embed];
+
+	try {
+		return [await animate(options, mcmeta, dimension, baseCanvas), embed];
+	} catch {
+		return [null, embed];
+	}
 }
 
 export async function animate(
@@ -85,6 +90,9 @@ export async function animate(
 	dimension: ISizeCalculationResult,
 	baseCanvas: Canvas,
 ): Promise<MessageAttachment> {
+	if (dimension.height > 16384 || dimension.width > 512)
+		return Promise.reject("Output is too big!");
+
 	const canvas: Canvas = createCanvas(dimension.width, dimension.height);
 	const context: SKRSContext2D = canvas.getContext("2d");
 	context.imageSmoothingEnabled = false;
