@@ -10,7 +10,7 @@
         "prettier": "prettier \"{,!(node_modules)/**/}*.ts\" --config .prettierrc --write"
     },
     "devDependencies": {
-        "prettier": "^3.0.0",
+        "prettier": "^3.0.2",
         "ts-node": "^10.9.1",
         "ts-node-dev": "^2.0.0",
         "tsc-alias": "^1.8.7",
@@ -18,13 +18,13 @@
         "typescript": "^5.1.6"
     },
     "dependencies": {
-        "@discordjs/builders": "^1.6.3",
-        "@discordjs/rest": "^1.7.1",
+        "@discordjs/builders": "^1.6.5",
+        "@discordjs/rest": "^2.0.1",
         "@napi-rs/canvas": "^0.1.41",
-        "@types/node": "^20.4.5",
+        "@types/node": "^20.5.3",
         "axios": "^1.4.0",
         "chalk": "^4.1.2",
-        "discord-api-types": "^0.30.0",
+        "discord-api-types": "^0.37.54",
         "discord.js": "^13.16.0",
         "firestorm-db": "^1.10.2",
         "follow-redirects": "^1.15.2",
@@ -34,6 +34,6 @@
         "linux-os-info": "^2.0.0",
         "module-alias": "^2.2.3",
         "moment": "^2.29.4",
-        "tslib": "^2.6.1"
+        "tslib": "^2.6.2"
     }
 }
