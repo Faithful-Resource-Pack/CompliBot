@@ -19,12 +19,10 @@ export const command: SlashCommand = {
 		),
 	execute: async (interaction: CommandInteraction) => {
 		await interaction.deferReply();
-		// used for loading times
-		const baseDescription = "This can take some time, please wait...";
 
 		const loadingEmbed = new MessageEmbed()
 			.setTitle("Searching for contributions...")
-			.setDescription(baseDescription)
+			.setDescription("This can take some time, please wait...")
 			.setThumbnail(settings.images.loading);
 
 		await interaction
@@ -64,23 +62,26 @@ export const command: SlashCommand = {
 						acc[acc.length - 1].push(cur);
 						return acc;
 					}, [])
-					.map(
-						async (ids: string[]) =>
-							// optimize array search by deleting double
-							(
+					.map(async (ids: string[]) => {
+						// optimize array search by deleting double
+						let data: any[];
+						try {
+							data = (
 								await axios.get(
 									`${(interaction.client as Client).tokens.apiUrl}/textures/${ids
 										.filter((v, i, a) => a.indexOf(v) === i)
 										.join(",")}`,
 								)
-							).data,
-					),
+							).data;
+						} catch {}
+						if (data) return data;
+					}),
 			)
 		).flat();
 
 		// merge the two objects by id
 		const finalData = contributionData.map((contribution: Contribution) => {
-			return {...contribution, ...textureData.find((val) => val.id == contribution.texture), }
+			return { ...contribution, ...textureData.find((val) => val.id == contribution.texture) };
 		});
 
 		let packCount = {};
