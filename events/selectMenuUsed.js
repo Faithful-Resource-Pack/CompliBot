@@ -17,17 +17,14 @@ module.exports = {
 	async execute(interaction) {
 		switch (interaction.customId.split("_")[0]) {
 			case "choiceEmbed":
+				await interaction.deferUpdate();
 				const choiceMessage = interaction.message;
 				if (choiceMessage.deletable && choiceMessage.reference) {
 					const message = await choiceMessage.channel.messages.fetch(
 						choiceMessage.reference.messageId,
 					);
-					if (message.deletable && message.author.id == interaction.user.id) {
-						// "complete" interaction and immediately delete message
-						// can't be ephemeral because you can't force-delete those?
-						const followUp = await interaction.reply({ content: "** **", fetchReply: true });
-						if (followUp.deletable) await followUp.delete();
 
+					if (message.deletable && message.author.id == interaction.user.id) {
 						const [id, index] = interaction.values[0].split("__");
 						const attachments = Array.from(message.attachments.values());
 
