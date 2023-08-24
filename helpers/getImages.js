@@ -1,3 +1,5 @@
+const settings = require("../resources/settings.json");
+
 /**
  * Convert MessageAttachment objects into sendable URLs
  * @author RobertR11, Evorp
@@ -8,7 +10,7 @@
 module.exports = async function getImages(client, ...fileArray) {
 	let imgArray = [];
 	const imgMessage = await client.channels.cache
-		.get("916766396170518608")
+		.get(settings.channels.images)
 		.send({ files: fileArray });
 
 	imgMessage.attachments.forEach((Attachment) => {
