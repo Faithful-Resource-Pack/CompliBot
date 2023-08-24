@@ -13,6 +13,7 @@ const paths = require("./firestorm/texture_paths");
 
 /**
  * Search for a given texture and return details
+ * @todo the api already does this for you, just use that
  * @author Juknum
  * @param {String} search texture name to search for
  * @returns {Promise<MinecraftTexture>} array of results

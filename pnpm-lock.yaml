@@ -11,9 +11,6 @@ dependencies:
   '@octokit/rest':
     specifier: ^19.0.13
     version: 19.0.13
-  async-mutex:
-    specifier: ^0.4.0
-    version: 0.4.0
   axios:
     specifier: ^1.4.0
     version: 1.4.0
@@ -32,9 +29,6 @@ dependencies:
   fs-extra:
     specifier: ^11.1.1
     version: 11.1.1
-  getopts:
-    specifier: ^2.3.0
-    version: 2.3.0
   gif-encoder-2:
     specifier: ^1.0.5
     version: 1.0.5
@@ -53,9 +47,6 @@ dependencies:
   prettier:
     specifier: ^3.0.2
     version: 3.0.2
-  simple-git:
-    specifier: ^3.19.1
-    version: 3.19.1
 
 packages:
 
@@ -75,18 +66,6 @@ packages:
     resolution: {integrity: sha512-R5i8Wb8kIcBAFEPLLf7LVBQKBDYUL+ekb23sOgpkpyGT+V4P7V83wTxcsqmX+PbqHt4cEHn053uMWfRqh/Z/nA==}
     engines: {node: '>=16.9.0'}
     deprecated: no longer supported
-    dev: false
-
-  /@kwsites/file-exists@1.1.1:
-    resolution: {integrity: sha512-m9/5YGR18lIwxSFDwfE3oA7bWuq9kdau6ugN4H2rJeyhFQZcG9AgSHkQtSD15a8WvTgfz9aikZMrKPHvbpqFiw==}
-    dependencies:
-      debug: 4.3.4
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
-
-  /@kwsites/promise-deferred@1.1.1:
-    resolution: {integrity: sha512-GaHYm+c0O9MjZRu0ongGBRbinu8gVAMd2UZjji6jVmqKtZluZnptXGWhz1E8j8D2HJ3f/yMxKAUC0b+57wncIw==}
     dev: false
 
   /@napi-rs/canvas-android-arm64@0.1.44:
@@ -377,12 +356,6 @@ packages:
     engines: {node: '>=8'}
     dev: false
 
-  /async-mutex@0.4.0:
-    resolution: {integrity: sha512-eJFZ1YhRR8UN8eBLoNzcDPcy/jqjsg6I1AP+KvWQX80BqOSW1oJPJXDylPUEeMr2ZQvHgnQ//Lp6f3RQ1zI7HA==}
-    dependencies:
-      tslib: 2.6.1
-    dev: false
-
   /asynckit@0.4.0:
     resolution: {integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==}
     dev: false
@@ -477,18 +450,6 @@ packages:
     dependencies:
       ms: 2.1.2
       supports-color: 5.5.0
-    dev: false
-
-  /debug@4.3.4:
-    resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
-    engines: {node: '>=6.0'}
-    peerDependencies:
-      supports-color: '*'
-    peerDependenciesMeta:
-      supports-color:
-        optional: true
-    dependencies:
-      ms: 2.1.2
     dev: false
 
   /delayed-stream@1.0.0:
@@ -611,10 +572,6 @@ packages:
     requiresBuild: true
     dev: false
     optional: true
-
-  /getopts@2.3.0:
-    resolution: {integrity: sha512-5eDf9fuSXwxBL6q5HX+dhDj+dslFGWzU5thZ9kNKUkcPtaPdatmUFKwHFrLb/uf/WpA4BHET+AX3Scl56cAjpA==}
-    dev: false
 
   /gif-encoder-2@1.0.5:
     resolution: {integrity: sha512-fsRAKbZuUoZ7FYGjpFElmflTkKwsn/CzAmL/xDl4558aTAgysIDCUF6AXWO8dmai/ApfZACbPVAM+vPezJXlFg==}
@@ -870,16 +827,6 @@ packages:
     hasBin: true
     dependencies:
       lru-cache: 6.0.0
-    dev: false
-
-  /simple-git@3.19.1:
-    resolution: {integrity: sha512-Ck+rcjVaE1HotraRAS8u/+xgTvToTuoMkT9/l9lvuP5jftwnYUp6DwuJzsKErHgfyRk8IB8pqGHWEbM3tLgV1w==}
-    dependencies:
-      '@kwsites/file-exists': 1.1.1
-      '@kwsites/promise-deferred': 1.1.1
-      debug: 4.3.4
-    transitivePeerDependencies:
-      - supports-color
     dev: false
 
   /simple-update-notifier@2.0.0:

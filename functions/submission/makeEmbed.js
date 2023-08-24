@@ -23,7 +23,7 @@ const { MessageEmbed, MessageAttachment } = require("discord.js");
 module.exports = async function makeEmbed(client, message, texture, attachment, param = {}) {
 	const packName = await getPackByChannel(message.channel.id, "submit");
 
-	/** @type {import("../../helpers/firestorm/texture_use.js").TextureUse[]} */
+	/** @type {import("../../helpers/firestorm/texture_use").TextureUse[]} */
 	const uses = await texture.uses();
 
 	let pathText = [];
