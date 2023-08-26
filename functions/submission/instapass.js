@@ -3,6 +3,7 @@ const settings = require("../../resources/settings.json");
 const downloadResults = require("./downloadResults");
 const warnUser = require("../../helpers/warnUser");
 const DEBUG = process.env.DEBUG.toLowerCase() == "true";
+const { imageButtons } = require("../../helpers/buttons");
 
 /**
  * Instapass a given texture embed
@@ -22,15 +23,17 @@ module.exports = async function instapass(client, message) {
 		}
 	}
 	// this is why we send the channel rather than the pack into downloadResults()
+	/** @type {import("discord.js").TextChannel} */
 	const channelOut = await client.channels.fetch(channelOutID);
 	if (!channelOut) return warnUser(message, "Result channel was not able to be fetched!");
 	await channelOut.send({
 		embeds: [
-			message.embeds[0]
-				.setColor(settings.colors.yellow)
-				.setDescription(`[Original Post](${message.url})\n${message.embeds[0].description ?? ""}`),
+			// the status in submissions is changed in reactionMenu()
+			message.embeds[0].setDescription(
+				`[Original Post](${message.url})\n${message.embeds[0].description ?? ""}`,
+			),
 		],
-		components: [...message.components],
+		components: [imageButtons],
 	});
 
 	await downloadResults(client, channelOutID, true);

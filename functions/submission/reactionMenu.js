@@ -3,6 +3,7 @@ const settings = require("../../resources/settings.json");
 const { Permissions } = require("discord.js");
 const instapass = require("./instapass");
 const changeStatus = require("./changeStatus");
+const { imageButtons } = require("../../helpers/buttons");
 const DEBUG = process.env.DEBUG.toLowerCase() == "true";
 /**
  * Opens reaction tray, listens for reaction, and closes tray
@@ -124,6 +125,7 @@ module.exports = async function reactionMenu(client, menuReaction, user) {
 					message,
 					`<:instapass:${settings.emojis.instapass}> Instapassed by <@${member.id}>`,
 					settings.colors.yellow,
+					[imageButtons],
 				);
 				return instapass(client, message);
 			case settings.emojis.invalid:
