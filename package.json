@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node --use_strict --trace-warnings index.js",
     "prettier": "prettier \"{*.js,!(node*)**/*.js}\" --config .prettierrc --write",
-    "dev": "nodemon --ignore resources/"
+    "dev": "nodemon --ignore resources/ --ignore json/"
   },
   "repository": {
     "type": "git",
