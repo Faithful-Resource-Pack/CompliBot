@@ -12,7 +12,7 @@ const { promises, writeFile } = require("fs");
 const getPackByChannel = require("./getPackByChannel");
 
 /**
- * Download textures from a given channel to all its paths locally
+ * Push textures from a channel to all its paths locally and add contributions
  * @author Juknum, Evorp
  * @param {import("discord.js").Client} client
  * @param {String} channelResultID result channel to download from
@@ -28,7 +28,6 @@ module.exports = async function downloadResults(client, channelResultID, instapa
 	// removes non-submission messages
 	messages = messages.filter((message) => message.embeds?.[0]?.fields?.[1]);
 
-	let textures;
 	if (!instapass) {
 		// get messages from the same day
 		const delayedDate = new Date();
@@ -41,24 +40,25 @@ module.exports = async function downloadResults(client, channelResultID, instapa
 			);
 		});
 
-		// keep good textures
-		messages = messages.filter(
-			(message) =>
-				message.embeds[0].fields[1] !== undefined &&
-				message.embeds[0].fields[1].value.includes(settings.emojis.upvote),
+		// filter out rejected textures
+		messages = messages.filter((message) =>
+			message.embeds[0].fields[1]?.value?.includes(settings.emojis.upvote),
 		);
 
 		messages.reverse(); // upload them from the oldest to the newest
 	} else {
 		for (let msg of messages) {
-			if (msg.embeds[0].fields[1].value.includes(settings.emojis.instapass)) {
-				messages = [msg]; // converts to an array so map() can be used on it
+			if (msg.embeds[0].fields[1]?.value?.includes(settings.emojis.instapass)) {
+				// converts to an array so map() can be used on it
+				messages = [msg];
+				// only one texture instapassed at a time, so this is the most recent texture
 				break;
 			}
 		}
 	}
 
-	textures = messages.map((message) => {
+	// mapped for easier usage later
+	const textures = messages.map((message) => {
 		return {
 			url: message.embeds[0].thumbnail.url,
 			authors: message.embeds[0].fields[0].value
@@ -80,46 +80,42 @@ module.exports = async function downloadResults(client, channelResultID, instapa
 			continue;
 		}
 
+		const res = await fetch(texture.url);
+		const textureBuffer = await res.arrayBuffer();
 		const textureInfo = await texturesCollection.get(texture.id);
 		if (instapass) instapassName = textureInfo.name;
 
-		// push all the texture's paths into array
-		const uses = await textureInfo.uses();
-		let allPaths = [];
-		for (let use of uses) {
+		// add the image to all its versions and paths
+		for (let use of await textureInfo.uses()) {
 			const edition = use.editions[0].toLowerCase();
 			const folder = settings.repositories.repo_name[edition][packName]?.repo;
 			if (!folder && DEBUG)
 				console.log(`GitHub repository not found for pack and edition: ${packName} ${edition}`);
 			const basePath = `./texturesPush/${folder}`;
 
+			/** @type {import("../../helpers/firestorm/texture_paths").TexturePath[]} */
 			const paths = await use.paths();
 
 			// for all paths
 			for (let path of paths) {
-				const versions = path.versions;
 				// for each version of each path
-				for (let version of versions) allPaths.push(`${basePath}/${version}/${path.path}`);
+				for (let version of path.versions) {
+					const fullPath = `${basePath}/${version}/${path.path}`;
+
+					// make full folder chain
+					await promises
+						// removes the texture name from the full path
+						.mkdir(fullPath.substring(0, fullPath.lastIndexOf("/")), { recursive: true })
+						.catch((err) => {
+							if (DEBUG) console.error(err);
+						});
+
+					// write texture to previously generated path
+					writeFile(fullPath, Buffer.from(textureBuffer), (err) => {
+						if (DEBUG) return console.log(err || `Added texture to path: ${fullPath}`);
+					});
+				}
 			}
-		}
-
-		// get the texture image itself as a buffer
-		const res = await fetch(texture.url);
-		const buffer = await res.arrayBuffer();
-
-		// use those generated paths to create the full path
-		for (let path of allPaths) {
-			// create full folder path
-			await promises
-				.mkdir(path.substring(0, path.lastIndexOf("/")), { recursive: true })
-				.catch((err) => {
-					if (DEBUG) console.error(err);
-				});
-
-			// write texture to the corresponding path
-			writeFile(path, Buffer.from(buffer), (err) => {
-				if (DEBUG) return err ? console.error(err) : console.log(`Added texture to path: ${path}`);
-			});
 		}
 
 		// prepare the authors for the texture
@@ -127,7 +123,7 @@ module.exports = async function downloadResults(client, channelResultID, instapa
 			date: texture.date,
 			resolution: Number((packName.match(/\d+/) ?? [32])[0]), // stupid workaround but it works
 			pack: packName,
-			texture: `${texture.id}`,
+			texture: texture.id,
 			authors: texture.authors,
 		});
 
@@ -157,7 +153,9 @@ module.exports = async function downloadResults(client, channelResultID, instapa
 
 	if (instapass) await pushTextures(`Instapassed ${instapassName} from ${formattedDate()}`);
 	if (DEBUG)
-		contributionResults
-			? console.log(`Added contributions: ${contributionResults}`)
-			: console.log(`Couldn't add contributions for pack: ${packName}`);
+		console.log(
+			contributionResults
+				? `Added contributions: ${contributionResults}`
+				: `Couldn't add contributions for pack: ${packName}`,
+		);
 };

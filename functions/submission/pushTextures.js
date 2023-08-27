@@ -23,7 +23,7 @@ module.exports = async function pushTextures(
 	for (let packGithub of GITHUB_JAVA) {
 		for (let branch of BRANCHES_JAVA) {
 			if (checkFolder(`./texturesPush/${packGithub.repo}/${branch}`)) {
-				if (DEBUG) console.log(`PUSHING: ${packGithub.repo} (${branch})`);
+				if (DEBUG) console.log(`Pushing: ${packGithub.repo} (${branch})`);
 				try {
 					await pushToGitHub(
 						packGithub.org,

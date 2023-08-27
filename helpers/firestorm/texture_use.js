@@ -7,12 +7,12 @@ require("./firestorm_config")();
 
 /**
  * @typedef {Object} TextureUse
- * @property {Number} textureID // texture ID
- * @property {String} textureUseName // texture use human name
- * @property {Function} texture // get the texture associated for this use
- * @property {String[]} editions // editions for this use
- * @property {Function} paths // get the paths for this texture
- * @property {Function} animation // get the animation for this texture
+ * @property {Number} textureID texture ID
+ * @property {String} textureUseName texture use human name
+ * @property {Function} texture get the texture associated for this use
+ * @property {String[]} editions editions for this use
+ * @property {Function} paths get the paths for this texture
+ * @property {Function} animation get the animation for this texture
  */
 
 module.exports = firestorm.collection("uses", (el) => {
@@ -21,7 +21,7 @@ module.exports = firestorm.collection("uses", (el) => {
 		return texture.get(el.textureID);
 	};
 
-	/** @returns {Promise<TexturePath[]>} */
+	/** @returns {Promise<import("./texture_paths").TexturePath[]>} */
 	el.paths = function () {
 		return texture_paths.search([
 			{

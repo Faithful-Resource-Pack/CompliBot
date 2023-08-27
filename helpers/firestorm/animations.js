@@ -5,9 +5,9 @@ require("./firestorm_config")();
 
 /**
  * @typedef {Object} TextureAnimation
- * @property {Object} mcmeta // mcmeta animation object
- * @property {String} edition // minecraft edition animation
- * @property {Function} use // gets the use of this animation
+ * @property {Object} mcmeta mcmeta animation object
+ * @property {String} edition minecraft edition animation
+ * @property {Function} use gets the use of this animation
  */
 
 module.exports = firestorm.collection("animation", (el) => {

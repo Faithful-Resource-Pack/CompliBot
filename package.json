@@ -21,9 +21,9 @@
   "dependencies": {
     "@napi-rs/canvas": "^0.1.44",
     "@octokit/rest": "^19.0.13",
-    "axios": "^1.4.0",
+    "axios": "^1.5.0",
     "buffer": "^6.0.3",
-    "cron": "^2.4.1",
+    "cron": "^2.4.3",
     "discord.js": "^13.16.0",
     "dotenv": "^16.3.1",
     "fs-extra": "^11.1.1",
