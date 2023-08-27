@@ -1,12 +1,12 @@
     %randomSentence%
     %randomSentenceUnderline%
 
-CompliBot crash/log report, please report this to developers!
+CompliBot crash/log report. Please report this to developers!
 Date: %date%
 %stack%
 
-Actions: 
-> last 50 bots actions: slash commands, chat messages, etc...
+Actions:
+> last 50 bot actions: slash commands, chat messages, etc...
 
 %templateStart%
   INDEX        : %templateIndex%

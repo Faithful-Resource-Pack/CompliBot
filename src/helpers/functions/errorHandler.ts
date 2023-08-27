@@ -165,6 +165,7 @@ export const errorHandler: Function = async (client: Client, reason: any, type: 
 		.setAuthor({ name: type, iconURL: settings.images.error }) // much compressed than .title() & .thumbnail()
 		.setColor(colors.red)
 		.setTimestamp()
+		.setDescription(`\`\`\`${reason?.stack ?? reason ?? "No reason provided!"}\`\`\``)
 		.setFooter({ text: client.user.username, iconURL: client.user.avatarURL() });
 
 	await channel.send({ embeds: [embed] }).catch(console.error);
