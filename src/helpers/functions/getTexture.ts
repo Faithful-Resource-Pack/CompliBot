@@ -33,7 +33,7 @@ export const getTextureMessageOptions = async (options: {
 				await axios.get(
 					`https://raw.githubusercontent.com/CompliBot/Default-Java/${
 						animatedPath.versions.sort(minecraftSorter).reverse()[0]
-					}/assets/${animatedUse.assets}/${animatedPath.name}.mcmeta`,
+					}/${animatedPath.name}.mcmeta`,
 				)
 			).data;
 		} catch {

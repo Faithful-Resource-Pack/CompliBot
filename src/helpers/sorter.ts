@@ -33,9 +33,7 @@ export const addPathsToEmbed = (texture: Texture): EmbedFieldData[] => {
 				const versionRange = `\`[${
 					versions.length > 1 ? `${versions[0]} — ${versions[versions.length - 1]}` : versions[0]
 				}]\``;
-				const formatted = `${versionRange} ${
-					use.assets !== null && !p.name.startsWith("assets") ? `assets/${use.assets}/` : ``
-				}${p.name}`;
+				const formatted = `${versionRange} ${p.name}`;
 				if (tmp[use.edition]) tmp[use.edition].push(formatted);
 				else tmp[use.edition] = [formatted];
 			});
