@@ -133,7 +133,7 @@ module.exports = {
 						//break;
 					}
 				}
-			} catch (e) {
+			} catch {
 				return warnUser(message, strings.command.image.not_found_in_10_last);
 			}
 			//}

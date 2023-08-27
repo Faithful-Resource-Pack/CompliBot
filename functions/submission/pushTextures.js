@@ -1,4 +1,4 @@
-const fs = require("fs");
+const { rmdirSync, existsSync } = require("fs");
 
 const settings = require("../../resources/settings.json");
 const formattedDate = require("../../helpers/formattedDate");
@@ -7,65 +7,28 @@ const pushToGitHub = require("../pushToGitHub");
 const DEBUG = process.env.DEBUG.toLowerCase() == "true";
 
 /**
- * Push files from local storage to GitHub
- * @author Juknum
- * @param {String?} commitMessage
+ * Push textures from ./texturesPush/ to their corresponding repo on GitHub
+ * @author Juknum, Evorp
+ * @param {String} commitMessage default is the generic autopush message
  */
 module.exports = async function pushTextures(
 	commitMessage = `Autopush passed textures from ${formattedDate()}`,
 ) {
-	const GITHUB_JAVA = Object.values(settings.repositories.repo_name.java);
-	const GITHUB_BEDROCK = Object.values(settings.repositories.repo_name.bedrock);
-
-	const BRANCHES_JAVA = settings.versions.java;
-	const BRANCHES_BEDROCK = settings.versions.bedrock;
-
-	for (let packGithub of GITHUB_JAVA) {
-		for (let branch of BRANCHES_JAVA) {
-			if (checkFolder(`./texturesPush/${packGithub.repo}/${branch}`)) {
-				if (DEBUG) console.log(`Pushing: ${packGithub.repo} (${branch})`);
+	// Object.keys(settings.versions) picks up dungeons and the id property too unfortunately
+	for (let edition of ["java", "bedrock"]) {
+		for (let packGithub of Object.values(settings.repositories.repo_name[edition])) {
+			for (let branch of settings.versions[edition]) {
+				const path = `./texturesPush/${packGithub.repo}/${branch}/`;
+				if (!existsSync(path)) continue;
 				try {
-					await pushToGitHub(
-						packGithub.org,
-						packGithub.repo,
-						`${branch}`,
-						commitMessage,
-						`./texturesPush/${packGithub.repo}/${branch}/`,
-					);
-				} catch (e) {
-					// branch doesn't exist, octokit causes an error
+					await pushToGitHub(packGithub.org, packGithub.repo, branch, commitMessage, path);
+					rmdirSync(path, { recursive: true });
+					if (DEBUG) console.log(`Pushed: ${packGithub.repo} (${branch})`);
+				} catch {
+					// can also be an auth error or really anything but this is most likely any error's reason
+					if (DEBUG) console.log(`Branch ${branch} doesn't exist for pack ${packGithub.repo}!`);
 				}
-				fs.rmdirSync(`./texturesPush/${packGithub.repo}/${branch}/`, { recursive: true });
 			}
 		}
 	}
-
-	for (let packGithub of GITHUB_BEDROCK) {
-		for (let branch of BRANCHES_BEDROCK) {
-			if (checkFolder(`./texturesPush/${packGithub.repo}/${branch}`)) {
-				if (DEBUG) console.log(`PUSHING: ${packGithub.repo} (${branch})`);
-				await pushToGitHub(
-					packGithub.org,
-					packGithub.repo,
-					`${branch}`,
-					commitMessage,
-					`./texturesPush/${packGithub.repo}/${branch}/`,
-				);
-
-				fs.rmdirSync(`./texturesPush/${packGithub.repo}/${branch}/`, { recursive: true });
-			}
-		}
-	}
-};
-
-/**
- * Check if a directory is empty
- * @param {String} folderPath
- * @returns {Boolean} true if empty
- */
-const checkFolder = (folderPath) => {
-	if (!folderPath) throw Error("A folder path is required!");
-
-	const isFolderExist = fs.existsSync(folderPath);
-	return isFolderExist;
 };

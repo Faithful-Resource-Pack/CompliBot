@@ -112,7 +112,7 @@ module.exports = async function downloadResults(client, channelResultID, instapa
 
 					// write texture to previously generated path
 					writeFile(fullPath, Buffer.from(textureBuffer), (err) => {
-						if (DEBUG) return console.log(err || `Added texture to path: ${fullPath}`);
+						if (DEBUG) return console.log(err ?? `Added texture to path: ${fullPath}`);
 					});
 				}
 			}

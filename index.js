@@ -8,9 +8,8 @@ const { Client, Intents, Constants, Collection } = require("discord.js");
  * COMPLIBOT SUBMISSIONS INDEX FILE:
  * - Developed by and for the Faithful Community.
  * - Please read our license first.
- * - If you find any bugs, please use our GitHub issues tracker
+ * - If you find any bugs, please use our GitHub issue tracker
  */
-
 function startBot() {
 	const client = new Client({
 		allowedMentions: { parse: ["users", "roles"], repliedUser: false }, // remove this line to die instantly ~JackDotJS 2021
@@ -56,6 +55,9 @@ function startBot() {
 		else client.on(event.name, (...args) => event.execute(...args));
 	}
 
+	/**
+	 * ERROR HANDLER
+	 */
 	const unhandledRejection = require("./events/unhandledRejection");
 	process.on("unhandledRejection", (reason, promise) =>
 		unhandledRejection(client, reason, promise),
@@ -64,12 +66,12 @@ function startBot() {
 	client.login(process.env.CLIENT_TOKEN).catch(console.error);
 }
 
+// IMPORTANT: you always need to fetch settings BEFORE you start the bot
 fetchSettings()
 	.then(() => startBot())
 	.catch((err) => {
 		console.error("An error occured while fetching settings.json!");
-		const error = err.response?.data ?? err;
-		console.error(error);
+		console.error(err.response?.data ?? err);
 	});
 
 exports.startBot = startBot;
