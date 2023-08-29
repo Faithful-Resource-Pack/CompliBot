@@ -16,7 +16,7 @@ const settings = require("../../resources/settings.json");
  * @param {Number?} tolerance difference between colors considered acceptable
  * @returns {Promise<import("discord.js").MessageAttachment>} compared image
  */
-module.exports = async function difference(firstUrl, secondUrl, tolerance = 5) {
+module.exports = async function difference(firstUrl, secondUrl, tolerance = 0) {
 	let mappedUrls = [];
 	let invalidUrl = false;
 	for (let url of [firstUrl, secondUrl]) {
