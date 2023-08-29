@@ -5,7 +5,7 @@ const strings = require("../resources/strings.json");
 const settings = require("../resources/settings.json");
 const makeEmbed = require("../functions/submission/makeEmbed");
 const getAuthors = require("../functions/submission/getAuthors");
-const textures = require("../helpers/firestorm/texture");
+const { default: axios } = require("axios");
 
 /**
  * "fake" event created to split up the generic interaction event
@@ -33,7 +33,8 @@ module.exports = {
 							authors: await getAuthors(message),
 						};
 
-						const texture = await textures.get(id);
+						/** @type {import("../helpers/jsdoc").Texture} */
+						const texture = (await axios.get(`https://api.faithfulpack.net/v2/textures/${id}/all`)).data;
 						if (choiceMessage.deletable) await choiceMessage.delete();
 
 						return await makeEmbed(client, message, texture, attachments[index], param);

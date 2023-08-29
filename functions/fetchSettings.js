@@ -1,6 +1,5 @@
 const { writeFile } = require("fs/promises");
 const { join } = require("path");
-const allCollection = require("../helpers/firestorm/all");
 
 /**
  * Download remote settings file
@@ -9,7 +8,7 @@ const allCollection = require("../helpers/firestorm/all");
  */
 module.exports = async (format = false) => {
 	if (process.env.FETCH_SETTINGS.toLowerCase() !== "true") return;
-	const settings = await allCollection.settings.read_raw();
+	const settings = (await axios.get(`https://api.faithfulpack.net/v2/settings/raw`)).data;
 	const OUT_PATH = join(process.cwd(), "resources", "settings.json");
 	const space = format ? 4 : 0;
 	return writeFile(OUT_PATH, JSON.stringify(settings, null, space), {

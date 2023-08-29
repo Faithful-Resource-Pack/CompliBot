@@ -1,15 +1,14 @@
 const settings = require("../../resources/settings.json");
 
 const getMessages = require("../../helpers/getMessages");
-const texturesCollection = require("../../helpers/firestorm/texture");
-const contributionsCollection = require("../../helpers/firestorm/contributions");
 const pushTextures = require("./pushTextures");
 const formattedDate = require("../../helpers/formattedDate");
 const DEBUG = process.env.DEBUG.toLowerCase() == "true";
+const DEV = process.env.DEV.toLowerCase() == "true";
 
-const Buffer = require("buffer/").Buffer;
 const { promises, writeFile } = require("fs");
 const getPackByChannel = require("./getPackByChannel");
+const { default: axios } = require("axios");
 
 /**
  * Push textures from a channel to all its paths locally and add contributions
@@ -80,27 +79,25 @@ module.exports = async function downloadResults(client, channelResultID, instapa
 			continue;
 		}
 
-		const res = await fetch(texture.url);
-		const textureBuffer = await res.arrayBuffer();
-		const textureInfo = await texturesCollection.get(texture.id);
-		if (instapass) instapassName = textureInfo.name;
+		const imageFile = (await axios.get(texture.url, { responseType: "arraybuffer" })).data;
+
+		/** @type {import("../../helpers/jsdoc").Texture} */
+		const textureInfo = (await axios.get(`https://api.faithfulpack.net/v2/textures/${texture.id}/all`)).data;
 
 		// add the image to all its versions and paths
-		for (let use of await textureInfo.uses()) {
-			const edition = use.editions[0].toLowerCase();
+		for (let use of textureInfo.uses) {
+			const paths = textureInfo.paths.filter((i) => i.use == use.id);
+			const edition = use.edition.toLowerCase();
 			const folder = settings.repositories.repo_name[edition][packName]?.repo;
 			if (!folder && DEBUG)
 				console.log(`GitHub repository not found for pack and edition: ${packName} ${edition}`);
 			const basePath = `./texturesPush/${folder}`;
 
-			/** @type {import("../../helpers/firestorm/texture_paths").TexturePath[]} */
-			const paths = await use.paths();
-
 			// for all paths
 			for (let path of paths) {
 				// for each version of each path
 				for (let version of path.versions) {
-					const fullPath = `${basePath}/${version}/${path.path}`;
+					const fullPath = `${basePath}/${version}/${path.name}`;
 
 					// make full folder chain
 					await promises
@@ -111,7 +108,7 @@ module.exports = async function downloadResults(client, channelResultID, instapa
 						});
 
 					// write texture to previously generated path
-					writeFile(fullPath, Buffer.from(textureBuffer), (err) => {
+					writeFile(fullPath, Buffer.from(imageFile), (err) => {
 						if (DEBUG) return console.log(err ?? `Added texture to path: ${fullPath}`);
 					});
 				}
@@ -144,18 +141,16 @@ module.exports = async function downloadResults(client, channelResultID, instapa
 		}
 	}
 
-	let contributionResults;
 	try {
-		contributionResults = await contributionsCollection.addBulk(allContribution);
+		await axios.post(`https://api.faithfulpack.net/v2/contributions`, allContribution, {
+			headers: {
+				bot: process.env.FIRESTORM_TOKEN,
+			}
+		});
+		if (DEBUG) console.log(`Added contributions: ${allContribution}`);
 	} catch {
-		// couldn't add contributions (probably because in dev mode)
+		if (DEBUG) console.error(`Couldn't add contributions for pack: ${packName}`);
 	}
 
 	if (instapass) await pushTextures(`Instapassed ${instapassName} from ${formattedDate()}`);
-	if (DEBUG)
-		console.log(
-			contributionResults
-				? `Added contributions: ${contributionResults}`
-				: `Couldn't add contributions for pack: ${packName}`,
-		);
 };

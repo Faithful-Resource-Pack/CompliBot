@@ -16,51 +16,23 @@ const { MessageEmbed, MessageAttachment } = require("discord.js");
  * @author Juknum, Evorp
  * @param {import("discord.js").Client} client
  * @param {import("discord.js").Message} message used for channel and author information
- * @param {import("../../helpers/getTexture").MinecraftTexture} texture texture information
+ * @param {import("../../helpers/jsdoc").Texture} texture texture information
  * @param {import("discord.js").MessageAttachment} attachment raw texture to embed
  * @param {{ description: String?, authors: String[] }} param additional info (e.g. description, coauthors)
  */
 module.exports = async function makeEmbed(client, message, texture, attachment, param = {}) {
 	const packName = await getPackByChannel(message.channel.id, "submit");
-
-	/** @type {import("../../helpers/firestorm/texture_use").TextureUse[]} */
-	const uses = await texture.uses();
-
-	let pathText = [];
 	let imgButtons;
 
-	// generate displayed paths and uses
-	for (let use of uses) {
-		const localPath = await use.paths();
-		pathText.push(`**${use.editions[0].charAt(0).toUpperCase() + use.editions[0].slice(1)}**\n`);
-		for (let path of localPath) {
-			const versions = path.versions.sort(minecraftSorter);
-			// show range of versions if multiple exist
-			// otherwise just push the first one (e.g. bedrock, texture only in one version)
-			pathText.push(
-				`\`[${
-					versions.length > 1 ? `${versions[0]} — ${versions[versions.length - 1]}` : versions[0]
-				}]\` ${path.path}\n`,
-			);
-		}
-	}
-
-	// add previous contributions
+	// load previous contributions if applicable
 	if (param.description.startsWith("+")) {
-		const allContributions = (await texture.contributions()).filter((i) => i?.pack == packName);
+		const allContributions = texture.contributions.filter((i) => i.pack == packName);
 		if (allContributions.length) {
 			const lastContribution = allContributions.sort((a, b) => (a.date > b.date ? -1 : 1))[0];
 			for (let author of lastContribution.authors)
 				if (!param.authors.includes(author)) param.authors.push(author);
 		}
 	}
-
-	const paths = await uses[0].paths();
-	const info = {
-		path: paths[0].path,
-		version: paths[0].versions.sort(minecraftSorter).reverse()[0],
-		edition: uses[0].editions[0],
-	};
 
 	const embed = new MessageEmbed()
 		.setAuthor({ name: message.author.username, iconURL: message.author.displayAvatarURL() })
@@ -70,7 +42,7 @@ module.exports = async function makeEmbed(client, message, texture, attachment, 
 		.addFields([
 			{ name: "Author", value: `<@!${param.authors.join(">\n<@!").toString()}>`, inline: true },
 			{ name: "Status", value: `<:pending:${settings.emojis.pending}> Pending...`, inline: true },
-			{ name: "\u200B", value: pathText.toString().replace(/,/g, ""), inline: false },
+			...addPathsToEmbed(texture),
 		]);
 
 	// load raw image to pull from
@@ -80,7 +52,11 @@ module.exports = async function makeEmbed(client, message, texture, attachment, 
 	// generate comparison image if possible
 	if (dimension.width * dimension.height <= 262144) {
 		if (DEBUG) console.log(`Generating comparison image for texture: ${texture.name}`);
-		const { comparisonImage, hasReference } = await generateComparison(packName, attachment, info);
+		const { comparisonImage, hasReference } = await generateComparison(packName, attachment, {
+			path: texture.paths[0].name,
+			version: texture.paths[0].versions.sort(minecraftSorter).reverse()[0],
+			edition: texture.uses[0].edition.toLowerCase(),
+		});
 		// send to #submission-spam for permanent urls
 		const [thumbnailUrl, comparedUrl] = await getImages(client, rawImage, comparisonImage);
 
@@ -131,10 +107,43 @@ module.exports = async function makeEmbed(client, message, texture, attachment, 
 		settings.emojis.upvote,
 		settings.emojis.downvote,
 		settings.emojis.see_more,
-	]) {
-		const e = client.emojis.cache.get(emojiID);
-		await msg.react(e);
-	}
+	])
+		await msg.react(client.emojis.cache.get(emojiID));
 
 	if (DEBUG) console.log(`Finished submission embed for texture: ${texture.name}`);
 };
+
+/**
+ * Return organized path data for a given texture
+ * @param {import("../../helpers/jsdoc").Texture} texture
+ * @returns {import("discord.js").EmbedFieldData[]}
+ */
+function addPathsToEmbed(texture) {
+	let tmp = {};
+	texture.uses.forEach((use) => {
+		texture.paths
+			.filter((el) => el.use === use.id)
+			.forEach((p) => {
+				const versions = p.versions.sort(minecraftSorter);
+				const versionRange = `\`[${
+					versions.length > 1 ? `${versions[0]} — ${versions[versions.length - 1]}` : versions[0]
+				}]\``;
+				const formatted = `${versionRange} ${p.name}`;
+				if (tmp[use.edition]) tmp[use.edition].push(formatted);
+				else tmp[use.edition] = [formatted];
+			});
+	});
+
+	let final = [];
+
+	Object.keys(tmp).forEach((edition) => {
+		if (tmp[edition].length > 0) {
+			final.push({
+				name: edition.charAt(0).toLocaleUpperCase() + edition.slice(1),
+				value: tmp[edition].join("\n"),
+			});
+		}
+	});
+
+	return final;
+}

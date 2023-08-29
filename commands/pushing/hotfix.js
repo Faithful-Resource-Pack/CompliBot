@@ -3,7 +3,6 @@ const prefix = process.env.PREFIX;
 const fs = require("fs");
 
 const settings = require("../../resources/settings.json");
-const allCollection = require("../../helpers/firestorm/all");
 const retrieveSubmission = require("../../functions/submission/retrieveSubmission");
 const downloadResults = require("../../functions/submission/downloadResults");
 const pushTextures = require("../../functions/submission/pushTextures");

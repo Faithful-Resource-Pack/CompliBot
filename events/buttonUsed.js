@@ -3,8 +3,8 @@ const tile = require("../functions/textures/tile");
 const palette = require("../functions/textures/palette");
 const difference = require("../functions/textures/difference");
 
-const textures = require("../helpers/firestorm/texture");
 const minecraftSorter = require("../helpers/minecraftSorter");
+const { default: axios } = require("axios");
 const { MessageEmbed } = require("discord.js");
 
 const strings = require("../resources/strings.json");
@@ -50,17 +50,11 @@ module.exports = {
 				])[0];
 				if (!id) break;
 				await interaction.deferReply({ ephemeral: true });
-				const texture = await textures.get(id);
-				const uses = await texture.uses();
-				const paths = await uses[0].paths();
-				const info = {
-					path: paths[0].path,
-					version: paths[0].versions.sort(minecraftSorter).reverse()[0],
-					edition: uses[0].editions[0],
-				};
-				const currentUrl = `${settings.repositories.raw[packName][info.edition.toLowerCase()]}${
-					info.version
-				}/${info.path}`;
+				/** @type {import("../helpers/jsdoc").Texture} */
+				const texture = (await axios.get(`https://api.faithfulpack.net/v2/textures/${id}/all`)).data;
+				const currentUrl = `${
+					settings.repositories.raw[packName][texture.uses[0].edition.toLowerCase()]
+				}${texture.paths[0].versions.sort(minecraftSorter)[0]}/${texture.paths[0].name}`;
 				const proposedUrl = message.embeds[0].thumbnail?.url;
 
 				const diff = await difference(currentUrl, proposedUrl);

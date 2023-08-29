@@ -1,17 +1,17 @@
 const settings = require("../../resources/settings.json");
 const strings = require("../../resources/strings.json");
+
 const DEBUG = process.env.DEBUG.toLowerCase() == "true";
 
 const choiceEmbed = require("./choiceEmbed");
 const makeEmbed = require("./makeEmbed");
 const addDeleteButton = require("../../helpers/addDeleteButton");
 
-const textures = require("../../helpers/firestorm/texture");
-const getTexture = require("../../helpers/getTexture");
 const getAuthors = require("./getAuthors");
 const minecraftSorter = require("../../helpers/minecraftSorter");
 
 const { MessageEmbed, Permissions } = require("discord.js");
+const { default: axios } = require("axios");
 
 /**
  * Get submission information and create embed
@@ -50,10 +50,11 @@ module.exports = async function submitTexture(client, message) {
 
 		// priority to ids -> faster
 		if (!isNaN(Number(id))) {
-			const texture = await textures
-				.get(id)
-				.catch((err) => invalidSubmission(message, strings.submission.unknown_id + err));
-			await makeEmbed(client, message, texture, attachment, param);
+			/** @type {import("../../helpers/jsdoc").Texture} */
+			const texture = (await axios.get(`https://api.faithfulpack.net/v2/textures/${id}/all`)).data;
+			if (!Object.keys(texture).length)
+				await invalidSubmission(message, strings.submission.unknown_id + err);
+			else await makeEmbed(client, message, texture, attachment, param);
 			continue;
 		}
 
@@ -66,7 +67,8 @@ module.exports = async function submitTexture(client, message) {
 			continue;
 		}
 
-		const results = await getTexture(search);
+		/** @type {import("../../helpers/jsdoc").Texture[]} */
+		const results = (await axios.get(`https://api.faithfulpack.net/v2/textures/${search}/all`)).data;
 
 		if (!results.length) {
 			await invalidSubmission(message, strings.submission.does_not_exist + "\n" + search);
@@ -79,13 +81,11 @@ module.exports = async function submitTexture(client, message) {
 		ongoingMenu = true;
 		let mappedResults = [];
 		for (let result of results) {
-			const uses = await result.uses();
-			const paths = await uses[0].paths();
-			const version = paths[0].versions.sort(minecraftSorter).reverse()[0];
+			const version = result.paths[0].versions.sort(minecraftSorter).reverse()[0];
 
 			mappedResults.push({
 				label: `[#${result.id}] (${version}) ${result.name}`,
-				description: paths[0].path,
+				description: result.paths[0].name,
 				value: `${result.id}__${attachmentIndex}`,
 			});
 		}
