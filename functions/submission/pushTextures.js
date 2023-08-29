@@ -19,15 +19,16 @@ module.exports = async function pushTextures(
 		for (let packGithub of Object.values(settings.repositories.repo_name[edition])) {
 			for (let branch of settings.versions[edition]) {
 				const path = `./texturesPush/${packGithub.repo}/${branch}/`;
+
 				// don't create empty commits
 				if (!existsSync(path)) continue;
 				try {
 					await pushToGitHub(packGithub.org, packGithub.repo, branch, commitMessage, path);
 					// only remove path if pushing succeeded, so the bot tries the next day too
 					rmdirSync(path, { recursive: true });
-					if (DEBUG) console.log(`Pushed: ${packGithub.repo} (${branch})`);
+					if (DEBUG) console.log(`Pushed: [${packGithub.repo}:${branch}] (${packGithub.org})`);
 				} catch {
-					// can also be an auth error or really anything but this is most likely any error's reason
+					// can also be an auth error or really anything but this is most likely
 					if (DEBUG) console.log(`Branch ${branch} doesn't exist for pack ${packGithub.repo}!`);
 				}
 			}

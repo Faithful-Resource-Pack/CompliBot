@@ -1,4 +1,4 @@
-const settings = require("../../resources/settings.json");
+const settings = require("../../../resources/settings.json");
 
 /**
  * get pack id (e.g. faithful_32x, classic_faithful_64x) by a given submission channel id

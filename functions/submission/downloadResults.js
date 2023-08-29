@@ -7,7 +7,7 @@ const DEBUG = process.env.DEBUG.toLowerCase() == "true";
 const DEV = process.env.DEV.toLowerCase() == "true";
 
 const { promises, writeFile } = require("fs");
-const getPackByChannel = require("./getPackByChannel");
+const getPackByChannel = require("./utility/getPackByChannel");
 const { default: axios } = require("axios");
 
 /**

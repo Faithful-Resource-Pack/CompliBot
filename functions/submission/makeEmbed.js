@@ -3,10 +3,10 @@ const DEBUG = process.env.DEBUG.toLowerCase() == "true";
 
 const minecraftSorter = require("../../helpers/minecraftSorter");
 
-const getPackByChannel = require("./getPackByChannel");
-const getDimensions = require("../textures/getDimensions");
+const getPackByChannel = require("./utility/getPackByChannel");
+const getDimensions = require("../images/getDimensions");
 const getImages = require("../../helpers/getImages");
-const generateComparison = require("./generateComparison");
+const generateComparison = require("./utility/generateComparison");
 const { imageButtons, submissionButtons } = require("../../helpers/buttons");
 
 const { MessageEmbed, MessageAttachment } = require("discord.js");

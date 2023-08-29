@@ -1,8 +1,7 @@
-const settings = require("../../resources/settings.json");
-const stitch = require("../textures/stitch");
-const { magnifyAttachment } = require("../textures/magnify");
+const settings = require("../../../resources/settings.json");
+const stitch = require("../../images/stitch");
+const { magnifyAttachment } = require("../../images/magnify");
 const { loadImage } = require("@napi-rs/canvas");
-const getPackByChannel = require("./getPackByChannel");
 
 /**
  * @author Evorp

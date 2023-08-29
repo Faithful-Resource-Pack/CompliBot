@@ -3,11 +3,11 @@ const strings = require("../../resources/strings.json");
 
 const DEBUG = process.env.DEBUG.toLowerCase() == "true";
 
-const choiceEmbed = require("./choiceEmbed");
+const choiceEmbed = require("./utility/choiceEmbed");
 const makeEmbed = require("./makeEmbed");
 const addDeleteButton = require("../../helpers/addDeleteButton");
 
-const getAuthors = require("./getAuthors");
+const getAuthors = require("./utility/getAuthors");
 const minecraftSorter = require("../../helpers/minecraftSorter");
 
 const { MessageEmbed, Permissions } = require("discord.js");
