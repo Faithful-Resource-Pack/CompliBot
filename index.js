@@ -6,7 +6,7 @@
  */
 
 // used for @ paths
-require('module-alias/register');
+require("module-alias/register");
 require("dotenv").config();
 
 const { readdirSync } = require("fs");

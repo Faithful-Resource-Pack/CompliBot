@@ -144,7 +144,7 @@ module.exports = async function downloadResults(client, channelResultID, instapa
 		await axios.post(`${process.env.API_URL}contributions`, allContribution, {
 			headers: {
 				bot: process.env.API_TOKEN,
-			}
+			},
 		});
 		if (DEBUG) console.log(`Added contributions: ${allContribution}`);
 	} catch {
