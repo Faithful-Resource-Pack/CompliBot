@@ -81,7 +81,7 @@ module.exports = async function downloadResults(client, channelResultID, instapa
 		const imageFile = (await axios.get(texture.url, { responseType: "arraybuffer" })).data;
 
 		/** @type {import("../../helpers/jsdoc").Texture} */
-		const textureInfo = (await axios.get(`https://api.faithfulpack.net/v2/textures/${texture.id}/all`)).data;
+		const textureInfo = (await axios.get(`${process.env.API_URL}textures/${texture.id}/all`)).data;
 
 		// add the image to all its versions and paths
 		for (let use of textureInfo.uses) {
@@ -141,7 +141,7 @@ module.exports = async function downloadResults(client, channelResultID, instapa
 	}
 
 	try {
-		await axios.post(`https://api.faithfulpack.net/v2/contributions`, allContribution, {
+		await axios.post(`${process.env.API_URL}contributions`, allContribution, {
 			headers: {
 				bot: process.env.API_TOKEN,
 			}

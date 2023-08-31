@@ -8,7 +8,7 @@ const { join } = require("path");
  */
 module.exports = async (format = false) => {
 	if (process.env.FETCH_SETTINGS.toLowerCase() !== "true") return;
-	const settings = (await axios.get(`https://api.faithfulpack.net/v2/settings/raw`)).data;
+	const settings = (await axios.get(`${process.env.API_URL}settings/raw`)).data;
 	const OUT_PATH = join(process.cwd(), "resources", "settings.json");
 	const space = format ? 4 : 0;
 	return writeFile(OUT_PATH, JSON.stringify(settings, null, space), {

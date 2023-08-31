@@ -51,7 +51,7 @@ module.exports = {
 				if (!id) break;
 				await interaction.deferReply({ ephemeral: true });
 				/** @type {import("../helpers/jsdoc").Texture} */
-				const texture = (await axios.get(`https://api.faithfulpack.net/v2/textures/${id}/all`)).data;
+				const texture = (await axios.get(`${process.env.API_URL}textures/${id}/all`)).data;
 				const currentUrl = `${
 					settings.repositories.raw[packName][texture.uses[0].edition.toLowerCase()]
 				}${texture.paths[0].versions.sort(minecraftSorter)[0]}/${texture.paths[0].name}`;

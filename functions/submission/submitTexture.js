@@ -51,7 +51,7 @@ module.exports = async function submitTexture(client, message) {
 		// priority to ids -> faster
 		if (!isNaN(Number(id))) {
 			/** @type {import("../../helpers/jsdoc").Texture} */
-			const texture = (await axios.get(`https://api.faithfulpack.net/v2/textures/${id}/all`)).data;
+			const texture = (await axios.get(`${process.env.API_URL}textures/${id}/all`)).data;
 			if (!Object.keys(texture).length)
 				await invalidSubmission(message, strings.submission.unknown_id + err);
 			else await makeEmbed(client, message, texture, attachment, param);
@@ -68,7 +68,7 @@ module.exports = async function submitTexture(client, message) {
 		}
 
 		/** @type {import("../../helpers/jsdoc").Texture[]} */
-		const results = (await axios.get(`https://api.faithfulpack.net/v2/textures/${search}/all`)).data;
+		const results = (await axios.get(`${process.env.API_URL}textures/${search}/all`)).data;
 
 		if (!results.length) {
 			await invalidSubmission(message, strings.submission.does_not_exist + "\n" + search);

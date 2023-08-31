@@ -55,7 +55,8 @@ pnpm dev
 |     FETCH_SETTINGS      |                   true                   |          Switches to a local copy of `settings.json`.          |
 |           DEV           |                  false                   |          Disables annoying production-only features.           |
 |         LOG_DEV         |                  false                   |       Whether to log errors to the main or dev channel.        |
-|        API_TOKEN        | a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0 |               Token for writing to the database                |
+|         API_URL         |     https://api.faithfulpack.net/v2/     |        Used for fetching texture information and more.         |
+|        API_TOKEN        | a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0 |        Token for making privileged requests to the API.        |
 | COMPLIBOT_GIT_USERNAME  |              Faithful-Pack               |            Git username for the CompliBot account.             |
 |   COMPLIBOT_GIT_EMAIL   |    CompliBot@users.noreply.github.com    |              Git email for the CompliBot account.              |
 | COMPLIBOT_GIT_JSON_REPO |    /Faithful-Resource-Pack/Database/     |         Github repository to back up JSON files into.          |

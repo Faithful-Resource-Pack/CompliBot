@@ -1,17 +1,21 @@
-require('module-alias/register');
-require("dotenv").config();
-const { readdirSync } = require("fs");
-const walkSync = require("@helpers/walkSync");
-const fetchSettings = require("@functions/fetchSettings");
-const unhandledRejection = require("@events/unhandledRejection");
-const { Client, Intents, Constants, Collection } = require("discord.js");
-
 /**
  * COMPLIBOT SUBMISSIONS INDEX FILE:
  * - Developed by and for the Faithful Community.
  * - Please read our license first.
  * - If you find any bugs, please use our GitHub issue tracker
  */
+
+// used for @ paths
+require('module-alias/register');
+require("dotenv").config();
+
+const { readdirSync } = require("fs");
+const walkSync = require("@helpers/walkSync");
+
+const fetchSettings = require("@functions/fetchSettings");
+const unhandledRejection = require("@events/unhandledRejection");
+const { Client, Intents, Constants, Collection } = require("discord.js");
+
 function startBot() {
 	const client = new Client({
 		allowedMentions: { parse: ["users", "roles"], repliedUser: false }, // remove this line to die instantly ~JackDotJS 2021

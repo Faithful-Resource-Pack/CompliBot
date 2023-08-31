@@ -34,7 +34,7 @@ module.exports = {
 						};
 
 						/** @type {import("../helpers/jsdoc").Texture} */
-						const texture = (await axios.get(`https://api.faithfulpack.net/v2/textures/${id}/all`)).data;
+						const texture = (await axios.get(`${process.env.API_URL}textures/${id}/all`)).data;
 						if (choiceMessage.deletable) await choiceMessage.delete();
 
 						return await makeEmbed(client, message, texture, attachments[index], param);
