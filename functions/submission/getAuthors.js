@@ -14,7 +14,7 @@ module.exports = async function getAuthors(message) {
 
 	if (names.length) {
 		// fetch all contributors and check if their username matches the one in curly brackets
-		const res = await fetch(`https://api.faithfulpack.net/v2/contributions/authors`);
+		const res = await fetch(`https://api.faithfulpack.net/v2/users/names`);
 		const contributionJSON = await res.json();
 		for (let user of contributionJSON) {
 			// if no username set it will throw an error otherwise
