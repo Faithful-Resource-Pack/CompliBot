@@ -14,7 +14,7 @@
  * @typedef Use
  * @property {String} id
  * @property {String} name
- * @property {"java" | "bedrock" | "dungeons"} edition
+ * @property {"java" | "bedrock"} edition
  *
  * @typedef Contribution
  * @property {String} id

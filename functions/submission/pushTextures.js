@@ -4,6 +4,7 @@ const settings = require("../../resources/settings.json");
 const formattedDate = require("../../helpers/formattedDate");
 
 const pushToGitHub = require("../pushToGitHub");
+const { default: axios } = require("axios");
 const DEBUG = process.env.DEBUG.toLowerCase() == "true";
 
 /**
@@ -14,8 +15,9 @@ const DEBUG = process.env.DEBUG.toLowerCase() == "true";
 module.exports = async function pushTextures(
 	commitMessage = `Autopush passed textures from ${formattedDate()}`,
 ) {
-	// Object.keys(settings.versions) picks up dungeons and the id property too unfortunately
-	for (let edition of ["java", "bedrock"]) {
+	// Object.keys(settings.versions) picks up other stuff so we fetch for dynamic editions here
+	const editions = (await axios.get(`https://api.faithfulpack.net/v2/textures/editions`)).data;
+	for (let edition of editions) {
 		for (let packGithub of Object.values(settings.repositories.repo_name[edition])) {
 			for (let branch of settings.versions[edition]) {
 				const path = `./texturesPush/${packGithub.repo}/${branch}/`;
