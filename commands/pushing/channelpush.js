@@ -1,9 +1,9 @@
 const { Permissions } = require("discord.js");
-const settings = require("../../resources/settings.json");
-const strings = require("../../resources/strings.json");
+const settings = require("@resources/settings.json");
+const strings = require("@resources/strings.json");
 
-const retrieveSubmission = require("../../functions/submission/retrieveSubmission");
-const warnUser = require("../../helpers/warnUser");
+const retrieveSubmission = require("@submission/retrieveSubmission");
+const warnUser = require("@helpers/warnUser");
 
 module.exports = {
 	name: "channelpush",

@@ -1,7 +1,7 @@
-const strings = require("../../resources/strings.json");
+const strings = require("@resources/strings.json");
 
-const warnUser = require("../../helpers/warnUser");
-const { magnify } = require("../../functions/images/magnify");
+const warnUser = require("@helpers/warnUser");
+const { magnify } = require("@functions/images/magnify");
 
 module.exports = {
 	name: "magnify",

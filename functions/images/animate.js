@@ -1,4 +1,4 @@
-const strings = require("../../resources/strings.json");
+const strings = require("@resources/strings.json");
 
 const { createCanvas, loadImage } = require("@napi-rs/canvas");
 const GIFEncoder = require("./GIFEncoder");

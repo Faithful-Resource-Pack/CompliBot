@@ -3,7 +3,7 @@ const { MessageAttachment } = require("discord.js");
 
 const { magnifyBuffer } = require("./magnify");
 
-const settings = require("../../resources/settings.json");
+const settings = require("@resources/settings.json");
 
 /**
  * shows the per-pixel difference between two images:

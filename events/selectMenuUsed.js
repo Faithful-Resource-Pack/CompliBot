@@ -1,10 +1,10 @@
 const client = require("../index").Client;
 const { MessageEmbed } = require("discord.js");
 
-const strings = require("../resources/strings.json");
-const settings = require("../resources/settings.json");
-const makeEmbed = require("../functions/submission/makeEmbed");
-const getAuthors = require("../functions/submission/utility/getAuthors");
+const strings = require("@resources/strings.json");
+const settings = require("@resources/settings.json");
+const makeEmbed = require("@submission/makeEmbed");
+const getAuthors = require("@submission/utility/getAuthors");
 const { default: axios } = require("axios");
 
 /**

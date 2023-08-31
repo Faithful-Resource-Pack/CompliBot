@@ -5,13 +5,13 @@ const { MessageEmbed } = require("discord.js");
 const MAINTENANCE = process.env.MAINTENANCE.toLowerCase() == "true";
 const PREFIX = process.env.PREFIX;
 
-const strings = require("../resources/strings.json");
-const settings = require("../resources/settings.json");
+const strings = require("@resources/strings.json");
+const settings = require("@resources/settings.json");
 
-const submitTexture = require("../functions/submission/submitTexture");
+const submitTexture = require("@submission/submitTexture");
 
-const addDeleteButton = require("../helpers/addDeleteButton");
-const warnUser = require("../helpers/warnUser");
+const addDeleteButton = require("@helpers/addDeleteButton");
+const warnUser = require("@helpers/warnUser");
 
 module.exports = {
 	name: "messageCreate",

@@ -1,6 +1,6 @@
-const settings = require("../../../resources/settings.json");
-const stitch = require("../../images/stitch");
-const { magnifyAttachment } = require("../../images/magnify");
+const settings = require("@resources/settings.json");
+const stitch = require("@functions/images/stitch");
+const { magnifyAttachment } = require("@functions/images/magnify");
 const { loadImage } = require("@napi-rs/canvas");
 
 /**

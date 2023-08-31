@@ -1,7 +1,7 @@
 const { mkdirSync, writeFileSync } = require("fs");
-const allCollection = require("../helpers/firestorm/all");
+const allCollection = require("@helpers/firestorm/all");
 
-const pushToGitHub = require("../functions/pushToGitHub");
+const pushToGitHub = require("@functions/pushToGitHub");
 const { join } = require("path");
 
 /**

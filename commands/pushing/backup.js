@@ -1,5 +1,5 @@
-const saveDB = require("../../functions/saveDB");
-const settings = require("../../resources/settings.json");
+const saveDB = require("@functions/saveDB");
+const settings = require("@resources/settings.json");
 
 module.exports = {
 	name: "backup",

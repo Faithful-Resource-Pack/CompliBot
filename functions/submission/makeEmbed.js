@@ -1,13 +1,13 @@
-const settings = require("../../resources/settings.json");
+const settings = require("@resources/settings.json");
 const DEBUG = process.env.DEBUG.toLowerCase() == "true";
 
-const minecraftSorter = require("../../helpers/minecraftSorter");
+const minecraftSorter = require("@helpers/minecraftSorter");
 
 const getPackByChannel = require("./utility/getPackByChannel");
-const getDimensions = require("../images/getDimensions");
-const getImages = require("../../helpers/getImages");
+const getDimensions = require("@functions/images/getDimensions");
+const getImages = require("@helpers/getImages");
 const generateComparison = require("./utility/generateComparison");
-const { imageButtons, submissionButtons } = require("../../helpers/buttons");
+const { imageButtons, submissionButtons } = require("@helpers/buttons");
 
 const { MessageEmbed, MessageAttachment } = require("discord.js");
 

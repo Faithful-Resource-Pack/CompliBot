@@ -1,7 +1,9 @@
+require('module-alias/register');
 require("dotenv").config();
 const { readdirSync } = require("fs");
-const walkSync = require("./helpers/walkSync");
-const fetchSettings = require("./functions/fetchSettings");
+const walkSync = require("@helpers/walkSync");
+const fetchSettings = require("@functions/fetchSettings");
+const unhandledRejection = require("@events/unhandledRejection");
 const { Client, Intents, Constants, Collection } = require("discord.js");
 
 /**
@@ -58,7 +60,6 @@ function startBot() {
 	/**
 	 * ERROR HANDLER
 	 */
-	const unhandledRejection = require("./events/unhandledRejection");
 	process.on("unhandledRejection", (reason, promise) =>
 		unhandledRejection(client, reason, promise),
 	);

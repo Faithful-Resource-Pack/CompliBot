@@ -1,8 +1,8 @@
-const settings = require("../../resources/settings.json");
+const settings = require("@resources/settings.json");
 
-const getMessages = require("../../helpers/getMessages");
+const getMessages = require("@helpers/getMessages");
 const changeStatus = require("./utility/changeStatus");
-const { imageButtons } = require("../../helpers/buttons");
+const { imageButtons } = require("@helpers/buttons");
 const { MessageEmbed } = require("discord.js");
 
 const DEBUG = process.env.DEBUG.toLowerCase() == "true";

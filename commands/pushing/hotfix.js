@@ -2,13 +2,13 @@ const prefix = process.env.PREFIX;
 
 const fs = require("fs");
 
-const settings = require("../../resources/settings.json");
-const retrieveSubmission = require("../../functions/submission/retrieveSubmission");
-const downloadResults = require("../../functions/submission/downloadResults");
-const pushTextures = require("../../functions/submission/pushTextures");
-const saveDB = require("../../functions/saveDB");
+const settings = require("@resources/settings.json");
+const retrieveSubmission = require("@submission/retrieveSubmission");
+const downloadResults = require("@submission/downloadResults");
+const pushTextures = require("@submission/pushTextures");
+const saveDB = require("@functions/saveDB");
 
-const strings = require("../../resources/strings.json");
+const strings = require("@resources/strings.json");
 
 module.exports = {
 	name: "hotfix",

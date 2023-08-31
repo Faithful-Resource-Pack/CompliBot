@@ -38,6 +38,9 @@ dependencies:
   image-size:
     specifier: ^1.0.2
     version: 1.0.2
+  module-alias:
+    specifier: ^2.2.3
+    version: 2.2.3
   nodemon:
     specifier: ^3.0.1
     version: 3.0.1
@@ -703,6 +706,10 @@ packages:
     resolution: {integrity: sha512-J7p63hRiAjw1NDEww1W7i37+ByIrOWO5XQQAzZ3VOcL0PNybwpfmV/N05zFAzwQ9USyEcX6t3UO+K5aqBQOIHw==}
     dependencies:
       brace-expansion: 1.1.11
+    dev: false
+
+  /module-alias@2.2.3:
+    resolution: {integrity: sha512-23g5BFj4zdQL/b6tor7Ji+QY4pEfNH784BMslY9Qb0UnJWRAt+lQGLYmRaM0KDBwIG23ffEBELhZDP2rhi9f/Q==}
     dev: false
 
   /ms@2.1.3:

@@ -1,4 +1,4 @@
-const strings = require("../../resources/strings.json");
+const strings = require("@resources/strings.json");
 
 module.exports = {
 	name: "behave",

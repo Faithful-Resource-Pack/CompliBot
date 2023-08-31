@@ -1,11 +1,11 @@
 const { Permissions } = require("discord.js");
-const settings = require("../../resources/settings.json");
-const strings = require("../../resources/strings.json");
+const settings = require("@resources/settings.json");
+const strings = require("@resources/strings.json");
 
-const formattedDate = require("../../helpers/formattedDate");
-const pushTextures = require("../../functions/submission/pushTextures");
-const downloadResults = require("../../functions/submission/downloadResults");
-const warnUser = require("../../helpers/warnUser");
+const formattedDate = require("@helpers/formattedDate");
+const pushTextures = require("@submission/pushTextures");
+const downloadResults = require("@submission/downloadResults");
+const warnUser = require("@helpers/warnUser");
 
 module.exports = {
 	name: "autopush",

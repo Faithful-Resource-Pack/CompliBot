@@ -1,6 +1,6 @@
-const settings = require("../../resources/settings.json");
+const settings = require("@resources/settings.json");
 const { startBot } = require("../../index");
-const fetchSettings = require("../../functions/fetchSettings");
+const fetchSettings = require("@functions/fetchSettings");
 
 const { MessageEmbed } = require("discord.js");
 

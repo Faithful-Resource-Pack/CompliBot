@@ -1,3 +1,5 @@
+const settings = require("@resources/settings.json");
+
 const { MessageEmbed } = require("discord.js");
 
 // Environment vars
@@ -12,7 +14,6 @@ const LOG_DEV = process.env.LOG_DEV.toLowerCase() == "true";
  */
 module.exports = function unhandledRejection(client, error, promise, originMessage) {
 	if (DEV) return console.trace(error.stack ?? error);
-	const settings = require("../resources/settings.json");
 
 	const channel = client.channels.cache.get(LOG_DEV ? "867499014085148682" : "853547435782701076");
 

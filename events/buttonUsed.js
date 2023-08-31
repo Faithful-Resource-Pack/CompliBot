@@ -1,15 +1,15 @@
-const { magnifyAttachment } = require("../functions/images/magnify");
-const tile = require("../functions/images/tile");
-const palette = require("../functions/images/palette");
-const difference = require("../functions/images/difference");
+const { magnifyAttachment } = require("@functions/images/magnify");
+const tile = require("@functions/images/tile");
+const palette = require("@functions/images/palette");
+const difference = require("@functions/images/difference");
 
-const minecraftSorter = require("../helpers/minecraftSorter");
+const minecraftSorter = require("@helpers/minecraftSorter");
 const { default: axios } = require("axios");
 const { MessageEmbed } = require("discord.js");
 
-const strings = require("../resources/strings.json");
-const settings = require("../resources/settings.json");
-const getPackByChannel = require("../functions/submission/utility/getPackByChannel");
+const strings = require("@resources/strings.json");
+const settings = require("@resources/settings.json");
+const getPackByChannel = require("@submission/utility/getPackByChannel");
 
 /**
  * "fake" event created to split up the generic interaction event

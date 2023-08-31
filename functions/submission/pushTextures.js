@@ -1,9 +1,9 @@
 const { rmdirSync, existsSync } = require("fs");
 
-const settings = require("../../resources/settings.json");
-const formattedDate = require("../../helpers/formattedDate");
+const settings = require("@resources/settings.json");
+const formattedDate = require("@helpers/formattedDate");
 
-const pushToGitHub = require("../pushToGitHub");
+const pushToGitHub = require("@functions/pushToGitHub");
 const { default: axios } = require("axios");
 const DEBUG = process.env.DEBUG.toLowerCase() == "true";
 

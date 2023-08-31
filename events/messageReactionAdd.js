@@ -1,7 +1,7 @@
 const client = require("../index").Client;
-const settings = require("../resources/settings.json");
+const settings = require("@resources/settings.json");
 
-const reactionMenu = require("../functions/submission/reactionMenu");
+const reactionMenu = require("@submission/reactionMenu");
 
 module.exports = {
 	name: "messageReactionAdd",

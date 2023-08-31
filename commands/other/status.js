@@ -1,7 +1,7 @@
-const strings = require("../../resources/strings.json");
-const settings = require("../../resources/settings.json");
+const strings = require("@resources/strings.json");
+const settings = require("@resources/settings.json");
 
-const warnUser = require("../../helpers/warnUser");
+const warnUser = require("@helpers/warnUser");
 
 const activity = ["PLAYING", "STREAMING", "LISTENING", "WATCHING", "COMPETING", "NONE"];
 const presence = ["online", "idle", "dnd"];

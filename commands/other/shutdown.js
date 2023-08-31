@@ -1,4 +1,4 @@
-const settings = require("../../resources/settings.json");
+const settings = require("@resources/settings.json");
 
 const { MessageEmbed } = require("discord.js");
 

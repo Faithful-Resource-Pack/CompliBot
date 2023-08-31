@@ -1,6 +1,6 @@
 const { createCanvas, loadImage } = require("@napi-rs/canvas");
-const settings = require("../../resources/settings.json");
-const strings = require("../../resources/strings.json");
+const settings = require("@resources/settings.json");
+const strings = require("@resources/strings.json");
 
 const { MessageEmbed, MessageAttachment } = require("discord.js");
 const getDimensions = require("./getDimensions");

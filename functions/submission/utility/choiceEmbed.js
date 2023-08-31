@@ -1,7 +1,7 @@
 const { MessageEmbed, MessageActionRow, MessageSelectMenu } = require("discord.js");
-const addDeleteButton = require("../../../helpers/addDeleteButton");
+const addDeleteButton = require("@helpers/addDeleteButton");
 
-const settings = require("../../../resources/settings.json");
+const settings = require("@resources/settings.json");
 
 /**
  * Selection menu for dealing with multiple valid options

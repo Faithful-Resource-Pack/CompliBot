@@ -1,5 +1,5 @@
 const { MessageButton, MessageActionRow } = require("discord.js");
-const settings = require("../resources/settings.json");
+const settings = require("@resources/settings.json");
 
 /**
  * Helper file to store image-related buttons and their data

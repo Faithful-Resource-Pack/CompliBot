@@ -1,14 +1,14 @@
-const settings = require("../../resources/settings.json");
-const strings = require("../../resources/strings.json");
+const settings = require("@resources/settings.json");
+const strings = require("@resources/strings.json");
 
 const DEBUG = process.env.DEBUG.toLowerCase() == "true";
 
 const choiceEmbed = require("./utility/choiceEmbed");
 const makeEmbed = require("./makeEmbed");
-const addDeleteButton = require("../../helpers/addDeleteButton");
+const addDeleteButton = require("@helpers/addDeleteButton");
 
 const getAuthors = require("./utility/getAuthors");
-const minecraftSorter = require("../../helpers/minecraftSorter");
+const minecraftSorter = require("@helpers/minecraftSorter");
 
 const { MessageEmbed, Permissions } = require("discord.js");
 const { default: axios } = require("axios");

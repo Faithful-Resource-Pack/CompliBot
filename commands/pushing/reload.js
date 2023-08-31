@@ -1,8 +1,8 @@
-const strings = require("../../resources/strings.json");
-const settings = require("../../resources/settings.json");
+const strings = require("@resources/strings.json");
+const settings = require("@resources/settings.json");
 
-const warnUser = require("../../helpers/warnUser");
-const walkSync = require("../../helpers/walkSync");
+const warnUser = require("@helpers/warnUser");
+const walkSync = require("@helpers/walkSync");
 
 module.exports = {
 	name: "reload",

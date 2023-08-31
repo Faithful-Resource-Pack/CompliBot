@@ -1,9 +1,9 @@
-const settings = require("../../resources/settings.json");
+const settings = require("@resources/settings.json");
 
 const { Permissions } = require("discord.js");
 const instapass = require("./utility/instapass");
 const changeStatus = require("./utility/changeStatus");
-const { imageButtons } = require("../../helpers/buttons");
+const { imageButtons } = require("@helpers/buttons");
 const DEBUG = process.env.DEBUG.toLowerCase() == "true";
 /**
  * Opens reaction tray, listens for reaction, and closes tray

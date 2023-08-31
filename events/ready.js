@@ -3,14 +3,14 @@ const { CronJob } = require("cron");
 
 const DEV = process.env.DEV.toLowerCase() == "true";
 const MAINTENANCE = process.env.MAINTENANCE.toLowerCase() == "true";
-const fetchSettings = require("../functions/fetchSettings");
+const fetchSettings = require("@functions/fetchSettings");
 
-const settings = require("../resources/settings.json");
+const settings = require("@resources/settings.json");
 
-const retrieveSubmission = require("../functions/submission/retrieveSubmission");
-const downloadResults = require("../functions/submission/downloadResults");
-const pushTextures = require("../functions/submission/pushTextures");
-const saveDB = require("../functions/saveDB");
+const retrieveSubmission = require("@submission/retrieveSubmission");
+const downloadResults = require("@submission/downloadResults");
+const pushTextures = require("@submission/pushTextures");
+const saveDB = require("@functions/saveDB");
 
 /**
  * Send submission messages to their respective channels

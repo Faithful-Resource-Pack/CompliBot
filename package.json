@@ -30,7 +30,16 @@
     "globby": "^11.1.0",
     "http": "0.0.1-security",
     "image-size": "^1.0.2",
+    "module-alias": "^2.2.3",
     "nodemon": "^3.0.1",
     "prettier": "^3.0.2"
+  },
+  "_moduleAliases": {
+    "@functions": "./functions",
+    "@helpers": "./helpers",
+    "@commands": "./commands",
+    "@events": "./events",
+    "@submission": "./functions/submission",
+    "@resources": "./resources"
   }
 }

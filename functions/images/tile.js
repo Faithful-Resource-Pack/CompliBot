@@ -1,7 +1,7 @@
 const { createCanvas, loadImage } = require("@napi-rs/canvas");
 const getDimensions = require("./getDimensions");
 const { MessageEmbed } = require("discord.js");
-const settings = require("../../resources/settings.json");
+const settings = require("@resources/settings.json");
 /**
  * Tile an image
  * @author Juknum

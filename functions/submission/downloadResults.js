@@ -1,8 +1,8 @@
-const settings = require("../../resources/settings.json");
+const settings = require("@resources/settings.json");
 
-const getMessages = require("../../helpers/getMessages");
+const getMessages = require("@helpers/getMessages");
 const pushTextures = require("./pushTextures");
-const formattedDate = require("../../helpers/formattedDate");
+const formattedDate = require("@helpers/formattedDate");
 const DEBUG = process.env.DEBUG.toLowerCase() == "true";
 
 const { promises, writeFile } = require("fs");

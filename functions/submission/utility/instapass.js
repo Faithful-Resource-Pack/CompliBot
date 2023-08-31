@@ -1,9 +1,9 @@
-const settings = require("../../../resources/settings.json");
+const settings = require("@resources/settings.json");
 
-const downloadResults = require("../downloadResults");
-const warnUser = require("../../../helpers/warnUser");
+const downloadResults = require("@submission/downloadResults");
+const warnUser = require("@helpers/warnUser");
 const DEBUG = process.env.DEBUG.toLowerCase() == "true";
-const { imageButtons } = require("../../../helpers/buttons");
+const { imageButtons } = require("@helpers/buttons");
 
 /**
  * Instapass a given texture embed
