@@ -18,9 +18,9 @@
  *
  * @typedef Contribution
  * @property {String} id
- * @property {String} number unix timestamp
+ * @property {Number} date unix timestamp
  * @property {String} texture texture id
- * @property {Number} resolution
+ * @property {8 | 16 | 32 | 64 | 128 | 256 | 512} resolution
  * @property {Pack} pack
  * @property {String[]} authors
  *
