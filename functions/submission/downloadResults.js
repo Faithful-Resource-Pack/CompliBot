@@ -4,7 +4,6 @@ const getMessages = require("../../helpers/getMessages");
 const pushTextures = require("./pushTextures");
 const formattedDate = require("../../helpers/formattedDate");
 const DEBUG = process.env.DEBUG.toLowerCase() == "true";
-const DEV = process.env.DEV.toLowerCase() == "true";
 
 const { promises, writeFile } = require("fs");
 const getPackByChannel = require("./utility/getPackByChannel");
@@ -144,7 +143,7 @@ module.exports = async function downloadResults(client, channelResultID, instapa
 	try {
 		await axios.post(`https://api.faithfulpack.net/v2/contributions`, allContribution, {
 			headers: {
-				bot: process.env.FIRESTORM_TOKEN,
+				bot: process.env.API_TOKEN,
 			}
 		});
 		if (DEBUG) console.log(`Added contributions: ${allContribution}`);
