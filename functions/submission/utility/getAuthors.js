@@ -16,7 +16,7 @@ module.exports = async function getAuthors(message) {
 
 	if (names.length) {
 		// fetch all contributors and check if their username matches the one in curly brackets
-		const contributions = (await axios.get(`https://api.faithfulpack.net/v2/contributions/authors`)).data;
+		const contributions = (await axios.get(`https://api.faithfulpack.net/v2/users/names`)).data;
 		for (let user of contributions) {
 			// if no username set it will throw an error otherwise
 			if (!user.username) continue;
