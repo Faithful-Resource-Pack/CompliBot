@@ -18,10 +18,16 @@ const collections = {
 
 /**
  * push all raw api collections to github
- * @author Evorp, Jukum
+ * @author Evorp, Juknum
  * @param {String} commitMessage
  */
-module.exports = async function saveDB(commitMessage) {
+module.exports = async function saveDB(commitMessage = "Daily Backup") {
+	const params = {
+		org: "Faithful-Resource-Pack",
+		repo: "Database",
+		branch: "main",
+	};
+
 	const folderPath = join(process.cwd(), "json", "database");
 	mkdirSync(folderPath, { recursive: true });
 
@@ -35,15 +41,16 @@ module.exports = async function saveDB(commitMessage) {
 				})
 			).data;
 
-			writeFileSync(join(folderPath, `${filename}.json`), JSON.stringify(fetched, null, 0), {
+			writeFileSync(join(folderPath, `${filename}.json`), JSON.stringify(fetched), {
 				flag: "w+",
 				encoding: "utf-8",
 			});
 		} catch (err) {
+			// probably an axios error
 			if (DEBUG) console.error(err?.response?.data ?? err);
 		}
 	}
 
 	if (DEBUG) console.log(`Downloaded database files: ${Object.keys(collections)}`);
-	await pushToGitHub("Faithful-Resource-Pack", "Database", "main", commitMessage, "./json/");
+	await pushToGitHub(params.org, params.repo, params.branch, commitMessage, "./json/");
 };

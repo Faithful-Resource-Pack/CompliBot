@@ -46,8 +46,7 @@ function startBot() {
 	client.commands = new Collection();
 	for (const file of commandFiles) {
 		const command = require(file);
-		if (typeof command?.name === "string")
-			client.commands.set(command.name, command);
+		if (typeof command?.name === "string") client.commands.set(command.name, command);
 	}
 
 	/**

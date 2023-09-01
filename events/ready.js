@@ -72,7 +72,7 @@ const downloadToBot = new CronJob("15 0 * * *", async () => {
  */
 const pushToGithub = new CronJob("30 0 * * *", async () => {
 	await pushTextures();
-	await saveDB(`Daily Backup`);
+	await saveDB();
 });
 
 module.exports = {

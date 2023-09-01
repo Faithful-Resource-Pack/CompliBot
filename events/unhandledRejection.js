@@ -4,7 +4,6 @@ const { MessageEmbed } = require("discord.js");
 
 // Environment vars
 const DEV = process.env.DEV.toLowerCase() == "true";
-const LOG_DEV = process.env.LOG_DEV.toLowerCase() == "true";
 
 /**
  * @param {import("discord.js").Client} client Discord client treating the information
@@ -13,9 +12,10 @@ const LOG_DEV = process.env.LOG_DEV.toLowerCase() == "true";
  * @param {import("discord.js").Message?} originMessage Origin user message
  */
 module.exports = function unhandledRejection(client, error, promise, originMessage) {
-	if (DEV) return console.trace(error.stack ?? error);
+	if (DEV) return console.trace(error?.stack ?? error);
 
-	const channel = client.channels.cache.get(LOG_DEV ? "867499014085148682" : "853547435782701076");
+	const channel = client.channels.cache.get(process.env.LOG_CHANNEL);
+	if (!channel) return;
 
 	let eproto_error = false;
 	let content = error.stack; // stack else AxiosError else random error
@@ -30,16 +30,12 @@ module.exports = function unhandledRejection(client, error, promise, originMessa
 	}
 	const syntax = isJSON ? "json" : "fix";
 
-	if (eproto_error) {
-		console.error(error, promise, content);
-		return;
-	}
+	if (eproto_error) return console.error(error, promise, content);
 
 	let description = `\`\`\`${syntax}\n${content}\`\`\``;
 
-	if (originMessage?.url !== undefined) {
-		description = "Coming from [this message](" + originMessage.url + ")\n" + description;
-	}
+	if (originMessage?.url !== undefined)
+		description = `Coming from [this message](${originMessage.url})\n` + description;
 
 	const embed = new MessageEmbed()
 		.setTitle("Unhandled Rejection")
