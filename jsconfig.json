@@ -1,0 +1,15 @@
+{
+	"exclude": ["node_modules"],
+	"compilerOptions": {
+		"baseUrl": ".",
+		"paths": {
+			"@functions/*": ["./functions/*"],
+			"@helpers/*": ["./helpers/*"],
+			"@commands/*": ["./commands/*"],
+			"@events/*": ["./events/*"],
+			"@submission/*": ["./functions/submission/*"],
+			"@resources/*": ["./resources/*"],
+			"@index": ["./index.js"]
+		}
+	}
+}

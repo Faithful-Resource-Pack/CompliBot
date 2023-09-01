@@ -23,7 +23,6 @@ const collections = {
  */
 module.exports = async function saveDB(commitMessage) {
 	const folderPath = join(process.cwd(), "json", "database");
-
 	mkdirSync(folderPath, { recursive: true });
 
 	for (const [filename, url] of Object.entries(collections)) {
@@ -45,5 +44,6 @@ module.exports = async function saveDB(commitMessage) {
 		}
 	}
 
-	pushToGitHub("Faithful-Resource-Pack", "Database", "main", commitMessage, "./json/");
+	if (DEBUG) console.log(`Downloaded database files: ${Object.keys(collections)}`);
+	await pushToGitHub("Faithful-Resource-Pack", "Database", "main", commitMessage, "./json/");
 };
