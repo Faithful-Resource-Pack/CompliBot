@@ -20,13 +20,13 @@ const collections = {
  * push all raw api collections to github
  * @author Evorp, Juknum
  * @param {String} commitMessage
+ * @param {{org?: String, repo?: String, branch?: String}} params
  */
-module.exports = async function saveDB(commitMessage = "Daily Backup") {
-	const params = {
-		org: "Faithful-Resource-Pack",
-		repo: "Database",
-		branch: "main",
-	};
+module.exports = async function saveDB(commitMessage = "Daily Backup", params = {}) {
+	/** @todo move these to settings.json */
+	if (!params.org) params.org = "Faithful-Resource-Pack";
+	if (!params.repo) params.repo = "Database";
+	if (!params.branch) params.branch = "main";
 
 	const folderPath = join(process.cwd(), "json", "database");
 	mkdirSync(folderPath, { recursive: true });
