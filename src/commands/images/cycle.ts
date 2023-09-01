@@ -18,7 +18,7 @@ export const command: SlashCommand = {
 		)
 		.addStringOption((option) =>
 			option
-				.setName("pack")
+				.setName("packs")
 				.setDescription("Which set of packs you want to display.")
 				.addChoices(
 					{ name: "Faithful", value: "faithful" },
@@ -34,7 +34,7 @@ export const command: SlashCommand = {
 				.setRequired(false),
 		),
 	execute: async (interaction: CommandInteraction) => {
-		const display = interaction.options.getString("pack", true);
+		const display = interaction.options.getString("packs", true);
 		const name = interaction.options.getString("texture", true);
 		const framerate = interaction.options.getNumber("framerate", false) ?? 1;
 
