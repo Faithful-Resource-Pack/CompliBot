@@ -35,36 +35,18 @@ pnpm dev
 
 ---
 
-## Bot config:
+## Bot setup
 
 **DISCLAIMER: We won't help you rebrand the bot for any other server. If you really want to do that, then you need to figure it out yourself.**
 
 - Create an app on the **[Discord Developer Portal](https://discord.com/developers/)**.
 - Go to the **Bot** tab, create a bot and copy its token.
-- Create a file named **.env** or rename the **.env.example** file to **.env**.
-- Open the **.env** file using any text editor.
-- This file contains general bot settings in this format:
+- Rename the **.env.example** file to **.env** and open it using any text editor.
+- Paste in your token after `CLIENT_TOKEN`.
 
-|       Field name        |              Example value               |                          Description                           |
-| :---------------------: | :--------------------------------------: | :------------------------------------------------------------: |
-|      CLIENT_TOKEN       | a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0 | Token copied from the Developer Portal, used to start the bot. |
-|         PREFIX          |                    /                     |              Character used to execute commands.               |
-|       DEVELOPERS        |          [123456789, 987654321]          |      User ids authorized to use developer-only commands.       |
-|       MAINTENANCE       |                  false                   |  Makes all commands dev-only, sets status to do not disturb.   |
-|          DEBUG          |                  false                   |       Shows more in-depth console logs for larger tasks.       |
-|     FETCH_SETTINGS      |                   true                   |          Switches to a local copy of `settings.json`.          |
-|           DEV           |                  false                   |          Disables annoying production-only features.           |
-|         LOG_DEV         |                  false                   |       Whether to log errors to the main or dev channel.        |
-|         API_URL         |     https://api.faithfulpack.net/v2/     |        Used for fetching texture information and more.         |
-|        API_TOKEN        | a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0 |        Token for making privileged requests to the API.        |
-| COMPLIBOT_GIT_USERNAME  |              Faithful-Pack               |            Git username for the CompliBot account.             |
-|   COMPLIBOT_GIT_EMAIL   |    CompliBot@users.noreply.github.com    |              Git email for the CompliBot account.              |
-| COMPLIBOT_GIT_JSON_REPO |    /Faithful-Resource-Pack/Database/     |         Github repository to back up JSON files into.          |
-|   COMPLIBOT_GIT_TOKEN   | a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0 |          Git token for the CompliBot GitHub account.           |
+## Configuration
 
-## Other configuration:
-
-- `resources/strings.json` for embed or message texts
+- `resources/strings.json` for all types of bot-related messages
 - `resources/settings.json` for roles, channel ids, and colors
 
 Make sure to disable setting fetching in your `.env` file if you're editing `settings.json` locally!

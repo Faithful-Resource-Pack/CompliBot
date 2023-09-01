@@ -1,4 +1,4 @@
-const client = require("../index").Client;
+const client = require("@index").Client;
 const { CronJob } = require("cron");
 
 const DEV = process.env.DEV.toLowerCase() == "true";

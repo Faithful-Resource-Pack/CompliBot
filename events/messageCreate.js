@@ -1,4 +1,4 @@
-const client = require("../index").Client;
+const client = require("@index").Client;
 
 const { MessageEmbed } = require("discord.js");
 

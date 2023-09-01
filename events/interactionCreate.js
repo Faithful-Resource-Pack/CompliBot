@@ -1,4 +1,4 @@
-const client = require("../index").Client;
+const client = require("@index").Client;
 
 /**
  * this is the actual event being called for button/menu interactions
