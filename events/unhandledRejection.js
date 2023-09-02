@@ -1,7 +1,4 @@
-const { MessageEmbed } = require("discord.js");
-
-// Environment vars
-const DEV = process.env.DEV.toLowerCase() == "true";
+const devLogger = require("@helpers/devLogger");
 
 /**
  * @param {import("discord.js").Client} client Discord client treating the information
@@ -10,41 +7,27 @@ const DEV = process.env.DEV.toLowerCase() == "true";
  * @param {import("discord.js").Message?} originMessage Origin user message
  */
 module.exports = function unhandledRejection(client, error, promise, originMessage) {
-	// need to import here since this is loaded before fetchSettings()
-	const settings = require("@resources/settings.json");
-	if (DEV) return console.trace(error?.stack ?? error);
-
-	const channel = client.channels.cache.get(process.env.LOG_CHANNEL);
-	if (!channel) return;
+	// if (DEV) return console.trace(error?.stack ?? error);
 
 	let eproto_error = false;
-	let content = error.stack; // stack else AxiosError else random error
+	let description = error.stack; // stack else AxiosError else random error
 	let isJSON = false;
 	if (error.isAxiosError) {
-		content = JSON.stringify(error.toJSON());
+		description = JSON.stringify(error.toJSON());
 		eproto_error = error.code === "EPROTO";
 		isJSON = true;
-	} else if (!content) {
-		content = JSON.stringify(error);
+	} else if (!description) {
+		description = JSON.stringify(error);
 		isJSON = true;
 	}
-	const syntax = isJSON ? "json" : "fix";
 
-	if (eproto_error) return console.error(error, promise, content);
-
-	let description = `\`\`\`${syntax}\n${content}\`\`\``;
+	if (eproto_error) return console.error(error, promise, description);
 
 	if (originMessage?.url !== undefined)
 		description = `Coming from [this message](${originMessage.url})\n` + description;
 
-	const embed = new MessageEmbed()
-		.setTitle("Unhandled Rejection")
-		.setDescription(description)
-		.setColor(settings.colors.red)
-		.setTimestamp();
-
 	console.error(error, promise);
 
 	// DO NOT DELETE THIS CATCH, IT AVOIDS INFINITE LOOP IF THIS PROMISE REJECTS
-	channel.send({ embeds: [embed] }).catch(console.error);
+	devLogger(client, description).catch(console.error);
 };

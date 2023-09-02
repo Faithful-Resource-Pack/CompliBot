@@ -1,12 +1,13 @@
 const settings = require("@resources/settings.json");
+const DEBUG = process.env.DEBUG.toLowerCase() == "true";
 
 const getMessages = require("@helpers/getMessages");
 const pushTextures = require("./pushTextures");
 const formattedDate = require("@helpers/formattedDate");
-const DEBUG = process.env.DEBUG.toLowerCase() == "true";
+const devLogger = require("@helpers/devLogger");
+const getPackByChannel = require("./utility/getPackByChannel");
 
 const { promises, writeFile } = require("fs");
-const getPackByChannel = require("./utility/getPackByChannel");
 const { default: axios } = require("axios");
 
 /**
@@ -147,7 +148,8 @@ module.exports = async function downloadResults(client, channelResultID, instapa
 			},
 		});
 		if (DEBUG) console.log(`Added contributions: ${allContribution}`);
-	} catch {
+	} catch (err) {
+		devLogger(client, err?.response?.data ?? err, { title: "Contribution Error" });
 		if (DEBUG) console.error(`Couldn't add contributions for pack: ${packName}`);
 	}
 

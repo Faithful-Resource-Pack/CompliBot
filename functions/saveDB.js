@@ -7,14 +7,16 @@ const { mkdirSync, writeFileSync } = require("fs");
 const pushToGitHub = require("@functions/pushToGitHub");
 const { join } = require("path");
 const { default: axios } = require("axios");
+const devLogger = require("@helpers/devLogger");
 
 /**
  * push all raw api collections to github
  * @author Evorp, Juknum
+ * @param {import("discord.js").Client} client
  * @param {String} commitMessage
  * @param {{org?: String, repo?: String, branch?: String}} params
  */
-module.exports = async function saveDB(commitMessage = "Daily Backup", params = {}) {
+module.exports = async function saveDB(client, commitMessage = "Daily Backup", params = {}) {
 	if (!params.org) params.org = settings.backup.git.org;
 	if (!params.repo) params.repo = settings.backup.git.repo;
 	if (!params.branch) params.branch = settings.backup.git.branch;
@@ -41,7 +43,10 @@ module.exports = async function saveDB(commitMessage = "Daily Backup", params = 
 
 			successfulPushes.push(filename);
 		} catch (err) {
-			// probably an axios error
+			devLogger(client, JSON.stringify(err?.response?.data ?? err), {
+				isJson: true,
+				title: `Failed to backup collection "${filename}"`,
+			});
 			if (DEBUG) console.error(err?.response?.data ?? err);
 		}
 	}
