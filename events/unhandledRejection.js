@@ -7,7 +7,7 @@ const devLogger = require("@helpers/devLogger");
  * @param {import("discord.js").Message?} originMessage Origin user message
  */
 module.exports = function unhandledRejection(client, error, promise, originMessage) {
-	// if (DEV) return console.trace(error?.stack ?? error);
+	if (DEV) return console.trace(error?.stack ?? error);
 
 	let eproto_error = false;
 	let description = error.stack; // stack else AxiosError else random error
