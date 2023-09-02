@@ -1,20 +1,12 @@
+const settings = require("@resources/settings.json");
+
+const DEBUG = process.env.DEBUG.toLowerCase() == "true";
+
 const { mkdirSync, writeFileSync } = require("fs");
 
 const pushToGitHub = require("@functions/pushToGitHub");
 const { join } = require("path");
 const { default: axios } = require("axios");
-const DEBUG = process.env.DEBUG.toLowerCase() == "true";
-
-// api urls after the slash to fetch from
-const collections = {
-	addons: `addons`,
-	contributions: `contributions/raw`,
-	uses: `uses/raw`,
-	settings: `settings/raw`,
-	users: `users/raw`,
-	paths: `paths/raw`,
-	textures: `textures/raw`,
-};
 
 /**
  * push all raw api collections to github
@@ -23,20 +15,21 @@ const collections = {
  * @param {{org?: String, repo?: String, branch?: String}} params
  */
 module.exports = async function saveDB(commitMessage = "Daily Backup", params = {}) {
-	/** @todo move these to settings.json */
-	if (!params.org) params.org = "Faithful-Resource-Pack";
-	if (!params.repo) params.repo = "Database";
-	if (!params.branch) params.branch = "main";
+	if (!params.org) params.org = settings.backup.git.org;
+	if (!params.repo) params.repo = settings.backup.git.repo;
+	if (!params.branch) params.branch = settings.backup.git.branch;
 
 	const folderPath = join(process.cwd(), "json", "database");
 	mkdirSync(folderPath, { recursive: true });
 
-	for (const [filename, url] of Object.entries(collections)) {
+	let successfulPushes = [];
+	for (const [filename, url] of Object.entries(settings.backup.urls)) {
 		try {
 			const fetched = (
 				await axios.get(process.env.API_URL + url, {
 					headers: {
-						bot: process.env.API_TOKEN, // for a few privileged collections like users
+						// for privileged collections like addons, ignored if not needed
+						bot: process.env.API_TOKEN,
 					},
 				})
 			).data;
@@ -45,12 +38,14 @@ module.exports = async function saveDB(commitMessage = "Daily Backup", params = 
 				flag: "w+",
 				encoding: "utf-8",
 			});
+
+			successfulPushes.push(filename);
 		} catch (err) {
 			// probably an axios error
 			if (DEBUG) console.error(err?.response?.data ?? err);
 		}
 	}
 
-	if (DEBUG) console.log(`Downloaded database files: ${Object.keys(collections)}`);
+	if (DEBUG) console.log(`Downloaded database files: ${successfulPushes}`);
 	await pushToGitHub(params.org, params.repo, params.branch, commitMessage, "./json/");
 };

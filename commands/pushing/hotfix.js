@@ -1,4 +1,4 @@
-const prefix = process.env.PREFIX;
+const PREFIX = process.env.PREFIX;
 
 const fs = require("fs");
 

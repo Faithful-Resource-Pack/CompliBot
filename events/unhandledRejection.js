@@ -1,5 +1,3 @@
-const settings = require("@resources/settings.json");
-
 const { MessageEmbed } = require("discord.js");
 
 // Environment vars
@@ -12,6 +10,8 @@ const DEV = process.env.DEV.toLowerCase() == "true";
  * @param {import("discord.js").Message?} originMessage Origin user message
  */
 module.exports = function unhandledRejection(client, error, promise, originMessage) {
+	// need to import here since this is loaded before fetchSettings()
+	const settings = require("@resources/settings.json");
 	if (DEV) return console.trace(error?.stack ?? error);
 
 	const channel = client.channels.cache.get(process.env.LOG_CHANNEL);
