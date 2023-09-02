@@ -15,7 +15,6 @@ export async function generalChoiceEmbed(
 	results: MessageSelectOptionData[],
 ) {
 	const resultLength = results.length; // we're modifying results directly so it needs to be saved first
-	const maxRows = 4; // actually 5 but - 1 because we are adding a delete button to it (the 5th one)
 	const components: Array<MessageActionRow> = [];
 	const emojis: Array<string> = [
 		"1️⃣",
@@ -47,11 +46,11 @@ export async function generalChoiceEmbed(
 
 	// dividing into maximum of 25 choices per menu
 	// 4 menus max
-	let currentRow = 0;
-	do {
+	const maxRows = 4; // actually 5 but - 1 because we are adding a delete button to it (the 5th one)
+	for (let currentRow = 0; currentRow <= maxRows && results.length; ++currentRow) {
 		const options: Array<MessageSelectOptionData> = [];
 
-		for (let i = 0; i < 25; i++)
+		for (let i = 0; i < emojis.length; i++)
 			if (results[0] !== undefined) {
 				let t = results.shift();
 				t.emoji = emojis[i % emojis.length];
@@ -66,7 +65,7 @@ export async function generalChoiceEmbed(
 		const row = new MessageActionRow().addComponents(menu);
 
 		components.push(row);
-	} while (results.length !== 0 && currentRow++ < maxRows);
+	}
 
 	const embed = new MessageEmbed()
 		.setTitle(`${resultLength} results found`)
