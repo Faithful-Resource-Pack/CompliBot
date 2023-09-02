@@ -2,6 +2,7 @@ import { MessageEmbed, CommandInteraction, Message } from "@client";
 import { MessageActionRow, MessageSelectOptionData, MessageSelectMenu } from "discord.js";
 import { Textures } from "./interfaces/firestorm";
 import { minecraftSorter } from "@helpers/sorter";
+import settings from "@json/dynamic/settings.json";
 
 /**
  * construct custom choice embed with any given results
@@ -16,33 +17,7 @@ export async function generalChoiceEmbed(
 ) {
 	const choicesLength = choices.length; // we're modifying choices directly so it needs to be saved first
 	const components: Array<MessageActionRow> = [];
-	const emojis: Array<string> = [
-		"1️⃣",
-		"2️⃣",
-		"3️⃣",
-		"4️⃣",
-		"5️⃣",
-		"6️⃣",
-		"7️⃣",
-		"8️⃣",
-		"9️⃣",
-		"🔟",
-		"🇦",
-		"🇧",
-		"🇨",
-		"🇩",
-		"🇪",
-		"🇫",
-		"🇬",
-		"🇭",
-		"🇮",
-		"🇯",
-		"🇰",
-		"🇱",
-		"🇲",
-		"🇳",
-		"🇴",
-	];
+	const emojis = settings.emojis.default_select;
 
 	// dividing into maximum of 25 choices per menu
 	// 4 menus max
