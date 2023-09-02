@@ -7,14 +7,14 @@ import { minecraftSorter } from "@helpers/sorter";
  * construct custom choice embed with any given results
  * @param interaction interaction to reply to
  * @param menuID which id the result gets sent to
- * @param results pre-formatted results to add in the menus
+ * @param choices pre-formatted choices to add in the menus
  */
 export async function generalChoiceEmbed(
 	interaction: CommandInteraction,
 	menuID: string,
-	results: MessageSelectOptionData[],
+	choices: MessageSelectOptionData[],
 ) {
-	const resultLength = results.length; // we're modifying results directly so it needs to be saved first
+	const choicesLength = choices.length; // we're modifying choices directly so it needs to be saved first
 	const components: Array<MessageActionRow> = [];
 	const emojis: Array<string> = [
 		"1️⃣",
@@ -47,12 +47,12 @@ export async function generalChoiceEmbed(
 	// dividing into maximum of 25 choices per menu
 	// 4 menus max
 	const maxRows = 4; // actually 5 but - 1 because we are adding a delete button to it (the 5th one)
-	for (let currentRow = 0; currentRow <= maxRows && results.length; ++currentRow) {
+	for (let currentRow = 0; currentRow <= maxRows && choices.length; ++currentRow) {
 		const options: Array<MessageSelectOptionData> = [];
 
 		for (let i = 0; i < emojis.length; i++)
-			if (results[0] !== undefined) {
-				let t = results.shift();
+			if (choices[0] !== undefined) {
+				let t = choices.shift();
 				t.emoji = emojis[i % emojis.length];
 				options.push(t);
 			}
@@ -68,7 +68,7 @@ export async function generalChoiceEmbed(
 	}
 
 	const embed = new MessageEmbed()
-		.setTitle(`${resultLength} results found`)
+		.setTitle(`${choicesLength} results found`)
 		.setDescription(`If you can't what you're looking for, please be more specific!`);
 
 	await interaction
@@ -81,7 +81,7 @@ export async function generalChoiceEmbed(
  * @param interaction interaction to reply to
  * @param menuID which id the result gets sent to
  * @param results textures to embed
- * @param constValue extra info to send to the menuID
+ * @param constValue extra info to send to the menuID (separate multiple values with "__")
  */
 export async function textureChoiceEmbed(
 	interaction: CommandInteraction,
