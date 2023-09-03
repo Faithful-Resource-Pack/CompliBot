@@ -7,10 +7,11 @@ import { MessageAttachment, Guild } from "discord.js";
 import { magnifyAttachment } from "./canvas/magnify";
 import { ISizeCalculationResult } from "image-size/dist/types/interface";
 import { colors } from "@helpers/colors";
-import { Contributions, Texture, Paths, Uses, Contribution } from "@helpers/interfaces/firestorm";
+import { Texture, Contribution } from "@helpers/interfaces/firestorm";
 import { animateAttachment } from "./canvas/animate";
 import { formatName, minecraftSorter, addPathsToEmbed } from "@helpers/sorter";
 import { textureButtons } from "@helpers/buttons";
+import settings from "@json/dynamic/settings.json";
 
 export const getTextureMessageOptions = async (options: {
 	texture: Texture;
@@ -25,19 +26,18 @@ export const getTextureMessageOptions = async (options: {
 
 	let mcmeta: any = {};
 	if (animated) {
-		const [animatedPath] = paths.filter((p) => p.mcmeta === true);
-		const animatedUse = uses.find((u) => u.id === animatedPath.use);
+		const animatedPath = paths.filter((p) => p.mcmeta === true)[0];
 
 		try {
 			mcmeta = (
 				await axios.get(
-					`https://raw.githubusercontent.com/CompliBot/Default-Java/${
+					`${settings.repositories.raw[pack].java}${
 						animatedPath.versions.sort(minecraftSorter).reverse()[0]
 					}/${animatedPath.name}.mcmeta`,
 				)
 			).data;
 		} catch {
-			mcmeta = { __comment: "MCMETA file not found, please check default repository!" };
+			mcmeta = { __comment: "MCMETA file not found, please check the pack's repository!" };
 		}
 	}
 
