@@ -44,7 +44,7 @@ export async function animateAttachment(options: Options): Promise<MessageAttach
 }
 
 /**
- * animate image with specified style
+ * Animate image with specified style
  * @author Superboxer47
  * @param options options for the animation
  * @returns animated gif of the provided image
