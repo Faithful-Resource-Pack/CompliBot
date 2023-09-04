@@ -72,7 +72,7 @@ export async function animateImage(options: Options): Promise<[MessageAttachment
 	const frametime = (mcmeta as any).animation?.frametime || 1;
 
 	if (style !== "none")
-		embed.addFields([{ name: "MCMETA", value: `\`\`\`json\n${JSON.stringify(mcmeta)}\`\`\`` }]);
+		embed.addFields([{ name: "MCMETA", value: `\`\`\`json\n${JSON.stringify(mcmeta.animation)}\`\`\`` }]);
 	if (frametime > 15) embed.setFooter({ text: "Frametime reduced for optimization!" });
 
 	try {
