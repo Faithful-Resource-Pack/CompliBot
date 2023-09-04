@@ -22,9 +22,9 @@ export const media = {
 
 [${parseId(ids.modrinth)} Modrinth](https://modrinth.com/resourcepack/faithful-32x)
 
-[${parseId(ids.mcpedl)} MCPEDL](https://mcpedl.com/faithful-32x/)
-
 [${parseId(ids.pmc)} Planet Minecraft](https://planetminecraft.com/texture-pack/faithful-32x/)
+
+[${parseId(ids.mcpedl)} MCPEDL](https://mcpedl.com/faithful-32x/)
 
 [${parseId(
 			ids.github,
@@ -53,6 +53,8 @@ export const media = {
 [${parseId(ids.modrinth)} Modrinth](https://modrinth.com/resourcepack/faithful-64x)
 
 [${parseId(ids.pmc)} Planet Minecraft](https://planetminecraft.com/texture-pack/faithful-64x/)
+
+[${parseId(ids.mcpedl)} MCPEDL](https://mcpedl.com/faithful-64x/)
 
 [${parseId(
 			ids.github,
