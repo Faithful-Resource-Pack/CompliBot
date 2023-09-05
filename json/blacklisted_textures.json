@@ -137,7 +137,8 @@
         "gui/realms/upload.png",
         "gui/sprites/backup/changes.png",
         "gui/sprites/backup/changes_highlighted.png",
-        "gui/sprites/hud/crosshair.png"
+        "gui/sprites/hud/crosshair.png",
+        "gui/sprites/container/loom/error.png"
     ],
     "bedrock": [
         "spit",
