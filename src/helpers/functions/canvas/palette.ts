@@ -35,8 +35,7 @@ export async function paletteAttachment(
 	options: options,
 ): Promise<[MessageAttachment, MessageEmbed]> {
 	const { width, height } = await getDimensions(options.url);
-	const size = width * height;
-	if (size > 262144) return [null, new MessageEmbed()];
+	if (width * height > 262144) return [null, new MessageEmbed()];
 
 	const canvas: Canvas = createCanvas(width, height);
 	const context = canvas.getContext("2d");
@@ -47,7 +46,7 @@ export async function paletteAttachment(
 
 	const imageData = context.getImageData(0, 0, width, height).data;
 
-	for (let x = 0; x < width; x++)
+	for (let x = 0; x < width; x++) {
 		for (let y = 0; y < height; y++) {
 			let index = (y * width + x) * 4;
 			let r = imageData[index];
@@ -56,16 +55,15 @@ export async function paletteAttachment(
 			let a = imageData[index + 3] / 255;
 
 			// avoid transparent colors
-			if (a) {
-				let hex = new ColorManager({ rgb: { r: r, g: g, b: b } }).toHEX().value;
+			if (!a) continue;
+			let hex = new ColorManager({ rgb: { r, g, b } }).toHEX().value;
 
-				if (!(hex in allColors))
-					allColors[hex] = { hex: hex, opacity: [], rgb: [r, g, b], count: 0 };
+			if (!(hex in allColors)) allColors[hex] = { hex: hex, opacity: [], rgb: [r, g, b], count: 0 };
 
-				++allColors[hex].count;
-				allColors[hex].opacity.push(a);
-			}
+			++allColors[hex].count;
+			allColors[hex].opacity.push(a);
 		}
+	}
 
 	// convert back to array
 	let colors = Object.values(allColors)
@@ -75,34 +73,33 @@ export async function paletteAttachment(
 
 	const embed = new MessageEmbed().setTitle("Palette results").setDescription("List of colors:\n");
 
-	const field_groups = [];
-	let g: number;
+	const fieldGroups = [];
+	let group: number;
 	for (let i = 0; i < colors.length; i++) {
 		// create 9 groups
 		if (i % COLORS_PER_PALETTE === 0) {
-			field_groups.push([]);
-			g = 0;
+			fieldGroups.push([]);
+			group = 0;
 		}
 
 		// each group has 3 lines
-		if (g % COLORS_PER_PALETTE_LINE === 0) field_groups[field_groups.length - 1].push([]);
+		if (group % COLORS_PER_PALETTE_LINE === 0) fieldGroups[fieldGroups.length - 1].push([]);
 
 		// add color to latest group at the latest line
-		field_groups[field_groups.length - 1][field_groups[field_groups.length - 1].length - 1].push(
+		fieldGroups[fieldGroups.length - 1][fieldGroups[fieldGroups.length - 1].length - 1].push(
 			colors[i],
 		);
-		++g;
+		++group;
 	}
 
-	let groupValue: any;
-	field_groups.forEach((group, index) => {
-		groupValue = group
+	fieldGroups.forEach((group, index) => {
+		const groupValue = group
 			.map((line: any[]) =>
 				line.map((color: string) => `[\`#${color}\`](${COOLORS_URL}${color})`).join(" "),
 			)
 			.join(" ");
 		embed.addFields({
-			name: "Hex" + (field_groups.length > 1 ? ` part ${index + 1}` : "") + ": ",
+			name: "Hex" + (fieldGroups.length > 1 ? ` part ${index + 1}` : "") + ": ",
 			value: groupValue,
 			inline: true,
 		});
@@ -110,37 +107,30 @@ export async function paletteAttachment(
 
 	// create palette links, 9 max par link
 	// make arrays of hex arrays
-	const palette_groups = [];
+	const paletteGroups = [];
 	for (let i = 0; i < colors.length; ++i) {
-		if (i % COLORS_PER_PALETTE === 0) palette_groups.push([]);
-		palette_groups[palette_groups.length - 1].push(colors[i]);
+		if (i % COLORS_PER_PALETTE === 0) paletteGroups.push([]);
+		paletteGroups[paletteGroups.length - 1].push(colors[i]);
 	}
 
 	// create URLs
-	const palette_urls: Array<string> = [];
-	let descriptionLen: number = embed.description.length;
+	const paletteUrls: Array<string> = [];
+	let descriptionLength = embed.description.length;
 
-	let i: number = 0;
-	let stayInLoop: boolean = true;
-	let link: string;
+	for (let i = 0; i < paletteGroups.length; ++i) {
+		const link = `**[Palette${
+			paletteGroups.length > 1 ? " part " + (i + 1) : ""
+		}](${COOLORS_URL}${paletteGroups[i].join("-")})**`;
 
-	while (i < palette_groups.length && stayInLoop) {
-		link = `**[Palette${
-			palette_groups.length > 1 ? " part " + (i + 1) : ""
-		}](${COOLORS_URL}${palette_groups[i].join("-")})**`;
+		if (descriptionLength + link.length + 3 > 1024) break;
 
-		if (descriptionLen + link.length + 3 > 1024) stayInLoop = false;
-		else {
-			palette_urls.push(link);
-			descriptionLen += link.length;
-		}
-
-		++i;
+		paletteUrls.push(link);
+		descriptionLength += link.length;
 	}
 
 	// add generate palette link && append palette to description
 	embed.setDescription(
-		`Total: ${Object.values(allColors).length}\n\n` + embed.description + palette_urls.join(" - "),
+		`Total: ${Object.values(allColors).length}\n\n` + embed.description + paletteUrls.join(" - "),
 	);
 
 	// create gradient canvas for top GRADIENT_TOP colors
@@ -183,5 +173,6 @@ export async function paletteAttachment(
 		colorCanvas.toBuffer("image/png"),
 		`${options.name ? options.name : "palette.png"}`,
 	);
+
 	return [attachment, embed];
 }

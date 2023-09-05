@@ -4,7 +4,7 @@ import { EmbedFieldData } from "discord.js";
 /**
  * Sort Minecraft Version Numbers
  * Use this function as a filter for the sort() method:
- * [].sort(MinecraftSorter)
+ * [].sort(minecraftSorter)
  */
 export const minecraftSorter = (a: string, b: string) => {
 	const _a = a.split(".").map((s) => parseInt(s));
@@ -24,7 +24,7 @@ export const minecraftSorter = (a: string, b: string) => {
 };
 
 export const addPathsToEmbed = (texture: Texture): EmbedFieldData[] => {
-	let tmp = {};
+	const tmp = {};
 	texture.uses.forEach((use) => {
 		texture.paths
 			.filter((el) => el.use === use.id)
@@ -39,18 +39,14 @@ export const addPathsToEmbed = (texture: Texture): EmbedFieldData[] => {
 			});
 	});
 
-	let final: EmbedFieldData[] = [];
-
-	Object.keys(tmp).forEach((edition) => {
-		if (tmp[edition].length > 0) {
-			final.push({
+	return Object.keys(tmp).map((edition) => {
+		if (tmp[edition].length) {
+			return {
 				name: edition.charAt(0).toLocaleUpperCase() + edition.slice(1),
 				value: tmp[edition].join("\n"),
-			});
+			};
 		}
 	});
-
-	return final;
 };
 
 export const formatName = (pack: string, size: string = "512"): [string, string] => {
