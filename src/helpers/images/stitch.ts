@@ -37,7 +37,7 @@ import { MessageAttachment } from "discord.js";
 import { formatName, addPathsToEmbed } from "@helpers/sorter";
 import axios from "axios";
 import getDimensions from "./getDimensions";
-import { Texture } from "@helpers/interfaces/firestorm";
+import { Texture } from "@interfaces";
 
 /**
  * More convenient way of getting all compared textures in a nice grid without copy pasting the same code everywhere

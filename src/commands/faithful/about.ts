@@ -5,7 +5,7 @@ import { MessageAttachment } from "discord.js";
 import axios from "axios";
 import settings from "@json/dynamic/settings.json";
 import { formatName } from "@helpers/sorter";
-import { Contribution, Texture } from "@helpers/interfaces/firestorm";
+import { Contribution, Texture } from "@interfaces";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()

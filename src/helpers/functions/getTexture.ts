@@ -7,7 +7,7 @@ import { MessageAttachment, Guild } from "discord.js";
 import { magnifyAttachment } from "@images/magnify";
 import { ISizeCalculationResult } from "image-size/dist/types/interface";
 import { colors } from "@helpers/colors";
-import { Texture, Contribution } from "@helpers/interfaces/firestorm";
+import { Texture, Contribution } from "@interfaces";
 import { animateAttachment } from "@images/animate";
 import { formatName, minecraftSorter, addPathsToEmbed } from "@helpers/sorter";
 import { textureButtons } from "@helpers/buttons";

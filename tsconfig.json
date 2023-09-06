@@ -22,15 +22,12 @@
 		"paths": {
 			"@/*": ["../*"],
 			"@client": ["client"],
-			"@client/buttons/*": ["buttons/*"],
-			"@client/commands/*": ["commands/*"],
-			"@client/menus/*": ["menus/*"],
 			"@functions/*": ["helpers/functions/*"],
 			"@class/*": ["helpers/class/*"],
 			"@helpers/*": ["helpers/*"],
-			"@interfaces": ["helpers/interfaces"],
+			"@interfaces": ["interfaces"],
 			"@json/*": ["../json/*"],
-			"@images/*": ["helpers/functions/images/*"]
+			"@images/*": ["helpers/images/*"]
 		}
 	},
 	"exclude": ["node_modules"],

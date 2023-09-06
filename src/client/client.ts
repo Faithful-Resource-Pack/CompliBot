@@ -330,7 +330,7 @@ class ExtendedClient extends Client {
 	 * !! broke if dir doesn't exist
 	 */
 	private loadButtons = (): void => {
-		const buttonPath = path.join(__dirname, "..", "buttons");
+		const buttonPath = path.join(__dirname, "..", "events", "buttons");
 
 		readdirSync(buttonPath).forEach(async (dir) => {
 			if (dir == ".DS_Store") return;
@@ -348,7 +348,7 @@ class ExtendedClient extends Client {
 	 * !! broke if dir doesn't exist
 	 */
 	private loadSelectMenus = (): void => {
-		const menusPath = path.join(__dirname, "..", "menus");
+		const menusPath = path.join(__dirname, "..", "events", "menus");
 
 		readdirSync(menusPath).forEach(async (dir) => {
 			if (dir == ".DS_Store") return;

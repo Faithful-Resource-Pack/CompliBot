@@ -1,4 +1,4 @@
-import { Config } from "./interfaces";
+import { Config } from "@interfaces";
 import configJson from "@json/config.json";
 
 const config: Config = configJson;

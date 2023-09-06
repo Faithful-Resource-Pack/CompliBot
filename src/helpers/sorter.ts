@@ -1,4 +1,4 @@
-import { Texture } from "@helpers/interfaces/firestorm";
+import { Texture } from "@interfaces";
 import { EmbedFieldData } from "discord.js";
 
 /**

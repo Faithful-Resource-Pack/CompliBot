@@ -1,6 +1,6 @@
 import { MessageEmbed, CommandInteraction, Message } from "@client";
 import { MessageActionRow, MessageSelectOptionData, MessageSelectMenu } from "discord.js";
-import { Textures } from "./interfaces/firestorm";
+import { Textures } from "@interfaces";
 import { minecraftSorter } from "@helpers/sorter";
 import settings from "@json/dynamic/settings.json";
 

@@ -1,7 +1,5 @@
 export interface Tokens {
-	firestormToken: string;
 	token: string;
-	prefix: string;
 	apiUrl: string;
 	apiPassword: string; // for api authentification
 	errorChannel: string; // error channel where errors are sent

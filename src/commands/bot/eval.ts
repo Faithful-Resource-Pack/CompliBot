@@ -1,4 +1,4 @@
-import { SlashCommand } from "@helpers/interfaces";
+import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { Client, CommandInteraction, MessageEmbed } from "@client";
 
@@ -24,7 +24,6 @@ export const command: SlashCommand = {
 			text = text
 				.replaceAll(client.tokens.token, "[BOT_TOKEN]")
 				.replaceAll(client.tokens.apiPassword, "[API_PASSWORD]")
-				.replaceAll(client.tokens.firestormToken, "[FIRESTORM_TOKEN]")
 				.replace(/`/g, "`" + String.fromCharCode(8203))
 				.replace(/@/g, "@" + String.fromCharCode(8203));
 

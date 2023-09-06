@@ -4,7 +4,7 @@ import GIFEncoder from "./GIFEncoder";
 import { Client, MessageEmbed } from "@client";
 import { addPathsToEmbed } from "@helpers/sorter";
 import axios from "axios";
-import { Texture } from "@helpers/interfaces/firestorm";
+import { Texture } from "@interfaces";
 
 /**
  * Turn array of canvas images into a gif

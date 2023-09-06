@@ -42,16 +42,8 @@ ___
 
 1. Create an app on the **[Discord Developer Portal](https://discord.com/developers/)**.
 2. Go to the **Bot** tab, create a bot and copy its token.
-3. Create a file named `tokens.json` or renamed the `tokens.json.example` to that name.
-4. Fill all field following this format:
-
-```jsonc
-{
-  "prefix": "/", // bot prefix for non-slash commands
-  "firestormToken": "", // writting token from the firestorm library
-  "token": "" // bot token from the Discord Developer Portal
-}
-```
+3. Create a file named `tokens.json` or rename `tokens.json.example`.
+4. Paste your token under `token`. Additional information like API tokens and various testing modes can be enabled from there as well.
 
 ### Other configs:
 
