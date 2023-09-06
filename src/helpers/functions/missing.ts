@@ -5,7 +5,6 @@ import { formatName } from "@helpers/sorter";
 import { Client } from "@client";
 import { AnyChannel, VoiceChannel } from "discord.js";
 import { join, normalize } from "path";
-import { includesNone, normalizeArray } from "@helpers/arrays";
 import settings from "@json/dynamic/settings.json";
 
 import os from "os";
@@ -162,9 +161,11 @@ export const compute = async (
 		}),
 	]).catch((err) => Promise.reject(err));
 
-	await callback("Searching for differences...").catch((err) => Promise.reject(err));
-	const editionFilter =
-		edition === "java" ? normalizeArray(BLACKLIST.java) : normalizeArray(BLACKLIST.bedrock);
+	await callback("Searching for differences...").catch((err: any) => Promise.reject(err));
+
+	const editionFilter = (edition === "java" ? BLACKLIST.java : BLACKLIST.bedrock).map((i) =>
+		i.normalize(),
+	);
 
 	const texturesDefault: Array<string> = getAllFilesFromDir(tmpDirPathDefault, editionFilter).map(
 		(f) => normalize(f).replace(tmpDirPathDefault, ""),
@@ -225,19 +226,22 @@ export const compute = async (
 };
 
 export const getAllFilesFromDir = (dir: string, filter = []): Array<string> => {
-	let res = [];
+	let fileList = [];
 	readdirSync(dir).forEach((file) => {
 		file = normalize(join(dir, file));
 		const stat = statSync(file);
 
 		if (!file.includes(".git")) {
-			if (stat?.isDirectory()) res = res.concat(getAllFilesFromDir(file, filter));
+			if (stat.isDirectory()) fileList = fileList.concat(getAllFilesFromDir(file, filter));
 			else {
-				if ((file.endsWith(".png") || file.endsWith(".tga")) && includesNone(filter, file))
-					res.push(file);
+				if (
+					(file.endsWith(".png") || file.endsWith(".tga")) &&
+					!filter.some((i: string) => file.includes(i))
+				)
+					fileList.push(file);
 			}
 		}
 	});
 
-	return res;
+	return fileList;
 };
