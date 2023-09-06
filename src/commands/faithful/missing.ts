@@ -12,6 +12,7 @@ import {
 	MissingResults,
 } from "@functions/missing";
 import axios from "axios";
+import { doNestedObj } from "@helpers/arrays";
 import settings from "@json/dynamic/settings.json";
 import { formatName } from "@helpers/sorter";
 
@@ -53,12 +54,7 @@ export const command: SlashCommand = {
 				option
 					.setName("version")
 					.setDescription("The Minecraft version.")
-					// map to usable choice parameters
-					.addChoices(
-						...versions.map((i: string) => {
-							return { name: i, value: i };
-						}),
-					)
+					.addChoices(...doNestedObj(versions))
 					.setRequired(false),
 			)
 			.addBooleanOption((option) =>

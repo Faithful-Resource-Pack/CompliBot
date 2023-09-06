@@ -2,7 +2,7 @@ import { MessageAttachment, MessageEmbed, TextChannel } from "discord.js";
 import { Client } from "@client";
 import fs from "fs";
 import { err } from "@helpers/logger";
-import { colors } from "@json/dynamic/settings.json";
+import { colors } from "@helpers/colors";
 import { Log } from "client/client";
 import path from "path";
 import settings from "@json/dynamic/settings.json";
