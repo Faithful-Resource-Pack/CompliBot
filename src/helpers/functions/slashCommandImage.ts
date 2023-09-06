@@ -31,9 +31,9 @@ export async function fetchMessageImage(
 		.sort((a, b) => b.createdTimestamp - a.createdTimestamp)
 		.filter(
 			(m) =>
-				(m.attachments?.first()?.url?.match(/\.(jpeg|jpg|png)$/) as any) ||
-				m.embeds[0]?.thumbnail?.url?.match(/\.(jpeg|jpg|png)$/) ||
-				m.embeds[0]?.image?.url?.match(/\.(jpeg|jpg|png)$/),
+				(m.attachments?.first()?.url?.split("?")[0]?.match(/\.(jpeg|jpg|png)$/) as any) ||
+				m.embeds[0]?.thumbnail?.url?.split("?")[0]?.match(/\.(jpeg|jpg|png)$/) ||
+				m.embeds[0]?.image?.url?.split("?")[0]?.match(/\.(jpeg|jpg|png)$/),
 		)
 		.first();
 
@@ -117,7 +117,7 @@ export async function generalSlashCommandImage(
 ): Promise<void> {
 	await interaction.deferReply();
 
-	const attachmentUrl = interaction.options.getAttachment("image", false)?.url; //safe navigation operator.
+	const attachmentUrl = interaction.options.getAttachment("image", false)?.url?.split("?")[0]; //safe navigation operator.
 	const imageURL: string = attachmentUrl
 		? attachmentUrl
 		: await fetchMessageImage(interaction, 10, {

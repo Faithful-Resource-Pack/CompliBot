@@ -1,7 +1,7 @@
 import { Button } from "@interfaces";
 import { info } from "@helpers/logger";
 import { Client, Message, ButtonInteraction, MessageEmbed } from "@client";
-import { paletteAttachment } from "@functions/canvas/palette";
+import { paletteAttachment } from "@images/palette";
 import { getImageFromMessage } from "@functions/slashCommandImage";
 
 export const button: Button = {

@@ -1,7 +1,7 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction, MessageEmbed } from "@client";
-import { tileAttachment, tileShape } from "@functions/canvas/tile";
+import { tileAttachment, tileShape } from "@images/tile";
 import { generalSlashCommandImage } from "@functions/slashCommandImage";
 
 export const command: SlashCommand = {

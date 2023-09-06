@@ -2,7 +2,7 @@ import { Client, Message, SelectMenuInteraction, MessageEmbed } from "@client";
 import { SelectMenu } from "@interfaces";
 import { info } from "@helpers/logger";
 import { MessageEmbedFooter, MessageInteraction } from "discord.js";
-import { cycleComparison } from "@functions/canvas/cycle";
+import { cycleComparison } from "@images/cycle";
 
 export const menu: SelectMenu = {
 	selectMenuId: "cycleSelect",

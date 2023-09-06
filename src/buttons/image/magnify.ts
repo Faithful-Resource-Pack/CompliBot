@@ -1,7 +1,7 @@
 import { Button } from "@interfaces";
 import { info } from "@helpers/logger";
 import { Client, Message, ButtonInteraction, MessageEmbed } from "@client";
-import { magnifyAttachment } from "@functions/canvas/magnify";
+import { magnifyAttachment } from "@images/magnify";
 import { palette } from "@helpers/buttons";
 import { getImageFromMessage } from "@functions/slashCommandImage";
 import { MessageActionRow } from "discord.js";

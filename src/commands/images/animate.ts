@@ -2,7 +2,7 @@ import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction, MessageEmbed } from "@client";
 import { generalSlashCommandImage } from "@functions/slashCommandImage";
-import { animateImage } from "@functions/canvas/animate";
+import { animateImage } from "@images/animate";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()

@@ -2,7 +2,7 @@ import { SlashCommand } from "@interfaces";
 import { Client, CommandInteraction, Message, MessageEmbed } from "@client";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { generalSlashCommandImage } from "@functions/slashCommandImage";
-import { mcColorsOptions, multiplyAttachment } from "@functions/canvas/multiply";
+import { mcColorsOptions, multiplyAttachment } from "@images/multiply";
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
 		.setName("tint")

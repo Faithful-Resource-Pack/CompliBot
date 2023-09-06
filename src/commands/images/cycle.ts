@@ -1,7 +1,7 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { Client, CommandInteraction, MessageEmbed, Message } from "@client";
-import { cycleComparison } from "@functions/canvas/cycle";
+import { cycleComparison } from "@images/cycle";
 import parseTextureName from "@functions/parseTextureName";
 import { colors } from "@helpers/colors";
 import { textureChoiceEmbed } from "@helpers/choiceEmbed";

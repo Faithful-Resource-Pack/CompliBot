@@ -2,7 +2,7 @@ import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction, MessageEmbed } from "@client";
 import { generalSlashCommandImage } from "@functions/slashCommandImage";
-import { magnifyAttachment } from "@functions/canvas/magnify";
+import { magnifyAttachment } from "@images/magnify";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()

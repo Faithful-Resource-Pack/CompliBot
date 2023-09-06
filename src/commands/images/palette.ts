@@ -3,7 +3,7 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction } from "discord.js";
 import { generalSlashCommandImage } from "@functions/slashCommandImage";
 import { MessageEmbed } from "@client";
-import { paletteAttachment } from "@functions/canvas/palette";
+import { paletteAttachment } from "@images/palette";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()

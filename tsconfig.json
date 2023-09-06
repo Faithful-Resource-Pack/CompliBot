@@ -29,7 +29,8 @@
 			"@class/*": ["helpers/class/*"],
 			"@helpers/*": ["helpers/*"],
 			"@interfaces": ["helpers/interfaces"],
-			"@json/*": ["../json/*"]
+			"@json/*": ["../json/*"],
+			"@images/*": ["helpers/functions/images/*"]
 		}
 	},
 	"exclude": ["node_modules"],

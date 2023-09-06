@@ -1,6 +1,6 @@
 import { Event } from "@interfaces";
 import { Client, Message, MessageEmbed } from "@client";
-import { textureComparison } from "@functions/canvas/stitch";
+import { textureComparison } from "@images/stitch";
 import settings from "@json/dynamic/settings.json";
 import { Pack } from "@helpers/interfaces/submission";
 

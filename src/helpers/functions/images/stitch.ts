@@ -31,7 +31,7 @@ export async function stitch(images: Canvas[][], gap: number = 0) {
 	return canvas.toBuffer("image/png");
 }
 
-import { magnify } from "@functions/canvas/magnify";
+import { magnify } from "@images/magnify";
 import { Client, MessageEmbed } from "@client";
 import { MessageAttachment } from "discord.js";
 import { formatName, addPathsToEmbed } from "@helpers/sorter";
