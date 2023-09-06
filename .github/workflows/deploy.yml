@@ -17,9 +17,9 @@ jobs:
                   PORT: ${{ secrets.PORT }}
                   KEY: ${{ secrets.SSH }}
                   script: |
-                      cd ./"CompliBot (TS)"
+                      cd ./CompliBot
                       git stash
                       git pull
                       pnpm install
-                      pm2 delete "BOT (TS)"
-                      pm2 start "pnpm start" --name "BOT (TS)"
+                      pm2 delete "complibot"
+                      pm2 start "pnpm start" --name "complibot"
