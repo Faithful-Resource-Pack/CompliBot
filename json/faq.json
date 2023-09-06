@@ -101,7 +101,7 @@
     },
     {
         "question": "I have found a bug in CompliBot or Wynem and I want to request a fix and/or give feedback, how do I do it?",
-        "answer": "If you find any bugs with CompliBot and/or have any requests, you can use the `/feedback` command to send feedback directly to the bot developers. For Wynem, you can use `e!suggest`. You can also report any CompliBot related problems directly by making an issue on the [GitHub repository](https://github.com/Faithful-Resource-Pack/Discord-Bot).",
+        "answer": "If you find any bugs with CompliBot and/or have any requests, you can use the `/feedback` command to send feedback directly to the bot developers. For Wynem, you can use `e!suggest`. You can also report any CompliBot related problems directly by making an issue on the [GitHub repository](https://github.com/Faithful-Resource-Pack/CompliBot).",
         "keywords": ["bot bug", "bot bugs", "bot issue"]
     },
     {

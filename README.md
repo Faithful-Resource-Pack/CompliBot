@@ -3,10 +3,10 @@
   <h1>CompliBot</h1>
   <h3>The official bot for the Faithful Discord servers.</h3>
 
-![RepoSize](https://img.shields.io/github/repo-size/Faithful-Resource-Pack/Discord-Bot)
-![Issues](https://img.shields.io/github/issues/Faithful-Resource-Pack/Discord-Bot)
-![PullRequests](https://img.shields.io/github/issues-pr/Faithful-Resource-Pack/Discord-Bot)
-[![Crowdin](https://badges.crowdin.net/e/1602cfd1a52793da79736586c4493097/localized.svg)](https://faithful.crowdin.com/discord-bot)
+![RepoSize](https://img.shields.io/github/repo-size/Faithful-Resource-Pack/CompliBot)
+![Issues](https://img.shields.io/github/issues/Faithful-Resource-Pack/CompliBot)
+![PullRequests](https://img.shields.io/github/issues-pr/Faithful-Resource-Pack/CompliBot)
+[![Crowdin](https://badges.crowdin.net/e/1602cfd1a52793da79736586c4493097/localized.svg)](https://faithful.crowdin.com/complibot)
 </div>
 
 ---
@@ -18,7 +18,7 @@
 ---
 
 ## Found an issue?
-Please submit it using our [bug tracker](https://github.com/Faithful-Resource-Pack/Discord-Bot/issues/new/choose) or by using the `/feedback <text>` command from the bot. The bug tracker is preferred but both options are valid.
+Please submit it using our [bug tracker](https://github.com/Faithful-Resource-Pack/CompliBot/issues/new/choose) or by using the `/feedback <text>` command from the bot. The bug tracker is preferred but both options are valid.
 
 ---
 
