@@ -129,7 +129,7 @@ export const command: SlashCommand = {
 
 		poll.setMultipleAnswers(multipleAnswers);
 		poll.setAnonymous(anonymous);
-		poll.postSubmissionMessage(interaction, embed, {
+		poll.postMessage(interaction, embed, {
 			question,
 			yesno,
 			answersArr,

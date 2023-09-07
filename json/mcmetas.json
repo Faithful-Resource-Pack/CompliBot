@@ -120,12 +120,7 @@
     "magma": {
         "animation": {
             "frametime": 8,
-            "interpolate": true,
-            "frames": [
-                0,
-                1,
-                2
-            ]
+            "interpolate": true
         }
     },
     "none": {

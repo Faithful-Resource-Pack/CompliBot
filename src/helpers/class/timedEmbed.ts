@@ -11,7 +11,7 @@ interface AllVotes {
 }
 
 /**
- * Parent class for Poll & Submissions since most of the code here is needed for both classes
+ * Base class for polls and other miscellaneous timed embeds
  */
 export class TimedEmbed {
 	readonly id: string;
@@ -40,17 +40,13 @@ export class TimedEmbed {
 		}
 	}
 
-	/**
-	 * This function tell if the poll/submission is anonymous or not
-	 * @returns {Promise<Boolean>}
-	 */
 	public isAnonymous(): boolean {
 		return this.anonymous;
 	}
 
 	/**
-	 * Set the poll/submission to be anonymous or not
-	 * @param {Boolean} b - true if the poll/submission is anonymous
+	 * Set the embed to be anonymous or not
+	 * @param {Boolean} b - true if the embed is anonymous
 	 * @returns {this}
 	 */
 	public setAnonymous(b: boolean): this {
@@ -99,7 +95,7 @@ export class TimedEmbed {
 	}
 
 	/**
-	 * Add an upvote to the poll/submission
+	 * Add an upvote to the embed
 	 * @param {User.id} id - the user id to add
 	 * @returns {this}
 	 */
@@ -108,7 +104,7 @@ export class TimedEmbed {
 	}
 
 	/**
-	 * Add a downvote to the poll/submission
+	 * Add a downvote to the embed
 	 * @param {User.id} id - the user id to add
 	 * @returns {this}
 	 */
@@ -117,7 +113,7 @@ export class TimedEmbed {
 	}
 
 	/**
-	 * Add any vote to the poll/submission
+	 * Add any vote to the embed
 	 * @param {User.id} id - the user id to add
 	 * @returns {this}
 	 */
@@ -136,7 +132,7 @@ export class TimedEmbed {
 	}
 
 	/**
-	 * Remove an upvote to the poll/submission
+	 * Remove an upvote to the embed
 	 * @param {User.id} id - the user id to remove
 	 * @returns {this}
 	 */
@@ -145,7 +141,7 @@ export class TimedEmbed {
 	}
 
 	/**
-	 * Remove a downvote to the poll/submission
+	 * Remove a downvote to the embed
 	 * @param {User.id} id - the user id to remove
 	 * @returns {this}
 	 */
@@ -154,7 +150,7 @@ export class TimedEmbed {
 	}
 
 	/**
-	 * Remove any vote to the poll/submission
+	 * Remove any vote to the embed
 	 * @param {String} type - the type category of vote to remove
 	 * @param {User.id} id - the user id to remove
 	 * @returns {this}
@@ -165,7 +161,7 @@ export class TimedEmbed {
 	}
 
 	/**
-	 * Void votes from the poll/submission
+	 * Void votes from the embed
 	 * @returns {this}
 	 */
 	protected voidVotes(): this {
@@ -188,7 +184,7 @@ export class TimedEmbed {
 	}
 
 	/**
-	 * Get the Discord Message Id of the poll/submission
+	 * Get the Discord Message Id of the embed
 	 * @returns {String}
 	 */
 	public getMessageId(): string {
@@ -196,7 +192,7 @@ export class TimedEmbed {
 	}
 
 	/**
-	 * Set the Discord Message Id of the poll/submission
+	 * Set the Discord Message Id of the embed
 	 * @param {Message|string} message - Discord Message OR Discord Message Id
 	 * @returns {this}
 	 */
@@ -209,7 +205,7 @@ export class TimedEmbed {
 	}
 
 	/**
-	 * Get the Discord Channel Id of the poll/submission
+	 * Get the Discord Channel Id of the embed
 	 * @returns {String}
 	 */
 	public getChannelId(): string {
@@ -217,7 +213,7 @@ export class TimedEmbed {
 	}
 
 	/**
-	 * Set the Discord Channel Id of the poll/submission
+	 * Set the Discord Channel Id of the embed
 	 * @param {TextChannel|string} channel - Discord Channel OR Discord Channel Id
 	 * @returns {this}
 	 */
@@ -231,7 +227,7 @@ export class TimedEmbed {
 	}
 
 	/**
-	 * Get the status of the poll/submission
+	 * Get the status of the embed
 	 * @returns {String}
 	 */
 	public getStatus(): string {
@@ -239,7 +235,7 @@ export class TimedEmbed {
 	}
 
 	/**
-	 * Get the status displayed in the embed of the poll/submission
+	 * Get the status displayed in the embed of the embed
 	 * @returns {String}
 	 */
 	public getStatusUI(): string {
@@ -274,7 +270,7 @@ export class TimedEmbed {
 	}
 
 	/**
-	 * Set the poll/submission timeout
+	 * Set the embed timeout
 	 * @param {Number} number - the timeout in seconds
 	 */
 	public setTimeout(number: number): this;
@@ -286,7 +282,7 @@ export class TimedEmbed {
 	}
 
 	/**
-	 * Set the poll/submission multiple answers
+	 * Set the embed multiple answers
 	 * @param {Boolean} bool - value
 	 * @returns {this}
 	 */

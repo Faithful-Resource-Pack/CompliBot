@@ -118,7 +118,7 @@ export class Poll extends TimedEmbed {
 	 * @param {PollOptions} options - different options for the poll
 	 * @returns {Promise<void>}
 	 */
-	public async postSubmissionMessage(
+	public async postMessage(
 		interaction: CommandInteraction,
 		embed: MessageEmbed,
 		options: PollOptions,
