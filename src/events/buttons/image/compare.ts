@@ -1,7 +1,7 @@
 import { Button } from "@interfaces";
 import { info } from "@helpers/logger";
 import { Client, Message, ButtonInteraction, MessageEmbed } from "@client";
-import { textureComparison } from "@images/stitch";
+import textureComparison from "@functions/textureComparison";
 import { MessageEmbedFooter } from "discord.js";
 
 export const button: Button = {

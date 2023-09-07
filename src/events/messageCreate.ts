@@ -1,6 +1,6 @@
 import { Event } from "@interfaces";
 import { Client, Message, MessageEmbed } from "@client";
-import { textureComparison } from "@images/stitch";
+import textureComparison from "@functions/textureComparison";
 import settings from "@json/dynamic/settings.json";
 import { Pack } from "@interfaces";
 
@@ -97,8 +97,8 @@ export const event: Event = {
 
 		/**
 		 * texture ID quoting
+		 * @todo deprecate this and switch fully to /compare <id>
 		 * @author Evorp
-		 * @see textureComparison()
 		 */
 
 		const results = message.content.match(/(?<=\[\#)(.*?)(?=\])/g) ?? [];
@@ -123,15 +123,12 @@ export const event: Event = {
 				display = (result?.match(/[a-zA-Z]+/g) ?? [""])[0].toLocaleLowerCase().trim();
 			}
 
-			try {
-				message.channel.sendTyping();
-				const [embed, magnified] = await textureComparison(client, id, display);
-				message
-					.reply({ embeds: [embed], files: [magnified] })
-					.then((message) => message.deleteButton());
-			} catch {
-				/* texture doesn't exist or failed or whatever*/
-			}
+			message.channel.sendTyping();
+			const [embed, magnified] = await textureComparison(client, id, display);
+
+			message
+				.reply({ embeds: [embed], files: magnified ? [magnified] : null })
+				.then((message: Message) => message.deleteButton());
 		}
 	},
 };

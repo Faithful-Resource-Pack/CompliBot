@@ -2,7 +2,7 @@ import { Client, Message, SelectMenuInteraction, MessageEmbed } from "@client";
 import { SelectMenu } from "@interfaces";
 import { info } from "@helpers/logger";
 import { MessageEmbedFooter, MessageInteraction } from "discord.js";
-import { textureComparison } from "@images/stitch";
+import textureComparison from "@functions/textureComparison";
 
 export const menu: SelectMenu = {
 	selectMenuId: "compareSelect",
