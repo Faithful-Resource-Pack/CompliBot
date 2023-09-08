@@ -3,6 +3,7 @@ import { Client, Message, MessageEmbed } from "@client";
 import textureComparison from "@functions/textureComparison";
 import settings from "@json/dynamic/settings.json";
 import { Pack } from "@interfaces";
+import { colors } from "@helpers/colors";
 
 export const event: Event = {
 	name: "messageCreate",
@@ -126,9 +127,22 @@ export const event: Event = {
 			message.channel.sendTyping();
 			const [embed, magnified] = await textureComparison(client, id, display);
 
-			message
-				.reply({ embeds: [embed], files: magnified ? [magnified] : null })
-				.then((message: Message) => message.deleteButton());
+			try {
+				message
+					.reply({ embeds: [embed], files: magnified ? [magnified] : null })
+					.then((message: Message) => message.deleteButton());
+			} catch {
+				message
+					.reply({
+						embeds: [
+							new MessageEmbed()
+								.setTitle("No results found!")
+								.setDescription(`The ID ${id} doesn't exist!`)
+								.setColor(colors.red),
+						],
+					})
+					.then((message: Message) => message.deleteButton());
+			}
 		}
 	},
 };
