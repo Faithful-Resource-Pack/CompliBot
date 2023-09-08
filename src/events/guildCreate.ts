@@ -14,6 +14,6 @@ export const event: Event = {
 			.setDescription("To get started, try to type `/` to see all available slash commands!");
 
 		guild.systemChannel?.send({ embeds: [embed] });
-		console.log(`${info} I was added to a guild, now I'm in: ${client.guilds.cache.size}`);
+		console.log(`${info}I was added to a guild. Now I'm in ${client.guilds.cache.size} total!`);
 	},
 };

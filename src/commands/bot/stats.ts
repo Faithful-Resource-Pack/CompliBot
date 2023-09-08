@@ -46,7 +46,8 @@ export const command: SlashCommand = {
 			const embed = new MessageEmbed()
 				.setTitle(`${client.user.username}'s Statistics`)
 				.setThumbnail(client.user.displayAvatarURL())
-				.addFields( // TODO: remove the prefix since there are no prefix commands on the bot
+				.addFields(
+					// TODO: remove the prefix since there are no prefix commands on the bot
 					{ name: FieldTitles[0], value: "/", inline: true },
 					{ name: FieldTitles[1], value: duration(client.uptime).humanize(), inline: true },
 					{ name: FieldTitles[2], value: client.guilds.cache.size.toString(), inline: true },

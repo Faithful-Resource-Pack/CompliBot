@@ -11,7 +11,7 @@ import { Client } from "@client";
  */
 export async function fetchSettings(client: Client) {
 	const settings = (await axios.get(`${client.tokens.apiUrl}settings/raw`)).data;
-	const out = join(process.cwd(), "json/dynamic/settings.json");
+	const out = join(process.cwd(), "json", "dynamic", "settings.json");
 	writeFile(out, JSON.stringify(settings), {
 		flag: "w",
 		encoding: "utf-8",

@@ -129,8 +129,7 @@ const MessageBody = {
 			.setTitle("Action failed!")
 			.setDescription(text)
 			.setFooter({
-				text:
-					disappearing ? `This warning & original message will be deleted in ${timeout}s.` : "",
+				text: disappearing ? `This warning & original message will be deleted in ${timeout}s.` : "",
 				iconURL: this.client.user.displayAvatarURL(),
 			});
 
