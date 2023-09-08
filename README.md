@@ -12,6 +12,7 @@
 ---
 
 ## Online on:
+
 - [Faithful](https://discord.gg/sN9YRQbBv7)
 - [Classic Faithful](https://discord.gg/KSEhCVtg4J)
 
@@ -36,18 +37,20 @@ pnpm dev
 ```
 
 ___
-### Bot config:
+## Bot setup:
 
-> **⚠️ We won't help you re-branding the bot for any other server. If you really want to do that, then you need to figure it out yourself.**
+**DISCLAIMER: We won't help you rebrand the bot for any other server. If you really want to do that, then you need to figure it out yourself.**
 
 1. Create an app on the **[Discord Developer Portal](https://discord.com/developers/)**.
 2. Go to the **Bot** tab, create a bot and copy its token.
-3. Create a file named `tokens.json` or rename `tokens.json.example`.
-4. Paste your token under `token`. Additional information like API tokens and various testing modes can be enabled from there as well.
+3. Rename `tokens.json.example` in the `json/` folder to `tokens.json`.
+4. Paste your token after `token`. Additional information like API tokens and various testing modes can be enabled from there as well.
 
-### Other configs:
+## Configuration:
 
-See `config.json` for general public config.
+- `config.json` for role information and miscellaneous extras.
+- `settings.json` for channel names, versions, and more.
 
-### Firestorm
-This project is heavily developed around the self hosted Firestore-like database: [firestorm-db](https://github.com/TheRolfFR/firestorm-db). Feel free to check the repository of that library to easily understand how it works.
+## API Reference:
+
+This project is heavily developed around our public API. Check out our API documentation at https://api.faithfulpack.net/docs for more information about endpoints and making requests.
