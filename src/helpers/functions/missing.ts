@@ -193,6 +193,7 @@ export const compute = async (
 			.join("\n")
 			.replace(/\\/g, "/")
 			.replace(/\/assets\/minecraft/g, "")
+			// only match at start of line so realms/optifine aren't affected
 			.replace(/^\/textures\//gm, ""),
 		"utf8",
 	);
