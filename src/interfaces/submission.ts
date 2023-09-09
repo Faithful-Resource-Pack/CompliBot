@@ -6,9 +6,9 @@ export interface Submissions {
 // one specific pack instance
 export interface Pack {
 	channels: Channels;
-	council_disabled: boolean;
-	vote_time: number;
-	council_time?: number;
+	council_enabled: boolean;
+	time_to_results: number;
+	time_to_council?: number;
 	contributor_role?: string;
 }
 
