@@ -8,7 +8,7 @@ import { join, normalize } from "path";
 import settings from "@json/dynamic/settings.json";
 
 import os from "os";
-import BLACKLIST from "@json/blacklisted_textures.json";
+import blacklistedTextures from "@json/blacklisted_textures.json";
 import axios from "axios";
 
 // return value for the compute function
@@ -163,9 +163,7 @@ export const compute = async (
 
 	await callback("Searching for differences...").catch((err: any) => Promise.reject(err));
 
-	const editionFilter = (edition === "java" ? BLACKLIST.java : BLACKLIST.bedrock).map((i) =>
-		i.normalize(),
-	);
+	const editionFilter = blacklistedTextures[edition].map((i: string) => i.normalize());
 
 	const texturesDefault: Array<string> = getAllFilesFromDir(tmpDirPathDefault, editionFilter).map(
 		(f) => normalize(f).replace(tmpDirPathDefault, ""),
@@ -195,7 +193,7 @@ export const compute = async (
 			.join("\n")
 			.replace(/\\/g, "/")
 			.replace(/\/assets\/minecraft/g, "")
-			.replace(/\/textures\//g, ""),
+			.replace(/^\/textures\//g, ""),
 		"utf8",
 	);
 
