@@ -193,7 +193,7 @@ export const compute = async (
 			.join("\n")
 			.replace(/\\/g, "/")
 			.replace(/\/assets\/minecraft/g, "")
-			.replace(/^\/textures\//g, ""),
+			.replace(/^\/textures\//gm, ""),
 		"utf8",
 	);
 
