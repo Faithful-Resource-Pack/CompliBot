@@ -1,4 +1,4 @@
-import { MessageAttachment, MessageEmbed, TextChannel } from "discord.js";
+import { DiscordAPIError, MessageAttachment, MessageEmbed, TextChannel } from "discord.js";
 import { Client } from "@client";
 import fs from "fs";
 import { err } from "@helpers/logger";
@@ -41,7 +41,7 @@ const randomSentences: Array<string> = [
 	"Ouch. That hurt :(",
 ];
 
-var lastReasons = [];
+const lastReasons = [];
 const loopLimit = 3; //how many times the same error needs to be made to trigger a loop
 
 export const logConstructor: Function = (
@@ -140,6 +140,8 @@ export const logConstructor: Function = (
 
 export const errorHandler: Function = async (client: Client, reason: any, type: string) => {
 	console.error(`${err} ${reason?.stack ?? reason ?? "No reason provided!"}`);
+
+	if (reason instanceof DiscordAPIError) return; // not on our end
 
 	// get dev log channel
 	const channel = client.channels.cache.get(client.tokens.errorChannel) as TextChannel;
