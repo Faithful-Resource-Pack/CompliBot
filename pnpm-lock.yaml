@@ -41,9 +41,6 @@ dependencies:
   linux-os-info:
     specifier: ^2.0.0
     version: 2.0.0
-  module-alias:
-    specifier: ^2.2.3
-    version: 2.2.3
   moment:
     specifier: ^2.29.4
     version: 2.29.4
@@ -794,10 +791,6 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
     dev: true
-
-  /module-alias@2.2.3:
-    resolution: {integrity: sha512-23g5BFj4zdQL/b6tor7Ji+QY4pEfNH784BMslY9Qb0UnJWRAt+lQGLYmRaM0KDBwIG23ffEBELhZDP2rhi9f/Q==}
-    dev: false
 
   /moment@2.29.4:
     resolution: {integrity: sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==}

@@ -30,7 +30,6 @@
         "image-size": "^1.0.2",
         "jszip": "^3.10.1",
         "linux-os-info": "^2.0.0",
-        "module-alias": "^2.2.3",
         "moment": "^2.29.4",
         "tslib": "^2.6.2"
     }
