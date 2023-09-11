@@ -70,7 +70,7 @@
   "Command.Feedback.Bug": "",
   "Command.Feedback.ConfirmPrompt": "Czy na pewno chcesz to wysłać? potwierdź za pomocą poniższych przycisków",
   "Command.Feedback.Preview": "Podgląd twojej informacji zwrotnej:",
-  "Command.Feedback.Sent": "%EMOJI.SEE_MORE% Opinia wysłana do deweloperów!",
+  "Command.Feedback.Sent": "Opinia wysłana do deweloperów!",
   "Command.Feedback.Suggestion": "Sugestia",
   "Command.Feedback.Title": "Informacja zwrotna",
   "Command.HelpUs.Description": "Lubisz ten projekt i chcesz pomóc deweloperom?\nSkontakuj się z jednym z deweloperów aby otrzymać zaproszenie na serwer dla deweloperów:\n<@!473860522710794250>, <@!360249987927638016>, <@!173336582265241601>, <@!601501288978448411>\n\nMożesz też sprawdzić naszą stronę GitHub:\n> https://github.com/Faithful-Resource-Pack/CompliBot",

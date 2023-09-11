@@ -70,7 +70,7 @@
     "Command.Feedback.Bug": "",
     "Command.Feedback.ConfirmPrompt": "Bunu göndermek istediğine emin misin? Aşağıdaki butonlarla onayla",
     "Command.Feedback.Preview": "Grei bildiriminin ön izlemesi:",
-    "Command.Feedback.Sent": "%EMOJI.SEE_MORE% Geri bildirim geliştiricilere gönderildi!",
+    "Command.Feedback.Sent": "%Geri bildirim geliştiricilere gönderildi!",
     "Command.Feedback.Suggestion": "Öneri",
     "Command.Feedback.Title": "Geri bildirim",
     "Command.HelpUs.Description": "Bu projeyi seviyorsunuz ve geliştiricilere yardım etmek mi istiyorsunuz?\nGeliştirici sunucularına davet edilmek için lütfen aşağıdaki geliştiricilerden birisiyle iletişime geçin:\n<@!473860522710794250>, <@!360249987927638016>, <@!173336582265241601>, <@!601501288978448411>\n\nAyrıca bizi GitHub'da da bulabilirsiniz:\n> https://github.com/Faithful-Resource-Pack/CompliBot",

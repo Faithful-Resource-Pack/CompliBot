@@ -70,7 +70,7 @@
     "Command.Feedback.Bug": "Bug",
     "Command.Feedback.ConfirmPrompt": "Are you sure you want to send this? Confirm with the buttons below",
     "Command.Feedback.Preview": "Preview of your feedback:",
-    "Command.Feedback.Sent": "%EMOJI.SEE_MORE% Feedback sent to developers!",
+    "Command.Feedback.Sent": "Feedback sent to developers!",
     "Command.Feedback.Suggestion": "Suggestion",
     "Command.Feedback.Title": "Feedback",
     "Command.HelpUs.Description": "Do you love this project and want to help the developers?\nPlease contact one of the developers below to be invited to the development servers:\n<@!473860522710794250>, <@!360249987927638016>, or <@!173336582265241601>\n\nYou can also check us out on GitHub:\n> https://github.com/Faithful-Resource-Pack/CompliBot",

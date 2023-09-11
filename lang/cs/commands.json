@@ -69,7 +69,7 @@
     "Command.Feedback.Bug": "Chyba",
     "Command.Feedback.ConfirmPrompt": "Určitě to chceš odeslat? Potvrďte tlačítkem dole",
     "Command.Feedback.Preview": "Náhled tvojí zpětné vazby:",
-    "Command.Feedback.Sent": "%EMOJI.SEE_MORE% Zpětná vazba byla odeslána vývojářům!",
+    "Command.Feedback.Sent": "Zpětná vazba byla odeslána vývojářům!",
     "Command.Feedback.Suggestion": "Návrh",
     "Command.Feedback.Title": "Zpětná vazba",
     "Command.HelpUs.Description": "Líbí se ti tento projekt a chceš pomoci vývojářům?\nProsím kontaktuj jednoho z těchto vývojářů pro pozvánku na vývojový server:\n<@!473860522710794250>, <@!360249987927638016>, <@!173336582265241601>, <@!601501288978448411>\n\nTaky nás můžeš omrknout na GitHubu:\n> https://github.com/Faithful-Resource-Pack/CompliBot",
