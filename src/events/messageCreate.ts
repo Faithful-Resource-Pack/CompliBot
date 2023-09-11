@@ -106,7 +106,7 @@ export const event: Event = {
 		if (!results.length) return;
 
 		for (let result of results) {
-			let id: string | number;
+			let id: string;
 			let display = "all";
 
 			// check for [#template]
@@ -120,8 +120,8 @@ export const event: Event = {
 				id = result;
 			} else {
 				// display is passed in so parse them separately
-				id = (result?.match(/\d+/g) ?? [""])[0];
-				display = (result?.match(/[a-zA-Z]+/g) ?? [""])[0].toLocaleLowerCase().trim();
+				id = result.match(/\d+/g)?.[0];
+				display = result.match(/[a-zA-Z]+/g)?.[0].toLocaleLowerCase().trim();
 			}
 
 			message.channel.sendTyping();

@@ -79,7 +79,7 @@ export const computeAndUpdate = async (
 		switch (channel.type) {
 			case "GUILD_VOICE":
 				const pattern = /[.\d+]+(?!.*[.\d+])/;
-				if ((channel.name.match(pattern) ?? [""])[0] == results[2].completion.toString()) break;
+				if (channel.name.match(pattern)?.[0] == results[2].completion.toString()) break;
 
 				const updatedName = channel.name.replace(pattern, results[2].completion.toString());
 				await (channel as VoiceChannel).setName(updatedName);
