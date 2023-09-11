@@ -394,6 +394,7 @@
         "textures/ui/glyph_persona.png",
         "textures/ui/navy_blue.png",
         "textures/ui/realms_gradient_top.png",
-        "textures/ui/realms_title.png"
+        "textures/ui/realms_title.png",
+        "textures/misc/enchanted_actor_glint.png"
     ]
 }
