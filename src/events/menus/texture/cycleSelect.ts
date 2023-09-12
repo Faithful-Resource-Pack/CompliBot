@@ -31,8 +31,6 @@ export const menu: SelectMenu = {
 			Number(framerate),
 		);
 
-		message
-			.edit(editOptions)
-			.then((message: Message) => message.deleteButton());
+		message.edit(editOptions).then((message: Message) => message.deleteButton());
 	},
 };

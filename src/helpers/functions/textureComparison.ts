@@ -59,14 +59,15 @@ export default async function textureComparison(
 		const dimension = await getDimensions(defaultURL);
 		if (dimension.width * dimension.height * displayed.flat().length > 262144) {
 			return {
-				embeds: [new MessageEmbed()
-					.setTitle("Output will be too big!")
-					.setDescription(
-						"Try specifying which set of packs you want to view to reduce the total image size.",
-					)
-					.setFooter({ text: "Use [#template] for more information!" }),
-					],
-				components: []
+				embeds: [
+					new MessageEmbed()
+						.setTitle("Output will be too big!")
+						.setDescription(
+							"Try specifying which set of packs you want to view to reduce the total image size.",
+						)
+						.setFooter({ text: "Use [#template] for more information!" }),
+				],
+				components: [],
 			};
 		}
 	}

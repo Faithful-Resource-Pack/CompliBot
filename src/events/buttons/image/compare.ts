@@ -28,10 +28,8 @@ export const button: Button = {
 
 		(messageOptions.embeds[0] as MessageEmbed).setTimestamp();
 
-		return interaction
-			.editReply(messageOptions)
-			.then((message: Message) => {
-				message.deleteButton(true);
-			});
+		return interaction.editReply(messageOptions).then((message: Message) => {
+			message.deleteButton(true);
+		});
 	},
 };

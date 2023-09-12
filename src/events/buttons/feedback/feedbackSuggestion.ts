@@ -7,6 +7,7 @@ export const button: Button = {
 	buttonId: "feedbackSuggestion",
 	execute: async (client: Client, interaction: ButtonInteraction) => {
 		if (client.verbose) console.log(`${info}Suggestion sent!`);
+		await interaction.deferUpdate();
 		return await sendFeedback(
 			client,
 			interaction,

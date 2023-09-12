@@ -55,21 +55,30 @@ export default async function sendFeedback(
 		});
 
 	const responseEmbed = new MessageEmbed()
-		.setTitle(await interaction.getEphemeralString({ string: "Command.Feedback.Sent" }))
+		.setTitle(
+			(await interaction.getEphemeralString({ string: "Command.Feedback.Sent" })).replace(
+				"%FEEDBACKTYPE%",
+				// uppercase
+				type.replace(/\b(\w)/gu, (letter) => letter.toUpperCase()),
+			),
+		)
 		.setDescription(interaction.message.embeds[0].description)
 		.setAuthor({ name: interaction.user.username, iconURL: interaction.user.avatarURL() })
 		.setTimestamp();
 
-	const reply: Message = (await interaction.channel.send({
+	const reply: Message = (await (interaction.message as Message).edit({
 		embeds: [responseEmbed],
+		components: [],
 	})) as Message;
+
+	reply.deleteButton();
 
 	const url: string = reply.url;
 	const quote: string = quotes[type][Math.floor(Math.random() * quotes[type].length)];
 
 	const developerEmbed = new MessageEmbed()
 		.setAuthor({ name: interaction.user.username, iconURL: interaction.user.avatarURL() })
-		.setTitle(`[BUG] Feedback`)
+		.setTitle(`[${type.toUpperCase()}] Feedback`)
 		.setURL(url)
 		.setDescription(`\`\`\`${interaction.message.embeds[0].description}\`\`\`\n_${quote}_`)
 		.setFooter({ text: `${interaction.guild.name}` })
@@ -77,10 +86,4 @@ export default async function sendFeedback(
 
 	if (type === "bug") developerEmbed.setColor(colors.red);
 	channel.send({ embeds: [developerEmbed] });
-
-	try {
-		(interaction.message as Message).delete();
-	} catch {
-		/* message already deleted */
-	}
 }

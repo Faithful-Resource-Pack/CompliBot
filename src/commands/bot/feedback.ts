@@ -2,7 +2,7 @@ import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { MessageActionRow, MessageButton } from "discord.js";
 import { ids, parseId } from "@helpers/emojis";
-import { Client, MessageEmbed, CommandInteraction } from "@client";
+import { Client, MessageEmbed, Message, CommandInteraction } from "@client";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -21,11 +21,6 @@ export const command: SlashCommand = {
 				text: await interaction.getEphemeralString({ string: "Command.Feedback.ConfirmPrompt" }),
 			});
 
-		const btnCancel = new MessageButton()
-			.setStyle("DANGER")
-			.setEmoji(parseId(ids.delete))
-			.setCustomId("feedbackCancel");
-
 		const btnBug = new MessageButton()
 			.setLabel(await interaction.getEphemeralString({ string: "Command.Feedback.Bug" }))
 			.setStyle("PRIMARY")
@@ -38,11 +33,14 @@ export const command: SlashCommand = {
 			.setEmoji(parseId(ids.suggestion))
 			.setCustomId("feedbackSuggestion");
 
-		const buttons = new MessageActionRow().addComponents([btnCancel, btnBug, btnSuggestion]);
+		const buttons = new MessageActionRow().addComponents([btnBug, btnSuggestion]);
 
-		return interaction.reply({
-			components: [buttons],
-			embeds: [embedPreview],
-		});
+		return interaction
+			.reply({
+				components: [buttons],
+				embeds: [embedPreview],
+				fetchReply: true,
+			})
+			.then((message: Message) => message.deleteButton());
 	},
 };

@@ -24,10 +24,12 @@ export const menu: SelectMenu = {
 		interaction.deferUpdate();
 
 		const [id, display] = interaction.values[0].split("__");
-		const editOptions: MessageEditOptions = await textureComparison(interaction.client as Client, id, display);
+		const editOptions: MessageEditOptions = await textureComparison(
+			interaction.client as Client,
+			id,
+			display,
+		);
 
-		message
-			.edit(editOptions)
-			.then((message: Message) => message.deleteButton());
+		message.edit(editOptions).then((message: Message) => message.deleteButton());
 	},
 };

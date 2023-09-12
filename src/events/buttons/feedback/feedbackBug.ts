@@ -7,6 +7,7 @@ export const button: Button = {
 	buttonId: "feedbackBug",
 	execute: async (client: Client, interaction: ButtonInteraction) => {
 		if (client.verbose) console.log(`${info}Bug report sent!`);
+		await interaction.deferUpdate();
 		return await sendFeedback(client, interaction, interaction.message.interaction.user.id, "bug");
 	},
 };

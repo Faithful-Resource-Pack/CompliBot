@@ -67,9 +67,7 @@ export const command: SlashCommand = {
 				display,
 			);
 
-			return interaction
-				.editReply(replyOptions)
-				.then((message: Message) => message.deleteButton());
+			return interaction.editReply(replyOptions).then((message: Message) => message.deleteButton());
 		}
 
 		// multiple results
