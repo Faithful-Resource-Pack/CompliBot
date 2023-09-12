@@ -121,7 +121,10 @@ export const event: Event = {
 			} else {
 				// display is passed in so parse them separately
 				id = result.match(/\d+/g)?.[0];
-				display = result.match(/[a-zA-Z]+/g)?.[0].toLocaleLowerCase().trim();
+				display = result
+					.match(/[a-zA-Z]+/g)?.[0]
+					.toLocaleLowerCase()
+					.trim();
 			}
 
 			message.channel.sendTyping();

@@ -1,7 +1,7 @@
-import { Client, Message, MessageEmbed, SelectMenuInteraction } from "@client";
+import { Client, Message, SelectMenuInteraction } from "@client";
 import { SelectMenu } from "@interfaces";
 import { info } from "@helpers/logger";
-import { MessageEmbedFooter, MessageInteraction, MessageOptions } from "discord.js";
+import { MessageEditOptions, MessageInteraction } from "discord.js";
 import { getTextureMessageOptions } from "@functions/getTexture";
 import axios from "axios";
 
@@ -21,10 +21,11 @@ export const menu: SelectMenu = {
 				).replace("%USER%", `<@!${messageInteraction.user.id}>`),
 				ephemeral: true,
 			});
-		else interaction.deferUpdate();
+
+		interaction.deferUpdate();
 
 		const [id, pack] = interaction.values[0].split("__");
-		const replyOptions: MessageOptions = await getTextureMessageOptions({
+		const editOptions: MessageEditOptions = await getTextureMessageOptions({
 			texture: (
 				await axios.get(`${(interaction.client as Client).tokens.apiUrl}textures/${id}/all`)
 			).data,
@@ -32,25 +33,6 @@ export const menu: SelectMenu = {
 			guild: interaction.guild,
 		});
 
-		(replyOptions.embeds[0] as MessageEmbed).setFooter(
-			replyOptions.embeds[0].footer
-				? {
-						text: `${replyOptions.embeds[0].footer.text} | ${interaction.user.id}`,
-						iconURL: (replyOptions.embeds[0].footer as MessageEmbedFooter).iconURL,
-				  }
-				: {
-						text: interaction.user.id,
-				  },
-		);
-
-		try {
-			message.delete();
-		} catch (err) {
-			interaction.channel.send({
-				content: await interaction.getEphemeralString({ string: "Error.Message.Deleted" }),
-			});
-		}
-
-		interaction.channel.send(replyOptions).then((message: Message) => message.deleteButton(true));
+		return message.edit(editOptions).then((message: Message) => message.deleteButton());
 	},
 };

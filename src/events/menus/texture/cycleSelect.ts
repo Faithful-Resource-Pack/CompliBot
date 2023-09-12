@@ -1,7 +1,7 @@
-import { Client, Message, SelectMenuInteraction, MessageEmbed } from "@client";
+import { Client, Message, SelectMenuInteraction } from "@client";
 import { SelectMenu } from "@interfaces";
 import { info } from "@helpers/logger";
-import { MessageEmbedFooter, MessageInteraction } from "discord.js";
+import { MessageInteraction } from "discord.js";
 import { cycleComparison } from "@images/cycle";
 
 export const menu: SelectMenu = {
@@ -20,37 +20,19 @@ export const menu: SelectMenu = {
 				).replace("%USER%", `<@!${messageInteraction.user.id}>`),
 				ephemeral: true,
 			});
-		else interaction.deferUpdate();
+
+		interaction.deferUpdate();
 
 		const [id, display, framerate] = interaction.values[0].split("__");
-		const [embed, cycled] = await cycleComparison(
+		const editOptions = await cycleComparison(
 			interaction.client as Client,
 			id,
 			display,
 			Number(framerate),
 		);
 
-		(embed as MessageEmbed).setFooter(
-			embed.footer
-				? {
-						text: `${embed.footer.text} | ${interaction.user.id}`,
-						iconURL: (embed.footer as MessageEmbedFooter).iconURL,
-				  }
-				: {
-						text: interaction.user.id,
-				  },
-		);
-
-		try {
-			message.delete();
-		} catch (err) {
-			interaction.channel.send({
-				content: await interaction.getEphemeralString({ string: "Error.Message.Deleted" }),
-			});
-		}
-
-		interaction.channel
-			.send({ embeds: [embed], files: cycled ? [cycled] : null })
-			.then((message: Message) => message.deleteButton(true));
+		message
+			.edit(editOptions)
+			.then((message: Message) => message.deleteButton());
 	},
 };

@@ -14,8 +14,8 @@ declare module "discord.js" {
 		isDeleted: boolean; //! this is only used for the logger, please do not use it for anything else
 
 		warn(text: string, disappearing?: boolean): void;
-		deleteReact(options: Options): void;
-		deleteButton(isMessage?: boolean): Promise<Message>;
+		/** @param hasAuthorID whether to search for an author id in the footer or the interaction owner */
+		deleteButton(hasAuthorID?: boolean): Promise<Message>;
 	}
 }
 
@@ -31,7 +31,7 @@ const MessageBody = {
 	tokens: tokens,
 	menu: undefined,
 
-	deleteButton: async function (isMessage?: boolean): Promise<Message> {
+	deleteButton: async function (hasAuthorID?: boolean): Promise<Message> {
 		if (
 			this.components[0] != undefined &&
 			this.components.at(-1).components.length < 5 && //check there aren't 5 buttons
@@ -39,7 +39,7 @@ const MessageBody = {
 		) {
 			this.components
 				.at(-1)
-				.addComponents([isMessage === true ? deleteMessage : deleteInteraction]);
+				.addComponents([hasAuthorID === true ? deleteMessage : deleteInteraction]);
 
 			return this.edit({
 				components: [...this.components],
@@ -49,68 +49,10 @@ const MessageBody = {
 			components: [
 				...this.components,
 				new MessageActionRow().addComponents([
-					isMessage === true ? deleteMessage : deleteInteraction,
+					hasAuthorID === true ? deleteMessage : deleteInteraction,
 				]),
 			],
 		});
-	},
-
-	/**
-	 * Add a trash can emote and await of user interaction, if used, the message is deleted
-	 * - does nothing if it's DM
-	 *
-	 * @deprecated Use .deleteButton() instead!
-	 */
-	deleteReact: async function (options: DeleteReactOptions) {
-		if (this.channel.type === "DM") return;
-
-		// react using the trash can emoji
-		await this.react(ids.delete).catch((err: any) => {
-			console.trace(err);
-		});
-
-		// filter to get the right user
-		const filter = (reaction, user) => {
-			if (options.previousMessage)
-				return (
-					!user.bot &&
-					ids.delete === reaction.emoji.id &&
-					(user.id === options.previousMessage.author.id || user.id === options.authorID)
-				);
-			else
-				return (
-					!user.bot &&
-					ids.delete === reaction.emoji.id &&
-					(user.id === options.authorMessage.author.id || user.id === options.authorID)
-				);
-		};
-
-		// await for reaction for 1 minute long
-		this.awaitReactions({ filter: filter, max: 1, time: 60000, errors: ["time"] })
-			.then(async () => {
-				await this.delete().catch((err) => {
-					console.trace(err);
-				});
-
-				if (options.deleteAuthorMessage === true) {
-					if (options.previousMessage)
-						await options.previousMessage.delete().catch((err) => {
-							console.trace(err);
-						});
-					else
-						await options.authorMessage.delete().catch((err) => {
-							console.trace(err);
-						});
-				}
-			})
-			.catch(async () => {
-				// on timeout:
-				const reaction = this.reactions.cache.get(ids.delete);
-				if (reaction)
-					await reaction.remove().catch((err) => {
-						console.trace(err);
-					});
-			});
 	},
 
 	/**
@@ -145,7 +87,7 @@ const MessageBody = {
 
 		if (!disappearing) {
 			try {
-				replyMsg.deleteReact({ authorMessage: this, deleteAuthorMessage: true });
+				replyMsg.deleteButton(true);
 			} catch (err) {
 				this.channel.send({ embeds: [embed] });
 			}

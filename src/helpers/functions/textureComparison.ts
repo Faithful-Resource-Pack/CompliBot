@@ -13,13 +13,13 @@ import axios from "axios";
  * @author Evorp
  * @param client Client used for getting config stuff
  * @param id texture id to look up
- * @returns pre-formatted message embed and the attachment needed in an array, in that order
+ * @returns reply and edit options
  */
 export default async function textureComparison(
 	client: Client,
 	id: number | string,
 	display: string = "all",
-): Promise<[MessageEmbed, MessageAttachment]> {
+): Promise<any> {
 	const isTemplate: boolean = typeof id == "string" && id.toLowerCase() == "template";
 	const result: Texture = (await axios.get(`${client.tokens.apiUrl}textures/${id}/all`)).data;
 
@@ -58,15 +58,16 @@ export default async function textureComparison(
 
 		const dimension = await getDimensions(defaultURL);
 		if (dimension.width * dimension.height * displayed.flat().length > 262144) {
-			return [
-				new MessageEmbed()
+			return {
+				embeds: [new MessageEmbed()
 					.setTitle("Output will be too big!")
 					.setDescription(
 						"Try specifying which set of packs you want to view to reduce the total image size.",
 					)
 					.setFooter({ text: "Use [#template] for more information!" }),
-				null,
-			];
+					],
+				components: []
+			};
 		}
 	}
 
@@ -114,5 +115,6 @@ export default async function textureComparison(
 			.addFields(addPathsToEmbed(result))
 			.setFooter({ text: "Use [#template] for more information!" });
 
-	return [embed, magnified];
+	// empty array overwrites select menu choices if needed
+	return { embeds: [embed], files: [magnified], components: [] };
 }

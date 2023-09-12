@@ -58,14 +58,14 @@ export async function imagesToGIF(images: Image[], framerate: number): Promise<M
  * @param id texture id to look up
  * @param display which texture packs to display
  * @param framerate speed
- * @returns pre-formatted message embed and the attachment needed in an array, in that order
+ * @returns reply and edit options
  */
 export async function cycleComparison(
 	client: Client,
 	id: number | string,
 	display: string,
 	framerate: number = 1,
-): Promise<[MessageEmbed, MessageAttachment]> {
+): Promise<any> {
 	const result: Texture = (await axios.get(`${client.tokens.apiUrl}textures/${id}/all`)).data;
 
 	let packText: string;
@@ -103,5 +103,7 @@ export async function cycleComparison(
 
 	const cycled = await imagesToGIF(images, framerate);
 	embed.setImage("attachment://cycled.gif");
-	return [embed, cycled];
+
+	// empty array overwrites select menu choices if needed
+	return { embeds: [embed], files: [cycled], components: [] };
 }

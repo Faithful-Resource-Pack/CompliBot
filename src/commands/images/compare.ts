@@ -61,14 +61,14 @@ export const command: SlashCommand = {
 
 		// only one result
 		if (results.length === 1) {
-			const [embed, magnified] = await textureComparison(
+			const replyOptions = await textureComparison(
 				interaction.client as Client,
 				results[0].id,
 				display,
 			);
 
 			return interaction
-				.editReply({ embeds: [embed], files: magnified ? [magnified] : null })
+				.editReply(replyOptions)
 				.then((message: Message) => message.deleteButton());
 		}
 

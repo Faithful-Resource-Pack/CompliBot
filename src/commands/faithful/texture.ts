@@ -1,9 +1,7 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction, MessageEmbed, Message } from "@client";
-import { MessageSelectOptionData } from "discord.js";
 import { getTextureMessageOptions } from "@functions/getTexture";
-import { minecraftSorter } from "@helpers/sorter";
 import parseTextureName from "@functions/parseTextureName";
 import { colors } from "@helpers/colors";
 import { textureChoiceEmbed } from "@helpers/choiceEmbed";
