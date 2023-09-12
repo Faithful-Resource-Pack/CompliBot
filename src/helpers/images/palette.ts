@@ -94,7 +94,7 @@ export async function paletteAttachment(
 
 	fieldGroups.forEach((group, index) => {
 		const groupValue = group
-			.map((line: any[]) =>
+			.map((line: string[]) =>
 				line.map((color: string) => `[\`#${color}\`](${COOLORS_URL}${color})`).join(" "),
 			)
 			.join(" ");

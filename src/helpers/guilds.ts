@@ -6,8 +6,8 @@ const config: Config = configJson;
 /**
  * Return the guild name from the config file
  * Useful when you want to get the guild team name from the guild id
- * @param {String} guildId - the guild id to be searched
- * @param {Boolean} team - if true, the team name will be returned instead of the guild name
+ * @param guildId the guild id to be searched
+ * @param team if true, the team name will be returned instead of the guild name
  */
 export const getGuildName = (guildId: string, team: boolean = false): string => {
 	let output: string = undefined;

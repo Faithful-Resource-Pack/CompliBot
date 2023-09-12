@@ -5,8 +5,8 @@ const config: Config = configJson;
 
 /**
  * Get corresponding ids for the asked team(s) name(s) from the config file
- * @param {string|string[]} options.name - team name (or names) you want ids
- * @returns {string[]} - ids you searched
+ * @param options.name team name (or names) you want ids
+ * @returns ids you searched
  */
 export const getTeamsIds = (options: { name: string | Array<string> }): Array<string> => {
 	const output: Array<string> = [];

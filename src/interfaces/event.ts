@@ -1,12 +1,10 @@
 import { Client } from "@client";
 import { ClientEvents } from "discord.js";
 
-interface CustomEvents extends ClientEvents {
+interface AllEvents extends ClientEvents {
 	slashCommandUsed: any;
 	buttonUsed: any;
 	selectMenuUsed: any;
-	/** @deprecated slash commands interaction should be used */
-	oldCommandUsed: any;
 }
 
 interface Run {
@@ -14,6 +12,6 @@ interface Run {
 }
 
 export interface Event {
-	name: keyof CustomEvents;
+	name: keyof AllEvents;
 	run: Run;
 }

@@ -51,13 +51,7 @@ export const command: SlashCommand = {
 			return;
 		}
 
-		let faqChoice: any;
-		for (let faq of faqStrings) {
-			if (faq.keywords.includes(choice)) {
-				faqChoice = faq;
-				break;
-			}
-		}
+		const faqChoice = faqStrings.filter((faq) => faq.keywords.includes(choice))?.[0];
 
 		if (!faqChoice) {
 			const errorEmbed = new MessageEmbed()

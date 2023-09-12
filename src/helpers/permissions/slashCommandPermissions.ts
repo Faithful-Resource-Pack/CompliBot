@@ -1,4 +1,4 @@
-import { getRolesIds } from "@helpers/roles";
+import { getRoleIDs } from "@helpers/roles";
 import { CommandInteraction, GuildMemberRoleManager } from "discord.js";
 
 export interface permissionOptions {
@@ -117,7 +117,7 @@ export function checkPermissions(
 		if (permissions.roles) {
 			const roles = (interaction.member.roles as GuildMemberRoleManager).cache.map((r) => r.id);
 			code[permissionCodeEnum.roles] = roles.some((r) =>
-				getRolesIds({ name: permissions.roles, discords: "all", teams: "all" }).includes(r),
+				getRoleIDs({ name: permissions.roles, discords: "all", teams: "all" }).includes(r),
 			);
 		}
 

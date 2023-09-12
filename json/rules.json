@@ -11,6 +11,7 @@
 		"changes": {
 			"title": "Last Update: 3 August 2023",
 			"description": "Update expanded rule link and switch bots.",
+			"footer": "The rules are subject to change at any time for any reason.",
 			"enabled": true
 		}
 	},

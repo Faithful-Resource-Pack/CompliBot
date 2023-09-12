@@ -4,7 +4,7 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { Poll } from "@class/poll";
 import { addSeconds, parseDate } from "@helpers/dates";
 import { ids, parseId } from "@helpers/emojis";
-import { Client, MessageEmbed } from "@client";
+import { Client, MessageEmbed, Message } from "@client";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -82,7 +82,7 @@ export const command: SlashCommand = {
 		interaction.reply({ embeds: [embed] });
 
 		/* watching for message with answers */
-		const filter = (m) => m.author.id === interaction.member.user.id;
+		const filter = (m: Message) => m.author.id === interaction.member.user.id;
 
 		let answersArr: Array<string> = [];
 		let response: any;

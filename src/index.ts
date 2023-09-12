@@ -4,7 +4,7 @@ import { CommandInteraction, Constants, Intents } from "discord.js";
 import config from "@json/config.json";
 import tokens from "@json/tokens.json";
 
-export function StartClient(coldStart: boolean = true, interaction?: CommandInteraction) {
+export function StartClient(firstStart: boolean = true, interaction?: CommandInteraction) {
 	new Client(
 		{
 			config: config,
@@ -32,7 +32,7 @@ export function StartClient(coldStart: boolean = true, interaction?: CommandInte
 				Intents.FLAGS.GUILD_SCHEDULED_EVENTS,
 			],
 		},
-		coldStart,
+		firstStart,
 	).init(interaction);
 }
 

@@ -1,8 +1,8 @@
 /**
  * Add minutes to a date
- * @param {Date} d - the date to add minutes to
- * @param {Number} minutes - the number of minutes to add
- * @returns {Date} - the new date
+ * @param d the date to add minutes to
+ * @param minutes the number of minutes to add
+ * @returns the new date
  */
 export const addMinutes = (d: Date, minutes?: number): Date => {
 	if (minutes === null || minutes === undefined) minutes = 1;
@@ -12,9 +12,9 @@ export const addMinutes = (d: Date, minutes?: number): Date => {
 
 /**
  * Add seconds to a date
- * @param {Date} d - the date to add seconds to
- * @param {Number} seconds - the number of seconds to add
- * @returns {Date} - the new date
+ * @param d the date to add seconds to
+ * @param seconds the number of seconds to add
+ * @returns the new date
  */
 export const addSeconds = (d: Date, seconds?: number): Date => {
 	if (seconds === null || seconds === undefined) seconds = 1;
@@ -24,8 +24,8 @@ export const addSeconds = (d: Date, seconds?: number): Date => {
 
 /**
  * Parse user input into seconds
- * @param {String} d - user input
- * @returns {Number} - equivalent in seconds
+ * @param d user input
+ * @returns equivalent in seconds
  */
 export const parseDate = (d: string): number => {
 	if ((d.endsWith("y") && !d.endsWith("day")) || d.endsWith("year") || d.endsWith("years"))
@@ -46,8 +46,8 @@ export const parseDate = (d: string): number => {
 /**
  * Convert timestamp to human readable format
  * -> 1028193718 = 10/28/1937
- * @param {String} t - timestamp to convert
- * @returns {String} - human readable format
+ * @param t timestamp to convert
+ * @returns human readable format
  */
 export const fromTimestampToHumanReadable = (t: number): string => {
 	if (t === undefined) return "01/01/1970";

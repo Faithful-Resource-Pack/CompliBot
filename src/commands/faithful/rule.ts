@@ -88,7 +88,7 @@ export const command: SlashCommand = {
 					.setColor(colors.brand)
 					.setDescription(ruleStrings.rules_info.changes.description)
 					.setFooter({
-						text: `The rules are subject to change at any time for any reason.`,
+						text: ruleStrings.rules_info.changes.footer,
 						iconURL: thumbnail,
 					});
 			}

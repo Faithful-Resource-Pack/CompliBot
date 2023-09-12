@@ -9,8 +9,6 @@ import {
 } from "discord.js";
 import { Message, GuildMember, EmittingCollection, Automation } from "@client";
 import {
-	Command,
-	Event,
 	Config,
 	Tokens,
 	Button,
@@ -57,7 +55,7 @@ export type Log = {
 
 class ExtendedClient extends Client {
 	public verbose: boolean = false;
-	public cs: boolean = true; //cold start
+	public firstStart: boolean = true; // used for prettier restarting in dev mode
 	public config: Config;
 	public tokens: Tokens;
 	public automation: Automation = new Automation(this);
@@ -69,7 +67,6 @@ class ExtendedClient extends Client {
 	public menus: Collection<string, SelectMenu> = new Collection();
 	public buttons: Collection<string, Button> = new Collection();
 	public events: Collection<string, Event> = new Collection();
-	public aliases: Collection<string, Command> = new Collection();
 	public slashCommands: Collection<string, SlashCommand> = new Collection();
 
 	public polls: EmittingCollection<string, Poll> = new EmittingCollection();
@@ -77,13 +74,13 @@ class ExtendedClient extends Client {
 
 	constructor(
 		data: ClientOptions & { verbose: boolean; config: Config; tokens: Tokens },
-		coldStart: boolean = true,
+		firstStart: boolean = true,
 	) {
 		super(data);
 		this.verbose = data.verbose;
 		this.config = data.config;
 		this.tokens = data.tokens;
-		this.cs = coldStart;
+		this.firstStart = firstStart;
 	}
 
 	public async restart(interaction?: CommandInteraction): Promise<void> {
@@ -112,7 +109,7 @@ class ExtendedClient extends Client {
 
 	public async init(interaction?: CommandInteraction) {
 		// pretty stuff so it doesnt print the logo upon restart
-		if (!this.cs) {
+		if (!this.firstStart) {
 			console.log(`${success}Restarted`);
 			if (interaction) interaction.editReply("Reboot succeeded!");
 		} else this.asciiArt();
@@ -149,7 +146,7 @@ class ExtendedClient extends Client {
 			if (error) errorHandler(this, error, "uncaughtException", origin);
 		});
 		process.on("unhandledRejection", (reason) => {
-			// fixes weird error when you occasionally restart the bot
+			// always have a reason because of some weird bugs with discord
 			if (reason) errorHandler(this, reason, "unhandledRejection");
 		});
 
@@ -164,9 +161,9 @@ class ExtendedClient extends Client {
 
 	/**
 	 * Read & Load data from json file into emitting collection & setup events handler
-	 * @param collection {EmittingCollection}
-	 * @param filename {String}
-	 * @param relative_path {String}
+	 * @param collection
+	 * @param filename
+	 * @param relative_path
 	 */
 	private loadCollection = (
 		collection: EmittingCollection<any, any>,
@@ -188,9 +185,9 @@ class ExtendedClient extends Client {
 
 	/**
 	 * Save an emitting collection into a JSON file
-	 * @param collection {EmittingCollection}
-	 * @param filename {String}
-	 * @param relative_path {String}
+	 * @param collection
+	 * @param filename
+	 * @param relative_path
 	 */
 	private saveEmittingCollection = (
 		collection: EmittingCollection<any, any>,
@@ -208,7 +205,7 @@ class ExtendedClient extends Client {
 	 * SLASH COMMANDS DELETION
 	 */
 	public deleteGlobalSlashCommands = () => {
-		console.log(`${success}deleting / commands`);
+		console.log(`${success}deleting slash commands`);
 
 		const rest = new REST({ version: "9" }).setToken(this.tokens.token);
 		rest.get(Routes.applicationCommands(this.user.id)).then((data: any) => {
@@ -363,8 +360,8 @@ class ExtendedClient extends Client {
 
 	/**
 	 * Store any kind of action the bot does
-	 * @param {ActionsStr} type
-	 * @param {Actions} data
+	 * @param type
+	 * @param data
 	 */
 	public storeAction(type: ActionsStr, data: Actions): void {
 		this.logs[this.lastLogIndex++ % this.maxLogs] = { type, data };

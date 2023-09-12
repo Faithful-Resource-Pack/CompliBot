@@ -46,8 +46,7 @@ export class TimedEmbed {
 
 	/**
 	 * Set the embed to be anonymous or not
-	 * @param {Boolean} b - true if the embed is anonymous
-	 * @returns {this}
+	 * @param b true if the embed is anonymous
 	 */
 	public setAnonymous(b: boolean): this {
 		this.anonymous = b;
@@ -56,8 +55,7 @@ export class TimedEmbed {
 
 	/**
 	 * Global setter for votes
-	 * @param {Votes} votes - the votes to set
-	 * @returns {this}
+	 * @param votes - the votes to set
 	 */
 	public setVotes(votes: Votes): this {
 		this.votes = votes;
@@ -65,10 +63,9 @@ export class TimedEmbed {
 	}
 
 	/**
-	 * Get discords voters ids
+	 * Get Discord voter IDs
 	 * @warning this function is not safe, it can return a user that is not in the guild
 	 * @warning this function does not takes into account the anonymous option
-	 * @returns {Array<Array<string>>}
 	 */
 	public getVotes(): Array<Array<string>> {
 		return Object.values(this.votes);
@@ -76,7 +73,6 @@ export class TimedEmbed {
 
 	/**
 	 * Get discords voters count
-	 * @returns {Array<number>}
 	 */
 	public getVotesCount(): Array<number> {
 		return this.getVotes().map((arr) => arr.length);
@@ -96,8 +92,7 @@ export class TimedEmbed {
 
 	/**
 	 * Add an upvote to the embed
-	 * @param {User.id} id - the user id to add
-	 * @returns {this}
+	 * @param id the user id to add
 	 */
 	public addUpvote(id: string): this {
 		return this.addVote("upvote", id);
@@ -105,8 +100,7 @@ export class TimedEmbed {
 
 	/**
 	 * Add a downvote to the embed
-	 * @param {User.id} id - the user id to add
-	 * @returns {this}
+	 * @param id the user id to add
 	 */
 	public addDownvote(id: string): this {
 		return this.addVote("downvote", id);
@@ -114,8 +108,7 @@ export class TimedEmbed {
 
 	/**
 	 * Add any vote to the embed
-	 * @param {User.id} id - the user id to add
-	 * @returns {this}
+	 * @param id the user id to add
 	 */
 	public addVote(type: string, id: string): this {
 		if (!this.multipleAnswers) {
@@ -133,8 +126,7 @@ export class TimedEmbed {
 
 	/**
 	 * Remove an upvote to the embed
-	 * @param {User.id} id - the user id to remove
-	 * @returns {this}
+	 * @param id the user id to remove
 	 */
 	public removeUpvote(id: string): this {
 		return this.removeVote("upvote", id);
@@ -142,8 +134,7 @@ export class TimedEmbed {
 
 	/**
 	 * Remove a downvote to the embed
-	 * @param {User.id} id - the user id to remove
-	 * @returns {this}
+	 * @param id the user id to remove
 	 */
 	public removeDownvote(id: string): this {
 		return this.removeVote("downvote", id);
@@ -151,9 +142,8 @@ export class TimedEmbed {
 
 	/**
 	 * Remove any vote to the embed
-	 * @param {String} type - the type category of vote to remove
-	 * @param {User.id} id - the user id to remove
-	 * @returns {this}
+	 * @param type the type category of vote to remove
+	 * @param id the user id to remove
 	 */
 	public removeVote(type: string, id: string): this {
 		if (this.hasVotedFor(type, id)) this.votes[type].splice(this.votes[type].indexOf(id), 1);
@@ -162,7 +152,6 @@ export class TimedEmbed {
 
 	/**
 	 * Void votes from the embed
-	 * @returns {this}
 	 */
 	protected voidVotes(): this {
 		Object.values(this.votes).map((arr: Array<string>) => {
@@ -174,9 +163,8 @@ export class TimedEmbed {
 
 	/**
 	 * Tell if a user is in the array of voters for the given type
-	 * @param {String} type - the type category of vote to remove
-	 * @param {User.id} id - the user id to remove
-	 * @returns {Boolean}
+	 * @param type the type category of vote to remove
+	 * @param id the user id to remove
 	 */
 	public hasVotedFor(type: string, id: string): boolean {
 		if (this.votes[type] === undefined) return false;
@@ -185,7 +173,6 @@ export class TimedEmbed {
 
 	/**
 	 * Get the Discord Message Id of the embed
-	 * @returns {String}
 	 */
 	public getMessageId(): string {
 		return this.messageId;
@@ -193,8 +180,7 @@ export class TimedEmbed {
 
 	/**
 	 * Set the Discord Message Id of the embed
-	 * @param {Message|string} message - Discord Message OR Discord Message Id
-	 * @returns {this}
+	 * @param message Discord Message OR Discord Message Id
 	 */
 	public setMessageId(message: string): this;
 	public setMessageId(message: Message): this;
@@ -206,7 +192,6 @@ export class TimedEmbed {
 
 	/**
 	 * Get the Discord Channel Id of the embed
-	 * @returns {String}
 	 */
 	public getChannelId(): string {
 		return this.channelId;
@@ -214,8 +199,7 @@ export class TimedEmbed {
 
 	/**
 	 * Set the Discord Channel Id of the embed
-	 * @param {TextChannel|string} channel - Discord Channel OR Discord Channel Id
-	 * @returns {this}
+	 * @param channel - Discord Channel OR Discord Channel Id
 	 */
 	public setChannelId(channel: string): this;
 	public setChannelId(channel: TextChannel): this;
@@ -228,7 +212,6 @@ export class TimedEmbed {
 
 	/**
 	 * Get the status of the embed
-	 * @returns {String}
 	 */
 	public getStatus(): string {
 		return this.status;
@@ -236,7 +219,6 @@ export class TimedEmbed {
 
 	/**
 	 * Get the status displayed in the embed of the embed
-	 * @returns {String}
 	 */
 	public getStatusUI(): string {
 		return this.status;
@@ -253,7 +235,6 @@ export class TimedEmbed {
 
 	/**
 	 * Tell if the time is over or not
-	 * @returns {Boolean}
 	 */
 	public isTimeout(): boolean {
 		if (this.getTimeout() === 0) return false;
@@ -263,7 +244,6 @@ export class TimedEmbed {
 
 	/**
 	 * Get the actual timeout
-	 * @returns {Number}
 	 */
 	public getTimeout(): number {
 		return this.timeout;
@@ -271,7 +251,7 @@ export class TimedEmbed {
 
 	/**
 	 * Set the embed timeout
-	 * @param {Number} number - the timeout in seconds
+	 * @param number the timeout in seconds
 	 */
 	public setTimeout(number: number): this;
 	public setTimeout(date: Date): this;
@@ -282,9 +262,8 @@ export class TimedEmbed {
 	}
 
 	/**
-	 * Set the embed multiple answers
-	 * @param {Boolean} bool - value
-	 * @returns {this}
+	 * Whether to let people vote on multiple answers
+	 * @param bool value
 	 */
 	public setMultipleAnswers(bool: boolean): this {
 		this.multipleAnswers = bool;

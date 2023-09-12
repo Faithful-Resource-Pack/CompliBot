@@ -112,10 +112,10 @@ export async function getImageFromMessage(message: Message): Promise<string> {
 	return null; // default value
 }
 
-export type actionType = (args: any) => Promise<[MessageAttachment, MessageEmbed]>;
+export type ImageCommand = (args: any) => Promise<[MessageAttachment, MessageEmbed]>;
 export async function generalSlashCommandImage(
 	interaction: CommandInteraction,
-	actionCommand: actionType,
+	actionCommand: ImageCommand,
 	actionCommandParams: any,
 ): Promise<void> {
 	await interaction.deferReply();

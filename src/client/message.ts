@@ -57,10 +57,10 @@ const MessageBody = {
 
 	/**
 	 *  Warn the message by replying to it with an embed
-	 *  @author Juknum & Nick
-	 *  @param {string} text - The text to warn the user with
-	 *  @param {boolean} disappearing - Optional bool. If undefined or false it wont delete the warning. If true it will  delete in 30s.
-	 *  @param {number} timeout - Optional number (in seconds). If defined it will delete the warning after the timeout. If not defined it will delete in 30s.
+	 *  @author Juknum, Nick
+	 *  @param text - The text to warn the user with
+	 *  @param disappearing - Optional bool. If undefined or false it wont delete the warning. If true it will  delete in 30s.
+	 *  @param timeout - Optional number (in seconds). If defined it will delete the warning after the timeout. If not defined it will delete in 30s.
 	 */
 	warn: async function (text: string, disappearing?: boolean, timeout?: number) {
 		if (!timeout) timeout = 30;

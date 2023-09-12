@@ -16,8 +16,7 @@ export class Poll extends TimedEmbed {
 
 	/**
 	 * Update the discord message with the poll embed
-	 * @param {Client} client - Discord Client
-	 * @returns {Promise<void>}
+	 * @param client Discord Client
 	 */
 	public async updateEmbed(client: Client): Promise<void> {
 		let channel: TextChannel;
@@ -113,10 +112,9 @@ export class Poll extends TimedEmbed {
 
 	/**
 	 * Post the poll message to the channel
-	 * @param {CommandInteraction} interaction - command interaction from where the poll is issued
-	 * @param {MessageEmbed} embed - the poll embed that will be posted in the message
-	 * @param {PollOptions} options - different options for the poll
-	 * @returns {Promise<void>}
+	 * @param interaction command interaction from where the poll is issued
+	 * @param embed the poll embed that will be posted in the message
+	 * @param options different options for the poll
 	 */
 	public async postMessage(
 		interaction: CommandInteraction,
