@@ -13,8 +13,8 @@ export const command: SlashCommand = {
 				.setName("server")
 				.setDescription("Which server you want to view.")
 				.addChoices(
-					{ name: "Faithful 32x", value: "faithful_32x" },
-					{ name: "Classic Faithful 32x", value: "classic_faithful_32x" },
+					{ name: "Faithful", value: "faithful" },
+					{ name: "Classic Faithful", value: "classic_faithful" },
 					{ name: "All", value: "all" },
 				)
 				.setRequired(true),
@@ -23,10 +23,10 @@ export const command: SlashCommand = {
 		const choice = interaction.options.getString("server", true);
 		let contents: string;
 		switch (choice) {
-			case "faithful_32x":
+			case "faithful":
 				contents = "https://discord.gg/sN9YRQbBv7";
 				break;
-			case "classic_faithful_32x":
+			case "classic_faithful":
 				contents = "https://discord.gg/KSEhCVtg4J";
 				break;
 			case "all":
