@@ -128,11 +128,11 @@ export const event: Event = {
 			}
 
 			message.channel.sendTyping();
-			const [embed, magnified] = await textureComparison(client, id, display);
+			const replyOptions = await textureComparison(client, id, display);
 
 			try {
 				message
-					.reply({ embeds: [embed], files: magnified ? [magnified] : null })
+					.reply(replyOptions)
 					.then((message: Message) => message.deleteButton());
 			} catch {
 				message
