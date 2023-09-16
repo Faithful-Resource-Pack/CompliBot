@@ -131,9 +131,7 @@ export const event: Event = {
 			const replyOptions = await textureComparison(client, id, display);
 
 			try {
-				message
-					.reply(replyOptions)
-					.then((message: Message) => message.deleteButton());
+				message.reply(replyOptions).then((message: Message) => message.deleteButton());
 			} catch {
 				message
 					.reply({

@@ -26,6 +26,7 @@ export const command: SlashCommand = {
 					{ name: "9", value: "8" },
 					{ name: "10", value: "9" },
 					{ name: "all", value: "all" },
+					{ name: "server", value: "server" },
 				)
 				.setRequired(true),
 		),
@@ -33,7 +34,7 @@ export const command: SlashCommand = {
 		const baseUrl = "https://docs.faithfulpack.net/pages/manuals/expanded-server-rules";
 		const choice = interaction.options.getString("number", true);
 
-		if (choice == "all") {
+		if (choice == "all" || choice == "server") {
 			if (await interaction.perms({ type: "manager" })) return;
 
 			interaction
@@ -47,18 +48,19 @@ export const command: SlashCommand = {
 			let embedArray = [];
 			let i = 0;
 
-			await interaction.channel.send({
-				embeds: [
-					new MessageEmbed()
-						.setTitle(ruleStrings.rules_info.heading.title)
-						.setDescription(ruleStrings.rules_info.heading.description)
-						.setColor(colors.brand)
-						.setThumbnail(thumbnail)
-						.setURL(baseUrl),
-				],
-			});
+			if (choice == "all")
+				await interaction.channel.send({
+					embeds: [
+						new MessageEmbed()
+							.setTitle(ruleStrings.rules_info.heading.title)
+							.setDescription(ruleStrings.rules_info.heading.description)
+							.setColor(colors.brand)
+							.setThumbnail(thumbnail)
+							.setURL(baseUrl),
+					],
+				});
 
-			for (let rule of ruleStrings.rules) {
+			for (let rule of ruleStrings[choice == "all" ? "rules" : "server"]) {
 				++i;
 				embedArray.push(
 					new MessageEmbed()
@@ -74,6 +76,9 @@ export const command: SlashCommand = {
 			}
 
 			if (embedArray.length) await interaction.channel.send({ embeds: embedArray }); // sends the leftovers if exists
+
+			if (choice != "all") return;
+
 			const embedExpandedRules = new MessageEmbed()
 				.setColor(colors.brand)
 				.setTitle(ruleStrings.rules_info.expanded_rules.title)
