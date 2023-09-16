@@ -56,5 +56,27 @@
 			"title": "🔟 Don’t Leak Private Information",
 			"description": "What happens in private channels stays in those channels; keep any confidential information you may have private. Doxxing will get you reported to Discord and banned from the servers."
 		}
+	],
+	"server": [
+		{
+			"title": "1️⃣ Read & Follow the Rules of the Faithful Discord Servers",
+			"description": "The Faithful Discord rules extend to the Minecraft server as well. You can find them over at <#773991747549921301>, or see the [expanded rules](https://docs.faithfulpack.net/pages/manuals/expanded-server-rules) on our Docs site."
+		},
+		{
+			"title": "2️⃣ Don’t Grief Others' Builds",
+			"description": "Always consult the original builder before making any changes to something you didn’t create. There is no claim system in any of the worlds – As such, please only build where nobody has built yet and where it seems logical to build."
+		},
+		{
+			"title": "3️⃣ Don’t Steal",
+			"description": "Don’t take anything from containers that aren't yours, and always pay full price when trading unless agreed otherwise."
+		},
+		{
+			"title": "4️⃣ Don’t Hack, Cheat or Use Game-Breaking Exploits",
+			"description": "The goal of playing on this server is to have fun. Using cheats, hacks or exploits to gain an unfair advantage is not fun. This includes malicious mods, hacked clients and other programs, as well as exploiting vanilla bugs such as item duplication."
+		},
+		{
+			"title": "5️⃣ Build Appropriately",
+			"description": "Improper or otherwise malicious builds (obscene creations, player traps, lag/crash machines) will not be tolerated."
+		}
 	]
 }
