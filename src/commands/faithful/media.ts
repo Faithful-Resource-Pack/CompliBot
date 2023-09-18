@@ -25,7 +25,7 @@ export const command: SlashCommand = {
 		const key: string = interaction.options.getString("name", false) ?? "general";
 
 		if (key === "all") {
-			if (await interaction.perms({ type: "manager" })) return;
+			if (!interaction.hasPermission("manager")) return;
 			interaction
 				.reply({ content: "** **", fetchReply: true })
 				.then((message: Message) => message.delete());

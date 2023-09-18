@@ -48,12 +48,7 @@ export const command: SlashCommand = {
 		),
 	execute: new Collection<string, SlashCommandI>()
 		.set("audit", async (interaction: CommandInteraction, client: Client) => {
-			if (
-				await interaction.perms({
-					type: "dev",
-				})
-			)
-				return;
+			if (!interaction.hasPermission("dev")) return;
 
 			await interaction.deferReply({ ephemeral: true });
 			const banlist = require("@json/botbans.json");
@@ -120,12 +115,7 @@ export const command: SlashCommand = {
 			} // can't fetch channel
 		})
 		.set("view", async (interaction: CommandInteraction, client: Client) => {
-			if (
-				await interaction.perms({
-					type: "dev",
-				})
-			)
-				return;
+			if (!interaction.hasPermission("dev")) return;
 
 			await interaction.deferReply({ ephemeral: true });
 			const buffer = readFileSync(join(__dirname, "../../../json/botbans.json"));

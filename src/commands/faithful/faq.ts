@@ -16,12 +16,7 @@ export const command: SlashCommand = {
 		const choice = interaction.options.getString("keyword", true).toLocaleLowerCase().trim();
 
 		if (choice == "all") {
-			if (
-				await interaction.perms({
-					type: "manager",
-				})
-			)
-				return;
+			if (!interaction.hasPermission("manager")) return;
 
 			interaction
 				.reply({ content: "** **", fetchReply: true })

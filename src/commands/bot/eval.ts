@@ -11,12 +11,7 @@ export const command: SlashCommand = {
 			option.setName("code").setDescription("The code to evaluate.").setRequired(true),
 		),
 	execute: async (interaction: CommandInteraction) => {
-		if (
-			await interaction.perms({
-				type: "dev",
-			})
-		)
-			return;
+		if (!interaction.hasPermission("dev")) return;
 		const clean = async (text: any, client: Client): Promise<string> => {
 			if (text && text.constructor.name === "Promise") text = await text;
 			if (typeof text !== "string") text = require("util").inspect(text, { depth: 1 });

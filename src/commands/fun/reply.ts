@@ -17,12 +17,7 @@ export const command: SlashCommand = {
 			option.setName("message").setDescription("Message ID to reply to").setRequired(true),
 		),
 	execute: async (interaction: CommandInteraction, client: Client) => {
-		if (
-			await interaction.perms({
-				type: "dev",
-			})
-		)
-			return;
+		if (!interaction.hasPermission("dev")) return;
 
 		let msg: Message;
 		try {

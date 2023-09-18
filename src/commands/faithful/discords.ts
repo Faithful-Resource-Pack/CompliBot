@@ -30,7 +30,7 @@ export const command: SlashCommand = {
 				contents = "https://discord.gg/KSEhCVtg4J";
 				break;
 			case "all":
-				if (await interaction.perms({ type: "manager" })) return;
+				if (!interaction.hasPermission("manager")) return;
 				await interaction
 					.reply({ content: "** **", fetchReply: true })
 					.then((message: Message) => message.delete());

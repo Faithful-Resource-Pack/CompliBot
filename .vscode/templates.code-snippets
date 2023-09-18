@@ -28,7 +28,7 @@
 			"\t\t\t.setDescription(\"${1:Description}\"),",
 			"\t},",
 			"\texecute: async (interaction: CommandInteraction, client: Client) => {",
-            "\t\tif (await interaction.perms({${3}})) return;",
+            "\t\tif (!interaction.hasPermission(${3}) return;",
 			"\t\t${4://todo: implement command}",
 			"\t},\n};"
 		]
@@ -46,7 +46,7 @@
 			"\t\t.setName(\"${1:Name}\")",
 			"\t\t.setDescription(`${2:Description}`),",
 			"\texecute: async (interaction: CommandInteraction, client: Client) => {",
-            "\t\tif (await interaction.perms({${3}})) return;",
+            "\t\tif (!interaction.hasPermission(${3}) return;",
 			"\t\t${4://todo: implement command}",
 			"\t},\n};"
 		]

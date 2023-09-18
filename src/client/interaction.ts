@@ -1,11 +1,9 @@
-import { ButtonInteraction, CommandInteraction, SelectMenuInteraction } from "discord.js";
+import { ButtonInteraction, CommandInteraction, Role, SelectMenuInteraction } from "discord.js";
 import { string, keys, Placeholder } from "@helpers/locales";
-import {
-	checkPermissions, //<- hover over me (i know this is stupid its a jsdoc thing where you cant carry shit)
-	permissionCodeEnum,
-	permissionOptions,
-} from "@helpers/permissions/slashCommandPermissions";
+import { PermissionFlagsBits } from "discord-api-types/v10";
 import { MessageEmbed } from "@client";
+
+export type PermissionType = "manager" | "dev" | "moderator" | "council";
 
 declare module "discord.js" {
 	interface CommandInteraction {
@@ -13,9 +11,8 @@ declare module "discord.js" {
 		getString(options: TextOptions): Promise<string>;
 		/**
 		 * @see {@link checkPermissions} for implementation details
-		 * @example if (await interaction.perms({ servers: ["faithful", "dev"], roles: ["council", "manager"]})) return;
 		 */
-		perms(options: permissionOptions): Promise<boolean>;
+		hasPermission(type: PermissionType): boolean;
 	}
 
 	interface ButtonInteraction {
@@ -36,47 +33,37 @@ async function getEphemeralString(options: TextOptions): Promise<string> {
 	return await string(this.locale, options.string, options.placeholders);
 }
 
-/**
- * @author Juknum
- * @description a function for translating string keys into the guild language.
- * @important This function should be used in public response as the string depends on the locale of the guild.
- */
-async function getString(options: TextOptions): Promise<string> {
-	return await string(this.guildLocale, options.string, options.placeholders);
-}
+function hasPermission(type: PermissionType): boolean {
+	const hasManager = this.member.permissions.has(PermissionFlagsBits.Administrator);
+	const hasModerator = this.member.permissions.has(PermissionFlagsBits.ManageMessages);
+	const hasCouncil = this.member.roles.some((role: Role) =>
+		role.name.toLowerCase().includes("council"),
+	);
+	const hasDev = this.tokens.developers.includes(this.member.id);
 
-async function perms(options: permissionOptions): Promise<boolean> {
-	const code = checkPermissions(this, options);
-	let output: string = "";
+	const noPermission = new MessageEmbed()
+		.setTitle("You don't have permission to do that!")
+		.setDescription(`Only ${type}s can use this command.`);
 
-	if (!code[permissionCodeEnum.users])
-		output += "\n" + (await this.getEphemeralString({ string: "Permissions.temp.user" }));
-	if (!code[permissionCodeEnum.servers])
-		output += "\n" + (await this.getEphemeralString({ string: "Permissions.temp.server" }));
-	if (!code[permissionCodeEnum.roles])
-		output += "\n" + (await this.getEphemeralString({ string: "Permissions.temp.role" }));
-
-	if (!code.every((v) => v == true)) {
-		await this.reply({
-			embeds: [
-				new MessageEmbed()
-					.setTitle(await this.getEphemeralString({ string: "Permissions.temp.template" }))
-					.setDescription(output)
-					.setFooter({
-						text: await this.getEphemeralString({ string: "Permissions.temp.notice" }),
-					}),
-			],
-			ephemeral: true,
-		});
-		return true;
+	let out: boolean;
+	switch (type) {
+		case "manager":
+			out = hasManager;
+		case "council":
+			out = hasCouncil;
+		case "dev":
+			out = hasDev;
+		case "moderator":
+			out = hasModerator;
 	}
 
-	return false;
+	if (!out) this.reply({ embeds: [noPermission] });
+	return out;
 }
 
 CommandInteraction.prototype.getEphemeralString = getEphemeralString;
 ButtonInteraction.prototype.getEphemeralString = getEphemeralString;
 SelectMenuInteraction.prototype.getEphemeralString = getEphemeralString;
-CommandInteraction.prototype.perms = perms;
+CommandInteraction.prototype.hasPermission = hasPermission;
 
 export { CommandInteraction, ButtonInteraction, SelectMenuInteraction };

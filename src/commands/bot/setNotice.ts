@@ -19,12 +19,7 @@ export const command: SlashCommand = {
 				.setRequired(true),
 		),
 	execute: async (interaction: CommandInteraction, client: Client) => {
-		if (
-			await interaction.perms({
-				type: "dev",
-			})
-		)
-			return;
+		if (!interaction.hasPermission("dev")) return;
 
 		const newNotice: notice = {
 			unix: +Date.now(),
