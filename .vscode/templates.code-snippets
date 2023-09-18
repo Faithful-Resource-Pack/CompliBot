@@ -7,7 +7,7 @@
 			"\tname: \"${1:Name}\",",
 			"\trun: async (client, ${2:/* args */}) => {",
 			"\t\t${3://todo: implement event",
-			"\t},\n};"
+			"\t}},\n};"
 		]
 	},
 
@@ -28,7 +28,7 @@
 			"\t\t\t.setDescription(\"${1:Description}\"),",
 			"\t},",
 			"\texecute: async (interaction: CommandInteraction, client: Client) => {",
-            "\t\tif (!interaction.hasPermission(${3}) return;",
+            "\t\tif (!interaction.hasPermission(${3})) return;",
 			"\t\t${4://todo: implement command}",
 			"\t},\n};"
 		]
@@ -46,7 +46,7 @@
 			"\t\t.setName(\"${1:Name}\")",
 			"\t\t.setDescription(`${2:Description}`),",
 			"\texecute: async (interaction: CommandInteraction, client: Client) => {",
-            "\t\tif (!interaction.hasPermission(${3}) return;",
+            "\t\tif (!interaction.hasPermission(${3})) return;",
 			"\t\t${4://todo: implement command}",
 			"\t},\n};"
 		]
