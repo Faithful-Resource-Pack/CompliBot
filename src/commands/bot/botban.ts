@@ -57,11 +57,8 @@ export const command: SlashCommand = {
 			// const banlist = JSON.parse(banlistJSON);
 			const victimID = interaction.options.getUser("subject").id;
 			if (
-				victimID == client.user.id || //self
-				victimID == "360249987927638016" || //Evorp
-				victimID == "173336582265241601" || //TheRolf
-				victimID == "473860522710794250" || //RobertR11
-				victimID == "601501288978448411" //Nick.
+				client.tokens.developers.includes(victimID) ||
+				victimID == client.user.id // self
 			)
 				return interaction.followUp(
 					await interaction.getEphemeralString({ string: "Command.Botban.view.unbannable" }),
@@ -69,7 +66,7 @@ export const command: SlashCommand = {
 
 			if (interaction.options.getBoolean("pardon")) {
 				banlist.ids.filter(async (v: string) => {
-					return v != victimID; //removes only the id of the victim
+					return v != victimID; // removes only the id of the victim
 				});
 			} else {
 				banlist.ids.push(victimID);
