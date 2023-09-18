@@ -36,10 +36,11 @@ async function getEphemeralString(options: TextOptions): Promise<string> {
 function hasPermission(type: PermissionType): boolean {
 	const hasManager = this.member.permissions.has(PermissionFlagsBits.Administrator);
 	const hasModerator = this.member.permissions.has(PermissionFlagsBits.ManageMessages);
-	const hasCouncil = this.member.roles.some((role: Role) =>
+	const hasCouncil = this.member.roles.cache.some((role: Role) =>
 		role.name.toLowerCase().includes("council"),
 	);
-	const hasDev = this.tokens.developers.includes(this.member.id);
+
+	const hasDev = this.client.tokens.developers.includes(this.member.id);
 
 	const noPermission = new MessageEmbed()
 		.setTitle("You don't have permission to do that!")
@@ -57,7 +58,7 @@ function hasPermission(type: PermissionType): boolean {
 			out = hasModerator;
 	}
 
-	if (!out) this.reply({ embeds: [noPermission] });
+	if (!out) this.reply({ embeds: [noPermission], ephemeral: true });
 	return out;
 }
 
