@@ -13,7 +13,8 @@ export const command: SlashCommand = {
 				.setName("sentence")
 				.setDescription("The funny thing you want the bot to say.")
 				.setRequired(true),
-		).setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+		)
+		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 	execute: async (interaction: CommandInteraction, client: Client) => {
 		if (!interaction.hasPermission("dev")) return;
 

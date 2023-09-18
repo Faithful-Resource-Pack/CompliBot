@@ -16,7 +16,8 @@ export const command: SlashCommand = {
 		)
 		.addStringOption((option) =>
 			option.setName("message").setDescription("Message ID to reply to").setRequired(true),
-		).setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+		)
+		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 	execute: async (interaction: CommandInteraction, client: Client) => {
 		if (!interaction.hasPermission("dev")) return;
 
