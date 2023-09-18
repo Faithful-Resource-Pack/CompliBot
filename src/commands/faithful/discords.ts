@@ -1,8 +1,6 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction, Message, MessageEmbed } from "@client";
-import guidelineJSON from "@json/guidelines.json";
-import { colors } from "@helpers/colors";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()

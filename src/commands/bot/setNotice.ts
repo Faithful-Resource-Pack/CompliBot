@@ -4,6 +4,7 @@ import { CommandInteraction } from "discord.js";
 import { Client } from "@client";
 import { setData } from "@functions/setDataToJSON";
 import path from "path";
+import { PermissionFlagsBits } from "discord-api-types/v10";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -17,7 +18,8 @@ export const command: SlashCommand = {
 				.setName("description")
 				.setDescription("Description of the new notice")
 				.setRequired(true),
-		),
+		)
+		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 	execute: async (interaction: CommandInteraction, client: Client) => {
 		if (!interaction.hasPermission("dev")) return;
 

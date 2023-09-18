@@ -6,6 +6,7 @@ import ConfigJson from "@json/config.json";
 import { colors } from "@helpers/colors";
 import { readFileSync, writeFileSync } from "fs";
 import { join } from "path";
+import { PermissionFlagsBits } from "discord-api-types/v10";
 const config: Config = ConfigJson;
 
 export const command: SlashCommand = {
@@ -45,7 +46,8 @@ export const command: SlashCommand = {
 						.setDescription("Whether to undo an oopsie or not.")
 						.setRequired(false),
 				),
-		),
+		)
+		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 	execute: new Collection<string, SlashCommandI>()
 		.set("audit", async (interaction: CommandInteraction, client: Client) => {
 			if (!interaction.hasPermission("dev")) return;
