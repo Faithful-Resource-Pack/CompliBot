@@ -1,8 +1,6 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction, Message, MessageEmbed } from "@client";
-import guidelineJSON from "@json/guidelines.json";
-import { colors } from "@helpers/colors";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -30,7 +28,7 @@ export const command: SlashCommand = {
 				contents = "https://discord.gg/KSEhCVtg4J";
 				break;
 			case "all":
-				if (await interaction.perms({ type: "manager" })) return;
+				if (!interaction.hasPermission("manager")) return;
 				await interaction
 					.reply({ content: "** **", fetchReply: true })
 					.then((message: Message) => message.delete());

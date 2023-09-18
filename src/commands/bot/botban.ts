@@ -6,6 +6,7 @@ import ConfigJson from "@json/config.json";
 import { colors } from "@helpers/colors";
 import { readFileSync, writeFileSync } from "fs";
 import { join } from "path";
+import { PermissionFlagsBits } from "discord-api-types/v10";
 const config: Config = ConfigJson;
 
 export const command: SlashCommand = {
@@ -45,26 +46,19 @@ export const command: SlashCommand = {
 						.setDescription("Whether to undo an oopsie or not.")
 						.setRequired(false),
 				),
-		),
+		)
+		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 	execute: new Collection<string, SlashCommandI>()
 		.set("audit", async (interaction: CommandInteraction, client: Client) => {
-			if (
-				await interaction.perms({
-					type: "dev",
-				})
-			)
-				return;
+			if (!interaction.hasPermission("dev")) return;
 
 			await interaction.deferReply({ ephemeral: true });
 			const banlist = require("@json/botbans.json");
 			// const banlist = JSON.parse(banlistJSON);
 			const victimID = interaction.options.getUser("subject").id;
 			if (
-				victimID == client.user.id || //self
-				victimID == "360249987927638016" || //Evorp
-				victimID == "173336582265241601" || //TheRolf
-				victimID == "473860522710794250" || //RobertR11
-				victimID == "601501288978448411" //Nick.
+				client.tokens.developers.includes(victimID) ||
+				victimID == client.user.id // self
 			)
 				return interaction.followUp(
 					await interaction.getEphemeralString({ string: "Command.Botban.view.unbannable" }),
@@ -72,7 +66,7 @@ export const command: SlashCommand = {
 
 			if (interaction.options.getBoolean("pardon")) {
 				banlist.ids.filter(async (v: string) => {
-					return v != victimID; //removes only the id of the victim
+					return v != victimID; // removes only the id of the victim
 				});
 			} else {
 				banlist.ids.push(victimID);
@@ -120,12 +114,7 @@ export const command: SlashCommand = {
 			} // can't fetch channel
 		})
 		.set("view", async (interaction: CommandInteraction, client: Client) => {
-			if (
-				await interaction.perms({
-					type: "dev",
-				})
-			)
-				return;
+			if (!interaction.hasPermission("dev")) return;
 
 			await interaction.deferReply({ ephemeral: true });
 			const buffer = readFileSync(join(__dirname, "../../../json/botbans.json"));

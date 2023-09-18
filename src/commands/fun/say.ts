@@ -2,6 +2,7 @@ import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction } from "discord.js";
 import { Client, Message } from "@client";
+import { PermissionFlagsBits } from "discord-api-types/v10";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -12,14 +13,10 @@ export const command: SlashCommand = {
 				.setName("sentence")
 				.setDescription("The funny thing you want the bot to say.")
 				.setRequired(true),
-		),
-	execute: async (interaction: CommandInteraction, client: Client) => {
-		if (
-			await interaction.perms({
-				type: "dev",
-			})
 		)
-			return;
+		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+	execute: async (interaction: CommandInteraction, client: Client) => {
+		if (!interaction.hasPermission("dev")) return;
 
 		interaction
 			.reply({ content: "** **", fetchReply: true })

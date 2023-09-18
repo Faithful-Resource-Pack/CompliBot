@@ -1,6 +1,8 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { Client, CommandInteraction, MessageEmbed } from "@client";
+import { PermissionFlagsBits } from "discord-api-types/v10";
+import settings from "@json/dynamic/settings.json";
 
 export const command: SlashCommand = {
 	servers: ["dev"],
@@ -9,25 +11,19 @@ export const command: SlashCommand = {
 		.setDescription("Evaluates a string of code.")
 		.addStringOption((option) =>
 			option.setName("code").setDescription("The code to evaluate.").setRequired(true),
-		),
-	execute: async (interaction: CommandInteraction) => {
-		if (
-			await interaction.perms({
-				type: "dev",
-			})
 		)
-			return;
+		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+	execute: async (interaction: CommandInteraction) => {
+		if (!interaction.hasPermission("dev")) return;
 		const clean = async (text: any, client: Client): Promise<string> => {
 			if (text && text.constructor.name === "Promise") text = await text;
 			if (typeof text !== "string") text = require("util").inspect(text, { depth: 1 });
 
-			text = text
+			return text
 				.replaceAll(client.tokens.token, "[BOT_TOKEN]")
 				.replaceAll(client.tokens.apiPassword, "[API_PASSWORD]")
 				.replace(/`/g, "`" + String.fromCharCode(8203))
 				.replace(/@/g, "@" + String.fromCharCode(8203));
-
-			return text;
 		};
 		/**
 		 * VARIABLES USED IN eval()

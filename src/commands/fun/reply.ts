@@ -2,6 +2,7 @@ import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction } from "discord.js";
 import { Client, Message } from "@client";
+import { PermissionFlagsBits } from "discord-api-types/v10";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -15,14 +16,10 @@ export const command: SlashCommand = {
 		)
 		.addStringOption((option) =>
 			option.setName("message").setDescription("Message ID to reply to").setRequired(true),
-		),
-	execute: async (interaction: CommandInteraction, client: Client) => {
-		if (
-			await interaction.perms({
-				type: "dev",
-			})
 		)
-			return;
+		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+	execute: async (interaction: CommandInteraction, client: Client) => {
+		if (!interaction.hasPermission("dev")) return;
 
 		let msg: Message;
 		try {
