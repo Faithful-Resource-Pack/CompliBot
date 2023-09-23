@@ -18,7 +18,7 @@ export const button: Button = {
 
 		if (attachment == null)
 			return interaction.reply({
-				content: await interaction.getEphemeralString({ string: "Command.Images.TooBig" }),
+				content: interaction.strings().Command.Images.TooBig,
 				ephemeral: true,
 			});
 

@@ -49,10 +49,9 @@ export const command: SlashCommand = {
 						new EmbedBuilder()
 							.setTitle("No results found!")
 							.setDescription(
-								await interaction.getEphemeralString({
-									string: "Command.Texture.NotFound",
-									placeholders: { TEXTURENAME: `\`${name}\`` },
-								}),
+								interaction
+									.strings()
+									.Command.Texture.NotFound.replace("%TEXTURENAME%", `\`${name}\``),
 							)
 							.setColor(colors.red),
 					],

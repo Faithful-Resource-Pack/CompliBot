@@ -1,11 +1,11 @@
-import { Message, ActionRowBuilder, EmbedBuilder } from "discord.js";
-import { ids } from "@helpers/emojis";
+import { Message, ActionRowBuilder, EmbedBuilder, ComponentType } from "discord.js";
 import { Config, Tokens } from "@interfaces";
 import config from "@json/config.json";
 import tokens from "@json/tokens.json";
 import { deleteInteraction, deleteMessage } from "@helpers/buttons";
 import { colors } from "@helpers/colors";
 import settings from "@json/dynamic/settings.json";
+import { ButtonBuilder } from "@discordjs/builders";
 
 declare module "discord.js" {
 	interface Message {
@@ -35,20 +35,20 @@ const MessageBody = {
 		if (
 			this.components[0] != undefined &&
 			this.components.at(-1).components.length < 5 && //check there aren't 5 buttons
-			this.components.at(-1).components[0].type === "BUTTON" //checks there isn't a select menu
+			this.components.at(-1).components[0].type === ComponentType.Button //checks there isn't a select menu
 		) {
-			this.components
-				.at(-1)
-				.addComponents([hasAuthorID === true ? deleteMessage : deleteInteraction]);
+			const deleteRow = ActionRowBuilder.from(this.components.at(-1)).addComponents(
+				hasAuthorID === true ? deleteMessage : deleteInteraction,
+			);
 
 			return this.edit({
-				components: [...this.components],
+				components: [...this.components.slice(0, -1), deleteRow],
 			});
 		}
 		return this.edit({
 			components: [
 				...this.components,
-				new ActionRowBuilder().addComponents([
+				new ActionRowBuilder<ButtonBuilder>().addComponents([
 					hasAuthorID === true ? deleteMessage : deleteInteraction,
 				]),
 			],

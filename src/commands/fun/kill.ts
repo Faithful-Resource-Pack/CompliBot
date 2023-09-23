@@ -13,24 +13,9 @@ export const command: SlashCommand = {
 	execute: async (interaction: ChatInputCommandInteraction) => {
 		let embed = new EmbedBuilder();
 
-		const killed = (
-			await interaction.getEphemeralString({
-				string: "Command.Kill.Killed",
-				placeholders: { IGNORE_MISSING: "True" },
-			})
-		).split("$,");
-		const killed_by = (
-			await interaction.getEphemeralString({
-				string: "Command.Kill.KilledBy",
-				placeholders: { IGNORE_MISSING: "True" },
-			})
-		).split("$,");
-		const killed_by_using = (
-			await interaction.getEphemeralString({
-				string: "Command.Kill.KilledByUsing",
-				placeholders: { IGNORE_MISSING: "True" },
-			})
-		).split("$,");
+		const killed = interaction.strings().Command.Kill.Killed;
+		const killed_by = interaction.strings().Command.Kill.KilledBy;
+		const killed_by_using = interaction.strings().Command.Kill.KilledByUsing;
 
 		if (interaction.options.getUser("user") !== null) {
 			if (interaction.options.getString("weapon") !== null)

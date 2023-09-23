@@ -14,21 +14,21 @@ export const command: SlashCommand = {
 	execute: async (interaction: ChatInputCommandInteraction, client: Client) => {
 		const embedPreview = new EmbedBuilder()
 			.setAuthor({ name: interaction.user.username, iconURL: interaction.user.avatarURL() })
-			.setTitle(await interaction.getEphemeralString({ string: "Command.Feedback.Preview" }))
+			.setTitle(interaction.strings().Command.Feedback.Preview)
 			.setDescription(interaction.options.getString("message"))
 			.setTimestamp()
 			.setFooter({
-				text: await interaction.getEphemeralString({ string: "Command.Feedback.ConfirmPrompt" }),
+				text: interaction.strings().Command.Feedback.ConfirmPrompt,
 			});
 
 		const btnBug = new ButtonBuilder()
-			.setLabel(await interaction.getEphemeralString({ string: "Command.Feedback.Bug" }))
+			.setLabel(interaction.strings().Command.Feedback.Bug)
 			.setStyle(ButtonStyle.Primary)
 			.setEmoji(parseId(ids.bug))
 			.setCustomId("feedbackBug");
 
 		const btnSuggestion = new ButtonBuilder()
-			.setLabel(await interaction.getEphemeralString({ string: "Command.Feedback.Suggestion" }))
+			.setLabel(interaction.strings().Command.Feedback.Suggestion)
 			.setStyle(ButtonStyle.Primary)
 			.setEmoji(parseId(ids.suggestion))
 			.setCustomId("feedbackSuggestion");

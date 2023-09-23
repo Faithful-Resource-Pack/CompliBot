@@ -67,7 +67,7 @@ export const command: SlashCommand = {
 		if (timeoutVal !== null) {
 			if (parseInt(timeoutVal, 10).toString() === timeoutVal)
 				return interaction.reply({
-					content: await interaction.getEphemeralString({ string: "Error.Timeout.NoTypeGiven" }),
+					content: interaction.strings().Error.Timeout.NoTypeGiven,
 					ephemeral: true,
 				});
 			poll.setTimeout(addSeconds(new Date(), parseDate(timeoutVal)));

@@ -130,7 +130,9 @@ export async function paletteAttachment(
 
 	// add generate palette link && append palette to description
 	embed.setDescription(
-		`Total: ${Object.values(allColors).length}\n\n` + embed.data.description + paletteUrls.join(" - "),
+		`Total: ${Object.values(allColors).length}\n\n` +
+			embed.data.description +
+			paletteUrls.join(" - "),
 	);
 
 	// create gradient canvas for top GRADIENT_TOP colors

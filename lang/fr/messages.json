@@ -1,20 +1,34 @@
 {
-  "Error.DevBad": "Cette partie reste non implémentée en raison d'incompétence. Demandez aux développeurs ou faîtes avec.",
-  "Error.General": "Une erreur est survenue !",
-  "Error.Message.Deleted": "Ce message a déjà été supprimé !",
-  "Error.NotFound": "%THING% non trouvé !",
-  "Error.NoPermissions": "Vous n'avez pas la permission d'effectuer cela !",
-  "Error.Interaction.Reserved": "Cette interaction est réservée à son propriétaire (%USER%)",
-  "Error.Channel.CacheNotFound": "Le salon %CHANNEL_NAME% est introuvable dans le cache !",
-  "Error.Channel.NotTextChannel": "Le salon ciblé n'est pas un salon textuel, le message ne peut pas être envoyé !",
-  "Error.Timeout.NoTypeGiven": "Le délai d'expiration donné ne spécifie pas de quelle longueur il est !\nExemple : `30s`, `1 min`, `10 heures`, `1 jour`, `1 semaine`, `1 mois`, `1 an`",
-  "General.Are": "sont",
-  "General.Cancel": "Annuler",
-  "General.Is": "est",
-  "General.No": "Non",
-  "General.Send": "Envoyer",
-  "General.Yes": "Oui",
-  "Success.Detailed": "Succès ! %DETAILS%",
-  "Success.General": "Succès !",
-  "Success.Cancel": "%ACTION% annulée !"
+    "Error": {
+        "DevBad": "Cette partie reste non implémentée en raison d'incompétence. Demandez aux développeurs ou faîtes avec.",
+        "General": "Une erreur est survenue !",
+        "Message": {
+            "Deleted": "Ce message a déjà été supprimé !"
+        },
+        "NotFound": "%THING% non trouvé !",
+        "NoPermissions": "Vous n'avez pas la permission d'effectuer cela !",
+        "Interaction": {
+            "Reserved": "Cette interaction est réservée à son propriétaire (%USER%)"
+        },
+        "Channel": {
+            "CacheNotFound": "Le salon %CHANNEL_NAME% est introuvable dans le cache !",
+            "NotTextChannel": "Le salon ciblé n'est pas un salon textuel, le message ne peut pas être envoyé !"
+        },
+        "Timeout": {
+            "NoTypeGiven": "Le délai d'expiration donné ne spécifie pas de quelle longueur il est !\nExemple : `30s`, `1 min`, `10 heures`, `1 jour`, `1 semaine`, `1 mois`, `1 an`"
+        }
+    },
+    "General": {
+        "Are": "sont",
+        "Cancel": "Annuler",
+        "Is": "est",
+        "No": "Non",
+        "Send": "Envoyer",
+        "Yes": "Oui"
+    },
+    "Success": {
+        "Detailed": "Succès ! %DETAILS%",
+        "General": "Succès !",
+        "Cancel": "%ACTION% annulée !"
+    }
 }

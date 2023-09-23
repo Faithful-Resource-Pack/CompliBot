@@ -1,20 +1,34 @@
 {
-  "Error.DevBad": "This part remains unimplemented due to incompetence. Ask the devs or cope.",
-  "Error.General": "Encountered an error!",
-  "Error.Message.Deleted": "This message has already been deleted!",
-  "Error.NotFound": "%THING% not found!",
-  "Error.NoPermissions": "You don't have the permission to do that!",
-  "Error.Interaction.Reserved": "This interaction is reserved for %USER%!",
-  "Error.Channel.CacheNotFound": "%CHANNEL_NAME% not found!",
-  "Error.Channel.NotTextChannel": "Feedback channel isn't a text channel!",
-  "Error.Timeout.NoTypeGiven": "The given timeout doesn't specify which length it is!\nExample: `30s`, `1 min`, `10 hours`, `1 day`, `1 week`, `1 month`, `1 year`",
-  "General.Are": "are",
-  "General.Cancel": "Cancel",
-  "General.Is": "is",
-  "General.No": "No",
-  "General.Send": "Send",
-  "General.Yes": "Yes",
-  "Success.Detailed": "Success! %DETAILS%",
-  "Success.General": "Success!",
-  "Success.Cancel": "%ACTION% canceled!"
+    "Error": {
+        "DevBad": "This part remains unimplemented due to incompetence. Ask the devs or cope.",
+        "General": "Encountered an error!",
+        "Message": {
+            "Deleted": "This message has already been deleted!"
+        },
+        "NotFound": "%THING% not found!",
+        "NoPermissions": "You don't have the permission to do that!",
+        "Interaction": {
+            "Reserved": "This interaction is reserved for %USER%!"
+        },
+        "Channel": {
+            "CacheNotFound": "%CHANNEL_NAME% not found!",
+            "NotTextChannel": "Feedback channel isn't a text channel!"
+        },
+        "Timeout": {
+            "NoTypeGiven": "The given timeout doesn't specify which length it is!\nExample: `30s`, `1 min`, `10 hours`, `1 day`, `1 week`, `1 month`, `1 year`"
+        }
+    },
+    "General": {
+        "Are": "are",
+        "Cancel": "Cancel",
+        "Is": "is",
+        "No": "No",
+        "Send": "Send",
+        "Yes": "Yes"
+    },
+    "Success": {
+        "Detailed": "Success! %DETAILS%",
+        "General": "Success!",
+        "Cancel": "%ACTION% canceled!"
+    }
 }

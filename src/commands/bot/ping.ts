@@ -5,29 +5,21 @@ import { Client, EmbedBuilder, ChatInputCommandInteraction, Message } from "@cli
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder().setName("ping").setDescription("Check the bot and API latency."),
 	execute: async (interaction: ChatInputCommandInteraction, client: Client) => {
-		let embed = new EmbedBuilder().setTitle(
-			await interaction.getEphemeralString({ string: "Command.Ping.Await" }),
-		);
+		let embed = new EmbedBuilder().setTitle(interaction.strings().Command.Ping.Await);
 		await interaction.reply({ embeds: [embed] }).then(async () => {
-			const d: Date = new Date();
-			const quotes = (
-				await interaction.getEphemeralString({
-					string: "Command.Ping.Quotes",
-					placeholders: { YEAR: (new Date().getFullYear() + 2).toString() },
-				})
-			).split("$,");
-			embed
-				.setTitle(await interaction.getEphemeralString({ string: "Command.Ping.Title" }))
-				.setDescription(
-					await interaction.getEphemeralString({
-						string: "Command.Ping.Description",
-						placeholders: {
-							QUOTE: quotes[Math.floor(Math.random() * quotes.length)],
-							LATENCY: (d.getTime() - interaction.createdTimestamp).toString(),
-							APILATENCY: Math.round(client.ws.ping).toString(),
-						},
-					}),
-				);
+			const d = new Date();
+			const quotes = interaction.strings().Command.Ping.Quotes;
+			const quote = quotes[Math.floor(Math.random() * quotes.length)];
+			embed.setTitle(interaction.strings().Command.Ping.Title).setDescription(
+				interaction
+					.strings()
+					.Command.Ping.Description.replace(
+						"QUOTE",
+						quote.replace("%YEAR%", (d.getFullYear() + 2).toString()),
+					)
+					.replace("%LATENCY%", (d.getTime() - interaction.createdTimestamp).toString())
+					.replace("%APILATENCY%", Math.round(client.ws.ping).toString()),
+			);
 
 			try {
 				interaction

@@ -17,14 +17,12 @@ export const event: Event = {
 			(
 				interaction as ChatInputCommandInteraction | ButtonInteraction | StringSelectMenuInteraction
 			).reply({
-				content: await (
+				content: (
 					interaction as
 						| ChatInputCommandInteraction
 						| ButtonInteraction
 						| StringSelectMenuInteraction
-				).getEphemeralString({
-					string: "Command.Botban.isBanned",
-				}),
+				).strings().Command.Botban.isBanned,
 				ephemeral: true,
 			});
 			return;
@@ -39,7 +37,7 @@ export const event: Event = {
 			client.emit("buttonUsed", (client as Client, interaction));
 		}
 
-		if (interaction.isSelectMenu()) {
+		if (interaction.isStringSelectMenu()) {
 			let _ = (interaction as StringSelectMenuInteraction) instanceof StringSelectMenuInteraction; //! do not remove, 'force' interaction to be casted (break if removed)
 			client.emit("selectMenuUsed", (client as Client, interaction));
 		}

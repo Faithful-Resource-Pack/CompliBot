@@ -33,9 +33,7 @@ export default async function sendFeedback(
 ) {
 	if (interaction.user.id !== user)
 		return interaction.reply({
-			content: (
-				await interaction.getEphemeralString({ string: "Error.Interaction.Reserved" })
-			).replace("%USER%", `<@!${user}>`),
+			content: interaction.strings().Error.Interaction.Reserved.replace("%USER%", `<@!${user}>`),
 			ephemeral: true,
 		});
 
@@ -43,21 +41,21 @@ export default async function sendFeedback(
 
 	if (!channel)
 		return interaction.reply({
-			content: (
-				await interaction.getEphemeralString({ string: "Error.Channel.CacheNotFound" })
-			).replace("%CHANNEL_NAME%", "#feedback"),
+			content: interaction
+				.strings()
+				.Error.Channel.CacheNotFound.replace("%CHANNEL_NAME%", "#feedback"),
 			ephemeral: true,
 		});
 
 	if (channel.type !== ChannelType.GuildText)
 		return interaction.reply({
-			content: await interaction.getEphemeralString({ string: "Error.Channel.NotTextChannel" }),
+			content: interaction.strings().Error.Channel.NotTextChannel,
 			ephemeral: true,
 		});
 
 	const responseEmbed = new EmbedBuilder()
 		.setTitle(
-			(await interaction.getEphemeralString({ string: "Command.Feedback.Sent" })).replace(
+			interaction.strings().Command.Feedback.Sent.replace(
 				"%FEEDBACKTYPE%",
 				// uppercase
 				type.replace(/\b(\w)/gu, (letter) => letter.toUpperCase()),

@@ -14,10 +14,9 @@ export const button: Button = {
 
 		if (messageInteraction != undefined && interaction.user.id != messageInteraction.user.id)
 			return interaction.reply({
-				content: await interaction.getEphemeralString({
-					string: "Error.Interaction.Reserved",
-					placeholders: { USER: `<@!${messageInteraction.user.id}>` },
-				}),
+				content: interaction
+					.strings()
+					.Error.Interaction.Reserved.replace("%USER%", `<@!${messageInteraction.user.id}>`),
 				ephemeral: true,
 			});
 
@@ -28,10 +27,12 @@ export const button: Button = {
 
 		if (message.reference !== undefined && fetchedRef)
 			return interaction.reply({
-				content: await interaction.getEphemeralString({
-					string: "Error.Interaction.Reserved",
-					placeholders: { USER: `<@!${(await message.fetchReference()).author.id}>` },
-				}),
+				content: interaction
+					.strings()
+					.Error.Interaction.Reserved.replace(
+						"%USER%",
+						`<@!${(await message.fetchReference()).author.id}>`,
+					),
 				ephemeral: true,
 			});
 
@@ -39,7 +40,7 @@ export const button: Button = {
 			return message.delete();
 		} catch (err) {
 			return interaction.reply({
-				content: await interaction.getEphemeralString({ string: "Error.Message.Deleted" }),
+				content: interaction.strings().Error.Message.Deleted,
 				ephemeral: true,
 			});
 		}

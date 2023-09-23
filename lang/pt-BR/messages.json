@@ -1,7 +1,11 @@
 {
-  "Error.DevBad": "Esta parte permanece não implementada devido a incompetência. Peça aos desenvolvedores ou lide com isso.",
-  "Error.General": "Erro encontrado!",
-  "Error.NotFound": "%THING% não encontrado!",
-  "Success.Detailed": "Sucesso! %DETAILS%",
-  "Success.General": "Sucesso!"
+    "Error": {
+        "DevBad": "Esta parte permanece não implementada devido a incompetência. Peça aos desenvolvedores ou lide com isso.",
+        "General": "Erro encontrado!",
+        "NotFound": "%THING% não encontrado!"
+    },
+    "Success": {
+        "Detailed": "Sucesso! %DETAILS%",
+        "General": "Sucesso!"
+    }
 }

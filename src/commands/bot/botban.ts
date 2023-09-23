@@ -60,9 +60,7 @@ export const command: SlashCommand = {
 				client.tokens.developers.includes(victimID) ||
 				victimID == client.user.id // self
 			)
-				return interaction.followUp(
-					await interaction.getEphemeralString({ string: "Command.Botban.view.unbannable" }),
-				);
+				return interaction.followUp(interaction.strings().Command.Botban.view.unbannable);
 
 			if (interaction.options.getBoolean("pardon")) {
 				banlist.ids.filter(async (v: string) => {

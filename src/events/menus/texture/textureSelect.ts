@@ -16,9 +16,9 @@ export const menu: SelectMenu = {
 
 		if (interaction.user.id !== messageInteraction.user.id)
 			return interaction.reply({
-				content: (
-					await interaction.getEphemeralString({ string: "Error.Interaction.Reserved" })
-				).replace("%USER%", `<@!${messageInteraction.user.id}>`),
+				content: interaction
+					.strings()
+					.Error.Interaction.Reserved.replace("%USER%", `<@!${messageInteraction.user.id}>`),
 				ephemeral: true,
 			});
 

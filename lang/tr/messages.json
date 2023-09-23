@@ -1,20 +1,34 @@
 {
-  "Error.DevBad": "Bu parça yetersizlik nedeniyle uygulanmamış durumda. Geliştiricilere sor ya da başa çık.",
-  "Error.General": "Bir hatayla karşılaşıldı!",
-  "Error.Message.Deleted": "Bu mesaj zaten silinmiş!",
-  "Error.NotFound": "%THING% Bulunamadı!",
-  "Error.NoPermissions": "Onu yapmak için yetkiye sahip değilsin!",
-  "Error.Interaction.Reserved": "Bu etkileşim sahibine (%USER%) ayrılmıştır.",
-  "Error.Channel.CacheNotFound": "%CHANNEL_NAME% kanalı önbellekte bulunamıyor!",
-  "Error.Channel.NotTextChannel": "Hedeflenen kanal bir metin kanalı değil, mesaj gönderilemiyor!",
-  "Error.Timeout.NoTypeGiven": "Verilen zaman aşımı, süresini belirtmiyor!\nÖrnek: `30s`, `1 min`, `10 hours`, `1 day`, `1 week`, `1 month`, `1 year`",
-  "General.Are": "çoğul",
-  "General.Cancel": "İptal",
-  "General.Is": "tekil",
-  "General.No": "Hayır",
-  "General.Send": "Gönder",
-  "General.Yes": "Evet",
-  "Success.Detailed": "Başarı! %DETAILS%",
-  "Success.General": "Başarı!",
-  "Success.Cancel": "%ACTION% iptal edildi!"
+    "Error": {
+        "DevBad": "Bu parça yetersizlik nedeniyle uygulanmamış durumda. Geliştiricilere sor ya da başa çık.",
+        "General": "Bir hatayla karşılaşıldı!",
+        "Message": {
+            "Deleted": "Bu mesaj zaten silinmiş!"
+        },
+        "NotFound": "%THING% Bulunamadı!",
+        "NoPermissions": "Onu yapmak için yetkiye sahip değilsin!",
+        "Interaction": {
+            "Reserved": "Bu etkileşim sahibine (%USER%) ayrılmıştır."
+        },
+        "Channel": {
+            "CacheNotFound": "%CHANNEL_NAME% kanalı önbellekte bulunamıyor!",
+            "NotTextChannel": "Hedeflenen kanal bir metin kanalı değil, mesaj gönderilemiyor!"
+        },
+        "Timeout": {
+            "NoTypeGiven": "Verilen zaman aşımı, süresini belirtmiyor!\nÖrnek: `30s`, `1 min`, `10 hours`, `1 day`, `1 week`, `1 month`, `1 year`"
+        }
+    },
+    "General": {
+        "Are": "çoğul",
+        "Cancel": "İptal",
+        "Is": "tekil",
+        "No": "Hayır",
+        "Send": "Gönder",
+        "Yes": "Evet"
+    },
+    "Success": {
+        "Detailed": "Başarı! %DETAILS%",
+        "General": "Başarı!",
+        "Cancel": "%ACTION% iptal edildi!"
+    }
 }

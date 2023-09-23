@@ -54,14 +54,9 @@ export async function fetchMessageImage(
 	if (!userInteraction.doInteraction) return null;
 
 	// no message found but we wait for user input
-	const embed = new EmbedBuilder()
-		.setTitle(await interaction.getEphemeralString({ string: "Command.Images.NotFound.Title" }))
-		.setDescription(
-			await interaction.getEphemeralString({
-				string: "Command.Images.NotFound",
-				placeholders: { NUMBER: `${limit}` },
-			}),
-		);
+	const embed = new EmbedBuilder().setDescription(
+		interaction.strings().Command.Images.NotFound.replace("%NUMBER%", limit.toString()),
+	);
 
 	const embedMessage: Message = (await interaction.editReply({ embeds: [embed] })) as Message;
 	const awaitedMessages: Collection<
@@ -137,7 +132,7 @@ export async function generalSlashCommandImage(
 
 	if (imageURL === null) {
 		await interaction.followUp({
-			content: await interaction.getEphemeralString({ string: "Command.Images.NoResponse" }),
+			content: interaction.strings().Command.Images.NoResponse,
 			ephemeral: true,
 		});
 		return;
@@ -150,7 +145,7 @@ export async function generalSlashCommandImage(
 
 	if (attachment === null) {
 		await interaction.followUp({
-			content: await interaction.getEphemeralString({ string: "Command.Images.TooBig" }),
+			content: interaction.strings().Command.Images.TooBig,
 			ephemeral: true,
 		});
 		return;

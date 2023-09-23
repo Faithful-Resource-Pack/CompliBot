@@ -3,17 +3,16 @@ import {
 	ChatInputCommandInteraction,
 	Role,
 	StringSelectMenuInteraction,
+	EmbedBuilder
 } from "discord.js";
-import { string, keys, Placeholder } from "@helpers/locales";
 import { PermissionFlagsBits } from "discord-api-types/v10";
-import { EmbedBuilder } from "@client";
+import { JSONFiles, StringOutput, en_US } from "@helpers/strings";
 
 export type PermissionType = "manager" | "dev" | "moderator" | "council";
 
 declare module "discord.js" {
 	interface ChatInputCommandInteraction {
-		getEphemeralString(options: TextOptions): Promise<string>;
-		getString(options: TextOptions): Promise<string>;
+		strings(): StringOutput;
 		/**
 		 * @see {@link checkPermissions} for implementation details
 		 */
@@ -21,21 +20,12 @@ declare module "discord.js" {
 	}
 
 	interface ButtonInteraction {
-		getEphemeralString(options: TextOptions): Promise<string>;
-		getString(options: TextOptions): Promise<string>;
+		strings(): StringOutput;
 	}
 
 	interface StringSelectMenuInteraction {
-		getEphemeralString(options: TextOptions): Promise<string>;
-		getString(options: TextOptions): Promise<string>;
+		strings(): StringOutput;
 	}
-}
-interface TextOptions {
-	string: keys;
-	placeholders?: Placeholder;
-}
-async function getEphemeralString(options: TextOptions): Promise<string> {
-	return await string(this.locale, options.string, options.placeholders);
 }
 
 function hasPermission(type: PermissionType): boolean {
@@ -67,9 +57,28 @@ function hasPermission(type: PermissionType): boolean {
 	return out;
 }
 
-ChatInputCommandInteraction.prototype.getEphemeralString = getEphemeralString;
-ButtonInteraction.prototype.getEphemeralString = getEphemeralString;
-StringSelectMenuInteraction.prototype.getEphemeralString = getEphemeralString;
+function strings(): StringOutput {
+	const countryCode = this.locale;
+	let lang: typeof en_US;
+	for (let i = 0; JSONFiles[i]; i++)
+		lang = { ...lang, ...require(`@/lang/en-US/${JSONFiles[i]}.json`) }; // fallback
+
+	if (countryCode !== "en-GB" && countryCode !== "en-US")
+		// because the fallback is already IN ENGLISH
+		for (let i = 0; JSONFiles[i]; i++)
+			try {
+				//* We try the import before spreading the object to avoid issues, we only want to check if the file exists
+				const lang2 = require(`@/lang/${countryCode}/${JSONFiles[i]}.json`);
+				lang = { ...lang, ...lang2 };
+			} catch {} // file not found
+
+	return lang;
+}
+
+
 ChatInputCommandInteraction.prototype.hasPermission = hasPermission;
+ButtonInteraction.prototype.strings = strings;
+StringSelectMenuInteraction.prototype.strings = strings;
+ChatInputCommandInteraction.prototype.strings = strings;
 
 export { ChatInputCommandInteraction, ButtonInteraction, StringSelectMenuInteraction };

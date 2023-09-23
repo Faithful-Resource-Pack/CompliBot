@@ -14,20 +14,16 @@ export const button: Button = {
 		//additional checking for undefined embeds and footers and stuff
 		if (!message.reference && !authorId)
 			return interaction.reply({
-				content: await interaction.getEphemeralString({
-					string: "Error.NotFound",
-					placeholders: { THING: `Author ID in footer` },
-				}),
+				content: interaction.strings().Error.NotFound.replace("%THING%", `Author ID in footer`),
 				ephemeral: true,
 			});
 
 		if (!message.reference && interaction.user.id != authorId)
 			//stupid check because undefined
 			return interaction.reply({
-				content: await interaction.getEphemeralString({
-					string: "Error.Interaction.Reserved",
-					placeholders: { USER: `<@!${authorId}>` },
-				}),
+				content: interaction
+					.strings()
+					.Error.Interaction.Reserved.replace("%USER%", `<@!${authorId}>`),
 				ephemeral: true,
 			});
 
@@ -35,7 +31,7 @@ export const button: Button = {
 			message.delete();
 		} catch (err) {
 			return interaction.reply({
-				content: await interaction.getEphemeralString({ string: "Error.Message.Deleted" }),
+				content: interaction.strings().Error.Message.Deleted,
 				ephemeral: true,
 			});
 		}

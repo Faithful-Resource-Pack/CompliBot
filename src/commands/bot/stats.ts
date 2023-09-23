@@ -39,9 +39,7 @@ export const command: SlashCommand = {
 			if (os.platform() == "linux") version = linuxOs({ mode: "sync" }).pretty_name;
 			else version = os.version();
 
-			const FieldTitles = (
-				await interaction.getEphemeralString({ string: "Command.Stats.Embed.FieldTitles" })
-			).split("$,");
+			const FieldTitles = interaction.strings().Command.Stats.Embed.FieldTitles;
 
 			const embed = new EmbedBuilder()
 				.setTitle(`${client.user.username}'s Statistics`)
@@ -64,7 +62,7 @@ export const command: SlashCommand = {
 					{ name: FieldTitles[9], value: version },
 				)
 				.setFooter({
-					text: await interaction.getEphemeralString({ string: "Command.Stats.Footer" }),
+					text: interaction.strings().Command.Stats.Footer,
 					iconURL: settings.images.heart,
 				});
 			interaction
@@ -79,25 +77,21 @@ export const command: SlashCommand = {
 			)
 				return interaction.reply({
 					ephemeral: true,
-					content: await interaction.getEphemeralString({
-						string: "Command.Stats.NotFound",
-						placeholders: {
-							COMMAND: interaction.options.getString("command"),
-						},
-					}),
+					content: interaction
+						.strings()
+						.Command.Stats.NotFound.replace("%COMMAND%", interaction.options.getString("command")),
 				});
 
 			if (interaction.options.getString("command")) {
 				const embed = new EmbedBuilder().setTimestamp().setTitle(
-					await interaction.getEphemeralString({
-						string: "Command.Stats.Usage",
-						placeholders: {
-							COMMAND: interaction.options.getString("command"),
-							USE:
-								client.commandsProcessed.get(interaction.options.getString("command")).toString() ??
+					interaction
+						.strings()
+						.Command.Stats.Usage.replace("%COMMAND%", interaction.options.getString("command"))
+						.replace(
+							"%USE%",
+							client.commandsProcessed.get(interaction.options.getString("command")).toString() ??
 								"0",
-						},
-					}),
+						),
 				);
 				interaction.reply({ ephemeral: true, embeds: [embed], fetchReply: true });
 			} else {
@@ -107,8 +101,7 @@ export const command: SlashCommand = {
 
 				const embed = new EmbedBuilder()
 					.setTimestamp()
-					.setTitle(await interaction.getEphemeralString({ string: "Command.Stats.Top10" }))
-					.setDescription(`
+					.setTitle(interaction.strings().Command.Stats.Top10).setDescription(`
 ${data[0]
 	.slice(0, data[0].length > 10 ? 10 : data[0].length)
 	.map((key: any, index: any) => {

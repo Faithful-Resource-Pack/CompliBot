@@ -13,10 +13,10 @@ export const command: SlashCommand = {
 		var embed = new EmbedBuilder()
 			.setTitle(
 				res > 0.5
-					? await interaction.getEphemeralString({ string: "Command.Coin.Heads" })
+					? interaction.strings().Command.Coin.Heads
 					: res < 0.5
-					? await interaction.getEphemeralString({ string: "Command.Coin.Tails" })
-					: await interaction.getEphemeralString({ string: "Command.Coin.Edge" }),
+					? interaction.strings().Command.Coin.Tails
+					: interaction.strings().Command.Coin.Edge,
 			)
 			.setThumbnail(
 				res > 0.5
