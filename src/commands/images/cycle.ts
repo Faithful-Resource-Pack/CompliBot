@@ -66,16 +66,14 @@ export const command: SlashCommand = {
 
 		// only one result
 		if (results.length === 1) {
-			const [embed, cycled] = await cycleComparison(
+			const replyOptions = await cycleComparison(
 				interaction.client as Client,
 				results[0].id,
 				display,
 				framerate,
 			);
 
-			return interaction
-				.editReply({ embeds: [embed], files: cycled ? [cycled] : null })
-				.then((message: Message) => message.deleteButton());
+			return interaction.editReply(replyOptions).then((message: Message) => message.deleteButton());
 		}
 
 		// multiple results
