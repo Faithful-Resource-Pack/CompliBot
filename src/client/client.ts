@@ -1,11 +1,12 @@
 import {
+	ActivityType,
 	ButtonInteraction,
 	Client,
 	ClientOptions,
 	Collection,
-	CommandInteraction,
+	ChatInputCommandInteraction,
 	Guild,
-	SelectMenuInteraction,
+	StringSelectMenuInteraction,
 } from "discord.js";
 import { Message, GuildMember, EmittingCollection, Automation } from "@client";
 import {
@@ -46,8 +47,8 @@ export type Actions =
 	| GuildMember
 	| Guild
 	| ButtonInteraction
-	| SelectMenuInteraction
-	| CommandInteraction;
+	| StringSelectMenuInteraction
+	| ChatInputCommandInteraction;
 export type Log = {
 	type: ActionsStr;
 	data: any;
@@ -83,7 +84,7 @@ class ExtendedClient extends Client {
 		this.firstStart = firstStart;
 	}
 
-	public async restart(interaction?: CommandInteraction): Promise<void> {
+	public async restart(interaction?: ChatInputCommandInteraction): Promise<void> {
 		console.log(`${info}Restarting bot...`);
 		this.destroy();
 		StartClient(false, interaction);
@@ -108,7 +109,7 @@ class ExtendedClient extends Client {
 		console.log(chalk.hex(darkColor)(`                                  888                `)  + chalk.gray.italic(this.tokens.maintenance === false ? "~ Made lovingly with pain\n" : "    Maintenance mode!\n"));
 	}
 
-	public async init(interaction?: CommandInteraction) {
+	public async init(interaction?: ChatInputCommandInteraction) {
 		// pretty stuff so it doesnt print the logo upon restart
 		if (!this.firstStart) {
 			console.log(`${success}Restarted`);
@@ -305,7 +306,7 @@ class ExtendedClient extends Client {
 		if (this.tokens.maintenance) {
 			this.on("ready", async () => {
 				this.user.setPresence({
-					activities: [{ name: "under maintenance", type: "PLAYING" }],
+					activities: [{ name: "under maintenance", type: ActivityType.Playing }],
 					status: "idle",
 				});
 				this.user.setStatus("idle");

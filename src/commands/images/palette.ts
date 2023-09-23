@@ -1,8 +1,8 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction } from "discord.js";
+import { ChatInputCommandInteraction } from "discord.js";
 import { generalSlashCommandImage } from "@functions/slashCommandImage";
-import { MessageEmbed } from "@client";
+import { EmbedBuilder } from "@client";
 import { paletteAttachment } from "@images/palette";
 
 export const command: SlashCommand = {
@@ -12,11 +12,11 @@ export const command: SlashCommand = {
 		.addAttachmentOption((o) =>
 			o.setName("image").setDescription("The image to palette").setRequired(false),
 		),
-	execute: async (interaction: CommandInteraction) => {
+	execute: async (interaction: ChatInputCommandInteraction) => {
 		generalSlashCommandImage(interaction, paletteAttachment, {
 			factor: interaction.options.getNumber("factor"),
 			name: "magnified.png",
-			embed: new MessageEmbed().setTitle("Magnified").setImage("attachment://magnified.png"),
+			embed: new EmbedBuilder().setTitle("Magnified").setImage("attachment://magnified.png"),
 			hideButtons: true,
 		});
 	},

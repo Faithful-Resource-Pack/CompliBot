@@ -1,6 +1,6 @@
-import { MessageEmbed } from "@client";
+import { EmbedBuilder } from "@client";
 import { createCanvas, loadImage } from "@napi-rs/canvas";
-import { MessageAttachment } from "discord.js";
+import { AttachmentBuilder } from "discord.js";
 import { ColorManager } from "./colors";
 import getDimensions from "./getDimensions";
 
@@ -43,14 +43,14 @@ export const mcColorsOptions: { name: string; value: string }[] = Object.keys(mc
 
 type options = {
 	url: string;
-	embed?: MessageEmbed;
+	embed?: EmbedBuilder;
 	name?: string;
 	color: string;
 };
 
 export async function multiplyAttachment(
 	options: options,
-): Promise<[MessageAttachment, MessageEmbed]> {
+): Promise<[AttachmentBuilder, EmbedBuilder]> {
 	const dimension = await getDimensions(options.url);
 	const canvas = createCanvas(dimension.width, dimension.height);
 	const context = canvas.getContext("2d");
@@ -79,10 +79,9 @@ export async function multiplyAttachment(
 
 	await context.putImageData(data, 0, 0);
 	return [
-		new MessageAttachment(
-			canvas.toBuffer("image/png"),
-			`${options.name ? options.name : "tinted.png"}`,
-		),
+		new AttachmentBuilder(canvas.toBuffer("image/png"), {
+			name: `${options.name ? options.name : "tinted.png"}`,
+		}),
 		options.embed,
 	];
 }

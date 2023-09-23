@@ -1,25 +1,24 @@
-import { MessageEmbed } from "@client";
+import { EmbedBuilder } from "@client";
 import { Canvas, SKRSContext2D, createCanvas, loadImage, Image, DOMMatrix } from "@napi-rs/canvas";
-import { MessageAttachment } from "discord.js";
+import { AttachmentBuilder } from "discord.js";
 import getDimensions from "./getDimensions";
 
 export type tileShape = "grid" | "vertical" | "horizontal" | "hollow" | "plus";
 interface options {
 	url: string;
-	embed?: MessageEmbed;
+	embed?: EmbedBuilder;
 	name?: string;
 	shape?: tileShape;
 	random?: "flip" | "rotation";
 }
 
-export async function tileAttachment(options: options): Promise<[MessageAttachment, MessageEmbed]> {
+export async function tileAttachment(options: options): Promise<[AttachmentBuilder, EmbedBuilder]> {
 	try {
 		const canvas = await tileCanvas(options);
 		return [
-			new MessageAttachment(
-				canvas.toBuffer("image/png"),
-				`${options.name ? options.name : "tiled.png"}`,
-			),
+			new AttachmentBuilder(canvas.toBuffer("image/png"), {
+				name: `${options.name ? options.name : "tiled.png"}`,
+			}),
 			options.embed,
 		];
 	} catch (err) {

@@ -1,7 +1,7 @@
 import { SlashCommand, SyncSlashCommandBuilder } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { Client, CommandInteraction, MessageEmbed } from "@client";
-import { Message, MessageAttachment } from "discord.js";
+import { Client, ChatInputCommandInteraction, EmbedBuilder } from "@client";
+import { Message, AttachmentBuilder } from "discord.js";
 import {
 	compute,
 	computeAll,
@@ -68,7 +68,7 @@ export const command: SlashCommand = {
 					.setRequired(false),
 			);
 	},
-	execute: async (interaction: CommandInteraction) => {
+	execute: async (interaction: ChatInputCommandInteraction) => {
 		await interaction.deferReply();
 
 		const edition: string = interaction.options.getString("edition", true);
@@ -77,7 +77,7 @@ export const command: SlashCommand = {
 
 		const updateChannels = version === "latest";
 
-		const embed: MessageEmbed = new MessageEmbed()
+		const embed: EmbedBuilder = new EmbedBuilder()
 			.setTitle("Searching for missing textures...")
 			.setDescription("This can take some time, please wait...")
 			.setThumbnail(settings.images.loading)
@@ -138,8 +138,8 @@ export const command: SlashCommand = {
 			];
 		}
 
-		const files: Array<MessageAttachment> = [];
-		const embed2: MessageEmbed = new MessageEmbed();
+		const files: Array<AttachmentBuilder> = [];
+		const embed2: EmbedBuilder = new EmbedBuilder();
 
 		responses.forEach((response: MissingResult) => {
 			// no repo found for the asked pack + edition
@@ -155,18 +155,16 @@ export const command: SlashCommand = {
 			else {
 				if (response[1].length !== 0)
 					files.push(
-						new MessageAttachment(
-							response[0],
-							`missing-${response[2].pack}-${response[2].edition}.txt`,
-						),
+						new AttachmentBuilder(response[0], {
+							name: `missing-${response[2].pack}-${response[2].edition}.txt`,
+						}),
 					);
 
 				if (response[3]?.length && interaction.options.getBoolean("nonvanilla", false)) {
 					files.push(
-						new MessageAttachment(
-							response[3],
-							`nonvanilla-${response[2].pack}-${response[2].edition}.txt`,
-						),
+						new AttachmentBuilder(response[3], {
+							name: `nonvanilla-${response[2].pack}-${response[2].edition}.txt`,
+						}),
 					);
 				}
 

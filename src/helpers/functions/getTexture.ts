@@ -1,9 +1,9 @@
-import { MessageEmbed } from "@client";
+import { EmbedBuilder } from "@client";
 import TokenJson from "@json/tokens.json";
 import { Tokens } from "@interfaces";
 import axios from "axios";
 import getDimensions from "@images/getDimensions";
-import { MessageAttachment, Guild } from "discord.js";
+import { AttachmentBuilder, Guild } from "discord.js";
 import { magnifyAttachment } from "@images/magnify";
 import { ISizeCalculationResult } from "image-size/dist/types/interface";
 import { colors } from "@helpers/colors";
@@ -43,8 +43,8 @@ export const getTextureMessageOptions = async (options: {
 
 	const [strPack, strIconURL] = formatName(pack);
 
-	const files: Array<MessageAttachment> = [];
-	const embed = new MessageEmbed().setTitle(`[#${texture.id}] ${texture.name}`).setFooter({
+	const files: Array<AttachmentBuilder> = [];
+	const embed = new EmbedBuilder().setTitle(`[#${texture.id}] ${texture.name}`).setFooter({
 		text: `${strPack}`,
 		iconURL: strIconURL,
 	});
@@ -66,7 +66,7 @@ export const getTextureMessageOptions = async (options: {
 		// getDimensions also validates a url
 		dimension = await getDimensions(textureURL);
 	} catch (err) {
-		const errorEmbed = new MessageEmbed()
+		const errorEmbed = new EmbedBuilder()
 			.setTitle("Image not found!")
 			.setDescription(`\`${texture.name}\` hasn't been made for ${strPack} yet or is blacklisted!`)
 			.setColor(colors.red);

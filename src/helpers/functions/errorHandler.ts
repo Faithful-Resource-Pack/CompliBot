@@ -1,4 +1,4 @@
-import { DiscordAPIError, MessageAttachment, MessageEmbed, TextChannel } from "discord.js";
+import { DiscordAPIError, AttachmentBuilder, EmbedBuilder, TextChannel } from "discord.js";
 import { Client } from "@client";
 import fs from "fs";
 import { err } from "@helpers/logger";
@@ -47,7 +47,7 @@ const loopLimit = 3; //how many times the same error needs to be made to trigger
 export const logConstructor: Function = (
 	client: Client,
 	reason: any = { stack: "You requested it with /logs ¯\\_(ツ)_/¯" },
-): MessageAttachment => {
+): AttachmentBuilder => {
 	const logTemplate = fs.readFileSync(path.join(__dirname + "/errorHandler.log"), {
 		encoding: "utf-8",
 	});
@@ -135,7 +135,7 @@ export const logConstructor: Function = (
 		});
 
 	const buffer = Buffer.from(logText, "utf8");
-	return new MessageAttachment(buffer, "stack.log");
+	return new AttachmentBuilder(buffer, { name: "stack.log" });
 };
 
 export const errorHandler: Function = async (client: Client, reason: any, type: string) => {
@@ -154,7 +154,7 @@ export const errorHandler: Function = async (client: Client, reason: any, type: 
 	/*if (lastReasons.every((v) => v.stack == lastReasons[0].stack) && lastReasons.length == loopLimit) {
 		if (client.verbose) console.log(`${err}Suspected crash loop detected; Restarting...`);
 
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setTitle("(Probably) Looped, crash encountered!")
 			.setFooter({ text: `Got the same error ${loopLimit} times in a row. Attempting restart...` })
 			.setDescription("```bash\n" + reason.stack + "\n```");
@@ -163,7 +163,7 @@ export const errorHandler: Function = async (client: Client, reason: any, type: 
 		client.restart();
 	}*/
 
-	const embed = new MessageEmbed()
+	const embed = new EmbedBuilder()
 		.setAuthor({ name: type, iconURL: settings.images.error }) // much compressed than .title() & .thumbnail()
 		.setColor(colors.red)
 		.setTimestamp()

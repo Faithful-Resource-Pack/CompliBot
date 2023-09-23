@@ -1,5 +1,5 @@
 import { Event } from "@interfaces";
-import { Client, Message, MessageEmbed } from "@client";
+import { Client, Message, EmbedBuilder } from "@client";
 import textureComparison from "@functions/textureComparison";
 import settings from "@json/dynamic/settings.json";
 import { Pack } from "@interfaces";
@@ -66,7 +66,7 @@ export const event: Event = {
 				message
 					.reply({
 						embeds: [
-							new MessageEmbed().setImage(
+							new EmbedBuilder().setImage(
 								Math.floor(Math.random() * 4) == 1 // why can't TS/JS just have a normal randint() function
 									? "https://i.imgur.com/hAuUsnD.png"
 									: "https://media1.tenor.com/images/8dc53503f5a5bb23ef12b2c83a0e1d4d/tenor.gif",
@@ -86,7 +86,7 @@ export const event: Event = {
 			message
 				.reply({
 					embeds: [
-						new MessageEmbed()
+						new EmbedBuilder()
 							.setDescription("```Uh-oh moment```")
 							.setFooter({ text: "Swahili → English" }),
 					],
@@ -136,7 +136,7 @@ export const event: Event = {
 				message
 					.reply({
 						embeds: [
-							new MessageEmbed()
+							new EmbedBuilder()
 								.setTitle("No results found!")
 								.setDescription(`The ID ${id} doesn't exist!`)
 								.setColor(colors.red),

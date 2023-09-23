@@ -1,6 +1,6 @@
-import { MessageEmbed } from "@client";
+import { EmbedBuilder } from "@client";
 import { Canvas, createCanvas, loadImage } from "@napi-rs/canvas";
-import { MessageAttachment } from "discord.js";
+import { AttachmentBuilder } from "discord.js";
 import { ColorManager } from "./colors";
 import getDimensions from "./getDimensions";
 
@@ -33,9 +33,9 @@ export interface AllColors {
 
 export async function paletteAttachment(
 	options: options,
-): Promise<[MessageAttachment, MessageEmbed]> {
+): Promise<[AttachmentBuilder, EmbedBuilder]> {
 	const { width, height } = await getDimensions(options.url);
-	if (width * height > 262144) return [null, new MessageEmbed()];
+	if (width * height > 262144) return [null, new EmbedBuilder()];
 
 	const canvas: Canvas = createCanvas(width, height);
 	const context = canvas.getContext("2d");
@@ -71,7 +71,7 @@ export async function paletteAttachment(
 		.slice(0, COLORS_TOP)
 		.map((el) => el.hex);
 
-	const embed = new MessageEmbed().setTitle("Palette results").setDescription("List of colors:\n");
+	const embed = new EmbedBuilder().setTitle("Palette results").setDescription("List of colors:\n");
 
 	const fieldGroups = [];
 	let group: number;
@@ -169,10 +169,9 @@ export async function paletteAttachment(
 		ctx.fillRect(bandWidth * index, 0, bandWidth, GRADIENT_HEIGHT);
 	});
 
-	const attachment = new MessageAttachment(
-		colorCanvas.toBuffer("image/png"),
-		`${options.name ? options.name : "palette.png"}`,
-	);
+	const attachment = new AttachmentBuilder(colorCanvas.toBuffer("image/png"), {
+		name: `${options.name ? options.name : "palette.png"}`,
+	});
 
 	return [attachment, embed];
 }

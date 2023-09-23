@@ -1,6 +1,6 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { Client, CommandInteraction, MessageEmbed, Message } from "@client";
+import { Client, ChatInputCommandInteraction, EmbedBuilder, Message } from "@client";
 import { cycleComparison } from "@images/cycle";
 import parseTextureName from "@functions/parseTextureName";
 import { colors } from "@helpers/colors";
@@ -33,7 +33,7 @@ export const command: SlashCommand = {
 				.setDescription("Seconds between each frame (default is 1).")
 				.setRequired(false),
 		),
-	execute: async (interaction: CommandInteraction) => {
+	execute: async (interaction: ChatInputCommandInteraction) => {
 		const display = interaction.options.getString("packs", true);
 		const name = interaction.options.getString("texture", true);
 		const framerate = interaction.options.getNumber("framerate", false) ?? 1;
@@ -50,7 +50,7 @@ export const command: SlashCommand = {
 			return interaction
 				.editReply({
 					embeds: [
-						new MessageEmbed()
+						new EmbedBuilder()
 							.setTitle("No results found!")
 							.setDescription(
 								await interaction.getEphemeralString({

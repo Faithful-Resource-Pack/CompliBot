@@ -1,10 +1,10 @@
-import { CommandInteraction, EmbedField } from "discord.js";
+import { ChatInputCommandInteraction, EmbedField } from "discord.js";
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { Poll } from "@class/poll";
 import { addSeconds, parseDate } from "@helpers/dates";
 import { ids, parseId } from "@helpers/emojis";
-import { Client, MessageEmbed, Message } from "@client";
+import { Client, EmbedBuilder, Message } from "@client";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -46,7 +46,7 @@ export const command: SlashCommand = {
 		.addStringOption((option) =>
 			option.setName("description").setDescription("Add more information about your poll here."),
 		),
-	execute: async (interaction: CommandInteraction, client: Client) => {
+	execute: async (interaction: ChatInputCommandInteraction, client: Client) => {
 		const question: string = interaction.options.getString("question", true);
 		const multipleAnswers: boolean =
 			interaction.options.getBoolean("allow-multiple-answers", false) === true ? true : false;
@@ -74,7 +74,7 @@ export const command: SlashCommand = {
 		} else poll.setTimeout(0);
 
 		/* default embed */
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setTitle("Poll constructor:")
 			.setDescription(`Please send a message below for each ${answersCount} answers:`)
 			.setFooter({ text: "use /poll to make a poll!" });

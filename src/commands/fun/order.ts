@@ -1,6 +1,6 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction, MessageAttachment } from "discord.js";
+import { ChatInputCommandInteraction, AttachmentBuilder } from "discord.js";
 import { Message, Client } from "@client";
 
 /**
@@ -39,7 +39,7 @@ export const command: SlashCommand = {
 				.addChoices(...options)
 				.setRequired(true),
 		),
-	execute: async (interaction: CommandInteraction, client: Client) => {
+	execute: async (interaction: ChatInputCommandInteraction, client: Client) => {
 		await interaction.deferReply();
 		let advice: string = null;
 
@@ -62,10 +62,9 @@ export const command: SlashCommand = {
 			}
 		}
 
-		const gif: MessageAttachment = new MessageAttachment(
-			interaction.options.getString("item"),
-			interaction.options.getString("item"),
-		);
+		const gif = new AttachmentBuilder(interaction.options.getString("item"), {
+			name: interaction.options.getString("item"),
+		});
 		interaction
 			.editReply({ content: advice, files: [gif] })
 			.then((message: Message) => message.deleteButton());

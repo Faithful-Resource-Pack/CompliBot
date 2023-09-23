@@ -15,7 +15,7 @@
 		"prefix": "nact",
 		"body": [
 			"import { SlashCommand, SyncSlashCommandBuilder } from \"@interfaces\";",
-			"import { Client, CommandInteraction, Message, MessageEmbed } from \"@client\";",
+			"import { Client, ChatInputCommandInteraction, Message, EmbedBuilder } from \"@client\";",
 			"import { SlashCommandBuilder } from \"@discordjs/builders\";",
 			"export const command: SlashCommand = {",
 			"\tdata: async (client: Client): Promise<SyncSlashCommandBuilder> => {",
@@ -27,7 +27,7 @@
 			"\t\t\t.setName(\"${1:Name}\")",
 			"\t\t\t.setDescription(\"${1:Description}\"),",
 			"\t},",
-			"\texecute: async (interaction: CommandInteraction, client: Client) => {",
+			"\texecute: async (interaction: ChatInputCommandInteraction, client: Client) => {",
             "\t\tif (!interaction.hasPermission(${3})) return;",
 			"\t\t${4://todo: implement command}",
 			"\t},\n};"
@@ -38,14 +38,14 @@
 		"prefix": "nct",
 		"body": [
 			"import { SlashCommand } from \"@interfaces\";",
-			"import { Client, CommandInteraction, Message, MessageEmbed } from \"@client\";",
+			"import { Client, ChatInputCommandInteraction, Message, EmbedBuilder } from \"@client\";",
 			"import { SlashCommandBuilder } from \"@discordjs/builders\";",
 			"export const command: SlashCommand = {",
 			"\tdata: new SlashCommandBuilder()",
 
 			"\t\t.setName(\"${1:Name}\")",
 			"\t\t.setDescription(`${2:Description}`),",
-			"\texecute: async (interaction: CommandInteraction, client: Client) => {",
+			"\texecute: async (interaction: ChatInputCommandInteraction, client: Client) => {",
             "\t\tif (!interaction.hasPermission(${3})) return;",
 			"\t\t${4://todo: implement command}",
 			"\t},\n};"

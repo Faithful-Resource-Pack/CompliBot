@@ -1,6 +1,6 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { Client, CommandInteraction, MessageEmbed } from "@client";
+import { Client, ChatInputCommandInteraction, EmbedBuilder } from "@client";
 import { PermissionFlagsBits } from "discord-api-types/v10";
 import settings from "@json/dynamic/settings.json";
 
@@ -13,7 +13,7 @@ export const command: SlashCommand = {
 			option.setName("code").setDescription("The code to evaluate.").setRequired(true),
 		)
 		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
-	execute: async (interaction: CommandInteraction) => {
+	execute: async (interaction: ChatInputCommandInteraction) => {
 		if (!interaction.hasPermission("dev")) return;
 		const clean = async (text: any, client: Client): Promise<string> => {
 			if (text && text.constructor.name === "Promise") text = await text;
@@ -44,7 +44,7 @@ export const command: SlashCommand = {
 		interaction.reply({
 			ephemeral: true,
 			embeds: [
-				new MessageEmbed().setDescription(
+				new EmbedBuilder().setDescription(
 					`\`\`\`js\n${(await clean(evaluated, interaction.client as Client)).slice(
 						0,
 						4085,

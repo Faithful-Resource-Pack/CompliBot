@@ -1,6 +1,6 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction, MessageEmbed, Message } from "@client";
+import { ChatInputCommandInteraction, EmbedBuilder, Message } from "@client";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -10,8 +10,8 @@ export const command: SlashCommand = {
 		.addStringOption((string) =>
 			string.setName("weapon").setDescription("Weapon to kill the user with."),
 		),
-	execute: async (interaction: CommandInteraction) => {
-		let embed = new MessageEmbed();
+	execute: async (interaction: ChatInputCommandInteraction) => {
+		let embed = new EmbedBuilder();
 
 		const killed = (
 			await interaction.getEphemeralString({

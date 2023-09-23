@@ -1,11 +1,11 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { Client, MessageEmbed, CommandInteraction, Message } from "@client";
+import { Client, EmbedBuilder, ChatInputCommandInteraction, Message } from "@client";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder().setName("ping").setDescription("Check the bot and API latency."),
-	execute: async (interaction: CommandInteraction, client: Client) => {
-		let embed = new MessageEmbed().setTitle(
+	execute: async (interaction: ChatInputCommandInteraction, client: Client) => {
+		let embed = new EmbedBuilder().setTitle(
 			await interaction.getEphemeralString({ string: "Command.Ping.Await" }),
 		);
 		await interaction.reply({ embeds: [embed] }).then(async () => {

@@ -1,7 +1,7 @@
 import { Config, SlashCommand, SlashCommandI } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { Client, MessageEmbed, CommandInteraction } from "@client";
-import { Collection, MessageAttachment, TextChannel } from "discord.js";
+import { Client, EmbedBuilder, ChatInputCommandInteraction } from "@client";
+import { Collection, AttachmentBuilder, TextChannel } from "discord.js";
 import ConfigJson from "@json/config.json";
 import { colors } from "@helpers/colors";
 import { readFileSync, writeFileSync } from "fs";
@@ -49,7 +49,7 @@ export const command: SlashCommand = {
 		)
 		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 	execute: new Collection<string, SlashCommandI>()
-		.set("audit", async (interaction: CommandInteraction, client: Client) => {
+		.set("audit", async (interaction: ChatInputCommandInteraction, client: Client) => {
 			if (!interaction.hasPermission("dev")) return;
 
 			await interaction.deferReply({ ephemeral: true });
@@ -79,7 +79,7 @@ export const command: SlashCommand = {
 				} <@${victimID}>`,
 				ephemeral: true,
 			});
-			const embed: MessageEmbed = new MessageEmbed()
+			const embed: EmbedBuilder = new EmbedBuilder()
 				.setTitle(
 					`${
 						interaction.options.getBoolean("revoke") ? "Removed" : "Added"
@@ -87,7 +87,7 @@ export const command: SlashCommand = {
 				)
 				.setAuthor({
 					name: interaction.user.username,
-					iconURL: interaction.user.avatarURL({ dynamic: true }),
+					iconURL: interaction.user.avatarURL(),
 				})
 				.setColor(colors.red)
 				.addFields([
@@ -113,7 +113,7 @@ export const command: SlashCommand = {
 				return;
 			} // can't fetch channel
 		})
-		.set("view", async (interaction: CommandInteraction, client: Client) => {
+		.set("view", async (interaction: ChatInputCommandInteraction, client: Client) => {
 			if (!interaction.hasPermission("dev")) return;
 
 			await interaction.deferReply({ ephemeral: true });
@@ -126,23 +126,23 @@ export const command: SlashCommand = {
 			switch (interaction.options.getString("format")) {
 				case "json":
 					return interaction.followUp({
-						files: [new MessageAttachment(buffer, "bans.json")],
+						files: [new AttachmentBuilder(buffer, { name: "bans.json" })],
 						ephemeral: true,
 					});
 				case "emb":
-					const emb = new MessageEmbed()
+					const emb = new EmbedBuilder()
 						.setTitle("Botbanned IDs:")
 						.setDescription(JSON.parse(buffer.toString("utf-8"))["ids"].join("\n"));
 					return interaction.followUp({ embeds: [emb], ephemeral: true });
 				case "ment":
-					const pingEmb = new MessageEmbed()
+					const pingEmb = new EmbedBuilder()
 						.setTitle("Botbanned Users:")
 						.setDescription("<@" + JSON.parse(buffer.toString("utf-8"))["ids"].join(">\n<@") + ">");
 					return interaction.followUp({ embeds: [pingEmb], ephemeral: true });
 				case "txt":
 				default:
 					interaction.followUp({
-						files: [new MessageAttachment(txtBuff, "bans.txt")],
+						files: [new AttachmentBuilder(txtBuff, { name: "bans.txt" })],
 						ephemeral: true,
 					});
 					break;

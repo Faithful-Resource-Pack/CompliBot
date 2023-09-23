@@ -1,10 +1,10 @@
 import axios from "axios";
-import { CommandInteraction, Client, Message, MessageEmbed } from "@client";
+import { ChatInputCommandInteraction, Client, Message, EmbedBuilder } from "@client";
 import { colors } from "@helpers/colors";
 
 export default async function parseTextureName(
 	name: string,
-	interaction: CommandInteraction,
+	interaction: ChatInputCommandInteraction,
 ): Promise<any[]> {
 	name = name.toLowerCase().trim().replace(".png", "").replace("#", "").replace(/ /g, "_");
 
@@ -12,7 +12,7 @@ export default async function parseTextureName(
 		interaction
 			.editReply({
 				embeds: [
-					new MessageEmbed()
+					new EmbedBuilder()
 						.setTitle("Action failed!")
 						.setDescription("You need at least three characters to start a texture search!")
 						.setColor(colors.red),

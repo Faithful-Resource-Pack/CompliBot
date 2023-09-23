@@ -1,4 +1,4 @@
-import { Message, MessageActionRow, MessageEmbed } from "discord.js";
+import { Message, ActionRowBuilder, EmbedBuilder } from "discord.js";
 import { ids } from "@helpers/emojis";
 import { Config, Tokens } from "@interfaces";
 import config from "@json/config.json";
@@ -48,7 +48,7 @@ const MessageBody = {
 		return this.edit({
 			components: [
 				...this.components,
-				new MessageActionRow().addComponents([
+				new ActionRowBuilder().addComponents([
 					hasAuthorID === true ? deleteMessage : deleteInteraction,
 				]),
 			],
@@ -65,7 +65,7 @@ const MessageBody = {
 	warn: async function (text: string, disappearing?: boolean, timeout?: number) {
 		if (!timeout) timeout = 30;
 
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setColor(colors.red)
 			.setThumbnail(settings.images.error)
 			.setTitle("Action failed!")

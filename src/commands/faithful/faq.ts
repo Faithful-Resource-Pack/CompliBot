@@ -1,6 +1,6 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction, Message, MessageEmbed, Client } from "@client";
+import { ChatInputCommandInteraction, Message, EmbedBuilder, Client } from "@client";
 import { colors } from "@helpers/colors";
 import faqStrings from "@json/faq.json";
 import settings from "@json/dynamic/settings.json";
@@ -12,7 +12,7 @@ export const command: SlashCommand = {
 		.addStringOption((option) =>
 			option.setName("keyword").setDescription("The specific FAQ entry to view.").setRequired(true),
 		),
-	execute: async (interaction: CommandInteraction) => {
+	execute: async (interaction: ChatInputCommandInteraction) => {
 		const choice = interaction.options.getString("keyword", true).toLocaleLowerCase().trim();
 
 		if (choice == "all") {
@@ -27,7 +27,7 @@ export const command: SlashCommand = {
 
 			for (let faq of faqStrings) {
 				embedArray.push(
-					new MessageEmbed()
+					new EmbedBuilder()
 						.setTitle(faq.question)
 						.setDescription(faq.answer)
 						.setColor(colors.brand)
@@ -49,7 +49,7 @@ export const command: SlashCommand = {
 		const faqChoice = faqStrings.filter((faq) => faq.keywords.includes(choice))?.[0];
 
 		if (!faqChoice) {
-			const errorEmbed = new MessageEmbed()
+			const errorEmbed = new EmbedBuilder()
 				.setTitle("Invalid choice!")
 				.setDescription(`\`${choice}\` is not a valid FAQ keyword! Have you made a typo?`)
 				.setColor(colors.red);
@@ -58,7 +58,7 @@ export const command: SlashCommand = {
 			return;
 		}
 
-		const faqEmbed = new MessageEmbed()
+		const faqEmbed = new EmbedBuilder()
 			.setTitle(faqChoice.question)
 			.setDescription(faqChoice.answer)
 			.setThumbnail(settings.images.question)

@@ -1,6 +1,6 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction, MessageEmbed } from "@client";
+import { ChatInputCommandInteraction, EmbedBuilder } from "@client";
 import { generalSlashCommandImage } from "@functions/slashCommandImage";
 import { magnifyAttachment } from "@images/magnify";
 
@@ -26,11 +26,11 @@ export const command: SlashCommand = {
 				.setDescription("The scale factor the image should be enlarged by.")
 				.setRequired(false);
 		}),
-	execute: (interaction: CommandInteraction) => {
+	execute: (interaction: ChatInputCommandInteraction) => {
 		generalSlashCommandImage(interaction, magnifyAttachment, {
 			factor: interaction.options.getNumber("factor"),
 			name: "magnified.png",
-			embed: new MessageEmbed().setTitle("Magnified").setImage("attachment://magnified.png"),
+			embed: new EmbedBuilder().setTitle("Magnified").setImage("attachment://magnified.png"),
 		});
 	},
 };

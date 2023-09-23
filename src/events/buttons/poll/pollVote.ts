@@ -1,5 +1,5 @@
 import { Button } from "@interfaces";
-import { Client, Message, ButtonInteraction, MessageEmbed } from "@client";
+import { Client, Message, ButtonInteraction, EmbedBuilder } from "@client";
 import { Poll } from "@class/poll";
 
 export const button: Button = {
@@ -7,7 +7,7 @@ export const button: Button = {
 	execute: async (client: Client, interaction: ButtonInteraction) => {
 		await interaction.deferUpdate();
 		const message: Message = interaction.message as Message;
-		const embed: MessageEmbed = message.embeds[0];
+		const embed: EmbedBuilder = message.embeds[0];
 
 		// get poll, update it
 		const pid: string = embed.footer.text.split(" | ")[0];

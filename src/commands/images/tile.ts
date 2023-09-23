@@ -1,6 +1,6 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction, MessageEmbed } from "@client";
+import { ChatInputCommandInteraction, EmbedBuilder } from "@client";
 import { tileAttachment, tileShape } from "@images/tile";
 import { generalSlashCommandImage } from "@functions/slashCommandImage";
 
@@ -34,7 +34,7 @@ export const command: SlashCommand = {
 		.addAttachmentOption((o) =>
 			o.setName("image").setDescription("The image to tile").setRequired(false),
 		),
-	execute: async (interaction: CommandInteraction) => {
+	execute: async (interaction: ChatInputCommandInteraction) => {
 		const random = interaction.options.getString("random");
 		const shape: tileShape = (interaction.options.getString("type") ?? "grid") as tileShape;
 
@@ -43,7 +43,7 @@ export const command: SlashCommand = {
 			random: random,
 			shape: shape,
 			name: "tiled.png",
-			embed: new MessageEmbed()
+			embed: new EmbedBuilder()
 				.setTitle(`Tiled as ${shape}`)
 				.setDescription(`Random: ${random == undefined ? false : random}`)
 				.setImage("attachment://tiled.png"),

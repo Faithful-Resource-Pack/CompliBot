@@ -1,6 +1,6 @@
 import { pollDelete, pollVotes, pollYesNo } from "@helpers/buttons";
-import { Client, CommandInteraction, Message, MessageEmbed } from "@client";
-import { MessageActionRow, MessageButton, TextChannel, EmbedField } from "discord.js";
+import { Client, ChatInputCommandInteraction, Message, EmbedBuilder } from "@client";
+import { ActionRowBuilder, ButtonBuilder, TextChannel, EmbedField } from "discord.js";
 import { TimedEmbed } from "./timedEmbed";
 
 export interface PollOptions {
@@ -30,8 +30,8 @@ export class Poll extends TimedEmbed {
 			return;
 		}
 
-		const embed: MessageEmbed = new MessageEmbed(message.embeds[0]);
-		let components: Array<MessageActionRow> = message.components;
+		const embed: EmbedBuilder = new EmbedBuilder(message.embeds[0]);
+		let components: Array<ActionRowBuilder> = message.components;
 		let isYesno: boolean = false;
 
 		if (this.getStatus() === "ended") components = [];
@@ -117,8 +117,8 @@ export class Poll extends TimedEmbed {
 	 * @param options different options for the poll
 	 */
 	public async postMessage(
-		interaction: CommandInteraction,
-		embed: MessageEmbed,
+		interaction: ChatInputCommandInteraction,
+		embed: EmbedBuilder,
 		options: PollOptions,
 	): Promise<void> {
 		embed.setTitle(options.question);
@@ -143,17 +143,17 @@ export class Poll extends TimedEmbed {
 				{ name: "Status", value: `*Will end <t:${this.getTimeout()}:R>*`, inline: true },
 			]);
 
-		const components: Array<MessageActionRow> = [];
+		const components: Array<ActionRowBuilder> = [];
 		if (options.yesno) components.push(pollYesNo);
 		else {
-			const btns: Array<MessageButton> = [];
+			const btns: Array<ButtonBuilder> = [];
 			options.answersArr.forEach((el, index) => btns.push(pollVotes[index]));
-			components.push(new MessageActionRow().addComponents(btns));
+			components.push(new ActionRowBuilder().addComponents(btns));
 		}
 
 		const message: Message = (await interaction.editReply({
 			embeds: [embed],
-			components: [...components, new MessageActionRow().addComponents(pollDelete)],
+			components: [...components, new ActionRowBuilder().addComponents(pollDelete)],
 		})) as any;
 
 		if (options.question.length > 100) {

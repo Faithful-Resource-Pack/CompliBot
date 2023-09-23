@@ -1,6 +1,6 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction } from "discord.js";
+import { ChatInputCommandInteraction } from "discord.js";
 import { Client, Message } from "@client";
 import { PermissionFlagsBits } from "discord-api-types/v10";
 
@@ -15,7 +15,7 @@ export const command: SlashCommand = {
 				.setRequired(true),
 		)
 		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
-	execute: async (interaction: CommandInteraction, client: Client) => {
+	execute: async (interaction: ChatInputCommandInteraction, client: Client) => {
 		if (!interaction.hasPermission("dev")) return;
 
 		interaction

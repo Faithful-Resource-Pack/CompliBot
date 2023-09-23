@@ -1,8 +1,8 @@
 import { Client } from "@client";
-import { SelectMenuInteraction } from "discord.js";
+import { StringSelectMenuInteraction } from "discord.js";
 
 interface Execute {
-	(client: Client, interaction: SelectMenuInteraction): void;
+	(client: Client, interaction: StringSelectMenuInteraction): void;
 }
 
 export interface SelectMenu {

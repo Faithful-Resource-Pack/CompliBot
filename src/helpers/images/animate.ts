@@ -1,5 +1,5 @@
 import { Canvas, SKRSContext2D, createCanvas, loadImage, Image } from "@napi-rs/canvas";
-import { MessageAttachment, MessageEmbed } from "discord.js";
+import { AttachmentBuilder, EmbedBuilder } from "discord.js";
 import getDimensions from "./getDimensions";
 import GIFEncoder from "./GIFEncoder";
 import { ISizeCalculationResult } from "image-size/dist/types/interface";
@@ -10,12 +10,12 @@ interface Options {
 	mcmeta?: Object;
 	name?: string;
 	magnify?: boolean;
-	embed?: MessageEmbed;
+	embed?: EmbedBuilder;
 	image?: Image;
 	style?: keyof typeof mcmetaList;
 }
 
-export async function animateAttachment(options: Options): Promise<MessageAttachment> {
+export async function animateAttachment(options: Options): Promise<AttachmentBuilder> {
 	const dimension = await getDimensions(options.url);
 	if (options.magnify) {
 		let factor: number = 1;
@@ -49,7 +49,7 @@ export async function animateAttachment(options: Options): Promise<MessageAttach
  * @param options options for the animation
  * @returns animated gif of the provided image
  */
-export async function animateImage(options: Options): Promise<[MessageAttachment, MessageEmbed]> {
+export async function animateImage(options: Options): Promise<[AttachmentBuilder, EmbedBuilder]> {
 	const dimension = await getDimensions(options.url);
 	const style = options.style;
 	const embed = options.embed;
@@ -89,7 +89,7 @@ export async function animate(
 	mcmeta: any,
 	dimension: ISizeCalculationResult,
 	baseCanvas: Canvas,
-): Promise<MessageAttachment> {
+): Promise<AttachmentBuilder> {
 	if (dimension.height > 16384 || dimension.width > 512)
 		return Promise.reject("Output is too big!");
 
@@ -199,8 +199,7 @@ export async function animate(
 	}
 
 	encoder.finish();
-	return new MessageAttachment(
-		encoder.out.getData(),
-		options.name ? options.name : "animation.gif",
-	);
+	return new AttachmentBuilder(encoder.out.getData(), {
+		name: options.name ? options.name : "animation.gif",
+	});
 }

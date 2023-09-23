@@ -1,7 +1,7 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { Message, MessageEmbed, CommandInteraction, Client } from "@client";
-import { MessageAttachment } from "discord.js";
+import { Message, EmbedBuilder, ChatInputCommandInteraction, Client } from "@client";
+import { AttachmentBuilder } from "discord.js";
 import axios from "axios";
 import settings from "@json/dynamic/settings.json";
 import { formatName } from "@helpers/sorter";
@@ -17,10 +17,10 @@ export const command: SlashCommand = {
 				.setDescription("User you want to look up (leave blank if you want to search yourself).")
 				.setRequired(false),
 		),
-	execute: async (interaction: CommandInteraction) => {
+	execute: async (interaction: ChatInputCommandInteraction) => {
 		await interaction.deferReply();
 
-		const loadingEmbed = new MessageEmbed()
+		const loadingEmbed = new EmbedBuilder()
 			.setTitle("Searching for contributions...")
 			.setDescription("This can take some time, please wait...")
 			.setThumbnail(settings.images.loading);
@@ -39,7 +39,7 @@ export const command: SlashCommand = {
 				)
 			).data;
 		} catch {
-			const finalEmbed = new MessageEmbed()
+			const finalEmbed = new EmbedBuilder()
 				.setTitle(`${user.username} has no contributions!`)
 				.setDescription(
 					"No database profile was found for this user. If this data looks incorrect, register at https://webapp.faithfulpack.net.",
@@ -85,7 +85,7 @@ export const command: SlashCommand = {
 		});
 
 		let packCount = {};
-		let files: MessageAttachment[] | undefined;
+		let files: AttachmentBuilder[] | undefined;
 		if (finalData.length) {
 			const textBuf = Buffer.from(
 				finalData
@@ -96,10 +96,10 @@ export const command: SlashCommand = {
 					})
 					.join("\n"),
 			);
-			files = [new MessageAttachment(textBuf, "about.txt")];
+			files = [new AttachmentBuilder(textBuf, { name: "about.txt" })];
 		}
 
-		const finalEmbed = new MessageEmbed()
+		const finalEmbed = new EmbedBuilder()
 			.setTitle(
 				`${user.username} has ${finalData.length} ${
 					finalData.length == 1 ? "contribution" : "contributions"

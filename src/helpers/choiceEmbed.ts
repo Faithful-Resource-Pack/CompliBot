@@ -1,5 +1,5 @@
-import { MessageEmbed, CommandInteraction, Message } from "@client";
-import { MessageActionRow, MessageSelectOptionData, MessageSelectMenu } from "discord.js";
+import { EmbedBuilder, ChatInputCommandInteraction, Message } from "@client";
+import { ActionRowBuilder, MessageSelectOptionData, MessageSelectMenu } from "discord.js";
 import { Textures } from "@interfaces";
 import { minecraftSorter } from "@helpers/sorter";
 import settings from "@json/dynamic/settings.json";
@@ -11,12 +11,12 @@ import settings from "@json/dynamic/settings.json";
  * @param choices pre-formatted choices to add in the menus
  */
 export async function generalChoiceEmbed(
-	interaction: CommandInteraction,
+	interaction: ChatInputCommandInteraction,
 	menuID: string,
 	choices: MessageSelectOptionData[],
 ) {
 	const choicesLength = choices.length; // we're modifying choices directly so it needs to be saved first
-	const components: Array<MessageActionRow> = [];
+	const components: Array<ActionRowBuilder> = [];
 	const emojis = settings.emojis.default_select;
 
 	// dividing into maximum of 25 choices per menu
@@ -37,12 +37,12 @@ export async function generalChoiceEmbed(
 			.setPlaceholder("Select an option!")
 			.addOptions(options);
 
-		const row = new MessageActionRow().addComponents(menu);
+		const row = new ActionRowBuilder().addComponents(menu);
 
 		components.push(row);
 	}
 
-	const embed = new MessageEmbed()
+	const embed = new EmbedBuilder()
 		.setTitle(`${choicesLength} results found`)
 		.setDescription(`If you can't what you're looking for, please be more specific!`);
 
@@ -59,7 +59,7 @@ export async function generalChoiceEmbed(
  * @param constValue extra info to send to the menuID (separate multiple values with "__")
  */
 export async function textureChoiceEmbed(
-	interaction: CommandInteraction,
+	interaction: ChatInputCommandInteraction,
 	menuID: string,
 	results: Textures,
 	constValue: string,

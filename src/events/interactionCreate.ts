@@ -1,5 +1,10 @@
 import { Event } from "@interfaces";
-import { Client, CommandInteraction, ButtonInteraction, SelectMenuInteraction } from "@client";
+import {
+	Client,
+	ChatInputCommandInteraction,
+	ButtonInteraction,
+	StringSelectMenuInteraction,
+} from "@client";
 import { Interaction } from "discord.js";
 
 export const event: Event = {
@@ -9,9 +14,14 @@ export const event: Event = {
 
 		const banlist = require("@json/botbans.json");
 		if (banlist.ids.indexOf(interaction.user.id) > -1) {
-			(interaction as CommandInteraction | ButtonInteraction | SelectMenuInteraction).reply({
+			(
+				interaction as ChatInputCommandInteraction | ButtonInteraction | StringSelectMenuInteraction
+			).reply({
 				content: await (
-					interaction as CommandInteraction | ButtonInteraction | SelectMenuInteraction
+					interaction as
+						| ChatInputCommandInteraction
+						| ButtonInteraction
+						| StringSelectMenuInteraction
 				).getEphemeralString({
 					string: "Command.Botban.isBanned",
 				}),
@@ -21,7 +31,7 @@ export const event: Event = {
 		}
 
 		if (interaction.isCommand()) {
-			let _ = (interaction as CommandInteraction) instanceof CommandInteraction; //! do not remove, 'force' interaction to be casted (break if removed)
+			let _ = (interaction as ChatInputCommandInteraction) instanceof ChatInputCommandInteraction; //! do not remove, 'force' interaction to be casted (break if removed)
 			client.emit("slashCommandUsed", (client as Client, interaction));
 		}
 		if (interaction.isButton()) {
@@ -30,7 +40,7 @@ export const event: Event = {
 		}
 
 		if (interaction.isSelectMenu()) {
-			let _ = (interaction as SelectMenuInteraction) instanceof SelectMenuInteraction; //! do not remove, 'force' interaction to be casted (break if removed)
+			let _ = (interaction as StringSelectMenuInteraction) instanceof StringSelectMenuInteraction; //! do not remove, 'force' interaction to be casted (break if removed)
 			client.emit("selectMenuUsed", (client as Client, interaction));
 		}
 	},

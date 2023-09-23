@@ -2,7 +2,7 @@ import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { colors } from "@helpers/colors";
 import { media } from "@helpers/infoembed";
-import { Message, MessageEmbed, CommandInteraction } from "@client";
+import { Message, EmbedBuilder, ChatInputCommandInteraction } from "@client";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -21,7 +21,7 @@ export const command: SlashCommand = {
 					{ name: "All", value: "all" },
 				),
 		),
-	execute: async (interaction: CommandInteraction) => {
+	execute: async (interaction: ChatInputCommandInteraction) => {
 		const key: string = interaction.options.getString("name", false) ?? "general";
 
 		if (key === "all") {
@@ -29,10 +29,10 @@ export const command: SlashCommand = {
 			interaction
 				.reply({ content: "** **", fetchReply: true })
 				.then((message: Message) => message.delete());
-			let embedArray: MessageEmbed[] = [];
+			let embedArray: EmbedBuilder[] = [];
 			for (let i of Object.values(media)) {
 				embedArray.push(
-					new MessageEmbed()
+					new EmbedBuilder()
 						.setTitle(i.title)
 						.setDescription(i.description)
 						.setColor(i.color)
@@ -43,7 +43,7 @@ export const command: SlashCommand = {
 			return await interaction.channel.send({ embeds: embedArray });
 		}
 
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setTitle(media[key].title)
 			.setDescription(media[key].description)
 			.setColor(media[key].color)

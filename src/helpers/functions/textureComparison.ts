@@ -1,8 +1,7 @@
 import stitch from "@images/stitch";
 import { magnify } from "@images/magnify";
 import { loadImage } from "@napi-rs/canvas";
-import { Client, MessageEmbed } from "@client";
-import { MessageAttachment } from "discord.js";
+import { Client, EmbedBuilder } from "@client";
 import { formatName, addPathsToEmbed } from "@helpers/sorter";
 import getDimensions from "@images/getDimensions";
 import { Texture } from "@interfaces";
@@ -60,7 +59,7 @@ export default async function textureComparison(
 		if (dimension.width * dimension.height * displayed.flat().length > 262144) {
 			return {
 				embeds: [
-					new MessageEmbed()
+					new EmbedBuilder()
 						.setTitle("Output will be too big!")
 						.setDescription(
 							"Try specifying which set of packs you want to view to reduce the total image size.",
@@ -94,7 +93,7 @@ export default async function textureComparison(
 	const stitched = await stitch(loadedImages, longestRow == 3 ? 4 : 2);
 
 	const magnified = (await magnify({ image: await loadImage(stitched), name: "magnified.png" }))[0];
-	const embed = new MessageEmbed().setImage("attachment://magnified.png");
+	const embed = new EmbedBuilder().setImage("attachment://magnified.png");
 
 	if (isTemplate)
 		embed.setTitle(`Comparison Template`).addFields([

@@ -1,6 +1,6 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction, Message, MessageEmbed } from "@client";
+import { ChatInputCommandInteraction, Message, EmbedBuilder } from "@client";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -17,7 +17,7 @@ export const command: SlashCommand = {
 				)
 				.setRequired(true),
 		),
-	execute: async (interaction: CommandInteraction) => {
+	execute: async (interaction: ChatInputCommandInteraction) => {
 		const choice = interaction.options.getString("server", true);
 		let contents: string;
 		switch (choice) {

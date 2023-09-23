@@ -1,6 +1,6 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction, Message, MessageEmbed } from "@client";
+import { ChatInputCommandInteraction, Message, EmbedBuilder } from "@client";
 import guidelineJSON from "@json/guidelines.json";
 import { colors } from "@helpers/colors";
 
@@ -24,11 +24,11 @@ export const command: SlashCommand = {
 				.setDescription("A specific part of the guidelines you want to link to")
 				.setRequired(false),
 		),
-	execute: async (interaction: CommandInteraction) => {
+	execute: async (interaction: ChatInputCommandInteraction) => {
 		let contents: string;
 		let choice = interaction.options.getString("choice");
 		const pack = interaction.options.getString("pack");
-		const errorEmbed = new MessageEmbed()
+		const errorEmbed = new EmbedBuilder()
 			.setTitle("Invalid choice!")
 			.setDescription(
 				`\`${choice}\` is not a valid choice for pack \`${pack}\`. Have you chosen the wrong pack or made a typo?`,

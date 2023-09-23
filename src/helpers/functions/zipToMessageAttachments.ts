@@ -1,9 +1,9 @@
 import axios from "axios";
-import { MessageAttachment } from "discord.js";
+import { AttachmentBuilder } from "discord.js";
 import JSZip from "jszip";
 
-export const zipToMA = async (url: string): Promise<Array<MessageAttachment>> => {
-	let output: Array<MessageAttachment> = [];
+export const zipToMA = async (url: string): Promise<Array<AttachmentBuilder>> => {
+	let output: Array<AttachmentBuilder> = [];
 
 	// get zip as arraybuffer
 	const zip: ArrayBuffer = (
@@ -38,9 +38,9 @@ export const zipToMA = async (url: string): Promise<Array<MessageAttachment>> =>
 			}, {});
 		});
 
-	// convert to MessageAttachment
+	// convert to AttachmentBuilder
 	Object.keys(zipFiles).forEach((key: string) => {
-		output.push(new MessageAttachment(zipFiles[key], key));
+		output.push(new AttachmentBuilder(zipFiles[key], { name: key }));
 	});
 
 	return output;

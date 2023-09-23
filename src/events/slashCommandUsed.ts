@@ -1,11 +1,11 @@
 import { SlashCommandI } from "@interfaces";
 import { Collection } from "discord.js";
 import { Event } from "@interfaces";
-import { Client, CommandInteraction } from "@client";
+import { Client, ChatInputCommandInteraction } from "@client";
 
 export const event: Event = {
 	name: "slashCommandUsed",
-	run: async (client: Client, interaction: CommandInteraction) => {
+	run: async (client: Client, interaction: ChatInputCommandInteraction) => {
 		client.storeAction("slashCommand", interaction);
 
 		// get command name
@@ -28,7 +28,7 @@ export const event: Event = {
 			// not a subcommand
 			try {
 				// execute command
-				(command.execute as SlashCommandI)(interaction as CommandInteraction, client);
+				(command.execute as SlashCommandI)(interaction as ChatInputCommandInteraction, client);
 			} catch (err) {
 				console.error(err);
 				return interaction.reply({ content: "There were an error with command!", ephemeral: true });

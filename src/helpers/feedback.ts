@@ -1,4 +1,4 @@
-import { Client, ButtonInteraction, MessageEmbed, Message } from "@client";
+import { Client, ButtonInteraction, EmbedBuilder, Message } from "@client";
 import settings from "@json/dynamic/settings.json";
 import { colors } from "@helpers/colors";
 
@@ -54,7 +54,7 @@ export default async function sendFeedback(
 			ephemeral: true,
 		});
 
-	const responseEmbed = new MessageEmbed()
+	const responseEmbed = new EmbedBuilder()
 		.setTitle(
 			(await interaction.getEphemeralString({ string: "Command.Feedback.Sent" })).replace(
 				"%FEEDBACKTYPE%",
@@ -76,7 +76,7 @@ export default async function sendFeedback(
 	const url: string = reply.url;
 	const quote: string = quotes[type][Math.floor(Math.random() * quotes[type].length)];
 
-	const developerEmbed = new MessageEmbed()
+	const developerEmbed = new EmbedBuilder()
 		.setAuthor({ name: interaction.user.username, iconURL: interaction.user.avatarURL() })
 		.setTitle(`[${type.toUpperCase()}] Feedback`)
 		.setURL(url)

@@ -1,12 +1,17 @@
-import { ButtonInteraction, CommandInteraction, Role, SelectMenuInteraction } from "discord.js";
+import {
+	ButtonInteraction,
+	ChatInputCommandInteraction,
+	Role,
+	StringSelectMenuInteraction,
+} from "discord.js";
 import { string, keys, Placeholder } from "@helpers/locales";
 import { PermissionFlagsBits } from "discord-api-types/v10";
-import { MessageEmbed } from "@client";
+import { EmbedBuilder } from "@client";
 
 export type PermissionType = "manager" | "dev" | "moderator" | "council";
 
 declare module "discord.js" {
-	interface CommandInteraction {
+	interface ChatInputCommandInteraction {
 		getEphemeralString(options: TextOptions): Promise<string>;
 		getString(options: TextOptions): Promise<string>;
 		/**
@@ -20,7 +25,7 @@ declare module "discord.js" {
 		getString(options: TextOptions): Promise<string>;
 	}
 
-	interface SelectMenuInteraction {
+	interface StringSelectMenuInteraction {
 		getEphemeralString(options: TextOptions): Promise<string>;
 		getString(options: TextOptions): Promise<string>;
 	}
@@ -42,7 +47,7 @@ function hasPermission(type: PermissionType): boolean {
 
 	const hasDev = this.client.tokens.developers.includes(this.member.id);
 
-	const noPermission = new MessageEmbed()
+	const noPermission = new EmbedBuilder()
 		.setTitle("You don't have permission to do that!")
 		.setDescription(`Only ${type}s can use this command.`);
 
@@ -62,9 +67,9 @@ function hasPermission(type: PermissionType): boolean {
 	return out;
 }
 
-CommandInteraction.prototype.getEphemeralString = getEphemeralString;
+ChatInputCommandInteraction.prototype.getEphemeralString = getEphemeralString;
 ButtonInteraction.prototype.getEphemeralString = getEphemeralString;
-SelectMenuInteraction.prototype.getEphemeralString = getEphemeralString;
-CommandInteraction.prototype.hasPermission = hasPermission;
+StringSelectMenuInteraction.prototype.getEphemeralString = getEphemeralString;
+ChatInputCommandInteraction.prototype.hasPermission = hasPermission;
 
-export { CommandInteraction, ButtonInteraction, SelectMenuInteraction };
+export { ChatInputCommandInteraction, ButtonInteraction, StringSelectMenuInteraction };

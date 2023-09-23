@@ -1,4 +1,4 @@
-import { Client, Message, SelectMenuInteraction } from "@client";
+import { Client, Message, StringSelectMenuInteraction } from "@client";
 import { SelectMenu } from "@interfaces";
 import { info } from "@helpers/logger";
 import { MessageEditOptions, MessageInteraction } from "discord.js";
@@ -6,7 +6,7 @@ import textureComparison from "@functions/textureComparison";
 
 export const menu: SelectMenu = {
 	selectMenuId: "compareSelect",
-	execute: async (client: Client, interaction: SelectMenuInteraction) => {
+	execute: async (client: Client, interaction: StringSelectMenuInteraction) => {
 		if (client.verbose) console.log(`${info}Texture selected!`);
 
 		const messageInteraction: MessageInteraction = interaction.message

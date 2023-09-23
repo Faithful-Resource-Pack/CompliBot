@@ -1,8 +1,8 @@
 import { Button } from "@interfaces";
 import { info } from "@helpers/logger";
-import { Client, Message, ButtonInteraction, MessageEmbed } from "@client";
+import { Client, Message, ButtonInteraction, EmbedBuilder } from "@client";
 import textureComparison from "@functions/textureComparison";
-import { InteractionEditReplyOptions, MessageEmbedFooter } from "discord.js";
+import { InteractionEditReplyOptions, EmbedBuilderFooter } from "discord.js";
 
 export const button: Button = {
 	buttonId: "compare",
@@ -15,18 +15,18 @@ export const button: Button = {
 		await interaction.deferReply();
 		const messageOptions: InteractionEditReplyOptions = await textureComparison(client, ids[0]);
 
-		(messageOptions.embeds[0] as MessageEmbed).setFooter(
+		(messageOptions.embeds[0] as EmbedBuilder).setFooter(
 			messageOptions.embeds[0].footer
 				? {
 						text: `${messageOptions.embeds[0].footer.text} | ${interaction.user.id}`,
-						iconURL: (messageOptions.embeds[0].footer as MessageEmbedFooter).iconURL,
+						iconURL: (messageOptions.embeds[0].footer as EmbedBuilderFooter).iconURL,
 				  }
 				: {
 						text: interaction.user.id,
 				  },
 		);
 
-		(messageOptions.embeds[0] as MessageEmbed).setTimestamp();
+		(messageOptions.embeds[0] as EmbedBuilder).setTimestamp();
 
 		return interaction.editReply(messageOptions).then((message: Message) => {
 			message.deleteButton(true);

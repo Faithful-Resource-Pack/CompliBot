@@ -1,6 +1,13 @@
-import { CommandInteraction, Message, MessageEmbed } from "@client";
+import { ChatInputCommandInteraction, Message, EmbedBuilder } from "@client";
+import { ActionRowBuilder } from "@discordjs/builders";
 import { imageButtons } from "@helpers/buttons";
-import { Collection, MessageAttachment, User } from "discord.js";
+import {
+	Collection,
+	AttachmentBuilder,
+	User,
+	MessageType,
+	MessageActionRowComponentBuilder,
+} from "discord.js";
 
 /**
  * STEPS:
@@ -15,7 +22,7 @@ import { Collection, MessageAttachment, User } from "discord.js";
  * @returns image url
  */
 export async function fetchMessageImage(
-	interaction: CommandInteraction,
+	interaction: ChatInputCommandInteraction,
 	limit: number,
 	userInteraction: { doInteraction: boolean; user: User; time?: number },
 ): Promise<string> {
@@ -47,7 +54,7 @@ export async function fetchMessageImage(
 	if (!userInteraction.doInteraction) return null;
 
 	// no message found but we wait for user input
-	const embed = new MessageEmbed()
+	const embed = new EmbedBuilder()
 		.setTitle(await interaction.getEphemeralString({ string: "Command.Images.NotFound.Title" }))
 		.setDescription(
 			await interaction.getEphemeralString({
@@ -99,7 +106,7 @@ export async function getImageFromMessage(message: Message): Promise<string> {
 	if (result) return result;
 
 	// if no images attached to the first parent reply, check if there is another parent reply (recursive go brr)
-	if (message.type === "REPLY") {
+	if (message.type === MessageType.Reply) {
 		try {
 			await message.fetchReference();
 		} catch {
@@ -112,9 +119,9 @@ export async function getImageFromMessage(message: Message): Promise<string> {
 	return null; // default value
 }
 
-export type ImageCommand = (args: any) => Promise<[MessageAttachment, MessageEmbed]>;
+export type ImageCommand = (args: any) => Promise<[AttachmentBuilder, EmbedBuilder]>;
 export async function generalSlashCommandImage(
-	interaction: CommandInteraction,
+	interaction: ChatInputCommandInteraction,
 	actionCommand: ImageCommand,
 	actionCommandParams: any,
 ): Promise<void> {
@@ -136,7 +143,7 @@ export async function generalSlashCommandImage(
 		return;
 	}
 
-	const [attachment, embed]: [MessageAttachment, MessageEmbed] = await actionCommand({
+	const [attachment, embed]: [AttachmentBuilder, EmbedBuilder] = await actionCommand({
 		...actionCommandParams,
 		url: imageURL,
 	});
@@ -153,7 +160,9 @@ export async function generalSlashCommandImage(
 		.editReply({
 			files: [attachment],
 			embeds: [embed],
-			components: actionCommandParams.hideButtons ? null : [imageButtons],
+			components: actionCommandParams.hideButtons
+				? null
+				: [imageButtons as ActionRowBuilder<MessageActionRowComponentBuilder>],
 		})
 		.then((message: Message) => {
 			message.deleteButton();

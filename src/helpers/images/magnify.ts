@@ -1,21 +1,21 @@
-import { MessageEmbed } from "@client";
+import { EmbedBuilder } from "@client";
 import { createCanvas, loadImage, Image } from "@napi-rs/canvas";
-import { MessageAttachment } from "discord.js";
+import { AttachmentBuilder } from "discord.js";
 import getDimensions from "./getDimensions";
 import { ISizeCalculationResult } from "image-size/dist/types/interface";
 
 type options = {
 	url?: string;
 	image?: Image;
-	embed?: MessageEmbed;
+	embed?: EmbedBuilder;
 	name?: string;
 	factor?: 32 | 16 | 8 | 4 | 2 | 1 | 0.5 | 0.25;
 	orientation?: "portrait" | "landscape" | "none"; // default is none
 };
 
 /**
- * magnification from pre-loaded image (can't be MessageAttachment, has to be Image)
- * returns image buffer directly rather than a MessageAttachment()
+ * magnification from pre-loaded image (can't be AttachmentBuilder, has to be Image)
+ * returns image buffer directly rather than a AttachmentBuilder()
  */
 export async function magnifyBuffer(options: options, dimension?: ISizeCalculationResult) {
 	let factor = options.factor;
@@ -80,22 +80,22 @@ export async function magnifyBuffer(options: options, dimension?: ISizeCalculati
  */
 export async function magnifyAttachment(
 	options: options,
-): Promise<[MessageAttachment, MessageEmbed]> {
+): Promise<[AttachmentBuilder, EmbedBuilder]> {
 	const dimension = await getDimensions(options.url);
 	return await magnify(options, dimension);
 }
 
 /**
- * magnification from pre-loaded image (can't be MessageAttachment, has to be Image)
+ * magnification from pre-loaded image (can't be AttachmentBuilder, has to be Image)
  */
 export async function magnify(
 	options: options,
 	dimension?: ISizeCalculationResult,
-): Promise<[MessageAttachment, MessageEmbed]> {
+): Promise<[AttachmentBuilder, EmbedBuilder]> {
 	const buf = await magnifyBuffer(options, dimension);
 
 	return [
-		new MessageAttachment(buf, `${options.name ? options.name : "magnified.png"}`),
+		new AttachmentBuilder(buf, { name: `${options.name ? options.name : "magnified.png"}` }),
 		options.embed,
 	];
 }

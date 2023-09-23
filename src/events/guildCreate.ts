@@ -1,4 +1,4 @@
-import { Guild, MessageEmbed } from "discord.js";
+import { Guild, EmbedBuilder } from "discord.js";
 import { Event } from "@interfaces";
 import { info } from "@helpers/logger";
 
@@ -9,7 +9,7 @@ export const event: Event = {
 
 		client.loadSlashCommands();
 
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setTitle("Thanks for Inviting me")
 			.setDescription("To get started, try to type `/` to see all available slash commands!");
 

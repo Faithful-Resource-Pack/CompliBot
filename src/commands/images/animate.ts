@@ -1,6 +1,6 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction, MessageEmbed } from "@client";
+import { ChatInputCommandInteraction, EmbedBuilder } from "@client";
 import { generalSlashCommandImage } from "@functions/slashCommandImage";
 import { animateImage } from "@images/animate";
 
@@ -25,12 +25,12 @@ export const command: SlashCommand = {
 		.addAttachmentOption((o) =>
 			o.setName("image").setDescription("The tilesheet to animate").setRequired(false),
 		),
-	execute: (interaction: CommandInteraction) => {
+	execute: (interaction: ChatInputCommandInteraction) => {
 		const style = interaction.options.getString("style", false) ?? "none";
 		generalSlashCommandImage(interaction, animateImage, {
 			style: style,
 			name: "animated.gif",
-			embed: new MessageEmbed()
+			embed: new EmbedBuilder()
 				.setTitle(`Animated ${style === "none" ? "" : `as ${style}`}`)
 				.setImage("attachment://animated.gif"),
 		});

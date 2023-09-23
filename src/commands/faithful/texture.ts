@@ -1,6 +1,6 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction, MessageEmbed, Message } from "@client";
+import { ChatInputCommandInteraction, EmbedBuilder, Message } from "@client";
 import { getTextureMessageOptions } from "@functions/getTexture";
 import parseTextureName from "@functions/parseTextureName";
 import { colors } from "@helpers/colors";
@@ -31,7 +31,7 @@ export const command: SlashCommand = {
 				)
 				.setRequired(true),
 		),
-	execute: async (interaction: CommandInteraction) => {
+	execute: async (interaction: ChatInputCommandInteraction) => {
 		const name = interaction.options.getString("name");
 
 		// sometimes it takes too long otherwise
@@ -46,7 +46,7 @@ export const command: SlashCommand = {
 			return interaction
 				.editReply({
 					embeds: [
-						new MessageEmbed()
+						new EmbedBuilder()
 							.setTitle("No results found!")
 							.setDescription(
 								await interaction.getEphemeralString({

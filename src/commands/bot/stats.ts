@@ -2,7 +2,7 @@ import { duration } from "moment";
 import { SlashCommand, SlashCommandI } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { Collection, Guild, version as djsVersion } from "discord.js";
-import { Client, MessageEmbed, CommandInteraction, Message } from "@client";
+import { Client, EmbedBuilder, ChatInputCommandInteraction, Message } from "@client";
 import os from "os";
 import linuxOs from "linux-os-info";
 import settings from "@json/dynamic/settings.json";
@@ -26,7 +26,7 @@ export const command: SlashCommand = {
 				),
 		),
 	execute: new Collection<string, SlashCommandI>()
-		.set("bot", async (interaction: CommandInteraction, client: Client) => {
+		.set("bot", async (interaction: ChatInputCommandInteraction, client: Client) => {
 			let sumMembers = 0;
 			let version: string;
 
@@ -43,7 +43,7 @@ export const command: SlashCommand = {
 				await interaction.getEphemeralString({ string: "Command.Stats.Embed.FieldTitles" })
 			).split("$,");
 
-			const embed = new MessageEmbed()
+			const embed = new EmbedBuilder()
 				.setTitle(`${client.user.username}'s Statistics`)
 				.setThumbnail(client.user.displayAvatarURL())
 				.addFields(
@@ -71,7 +71,7 @@ export const command: SlashCommand = {
 				.reply({ embeds: [embed], fetchReply: true })
 				.then((message: Message) => message.deleteButton());
 		})
-		.set("command", async (interaction: CommandInteraction, client: Client) => {
+		.set("command", async (interaction: ChatInputCommandInteraction, client: Client) => {
 			//if the command args are provided and the command does not exist in commandsProcessed:
 			if (
 				interaction.options.getString("command") &&
@@ -88,7 +88,7 @@ export const command: SlashCommand = {
 				});
 
 			if (interaction.options.getString("command")) {
-				const embed = new MessageEmbed().setTimestamp().setTitle(
+				const embed = new EmbedBuilder().setTimestamp().setTitle(
 					await interaction.getEphemeralString({
 						string: "Command.Stats.Usage",
 						placeholders: {
@@ -105,7 +105,7 @@ export const command: SlashCommand = {
 				const sorted = new Map([...client.commandsProcessed.entries()].sort((a, b) => b[1] - a[1]));
 				const data = [[...sorted.keys()], [...sorted.values()]];
 
-				const embed = new MessageEmbed()
+				const embed = new EmbedBuilder()
 					.setTimestamp()
 					.setTitle(await interaction.getEphemeralString({ string: "Command.Stats.Top10" }))
 					.setDescription(`

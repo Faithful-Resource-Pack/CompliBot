@@ -1,6 +1,6 @@
 import { Button } from "@interfaces";
 import { info } from "@helpers/logger";
-import { Client, Message, ButtonInteraction, MessageEmbed } from "@client";
+import { Client, Message, ButtonInteraction, EmbedBuilder } from "@client";
 import { paletteAttachment } from "@images/palette";
 import { getImageFromMessage } from "@functions/slashCommandImage";
 
@@ -25,7 +25,7 @@ export const button: Button = {
 		return interaction
 			.reply({
 				embeds: [
-					new MessageEmbed(embed)
+					new EmbedBuilder(embed)
 						.setFooter({ text: `${interaction.user.username} | ${interaction.user.id}` })
 						.setTimestamp(),
 				],
