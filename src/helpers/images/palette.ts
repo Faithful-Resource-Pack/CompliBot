@@ -115,7 +115,7 @@ export async function paletteAttachment(
 
 	// create URLs
 	const paletteUrls: Array<string> = [];
-	let descriptionLength = embed.description.length;
+	let descriptionLength = embed.data.description.length;
 
 	for (let i = 0; i < paletteGroups.length; ++i) {
 		const link = `**[Palette${
@@ -130,7 +130,7 @@ export async function paletteAttachment(
 
 	// add generate palette link && append palette to description
 	embed.setDescription(
-		`Total: ${Object.values(allColors).length}\n\n` + embed.description + paletteUrls.join(" - "),
+		`Total: ${Object.values(allColors).length}\n\n` + embed.data.description + paletteUrls.join(" - "),
 	);
 
 	// create gradient canvas for top GRADIENT_TOP colors

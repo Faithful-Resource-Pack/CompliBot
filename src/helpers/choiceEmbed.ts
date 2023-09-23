@@ -1,5 +1,9 @@
 import { EmbedBuilder, ChatInputCommandInteraction, Message } from "@client";
-import { ActionRowBuilder, MessageSelectOptionData, MessageSelectMenu } from "discord.js";
+import {
+	ActionRowBuilder,
+	SelectMenuComponentOptionData,
+	StringSelectMenuBuilder,
+} from "discord.js";
 import { Textures } from "@interfaces";
 import { minecraftSorter } from "@helpers/sorter";
 import settings from "@json/dynamic/settings.json";
@@ -13,17 +17,17 @@ import settings from "@json/dynamic/settings.json";
 export async function generalChoiceEmbed(
 	interaction: ChatInputCommandInteraction,
 	menuID: string,
-	choices: MessageSelectOptionData[],
+	choices: SelectMenuComponentOptionData[],
 ) {
 	const choicesLength = choices.length; // we're modifying choices directly so it needs to be saved first
-	const components: Array<ActionRowBuilder> = [];
+	const components: Array<ActionRowBuilder<StringSelectMenuBuilder>> = [];
 	const emojis = settings.emojis.default_select;
 
 	// dividing into maximum of 25 choices per menu
 	// 4 menus max
 	const maxRows = 4; // actually 5 but - 1 because we are adding a delete button to it (the 5th one)
 	for (let currentRow = 0; currentRow <= maxRows && choices.length; ++currentRow) {
-		const options: Array<MessageSelectOptionData> = [];
+		const options: Array<SelectMenuComponentOptionData> = [];
 
 		for (let i = 0; i < emojis.length; i++)
 			if (choices[0] !== undefined) {
@@ -32,12 +36,12 @@ export async function generalChoiceEmbed(
 				options.push(t);
 			}
 
-		const menu = new MessageSelectMenu()
+		const menu = new StringSelectMenuBuilder()
 			.setCustomId(`${menuID}_${currentRow}`)
 			.setPlaceholder("Select an option!")
 			.addOptions(options);
 
-		const row = new ActionRowBuilder().addComponents(menu);
+		const row = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(menu);
 
 		components.push(row);
 	}
@@ -64,7 +68,7 @@ export async function textureChoiceEmbed(
 	results: Textures,
 	constValue: string,
 ) {
-	const mappedResults: MessageSelectOptionData[] = [];
+	const mappedResults: SelectMenuComponentOptionData[] = [];
 	for (let result of results) {
 		mappedResults.push({
 			label: `[#${result.id}] (${result.paths[0].versions.sort(minecraftSorter).reverse()[0]}) ${

@@ -209,7 +209,7 @@ class ExtendedClient extends Client {
 	public deleteGlobalSlashCommands = () => {
 		console.log(`${success}deleting slash commands`);
 
-		const rest = new REST({ version: "9" }).setToken(this.tokens.token);
+		const rest = new REST({ version: "10" }).setToken(this.tokens.token);
 		rest.get(Routes.applicationCommands(this.user.id)).then((data: any) => {
 			const promises = [];
 			for (const command of data)

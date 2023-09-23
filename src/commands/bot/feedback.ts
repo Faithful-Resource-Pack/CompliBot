@@ -1,11 +1,6 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import {
-	ActionRowBuilder,
-	ButtonBuilder,
-	ButtonStyle,
-	MessageActionRowComponentBuilder,
-} from "discord.js";
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
 import { ids, parseId } from "@helpers/emojis";
 import { Client, EmbedBuilder, Message, ChatInputCommandInteraction } from "@client";
 
@@ -38,11 +33,11 @@ export const command: SlashCommand = {
 			.setEmoji(parseId(ids.suggestion))
 			.setCustomId("feedbackSuggestion");
 
-		const buttons = new ActionRowBuilder().addComponents(btnBug, btnSuggestion);
+		const buttons = new ActionRowBuilder<ButtonBuilder>().addComponents(btnBug, btnSuggestion);
 
 		return interaction
 			.reply({
-				components: [buttons as ActionRowBuilder<MessageActionRowComponentBuilder>],
+				components: [buttons],
 				embeds: [embedPreview],
 				fetchReply: true,
 			})

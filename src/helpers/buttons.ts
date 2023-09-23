@@ -64,10 +64,17 @@ export const pollDelete = new ButtonBuilder()
 	.setCustomId("pollDelete");
 
 export const pollVotes = [pollVote1, pollVote2, pollVote3, pollVote4, pollVote5];
-export const pollYesNo = new ActionRowBuilder().addComponents([pollUpvote, pollDownvote]);
+export const pollYesNo = new ActionRowBuilder<ButtonBuilder>().addComponents([
+	pollUpvote,
+	pollDownvote,
+]);
 
-export const imageButtons = new ActionRowBuilder().addComponents([magnify, tile, palette]);
-export const textureButtons = new ActionRowBuilder().addComponents([
+export const imageButtons = new ActionRowBuilder<ButtonBuilder>().addComponents([
+	magnify,
+	tile,
+	palette,
+]);
+export const textureButtons = new ActionRowBuilder<ButtonBuilder>().addComponents([
 	magnify,
 	tile,
 	palette,

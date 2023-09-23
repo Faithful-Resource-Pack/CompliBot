@@ -5,6 +5,7 @@ import { magnifyAttachment } from "@images/magnify";
 import { palette } from "@helpers/buttons";
 import { getImageFromMessage } from "@functions/slashCommandImage";
 import { ActionRowBuilder } from "discord.js";
+import { ButtonBuilder } from "@discordjs/builders";
 
 export const button: Button = {
 	buttonId: "magnify",
@@ -35,7 +36,7 @@ export const button: Button = {
 						.setTimestamp(),
 				],
 				files: [attachment],
-				components: [new ActionRowBuilder().addComponents(palette)],
+				components: [new ActionRowBuilder<ButtonBuilder>().addComponents(palette)],
 				fetchReply: true,
 			})
 			.then((message: Message) => {

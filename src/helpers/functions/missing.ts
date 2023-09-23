@@ -3,7 +3,7 @@ import { existsSync, readdirSync, statSync } from "fs";
 import { mkdir } from "fs/promises";
 import { formatName } from "@helpers/sorter";
 import { Client } from "@client";
-import { AnyChannel, VoiceChannel } from "discord.js";
+import { Channel, ChannelType, VoiceChannel } from "discord.js";
 import { join, normalize } from "path";
 import settings from "@json/dynamic/settings.json";
 
@@ -66,7 +66,7 @@ export const computeAndUpdate = async (
 ): Promise<MissingResult> => {
 	const results = await compute(client, pack, edition, version, callback);
 	if (client !== null) {
-		let channel: AnyChannel;
+		let channel: Channel;
 		try {
 			channel = await client.channels.fetch(
 				settings.channels.pack_progress[results[2].pack][results[2].edition],
@@ -77,7 +77,7 @@ export const computeAndUpdate = async (
 
 		// you can add different patterns depending on the channel type
 		switch (channel.type) {
-			case "GUILD_VOICE":
+			case ChannelType.GuildVoice:
 				const pattern = /[.\d+]+(?!.*[.\d+])/;
 				if (channel.name.match(pattern)?.[0] == results[2].completion.toString()) break;
 

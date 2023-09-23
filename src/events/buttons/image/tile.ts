@@ -5,6 +5,7 @@ import { tileAttachment } from "@images/tile";
 import { magnify, palette } from "@helpers/buttons";
 import { getImageFromMessage } from "@functions/slashCommandImage";
 import { ActionRowBuilder } from "discord.js";
+import { ButtonBuilder } from "@discordjs/builders";
 
 export const button: Button = {
 	buttonId: "tile",
@@ -35,7 +36,7 @@ export const button: Button = {
 						.setTimestamp(),
 				],
 				files: [attachment],
-				components: [new ActionRowBuilder().addComponents(magnify, palette)],
+				components: [new ActionRowBuilder<ButtonBuilder>().addComponents(magnify, palette)],
 				fetchReply: true,
 			})
 			.then((message: Message) => {

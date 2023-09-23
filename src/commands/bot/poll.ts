@@ -76,8 +76,7 @@ export const command: SlashCommand = {
 		/* default embed */
 		const embed = new EmbedBuilder()
 			.setTitle("Poll constructor:")
-			.setDescription(`Please send a message below for each ${answersCount} answers:`)
-			.setFooter({ text: "use /poll to make a poll!" });
+			.setDescription(`Please send a message below for each ${answersCount} answers:`);
 
 		interaction.reply({ embeds: [embed] });
 
@@ -88,7 +87,7 @@ export const command: SlashCommand = {
 		let response: any;
 		const yesnoEmojis: Array<string> = [parseId(ids.upvote), parseId(ids.downvote)];
 		const numberEmojis: Array<string> = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"];
-		embed.addFields([{ name: "Answers", value: "None", inline: true }]);
+		const fields = [{ name: "Answers", value: "None", inline: true }];
 		do {
 			try {
 				const collected = await interaction.channel.awaitMessages({
@@ -109,7 +108,7 @@ export const command: SlashCommand = {
 
 			embed.setDescription(`Waiting for answers... ${answersCount - answersArr.length} left.`);
 			embed.setFields(
-				embed.fields.map((field: EmbedField) => {
+				...fields.map((field: EmbedField) => {
 					if (field.name === "Answers")
 						field.value = answersArr
 							.map(
@@ -124,8 +123,7 @@ export const command: SlashCommand = {
 			response = await interaction.editReply({ embeds: [embed] });
 		} while (answersArr.length < answersCount);
 
-		if (description) embed.setDescription(description);
-		else embed.description = null;
+		embed.setDescription(description || null);
 
 		poll.setMultipleAnswers(multipleAnswers);
 		poll.setAnonymous(anonymous);

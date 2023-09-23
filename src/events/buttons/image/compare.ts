@@ -2,7 +2,7 @@ import { Button } from "@interfaces";
 import { info } from "@helpers/logger";
 import { Client, Message, ButtonInteraction, EmbedBuilder } from "@client";
 import textureComparison from "@functions/textureComparison";
-import { InteractionEditReplyOptions, EmbedBuilderFooter } from "discord.js";
+import { InteractionEditReplyOptions, EmbedFooterData } from "discord.js";
 
 export const button: Button = {
 	buttonId: "compare",
@@ -15,11 +15,13 @@ export const button: Button = {
 		await interaction.deferReply();
 		const messageOptions: InteractionEditReplyOptions = await textureComparison(client, ids[0]);
 
+		const embed = messageOptions.embeds[0] as EmbedBuilder;
+
 		(messageOptions.embeds[0] as EmbedBuilder).setFooter(
-			messageOptions.embeds[0].footer
+			embed.data.footer
 				? {
-						text: `${messageOptions.embeds[0].footer.text} | ${interaction.user.id}`,
-						iconURL: (messageOptions.embeds[0].footer as EmbedBuilderFooter).iconURL,
+						text: `${embed.data.footer.text} | ${interaction.user.id}`,
+						iconURL: embed.data.footer?.icon_url,
 				  }
 				: {
 						text: interaction.user.id,

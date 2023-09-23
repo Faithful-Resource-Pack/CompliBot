@@ -1,5 +1,5 @@
 import { Texture } from "@interfaces";
-import { EmbedFieldData } from "discord.js";
+import { APIEmbedField } from "discord.js";
 
 /**
  * Sort Minecraft Version Numbers
@@ -23,7 +23,7 @@ export const minecraftSorter = (a: string, b: string) => {
 	return _a.length == _b.length ? 0 : _a.length < _b.length ? -1 : 1; // longer length wins
 };
 
-export const addPathsToEmbed = (texture: Texture): EmbedFieldData[] => {
+export const addPathsToEmbed = (texture: Texture): APIEmbedField[] => {
 	const tmp = {};
 	texture.uses.forEach((use) => {
 		texture.paths

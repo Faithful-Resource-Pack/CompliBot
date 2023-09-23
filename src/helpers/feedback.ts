@@ -1,6 +1,7 @@
 import { Client, ButtonInteraction, EmbedBuilder, Message } from "@client";
 import settings from "@json/dynamic/settings.json";
 import { colors } from "@helpers/colors";
+import { ChannelType } from "discord.js";
 
 const quotes = {
 	suggestion: [
@@ -48,7 +49,7 @@ export default async function sendFeedback(
 			ephemeral: true,
 		});
 
-	if (!channel.isText())
+	if (channel.type !== ChannelType.GuildText)
 		return interaction.reply({
 			content: await interaction.getEphemeralString({ string: "Error.Channel.NotTextChannel" }),
 			ephemeral: true,
@@ -66,7 +67,7 @@ export default async function sendFeedback(
 		.setAuthor({ name: interaction.user.username, iconURL: interaction.user.avatarURL() })
 		.setTimestamp();
 
-	const reply: Message = (await (interaction.message as Message).edit({
+	const reply = (await (interaction.message as Message).edit({
 		embeds: [responseEmbed],
 		components: [],
 	})) as Message;

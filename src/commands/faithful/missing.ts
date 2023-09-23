@@ -94,7 +94,7 @@ export const command: SlashCommand = {
 				steps.push(step);
 			}
 
-			embed.fields[0].value = steps.join("\n");
+			embed.spliceFields(0, 1, { name: "Steps", value: steps.join("\n") });
 			await interaction.editReply({ embeds: [embed] });
 		};
 
