@@ -9,7 +9,6 @@ export function StartClient(firstStart: boolean = true, interaction?: ChatInputC
 		{
 			config: config,
 			tokens: tokens,
-			verbose: tokens.verbose,
 			allowedMentions: { parse: ["users", "roles"], repliedUser: false }, // remove this line to die instantly ~JackDotJS 2021
 			partials: [
 				Partials.Channel,

@@ -3,7 +3,7 @@ import {
 	ChatInputCommandInteraction,
 	Role,
 	StringSelectMenuInteraction,
-	EmbedBuilder
+	EmbedBuilder,
 } from "discord.js";
 import { PermissionFlagsBits } from "discord-api-types/v10";
 import { JSONFiles, StringOutput, en_US } from "@helpers/strings";
@@ -74,7 +74,6 @@ function strings(): StringOutput {
 
 	return lang;
 }
-
 
 ChatInputCommandInteraction.prototype.hasPermission = hasPermission;
 ButtonInteraction.prototype.strings = strings;

@@ -74,11 +74,11 @@ class ExtendedClient extends Client {
 	public commandsProcessed: EmittingCollection<string, number> = new EmittingCollection();
 
 	constructor(
-		data: ClientOptions & { verbose: boolean; config: Config; tokens: Tokens },
+		data: ClientOptions & { config: Config; tokens: Tokens },
 		firstStart: boolean = true,
 	) {
 		super(data);
-		this.verbose = data.verbose;
+		this.verbose = data.tokens.verbose;
 		this.config = data.config;
 		this.tokens = data.tokens;
 		this.firstStart = firstStart;
