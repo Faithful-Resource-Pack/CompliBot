@@ -49,7 +49,7 @@ export const command: SlashCommand = {
 		)
 		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 	execute: new Collection<string, SlashCommandI>()
-		.set("audit", async (interaction: ChatInputCommandInteraction, client: Client) => {
+		.set("audit", async (interaction: ChatInputCommandInteraction) => {
 			if (!interaction.hasPermission("dev")) return;
 
 			await interaction.deferReply({ ephemeral: true });
@@ -57,8 +57,8 @@ export const command: SlashCommand = {
 			// const banlist = JSON.parse(banlistJSON);
 			const victimID = interaction.options.getUser("subject").id;
 			if (
-				client.tokens.developers.includes(victimID) ||
-				victimID == client.user.id // self
+				(interaction.client as Client).tokens.developers.includes(victimID) ||
+				victimID == interaction.client.user.id // self
 			)
 				return interaction.followUp(interaction.strings().Command.Botban.view.unbannable);
 
@@ -99,11 +99,11 @@ export const command: SlashCommand = {
 			const team: string = config.discords.filter((d) => d.id === interaction.guildId)[0].team;
 			try {
 				if (team)
-					logChannel = (await client.channels.fetch(
+					logChannel = (await interaction.client.channels.fetch(
 						config.teams.filter((t) => t.name === team)[0].channels.moderation,
 					)) as any;
 				else
-					logChannel = (await client.channels.fetch(
+					logChannel = (await interaction.client.channels.fetch(
 						config.discords.filter((d) => d.id === interaction.guildId)[0].channels.moderation,
 					)) as any;
 				logChannel.send({ embeds: [embed] });
@@ -111,7 +111,7 @@ export const command: SlashCommand = {
 				return;
 			} // can't fetch channel
 		})
-		.set("view", async (interaction: ChatInputCommandInteraction, client: Client) => {
+		.set("view", async (interaction: ChatInputCommandInteraction) => {
 			if (!interaction.hasPermission("dev")) return;
 
 			await interaction.deferReply({ ephemeral: true });

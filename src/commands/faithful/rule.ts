@@ -30,7 +30,7 @@ export const command: SlashCommand = {
 				)
 				.setRequired(true),
 		),
-	execute: async (interaction: ChatInputCommandInteraction) => {
+	async execute(interaction: ChatInputCommandInteraction) {
 		const baseUrl = "https://docs.faithfulpack.net/pages/manuals/expanded-server-rules";
 		const choice = interaction.options.getString("number", true);
 

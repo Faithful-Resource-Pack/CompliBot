@@ -17,7 +17,7 @@ export const command: SlashCommand = {
 				)
 				.setRequired(true),
 		),
-	execute: async (interaction: ChatInputCommandInteraction) => {
+	async execute(interaction: ChatInputCommandInteraction) {
 		const choice = interaction.options.getString("server", true);
 		let contents: string;
 		switch (choice) {

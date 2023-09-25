@@ -15,7 +15,7 @@ export const command: SlashCommand = {
 				.setRequired(true),
 		)
 		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
-	execute: async (interaction: ChatInputCommandInteraction, client: Client) => {
+	async execute(interaction: ChatInputCommandInteraction) {
 		if (!interaction.hasPermission("dev")) return;
 
 		interaction

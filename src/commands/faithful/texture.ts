@@ -31,7 +31,7 @@ export const command: SlashCommand = {
 				)
 				.setRequired(true),
 		),
-	execute: async (interaction: ChatInputCommandInteraction) => {
+	async execute(interaction: ChatInputCommandInteraction) {
 		const name = interaction.options.getString("name");
 
 		// sometimes it takes too long otherwise

@@ -12,7 +12,7 @@ export const command: SlashCommand = {
 		.addAttachmentOption((o) =>
 			o.setName("image").setDescription("The image to palette").setRequired(false),
 		),
-	execute: async (interaction: ChatInputCommandInteraction) => {
+	async execute(interaction: ChatInputCommandInteraction) {
 		generalSlashCommandImage(interaction, paletteAttachment, {
 			factor: interaction.options.getNumber("factor"),
 			name: "magnified.png",

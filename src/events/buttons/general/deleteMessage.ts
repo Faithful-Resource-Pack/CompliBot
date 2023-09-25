@@ -4,7 +4,7 @@ import { Client, Message, ButtonInteraction } from "@client";
 
 export const button: Button = {
 	buttonId: "deleteMessage",
-	execute: async (client: Client, interaction: ButtonInteraction) => {
+	async execute(client: Client, interaction: ButtonInteraction) {
 		if (client.verbose) console.log(`${info}Message deleted!`);
 		const message: Message = interaction.message as Message;
 		// as we can't fetch the interaction to detect who is the owner of the message/interaction, we uses the stored id inside the footer

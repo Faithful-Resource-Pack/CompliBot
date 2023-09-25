@@ -4,7 +4,7 @@ import { Poll } from "@class/poll";
 
 export const button: Button = {
 	buttonId: "pollVote",
-	execute: async (client: Client, interaction: ButtonInteraction) => {
+	async execute(client: Client, interaction: ButtonInteraction) {
 		await interaction.deferUpdate();
 		const message: Message = interaction.message as Message;
 		const embed = message.embeds[0];

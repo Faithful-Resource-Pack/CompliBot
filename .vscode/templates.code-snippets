@@ -27,7 +27,7 @@
 			"\t\t\t.setName(\"${1:Name}\")",
 			"\t\t\t.setDescription(\"${1:Description}\"),",
 			"\t},",
-			"\texecute: async (interaction: ChatInputCommandInteraction, client: Client) => {",
+			"\tasync execute(interaction: ChatInputCommandInteraction) {",
             "\t\tif (!interaction.hasPermission(${3})) return;",
 			"\t\t${4://todo: implement command}",
 			"\t},\n};"
@@ -45,7 +45,7 @@
 
 			"\t\t.setName(\"${1:Name}\")",
 			"\t\t.setDescription(`${2:Description}`),",
-			"\texecute: async (interaction: ChatInputCommandInteraction, client: Client) => {",
+			"\tasync execute(interaction: ChatInputCommandInteraction) {",
             "\t\tif (!interaction.hasPermission(${3})) return;",
 			"\t\t${4://todo: implement command}",
 			"\t},\n};"

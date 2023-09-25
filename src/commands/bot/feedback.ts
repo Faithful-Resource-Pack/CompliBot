@@ -11,7 +11,7 @@ export const command: SlashCommand = {
 		.addStringOption((option) =>
 			option.setName("message").setDescription("The message you wish to send").setRequired(true),
 		),
-	execute: async (interaction: ChatInputCommandInteraction, client: Client) => {
+	async execute(interaction: ChatInputCommandInteraction) {
 		const embedPreview = new EmbedBuilder()
 			.setAuthor({ name: interaction.user.username, iconURL: interaction.user.avatarURL() })
 			.setTitle(interaction.strings().Command.Feedback.Preview)

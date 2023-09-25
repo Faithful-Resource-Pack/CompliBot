@@ -17,7 +17,7 @@ export const command: SlashCommand = {
 				.setDescription("User you want to look up (leave blank if you want to search yourself).")
 				.setRequired(false),
 		),
-	execute: async (interaction: ChatInputCommandInteraction) => {
+	async execute(interaction: ChatInputCommandInteraction) {
 		await interaction.deferReply();
 
 		const loadingEmbed = new EmbedBuilder()

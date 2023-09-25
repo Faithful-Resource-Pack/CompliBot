@@ -6,7 +6,7 @@ import { getImageFromMessage } from "@functions/slashCommandImage";
 
 export const button: Button = {
 	buttonId: "palette",
-	execute: async (client: Client, interaction: ButtonInteraction) => {
+	async execute(client: Client, interaction: ButtonInteraction) {
 		if (client.verbose) console.log(`${info}Image palette was requested!`);
 
 		const message: Message = interaction.message as Message;

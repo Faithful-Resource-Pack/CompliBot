@@ -1,10 +1,10 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { Client, EmbedBuilder, ChatInputCommandInteraction, Message } from "@client";
+import { EmbedBuilder, ChatInputCommandInteraction, Message } from "@client";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder().setName("ping").setDescription("Check the bot and API latency."),
-	execute: async (interaction: ChatInputCommandInteraction, client: Client) => {
+	async execute(interaction: ChatInputCommandInteraction) {
 		let embed = new EmbedBuilder().setTitle(interaction.strings().Command.Ping.Await);
 		await interaction.reply({ embeds: [embed] }).then(async () => {
 			const d = new Date();
@@ -18,7 +18,7 @@ export const command: SlashCommand = {
 						quote.replace("%YEAR%", (d.getFullYear() + 2).toString()),
 					)
 					.replace("%LATENCY%", (d.getTime() - interaction.createdTimestamp).toString())
-					.replace("%APILATENCY%", Math.round(client.ws.ping).toString()),
+					.replace("%APILATENCY%", Math.round(interaction.client.ws.ping).toString()),
 			);
 
 			try {

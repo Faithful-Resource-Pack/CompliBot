@@ -16,7 +16,7 @@ export const command: SlashCommand = {
 				)
 				.setRequired(true),
 		),
-	execute: async (interaction: ChatInputCommandInteraction) => {
+	async execute(interaction: ChatInputCommandInteraction) {
 		let contents: string;
 		const pack = interaction.options.getString("pack", true);
 		switch (pack) {

@@ -24,7 +24,7 @@ export const command: SlashCommand = {
 				.setDescription("A specific part of the guidelines you want to link to")
 				.setRequired(false),
 		),
-	execute: async (interaction: ChatInputCommandInteraction) => {
+	async execute(interaction: ChatInputCommandInteraction) {
 		let contents: string;
 		let keyword = interaction.options.getString("choice");
 		const pack = interaction.options.getString("pack");

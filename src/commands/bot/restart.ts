@@ -8,10 +8,10 @@ export const command: SlashCommand = {
 		.setName("restart")
 		.setDescription("Restarts the bot.")
 		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
-	execute: async (interaction: ChatInputCommandInteraction, client: Client) => {
+	async execute(interaction: ChatInputCommandInteraction) {
 		if (!interaction.hasPermission("dev")) return;
 
 		await interaction.reply({ content: "restarting...", ephemeral: true });
-		await client.restart(interaction);
+		await (interaction.client as Client).restart(interaction);
 	},
 };

@@ -29,7 +29,7 @@ export const command: SlashCommand = {
 				)
 				.setRequired(false),
 		),
-	execute: async (interaction: ChatInputCommandInteraction) => {
+	async execute(interaction: ChatInputCommandInteraction) {
 		const display = interaction.options.getString("display", false) ?? "all";
 		const name = interaction.options.getString("texture", true);
 

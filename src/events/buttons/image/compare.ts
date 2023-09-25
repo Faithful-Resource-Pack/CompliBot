@@ -6,7 +6,7 @@ import { InteractionEditReplyOptions, EmbedFooterData } from "discord.js";
 
 export const button: Button = {
 	buttonId: "compare",
-	execute: async (client: Client, interaction: ButtonInteraction) => {
+	async execute(client: Client, interaction: ButtonInteraction) {
 		if (client.verbose) console.log(`${info}Image was compared!`);
 
 		const message: Message = interaction.message as Message;

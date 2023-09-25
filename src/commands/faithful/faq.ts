@@ -12,7 +12,7 @@ export const command: SlashCommand = {
 		.addStringOption((option) =>
 			option.setName("keyword").setDescription("The specific FAQ entry to view.").setRequired(true),
 		),
-	execute: async (interaction: ChatInputCommandInteraction) => {
+	async execute(interaction: ChatInputCommandInteraction) {
 		const choice = interaction.options.getString("keyword", true).toLocaleLowerCase().trim();
 
 		if (choice == "all") {

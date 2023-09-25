@@ -33,7 +33,7 @@ export const command: SlashCommand = {
 				.setDescription("Seconds between each frame (default is 1).")
 				.setRequired(false),
 		),
-	execute: async (interaction: ChatInputCommandInteraction) => {
+	async execute(interaction: ChatInputCommandInteraction) {
 		const display = interaction.options.getString("packs", true);
 		const name = interaction.options.getString("texture", true);
 		const framerate = interaction.options.getNumber("framerate", false) ?? 1;

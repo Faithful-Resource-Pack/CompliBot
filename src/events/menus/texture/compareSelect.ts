@@ -6,7 +6,7 @@ import textureComparison from "@functions/textureComparison";
 
 export const menu: SelectMenu = {
 	selectMenuId: "compareSelect",
-	execute: async (client: Client, interaction: StringSelectMenuInteraction) => {
+	async execute(client: Client, interaction: StringSelectMenuInteraction) {
 		if (client.verbose) console.log(`${info}Texture selected!`);
 
 		const messageInteraction: MessageInteraction = interaction.message

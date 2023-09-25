@@ -20,7 +20,7 @@ export const command: SlashCommand = {
 					{ name: "All", value: "all" },
 				),
 		),
-	execute: async (interaction: ChatInputCommandInteraction) => {
+	async execute(interaction: ChatInputCommandInteraction) {
 		const key: string = interaction.options.getString("name", false) ?? "general";
 
 		if (key === "all") {

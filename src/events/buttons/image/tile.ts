@@ -9,7 +9,7 @@ import { ButtonBuilder } from "@discordjs/builders";
 
 export const button: Button = {
 	buttonId: "tile",
-	execute: async (client: Client, interaction: ButtonInteraction) => {
+	async execute(client: Client, interaction: ButtonInteraction) {
 		if (client.verbose) console.log(`${info}Image was tiled!`);
 
 		const message: Message = interaction.message as Message;

@@ -46,7 +46,7 @@ export const command: SlashCommand = {
 		.addStringOption((option) =>
 			option.setName("description").setDescription("Add more information about your poll here."),
 		),
-	execute: async (interaction: ChatInputCommandInteraction, client: Client) => {
+	async execute(interaction: ChatInputCommandInteraction) {
 		const question: string = interaction.options.getString("question", true);
 		const multipleAnswers: boolean =
 			interaction.options.getBoolean("allow-multiple-answers", false) === true ? true : false;

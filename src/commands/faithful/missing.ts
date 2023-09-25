@@ -67,7 +67,7 @@ export const command: SlashCommand = {
 					.setRequired(false),
 			);
 	},
-	execute: async (interaction: ChatInputCommandInteraction) => {
+	async execute(interaction: ChatInputCommandInteraction) {
 		await interaction.deferReply();
 
 		const edition = interaction.options.getString("edition", true);

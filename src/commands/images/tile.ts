@@ -34,7 +34,7 @@ export const command: SlashCommand = {
 		.addAttachmentOption((o) =>
 			o.setName("image").setDescription("The image to tile").setRequired(false),
 		),
-	execute: async (interaction: ChatInputCommandInteraction) => {
+	async execute(interaction: ChatInputCommandInteraction) {
 		const random = interaction.options.getString("random");
 		const shape: tileShape = (interaction.options.getString("type") ?? "grid") as tileShape;
 

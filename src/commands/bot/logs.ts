@@ -9,9 +9,9 @@ export const command: SlashCommand = {
 		.setName("logs")
 		.setDescription("Get logs of the bot.")
 		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
-	execute: async (interaction: ChatInputCommandInteraction, client: Client) => {
+	async execute(interaction: ChatInputCommandInteraction) {
 		if (!interaction.hasPermission("dev")) return;
 
-		await interaction.reply({ files: [logConstructor(client)] }).catch(console.error);
+		await interaction.reply({ files: [logConstructor(interaction.client)] }).catch(console.error);
 	},
 };

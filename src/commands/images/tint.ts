@@ -17,7 +17,7 @@ export const command: SlashCommand = {
 		.addAttachmentOption((o) =>
 			o.setName("image").setDescription("The image to tint").setRequired(false),
 		),
-	execute: async (interaction: ChatInputCommandInteraction, client: Client) => {
+	async execute(interaction: ChatInputCommandInteraction) {
 		generalSlashCommandImage(interaction, multiplyAttachment, {
 			color: interaction.options.getString("color"),
 			name: "tinted.png",

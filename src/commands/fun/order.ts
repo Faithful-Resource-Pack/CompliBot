@@ -39,7 +39,7 @@ export const command: SlashCommand = {
 				.addChoices(...options)
 				.setRequired(true),
 		),
-	execute: async (interaction: ChatInputCommandInteraction, client: Client) => {
+	async execute(interaction: ChatInputCommandInteraction) {
 		await interaction.deferReply();
 		let advice: string = null;
 

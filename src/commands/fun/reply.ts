@@ -18,7 +18,7 @@ export const command: SlashCommand = {
 			option.setName("message").setDescription("Message ID to reply to").setRequired(true),
 		)
 		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
-	execute: async (interaction: ChatInputCommandInteraction, client: Client) => {
+	async execute(interaction: ChatInputCommandInteraction) {
 		if (!interaction.hasPermission("dev")) return;
 
 		let msg: Message;

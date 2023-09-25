@@ -9,7 +9,7 @@ import { ButtonBuilder } from "@discordjs/builders";
 
 export const button: Button = {
 	buttonId: "magnify",
-	execute: async (client: Client, interaction: ButtonInteraction) => {
+	async execute(client: Client, interaction: ButtonInteraction) {
 		if (client.verbose) console.log(`${info}Image was magnified!`);
 
 		const message: Message = interaction.message as Message;

@@ -10,7 +10,7 @@ export const command: SlashCommand = {
 		.addStringOption((string) =>
 			string.setName("weapon").setDescription("Weapon to kill the user with."),
 		),
-	execute: async (interaction: ChatInputCommandInteraction) => {
+	async execute(interaction: ChatInputCommandInteraction) {
 		let embed = new EmbedBuilder();
 
 		const killed = interaction.strings().Command.Kill.Killed;

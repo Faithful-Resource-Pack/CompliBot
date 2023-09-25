@@ -23,15 +23,18 @@ export const event: Event = {
 			// execute it if so
 			(command.execute as Collection<string, SlashCommandI>).get(
 				interaction.options.getSubcommand(),
-			)(interaction, client);
+			)(interaction);
 		} catch (_err) {
 			// not a subcommand
 			try {
 				// execute command
-				(command.execute as SlashCommandI)(interaction as ChatInputCommandInteraction, client);
+				(command.execute as SlashCommandI)(interaction as ChatInputCommandInteraction);
 			} catch (err) {
 				console.error(err);
-				return interaction.reply({ content: "There were an error with command!", ephemeral: true });
+				return interaction.reply({
+					content: "There was an error with this command!",
+					ephemeral: true,
+				});
 			}
 		}
 
