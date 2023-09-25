@@ -69,7 +69,8 @@ export const computeAndUpdate = async (
 				settings.channels.pack_progress[results[2].pack][results[2].edition],
 			);
 		} catch {
-			/* channel doesn't exist or can't be fetched */
+			// channel doesn't exist or can't be fetched, return early
+			return results;
 		}
 
 		// you can add different patterns depending on the channel type
