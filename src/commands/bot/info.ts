@@ -17,15 +17,15 @@ export const command: SlashCommand = {
 						\n- Real-time texture interaction using `/texture`, `/compare`, and `/cycle`. \
 						\n- Check resource pack progress with `/missing` or check your contributions with `/about`. \
 						\n- Image manipulation utilities such as `/magnify`, `/tile`, `/palette`, and `/animate`.",
-					inline: true
+					inline: true,
 				},
 				{
 					name: "Developing",
 					value:
 						"I'm fully open source (written in TypeScript and Discord.js) and can be cloned at my GitHub repository [here](https://github.com/faithful-resource-pack/complibot). \
 						\n\nIf you're interested in developing, contact <@!473860522710794250>, <@!360249987927638016>, or <@!173336582265241601> for more information.",
-					inline: true
-				}
+					inline: true,
+				},
 			)
 			.setThumbnail(settings.images.bot);
 

@@ -104,7 +104,7 @@ export const compute = async (
 	const repoDefault = repo.default[edition];
 	const repoRequest = repo[pack][edition];
 
-	// pack doesn't support edition (ex: Faithful 64x -> dungeons)
+	// pack doesn't support edition yet
 	if (repoRequest === undefined)
 		return [
 			null,
@@ -112,13 +112,12 @@ export const compute = async (
 			{ completion: 0, pack: pack, edition: edition, version: version },
 		];
 
-	const tmpDirPath: string = normalize(os.tmpdir());
-	const tmpDirPathDefault: string = join(tmpDirPath, `missing-default-${edition}`);
-	const tmpDirPathRequest: string = join(tmpDirPath, `missing-${pack}-${edition}`);
+	const tmpDirPath = normalize(os.tmpdir());
+	const tmpDirPathDefault = join(tmpDirPath, `missing-default-${edition}`);
+	const tmpDirPathRequest = join(tmpDirPath, `missing-${pack}-${edition}`);
 
 	// CLONE REPO IF NOT ALREADY CLONED
-	let exists: boolean = existsSync(tmpDirPathDefault);
-	if (!exists) {
+	if (!existsSync(tmpDirPathDefault)) {
 		await callback(`Downloading default ${edition} pack...`).catch((err: any) =>
 			Promise.reject(err),
 		);
@@ -126,8 +125,7 @@ export const compute = async (
 		await exec(`git clone ${repoDefault} .`, { cwd: tmpDirPathDefault });
 	}
 
-	exists = existsSync(tmpDirPathRequest);
-	if (!exists) {
+	if (!existsSync(tmpDirPathRequest)) {
 		await callback(`Downloading \`${formatName(pack)[0]}\` (${edition}) pack...`).catch(
 			(err: any) => Promise.reject(err),
 		);
@@ -143,30 +141,27 @@ export const compute = async (
 		(err: any) => Promise.reject(err),
 	);
 
-	/**
-	 * STEPS:
-	 * - stash
-	 * - update local repo
-	 * - checkout version X branch
-	 * - pull
-	 */
+	const steps = [
+		"git stash",
+		"git remote update",
+		"git fetch",
+		`git checkout ${version}`,
+		`git pull`,
+	];
+
 	await Promise.all([
-		series(["git stash", "git remote update", "git fetch", `git checkout ${version}`, `git pull`], {
-			cwd: tmpDirPathDefault,
-		}),
-		series(["git stash", "git remote update", "git fetch", `git checkout ${version}`, `git pull`], {
-			cwd: tmpDirPathRequest,
-		}),
+		series(steps, { cwd: tmpDirPathDefault }),
+		series(steps, { cwd: tmpDirPathRequest }),
 	]).catch((err) => Promise.reject(err));
 
 	await callback("Searching for differences...").catch((err: any) => Promise.reject(err));
 
 	const editionFilter = blacklistedTextures[edition].map((i: string) => i.normalize());
 
-	const texturesDefault: string[] = getAllFilesFromDir(tmpDirPathDefault, editionFilter).map((f) =>
+	const texturesDefault = getAllFilesFromDir(tmpDirPathDefault, editionFilter).map((f) =>
 		normalize(f).replace(tmpDirPathDefault, ""),
 	);
-	const texturesRequest: string[] = getAllFilesFromDir(tmpDirPathRequest, editionFilter).map((f) =>
+	const texturesRequest= getAllFilesFromDir(tmpDirPathRequest, editionFilter).map((f) =>
 		normalize(f).replace(tmpDirPathRequest, ""),
 	);
 
@@ -175,41 +170,21 @@ export const compute = async (
 	const check = texturesRequest.reduce((o, key) => ({ ...o, [key]: true }), {});
 
 	// get texture that aren't in the check object
-	const diffResult: string[] = texturesDefault.filter((v) => !check[v]);
+	const diffResult = texturesDefault.filter((v) => !check[v]);
 	const nonvanillaTextures = texturesRequest.filter(
 		(texture) =>
 			!texturesDefault.includes(texture) &&
-			!texture.endsWith("huge_chungus.png") &&
+			!texture.endsWith("huge_chungus.png") && // we do a little trolling
 			!editionFilter.includes(texture) &&
 			(texture.replace(/\\/g, "/").startsWith("/assets/minecraft/textures") ||
 				texture.replace(/\\/g, "/").startsWith("/assets/realms") ||
 				texture.replace(/\\/g, "/").startsWith("/textures")),
 	);
 
-	const buffResult: Buffer = Buffer.from(
-		diffResult
-			.join("\n")
-			.replace(/\\/g, "/")
-			.replace(/\/assets\/minecraft/g, "")
-			// only match at start of line so realms/optifine aren't affected
-			.replace(/^\/textures\//gm, ""),
-		"utf8",
-	);
-
-	const nonvanillaResult: Buffer = Buffer.from(
-		nonvanillaTextures
-			.join("\n")
-			.replace(/\\/g, "/")
-			.replace(/\/assets\/minecraft/g, "")
-			.replace(/^\/textures\//gm, ""),
-		"utf8",
-	);
-
-	const progress: number =
-		Math.round(10000 - (diffResult.length / texturesDefault.length) * 10000) / 100;
+	const progress = Number((100 * (1 - diffResult.length / texturesDefault.length)).toFixed(2));
 
 	return [
-		buffResult,
+		Buffer.from(formatResults(diffResult), "utf8"),
 		diffResult,
 		{
 			completion: progress,
@@ -218,11 +193,11 @@ export const compute = async (
 			version: version,
 			total: texturesDefault.length,
 		},
-		nonvanillaResult,
+		Buffer.from(formatResults(nonvanillaTextures), "utf8"),
 	];
 };
 
-export const getAllFilesFromDir = (dir: string, filter = []): string[] => {
+export const getAllFilesFromDir = (dir: string, filter: string[] = []): string[] => {
 	let fileList = [];
 	readdirSync(dir).forEach((file) => {
 		file = normalize(join(dir, file));
@@ -233,7 +208,7 @@ export const getAllFilesFromDir = (dir: string, filter = []): string[] => {
 			else {
 				if (
 					(file.endsWith(".png") || file.endsWith(".tga")) &&
-					!filter.some((i: string) => file.includes(i))
+					!filter.some((i) => file.includes(i))
 				)
 					fileList.push(file);
 			}
@@ -242,3 +217,11 @@ export const getAllFilesFromDir = (dir: string, filter = []): string[] => {
 
 	return fileList;
 };
+
+export const formatResults = (results: string[]) =>
+	results
+		.join("\n")
+		.replace(/\\/g, "/")
+		.replace(/\/assets\/minecraft/g, "")
+		// only match at start of line so realms/optifine aren't affected
+		.replace(/^\/textures\//gm, "");
