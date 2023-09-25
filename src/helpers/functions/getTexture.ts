@@ -20,7 +20,7 @@ export const getTextureMessageOptions = async (options: {
 }): Promise<any> => {
 	const tokens: Tokens = TokenJson;
 	const { texture, pack, guild } = options;
-	const { uses, paths, contributions: allContributions } = texture;
+	const { paths, contributions: allContributions } = texture;
 	const animated: boolean = paths.filter((p) => p.mcmeta === true).length !== 0;
 	const contributionJSON = (await axios.get(`${tokens.apiUrl}contributions/authors`)).data;
 
@@ -43,7 +43,7 @@ export const getTextureMessageOptions = async (options: {
 
 	const [strPack, strIconURL] = formatName(pack);
 
-	const files: Array<AttachmentBuilder> = [];
+	const files: AttachmentBuilder[] = [];
 	const embed = new EmbedBuilder().setTitle(`[#${texture.id}] ${texture.name}`).setFooter({
 		text: `${strPack}`,
 		iconURL: strIconURL,
@@ -88,12 +88,12 @@ export const getTextureMessageOptions = async (options: {
 	}
 
 	if (mainContribution) {
-		let strDate: string = `<t:${Math.trunc(mainContribution.date / 1000)}:d>`;
+		let strDate = `<t:${Math.trunc(mainContribution.date / 1000)}:d>`;
 		let authors = mainContribution.authors.map((authorId: string) => {
 			if (guild.members.cache.get(authorId)) return `<@!${authorId}>`;
 
 			// this may possibly be one of the worst solutions but it somehow works
-			for (let user of contributionJSON) {
+			for (const user of contributionJSON) {
 				if (user.id == authorId) return user.username ?? "Anonymous";
 			}
 			return "Unknown";

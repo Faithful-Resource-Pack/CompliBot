@@ -19,17 +19,15 @@ export interface MissingOptions {
 	version: string;
 	total?: number;
 }
-export type MissingResult = [Buffer, Array<string>, MissingOptions, Buffer?];
-export type MissingResults = Array<MissingResult>;
+export type MissingResult = [Buffer, string[], MissingOptions, Buffer?];
 
 export const computeAll = async (
 	client: Client,
 	pack: string,
 	version: string,
 	callback: Function,
-): Promise<MissingResults> => {
-	const editions: Array<string> = (await axios.get(`${client.tokens.apiUrl}textures/editions`))
-		.data;
+): Promise<MissingResult[]> => {
+	const editions: string[] = (await axios.get(`${client.tokens.apiUrl}textures/editions`)).data;
 
 	return Promise.all(
 		editions.map(async (edition: string) => {
@@ -43,9 +41,8 @@ export const computeAndUpdateAll = async (
 	pack: string,
 	version: string,
 	callback: Function,
-): Promise<MissingResults> => {
-	const editions: Array<string> = (await axios.get(`${client.tokens.apiUrl}textures/editions`))
-		.data;
+): Promise<MissingResult[]> => {
+	const editions: string[] = (await axios.get(`${client.tokens.apiUrl}textures/editions`)).data;
 
 	return Promise.all(
 		editions.map(async (edition: string) => {
@@ -137,7 +134,7 @@ export const compute = async (
 		await exec(`git clone ${repoRequest} .`, { cwd: tmpDirPathRequest });
 	}
 
-	const versions: Array<string> = (
+	const versions: string[] = (
 		await axios.get(`${client.tokens.apiUrl}settings/versions.${edition}`)
 	).data;
 	if (!versions.includes(version)) version = versions[0]; // latest version if versions doesn't include version (unexisting/unsupported)
@@ -165,11 +162,11 @@ export const compute = async (
 
 	const editionFilter = blacklistedTextures[edition].map((i: string) => i.normalize());
 
-	const texturesDefault: Array<string> = getAllFilesFromDir(tmpDirPathDefault, editionFilter).map(
-		(f) => normalize(f).replace(tmpDirPathDefault, ""),
+	const texturesDefault: string[] = getAllFilesFromDir(tmpDirPathDefault, editionFilter).map((f) =>
+		normalize(f).replace(tmpDirPathDefault, ""),
 	);
-	const texturesRequest: Array<string> = getAllFilesFromDir(tmpDirPathRequest, editionFilter).map(
-		(f) => normalize(f).replace(tmpDirPathRequest, ""),
+	const texturesRequest: string[] = getAllFilesFromDir(tmpDirPathRequest, editionFilter).map((f) =>
+		normalize(f).replace(tmpDirPathRequest, ""),
 	);
 
 	// instead of looping in the check array for each checked element, we directly check if the
@@ -177,7 +174,7 @@ export const compute = async (
 	const check = texturesRequest.reduce((o, key) => ({ ...o, [key]: true }), {});
 
 	// get texture that aren't in the check object
-	const diffResult: Array<string> = texturesDefault.filter((v) => !check[v]);
+	const diffResult: string[] = texturesDefault.filter((v) => !check[v]);
 	const nonvanillaTextures = texturesRequest.filter(
 		(texture) =>
 			!texturesDefault.includes(texture) &&
@@ -224,7 +221,7 @@ export const compute = async (
 	];
 };
 
-export const getAllFilesFromDir = (dir: string, filter = []): Array<string> => {
+export const getAllFilesFromDir = (dir: string, filter = []): string[] => {
 	let fileList = [];
 	readdirSync(dir).forEach((file) => {
 		file = normalize(join(dir, file));

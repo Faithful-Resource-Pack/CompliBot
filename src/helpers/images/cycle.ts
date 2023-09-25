@@ -37,7 +37,7 @@ export async function imagesToGIF(images: Image[], framerate: number): Promise<A
 	const encoder = new GIFEncoder(finalWidth, finalHeight);
 	encoder.start();
 	encoder.setTransparent(true);
-	for (let image of images) {
+	for (const image of images) {
 		// converting the Image() object to a Canvas() object
 		const canvas = createCanvas(finalWidth, finalHeight);
 		const ctx = canvas.getContext("2d");
@@ -91,8 +91,8 @@ export async function cycleComparison(
 		.addFields(addPathsToEmbed(result))
 		.setFooter({ text: packText });
 
-	let images = [];
-	for (let pack of displayed) {
+	const images: Image[] = [];
+	for (const pack of displayed) {
 		const url = `${client.tokens.apiUrl}textures/${id}/url/${pack}/latest`;
 		try {
 			images.push(await loadImage(url));

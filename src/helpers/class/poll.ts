@@ -12,7 +12,7 @@ import { TimedEmbed } from "./timedEmbed";
 export interface PollOptions {
 	question: string;
 	yesno: boolean;
-	answersArr: Array<string>;
+	answersArr: string[];
 	thread: boolean;
 }
 export class Poll extends TimedEmbed {
@@ -75,8 +75,8 @@ export class Poll extends TimedEmbed {
 					return field;
 				}
 
-				const votesCount: Array<number> = this.getVotesCount();
-				const votes: Array<Array<string>> = this.getVotes();
+				const votesCount = this.getVotesCount();
+				const votes = this.getVotes();
 
 				field.value =
 					votesCount[index - 1] === 0
@@ -152,10 +152,10 @@ export class Poll extends TimedEmbed {
 				{ name: "Status", value: `*Will end <t:${this.getTimeout()}:R>*`, inline: true },
 			]);
 
-		const components: Array<ActionRowBuilder<ButtonBuilder>> = [];
+		const components: ActionRowBuilder<ButtonBuilder>[] = [];
 		if (options.yesno) components.push(pollYesNo);
 		else {
-			const btns: Array<ButtonBuilder> = [];
+			const btns: ButtonBuilder[] = [];
 			options.answersArr.forEach((el, index) => btns.push(pollVotes[index]));
 			components.push(new ActionRowBuilder<ButtonBuilder>().addComponents(btns));
 		}

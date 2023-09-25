@@ -105,7 +105,7 @@ export const event: Event = {
 		const results = message.content.match(/(?<=\[\#)(.*?)(?=\])/g) ?? [];
 		if (!results.length) return;
 
-		for (let result of results) {
+		for (const result of results) {
 			let id: string;
 			let display = "all";
 

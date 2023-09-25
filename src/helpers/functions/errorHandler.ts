@@ -7,7 +7,7 @@ import { Log } from "client/client";
 import path from "path";
 import settings from "@json/dynamic/settings.json";
 
-const randomSentences: Array<string> = [
+const randomSentences = [
 	"Oh no, not again!",
 	"Well, it's unexpected...",
 	"OOPS, sorry, my bad!",

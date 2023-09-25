@@ -10,7 +10,7 @@ export const command: SlashCommand = {
 	execute: async (interaction: ChatInputCommandInteraction) => {
 		const res = Math.round(Math.random() * 100) / 100; // round to 2 decimal places;
 
-		var embed = new EmbedBuilder()
+		const embed = new EmbedBuilder()
 			.setTitle(
 				res > 0.5
 					? interaction.strings().Command.Coin.Heads

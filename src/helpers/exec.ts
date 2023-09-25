@@ -29,7 +29,7 @@ export const execSync = (cmd: string, cb: Function, options: any = undefined): v
 
 // execute multiple commands in series
 // this could be replaced by any flow control lib
-export const seriesSync = (cmds: Array<string>, cb: Function, options: any = undefined): void => {
+export const seriesSync = (cmds: string[], cb: Function, options = undefined): void => {
 	let execNext = () => {
 		execSync(
 			cmds.shift(),
@@ -47,7 +47,7 @@ export const seriesSync = (cmds: Array<string>, cb: Function, options: any = und
 	execNext();
 };
 
-export const exec = async (cmd: string, options: any = undefined): Promise<void> => {
+export const exec = async (cmd: string, options: any = undefined) => {
 	return new Promise((res, rej) => {
 		execSync(
 			cmd,
@@ -60,7 +60,7 @@ export const exec = async (cmd: string, options: any = undefined): Promise<void>
 	});
 };
 
-export const series = async (cmds: Array<string>, options: any = undefined): Promise<void> => {
+export const series = async (cmds: string[], options = undefined) => {
 	return new Promise((res, rej) => {
 		seriesSync(
 			cmds,

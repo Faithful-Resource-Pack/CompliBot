@@ -1,6 +1,5 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { colors } from "@helpers/colors";
 import { media } from "@helpers/infoembed";
 import { Message, EmbedBuilder, ChatInputCommandInteraction } from "@client";
 
@@ -29,18 +28,16 @@ export const command: SlashCommand = {
 			interaction
 				.reply({ content: "** **", fetchReply: true })
 				.then((message: Message) => message.delete());
-			let embedArray: EmbedBuilder[] = [];
-			for (let i of Object.values(media)) {
-				embedArray.push(
-					new EmbedBuilder()
-						.setTitle(i.title)
-						.setDescription(i.description)
-						.setColor(i.color)
-						.setThumbnail(i.thumbnail),
-				);
-			}
 
-			return await interaction.channel.send({ embeds: embedArray });
+			return await interaction.channel.send({
+				embeds: Object.values(media).map((mediaInfo) =>
+					new EmbedBuilder()
+						.setTitle(mediaInfo.title)
+						.setDescription(mediaInfo.description)
+						.setColor(mediaInfo.color)
+						.setThumbnail(mediaInfo.thumbnail),
+				),
+			});
 		}
 
 		const embed = new EmbedBuilder()

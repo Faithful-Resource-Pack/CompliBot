@@ -60,7 +60,7 @@ export const command: SlashCommand = {
 					],
 				});
 
-			for (let rule of ruleStrings[choice == "all" ? "rules" : "server"]) {
+			for (const rule of ruleStrings[choice == "all" ? "rules" : "server"]) {
 				++i;
 				embedArray.push(
 					new EmbedBuilder()

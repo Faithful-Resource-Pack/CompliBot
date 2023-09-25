@@ -83,10 +83,9 @@ export const command: SlashCommand = {
 		/* watching for message with answers */
 		const filter = (m: Message) => m.author.id === interaction.member.user.id;
 
-		let answersArr: Array<string> = [];
-		let response: any;
-		const yesnoEmojis: Array<string> = [parseId(ids.upvote), parseId(ids.downvote)];
-		const numberEmojis: Array<string> = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"];
+		const answersArr: string[] = [];
+		const yesnoEmojis: string[] = [parseId(ids.upvote), parseId(ids.downvote)];
+		const numberEmojis: string[] = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"];
 		const fields = [{ name: "Answers", value: "None", inline: true }];
 		do {
 			try {
@@ -120,7 +119,7 @@ export const command: SlashCommand = {
 				}),
 			);
 
-			response = await interaction.editReply({ embeds: [embed] });
+			await interaction.editReply({ embeds: [embed] });
 		} while (answersArr.length < answersCount);
 
 		embed.setDescription(description || null);

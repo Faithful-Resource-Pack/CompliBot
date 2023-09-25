@@ -2,7 +2,7 @@ import { TextChannel } from "discord.js";
 import { Message } from "@client";
 
 export type Votes = {
-	[key: string]: Array<string>;
+	[key: string]: string[];
 };
 
 interface AllVotes {
@@ -40,7 +40,7 @@ export class TimedEmbed {
 		}
 	}
 
-	public isAnonymous(): boolean {
+	public isAnonymous() {
 		return this.anonymous;
 	}
 
@@ -48,7 +48,7 @@ export class TimedEmbed {
 	 * Set the embed to be anonymous or not
 	 * @param b true if the embed is anonymous
 	 */
-	public setAnonymous(b: boolean): this {
+	public setAnonymous(b: boolean) {
 		this.anonymous = b;
 		return this;
 	}
@@ -57,7 +57,7 @@ export class TimedEmbed {
 	 * Global setter for votes
 	 * @param votes - the votes to set
 	 */
-	public setVotes(votes: Votes): this {
+	public setVotes(votes: Votes) {
 		this.votes = votes;
 		return this;
 	}
@@ -67,14 +67,14 @@ export class TimedEmbed {
 	 * @warning this function is not safe, it can return a user that is not in the guild
 	 * @warning this function does not takes into account the anonymous option
 	 */
-	public getVotes(): Array<Array<string>> {
+	public getVotes() {
 		return Object.values(this.votes);
 	}
 
 	/**
 	 * Get discords voters count
 	 */
-	public getVotesCount(): Array<number> {
+	public getVotesCount() {
 		return this.getVotes().map((arr) => arr.length);
 	}
 
@@ -84,7 +84,7 @@ export class TimedEmbed {
 
 	public getAllVotes() {
 		let total: AllVotes = { upvote: 0, downvote: 0 };
-		for (let [key, value] of Object.entries(this.votes)) {
+		for (const [key, value] of Object.entries(this.votes)) {
 			total[key] = value.length;
 		}
 		return total;
@@ -94,7 +94,7 @@ export class TimedEmbed {
 	 * Add an upvote to the embed
 	 * @param id the user id to add
 	 */
-	public addUpvote(id: string): this {
+	public addUpvote(id: string) {
 		return this.addVote("upvote", id);
 	}
 
@@ -102,7 +102,7 @@ export class TimedEmbed {
 	 * Add a downvote to the embed
 	 * @param id the user id to add
 	 */
-	public addDownvote(id: string): this {
+	public addDownvote(id: string) {
 		return this.addVote("downvote", id);
 	}
 
@@ -110,7 +110,7 @@ export class TimedEmbed {
 	 * Add any vote to the embed
 	 * @param id the user id to add
 	 */
-	public addVote(type: string, id: string): this {
+	public addVote(type: string, id: string) {
 		if (!this.multipleAnswers) {
 			// remove user vote for all others categories
 			Object.keys(this.votes).forEach((key: string) => {
@@ -128,7 +128,7 @@ export class TimedEmbed {
 	 * Remove an upvote to the embed
 	 * @param id the user id to remove
 	 */
-	public removeUpvote(id: string): this {
+	public removeUpvote(id: string) {
 		return this.removeVote("upvote", id);
 	}
 
@@ -136,7 +136,7 @@ export class TimedEmbed {
 	 * Remove a downvote to the embed
 	 * @param id the user id to remove
 	 */
-	public removeDownvote(id: string): this {
+	public removeDownvote(id: string) {
 		return this.removeVote("downvote", id);
 	}
 
@@ -145,7 +145,7 @@ export class TimedEmbed {
 	 * @param type the type category of vote to remove
 	 * @param id the user id to remove
 	 */
-	public removeVote(type: string, id: string): this {
+	public removeVote(type: string, id: string) {
 		if (this.hasVotedFor(type, id)) this.votes[type].splice(this.votes[type].indexOf(id), 1);
 		return this;
 	}
@@ -154,7 +154,7 @@ export class TimedEmbed {
 	 * Void votes from the embed
 	 */
 	protected voidVotes(): this {
-		Object.values(this.votes).map((arr: Array<string>) => {
+		Object.values(this.votes).map((arr) => {
 			arr.length = 0;
 		});
 

@@ -72,11 +72,11 @@ export default async function textureComparison(
 	}
 
 	// get texture urls
-	let loadedImages = [];
+	const loadedImages = [];
 	let i = 0;
-	for (let packSet of displayed) {
+	for (const packSet of displayed) {
 		loadedImages.push([]);
-		for (let pack of packSet) {
+		for (const pack of packSet) {
 			const imgUrl = isTemplate
 				? formatName(pack, "64")[1]
 				: `${client.tokens.apiUrl}textures/${id}/url/${pack}/latest`;

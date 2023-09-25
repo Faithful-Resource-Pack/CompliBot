@@ -1,8 +1,3 @@
-export interface Config {
-	teams: Array<Team>;
-	discords: Array<Discord>;
-}
-
 export interface Discord {
 	team?: string; // tell if discord guilds are teamed up (for global commands)
 	name: string;
@@ -12,5 +7,10 @@ export interface Discord {
 }
 
 export type Team = Omit<Discord, "id" | "roles"> & {
-	roles: { [role: string]: Array<string> };
+	roles: { [role: string]: string[] };
 };
+
+export interface Config {
+	teams: Team[];
+	discords: Discord[];
+}

@@ -1,10 +1,20 @@
+import { ColorResolvable } from "discord.js";
 import { colors } from "./colors";
 import { parseId, ids } from "./emojis";
 import settings from "@json/dynamic/settings.json";
 
+export interface MediaI {
+	[name: string]: {
+		thumbnail: string;
+		color: ColorResolvable;
+		title: string;
+		description: string;
+	};
+}
+
 // sorry for the questionable indentation and formatting
 // blame prettier for most of it but also discord sometimes rendering whitespace weirdly
-export const media = {
+export const media: MediaI = {
 	faithful_32x: {
 		thumbnail: settings.images.faithful_32x,
 		color: colors.f32,
@@ -154,6 +164,4 @@ export const media = {
 ### Media:
 [News](https://faithfulpack.net/news) • [Twitter](https://twitter.com/faithfulpack/) • [Reddit](https://reddit.com/r/faithfulpack/) • [Main GitHub](https://github.com/faithful-resource-pack/) • [Classic Faithful GitHub](https://github.com/classicfaithful/)`,
 	},
-} as const;
-
-export type mediaType = keyof typeof media;
+};

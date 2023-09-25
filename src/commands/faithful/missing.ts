@@ -9,7 +9,6 @@ import {
 	computeAndUpdateAll,
 	MissingOptions,
 	MissingResult,
-	MissingResults,
 } from "@functions/missing";
 import axios from "axios";
 import settings from "@json/dynamic/settings.json";
@@ -71,9 +70,9 @@ export const command: SlashCommand = {
 	execute: async (interaction: ChatInputCommandInteraction) => {
 		await interaction.deferReply();
 
-		const edition: string = interaction.options.getString("edition", true);
-		const pack: string = interaction.options.getString("pack", true);
-		const version: string = interaction.options.getString("version") ?? "latest";
+		const edition = interaction.options.getString("edition", true);
+		const pack = interaction.options.getString("pack", true);
+		const version = interaction.options.getString("version") ?? "latest";
 
 		const updateChannels = version === "latest";
 
@@ -84,7 +83,7 @@ export const command: SlashCommand = {
 			.addFields([{ name: "Steps", value: "\u200b" }]);
 
 		await interaction.editReply({ embeds: [embed] });
-		let steps: Array<string> = [];
+		let steps: string[] = [];
 
 		let stepCallback = async (step: string) => {
 			// when in the computing function this function is called when a step is being executed
@@ -109,7 +108,7 @@ export const command: SlashCommand = {
 			return [null, [errMessage], options];
 		};
 
-		let responses: MissingResults;
+		let responses: MissingResult[];
 
 		if (edition === "all") {
 			// you can edit the function being called so you don't need like 50 different if statements with the same args
@@ -138,8 +137,8 @@ export const command: SlashCommand = {
 			];
 		}
 
-		const files: Array<AttachmentBuilder> = [];
-		const embed2: EmbedBuilder = new EmbedBuilder();
+		const files: AttachmentBuilder[] = [];
+		const embed2 = new EmbedBuilder();
 
 		responses.forEach((response: MissingResult) => {
 			// no repo found for the asked pack + edition

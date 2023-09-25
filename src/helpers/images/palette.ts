@@ -25,7 +25,7 @@ export interface options {
 export interface AllColors {
 	[key: string]: {
 		hex: string;
-		opacity: Array<number>;
+		opacity: number[];
 		rgb: [r: number, g: number, b: number];
 		count: number;
 	};
@@ -114,7 +114,7 @@ export async function paletteAttachment(
 	}
 
 	// create URLs
-	const paletteUrls: Array<string> = [];
+	const paletteUrls: string[] = [];
 	let descriptionLength = embed.data.description.length;
 
 	for (let i = 0; i < paletteGroups.length; ++i) {

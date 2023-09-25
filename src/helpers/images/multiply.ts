@@ -64,7 +64,7 @@ export async function multiplyAttachment(
 	context.fillStyle = options.color;
 	context.fillRect(0, 0, dimension.width, dimension.height);
 
-	var data = context.getImageData(0, 0, dimension.width, dimension.height);
+	const data = context.getImageData(0, 0, dimension.width, dimension.height);
 
 	for (let i = 0; i < data.data.length; i += 4) {
 		const red = data.data[i];
@@ -77,7 +77,8 @@ export async function multiplyAttachment(
 		}
 	}
 
-	await context.putImageData(data, 0, 0);
+	context.putImageData(data, 0, 0);
+
 	return [
 		new AttachmentBuilder(canvas.toBuffer("image/png"), {
 			name: `${options.name ? options.name : "tinted.png"}`,

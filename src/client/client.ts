@@ -8,7 +8,7 @@ import {
 	Guild,
 	StringSelectMenuInteraction,
 } from "discord.js";
-import { Message, GuildMember, EmittingCollection, Automation } from "@client";
+import { Message, EmittingCollection, Automation } from "@client";
 import {
 	Config,
 	Tokens,
@@ -16,6 +16,7 @@ import {
 	SelectMenu,
 	SlashCommand,
 	AsyncSlashCommandBuilder,
+	Event,
 } from "@interfaces";
 import { getData } from "@functions/getDataFromJSON";
 import { setData } from "@functions/setDataToJSON";
@@ -29,7 +30,8 @@ import { RESTPostAPIApplicationCommandsJSONBody, Routes } from "discord-api-type
 
 import path from "path";
 import chalk from "chalk";
-import { StartClient } from "index";
+import StartClient from "index";
+import walkSync from "@helpers/walkSync";
 
 const JSON_PATH = path.join(__dirname, "../../json/dynamic"); // json folder at root
 const POLLS_FILENAME = "polls.json";
@@ -42,36 +44,37 @@ export type ActionsStr =
 	| "selectMenu"
 	| "guildMemberUpdate"
 	| "guildJoined";
+
 export type Actions =
 	| Message
-	| GuildMember
 	| Guild
 	| ButtonInteraction
 	| StringSelectMenuInteraction
 	| ChatInputCommandInteraction;
+
 export type Log = {
 	type: ActionsStr;
 	data: any;
 };
 
-class ExtendedClient extends Client {
-	public verbose: boolean = false;
-	public firstStart: boolean = true; // used for prettier restarting in dev mode
+export class ExtendedClient extends Client {
+	public verbose = false;
+	public firstStart = true; // used for prettier restarting in dev mode
 	public config: Config;
 	public tokens: Tokens;
-	public automation: Automation = new Automation(this);
+	public automation = new Automation(this);
 
-	private logs: Array<Log> = [];
-	private maxLogs: number = 50;
-	private lastLogIndex: number = 0;
+	private logs: Log[] = [];
+	private maxLogs = 50;
+	private lastLogIndex = 0;
 
-	public menus: Collection<string, SelectMenu> = new Collection();
-	public buttons: Collection<string, Button> = new Collection();
-	public events: Collection<string, Event> = new Collection();
-	public slashCommands: Collection<string, SlashCommand> = new Collection();
+	public menus = new Collection<string, SelectMenu>();
+	public buttons = new Collection<string, Button>();
+	public events = new Collection<string, Event>();
+	public slashCommands = new Collection<string, SlashCommand>();
 
-	public polls: EmittingCollection<string, Poll> = new EmittingCollection();
-	public commandsProcessed: EmittingCollection<string, number> = new EmittingCollection();
+	public polls = new EmittingCollection<string, Poll>();
+	public commandsProcessed = new EmittingCollection<string, number>();
 
 	constructor(
 		data: ClientOptions & { config: Config; tokens: Tokens },
@@ -84,7 +87,7 @@ class ExtendedClient extends Client {
 		this.firstStart = firstStart;
 	}
 
-	public async restart(interaction?: ChatInputCommandInteraction): Promise<void> {
+	public async restart(interaction?: ChatInputCommandInteraction) {
 		console.log(`${info}Restarting bot...`);
 		this.destroy();
 		StartClient(false, interaction);
@@ -109,7 +112,7 @@ class ExtendedClient extends Client {
 		console.log(chalk.hex(darkColor)(`                                  888                `)  + chalk.gray.italic(this.tokens.maintenance === false ? "~ Made lovingly with pain\n" : "    Maintenance mode!\n"));
 	}
 
-	public async init(interaction?: ChatInputCommandInteraction) {
+	public init(interaction?: ChatInputCommandInteraction) {
 		// pretty stuff so it doesnt print the logo upon restart
 		if (!this.firstStart) {
 			console.log(`${success}Restarted`);
@@ -223,36 +226,27 @@ class ExtendedClient extends Client {
 	 */
 	public async loadSlashCommands(): Promise<void> {
 		const slashCommandsPath = path.join(__dirname, "..", "commands");
-		const commandsArr: Array<{
-			servers: Array<string>;
+		const commandsArr: {
+			servers: string[];
 			command: RESTPostAPIApplicationCommandsJSONBody;
-		}> = [];
+		}[] = [];
 
-		const paths: Array<string> = readdirSync(slashCommandsPath);
-		// use a classic for loop to force async functions to be fulfilled
-		for (let i = 0; i < paths.length; i++) {
-			const dir: string = paths[i];
-			if (dir == ".DS_Store") continue;
+		const commands = walkSync(slashCommandsPath).filter((file) => file.endsWith(".ts"));
+		for (const file of commands) {
+			const { command }: { command: SlashCommand } = require(file);
 
-			const commands = readdirSync(`${slashCommandsPath}/${dir}`).filter((file) =>
-				file.endsWith(".ts"),
-			);
-			for (const file of commands) {
-				const { command } = require(`${slashCommandsPath}/${dir}/${file}`);
-
-				if (command.data instanceof Function) {
-					this.slashCommands.set(
-						(await (command.data as AsyncSlashCommandBuilder)(this)).name,
-						command,
-					); // AsyncSlashCommandBuilder
-					commandsArr.push({
-						servers: command.servers,
-						command: (await (command.data as AsyncSlashCommandBuilder)(this)).toJSON(),
-					});
-				} else {
-					this.slashCommands.set(command.data.name, command); // SyncSlashCommandBuilder
-					commandsArr.push({ servers: command.servers, command: command.data.toJSON() });
-				}
+			if (command.data instanceof Function) {
+				this.slashCommands.set(
+					(await (command.data as AsyncSlashCommandBuilder)(this)).name,
+					command,
+				); // AsyncSlashCommandBuilder
+				commandsArr.push({
+					servers: command.servers,
+					command: (await (command.data as AsyncSlashCommandBuilder)(this)).toJSON(),
+				});
+			} else {
+				this.slashCommands.set(command.data.name, command); // SyncSlashCommandBuilder
+				commandsArr.push({ servers: command.servers, command: command.data.toJSON() });
 			}
 		}
 
@@ -317,9 +311,9 @@ class ExtendedClient extends Client {
 			readdirSync(eventPath)
 				.filter((file) => file.endsWith(".ts"))
 				.forEach(async (file) => {
-					const { event } = await import(`${eventPath}/${file}`);
+					const { event }: { event: Event } = await import(`${eventPath}/${file}`);
 					this.events.set(event.name, event);
-					this.on(event.name, event.run.bind(null, this));
+					this.on(event.name as any, event.run.bind(null, this));
 				});
 		}
 	};
@@ -371,11 +365,9 @@ class ExtendedClient extends Client {
 
 	/**
 	 * Get the whole logs
-	 * @returns {Array<Log>}
+	 * @returns {Log[]}
 	 */
-	public getAction(): Array<Log> {
+	public getAction(): Log[] {
 		return this.logs;
 	}
 }
-
-export { ExtendedClient };

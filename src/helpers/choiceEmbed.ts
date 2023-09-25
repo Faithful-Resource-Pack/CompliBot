@@ -4,7 +4,7 @@ import {
 	SelectMenuComponentOptionData,
 	StringSelectMenuBuilder,
 } from "discord.js";
-import { Textures } from "@interfaces";
+import { Texture } from "@interfaces";
 import { minecraftSorter } from "@helpers/sorter";
 import settings from "@json/dynamic/settings.json";
 
@@ -20,14 +20,14 @@ export async function generalChoiceEmbed(
 	choices: SelectMenuComponentOptionData[],
 ) {
 	const choicesLength = choices.length; // we're modifying choices directly so it needs to be saved first
-	const components: Array<ActionRowBuilder<StringSelectMenuBuilder>> = [];
+	const components: ActionRowBuilder<StringSelectMenuBuilder>[] = [];
 	const emojis = settings.emojis.default_select;
 
 	// dividing into maximum of 25 choices per menu
 	// 4 menus max
 	const maxRows = 4; // actually 5 but - 1 because we are adding a delete button to it (the 5th one)
 	for (let currentRow = 0; currentRow <= maxRows && choices.length; ++currentRow) {
-		const options: Array<SelectMenuComponentOptionData> = [];
+		const options: SelectMenuComponentOptionData[] = [];
 
 		for (let i = 0; i < emojis.length; i++)
 			if (choices[0] !== undefined) {
@@ -65,11 +65,11 @@ export async function generalChoiceEmbed(
 export async function textureChoiceEmbed(
 	interaction: ChatInputCommandInteraction,
 	menuID: string,
-	results: Textures,
+	results: Texture[],
 	constValue: string,
 ) {
 	const mappedResults: SelectMenuComponentOptionData[] = [];
-	for (let result of results) {
+	for (const result of results) {
 		mappedResults.push({
 			label: `[#${result.id}] (${result.paths[0].versions.sort(minecraftSorter).reverse()[0]}) ${
 				result.name

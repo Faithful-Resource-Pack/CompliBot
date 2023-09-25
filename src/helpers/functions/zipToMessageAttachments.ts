@@ -2,8 +2,8 @@ import axios from "axios";
 import { AttachmentBuilder } from "discord.js";
 import JSZip from "jszip";
 
-export const zipToMA = async (url: string): Promise<Array<AttachmentBuilder>> => {
-	let output: Array<AttachmentBuilder> = [];
+export const zipToMA = async (url: string): Promise<AttachmentBuilder[]> => {
+	let output: AttachmentBuilder[] = [];
 
 	// get zip as arraybuffer
 	const zip: ArrayBuffer = (
@@ -31,7 +31,7 @@ export const zipToMA = async (url: string): Promise<Array<AttachmentBuilder>> =>
 		})
 		.then((res): { [key: string]: Buffer } => {
 			return res.reduce((acc, val: [key: string, buff: Buffer]) => {
-				let splitted: Array<string> = val[0].split("/");
+				let splitted: string[] = val[0].split("/");
 				let key: string = splitted[splitted.length - 1];
 				acc[key] = val[1];
 				return acc;
@@ -47,10 +47,10 @@ export const zipToMA = async (url: string): Promise<Array<AttachmentBuilder>> =>
 };
 
 const arrayBufferToBufferCycle = (ab: ArrayBuffer): Buffer => {
-	var buffer = Buffer.alloc(ab.byteLength);
-	var view = new Uint8Array(ab);
-	for (var i = 0; i < buffer.length; ++i) {
-		buffer[i] = view[i];
-	}
+	let buffer = Buffer.alloc(ab.byteLength);
+	let view = new Uint8Array(ab);
+
+	for (let i = 0; i < buffer.length; ++i) buffer[i] = view[i];
+
 	return buffer;
 };

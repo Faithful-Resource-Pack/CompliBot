@@ -25,7 +25,7 @@ export const command: SlashCommand = {
 			let embedArray = [];
 			let i = 0;
 
-			for (let faq of faqStrings) {
+			for (const faq of faqStrings) {
 				embedArray.push(
 					new EmbedBuilder()
 						.setTitle(faq.question)

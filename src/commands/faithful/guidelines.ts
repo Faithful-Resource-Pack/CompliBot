@@ -26,12 +26,12 @@ export const command: SlashCommand = {
 		),
 	execute: async (interaction: ChatInputCommandInteraction) => {
 		let contents: string;
-		let choice = interaction.options.getString("choice");
+		let keyword = interaction.options.getString("choice");
 		const pack = interaction.options.getString("pack");
 		const errorEmbed = new EmbedBuilder()
 			.setTitle("Invalid choice!")
 			.setDescription(
-				`\`${choice}\` is not a valid choice for pack \`${pack}\`. Have you chosen the wrong pack or made a typo?`,
+				`\`${keyword}\` is not a valid choice for pack \`${pack}\`. Have you chosen the wrong pack or made a typo?`,
 			)
 			.setColor(colors.red);
 
@@ -44,25 +44,25 @@ export const command: SlashCommand = {
 				break;
 		}
 
-		if (choice) {
-			choice = choice.toLocaleLowerCase(); // remove case sensitivity for easier parsing
+		if (keyword) {
+			keyword = keyword.toLocaleLowerCase(); // remove case sensitivity for easier parsing
 			if (
-				!guidelineJSON.choices
+				!guidelineJSON
 					.map((i) => i.keywords)
 					.flat()
-					.includes(choice)
+					.includes(keyword)
 			) {
 				// if it's not present anywhere escape early
 				return interaction.reply({ embeds: [errorEmbed], ephemeral: true });
 			}
 
-			for (let i of guidelineJSON.choices) {
-				if (!i.keywords.includes(choice)) continue;
-				if (!i[pack]) {
+			for (const choice of guidelineJSON) {
+				if (!choice.keywords.includes(keyword)) continue;
+				if (!choice[pack]) {
 					// if you pick an option that isn't present in the pack you selected
 					return interaction.reply({ embeds: [errorEmbed], ephemeral: true });
 				}
-				contents += `#${i[pack]}`; // adds the html id specified in the json
+				contents += `#${choice[pack]}`; // adds the html id specified in the json
 				break;
 			}
 		}
