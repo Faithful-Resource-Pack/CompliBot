@@ -1,6 +1,6 @@
 import { ChatInputCommandInteraction, EmbedField } from "discord.js";
 import { SlashCommand } from "@interfaces";
-import { SlashCommandBuilder } from "@discordjs/builders";
+import { SlashCommandBuilder } from "discord.js";
 import { Poll } from "@class/poll";
 import { addSeconds, parseDate } from "@helpers/dates";
 import { ids, parseId } from "@helpers/emojis";

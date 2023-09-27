@@ -1,5 +1,5 @@
 import { SlashCommand } from "@interfaces";
-import { SlashCommandBuilder } from "@discordjs/builders";
+import { SlashCommandBuilder } from "discord.js";
 import { ChatInputCommandInteraction, Message, EmbedBuilder } from "@client";
 import guidelineJSON from "@json/guidelines.json";
 import { colors } from "@helpers/colors";
@@ -14,6 +14,7 @@ export const command: SlashCommand = {
 				.setDescription("The guidelines you want to view")
 				.addChoices(
 					{ name: "Faithful 32x", value: "faithful_32x" },
+					{ name: "Faithful 64x", value: "faithful_64x" },
 					{ name: "Classic Faithful 32x", value: "classic_faithful_32x" },
 				)
 				.setRequired(true),
@@ -37,6 +38,9 @@ export const command: SlashCommand = {
 
 		switch (pack) {
 			case "faithful_32x":
+				contents = "https://docs.faithfulpack.net/pages/textures/f32-texturing-guidelines";
+				break;
+			case "faithful_64x":
 				contents = "https://docs.faithfulpack.net/pages/textures/f32-texturing-guidelines";
 				break;
 			case "classic_faithful_32x":

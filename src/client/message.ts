@@ -5,7 +5,7 @@ import tokens from "@json/tokens.json";
 import { deleteInteraction, deleteMessage } from "@helpers/buttons";
 import { colors } from "@helpers/colors";
 import settings from "@json/dynamic/settings.json";
-import { ButtonBuilder } from "@discordjs/builders";
+import { ButtonBuilder } from "discord.js";
 
 declare module "discord.js" {
 	interface Message {

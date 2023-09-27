@@ -1,5 +1,5 @@
 import { SlashCommand } from "@interfaces";
-import { SlashCommandBuilder } from "@discordjs/builders";
+import { SlashCommandBuilder } from "discord.js";
 import { ChatInputCommandInteraction, Message, EmbedBuilder, Client } from "@client";
 import { colors } from "@helpers/colors";
 import ruleStrings from "@json/rules.json";

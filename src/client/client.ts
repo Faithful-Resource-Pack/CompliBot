@@ -12,8 +12,7 @@ import { Message, EmittingCollection, Automation } from "@client";
 import {
 	Config,
 	Tokens,
-	Button,
-	SelectMenu,
+	Component,
 	SlashCommand,
 	AsyncSlashCommandBuilder,
 	Event,
@@ -28,12 +27,12 @@ import { readdirSync } from "fs";
 import { REST } from "@discordjs/rest";
 import { RESTPostAPIApplicationCommandsJSONBody, Routes } from "discord-api-types/v10";
 
-import path from "path";
+import { join } from "path";
 import chalk from "chalk";
 import StartClient from "index";
 import walkSync from "@helpers/walkSync";
 
-const JSON_PATH = path.join(__dirname, "../../json/dynamic"); // json folder at root
+const JSON_PATH = join(__dirname, "../../json/dynamic"); // json folder at root
 const POLLS_FILENAME = "polls.json";
 const COMMANDS_PROCESSED_FILENAME = "commandsProcessed.json";
 
@@ -68,9 +67,9 @@ export class ExtendedClient extends Client {
 	private maxLogs = 50;
 	private lastLogIndex = 0;
 
-	public menus = new Collection<string, SelectMenu>();
-	public buttons = new Collection<string, Button>();
-	public events = new Collection<string, Event>();
+	public menus = new Collection<string, Component>();
+	public buttons = new Collection<string, Component>();
+	public modals = new Collection<string, Component>();
 	public slashCommands = new Collection<string, SlashCommand>();
 
 	public polls = new EmittingCollection<string, Poll>();
@@ -113,6 +112,7 @@ export class ExtendedClient extends Client {
 	}
 
 	public init(interaction?: ChatInputCommandInteraction) {
+		console.log(process.cwd());
 		// pretty stuff so it doesnt print the logo upon restart
 		if (!this.firstStart) {
 			console.log(`${success}Restarted`);
@@ -128,11 +128,9 @@ export class ExtendedClient extends Client {
 			})
 			.then(() => {
 				this.loadSlashCommands();
+				this.loadComponents();
 
 				this.loadEvents();
-				this.loadButtons();
-				this.loadSelectMenus();
-
 				this.loadCollections();
 				this.automation.start();
 				if (this.verbose) console.log(info + `Init complete`);
@@ -158,11 +156,11 @@ export class ExtendedClient extends Client {
 		return this;
 	}
 
-	private loadCollections = () => {
+	private loadCollections() {
 		this.loadCollection(this.polls, POLLS_FILENAME, JSON_PATH);
 		this.loadCollection(this.commandsProcessed, COMMANDS_PROCESSED_FILENAME, JSON_PATH);
 		if (this.verbose) console.log(info + `Loaded collection data`);
-	};
+	}
 
 	/**
 	 * Read & Load data from json file into emitting collection & setup events handler
@@ -170,11 +168,11 @@ export class ExtendedClient extends Client {
 	 * @param filename
 	 * @param relative_path
 	 */
-	private loadCollection = (
+	private loadCollection(
 		collection: EmittingCollection<any, any>,
 		filename: string,
 		relative_path: string,
-	): void => {
+	) {
 		const obj = getData({ filename, relative_path });
 		Object.keys(obj).forEach((key: string) => {
 			collection.set(key, obj[key]);
@@ -186,7 +184,7 @@ export class ExtendedClient extends Client {
 		collection.events.on("dataDeleted", (key: string) => {
 			this.saveEmittingCollection(collection, filename, relative_path);
 		});
-	};
+	}
 
 	/**
 	 * Save an emitting collection into a JSON file
@@ -194,22 +192,22 @@ export class ExtendedClient extends Client {
 	 * @param filename
 	 * @param relative_path
 	 */
-	private saveEmittingCollection = (
+	private saveEmittingCollection(
 		collection: EmittingCollection<any, any>,
 		filename: string,
 		relative_path: string,
-	): void => {
+	) {
 		let data = {};
 		[...collection.keys()].forEach((k: string) => {
 			data[k] = collection.get(k);
 		});
 		setData({ filename, relative_path, data: JSON.parse(JSON.stringify(data)) });
-	};
+	}
 
 	/**
 	 * SLASH COMMANDS DELETION
 	 */
-	public deleteGlobalSlashCommands = () => {
+	public deleteGlobalSlashCommands() {
 		console.log(`${success}deleting slash commands`);
 
 		const rest = new REST({ version: "10" }).setToken(this.tokens.token);
@@ -219,13 +217,13 @@ export class ExtendedClient extends Client {
 				promises.push(rest.delete(`${Routes.applicationCommands(this.user.id)}/${command.id}`));
 			return Promise.all(promises).then(() => console.log(`${success}delete succeed`));
 		});
-	};
+	}
 
 	/**
 	 * SLASH COMMANDS HANDLER
 	 */
-	public async loadSlashCommands(): Promise<void> {
-		const slashCommandsPath = path.join(__dirname, "..", "commands");
+	public async loadSlashCommands() {
+		const slashCommandsPath = join(__dirname, "..", "commands");
 		const commandsArr: {
 			servers: string[];
 			command: RESTPostAPIApplicationCommandsJSONBody;
@@ -233,7 +231,7 @@ export class ExtendedClient extends Client {
 
 		const commands = walkSync(slashCommandsPath).filter((file) => file.endsWith(".ts"));
 		for (const file of commands) {
-			const { command }: { command: SlashCommand } = require(file);
+			const command: SlashCommand = require(file).command;
 
 			if (command.data instanceof Function) {
 				this.slashCommands.set(
@@ -260,7 +258,7 @@ export class ExtendedClient extends Client {
 
 		const guilds = { global: [] };
 		commandsArr.forEach((el) => {
-			if (el.servers === null || el.servers === undefined) guilds["global"].push(el.command);
+			if (el.servers === null || el.servers === undefined) guilds.global.push(el.command);
 			else
 				el.servers.forEach((server) => {
 					if (guilds[server] === undefined) guilds[server] = [];
@@ -296,63 +294,42 @@ export class ExtendedClient extends Client {
 	 * Read "Events" directory and add them as events
 	 * !! broke if dir doesn't exist
 	 */
-	private loadEvents = (): void => {
-		if (this.tokens.maintenance) {
-			this.on("ready", async () => {
+	private loadEvents() {
+		if (this.tokens.maintenance)
+			return this.on("ready", async () => {
 				this.user.setPresence({
 					activities: [{ name: "under maintenance", type: ActivityType.Playing }],
 					status: "idle",
 				});
 				this.user.setStatus("idle");
 			});
-		} else {
-			const eventPath = path.join(__dirname, "..", "events");
 
-			readdirSync(eventPath)
-				.filter((file) => file.endsWith(".ts"))
-				.forEach(async (file) => {
-					const { event }: { event: Event } = await import(`${eventPath}/${file}`);
-					this.events.set(event.name, event);
-					this.on(event.name as any, event.run.bind(null, this));
-				});
+		const eventPath = join(__dirname, "..", "events");
+		const events = walkSync(eventPath).filter((file) => file.endsWith(".ts"));
+		for (const file of events) {
+			const event: Event = require(file).default;
+			if (!event) continue; // not an event file
+			this.on(event.name as string, event.execute.bind(null, this));
 		}
-	};
+	}
+
+	private loadComponents() {
+		this.loadComponent(this.buttons, join(__dirname, "..", "events", "buttons"));
+		this.loadComponent(this.menus, join(__dirname, "..", "events", "menus"));
+		this.loadComponent(this.modals, join(__dirname, "..", "events", "modals"));
+	}
 
 	/**
-	 * Read "Buttons" directory and add them to the buttons collection
-	 * !! broke if dir doesn't exist
+	 * Read given directory and add them to needed collection
 	 */
-	private loadButtons = (): void => {
-		const buttonPath = path.join(__dirname, "..", "events", "buttons");
-
-		readdirSync(buttonPath).forEach(async (dir) => {
-			if (dir == ".DS_Store") return;
-			const buttons = readdirSync(`${buttonPath}/${dir}`).filter((file) => file.endsWith(".ts"));
-
-			for (const file of buttons) {
-				const { button } = await import(`${buttonPath}/${dir}/${file}`);
-				this.buttons.set(button.buttonId, button);
-			}
-		});
-	};
-
-	/**
-	 * Read "Menus" directory and add them to the menus collection
-	 * !! broke if dir doesn't exist
-	 */
-	private loadSelectMenus = (): void => {
-		const menusPath = path.join(__dirname, "..", "events", "menus");
-
-		readdirSync(menusPath).forEach(async (dir) => {
-			if (dir == ".DS_Store") return;
-			const menus = readdirSync(`${menusPath}/${dir}`).filter((file) => file.endsWith(".ts"));
-
-			for (const file of menus) {
-				const { menu } = await import(`${menusPath}/${dir}/${file}`);
-				this.menus.set(menu.selectMenuId, menu);
-			}
-		});
-	};
+	private loadComponent(collection: Collection<string, Component>, path: string) {
+		const components = walkSync(path).filter((file) => file.endsWith(".ts"));
+		for (const file of components) {
+			const { default: component }: {default: Component} = require(file);
+			collection.set(component.id, component);
+		}
+		return collection;
+	}
 
 	/**
 	 * Store any kind of action the bot does

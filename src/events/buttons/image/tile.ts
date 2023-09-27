@@ -5,7 +5,7 @@ import { tileAttachment } from "@images/tile";
 import { magnify, palette } from "@helpers/buttons";
 import { getImageFromMessage } from "@functions/slashCommandImage";
 import { ActionRowBuilder } from "discord.js";
-import { ButtonBuilder } from "@discordjs/builders";
+import { ButtonBuilder } from "discord.js";
 
 export const button: Button = {
 	buttonId: "tile",

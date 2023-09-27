@@ -5,9 +5,9 @@ import settings from "@json/dynamic/settings.json";
 import { Pack } from "@interfaces";
 import { colors } from "@helpers/colors";
 
-export const event: Event = {
+export default {
 	name: "messageCreate",
-	run: async (client: Client, message: Message) => {
+	async execute(client: Client, message: Message) {
 		//! do not remove, 'force' message to be casted (break if removed)
 		let _ = (message as Message) instanceof Message;
 
@@ -146,4 +146,4 @@ export const event: Event = {
 			}
 		}
 	},
-};
+} as Event;

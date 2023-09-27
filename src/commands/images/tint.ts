@@ -1,6 +1,6 @@
 import { SlashCommand } from "@interfaces";
 import { Client, ChatInputCommandInteraction, Message, EmbedBuilder } from "@client";
-import { SlashCommandBuilder } from "@discordjs/builders";
+import { SlashCommandBuilder } from "discord.js";
 import { generalSlashCommandImage } from "@functions/slashCommandImage";
 import { mcColorsOptions, multiplyAttachment } from "@images/multiply";
 export const command: SlashCommand = {

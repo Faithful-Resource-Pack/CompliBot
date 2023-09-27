@@ -7,11 +7,11 @@ interface AllEvents extends ClientEvents {
 	selectMenuUsed: any;
 }
 
-interface Run {
+interface Execute {
 	(client: Client, ...args: any[]);
 }
 
 export interface Event {
 	name: keyof AllEvents;
-	run: Run;
+	execute: Execute;
 }

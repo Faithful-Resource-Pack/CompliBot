@@ -1,5 +1,5 @@
 import { ChatInputCommandInteraction, Message, EmbedBuilder } from "@client";
-import { ActionRowBuilder } from "@discordjs/builders";
+import { ActionRowBuilder } from "discord.js";
 import { imageButtons } from "@helpers/buttons";
 import {
 	Collection,

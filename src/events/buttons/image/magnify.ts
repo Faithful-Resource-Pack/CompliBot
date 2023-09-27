@@ -5,7 +5,7 @@ import { magnifyAttachment } from "@images/magnify";
 import { palette } from "@helpers/buttons";
 import { getImageFromMessage } from "@functions/slashCommandImage";
 import { ActionRowBuilder } from "discord.js";
-import { ButtonBuilder } from "@discordjs/builders";
+import { ButtonBuilder } from "discord.js";
 
 export const button: Button = {
 	buttonId: "magnify",

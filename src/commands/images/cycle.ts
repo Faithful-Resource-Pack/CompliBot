@@ -1,5 +1,5 @@
 import { SlashCommand } from "@interfaces";
-import { SlashCommandBuilder } from "@discordjs/builders";
+import { SlashCommandBuilder } from "discord.js";
 import { Client, ChatInputCommandInteraction, EmbedBuilder, Message } from "@client";
 import { cycleComparison } from "@images/cycle";
 import parseTextureName from "@functions/parseTextureName";

@@ -1,5 +1,5 @@
 import { SlashCommand, SyncSlashCommandBuilder } from "@interfaces";
-import { SlashCommandBuilder } from "@discordjs/builders";
+import { SlashCommandBuilder } from "discord.js";
 import { Client, ChatInputCommandInteraction, EmbedBuilder } from "@client";
 import { Message, AttachmentBuilder } from "discord.js";
 import {

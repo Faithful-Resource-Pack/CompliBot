@@ -1,6 +1,7 @@
-import { Collection, Interaction } from "discord.js";
-import { SlashCommandSubcommandsOnlyBuilder, SlashCommandBuilder } from "@discordjs/builders";
+import { SlashCommandSubcommandsOnlyBuilder, SlashCommandBuilder, ButtonInteraction, Collection, Interaction, StringSelectMenuInteraction } from "discord.js";
 import { Client } from "@client";
+
+// slash commands
 
 export interface SlashCommand {
 	servers?: string[];
@@ -19,11 +20,13 @@ export interface SlashCommandI {
 	(interaction: Interaction, client?: Client): void;
 }
 
-/**
- * important: When using permissions, please do "(false)" to the slash command builder!
- * otherwise the command will stay available for everybody else
- */
-export interface Permissions {
-	roles?: string[] | undefined;
-	users?: string[] | undefined;
+// same interface is used for buttons, select menus, modals, etc so they can be added to the bot much more easily
+
+export interface Component {
+	id: string;
+	execute: ComponentExecute;
+}
+
+export interface ComponentExecute {
+	(client: Client, interaction: ButtonInteraction): void;
 }

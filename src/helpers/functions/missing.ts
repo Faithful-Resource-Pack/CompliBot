@@ -161,7 +161,7 @@ export const compute = async (
 	const texturesDefault = getAllFilesFromDir(tmpDirPathDefault, editionFilter).map((f) =>
 		normalize(f).replace(tmpDirPathDefault, ""),
 	);
-	const texturesRequest= getAllFilesFromDir(tmpDirPathRequest, editionFilter).map((f) =>
+	const texturesRequest = getAllFilesFromDir(tmpDirPathRequest, editionFilter).map((f) =>
 		normalize(f).replace(tmpDirPathRequest, ""),
 	);
 

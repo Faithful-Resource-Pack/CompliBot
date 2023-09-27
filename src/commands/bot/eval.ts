@@ -1,5 +1,5 @@
 import { SlashCommand } from "@interfaces";
-import { SlashCommandBuilder } from "@discordjs/builders";
+import { SlashCommandBuilder } from "discord.js";
 import { Client, ChatInputCommandInteraction, EmbedBuilder } from "@client";
 import { PermissionFlagsBits } from "discord-api-types/v10";
 import settings from "@json/dynamic/settings.json";

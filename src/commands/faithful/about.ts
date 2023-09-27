@@ -1,5 +1,5 @@
 import { SlashCommand } from "@interfaces";
-import { SlashCommandBuilder } from "@discordjs/builders";
+import { SlashCommandBuilder } from "discord.js";
 import { Message, EmbedBuilder, ChatInputCommandInteraction, Client } from "@client";
 import { AttachmentBuilder } from "discord.js";
 import axios from "axios";

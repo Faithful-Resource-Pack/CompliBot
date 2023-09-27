@@ -1,6 +1,6 @@
 import { duration } from "moment";
 import { SlashCommand, SlashCommandI } from "@interfaces";
-import { SlashCommandBuilder } from "@discordjs/builders";
+import { SlashCommandBuilder } from "discord.js";
 import { Collection, Guild, version as djsVersion } from "discord.js";
 import { Client, EmbedBuilder, ChatInputCommandInteraction, Message } from "@client";
 import os from "os";

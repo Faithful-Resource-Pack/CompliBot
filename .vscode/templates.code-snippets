@@ -3,11 +3,11 @@
 		"prefix": "net",
 		"body": [
 			"import { Event } from '@interfaces';",
-			"export const event: Event = {",
+			"export default {",
 			"\tname: \"${1:Name}\",",
-			"\trun: async (client, ${2:/* args */}) => {",
+			"\tasync execute(client, ${2:/* args */}) {",
 			"\t\t${3://todo: implement event",
-			"\t}},\n};"
+			"\t}},\n} as Event;"
 		]
 	},
 
@@ -16,7 +16,7 @@
 		"body": [
 			"import { SlashCommand, SyncSlashCommandBuilder } from \"@interfaces\";",
 			"import { Client, ChatInputCommandInteraction, Message, EmbedBuilder } from \"@client\";",
-			"import { SlashCommandBuilder } from \"@discordjs/builders\";",
+			"import { SlashCommandBuilder } from \"discord.js\";",
 			"export const command: SlashCommand = {",
 			"\tdata: async (client: Client): Promise<SyncSlashCommandBuilder> => {",
 			"\t\t/**",
@@ -39,7 +39,7 @@
 		"body": [
 			"import { SlashCommand } from \"@interfaces\";",
 			"import { Client, ChatInputCommandInteraction, Message, EmbedBuilder } from \"@client\";",
-			"import { SlashCommandBuilder } from \"@discordjs/builders\";",
+			"import { SlashCommandBuilder } from \"discord.js\";",
 			"export const command: SlashCommand = {",
 			"\tdata: new SlashCommandBuilder()",
 

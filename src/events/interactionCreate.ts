@@ -7,9 +7,9 @@ import {
 } from "@client";
 import { Interaction } from "discord.js";
 
-export const event: Event = {
+export default {
 	name: "interactionCreate",
-	run: async (client: Client, interaction: Interaction) => {
+	async execute(client: Client, interaction: Interaction) {
 		if (!interaction.inGuild()) return;
 
 		const banlist = require("@json/botbans.json");
@@ -42,4 +42,4 @@ export const event: Event = {
 			client.emit("selectMenuUsed", (client as Client, interaction));
 		}
 	},
-};
+} as Event;

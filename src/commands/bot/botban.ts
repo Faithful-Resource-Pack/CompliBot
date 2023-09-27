@@ -1,5 +1,5 @@
 import { Config, SlashCommand, SlashCommandI } from "@interfaces";
-import { SlashCommandBuilder } from "@discordjs/builders";
+import { SlashCommandBuilder } from "discord.js";
 import { Client, EmbedBuilder, ChatInputCommandInteraction } from "@client";
 import { Collection, AttachmentBuilder, TextChannel } from "discord.js";
 import ConfigJson from "@json/config.json";

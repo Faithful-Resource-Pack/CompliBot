@@ -1,5 +1,5 @@
 import { SlashCommand } from "@interfaces";
-import { SlashCommandBuilder } from "@discordjs/builders";
+import { SlashCommandBuilder } from "discord.js";
 import { ChatInputCommandInteraction, EmbedBuilder } from "@client";
 import { tileAttachment, tileShape } from "@images/tile";
 import { generalSlashCommandImage } from "@functions/slashCommandImage";

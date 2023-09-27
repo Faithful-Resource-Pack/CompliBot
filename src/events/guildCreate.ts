@@ -2,9 +2,9 @@ import { Guild, EmbedBuilder } from "discord.js";
 import { Event } from "@interfaces";
 import { info } from "@helpers/logger";
 
-export const event: Event = {
+export default {
 	name: "guildCreate",
-	run: async (client, guild: Guild) => {
+	async run(client, guild: Guild) {
 		client.storeAction("guildJoined", guild);
 
 		client.loadSlashCommands();
@@ -16,4 +16,4 @@ export const event: Event = {
 		guild.systemChannel?.send({ embeds: [embed] });
 		console.log(`${info}I was added to a guild. Now I'm in ${client.guilds.cache.size} total!`);
 	},
-};
+ } as Event;
