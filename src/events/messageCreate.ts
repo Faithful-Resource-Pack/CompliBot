@@ -8,10 +8,8 @@ import { colors } from "@helpers/colors";
 export default {
 	name: "messageCreate",
 	async execute(client: Client, message: Message) {
-		//! do not remove, 'force' message to be casted (break if removed)
-		let _ = (message as Message) instanceof Message;
-
-		let m = Object.assign({}, message); // lose reference to message: create unique instance of the message for the logger (ask @Juknum)
+		// duplicate message for logger (ask @Juknum)
+		let m = structuredClone(message);
 		m.isDeleted = false;
 		client.storeAction("message", m);
 

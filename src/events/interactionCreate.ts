@@ -28,18 +28,13 @@ export default {
 			return;
 		}
 
-		if (interaction.isCommand()) {
-			let _ = (interaction as ChatInputCommandInteraction) instanceof ChatInputCommandInteraction; //! do not remove, 'force' interaction to be casted (break if removed)
-			client.emit("slashCommandUsed", (client as Client, interaction));
-		}
-		if (interaction.isButton()) {
-			let _ = (interaction as ButtonInteraction) instanceof ButtonInteraction; //! do not remove, 'force' interaction to be casted (break if removed)
-			client.emit("buttonUsed", (client as Client, interaction));
-		}
+		if (interaction.isCommand()) client.emit("slashCommandUsed", (client as Client, interaction));
 
-		if (interaction.isStringSelectMenu()) {
-			let _ = (interaction as StringSelectMenuInteraction) instanceof StringSelectMenuInteraction; //! do not remove, 'force' interaction to be casted (break if removed)
+		if (interaction.isButton()) client.emit("buttonUsed", (client as Client, interaction));
+
+		if (interaction.isStringSelectMenu())
 			client.emit("selectMenuUsed", (client as Client, interaction));
-		}
+
+		if (interaction.isModalSubmit()) client.emit("modalSubmit", (client as Client, interaction));
 	},
 } as Event;

@@ -4,6 +4,7 @@ import {
 	Role,
 	StringSelectMenuInteraction,
 	EmbedBuilder,
+	ModalSubmitInteraction,
 } from "discord.js";
 import { PermissionFlagsBits } from "discord-api-types/v10";
 import { JSONFiles, StringOutput, en_US } from "@helpers/strings";
@@ -24,6 +25,10 @@ declare module "discord.js" {
 	}
 
 	interface StringSelectMenuInteraction {
+		strings(): StringOutput;
+	}
+
+	interface ModalSubmitInteraction {
 		strings(): StringOutput;
 	}
 }
@@ -79,5 +84,11 @@ ChatInputCommandInteraction.prototype.hasPermission = hasPermission;
 ButtonInteraction.prototype.strings = strings;
 StringSelectMenuInteraction.prototype.strings = strings;
 ChatInputCommandInteraction.prototype.strings = strings;
+ModalSubmitInteraction.prototype.strings = strings;
 
-export { ChatInputCommandInteraction, ButtonInteraction, StringSelectMenuInteraction };
+export {
+	ChatInputCommandInteraction,
+	ButtonInteraction,
+	ModalSubmitInteraction,
+	StringSelectMenuInteraction,
+};

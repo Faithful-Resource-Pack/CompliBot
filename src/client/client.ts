@@ -7,6 +7,7 @@ import {
 	ChatInputCommandInteraction,
 	Guild,
 	StringSelectMenuInteraction,
+	ModalSubmitInteraction,
 } from "discord.js";
 import { Message, EmittingCollection, Automation } from "@client";
 import {
@@ -23,7 +24,6 @@ import { errorHandler } from "@functions/errorHandler";
 import { err, info, success } from "@helpers/logger";
 import { Poll } from "@class/poll";
 
-import { readdirSync } from "fs";
 import { REST } from "@discordjs/rest";
 import { RESTPostAPIApplicationCommandsJSONBody, Routes } from "discord-api-types/v10";
 
@@ -41,6 +41,7 @@ export type ActionsStr =
 	| "slashCommand"
 	| "button"
 	| "selectMenu"
+	| "modal"
 	| "guildMemberUpdate"
 	| "guildJoined";
 
@@ -49,7 +50,8 @@ export type Actions =
 	| Guild
 	| ButtonInteraction
 	| StringSelectMenuInteraction
-	| ChatInputCommandInteraction;
+	| ChatInputCommandInteraction
+	| ModalSubmitInteraction;
 
 export type Log = {
 	type: ActionsStr;
