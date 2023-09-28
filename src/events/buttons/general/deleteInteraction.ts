@@ -1,10 +1,10 @@
-import { Button } from "@interfaces";
+import { Component } from "@interfaces";
 import { info } from "@helpers/logger";
 import { Client, Message, ButtonInteraction } from "@client";
 import { MessageInteraction } from "discord.js";
 
-export const button: Button = {
-	buttonId: "deleteInteraction",
+export default {
+	id: "deleteInteraction",
 	async execute(client: Client, interaction: ButtonInteraction) {
 		if (client.verbose) console.log(`${info}Interaction Message deleted!`);
 
@@ -20,7 +20,7 @@ export const button: Button = {
 				ephemeral: true,
 			});
 
-		let fetchedRef: boolean = false;
+		let fetchedRef = false;
 		try {
 			fetchedRef = (await message.fetchReference()).author.id != interaction.user.id;
 		} catch {} // ref deleted or author not matching
@@ -45,4 +45,4 @@ export const button: Button = {
 			});
 		}
 	},
-};
+} as Component;

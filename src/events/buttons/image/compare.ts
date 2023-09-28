@@ -1,11 +1,11 @@
-import { Button } from "@interfaces";
+import { Component } from "@interfaces";
 import { info } from "@helpers/logger";
 import { Client, Message, ButtonInteraction, EmbedBuilder } from "@client";
 import textureComparison from "@functions/textureComparison";
 import { InteractionEditReplyOptions, EmbedFooterData } from "discord.js";
 
-export const button: Button = {
-	buttonId: "compare",
+export default {
+	id: "compare",
 	async execute(client: Client, interaction: ButtonInteraction) {
 		if (client.verbose) console.log(`${info}Image was compared!`);
 
@@ -34,4 +34,4 @@ export const button: Button = {
 			message.deleteButton(true);
 		});
 	},
-};
+} as Component;

@@ -1,11 +1,11 @@
 import { Client, Message, StringSelectMenuInteraction } from "@client";
-import { SelectMenu } from "@interfaces";
+import { Component } from "@interfaces";
 import { info } from "@helpers/logger";
 import { MessageInteraction } from "discord.js";
 import { cycleComparison } from "@images/cycle";
 
-export const menu: SelectMenu = {
-	selectMenuId: "cycleSelect",
+export default {
+	id: "cycleSelect",
 	async execute(client: Client, interaction: StringSelectMenuInteraction) {
 		if (client.verbose) console.log(`${info}Texture selected!`);
 
@@ -33,4 +33,4 @@ export const menu: SelectMenu = {
 
 		message.edit(editOptions).then((message: Message) => message.deleteButton());
 	},
-};
+} as Component;

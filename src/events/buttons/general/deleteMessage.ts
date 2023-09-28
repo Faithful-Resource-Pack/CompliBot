@@ -1,9 +1,9 @@
-import { Button } from "@interfaces";
 import { info } from "@helpers/logger";
 import { Client, Message, ButtonInteraction } from "@client";
+import { Component } from "@interfaces";
 
-export const button: Button = {
-	buttonId: "deleteMessage",
+export default {
+	id: "deleteMessage",
 	async execute(client: Client, interaction: ButtonInteraction) {
 		if (client.verbose) console.log(`${info}Message deleted!`);
 		const message: Message = interaction.message as Message;
@@ -36,4 +36,4 @@ export const button: Button = {
 			});
 		}
 	},
-};
+} as Component;

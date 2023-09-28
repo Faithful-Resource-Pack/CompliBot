@@ -4,7 +4,7 @@ import { info } from "@helpers/logger";
 
 export default {
 	name: "guildCreate",
-	async run(client, guild: Guild) {
+	async execute(client, guild: Guild) {
 		client.storeAction("guildJoined", guild);
 
 		client.loadSlashCommands();
@@ -16,4 +16,4 @@ export default {
 		guild.systemChannel?.send({ embeds: [embed] });
 		console.log(`${info}I was added to a guild. Now I'm in ${client.guilds.cache.size} total!`);
 	},
- } as Event;
+} as Event;

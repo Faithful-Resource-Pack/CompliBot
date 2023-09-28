@@ -1,4 +1,9 @@
-import { SlashCommandSubcommandsOnlyBuilder, SlashCommandBuilder, ButtonInteraction, Collection, Interaction, StringSelectMenuInteraction } from "discord.js";
+import {
+	SlashCommandSubcommandsOnlyBuilder,
+	SlashCommandBuilder,
+	Collection,
+	Interaction,
+} from "discord.js";
 import { Client } from "@client";
 
 // slash commands
@@ -28,5 +33,5 @@ export interface Component {
 }
 
 export interface ComponentExecute {
-	(client: Client, interaction: ButtonInteraction): void;
+	(client: Client, interaction: Interaction): void;
 }

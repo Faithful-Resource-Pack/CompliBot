@@ -1,12 +1,29 @@
 import { SlashCommandI } from "@interfaces";
 import { Collection } from "discord.js";
 import { Event } from "@interfaces";
-import { Client, ChatInputCommandInteraction } from "@client";
+import { Client, ChatInputCommandInteraction, EmbedBuilder } from "@client";
+import settings from "@json/dynamic/settings.json";
+import { colors } from "@helpers/colors";
 
-export const event: Event = {
+export default {
 	name: "slashCommandUsed",
-	run: async (client: Client, interaction: ChatInputCommandInteraction) => {
+	async execute(client: Client, interaction: ChatInputCommandInteraction) {
 		client.storeAction("slashCommand", interaction);
+		const submissionChannels = Object.values(settings.submission.packs).map(
+			(pack) => pack.channels.submit,
+		);
+
+		// disable commands
+		if (submissionChannels.includes(interaction.channel.id))
+			return await interaction.reply({
+				embeds: [
+					new EmbedBuilder()
+						.setTitle("You cannot run slash commands in a submission channel!")
+						.setDescription("Please use the appropriate bot command channel instead.")
+						.setColor(colors.red),
+				],
+				ephemeral: true,
+			});
 
 		// get command name
 		const { commandName } = interaction;
@@ -42,4 +59,4 @@ export const event: Event = {
 		const count: number = client.commandsProcessed.get((command.data as SlashCommandI).name) + 1;
 		client.commandsProcessed.set((command.data as SlashCommandI).name, isNaN(count) ? 1 : count);
 	},
-};
+} as Event;

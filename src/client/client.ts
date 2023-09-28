@@ -112,7 +112,6 @@ export class ExtendedClient extends Client {
 	}
 
 	public init(interaction?: ChatInputCommandInteraction) {
-		console.log(process.cwd());
 		// pretty stuff so it doesnt print the logo upon restart
 		if (!this.firstStart) {
 			console.log(`${success}Restarted`);
@@ -308,7 +307,7 @@ export class ExtendedClient extends Client {
 		const events = walkSync(eventPath).filter((file) => file.endsWith(".ts"));
 		for (const file of events) {
 			const event: Event = require(file).default;
-			if (!event) continue; // not an event file
+			if (!event.name) continue; // not an event file
 			this.on(event.name as string, event.execute.bind(null, this));
 		}
 	}
@@ -325,7 +324,7 @@ export class ExtendedClient extends Client {
 	private loadComponent(collection: Collection<string, Component>, path: string) {
 		const components = walkSync(path).filter((file) => file.endsWith(".ts"));
 		for (const file of components) {
-			const { default: component }: {default: Component} = require(file);
+			const { default: component }: { default: Component } = require(file);
 			collection.set(component.id, component);
 		}
 		return collection;

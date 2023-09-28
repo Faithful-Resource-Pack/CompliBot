@@ -3,12 +3,12 @@ import { success } from "@helpers/logger";
 import { fetchSettings } from "@helpers/fetchSettings";
 import { ActivityType } from "discord.js";
 
-export const event: Event = {
+export default {
 	name: "ready",
-	run: async (client) => {
+	async execute(client) {
 		console.log(`${success}${client.user.username} is online!`);
 		client.user.setActivity(`commands`, { type: ActivityType.Listening });
 
 		await fetchSettings(client);
 	},
-};
+} as Event;

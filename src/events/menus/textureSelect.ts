@@ -1,12 +1,12 @@
 import { Client, Message, StringSelectMenuInteraction } from "@client";
-import { SelectMenu } from "@interfaces";
+import { Component } from "@interfaces";
 import { info } from "@helpers/logger";
 import { MessageEditOptions, MessageInteraction } from "discord.js";
 import { getTextureMessageOptions } from "@functions/getTexture";
 import axios from "axios";
 
-export const menu: SelectMenu = {
-	selectMenuId: "textureSelect",
+export default {
+	id: "textureSelect",
 	async execute(client: Client, interaction: StringSelectMenuInteraction) {
 		if (client.verbose) console.log(`${info}Texture selected!`);
 
@@ -35,4 +35,4 @@ export const menu: SelectMenu = {
 
 		return message.edit(editOptions).then((message: Message) => message.deleteButton());
 	},
-};
+} as Component;

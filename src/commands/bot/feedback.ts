@@ -1,5 +1,11 @@
 import { SlashCommand } from "@interfaces";
-import { ActionRowBuilder, SlashCommandBuilder, TextInputBuilder, TextInputStyle, ModalBuilder } from "discord.js";
+import {
+	ActionRowBuilder,
+	SlashCommandBuilder,
+	TextInputBuilder,
+	TextInputStyle,
+	ModalBuilder,
+} from "discord.js";
 import { ChatInputCommandInteraction } from "@client";
 
 // I'm sorry...
@@ -68,7 +74,9 @@ export const command: SlashCommand = {
 
 		modal.addComponents(
 			// every modal input needs to be in a new action row (blame djs)
-			...feedbackFormat[type].map((textInput: TextInputBuilder) => new ActionRowBuilder<TextInputBuilder>().addComponents(textInput)),
+			...feedbackFormat[type].map((textInput: TextInputBuilder) =>
+				new ActionRowBuilder<TextInputBuilder>().addComponents(textInput),
+			),
 		);
 
 		await interaction.showModal(modal);

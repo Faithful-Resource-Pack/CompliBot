@@ -1,4 +1,4 @@
-import { Button } from "@interfaces";
+import { Component } from "@interfaces";
 import { info } from "@helpers/logger";
 import { Client, Message, ButtonInteraction, EmbedBuilder } from "@client";
 import { tileAttachment } from "@images/tile";
@@ -7,8 +7,8 @@ import { getImageFromMessage } from "@functions/slashCommandImage";
 import { ActionRowBuilder } from "discord.js";
 import { ButtonBuilder } from "discord.js";
 
-export const button: Button = {
-	buttonId: "tile",
+export default {
+	id: "tile",
 	async execute(client: Client, interaction: ButtonInteraction) {
 		if (client.verbose) console.log(`${info}Image was tiled!`);
 
@@ -43,4 +43,4 @@ export const button: Button = {
 				message.deleteButton(true);
 			});
 	},
-};
+} as Component;

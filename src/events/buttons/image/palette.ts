@@ -1,11 +1,11 @@
-import { Button } from "@interfaces";
+import { Component } from "@interfaces";
 import { info } from "@helpers/logger";
 import { Client, Message, ButtonInteraction, EmbedBuilder } from "@client";
 import { paletteAttachment } from "@images/palette";
 import { getImageFromMessage } from "@functions/slashCommandImage";
 
-export const button: Button = {
-	buttonId: "palette",
+export default {
+	id: "palette",
 	async execute(client: Client, interaction: ButtonInteraction) {
 		if (client.verbose) console.log(`${info}Image palette was requested!`);
 
@@ -36,4 +36,4 @@ export const button: Button = {
 				message.deleteButton(true);
 			});
 	},
-};
+} as Component;

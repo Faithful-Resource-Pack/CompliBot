@@ -4,7 +4,7 @@ import { info } from "@helpers/logger";
 
 export default {
 	name: "buttonUsed",
-	async run(client: Client, interaction: ButtonInteraction) {
+	async execute(client: Client, interaction: ButtonInteraction) {
 		client.storeAction("button", interaction);
 
 		if (client.verbose) console.log(`${info}Button used`);

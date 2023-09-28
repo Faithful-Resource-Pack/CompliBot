@@ -1,11 +1,11 @@
 import { Client, Message, StringSelectMenuInteraction } from "@client";
-import { SelectMenu } from "@interfaces";
+import { Component } from "@interfaces";
 import { info } from "@helpers/logger";
 import { MessageEditOptions, MessageInteraction } from "discord.js";
 import textureComparison from "@functions/textureComparison";
 
-export const menu: SelectMenu = {
-	selectMenuId: "compareSelect",
+export default {
+	id: "compareSelect",
 	async execute(client: Client, interaction: StringSelectMenuInteraction) {
 		if (client.verbose) console.log(`${info}Texture selected!`);
 
@@ -32,4 +32,4 @@ export const menu: SelectMenu = {
 
 		message.edit(editOptions).then((message: Message) => message.deleteButton());
 	},
-};
+} as Component;

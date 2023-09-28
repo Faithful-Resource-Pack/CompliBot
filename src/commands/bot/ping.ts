@@ -14,7 +14,7 @@ export const command: SlashCommand = {
 				interaction
 					.strings()
 					.Command.Ping.Description.replace(
-						"QUOTE",
+						"%QUOTE%",
 						quote.replace("%YEAR%", (d.getFullYear() + 2).toString()),
 					)
 					.replace("%LATENCY%", (d.getTime() - interaction.createdTimestamp).toString())

@@ -1,4 +1,11 @@
-export const colors = {
+import { ColorResolvable } from "discord.js";
+
+// discord.js will complain strings can't resolve as colors otherwise
+type ColorType = {
+	[name: string]: ColorResolvable;
+};
+
+export const colors: ColorType = {
 	// status/generic colors
 	red: "#f44336",
 	yellow: "#ffeb3b",
@@ -14,6 +21,4 @@ export const colors = {
 	cf32: "#00c756",
 	cf64: "#9f00cf",
 	cf32pa: "#a1db12",
-} as const;
-
-export type colorType = keyof typeof colors;
+};

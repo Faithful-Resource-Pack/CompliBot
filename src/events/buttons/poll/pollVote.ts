@@ -1,9 +1,9 @@
-import { Button } from "@interfaces";
+import { Component } from "@interfaces";
 import { Client, Message, ButtonInteraction } from "@client";
 import { Poll } from "@class/poll";
 
-export const button: Button = {
-	buttonId: "pollVote",
+export default {
+	id: "pollVote",
 	async execute(client: Client, interaction: ButtonInteraction) {
 		await interaction.deferUpdate();
 		const message: Message = interaction.message as Message;
@@ -37,4 +37,4 @@ export const button: Button = {
 
 		client.polls.set(pid, poll);
 	},
-};
+} as Component;

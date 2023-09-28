@@ -1,10 +1,10 @@
-import { Button } from "@interfaces";
+import { Component } from "@interfaces";
 import { info } from "@helpers/logger";
 import { Client, Message, ButtonInteraction } from "@client";
 import { MessageInteraction } from "discord.js";
 
-export const button: Button = {
-	buttonId: "pollDelete",
+export default {
+	id: "pollDelete",
 	async execute(client: Client, interaction: ButtonInteraction) {
 		if (client.verbose) console.log(`${info}Poll Message deleted!`);
 
@@ -39,4 +39,4 @@ export const button: Button = {
 
 		return;
 	},
-};
+} as Component;
