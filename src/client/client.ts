@@ -96,7 +96,7 @@ export class ExtendedClient extends Client {
 		console.log(chalk.hex(darkColor)(`888        d88""88b 888 "888 "88b 888 "88b 888 888 `) + chalk.hex(lightColor)(`888  "Y88b d88""88b 888`));
 		console.log(chalk.hex(darkColor)(`888    888 888  888 888  888  888 888  888 888 888 `) + chalk.hex(lightColor)(`888    888 888  888 888`));
 		console.log(chalk.hex(darkColor)(`Y88b  d88P Y88..88P 888  888  888 888 d88P 888 888 `) + chalk.hex(lightColor)(`888   d88P Y88..88P Y88b.`));
-		console.log(chalk.hex(darkColor)(`"Y8888P"    "Y88P"  888  888  888 88888P"  888 888 `) + chalk.hex(lightColor)(`8888888P"   "Y88P"   "Y888`));
+		console.log(chalk.hex(darkColor)(` "Y8888P"   "Y88P"  888  888  888 88888P"  888 888 `) + chalk.hex(lightColor)(`8888888P"   "Y88P"   "Y888`));
 		console.log(chalk.hex(darkColor)(`                                  888`));
 		console.log(chalk.hex(darkColor)(`                                  888                   `)+ chalk.white.bold(`Faithful Devs. ${new Date().getFullYear()}`));
 		console.log(chalk.hex(darkColor)(`                                  888                `)  + chalk.gray.italic(this.tokens.maintenance === false ? "~ Made lovingly with pain\n" : "    Maintenance mode!\n"));
@@ -118,12 +118,12 @@ export class ExtendedClient extends Client {
 			})
 			.then(() => {
 				this.loadSlashCommands();
-				this.loadComponents();
 
+				this.loadComponents();
 				this.loadEvents();
 				this.loadCollections();
+
 				this.automation.start();
-				if (this.verbose) console.log(`${info}Init complete`);
 			});
 
 		// I know this restarting stuff kinda sucks but you can't guarantee which one is triggered
@@ -305,11 +305,14 @@ export class ExtendedClient extends Client {
 		}
 	}
 
+	/**
+	 * Convenience method to load all components at once
+	 */
 	private loadComponents() {
 		this.loadComponent(this.buttons, join(__dirname, "..", "events", "buttons"));
 		this.loadComponent(this.menus, join(__dirname, "..", "events", "menus"));
 		this.loadComponent(this.modals, join(__dirname, "..", "events", "modals"));
-		if (this.verbose) console.log(`${info}Loaded all components.`);
+		if (this.verbose) console.log(`${info}Loaded Discord components`);
 	}
 
 	/**

@@ -93,54 +93,19 @@ export default {
 
 		if (message.content.toLocaleLowerCase().includes("forgor")) await message.react("💀");
 
-		/**
-		 * texture ID quoting
-		 * @todo deprecate this and switch fully to /compare <id>
-		 * @author Evorp
-		 */
-
 		const results = message.content.match(/(?<=\[\#)(.*?)(?=\])/g) ?? [];
 		if (!results.length) return;
-
-		for (const result of results) {
-			let id: string;
-			let display = "all";
-
-			// check for [#template]
-			const split = result.toLocaleLowerCase().split(" ");
-			if (split.includes("template")) {
-				id = "template";
-				// check for template + display
-				if (split.length > 1) display = split.find((arg) => arg !== "template");
-			} else if (!isNaN(Number(result))) {
-				// if no display is passed in
-				id = result;
-			} else {
-				// display is passed in so parse them separately
-				id = result.match(/\d+/g)?.[0];
-				display = result
-					.match(/[a-zA-Z]+/g)?.[0]
-					.toLocaleLowerCase()
-					.trim();
-			}
-
-			message.channel.sendTyping();
-			const replyOptions = await textureComparison(client, id, display);
-
-			try {
-				message.reply(replyOptions).then((message: Message) => message.deleteButton());
-			} catch {
-				message
-					.reply({
-						embeds: [
-							new EmbedBuilder()
-								.setTitle("No results found!")
-								.setDescription(`The ID ${id} doesn't exist!`)
-								.setColor(colors.red),
-						],
-					})
-					.then((message: Message) => message.deleteButton());
-			}
-		}
+		message
+			.reply({
+				embeds: [
+					new EmbedBuilder()
+						.setTitle("Texture ID quoting has been removed!")
+						.setDescription(
+							"The feature was notoriously buggy, is based on a largely outdated Discord bot meta, and is entirely duplicated by `/compare`.\n\nTo replicate the functionality of ID quoting, simply run `/compare <id>`. [#template] is now a button on the embed for additional visibility.",
+						)
+						.setColor(colors.red),
+				],
+			})
+			.then((message: Message) => message.deleteButton());
 	},
 } as Event;

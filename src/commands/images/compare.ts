@@ -21,16 +21,16 @@ export const command: SlashCommand = {
 				.setName("display")
 				.setDescription("Which set of packs you want to display (default is everything).")
 				.addChoices(
-					{ name: "Faithful", value: "faithful" },
-					{ name: "Classic Faithful Jappa", value: "cfjappa" },
-					{ name: "Classic Faithful Programmer Art", value: "cfpa" },
-					{ name: "Jappa", value: "jappa" },
-					{ name: "All", value: "all" },
+					{ name: "Faithful", value: "Faithful" },
+					{ name: "Classic Faithful Jappa", value: "Classic Faithful Jappa" },
+					{ name: "Classic Faithful Programmer Art", value: "Classic Faithful PA" },
+					{ name: "Jappa", value: "Jappa" },
+					{ name: "All", value: "All" },
 				)
 				.setRequired(false),
 		),
 	async execute(interaction: ChatInputCommandInteraction) {
-		const display = interaction.options.getString("display", false) ?? "all";
+		const display = interaction.options.getString("display", false) ?? "All";
 		const name = interaction.options.getString("texture", true);
 
 		// sometimes it takes too long otherwise

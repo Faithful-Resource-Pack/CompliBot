@@ -3,6 +3,7 @@ export const ids = {
 	suggestion: "959344133158350869",
 	view_votes: "949830600125194281",
 	pmc: "863132124333080576",
+	diff: "1119109164959027291",
 	modrinth: "1129458572095397965",
 	github: "1129461571601567855",
 	mcpedl: "1129458566659575918",
@@ -28,8 +29,8 @@ export const ids = {
 	tile: "918186692307996723",
 	next_res: "918186640571256842",
 	pending: "918186662780092537",
-	flip_tiling: "942014073141334056",
-	rotate_tiling: "942014072818376716",
+	flip: "942325434308243497",
+	rotate: "942325479661256754",
 } as const;
 
 export function parseId(id: string): string {

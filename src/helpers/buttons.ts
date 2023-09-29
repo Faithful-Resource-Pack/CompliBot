@@ -18,6 +18,11 @@ export const tile = new ButtonBuilder()
 	.setEmoji(parseId(ids.tile))
 	.setCustomId("tile");
 
+export const template = new ButtonBuilder()
+	.setStyle(ButtonStyle.Primary)
+	.setEmoji(parseId(ids.flip))
+	.setCustomId("comparisonTemplate");
+
 export const deleteMessage = new ButtonBuilder()
 	.setStyle(ButtonStyle.Danger)
 	.setEmoji(parseId(ids.delete))
