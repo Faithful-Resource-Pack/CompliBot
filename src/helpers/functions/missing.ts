@@ -62,13 +62,12 @@ export const computeAndUpdate = async (
 ): Promise<MissingResult> => {
 	const results = await compute(client, pack, edition, version, callback);
 	if (!client) return results;
-	const packProgress = (await axios.get(`${client.tokens.apiUrl}settings/channels.pack_progress`)).data;
+	const packProgress = (await axios.get(`${client.tokens.apiUrl}settings/channels.pack_progress`))
+		.data;
 
 	let channel: Channel;
 	try {
-		channel = await client.channels.fetch(
-			packProgress[results[2].pack][results[2].edition],
-		);
+		channel = await client.channels.fetch(packProgress[results[2].pack][results[2].edition]);
 	} catch {
 		// channel doesn't exist or can't be fetched, return early
 		return results;
@@ -84,7 +83,6 @@ export const computeAndUpdate = async (
 			await (channel as VoiceChannel).setName(updatedName);
 			break;
 	}
-
 
 	return results;
 };
@@ -142,17 +140,14 @@ export const compute = async (
 		(err: any) => Promise.reject(err),
 	);
 
-	const steps = [
-		"git stash",
-		"git remote update",
-		"git fetch",
-		`git checkout ${version}`,
-		`git pull`,
-	];
-
+	// for some reason specifying the steps in a variable and loading it here breaks?
 	await Promise.all([
-		series(steps, { cwd: tmpDirPathDefault }),
-		series(steps, { cwd: tmpDirPathRequest }),
+		series(["git stash", "git remote update", "git fetch", `git checkout ${version}`, `git pull`], {
+			cwd: tmpDirPathDefault,
+		}),
+		series(["git stash", "git remote update", "git fetch", `git checkout ${version}`, `git pull`], {
+			cwd: tmpDirPathRequest,
+		}),
 	]).catch((err) => Promise.reject(err));
 
 	await callback("Searching for differences...").catch((err: any) => Promise.reject(err));

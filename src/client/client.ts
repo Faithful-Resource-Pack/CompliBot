@@ -123,7 +123,7 @@ export class ExtendedClient extends Client {
 				this.loadEvents();
 				this.loadCollections();
 				this.automation.start();
-				if (this.verbose) console.log(info + `Init complete`);
+				if (this.verbose) console.log(`${info}Init complete`);
 			});
 
 		// I know this restarting stuff kinda sucks but you can't guarantee which one is triggered
@@ -149,7 +149,7 @@ export class ExtendedClient extends Client {
 	private loadCollections() {
 		this.loadCollection(this.polls, POLLS_FILENAME, JSON_PATH);
 		this.loadCollection(this.commandsProcessed, COMMANDS_PROCESSED_FILENAME, JSON_PATH);
-		if (this.verbose) console.log(info + `Loaded collection data`);
+		if (this.verbose) console.log(`${info}Loaded collection data`);
 	}
 
 	/**
@@ -309,6 +309,7 @@ export class ExtendedClient extends Client {
 		this.loadComponent(this.buttons, join(__dirname, "..", "events", "buttons"));
 		this.loadComponent(this.menus, join(__dirname, "..", "events", "menus"));
 		this.loadComponent(this.modals, join(__dirname, "..", "events", "modals"));
+		if (this.verbose) console.log(`${info}Loaded all components.`);
 	}
 
 	/**

@@ -10,7 +10,7 @@ import {
 	MissingResult,
 } from "@functions/missing";
 import axios from "axios";
-import { formatName } from "@helpers/sorter";
+import { formatName, minecraftSorter } from "@helpers/sorter";
 
 export const command: SlashCommand = {
 	async data(client: Client): Promise<SyncSlashCommandBuilder> {
@@ -48,9 +48,12 @@ export const command: SlashCommand = {
 					.setDescription("The Minecraft version.")
 					// map to usable choice parameters
 					.addChoices(
-						...versions.map((i: string) => {
-							return { name: i, value: i };
-						}),
+						...versions
+							.sort(minecraftSorter)
+							.reverse()
+							.map((i: string) => {
+								return { name: i, value: i };
+							}),
 					)
 					.setRequired(false),
 			)
