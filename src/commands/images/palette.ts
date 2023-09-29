@@ -1,8 +1,8 @@
 import { SlashCommand } from "@interfaces";
+import {  } from "discord.js";
 import { SlashCommandBuilder } from "discord.js";
-import { ChatInputCommandInteraction } from "discord.js";
 import { generalSlashCommandImage } from "@functions/slashCommandImage";
-import { EmbedBuilder } from "@client";
+import { EmbedBuilder, ChatInputCommandInteraction } from "@client";
 import { paletteAttachment } from "@images/palette";
 
 export const command: SlashCommand = {

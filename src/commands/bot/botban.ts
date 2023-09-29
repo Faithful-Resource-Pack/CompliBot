@@ -1,9 +1,6 @@
 import { SlashCommand, SlashCommandI } from "@interfaces";
-import { SlashCommandBuilder } from "discord.js";
 import { Client, EmbedBuilder, ChatInputCommandInteraction } from "@client";
-import { Collection, AttachmentBuilder, TextChannel } from "discord.js";
-import settings from "@json/dynamic/settings.json";
-import { colors } from "@helpers/colors";
+import { Collection, AttachmentBuilder, SlashCommandBuilder } from "discord.js";
 import { readFileSync, writeFileSync } from "fs";
 import { join } from "path";
 import { PermissionFlagsBits } from "discord-api-types/v10";

@@ -1,5 +1,5 @@
 import { SlashCommand } from "@interfaces";
-import { Client, ChatInputCommandInteraction, Message, EmbedBuilder } from "@client";
+import { ChatInputCommandInteraction, EmbedBuilder } from "@client";
 import { SlashCommandBuilder } from "discord.js";
 import { generalSlashCommandImage } from "@functions/slashCommandImage";
 import { mcColorsOptions, multiplyAttachment } from "@images/multiply";

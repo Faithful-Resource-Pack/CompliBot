@@ -15,7 +15,7 @@
 		"prefix": "nact",
 		"body": [
 			"import { SlashCommand, SyncSlashCommandBuilder } from \"@interfaces\";",
-			"import { Client, ChatInputCommandInteraction, Message, EmbedBuilder } from \"@client\";",
+			"import { Client, ChatInputCommandInteraction, EmbedBuilder } from \"@client\";",
 			"import { SlashCommandBuilder } from \"discord.js\";",
 			"export const command: SlashCommand = {",
 			"\tasync data(client: Client): Promise<SyncSlashCommandBuilder> {",
@@ -38,7 +38,7 @@
 		"prefix": "nct",
 		"body": [
 			"import { SlashCommand } from \"@interfaces\";",
-			"import { Client, ChatInputCommandInteraction, Message, EmbedBuilder } from \"@client\";",
+			"import { Client, ChatInputCommandInteraction, EmbedBuilder } from \"@client\";",
 			"import { SlashCommandBuilder } from \"discord.js\";",
 			"export const command: SlashCommand = {",
 			"\tdata: new SlashCommandBuilder()",

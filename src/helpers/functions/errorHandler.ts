@@ -5,7 +5,7 @@ import { err } from "@helpers/logger";
 import { colors } from "@helpers/colors";
 import { Log } from "client/client";
 import path from "path";
-import settings from "@json/dynamic/settings.json";
+import axios from "axios";
 
 const randomSentences = [
 	"Oh no, not again!",
@@ -163,8 +163,10 @@ export const errorHandler: Function = async (client: Client, reason: any, type: 
 		client.restart();
 	}*/
 
+	const error: string = (await axios.get(`${client.tokens.apiUrl}settings/images.error`)).data;
+
 	const embed = new EmbedBuilder()
-		.setAuthor({ name: type, iconURL: settings.images.error }) // much compressed than .title() & .thumbnail()
+		.setAuthor({ name: type, iconURL: error }) // much compressed than .title() & .thumbnail()
 		.setColor(colors.red)
 		.setTimestamp()
 		.setDescription(`\`\`\`${reason?.stack ?? reason ?? "No reason provided!"}\`\`\``)

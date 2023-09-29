@@ -1,7 +1,6 @@
 import { SlashCommand, SyncSlashCommandBuilder } from "@interfaces";
-import { SlashCommandBuilder } from "discord.js";
 import { Client, ChatInputCommandInteraction, EmbedBuilder } from "@client";
-import { Message, AttachmentBuilder } from "discord.js";
+import { SlashCommandBuilder, Message, AttachmentBuilder } from "discord.js";
 import {
 	compute,
 	computeAll,
@@ -11,16 +10,11 @@ import {
 	MissingResult,
 } from "@functions/missing";
 import axios from "axios";
-import settings from "@json/dynamic/settings.json";
 import { formatName } from "@helpers/sorter";
 
 export const command: SlashCommand = {
 	async data(client: Client): Promise<SyncSlashCommandBuilder> {
-		let versions = Object.values(
-			(await axios.get(`${client.tokens.apiUrl}settings/versions`)).data,
-		).flat();
-		versions.splice(versions.indexOf("versions"), 1); // remove "versions" key id (API issue)
-
+		const versions: string[] = (await axios.get(`${client.tokens.apiUrl}textures/versions`)).data;
 		return new SlashCommandBuilder()
 			.setName("missing")
 			.setDescription("Displays the missing textures for a particular resource pack")
@@ -76,11 +70,15 @@ export const command: SlashCommand = {
 
 		const updateChannels = version === "latest";
 
-		const embed: EmbedBuilder = new EmbedBuilder()
+		const loading: string = (
+			await axios.get(`${(interaction.client as Client).tokens.apiUrl}settings/images.loading`)
+		).data;
+
+		const embed = new EmbedBuilder()
 			.setTitle("Searching for missing textures...")
 			.setDescription("This can take some time, please wait...")
-			.setThumbnail(settings.images.loading)
-			.addFields([{ name: "Steps", value: "\u200b" }]);
+			.setThumbnail(loading)
+			.addFields({ name: "Steps", value: "\u200b" });
 
 		await interaction.editReply({ embeds: [embed] });
 		let steps: string[] = [];

@@ -1,7 +1,6 @@
 import { SlashCommand } from "@interfaces";
-import { SlashCommandBuilder } from "discord.js";
-import { ChatInputCommandInteraction, AttachmentBuilder } from "discord.js";
-import { Message, Client } from "@client";
+import { SlashCommandBuilder, AttachmentBuilder } from "discord.js";
+import { Message, ChatInputCommandInteraction } from "@client";
 
 /**
  * Warning: key value cannot be longer than a certain value (I didn't search how much it is)

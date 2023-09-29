@@ -1,11 +1,9 @@
 import { ColorResolvable } from "discord.js";
 import { colors } from "./colors";
 import { parseId, ids } from "./emojis";
-import settings from "@json/dynamic/settings.json";
 
 export interface MediaI {
 	[name: string]: {
-		thumbnail: string;
 		color: ColorResolvable;
 		title: string;
 		description: string;
@@ -16,7 +14,6 @@ export interface MediaI {
 // blame prettier for most of it but also discord sometimes rendering whitespace weirdly
 export const media: MediaI = {
 	faithful_32x: {
-		thumbnail: settings.images.faithful_32x,
 		color: colors.f32,
 		title: `Faithful 32x:`,
 		description: `
@@ -46,7 +43,6 @@ export const media: MediaI = {
 	},
 
 	faithful_64x: {
-		thumbnail: settings.images.faithful_64x,
 		color: colors.f64,
 		title: "Faithful 64x:",
 		description: `
@@ -77,7 +73,6 @@ export const media: MediaI = {
 	},
 
 	classic_faithful_32x: {
-		thumbnail: settings.images.classic_faithful_32x,
 		color: colors.cf32,
 		title: "Classic Faithful 32x Jappa:",
 		description: `
@@ -102,7 +97,6 @@ export const media: MediaI = {
 	},
 
 	classic_faithful_32x_progart: {
-		thumbnail: settings.images.classic_faithful_32x_progart,
 		color: colors.cf32pa,
 		title: "Classic Faithful 32x PA:",
 		description: `
@@ -129,7 +123,6 @@ export const media: MediaI = {
 	},
 
 	classic_faithful_64x: {
-		thumbnail: settings.images.classic_faithful_64x,
 		color: colors.cf64,
 		title: "Classic Faithful 64x:",
 		description: `
@@ -152,8 +145,6 @@ export const media: MediaI = {
 	},
 
 	general: {
-		thumbnail:
-			"https://database.faithfulpack.net/images/branding/logos/transparent/512/plain_logo.png",
 		color: colors.brand,
 		title: "Useful Links:",
 		description: `

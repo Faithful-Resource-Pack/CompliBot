@@ -1,9 +1,7 @@
 import { SlashCommand } from "@interfaces";
-import { SlashCommandBuilder } from "discord.js";
 import { Message, EmbedBuilder, ChatInputCommandInteraction, Client } from "@client";
-import { AttachmentBuilder } from "discord.js";
+import { SlashCommandBuilder, AttachmentBuilder } from "discord.js";
 import axios from "axios";
-import settings from "@json/dynamic/settings.json";
 import { formatName } from "@helpers/sorter";
 import { Contribution, Texture } from "@interfaces";
 
@@ -20,10 +18,14 @@ export const command: SlashCommand = {
 	async execute(interaction: ChatInputCommandInteraction) {
 		await interaction.deferReply();
 
+		const loading: string = (
+			await axios.get(`${(interaction.client as Client).tokens.apiUrl}settings/images.loading`)
+		).data;
+
 		const loadingEmbed = new EmbedBuilder()
 			.setTitle("Searching for contributions...")
 			.setDescription("This can take some time, please wait...")
-			.setThumbnail(settings.images.loading);
+			.setThumbnail(loading);
 
 		await interaction
 			.editReply({ embeds: [loadingEmbed] })

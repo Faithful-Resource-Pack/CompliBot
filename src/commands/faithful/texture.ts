@@ -1,7 +1,7 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "discord.js";
 import { ChatInputCommandInteraction, EmbedBuilder, Message } from "@client";
-import { getTextureMessageOptions } from "@functions/getTexture";
+import { getTexture } from "@functions/getTexture";
 import parseTextureName from "@functions/parseTextureName";
 import { colors } from "@helpers/colors";
 import { textureChoiceEmbed } from "@helpers/choiceEmbed";
@@ -61,7 +61,7 @@ export const command: SlashCommand = {
 
 		// only 1 result
 		if (results.length === 1) {
-			const replyOptions = await getTextureMessageOptions({
+			const replyOptions = await getTexture({
 				texture: results[0],
 				pack: interaction.options.getString("pack", true),
 				guild: interaction.guild,

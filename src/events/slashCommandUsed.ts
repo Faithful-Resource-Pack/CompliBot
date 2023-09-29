@@ -1,17 +1,18 @@
-import { SlashCommandI } from "@interfaces";
+import { Pack, SlashCommandI } from "@interfaces";
 import { Collection } from "discord.js";
 import { Event } from "@interfaces";
 import { Client, ChatInputCommandInteraction, EmbedBuilder } from "@client";
-import settings from "@json/dynamic/settings.json";
 import { colors } from "@helpers/colors";
+import axios from "axios";
 
 export default {
 	name: "slashCommandUsed",
 	async execute(client: Client, interaction: ChatInputCommandInteraction) {
 		client.storeAction("slashCommand", interaction);
-		const submissionChannels = Object.values(settings.submission.packs).map(
-			(pack) => pack.channels.submit,
-		);
+		const packs: Pack[] = (await axios.get(`${client.tokens.apiUrl}settings/submission.packs`))
+			.data;
+
+		const submissionChannels = Object.values(packs).map((pack) => pack.channels.submit);
 
 		// disable commands
 		if (submissionChannels.includes(interaction.channel.id))

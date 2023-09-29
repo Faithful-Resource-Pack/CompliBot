@@ -1,7 +1,8 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "discord.js";
 import { media } from "@helpers/infoembed";
-import { Message, EmbedBuilder, ChatInputCommandInteraction } from "@client";
+import { Message, EmbedBuilder, ChatInputCommandInteraction, Client } from "@client";
+import axios from "axios";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -23,6 +24,11 @@ export const command: SlashCommand = {
 	async execute(interaction: ChatInputCommandInteraction) {
 		const key: string = interaction.options.getString("name", false) ?? "general";
 
+		// you can't import images directly in infoembed.ts so you have to do it here (blame TS)
+		const images: { [key: string]: string } = (
+			await axios.get(`${(interaction.client as Client).tokens.apiUrl}settings/images`)
+		).data;
+
 		if (key === "all") {
 			if (!interaction.hasPermission("manager")) return;
 			interaction
@@ -30,12 +36,12 @@ export const command: SlashCommand = {
 				.then((message: Message) => message.delete());
 
 			return await interaction.channel.send({
-				embeds: Object.values(media).map((mediaInfo) =>
+				embeds: Object.entries(media).map(([key, mediaInfo]) =>
 					new EmbedBuilder()
 						.setTitle(mediaInfo.title)
 						.setDescription(mediaInfo.description)
 						.setColor(mediaInfo.color)
-						.setThumbnail(mediaInfo.thumbnail),
+						.setThumbnail(images[key]),
 				),
 			});
 		}
@@ -44,7 +50,7 @@ export const command: SlashCommand = {
 			.setTitle(media[key].title)
 			.setDescription(media[key].description)
 			.setColor(media[key].color)
-			.setThumbnail(media[key].thumbnail);
+			.setThumbnail(images[key]);
 
 		interaction
 			.reply({ embeds: [embed], fetchReply: true })

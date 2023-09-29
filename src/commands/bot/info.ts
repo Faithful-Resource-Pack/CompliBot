@@ -1,11 +1,14 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "discord.js";
-import { ChatInputCommandInteraction, EmbedBuilder } from "@client";
-import settings from "@json/dynamic/settings.json";
+import { ChatInputCommandInteraction, Client, EmbedBuilder } from "@client";
+import axios from "axios";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder().setName("info").setDescription("General info about CompliBot."),
 	async execute(interaction: ChatInputCommandInteraction) {
+		const image: string = (
+			await axios.get(`${(interaction.client as Client).tokens.apiUrl}settings/images.bot`)
+		).data;
 		const embed = new EmbedBuilder()
 			.setTitle("Hi, I'm CompliBot. I was made for the Faithful Discord servers.")
 			.setDescription(`And I think I turned out pretty well.`)
@@ -27,7 +30,7 @@ export const command: SlashCommand = {
 					inline: true,
 				},
 			)
-			.setThumbnail(settings.images.bot);
+			.setThumbnail(image);
 
 		interaction.reply({ embeds: [embed], ephemeral: true });
 	},

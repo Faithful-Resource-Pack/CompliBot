@@ -1,10 +1,9 @@
-import { ChatInputCommandInteraction, EmbedField } from "discord.js";
+import { SlashCommandBuilder, EmbedField } from "discord.js";
 import { SlashCommand } from "@interfaces";
-import { SlashCommandBuilder } from "discord.js";
 import { Poll } from "@class/poll";
 import { addSeconds, parseDate } from "@helpers/dates";
 import { ids, parseId } from "@helpers/emojis";
-import { Client, EmbedBuilder, Message } from "@client";
+import { ChatInputCommandInteraction, EmbedBuilder, Message } from "@client";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()

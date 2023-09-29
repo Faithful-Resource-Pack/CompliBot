@@ -1,11 +1,10 @@
 import { duration } from "moment";
 import { SlashCommand, SlashCommandI } from "@interfaces";
-import { SlashCommandBuilder } from "discord.js";
-import { Collection, Guild, version as djsVersion } from "discord.js";
+import { SlashCommandBuilder, Collection, Guild, version as djsVersion } from "discord.js";
 import { Client, EmbedBuilder, ChatInputCommandInteraction, Message } from "@client";
 import os from "os";
 import linuxOs from "linux-os-info";
-import settings from "@json/dynamic/settings.json";
+import axios from "axios";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -41,31 +40,32 @@ export const command: SlashCommand = {
 			if (os.platform() == "linux") version = linuxOs({ mode: "sync" }).pretty_name;
 			else version = os.version();
 
-			const FieldTitles = interaction.strings().Command.Stats.Embed.FieldTitles;
+			const fieldTitles = interaction.strings().Command.Stats.Embed.FieldTitles;
+			const image: string = (await axios.get(`${client.tokens.apiUrl}settings/images.heart`)).data;
 
 			const embed = new EmbedBuilder()
 				.setTitle(`${client.user.username}'s Statistics`)
 				.setThumbnail(client.user.displayAvatarURL())
 				.addFields(
 					// TODO: remove the prefix since there are no prefix commands on the bot
-					{ name: FieldTitles[0], value: "/", inline: true },
-					{ name: FieldTitles[1], value: duration(client.uptime).humanize(), inline: true },
-					{ name: FieldTitles[2], value: client.guilds.cache.size.toString(), inline: true },
+					{ name: fieldTitles[0], value: "/", inline: true },
+					{ name: fieldTitles[1], value: duration(client.uptime).humanize(), inline: true },
+					{ name: fieldTitles[2], value: client.guilds.cache.size.toString(), inline: true },
 					{
-						name: FieldTitles[3],
+						name: fieldTitles[3],
 						value: `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB`,
 						inline: true,
 					},
-					{ name: FieldTitles[4], value: `discord.js ${djsVersion}`, inline: true },
-					{ name: FieldTitles[5], value: `${process.version}`, inline: true },
-					{ name: FieldTitles[6], value: `${client.slashCommands.size}`, inline: true },
-					{ name: FieldTitles[7], value: `${number}`, inline: true },
-					{ name: FieldTitles[8], value: `${sumMembers}`, inline: true },
-					{ name: FieldTitles[9], value: version },
+					{ name: fieldTitles[4], value: `discord.js ${djsVersion}`, inline: true },
+					{ name: fieldTitles[5], value: `${process.version}`, inline: true },
+					{ name: fieldTitles[6], value: `${client.slashCommands.size}`, inline: true },
+					{ name: fieldTitles[7], value: `${number}`, inline: true },
+					{ name: fieldTitles[8], value: `${sumMembers}`, inline: true },
+					{ name: fieldTitles[9], value: version },
 				)
 				.setFooter({
 					text: interaction.strings().Command.Stats.Footer,
-					iconURL: settings.images.heart,
+					iconURL: image,
 				});
 			interaction
 				.reply({ embeds: [embed], fetchReply: true })

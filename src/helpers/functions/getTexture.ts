@@ -11,9 +11,8 @@ import { Texture, Contribution } from "@interfaces";
 import { animateAttachment } from "@images/animate";
 import { formatName, minecraftSorter, addPathsToEmbed } from "@helpers/sorter";
 import { textureButtons } from "@helpers/buttons";
-import settings from "@json/dynamic/settings.json";
 
-export const getTextureMessageOptions = async (options: {
+export const getTexture = async (options: {
 	texture: Texture;
 	pack: string;
 	guild: Guild;
@@ -27,13 +26,14 @@ export const getTextureMessageOptions = async (options: {
 	let mcmeta: any = {};
 	if (animated) {
 		const animatedPath = paths.filter((p) => p.mcmeta === true)[0];
+		const raw = (await axios.get(`${tokens.apiUrl}settings/repositories.raw`)).data;
 
 		try {
 			mcmeta = (
 				await axios.get(
-					`${settings.repositories.raw[pack].java}${
-						animatedPath.versions.sort(minecraftSorter).reverse()[0]
-					}/${animatedPath.name}.mcmeta`,
+					`${raw[pack].java}${animatedPath.versions.sort(minecraftSorter).reverse()[0]}/${
+						animatedPath.name
+					}.mcmeta`,
 				)
 			).data;
 		} catch {

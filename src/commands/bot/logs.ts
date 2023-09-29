@@ -1,8 +1,7 @@
 import { SlashCommand } from "@interfaces";
-import { SlashCommandBuilder } from "discord.js";
-import { Client, ChatInputCommandInteraction } from "@client";
+import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
+import { ChatInputCommandInteraction } from "@client";
 import { logConstructor } from "@functions/errorHandler";
-import { PermissionFlagsBits } from "discord-api-types/v10";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()

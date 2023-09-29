@@ -2,7 +2,7 @@ import { Client, Message, StringSelectMenuInteraction } from "@client";
 import { Component } from "@interfaces";
 import { info } from "@helpers/logger";
 import { MessageEditOptions, MessageInteraction } from "discord.js";
-import { getTextureMessageOptions } from "@functions/getTexture";
+import { getTexture } from "@functions/getTexture";
 import axios from "axios";
 
 export default {
@@ -25,7 +25,7 @@ export default {
 		interaction.deferUpdate();
 
 		const [id, pack] = interaction.values[0].split("__");
-		const editOptions: MessageEditOptions = await getTextureMessageOptions({
+		const editOptions: MessageEditOptions = await getTexture({
 			texture: (
 				await axios.get(`${(interaction.client as Client).tokens.apiUrl}textures/${id}/all`)
 			).data,

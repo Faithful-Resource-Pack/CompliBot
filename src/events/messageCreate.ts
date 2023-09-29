@@ -1,9 +1,9 @@
 import { Event } from "@interfaces";
 import { Client, Message, EmbedBuilder } from "@client";
 import textureComparison from "@functions/textureComparison";
-import settings from "@json/dynamic/settings.json";
 import { Pack } from "@interfaces";
 import { colors } from "@helpers/colors";
+import axios from "axios";
 
 export default {
 	name: "messageCreate",
@@ -13,9 +13,10 @@ export default {
 
 		if (message.author.bot) return;
 
-		const submissionChannels = Object.values(settings.submission.packs).map(
-			(i: Pack) => i.channels.submit,
-		);
+		const packs: Pack[] = (await axios.get(`${client.tokens.apiUrl}settings/submission.packs`))
+			.data;
+
+		const submissionChannels = Object.values(packs).map((pack) => pack.channels.submit);
 		// returns early if you're in a submission channel
 		if (submissionChannels.includes(message.channel.id)) return;
 

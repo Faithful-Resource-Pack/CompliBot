@@ -3,7 +3,7 @@ import { SlashCommandBuilder } from "discord.js";
 import { ChatInputCommandInteraction, Message, EmbedBuilder, Client } from "@client";
 import { colors } from "@helpers/colors";
 import faqStrings from "@json/faq.json";
-import settings from "@json/dynamic/settings.json";
+import axios from "axios";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -58,10 +58,14 @@ export const command: SlashCommand = {
 			return;
 		}
 
+		const question: string = (
+			await axios.get(`${(interaction.client as Client).tokens.apiUrl}settings/images.question`)
+		).data;
+
 		const faqEmbed = new EmbedBuilder()
 			.setTitle(faqChoice.question)
 			.setDescription(faqChoice.answer)
-			.setThumbnail(settings.images.question)
+			.setThumbnail(question)
 			.setFooter({ text: `Keywords: ${faqChoice.keywords.join(" • ")}` });
 
 		interaction

@@ -24,7 +24,7 @@ import { join } from "path";
 import chalk from "chalk";
 import StartClient from "index";
 import walkSync from "@helpers/walkSync";
-import settings from "@json/dynamic/settings.json";
+import axios from "axios";
 
 const JSON_PATH = join(__dirname, "../../json/dynamic"); // json folder at root
 const POLLS_FILENAME = "polls.json";
@@ -241,6 +241,9 @@ export class ExtendedClient extends Client {
 		}
 
 		const rest = new REST({ version: "10" }).setToken(this.tokens.token);
+		const allGuilds: { [name: string]: string } = (
+			await axios.get(`${this.tokens.apiUrl}settings/guilds`)
+		).data;
 
 		// lock all commands to dev server
 		if (this.tokens.dev)
@@ -258,7 +261,7 @@ export class ExtendedClient extends Client {
 				});
 		});
 
-		for (const [name, id] of Object.entries(settings.guilds).filter((obj) => obj[1] != "id")) {
+		for (const [name, id] of Object.entries(allGuilds).filter((obj) => obj[1] != "id")) {
 			// if the client isn't in the guild, skip it
 			if (this.guilds.cache.get(id) === undefined) continue;
 			try {

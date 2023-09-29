@@ -1,4 +1,4 @@
-import { EmbedBuilder, ChatInputCommandInteraction, Message } from "@client";
+import { EmbedBuilder, ChatInputCommandInteraction, Message, Client } from "@client";
 import {
 	ActionRowBuilder,
 	SelectMenuComponentOptionData,
@@ -6,7 +6,7 @@ import {
 } from "discord.js";
 import { Texture } from "@interfaces";
 import { minecraftSorter } from "@helpers/sorter";
-import settings from "@json/dynamic/settings.json";
+import axios from "axios";
 
 /**
  * construct custom choice embed with any given results
@@ -21,7 +21,9 @@ export async function generalChoiceEmbed(
 ) {
 	const choicesLength = choices.length; // we're modifying choices directly so it needs to be saved first
 	const components: ActionRowBuilder<StringSelectMenuBuilder>[] = [];
-	const emojis = settings.emojis.default_select;
+	const emojis: string[] = (
+		await axios.get(`${(interaction.client as Client).tokens.apiUrl}settings/emojis.default_select`)
+	).data;
 
 	// dividing into maximum of 25 choices per menu
 	// 4 menus max

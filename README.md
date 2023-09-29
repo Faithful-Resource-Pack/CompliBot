@@ -46,11 +46,6 @@ ___
 3. Rename `tokens.json.example` in the `json/` folder to `tokens.json`.
 4. Paste your token after `token`. Additional information like API tokens and various testing modes can be enabled from there as well.
 
-## Configuration:
-
-- `json/tokens.json` for toggling environment variables.
-- `json/dynamic/settings.json` for channel names, versions, and more.
-
 ## API Reference:
 
 This project is heavily developed around our public API. Check out our API documentation at https://api.faithfulpack.net/docs for more information about endpoints and making requests.

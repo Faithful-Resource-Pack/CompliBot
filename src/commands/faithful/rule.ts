@@ -3,7 +3,7 @@ import { SlashCommandBuilder } from "discord.js";
 import { ChatInputCommandInteraction, Message, EmbedBuilder, Client } from "@client";
 import { colors } from "@helpers/colors";
 import ruleStrings from "@json/rules.json";
-import settings from "@json/dynamic/settings.json";
+import axios from "axios";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -33,6 +33,11 @@ export const command: SlashCommand = {
 	async execute(interaction: ChatInputCommandInteraction) {
 		const baseUrl = "https://docs.faithfulpack.net/pages/manuals/expanded-server-rules";
 		const choice = interaction.options.getString("number", true);
+
+		// fetch the whole collection since we're using it multiple times
+		const settings = (
+			await axios.get(`${(interaction.client as Client).tokens.apiUrl}settings/raw`)
+		).data;
 
 		if (choice == "all" || choice == "server") {
 			if (!interaction.hasPermission("manager")) return;

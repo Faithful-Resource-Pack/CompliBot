@@ -1,8 +1,9 @@
 import { Message, ActionRowBuilder, EmbedBuilder, ComponentType } from "discord.js";
 import { deleteInteraction, deleteMessage } from "@helpers/buttons";
 import { colors } from "@helpers/colors";
-import settings from "@json/dynamic/settings.json";
 import { ButtonBuilder } from "discord.js";
+import axios from "axios";
+import { Client } from "@client";
 
 declare module "discord.js" {
 	interface Message {
@@ -42,52 +43,6 @@ const ExtendedMessage = {
 				]),
 			],
 		});
-	},
-
-	/**
-	 *  Warn the message by replying to it with an embed
-	 *  @author Juknum, Nick
-	 *  @param text - The text to warn the user with
-	 *  @param disappearing - Optional bool. If undefined or false it wont delete the warning. If true it will  delete in 30s.
-	 *  @param timeout - Optional number (in seconds). If defined it will delete the warning after the timeout. If not defined it will delete in 30s.
-	 */
-	async warn(text: string, disappearing?: boolean, timeout?: number) {
-		if (!timeout) timeout = 30;
-
-		const embed = new EmbedBuilder()
-			.setColor(colors.red)
-			.setThumbnail(settings.images.error)
-			.setTitle("Action failed!")
-			.setDescription(text)
-			.setFooter({
-				text: disappearing ? `This warning & original message will be deleted in ${timeout}s.` : "",
-				iconURL: this.client.user.displayAvatarURL(),
-			});
-
-		let replyMsg: Message;
-
-		try {
-			replyMsg = await this.reply({ embeds: [embed] });
-		} catch {
-			replyMsg = await this.channel.send({ embeds: [embed] });
-		} // message can't be fetched
-
-		if (disappearing) {
-			setTimeout(() => {
-				try {
-					replyMsg.delete();
-					if (this.deletable) this.delete();
-				} catch {
-					// already deleted
-				}
-			}, timeout * 1000); // deletes the message after 30s
-		} else {
-			try {
-				replyMsg.deleteButton(true);
-			} catch (err) {
-				this.channel.send({ embeds: [embed] });
-			}
-		}
 	},
 };
 

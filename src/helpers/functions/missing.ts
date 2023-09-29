@@ -5,7 +5,6 @@ import { formatName } from "@helpers/sorter";
 import { Client } from "@client";
 import { Channel, ChannelType, VoiceChannel } from "discord.js";
 import { join, normalize } from "path";
-import settings from "@json/dynamic/settings.json";
 
 import os from "os";
 import blacklistedTextures from "@json/blacklisted_textures.json";
@@ -62,28 +61,30 @@ export const computeAndUpdate = async (
 	callback: Function,
 ): Promise<MissingResult> => {
 	const results = await compute(client, pack, edition, version, callback);
-	if (client !== null) {
-		let channel: Channel;
-		try {
-			channel = await client.channels.fetch(
-				settings.channels.pack_progress[results[2].pack][results[2].edition],
-			);
-		} catch {
-			// channel doesn't exist or can't be fetched, return early
-			return results;
-		}
+	if (!client) return results;
+	const packProgress = (await axios.get(`${client.tokens.apiUrl}settings/channels.pack_progress`)).data;
 
-		// you can add different patterns depending on the channel type
-		switch (channel.type) {
-			case ChannelType.GuildVoice:
-				const pattern = /[.\d+]+(?!.*[.\d+])/;
-				if (channel.name.match(pattern)?.[0] == results[2].completion.toString()) break;
-
-				const updatedName = channel.name.replace(pattern, results[2].completion.toString());
-				await (channel as VoiceChannel).setName(updatedName);
-				break;
-		}
+	let channel: Channel;
+	try {
+		channel = await client.channels.fetch(
+			packProgress[results[2].pack][results[2].edition],
+		);
+	} catch {
+		// channel doesn't exist or can't be fetched, return early
+		return results;
 	}
+
+	// you can add different patterns depending on the channel type
+	switch (channel.type) {
+		case ChannelType.GuildVoice:
+			const pattern = /[.\d+]+(?!.*[.\d+])/;
+			if (channel.name.match(pattern)?.[0] == results[2].completion.toString()) break;
+
+			const updatedName = channel.name.replace(pattern, results[2].completion.toString());
+			await (channel as VoiceChannel).setName(updatedName);
+			break;
+	}
+
 
 	return results;
 };
