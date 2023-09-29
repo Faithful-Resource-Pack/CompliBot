@@ -1,15 +1,14 @@
 import { Client } from "@client";
 import { ChatInputCommandInteraction, GatewayIntentBits, Partials } from "discord.js";
 
-import config from "@json/config.json";
 import tokens from "@json/tokens.json";
 
 export default function StartClient(firstStart = true, interaction?: ChatInputCommandInteraction) {
 	new Client(
 		{
-			config: config,
 			tokens: tokens,
-			allowedMentions: { parse: ["users", "roles"], repliedUser: false }, // remove this line to die instantly ~JackDotJS 2021
+			// remove this line to die instantly ~JackDotJS 2021
+			allowedMentions: { parse: ["users", "roles"], repliedUser: false },
 			partials: [
 				Partials.Channel,
 				Partials.GuildMember,

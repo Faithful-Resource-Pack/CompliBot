@@ -18,7 +18,7 @@
 			"import { Client, ChatInputCommandInteraction, Message, EmbedBuilder } from \"@client\";",
 			"import { SlashCommandBuilder } from \"discord.js\";",
 			"export const command: SlashCommand = {",
-			"\tdata: async (client: Client): Promise<SyncSlashCommandBuilder> => {",
+			"\tasync data(client: Client): Promise<SyncSlashCommandBuilder> {",
 			"\t\t/**",
 			"\t\t * todo: implement fetched stuff here",
 			"\t\t */",

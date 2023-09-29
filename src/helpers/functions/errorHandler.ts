@@ -62,7 +62,7 @@ export const logConstructor: Function = (
 
 	logText = logText.split("%templateStart%")[0]; // remove message template
 
-	let len: number = client.getAction().length;
+	const len = client.getAction().length;
 	client
 		.getAction()
 		.reverse()
@@ -72,13 +72,13 @@ export const logConstructor: Function = (
 				.replace(
 					"%templateType%",
 					log.type === "slashCommand"
-						? `${log.type} (${log.data.commandName})`
+						? `${log.type} [${log.data.commandName}]`
 						: log.type === "guildMemberUpdate"
 						? `${log.type} | ${log.data.user.username} ${
 								log.data.reason === "added" ? "joined" : "left"
 						  } ${log.data.guild.name}`
 						: log.type === "message"
-						? `${log.type} [${log.data.isDeleted ? "deleted" : "created"}] | ${
+						? `${log.type} | ${
 								log.data.author ? (log.data.author.bot ? "BOT" : "USER") : "Unknown (likely bot)"
 						  } | ${log.data.author ? log.data.author.username : "Unknown"}`
 						: log.type,

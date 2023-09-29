@@ -15,7 +15,7 @@ import settings from "@json/dynamic/settings.json";
 import { formatName } from "@helpers/sorter";
 
 export const command: SlashCommand = {
-	data: async (client: Client): Promise<SyncSlashCommandBuilder> => {
+	async data(client: Client): Promise<SyncSlashCommandBuilder> {
 		let versions = Object.values(
 			(await axios.get(`${client.tokens.apiUrl}settings/versions`)).data,
 		).flat();

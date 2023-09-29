@@ -1,88 +1,32 @@
-import { Client, ButtonInteraction, EmbedBuilder, Message } from "@client";
-import settings from "@json/dynamic/settings.json";
-import { colors } from "@helpers/colors";
-import { ChannelType } from "discord.js";
-
-const quotes = {
-	suggestion: [
-		"Hot take but okay",
-		"Sure...",
-		"Maybe later...",
-		"Why didn't i think of that?",
-		"Adding one to the other %NUMBER% things todo",
-		"Infeasible idea but tell them you might",
-		"Dev bad",
-		"soon™",
-	],
-	bug: [
-		"God i hate being a developer",
-		"I thought i fixed this yesterday",
-		"AAAAAAAAAA",
-		"Shit.",
-		"Slap a '//todo fix plz' in there.",
-		"Rule #69: Always blame Juknum",
-		"Major skill issue",
-	],
-};
+import { ModalSubmitInteraction } from "discord.js";
+import { Octokit } from "@octokit/rest";
+import { Client, EmbedBuilder } from "@client";
+import { colors } from "./colors";
 
 export default async function sendFeedback(
-	client: Client,
-	interaction: ButtonInteraction,
-	user: String,
-	type: "suggestion" | "bug",
+	interaction: ModalSubmitInteraction,
+	title: string,
+	description: string,
 ) {
-	if (interaction.user.id !== user)
-		return interaction.reply({
-			content: interaction.strings().Error.Interaction.Reserved.replace("%USER%", `<@!${user}>`),
-			ephemeral: true,
+	try {
+		const octokit = new Octokit({
+			auth: (interaction.client as Client).tokens.gitToken,
 		});
 
-	const channel = client.channels.cache.get(settings.channels.feedback[type]);
-
-	if (!channel)
-		return interaction.reply({
-			content: interaction
-				.strings()
-				.Error.Channel.CacheNotFound.replace("%CHANNEL_NAME%", "#feedback"),
-			ephemeral: true,
+		octokit.issues.create({
+			owner: "Faithful-Resource-Pack",
+			repo: "CompliBot",
+			title,
+			body: `*Issue originally created by \`${interaction.user.username}\` on Discord*\n\n${description}`,
 		});
-
-	if (channel.type !== ChannelType.GuildText)
-		return interaction.reply({
-			content: interaction.strings().Error.Channel.NotTextChannel,
-			ephemeral: true,
+	} catch (err) {
+		interaction.followUp({
+			embeds: [
+				new EmbedBuilder()
+					.setTitle("Feedback could not be sent!")
+					.setDescription(`Error for the developers: \`\`\`${err}\`\`\``)
+					.setColor(colors.red),
+			],
 		});
-
-	const responseEmbed = new EmbedBuilder()
-		.setTitle(
-			interaction.strings().Command.Feedback.Sent.replace(
-				"%FEEDBACKTYPE%",
-				// uppercase
-				type.replace(/\b(\w)/gu, (letter) => letter.toUpperCase()),
-			),
-		)
-		.setDescription(interaction.message.embeds[0].description)
-		.setAuthor({ name: interaction.user.username, iconURL: interaction.user.avatarURL() })
-		.setTimestamp();
-
-	const reply = (await (interaction.message as Message).edit({
-		embeds: [responseEmbed],
-		components: [],
-	})) as Message;
-
-	reply.deleteButton();
-
-	const url: string = reply.url;
-	const quote: string = quotes[type][Math.floor(Math.random() * quotes[type].length)];
-
-	const developerEmbed = new EmbedBuilder()
-		.setAuthor({ name: interaction.user.username, iconURL: interaction.user.avatarURL() })
-		.setTitle(`[${type.toUpperCase()}] Feedback`)
-		.setURL(url)
-		.setDescription(`\`\`\`${interaction.message.embeds[0].description}\`\`\`\n_${quote}_`)
-		.setFooter({ text: `${interaction.guild.name}` })
-		.setTimestamp();
-
-	if (type === "bug") developerEmbed.setColor(colors.red);
-	channel.send({ embeds: [developerEmbed] });
+	}
 }

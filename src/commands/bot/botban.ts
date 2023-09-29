@@ -1,13 +1,12 @@
-import { Config, SlashCommand, SlashCommandI } from "@interfaces";
+import { SlashCommand, SlashCommandI } from "@interfaces";
 import { SlashCommandBuilder } from "discord.js";
 import { Client, EmbedBuilder, ChatInputCommandInteraction } from "@client";
 import { Collection, AttachmentBuilder, TextChannel } from "discord.js";
-import ConfigJson from "@json/config.json";
+import settings from "@json/dynamic/settings.json";
 import { colors } from "@helpers/colors";
 import { readFileSync, writeFileSync } from "fs";
 import { join } from "path";
 import { PermissionFlagsBits } from "discord-api-types/v10";
-const config: Config = ConfigJson;
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -77,39 +76,6 @@ export const command: SlashCommand = {
 				} <@${victimID}>`,
 				ephemeral: true,
 			});
-			const embed: EmbedBuilder = new EmbedBuilder()
-				.setTitle(
-					`${
-						interaction.options.getBoolean("revoke") ? "Removed" : "Added"
-					} <@${victimID}> to botban list`,
-				)
-				.setAuthor({
-					name: interaction.user.username,
-					iconURL: interaction.user.avatarURL(),
-				})
-				.setColor(colors.red)
-				.addFields([
-					{ name: "Server", value: `\`${interaction.guild.name}\``, inline: true },
-					{ name: "Channel", value: `${interaction.channel}`, inline: true },
-				])
-				.setTimestamp();
-
-			// send log into the addressed logs channel
-			let logChannel: TextChannel;
-			const team: string = config.discords.filter((d) => d.id === interaction.guildId)[0].team;
-			try {
-				if (team)
-					logChannel = (await interaction.client.channels.fetch(
-						config.teams.filter((t) => t.name === team)[0].channels.moderation,
-					)) as any;
-				else
-					logChannel = (await interaction.client.channels.fetch(
-						config.discords.filter((d) => d.id === interaction.guildId)[0].channels.moderation,
-					)) as any;
-				logChannel.send({ embeds: [embed] });
-			} catch {
-				return;
-			} // can't fetch channel
 		})
 		.set("view", async (interaction: ChatInputCommandInteraction) => {
 			if (!interaction.hasPermission("dev")) return;

@@ -10,14 +10,7 @@ import {
 	ModalSubmitInteraction,
 } from "discord.js";
 import { Message, EmittingCollection, Automation } from "@client";
-import {
-	Config,
-	Tokens,
-	Component,
-	SlashCommand,
-	AsyncSlashCommandBuilder,
-	Event,
-} from "@interfaces";
+import { Tokens, Component, SlashCommand, AsyncSlashCommandBuilder, Event } from "@interfaces";
 import { getData } from "@functions/getDataFromJSON";
 import { setData } from "@functions/setDataToJSON";
 import { errorHandler } from "@functions/errorHandler";
@@ -31,6 +24,7 @@ import { join } from "path";
 import chalk from "chalk";
 import StartClient from "index";
 import walkSync from "@helpers/walkSync";
+import settings from "@json/dynamic/settings.json";
 
 const JSON_PATH = join(__dirname, "../../json/dynamic"); // json folder at root
 const POLLS_FILENAME = "polls.json";
@@ -61,7 +55,6 @@ export type Log = {
 export class ExtendedClient extends Client {
 	public verbose = false;
 	public firstStart = true; // used for prettier restarting in dev mode
-	public config: Config;
 	public tokens: Tokens;
 	public automation = new Automation(this);
 
@@ -77,13 +70,9 @@ export class ExtendedClient extends Client {
 	public polls = new EmittingCollection<string, Poll>();
 	public commandsProcessed = new EmittingCollection<string, number>();
 
-	constructor(
-		data: ClientOptions & { config: Config; tokens: Tokens },
-		firstStart: boolean = true,
-	) {
+	constructor(data: ClientOptions & { tokens: Tokens }, firstStart: boolean = true) {
 		super(data);
 		this.verbose = data.tokens.verbose;
-		this.config = data.config;
 		this.tokens = data.tokens;
 		this.firstStart = firstStart;
 	}
@@ -216,7 +205,7 @@ export class ExtendedClient extends Client {
 			const promises = [];
 			for (const command of data)
 				promises.push(rest.delete(`${Routes.applicationCommands(this.user.id)}/${command.id}`));
-			return Promise.all(promises).then(() => console.log(`${success}delete succeed`));
+			return Promise.all(promises).then(() => console.log(`${success}Delete complete`));
 		});
 	}
 
@@ -235,23 +224,25 @@ export class ExtendedClient extends Client {
 			const command: SlashCommand = require(file).command;
 
 			if (command.data instanceof Function) {
+				// for dynamic data (e.g. /missing)
 				this.slashCommands.set(
 					(await (command.data as AsyncSlashCommandBuilder)(this)).name,
 					command,
-				); // AsyncSlashCommandBuilder
+				);
 				commandsArr.push({
 					servers: command.servers,
 					command: (await (command.data as AsyncSlashCommandBuilder)(this)).toJSON(),
 				});
 			} else {
-				this.slashCommands.set(command.data.name, command); // SyncSlashCommandBuilder
+				// regular data
+				this.slashCommands.set(command.data.name, command);
 				commandsArr.push({ servers: command.servers, command: command.data.toJSON() });
 			}
 		}
 
-		const rest = new REST({ version: "9" }).setToken(this.tokens.token);
+		const rest = new REST({ version: "10" }).setToken(this.tokens.token);
 
-		// deploy commands only for dev discord when in dev mode
+		// lock all commands to dev server
 		if (this.tokens.dev)
 			commandsArr.forEach((el) => {
 				el.servers = ["dev"];
@@ -267,21 +258,18 @@ export class ExtendedClient extends Client {
 				});
 		});
 
-		for (let i = 0; i < this.config.discords.length; i++) {
-			const d = this.config.discords[i];
-
+		for (const [name, id] of Object.entries(settings.guilds).filter((obj) => obj[1] != "id")) {
 			// if the client isn't in the guild, skip it
-			if (this.guilds.cache.get(d.id) === undefined) continue;
-			else
-				try {
-					// otherwise we add specific commands to that guild
-					await rest.put(Routes.applicationGuildCommands(this.user.id, d.id), {
-						body: guilds[d.name],
-					});
-					console.log(`${success}Successfully added slash commands to: ${d.name}`);
-				} catch (err) {
-					console.error(err);
-				}
+			if (this.guilds.cache.get(id) === undefined) continue;
+			try {
+				// add guild-specific commands (e.g. /eval)
+				await rest.put(Routes.applicationGuildCommands(this.user.id, id), {
+					body: guilds[name],
+				});
+				console.log(`${success}Successfully added slash commands to: ${name}`);
+			} catch (err) {
+				console.error(err);
+			}
 		}
 
 		// we add global commands to all guilds (only if not in dev mode)

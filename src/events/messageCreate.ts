@@ -9,9 +9,7 @@ export default {
 	name: "messageCreate",
 	async execute(client: Client, message: Message) {
 		// duplicate message for logger (ask @Juknum)
-		let m = structuredClone(message);
-		m.isDeleted = false;
-		client.storeAction("message", m);
+		client.storeAction("message", structuredClone(message));
 
 		if (message.author.bot) return;
 
