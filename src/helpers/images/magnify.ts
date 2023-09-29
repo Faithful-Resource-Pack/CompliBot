@@ -95,7 +95,7 @@ export async function magnify(
 	const buf = await magnifyBuffer(options, dimension);
 
 	return [
-		new AttachmentBuilder(buf, { name: `${options.name ? options.name : "magnified.png"}` }),
+		new AttachmentBuilder(buf, { name: `${options.name || "magnified.png"}` }),
 		options.embed,
 	];
 }

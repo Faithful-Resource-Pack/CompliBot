@@ -32,7 +32,7 @@ export const command: SlashCommand = {
 
 		// ----
 
-		const code: string = interaction.options.getString("code", true);
+		const code = interaction.options.getString("code", true);
 		const evaluated = await eval(
 			`(async () => { try { return await (async () => {${
 				code.includes("return") ? code : `return ${code}`

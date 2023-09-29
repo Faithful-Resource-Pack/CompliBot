@@ -20,7 +20,7 @@ export const getTexture = async (options: {
 	const tokens: Tokens = TokenJson;
 	const { texture, pack, guild } = options;
 	const { paths, contributions: allContributions } = texture;
-	const animated: boolean = paths.filter((p) => p.mcmeta === true).length !== 0;
+	const animated = paths.filter((p) => p.mcmeta === true).length !== 0;
 	const contributionJSON = (await axios.get(`${tokens.apiUrl}contributions/authors`)).data;
 
 	let mcmeta: any = {};
@@ -89,7 +89,7 @@ export const getTexture = async (options: {
 
 	if (mainContribution) {
 		let strDate = `<t:${Math.trunc(mainContribution.date / 1000)}:d>`;
-		let authors = mainContribution.authors.map((authorId: string) => {
+		let authors = mainContribution.authors.map((authorId) => {
 			if (guild.members.cache.get(authorId)) return `<@!${authorId}>`;
 
 			// this may possibly be one of the worst solutions but it somehow works

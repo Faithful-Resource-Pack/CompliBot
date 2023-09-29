@@ -50,7 +50,7 @@ export default async function textureComparison(
 	const result: Texture = (await axios.get(`${client.tokens.apiUrl}textures/${id}/all`)).data;
 	const displayed = parseDisplay(display);
 
-	const defaultURL: string = `${client.tokens.apiUrl}textures/${id}/url/default/latest`;
+	const defaultURL = `${client.tokens.apiUrl}textures/${id}/url/default/latest`;
 
 	const dimension = await getDimensions(defaultURL);
 	if (dimension.width * dimension.height * displayed.flat().length > 262144) {

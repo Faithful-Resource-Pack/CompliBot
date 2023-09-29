@@ -172,7 +172,7 @@ export async function paletteAttachment(
 	});
 
 	const attachment = new AttachmentBuilder(colorCanvas.toBuffer("image/png"), {
-		name: `${options.name ? options.name : "palette.png"}`,
+		name: `${options.name || "palette.png"}`,
 	});
 
 	return [attachment, embed];

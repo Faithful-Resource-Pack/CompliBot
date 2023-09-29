@@ -64,7 +64,7 @@ export async function cycleComparison(
 	client: Client,
 	id: number | string,
 	display: string,
-	framerate: number = 1,
+	framerate = 1,
 ): Promise<any> {
 	const result: Texture = (await axios.get(`${client.tokens.apiUrl}textures/${id}/all`)).data;
 

@@ -5,9 +5,19 @@ import GIFEncoder from "./GIFEncoder";
 import { ISizeCalculationResult } from "image-size/dist/types/interface";
 import mcmetaList from "@json/mcmetas.json";
 
+interface MCMETA {
+	animation: {
+		frametime?: number;
+		interpolate?: boolean;
+		frames?: (number | { index?: number; time?: number })[];
+		height?: number;
+		width?: number;
+	};
+}
+
 interface Options {
 	url: string;
-	mcmeta?: Object;
+	mcmeta?: MCMETA;
 	name?: string;
 	magnify?: boolean;
 	embed?: EmbedBuilder;
@@ -18,7 +28,7 @@ interface Options {
 export async function animateAttachment(options: Options): Promise<AttachmentBuilder> {
 	const dimension = await getDimensions(options.url);
 	if (options.magnify) {
-		let factor: number = 1;
+		let factor = 1;
 		const surface = dimension.width * dimension.width;
 
 		if (surface <= 256) factor = 32; // 16²px or below
@@ -67,9 +77,9 @@ export async function animateImage(options: Options): Promise<[AttachmentBuilder
 	baseContext.imageSmoothingEnabled = false;
 	baseContext.drawImage(baseIMG, 0, 0, baseCanvas.width, baseCanvas.height);
 
-	const mcmeta = mcmetaList[style];
+	const mcmeta: MCMETA = mcmetaList[style];
 
-	const frametime = (mcmeta as any).animation?.frametime || 1;
+	const frametime = mcmeta.animation?.frametime || 1;
 
 	if (style !== "none")
 		embed.addFields([
@@ -86,7 +96,7 @@ export async function animateImage(options: Options): Promise<[AttachmentBuilder
 
 export async function animate(
 	options: Options,
-	mcmeta: any,
+	mcmeta: MCMETA,
 	dimension: ISizeCalculationResult,
 	baseCanvas: Canvas,
 ): Promise<AttachmentBuilder> {
@@ -102,7 +112,7 @@ export async function animate(
 	mcmeta = typeof mcmeta === "object" ? mcmeta : { animation: {} };
 	if (!mcmeta.animation) mcmeta.animation = {};
 
-	let frametime: number = mcmeta.animation.frametime || 1;
+	let frametime = mcmeta.animation.frametime || 1;
 
 	// prismarine would take 6600 iterations without a cap which isn't great for performance
 	if (frametime > 15) frametime = 15;
@@ -138,9 +148,8 @@ export async function animate(
 	encoder.setTransparent(true);
 
 	if (mcmeta.animation.interpolate) {
-		let limit: number = frametime;
 		for (let i = 0; i < frames.length; i++) {
-			for (let y = 1; y <= limit; y++) {
+			for (let y = 1; y <= frametime; y++) {
 				context.clearRect(0, 0, canvas.width, canvas.height);
 				context.globalAlpha = 1;
 				context.globalCompositeOperation = "copy";
@@ -200,6 +209,6 @@ export async function animate(
 
 	encoder.finish();
 	return new AttachmentBuilder(encoder.out.getData(), {
-		name: options.name ? options.name : "animation.gif",
+		name: options.name || "animation.gif",
 	});
 }

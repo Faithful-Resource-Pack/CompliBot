@@ -17,10 +17,10 @@ export const zipToMA = async (url: string): Promise<AttachmentBuilder[]> => {
 	// get files inside the zip as an object: { "filename": "Buffer" }
 	const zipFiles: { [key: string]: Buffer } = await JSZip.loadAsync(arrayBufferToBufferCycle(zip))
 		.then((zip) => {
-			let ext = /(.png|.tga)$/;
+			const ext = /(.png|.tga)$/;
 			let promises = Object.keys(zip.files)
-				.filter((filename: string) => ext.test(filename.toLowerCase()))
-				.map(async (filename: string) => {
+				.filter((filename) => ext.test(filename.toLowerCase()))
+				.map(async (filename) => {
 					let file = zip.files[filename];
 					return file.async("nodebuffer").then((buffer: Buffer) => {
 						return [filename, buffer];
@@ -31,8 +31,8 @@ export const zipToMA = async (url: string): Promise<AttachmentBuilder[]> => {
 		})
 		.then((res): { [key: string]: Buffer } => {
 			return res.reduce((acc, val: [key: string, buff: Buffer]) => {
-				let splitted: string[] = val[0].split("/");
-				let key: string = splitted[splitted.length - 1];
+				const splitted = val[0].split("/");
+				const key = splitted[splitted.length - 1];
 				acc[key] = val[1];
 				return acc;
 			}, {});

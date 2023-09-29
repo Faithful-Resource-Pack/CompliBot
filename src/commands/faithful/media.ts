@@ -22,10 +22,10 @@ export const command: SlashCommand = {
 				),
 		),
 	async execute(interaction: ChatInputCommandInteraction) {
-		const key: string = interaction.options.getString("name", false) ?? "general";
+		const key = interaction.options.getString("name", false) ?? "general";
 
 		// you can't import images directly in infoembed.ts so you have to do it here (blame TS)
-		const images: { [key: string]: string } = (
+		const images: { [name: string]: string } = (
 			await axios.get(`${(interaction.client as Client).tokens.apiUrl}settings/images`)
 		).data;
 

@@ -17,7 +17,7 @@ export async function tileAttachment(options: options): Promise<[AttachmentBuild
 		const canvas = await tileCanvas(options);
 		return [
 			new AttachmentBuilder(canvas.toBuffer("image/png"), {
-				name: `${options.name ? options.name : "tiled.png"}`,
+				name: `${options.name || "tiled.png"}`,
 			}),
 			options.embed,
 		];

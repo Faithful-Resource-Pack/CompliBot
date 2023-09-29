@@ -46,18 +46,17 @@ export const command: SlashCommand = {
 			option.setName("description").setDescription("Add more information about your poll here."),
 		),
 	async execute(interaction: ChatInputCommandInteraction) {
-		const question: string = interaction.options.getString("question", true);
-		const multipleAnswers: boolean =
+		const question = interaction.options.getString("question", true);
+		const multipleAnswers =
 			interaction.options.getBoolean("allow-multiple-answers", false) === true ? true : false;
-		const timeoutVal: string | null = interaction.options.getString("timeout", false);
-		const yesno: boolean = interaction.options.getBoolean("yesno", false) === true ? true : false;
-		const thread: boolean = interaction.options.getBoolean("thread", false) === true ? true : false;
-		const description: string = interaction.options.getString("description", false);
-		const anonymous: boolean =
-			interaction.options.getBoolean("anonymous", false) === true ? true : false;
+		const timeoutVal = interaction.options.getString("timeout", false);
+		const yesno = interaction.options.getBoolean("yesno", false) === true ? true : false;
+		const thread = interaction.options.getBoolean("thread", false) === true ? true : false;
+		const description = interaction.options.getString("description", false);
+		const anonymous = interaction.options.getBoolean("anonymous", false) === true ? true : false;
 
-		const _count: number = interaction.options.getNumber("answers", true);
-		const answersCount: number = yesno ? 2 : _count > 5 ? 5 : _count < 2 ? 2 : _count;
+		const _count = interaction.options.getNumber("answers", true);
+		const answersCount = yesno ? 2 : _count > 5 ? 5 : _count < 2 ? 2 : _count;
 
 		// instantiate a new poll
 		const poll = new Poll();
@@ -83,8 +82,8 @@ export const command: SlashCommand = {
 		const filter = (m: Message) => m.author.id === interaction.member.user.id;
 
 		const answersArr: string[] = [];
-		const yesnoEmojis: string[] = [parseId(ids.upvote), parseId(ids.downvote)];
-		const numberEmojis: string[] = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"];
+		const yesnoEmojis = [parseId(ids.upvote), parseId(ids.downvote)];
+		const numberEmojis = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"];
 		const fields = [{ name: "Answers", value: "None", inline: true }];
 		do {
 			try {

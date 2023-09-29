@@ -99,11 +99,11 @@ export const command: SlashCommand = {
 		};
 
 		const catchErr = (err: string | Error, options: MissingOptions): MissingResult => {
-			let errMessage: string = (err as Error).message;
+			let errMessage = (err as Error).message;
 			if (!errMessage) {
 				console.error(err);
 				errMessage =
-					"An error occured when launching missing command. Please check console error output for more info";
+					"An error occured when running /missing. Please check the console error output for more information.";
 			}
 
 			return [null, [errMessage], options];

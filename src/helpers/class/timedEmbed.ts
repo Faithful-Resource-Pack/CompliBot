@@ -19,9 +19,9 @@ export class TimedEmbed {
 	private channelId: string;
 	private votes: Votes;
 	private status: string = "pending";
-	private timeout: number = 0; // used for end of events (pending until...)
-	private anonymous: boolean = true;
-	private multipleAnswers: boolean = false;
+	private timeout = 0; // used for end of events (pending until...)
+	private anonymous = true;
+	private multipleAnswers = false;
 
 	constructor(data?: TimedEmbed) {
 		if (!data) {
@@ -166,7 +166,7 @@ export class TimedEmbed {
 	 * @param type the type category of vote to remove
 	 * @param id the user id to remove
 	 */
-	public hasVotedFor(type: string, id: string): boolean {
+	public hasVotedFor(type: string, id: string) {
 		if (this.votes[type] === undefined) return false;
 		return this.votes[type].includes(id);
 	}
@@ -236,7 +236,7 @@ export class TimedEmbed {
 	/**
 	 * Tell if the time is over or not
 	 */
-	public isTimeout(): boolean {
+	public isTimeout() {
 		if (this.getTimeout() === 0) return false;
 		if (this.getTimeout() < new Date().getTime() / 1000) return true;
 		return false;

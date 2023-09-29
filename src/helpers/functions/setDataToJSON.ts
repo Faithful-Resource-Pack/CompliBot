@@ -7,8 +7,8 @@ interface Options {
 	data: {};
 }
 export function setData(options: Options): void {
-	let folder: string = path.resolve(__dirname, options.relative_path);
-	let file: string = path.resolve(folder, options.filename);
+	let folder = path.resolve(__dirname, options.relative_path);
+	let file = path.resolve(folder, options.filename);
 
 	try {
 		fs.writeFileSync(file, JSON.stringify(options.data));

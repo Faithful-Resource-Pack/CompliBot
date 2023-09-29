@@ -123,7 +123,7 @@ export async function generalSlashCommandImage(
 	await interaction.deferReply();
 
 	const attachmentUrl = interaction.options.getAttachment("image", false)?.url?.split("?")[0]; //safe navigation operator.
-	const imageURL: string = attachmentUrl
+	const imageURL = attachmentUrl
 		? attachmentUrl
 		: await fetchMessageImage(interaction, 10, {
 				doInteraction: true,

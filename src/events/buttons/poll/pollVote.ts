@@ -10,11 +10,11 @@ export default {
 		const embed = message.embeds[0];
 
 		// get poll, update it
-		const pid: string = embed.footer.text.split(" | ")[0];
-		const poll: Poll = new Poll(client.polls.get(pid));
+		const pid = embed.footer.text.split(" | ")[0];
+		const poll = new Poll(client.polls.get(pid));
 
-		const type: string = interaction.customId.replace("pollVote__", "");
-		const id: string = interaction.user.id;
+		const type = interaction.customId.replace("pollVote__", "");
+		const id = interaction.user.id;
 
 		if (poll.hasVotedFor(type, id)) poll.removeVote(type, id);
 		else poll.addVote(type, id);

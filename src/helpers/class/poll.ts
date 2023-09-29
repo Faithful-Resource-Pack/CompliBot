@@ -1,13 +1,7 @@
 import { pollDelete, pollVotes, pollYesNo } from "@helpers/buttons";
 import { Client, ChatInputCommandInteraction, Message, EmbedBuilder } from "@client";
-import {
-	ActionRowBuilder,
-	ButtonBuilder,
-	TextChannel,
-	EmbedField,
-	MessageActionRowComponentBuilder,
-} from "discord.js";
-import { TimedEmbed } from "./timedEmbed";
+import { ActionRowBuilder, ButtonBuilder, TextChannel, EmbedField } from "discord.js";
+import { TimedEmbed } from "@class/timedEmbed";
 
 export interface PollOptions {
 	question: string;
@@ -15,6 +9,7 @@ export interface PollOptions {
 	answersArr: string[];
 	thread: boolean;
 }
+
 export class Poll extends TimedEmbed {
 	constructor(data?: Poll) {
 		super(data);
@@ -38,7 +33,7 @@ export class Poll extends TimedEmbed {
 
 		const embed = EmbedBuilder.from(message.embeds[0]);
 		let components = [...message.components];
-		let isYesno: boolean = false;
+		let isYesno = false;
 
 		if (this.getStatus() === "ended") components = [];
 		if (this.getVoteNames()[0] == "upvote") isYesno = true;
@@ -48,7 +43,7 @@ export class Poll extends TimedEmbed {
 		embed.setFields(
 			...message.embeds[0].fields.map((field: EmbedField, index: number) => {
 				if (index === 0) return field;
-				const val: number = parseInt(field.value.substring(2, 3));
+				const val = parseInt(field.value.substring(2, 3));
 				if (!Number.isNaN(val)) {
 					// if it can't be casted to a number no votes have been made yet
 					if ((bestOption[0] as number) < val) {

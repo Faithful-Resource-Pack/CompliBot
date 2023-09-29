@@ -57,7 +57,7 @@ export default {
 		}
 
 		// increase uses of that command
-		const count: number = client.commandsProcessed.get((command.data as SlashCommandI).name) + 1;
+		const count = client.commandsProcessed.get((command.data as SlashCommandI).name) + 1;
 		client.commandsProcessed.set((command.data as SlashCommandI).name, isNaN(count) ? 1 : count);
 	},
 } as Event;

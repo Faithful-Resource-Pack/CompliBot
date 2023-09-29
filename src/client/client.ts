@@ -70,7 +70,7 @@ export class ExtendedClient extends Client {
 	public polls = new EmittingCollection<string, Poll>();
 	public commandsProcessed = new EmittingCollection<string, number>();
 
-	constructor(data: ClientOptions & { tokens: Tokens }, firstStart: boolean = true) {
+	constructor(data: ClientOptions & { tokens: Tokens }, firstStart = true) {
 		super(data);
 		this.verbose = data.tokens.verbose;
 		this.tokens = data.tokens;

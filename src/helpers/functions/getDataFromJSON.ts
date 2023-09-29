@@ -8,8 +8,8 @@ interface Options {
 }
 export function getData(options: Options): JSON {
 	let data: JSON;
-	let folder: string = path.resolve(__dirname, options.relative_path);
-	let file: string = path.resolve(folder, options.filename);
+	let folder = path.resolve(__dirname, options.relative_path);
+	let file = path.resolve(folder, options.filename);
 
 	try {
 		data = JSON.parse(fs.readFileSync(file).toString());

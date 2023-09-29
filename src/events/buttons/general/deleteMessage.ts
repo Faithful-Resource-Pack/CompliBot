@@ -8,8 +8,7 @@ export default {
 		if (client.verbose) console.log(`${info}Message deleted!`);
 		const message: Message = interaction.message as Message;
 		// as we can't fetch the interaction to detect who is the owner of the message/interaction, we uses the stored id inside the footer
-		const authorId: string = interaction.message.embeds[0].footer.text.split(" | ")[1]; //splits by | to remove stuff before author id
-		const sid: string = interaction.message.embeds[0].footer.text.split(" | ")[0];
+		const authorId = interaction.message.embeds[0].footer.text.split(" | ")[1]; //splits by | to remove stuff before author id
 
 		//additional checking for undefined embeds and footers and stuff
 		if (!message.reference && !authorId)

@@ -6,7 +6,7 @@ import { Canvas } from "@napi-rs/canvas";
  * @param gap optionally specify pixel gap
  * @returns canvas buffer with stitched image
  */
-export default async function stitch(images: Canvas[][], gap: number = 0) {
+export default async function stitch(images: Canvas[][], gap = 0) {
 	const img = images.flat().reduce((a, e) => (a.width > e.width ? a : e), { width: 0, height: 0 });
 	const length = images.reduce((a, e) => Math.max(a, e.length), 0);
 	const vGap = (length - 1) * gap;

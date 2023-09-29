@@ -81,7 +81,7 @@ export async function multiplyAttachment(
 
 	return [
 		new AttachmentBuilder(canvas.toBuffer("image/png"), {
-			name: `${options.name ? options.name : "tinted.png"}`,
+			name: `${options.name || "tinted.png"}`,
 		}),
 		options.embed,
 	];

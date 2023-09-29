@@ -40,7 +40,7 @@ export const command: SlashCommand = {
 		),
 	async execute(interaction: ChatInputCommandInteraction) {
 		await interaction.deferReply();
-		let advice: string = null;
+		let advice: string;
 
 		// send an annotation following the gif
 		for (const option of options) {

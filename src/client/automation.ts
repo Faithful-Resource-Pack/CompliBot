@@ -2,7 +2,7 @@ import { Poll } from "@class/poll";
 import { Client } from "@client";
 
 export class Automation {
-	private ticking: boolean = true;
+	private ticking = true;
 	private client: Client;
 
 	constructor(client: Client) {
