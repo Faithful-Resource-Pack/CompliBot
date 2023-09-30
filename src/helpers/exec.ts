@@ -6,7 +6,7 @@
 //* remade in TS by @Juknum
 
 // execute a single shell command where "cmd" is a string
-export const execSync = (cmd: string, cb: Function, options: any = undefined): void => {
+export const execSync = (cmd: string, cb: Function, options = undefined): void => {
 	// this would be way easier on a shell/bash script :P
 	const child_process = require("child_process");
 	const parts = cmd.split(/\s+/g);

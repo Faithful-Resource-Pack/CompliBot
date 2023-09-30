@@ -35,3 +35,10 @@ export interface Texture {
 	paths?: Path[];
 	contributions?: Contribution[];
 }
+
+export interface Contributor {
+	id: string;
+	contributions: number;
+	username?: string;
+	uuid?: string;
+}

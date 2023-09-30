@@ -1,6 +1,6 @@
 import { EmbedBuilder } from "@client";
 import TokenJson from "@json/tokens.json";
-import { Tokens } from "@interfaces";
+import { Contributor, Tokens } from "@interfaces";
 import axios from "axios";
 import getDimensions from "@images/getDimensions";
 import { AttachmentBuilder, Guild } from "discord.js";
@@ -21,7 +21,8 @@ export const getTexture = async (options: {
 	const { texture, pack, guild } = options;
 	const { paths, contributions: allContributions } = texture;
 	const animated = paths.filter((p) => p.mcmeta === true).length !== 0;
-	const contributionJSON = (await axios.get(`${tokens.apiUrl}contributions/authors`)).data;
+	const contributionJSON: Contributor[] = (await axios.get(`${tokens.apiUrl}contributions/authors`))
+		.data;
 
 	let mcmeta: any = {};
 	if (animated) {
@@ -76,9 +77,7 @@ export const getTexture = async (options: {
 
 	embed
 		.setURL(`https://webapp.faithfulpack.net/#/gallery/java/32x/latest/all/?show=${texture.id}`)
-		.addFields([
-			{ name: "Resolution", value: `${dimension.width}×${dimension.height}`, inline: true },
-		]);
+		.addFields([{ name: "Resolution", value: `${dimension.width}×${dimension.height}` }]);
 
 	let mainContribution: Contribution;
 	if (allContributions.length) {
@@ -88,18 +87,16 @@ export const getTexture = async (options: {
 	}
 
 	if (mainContribution) {
-		let strDate = `<t:${Math.trunc(mainContribution.date / 1000)}:d>`;
-		let authors = mainContribution.authors.map((authorId) => {
+		const authors = mainContribution.authors.map((authorId) => {
 			if (guild.members.cache.get(authorId)) return `<@!${authorId}>`;
 
-			// this may possibly be one of the worst solutions but it somehow works
-			for (const user of contributionJSON) {
-				if (user.id == authorId) return user.username ?? "Anonymous";
-			}
-			return "Unknown";
+			// fetch username if not in server
+			return contributionJSON.find((user) => user.id == authorId)?.username ?? "Anonymous";
 		});
 
-		const displayContribution = `${strDate} — ${authors.join(", ")}`;
+		const displayContribution = `<t:${Math.trunc(mainContribution.date / 1000)}:d> — ${authors.join(
+			", ",
+		)}`;
 
 		if (displayContribution != undefined) {
 			embed.addFields([
