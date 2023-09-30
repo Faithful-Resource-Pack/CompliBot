@@ -5,6 +5,8 @@ import GIFEncoder from "./GIFEncoder";
 import { ISizeCalculationResult } from "image-size/dist/types/interface";
 import mcmetaList from "@json/mcmetas.json";
 
+// ! TODO: switch to the submission bot version (supports width and height properties, overall better)
+
 interface MCMETA {
 	animation: {
 		frametime?: number;

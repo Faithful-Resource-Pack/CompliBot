@@ -1,6 +1,6 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
-import { ChatInputCommandInteraction } from "@client";
+import { ChatInputCommandInteraction, Client } from "@client";
 import { logConstructor } from "@functions/errorHandler";
 
 export const command: SlashCommand = {
@@ -11,6 +11,6 @@ export const command: SlashCommand = {
 	async execute(interaction: ChatInputCommandInteraction) {
 		if (!interaction.hasPermission("dev")) return;
 
-		await interaction.reply({ files: [logConstructor(interaction.client)] }).catch(console.error);
+		await interaction.reply({ files: [logConstructor(interaction.client as Client)] }).catch(console.error);
 	},
 };

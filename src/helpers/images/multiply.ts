@@ -1,7 +1,7 @@
 import { EmbedBuilder } from "@client";
 import { createCanvas, loadImage } from "@napi-rs/canvas";
 import { AttachmentBuilder } from "discord.js";
-import { ColorManager } from "./colors";
+import ColorManager from "@images/colors";
 import getDimensions from "./getDimensions";
 
 export enum mcColors {

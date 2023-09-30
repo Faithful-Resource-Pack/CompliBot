@@ -1,6 +1,7 @@
 import { Canvas } from "@napi-rs/canvas";
 
 /**
+ * Stitch a 2d array of canvases into one image with a specified gap
  * @author EwanHowell
  * @param images pre-loaded canvas images
  * @param gap optionally specify pixel gap

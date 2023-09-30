@@ -25,7 +25,7 @@ export default {
 		return interaction
 			.reply({
 				embeds: [
-					new EmbedBuilder(embed)
+					EmbedBuilder.from(embed)
 						.setFooter({ text: `${interaction.user.username} | ${interaction.user.id}` })
 						.setTimestamp(),
 				],

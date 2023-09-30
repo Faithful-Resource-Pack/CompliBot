@@ -1,7 +1,7 @@
 import { ModalSubmitInteraction } from "discord.js";
 import { Octokit } from "@octokit/rest";
 import { Client, EmbedBuilder } from "@client";
-import { colors } from "./colors";
+import { colors } from "@helpers/colors";
 
 /**
  * Create GitHub issue with specified title and description

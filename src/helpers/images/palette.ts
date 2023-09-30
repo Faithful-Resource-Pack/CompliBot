@@ -1,7 +1,7 @@
 import { EmbedBuilder } from "@client";
 import { Canvas, createCanvas, loadImage } from "@napi-rs/canvas";
 import { AttachmentBuilder } from "discord.js";
-import { ColorManager } from "./colors";
+import ColorManager from "@images/colors";
 import getDimensions from "./getDimensions";
 
 const COOLORS_URL = "https://coolors.co/";
@@ -31,6 +31,12 @@ export interface AllColors {
 	};
 }
 
+/**
+ * Sends an ephemeral message with the palette of a given image url
+ * @author Juknum, Evorp
+ * @param options image info
+ * @returns slash command attachment compatible embed/attachment data
+ */
 export async function paletteAttachment(
 	options: options,
 ): Promise<[AttachmentBuilder, EmbedBuilder]> {

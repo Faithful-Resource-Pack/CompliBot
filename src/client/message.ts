@@ -1,9 +1,6 @@
-import { Message, ActionRowBuilder, EmbedBuilder, ComponentType } from "discord.js";
+import { Message, ActionRowBuilder, ComponentType } from "discord.js";
 import { deleteInteraction, deleteMessage } from "@helpers/buttons";
-import { colors } from "@helpers/colors";
 import { ButtonBuilder } from "discord.js";
-import axios from "axios";
-import { Client } from "@client";
 
 declare module "discord.js" {
 	interface Message {
