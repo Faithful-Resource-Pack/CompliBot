@@ -1,11 +1,19 @@
 import axios from "axios";
 import { ChatInputCommandInteraction, Client, Message, EmbedBuilder } from "@client";
 import { colors } from "@helpers/colors";
+import { Texture } from "@interfaces";
 
+/**
+ * Validate and parse a texture name into a series of texture objects
+ * @author Evorp, Juknum
+ * @param name texture name or id
+ * @param interaction what to reply to if not possible
+ * @returns texture results
+ */
 export default async function parseTextureName(
 	name: string,
 	interaction: ChatInputCommandInteraction,
-): Promise<any[]> {
+): Promise<Texture[]> {
 	name = name.toLowerCase().trim().replace(".png", "").replace("#", "").replace(/ /g, "_");
 
 	if (name.length < 3 && isNaN(Number(name))) {

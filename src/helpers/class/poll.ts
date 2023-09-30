@@ -147,9 +147,11 @@ export class Poll extends TimedEmbed {
 		}
 
 		if (this.getTimeout() !== 0)
-			embed.addFields([
-				{ name: "Status", value: `*Will end <t:${this.getTimeout()}:R>*`, inline: true },
-			]);
+			embed.addFields({
+				name: "Status",
+				value: `*Will end <t:${this.getTimeout()}:R>*`,
+				inline: true,
+			});
 
 		const components: ActionRowBuilder<ButtonBuilder>[] = [];
 		if (options.yesno) components.push(pollYesNo);

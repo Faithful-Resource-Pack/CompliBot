@@ -6,8 +6,6 @@ import {
 } from "discord.js";
 import { Client } from "@client";
 
-// slash commands
-
 export interface SlashCommand {
 	servers?: string[];
 	data: SyncSlashCommandBuilder | AsyncSlashCommandBuilder;

@@ -144,14 +144,12 @@ export const command: SlashCommand = {
 		responses.forEach((response: MissingResult) => {
 			// no repo found for the asked pack + edition
 			if (response[0] === null)
-				embed2.addFields([
-					{
-						name: `${formatName(response[2].pack)[0]} - ${response[2].edition} - ${
-							response[2].version
-						}`,
-						value: `${response[2].completion}% complete\n> ${response[1][0]}`,
-					},
-				]);
+				embed2.addFields({
+					name: `${formatName(response[2].pack)[0]} - ${response[2].edition} - ${
+						response[2].version
+					}`,
+					value: `${response[2].completion}% complete\n> ${response[1][0]}`,
+				});
 			else {
 				if (response[1].length !== 0)
 					files.push(
@@ -168,16 +166,14 @@ export const command: SlashCommand = {
 					);
 				}
 
-				embed2.addFields([
-					{
-						name: `${formatName(response[2].pack)[0]} - ${response[2].edition} - ${
-							response[2].version
-						}`,
-						value: `${response[2].completion}% complete\n> ${response[1].length} ${
-							response[1].length == 1 ? "texture" : "textures"
-						} missing of ${response[2].total} total.`,
-					},
-				]);
+				embed2.addFields({
+					name: `${formatName(response[2].pack)[0]} - ${response[2].edition} - ${
+						response[2].version
+					}`,
+					value: `${response[2].completion}% complete\n> ${response[1].length} ${
+						response[1].length == 1 ? "texture" : "textures"
+					} missing of ${response[2].total} total.`,
+				});
 			}
 		});
 

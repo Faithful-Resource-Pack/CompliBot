@@ -83,7 +83,7 @@ export const getTexture = async (options: {
 
 	embed
 		.setURL(`https://webapp.faithfulpack.net/#/gallery/java/32x/latest/all/?show=${texture.id}`)
-		.addFields([{ name: "Resolution", value: `${dimension.width}×${dimension.height}` }]);
+		.addFields({ name: "Resolution", value: `${dimension.width}×${dimension.height}` });
 
 	let mainContribution: Contribution;
 	if (allContributions.length) {
@@ -105,12 +105,10 @@ export const getTexture = async (options: {
 		)}`;
 
 		if (displayContribution != undefined) {
-			embed.addFields([
-				{
-					name: authors.length == 1 ? "Latest Author" : "Latest Authors",
-					value: displayContribution,
-				},
-			]);
+			embed.addFields({
+				name: authors.length == 1 ? "Latest Author" : "Latest Authors",
+				value: displayContribution,
+			});
 		}
 	}
 
@@ -119,9 +117,10 @@ export const getTexture = async (options: {
 	// magnifying the texture in thumbnail
 	if (animated) {
 		if (Object.keys(mcmeta?.animation ?? {}).length)
-			embed.addFields([
-				{ name: "MCMETA", value: `\`\`\`json\n${JSON.stringify(mcmeta.animation)}\`\`\`` },
-			]);
+			embed.addFields({
+				name: "MCMETA",
+				value: `\`\`\`json\n${JSON.stringify(mcmeta.animation)}\`\`\``,
+			});
 
 		files.push(
 			await animateAttachment({ url: textureURL, magnify: true, name: "magnified.gif", mcmeta }),

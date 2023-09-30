@@ -2,7 +2,13 @@ import axios from "axios";
 import { AttachmentBuilder } from "discord.js";
 import JSZip from "jszip";
 
-export const zipToMA = async (url: string): Promise<AttachmentBuilder[]> => {
+/**
+ * Convert a zip file of images into valid attachmentbuilders
+ * @author Juknum
+ * @param url zip url
+ * @returns
+ */
+export const zipToAttachmentBuilders = async (url: string): Promise<AttachmentBuilder[]> => {
 	let output: AttachmentBuilder[] = [];
 
 	// get zip as arraybuffer
@@ -46,6 +52,12 @@ export const zipToMA = async (url: string): Promise<AttachmentBuilder[]> => {
 	return output;
 };
 
+/**
+ * Convert an arrayBuffer into a regular buffer
+ * @author Juknum
+ * @param ab array buffer
+ * @returns buffer
+ */
 const arrayBufferToBufferCycle = (ab: ArrayBuffer): Buffer => {
 	let buffer = Buffer.alloc(ab.byteLength);
 	let view = new Uint8Array(ab);

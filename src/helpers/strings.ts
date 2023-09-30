@@ -6,6 +6,13 @@ export const en_US = { ...commands, ...messages };
 
 export type StringOutput = typeof en_US;
 
+/**
+ * @important
+ * If Discord adds a language, what should I do?
+ * - [Add it to workflow file on crowdin](https://faithful.crowdin.com/u/projects/4/workflow)
+ * - [Update the language list below using](https://discord.com/developers/docs/reference#locales)
+ * - [Update mapping on crowdin](https://faithful.crowdin.com/u/projects/4/apps/system/github) (select the branch > edit branch configuration > edit file filter > language mapping)
+ */
 export type langs =
 	| "bg" // Bulgarian
 	| "cs" // Czech
