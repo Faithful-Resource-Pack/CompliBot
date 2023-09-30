@@ -3,10 +3,15 @@
 // borrowed from Miller Medeiros on https://gist.github.com/millermedeiros/4724047
 // released under MIT License
 // version: 0.1.0 (2021/08/13)
-//* remade in TS by @Juknum
 
-// execute a single shell command where "cmd" is a string
-export const execSync = (cmd: string, cb: Function, options = undefined): void => {
+/**
+ * execute a single shell command where "cmd" is a string
+ * @author Juknum
+ * @param cmd what command to run
+ * @param cb what to run afterwards (grabs error too)
+ * @param options extra command line options for child_process
+ */
+export const execSync = (cmd: string, cb: Function, options = undefined) => {
 	// this would be way easier on a shell/bash script :P
 	const child_process = require("child_process");
 	const parts = cmd.split(/\s+/g);
@@ -29,8 +34,8 @@ export const execSync = (cmd: string, cb: Function, options = undefined): void =
 
 // execute multiple commands in series
 // this could be replaced by any flow control lib
-export const seriesSync = (cmds: string[], cb: Function, options = undefined): void => {
-	let execNext = () => {
+export const seriesSync = (cmds: string[], cb: Function, options = undefined) => {
+	const execNext = () => {
 		execSync(
 			cmds.shift(),
 			(err: any) => {

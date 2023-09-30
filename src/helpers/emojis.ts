@@ -33,7 +33,12 @@ export const ids = {
 	rotate: "942325479661256754",
 } as const;
 
-export function parseId(id: string): string {
+/**
+ * @author Nick
+ * @param id emoji id
+ * @returns usable string
+ */
+export function parseId(id: string) {
 	return `<:${Object.keys(ids).find((key) => ids[key] === id)}:${id}>`;
 }
 

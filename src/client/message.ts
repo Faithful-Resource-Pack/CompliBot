@@ -21,6 +21,12 @@ export interface DeleteReactOptions {
 }
 
 const ExtendedMessage = {
+	/**
+	 * Adds a delete button to a given message
+	 * @author Nick, Evorp
+	 * @param hasAuthorID whether to check for an author ID in the footer for permission later
+	 * @returns edited message
+	 */
 	async deleteButton(hasAuthorID?: boolean): Promise<Message> {
 		if (
 			this.components[0] != undefined &&

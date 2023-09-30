@@ -6,7 +6,14 @@ interface Options {
 	filename: string;
 	default_value?: "{}";
 }
-export function getData(options: Options): JSON {
+
+/**
+ * Read data from json
+ * @author Juknum
+ * @param options which file
+ * @returns json file
+ */
+export function getData(options: Options) {
 	let data: JSON;
 	let folder = path.resolve(__dirname, options.relative_path);
 	let file = path.resolve(folder, options.filename);

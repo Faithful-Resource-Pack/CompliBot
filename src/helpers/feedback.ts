@@ -3,6 +3,13 @@ import { Octokit } from "@octokit/rest";
 import { Client, EmbedBuilder } from "@client";
 import { colors } from "./colors";
 
+/**
+ * Create GitHub issue with specified title and description
+ * @author Evorp
+ * @param interaction for getting author name and catching errors
+ * @param title issue title
+ * @param description issue body
+ */
 export default async function sendFeedback(
 	interaction: ModalSubmitInteraction,
 	title: string,

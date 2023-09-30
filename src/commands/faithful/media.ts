@@ -18,18 +18,18 @@ export const command: SlashCommand = {
 					{ name: "Classic Faithful 32x Jappa", value: "classic_faithful_32x" },
 					{ name: "Classic Faithful 32x Programmer Art", value: "classic_faithful_32x_progart" },
 					{ name: "Classic Faithful 64x", value: "classic_faithful_64x" },
-					{ name: "All", value: "all" },
+					{ name: "All", value: "default" },
 				),
 		),
 	async execute(interaction: ChatInputCommandInteraction) {
-		const key = interaction.options.getString("name", false) ?? "general";
+		const key = interaction.options.getString("name", false) ?? "default";
 
 		// you can't import images directly in infoembed.ts so you have to do it here (blame TS)
 		const images: { [name: string]: string } = (
 			await axios.get(`${(interaction.client as Client).tokens.apiUrl}settings/images`)
 		).data;
 
-		if (key === "all") {
+		if (key === "default") {
 			if (!interaction.hasPermission("manager")) return;
 			interaction
 				.reply({ content: "** **", fetchReply: true })

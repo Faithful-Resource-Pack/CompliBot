@@ -2,6 +2,7 @@ import { readdirSync, statSync } from "fs";
 
 /**
  * Return an array of all filepaths in a directory
+ * @author Juknum, Evorp
  * @param dir
  * @param filelist recursion
  * @returns array of file paths

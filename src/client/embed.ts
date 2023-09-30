@@ -1,6 +1,9 @@
-import { APIEmbed } from "discord-api-types/v10.mjs";
-import { Colors, EmbedBuilder, EmbedData } from "discord.js";
+import { Colors, EmbedBuilder, EmbedData, APIEmbed } from "discord.js";
 
+/**
+ * Automatically sets embed color to blurple
+ * @author Nick
+ */
 export class ExtendedEmbedBuilder extends EmbedBuilder {
 	constructor(data?: EmbedData | APIEmbed) {
 		super(data);

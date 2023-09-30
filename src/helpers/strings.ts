@@ -1,9 +1,8 @@
-import main from "@/lang/en-US/main.json";
 import commands from "@/lang/en-US/commands.json";
 import messages from "@/lang/en-US/messages.json";
 
-export const JSONFiles = ["main", "commands", "messages"];
-export const en_US = { ...main, ...commands, ...messages };
+export const JSONFiles = ["commands", "messages"];
+export const en_US = { ...commands, ...messages };
 
 export type StringOutput = typeof en_US;
 

@@ -23,6 +23,12 @@ export const minecraftSorter = (a: string, b: string) => {
 	return _a.length == _b.length ? 0 : _a.length < _b.length ? -1 : 1; // longer length wins
 };
 
+/**
+ * Generate embed fields for a given texture's paths
+ * @author Juknum
+ * @param texture texture to get paths and uses from
+ * @returns usable embed field data
+ */
 export const addPathsToEmbed = (texture: Texture): APIEmbedField[] => {
 	const tmp = {};
 	texture.uses.forEach((use) => {
@@ -49,8 +55,15 @@ export const addPathsToEmbed = (texture: Texture): APIEmbedField[] => {
 	});
 };
 
-export const formatName = (pack: string, size: string = "512"): [string, string] => {
-	// TODO: migrate from old config (ideally move to API if possible)
+/**
+ * Format a pack ID into a displayable name and icon
+ * @author Evorp
+ * @param pack pack to format
+ * @param size optionally specify size of image
+ * @todo migrate this to somewhere better for extensibility (api probably)
+ * @returns formatted string and icon in that order
+ */
+export const formatName = (pack: string, size = "512"): [string, string] => {
 	let strPack: string;
 	let strIconURL = `https://database.faithfulpack.net/images/branding/logos/transparent/${size}/`;
 	switch (pack) {

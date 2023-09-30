@@ -12,13 +12,14 @@ interface AllVotes {
 
 /**
  * Base class for polls and other miscellaneous timed embeds
+ * @author Juknum
  */
 export class TimedEmbed {
 	readonly id: string;
 	private messageId: string;
 	private channelId: string;
 	private votes: Votes;
-	private status: string = "pending";
+	private status = "pending";
 	private timeout = 0; // used for end of events (pending until...)
 	private anonymous = true;
 	private multipleAnswers = false;

@@ -1,55 +1,29 @@
 import { DiscordAPIError, AttachmentBuilder, EmbedBuilder, TextChannel } from "discord.js";
 import { Client } from "@client";
-import fs from "fs";
+import { readFileSync } from "fs";
 import { err } from "@helpers/logger";
 import { colors } from "@helpers/colors";
 import { Log } from "client/client";
-import path from "path";
+import { join } from "path";
 import axios from "axios";
 import * as Random from "@helpers/random";
-
-const randomSentences = [
-	"Oh no, not again!",
-	"Well, it's unexpected...",
-	"OOPS, sorry, my bad!",
-	"I thought TS > JS was true...",
-	"This one is going to be a nightmare to solve!",
-	"Please, don't blame me, I try my best. Each day.",
-	"Like humans, I have some errors",
-	"Don't be sad, have a hug <3",
-	"oh.",
-	"Another one! DJ Khaleeeeed!",
-	"I just don't know what went wrong :(",
-	"My bad.",
-	"Hold my beer.",
-	"I'm so sorry, I'm just a bot :(",
-	"Unfortunately I was coded in a way that I can't handle this error",
-	"Would you like a cupcake?",
-	"Why did you do that?",
-	"Don't be sad. I'll do better next time, I promise!",
-	"somebody set up us the error",
-	"I'm sorry, Dave.",
-	"Hi. I'm CompliBot, and I'm a erroraholic.",
-	"Ooh. Shiny.",
-	"But it works on my machine.",
-	"Oops.",
-	"On the bright side, I bought you a teddy bear!",
-	"Shall we play a game?",
-	"Surprise! Haha. Well, this is awkward.",
-	"This doesn't make any sense!",
-	"Why is it breaking :(",
-	"Don't do that.",
-	"Ouch. That hurt :(",
-];
+import { error as randomSentences } from "@json/quotes.json";
 
 const lastReasons = [];
-const loopLimit = 3; //how many times the same error needs to be made to trigger a loop
+const loopLimit = 3; // how many times the same error needs to be made to trigger a loop
 
-export const logConstructor: Function = (
+/**
+ * Get all recent logs as a discord attachment
+ * @author Juknum
+ * @param client discord client
+ * @param reason reason for requesting logs
+ * @returns whole log as a text file
+ */
+export const logConstructor = (
 	client: Client,
 	reason: any = { stack: "You requested it with /logs ¯\\_(ツ)_/¯" },
 ): AttachmentBuilder => {
-	const logTemplate = fs.readFileSync(path.join(__dirname + "/errorHandler.log"), {
+	const logTemplate = readFileSync(join(__dirname + "/errorHandler.log"), {
 		encoding: "utf-8",
 	});
 	const template = logTemplate.match(new RegExp(/\%templateStart%([\s\S]*?)%templateEnd/))[1]; // get message template
@@ -139,6 +113,13 @@ export const logConstructor: Function = (
 	return new AttachmentBuilder(buffer, { name: "stack.log" });
 };
 
+/**
+ * Logs errors to a given error channel
+ * @author Juknum
+ * @param client discord client
+ * @param reason error description
+ * @param type error title
+ */
 export const errorHandler: Function = async (client: Client, reason: any, type: string) => {
 	console.error(`${err} ${reason?.stack ?? reason ?? "No reason provided!"}`);
 

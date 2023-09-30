@@ -5,8 +5,8 @@ import {
 	StringSelectMenuInteraction,
 	EmbedBuilder,
 	ModalSubmitInteraction,
+	PermissionFlagsBits,
 } from "discord.js";
-import { PermissionFlagsBits } from "discord-api-types/v10";
 import { JSONFiles, StringOutput, en_US } from "@helpers/strings";
 
 export type PermissionType = "manager" | "dev" | "moderator" | "council";
@@ -14,9 +14,6 @@ export type PermissionType = "manager" | "dev" | "moderator" | "council";
 declare module "discord.js" {
 	interface ChatInputCommandInteraction {
 		strings(): StringOutput;
-		/**
-		 * @see {@link checkPermissions} for implementation details
-		 */
 		hasPermission(type: PermissionType): boolean;
 	}
 
@@ -33,6 +30,12 @@ declare module "discord.js" {
 	}
 }
 
+/**
+ * Check whether a user can run a given command
+ * @author Evorp
+ * @param type what role to check for
+ * @returns whether the user has permission or not
+ */
 function hasPermission(type: PermissionType): boolean {
 	const hasManager = this.member.permissions.has(PermissionFlagsBits.Administrator);
 	const hasModerator = this.member.permissions.has(PermissionFlagsBits.ManageMessages);
@@ -62,6 +65,11 @@ function hasPermission(type: PermissionType): boolean {
 	return out;
 }
 
+/**
+ * Load strings based on interaction language
+ * @author Evorp
+ * @returns string output in correct language
+ */
 function strings(): StringOutput {
 	const countryCode = this.locale;
 	let lang: typeof en_US;

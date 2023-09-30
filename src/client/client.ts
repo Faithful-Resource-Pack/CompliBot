@@ -8,6 +8,9 @@ import {
 	Guild,
 	StringSelectMenuInteraction,
 	ModalSubmitInteraction,
+	RESTPostAPIApplicationCommandsJSONBody,
+	Routes,
+	REST,
 } from "discord.js";
 import { Message, EmittingCollection, Automation } from "@client";
 import { Tokens, Component, SlashCommand, AsyncSlashCommandBuilder, Event } from "@interfaces";
@@ -16,9 +19,6 @@ import { setData } from "@functions/setDataToJSON";
 import { errorHandler } from "@functions/errorHandler";
 import { err, info, success } from "@helpers/logger";
 import { Poll } from "@class/poll";
-
-import { REST } from "@discordjs/rest";
-import { RESTPostAPIApplicationCommandsJSONBody, Routes } from "discord-api-types/v10";
 
 import { join } from "path";
 import chalk from "chalk";
@@ -52,6 +52,10 @@ export type Log = {
 	data: any;
 };
 
+/**
+ * Extend client class to add message component collections, tokens, and slash commands directly
+ * @author Nick, Evorp, Juknum
+ */
 export class ExtendedClient extends Client {
 	public verbose = false;
 	public firstStart = true; // used for prettier restarting in dev mode

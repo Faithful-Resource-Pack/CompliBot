@@ -144,7 +144,7 @@ export const media: MediaI = {
     `,
 	},
 
-	general: {
+	default: {
 		color: colors.brand,
 		title: "Useful Links:",
 		description: `

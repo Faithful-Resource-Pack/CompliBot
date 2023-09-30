@@ -6,7 +6,12 @@ interface Options {
 	filename: string;
 	data: {};
 }
-export function setData(options: Options): void {
+/**
+ * Set data to a given json
+ * @author Juknum
+ * @param options data to set
+ */
+export function setData(options: Options) {
 	let folder = path.resolve(__dirname, options.relative_path);
 	let file = path.resolve(folder, options.filename);
 

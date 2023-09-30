@@ -12,6 +12,12 @@ import { animateAttachment } from "@images/animate";
 import { formatName, minecraftSorter, addPathsToEmbed } from "@helpers/sorter";
 import { textureButtons } from "@helpers/buttons";
 
+/**
+ * Create a full texture embed with provided information
+ * @author Juknum, Evorp, RobertR11
+ * @param options what textures to load
+ * @returns reply options
+ */
 export const getTexture = async (options: {
 	texture: Texture;
 	pack: string;

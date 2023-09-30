@@ -1,11 +1,7 @@
 import { Component } from "@interfaces";
 import { info } from "@helpers/logger";
 import { Client, Message, ButtonInteraction, EmbedBuilder } from "@client";
-import { magnify, magnifyAttachment } from "@images/magnify";
-import { palette } from "@helpers/buttons";
-import { getImageFromMessage } from "@functions/slashCommandImage";
-import { ActionRowBuilder } from "discord.js";
-import { ButtonBuilder } from "discord.js";
+import { magnify } from "@images/magnify";
 import { parseDisplay } from "@functions/textureComparison";
 import { formatName } from "@helpers/sorter";
 import { loadImage } from "@napi-rs/canvas";

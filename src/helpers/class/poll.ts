@@ -10,6 +10,10 @@ export interface PollOptions {
 	thread: boolean;
 }
 
+/**
+ * Class for dealing with polls
+ * @author Juknum
+ */
 export class Poll extends TimedEmbed {
 	constructor(data?: Poll) {
 		super(data);

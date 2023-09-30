@@ -10,6 +10,7 @@ import axios from "axios";
 
 /**
  * construct custom choice embed with any given results
+ * @author Juknum, Evorp
  * @param interaction interaction to reply to
  * @param menuID which id the result gets sent to
  * @param choices pre-formatted choices to add in the menus
@@ -59,6 +60,7 @@ export async function generalChoiceEmbed(
 
 /**
  * construct choice embed when there's multiple textures to pick from
+ * @author Juknum
  * @param interaction interaction to reply to
  * @param menuID which id the result gets sent to
  * @param results textures to embed

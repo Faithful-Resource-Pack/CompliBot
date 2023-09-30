@@ -1,6 +1,10 @@
 import { Poll } from "@class/poll";
 import { Client } from "@client";
 
+/**
+ * Automate checking tasks, primarily used for polls
+ * @author Juknum
+ */
 export class Automation {
 	private ticking = true;
 	private client: Client;

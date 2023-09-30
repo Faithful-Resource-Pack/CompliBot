@@ -1,5 +1,6 @@
 /**
  * Add minutes to a date
+ * @author Juknum
  * @param d the date to add minutes to
  * @param minutes the number of minutes to add
  * @returns the new date
@@ -12,6 +13,7 @@ export const addMinutes = (d: Date, minutes?: number): Date => {
 
 /**
  * Add seconds to a date
+ * @author Juknum
  * @param d the date to add seconds to
  * @param seconds the number of seconds to add
  * @returns the new date
@@ -24,6 +26,7 @@ export const addSeconds = (d: Date, seconds?: number): Date => {
 
 /**
  * Parse user input into seconds
+ * @author Juknum
  * @param d user input
  * @returns equivalent in seconds
  */
@@ -44,8 +47,8 @@ export const parseDate = (d: string) => {
 };
 
 /**
- * Convert timestamp to human readable format
- * -> 1028193718 = 10/28/1937
+ * Convert timestamp to human readable format (e.g. 1028193718 = 10/28/1937)
+ * @author Juknum
  * @param t timestamp to convert
  * @returns human readable format
  */
