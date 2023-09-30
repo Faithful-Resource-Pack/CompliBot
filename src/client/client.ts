@@ -273,7 +273,7 @@ export class ExtendedClient extends Client {
 				await rest.put(Routes.applicationGuildCommands(this.user.id, id), {
 					body: guilds[name],
 				});
-				console.log(`${success}Successfully added slash commands to: ${name}`);
+				console.log(`${success}Successfully added slash commands to server: ${name}`);
 			} catch (err) {
 				console.error(err);
 			}

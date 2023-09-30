@@ -11,6 +11,8 @@ export const command: SlashCommand = {
 	async execute(interaction: ChatInputCommandInteraction) {
 		if (!interaction.hasPermission("dev")) return;
 
-		await interaction.reply({ files: [logConstructor(interaction.client as Client)] }).catch(console.error);
+		await interaction
+			.reply({ files: [logConstructor(interaction.client as Client)] })
+			.catch(console.error);
 	},
 };
