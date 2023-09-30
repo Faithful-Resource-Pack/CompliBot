@@ -1,6 +1,7 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "discord.js";
 import { ChatInputCommandInteraction, EmbedBuilder, Message } from "@client";
+import * as Random from "@helpers/random";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -20,23 +21,20 @@ export const command: SlashCommand = {
 		if (interaction.options.getUser("user") !== null) {
 			if (interaction.options.getString("weapon") !== null)
 				embed.setDescription(
-					killed_by_using[Math.floor(Math.random() * killed_by_using.length)]
+					Random.choice(killed_by_using)
 						.replace("%AUTHOR%", interaction.member.user.username)
 						.replace("%PLAYER%", interaction.options.getUser("user").username)
 						.replace("%WEAPON%", interaction.options.getString("weapon")),
 				);
 			else
 				embed.setDescription(
-					killed_by[Math.floor(Math.random() * killed_by.length)]
+					Random.choice(killed_by)
 						.replace("%AUTHOR%", interaction.member.user.username)
 						.replace("%PLAYER%", interaction.options.getUser("user").username),
 				);
 		} else
 			embed.setDescription(
-				killed[Math.floor(Math.random() * killed.length)].replace(
-					"%AUTHOR%",
-					interaction.member.user.username,
-				),
+				Random.choice(killed).replace("%AUTHOR%", interaction.member.user.username),
 			);
 
 		interaction

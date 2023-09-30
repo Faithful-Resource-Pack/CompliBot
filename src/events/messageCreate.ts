@@ -1,9 +1,9 @@
 import { Event } from "@interfaces";
 import { Client, Message, EmbedBuilder } from "@client";
-import textureComparison from "@functions/textureComparison";
 import { Pack } from "@interfaces";
 import { colors } from "@helpers/colors";
 import axios from "axios";
+import * as Random from "@helpers/random";
 
 export default {
 	name: "messageCreate",
@@ -64,7 +64,7 @@ export default {
 					.reply({
 						embeds: [
 							new EmbedBuilder().setImage(
-								Math.floor(Math.random() * 4) == 1 // why can't TS/JS just have a normal randint() function
+								Random.randint(0, 4) == 1
 									? "https://i.imgur.com/hAuUsnD.png"
 									: "https://media1.tenor.com/images/8dc53503f5a5bb23ef12b2c83a0e1d4d/tenor.gif",
 							),

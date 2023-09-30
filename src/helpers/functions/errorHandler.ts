@@ -6,6 +6,7 @@ import { colors } from "@helpers/colors";
 import { Log } from "client/client";
 import path from "path";
 import axios from "axios";
+import * as Random from "@helpers/random";
 
 const randomSentences = [
 	"Oh no, not again!",
@@ -53,12 +54,12 @@ export const logConstructor: Function = (
 	});
 	const template = logTemplate.match(new RegExp(/\%templateStart%([\s\S]*?)%templateEnd/))[1]; // get message template
 
-	const t = Math.floor(Math.random() * randomSentences.length);
+	const sentence = Random.choice(randomSentences);
 	let logText = logTemplate
 		.replace("%date%", new Date().toUTCString())
 		.replace("%stack%", reason.stack || JSON.stringify(reason))
-		.replace("%randomSentence%", randomSentences[t])
-		.replace("%randomSentenceUnderline%", "-".repeat(randomSentences[t].length));
+		.replace("%randomSentence%", sentence)
+		.replace("%randomSentenceUnderline%", "-".repeat(sentence.length));
 
 	logText = logText.split("%templateStart%")[0]; // remove message template
 

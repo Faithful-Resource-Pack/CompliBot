@@ -31,7 +31,7 @@ export async function generalChoiceEmbed(
 	for (let currentRow = 0; currentRow <= maxRows && choices.length; ++currentRow) {
 		const options: SelectMenuComponentOptionData[] = [];
 
-		for (let i = 0; i < emojis.length; i++)
+		for (let i = 0; i < emojis.length; ++i)
 			if (choices[0] !== undefined) {
 				let t = choices.shift();
 				t.emoji = emojis[i % emojis.length];

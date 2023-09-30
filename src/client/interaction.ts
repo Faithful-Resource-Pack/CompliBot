@@ -65,17 +65,17 @@ function hasPermission(type: PermissionType): boolean {
 function strings(): StringOutput {
 	const countryCode = this.locale;
 	let lang: typeof en_US;
-	for (let i = 0; JSONFiles[i]; i++)
-		lang = { ...lang, ...require(`@/lang/en-US/${JSONFiles[i]}.json`) }; // fallback
+	for (const json of JSONFiles) lang = { ...lang, ...require(`@/lang/en-US/${json}.json`) }; // fallback
 
-	if (countryCode !== "en-GB" && countryCode !== "en-US")
-		// because the fallback is already IN ENGLISH
-		for (let i = 0; JSONFiles[i]; i++)
-			try {
-				//* We try the import before spreading the object to avoid issues, we only want to check if the file exists
-				const lang2 = require(`@/lang/${countryCode}/${JSONFiles[i]}.json`);
-				lang = { ...lang, ...lang2 };
-			} catch {} // file not found
+	if (countryCode == "en-GB" || countryCode == "en-US") return lang;
+
+	// because the fallback is already IN ENGLISH
+	for (const json of JSONFiles)
+		try {
+			//* We try the import before spreading the object to avoid issues, we only want to check if the file exists
+			const lang2 = require(`@/lang/${countryCode}/${json}.json`);
+			lang = { ...lang, ...lang2 };
+		} catch {} // file not found
 
 	return lang;
 }
