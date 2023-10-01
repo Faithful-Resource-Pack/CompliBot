@@ -20,6 +20,7 @@ export const command: SlashCommand = {
 			return text
 				.replaceAll(client.tokens.token, "[BOT_TOKEN]")
 				.replaceAll(client.tokens.apiPassword, "[API_PASSWORD]")
+				.replaceAll(client.tokens.gitToken, "[GIT_TOKEN]")
 				.replace(/`/g, "`" + String.fromCharCode(8203))
 				.replace(/@/g, "@" + String.fromCharCode(8203));
 		};

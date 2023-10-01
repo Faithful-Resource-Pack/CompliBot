@@ -38,7 +38,7 @@ export const zipToAttachmentBuilders = async (url: string): Promise<AttachmentBu
 		.then((res): { [key: string]: Buffer } => {
 			return res.reduce((acc, val: [key: string, buff: Buffer]) => {
 				const splitted = val[0].split("/");
-				const key = splitted[splitted.length - 1];
+				const key = splitted.at(-1);
 				acc[key] = val[1];
 				return acc;
 			}, {});

@@ -79,7 +79,7 @@ export async function paletteAttachment(
 
 	const embed = new EmbedBuilder().setTitle("Palette results").setDescription("List of colors:\n");
 
-	const fieldGroups = [];
+	const fieldGroups: string[][][] = [];
 	let group: number;
 	for (let i = 0; i < colors.length; i++) {
 		// create 9 groups
@@ -89,12 +89,10 @@ export async function paletteAttachment(
 		}
 
 		// each group has 3 lines
-		if (group % COLORS_PER_PALETTE_LINE === 0) fieldGroups[fieldGroups.length - 1].push([]);
+		if (group % COLORS_PER_PALETTE_LINE === 0) fieldGroups.at(-1).push([]);
 
 		// add color to latest group at the latest line
-		fieldGroups[fieldGroups.length - 1][fieldGroups[fieldGroups.length - 1].length - 1].push(
-			colors[i],
-		);
+		fieldGroups.at(-1)[fieldGroups[fieldGroups.length - 1].length - 1].push(colors[i]);
 		++group;
 	}
 
@@ -113,10 +111,10 @@ export async function paletteAttachment(
 
 	// create palette links, 9 max par link
 	// make arrays of hex arrays
-	const paletteGroups = [];
+	const paletteGroups: string[][] = [];
 	for (let i = 0; i < colors.length; ++i) {
 		if (i % COLORS_PER_PALETTE === 0) paletteGroups.push([]);
-		paletteGroups[paletteGroups.length - 1].push(colors[i]);
+		paletteGroups.at(-1).push(colors[i]);
 	}
 
 	// create URLs

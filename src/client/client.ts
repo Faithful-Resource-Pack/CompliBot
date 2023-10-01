@@ -304,8 +304,7 @@ export class ExtendedClient extends Client {
 		const events = walkSync(eventPath).filter((file) => file.endsWith(".ts"));
 		for (const file of events) {
 			const event: Event = require(file).default;
-			if (!event.name) continue; // not an event file
-			this.on(event.name as string, event.execute.bind(null, this));
+			this.on(event.name as string, event.execute);
 		}
 	}
 
@@ -313,9 +312,9 @@ export class ExtendedClient extends Client {
 	 * Convenience method to load all components at once
 	 */
 	private loadComponents() {
-		this.loadComponent(this.buttons, join(__dirname, "..", "events", "buttons"));
-		this.loadComponent(this.menus, join(__dirname, "..", "events", "menus"));
-		this.loadComponent(this.modals, join(__dirname, "..", "events", "modals"));
+		this.loadComponent(this.buttons, join(__dirname, "..", "components", "buttons"));
+		this.loadComponent(this.menus, join(__dirname, "..", "components", "menus"));
+		this.loadComponent(this.modals, join(__dirname, "..", "components", "modals"));
 		if (this.verbose) console.log(`${info}Loaded Discord components`);
 	}
 

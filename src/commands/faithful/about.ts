@@ -61,7 +61,7 @@ export const command: SlashCommand = {
 						if (index % 30 === 0) {
 							acc.push([]);
 						}
-						acc[acc.length - 1].push(cur);
+						acc.at(-1).push(cur);
 						return acc;
 					}, [])
 					.map(async (ids: string[]) => {
