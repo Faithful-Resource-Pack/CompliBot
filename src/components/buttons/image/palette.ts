@@ -2,7 +2,7 @@ import { Component } from "@interfaces";
 import { info } from "@helpers/logger";
 import { Client, Message, ButtonInteraction, EmbedBuilder } from "@client";
 import { paletteAttachment } from "@images/palette";
-import { getImageFromMessage } from "@functions/slashCommandImage";
+import getImage from "@helpers/getImage";
 
 export default {
 	id: "palette",
@@ -10,7 +10,7 @@ export default {
 		if (client.verbose) console.log(`${info}Image palette was requested!`);
 
 		const message: Message = interaction.message as Message;
-		const url = await getImageFromMessage(message);
+		const url = await getImage(message);
 		const [attachment, embed] = await paletteAttachment({
 			url: url,
 			name: url.split("/").at(-1),

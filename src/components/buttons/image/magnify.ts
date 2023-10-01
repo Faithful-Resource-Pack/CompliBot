@@ -1,9 +1,9 @@
 import { Component } from "@interfaces";
 import { info } from "@helpers/logger";
 import { Client, Message, ButtonInteraction, EmbedBuilder } from "@client";
-import { magnifyAttachment } from "@images/magnify";
+import { magnifyToAttachment } from "@images/magnify";
 import { palette } from "@helpers/buttons";
-import { getImageFromMessage } from "@functions/slashCommandImage";
+import getImage from "@helpers/getImage";
 import { ActionRowBuilder } from "discord.js";
 import { ButtonBuilder } from "discord.js";
 
@@ -13,13 +13,8 @@ export default {
 		if (client.verbose) console.log(`${info}Image was magnified!`);
 
 		const message: Message = interaction.message as Message;
-		const url = await getImageFromMessage(message);
-		const attachment = (
-			await magnifyAttachment({
-				url: url,
-				name: url.split("/").at(-1),
-			})
-		)[0];
+		const url = await getImage(message);
+		const attachment = await magnifyToAttachment(url, url.split("/").at(-1));
 
 		if (attachment == null)
 			return interaction.reply({

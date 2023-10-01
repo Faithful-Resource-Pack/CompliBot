@@ -4,13 +4,14 @@ import { Contributor, Tokens } from "@interfaces";
 import axios from "axios";
 import getDimensions from "@images/getDimensions";
 import { AttachmentBuilder, Guild } from "discord.js";
-import { magnifyAttachment } from "@images/magnify";
+import { magnifyToAttachment } from "@images/magnify";
 import { ISizeCalculationResult } from "image-size/dist/types/interface";
 import { colors } from "@helpers/colors";
 import { Texture, Contribution } from "@interfaces";
-import { animateAttachment } from "@images/animate";
+import { animateToAttachment } from "@images/animate";
 import { formatName, minecraftSorter, addPathsToEmbed } from "@helpers/sorter";
 import { textureButtons } from "@helpers/buttons";
+import { loadImage } from "@napi-rs/canvas";
 
 /**
  * Create a full texture embed with provided information
@@ -122,10 +123,8 @@ export const getTexture = async (options: {
 				value: `\`\`\`json\n${JSON.stringify(mcmeta.animation)}\`\`\``,
 			});
 
-		files.push(
-			await animateAttachment({ url: textureURL, magnify: true, name: "magnified.gif", mcmeta }),
-		);
-	} else files.push((await magnifyAttachment({ url: textureURL, name: "magnified.png" }))[0]);
+		files.push(await animateToAttachment(await loadImage(textureURL), mcmeta));
+	} else files.push(await magnifyToAttachment(textureURL));
 
 	return { embeds: [embed], files: files, components: [textureButtons] };
 };

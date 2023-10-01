@@ -1,101 +1,61 @@
-import { EmbedBuilder } from "@client";
 import { createCanvas, loadImage, Image } from "@napi-rs/canvas";
 import { AttachmentBuilder } from "discord.js";
 import getDimensions from "./getDimensions";
-import { ISizeCalculationResult } from "image-size/dist/types/interface";
 
-type options = {
-	url?: string;
-	image?: Image;
-	embed?: EmbedBuilder;
-	name?: string;
-	factor?: 32 | 16 | 8 | 4 | 2 | 1 | 0.5 | 0.25;
-	orientation?: "portrait" | "landscape" | "none"; // default is none
-};
+// taken from loadImage();
+export type ImageSource =
+	| string
+	| URL
+	| Buffer
+	| ArrayBufferLike
+	| Uint8Array
+	| Image
+	| import("stream").Readable;
 
 /**
- * magnification from pre-loaded image (can't be AttachmentBuilder, has to be Image)
- * returns image buffer directly rather than a AttachmentBuilder()
+ * The actual magnification function
+ * @author Juknum, Evorp
+ * @param origin url, image, or buffer to magnify
+ * @param isAnimation whether to magnify the image as a tilesheet
+ * @returns buffer for magnified image
  */
-export async function magnifyBuffer(options: options, dimension?: ISizeCalculationResult) {
-	let factor = options.factor;
-	if (!dimension) {
-		dimension = options.url
-			? await getDimensions(options.url)
-			: (dimension = { width: options.image.width, height: options.image.height });
-	}
+export async function magnify(origin: ImageSource, isAnimation = false) {
+	const tmp = await loadImage(origin).catch((err) => Promise.reject(err));
 
-	// If no factor was given it tries maximizing the image output size
-	if (factor == undefined) {
-		const surface = dimension.width * dimension.height;
+	const dimension =
+		typeof origin == "string"
+			? await getDimensions(origin)
+			: { width: tmp.width, height: tmp.height };
 
-		if (surface <= 256) factor = 32; // 16²px or below
-		if (surface > 256) factor = 16; // 16²px
-		if (surface > 1024) factor = 8; // 32²px
-		if (surface > 4096) factor = 4; // 64²px
-		if (surface > 65536) factor = 2;
-		// 262144 = 512²px
-		else if (surface >= 262144) factor = 1;
-	} else if (dimension.width * factor * (dimension.height * factor) > 262144) factor = 1;
+	// ignore height if tilesheet, otherwise it's not scaled as much
+	const surface = isAnimation ? dimension.width * 16 : dimension.width * dimension.height;
 
-	const [width, height] = [dimension.width * factor, dimension.height * factor];
-	const imageToDraw = options.url ? await loadImage(options.url) : options.image;
+	let factor = 64;
+	if (surface <= 256) factor = 32;
+	if (surface > 256) factor = 16;
+	if (surface > 1024) factor = 8;
+	if (surface > 4096) factor = 4;
+	if (surface > 65536) factor = 2;
+	if (surface > 262144) factor = 1;
 
-	const canvas = createCanvas(
-		options.orientation === undefined ||
-			options.orientation === "none" ||
-			options.orientation === "portrait"
-			? width
-			: width * (16 / 9),
-		options.orientation === undefined ||
-			options.orientation === "none" ||
-			options.orientation === "landscape"
-			? height
-			: height * (16 / 9),
-	);
+	const width = dimension.width * factor;
+	const height = dimension.height * factor;
+	const canvasResult = createCanvas(width, height);
+	const canvasResultCTX = canvasResult.getContext("2d");
 
-	const context = canvas.getContext("2d");
-	context.imageSmoothingEnabled = false;
-	context.drawImage(
-		imageToDraw,
-		options.orientation === undefined ||
-			options.orientation === "none" ||
-			options.orientation === "portrait"
-			? 0
-			: (width * (16 / 9)) / 4, // landscape
-		options.orientation === undefined ||
-			options.orientation === "none" ||
-			options.orientation === "landscape"
-			? 0
-			: (height * (16 / 9)) / 4, // portrait
-		width,
-		height,
-	);
-
-	return canvas.toBuffer("image/png");
+	canvasResultCTX.imageSmoothingEnabled = false;
+	canvasResultCTX.drawImage(tmp, 0, 0, width, height);
+	return { magnified: canvasResult.toBuffer("image/png"), width, height, factor };
 }
 
 /**
- * magnification from an image url
+ * Returns discord attachment
+ * @author Juknum
+ * @param origin url to magnify
+ * @param name name, defaults to "magnified.png"
+ * @returns magnified file
  */
-export async function magnifyAttachment(
-	options: options,
-): Promise<[AttachmentBuilder, EmbedBuilder]> {
-	const dimension = await getDimensions(options.url);
-	return await magnify(options, dimension);
-}
-
-/**
- * magnification from pre-loaded image (can't be AttachmentBuilder, has to be Image)
- */
-export async function magnify(
-	options: options,
-	dimension?: ISizeCalculationResult,
-): Promise<[AttachmentBuilder, EmbedBuilder]> {
-	const buf = await magnifyBuffer(options, dimension);
-
-	return [
-		new AttachmentBuilder(buf, { name: `${options.name || "magnified.png"}` }),
-		options.embed,
-	];
+export async function magnifyToAttachment(origin: ImageSource, name = "magnified.png") {
+	const { magnified } = await magnify(origin);
+	return new AttachmentBuilder(magnified, { name });
 }

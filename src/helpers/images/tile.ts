@@ -3,12 +3,12 @@ import { Canvas, SKRSContext2D, createCanvas, loadImage, Image, DOMMatrix } from
 import { AttachmentBuilder } from "discord.js";
 import getDimensions from "./getDimensions";
 
-export type tileShape = "grid" | "vertical" | "horizontal" | "hollow" | "plus";
+export type TileShape = "grid" | "vertical" | "horizontal" | "hollow" | "plus";
 interface options {
 	url: string;
 	embed?: EmbedBuilder;
 	name?: string;
-	shape?: tileShape;
+	shape?: TileShape;
 	random?: "flip" | "rotation";
 }
 

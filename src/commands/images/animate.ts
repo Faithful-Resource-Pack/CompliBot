@@ -1,8 +1,11 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "discord.js";
-import { ChatInputCommandInteraction, EmbedBuilder } from "@client";
-import { generalSlashCommandImage } from "@functions/slashCommandImage";
-import { animateImage } from "@images/animate";
+import { ChatInputCommandInteraction, Message } from "@client";
+import getImage from "@helpers/getImage";
+import { animateToAttachment, MCMETA } from "@helpers/images/animate";
+import mcmetaList from "@json/mcmetas.json";
+import { loadImage } from "@napi-rs/canvas";
+import { magnify } from "@helpers/images/magnify";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -25,14 +28,17 @@ export const command: SlashCommand = {
 		.addAttachmentOption((o) =>
 			o.setName("image").setDescription("The tilesheet to animate").setRequired(false),
 		),
-	execute: (interaction: ChatInputCommandInteraction) => {
+	async execute(interaction: ChatInputCommandInteraction) {
+		await interaction.deferReply();
 		const style = interaction.options.getString("style", false) ?? "none";
-		generalSlashCommandImage(interaction, animateImage, {
-			style: style,
-			name: "animated.gif",
-			embed: new EmbedBuilder()
-				.setTitle(`Animated ${style === "none" ? "" : `as ${style}`}`)
-				.setImage("attachment://animated.gif"),
-		});
+		let image = interaction.options.getAttachment("image", false)?.url;
+		if (!image) image = await getImage(interaction);
+
+		const mcmeta: MCMETA = mcmetaList[style];
+
+		// magnify beforehand since you can't magnify a gif currently
+		const { magnified } = await magnify(image, true);
+		const file = await animateToAttachment(await loadImage(magnified), mcmeta, `${style}.gif`);
+		await interaction.editReply({ files: [file] }).then((message: Message) => message.deleteButton());
 	},
 };

@@ -3,9 +3,9 @@ import { info } from "@helpers/logger";
 import { Client, Message, ButtonInteraction, EmbedBuilder } from "@client";
 import { tileAttachment } from "@images/tile";
 import { magnify, palette } from "@helpers/buttons";
-import { getImageFromMessage } from "@functions/slashCommandImage";
 import { ActionRowBuilder } from "discord.js";
 import { ButtonBuilder } from "discord.js";
+import getImage from "@helpers/getImage";
 
 export default {
 	id: "tile",
@@ -13,7 +13,7 @@ export default {
 		if (client.verbose) console.log(`${info}Image was tiled!`);
 
 		const message: Message = interaction.message as Message;
-		const url = await getImageFromMessage(message);
+		const url = await getImage(message);
 		const attachment = (
 			await tileAttachment({
 				url: url,

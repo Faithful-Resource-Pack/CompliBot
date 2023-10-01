@@ -1,13 +1,8 @@
-import { Canvas, SKRSContext2D, createCanvas, loadImage, Image } from "@napi-rs/canvas";
-import { AttachmentBuilder, EmbedBuilder } from "discord.js";
-import getDimensions from "./getDimensions";
+import { Canvas, Image, createCanvas } from "@napi-rs/canvas";
 import GIFEncoder from "./GIFEncoder";
-import { ISizeCalculationResult } from "image-size/dist/types/interface";
-import mcmetaList from "@json/mcmetas.json";
+import { AttachmentBuilder } from "discord.js";
 
-// ! TODO: switch to the submission bot version (supports width and height properties, overall better)
-
-interface MCMETA {
+export interface MCMETA {
 	animation: {
 		frametime?: number;
 		interpolate?: boolean;
@@ -17,122 +12,37 @@ interface MCMETA {
 	};
 }
 
-interface Options {
-	url: string;
-	mcmeta?: MCMETA;
-	name?: string;
-	magnify?: boolean;
-	embed?: EmbedBuilder;
-	image?: Image;
-	style?: keyof typeof mcmetaList;
-}
-
-export async function animateAttachment(options: Options): Promise<AttachmentBuilder> {
-	const dimension = await getDimensions(options.url);
-	if (options.magnify) {
-		let factor = 1;
-		const surface = dimension.width * dimension.width;
-
-		if (surface <= 256) factor = 32; // 16²px or below
-		if (surface > 256) factor = 16; // 16²px
-		if (surface > 1024) factor = 8; // 32²px
-		if (surface > 4096) factor = 4; // 64²px
-		if (surface > 65536) factor = 2;
-		// 262144 = 512²px
-		else if (surface >= 262144) factor = 1;
-
-		dimension.width *= factor;
-		dimension.height *= factor;
-	}
-
-	const baseIMG = await loadImage(options.url);
-	const baseCanvas: Canvas = createCanvas(dimension.width, dimension.height);
-	const baseContext: SKRSContext2D = baseCanvas.getContext("2d");
-	baseContext.imageSmoothingEnabled = false;
-	baseContext.drawImage(baseIMG, 0, 0, baseCanvas.width, baseCanvas.height);
-
-	// ! TODO: Width & Height properties from MCMETA are not supported yet
-	return await animate(options, options.mcmeta, dimension, baseCanvas);
-}
-
 /**
- * Animate image with specified style
- * @author Superboxer47
- * @param options options for the animation
- * @returns animated gif of the provided image
+ * Animate a given image with a given mcmeta
+ * @author Superboxer4, Evorp, Juknum
+ * @param baseCanvas tilesheet to animate
+ * @param mcmeta how you want it animated
+ * @returns animated GIF as buffer
  */
-export async function animateImage(options: Options): Promise<[AttachmentBuilder, EmbedBuilder]> {
-	const dimension = await getDimensions(options.url);
-	const style = options.style;
-	const embed = options.embed;
-
-	// Setting the width and height of the canvas to max
-	const maxWidth = 512;
-	const aspect = dimension.height / dimension.width;
-	dimension.height = maxWidth * aspect;
-	dimension.width = maxWidth;
-
-	// Making the baseCanvas to be animated
-	const baseIMG = await loadImage(options.url);
-	const baseCanvas: Canvas = createCanvas(dimension.width, dimension.height);
-	const baseContext: SKRSContext2D = baseCanvas.getContext("2d");
-	baseContext.imageSmoothingEnabled = false;
-	baseContext.drawImage(baseIMG, 0, 0, baseCanvas.width, baseCanvas.height);
-
-	const mcmeta: MCMETA = mcmetaList[style];
-
-	const frametime = mcmeta.animation?.frametime || 1;
-
-	if (style !== "none")
-		embed.addFields({
-			name: "MCMETA",
-			value: `\`\`\`json\n${JSON.stringify(mcmeta.animation)}\`\`\``,
-		});
-	if (frametime > 15) embed.setFooter({ text: "Frametime reduced for optimization!" });
-
-	try {
-		return [await animate(options, mcmeta, dimension, baseCanvas), embed];
-	} catch {
-		return [null, embed];
-	}
-}
-
-export async function animate(
-	options: Options,
-	mcmeta: MCMETA,
-	dimension: ISizeCalculationResult,
-	baseCanvas: Canvas,
-): Promise<AttachmentBuilder> {
-	if (dimension.height > 16384 || dimension.width > 512)
-		return Promise.reject("Output is too big!");
-
-	const canvas: Canvas = createCanvas(dimension.width, dimension.height);
-	const context: SKRSContext2D = canvas.getContext("2d");
-	context.imageSmoothingEnabled = false;
-	let ratio = Math.round(dimension.height / dimension.width);
-	if (ratio < 1) ratio = 1; // failsafe for wide images
-
-	mcmeta = typeof mcmeta === "object" ? mcmeta : { animation: {} };
+export async function animate(baseCanvas: Canvas | Image, mcmeta: MCMETA): Promise<Buffer> {
 	if (!mcmeta.animation) mcmeta.animation = {};
 
-	let frametime = mcmeta.animation.frametime || 1;
+	if (!mcmeta.animation?.width) mcmeta.animation.width = baseCanvas.width;
+	// assume square image if not declared explicitly (baseCanvas.height is full spritesheet)
+	if (!mcmeta.animation?.height) mcmeta.animation.height = baseCanvas.width;
 
-	// prismarine would take 6600 iterations without a cap which isn't great for performance
+	// cap frametime at 15 to not crash the bot from rendering 6000 frames of prismarine
+	let frametime = mcmeta.animation?.frametime || 1;
 	if (frametime > 15) frametime = 15;
 
-	const frames = [];
-
+	const frames: { index: number; duration: number }[] = [];
 	if (mcmeta.animation.frames?.length) {
 		// add frames in specified order if possible
-		for (let i = 0; i < mcmeta.animation.frames.length; i++) {
+		for (let i = 0; i < mcmeta.animation.frames.length; ++i) {
 			const frame = mcmeta.animation.frames[i];
 			switch (typeof frame) {
 				case "number":
 					frames.push({ index: frame, duration: frametime });
 					break;
 				case "object":
-					frames.push({ index: frame.index || 1, duration: frame.time || frametime });
+					frames.push({ index: frame.index || i, duration: frame.time || frametime });
 					break;
+				// If wrong frame support is given
 				default:
 					frames.push({ index: i, duration: frametime });
 					break;
@@ -140,20 +50,24 @@ export async function animate(
 		}
 	} else {
 		// just animate directly downwards if nothing specified
-		for (let i = 0; i < dimension.height / dimension.width; i++) {
+		for (let i = 0; i < baseCanvas.height / mcmeta.animation.height; ++i) {
 			frames.push({ index: i, duration: frametime });
 		}
 	}
 
-	// Draw frames
-	const encoder = new GIFEncoder(dimension.width, dimension.width);
+	// initialize gif encoder and final canvas
+	const canvas = createCanvas(mcmeta.animation.width, mcmeta.animation.height);
+	const context = canvas.getContext("2d");
+	context.imageSmoothingEnabled = false;
+	const encoder = new GIFEncoder(mcmeta.animation.width, mcmeta.animation.height);
 	encoder.start();
 	encoder.setTransparent(true);
+	context.globalCompositeOperation = "copy";
 
 	if (mcmeta.animation.interpolate) {
-		for (let i = 0; i < frames.length; i++) {
-			for (let y = 1; y <= frametime; y++) {
-				context.clearRect(0, 0, canvas.width, canvas.height);
+		for (let i = 0; i < frames.length; ++i) {
+			for (let y = 1; y <= frametime; ++y) {
+				context.clearRect(0, 0, mcmeta.animation.width, mcmeta.animation.height);
 				context.globalAlpha = 1;
 				context.globalCompositeOperation = "copy";
 
@@ -161,13 +75,13 @@ export async function animate(
 				context.drawImage(
 					baseCanvas, // image
 					0,
-					dimension.width * (frames[i].index % ratio), // sx, sy
-					dimension.width,
-					dimension.width, // sWidth, sHeight
+					mcmeta.animation.height * frames[i].index, // sx, sy
+					mcmeta.animation.width,
+					mcmeta.animation.height, // sWidth, sHeight
 					0,
 					0, // dx, dy
-					canvas.width,
-					canvas.width, // dWidth, dHeight
+					mcmeta.animation.width,
+					mcmeta.animation.height, // dWidth, dHeight
 				);
 
 				context.globalAlpha = ((100 / frametime) * y) / 100;
@@ -177,32 +91,33 @@ export async function animate(
 				context.drawImage(
 					baseCanvas, // image
 					0,
-					dimension.width * (frames[(i + 1) % frames.length].index % ratio), // sx, sy
-					dimension.width,
-					dimension.width, // sWidth, sHeight
+					mcmeta.animation.height * frames[(i + 1) % frames.length].index, // sx, sy
+					mcmeta.animation.width,
+					mcmeta.animation.height, // sWidth, sHeight
 					0,
 					0, // dx, dy
-					canvas.width,
-					canvas.width, // dWidth, dHeight
+					mcmeta.animation.width,
+					mcmeta.animation.height, // dWidth, dHeight
 				);
 				encoder.addFrame(context);
 			}
 		}
 	} else {
-		for (let i = 0; i < frames.length; i++) {
-			context.clearRect(0, 0, dimension.width, dimension.height);
+		for (let i = 0; i < frames.length; ++i) {
+			context.clearRect(0, 0, mcmeta.animation.width, mcmeta.animation.height);
 			context.globalAlpha = 1;
 
+			// see: https://mdn.dev/archives/media/attachments/2012/07/09/225/46ffb06174df7c077c89ff3055e6e524/Canvas_drawimage.jpg
 			context.drawImage(
 				baseCanvas, // image
 				0,
-				dimension.width * (frames[i].index % ratio), // sx, sy
-				dimension.width,
-				dimension.width, // sWidth, sHeight
+				mcmeta.animation.height * frames[i].index, // sx, sy
+				mcmeta.animation.width,
+				mcmeta.animation.height, // sWidth, sHeight
 				0,
 				0, // dx, dy
-				canvas.width,
-				canvas.width, // dWidth, dHeight
+				mcmeta.animation.width,
+				mcmeta.animation.height, // dWidth, dHeight
 			);
 
 			encoder.setDelay(50 * frames[i].duration);
@@ -211,7 +126,14 @@ export async function animate(
 	}
 
 	encoder.finish();
-	return new AttachmentBuilder(encoder.out.getData(), {
-		name: options.name || "animation.gif",
-	});
+	return encoder.out.getData();
+}
+
+export async function animateToAttachment(
+	baseCanvas: Image | Canvas,
+	mcmeta: MCMETA,
+	name = "animated.gif",
+) {
+	const buf = await animate(baseCanvas, mcmeta);
+	return new AttachmentBuilder(buf, { name });
 }

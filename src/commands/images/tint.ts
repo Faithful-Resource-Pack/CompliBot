@@ -1,7 +1,6 @@
 import { SlashCommand } from "@interfaces";
 import { ChatInputCommandInteraction, EmbedBuilder } from "@client";
 import { SlashCommandBuilder } from "discord.js";
-import { generalSlashCommandImage } from "@functions/slashCommandImage";
 import { mcColorsOptions, multiplyAttachment } from "@images/multiply";
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -17,11 +16,5 @@ export const command: SlashCommand = {
 		.addAttachmentOption((o) =>
 			o.setName("image").setDescription("The image to tint").setRequired(false),
 		),
-	async execute(interaction: ChatInputCommandInteraction) {
-		generalSlashCommandImage(interaction, multiplyAttachment, {
-			color: interaction.options.getString("color"),
-			name: "tinted.png",
-			embed: new EmbedBuilder().setTitle("Tinted").setImage("attachment://tinted.png"),
-		});
-	},
+	async execute(interaction: ChatInputCommandInteraction) {},
 };

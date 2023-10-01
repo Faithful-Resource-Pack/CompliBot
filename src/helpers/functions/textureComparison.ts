@@ -1,5 +1,5 @@
 import stitch from "@images/stitch";
-import { magnify } from "@images/magnify";
+import { magnifyToAttachment } from "@images/magnify";
 import { loadImage } from "@napi-rs/canvas";
 import { Client, EmbedBuilder } from "@client";
 import { addPathsToEmbed } from "@helpers/sorter";
@@ -85,7 +85,7 @@ export default async function textureComparison(
 	const longestRow = loadedImages.reduce((acc, item) => Math.max(acc, item.length), 0);
 	const stitched = await stitch(loadedImages, longestRow == 3 ? 4 : 2);
 
-	const magnified = (await magnify({ image: await loadImage(stitched), name: "magnified.png" }))[0];
+	const magnified = await magnifyToAttachment(stitched);
 
 	const embed = new EmbedBuilder()
 		.setImage("attachment://magnified.png")

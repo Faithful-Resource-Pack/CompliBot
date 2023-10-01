@@ -1,7 +1,7 @@
 import { Component } from "@interfaces";
 import { info } from "@helpers/logger";
 import { Client, Message, ButtonInteraction, EmbedBuilder } from "@client";
-import { magnify } from "@images/magnify";
+import { magnifyToAttachment } from "@images/magnify";
 import { parseDisplay } from "@functions/textureComparison";
 import { formatName } from "@helpers/sorter";
 import { loadImage } from "@napi-rs/canvas";
@@ -30,9 +30,7 @@ export default {
 		const longestRow = loadedImages.reduce((acc, item) => Math.max(acc, item.length), 0);
 		const stitched = await stitch(loadedImages, longestRow == 3 ? 4 : 2);
 
-		const magnified = (
-			await magnify({ image: await loadImage(stitched), name: "magnified.png" })
-		)[0];
+		const magnified = await magnifyToAttachment(stitched);
 
 		const embed = new EmbedBuilder()
 			.setImage("attachment://magnified.png")
