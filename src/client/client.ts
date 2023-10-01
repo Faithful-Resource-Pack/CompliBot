@@ -304,7 +304,7 @@ export class ExtendedClient extends Client {
 		const events = walkSync(eventPath).filter((file) => file.endsWith(".ts"));
 		for (const file of events) {
 			const event: Event = require(file).default;
-			this.on(event.name as string, event.execute);
+			this.on(event.name as string, event.execute.bind(null, this));
 		}
 	}
 
