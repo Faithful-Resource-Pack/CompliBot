@@ -3,11 +3,12 @@ import {
 	ChatInputCommandInteraction,
 	Role,
 	StringSelectMenuInteraction,
-	EmbedBuilder,
 	ModalSubmitInteraction,
 	PermissionFlagsBits,
 } from "discord.js";
 import { JSONFiles, StringOutput, en_US } from "@helpers/strings";
+import { EmbedBuilder } from "@client";
+import { colors } from "@helpers/colors";
 
 export type PermissionType = "manager" | "dev" | "moderator" | "council";
 
@@ -47,7 +48,8 @@ function hasPermission(type: PermissionType): boolean {
 
 	const noPermission = new EmbedBuilder()
 		.setTitle("You don't have permission to do that!")
-		.setDescription(`Only ${type}s can use this command.`);
+		.setDescription(`Only ${type}s can use this command.`)
+		.setColor(colors.red);
 
 	let out: boolean;
 	switch (type) {
