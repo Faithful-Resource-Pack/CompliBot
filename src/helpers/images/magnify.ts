@@ -35,10 +35,10 @@ export async function magnify(origin: ImageSource, isAnimation = false) {
 	const width = input.width * factor;
 	const height = input.height * factor;
 	const output = createCanvas(width, height);
-	const canvasResultCTX = output.getContext("2d");
+	const ctx = output.getContext("2d");
 
-	canvasResultCTX.imageSmoothingEnabled = false;
-	canvasResultCTX.drawImage(input, 0, 0, width, height);
+	ctx.imageSmoothingEnabled = false;
+	ctx.drawImage(input, 0, 0, width, height);
 	return { magnified: output.toBuffer("image/png"), width, height, factor };
 }
 

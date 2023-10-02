@@ -47,7 +47,7 @@ export const command: SlashCommand = {
 		await interaction
 			.editReply({
 				files: [file],
-				components: [imageButtons]
+				components: [imageButtons],
 			})
 			.then((message: Message) => message.deleteButton());
 	},

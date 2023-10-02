@@ -16,7 +16,7 @@ const options: OrderOptions = {
 	},
 	soup: {
 		url: "https://c.tenor.com/45SSoTETymIAAAAS/sopita-de-fideo-noodle.gif",
-		caption: "Gutten Appetit",
+		caption: "Guten Appetit",
 	},
 	burger: { url: "https://c.tenor.com/tdFqDJemKpUAAAAC/mcdonalds-big-mac.gif" },
 	poop: {
