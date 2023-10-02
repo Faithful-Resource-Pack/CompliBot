@@ -1,6 +1,5 @@
 import { createCanvas, loadImage, Image } from "@napi-rs/canvas";
 import { AttachmentBuilder } from "discord.js";
-import getDimensions from "./getDimensions";
 
 // taken from loadImage();
 export type ImageSource =
@@ -20,15 +19,10 @@ export type ImageSource =
  * @returns buffer for magnified image
  */
 export async function magnify(origin: ImageSource, isAnimation = false) {
-	const tmp = await loadImage(origin).catch((err) => Promise.reject(err));
-
-	const dimension =
-		typeof origin == "string"
-			? await getDimensions(origin)
-			: { width: tmp.width, height: tmp.height };
+	const input = await loadImage(origin).catch((err) => Promise.reject(err));
 
 	// ignore height if tilesheet, otherwise it's not scaled as much
-	const surface = isAnimation ? dimension.width * 16 : dimension.width * dimension.height;
+	const surface = isAnimation ? input.width * 16 : input.width * input.height;
 
 	let factor = 64;
 	if (surface <= 256) factor = 32;
@@ -38,14 +32,14 @@ export async function magnify(origin: ImageSource, isAnimation = false) {
 	if (surface > 65536) factor = 2;
 	if (surface > 262144) factor = 1;
 
-	const width = dimension.width * factor;
-	const height = dimension.height * factor;
-	const canvasResult = createCanvas(width, height);
-	const canvasResultCTX = canvasResult.getContext("2d");
+	const width = input.width * factor;
+	const height = input.height * factor;
+	const output = createCanvas(width, height);
+	const canvasResultCTX = output.getContext("2d");
 
 	canvasResultCTX.imageSmoothingEnabled = false;
-	canvasResultCTX.drawImage(tmp, 0, 0, width, height);
-	return { magnified: canvasResult.toBuffer("image/png"), width, height, factor };
+	canvasResultCTX.drawImage(input, 0, 0, width, height);
+	return { magnified: output.toBuffer("image/png"), width, height, factor };
 }
 
 /**

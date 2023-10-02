@@ -31,14 +31,16 @@ export const command: SlashCommand = {
 	async execute(interaction: ChatInputCommandInteraction) {
 		await interaction.deferReply();
 		const style = interaction.options.getString("style", false) ?? "none";
-		let image = interaction.options.getAttachment("image", false)?.url;
-		if (!image) image = await getImage(interaction);
+		const image =
+			interaction.options.getAttachment("image", false)?.url ?? (await getImage(interaction));
 
 		const mcmeta: MCMETA = mcmetaList[style];
 
 		// magnify beforehand since you can't magnify a gif currently
 		const { magnified } = await magnify(image, true);
 		const file = await animateToAttachment(await loadImage(magnified), mcmeta, `${style}.gif`);
-		await interaction.editReply({ files: [file] }).then((message: Message) => message.deleteButton());
+		await interaction
+			.editReply({ files: [file] })
+			.then((message: Message) => message.deleteButton());
 	},
 };

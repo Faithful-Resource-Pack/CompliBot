@@ -1,7 +1,7 @@
 import { Component } from "@interfaces";
 import { info } from "@helpers/logger";
 import { Client, Message, ButtonInteraction, EmbedBuilder } from "@client";
-import { tileAttachment } from "@images/tile";
+import { tileToAttachment } from "@images/tile";
 import { magnify, palette } from "@helpers/buttons";
 import { ActionRowBuilder } from "discord.js";
 import { ButtonBuilder } from "discord.js";
@@ -14,12 +14,7 @@ export default {
 
 		const message: Message = interaction.message as Message;
 		const url = await getImage(message);
-		const attachment = (
-			await tileAttachment({
-				url: url,
-				name: url.split("/").at(-1), //gets last element and trims off .png as it is re-added later
-			})
-		)[0];
+		const attachment = await tileToAttachment(url, {}, url.split("/").at(-1));
 
 		if (attachment == null)
 			return interaction.reply({

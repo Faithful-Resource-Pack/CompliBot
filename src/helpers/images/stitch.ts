@@ -19,8 +19,8 @@ export default async function stitch(images: Canvas[][], gap = 0) {
 	const canvas = new Canvas(tileWidth * length + vGap, tileHeight * images.length + hGap);
 	const ctx = canvas.getContext("2d");
 	ctx.imageSmoothingEnabled = false;
-	for (let y = 0; y < images.length; y++)
-		for (let x = 0; x < images[y].length; x++) {
+	for (let y = 0; y < images.length; ++y)
+		for (let x = 0; x < images[y].length; ++x) {
 			ctx.drawImage(
 				images[y][x],
 				x * tileWidth + x * gap,

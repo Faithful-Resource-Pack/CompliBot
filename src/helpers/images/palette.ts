@@ -52,8 +52,8 @@ export async function paletteAttachment(
 
 	const imageData = context.getImageData(0, 0, width, height).data;
 
-	for (let x = 0; x < width; x++) {
-		for (let y = 0; y < height; y++) {
+	for (let x = 0; x < width; ++x) {
+		for (let y = 0; y < height; ++y) {
 			let index = (y * width + x) * 4;
 			let r = imageData[index];
 			let g = imageData[index + 1];
@@ -81,7 +81,7 @@ export async function paletteAttachment(
 
 	const fieldGroups: string[][][] = [];
 	let group: number;
-	for (let i = 0; i < colors.length; i++) {
+	for (let i = 0; i < colors.length; ++i) {
 		// create 9 groups
 		if (i % COLORS_PER_PALETTE === 0) {
 			fieldGroups.push([]);
