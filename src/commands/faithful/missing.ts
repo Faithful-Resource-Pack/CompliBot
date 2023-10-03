@@ -145,9 +145,7 @@ export const command: SlashCommand = {
 			// no repo found for the asked pack + edition
 			if (response[0] === null)
 				embed2.addFields({
-					name: `${formatName(response[2].pack)[0]} - ${response[2].edition} - ${
-						response[2].version
-					}`,
+					name: `${formatName(response[2].pack)[0]} - ${response[2].version}`,
 					value: `${response[2].completion}% complete\n> ${response[1][0]}`,
 				});
 			else {
