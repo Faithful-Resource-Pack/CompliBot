@@ -1,6 +1,5 @@
 tokens.json
 node_modules
 .env
-src/commandsOld
 json/dynamic
 .DS_Store
