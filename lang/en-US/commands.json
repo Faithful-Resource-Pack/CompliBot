@@ -1,102 +1,18 @@
 {
     "Command": {
-        "Activity": {
-            "noChannel": "Please join a voice channel or add a channel argument!",
-            "stageChannel": "Activities cannot be started in a stage channel! (move to a regular vc)",
-            "unableToCreateInvite": "Unable to create invite! *(probably discord api downtime)"
-        },
         "Botban": {
             "isBanned": "You cannot use the bot as you have been bot banned!",
             "view": {
                 "unbannable": "You cannot audit this user's entry in the bot ban list!"
             }
         },
-        "Changelog": {
-            "Title": "Results for version "
-        },
         "Coin": {
             "Edge": "Edge?!",
             "Heads": "Heads",
             "Tails": "Tails"
         },
-        "EightBall": {
-            "Answers": [
-                "Yes",
-                "Yes.",
-                "Yes?",
-                "Yes!",
-                "No",
-                "No.",
-                "No?",
-                "No!",
-                "Maybe",
-                "Maybe not",
-                "Probably",
-                "Probably not",
-                "I don't know",
-                "True",
-                "False",
-                "I'll think about it",
-                "Could you rephrase that",
-                "I'm sure of it",
-                "I'm not sure",
-                "Of course",
-                "Of course not",
-                "Question too vague",
-                "Definitely",
-                "Definitely not",
-                "Totally not",
-                "Totally",
-                "It is impossible",
-                "It is possible",
-                "It is decidedly so",
-                "Possibly",
-                "Possibly not",
-                "Try asking again",
-                "Up to you",
-                "¯\\_(ツ)_/¯",
-                "Not really",
-                "Absolutely",
-                "Absolutely not",
-                "It is decidedly so",
-                "Sure",
-                "It is certain",
-                "Without a doubt",
-                "Yes definitely",
-                "You may rely on it",
-                "As I see it, yes",
-                "Most likely",
-                "Outlook good",
-                "Signs point to yes",
-                "Reply hazy, try again",
-                "Ask again later",
-                "Better not tell you now",
-                "Cannot predict now",
-                "Concentrate and ask again",
-                "Don't count on it",
-                "My reply is no",
-                "My sources say no",
-                "Outlook not so good",
-                "Very doubtful"
-            ]
-        },
-        "Feedback": {
-            "Bug": "Bug",
-            "ConfirmPrompt": "Are you sure you want to send this? Confirm with the buttons below",
-            "Preview": "Preview of your feedback:",
-            "Sent": "%FEEDBACKTYPE% sent to developers!",
-            "Suggestion": "Suggestion",
-            "Title": "Feedback"
-        },
-        "HelpUs": {
-            "Description": "Do you love this project and want to help the developers?\nPlease contact one of the developers below to be invited to the development servers:\n<@!473860522710794250>, <@!360249987927638016>, or <@!173336582265241601>\n\nYou can also check us out on GitHub:\n> https://github.com/Faithful-Resource-Pack/CompliBot",
-            "Title": "Do you want to help or support us in the CompliBot development?"
-        },
         "Images": {
-            "NotFound": "No images were found in the last %NUMBER% messages, please submit one using the following:\n\n- Sending an image URL\n- Attaching one to your message\n- Reply to a previous message (can be chained)\n\n> You can cancel this by sending anything else.",
-            "TooBig": "Output exceeds the maximum of 512px²!",
-            "NoImageAttached": "No image were attached, nor valid URL were given!",
-            "NoResponse": "No responses were given in time!"
+            "TooBig": "Output exceeds the maximum of 512px²!"
         },
         "Kill": {
             "Killed": [
@@ -199,17 +115,6 @@
                 "%PLAYER% fell too far and was finished by %AUTHOR% using %WEAPON%"
             ]
         },
-        "Modping": {
-            "AfkDnd": "There %NUMBER% moderators with Do not disturb / idle statuses and they may not respond.",
-            "NoRole": "There is no role including the name \"mod\" or \"moderator\" in this server",
-            "Online": "There %NUMBER% moderators online",
-            "Offline": "There are currently no moderators online ¯\\_(ツ)_/¯, I'm going to ping them all.",
-            "Urgent": "You demanded that **all** moderators be present.\nYou must have a good reason or penalties may be taken."
-        },
-        "Profile": {
-            "noContent": "No such Minecraft username exists!",
-            "noResponse": "The %API%api is currently down, please check again later!"
-        },
         "Stats": {
             "Embed": {
                 "FieldTitles": [
@@ -232,16 +137,7 @@
             "NotFound": "The command `%COMMAND%` doesn't exist!"
         },
         "Texture": {
-            "NotFound": "No results for this texture name: %TEXTURENAME%"
-        }
-    },
-    "Permissions": {
-        "temp": {
-            "template": "You are not permitted to run this command:",
-            "user": "You need to be a specific user to run this command!",
-            "role": "You need a specific role to run this command!",
-            "server": "You must be in a specific server to run this command!",
-            "notice": "This is a temporary fix for Discord's permissions v2 system, which we have not fully adopted yet."
+            "NotFound": "No results were found for %TEXTURENAME%. Have you made a typo?"
         }
     }
 }
