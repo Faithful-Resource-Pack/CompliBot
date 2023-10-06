@@ -18,7 +18,7 @@ export default {
 
 		if (attachment == null)
 			return interaction.reply({
-				content: interaction.strings().Command.Images.TooBig,
+				content: interaction.strings().command.images.too_big,
 				ephemeral: true,
 			});
 

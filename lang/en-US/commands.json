@@ -1,123 +1,17 @@
 {
-    "Command": {
-        "Botban": {
-            "isBanned": "You cannot use the bot as you have been bot banned!",
+    "command": {
+        "botban": {
+            "is_banned": "You cannot use the bot as you have been bot banned!",
             "view": {
                 "unbannable": "You cannot audit this user's entry in the bot ban list!"
             }
         },
-        "Coin": {
-            "Edge": "Edge?!",
-            "Heads": "Heads",
-            "Tails": "Tails"
+        "images": {
+            "too_big": "Output exceeds the maximum of 512px²!"
         },
-        "Images": {
-            "TooBig": "Output exceeds the maximum of 512px²!"
-        },
-        "Kill": {
-            "Killed": [
-                "%AUTHOR% fell out of the world",
-                "%AUTHOR% died",
-                "%AUTHOR% didn't specify a user to kill and died"
-            ],
-            "KilledBy": [
-                "%PLAYER% was shot by %AUTHOR%",
-                "%PLAYER% was pummeled by %AUTHOR%",
-                "%PLAYER% was pricked to death",
-                "%PLAYER% walked into a cactus whilst trying to escape %AUTHOR%",
-                "%PLAYER% drowned",
-                "%PLAYER% drowned whilst trying to escape %AUTHOR%",
-                "%PLAYER% experienced kinetic energy",
-                "%PLAYER% experienced kinetic energy whilst trying to escape %AUTHOR%",
-                "%PLAYER% blew up",
-                "%PLAYER% was blown up by %AUTHOR%",
-                "%PLAYER% was killed by [Intentional Game Design]",
-                "%PLAYER% hit the ground too hard",
-                "%PLAYER% hit the ground too hard whilst trying to escape %AUTHOR%",
-                "%PLAYER% fell from a high place",
-                "%PLAYER% fell off a ladder",
-                "%PLAYER% fell off some vines",
-                "%PLAYER% fell off some weeping vines",
-                "%PLAYER% fell off some twisting vines",
-                "%PLAYER% fell off scaffolding",
-                "%PLAYER% fell while climbing",
-                "death.fell.accident.water",
-                "%PLAYER% was impaled on a stalagmite",
-                "%PLAYER% was impaled on a stalagmite whilst fighting %AUTHOR%",
-                "%PLAYER% was squashed by a falling anvil",
-                "%PLAYER% was squashed by a falling anvil whilst fighting %AUTHOR%",
-                "%PLAYER% was squashed by a falling block",
-                "%PLAYER% was squashed by a falling block whilst fighting %AUTHOR%",
-                "%PLAYER% was skewered by a falling stalactite",
-                "%PLAYER% was skewered by a falling stalactite whilst fighting %AUTHOR%",
-                "%PLAYER% went up in flames",
-                "%PLAYER% walked into fire whilst fighting %AUTHOR%",
-                "%PLAYER% burned to death",
-                "%PLAYER% was burnt to a crisp whilst fighting %AUTHOR%",
-                "%PLAYER% went off with a bang",
-                "%PLAYER% tried to swim in lava",
-                "%PLAYER% tried to swim in lava to escape %AUTHOR%",
-                "%PLAYER% was struck by lightning",
-                "%PLAYER% was struck by lightning whilst fighting %AUTHOR%",
-                "%PLAYER% discovered the floor was lava",
-                "%PLAYER% walked into danger zone due to %AUTHOR%",
-                "%PLAYER% was killed by magic",
-                "%PLAYER% was killed by magic whilst trying to escape %AUTHOR%",
-                "%PLAYER% was killed by %AUTHOR% using magic",
-                "%PLAYER% froze to death",
-                "%PLAYER% was frozen to death by %AUTHOR%",
-                "%PLAYER% was slain by %AUTHOR%",
-                "%PLAYER% was fireballed by %AUTHOR%",
-                "%PLAYER% was stung to death",
-                "death.attack.sting.item",
-                "%PLAYER% was shot by a skull from %AUTHOR%",
-                "death.attack.witherSkull.item",
-                "%PLAYER% starved to death",
-                "%PLAYER% starved to death whilst fighting %AUTHOR%",
-                "%PLAYER% suffocated in a wall",
-                "%PLAYER% suffocated in a wall whilst fighting %AUTHOR%",
-                "%PLAYER% was squished too much",
-                "%PLAYER% was squashed by %AUTHOR%",
-                "%PLAYER% was poked to death by a sweet berry bush",
-                "%PLAYER% was poked to death by a sweet berry bush whilst trying to escape %AUTHOR%",
-                "%PLAYER% was killed trying to hurt %AUTHOR%",
-                "%PLAYER% was impaled by %AUTHOR%",
-                "%PLAYER% fell out of the world",
-                "%PLAYER% didn't want to live in the same world as %AUTHOR%",
-                "%PLAYER% withered away",
-                "%PLAYER% withered away whilst fighting %AUTHOR%",
-                "%PLAYER% died from dehydration",
-                "%PLAYER% died from dehydration whilst trying to escape %AUTHOR%",
-                "%PLAYER% died",
-                "%PLAYER% died because of %AUTHOR%",
-                "%PLAYER% was roasted in dragon breath",
-                "%PLAYER% was roasted in dragon breath by %AUTHOR%",
-                "%PLAYER% was doomed to fall",
-                "%PLAYER% was doomed to fall by %AUTHOR%",
-                "%PLAYER% fell too far and was finished by %AUTHOR%",
-                "%PLAYER% was stung to death by %AUTHOR%",
-                "%PLAYER% went off with a bang whilst fighting %AUTHOR%",
-                "%PLAYER% was killed by even more magic",
-                "%PLAYER% was too soft for this world",
-                "%PLAYER% was too soft for this world (%AUTHOR% helped)"
-            ],
-            "KilledByUsing": [
-                "%PLAYER% was shot by %AUTHOR% using %WEAPON%",
-                "%PLAYER% was pummeled by %AUTHOR% using %WEAPON%",
-                "%PLAYER% was blown up by %AUTHOR% using %WEAPON%",
-                "%PLAYER% went off with a bang due to a firework fired from %WEAPON% by %AUTHOR%",
-                "%PLAYER% was killed by %AUTHOR% using %WEAPON%",
-                "%PLAYER% was slain by %AUTHOR% using %WEAPON%",
-                "%PLAYER% was fireballed by %AUTHOR% using %WEAPON%",
-                "%PLAYER% was killed by %WEAPON% trying to hurt %AUTHOR%",
-                "%PLAYER% was impaled by %AUTHOR% with %WEAPON%",
-                "%PLAYER% was doomed to fall by %AUTHOR% using %WEAPON%",
-                "%PLAYER% fell too far and was finished by %AUTHOR% using %WEAPON%"
-            ]
-        },
-        "Stats": {
-            "Embed": {
-                "FieldTitles": [
+        "stats": {
+            "embed": {
+                "field_titles": [
                     "Prefix",
                     "Uptime",
                     "Guilds Count",
@@ -128,16 +22,15 @@
                     "Commands\nProcessed",
                     "Members\nAcross Guilds",
                     "Operating System"
-                ],
-                "Title": "%USER% stats."
+                ]
             },
-            "Footer": "Made with love",
-            "Usage": "%COMMAND% has ran %USE% times.",
-            "Top10": "Top 10 most used commands:",
-            "NotFound": "The command `%COMMAND%` doesn't exist!"
+            "footer": "Made with love",
+            "usage": "%COMMAND% has ran %USE% times.",
+            "top_ten": "Top 10 most used commands:",
+            "not_found": "The command `%COMMAND%` doesn't exist!"
         },
-        "Texture": {
-            "NotFound": "No results were found for %TEXTURENAME%. Have you made a typo?"
+        "texture": {
+            "not_found": "No results were found for %TEXTURENAME%. Have you made a typo?"
         }
     }
 }

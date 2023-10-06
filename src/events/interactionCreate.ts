@@ -22,7 +22,7 @@ export default {
 						| ChatInputCommandInteraction
 						| ButtonInteraction
 						| StringSelectMenuInteraction
-				).strings().Command.Botban.isBanned,
+				).strings().command.botban.is_banned,
 				ephemeral: true,
 			});
 			return;

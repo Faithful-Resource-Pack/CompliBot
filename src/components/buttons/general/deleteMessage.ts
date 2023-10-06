@@ -13,7 +13,7 @@ export default {
 		//additional checking for undefined embeds and footers and stuff
 		if (!message.reference && !authorId)
 			return interaction.reply({
-				content: interaction.strings().Error.NotFound.replace("%THING%", `Author ID in footer`),
+				content: interaction.strings().error.not_found.replace("%THING%", `Author ID in footer`),
 				ephemeral: true,
 			});
 
@@ -22,7 +22,7 @@ export default {
 			return interaction.reply({
 				content: interaction
 					.strings()
-					.Error.Interaction.Reserved.replace("%USER%", `<@!${authorId}>`),
+					.error.interaction.reserved.replace("%USER%", `<@!${authorId}>`),
 				ephemeral: true,
 			});
 
@@ -30,7 +30,7 @@ export default {
 			message.delete();
 		} catch (err) {
 			return interaction.reply({
-				content: interaction.strings().Error.Message.Deleted,
+				content: interaction.strings().error.message.deleted,
 				ephemeral: true,
 			});
 		}

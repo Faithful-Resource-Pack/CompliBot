@@ -11,13 +11,7 @@ export const command: SlashCommand = {
 		const res = Math.round(Math.random() * 100) / 100; // round to 2 decimal places;
 
 		const embed = new EmbedBuilder()
-			.setTitle(
-				res > 0.5
-					? interaction.strings().Command.Coin.Heads
-					: res < 0.5
-					? interaction.strings().Command.Coin.Tails
-					: interaction.strings().Command.Coin.Edge,
-			)
+			.setTitle(res > 0.5 ? "Heads" : res < 0.5 ? "Tails" : "Edge?!")
 			.setThumbnail(
 				res > 0.5
 					? "https://database.faithfulpack.net/images/bot/coin_heads.png?w=240&enlarge=1"

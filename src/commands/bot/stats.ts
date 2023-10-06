@@ -40,7 +40,7 @@ export const command: SlashCommand = {
 			if (os.platform() == "linux") version = linuxOs({ mode: "sync" }).pretty_name;
 			else version = os.version();
 
-			const fieldTitles = interaction.strings().Command.Stats.Embed.FieldTitles;
+			const fieldTitles = interaction.strings().command.stats.embed.field_titles;
 			const image: string = (await axios.get(`${client.tokens.apiUrl}settings/images.heart`)).data;
 
 			const embed = new EmbedBuilder()
@@ -64,7 +64,7 @@ export const command: SlashCommand = {
 					{ name: fieldTitles[9], value: version },
 				)
 				.setFooter({
-					text: interaction.strings().Command.Stats.Footer,
+					text: interaction.strings().command.stats.footer,
 					iconURL: image,
 				});
 			interaction
@@ -81,14 +81,14 @@ export const command: SlashCommand = {
 					ephemeral: true,
 					content: interaction
 						.strings()
-						.Command.Stats.NotFound.replace("%COMMAND%", interaction.options.getString("command")),
+						.command.stats.not_found.replace("%COMMAND%", interaction.options.getString("command")),
 				});
 
 			if (interaction.options.getString("command")) {
 				const embed = new EmbedBuilder().setTimestamp().setTitle(
 					interaction
 						.strings()
-						.Command.Stats.Usage.replace("%COMMAND%", interaction.options.getString("command"))
+						.command.stats.usage.replace("%COMMAND%", interaction.options.getString("command"))
 						.replace(
 							"%USE%",
 							client.commandsProcessed.get(interaction.options.getString("command")).toString() ??
@@ -103,7 +103,7 @@ export const command: SlashCommand = {
 
 				const embed = new EmbedBuilder()
 					.setTimestamp()
-					.setTitle(interaction.strings().Command.Stats.Top10).setDescription(`
+					.setTitle(interaction.strings().command.Stats.top_ten).setDescription(`
 ${data[0]
 	.slice(0, data[0].length > 10 ? 10 : data[0].length)
 	.map((key: any, index: any) => {

@@ -52,7 +52,7 @@ export default async function parseTextureName(
 				new EmbedBuilder()
 					.setTitle("No results found!")
 					.setDescription(
-						interaction.strings().Command.Texture.NotFound.replace("%TEXTURENAME%", `\`${name}\``),
+						interaction.strings().command.texture.not_found.replace("%TEXTURENAME%", `\`${name}\``),
 					)
 					.setColor(colors.red),
 			],

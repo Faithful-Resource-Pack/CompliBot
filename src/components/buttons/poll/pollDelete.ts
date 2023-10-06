@@ -17,7 +17,7 @@ export default {
 			return interaction.reply({
 				content: interaction
 					.strings()
-					.Error.Interaction.Reserved.replace("%USER%", `<@!${messageInteraction.user.id}>`),
+					.error.interaction.reserved.replace("%USER%", `<@!${messageInteraction.user.id}>`),
 				ephemeral: true,
 			});
 
@@ -25,7 +25,7 @@ export default {
 			message.delete();
 		} catch (err) {
 			interaction.reply({
-				content: interaction.strings().Error.Message.Deleted,
+				content: interaction.strings().error.message.deleted,
 				ephemeral: true,
 			});
 		}

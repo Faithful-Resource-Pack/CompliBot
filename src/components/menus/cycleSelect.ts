@@ -17,7 +17,7 @@ export default {
 			return interaction.reply({
 				content: interaction
 					.strings()
-					.Error.Interaction.Reserved.replace("%USER%", `<@!${messageInteraction.user.id}>`),
+					.error.interaction.reserved.replace("%USER%", `<@!${messageInteraction.user.id}>`),
 				ephemeral: true,
 			});
 

@@ -1,0 +1,15 @@
+{
+    "error": {
+        "placeholder": "This feature has not been implemented yet.",
+        "message": {
+            "deleted": "This message has already been deleted!"
+        },
+        "not_found": "%THING% not found!",
+        "interaction": {
+            "reserved": "This interaction is reserved for %USER%!"
+        },
+        "timeout": {
+            "no_type_given": "The given timeout doesn't specify which length it is!\nExample: `30s`, `1 min`, `10 hours`, `1 day`, `1 week`, `1 month`, `1 year`"
+        }
+    }
+}

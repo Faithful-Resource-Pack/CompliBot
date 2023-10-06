@@ -6,7 +6,7 @@ import {
 	ModalSubmitInteraction,
 	PermissionFlagsBits,
 } from "discord.js";
-import { JSONFiles, StringOutput, en_US } from "@helpers/strings";
+import { JSONFiles, en_US } from "@helpers/strings";
 import { EmbedBuilder } from "@client";
 import { colors } from "@helpers/colors";
 
@@ -14,20 +14,20 @@ export type PermissionType = "manager" | "dev" | "moderator" | "council";
 
 declare module "discord.js" {
 	interface ChatInputCommandInteraction {
-		strings(): StringOutput;
+		strings(): typeof en_US;
 		hasPermission(type: PermissionType): boolean;
 	}
 
 	interface ButtonInteraction {
-		strings(): StringOutput;
+		strings(): typeof en_US;
 	}
 
 	interface StringSelectMenuInteraction {
-		strings(): StringOutput;
+		strings(): typeof en_US;
 	}
 
 	interface ModalSubmitInteraction {
-		strings(): StringOutput;
+		strings(): typeof en_US;
 	}
 }
 
@@ -72,10 +72,15 @@ function hasPermission(type: PermissionType): boolean {
  * @author Evorp
  * @returns string output in correct language
  */
-function strings(): StringOutput {
+function strings(): typeof en_US {
 	const countryCode = this.locale;
 	let lang: typeof en_US;
-	for (const json of JSONFiles) lang = { ...lang, ...require(`@/lang/en-US/${json}.json`) }; // fallback
+	// load all english strings into one lang object
+	for (const json of JSONFiles)
+		lang = {
+			...lang,
+			...require(`@/lang/en-US/${json}.json`), // fallback
+		};
 
 	if (countryCode == "en-GB" || countryCode == "en-US") return lang;
 
