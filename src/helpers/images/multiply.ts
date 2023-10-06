@@ -4,7 +4,7 @@ import { AttachmentBuilder } from "discord.js";
 import ColorManager from "@images/colors";
 import getDimensions from "./getDimensions";
 
-export enum mcColors {
+export enum MCColors {
 	Foliage = "#5BAB46",
 	FoliageCold = "#60A17B",
 	FoliageHot = "#1ABF00",
@@ -31,17 +31,17 @@ export enum mcColors {
 	DyeBlack = "#1D1D21",
 }
 
-export const mcColorsOptions: { name: string; value: string }[] = Object.keys(mcColors).map(
+export const mcColorsOptions: { name: string; value: string }[] = Object.keys(MCColors).map(
 	(name) => {
 		//a cheeky regex for formatting
 		return {
 			name: name.replace(/([a-z])([A-Z])/g, "$1 $2"),
-			value: mcColors[name as keyof typeof mcColors],
+			value: MCColors[name as keyof typeof MCColors],
 		};
 	},
 );
 
-type options = {
+type MultiplyOptions = {
 	url: string;
 	embed?: EmbedBuilder;
 	name?: string;
@@ -49,7 +49,7 @@ type options = {
 };
 
 export async function multiplyAttachment(
-	options: options,
+	options: MultiplyOptions,
 ): Promise<[AttachmentBuilder, EmbedBuilder]> {
 	const dimension = await getDimensions(options.url);
 	const canvas = createCanvas(dimension.width, dimension.height);

@@ -1,7 +1,7 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "discord.js";
 import { EmbedBuilder, ChatInputCommandInteraction } from "@client";
-import { paletteAttachment } from "@images/palette";
+import { palette } from "@images/palette";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()

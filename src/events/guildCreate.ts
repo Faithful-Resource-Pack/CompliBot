@@ -1,4 +1,5 @@
-import { Guild, EmbedBuilder } from "discord.js";
+import { Guild } from "discord.js";
+import { EmbedBuilder } from "@client";
 import { Event } from "@interfaces";
 import { info } from "@helpers/logger";
 

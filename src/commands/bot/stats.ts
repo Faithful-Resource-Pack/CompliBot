@@ -103,7 +103,7 @@ export const command: SlashCommand = {
 
 				const embed = new EmbedBuilder()
 					.setTimestamp()
-					.setTitle(interaction.strings().command.Stats.top_ten).setDescription(`
+					.setTitle(interaction.strings().command.stats.top_ten).setDescription(`
 ${data[0]
 	.slice(0, data[0].length > 10 ? 10 : data[0].length)
 	.map((key: any, index: any) => {

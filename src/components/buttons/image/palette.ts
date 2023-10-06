@@ -1,7 +1,7 @@
 import { Component } from "@interfaces";
 import { info } from "@helpers/logger";
 import { Client, Message, ButtonInteraction, EmbedBuilder } from "@client";
-import { paletteAttachment } from "@images/palette";
+import { paletteToAttachment } from "@images/palette";
 import getImage from "@helpers/getImage";
 
 export default {
@@ -11,16 +11,7 @@ export default {
 
 		const message: Message = interaction.message as Message;
 		const url = await getImage(message);
-		const [attachment, embed] = await paletteAttachment({
-			url: url,
-			name: url.split("/").at(-1),
-		});
-
-		if (attachment == null)
-			return interaction.reply({
-				content: interaction.strings().command.images.too_big,
-				ephemeral: true,
-			});
+		const [attachment, embed] = await paletteToAttachment(url, url.split("/").at(-1));
 
 		return interaction
 			.reply({

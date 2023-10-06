@@ -6,7 +6,6 @@ export default {
 	async execute(client: Client, interaction: ModalSubmitInteraction) {
 		client.storeAction("modal", interaction);
 
-		console.log(interaction.customId);
 		const modal = client.modals.get(interaction.customId);
 		if (modal) return modal.execute(client, interaction);
 	},
