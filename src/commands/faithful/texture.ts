@@ -38,28 +38,10 @@ export const command: SlashCommand = {
 		await interaction.deferReply();
 		const results = await parseTextureName(name, interaction);
 
-		// returned early in parseTextureName()
+		// no results or invalid search
 		if (!results) return;
 
-		if (!results.length) {
-			// no results
-			return interaction
-				.editReply({
-					embeds: [
-						new EmbedBuilder()
-							.setTitle("No results found!")
-							.setDescription(
-								interaction
-									.strings()
-									.Command.Texture.NotFound.replace("%TEXTURENAME%", `\`${name}\``),
-							)
-							.setColor(colors.red),
-					],
-				})
-				.then((message: Message) => message.deleteButton());
-		}
-
-		// only 1 result
+		// only one result
 		if (results.length === 1) {
 			const replyOptions = await getTexture({
 				texture: results[0],
@@ -74,7 +56,7 @@ export const command: SlashCommand = {
 			interaction,
 			"textureSelect",
 			results,
-			interaction.options.getString("pack"),
+			interaction.options.getString("pack", true),
 		);
 	},
 };

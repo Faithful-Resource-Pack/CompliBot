@@ -126,5 +126,5 @@ export const getTexture = async (options: {
 		files.push(await animateToAttachment(await loadImage(textureURL), mcmeta));
 	} else files.push(await magnifyToAttachment(textureURL));
 
-	return { embeds: [embed], files: files, components: [textureButtons] };
+	return { embeds: [embed], files: files, components: [textureButtons], ephemeral: false };
 };

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ChatInputCommandInteraction, Client, Message, EmbedBuilder } from "@client";
+import { ChatInputCommandInteraction, Client, EmbedBuilder } from "@client";
 import { colors } from "@helpers/colors";
 import { Texture } from "@interfaces";
 
@@ -17,16 +17,18 @@ export default async function parseTextureName(
 	name = name.toLowerCase().trim().replace(".png", "").replace("#", "").replace(/ /g, "_");
 
 	if (name.length < 3 && isNaN(Number(name))) {
-		interaction
-			.editReply({
-				embeds: [
-					new EmbedBuilder()
-						.setTitle("Action failed!")
-						.setDescription("You need at least three characters to start a texture search!")
-						.setColor(colors.red),
-				],
-			})
-			.then((message: Message) => message.deleteButton());
+		// stupid workaround for already having deferred the message
+		await interaction.editReply({ content: "** **" }).then((reply) => reply.delete());
+
+		interaction.followUp({
+			embeds: [
+				new EmbedBuilder()
+					.setTitle("Action failed!")
+					.setDescription("You need at least three characters to start a texture search!")
+					.setColor(colors.red),
+			],
+			ephemeral: true,
+		});
 		return;
 	}
 
@@ -39,6 +41,26 @@ export default async function parseTextureName(
 		return [];
 	}
 
-	// if you search by texture id it returns a single object, so you need to cast to an array
-	return !isNaN(Number(name)) ? [results] : results;
+	// cast to array if it isn't one already (texture id returns single result)
+	const out = Array.isArray(results) ? results : [results];
+
+	if (!out.length) {
+		await interaction.editReply({ content: "** **" }).then((reply) => reply.delete());
+
+		await interaction.followUp({
+			embeds: [
+				new EmbedBuilder()
+					.setTitle("No results found!")
+					.setDescription(
+						interaction.strings().Command.Texture.NotFound.replace("%TEXTURENAME%", `\`${name}\``),
+					)
+					.setColor(colors.red),
+			],
+			ephemeral: true,
+		});
+
+		return;
+	}
+
+	return out;
 }
