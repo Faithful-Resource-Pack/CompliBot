@@ -9,8 +9,9 @@
             "title": "You cannot run slash commands in a submission channel!",
             "description": "Please use the appropriate bot command channel instead."
         },
-        "images": {
-            "too_big": "Output exceeds the maximum of 512px²!"
+        "tile": {
+            "too_big": "This image is too big to be tiled!",
+            "suggestion": "Try scaling your image down or using another program."
         },
         "stats": {
             "footer": "Made with love",

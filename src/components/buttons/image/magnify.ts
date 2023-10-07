@@ -14,13 +14,7 @@ export default {
 
 		const message: Message = interaction.message as Message;
 		const url = await getImage(message);
-		const attachment = await magnifyToAttachment(url, url.split("/").at(-1));
-
-		if (attachment == null)
-			return interaction.reply({
-				content: interaction.strings().command.images.too_big,
-				ephemeral: true,
-			});
+		const attachment = await magnifyToAttachment(url);
 
 		return interaction
 			.reply({

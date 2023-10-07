@@ -11,7 +11,7 @@ export default {
 
 		const message: Message = interaction.message as Message;
 		const url = await getImage(message);
-		const [attachment, embed] = await paletteToAttachment(url, url.split("/").at(-1));
+		const [attachment, embed] = await paletteToAttachment(url);
 
 		return interaction
 			.reply({

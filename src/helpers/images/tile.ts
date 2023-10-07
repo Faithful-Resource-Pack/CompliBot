@@ -9,6 +9,12 @@ interface TileOptions {
 	random?: TileRandom;
 }
 
+/**
+ * @author Juknum
+ * @param origin what to tile
+ * @param options what shape and randomness
+ * @returns tiled image as buffer
+ */
 export async function tile(origin: ImageSource, options: TileOptions = {}): Promise<Buffer> {
 	const input = await loadImage(origin).catch((err) => Promise.reject(err));
 

@@ -3,6 +3,8 @@ import { magnifyToAttachment } from "./images/magnify";
 import getImage from "./getImage";
 import { tileToAttachment } from "./images/tile";
 import { paletteToAttachment } from "./images/palette";
+import { ActionRowBuilder, ButtonBuilder } from "discord.js";
+import { imageButtons, palette } from "./buttons";
 
 export default async function prefixCommandHandler(message: Message) {
 	const args = message.content.split(" ");
@@ -15,11 +17,14 @@ export default async function prefixCommandHandler(message: Message) {
 		case "m":
 		case "z":
 			return await message
-				.reply({ files: [await magnifyToAttachment(url)] })
+				.reply({
+					files: [await magnifyToAttachment(url)],
+					components: [new ActionRowBuilder<ButtonBuilder>().addComponents(palette)]
+				})
 				.then((message: Message) => message.deleteButton());
 		case "t":
 			return await message
-				.reply({ files: [await tileToAttachment(url)] })
+				.reply({ files: [await tileToAttachment(url)], components: [imageButtons] })
 				.then((message: Message) => message.deleteButton());
 		case "p":
 			const [attachment, embed] = await paletteToAttachment(url);

@@ -1,9 +1,10 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "discord.js";
-import { ChatInputCommandInteraction, Message } from "@client";
+import { ChatInputCommandInteraction, EmbedBuilder, Message } from "@client";
 import { tileToAttachment, TileShape, TileRandom } from "@images/tile";
 import getImage from "@helpers/getImage";
 import { imageButtons } from "@helpers/buttons";
+import { colors } from "@helpers/colors";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -36,7 +37,6 @@ export const command: SlashCommand = {
 			o.setName("image").setDescription("The image to tile").setRequired(false),
 		),
 	async execute(interaction: ChatInputCommandInteraction) {
-		await interaction.deferReply();
 		const random = interaction.options.getString("random") as TileRandom;
 		const shape = interaction.options.getString("type") as TileShape;
 
@@ -44,10 +44,23 @@ export const command: SlashCommand = {
 			interaction.options.getAttachment("image", false)?.url ?? (await getImage(interaction));
 
 		const file = await tileToAttachment(image, { random, shape });
+
+		if (!file) {
+			return await interaction.reply({
+				embeds: [
+					new EmbedBuilder()
+						.setTitle(interaction.strings().command.tile.too_big)
+						.setDescription(interaction.strings().command.tile.suggestion)
+						.setColor(colors.red),
+				],
+				ephemeral: true
+			});
+		}
 		await interaction
-			.editReply({
+			.reply({
 				files: [file],
 				components: [imageButtons],
+				fetchReply: true,
 			})
 			.then((message: Message) => message.deleteButton());
 	},

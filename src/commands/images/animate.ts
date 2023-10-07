@@ -37,7 +37,7 @@ export const command: SlashCommand = {
 		const mcmeta: MCMETA = mcmetaList[style];
 
 		// magnify beforehand since you can't magnify a gif currently
-		const { magnified } = await magnify(image, true);
+		const { magnified } = await magnify(image, { isAnimation: true });
 		const file = await animateToAttachment(await loadImage(magnified), mcmeta, `${style}.gif`);
 		await interaction
 			.editReply({ files: [file] })

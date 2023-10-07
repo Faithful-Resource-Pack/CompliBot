@@ -11,19 +11,25 @@ export type ImageSource =
 	| Image
 	| import("stream").Readable;
 
+export interface MagnifyOptions {
+	isAnimation?: boolean;
+	factor?: number;
+}
+
 /**
  * The actual magnification function
  * @author Juknum, Evorp
  * @param origin url, image, or buffer to magnify
- * @param isAnimation whether to magnify the image as a tilesheet
+ * @param options
  * @returns buffer for magnified image
  */
-export async function magnify(origin: ImageSource, isAnimation = false) {
+export async function magnify(origin: ImageSource, options: MagnifyOptions = {}) {
 	const input = await loadImage(origin).catch((err) => Promise.reject(err));
 
 	// ignore height if tilesheet, otherwise it's not scaled as much
-	const surface = isAnimation ? input.width * 16 : input.width * input.height;
+	const surface = options.isAnimation ? input.width * 16 : input.width * input.height;
 
+	// no custom factor provided
 	let factor = 64;
 	if (surface <= 256) factor = 32;
 	if (surface > 256) factor = 16;
@@ -31,6 +37,9 @@ export async function magnify(origin: ImageSource, isAnimation = false) {
 	if (surface > 4096) factor = 4;
 	if (surface > 65536) factor = 2;
 	if (surface > 262144) factor = 1;
+
+	// custom factor provided
+	if (options.factor) factor = options.factor;
 
 	const width = input.width * factor;
 	const height = input.height * factor;
@@ -49,7 +58,11 @@ export async function magnify(origin: ImageSource, isAnimation = false) {
  * @param name name, defaults to "magnified.png"
  * @returns magnified file
  */
-export async function magnifyToAttachment(origin: ImageSource, name = "magnified.png") {
-	const { magnified } = await magnify(origin);
+export async function magnifyToAttachment(
+	origin: ImageSource,
+	options?: MagnifyOptions,
+	name = "magnified.png",
+) {
+	const { magnified } = await magnify(origin, options);
 	return new AttachmentBuilder(magnified, { name });
 }

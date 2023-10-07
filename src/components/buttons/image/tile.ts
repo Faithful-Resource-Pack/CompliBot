@@ -6,6 +6,7 @@ import { magnify, palette } from "@helpers/buttons";
 import { ActionRowBuilder } from "discord.js";
 import { ButtonBuilder } from "discord.js";
 import getImage from "@helpers/getImage";
+import { colors } from "@helpers/colors";
 
 export default {
 	id: "tile",
@@ -14,12 +15,17 @@ export default {
 
 		const message: Message = interaction.message as Message;
 		const url = await getImage(message);
-		const attachment = await tileToAttachment(url, {}, url.split("/").at(-1));
+		const attachment = await tileToAttachment(url);
 
-		if (attachment == null)
-			return interaction.reply({
-				content: interaction.strings().command.images.too_big,
-				ephemeral: true,
+		if (!attachment)
+			return await interaction.reply({
+				embeds: [
+					new EmbedBuilder()
+						.setTitle(interaction.strings().command.tile.too_big)
+						.setDescription(interaction.strings().command.tile.suggestion)
+						.setColor(colors.red),
+				],
+				ephemeral: true
 			});
 
 		return interaction
