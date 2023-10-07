@@ -1,5 +1,8 @@
-import { Message } from "@client";
+import { Message, ChatInputCommandInteraction } from "@client";
 import { Interaction, MessageType } from "discord.js";
+
+// remove stupid discord metadata (idk why they even added it)
+export const removeMetadata = (url: string) => url.split("?")[0];
 
 /**
  * Get image URL from a given message if possible
@@ -17,7 +20,10 @@ export async function getImageFromMessage(message: Message) {
 	// search for image urls
 	url = message.content?.split(" ").find((i) => i.startsWith("http"));
 	// check if url points to valid image
-	if (url && /(png|jpg|jpeg|webp)$/g.test(url.split("?")[0])) return url;
+	if (url && /(png|jpg|jpeg|webp)$/g.test(removeMetadata(url))) return url;
+
+	// nothing found
+	return "";
 }
 
 /**
@@ -58,7 +64,7 @@ export default async function getImage(msgOrInteraction: Message | Interaction) 
 	if (msgOrInteraction instanceof Message) {
 		author = msgOrInteraction.author.id;
 		url = await getImageFromMessage(msgOrInteraction);
-		if (url) return url.split("?")[0];
+		if (url) return removeMetadata(url);
 
 		// if there's no attachment we check if it's a reply
 		if (msgOrInteraction.type === MessageType.Reply) {
@@ -67,13 +73,19 @@ export default async function getImage(msgOrInteraction: Message | Interaction) 
 				original = await msgOrInteraction.fetchReference();
 			} catch {}
 			if (original) url = await getImageFromMessage(original);
-			if (url) return url.split("?")[0];
+			if (url) return removeMetadata(url);
 		}
+	}
+
+	// if it's a slash command we check if the image property exists and use that
+	if (msgOrInteraction instanceof ChatInputCommandInteraction) {
+		url = msgOrInteraction.options.getAttachment("image", false)?.url;
+		if (url) return removeMetadata(url);
 	}
 
 	// no url in message found so we search the channel
 	url = await getImageFromChannel(msgOrInteraction);
-	if (url) return url.split("?")[0];
+	if (url) return removeMetadata(url);
 
 	// no URL found at all
 	return "";

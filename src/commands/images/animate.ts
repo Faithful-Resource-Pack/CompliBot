@@ -31,8 +31,7 @@ export const command: SlashCommand = {
 	async execute(interaction: ChatInputCommandInteraction) {
 		await interaction.deferReply();
 		const style = interaction.options.getString("style", false) ?? "none";
-		const image =
-			interaction.options.getAttachment("image", false)?.url ?? (await getImage(interaction));
+		const image = await getImage(interaction);
 
 		const mcmeta: MCMETA = mcmetaList[style];
 

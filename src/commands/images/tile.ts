@@ -40,8 +40,7 @@ export const command: SlashCommand = {
 		const random = interaction.options.getString("random") as TileRandom;
 		const shape = interaction.options.getString("type") as TileShape;
 
-		const image =
-			interaction.options.getAttachment("image", false)?.url ?? (await getImage(interaction));
+		const image = await getImage(interaction);
 
 		const file = await tileToAttachment(image, { random, shape });
 

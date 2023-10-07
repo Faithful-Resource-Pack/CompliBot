@@ -12,8 +12,7 @@ export const command: SlashCommand = {
 			o.setName("image").setDescription("The image to palette").setRequired(false),
 		),
 	async execute(interaction: ChatInputCommandInteraction) {
-		const image =
-			interaction.options.getAttachment("image", false)?.url ?? (await getImage(interaction));
+		const image = await getImage(interaction);
 
 		const [file, embed] = await paletteToAttachment(image);
 

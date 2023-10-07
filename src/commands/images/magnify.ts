@@ -29,8 +29,7 @@ export const command: SlashCommand = {
 		}),
 	async execute(interaction: ChatInputCommandInteraction) {
 		await interaction.deferReply();
-		const image =
-			interaction.options.getAttachment("image", false)?.url ?? (await getImage(interaction));
+		const image = await getImage(interaction);
 
 		const file = await magnifyToAttachment(image, {
 			factor: interaction.options.getNumber("factor", false),
