@@ -10,9 +10,8 @@ export default {
 	async execute(client: Client, interaction: StringSelectMenuInteraction) {
 		if (client.verbose) console.log(`${info}Texture selected!`);
 
-		const messageInteraction: MessageInteraction = interaction.message
-			.interaction as MessageInteraction;
-		const message: Message = interaction.message as Message;
+		const messageInteraction = interaction.message.interaction as MessageInteraction;
+		const message = interaction.message as Message;
 
 		if (interaction.user.id !== messageInteraction.user.id)
 			return interaction.reply({

@@ -65,9 +65,6 @@ export const getTexture = async (options: {
 		textureURL = "";
 	}
 
-	embed.setThumbnail(textureURL);
-	embed.setImage(`attachment://magnified.${animated ? "gif" : "png"}`);
-
 	// test if url isn't a 404
 	let dimension: ISizeCalculationResult;
 	try {
@@ -79,12 +76,14 @@ export const getTexture = async (options: {
 			.setDescription(`\`${texture.name}\` hasn't been made for ${strPack} yet or is blacklisted!`)
 			.setColor(colors.red);
 		// missing texture so we break early
-		return { embeds: [errorEmbed] };
+		return { embeds: [errorEmbed], components: [] };
 	}
 
 	embed
 		.setURL(`https://webapp.faithfulpack.net/#/gallery/java/32x/latest/all/?show=${texture.id}`)
-		.addFields({ name: "Resolution", value: `${dimension.width}×${dimension.height}` });
+		.addFields({ name: "Resolution", value: `${dimension.width}×${dimension.height}` })
+		.setThumbnail(textureURL)
+		.setImage(`attachment://magnified.${animated ? "gif" : "png"}`);
 
 	let mainContribution: Contribution;
 	if (allContributions.length) {
