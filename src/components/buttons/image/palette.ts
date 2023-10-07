@@ -1,9 +1,8 @@
 import { Component } from "@interfaces";
 import { info } from "@helpers/logger";
-import { Client, Message, ButtonInteraction, EmbedBuilder } from "@client";
-import { paletteToAttachment } from "@images/palette";
+import { Client, Message, ButtonInteraction } from "@client";
+import { paletteToAttachment, paletteTooBig } from "@images/palette";
 import getImage from "@helpers/getImage";
-import { colors } from "@helpers/colors";
 
 export default {
 	id: "palette",
@@ -14,20 +13,7 @@ export default {
 		const url = await getImage(message);
 		const [file, embed] = await paletteToAttachment(url);
 
-		if (!file || !embed)
-			return await interaction.reply({
-				embeds: [
-					new EmbedBuilder()
-						.setTitle(
-							interaction
-								.strings()
-								.command.images.too_big.replace("%ACTION%", "to take the palette of"),
-						)
-						.setDescription(interaction.strings().command.images.suggestion)
-						.setColor(colors.red),
-				],
-				ephemeral: true,
-			});
+		if (!file || !embed) return await paletteTooBig(interaction);
 
 		return interaction
 			.reply({

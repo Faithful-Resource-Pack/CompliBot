@@ -2,6 +2,8 @@ import { Message, ActionRowBuilder, ComponentType } from "discord.js";
 import { deleteInteraction, deleteMessage } from "@helpers/buttons";
 import { ButtonBuilder } from "discord.js";
 import { ExtendedClient } from "./client";
+import { en_US } from "@helpers/strings";
+import { strings } from "./interaction";
 
 declare module "discord.js" {
 	interface Message {
@@ -9,14 +11,8 @@ declare module "discord.js" {
 		warn(text: string, disappearing?: boolean): void;
 		/** @param hasAuthorID whether to search for an author id in the footer or the interaction owner */
 		deleteButton(hasAuthorID?: boolean): Promise<Message>;
+		strings(): typeof en_US;
 	}
-}
-
-export interface DeleteReactOptions {
-	authorMessage: Message;
-	deleteAuthorMessage: boolean;
-	previousMessage?: Message;
-	authorID?: string;
 }
 
 const ExtendedMessage = {
@@ -54,5 +50,7 @@ const ExtendedMessage = {
 Object.keys(ExtendedMessage).forEach((key) => {
 	Message.prototype[key] = ExtendedMessage[key];
 });
+
+Message.prototype.strings = strings;
 
 export { Message };

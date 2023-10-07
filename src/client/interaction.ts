@@ -77,7 +77,7 @@ function hasPermission(type: PermissionType): boolean {
  * @author Evorp
  * @returns string output in correct language
  */
-function strings(): typeof en_US {
+export function strings(): typeof en_US {
 	const countryCode = this.locale;
 	let lang: typeof en_US;
 	// load all english strings into one lang object

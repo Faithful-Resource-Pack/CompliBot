@@ -1,8 +1,15 @@
-import { EmbedBuilder } from "@client";
+import {
+	EmbedBuilder,
+	ButtonInteraction,
+	ChatInputCommandInteraction,
+	StringSelectMenuInteraction,
+	Message,
+} from "@client";
 import { Canvas, createCanvas, loadImage } from "@napi-rs/canvas";
 import { AttachmentBuilder } from "discord.js";
 import ColorManager from "@images/colors";
 import { ImageSource } from "./magnify";
+import { colors } from "@helpers/colors";
 
 const COOLORS_URL = "https://coolors.co/";
 
@@ -176,4 +183,35 @@ export async function paletteToAttachment(
 	// too big
 	if (!image || !embed) return [null, null];
 	return [new AttachmentBuilder(image, { name }), embed];
+}
+
+export async function paletteTooBig(
+	interaction:
+		| ButtonInteraction
+		| ChatInputCommandInteraction
+		| StringSelectMenuInteraction
+		| Message,
+) {
+	// need to cast to any to add properties later
+	const args: any = {
+		embeds: [
+			new EmbedBuilder()
+				.setTitle(
+					interaction
+						.strings()
+						.command.images.too_big.replace("%ACTION%", "to take the palette of"),
+				)
+				.setDescription(interaction.strings().command.images.max_size)
+				.setColor(colors.red),
+		],
+	};
+
+	// make ephemeral if possible
+	if (!(interaction instanceof Message)) {
+		args.ephemeral = true;
+		args.fetchReply = true;
+	}
+
+	const reply = await (interaction as ChatInputCommandInteraction).reply(args);
+	if (interaction instanceof Message) reply.deleteButton();
 }

@@ -1,8 +1,8 @@
 import { Message } from "@client";
 import { magnifyToAttachment } from "./images/magnify";
 import getImage from "./getImage";
-import { tileToAttachment } from "./images/tile";
-import { paletteToAttachment } from "./images/palette";
+import { tileToAttachment, tileTooBig } from "./images/tile";
+import { paletteToAttachment, paletteTooBig } from "./images/palette";
 import { ActionRowBuilder, ButtonBuilder } from "discord.js";
 import { imageButtons, palette } from "./buttons";
 
@@ -23,11 +23,14 @@ export default async function prefixCommandHandler(message: Message) {
 				})
 				.then((message: Message) => message.deleteButton());
 		case "t":
+			const file = await tileToAttachment(url);
+			if (!file) return tileTooBig(message);
 			return await message
-				.reply({ files: [await tileToAttachment(url)], components: [imageButtons] })
+				.reply({ files: [file], components: [imageButtons] })
 				.then((message: Message) => message.deleteButton());
 		case "p":
 			const [attachment, embed] = await paletteToAttachment(url);
+			if (!attachment || !embed) return paletteTooBig(message);
 			return await message
 				.reply({ files: [attachment], embeds: [embed] })
 				.then((message: Message) => message.deleteButton());

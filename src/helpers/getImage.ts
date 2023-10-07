@@ -11,7 +11,13 @@ export async function getImageFromMessage(message: Message) {
 	if (message.attachments.size) return message.attachments?.first().url;
 	const embed = message.embeds?.[0];
 	if (!embed) return "";
-	return embed.thumbnail?.url || embed.image?.url || "";
+	let url = embed.thumbnail?.url || embed.image?.url;
+	if (url) return url;
+
+	// search for image urls
+	url = message.content?.split(" ").find((i) => i.startsWith("http"));
+	// check if url points to valid image
+	if (url && /(png|jpg|jpeg|webp)$/g.test(url.split("?")[0])) return url;
 }
 
 /**

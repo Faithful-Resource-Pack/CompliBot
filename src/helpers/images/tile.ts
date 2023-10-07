@@ -1,6 +1,14 @@
 import { createCanvas, loadImage, Image, DOMMatrix } from "@napi-rs/canvas";
 import { AttachmentBuilder } from "discord.js";
 import { ImageSource } from "./magnify";
+import {
+	EmbedBuilder,
+	ButtonInteraction,
+	ChatInputCommandInteraction,
+	StringSelectMenuInteraction,
+	Message,
+} from "@client";
+import { colors } from "@helpers/colors";
 
 export type TileShape = "grid" | "vertical" | "horizontal" | "hollow" | "plus";
 export type TileRandom = "flip" | "rotation";
@@ -123,4 +131,30 @@ export async function tileToAttachment(
 	// image too big so we returned early
 	if (!buf) return null;
 	return new AttachmentBuilder(buf, { name });
+}
+
+export async function tileTooBig(
+	interaction:
+		| ButtonInteraction
+		| ChatInputCommandInteraction
+		| StringSelectMenuInteraction
+		| Message,
+) {
+	const args: any = {
+		embeds: [
+			new EmbedBuilder()
+				.setTitle(interaction.strings().command.images.too_big.replace("%ACTION%", "be tiled"))
+				.setDescription(interaction.strings().command.images.max_size)
+				.setColor(colors.red),
+		],
+	};
+
+	// make ephemeral if possible
+	if (!(interaction instanceof Message)) {
+		args.ephemeral = true;
+		args.fetchReply = true;
+	}
+
+	const reply = await (interaction as ChatInputCommandInteraction).reply(args);
+	if (interaction instanceof Message) reply.deleteButton();
 }
