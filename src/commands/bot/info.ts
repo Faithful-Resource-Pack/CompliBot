@@ -9,24 +9,20 @@ export const command: SlashCommand = {
 		const image: string = (
 			await axios.get(`${interaction.client.tokens.apiUrl}settings/images.bot`)
 		).data;
+
+		const info = interaction.strings().command.info;
 		const embed = new EmbedBuilder()
-			.setTitle("Hi, I'm CompliBot. I was made for the Faithful Discord servers.")
-			.setDescription(`And I think I turned out pretty well.`)
+			.setTitle(info.title)
+			.setDescription(info.subtitle)
 			.addFields(
 				{
-					name: "Features",
-					value:
-						"\
-						\n- Real-time texture interaction using `/texture`, `/compare`, and `/cycle`. \
-						\n- Check resource pack progress with `/missing` or check your contributions with `/about`. \
-						\n- Image manipulation utilities such as `/magnify`, `/tile`, `/palette`, and `/animate`.",
+					name: info.features.title,
+					value: info.features.description,
 					inline: true,
 				},
 				{
-					name: "Developing",
-					value:
-						"I'm fully open source (written in TypeScript and Discord.js) and can be cloned at my GitHub repository [here](https://github.com/faithful-resource-pack/complibot). \
-						\n\nIf you're interested in developing, contact <@!473860522710794250>, <@!360249987927638016>, or <@!173336582265241601> for more information.",
+					name: info.developing.title,
+					value: info.developing.description,
 					inline: true,
 				},
 			)

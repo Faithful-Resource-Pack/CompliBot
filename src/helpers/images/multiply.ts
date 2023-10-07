@@ -28,7 +28,7 @@ export const mcColors = {
 	GreenDye: "#5E7C16",
 	RedDye: "#B02E26",
 	BlackDye: "#1D1D21",
-}
+};
 
 export const mcColorsOptions: { name: string; value: string }[] = Object.keys(mcColors).map(
 	(name) => {

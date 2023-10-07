@@ -22,9 +22,11 @@ export const command: SlashCommand = {
 		await interaction.deferReply();
 		const url = await getImage(interaction);
 		const file = await multiplyToAttachment(url, interaction.options.getString("color"));
-		await interaction.editReply({
-			files: [file],
-			components: [imageButtons],
-		}).then((message: Message) => message.deleteButton());
+		await interaction
+			.editReply({
+				files: [file],
+				components: [imageButtons],
+			})
+			.then((message: Message) => message.deleteButton());
 	},
 };
