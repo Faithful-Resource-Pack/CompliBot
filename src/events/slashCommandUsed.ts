@@ -19,8 +19,8 @@ export default {
 			return await interaction.reply({
 				embeds: [
 					new EmbedBuilder()
-						.setTitle("You cannot run slash commands in a submission channel!")
-						.setDescription("Please use the appropriate bot command channel instead.")
+						.setTitle(interaction.strings().command.in_submission.title)
+						.setDescription(interaction.strings().command.in_submission.description)
 						.setColor(colors.red),
 				],
 				ephemeral: true,
@@ -48,9 +48,11 @@ export default {
 				// execute command
 				(command.execute as SlashCommandI)(interaction as ChatInputCommandInteraction);
 			} catch (err) {
-				console.error(err);
+				console.trace(err);
 				return interaction.reply({
-					content: "There was an error with this command!",
+					content: `${
+						interaction.strings().error.command
+					}\nError for the developers:\n\`\`\`${err}\`\`\``,
 					ephemeral: true,
 				});
 			}

@@ -1,9 +1,8 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "discord.js";
-import { Client, ChatInputCommandInteraction, EmbedBuilder, Message } from "@client";
+import { ChatInputCommandInteraction, Message } from "@client";
 import { cycleComparison } from "@images/cycle";
 import parseTextureName from "@functions/parseTextureName";
-import { colors } from "@helpers/colors";
 import { textureChoiceEmbed } from "@helpers/choiceEmbed";
 
 export const command: SlashCommand = {

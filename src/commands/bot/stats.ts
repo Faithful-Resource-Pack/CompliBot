@@ -40,7 +40,6 @@ export const command: SlashCommand = {
 			if (os.platform() == "linux") version = linuxOs({ mode: "sync" }).pretty_name;
 			else version = os.version();
 
-			const fieldTitles = interaction.strings().command.stats.embed.field_titles;
 			const image: string = (await axios.get(`${client.tokens.apiUrl}settings/images.heart`)).data;
 
 			const embed = new EmbedBuilder()
@@ -48,20 +47,20 @@ export const command: SlashCommand = {
 				.setThumbnail(client.user.displayAvatarURL())
 				.addFields(
 					// TODO: remove the prefix since there are no prefix commands on the bot
-					{ name: fieldTitles[0], value: "/", inline: true },
-					{ name: fieldTitles[1], value: duration(client.uptime).humanize(), inline: true },
-					{ name: fieldTitles[2], value: client.guilds.cache.size.toString(), inline: true },
+					{ name: "Prefix", value: interaction.client.tokens.prefix, inline: true },
+					{ name: "Uptime", value: duration(client.uptime).humanize(), inline: true },
+					{ name: "Server Count", value: client.guilds.cache.size.toString(), inline: true },
 					{
-						name: fieldTitles[3],
+						name: "Memory Usage",
 						value: `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB`,
 						inline: true,
 					},
-					{ name: fieldTitles[4], value: `discord.js ${djsVersion}`, inline: true },
-					{ name: fieldTitles[5], value: `${process.version}`, inline: true },
-					{ name: fieldTitles[6], value: `${client.slashCommands.size}`, inline: true },
-					{ name: fieldTitles[7], value: `${number}`, inline: true },
-					{ name: fieldTitles[8], value: `${sumMembers}`, inline: true },
-					{ name: fieldTitles[9], value: version },
+					{ name: "Discord Library", value: `Discord.js ${djsVersion}`, inline: true },
+					{ name: "Node.js", value: `${process.version}`, inline: true },
+					{ name: "Total Commands", value: `${client.slashCommands.size}`, inline: true },
+					{ name: "Commands Processed", value: `${number}`, inline: true },
+					{ name: "Members Across Servers", value: `${sumMembers}`, inline: true },
+					{ name: "Operating System", value: version },
 				)
 				.setFooter({
 					text: interaction.strings().command.stats.footer,

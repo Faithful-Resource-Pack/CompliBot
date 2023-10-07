@@ -9,7 +9,7 @@ interface TileOptions {
 	random?: TileRandom;
 }
 
-export async function tile(origin: ImageSource, options?: TileOptions): Promise<Buffer> {
+export async function tile(origin: ImageSource, options: TileOptions = {}): Promise<Buffer> {
 	const input = await loadImage(origin).catch((err) => Promise.reject(err));
 
 	if (input.width * input.height * 3 > 262144) return null;

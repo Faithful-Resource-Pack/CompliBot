@@ -1,9 +1,11 @@
 import { Message, ActionRowBuilder, ComponentType } from "discord.js";
 import { deleteInteraction, deleteMessage } from "@helpers/buttons";
 import { ButtonBuilder } from "discord.js";
+import { ExtendedClient } from "./client";
 
 declare module "discord.js" {
 	interface Message {
+		client: ExtendedClient;
 		warn(text: string, disappearing?: boolean): void;
 		/** @param hasAuthorID whether to search for an author id in the footer or the interaction owner */
 		deleteButton(hasAuthorID?: boolean): Promise<Message>;

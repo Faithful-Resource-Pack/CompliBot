@@ -42,11 +42,7 @@ export const command: SlashCommand = {
 
 		// only one result
 		if (results.length === 1) {
-			const replyOptions = await textureComparison(
-				interaction.client,
-				results[0].id,
-				display,
-			);
+			const replyOptions = await textureComparison(interaction.client, results[0].id, display);
 
 			return interaction.editReply(replyOptions).then((message: Message) => message.deleteButton());
 		}

@@ -229,10 +229,7 @@ export class ExtendedClient extends Client {
 
 			if (command.data instanceof Function) {
 				// for dynamic data (e.g. /missing)
-				this.slashCommands.set(
-					(await command.data(this)).name,
-					command,
-				);
+				this.slashCommands.set((await command.data(this)).name, command);
 				commandsArr.push({
 					servers: command.servers,
 					command: (await command.data(this)).toJSON(),

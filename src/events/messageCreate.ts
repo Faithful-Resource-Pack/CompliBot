@@ -4,6 +4,7 @@ import { Pack } from "@interfaces";
 import { colors } from "@helpers/colors";
 import axios from "axios";
 import * as Random from "@helpers/random";
+import prefixCommandHandler from "@helpers/prefixCommandHandler";
 
 export default {
 	name: "messageCreate",
@@ -20,6 +21,7 @@ export default {
 		// returns early if you're in a submission channel
 		if (submissionChannels.includes(message.channel.id)) return;
 
+		if (message.content.startsWith(client.tokens.prefix)) return prefixCommandHandler(message);
 		/**
 		 * easter eggs
 		 */

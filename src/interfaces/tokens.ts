@@ -1,4 +1,5 @@
 export interface Tokens {
+	prefix: string; // for shorthand prefix commands
 	token: string;
 	apiUrl: string;
 	apiPassword: string; // for api authentification

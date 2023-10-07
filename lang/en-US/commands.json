@@ -1,29 +1,18 @@
 {
     "command": {
         "botban": {
-            "is_banned": "You cannot use the bot as you have been bot banned!",
             "view": {
                 "unbannable": "You cannot audit this user's entry in the bot ban list!"
             }
+        },
+        "in_submission": {
+            "title": "You cannot run slash commands in a submission channel!",
+            "description": "Please use the appropriate bot command channel instead."
         },
         "images": {
             "too_big": "Output exceeds the maximum of 512px²!"
         },
         "stats": {
-            "embed": {
-                "field_titles": [
-                    "Prefix",
-                    "Uptime",
-                    "Guilds Count",
-                    "Ram Used",
-                    "Discord Library",
-                    "Node.js",
-                    "Total\nCommands",
-                    "Commands\nProcessed",
-                    "Members\nAcross Guilds",
-                    "Operating System"
-                ]
-            },
             "footer": "Made with love",
             "usage": "%COMMAND% has ran %USE% times.",
             "top_ten": "Top 10 most used commands:",

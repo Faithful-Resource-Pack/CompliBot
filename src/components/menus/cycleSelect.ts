@@ -24,12 +24,7 @@ export default {
 		interaction.deferUpdate();
 
 		const [id, display, framerate] = interaction.values[0].split("__");
-		const editOptions = await cycleComparison(
-			interaction.client,
-			id,
-			display,
-			Number(framerate),
-		);
+		const editOptions = await cycleComparison(interaction.client, id, display, Number(framerate));
 
 		message.edit(editOptions).then((message: Message) => message.deleteButton());
 	},
