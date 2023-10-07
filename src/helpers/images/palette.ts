@@ -19,7 +19,7 @@ const GRADIENT_HEIGHT = 50;
 
 export interface options {
 	url: string;
-	name: string;
+	name?: string;
 }
 
 export interface AllColors {
@@ -171,7 +171,7 @@ export async function paletteAttachment(
 
 	const attachment = new MessageAttachment(
 		colorCanvas.toBuffer("image/png"),
-		`${options.name ? options.name : "palette.png"}`,
+		`${options.name || "palette.png"}`,
 	);
 
 	return [attachment, embed];

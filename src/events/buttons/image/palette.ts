@@ -13,7 +13,6 @@ export const button: Button = {
 		const url = await getImageFromMessage(message);
 		const [attachment, embed] = await paletteAttachment({
 			url: url,
-			name: url.split("/").at(-1),
 		});
 
 		if (attachment == null)
