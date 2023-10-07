@@ -199,7 +199,7 @@ export async function paletteTooBig(
 				.setTitle(
 					interaction
 						.strings()
-						.command.images.too_big.replace("%ACTION%", "to take the palette of"),
+						.command.images.too_big.replace("%ACTION%", "take the palette of"),
 				)
 				.setDescription(interaction.strings().command.images.max_size)
 				.setColor(colors.red),
