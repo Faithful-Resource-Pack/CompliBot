@@ -28,7 +28,7 @@ export class Poll extends TimedEmbed {
 		let message: Message;
 
 		try {
-			channel = (await client.channels.fetch(this.getChannelId())) as any;
+			channel = (await client.channels.fetch(this.getChannelId())) as TextChannel;
 			message = await channel.messages.fetch(this.getMessageId());
 		} catch {
 			// message or channel can't be fetched
@@ -161,10 +161,10 @@ export class Poll extends TimedEmbed {
 			components.push(new ActionRowBuilder<ButtonBuilder>().addComponents(btns));
 		}
 
-		const message: Message = (await interaction.editReply({
+		const message: Message = await interaction.editReply({
 			embeds: [embed],
 			components: [...components, new ActionRowBuilder<ButtonBuilder>().addComponents(pollDelete)],
-		})) as any;
+		});
 
 		if (options.question.length > 100) {
 			options.question = options.question.substring(0, 96) + "...";

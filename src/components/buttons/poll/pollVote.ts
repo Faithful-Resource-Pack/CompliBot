@@ -6,7 +6,7 @@ export default {
 	id: "pollVote",
 	async execute(client: Client, interaction: ButtonInteraction) {
 		await interaction.deferUpdate();
-		const message: Message = interaction.message as Message;
+		const message = interaction.message as Message;
 		const embed = message.embeds[0];
 
 		// get poll, update it

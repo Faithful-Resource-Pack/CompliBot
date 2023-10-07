@@ -34,6 +34,7 @@ export interface AllColors {
  */
 export async function palette(origin: ImageSource) {
 	const imageToDraw = await loadImage(origin);
+	if (imageToDraw.width * imageToDraw.height > 262144) return { image: null, embed: null };
 	const canvas: Canvas = createCanvas(imageToDraw.width, imageToDraw.height);
 	const context = canvas.getContext("2d");
 	context.drawImage(imageToDraw, 0, 0);
@@ -172,5 +173,7 @@ export async function paletteToAttachment(
 	name = "palette.png",
 ): Promise<[AttachmentBuilder, EmbedBuilder]> {
 	const { image, embed } = await palette(origin);
+	// too big
+	if (!image || !embed) return [null, null];
 	return [new AttachmentBuilder(image, { name }), embed];
 }

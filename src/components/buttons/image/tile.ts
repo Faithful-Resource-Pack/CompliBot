@@ -13,7 +13,7 @@ export default {
 	async execute(client: Client, interaction: ButtonInteraction) {
 		if (client.verbose) console.log(`${info}Image was tiled!`);
 
-		const message: Message = interaction.message as Message;
+		const message = interaction.message as Message;
 		const url = await getImage(message);
 		const attachment = await tileToAttachment(url);
 
@@ -21,11 +21,11 @@ export default {
 			return await interaction.reply({
 				embeds: [
 					new EmbedBuilder()
-						.setTitle(interaction.strings().command.tile.too_big)
-						.setDescription(interaction.strings().command.tile.suggestion)
+						.setTitle(interaction.strings().command.images.too_big.replace("%ACTION%", "be tiled"))
+						.setDescription(interaction.strings().command.images.suggestion)
 						.setColor(colors.red),
 				],
-				ephemeral: true
+				ephemeral: true,
 			});
 
 		return interaction

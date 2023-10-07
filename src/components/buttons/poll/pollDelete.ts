@@ -8,10 +8,9 @@ export default {
 	async execute(client: Client, interaction: ButtonInteraction) {
 		if (client.verbose) console.log(`${info}Poll Message deleted!`);
 
-		const messageInteraction: MessageInteraction = interaction.message
-			.interaction as MessageInteraction;
-		const message: Message = interaction.message as Message;
-		const pid: string = interaction.message.embeds[0].footer.text.split(" | ")[0];
+		const messageInteraction = interaction.message.interaction as MessageInteraction;
+		const message = interaction.message as Message;
+		const pid = interaction.message.embeds[0].footer.text.split(" | ")[0];
 
 		if (messageInteraction != undefined && interaction.user.id != messageInteraction.user.id)
 			return interaction.reply({

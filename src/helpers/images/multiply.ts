@@ -21,7 +21,7 @@ export enum MCColors {
 	DyeLime = "#80C71F",
 	DyePink = "#F38BAA",
 	DyeGray = "#474F52",
-	DyeLightgray = "#9D9D97",
+	DyeLightGray = "#9D9D97",
 	DyeCyan = "#169C9C",
 	DyePurple = "#8932B8",
 	DyeBlue = "#3C44AA",
@@ -56,7 +56,7 @@ export async function multiplyAttachment(
 	const context = canvas.getContext("2d");
 
 	context.imageSmoothingEnabled = false;
-	const imageToDraw = await loadImage(options.url as string);
+	const imageToDraw = await loadImage(options.url);
 
 	context.drawImage(imageToDraw, 0, 0, dimension.width, dimension.height);
 	context.globalCompositeOperation = "multiply";

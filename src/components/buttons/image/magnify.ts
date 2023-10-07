@@ -12,7 +12,7 @@ export default {
 	async execute(client: Client, interaction: ButtonInteraction) {
 		if (client.verbose) console.log(`${info}Image was magnified!`);
 
-		const message: Message = interaction.message as Message;
+		const message = interaction.message as Message;
 		const url = await getImage(message);
 		const attachment = await magnifyToAttachment(url);
 

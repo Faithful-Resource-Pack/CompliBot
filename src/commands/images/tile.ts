@@ -49,11 +49,11 @@ export const command: SlashCommand = {
 			return await interaction.reply({
 				embeds: [
 					new EmbedBuilder()
-						.setTitle(interaction.strings().command.tile.too_big)
-						.setDescription(interaction.strings().command.tile.suggestion)
+						.setTitle(interaction.strings().command.images.too_big.replace("%ACTION%", "be tiled"))
+						.setDescription(interaction.strings().command.images.suggestion)
 						.setColor(colors.red),
 				],
-				ephemeral: true
+				ephemeral: true,
 			});
 		}
 		await interaction

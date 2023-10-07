@@ -8,8 +8,7 @@ export default {
 	async execute(client: Client, interaction: ButtonInteraction) {
 		if (client.verbose) console.log(`${info}Interaction Message deleted!`);
 
-		const messageInteraction: MessageInteraction = interaction.message
-			.interaction as MessageInteraction;
+		const messageInteraction = interaction.message.interaction as MessageInteraction;
 		const message = interaction.message as Message;
 
 		if (messageInteraction != undefined && interaction.user.id != messageInteraction.user.id)

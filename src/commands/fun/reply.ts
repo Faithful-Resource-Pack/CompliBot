@@ -21,9 +21,7 @@ export const command: SlashCommand = {
 
 		let msg: Message;
 		try {
-			msg = (await interaction.channel.messages.fetch(
-				interaction.options.getString("message"),
-			)) as Message;
+			msg = await interaction.channel.messages.fetch(interaction.options.getString("message"));
 		} catch {
 			return interaction.reply({ content: "Message can't be fetched!", ephemeral: true });
 		} // message can't be fetched

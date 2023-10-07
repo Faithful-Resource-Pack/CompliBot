@@ -9,7 +9,7 @@ export default {
 	async execute(client: Client, interaction: ButtonInteraction) {
 		if (client.verbose) console.log(`${info}Image was compared!`);
 
-		const message: Message = interaction.message as Message;
+		const message = interaction.message as Message;
 		const ids = message.embeds?.[0]?.title.match(/\d+/);
 
 		await interaction.deferReply();

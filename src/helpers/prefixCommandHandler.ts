@@ -19,7 +19,7 @@ export default async function prefixCommandHandler(message: Message) {
 			return await message
 				.reply({
 					files: [await magnifyToAttachment(url)],
-					components: [new ActionRowBuilder<ButtonBuilder>().addComponents(palette)]
+					components: [new ActionRowBuilder<ButtonBuilder>().addComponents(palette)],
 				})
 				.then((message: Message) => message.deleteButton());
 		case "t":
