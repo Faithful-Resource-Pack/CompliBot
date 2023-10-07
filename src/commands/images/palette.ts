@@ -38,7 +38,7 @@ export const command: SlashCommand = {
 			files: [file],
 			fetchReply: true,
 		}).then((message: Message) => {
-			message.deleteButton(true);
+			message.deleteButton();
 		});
 	},
 };
