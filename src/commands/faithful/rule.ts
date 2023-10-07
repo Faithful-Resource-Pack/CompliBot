@@ -1,6 +1,6 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "discord.js";
-import { ChatInputCommandInteraction, Message, EmbedBuilder, Client } from "@client";
+import { ChatInputCommandInteraction, Message, EmbedBuilder } from "@client";
 import { colors } from "@helpers/colors";
 import ruleStrings from "@json/rules.json";
 import axios from "axios";
@@ -35,9 +35,7 @@ export const command: SlashCommand = {
 		const choice = interaction.options.getString("number", true);
 
 		// fetch the whole collection since we're using it multiple times
-		const settings = (
-			await axios.get(`${(interaction.client as Client).tokens.apiUrl}settings/raw`)
-		).data;
+		const settings = (await axios.get(`${interaction.client.tokens.apiUrl}settings/raw`)).data;
 
 		if (choice == "all" || choice == "server") {
 			if (!interaction.hasPermission("manager")) return;

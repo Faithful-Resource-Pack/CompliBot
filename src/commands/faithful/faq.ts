@@ -1,6 +1,6 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "discord.js";
-import { ChatInputCommandInteraction, Message, EmbedBuilder, Client } from "@client";
+import { ChatInputCommandInteraction, Message, EmbedBuilder } from "@client";
 import { colors } from "@helpers/colors";
 import faqStrings from "@json/faq.json";
 import axios from "axios";
@@ -59,7 +59,7 @@ export const command: SlashCommand = {
 		}
 
 		const question: string = (
-			await axios.get(`${(interaction.client as Client).tokens.apiUrl}settings/images.question`)
+			await axios.get(`${interaction.client.tokens.apiUrl}settings/images.question`)
 		).data;
 
 		const faqEmbed = new EmbedBuilder()

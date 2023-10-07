@@ -25,7 +25,7 @@ export default {
 
 		const [id, display, framerate] = interaction.values[0].split("__");
 		const editOptions = await cycleComparison(
-			interaction.client as Client,
+			interaction.client,
 			id,
 			display,
 			Number(framerate),

@@ -48,7 +48,7 @@ export const command: SlashCommand = {
 		// only one result
 		if (results.length === 1) {
 			const replyOptions = await cycleComparison(
-				interaction.client as Client,
+				interaction.client,
 				results[0].id,
 				display,
 				framerate,

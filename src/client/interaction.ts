@@ -9,24 +9,29 @@ import {
 import { JSONFiles, en_US } from "@helpers/strings";
 import { EmbedBuilder } from "@client";
 import { colors } from "@helpers/colors";
+import { ExtendedClient } from "./client";
 
 export type PermissionType = "manager" | "dev" | "moderator" | "council";
 
 declare module "discord.js" {
 	interface ChatInputCommandInteraction {
+		client: ExtendedClient; // so you don't have to cast it every time
 		strings(): typeof en_US;
 		hasPermission(type: PermissionType): boolean;
 	}
 
 	interface ButtonInteraction {
+		client: ExtendedClient;
 		strings(): typeof en_US;
 	}
 
 	interface StringSelectMenuInteraction {
+		client: ExtendedClient;
 		strings(): typeof en_US;
 	}
 
 	interface ModalSubmitInteraction {
+		client: ExtendedClient;
 		strings(): typeof en_US;
 	}
 }

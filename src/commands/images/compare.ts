@@ -43,7 +43,7 @@ export const command: SlashCommand = {
 		// only one result
 		if (results.length === 1) {
 			const replyOptions = await textureComparison(
-				interaction.client as Client,
+				interaction.client,
 				results[0].id,
 				display,
 			);

@@ -27,7 +27,7 @@ export const command: SlashCommand = {
 	execute: new Collection<string, SlashCommandI>()
 		.set("bot", async (interaction: ChatInputCommandInteraction) => {
 			// easier to get extended properties
-			const client = interaction.client as Client;
+			const client = interaction.client;
 			let sumMembers = 0;
 			let version: string;
 

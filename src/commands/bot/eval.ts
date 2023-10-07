@@ -44,7 +44,7 @@ export const command: SlashCommand = {
 			ephemeral: true,
 			embeds: [
 				new EmbedBuilder().setDescription(
-					`\`\`\`js\n${(await clean(evaluated, interaction.client as Client)).slice(
+					`\`\`\`js\n${(await clean(evaluated, interaction.client)).slice(
 						0,
 						4085,
 					)}\`\`\``,

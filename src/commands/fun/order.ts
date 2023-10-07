@@ -41,8 +41,8 @@ export const command: SlashCommand = {
 				.setName("item")
 				.setDescription("The item you want.")
 				.addChoices(
-					...Object.entries(options).map((option) => {
-						return { name: option[0], value: option[0] };
+					...Object.keys(options).map((option) => {
+						return { name: option, value: option };
 					}),
 				)
 				.setRequired(true),

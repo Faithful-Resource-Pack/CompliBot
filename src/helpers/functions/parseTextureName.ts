@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ChatInputCommandInteraction, Client, EmbedBuilder } from "@client";
+import { ChatInputCommandInteraction, EmbedBuilder } from "@client";
 import { colors } from "@helpers/colors";
 import { Texture } from "@interfaces";
 
@@ -34,9 +34,7 @@ export default async function parseTextureName(
 
 	let results: any;
 	try {
-		results = (
-			await axios.get(`${(interaction.client as Client).tokens.apiUrl}textures/${name}/all`)
-		).data;
+		results = (await axios.get(`${interaction.client.tokens.apiUrl}textures/${name}/all`)).data;
 	} catch {
 		return [];
 	}

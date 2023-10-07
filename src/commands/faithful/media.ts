@@ -1,7 +1,7 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "discord.js";
 import { media } from "@helpers/infoembed";
-import { Message, EmbedBuilder, ChatInputCommandInteraction, Client } from "@client";
+import { Message, EmbedBuilder, ChatInputCommandInteraction } from "@client";
 import axios from "axios";
 
 export const command: SlashCommand = {
@@ -26,7 +26,7 @@ export const command: SlashCommand = {
 
 		// you can't import images directly in infoembed.ts so you have to do it here (blame TS)
 		const images: { [name: string]: string } = (
-			await axios.get(`${(interaction.client as Client).tokens.apiUrl}settings/images`)
+			await axios.get(`${interaction.client.tokens.apiUrl}settings/images`)
 		).data;
 
 		if (key === "default") {

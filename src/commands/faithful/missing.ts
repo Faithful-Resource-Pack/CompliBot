@@ -74,7 +74,7 @@ export const command: SlashCommand = {
 		const updateChannels = version === "latest";
 
 		const loading: string = (
-			await axios.get(`${(interaction.client as Client).tokens.apiUrl}settings/images.loading`)
+			await axios.get(`${interaction.client.tokens.apiUrl}settings/images.loading`)
 		).data;
 
 		const embed = new EmbedBuilder()
@@ -115,7 +115,7 @@ export const command: SlashCommand = {
 			// you can edit the function being called so you don't need like 50 different if statements with the same args
 			const updateCallback: Function = updateChannels ? computeAndUpdateAll : computeAll;
 			responses = await updateCallback(
-				interaction.client as Client,
+				interaction.client,
 				pack,
 				version,
 				stepCallback,
@@ -127,7 +127,7 @@ export const command: SlashCommand = {
 			const updateCallback: Function = updateChannels ? computeAndUpdate : compute;
 			responses = [
 				await updateCallback(
-					interaction.client as Client,
+					interaction.client,
 					pack,
 					edition,
 					version,

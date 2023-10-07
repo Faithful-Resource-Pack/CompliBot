@@ -177,6 +177,6 @@ export class Poll extends TimedEmbed {
 		this.setChannelId(interaction.channelId);
 		this.setMessageId(message.id);
 
-		(interaction.client as Client).polls.set(this.id, this);
+		interaction.client.polls.set(this.id, this);
 	}
 }

@@ -25,7 +25,7 @@ export default {
 
 		const [id, display] = interaction.values[0].split("__");
 		const editOptions: MessageEditOptions = await textureComparison(
-			interaction.client as Client,
+			interaction.client,
 			id,
 			display,
 		);

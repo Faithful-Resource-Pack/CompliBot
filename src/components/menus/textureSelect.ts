@@ -26,9 +26,7 @@ export default {
 
 		const [id, pack] = interaction.values[0].split("__");
 		const editOptions: MessageEditOptions = await getTexture({
-			texture: (
-				await axios.get(`${(interaction.client as Client).tokens.apiUrl}textures/${id}/all`)
-			).data,
+			texture: (await axios.get(`${interaction.client.tokens.apiUrl}textures/${id}/all`)).data,
 			pack: pack,
 			guild: interaction.guild,
 		});

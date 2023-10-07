@@ -1,4 +1,4 @@
-import { EmbedBuilder, ChatInputCommandInteraction, Message, Client } from "@client";
+import { EmbedBuilder, ChatInputCommandInteraction, Message } from "@client";
 import {
 	ActionRowBuilder,
 	SelectMenuComponentOptionData,
@@ -23,7 +23,7 @@ export async function generalChoiceEmbed(
 	const choicesLength = choices.length; // we're modifying choices directly so it needs to be saved first
 	const components: ActionRowBuilder<StringSelectMenuBuilder>[] = [];
 	const emojis: string[] = (
-		await axios.get(`${(interaction.client as Client).tokens.apiUrl}settings/emojis.default_select`)
+		await axios.get(`${interaction.client.tokens.apiUrl}settings/emojis.default_select`)
 	).data;
 
 	// dividing into maximum of 25 choices per menu

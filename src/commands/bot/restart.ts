@@ -1,6 +1,6 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
-import { Client, ChatInputCommandInteraction } from "@client";
+import { ChatInputCommandInteraction } from "@client";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -11,6 +11,6 @@ export const command: SlashCommand = {
 		if (!interaction.hasPermission("dev")) return;
 
 		await interaction.reply({ content: "restarting...", ephemeral: true });
-		await (interaction.client as Client).restart(interaction);
+		await interaction.client.restart(interaction);
 	},
 };

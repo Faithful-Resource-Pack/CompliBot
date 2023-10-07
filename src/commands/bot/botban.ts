@@ -1,5 +1,5 @@
 import { SlashCommand, SlashCommandI } from "@interfaces";
-import { Client, EmbedBuilder, ChatInputCommandInteraction } from "@client";
+import { EmbedBuilder, ChatInputCommandInteraction } from "@client";
 import {
 	Collection,
 	AttachmentBuilder,
@@ -57,7 +57,7 @@ export const command: SlashCommand = {
 			// const banlist = JSON.parse(banlistJSON);
 			const victimID = interaction.options.getUser("subject").id;
 			if (
-				(interaction.client as Client).tokens.developers.includes(victimID) ||
+				interaction.client.tokens.developers.includes(victimID) ||
 				victimID == interaction.client.user.id // self
 			)
 				return interaction.followUp(interaction.strings().command.botban.view.unbannable);

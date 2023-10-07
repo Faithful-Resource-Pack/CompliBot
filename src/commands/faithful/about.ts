@@ -1,5 +1,5 @@
 import { SlashCommand } from "@interfaces";
-import { Message, EmbedBuilder, ChatInputCommandInteraction, Client } from "@client";
+import { Message, EmbedBuilder, ChatInputCommandInteraction } from "@client";
 import { SlashCommandBuilder, AttachmentBuilder } from "discord.js";
 import axios from "axios";
 import { formatName } from "@helpers/sorter";
@@ -19,7 +19,7 @@ export const command: SlashCommand = {
 		await interaction.deferReply();
 
 		const loading: string = (
-			await axios.get(`${(interaction.client as Client).tokens.apiUrl}settings/images.loading`)
+			await axios.get(`${interaction.client.tokens.apiUrl}settings/images.loading`)
 		).data;
 
 		const loadingEmbed = new EmbedBuilder()
@@ -36,9 +36,7 @@ export const command: SlashCommand = {
 		let contributionData: Contribution[] = [];
 		try {
 			contributionData = (
-				await axios.get(
-					`${(interaction.client as Client).tokens.apiUrl}users/${user.id}/contributions`,
-				)
+				await axios.get(`${interaction.client.tokens.apiUrl}users/${user.id}/contributions`)
 			).data;
 		} catch {
 			const finalEmbed = new EmbedBuilder()
@@ -70,7 +68,7 @@ export const command: SlashCommand = {
 						try {
 							data = (
 								await axios.get(
-									`${(interaction.client as Client).tokens.apiUrl}textures/${ids
+									`${interaction.client.tokens.apiUrl}textures/${ids
 										.filter((v, i, a) => a.indexOf(v) === i)
 										.join(",")}`,
 								)

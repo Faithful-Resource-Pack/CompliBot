@@ -1,6 +1,6 @@
 import { ModalSubmitInteraction } from "discord.js";
 import { Octokit } from "@octokit/rest";
-import { Client, EmbedBuilder } from "@client";
+import { EmbedBuilder } from "@client";
 import { colors } from "@helpers/colors";
 
 /**
@@ -17,7 +17,7 @@ export default async function sendFeedback(
 ) {
 	try {
 		const octokit = new Octokit({
-			auth: (interaction.client as Client).tokens.gitToken,
+			auth: interaction.client.tokens.gitToken,
 		});
 
 		octokit.issues.create({
