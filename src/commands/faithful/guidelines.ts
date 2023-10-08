@@ -41,7 +41,7 @@ export const command: SlashCommand = {
 				contents = "https://docs.faithfulpack.net/pages/textures/f32-texturing-guidelines";
 				break;
 			case "faithful_64x":
-				contents = "https://docs.faithfulpack.net/pages/textures/f32-texturing-guidelines";
+				contents = "https://docs.faithfulpack.net/pages/textures/f64-texturing-guidelines";
 				break;
 			case "classic_faithful_32x":
 				contents = "https://docs.faithfulpack.net/pages/textures/cf32-texturing-guidelines";
