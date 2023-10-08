@@ -1,15 +1,6 @@
 import { createCanvas, loadImage, Image } from "@napi-rs/canvas";
 import { AttachmentBuilder } from "discord.js";
-
-// taken from loadImage();
-export type ImageSource =
-	| string
-	| URL
-	| Buffer
-	| ArrayBufferLike
-	| Uint8Array
-	| Image
-	| import("stream").Readable;
+import { ImageSource } from "@helpers/getImage";
 
 export interface MagnifyOptions {
 	isAnimation?: boolean;

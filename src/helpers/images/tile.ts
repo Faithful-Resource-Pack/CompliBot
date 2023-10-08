@@ -1,6 +1,6 @@
 import { createCanvas, loadImage, Image, DOMMatrix } from "@napi-rs/canvas";
 import { AttachmentBuilder } from "discord.js";
-import { ImageSource } from "./magnify";
+import { ImageSource } from "@helpers/getImage";
 import {
 	EmbedBuilder,
 	ButtonInteraction,

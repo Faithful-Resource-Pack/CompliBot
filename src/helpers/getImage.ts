@@ -1,8 +1,19 @@
+import { Image } from "@napi-rs/canvas";
 import { Message, ChatInputCommandInteraction } from "@client";
 import { Interaction, MessageType } from "discord.js";
 
 // remove stupid discord metadata (idk why they even added it)
 export const removeMetadata = (url: string) => url.split("?")[0];
+
+// taken from loadImage();
+export type ImageSource =
+	| string
+	| URL
+	| Buffer
+	| ArrayBufferLike
+	| Uint8Array
+	| Image
+	| import("stream").Readable;
 
 /**
  * Get image URL from a given message if possible
@@ -20,7 +31,7 @@ export async function getImageFromMessage(message: Message) {
 	// search for image urls
 	url = message.content?.split(" ").find((i) => i.startsWith("http"));
 	// check if url points to valid image
-	if (url && /(png|jpg|jpeg|webp)$/g.test(removeMetadata(url))) return url;
+	if (url && /(png|gif|jpg|jpeg|webp)$/g.test(removeMetadata(url))) return url;
 
 	// nothing found
 	return "";

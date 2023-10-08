@@ -8,7 +8,7 @@ import {
 import { Canvas, createCanvas, loadImage } from "@napi-rs/canvas";
 import { AttachmentBuilder } from "discord.js";
 import ColorManager from "@images/colors";
-import { ImageSource } from "./magnify";
+import { ImageSource } from "@helpers/getImage";
 import { colors } from "@helpers/colors";
 
 const COOLORS_URL = "https://coolors.co/";
