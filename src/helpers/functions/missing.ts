@@ -195,13 +195,13 @@ export const compute = async (
 };
 
 export const getAllFilesFromDir = (dir: string, filter: string[] = []): string[] => {
-	let fileList = [];
+	const fileList = [];
 	readdirSync(dir).forEach((file) => {
 		file = normalize(join(dir, file));
 		const stat = statSync(file);
 
 		if (!file.includes(".git")) {
-			if (stat.isDirectory()) fileList = fileList.concat(getAllFilesFromDir(file, filter));
+			if (stat.isDirectory()) fileList.push(...getAllFilesFromDir(file, filter));
 			else {
 				if (
 					(file.endsWith(".png") || file.endsWith(".tga")) &&
