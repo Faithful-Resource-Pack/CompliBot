@@ -71,7 +71,7 @@ export const getTextureMessageOptions = async (options: {
 			.setDescription(`\`${texture.name}\` hasn't been made for ${strPack} yet or is blacklisted!`)
 			.setColor(colors.red);
 		// missing texture so we break early
-		return { embeds: [errorEmbed] };
+		return { embeds: [errorEmbed], components: [] };
 	}
 
 	embed
