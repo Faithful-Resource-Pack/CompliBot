@@ -2,7 +2,7 @@ import { Poll } from "@class/poll";
 import { Client } from "@client";
 
 /**
- * Automate checking tasks, primarily used for polls
+ * Automate checking tasks with a given delay
  * @author Juknum
  */
 export class Automation {
@@ -22,8 +22,15 @@ export class Automation {
 			if (!this.ticking) return;
 
 			// polls check:
-			this.client.polls.each((p: Poll) => this.pollCheck(p));
+			this.client.polls.each(this.pollCheck);
 		}, 1000); // each second
+
+		// send to uptime kuma (only for production bot)
+		if (this.client.tokens.status) {
+			setInterval(() =>
+				fetch(this.client.tokens.status + this.client.ws.ping).catch(()=>{}),
+			600000); // 10 minutes
+		}
 	}
 
 	private pollCheck(p: Poll): void {

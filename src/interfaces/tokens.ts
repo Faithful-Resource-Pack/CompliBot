@@ -9,4 +9,5 @@ export interface Tokens {
 	dev: boolean; // if true: instantiate command only it the bot dev discord server
 	verbose: boolean; // show extra logs for debugging
 	maintenance: boolean; // if true: disallow normal bot functions and update status
+	status?: string; // optionally specify a url to post the bot status to
 }
