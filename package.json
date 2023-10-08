@@ -1,9 +1,8 @@
 {
     "name": "complibot",
-    "version": "2.0.4",
+    "version": "4.0.0",
     "description": "The official bot for the Faithful Discord servers.",
     "main": "src/index.ts",
-    "type": "commonjs",
     "scripts": {
         "dev": "ts-node-dev --respawn -r tsconfig-paths/register  --ignore-watch json/dynamic/ src/index.ts",
         "start": "node -r ts-node/register -r tsconfig-paths/register src/index.ts",
@@ -11,26 +10,21 @@
     },
     "devDependencies": {
         "prettier": "^3.0.3",
-        "ts-node": "^10.9.1",
-        "ts-node-dev": "^2.0.0",
-        "tsc-alias": "^1.8.7",
-        "tsconfig-paths": "^4.2.0",
-        "typescript": "^5.2.2"
+        "ts-node-dev": "^2.0.0"
     },
     "dependencies": {
-        "@discordjs/builders": "^1.6.5",
-        "@discordjs/rest": "^2.0.1",
         "@napi-rs/canvas": "^0.1.44",
-        "@types/node": "^20.6.2",
-        "axios": "^1.5.0",
+        "@octokit/rest": "^20.0.2",
+        "@types/node": "^20.8.3",
+        "axios": "^1.5.1",
         "chalk": "^4.1.2",
-        "discord-api-types": "^0.37.56",
-        "discord.js": "^13.16.0",
+        "discord.js": "^14.13.0",
         "gif-encoder-2": "^1.0.5",
         "image-size": "^1.0.2",
         "jszip": "^3.10.1",
         "linux-os-info": "^2.0.0",
         "moment": "^2.29.4",
-        "tslib": "^2.6.2"
+        "ts-node": "^10.9.1",
+        "tsconfig-paths": "^4.2.0"
     }
 }

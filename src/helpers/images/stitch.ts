@@ -1,12 +1,13 @@
 import { Canvas } from "@napi-rs/canvas";
 
 /**
+ * Stitch a 2d array of canvases into one image with a specified gap
  * @author EwanHowell
  * @param images pre-loaded canvas images
  * @param gap optionally specify pixel gap
  * @returns canvas buffer with stitched image
  */
-export default async function stitch(images: Canvas[][], gap: number = 0) {
+export default async function stitch(images: Canvas[][], gap = 0) {
 	const img = images.flat().reduce((a, e) => (a.width > e.width ? a : e), { width: 0, height: 0 });
 	const length = images.reduce((a, e) => Math.max(a, e.length), 0);
 	const vGap = (length - 1) * gap;
@@ -18,8 +19,8 @@ export default async function stitch(images: Canvas[][], gap: number = 0) {
 	const canvas = new Canvas(tileWidth * length + vGap, tileHeight * images.length + hGap);
 	const ctx = canvas.getContext("2d");
 	ctx.imageSmoothingEnabled = false;
-	for (let y = 0; y < images.length; y++)
-		for (let x = 0; x < images[y].length; x++) {
+	for (let y = 0; y < images.length; ++y)
+		for (let x = 0; x < images[y].length; ++x) {
 			ctx.drawImage(
 				images[y][x],
 				x * tileWidth + x * gap,

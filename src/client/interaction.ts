@@ -1,38 +1,47 @@
-import { ButtonInteraction, CommandInteraction, Role, SelectMenuInteraction } from "discord.js";
-import { string, keys, Placeholder } from "@helpers/locales";
-import { PermissionFlagsBits } from "discord-api-types/v10";
-import { MessageEmbed } from "@client";
+import {
+	ButtonInteraction,
+	ChatInputCommandInteraction,
+	Role,
+	StringSelectMenuInteraction,
+	ModalSubmitInteraction,
+	PermissionFlagsBits,
+} from "discord.js";
+import { strings, AllStrings } from "@helpers/strings";
+import { EmbedBuilder } from "@client";
+import { colors } from "@utility/colors";
+import { ExtendedClient } from "./client";
 
 export type PermissionType = "manager" | "dev" | "moderator" | "council";
 
 declare module "discord.js" {
-	interface CommandInteraction {
-		getEphemeralString(options: TextOptions): Promise<string>;
-		getString(options: TextOptions): Promise<string>;
-		/**
-		 * @see {@link checkPermissions} for implementation details
-		 */
+	interface ChatInputCommandInteraction {
+		client: ExtendedClient; // so you don't have to cast it every time
+		strings(): AllStrings;
 		hasPermission(type: PermissionType): boolean;
 	}
 
 	interface ButtonInteraction {
-		getEphemeralString(options: TextOptions): Promise<string>;
-		getString(options: TextOptions): Promise<string>;
+		client: ExtendedClient;
+		strings(): AllStrings;
 	}
 
-	interface SelectMenuInteraction {
-		getEphemeralString(options: TextOptions): Promise<string>;
-		getString(options: TextOptions): Promise<string>;
+	interface StringSelectMenuInteraction {
+		client: ExtendedClient;
+		strings(): AllStrings;
+	}
+
+	interface ModalSubmitInteraction {
+		client: ExtendedClient;
+		strings(): AllStrings;
 	}
 }
-interface TextOptions {
-	string: keys;
-	placeholders?: Placeholder;
-}
-async function getEphemeralString(options: TextOptions): Promise<string> {
-	return await string(this.locale, options.string, options.placeholders);
-}
 
+/**
+ * Check whether a user can run a given command
+ * @author Evorp
+ * @param type what role to check for
+ * @returns whether the user has permission or not
+ */
 function hasPermission(type: PermissionType): boolean {
 	const hasManager = this.member.permissions.has(PermissionFlagsBits.Administrator);
 	const hasModerator = this.member.permissions.has(PermissionFlagsBits.ManageMessages);
@@ -42,9 +51,10 @@ function hasPermission(type: PermissionType): boolean {
 
 	const hasDev = this.client.tokens.developers.includes(this.member.id);
 
-	const noPermission = new MessageEmbed()
+	const noPermission = new EmbedBuilder()
 		.setTitle("You don't have permission to do that!")
-		.setDescription(`Only ${type}s can use this command.`);
+		.setDescription(`Only ${type}s can use this command.`)
+		.setColor(colors.red);
 
 	let out: boolean;
 	switch (type) {
@@ -62,9 +72,15 @@ function hasPermission(type: PermissionType): boolean {
 	return out;
 }
 
-CommandInteraction.prototype.getEphemeralString = getEphemeralString;
-ButtonInteraction.prototype.getEphemeralString = getEphemeralString;
-SelectMenuInteraction.prototype.getEphemeralString = getEphemeralString;
-CommandInteraction.prototype.hasPermission = hasPermission;
+ChatInputCommandInteraction.prototype.hasPermission = hasPermission;
+ButtonInteraction.prototype.strings = strings;
+StringSelectMenuInteraction.prototype.strings = strings;
+ChatInputCommandInteraction.prototype.strings = strings;
+ModalSubmitInteraction.prototype.strings = strings;
 
-export { CommandInteraction, ButtonInteraction, SelectMenuInteraction };
+export {
+	ChatInputCommandInteraction,
+	ButtonInteraction,
+	ModalSubmitInteraction,
+	StringSelectMenuInteraction,
+};

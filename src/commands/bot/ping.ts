@@ -1,41 +1,32 @@
 import { SlashCommand } from "@interfaces";
-import { SlashCommandBuilder } from "@discordjs/builders";
-import { Client, MessageEmbed, CommandInteraction, Message } from "@client";
+import { SlashCommandBuilder } from "discord.js";
+import { EmbedBuilder, ChatInputCommandInteraction, Message } from "@client";
+import { ping } from "@json/quotes.json";
+import * as Random from "@utility/random";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder().setName("ping").setDescription("Check the bot and API latency."),
-	execute: async (interaction: CommandInteraction, client: Client) => {
-		let embed = new MessageEmbed().setTitle(
-			await interaction.getEphemeralString({ string: "Command.Ping.Await" }),
-		);
-		await interaction.reply({ embeds: [embed] }).then(async () => {
-			const d: Date = new Date();
-			const quotes = (
-				await interaction.getEphemeralString({
-					string: "Command.Ping.Quotes",
-					placeholders: { YEAR: (new Date().getFullYear() + 2).toString() },
-				})
-			).split("$,");
-			embed
-				.setTitle(await interaction.getEphemeralString({ string: "Command.Ping.Title" }))
-				.setDescription(
-					await interaction.getEphemeralString({
-						string: "Command.Ping.Description",
-						placeholders: {
-							QUOTE: quotes[Math.floor(Math.random() * quotes.length)],
-							LATENCY: (d.getTime() - interaction.createdTimestamp).toString(),
-							APILATENCY: Math.round(client.ws.ping).toString(),
-						},
-					}),
-				);
+	async execute(interaction: ChatInputCommandInteraction) {
+		const quote = Random.choice(ping);
 
-			try {
-				interaction
-					.editReply({ embeds: [embed] })
-					.then((message: Message) => message.deleteButton());
-			} catch (err) {
-				console.error(err);
-			}
-		});
+		// NEVER USE AWAIT ASYNC
+		// only send response to maximize response time
+		interaction
+			.reply({ content: "** **", fetchReply: true })
+			.then((msg) => {
+				const apiPing = interaction.client.ws.ping;
+				const botPing = msg.createdTimestamp - interaction.createdTimestamp;
+
+				const embed = new EmbedBuilder()
+					.setTitle("Pong!")
+					.setDescription(`_${quote.replace("%YEAR%", String(new Date().getFullYear() + 2))}_`)
+					.addFields(
+						{ name: "Bot Latency", value: `${botPing}ms`, inline: true },
+						{ name: "API Latency", value: `${Math.round(apiPing)}ms`, inline: true },
+					);
+
+				return interaction.editReply({ embeds: [embed] });
+			})
+			.then((message: Message) => message.deleteButton());
 	},
 };

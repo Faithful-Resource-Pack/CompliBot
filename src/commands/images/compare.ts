@@ -1,9 +1,9 @@
 import { SlashCommand } from "@interfaces";
-import { SlashCommandBuilder } from "@discordjs/builders";
-import { Client, CommandInteraction, MessageEmbed, Message } from "@client";
+import { SlashCommandBuilder } from "discord.js";
+import { Client, ChatInputCommandInteraction, EmbedBuilder, Message } from "@client";
 import textureComparison from "@functions/textureComparison";
 import parseTextureName from "@functions/parseTextureName";
-import { colors } from "@helpers/colors";
+import { colors } from "@utility/colors";
 import { textureChoiceEmbed } from "@helpers/choiceEmbed";
 
 export const command: SlashCommand = {
@@ -21,51 +21,28 @@ export const command: SlashCommand = {
 				.setName("display")
 				.setDescription("Which set of packs you want to display (default is everything).")
 				.addChoices(
-					{ name: "Faithful", value: "faithful" },
-					{ name: "Classic Faithful Jappa", value: "cfjappa" },
-					{ name: "Classic Faithful Programmer Art", value: "cfpa" },
-					{ name: "Jappa", value: "jappa" },
-					{ name: "All", value: "all" },
+					{ name: "Faithful", value: "Faithful" },
+					{ name: "Classic Faithful Jappa", value: "Classic Faithful Jappa" },
+					{ name: "Classic Faithful Programmer Art", value: "Classic Faithful PA" },
+					{ name: "Jappa", value: "Jappa" },
+					{ name: "All", value: "All" },
 				)
 				.setRequired(false),
 		),
-	execute: async (interaction: CommandInteraction) => {
-		const display = interaction.options.getString("display", false) ?? "all";
+	async execute(interaction: ChatInputCommandInteraction) {
+		const display = interaction.options.getString("display", false) ?? "All";
 		const name = interaction.options.getString("texture", true);
 
 		// sometimes it takes too long otherwise
 		await interaction.deferReply();
 		const results = await parseTextureName(name, interaction);
 
-		// returned early in parseTextureName()
+		// no results or invalid search
 		if (!results) return;
-
-		if (!results.length) {
-			// no results
-			return interaction
-				.editReply({
-					embeds: [
-						new MessageEmbed()
-							.setTitle("No results found!")
-							.setDescription(
-								await interaction.getEphemeralString({
-									string: "Command.Texture.NotFound",
-									placeholders: { TEXTURENAME: `\`${name}\`` },
-								}),
-							)
-							.setColor(colors.red),
-					],
-				})
-				.then((message: Message) => message.deleteButton());
-		}
 
 		// only one result
 		if (results.length === 1) {
-			const replyOptions = await textureComparison(
-				interaction.client as Client,
-				results[0].id,
-				display,
-			);
+			const replyOptions = await textureComparison(interaction.client, results[0].id, display);
 
 			return interaction.editReply(replyOptions).then((message: Message) => message.deleteButton());
 		}

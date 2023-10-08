@@ -36,7 +36,11 @@ interface ColorManagerOptions {
 	cmyk?: { c: number; m: number; y: number; k: number };
 }
 
-export class ColorManager {
+/**
+ * Convert and handle colors
+ * @author Nick
+ */
+export default class ColorManager {
 	private color: RGBA;
 
 	private b10b16(c: number | string): string {

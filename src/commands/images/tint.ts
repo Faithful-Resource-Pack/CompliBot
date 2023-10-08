@@ -1,12 +1,13 @@
 import { SlashCommand } from "@interfaces";
-import { Client, CommandInteraction, Message, MessageEmbed } from "@client";
-import { SlashCommandBuilder } from "@discordjs/builders";
-import { generalSlashCommandImage } from "@functions/slashCommandImage";
-import { mcColorsOptions, multiplyAttachment } from "@images/multiply";
+import { ChatInputCommandInteraction, Message } from "@client";
+import { SlashCommandBuilder } from "discord.js";
+import { mcColorsOptions, multiplyToAttachment } from "@images/multiply";
+import getImage from "@helpers/getImage";
+import { imageButtons } from "@utility/buttons";
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
 		.setName("tint")
-		.setDescription(`Tint a grayscale image to a minecraft color`)
+		.setDescription(`Tint a grayscale image to a Minecraft color`)
 		.addStringOption((option) =>
 			option
 				.setName("color")
@@ -17,11 +18,15 @@ export const command: SlashCommand = {
 		.addAttachmentOption((o) =>
 			o.setName("image").setDescription("The image to tint").setRequired(false),
 		),
-	execute: async (interaction: CommandInteraction, client: Client) => {
-		generalSlashCommandImage(interaction, multiplyAttachment, {
-			color: interaction.options.getString("color"),
-			name: "tinted.png",
-			embed: new MessageEmbed().setTitle("Tinted").setImage("attachment://tinted.png"),
-		});
+	async execute(interaction: ChatInputCommandInteraction) {
+		await interaction.deferReply();
+		const url = await getImage(interaction);
+		const file = await multiplyToAttachment(url, interaction.options.getString("color"));
+		await interaction
+			.editReply({
+				files: [file],
+				components: [imageButtons],
+			})
+			.then((message: Message) => message.deleteButton());
 	},
 };

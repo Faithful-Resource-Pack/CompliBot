@@ -1,32 +1,36 @@
 import { SlashCommand } from "@interfaces";
-import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction, MessageAttachment } from "discord.js";
-import { Message, Client } from "@client";
+import { SlashCommandBuilder, AttachmentBuilder } from "discord.js";
+import { Message, ChatInputCommandInteraction } from "@client";
 
-/**
- * Warning: key value cannot be longer than a certain value (I didn't search how much it is)
- * :: values used in SlashCommandBuilder must be defined before the bot construct it
- *
- * ! extension needs to be provided
- * !! .webp extension aren't rendering inside Discord
- */
-const options: { name: string; value: string }[] = [
-	{
-		name: "pizza",
-		value: "https://i0.wp.com/metro.co.uk/wp-content/uploads/2016/02/pizza-cheese.gif",
+interface OrderOptions {
+	[order: string]: {
+		url: string;
+		caption?: string;
+	};
+}
+
+const options: OrderOptions = {
+	pizza: {
+		url: "https://i0.wp.com/metro.co.uk/wp-content/uploads/2016/02/pizza-cheese.gif",
+		caption: "Buon Appetito!",
 	},
-	{ name: "soup", value: "https://c.tenor.com/45SSoTETymIAAAAS/sopita-de-fideo-noodle.gif" },
-	{ name: "burger", value: "https://c.tenor.com/tdFqDJemKpUAAAAC/mcdonalds-big-mac.gif" },
-	{ name: "poop", value: "https://media.tenor.com/QA6mPKs100UAAAAC/caught-in.gif" },
-	{
-		name: "66",
-		value: "https://media1.tenor.com/images/fb7250a2ef993a37e9c7f48af760821c/tenor.gif",
+	soup: {
+		url: "https://c.tenor.com/45SSoTETymIAAAAS/sopita-de-fideo-noodle.gif",
+		caption: "Guten Appetit",
 	},
-	{ name: "help", value: "https://c.tenor.com/yi5btxWVAwwAAAAS/help-shouting.gif" },
-	{ name: "ice", value: "https://c.tenor.com/ySPd8qwdV7QAAAAC/frozen-ice.gif" },
-	{ name: "fire", value: "https://i.giphy.com/media/Qre4feuyNhiYIzD7hC/200.gif" },
-	{ name: "popcorn", value: "https://c.tenor.com/yinQBUPPd_IAAAAC/michael-jackson-popcorn.gif" },
-];
+	burger: { url: "https://c.tenor.com/tdFqDJemKpUAAAAC/mcdonalds-big-mac.gif" },
+	poop: {
+		url: "https://media.tenor.com/QA6mPKs100UAAAAC/caught-in.gif",
+		caption: ":eyes:",
+	},
+	66: {
+		url: "https://media1.tenor.com/images/fb7250a2ef993a37e9c7f48af760821c/tenor.gif",
+	},
+	help: { url: "https://c.tenor.com/yi5btxWVAwwAAAAS/help-shouting.gif" },
+	ice: { url: "https://c.tenor.com/ySPd8qwdV7QAAAAC/frozen-ice.gif" },
+	fire: { url: "https://i.giphy.com/media/Qre4feuyNhiYIzD7hC/200.gif" },
+	popcorn: { url: "https://c.tenor.com/yinQBUPPd_IAAAAC/michael-jackson-popcorn.gif" },
+};
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -36,38 +40,25 @@ export const command: SlashCommand = {
 			option
 				.setName("item")
 				.setDescription("The item you want.")
-				.addChoices(...options)
+				.addChoices(
+					...Object.keys(options).map((option) => {
+						return { name: option, value: option };
+					}),
+				)
 				.setRequired(true),
 		),
-	execute: async (interaction: CommandInteraction, client: Client) => {
-		await interaction.deferReply();
-		let advice: string = null;
-
-		// send an annotation following the gif
-		for (const option of options) {
-			if (option[1] === interaction.options.getString("item")) {
-				switch (option[0]) {
-					case "soup":
-						advice = "Gutten Appetit";
-						break;
-					case "pizza":
-						advice = "Buon Appetito!";
-						break;
-					case "poop":
-						advice = ":eyes:";
-						break;
-					default:
-						break;
-				}
-			}
-		}
-
-		const gif: MessageAttachment = new MessageAttachment(
-			interaction.options.getString("item"),
-			interaction.options.getString("item"),
-		);
+	async execute(interaction: ChatInputCommandInteraction) {
+		const choice = options[interaction.options.getString("item")];
 		interaction
-			.editReply({ content: advice, files: [gif] })
+			.reply({
+				content: choice.caption,
+				files: [
+					new AttachmentBuilder(choice.url, {
+						name: choice.url,
+					}),
+				],
+				fetchReply: true,
+			})
 			.then((message: Message) => message.deleteButton());
 	},
 };

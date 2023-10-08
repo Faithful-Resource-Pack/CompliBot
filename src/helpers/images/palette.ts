@@ -1,8 +1,15 @@
-import { MessageEmbed } from "@client";
+import {
+	EmbedBuilder,
+	ButtonInteraction,
+	ChatInputCommandInteraction,
+	StringSelectMenuInteraction,
+	Message,
+} from "@client";
 import { Canvas, createCanvas, loadImage } from "@napi-rs/canvas";
-import { MessageAttachment } from "discord.js";
-import { ColorManager } from "./colors";
-import getDimensions from "./getDimensions";
+import { AttachmentBuilder } from "discord.js";
+import ColorManager from "@images/colors";
+import { ImageSource } from "@helpers/getImage";
+import { colors } from "@utility/colors";
 
 const COOLORS_URL = "https://coolors.co/";
 
@@ -17,42 +24,39 @@ const GRADIENT_WIDTH = 700;
 const GRADIENT_BAND_WIDTH = 3;
 const GRADIENT_HEIGHT = 50;
 
-export interface options {
-	url: string;
-	name?: string;
-}
-
 export interface AllColors {
 	[key: string]: {
 		hex: string;
-		opacity: Array<number>;
+		opacity: number[];
 		rgb: [r: number, g: number, b: number];
 		count: number;
 	};
 }
 
-export async function paletteAttachment(
-	options: options,
-): Promise<[MessageAttachment, MessageEmbed]> {
-	const { width, height } = await getDimensions(options.url);
-	if (width * height > 262144) return [null, new MessageEmbed()];
-
-	const canvas: Canvas = createCanvas(width, height);
+/**
+ * Create a palette of colors and additional information for a given image
+ * @author Juknum, Evorp
+ * @param origin image to find palette of
+ * @returns embed and attachment
+ */
+export async function palette(origin: ImageSource) {
+	const imageToDraw = await loadImage(origin);
+	// 1048576px is the same size as a magnified image
+	if (imageToDraw.width * imageToDraw.height > 1048576) return { image: null, embed: null };
+	const canvas: Canvas = createCanvas(imageToDraw.width, imageToDraw.height);
 	const context = canvas.getContext("2d");
-	const allColors: AllColors = {};
-
-	const imageToDraw = await loadImage(options.url);
 	context.drawImage(imageToDraw, 0, 0);
 
-	const imageData = context.getImageData(0, 0, width, height).data;
+	const allColors: AllColors = {};
+	const imageData = context.getImageData(0, 0, imageToDraw.width, imageToDraw.height).data;
 
-	for (let x = 0; x < width; x++) {
-		for (let y = 0; y < height; y++) {
-			let index = (y * width + x) * 4;
-			let r = imageData[index];
-			let g = imageData[index + 1];
-			let b = imageData[index + 2];
-			let a = imageData[index + 3] / 255;
+	for (let x = 0; x < imageToDraw.width; ++x) {
+		for (let y = 0; y < imageToDraw.height; ++y) {
+			const index = (y * imageToDraw.width + x) * 4;
+			const r = imageData[index];
+			const g = imageData[index + 1];
+			const b = imageData[index + 2];
+			const a = imageData[index + 3] / 255;
 
 			// avoid transparent colors
 			if (!a) continue;
@@ -66,16 +70,16 @@ export async function paletteAttachment(
 	}
 
 	// convert back to array
-	let colors = Object.values(allColors)
+	const colors = Object.values(allColors)
 		.sort((a, b) => b.count - a.count)
 		.slice(0, COLORS_TOP)
 		.map((el) => el.hex);
 
-	const embed = new MessageEmbed().setTitle("Palette results").setDescription("List of colors:\n");
+	const embed = new EmbedBuilder().setTitle("Palette results").setDescription("List of colors:\n");
 
-	const fieldGroups = [];
+	const fieldGroups: string[][][] = [];
 	let group: number;
-	for (let i = 0; i < colors.length; i++) {
+	for (let i = 0; i < colors.length; ++i) {
 		// create 9 groups
 		if (i % COLORS_PER_PALETTE === 0) {
 			fieldGroups.push([]);
@@ -83,12 +87,10 @@ export async function paletteAttachment(
 		}
 
 		// each group has 3 lines
-		if (group % COLORS_PER_PALETTE_LINE === 0) fieldGroups[fieldGroups.length - 1].push([]);
+		if (group % COLORS_PER_PALETTE_LINE === 0) fieldGroups.at(-1).push([]);
 
 		// add color to latest group at the latest line
-		fieldGroups[fieldGroups.length - 1][fieldGroups[fieldGroups.length - 1].length - 1].push(
-			colors[i],
-		);
+		fieldGroups.at(-1)[fieldGroups[fieldGroups.length - 1].length - 1].push(colors[i]);
 		++group;
 	}
 
@@ -107,15 +109,15 @@ export async function paletteAttachment(
 
 	// create palette links, 9 max par link
 	// make arrays of hex arrays
-	const paletteGroups = [];
+	const paletteGroups: string[][] = [];
 	for (let i = 0; i < colors.length; ++i) {
 		if (i % COLORS_PER_PALETTE === 0) paletteGroups.push([]);
-		paletteGroups[paletteGroups.length - 1].push(colors[i]);
+		paletteGroups.at(-1).push(colors[i]);
 	}
 
 	// create URLs
-	const paletteUrls: Array<string> = [];
-	let descriptionLength = embed.description.length;
+	const paletteUrls: string[] = [];
+	let descriptionLength = embed.data.description.length;
 
 	for (let i = 0; i < paletteGroups.length; ++i) {
 		const link = `**[Palette${
@@ -130,7 +132,9 @@ export async function paletteAttachment(
 
 	// add generate palette link && append palette to description
 	embed.setDescription(
-		`Total: ${Object.values(allColors).length}\n\n` + embed.description + paletteUrls.join(" - "),
+		`Total: ${Object.values(allColors).length}\n\n` +
+			embed.data.description +
+			paletteUrls.join(" - "),
 	);
 
 	// create gradient canvas for top GRADIENT_TOP colors
@@ -144,10 +148,10 @@ export async function paletteAttachment(
 		.sort((a, b) => b.count - a.count)
 		.slice(0, GRADIENT_TOP)
 		.sort((a, b) => {
-			let [ha, sa, la] = Object.values(
+			const [ha, sa, la] = Object.values(
 				new ColorManager({ rgb: { r: a.rgb[0], g: a.rgb[1], b: a.rgb[2] } }).toHSL(),
 			);
-			let [hb, sb, lb] = Object.values(
+			const [hb, sb, lb] = Object.values(
 				new ColorManager({ rgb: { r: b.rgb[0], g: b.rgb[1], b: b.rgb[2] } }).toHSL(),
 			);
 
@@ -165,14 +169,60 @@ export async function paletteAttachment(
 
 	allColorsSorted.forEach((color, index) => {
 		ctx.fillStyle = `#${color.hex}`;
-		ctx.globalAlpha = color.opacity.reduce((a, v, i) => (a * i + v) / (i + 1)); // average alpha
+		ctx.globalAlpha = color.opacity.reduce((acc, val, i) => (acc * i + val) / (i + 1)); // average alpha
 		ctx.fillRect(bandWidth * index, 0, bandWidth, GRADIENT_HEIGHT);
 	});
 
-	const attachment = new MessageAttachment(
-		colorCanvas.toBuffer("image/png"),
-		`${options.name || "palette.png"}`,
-	);
+	return { image: colorCanvas.toBuffer("image/png"), embed };
+}
 
-	return [attachment, embed];
+/**
+ * Get the color palette of an image
+ * @author Evorp
+ * @param origin image to find palette of
+ * @param name attachment name
+ * @returns sendable attachment and data
+ */
+export async function paletteToAttachment(
+	origin: ImageSource,
+	name = "palette.png",
+): Promise<[AttachmentBuilder, EmbedBuilder]> {
+	const { image, embed } = await palette(origin);
+	// too big
+	if (!image || !embed) return [null, null];
+	return [new AttachmentBuilder(image, { name }), embed];
+}
+
+/**
+ * Warn the user that the image is too large
+ * @author Evorp
+ * @param interaction interaction to reply to
+ */
+export async function paletteTooBig(
+	interaction:
+		| ButtonInteraction
+		| ChatInputCommandInteraction
+		| StringSelectMenuInteraction
+		| Message,
+) {
+	// need to cast to any to add properties later
+	const args: any = {
+		embeds: [
+			new EmbedBuilder()
+				.setTitle(
+					interaction.strings().command.images.too_big.replace("%ACTION%", "take the palette of"),
+				)
+				.setDescription(interaction.strings().command.images.max_size)
+				.setColor(colors.red),
+		],
+	};
+
+	// make ephemeral if possible
+	if (!(interaction instanceof Message)) {
+		args.ephemeral = true;
+		args.fetchReply = true;
+	}
+
+	const reply = await (interaction as ChatInputCommandInteraction).reply(args);
+	if (interaction instanceof Message) reply.deleteButton();
 }

@@ -1,10 +1,8 @@
 import { SlashCommand } from "@interfaces";
-import { SlashCommandBuilder } from "@discordjs/builders";
-import { Message, MessageEmbed, CommandInteraction, Client } from "@client";
-import { MessageAttachment } from "discord.js";
+import { Message, EmbedBuilder, ChatInputCommandInteraction } from "@client";
+import { SlashCommandBuilder, AttachmentBuilder } from "discord.js";
 import axios from "axios";
-import settings from "@json/dynamic/settings.json";
-import { formatName } from "@helpers/sorter";
+import formatName from "@utility/formatName";
 import { Contribution, Texture } from "@interfaces";
 
 export const command: SlashCommand = {
@@ -17,13 +15,17 @@ export const command: SlashCommand = {
 				.setDescription("User you want to look up (leave blank if you want to search yourself).")
 				.setRequired(false),
 		),
-	execute: async (interaction: CommandInteraction) => {
+	async execute(interaction: ChatInputCommandInteraction) {
 		await interaction.deferReply();
 
-		const loadingEmbed = new MessageEmbed()
+		const loading: string = (
+			await axios.get(`${interaction.client.tokens.apiUrl}settings/images.loading`)
+		).data;
+
+		const loadingEmbed = new EmbedBuilder()
 			.setTitle("Searching for contributions...")
 			.setDescription("This can take some time, please wait...")
-			.setThumbnail(settings.images.loading);
+			.setThumbnail(loading);
 
 		await interaction
 			.editReply({ embeds: [loadingEmbed] })
@@ -34,12 +36,10 @@ export const command: SlashCommand = {
 		let contributionData: Contribution[] = [];
 		try {
 			contributionData = (
-				await axios.get(
-					`${(interaction.client as Client).tokens.apiUrl}users/${user.id}/contributions`,
-				)
+				await axios.get(`${interaction.client.tokens.apiUrl}users/${user.id}/contributions`)
 			).data;
 		} catch {
-			const finalEmbed = new MessageEmbed()
+			const finalEmbed = new EmbedBuilder()
 				.setTitle(`${user.username} has no contributions!`)
 				.setDescription(
 					"No database profile was found for this user. If this data looks incorrect, register at https://webapp.faithfulpack.net.",
@@ -59,7 +59,7 @@ export const command: SlashCommand = {
 						if (index % 30 === 0) {
 							acc.push([]);
 						}
-						acc[acc.length - 1].push(cur);
+						acc.at(-1).push(cur);
 						return acc;
 					}, [])
 					.map(async (ids: string[]) => {
@@ -68,7 +68,7 @@ export const command: SlashCommand = {
 						try {
 							data = (
 								await axios.get(
-									`${(interaction.client as Client).tokens.apiUrl}textures/${ids
+									`${interaction.client.tokens.apiUrl}textures/${ids
 										.filter((v, i, a) => a.indexOf(v) === i)
 										.join(",")}`,
 								)
@@ -85,7 +85,7 @@ export const command: SlashCommand = {
 		});
 
 		let packCount = {};
-		let files: MessageAttachment[] | undefined;
+		let files: AttachmentBuilder[] | undefined;
 		if (finalData.length) {
 			const textBuf = Buffer.from(
 				finalData
@@ -96,10 +96,10 @@ export const command: SlashCommand = {
 					})
 					.join("\n"),
 			);
-			files = [new MessageAttachment(textBuf, "about.txt")];
+			files = [new AttachmentBuilder(textBuf, { name: "about.txt" })];
 		}
 
-		const finalEmbed = new MessageEmbed()
+		const finalEmbed = new EmbedBuilder()
 			.setTitle(
 				`${user.username} has ${finalData.length} ${
 					finalData.length == 1 ? "contribution" : "contributions"

@@ -1,28 +1,27 @@
 import { Event } from "@interfaces";
-import { Client, Message, MessageEmbed } from "@client";
-import textureComparison from "@functions/textureComparison";
-import settings from "@json/dynamic/settings.json";
+import { Client, Message, EmbedBuilder } from "@client";
 import { Pack } from "@interfaces";
-import { colors } from "@helpers/colors";
+import { colors } from "@utility/colors";
+import axios from "axios";
+import * as Random from "@utility/random";
+import prefixCommandHandler from "@helpers/prefixCommandHandler";
 
-export const event: Event = {
+export default {
 	name: "messageCreate",
-	run: async (client: Client, message: Message) => {
-		//! do not remove, 'force' message to be casted (break if removed)
-		let _ = (message as Message) instanceof Message;
-
-		let m = Object.assign({}, message); // lose reference to message: create unique instance of the message for the logger (ask @Juknum)
-		m.isDeleted = false;
-		client.storeAction("message", m);
+	async execute(client: Client, message: Message) {
+		// duplicate message for logger (ask @Juknum)
+		client.storeAction("message", structuredClone(message));
 
 		if (message.author.bot) return;
 
-		const submissionChannels = Object.values(settings.submission.packs).map(
-			(i: Pack) => i.channels.submit,
-		);
+		const packs: Pack[] = (await axios.get(`${client.tokens.apiUrl}settings/submission.packs`))
+			.data;
+
+		const submissionChannels = Object.values(packs).map((pack) => pack.channels.submit);
 		// returns early if you're in a submission channel
 		if (submissionChannels.includes(message.channel.id)) return;
 
+		if (message.content.startsWith(client.tokens.prefix)) return prefixCommandHandler(message);
 		/**
 		 * easter eggs
 		 */
@@ -66,8 +65,8 @@ export const event: Event = {
 				message
 					.reply({
 						embeds: [
-							new MessageEmbed().setImage(
-								Math.floor(Math.random() * 4) == 1 // why can't TS/JS just have a normal randint() function
+							new EmbedBuilder().setImage(
+								Random.randint(0, 4) == 1
 									? "https://i.imgur.com/hAuUsnD.png"
 									: "https://media1.tenor.com/images/8dc53503f5a5bb23ef12b2c83a0e1d4d/tenor.gif",
 							),
@@ -86,7 +85,7 @@ export const event: Event = {
 			message
 				.reply({
 					embeds: [
-						new MessageEmbed()
+						new EmbedBuilder()
 							.setDescription("```Uh-oh moment```")
 							.setFooter({ text: "Swahili → English" }),
 					],
@@ -96,54 +95,19 @@ export const event: Event = {
 
 		if (message.content.toLocaleLowerCase().includes("forgor")) await message.react("💀");
 
-		/**
-		 * texture ID quoting
-		 * @todo deprecate this and switch fully to /compare <id>
-		 * @author Evorp
-		 */
-
 		const results = message.content.match(/(?<=\[\#)(.*?)(?=\])/g) ?? [];
 		if (!results.length) return;
-
-		for (let result of results) {
-			let id: string;
-			let display = "all";
-
-			// check for [#template]
-			const split = result.toLocaleLowerCase().split(" ");
-			if (split.includes("template")) {
-				id = "template";
-				// check for template + display
-				if (split.length > 1) display = split.find((arg) => arg !== "template");
-			} else if (!isNaN(Number(result))) {
-				// if no display is passed in
-				id = result;
-			} else {
-				// display is passed in so parse them separately
-				id = result.match(/\d+/g)?.[0];
-				display = result
-					.match(/[a-zA-Z]+/g)?.[0]
-					.toLocaleLowerCase()
-					.trim();
-			}
-
-			message.channel.sendTyping();
-			const replyOptions = await textureComparison(client, id, display);
-
-			try {
-				message.reply(replyOptions).then((message: Message) => message.deleteButton());
-			} catch {
-				message
-					.reply({
-						embeds: [
-							new MessageEmbed()
-								.setTitle("No results found!")
-								.setDescription(`The ID ${id} doesn't exist!`)
-								.setColor(colors.red),
-						],
-					})
-					.then((message: Message) => message.deleteButton());
-			}
-		}
+		message
+			.reply({
+				embeds: [
+					new EmbedBuilder()
+						.setTitle("Texture ID quoting has been removed!")
+						.setDescription(
+							"The feature was notoriously buggy, is based on a largely outdated Discord bot meta, and is entirely duplicated by `/compare`.\n\nTo replicate the functionality of ID quoting, simply run `/compare <id>`. [#template] is now a button on the embed for additional visibility.",
+						)
+						.setColor(colors.red),
+				],
+			})
+			.then((message: Message) => message.deleteButton());
 	},
-};
+} as Event;

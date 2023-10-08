@@ -1,11 +1,10 @@
 import { exec, series } from "@helpers/exec";
 import { existsSync, readdirSync, statSync } from "fs";
 import { mkdir } from "fs/promises";
-import { formatName } from "@helpers/sorter";
+import formatName from "@utility/formatName";
 import { Client } from "@client";
-import { AnyChannel, VoiceChannel } from "discord.js";
+import { Channel, ChannelType, VoiceChannel } from "discord.js";
 import { join, normalize } from "path";
-import settings from "@json/dynamic/settings.json";
 
 import os from "os";
 import blacklistedTextures from "@json/blacklisted_textures.json";
@@ -19,17 +18,15 @@ export interface MissingOptions {
 	version: string;
 	total?: number;
 }
-export type MissingResult = [Buffer, Array<string>, MissingOptions, Buffer?];
-export type MissingResults = Array<MissingResult>;
+export type MissingResult = [Buffer, string[], MissingOptions, Buffer?];
 
 export const computeAll = async (
 	client: Client,
 	pack: string,
 	version: string,
 	callback: Function,
-): Promise<MissingResults> => {
-	const editions: Array<string> = (await axios.get(`${client.tokens.apiUrl}textures/editions`))
-		.data;
+): Promise<MissingResult[]> => {
+	const editions: string[] = (await axios.get(`${client.tokens.apiUrl}textures/editions`)).data;
 
 	return Promise.all(
 		editions.map(async (edition: string) => {
@@ -43,9 +40,8 @@ export const computeAndUpdateAll = async (
 	pack: string,
 	version: string,
 	callback: Function,
-): Promise<MissingResults> => {
-	const editions: Array<string> = (await axios.get(`${client.tokens.apiUrl}textures/editions`))
-		.data;
+): Promise<MissingResult[]> => {
+	const editions: string[] = (await axios.get(`${client.tokens.apiUrl}textures/editions`)).data;
 
 	return Promise.all(
 		editions.map(async (edition: string) => {
@@ -65,26 +61,27 @@ export const computeAndUpdate = async (
 	callback: Function,
 ): Promise<MissingResult> => {
 	const results = await compute(client, pack, edition, version, callback);
-	if (client !== null) {
-		let channel: AnyChannel;
-		try {
-			channel = await client.channels.fetch(
-				settings.channels.pack_progress[results[2].pack][results[2].edition],
-			);
-		} catch {
-			/* channel doesn't exist or can't be fetched */
-		}
+	if (!client) return results;
+	const packProgress = (await axios.get(`${client.tokens.apiUrl}settings/channels.pack_progress`))
+		.data;
 
-		// you can add different patterns depending on the channel type
-		switch (channel.type) {
-			case "GUILD_VOICE":
-				const pattern = /[.\d+]+(?!.*[.\d+])/;
-				if (channel.name.match(pattern)?.[0] == results[2].completion.toString()) break;
+	let channel: Channel;
+	try {
+		channel = await client.channels.fetch(packProgress[results[2].pack][results[2].edition]);
+	} catch {
+		// channel doesn't exist or can't be fetched, return early
+		return results;
+	}
 
-				const updatedName = channel.name.replace(pattern, results[2].completion.toString());
-				await (channel as VoiceChannel).setName(updatedName);
-				break;
-		}
+	// you can add different patterns depending on the channel type
+	switch (channel.type) {
+		case ChannelType.GuildVoice:
+			const pattern = /[.\d+]+(?!.*[.\d+])/;
+			if (channel.name.match(pattern)?.[0] == results[2].completion.toString()) break;
+
+			const updatedName = channel.name.replace(pattern, results[2].completion.toString());
+			await (channel as VoiceChannel).setName(updatedName);
+			break;
 	}
 
 	return results;
@@ -106,7 +103,7 @@ export const compute = async (
 	const repoDefault = repo.default[edition];
 	const repoRequest = repo[pack][edition];
 
-	// pack doesn't support edition (ex: Faithful 64x -> dungeons)
+	// pack doesn't support edition yet
 	if (repoRequest === undefined)
 		return [
 			null,
@@ -114,13 +111,12 @@ export const compute = async (
 			{ completion: 0, pack: pack, edition: edition, version: version },
 		];
 
-	const tmpDirPath: string = normalize(os.tmpdir());
-	const tmpDirPathDefault: string = join(tmpDirPath, `missing-default-${edition}`);
-	const tmpDirPathRequest: string = join(tmpDirPath, `missing-${pack}-${edition}`);
+	const tmpDirPath = normalize(os.tmpdir());
+	const tmpDirPathDefault = join(tmpDirPath, `missing-default-${edition}`);
+	const tmpDirPathRequest = join(tmpDirPath, `missing-${pack}-${edition}`);
 
 	// CLONE REPO IF NOT ALREADY CLONED
-	let exists: boolean = existsSync(tmpDirPathDefault);
-	if (!exists) {
+	if (!existsSync(tmpDirPathDefault)) {
 		await callback(`Downloading default ${edition} pack...`).catch((err: any) =>
 			Promise.reject(err),
 		);
@@ -128,8 +124,7 @@ export const compute = async (
 		await exec(`git clone ${repoDefault} .`, { cwd: tmpDirPathDefault });
 	}
 
-	exists = existsSync(tmpDirPathRequest);
-	if (!exists) {
+	if (!existsSync(tmpDirPathRequest)) {
 		await callback(`Downloading \`${formatName(pack)[0]}\` (${edition}) pack...`).catch(
 			(err: any) => Promise.reject(err),
 		);
@@ -137,21 +132,16 @@ export const compute = async (
 		await exec(`git clone ${repoRequest} .`, { cwd: tmpDirPathRequest });
 	}
 
-	const versions: Array<string> = (
+	const versions: string[] = (
 		await axios.get(`${client.tokens.apiUrl}settings/versions.${edition}`)
 	).data;
-	if (!versions.includes(version)) version = versions[0]; // latest version if versions doesn't include version (unexisting/unsupported)
+	// latest version if versions doesn't include version (unexisting/unsupported)
+	if (!versions.includes(version)) version = versions[0];
 	await callback(`Updating packs with latest version of \`${version}\` known...`).catch(
 		(err: any) => Promise.reject(err),
 	);
 
-	/**
-	 * STEPS:
-	 * - stash
-	 * - update local repo
-	 * - checkout version X branch
-	 * - pull
-	 */
+	// for some reason specifying the steps in a variable and loading it here breaks?
 	await Promise.all([
 		series(["git stash", "git remote update", "git fetch", `git checkout ${version}`, `git pull`], {
 			cwd: tmpDirPathDefault,
@@ -165,11 +155,11 @@ export const compute = async (
 
 	const editionFilter = blacklistedTextures[edition].map((i: string) => i.normalize());
 
-	const texturesDefault: Array<string> = getAllFilesFromDir(tmpDirPathDefault, editionFilter).map(
-		(f) => normalize(f).replace(tmpDirPathDefault, ""),
+	const texturesDefault = getAllFilesFromDir(tmpDirPathDefault, editionFilter).map((f) =>
+		normalize(f).replace(tmpDirPathDefault, ""),
 	);
-	const texturesRequest: Array<string> = getAllFilesFromDir(tmpDirPathRequest, editionFilter).map(
-		(f) => normalize(f).replace(tmpDirPathRequest, ""),
+	const texturesRequest = getAllFilesFromDir(tmpDirPathRequest, editionFilter).map((f) =>
+		normalize(f).replace(tmpDirPathRequest, ""),
 	);
 
 	// instead of looping in the check array for each checked element, we directly check if the
@@ -177,41 +167,21 @@ export const compute = async (
 	const check = texturesRequest.reduce((o, key) => ({ ...o, [key]: true }), {});
 
 	// get texture that aren't in the check object
-	const diffResult: Array<string> = texturesDefault.filter((v) => !check[v]);
+	const diffResult = texturesDefault.filter((v) => !check[v]);
 	const nonvanillaTextures = texturesRequest.filter(
 		(texture) =>
 			!texturesDefault.includes(texture) &&
-			!texture.endsWith("huge_chungus.png") &&
+			!texture.endsWith("huge_chungus.png") && // we do a little trolling
 			!editionFilter.includes(texture) &&
 			(texture.replace(/\\/g, "/").startsWith("/assets/minecraft/textures") ||
 				texture.replace(/\\/g, "/").startsWith("/assets/realms") ||
 				texture.replace(/\\/g, "/").startsWith("/textures")),
 	);
 
-	const buffResult: Buffer = Buffer.from(
-		diffResult
-			.join("\n")
-			.replace(/\\/g, "/")
-			.replace(/\/assets\/minecraft/g, "")
-			// only match at start of line so realms/optifine aren't affected
-			.replace(/^\/textures\//gm, ""),
-		"utf8",
-	);
-
-	const nonvanillaResult: Buffer = Buffer.from(
-		nonvanillaTextures
-			.join("\n")
-			.replace(/\\/g, "/")
-			.replace(/\/assets\/minecraft/g, "")
-			.replace(/^\/textures\//gm, ""),
-		"utf8",
-	);
-
-	const progress: number =
-		Math.round(10000 - (diffResult.length / texturesDefault.length) * 10000) / 100;
+	const progress = Number((100 * (1 - diffResult.length / texturesDefault.length)).toFixed(2));
 
 	return [
-		buffResult,
+		Buffer.from(formatResults(diffResult), "utf8"),
 		diffResult,
 		{
 			completion: progress,
@@ -220,22 +190,22 @@ export const compute = async (
 			version: version,
 			total: texturesDefault.length,
 		},
-		nonvanillaResult,
+		Buffer.from(formatResults(nonvanillaTextures), "utf8"),
 	];
 };
 
-export const getAllFilesFromDir = (dir: string, filter = []): Array<string> => {
-	let fileList = [];
+export const getAllFilesFromDir = (dir: string, filter: string[] = []): string[] => {
+	const fileList = [];
 	readdirSync(dir).forEach((file) => {
 		file = normalize(join(dir, file));
 		const stat = statSync(file);
 
 		if (!file.includes(".git")) {
-			if (stat.isDirectory()) fileList = fileList.concat(getAllFilesFromDir(file, filter));
+			if (stat.isDirectory()) fileList.push(getAllFilesFromDir(file, filter));
 			else {
 				if (
 					(file.endsWith(".png") || file.endsWith(".tga")) &&
-					!filter.some((i: string) => file.includes(i))
+					!filter.some((i) => file.includes(i))
 				)
 					fileList.push(file);
 			}
@@ -244,3 +214,11 @@ export const getAllFilesFromDir = (dir: string, filter = []): Array<string> => {
 
 	return fileList;
 };
+
+export const formatResults = (results: string[]) =>
+	results
+		.join("\n")
+		.replace(/\\/g, "/")
+		.replace(/\/assets\/minecraft/g, "")
+		// only match at start of line so realms/optifine aren't affected
+		.replace(/^\/textures\//gm, "");

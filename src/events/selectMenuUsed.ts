@@ -1,12 +1,12 @@
-import { SelectMenu, Event } from "@interfaces";
-import { Client, SelectMenuInteraction } from "@client";
+import { Event } from "@interfaces";
+import { Client, StringSelectMenuInteraction } from "@client";
 
-export const event: Event = {
+export default {
 	name: "selectMenuUsed",
-	run: async (client: Client, interaction: SelectMenuInteraction) => {
+	async execute(client: Client, interaction: StringSelectMenuInteraction) {
 		client.storeAction("selectMenu", interaction);
 
-		const selectMenu: SelectMenu = client.menus.get(interaction.customId.split("_")[0]);
+		const selectMenu = client.menus.get(interaction.customId.split("_")[0]);
 		if (selectMenu) return selectMenu.execute(client, interaction);
 	},
-};
+} as Event;

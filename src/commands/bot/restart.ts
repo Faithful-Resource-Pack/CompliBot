@@ -1,17 +1,16 @@
 import { SlashCommand } from "@interfaces";
-import { SlashCommandBuilder } from "@discordjs/builders";
-import { Client, CommandInteraction } from "@client";
-import { PermissionFlagsBits } from "discord-api-types/v10";
+import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
+import { ChatInputCommandInteraction } from "@client";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
 		.setName("restart")
 		.setDescription("Restarts the bot.")
 		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
-	execute: async (interaction: CommandInteraction, client: Client) => {
+	async execute(interaction: ChatInputCommandInteraction) {
 		if (!interaction.hasPermission("dev")) return;
 
 		await interaction.reply({ content: "restarting...", ephemeral: true });
-		await client.restart(interaction);
+		await interaction.client.restart(interaction);
 	},
 };

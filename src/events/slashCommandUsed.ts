@@ -1,12 +1,30 @@
-import { SlashCommandI } from "@interfaces";
+import { Pack, SlashCommandI } from "@interfaces";
 import { Collection } from "discord.js";
 import { Event } from "@interfaces";
-import { Client, CommandInteraction } from "@client";
+import { Client, ChatInputCommandInteraction, EmbedBuilder } from "@client";
+import { colors } from "@utility/colors";
+import axios from "axios";
 
-export const event: Event = {
+export default {
 	name: "slashCommandUsed",
-	run: async (client: Client, interaction: CommandInteraction) => {
+	async execute(client: Client, interaction: ChatInputCommandInteraction) {
 		client.storeAction("slashCommand", interaction);
+		const packs: Pack[] = (await axios.get(`${client.tokens.apiUrl}settings/submission.packs`))
+			.data;
+
+		const submissionChannels = Object.values(packs).map((pack) => pack.channels.submit);
+
+		// disable commands
+		if (submissionChannels.includes(interaction.channel.id))
+			return await interaction.reply({
+				embeds: [
+					new EmbedBuilder()
+						.setTitle(interaction.strings().command.in_submission.title)
+						.setDescription(interaction.strings().command.in_submission.description)
+						.setColor(colors.red),
+				],
+				ephemeral: true,
+			});
 
 		// get command name
 		const { commandName } = interaction;
@@ -23,20 +41,25 @@ export const event: Event = {
 			// execute it if so
 			(command.execute as Collection<string, SlashCommandI>).get(
 				interaction.options.getSubcommand(),
-			)(interaction, client);
+			)(interaction);
 		} catch (_err) {
 			// not a subcommand
 			try {
 				// execute command
-				(command.execute as SlashCommandI)(interaction as CommandInteraction, client);
+				(command.execute as SlashCommandI)(interaction as ChatInputCommandInteraction);
 			} catch (err) {
-				console.error(err);
-				return interaction.reply({ content: "There were an error with command!", ephemeral: true });
+				console.trace(err);
+				return interaction.reply({
+					content: `${
+						interaction.strings().error.command
+					}\nError for the developers:\n\`\`\`${err}\`\`\``,
+					ephemeral: true,
+				});
 			}
 		}
 
 		// increase uses of that command
-		const count: number = client.commandsProcessed.get((command.data as SlashCommandI).name) + 1;
+		const count = client.commandsProcessed.get((command.data as SlashCommandI).name) + 1;
 		client.commandsProcessed.set((command.data as SlashCommandI).name, isNaN(count) ? 1 : count);
 	},
-};
+} as Event;

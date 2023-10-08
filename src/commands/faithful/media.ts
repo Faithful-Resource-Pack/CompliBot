@@ -1,8 +1,8 @@
 import { SlashCommand } from "@interfaces";
-import { SlashCommandBuilder } from "@discordjs/builders";
-import { colors } from "@helpers/colors";
-import { media } from "@helpers/infoembed";
-import { Message, MessageEmbed, CommandInteraction } from "@client";
+import { SlashCommandBuilder } from "discord.js";
+import { media } from "@utility/infoembed";
+import { Message, EmbedBuilder, ChatInputCommandInteraction } from "@client";
+import axios from "axios";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -18,36 +18,39 @@ export const command: SlashCommand = {
 					{ name: "Classic Faithful 32x Jappa", value: "classic_faithful_32x" },
 					{ name: "Classic Faithful 32x Programmer Art", value: "classic_faithful_32x_progart" },
 					{ name: "Classic Faithful 64x", value: "classic_faithful_64x" },
-					{ name: "All", value: "all" },
+					{ name: "All", value: "default" },
 				),
 		),
-	execute: async (interaction: CommandInteraction) => {
-		const key: string = interaction.options.getString("name", false) ?? "general";
+	async execute(interaction: ChatInputCommandInteraction) {
+		const key = interaction.options.getString("name", false) ?? "default";
 
-		if (key === "all") {
+		// you can't import images directly in infoembed.ts so you have to do it here (blame TS)
+		const images: { [name: string]: string } = (
+			await axios.get(`${interaction.client.tokens.apiUrl}settings/images`)
+		).data;
+
+		if (key === "default") {
 			if (!interaction.hasPermission("manager")) return;
 			interaction
 				.reply({ content: "** **", fetchReply: true })
 				.then((message: Message) => message.delete());
-			let embedArray: MessageEmbed[] = [];
-			for (let i of Object.values(media)) {
-				embedArray.push(
-					new MessageEmbed()
-						.setTitle(i.title)
-						.setDescription(i.description)
-						.setColor(i.color)
-						.setThumbnail(i.thumbnail),
-				);
-			}
 
-			return await interaction.channel.send({ embeds: embedArray });
+			return await interaction.channel.send({
+				embeds: Object.entries(media).map(([key, mediaInfo]) =>
+					new EmbedBuilder()
+						.setTitle(mediaInfo.title)
+						.setDescription(mediaInfo.description)
+						.setColor(mediaInfo.color)
+						.setThumbnail(images[key]),
+				),
+			});
 		}
 
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setTitle(media[key].title)
 			.setDescription(media[key].description)
 			.setColor(media[key].color)
-			.setThumbnail(media[key].thumbnail);
+			.setThumbnail(images[key]);
 
 		interaction
 			.reply({ embeds: [embed], fetchReply: true })

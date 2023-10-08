@@ -1,39 +1,48 @@
-import { MessageEmbed } from "@client";
+import { EmbedBuilder } from "@client";
 import TokenJson from "@json/tokens.json";
-import { Tokens } from "@interfaces";
+import { Contributor, Tokens } from "@interfaces";
 import axios from "axios";
 import getDimensions from "@images/getDimensions";
-import { MessageAttachment, Guild } from "discord.js";
-import { magnifyAttachment } from "@images/magnify";
+import { APIEmbedField, AttachmentBuilder, Guild } from "discord.js";
+import { magnifyToAttachment } from "@images/magnify";
 import { ISizeCalculationResult } from "image-size/dist/types/interface";
-import { colors } from "@helpers/colors";
+import { colors } from "@utility/colors";
 import { Texture, Contribution } from "@interfaces";
-import { animateAttachment } from "@images/animate";
-import { formatName, minecraftSorter, addPathsToEmbed } from "@helpers/sorter";
-import { textureButtons } from "@helpers/buttons";
-import settings from "@json/dynamic/settings.json";
+import { animateToAttachment } from "@images/animate";
+import minecraftSorter from "@utility/minecraftSorter";
+import formatName from "@utility/formatName";
+import { textureButtons } from "@utility/buttons";
+import { loadImage } from "@napi-rs/canvas";
 
-export const getTextureMessageOptions = async (options: {
+/**
+ * Create a full texture embed with provided information
+ * @author Juknum, Evorp, RobertR11
+ * @param options what textures to load
+ * @returns reply options
+ */
+export const getTexture = async (options: {
 	texture: Texture;
 	pack: string;
 	guild: Guild;
 }): Promise<any> => {
 	const tokens: Tokens = TokenJson;
 	const { texture, pack, guild } = options;
-	const { uses, paths, contributions: allContributions } = texture;
-	const animated: boolean = paths.filter((p) => p.mcmeta === true).length !== 0;
-	const contributionJSON = (await axios.get(`${tokens.apiUrl}contributions/authors`)).data;
+	const { paths, contributions: allContributions } = texture;
+	const animated = paths.filter((p) => p.mcmeta === true).length !== 0;
+	const contributionJSON: Contributor[] = (await axios.get(`${tokens.apiUrl}contributions/authors`))
+		.data;
 
 	let mcmeta: any = {};
 	if (animated) {
 		const animatedPath = paths.filter((p) => p.mcmeta === true)[0];
+		const raw = (await axios.get(`${tokens.apiUrl}settings/repositories.raw`)).data;
 
 		try {
 			mcmeta = (
 				await axios.get(
-					`${settings.repositories.raw[pack].java}${
-						animatedPath.versions.sort(minecraftSorter).reverse()[0]
-					}/${animatedPath.name}.mcmeta`,
+					`${raw[pack].java}${animatedPath.versions.sort(minecraftSorter).reverse()[0]}/${
+						animatedPath.name
+					}.mcmeta`,
 				)
 			).data;
 		} catch {
@@ -43,8 +52,8 @@ export const getTextureMessageOptions = async (options: {
 
 	const [strPack, strIconURL] = formatName(pack);
 
-	const files: Array<MessageAttachment> = [];
-	const embed = new MessageEmbed().setTitle(`[#${texture.id}] ${texture.name}`).setFooter({
+	const files: AttachmentBuilder[] = [];
+	const embed = new EmbedBuilder().setTitle(`[#${texture.id}] ${texture.name}`).setFooter({
 		text: `${strPack}`,
 		iconURL: strIconURL,
 	});
@@ -57,16 +66,13 @@ export const getTextureMessageOptions = async (options: {
 		textureURL = "";
 	}
 
-	embed.setThumbnail(textureURL);
-	embed.setImage(`attachment://magnified.${animated ? "gif" : "png"}`);
-
 	// test if url isn't a 404
 	let dimension: ISizeCalculationResult;
 	try {
 		// getDimensions also validates a url
 		dimension = await getDimensions(textureURL);
 	} catch (err) {
-		const errorEmbed = new MessageEmbed()
+		const errorEmbed = new EmbedBuilder()
 			.setTitle("Image not found!")
 			.setDescription(`\`${texture.name}\` hasn't been made for ${strPack} yet or is blacklisted!`)
 			.setColor(colors.red);
@@ -76,9 +82,9 @@ export const getTextureMessageOptions = async (options: {
 
 	embed
 		.setURL(`https://webapp.faithfulpack.net/#/gallery/java/32x/latest/all/?show=${texture.id}`)
-		.addFields([
-			{ name: "Resolution", value: `${dimension.width}×${dimension.height}`, inline: true },
-		]);
+		.addFields({ name: "Resolution", value: `${dimension.width}×${dimension.height}` })
+		.setThumbnail(textureURL)
+		.setImage(`attachment://magnified.${animated ? "gif" : "png"}`);
 
 	let mainContribution: Contribution;
 	if (allContributions.length) {
@@ -88,26 +94,22 @@ export const getTextureMessageOptions = async (options: {
 	}
 
 	if (mainContribution) {
-		let strDate: string = `<t:${Math.trunc(mainContribution.date / 1000)}:d>`;
-		let authors = mainContribution.authors.map((authorId: string) => {
+		const authors = mainContribution.authors.map((authorId) => {
 			if (guild.members.cache.get(authorId)) return `<@!${authorId}>`;
 
-			// this may possibly be one of the worst solutions but it somehow works
-			for (let user of contributionJSON) {
-				if (user.id == authorId) return user.username ?? "Anonymous";
-			}
-			return "Unknown";
+			// fetch username if not in server
+			return contributionJSON.find((user) => user.id == authorId)?.username ?? "Anonymous";
 		});
 
-		const displayContribution = `${strDate} — ${authors.join(", ")}`;
+		const displayContribution = `<t:${Math.trunc(mainContribution.date / 1000)}:d> — ${authors.join(
+			", ",
+		)}`;
 
 		if (displayContribution != undefined) {
-			embed.addFields([
-				{
-					name: authors.length == 1 ? "Latest Author" : "Latest Authors",
-					value: displayContribution,
-				},
-			]);
+			embed.addFields({
+				name: authors.length == 1 ? "Latest Author" : "Latest Authors",
+				value: displayContribution,
+			});
 		}
 	}
 
@@ -116,14 +118,45 @@ export const getTextureMessageOptions = async (options: {
 	// magnifying the texture in thumbnail
 	if (animated) {
 		if (Object.keys(mcmeta?.animation ?? {}).length)
-			embed.addFields([
-				{ name: "MCMETA", value: `\`\`\`json\n${JSON.stringify(mcmeta.animation)}\`\`\`` },
-			]);
+			embed.addFields({
+				name: "MCMETA",
+				value: `\`\`\`json\n${JSON.stringify(mcmeta.animation)}\`\`\``,
+			});
 
-		files.push(
-			await animateAttachment({ url: textureURL, magnify: true, name: "magnified.gif", mcmeta }),
-		);
-	} else files.push((await magnifyAttachment({ url: textureURL, name: "magnified.png" }))[0]);
+		files.push(await animateToAttachment(await loadImage(textureURL), mcmeta));
+	} else files.push(await magnifyToAttachment(textureURL));
 
-	return { embeds: [embed], files: files, components: [textureButtons] };
+	return { embeds: [embed], files: files, components: [textureButtons], ephemeral: false };
+};
+
+/**
+ * Generate embed fields for a given texture's paths
+ * @author Juknum
+ * @param texture texture to get paths and uses from
+ * @returns usable embed field data
+ */
+export const addPathsToEmbed = (texture: Texture): APIEmbedField[] => {
+	const tmp = {};
+	texture.uses.forEach((use) => {
+		texture.paths
+			.filter((el) => el.use === use.id)
+			.forEach((p) => {
+				const versions = p.versions.sort(minecraftSorter);
+				const versionRange = `\`[${
+					versions.length > 1 ? `${versions[0]} — ${versions.at(-1)}` : versions[0]
+				}]\``;
+				const formatted = `${versionRange} ${p.name}`;
+				if (tmp[use.edition]) tmp[use.edition].push(formatted);
+				else tmp[use.edition] = [formatted];
+			});
+	});
+
+	return Object.keys(tmp).map((edition) => {
+		if (tmp[edition].length) {
+			return {
+				name: edition.charAt(0).toLocaleUpperCase() + edition.slice(1),
+				value: tmp[edition].join("\n"),
+			};
+		}
+	});
 };

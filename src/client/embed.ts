@@ -1,13 +1,14 @@
-import { APIEmbed } from "discord-api-types/v10.mjs";
-import { MessageEmbed, MessageEmbedOptions } from "discord.js";
+import { Colors, EmbedBuilder, EmbedData, APIEmbed } from "discord.js";
 
-class ExtendedEmbed extends MessageEmbed {
-	constructor(data?: MessageEmbed | MessageEmbedOptions | APIEmbed) {
+/**
+ * Automatically sets embed color to blurple
+ * @author Nick
+ */
+export class ExtendedEmbedBuilder extends EmbedBuilder {
+	constructor(data?: EmbedData | APIEmbed) {
 		super(data);
 		if (data) return; // do not override existing data
 
-		this.setColor("BLURPLE");
+		this.setColor(Colors.Blurple);
 	}
 }
-
-export { ExtendedEmbed };

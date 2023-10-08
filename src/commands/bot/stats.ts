@@ -1,11 +1,10 @@
 import { duration } from "moment";
 import { SlashCommand, SlashCommandI } from "@interfaces";
-import { SlashCommandBuilder } from "@discordjs/builders";
-import { Collection, Guild, version as djsVersion } from "discord.js";
-import { Client, MessageEmbed, CommandInteraction, Message } from "@client";
+import { SlashCommandBuilder, Collection, Guild, version as djsVersion } from "discord.js";
+import { Client, EmbedBuilder, ChatInputCommandInteraction, Message } from "@client";
 import os from "os";
 import linuxOs from "linux-os-info";
-import settings from "@json/dynamic/settings.json";
+import axios from "axios";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -26,7 +25,9 @@ export const command: SlashCommand = {
 				),
 		),
 	execute: new Collection<string, SlashCommandI>()
-		.set("bot", async (interaction: CommandInteraction, client: Client) => {
+		.set("bot", async (interaction: ChatInputCommandInteraction) => {
+			// easier to get extended properties
+			const client = interaction.client;
 			let sumMembers = 0;
 			let version: string;
 
@@ -39,39 +40,37 @@ export const command: SlashCommand = {
 			if (os.platform() == "linux") version = linuxOs({ mode: "sync" }).pretty_name;
 			else version = os.version();
 
-			const FieldTitles = (
-				await interaction.getEphemeralString({ string: "Command.Stats.Embed.FieldTitles" })
-			).split("$,");
+			const image: string = (await axios.get(`${client.tokens.apiUrl}settings/images.heart`)).data;
 
-			const embed = new MessageEmbed()
+			const embed = new EmbedBuilder()
 				.setTitle(`${client.user.username}'s Statistics`)
 				.setThumbnail(client.user.displayAvatarURL())
 				.addFields(
 					// TODO: remove the prefix since there are no prefix commands on the bot
-					{ name: FieldTitles[0], value: "/", inline: true },
-					{ name: FieldTitles[1], value: duration(client.uptime).humanize(), inline: true },
-					{ name: FieldTitles[2], value: client.guilds.cache.size.toString(), inline: true },
+					{ name: "Prefix", value: interaction.client.tokens.prefix, inline: true },
+					{ name: "Uptime", value: duration(client.uptime).humanize(), inline: true },
+					{ name: "Server Count", value: client.guilds.cache.size.toString(), inline: true },
 					{
-						name: FieldTitles[3],
+						name: "Memory Usage",
 						value: `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB`,
 						inline: true,
 					},
-					{ name: FieldTitles[4], value: `discord.js ${djsVersion}`, inline: true },
-					{ name: FieldTitles[5], value: `${process.version}`, inline: true },
-					{ name: FieldTitles[6], value: `${client.slashCommands.size}`, inline: true },
-					{ name: FieldTitles[7], value: `${number}`, inline: true },
-					{ name: FieldTitles[8], value: `${sumMembers}`, inline: true },
-					{ name: FieldTitles[9], value: version },
+					{ name: "Discord Library", value: `Discord.js ${djsVersion}`, inline: true },
+					{ name: "Node.js", value: `${process.version}`, inline: true },
+					{ name: "Total Commands", value: `${client.slashCommands.size}`, inline: true },
+					{ name: "Commands Processed", value: `${number}`, inline: true },
+					{ name: "Members Across Servers", value: `${sumMembers}`, inline: true },
+					{ name: "Operating System", value: version },
 				)
 				.setFooter({
-					text: await interaction.getEphemeralString({ string: "Command.Stats.Footer" }),
-					iconURL: settings.images.heart,
+					text: interaction.strings().command.stats.footer,
+					iconURL: image,
 				});
 			interaction
 				.reply({ embeds: [embed], fetchReply: true })
 				.then((message: Message) => message.deleteButton());
 		})
-		.set("command", async (interaction: CommandInteraction, client: Client) => {
+		.set("command", async (interaction: ChatInputCommandInteraction, client: Client) => {
 			//if the command args are provided and the command does not exist in commandsProcessed:
 			if (
 				interaction.options.getString("command") &&
@@ -79,25 +78,21 @@ export const command: SlashCommand = {
 			)
 				return interaction.reply({
 					ephemeral: true,
-					content: await interaction.getEphemeralString({
-						string: "Command.Stats.NotFound",
-						placeholders: {
-							COMMAND: interaction.options.getString("command"),
-						},
-					}),
+					content: interaction
+						.strings()
+						.command.stats.not_found.replace("%COMMAND%", interaction.options.getString("command")),
 				});
 
 			if (interaction.options.getString("command")) {
-				const embed = new MessageEmbed().setTimestamp().setTitle(
-					await interaction.getEphemeralString({
-						string: "Command.Stats.Usage",
-						placeholders: {
-							COMMAND: interaction.options.getString("command"),
-							USE:
-								client.commandsProcessed.get(interaction.options.getString("command")).toString() ??
+				const embed = new EmbedBuilder().setTimestamp().setTitle(
+					interaction
+						.strings()
+						.command.stats.usage.replace("%COMMAND%", interaction.options.getString("command"))
+						.replace(
+							"%USE%",
+							client.commandsProcessed.get(interaction.options.getString("command")).toString() ??
 								"0",
-						},
-					}),
+						),
 				);
 				interaction.reply({ ephemeral: true, embeds: [embed], fetchReply: true });
 			} else {
@@ -105,10 +100,9 @@ export const command: SlashCommand = {
 				const sorted = new Map([...client.commandsProcessed.entries()].sort((a, b) => b[1] - a[1]));
 				const data = [[...sorted.keys()], [...sorted.values()]];
 
-				const embed = new MessageEmbed()
+				const embed = new EmbedBuilder()
 					.setTimestamp()
-					.setTitle(await interaction.getEphemeralString({ string: "Command.Stats.Top10" }))
-					.setDescription(`
+					.setTitle(interaction.strings().command.stats.top_ten).setDescription(`
 ${data[0]
 	.slice(0, data[0].length > 10 ? 10 : data[0].length)
 	.map((key: any, index: any) => {

@@ -1,8 +1,6 @@
 import { SlashCommand } from "@interfaces";
-import { SlashCommandBuilder } from "@discordjs/builders";
-import { Client, CommandInteraction, MessageEmbed } from "@client";
-import { PermissionFlagsBits } from "discord-api-types/v10";
-import settings from "@json/dynamic/settings.json";
+import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
+import { Client, ChatInputCommandInteraction, EmbedBuilder } from "@client";
 
 export const command: SlashCommand = {
 	servers: ["dev"],
@@ -13,7 +11,7 @@ export const command: SlashCommand = {
 			option.setName("code").setDescription("The code to evaluate.").setRequired(true),
 		)
 		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
-	execute: async (interaction: CommandInteraction) => {
+	async execute(interaction: ChatInputCommandInteraction) {
 		if (!interaction.hasPermission("dev")) return;
 		const clean = async (text: any, client: Client): Promise<string> => {
 			if (text && text.constructor.name === "Promise") text = await text;
@@ -22,6 +20,7 @@ export const command: SlashCommand = {
 			return text
 				.replaceAll(client.tokens.token, "[BOT_TOKEN]")
 				.replaceAll(client.tokens.apiPassword, "[API_PASSWORD]")
+				.replaceAll(client.tokens.gitToken, "[GIT_TOKEN]")
 				.replace(/`/g, "`" + String.fromCharCode(8203))
 				.replace(/@/g, "@" + String.fromCharCode(8203));
 		};
@@ -34,7 +33,7 @@ export const command: SlashCommand = {
 
 		// ----
 
-		const code: string = interaction.options.getString("code", true);
+		const code = interaction.options.getString("code", true);
 		const evaluated = await eval(
 			`(async () => { try { return await (async () => {${
 				code.includes("return") ? code : `return ${code}`
@@ -44,11 +43,8 @@ export const command: SlashCommand = {
 		interaction.reply({
 			ephemeral: true,
 			embeds: [
-				new MessageEmbed().setDescription(
-					`\`\`\`js\n${(await clean(evaluated, interaction.client as Client)).slice(
-						0,
-						4085,
-					)}\`\`\``,
+				new EmbedBuilder().setDescription(
+					`\`\`\`js\n${(await clean(evaluated, interaction.client)).slice(0, 4085)}\`\`\``,
 				),
 			],
 		});

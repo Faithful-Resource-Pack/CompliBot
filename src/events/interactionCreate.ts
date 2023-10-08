@@ -1,37 +1,40 @@
 import { Event } from "@interfaces";
-import { Client, CommandInteraction, ButtonInteraction, SelectMenuInteraction } from "@client";
+import {
+	Client,
+	ChatInputCommandInteraction,
+	ButtonInteraction,
+	StringSelectMenuInteraction,
+} from "@client";
 import { Interaction } from "discord.js";
 
-export const event: Event = {
+export default {
 	name: "interactionCreate",
-	run: async (client: Client, interaction: Interaction) => {
+	async execute(client: Client, interaction: Interaction) {
 		if (!interaction.inGuild()) return;
 
 		const banlist = require("@json/botbans.json");
 		if (banlist.ids.indexOf(interaction.user.id) > -1) {
-			(interaction as CommandInteraction | ButtonInteraction | SelectMenuInteraction).reply({
-				content: await (
-					interaction as CommandInteraction | ButtonInteraction | SelectMenuInteraction
-				).getEphemeralString({
-					string: "Command.Botban.isBanned",
-				}),
+			(
+				interaction as ChatInputCommandInteraction | ButtonInteraction | StringSelectMenuInteraction
+			).reply({
+				content: (
+					interaction as
+						| ChatInputCommandInteraction
+						| ButtonInteraction
+						| StringSelectMenuInteraction
+				).strings().error.botbanned,
 				ephemeral: true,
 			});
 			return;
 		}
 
-		if (interaction.isCommand()) {
-			let _ = (interaction as CommandInteraction) instanceof CommandInteraction; //! do not remove, 'force' interaction to be casted (break if removed)
-			client.emit("slashCommandUsed", (client as Client, interaction));
-		}
-		if (interaction.isButton()) {
-			let _ = (interaction as ButtonInteraction) instanceof ButtonInteraction; //! do not remove, 'force' interaction to be casted (break if removed)
-			client.emit("buttonUsed", (client as Client, interaction));
-		}
+		if (interaction.isCommand()) client.emit("slashCommandUsed", (client as Client, interaction));
 
-		if (interaction.isSelectMenu()) {
-			let _ = (interaction as SelectMenuInteraction) instanceof SelectMenuInteraction; //! do not remove, 'force' interaction to be casted (break if removed)
+		if (interaction.isButton()) client.emit("buttonUsed", (client as Client, interaction));
+
+		if (interaction.isStringSelectMenu())
 			client.emit("selectMenuUsed", (client as Client, interaction));
-		}
+
+		if (interaction.isModalSubmit()) client.emit("modalSubmit", (client as Client, interaction));
 	},
-};
+} as Event;

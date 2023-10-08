@@ -1,68 +1,41 @@
-import { DiscordAPIError, MessageAttachment, MessageEmbed, TextChannel } from "discord.js";
+import { DiscordAPIError, AttachmentBuilder } from "discord.js";
 import { Client } from "@client";
-import fs from "fs";
-import { err } from "@helpers/logger";
-import { colors } from "@helpers/colors";
+import { readFileSync } from "fs";
+import { devLogger, err } from "@helpers/logger";
 import { Log } from "client/client";
-import path from "path";
-import settings from "@json/dynamic/settings.json";
-
-const randomSentences: Array<string> = [
-	"Oh no, not again!",
-	"Well, it's unexpected...",
-	"OOPS, sorry, my bad!",
-	"I thought TS > JS was true...",
-	"This one is going to be a nightmare to solve!",
-	"Please, don't blame me, I try my best. Each day.",
-	"Like humans, I have some errors",
-	"Don't be sad, have a hug <3",
-	"oh.",
-	"Another one! DJ Khaleeeeed!",
-	"I just don't know what went wrong :(",
-	"My bad.",
-	"Hold my beer.",
-	"I'm so sorry, I'm just a bot :(",
-	"Unfortunately I was coded in a way that I can't handle this error",
-	"Would you like a cupcake?",
-	"Why did you do that?",
-	"Don't be sad. I'll do better next time, I promise!",
-	"somebody set up us the error",
-	"I'm sorry, Dave.",
-	"Hi. I'm CompliBot, and I'm a erroraholic.",
-	"Ooh. Shiny.",
-	"But it works on my machine.",
-	"Oops.",
-	"On the bright side, I bought you a teddy bear!",
-	"Shall we play a game?",
-	"Surprise! Haha. Well, this is awkward.",
-	"This doesn't make any sense!",
-	"Why is it breaking :(",
-	"Don't do that.",
-	"Ouch. That hurt :(",
-];
+import { join } from "path";
+import * as Random from "@utility/random";
+import { error as randomSentences } from "@json/quotes.json";
 
 const lastReasons = [];
-const loopLimit = 3; //how many times the same error needs to be made to trigger a loop
+const loopLimit = 3; // how many times the same error needs to be made to trigger a loop
 
-export const logConstructor: Function = (
+/**
+ * Get all recent logs as a discord attachment
+ * @author Juknum
+ * @param client discord client
+ * @param reason reason for requesting logs
+ * @returns whole log as a text file
+ */
+export const logConstructor = (
 	client: Client,
 	reason: any = { stack: "You requested it with /logs ¯\\_(ツ)_/¯" },
-): MessageAttachment => {
-	const logTemplate = fs.readFileSync(path.join(__dirname + "/errorHandler.log"), {
+): AttachmentBuilder => {
+	const logTemplate = readFileSync(join(__dirname + "/errorHandler.log"), {
 		encoding: "utf-8",
 	});
 	const template = logTemplate.match(new RegExp(/\%templateStart%([\s\S]*?)%templateEnd/))[1]; // get message template
 
-	const t = Math.floor(Math.random() * randomSentences.length);
+	const sentence = Random.choice(randomSentences);
 	let logText = logTemplate
 		.replace("%date%", new Date().toUTCString())
 		.replace("%stack%", reason.stack || JSON.stringify(reason))
-		.replace("%randomSentence%", randomSentences[t])
-		.replace("%randomSentenceUnderline%", "-".repeat(randomSentences[t].length));
+		.replace("%randomSentence%", sentence)
+		.replace("%randomSentenceUnderline%", "-".repeat(sentence.length));
 
 	logText = logText.split("%templateStart%")[0]; // remove message template
 
-	let len: number = client.getAction().length;
+	const len = client.getAction().length;
 	client
 		.getAction()
 		.reverse()
@@ -72,13 +45,13 @@ export const logConstructor: Function = (
 				.replace(
 					"%templateType%",
 					log.type === "slashCommand"
-						? `${log.type} (${log.data.commandName})`
+						? `${log.type} [${log.data.commandName}]`
 						: log.type === "guildMemberUpdate"
 						? `${log.type} | ${log.data.user.username} ${
 								log.data.reason === "added" ? "joined" : "left"
 						  } ${log.data.guild.name}`
 						: log.type === "message"
-						? `${log.type} [${log.data.isDeleted ? "deleted" : "created"}] | ${
+						? `${log.type} | ${
 								log.data.author ? (log.data.author.bot ? "BOT" : "USER") : "Unknown (likely bot)"
 						  } | ${log.data.author ? log.data.author.username : "Unknown"}`
 						: log.type,
@@ -135,41 +108,45 @@ export const logConstructor: Function = (
 		});
 
 	const buffer = Buffer.from(logText, "utf8");
-	return new MessageAttachment(buffer, "stack.log");
+	return new AttachmentBuilder(buffer, { name: "stack.log" });
 };
 
-export const errorHandler: Function = async (client: Client, reason: any, type: string) => {
-	console.error(`${err} ${reason?.stack ?? reason ?? "No reason provided!"}`);
+/**
+ * Handle and log errors
+ * @author Juknum
+ * @param client discord client
+ * @param error error description
+ * @param type error title
+ */
+export async function errorHandler(client: Client, error: any, type: string) {
+	if (client.tokens.dev) return console.trace(`${err}${error?.stack ?? error}`);
 
-	if (reason instanceof DiscordAPIError) return; // not on our end
+	let eprotoError = false;
+	let description = error.stack;
+	let codeBlocks = "";
 
-	// get dev log channel
-	const channel = client.channels.cache.get(client.tokens.errorChannel) as TextChannel;
-	if (channel === undefined) return; // avoid infinite loop when crash is outside of client
+	if (error.isAxiosError) {
+		// axios errors are JSON
+		description = JSON.stringify(error.toJSON());
+		eprotoError = error.code === "EPROTO";
+		codeBlocks = "json";
+	} else if (!description) {
+		// no stack trace so it's JSON
+		description = JSON.stringify(error);
+		codeBlocks = "json";
+	} else if (error instanceof DiscordAPIError)
+		// not on our end, just clutters logs
+		return console.error(error, type, description);
+
+	// silence EPROTO errors
+	if (eprotoError) return console.error(error, type, description);
 
 	if (lastReasons.length == loopLimit) lastReasons.pop(); // pop removes an item from the end of an array
-	lastReasons.push(reason); // push adds one to the start
+	lastReasons.push(error); // push adds one to the start
 
-	//checks if every reasons are the same
-	/*if (lastReasons.every((v) => v.stack == lastReasons[0].stack) && lastReasons.length == loopLimit) {
-		if (client.verbose) console.log(`${err}Suspected crash loop detected; Restarting...`);
-
-		const embed = new MessageEmbed()
-			.setTitle("(Probably) Looped, crash encountered!")
-			.setFooter({ text: `Got the same error ${loopLimit} times in a row. Attempting restart...` })
-			.setDescription("```bash\n" + reason.stack + "\n```");
-		await channel.send({ embeds: [embed] });
-
-		client.restart();
-	}*/
-
-	const embed = new MessageEmbed()
-		.setAuthor({ name: type, iconURL: settings.images.error }) // much compressed than .title() & .thumbnail()
-		.setColor(colors.red)
-		.setTimestamp()
-		.setDescription(`\`\`\`${reason?.stack ?? reason ?? "No reason provided!"}\`\`\``)
-		.setFooter({ text: client.user.username, iconURL: client.user.avatarURL() });
-
-	await channel.send({ embeds: [embed] }).catch(console.error);
-	await channel.send({ files: [logConstructor(client, reason)] }).catch(console.error); // send after because the file is displayed before the embed (embeds are prioritized)
-};
+	devLogger(client, description, {
+		title: type,
+		file: logConstructor(client, error),
+		codeBlocks,
+	}).catch(console.error);
+}

@@ -1,9 +1,9 @@
 import { SlashCommand } from "@interfaces";
-import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction, Message, MessageEmbed, Client } from "@client";
-import { colors } from "@helpers/colors";
+import { SlashCommandBuilder } from "discord.js";
+import { ChatInputCommandInteraction, Message, EmbedBuilder } from "@client";
+import { colors } from "@utility/colors";
 import faqStrings from "@json/faq.json";
-import settings from "@json/dynamic/settings.json";
+import axios from "axios";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -12,7 +12,7 @@ export const command: SlashCommand = {
 		.addStringOption((option) =>
 			option.setName("keyword").setDescription("The specific FAQ entry to view.").setRequired(true),
 		),
-	execute: async (interaction: CommandInteraction) => {
+	async execute(interaction: ChatInputCommandInteraction) {
 		const choice = interaction.options.getString("keyword", true).toLocaleLowerCase().trim();
 
 		if (choice == "all") {
@@ -25,9 +25,9 @@ export const command: SlashCommand = {
 			let embedArray = [];
 			let i = 0;
 
-			for (let faq of faqStrings) {
+			for (const faq of faqStrings) {
 				embedArray.push(
-					new MessageEmbed()
+					new EmbedBuilder()
 						.setTitle(faq.question)
 						.setDescription(faq.answer)
 						.setColor(colors.brand)
@@ -49,7 +49,7 @@ export const command: SlashCommand = {
 		const faqChoice = faqStrings.filter((faq) => faq.keywords.includes(choice))?.[0];
 
 		if (!faqChoice) {
-			const errorEmbed = new MessageEmbed()
+			const errorEmbed = new EmbedBuilder()
 				.setTitle("Invalid choice!")
 				.setDescription(`\`${choice}\` is not a valid FAQ keyword! Have you made a typo?`)
 				.setColor(colors.red);
@@ -58,10 +58,14 @@ export const command: SlashCommand = {
 			return;
 		}
 
-		const faqEmbed = new MessageEmbed()
+		const question: string = (
+			await axios.get(`${interaction.client.tokens.apiUrl}settings/images.question`)
+		).data;
+
+		const faqEmbed = new EmbedBuilder()
 			.setTitle(faqChoice.question)
 			.setDescription(faqChoice.answer)
-			.setThumbnail(settings.images.question)
+			.setThumbnail(question)
 			.setFooter({ text: `Keywords: ${faqChoice.keywords.join(" • ")}` });
 
 		interaction

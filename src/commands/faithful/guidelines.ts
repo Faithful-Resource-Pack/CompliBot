@@ -1,8 +1,8 @@
 import { SlashCommand } from "@interfaces";
-import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction, Message, MessageEmbed } from "@client";
+import { SlashCommandBuilder } from "discord.js";
+import { ChatInputCommandInteraction, Message, EmbedBuilder } from "@client";
 import guidelineJSON from "@json/guidelines.json";
-import { colors } from "@helpers/colors";
+import { colors } from "@utility/colors";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -25,14 +25,14 @@ export const command: SlashCommand = {
 				.setDescription("A specific part of the guidelines you want to link to")
 				.setRequired(false),
 		),
-	execute: async (interaction: CommandInteraction) => {
+	async execute(interaction: ChatInputCommandInteraction) {
 		let contents: string;
-		let choice = interaction.options.getString("choice");
+		let keyword = interaction.options.getString("choice");
 		const pack = interaction.options.getString("pack");
-		const errorEmbed = new MessageEmbed()
+		const errorEmbed = new EmbedBuilder()
 			.setTitle("Invalid choice!")
 			.setDescription(
-				`\`${choice}\` is not a valid choice for pack \`${pack}\`. Have you chosen the wrong pack or made a typo?`,
+				`\`${keyword}\` is not a valid choice for pack \`${pack}\`. Have you chosen the wrong pack or made a typo?`,
 			)
 			.setColor(colors.red);
 
@@ -48,25 +48,25 @@ export const command: SlashCommand = {
 				break;
 		}
 
-		if (choice) {
-			choice = choice.toLocaleLowerCase(); // remove case sensitivity for easier parsing
+		if (keyword) {
+			keyword = keyword.toLocaleLowerCase(); // remove case sensitivity for easier parsing
 			if (
-				!guidelineJSON.choices
+				!guidelineJSON
 					.map((i) => i.keywords)
 					.flat()
-					.includes(choice)
+					.includes(keyword)
 			) {
 				// if it's not present anywhere escape early
 				return interaction.reply({ embeds: [errorEmbed], ephemeral: true });
 			}
 
-			for (let i of guidelineJSON.choices) {
-				if (!i.keywords.includes(choice)) continue;
-				if (!i[pack]) {
+			for (const choice of guidelineJSON) {
+				if (!choice.keywords.includes(keyword)) continue;
+				if (!choice[pack]) {
 					// if you pick an option that isn't present in the pack you selected
 					return interaction.reply({ embeds: [errorEmbed], ephemeral: true });
 				}
-				contents += `#${i[pack]}`; // adds the html id specified in the json
+				contents += `#${choice[pack]}`; // adds the html id specified in the json
 				break;
 			}
 		}

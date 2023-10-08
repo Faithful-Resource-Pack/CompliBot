@@ -1,8 +1,9 @@
 import { SlashCommand } from "@interfaces";
-import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction, MessageEmbed } from "@client";
-import { generalSlashCommandImage } from "@functions/slashCommandImage";
-import { magnifyAttachment } from "@images/magnify";
+import { SlashCommandBuilder } from "discord.js";
+import { ChatInputCommandInteraction, Message } from "@client";
+import { magnifyToAttachment } from "@images/magnify";
+import getImage from "@helpers/getImage";
+import { imageButtons } from "@utility/buttons";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -26,11 +27,19 @@ export const command: SlashCommand = {
 				.setDescription("The scale factor the image should be enlarged by.")
 				.setRequired(false);
 		}),
-	execute: (interaction: CommandInteraction) => {
-		generalSlashCommandImage(interaction, magnifyAttachment, {
-			factor: interaction.options.getNumber("factor"),
-			name: "magnified.png",
-			embed: new MessageEmbed().setTitle("Magnified").setImage("attachment://magnified.png"),
+	async execute(interaction: ChatInputCommandInteraction) {
+		await interaction.deferReply();
+		const image = await getImage(interaction);
+
+		const file = await magnifyToAttachment(image, {
+			factor: interaction.options.getNumber("factor", false),
 		});
+
+		await interaction
+			.editReply({
+				files: [file],
+				components: [imageButtons],
+			})
+			.then((message: Message) => message.deleteButton());
 	},
 };

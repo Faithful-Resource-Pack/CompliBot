@@ -1,8 +1,8 @@
 import { Image, createCanvas, loadImage } from "@napi-rs/canvas";
-import { MessageAttachment } from "discord.js";
+import { AttachmentBuilder } from "discord.js";
 import GIFEncoder from "./GIFEncoder";
-import { Client, MessageEmbed } from "@client";
-import { addPathsToEmbed } from "@helpers/sorter";
+import { Client, EmbedBuilder } from "@client";
+import { addPathsToEmbed } from "@functions/getTexture";
 import axios from "axios";
 import { Texture } from "@interfaces";
 
@@ -13,7 +13,7 @@ import { Texture } from "@interfaces";
  * @param framerate framerate of the gif
  * @returns gif as a message attachment
  */
-export async function imagesToGIF(images: Image[], framerate: number): Promise<MessageAttachment> {
+export async function imagesToGIF(images: Image[], framerate: number): Promise<AttachmentBuilder> {
 	const biggestImage = images.reduce((a, e) => (a.width > e.width ? a : e), {
 		width: 0,
 		height: 0,
@@ -37,7 +37,7 @@ export async function imagesToGIF(images: Image[], framerate: number): Promise<M
 	const encoder = new GIFEncoder(finalWidth, finalHeight);
 	encoder.start();
 	encoder.setTransparent(true);
-	for (let image of images) {
+	for (const image of images) {
 		// converting the Image() object to a Canvas() object
 		const canvas = createCanvas(finalWidth, finalHeight);
 		const ctx = canvas.getContext("2d");
@@ -48,7 +48,7 @@ export async function imagesToGIF(images: Image[], framerate: number): Promise<M
 		encoder.addFrame(ctx);
 	}
 	encoder.finish();
-	return new MessageAttachment(encoder.out.getData(), "cycled.gif");
+	return new AttachmentBuilder(encoder.out.getData(), { name: "cycled.gif" });
 }
 
 /**
@@ -64,7 +64,7 @@ export async function cycleComparison(
 	client: Client,
 	id: number | string,
 	display: string,
-	framerate: number = 1,
+	framerate = 1,
 ): Promise<any> {
 	const result: Texture = (await axios.get(`${client.tokens.apiUrl}textures/${id}/all`)).data;
 
@@ -85,14 +85,14 @@ export async function cycleComparison(
 			break;
 	}
 
-	const embed = new MessageEmbed()
+	const embed = new EmbedBuilder()
 		.setTitle(`[#${result.id}] ${result.name}`)
 		.setURL(`https://webapp.faithfulpack.net/#/gallery/java/32x/latest/all/?show=${id}`)
 		.addFields(addPathsToEmbed(result))
 		.setFooter({ text: packText });
 
-	let images = [];
-	for (let pack of displayed) {
+	const images: Image[] = [];
+	for (const pack of displayed) {
 		const url = `${client.tokens.apiUrl}textures/${id}/url/${pack}/latest`;
 		try {
 			images.push(await loadImage(url));

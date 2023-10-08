@@ -1,11 +1,17 @@
 import axios from "axios";
 import sizeOf from "image-size";
-import { ISizeCalculationResult } from "image-size/dist/types/interface";
 
-export default async function (imageURL: string): Promise<ISizeCalculationResult> {
-	const response = await axios.get(imageURL, { responseType: "arraybuffer" });
-	const data = response.data;
-	const buf = Buffer.from(data, "base64");
-	const size = sizeOf(buf);
-	return size;
+/**
+ * Get dimensions of an image and validate url
+ * @author Juknum
+ * @param imageURL url to find dimensions of
+ * @returns image size
+ */
+export default async function getDimensions(imageURL: string) {
+	const buf: Buffer = (await axios.get(imageURL, { responseType: "arraybuffer" })).data;
+
+	// fixes bug where buf was undefined
+	if (!buf) throw new Error(`Buffer for getDimensions invalid: ${buf}`);
+
+	return sizeOf(buf);
 }

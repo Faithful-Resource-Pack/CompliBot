@@ -1,9 +1,9 @@
 import { SlashCommand } from "@interfaces";
-import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction, Message, MessageEmbed, Client } from "@client";
-import { colors } from "@helpers/colors";
+import { SlashCommandBuilder } from "discord.js";
+import { ChatInputCommandInteraction, Message, EmbedBuilder } from "@client";
+import { colors } from "@utility/colors";
 import ruleStrings from "@json/rules.json";
-import settings from "@json/dynamic/settings.json";
+import axios from "axios";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -30,9 +30,12 @@ export const command: SlashCommand = {
 				)
 				.setRequired(true),
 		),
-	execute: async (interaction: CommandInteraction) => {
+	async execute(interaction: ChatInputCommandInteraction) {
 		const baseUrl = "https://docs.faithfulpack.net/pages/manuals/expanded-server-rules";
 		const choice = interaction.options.getString("number", true);
+
+		// fetch the whole collection since we're using it multiple times
+		const settings = (await axios.get(`${interaction.client.tokens.apiUrl}settings/raw`)).data;
 
 		if (choice == "all" || choice == "server") {
 			if (!interaction.hasPermission("manager")) return;
@@ -51,7 +54,7 @@ export const command: SlashCommand = {
 			if (choice == "all")
 				await interaction.channel.send({
 					embeds: [
-						new MessageEmbed()
+						new EmbedBuilder()
 							.setTitle(ruleStrings.rules_info.heading.title)
 							.setDescription(ruleStrings.rules_info.heading.description)
 							.setColor(colors.brand)
@@ -60,10 +63,10 @@ export const command: SlashCommand = {
 					],
 				});
 
-			for (let rule of ruleStrings[choice == "all" ? "rules" : "server"]) {
+			for (const rule of ruleStrings[choice == "all" ? "rules" : "server"]) {
 				++i;
 				embedArray.push(
-					new MessageEmbed()
+					new EmbedBuilder()
 						.setTitle(rule.title)
 						.setDescription(rule.description)
 						.setColor(colors.brand),
@@ -79,16 +82,16 @@ export const command: SlashCommand = {
 
 			if (choice != "all") return;
 
-			const embedExpandedRules = new MessageEmbed()
+			const embedExpandedRules = new EmbedBuilder()
 				.setColor(colors.brand)
 				.setTitle(ruleStrings.rules_info.expanded_rules.title)
 				.setDescription(ruleStrings.rules_info.expanded_rules.description);
 
-			let embedChanges: MessageEmbed; // needs to be declared outside the block to prevent block scope shenanigans
+			let embedChanges: EmbedBuilder; // needs to be declared outside the block to prevent block scope shenanigans
 
 			if (ruleStrings.rules_info.changes.enabled) {
 				// only for the changes note
-				embedChanges = new MessageEmbed()
+				embedChanges = new EmbedBuilder()
 					.setTitle(ruleStrings.rules_info.changes.title)
 					.setColor(colors.brand)
 					.setDescription(ruleStrings.rules_info.changes.description)
@@ -105,7 +108,7 @@ export const command: SlashCommand = {
 		return await interaction
 			.reply({
 				embeds: [
-					new MessageEmbed()
+					new EmbedBuilder()
 						.setTitle(ruleChoice.title)
 						.setDescription(ruleChoice.description)
 						.setThumbnail(settings.images.rules)

@@ -1,42 +1,39 @@
-import { MessageEmbed } from "@client";
-import { Canvas, SKRSContext2D, createCanvas, loadImage, Image, DOMMatrix } from "@napi-rs/canvas";
-import { MessageAttachment } from "discord.js";
-import getDimensions from "./getDimensions";
+import { createCanvas, loadImage, Image, DOMMatrix } from "@napi-rs/canvas";
+import { AttachmentBuilder } from "discord.js";
+import { ImageSource } from "@helpers/getImage";
+import {
+	EmbedBuilder,
+	ButtonInteraction,
+	ChatInputCommandInteraction,
+	StringSelectMenuInteraction,
+	Message,
+} from "@client";
+import { colors } from "@utility/colors";
 
-export type tileShape = "grid" | "vertical" | "horizontal" | "hollow" | "plus";
-interface options {
-	url: string;
-	embed?: MessageEmbed;
-	name?: string;
-	shape?: tileShape;
-	random?: "flip" | "rotation";
+export type TileShape = "grid" | "vertical" | "horizontal" | "hollow" | "plus";
+export type TileRandom = "flip" | "rotation";
+interface TileOptions {
+	shape?: TileShape;
+	random?: TileRandom;
 }
 
-export async function tileAttachment(options: options): Promise<[MessageAttachment, MessageEmbed]> {
-	try {
-		const canvas = await tileCanvas(options);
-		return [
-			new MessageAttachment(
-				canvas.toBuffer("image/png"),
-				`${options.name ? options.name : "tiled.png"}`,
-			),
-			options.embed,
-		];
-	} catch (err) {
-		return [null, options.embed];
-	}
-}
+/**
+ * Tile an image
+ * @author Juknum
+ * @param origin what to tile
+ * @param options what shape and randomness
+ * @returns tiled image as buffer
+ */
+export async function tile(origin: ImageSource, options: TileOptions = {}): Promise<Buffer> {
+	const input = await loadImage(origin).catch((err) => Promise.reject(err));
 
-export async function tileCanvas(options: options): Promise<Canvas> {
-	const dimension = await getDimensions(options.url);
-	if (dimension.width * dimension.height * 3 > 262144)
-		return Promise.reject("Output exceeds the maximum of 512 x 512px²!");
+	// 1048576px is the same size as a magnified image
+	if (input.width * input.height * 3 > 1048576) return null;
 
-	let canvas: Canvas = createCanvas(dimension.width * 3, dimension.height * 3);
-	let context: SKRSContext2D = canvas.getContext("2d");
+	const canvas = createCanvas(input.width * 3, input.height * 3);
+	const context = canvas.getContext("2d");
 
 	context.imageSmoothingEnabled = false;
-	let imageToDraw = await loadImage(options.url);
 
 	const drawRotatedImage = (
 		image: Image,
@@ -45,20 +42,21 @@ export async function tileCanvas(options: options): Promise<Canvas> {
 		scale: number,
 		rotation: number,
 	) => {
-		context.clearRect(x, y, dimension.width, dimension.height);
+		context.clearRect(x, y, input.width, input.height);
 		context.setTransform(new DOMMatrix([scale, 0, 0, scale, x, y])); // sets scale and origin
 		context.rotate(rotation * (Math.PI / 180));
 		context.drawImage(image, -image.width / 2, -image.height / 2);
 
 		context.restore(); // reset context position to its origin
 	};
+
 	const drawMirroredImage = (x = 0, y = 0) => {
 		context.save();
 		context.scale(-1, 1); //scales the entire canvas
 
 		// draw in negative space (* -1) since its flipped by .scale()
 		// and account for image width since the corner is also flipped
-		context.drawImage(imageToDraw, x * -1 - dimension.width, y);
+		context.drawImage(input, x * -1 - input.width, y);
 		context.restore();
 	};
 
@@ -78,12 +76,12 @@ export async function tileCanvas(options: options): Promise<Canvas> {
 			[0, 0, 0],
 		];
 
-		for (let x = 0; x < 3; x++) {
-			for (let y = 0; y < 3; y++) {
+		for (let x = 0; x < 3; ++x) {
+			for (let y = 0; y < 3; ++y) {
 				drawRotatedImage(
-					imageToDraw,
-					x * dimension.width + dimension.width / 2,
-					y * dimension.height + dimension.height / 2,
+					input,
+					x * input.width + input.width / 2,
+					y * input.height + input.height / 2,
 					1,
 					angles[y][x],
 				);
@@ -93,45 +91,85 @@ export async function tileCanvas(options: options): Promise<Canvas> {
 
 	// base grid
 	else
-		for (let x = 0; x < 3; x++) {
-			for (let y = 0; y < 3; y++) {
+		for (let x = 0; x < 3; ++x) {
+			for (let y = 0; y < 3; ++y) {
 				if (options?.random == "flip" && Math.random() < 0.5) {
-					drawMirroredImage(x * dimension.width, y * dimension.height);
-				} else context.drawImage(imageToDraw, x * dimension.width, y * dimension.height);
+					drawMirroredImage(x * input.width, y * input.height);
+				} else context.drawImage(input, x * input.width, y * input.height);
 			}
 		}
-	// context.fillStyle = "#fff";
-	// context.fillRect(1 * dimension.width, 1 * dimension.height, dimension.width, dimension.height);
-	// if (options.random && options.random === "flip") {
-	// 	drawMirroredImage(1 * dimension.width, 1 * dimension.height);
-	// } else context.drawImage(imageToDraw, 1 * dimension.width, 1 * dimension.height);
 
 	switch (options.shape) {
 		case "hollow":
-			context.clearRect(dimension.width, dimension.height, dimension.width, dimension.height); // middle middle
+			context.clearRect(input.width, input.height, input.width, input.height); // middle middle
 			break;
 		case "plus":
 		case "horizontal":
 		case "vertical":
-			context.clearRect(0, 0, dimension.width, dimension.height); // top left
-			context.clearRect(dimension.width * 2, 0, dimension.width, dimension.height); // top right
-			context.clearRect(
-				dimension.width * 2,
-				dimension.height * 2,
-				dimension.width,
-				dimension.height,
-			); // bottom right
-			context.clearRect(0, dimension.height * 2, dimension.width, dimension.height); // bottom left
+			context.clearRect(0, 0, input.width, input.height); // top left
+			context.clearRect(input.width * 2, 0, input.width, input.height); // top right
+			context.clearRect(input.width * 2, input.height * 2, input.width, input.height); // bottom right
+			context.clearRect(0, input.height * 2, input.width, input.height); // bottom left
 			break;
 		case "horizontal":
-			context.clearRect(dimension.width, 0, dimension.width, dimension.height); // top middle
-			context.clearRect(dimension.width, dimension.height * 2, dimension.width, dimension.height); // bottom middle
+			context.clearRect(input.width, 0, input.width, input.height); // top middle
+			context.clearRect(input.width, input.height * 2, input.width, input.height); // bottom middle
 			break;
 		case "vertical":
-			context.clearRect(dimension.width * 2, dimension.height, dimension.width, dimension.height); // middle left
-			context.clearRect(0, dimension.height, dimension.width, dimension.height); // middle right
+			context.clearRect(input.width * 2, input.height, input.width, input.height); // middle left
+			context.clearRect(0, input.height, input.width, input.height); // middle right
 			break;
 	}
 
-	return canvas;
+	return canvas.toBuffer("image/png");
+}
+
+/**
+ * Tile an image with specified parameters
+ * @author Evorp
+ * @param origin image to tile
+ * @param options how to tile it
+ * @param name what the attachment should be called
+ * @returns tiled image as sendable attachment
+ */
+export async function tileToAttachment(
+	origin: ImageSource,
+	options?: TileOptions,
+	name = "tiled.png",
+) {
+	const buf = await tile(origin, options);
+	// image too big so we returned early
+	if (!buf) return null;
+	return new AttachmentBuilder(buf, { name });
+}
+
+/**
+ * Warn the user that the image is too large
+ * @author Evorp
+ * @param interaction interaction to reply to
+ */
+export async function tileTooBig(
+	interaction:
+		| ButtonInteraction
+		| ChatInputCommandInteraction
+		| StringSelectMenuInteraction
+		| Message,
+) {
+	const args: any = {
+		embeds: [
+			new EmbedBuilder()
+				.setTitle(interaction.strings().command.images.too_big.replace("%ACTION%", "be tiled"))
+				.setDescription(interaction.strings().command.images.max_size)
+				.setColor(colors.red),
+		],
+	};
+
+	// make ephemeral if possible
+	if (!(interaction instanceof Message)) {
+		args.ephemeral = true;
+		args.fetchReply = true;
+	}
+
+	const reply = await (interaction as ChatInputCommandInteraction).reply(args);
+	if (interaction instanceof Message) reply.deleteButton();
 }

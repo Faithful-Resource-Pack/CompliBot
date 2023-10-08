@@ -1,8 +1,6 @@
 import { SlashCommand } from "@interfaces";
-import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction } from "discord.js";
-import { Client, Message } from "@client";
-import { PermissionFlagsBits } from "discord-api-types/v10";
+import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
+import { ChatInputCommandInteraction, Message } from "@client";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -18,14 +16,12 @@ export const command: SlashCommand = {
 			option.setName("message").setDescription("Message ID to reply to").setRequired(true),
 		)
 		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
-	execute: async (interaction: CommandInteraction, client: Client) => {
+	async execute(interaction: ChatInputCommandInteraction) {
 		if (!interaction.hasPermission("dev")) return;
 
 		let msg: Message;
 		try {
-			msg = (await interaction.channel.messages.fetch(
-				interaction.options.getString("message"),
-			)) as Message;
+			msg = await interaction.channel.messages.fetch(interaction.options.getString("message"));
 		} catch {
 			return interaction.reply({ content: "Message can't be fetched!", ephemeral: true });
 		} // message can't be fetched

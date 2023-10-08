@@ -1,46 +1,84 @@
 import { SlashCommand } from "@interfaces";
-import { SlashCommandBuilder } from "@discordjs/builders";
-import { MessageActionRow, MessageButton } from "discord.js";
-import { ids, parseId } from "@helpers/emojis";
-import { Client, MessageEmbed, Message, CommandInteraction } from "@client";
+import {
+	ActionRowBuilder,
+	SlashCommandBuilder,
+	TextInputBuilder,
+	TextInputStyle,
+	ModalBuilder,
+} from "discord.js";
+import { ChatInputCommandInteraction } from "@client";
+
+// I'm sorry...
+const feedbackFormat = {
+	bug: [
+		new TextInputBuilder()
+			.setCustomId("bugTitle")
+			.setStyle(TextInputStyle.Short)
+			.setLabel("Title")
+			.setPlaceholder("Create a title for the ticket"),
+		new TextInputBuilder()
+			.setCustomId("bugWhatHappened")
+			.setStyle(TextInputStyle.Paragraph)
+			.setLabel("What happened? What did you expect to happen?"),
+		new TextInputBuilder()
+			.setCustomId("bugToReproduce")
+			.setStyle(TextInputStyle.Paragraph)
+			.setLabel("Steps to reproduce the behavior")
+			.setPlaceholder("1. Type this\n2. Click that\n3. Bot errors"),
+		new TextInputBuilder()
+			.setCustomId("bugNotes")
+			.setStyle(TextInputStyle.Short)
+			.setLabel("Additional Notes")
+			.setRequired(false),
+	],
+	suggestion: [
+		new TextInputBuilder()
+			.setCustomId("suggestionTitle")
+			.setStyle(TextInputStyle.Short)
+			.setLabel("Title")
+			.setPlaceholder("Create a title for the ticket"),
+		new TextInputBuilder()
+			.setCustomId("suggestionIsProblem")
+			.setStyle(TextInputStyle.Paragraph)
+			.setLabel("Is your feature request related to a problem?")
+			.setRequired(false),
+		new TextInputBuilder()
+			.setCustomId("suggestionDescription")
+			.setStyle(TextInputStyle.Paragraph)
+			.setLabel("Describe the feature you'd like"),
+		new TextInputBuilder()
+			.setCustomId("suggestionNotes")
+			.setStyle(TextInputStyle.Short)
+			.setLabel("Additional Notes")
+			.setRequired(false),
+	],
+};
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
 		.setName("feedback")
 		.setDescription("Submits bot feedback to the developers.")
 		.addStringOption((option) =>
-			option.setName("message").setDescription("The message you wish to send").setRequired(true),
+			option
+				.setName("type")
+				.setDescription("What type of request to create")
+				.addChoices(
+					{ name: "Bug Report", value: "bug" },
+					{ name: "Feature Request", value: "suggestion" },
+				)
+				.setRequired(true),
 		),
-	execute: async (interaction: CommandInteraction, client: Client) => {
-		const embedPreview = new MessageEmbed()
-			.setAuthor({ name: interaction.user.username, iconURL: interaction.user.avatarURL() })
-			.setTitle(await interaction.getEphemeralString({ string: "Command.Feedback.Preview" }))
-			.setDescription(interaction.options.getString("message"))
-			.setTimestamp()
-			.setFooter({
-				text: await interaction.getEphemeralString({ string: "Command.Feedback.ConfirmPrompt" }),
-			});
+	async execute(interaction: ChatInputCommandInteraction) {
+		const type = interaction.options.getString("type");
+		const modal = new ModalBuilder().setCustomId(`${type}Ticket`).setTitle(`New ${type} Issue`);
 
-		const btnBug = new MessageButton()
-			.setLabel(await interaction.getEphemeralString({ string: "Command.Feedback.Bug" }))
-			.setStyle("PRIMARY")
-			.setEmoji(parseId(ids.bug))
-			.setCustomId("feedbackBug");
+		modal.addComponents(
+			// every modal input needs to be in a new action row (blame djs)
+			...feedbackFormat[type].map((textInput: TextInputBuilder) =>
+				new ActionRowBuilder<TextInputBuilder>().addComponents(textInput),
+			),
+		);
 
-		const btnSuggestion = new MessageButton()
-			.setLabel(await interaction.getEphemeralString({ string: "Command.Feedback.Suggestion" }))
-			.setStyle("PRIMARY")
-			.setEmoji(parseId(ids.suggestion))
-			.setCustomId("feedbackSuggestion");
-
-		const buttons = new MessageActionRow().addComponents([btnBug, btnSuggestion]);
-
-		return interaction
-			.reply({
-				components: [buttons],
-				embeds: [embedPreview],
-				fetchReply: true,
-			})
-			.then((message: Message) => message.deleteButton());
+		await interaction.showModal(modal);
 	},
 };

@@ -12,7 +12,6 @@ export interface Contribution {
 		| "classic_faithful_64x_progart";
 	authors: string[];
 }
-export interface Contributions extends Array<Contribution> {}
 
 export interface Path {
 	id: string;
@@ -21,21 +20,25 @@ export interface Path {
 	mcmeta: boolean; // true if animated
 	versions: string[]; // texture versions
 }
-export interface Paths extends Array<Path> {}
 
 export interface Use {
 	id: string;
 	name: string;
 	edition: "java" | "bedrock" | "dungeons";
 }
-export interface Uses extends Array<Use> {}
 
 export interface Texture {
 	id: string;
 	name: string;
 	tags: string[];
-	uses?: Uses;
-	paths?: Paths;
-	contributions?: Contributions;
+	uses?: Use[];
+	paths?: Path[];
+	contributions?: Contribution[];
 }
-export interface Textures extends Array<Texture> {}
+
+export interface Contributor {
+	id: string;
+	contributions: number;
+	username?: string;
+	uuid?: string;
+}

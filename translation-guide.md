@@ -1,5 +1,5 @@
 # Translation guide
-*A guide on how to translate for complibot*
+*A guide on how to translate for CompliBot*
 
 ## Contributing to a language
 To contribute to an existing language, first check `lang/README.md` to see if it has been completed. If it is not at 100%, there are translations missing from the language file.

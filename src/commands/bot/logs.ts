@@ -1,17 +1,16 @@
 import { SlashCommand } from "@interfaces";
-import { SlashCommandBuilder } from "@discordjs/builders";
-import { Client, CommandInteraction } from "@client";
+import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
+import { ChatInputCommandInteraction } from "@client";
 import { logConstructor } from "@functions/errorHandler";
-import { PermissionFlagsBits } from "discord-api-types/v10";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
 		.setName("logs")
 		.setDescription("Get logs of the bot.")
 		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
-	execute: async (interaction: CommandInteraction, client: Client) => {
+	async execute(interaction: ChatInputCommandInteraction) {
 		if (!interaction.hasPermission("dev")) return;
 
-		await interaction.reply({ files: [logConstructor(client)] }).catch(console.error);
+		await interaction.reply({ files: [logConstructor(interaction.client)] }).catch(console.error);
 	},
 };

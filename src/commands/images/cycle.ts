@@ -1,9 +1,8 @@
 import { SlashCommand } from "@interfaces";
-import { SlashCommandBuilder } from "@discordjs/builders";
-import { Client, CommandInteraction, MessageEmbed, Message } from "@client";
+import { SlashCommandBuilder } from "discord.js";
+import { ChatInputCommandInteraction, Message } from "@client";
 import { cycleComparison } from "@images/cycle";
 import parseTextureName from "@functions/parseTextureName";
-import { colors } from "@helpers/colors";
 import { textureChoiceEmbed } from "@helpers/choiceEmbed";
 
 export const command: SlashCommand = {
@@ -33,7 +32,7 @@ export const command: SlashCommand = {
 				.setDescription("Seconds between each frame (default is 1).")
 				.setRequired(false),
 		),
-	execute: async (interaction: CommandInteraction) => {
+	async execute(interaction: ChatInputCommandInteraction) {
 		const display = interaction.options.getString("packs", true);
 		const name = interaction.options.getString("texture", true);
 		const framerate = interaction.options.getNumber("framerate", false) ?? 1;
@@ -42,32 +41,13 @@ export const command: SlashCommand = {
 		await interaction.deferReply();
 		const results = await parseTextureName(name, interaction);
 
-		// returned early in parseTextureName()
+		// no results or invalid search
 		if (!results) return;
-
-		if (!results.length) {
-			// no results
-			return interaction
-				.editReply({
-					embeds: [
-						new MessageEmbed()
-							.setTitle("No results found!")
-							.setDescription(
-								await interaction.getEphemeralString({
-									string: "Command.Texture.NotFound",
-									placeholders: { TEXTURENAME: `\`${name}\`` },
-								}),
-							)
-							.setColor(colors.red),
-					],
-				})
-				.then((message: Message) => message.deleteButton());
-		}
 
 		// only one result
 		if (results.length === 1) {
 			const replyOptions = await cycleComparison(
-				interaction.client as Client,
+				interaction.client,
 				results[0].id,
 				display,
 				framerate,
@@ -81,7 +61,7 @@ export const command: SlashCommand = {
 			interaction,
 			"cycleSelect",
 			results,
-			`${display}__${framerate}`,
+			`${display}__${framerate}`, // storing multiple things in value
 		);
 	},
 };

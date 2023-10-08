@@ -2,16 +2,17 @@ import { Client } from "@client";
 import { ClientEvents } from "discord.js";
 
 interface AllEvents extends ClientEvents {
-	slashCommandUsed: any;
-	buttonUsed: any;
-	selectMenuUsed: any;
+	slashCommandUsed: string;
+	buttonUsed: string;
+	selectMenuUsed: string;
+	modalSubmit: string;
 }
 
-interface Run {
+interface Execute {
 	(client: Client, ...args: any[]);
 }
 
 export interface Event {
 	name: keyof AllEvents;
-	run: Run;
+	execute: Execute;
 }

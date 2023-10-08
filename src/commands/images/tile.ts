@@ -1,8 +1,10 @@
 import { SlashCommand } from "@interfaces";
-import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction, MessageEmbed } from "@client";
-import { tileAttachment, tileShape } from "@images/tile";
-import { generalSlashCommandImage } from "@functions/slashCommandImage";
+import { SlashCommandBuilder } from "discord.js";
+import { ChatInputCommandInteraction, EmbedBuilder, Message } from "@client";
+import { tileToAttachment, TileShape, TileRandom, tileTooBig } from "@images/tile";
+import getImage from "@helpers/getImage";
+import { imageButtons } from "@utility/buttons";
+import { colors } from "@utility/colors";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -34,19 +36,23 @@ export const command: SlashCommand = {
 		.addAttachmentOption((o) =>
 			o.setName("image").setDescription("The image to tile").setRequired(false),
 		),
-	execute: async (interaction: CommandInteraction) => {
-		const random = interaction.options.getString("random");
-		const shape: tileShape = (interaction.options.getString("type") ?? "grid") as tileShape;
+	async execute(interaction: ChatInputCommandInteraction) {
+		const random = interaction.options.getString("random") as TileRandom;
+		const shape = interaction.options.getString("type") as TileShape;
 
-		generalSlashCommandImage(interaction, tileAttachment, {
-			factor: interaction.options.getNumber("factor"),
-			random: random,
-			shape: shape,
-			name: "tiled.png",
-			embed: new MessageEmbed()
-				.setTitle(`Tiled as ${shape}`)
-				.setDescription(`Random: ${random == undefined ? false : random}`)
-				.setImage("attachment://tiled.png"),
-		});
+		const image = await getImage(interaction);
+
+		const file = await tileToAttachment(image, { random, shape });
+
+		if (!file) {
+			return await tileTooBig(interaction);
+		}
+		await interaction
+			.reply({
+				files: [file],
+				components: [imageButtons],
+				fetchReply: true,
+			})
+			.then((message: Message) => message.deleteButton());
 	},
 };
