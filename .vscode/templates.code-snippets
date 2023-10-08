@@ -1,11 +1,13 @@
 {
 	"New event template": {
 		"prefix": "net",
+		"description": "Client-emitted event template.",
 		"body": [
-			"import { Event } from '@interfaces';",
-			"export default {",
+			"import { Event } from \"@interfaces\";",
+			"import { Client } from \"@client\"",
+			"\nexport default {",
 			"\tname: \"${1:Name}\",",
-			"\tasync execute(client, ${2:/* args */}) {",
+			"\tasync execute(client: Client, ${2:/* args */}) {",
 			"\t\t${3://todo: implement event",
 			"\t}},\n} as Event;"
 		]
@@ -13,42 +15,63 @@
 
 	"New async command template": {
 		"prefix": "nact",
+		"description": "For non-static slash command data.",
 		"body": [
 			"import { SlashCommand, SyncSlashCommandBuilder } from \"@interfaces\";",
 			"import { Client, ChatInputCommandInteraction, EmbedBuilder } from \"@client\";",
 			"import { SlashCommandBuilder } from \"discord.js\";",
-			"export const command: SlashCommand = {",
+			"\nexport const command: SlashCommand = {",
 			"\tasync data(client: Client): Promise<SyncSlashCommandBuilder> {",
 			"\t\t/**",
 			"\t\t * todo: implement fetched stuff here",
 			"\t\t */",
 			"\t\treturn new SlashCommandBuilder()",
-
 			"\t\t\t.setName(\"${1:Name}\")",
-			"\t\t\t.setDescription(\"${1:Description}\"),",
+			"\t\t\t.setDescription(\"${2:Description}\");",
 			"\t},",
 			"\tasync execute(interaction: ChatInputCommandInteraction) {",
-            "\t\tif (!interaction.hasPermission(${3})) return;",
-			"\t\t${4://todo: implement command}",
+			"\t\t${3://todo: implement command}",
 			"\t},\n};"
 		]
 	},
 
 	"New command template": {
 		"prefix": "nct",
+		"description": "Regular slash command template.",
 		"body": [
 			"import { SlashCommand } from \"@interfaces\";",
 			"import { Client, ChatInputCommandInteraction, EmbedBuilder } from \"@client\";",
 			"import { SlashCommandBuilder } from \"discord.js\";",
-			"export const command: SlashCommand = {",
+			"\nexport const command: SlashCommand = {",
 			"\tdata: new SlashCommandBuilder()",
-
 			"\t\t.setName(\"${1:Name}\")",
 			"\t\t.setDescription(`${2:Description}`),",
 			"\tasync execute(interaction: ChatInputCommandInteraction) {",
-            "\t\tif (!interaction.hasPermission(${3})) return;",
-			"\t\t${4://todo: implement command}",
+			"\t\t${3://todo: implement command}",
 			"\t},\n};"
 		]
 	},
+
+	"New component template": {
+		"prefix": "ncpt",
+		"description": "Generic component template for buttons, menus, and modals."
+		"body": [
+			"import { Component } from \"@interfaces\";",
+			"import { Client } from \"@client\";",
+			"\nexport default {",
+			"\tid: \"${1:Name}\"",
+			"\tasync execute(client: Client, interaction: \"${2:Interaction}\") {"
+			"\t\t${3://todo: implement component}",
+			"\t}"
+			"} as Component;"
+		]
+	},
+
+	"Slash command permissions": {
+		"prefix": "scpm",
+		"description": "Return early if permission is not met",
+		"body": [
+			"if (!interaction.hasPermission(\"${1:type})\") return;",
+		]
+	}
 }
