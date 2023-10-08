@@ -3,7 +3,7 @@ import { info } from "@helpers/logger";
 import { Client, Message, ButtonInteraction, EmbedBuilder } from "@client";
 import { tileToAttachment, tileTooBig } from "@images/tile";
 import { imageButtons } from "@utility/buttons";
-import getImage from "@helpers/getImage";
+import getImage, { imageNotFound } from "@helpers/getImage";
 
 export default {
 	id: "tile",
@@ -12,6 +12,7 @@ export default {
 
 		const message = interaction.message as Message;
 		const url = await getImage(message);
+		if (!url) return imageNotFound(interaction);
 		const attachment = await tileToAttachment(url);
 
 		if (!attachment) return await tileTooBig(interaction);

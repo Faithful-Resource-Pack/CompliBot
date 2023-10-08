@@ -1,7 +1,7 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "discord.js";
 import { ChatInputCommandInteraction, EmbedBuilder, Message } from "@client";
-import getImage from "@helpers/getImage";
+import getImage, { imageNotFound } from "@helpers/getImage";
 import { animateToAttachment, MCMETA } from "@helpers/images/animate";
 import mcmetaList from "@json/mcmetas.json";
 import { loadImage } from "@napi-rs/canvas";
@@ -34,6 +34,7 @@ export const command: SlashCommand = {
 
 		const style = interaction.options.getString("style", false) ?? "none";
 		const image = await getImage(interaction);
+		if (!image) return imageNotFound(interaction);
 
 		// magnify beforehand since you can't magnify a gif currently
 		const { magnified, width, height } = await magnify(image, { isAnimation: true });

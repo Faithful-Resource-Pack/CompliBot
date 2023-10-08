@@ -10,6 +10,7 @@ import { AttachmentBuilder } from "discord.js";
 import ColorManager from "@images/colors";
 import { ImageSource } from "@helpers/getImage";
 import { colors } from "@utility/colors";
+import warnUser from "@helpers/warnUser";
 
 const COOLORS_URL = "https://coolors.co/";
 
@@ -205,24 +206,9 @@ export async function paletteTooBig(
 		| StringSelectMenuInteraction
 		| Message,
 ) {
-	// need to cast to any to add properties later
-	const args: any = {
-		embeds: [
-			new EmbedBuilder()
-				.setTitle(
-					interaction.strings().command.images.too_big.replace("%ACTION%", "take the palette of"),
-				)
-				.setDescription(interaction.strings().command.images.max_size)
-				.setColor(colors.red),
-		],
-	};
-
-	// make ephemeral if possible
-	if (!(interaction instanceof Message)) {
-		args.ephemeral = true;
-		args.fetchReply = true;
-	}
-
-	const reply = await (interaction as ChatInputCommandInteraction).reply(args);
-	if (interaction instanceof Message) reply.deleteButton();
+	return warnUser(
+		interaction,
+		interaction.strings().command.images.too_big.replace("%ACTION%", "take the palette of"),
+		interaction.strings().command.images.max_size,
+	);
 }

@@ -2,7 +2,7 @@ import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "discord.js";
 import { ChatInputCommandInteraction, Message } from "@client";
 import { magnifyToAttachment } from "@images/magnify";
-import getImage from "@helpers/getImage";
+import getImage, { imageNotFound } from "@helpers/getImage";
 import { imageButtons } from "@utility/buttons";
 
 export const command: SlashCommand = {
@@ -30,6 +30,7 @@ export const command: SlashCommand = {
 	async execute(interaction: ChatInputCommandInteraction) {
 		await interaction.deferReply();
 		const image = await getImage(interaction);
+		if (!image) return imageNotFound(interaction);
 
 		const file = await magnifyToAttachment(image, {
 			factor: interaction.options.getNumber("factor", false),

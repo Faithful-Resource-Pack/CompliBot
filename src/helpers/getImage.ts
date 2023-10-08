@@ -1,6 +1,12 @@
 import { Image } from "@napi-rs/canvas";
-import { Message, ChatInputCommandInteraction } from "@client";
+import {
+	Message,
+	ChatInputCommandInteraction,
+	ButtonInteraction,
+	StringSelectMenuInteraction,
+} from "@client";
 import { Interaction, MessageType } from "discord.js";
+import warnUser from "./warnUser";
 
 // remove stupid discord metadata (idk why they even added it)
 export const removeMetadata = (url: string) => url.split("?")[0];
@@ -102,4 +108,23 @@ export default async function getImage(msgOrInteraction: Message | Interaction) 
 
 	// no URL found at all
 	return "";
+}
+
+/**
+ * Warn the user that the image is too large
+ * @author Evorp
+ * @param interaction interaction to reply to
+ */
+export async function imageNotFound(
+	interaction:
+		| ButtonInteraction
+		| ChatInputCommandInteraction
+		| StringSelectMenuInteraction
+		| Message,
+) {
+	return warnUser(
+		interaction,
+		interaction.strings().command.images.not_found,
+		interaction.strings().command.images.suggestion,
+	);
 }

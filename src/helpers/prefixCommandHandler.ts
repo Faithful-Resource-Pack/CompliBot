@@ -1,6 +1,6 @@
 import { Message } from "@client";
 import { magnifyToAttachment } from "./images/magnify";
-import getImage from "./getImage";
+import getImage, { imageNotFound } from "./getImage";
 import { tileToAttachment, tileTooBig } from "./images/tile";
 import { paletteToAttachment, paletteTooBig } from "./images/palette";
 import { imageButtons } from "@utility/buttons";
@@ -10,6 +10,7 @@ export default async function prefixCommandHandler(message: Message) {
 
 	const command = args.shift().slice(message.client.tokens.prefix.length);
 	const url = await getImage(message);
+	if (!url) return imageNotFound(message);
 
 	// super basic prefix command handler for common utilities
 	switch (command) {

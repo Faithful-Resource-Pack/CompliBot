@@ -2,7 +2,7 @@ import { SlashCommand } from "@interfaces";
 import { ChatInputCommandInteraction, Message } from "@client";
 import { SlashCommandBuilder } from "discord.js";
 import { mcColorsOptions, multiplyToAttachment } from "@images/multiply";
-import getImage from "@helpers/getImage";
+import getImage, { imageNotFound } from "@helpers/getImage";
 import { imageButtons } from "@utility/buttons";
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -20,8 +20,10 @@ export const command: SlashCommand = {
 		),
 	async execute(interaction: ChatInputCommandInteraction) {
 		await interaction.deferReply();
-		const url = await getImage(interaction);
-		const file = await multiplyToAttachment(url, interaction.options.getString("color"));
+		const image = await getImage(interaction);
+		if (!image) return imageNotFound(interaction);
+
+		const file = await multiplyToAttachment(image, interaction.options.getString("color"));
 		await interaction
 			.editReply({
 				files: [file],

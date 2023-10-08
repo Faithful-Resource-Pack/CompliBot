@@ -2,7 +2,7 @@ import { Component } from "@interfaces";
 import { info } from "@helpers/logger";
 import { Client, Message, ButtonInteraction } from "@client";
 import { paletteToAttachment, paletteTooBig } from "@images/palette";
-import getImage from "@helpers/getImage";
+import getImage, { imageNotFound } from "@helpers/getImage";
 
 export default {
 	id: "palette",
@@ -11,6 +11,7 @@ export default {
 
 		const message = interaction.message as Message;
 		const url = await getImage(message);
+		if (!url) return imageNotFound(interaction);
 		const [file, embed] = await paletteToAttachment(url);
 
 		if (!file || !embed) return await paletteTooBig(interaction);
