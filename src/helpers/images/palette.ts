@@ -34,10 +34,10 @@ export interface AllColors {
 }
 
 /**
- * Sends an ephemeral message with the palette of a given image url
+ * Create a palette of colors and additional information for a given image
  * @author Juknum, Evorp
- * @param options image info
- * @returns slash command attachment compatible embed/attachment data
+ * @param origin image to find palette of
+ * @returns embed and attachment
  */
 export async function palette(origin: ImageSource) {
 	const imageToDraw = await loadImage(origin);
@@ -176,6 +176,13 @@ export async function palette(origin: ImageSource) {
 	return { image: colorCanvas.toBuffer("image/png"), embed };
 }
 
+/**
+ * Get the color palette of an image
+ * @author Evorp
+ * @param origin image to find palette of
+ * @param name attachment name
+ * @returns sendable attachment and data
+ */
 export async function paletteToAttachment(
 	origin: ImageSource,
 	name = "palette.png",
@@ -186,6 +193,11 @@ export async function paletteToAttachment(
 	return [new AttachmentBuilder(image, { name }), embed];
 }
 
+/**
+ * Warn the user that the image is too large
+ * @author Evorp
+ * @param interaction interaction to reply to
+ */
 export async function paletteTooBig(
 	interaction:
 		| ButtonInteraction

@@ -36,6 +36,10 @@ interface ColorManagerOptions {
 	cmyk?: { c: number; m: number; y: number; k: number };
 }
 
+/**
+ * Convert and handle colors
+ * @author Nick
+ */
 export default class ColorManager {
 	private color: RGBA;
 

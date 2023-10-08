@@ -18,6 +18,7 @@ interface TileOptions {
 }
 
 /**
+ * Tile an image
  * @author Juknum
  * @param origin what to tile
  * @param options what shape and randomness
@@ -123,6 +124,14 @@ export async function tile(origin: ImageSource, options: TileOptions = {}): Prom
 	return canvas.toBuffer("image/png");
 }
 
+/**
+ * Tile an image with specified parameters
+ * @author Evorp
+ * @param origin image to tile
+ * @param options how to tile it
+ * @param name what the attachment should be called
+ * @returns tiled image as sendable attachment
+ */
 export async function tileToAttachment(
 	origin: ImageSource,
 	options?: TileOptions,
@@ -134,6 +143,11 @@ export async function tileToAttachment(
 	return new AttachmentBuilder(buf, { name });
 }
 
+/**
+ * Warn the user that the image is too large
+ * @author Evorp
+ * @param interaction interaction to reply to
+ */
 export async function tileTooBig(
 	interaction:
 		| ButtonInteraction

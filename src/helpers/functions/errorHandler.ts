@@ -112,7 +112,7 @@ export const logConstructor = (
 };
 
 /**
- * Logs errors to a given error channel
+ * Handle and log errors
  * @author Juknum
  * @param client discord client
  * @param error error description

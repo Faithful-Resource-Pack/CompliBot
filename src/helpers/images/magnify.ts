@@ -11,7 +11,7 @@ export interface MagnifyOptions {
  * The actual magnification function
  * @author Juknum, Evorp
  * @param origin url, image, or buffer to magnify
- * @param options
+ * @param options additional options
  * @returns buffer for magnified image
  */
 export async function magnify(origin: ImageSource, options: MagnifyOptions = {}) {

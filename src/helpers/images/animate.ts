@@ -129,6 +129,13 @@ export async function animate(baseCanvas: Canvas | Image, mcmeta: MCMETA): Promi
 	return encoder.out.getData();
 }
 
+/**
+ * Animate a given image into a sendable gif
+ * @param baseCanvas tilesheet to animate
+ * @param mcmeta how to animate it
+ * @param name what name the attachment should have
+ * @returns sendable gif attachment
+ */
 export async function animateToAttachment(
 	baseCanvas: Image | Canvas,
 	mcmeta: MCMETA,

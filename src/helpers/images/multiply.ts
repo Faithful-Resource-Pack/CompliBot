@@ -40,6 +40,13 @@ export const mcColorsOptions: { name: string; value: string }[] = Object.keys(mc
 	},
 );
 
+/**
+ * Tint a grayscale image with a provided color
+ * @author Nick, Evorp
+ * @param origin what to multiply over
+ * @param color what color to multiply
+ * @returns multiplied image
+ */
 export async function multiply(origin: ImageSource, color: string) {
 	const imageToDraw = await loadImage(origin);
 	const canvas = createCanvas(imageToDraw.width, imageToDraw.height);
@@ -71,6 +78,14 @@ export async function multiply(origin: ImageSource, color: string) {
 	return canvas.toBuffer("image/png");
 }
 
+/**
+ * Multiply a given image into a sendable attachment
+ * @author Evorp
+ * @param origin what to multiply over
+ * @param color color to multiply
+ * @param name attachment name
+ * @returns sendable attachment
+ */
 export async function multiplyToAttachment(
 	origin: ImageSource,
 	color: string,

@@ -3,10 +3,10 @@ import { AttachmentBuilder } from "discord.js";
 import JSZip from "jszip";
 
 /**
- * Convert a zip file of images into valid attachmentbuilders
+ * Convert a zip file of images into usable attachments
  * @author Juknum
  * @param url zip url
- * @returns
+ * @returns array of attachments
  */
 export const zipToAttachmentBuilders = async (url: string): Promise<AttachmentBuilder[]> => {
 	let output: AttachmentBuilder[] = [];
