@@ -129,7 +129,6 @@ export const getTexture = async (options: {
 	return { embeds: [embed], files: files, components: [textureButtons], ephemeral: false };
 };
 
-
 /**
  * Generate embed fields for a given texture's paths
  * @author Juknum

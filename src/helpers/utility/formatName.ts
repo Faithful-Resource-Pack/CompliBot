@@ -41,4 +41,4 @@ export default function formatName(pack: string, size = "512"): [string, string]
 			break;
 	}
 	return [strPack, strIconURL];
-};
+}

@@ -51,7 +51,7 @@ export const command: SlashCommand = {
 					.addChoices(
 						...versions
 							.sort(minecraftSorter)
-							.reverse()
+							.reverse() // newest at top
 							.map((i: string) => {
 								return { name: i, value: i };
 							}),
@@ -78,13 +78,13 @@ export const command: SlashCommand = {
 			await axios.get(`${interaction.client.tokens.apiUrl}settings/images.loading`)
 		).data;
 
-		const embed = new EmbedBuilder()
+		const loadingEmbed = new EmbedBuilder()
 			.setTitle("Searching for missing textures...")
 			.setDescription("This can take some time, please wait...")
 			.setThumbnail(loading)
 			.addFields({ name: "Steps", value: "\u200b" });
 
-		await interaction.editReply({ embeds: [embed] });
+		await interaction.editReply({ embeds: [loadingEmbed] });
 		let steps: string[] = [];
 
 		let stepCallback = async (step: string) => {
@@ -95,8 +95,8 @@ export const command: SlashCommand = {
 				steps.push(step);
 			}
 
-			embed.spliceFields(0, 1, { name: "Steps", value: steps.join("\n") });
-			await interaction.editReply({ embeds: [embed] });
+			loadingEmbed.spliceFields(0, 1, { name: "Steps", value: steps.join("\n") });
+			await interaction.editReply({ embeds: [loadingEmbed] });
 		};
 
 		const catchErr = (err: string | Error, options: MissingOptions): MissingResult => {
@@ -132,12 +132,12 @@ export const command: SlashCommand = {
 		}
 
 		const files: AttachmentBuilder[] = [];
-		const embed2 = new EmbedBuilder();
+		const resultEmbed = new EmbedBuilder();
 
 		responses.forEach((response: MissingResult) => {
 			// no repo found for the asked pack + edition
 			if (response[0] === null)
-				embed2.addFields({
+				resultEmbed.addFields({
 					name: `${formatName(response[2].pack)[0]} - ${response[2].version}`,
 					value: `${response[2].completion}% complete\n> ${response[1][0]}`,
 				});
@@ -157,7 +157,7 @@ export const command: SlashCommand = {
 					);
 				}
 
-				embed2.addFields({
+				resultEmbed.addFields({
 					name: `${formatName(response[2].pack)[0]} - ${response[2].edition} - ${
 						response[2].version
 					}`,
@@ -169,7 +169,7 @@ export const command: SlashCommand = {
 		});
 
 		return interaction
-			.editReply({ embeds: [embed2], files: files })
+			.editReply({ embeds: [resultEmbed], files: files })
 			.then((message: Message) => message.deleteButton());
 	},
 };

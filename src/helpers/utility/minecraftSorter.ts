@@ -18,4 +18,4 @@ export default function minecraftSorter(a: string, b: string) {
 
 	if (res != 0) return res;
 	return _a.length == _b.length ? 0 : _a.length < _b.length ? -1 : 1; // longer length wins
-};
+}

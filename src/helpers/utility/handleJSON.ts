@@ -7,7 +7,6 @@ interface GetOptions {
 	default_value?: "{}";
 }
 
-
 interface SetOptions {
 	relative_path: string;
 	filename: string;
@@ -37,7 +36,6 @@ export function getData(options: GetOptions) {
 	}
 	return data;
 }
-
 
 /**
  * Set data to a given JSON
