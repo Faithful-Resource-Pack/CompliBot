@@ -1,6 +1,6 @@
 import { Client, EmbedBuilder } from "@client";
 import { AttachmentBuilder, ColorResolvable, TextChannel } from "discord.js";
-import { colors } from "@helpers/colors";
+import { colors } from "@utility/colors";
 import chalk from "chalk";
 
 export const err = `[${chalk.red("ERR")}] `;

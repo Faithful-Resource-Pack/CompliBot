@@ -4,7 +4,7 @@ import { readFileSync } from "fs";
 import { devLogger, err } from "@helpers/logger";
 import { Log } from "client/client";
 import { join } from "path";
-import * as Random from "@helpers/random";
+import * as Random from "@utility/random";
 import { error as randomSentences } from "@json/quotes.json";
 
 const lastReasons = [];

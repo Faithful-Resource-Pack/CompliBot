@@ -1,4 +1,4 @@
-import { Poll } from "@class/poll";
+import { Poll } from "@helpers/poll";
 import { Client } from "@client";
 
 /**

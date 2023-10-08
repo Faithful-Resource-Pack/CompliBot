@@ -1,7 +1,7 @@
-import { pollDelete, pollVotes, pollYesNo } from "@helpers/buttons";
+import { pollDelete, pollVotes, pollYesNo } from "@utility/buttons";
 import { Client, ChatInputCommandInteraction, Message, EmbedBuilder } from "@client";
 import { ActionRowBuilder, ButtonBuilder, TextChannel, EmbedField } from "discord.js";
-import { TimedEmbed } from "@class/timedEmbed";
+import { TimedEmbed } from "@helpers/timedEmbed";
 
 export interface PollOptions {
 	question: string;

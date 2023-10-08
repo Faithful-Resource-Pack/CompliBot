@@ -1,7 +1,7 @@
 import { SlashCommand } from "@interfaces";
 import { ChatInputCommandInteraction, EmbedBuilder, Message } from "@client";
 import { ColorResolvable, PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
-import { colors } from "@helpers/colors";
+import { colors } from "@utility/colors";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()

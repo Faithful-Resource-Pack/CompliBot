@@ -13,12 +13,11 @@ import {
 	REST,
 } from "discord.js";
 import { Message, EmittingCollection, Automation } from "@client";
-import { Tokens, Component, SlashCommand, AsyncSlashCommandBuilder, Event } from "@interfaces";
-import { getData } from "@functions/getDataFromJSON";
-import { setData } from "@functions/setDataToJSON";
+import { Tokens, Component, SlashCommand, Event } from "@interfaces";
+import { setData, getData } from "@utility/handleJSON";
 import { errorHandler } from "@functions/errorHandler";
 import { err, info, success } from "@helpers/logger";
-import { Poll } from "@class/poll";
+import { Poll } from "@helpers/poll";
 
 import { join } from "path";
 import chalk from "chalk";

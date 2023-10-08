@@ -8,7 +8,7 @@ import {
 	StringSelectMenuInteraction,
 	Message,
 } from "@client";
-import { colors } from "@helpers/colors";
+import { colors } from "@utility/colors";
 
 export type TileShape = "grid" | "vertical" | "horizontal" | "hollow" | "plus";
 export type TileRandom = "flip" | "rotation";

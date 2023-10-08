@@ -2,7 +2,7 @@ import { SlashCommand } from "@interfaces";
 import { Message, EmbedBuilder, ChatInputCommandInteraction } from "@client";
 import { SlashCommandBuilder, AttachmentBuilder } from "discord.js";
 import axios from "axios";
-import { formatName } from "@helpers/sorter";
+import formatName from "@utility/formatName";
 import { Contribution, Texture } from "@interfaces";
 
 export const command: SlashCommand = {

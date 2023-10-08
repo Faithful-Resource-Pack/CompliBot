@@ -3,7 +3,7 @@ import { SlashCommandBuilder } from "discord.js";
 import { Client, ChatInputCommandInteraction, EmbedBuilder, Message } from "@client";
 import textureComparison from "@functions/textureComparison";
 import parseTextureName from "@functions/parseTextureName";
-import { colors } from "@helpers/colors";
+import { colors } from "@utility/colors";
 import { textureChoiceEmbed } from "@helpers/choiceEmbed";
 
 export const command: SlashCommand = {

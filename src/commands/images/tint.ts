@@ -3,7 +3,7 @@ import { ChatInputCommandInteraction, Message } from "@client";
 import { SlashCommandBuilder } from "discord.js";
 import { mcColorsOptions, multiplyToAttachment } from "@images/multiply";
 import getImage from "@helpers/getImage";
-import { imageButtons } from "@helpers/buttons";
+import { imageButtons } from "@utility/buttons";
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
 		.setName("tint")

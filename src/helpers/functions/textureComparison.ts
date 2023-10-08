@@ -2,12 +2,12 @@ import stitch from "@images/stitch";
 import { magnifyToAttachment } from "@images/magnify";
 import { loadImage } from "@napi-rs/canvas";
 import { Client, EmbedBuilder } from "@client";
-import { addPathsToEmbed } from "@helpers/sorter";
+import { addPathsToEmbed } from "@functions/getTexture";
 import getDimensions from "@images/getDimensions";
 import { Texture } from "@interfaces";
 import axios from "axios";
 import { ActionRowBuilder, ButtonBuilder } from "discord.js";
-import { template } from "@helpers/buttons";
+import { template } from "@utility/buttons";
 
 /**
  * Get the corresponding pack IDs for a given display choice

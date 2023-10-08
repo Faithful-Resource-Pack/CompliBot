@@ -1,6 +1,6 @@
 import { Component } from "@interfaces";
 import { Client, Message, ButtonInteraction } from "@client";
-import { Poll } from "@class/poll";
+import { Poll } from "@helpers/poll";
 
 export default {
 	id: "pollVote",

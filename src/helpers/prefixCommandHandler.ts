@@ -3,7 +3,7 @@ import { magnifyToAttachment } from "./images/magnify";
 import getImage from "./getImage";
 import { tileToAttachment, tileTooBig } from "./images/tile";
 import { paletteToAttachment, paletteTooBig } from "./images/palette";
-import { imageButtons } from "./buttons";
+import { imageButtons } from "@utility/buttons";
 
 export default async function prefixCommandHandler(message: Message) {
 	const args = message.content.split(" ");

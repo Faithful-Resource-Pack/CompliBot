@@ -2,7 +2,7 @@ import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "discord.js";
 import { EmbedBuilder, ChatInputCommandInteraction, Message } from "@client";
 import { ping } from "@json/quotes.json";
-import * as Random from "@helpers/random";
+import * as Random from "@utility/random";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder().setName("ping").setDescription("Check the bot and API latency."),

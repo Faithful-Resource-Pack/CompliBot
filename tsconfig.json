@@ -23,7 +23,7 @@
 			"@/*": ["../*"],
 			"@client": ["client"],
 			"@functions/*": ["helpers/functions/*"],
-			"@class/*": ["helpers/class/*"],
+			"@utility/*": ["helpers/utility/*"],
 			"@helpers/*": ["helpers/*"],
 			"@interfaces": ["interfaces"],
 			"@json/*": ["../json/*"],

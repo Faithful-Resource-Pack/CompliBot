@@ -1,6 +1,6 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "discord.js";
-import { media } from "@helpers/infoembed";
+import { media } from "@utility/infoembed";
 import { Message, EmbedBuilder, ChatInputCommandInteraction } from "@client";
 import axios from "axios";
 

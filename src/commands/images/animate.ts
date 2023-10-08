@@ -6,7 +6,7 @@ import { animateToAttachment, MCMETA } from "@helpers/images/animate";
 import mcmetaList from "@json/mcmetas.json";
 import { loadImage } from "@napi-rs/canvas";
 import { magnify } from "@helpers/images/magnify";
-import { colors } from "@helpers/colors";
+import { colors } from "@utility/colors";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()

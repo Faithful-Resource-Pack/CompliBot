@@ -10,7 +10,8 @@ import {
 	MissingResult,
 } from "@functions/missing";
 import axios from "axios";
-import { formatName, minecraftSorter } from "@helpers/sorter";
+import formatName from "@utility/formatName";
+import minecraftSorter from "@utility/minecraftSorter";
 
 export const command: SlashCommand = {
 	async data(client: Client): Promise<SyncSlashCommandBuilder> {

@@ -5,7 +5,7 @@ import {
 	StringSelectMenuBuilder,
 } from "discord.js";
 import { Texture } from "@interfaces";
-import { minecraftSorter } from "@helpers/sorter";
+import minecraftSorter from "@utility/minecraftSorter";
 import axios from "axios";
 
 /**

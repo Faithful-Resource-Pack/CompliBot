@@ -1,5 +1,5 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
-import { ids } from "./emojis";
+import { ids } from "@utility/emojis";
 
 export const compare = new ButtonBuilder()
 	.setStyle(ButtonStyle.Primary)

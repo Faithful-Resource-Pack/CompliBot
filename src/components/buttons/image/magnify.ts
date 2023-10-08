@@ -2,7 +2,7 @@ import { Component } from "@interfaces";
 import { info } from "@helpers/logger";
 import { Client, Message, ButtonInteraction, EmbedBuilder } from "@client";
 import { magnifyToAttachment } from "@images/magnify";
-import { imageButtons } from "@helpers/buttons";
+import { imageButtons } from "@utility/buttons";
 import getImage from "@helpers/getImage";
 
 export default {

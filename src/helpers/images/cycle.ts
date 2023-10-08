@@ -2,7 +2,7 @@ import { Image, createCanvas, loadImage } from "@napi-rs/canvas";
 import { AttachmentBuilder } from "discord.js";
 import GIFEncoder from "./GIFEncoder";
 import { Client, EmbedBuilder } from "@client";
-import { addPathsToEmbed } from "@helpers/sorter";
+import { addPathsToEmbed } from "@functions/getTexture";
 import axios from "axios";
 import { Texture } from "@interfaces";
 

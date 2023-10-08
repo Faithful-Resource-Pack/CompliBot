@@ -1,6 +1,6 @@
 import { ColorResolvable } from "discord.js";
-import { colors } from "./colors";
-import { parseId, ids } from "./emojis";
+import { colors } from "@utility/colors";
+import { parseId, ids } from "@utility/emojis";
 
 export interface MediaI {
 	[name: string]: {

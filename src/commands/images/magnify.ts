@@ -3,7 +3,7 @@ import { SlashCommandBuilder } from "discord.js";
 import { ChatInputCommandInteraction, Message } from "@client";
 import { magnifyToAttachment } from "@images/magnify";
 import getImage from "@helpers/getImage";
-import { imageButtons } from "@helpers/buttons";
+import { imageButtons } from "@utility/buttons";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()

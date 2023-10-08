@@ -3,14 +3,15 @@ import TokenJson from "@json/tokens.json";
 import { Contributor, Tokens } from "@interfaces";
 import axios from "axios";
 import getDimensions from "@images/getDimensions";
-import { AttachmentBuilder, Guild } from "discord.js";
+import { APIEmbedField, AttachmentBuilder, Guild } from "discord.js";
 import { magnifyToAttachment } from "@images/magnify";
 import { ISizeCalculationResult } from "image-size/dist/types/interface";
-import { colors } from "@helpers/colors";
+import { colors } from "@utility/colors";
 import { Texture, Contribution } from "@interfaces";
 import { animateToAttachment } from "@images/animate";
-import { formatName, minecraftSorter, addPathsToEmbed } from "@helpers/sorter";
-import { textureButtons } from "@helpers/buttons";
+import minecraftSorter from "@utility/minecraftSorter";
+import formatName from "@utility/formatName";
+import { textureButtons } from "@utility/buttons";
 import { loadImage } from "@napi-rs/canvas";
 
 /**
@@ -126,4 +127,37 @@ export const getTexture = async (options: {
 	} else files.push(await magnifyToAttachment(textureURL));
 
 	return { embeds: [embed], files: files, components: [textureButtons], ephemeral: false };
+};
+
+
+/**
+ * Generate embed fields for a given texture's paths
+ * @author Juknum
+ * @param texture texture to get paths and uses from
+ * @returns usable embed field data
+ */
+export const addPathsToEmbed = (texture: Texture): APIEmbedField[] => {
+	const tmp = {};
+	texture.uses.forEach((use) => {
+		texture.paths
+			.filter((el) => el.use === use.id)
+			.forEach((p) => {
+				const versions = p.versions.sort(minecraftSorter);
+				const versionRange = `\`[${
+					versions.length > 1 ? `${versions[0]} — ${versions.at(-1)}` : versions[0]
+				}]\``;
+				const formatted = `${versionRange} ${p.name}`;
+				if (tmp[use.edition]) tmp[use.edition].push(formatted);
+				else tmp[use.edition] = [formatted];
+			});
+	});
+
+	return Object.keys(tmp).map((edition) => {
+		if (tmp[edition].length) {
+			return {
+				name: edition.charAt(0).toLocaleUpperCase() + edition.slice(1),
+				value: tmp[edition].join("\n"),
+			};
+		}
+	});
 };

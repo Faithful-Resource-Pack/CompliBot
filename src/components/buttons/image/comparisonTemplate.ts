@@ -3,7 +3,7 @@ import { info } from "@helpers/logger";
 import { Client, Message, ButtonInteraction, EmbedBuilder } from "@client";
 import { magnifyToAttachment } from "@images/magnify";
 import { parseDisplay } from "@functions/textureComparison";
-import { formatName } from "@helpers/sorter";
+import formatName from "@utility/formatName";
 import { loadImage } from "@napi-rs/canvas";
 import stitch from "@helpers/images/stitch";
 

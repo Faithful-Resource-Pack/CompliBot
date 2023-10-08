@@ -8,7 +8,7 @@ import {
 } from "discord.js";
 import { strings, AllStrings } from "@helpers/strings";
 import { EmbedBuilder } from "@client";
-import { colors } from "@helpers/colors";
+import { colors } from "@utility/colors";
 import { ExtendedClient } from "./client";
 
 export type PermissionType = "manager" | "dev" | "moderator" | "council";

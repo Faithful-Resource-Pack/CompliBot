@@ -1,5 +1,5 @@
 import { Message, ActionRowBuilder, ComponentType } from "discord.js";
-import { deleteInteraction, deleteMessage } from "@helpers/buttons";
+import { deleteInteraction, deleteMessage } from "@utility/buttons";
 import { ButtonBuilder } from "discord.js";
 import { ExtendedClient } from "./client";
 import { strings, AllStrings } from "@helpers/strings";

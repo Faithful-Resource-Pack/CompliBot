@@ -2,7 +2,7 @@ import { Pack, SlashCommandI } from "@interfaces";
 import { Collection } from "discord.js";
 import { Event } from "@interfaces";
 import { Client, ChatInputCommandInteraction, EmbedBuilder } from "@client";
-import { colors } from "@helpers/colors";
+import { colors } from "@utility/colors";
 import axios from "axios";
 
 export default {

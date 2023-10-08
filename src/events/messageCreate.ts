@@ -1,9 +1,9 @@
 import { Event } from "@interfaces";
 import { Client, Message, EmbedBuilder } from "@client";
 import { Pack } from "@interfaces";
-import { colors } from "@helpers/colors";
+import { colors } from "@utility/colors";
 import axios from "axios";
-import * as Random from "@helpers/random";
+import * as Random from "@utility/random";
 import prefixCommandHandler from "@helpers/prefixCommandHandler";
 
 export default {

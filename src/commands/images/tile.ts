@@ -3,8 +3,8 @@ import { SlashCommandBuilder } from "discord.js";
 import { ChatInputCommandInteraction, EmbedBuilder, Message } from "@client";
 import { tileToAttachment, TileShape, TileRandom, tileTooBig } from "@images/tile";
 import getImage from "@helpers/getImage";
-import { imageButtons } from "@helpers/buttons";
-import { colors } from "@helpers/colors";
+import { imageButtons } from "@utility/buttons";
+import { colors } from "@utility/colors";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
