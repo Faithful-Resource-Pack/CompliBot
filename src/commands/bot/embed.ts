@@ -67,7 +67,7 @@ export const command: SlashCommand = {
 		if (description) embed.setDescription(description);
 		if (baseColor) {
 			let color = baseColor;
-			if (!baseColor.startsWith("#"))	embed.setColor(`#${color}`);
+			if (!baseColor.startsWith("#")) embed.setColor(`#${color}`);
 			embed.setColor(color as ColorResolvable);
 		}
 		if (footer) embed.setFooter({ text: footer });

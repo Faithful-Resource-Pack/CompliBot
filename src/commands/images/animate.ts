@@ -1,11 +1,12 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "discord.js";
-import { ChatInputCommandInteraction, Message } from "@client";
+import { ChatInputCommandInteraction, EmbedBuilder, Message } from "@client";
 import getImage from "@helpers/getImage";
 import { animateToAttachment, MCMETA } from "@helpers/images/animate";
 import mcmetaList from "@json/mcmetas.json";
 import { loadImage } from "@napi-rs/canvas";
 import { magnify } from "@helpers/images/magnify";
+import { colors } from "@helpers/colors";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -30,13 +31,27 @@ export const command: SlashCommand = {
 		),
 	async execute(interaction: ChatInputCommandInteraction) {
 		await interaction.deferReply();
+
 		const style = interaction.options.getString("style", false) ?? "none";
 		const image = await getImage(interaction);
 
-		const mcmeta: MCMETA = mcmetaList[style];
-
 		// magnify beforehand since you can't magnify a gif currently
-		const { magnified } = await magnify(image, { isAnimation: true });
+		const { magnified, width, height } = await magnify(image, { isAnimation: true });
+		if (height > width * 32) {
+			await interaction.editReply({ content: "** **" }).then((reply) => reply.delete());
+
+			return interaction.followUp({
+				embeds: [
+					new EmbedBuilder()
+						.setTitle(interaction.strings().command.images.too_long)
+						.setDescription(interaction.strings().command.images.max_length)
+						.setColor(colors.red),
+				],
+				ephemeral: true,
+			});
+		}
+
+		const mcmeta: MCMETA = mcmetaList[style];
 		const file = await animateToAttachment(await loadImage(magnified), mcmeta, `${style}.gif`);
 		await interaction
 			.editReply({ files: [file] })
