@@ -27,9 +27,10 @@ export class Automation {
 
 		// send to uptime kuma (only for production bot)
 		if (this.client.tokens.status) {
-			setInterval(() =>
-				fetch(this.client.tokens.status + this.client.ws.ping).catch(()=>{}),
-			600000); // 10 minutes
+			setInterval(
+				() => fetch(this.client.tokens.status + this.client.ws.ping).catch(() => {}),
+				600000,
+			); // 10 minutes
 		}
 	}
 

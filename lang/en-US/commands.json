@@ -13,6 +13,10 @@
             "too_big": "This image is too big to %ACTION%!",
             "max_size": "The maximum size for an image is 1024px²."
         },
+        "embed": {
+            "not_enough_arguments": "Not enough information was provided!",
+            "need_more_info": "You need to have either a description or title for an embed."
+        },
         "stats": {
             "footer": "Made with love",
             "usage": "%COMMAND% has ran %USE% times.",
