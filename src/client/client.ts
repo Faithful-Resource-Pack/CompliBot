@@ -66,6 +66,7 @@ export class ExtendedClient extends Client {
 	private maxLogs = 50;
 	private lastLogIndex = 0;
 
+	// we reuse the same component type so one function can load all collections
 	public menus = new Collection<string, Component>();
 	public buttons = new Collection<string, Component>();
 	public modals = new Collection<string, Component>();
@@ -137,14 +138,14 @@ export class ExtendedClient extends Client {
 		process.on("SIGTERM", () => this.restart());
 
 		process.on("disconnect", (code: number) => {
-			if (code !== undefined) errorHandler(this, code, "disconnect");
+			if (code !== undefined) errorHandler(this, code, "Disconnect");
 		});
-		process.on("uncaughtException", (error, origin) => {
-			if (error) errorHandler(this, error, "uncaughtException", origin);
+		process.on("uncaughtException", (error) => {
+			if (error) errorHandler(this, error, "Uncaught Exception");
 		});
 		process.on("unhandledRejection", (reason) => {
 			// always have a reason because of some weird bugs with discord
-			if (reason) errorHandler(this, reason, "unhandledRejection");
+			if (reason) errorHandler(this, reason, "Unhandled Rejection");
 		});
 
 		return this;

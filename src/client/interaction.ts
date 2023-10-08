@@ -6,7 +6,7 @@ import {
 	ModalSubmitInteraction,
 	PermissionFlagsBits,
 } from "discord.js";
-import { JSONFiles, en_US } from "@helpers/strings";
+import { strings, AllStrings } from "@helpers/strings";
 import { EmbedBuilder } from "@client";
 import { colors } from "@helpers/colors";
 import { ExtendedClient } from "./client";
@@ -16,23 +16,23 @@ export type PermissionType = "manager" | "dev" | "moderator" | "council";
 declare module "discord.js" {
 	interface ChatInputCommandInteraction {
 		client: ExtendedClient; // so you don't have to cast it every time
-		strings(): typeof en_US;
+		strings(): AllStrings;
 		hasPermission(type: PermissionType): boolean;
 	}
 
 	interface ButtonInteraction {
 		client: ExtendedClient;
-		strings(): typeof en_US;
+		strings(): AllStrings;
 	}
 
 	interface StringSelectMenuInteraction {
 		client: ExtendedClient;
-		strings(): typeof en_US;
+		strings(): AllStrings;
 	}
 
 	interface ModalSubmitInteraction {
 		client: ExtendedClient;
-		strings(): typeof en_US;
+		strings(): AllStrings;
 	}
 }
 
@@ -70,34 +70,6 @@ function hasPermission(type: PermissionType): boolean {
 
 	if (!out) this.reply({ embeds: [noPermission], ephemeral: true });
 	return out;
-}
-
-/**
- * Load strings based on interaction language
- * @author Evorp
- * @returns string output in correct language
- */
-export function strings(): typeof en_US {
-	const countryCode = this.locale;
-	let lang: typeof en_US;
-	// load all english strings into one lang object
-	for (const json of JSONFiles)
-		lang = {
-			...lang,
-			...require(`@/lang/en-US/${json}.json`), // fallback
-		};
-
-	if (countryCode == "en-GB" || countryCode == "en-US") return lang;
-
-	// because the fallback is already IN ENGLISH
-	for (const json of JSONFiles)
-		try {
-			//* We try the import before spreading the object to avoid issues, we only want to check if the file exists
-			const lang2 = require(`@/lang/${countryCode}/${json}.json`);
-			lang = { ...lang, ...lang2 };
-		} catch {} // file not found
-
-	return lang;
 }
 
 ChatInputCommandInteraction.prototype.hasPermission = hasPermission;

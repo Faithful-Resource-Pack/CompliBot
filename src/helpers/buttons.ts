@@ -1,5 +1,5 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
-import { ids, parseId } from "./emojis";
+import { ids } from "./emojis";
 
 export const compare = new ButtonBuilder()
 	.setStyle(ButtonStyle.Primary)
@@ -32,7 +32,6 @@ export const deleteInteraction = new ButtonBuilder()
 	.setEmoji(ids.delete)
 	.setCustomId("deleteInteraction");
 
-// ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"];
 export const pollVote1 = new ButtonBuilder()
 	.setStyle(ButtonStyle.Primary)
 	.setEmoji("1️⃣")

@@ -5,6 +5,10 @@ type ColorType = {
 	[name: string]: ColorResolvable;
 };
 
+/**
+ * Can't fetch from settings.json since djs complains about color resolving
+ * so we declare them all here
+ */
 export const colors: ColorType = {
 	// status/generic colors
 	red: "#f44336",

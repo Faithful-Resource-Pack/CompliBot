@@ -1,3 +1,4 @@
+// note: the key name should be the same as the actual name
 export const ids = {
 	bug: "959344133145755648",
 	suggestion: "959344133158350869",
@@ -34,6 +35,7 @@ export const ids = {
 } as const;
 
 /**
+ * Convert a reaction id into an inline emoji string
  * @author Nick
  * @param id emoji id
  * @returns usable string

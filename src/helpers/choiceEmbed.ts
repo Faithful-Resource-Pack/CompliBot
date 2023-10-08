@@ -9,7 +9,7 @@ import { minecraftSorter } from "@helpers/sorter";
 import axios from "axios";
 
 /**
- * construct custom choice embed with any given results
+ * Construct custom choice embed with any given results
  * @author Juknum, Evorp
  * @param interaction interaction to reply to
  * @param menuID which id the result gets sent to
@@ -59,7 +59,7 @@ export async function generalChoiceEmbed(
 }
 
 /**
- * construct choice embed when there's multiple textures to pick from
+ * Construct choice embed when there's multiple textures to pick from
  * @author Juknum
  * @param interaction interaction to reply to
  * @param menuID which id the result gets sent to
