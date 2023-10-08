@@ -1,9 +1,9 @@
 import { SlashCommand } from "@interfaces";
-import { ActionRowBuilder, ButtonBuilder, SlashCommandBuilder } from "discord.js";
+import { SlashCommandBuilder } from "discord.js";
 import { ChatInputCommandInteraction, Message } from "@client";
 import { magnifyToAttachment } from "@images/magnify";
 import getImage from "@helpers/getImage";
-import { tile, palette } from "@helpers/buttons";
+import { imageButtons } from "@helpers/buttons";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -38,7 +38,7 @@ export const command: SlashCommand = {
 		await interaction
 			.editReply({
 				files: [file],
-				components: [new ActionRowBuilder<ButtonBuilder>().addComponents(palette)],
+				components: [imageButtons],
 			})
 			.then((message: Message) => message.deleteButton());
 	},

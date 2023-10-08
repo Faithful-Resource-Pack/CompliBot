@@ -41,7 +41,8 @@ export interface AllColors {
  */
 export async function palette(origin: ImageSource) {
 	const imageToDraw = await loadImage(origin);
-	if (imageToDraw.width * imageToDraw.height > 262144) return { image: null, embed: null };
+	// 1048576px is the same size as a magnified image
+	if (imageToDraw.width * imageToDraw.height > 1048576) return { image: null, embed: null };
 	const canvas: Canvas = createCanvas(imageToDraw.width, imageToDraw.height);
 	const context = canvas.getContext("2d");
 	context.drawImage(imageToDraw, 0, 0);
@@ -197,9 +198,7 @@ export async function paletteTooBig(
 		embeds: [
 			new EmbedBuilder()
 				.setTitle(
-					interaction
-						.strings()
-						.command.images.too_big.replace("%ACTION%", "take the palette of"),
+					interaction.strings().command.images.too_big.replace("%ACTION%", "take the palette of"),
 				)
 				.setDescription(interaction.strings().command.images.max_size)
 				.setColor(colors.red),

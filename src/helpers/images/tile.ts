@@ -26,7 +26,8 @@ interface TileOptions {
 export async function tile(origin: ImageSource, options: TileOptions = {}): Promise<Buffer> {
 	const input = await loadImage(origin).catch((err) => Promise.reject(err));
 
-	if (input.width * input.height * 3 > 262144) return null;
+	// 1048576px is the same size as a magnified image
+	if (input.width * input.height * 3 > 1048576) return null;
 
 	const canvas = createCanvas(input.width * 3, input.height * 3);
 	const context = canvas.getContext("2d");

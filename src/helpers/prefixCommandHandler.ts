@@ -3,8 +3,7 @@ import { magnifyToAttachment } from "./images/magnify";
 import getImage from "./getImage";
 import { tileToAttachment, tileTooBig } from "./images/tile";
 import { paletteToAttachment, paletteTooBig } from "./images/palette";
-import { ActionRowBuilder, ButtonBuilder } from "discord.js";
-import { imageButtons, palette } from "./buttons";
+import { imageButtons } from "./buttons";
 
 export default async function prefixCommandHandler(message: Message) {
 	const args = message.content.split(" ");
@@ -19,7 +18,7 @@ export default async function prefixCommandHandler(message: Message) {
 			return await message
 				.reply({
 					files: [await magnifyToAttachment(url)],
-					components: [new ActionRowBuilder<ButtonBuilder>().addComponents(palette)],
+					components: [imageButtons],
 				})
 				.then((message: Message) => message.deleteButton());
 		case "t":

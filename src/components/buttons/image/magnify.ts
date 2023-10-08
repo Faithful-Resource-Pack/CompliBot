@@ -2,10 +2,8 @@ import { Component } from "@interfaces";
 import { info } from "@helpers/logger";
 import { Client, Message, ButtonInteraction, EmbedBuilder } from "@client";
 import { magnifyToAttachment } from "@images/magnify";
-import { palette } from "@helpers/buttons";
+import { imageButtons } from "@helpers/buttons";
 import getImage from "@helpers/getImage";
-import { ActionRowBuilder } from "discord.js";
-import { ButtonBuilder } from "discord.js";
 
 export default {
 	id: "magnify",
@@ -25,7 +23,7 @@ export default {
 						.setTimestamp(),
 				],
 				files: [attachment],
-				components: [new ActionRowBuilder<ButtonBuilder>().addComponents(palette)],
+				components: [imageButtons],
 				fetchReply: true,
 			})
 			.then((message: Message) => {

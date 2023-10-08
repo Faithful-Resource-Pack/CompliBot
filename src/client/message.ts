@@ -29,7 +29,7 @@ const ExtendedMessage = {
 			this.components.at(-1).components[0].type === ComponentType.Button //checks there isn't a select menu
 		) {
 			const deleteRow = ActionRowBuilder.from(this.components.at(-1)).addComponents(
-				hasAuthorID === true ? deleteMessage : deleteInteraction,
+				hasAuthorID ? deleteMessage : deleteInteraction,
 			);
 
 			return this.edit({
@@ -40,7 +40,7 @@ const ExtendedMessage = {
 			components: [
 				...this.components,
 				new ActionRowBuilder<ButtonBuilder>().addComponents([
-					hasAuthorID === true ? deleteMessage : deleteInteraction,
+					hasAuthorID ? deleteMessage : deleteInteraction,
 				]),
 			],
 		});

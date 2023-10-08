@@ -2,9 +2,7 @@ import { Component } from "@interfaces";
 import { info } from "@helpers/logger";
 import { Client, Message, ButtonInteraction, EmbedBuilder } from "@client";
 import { tileToAttachment, tileTooBig } from "@images/tile";
-import { magnify, palette } from "@helpers/buttons";
-import { ActionRowBuilder } from "discord.js";
-import { ButtonBuilder } from "discord.js";
+import { imageButtons } from "@helpers/buttons";
 import getImage from "@helpers/getImage";
 
 export default {
@@ -27,7 +25,7 @@ export default {
 						.setTimestamp(),
 				],
 				files: [attachment],
-				components: [new ActionRowBuilder<ButtonBuilder>().addComponents(magnify, palette)],
+				components: [imageButtons],
 				fetchReply: true,
 			})
 			.then((message: Message) => {
