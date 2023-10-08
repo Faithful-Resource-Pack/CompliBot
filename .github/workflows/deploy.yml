@@ -2,7 +2,7 @@ name: Deploy
 
 on:
     push:
-        branches: [complibot-v4]
+        branches: [main]
     workflow_dispatch:
 
 jobs:
@@ -17,10 +17,10 @@ jobs:
                   PORT: ${{ secrets.PORT }}
                   KEY: ${{ secrets.SSH }}
                   script: |
-                      cd ./CompliBot-Beta
-                      git checkout complibot-v4
+                      cd ./CompliBot
+                      git checkout main
                       git stash
                       git pull
                       pnpm install
-                      pm2 delete "complibot-beta"
-                      pm2 start "pnpm start" --name "complibot-beta"
+                      pm2 delete "complibot"
+                      pm2 start "pnpm start" --name "complibot"
