@@ -2,7 +2,7 @@ import { Component } from "@interfaces";
 import { info } from "@helpers/logger";
 import { Client, Message, ButtonInteraction, EmbedBuilder } from "@client";
 import { magnifyToAttachment } from "@images/magnify";
-import { imageButtons } from "@utility/buttons";
+import { magnifyButtons } from "@utility/buttons";
 import getImage, { imageNotFound } from "@helpers/getImage";
 
 export default {
@@ -24,7 +24,7 @@ export default {
 						.setTimestamp(),
 				],
 				files: [attachment],
-				components: [imageButtons],
+				components: [magnifyButtons],
 				fetchReply: true,
 			})
 			.then((message: Message) => {

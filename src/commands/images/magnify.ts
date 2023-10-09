@@ -3,7 +3,7 @@ import { SlashCommandBuilder } from "discord.js";
 import { ChatInputCommandInteraction, Message } from "@client";
 import { magnifyToAttachment } from "@images/magnify";
 import getImage, { imageNotFound } from "@helpers/getImage";
-import { imageButtons } from "@utility/buttons";
+import { magnifyButtons } from "@utility/buttons";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -39,7 +39,7 @@ export const command: SlashCommand = {
 		await interaction
 			.editReply({
 				files: [file],
-				components: [imageButtons],
+				components: [magnifyButtons],
 			})
 			.then((message: Message) => message.deleteButton());
 	},

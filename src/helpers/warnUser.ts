@@ -17,12 +17,7 @@ export default async function warnUser(
 	description: string,
 ) {
 	const args: any = {
-		embeds: [
-			new EmbedBuilder()
-				.setTitle(title)
-				.setDescription(description)
-				.setColor(colors.red),
-		],
+		embeds: [new EmbedBuilder().setTitle(title).setDescription(description).setColor(colors.red)],
 	};
 
 	// make ephemeral if possible

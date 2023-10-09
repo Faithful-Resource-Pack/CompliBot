@@ -209,7 +209,9 @@ export async function paletteTooBig(
 	// force english if it's a message
 	return warnUser(
 		interaction,
-		interaction.strings(interaction instanceof Message).command.images.too_big.replace("%ACTION%", "take the palette of"),
+		interaction
+			.strings(interaction instanceof Message)
+			.command.images.too_big.replace("%ACTION%", "take the palette of"),
 		interaction.strings(interaction instanceof Message).command.images.max_size,
 	);
 }

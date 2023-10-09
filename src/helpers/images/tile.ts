@@ -159,7 +159,9 @@ export async function tileTooBig(
 	// force english if it's a message
 	return warnUser(
 		interaction,
-		interaction.strings(interaction instanceof Message).command.images.too_big.replace("%ACTION%", "be tiled"),
+		interaction
+			.strings(interaction instanceof Message)
+			.command.images.too_big.replace("%ACTION%", "be tiled"),
 		interaction.strings(interaction instanceof Message).command.images.max_size,
 	);
 }
