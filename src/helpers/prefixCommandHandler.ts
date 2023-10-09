@@ -9,6 +9,12 @@ export default async function prefixCommandHandler(message: Message) {
 	const args = message.content.split(" ");
 
 	const command = args.shift().slice(message.client.tokens.prefix.length);
+
+	// when adding a new prefix command remember to register it here
+	const prefixCommands = ["m", "z", "t", "p"];
+
+	if (!prefixCommands.includes(command)) return; // just generally using a slash
+
 	const url = await getImage(message);
 	if (!url) return imageNotFound(message);
 
