@@ -9,7 +9,7 @@ declare module "discord.js" {
 		client: ExtendedClient; // so you don't have to cast it every time
 		/** @param hasAuthorID whether to search for an author id in the footer or the interaction owner */
 		deleteButton(hasAuthorID?: boolean): Promise<Message>;
-		strings(): AllStrings;
+		strings(forceEnglish?: boolean): AllStrings;
 	}
 }
 

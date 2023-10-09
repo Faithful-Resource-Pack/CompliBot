@@ -16,23 +16,23 @@ export type PermissionType = "manager" | "dev" | "moderator" | "council";
 declare module "discord.js" {
 	interface ChatInputCommandInteraction {
 		client: ExtendedClient; // so you don't have to cast it every time
-		strings(): AllStrings;
+		strings(forceEnglish?: boolean): AllStrings;
 		hasPermission(type: PermissionType): boolean;
 	}
 
 	interface ButtonInteraction {
 		client: ExtendedClient;
-		strings(): AllStrings;
+		strings(forceEnglish?: boolean): AllStrings;
 	}
 
 	interface StringSelectMenuInteraction {
 		client: ExtendedClient;
-		strings(): AllStrings;
+		strings(forceEnglish?: boolean): AllStrings;
 	}
 
 	interface ModalSubmitInteraction {
 		client: ExtendedClient;
-		strings(): AllStrings;
+		strings(forceEnglish?: boolean): AllStrings;
 	}
 }
 

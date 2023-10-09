@@ -10,7 +10,7 @@ export type AllStrings = typeof baseTranslations;
  * @author Evorp
  * @returns string output in correct language
  */
-export function strings(): AllStrings {
+export function strings(forceEnglish = false): AllStrings {
 	const countryCode = this.locale;
 	let lang: AllStrings;
 	// load all english strings into one lang object
@@ -20,7 +20,7 @@ export function strings(): AllStrings {
 			...require(`@/lang/en-US/${json}.json`), // fallback
 		};
 
-	if (countryCode == "en-GB" || countryCode == "en-US") return lang;
+	if (countryCode == "en-GB" || countryCode == "en-US" || forceEnglish) return lang;
 
 	// because the fallback is already IN ENGLISH
 	for (const json of JSONFiles)

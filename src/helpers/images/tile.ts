@@ -156,9 +156,10 @@ export async function tileTooBig(
 		| StringSelectMenuInteraction
 		| Message,
 ) {
+	// force english if it's a message
 	return warnUser(
 		interaction,
-		interaction.strings().command.images.too_big.replace("%ACTION%", "be tiled"),
-		interaction.strings().command.images.max_size,
+		interaction.strings(interaction instanceof Message).command.images.too_big.replace("%ACTION%", "be tiled"),
+		interaction.strings(interaction instanceof Message).command.images.max_size,
 	);
 }
