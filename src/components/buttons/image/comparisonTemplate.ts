@@ -22,7 +22,7 @@ export default {
 		for (const packSet of packs) {
 			loadedImages.push([]);
 			for (const pack of packSet) {
-				loadedImages[i].push(await loadImage(formatName(pack)[1]));
+				loadedImages[i].push(await loadImage(formatName(pack, "64")[1]));
 			}
 			++i;
 		}
