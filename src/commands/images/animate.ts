@@ -53,7 +53,7 @@ export const command: SlashCommand = {
 		}
 
 		const mcmeta: MCMETA = mcmetaList[style];
-		const file = await animateToAttachment(await loadImage(magnified), mcmeta, `${style}.gif`);
+		const file = await animateToAttachment(magnified, mcmeta, `${style}.gif`);
 		await interaction
 			.editReply({ files: [file] })
 			.then((message: Message) => message.deleteButton());

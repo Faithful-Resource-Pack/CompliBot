@@ -4,7 +4,7 @@ import { Contributor, Tokens } from "@interfaces";
 import axios from "axios";
 import getDimensions from "@images/getDimensions";
 import { APIEmbedField, AttachmentBuilder, Guild } from "discord.js";
-import { magnifyToAttachment } from "@images/magnify";
+import { magnify, magnifyToAttachment } from "@images/magnify";
 import { ISizeCalculationResult } from "image-size/dist/types/interface";
 import { colors } from "@utility/colors";
 import { Texture, Contribution } from "@interfaces";
@@ -84,7 +84,7 @@ export const getTexture = async (options: {
 		.setURL(`https://webapp.faithfulpack.net/#/gallery/java/32x/latest/all/?show=${texture.id}`)
 		.addFields({ name: "Resolution", value: `${dimension.width}×${dimension.height}` })
 		.setThumbnail(textureURL)
-		.setImage(`attachment://magnified.${animated ? "gif" : "png"}`);
+		.setImage(`attachment://${animated ? "animated.gif" : "magnified.png"}`);
 
 	let mainContribution: Contribution;
 	if (allContributions.length) {
@@ -123,7 +123,8 @@ export const getTexture = async (options: {
 				value: `\`\`\`json\n${JSON.stringify(mcmeta.animation)}\`\`\``,
 			});
 
-		files.push(await animateToAttachment(await loadImage(textureURL), mcmeta));
+		const { magnified } = await magnify(textureURL, { isAnimation: true });
+		files.push(await animateToAttachment(magnified, mcmeta));
 	} else files.push(await magnifyToAttachment(textureURL));
 
 	return { embeds: [embed], files: files, components: [textureButtons], ephemeral: false };

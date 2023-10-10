@@ -1,6 +1,7 @@
-import { Canvas, Image, createCanvas } from "@napi-rs/canvas";
+import { createCanvas, loadImage } from "@napi-rs/canvas";
 import GIFEncoder from "./GIFEncoder";
 import { AttachmentBuilder } from "discord.js";
+import { ImageSource } from "@helpers/getImage";
 
 export interface MCMETA {
 	animation: {
@@ -15,11 +16,12 @@ export interface MCMETA {
 /**
  * Animate a given image with a given mcmeta
  * @author Superboxer4, Evorp, Juknum
- * @param baseCanvas tilesheet to animate
+ * @param origin tilesheet to animate
  * @param mcmeta how you want it animated
  * @returns animated GIF as buffer
  */
-export async function animate(baseCanvas: Canvas | Image, mcmeta: MCMETA): Promise<Buffer> {
+export async function animate(origin: ImageSource, mcmeta: MCMETA): Promise<Buffer> {
+	const baseCanvas = await loadImage(origin);
 	if (!mcmeta.animation) mcmeta.animation = {};
 
 	if (!mcmeta.animation?.width) mcmeta.animation.width = baseCanvas.width;
@@ -137,7 +139,7 @@ export async function animate(baseCanvas: Canvas | Image, mcmeta: MCMETA): Promi
  * @returns sendable gif attachment
  */
 export async function animateToAttachment(
-	baseCanvas: Image | Canvas,
+	baseCanvas: ImageSource,
 	mcmeta: MCMETA,
 	name = "animated.gif",
 ) {
