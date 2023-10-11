@@ -126,6 +126,8 @@ export class ExtendedClient extends Client {
 				this.loadComponents();
 				this.loadEvents();
 				this.loadCollections();
+
+				this.automation.start();
 			});
 
 		// I know this restarting stuff kinda sucks but you can't guarantee which one is triggered
