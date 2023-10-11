@@ -123,7 +123,7 @@ export async function errorHandler(client: Client, error: any, type: string) {
 
 	let eprotoError = false;
 	let description = error.stack;
-	let codeBlocks = " ";
+	let codeBlocks = "";
 
 	if (error.isAxiosError) {
 		// axios errors are JSON

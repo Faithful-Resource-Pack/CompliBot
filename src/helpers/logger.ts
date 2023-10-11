@@ -26,6 +26,9 @@ export async function devLogger(client: Client, description: string, params: Log
 	const channel = client.channels.cache.get(client.tokens.errorChannel) as TextChannel;
 	if (!channel) return; // avoid infinite loop when crash is outside of client
 
+	if (params.codeBlocks !== null && params.codeBlocks !== undefined)
+		description = `\`\`\`${params.codeBlocks}\n${description}\`\`\``;
+
 	const embed = new EmbedBuilder()
 		.setTitle(params.title ?? "Unhandled Rejection")
 		.setDescription(description)
