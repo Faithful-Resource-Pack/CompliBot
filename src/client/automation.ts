@@ -22,8 +22,15 @@ export class Automation {
 			if (!this.ticking) return;
 
 			// polls check:
-			this.client.polls.each(this.pollCheck.bind(null, this));
-		}, 1000); // each second
+			this.client.polls.each((p) => {
+				const poll = new Poll(p); // get methods back
+
+				if (poll.isTimeout()) {
+					poll.setStatus("ended");
+					poll.updateEmbed(this.client).then(() => this.client.polls.delete(poll.id));
+				}
+			});
+		}, 15000); // 15 seconds
 
 		// send to uptime kuma (only for production bot)
 		if (this.client.tokens.status) {
@@ -31,15 +38,6 @@ export class Automation {
 				() => fetch(this.client.tokens.status + this.client.ws.ping).catch(() => {}),
 				600000,
 			); // 10 minutes
-		}
-	}
-
-	private pollCheck(p: Poll) {
-		const poll = new Poll(p); // get methods back
-
-		if (poll.isTimeout()) {
-			poll.setStatus("ended");
-			poll.updateEmbed(this.client).then(() => this.client.polls.delete(poll.id));
 		}
 	}
 }
