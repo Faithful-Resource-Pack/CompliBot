@@ -3,7 +3,7 @@ import { magnifyToAttachment } from "./images/magnify";
 import getImage, { imageNotFound } from "./getImage";
 import { tileToAttachment, tileTooBig } from "./images/tile";
 import { paletteToAttachment, paletteTooBig } from "./images/palette";
-import { imageButtons } from "@utility/buttons";
+import { imageButtons, magnifyButtons } from "@utility/buttons";
 
 export default async function prefixCommandHandler(message: Message) {
 	const args = message.content.split(" ");
@@ -25,7 +25,7 @@ export default async function prefixCommandHandler(message: Message) {
 			return await message
 				.reply({
 					files: [await magnifyToAttachment(url)],
-					components: [imageButtons],
+					components: [magnifyButtons],
 				})
 				.then((message: Message) => message.deleteButton());
 		case "t":
