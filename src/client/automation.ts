@@ -22,7 +22,7 @@ export class Automation {
 			if (!this.ticking) return;
 
 			// polls check:
-			this.client.polls.each(this.pollCheck);
+			this.client.polls.each(this.pollCheck.bind(null, this));
 		}, 1000); // each second
 
 		// send to uptime kuma (only for production bot)
@@ -34,7 +34,7 @@ export class Automation {
 		}
 	}
 
-	private pollCheck(p: Poll): void {
+	private pollCheck(p: Poll) {
 		const poll = new Poll(p); // get methods back
 
 		if (poll.isTimeout()) {
