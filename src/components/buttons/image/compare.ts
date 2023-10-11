@@ -1,7 +1,7 @@
 import { Component } from "@interfaces";
 import { info } from "@helpers/logger";
 import { Client, Message, ButtonInteraction, EmbedBuilder } from "@client";
-import textureComparison from "@functions/textureComparison";
+import textureComparison, { comparisonTooBig } from "@functions/textureComparison";
 import { InteractionEditReplyOptions, EmbedFooterData } from "discord.js";
 
 export default {
@@ -14,6 +14,11 @@ export default {
 
 		await interaction.deferReply();
 		const messageOptions: InteractionEditReplyOptions = await textureComparison(client, ids[0]);
+		if (!messageOptions) {
+			// stupid workaround for already having deferred the message
+			await interaction.deleteReply();
+			return comparisonTooBig(interaction);
+		}
 
 		const embed = messageOptions.embeds[0] as EmbedBuilder;
 

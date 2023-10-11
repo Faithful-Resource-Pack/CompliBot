@@ -2,7 +2,7 @@ import { Client, Message, StringSelectMenuInteraction } from "@client";
 import { Component } from "@interfaces";
 import { info } from "@helpers/logger";
 import { MessageEditOptions, MessageInteraction } from "discord.js";
-import textureComparison from "@functions/textureComparison";
+import textureComparison, { comparisonTooBig } from "@functions/textureComparison";
 
 export default {
 	id: "compareSelect",
@@ -28,6 +28,12 @@ export default {
 			id,
 			display,
 		);
+
+		if (!editOptions) {
+			// stupid workaround for already having deferred the message
+			await interaction.deleteReply();
+			return comparisonTooBig(interaction);
+		}
 
 		message.edit(editOptions).then((message: Message) => message.deleteButton());
 	},

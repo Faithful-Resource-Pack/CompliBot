@@ -30,8 +30,13 @@ export default async function warnUser(
 	try {
 		reply = await (interaction as ChatInputCommandInteraction).reply(args);
 	} catch {
-		// already deferred so we try to follow up instead
-		reply = await (interaction as ChatInputCommandInteraction).editReply(args);
+		try {
+			// check if deferred
+			reply = await (interaction as ChatInputCommandInteraction).editReply(args);
+		} catch {
+			// follow up if original message not found
+			reply = await (interaction as ChatInputCommandInteraction).followUp(args);
+		}
 	}
 	if (interaction instanceof Message) reply.deleteButton();
 }

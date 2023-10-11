@@ -18,18 +18,13 @@ export default {
 		const packs = parseDisplay(display);
 
 		const loadedImages = [];
-		let i = 0;
 		for (const packSet of packs) {
 			loadedImages.push([]);
-			for (const pack of packSet) {
-				loadedImages[i].push(await loadImage(formatName(pack, "64")[1]));
-			}
-			++i;
+			for (const pack of packSet)
+				loadedImages.at(-1).push(await loadImage(formatName(pack, "64")[1]));
 		}
 
-		const longestRow = loadedImages.reduce((acc, item) => Math.max(acc, item.length), 0);
-		const stitched = await stitch(loadedImages, longestRow == 3 ? 4 : 2);
-
+		const stitched = await stitch(loadedImages);
 		const magnified = await magnifyToAttachment(stitched);
 
 		const embed = new EmbedBuilder()

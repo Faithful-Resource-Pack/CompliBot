@@ -1,9 +1,8 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "discord.js";
-import { ChatInputCommandInteraction, EmbedBuilder, Message } from "@client";
+import { ChatInputCommandInteraction, Message } from "@client";
 import { getTexture } from "@functions/getTexture";
 import parseTextureName from "@functions/parseTextureName";
-import { colors } from "@utility/colors";
 import { textureChoiceEmbed } from "@helpers/choiceEmbed";
 
 export const command: SlashCommand = {
@@ -48,6 +47,12 @@ export const command: SlashCommand = {
 				pack: interaction.options.getString("pack", true),
 				guild: interaction.guild,
 			});
+
+			if (!replyOptions.files) {
+				await interaction.deleteReply();
+				return interaction.followUp({ ...replyOptions, ephemeral: true });
+			}
+
 			return interaction.editReply(replyOptions).then((message: Message) => message.deleteButton());
 		}
 

@@ -1,9 +1,8 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "discord.js";
-import { Client, ChatInputCommandInteraction, EmbedBuilder, Message } from "@client";
-import textureComparison from "@functions/textureComparison";
+import { ChatInputCommandInteraction, Message } from "@client";
+import textureComparison, { comparisonTooBig } from "@functions/textureComparison";
 import parseTextureName from "@functions/parseTextureName";
-import { colors } from "@utility/colors";
 import { textureChoiceEmbed } from "@helpers/choiceEmbed";
 
 export const command: SlashCommand = {
@@ -43,6 +42,10 @@ export const command: SlashCommand = {
 		// only one result
 		if (results.length === 1) {
 			const replyOptions = await textureComparison(interaction.client, results[0].id, display);
+			if (!replyOptions) {
+				await interaction.deleteReply();
+				return comparisonTooBig(interaction);
+			}
 
 			return interaction.editReply(replyOptions).then((message: Message) => message.deleteButton());
 		}

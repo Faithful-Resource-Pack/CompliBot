@@ -24,11 +24,16 @@ export default {
 		interaction.deferUpdate();
 
 		const [id, pack] = interaction.values[0].split("__");
-		const editOptions: MessageEditOptions = await getTexture({
+		const editOptions = await getTexture({
 			texture: (await axios.get(`${interaction.client.tokens.apiUrl}textures/${id}/all`)).data,
 			pack: pack,
 			guild: interaction.guild,
 		});
+
+		if (!editOptions.files) {
+			await interaction.deleteReply();
+			return interaction.followUp({ ...editOptions, ephemeral: true });
+		}
 
 		return message.edit(editOptions).then((message: Message) => message.deleteButton());
 	},

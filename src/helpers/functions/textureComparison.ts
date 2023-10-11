@@ -1,13 +1,21 @@
 import stitch from "@images/stitch";
 import { magnifyToAttachment } from "@images/magnify";
 import { loadImage } from "@napi-rs/canvas";
-import { Client, EmbedBuilder } from "@client";
+import {
+	Client,
+	EmbedBuilder,
+	ButtonInteraction,
+	ChatInputCommandInteraction,
+	StringSelectMenuInteraction,
+	Message,
+} from "@client";
 import { addPathsToEmbed } from "@functions/getTexture";
 import getDimensions from "@images/getDimensions";
 import { Texture } from "@interfaces";
 import axios from "axios";
 import { ActionRowBuilder, ButtonBuilder } from "discord.js";
 import { template } from "@utility/buttons";
+import warnUser from "@helpers/warnUser";
 
 /**
  * Get the corresponding pack IDs for a given display choice
@@ -53,38 +61,24 @@ export default async function textureComparison(
 	const defaultURL = `${client.tokens.apiUrl}textures/${id}/url/default/latest`;
 
 	const dimension = await getDimensions(defaultURL);
-	if (dimension.width * dimension.height * displayed.flat().length > 262144) {
-		return {
-			embeds: [
-				new EmbedBuilder()
-					.setTitle("Output will be too big!")
-					.setDescription(
-						"Try specifying which set of packs you want to view to reduce the total image size.",
-					),
-			],
-			components: [],
-		};
-	}
+	if (dimension.width * dimension.height * displayed.flat().length > 262144) return null;
 
-	// get texture urls
+	// get texture urls into 2d array using the parsed display
 	const loadedImages = [];
-	let i = 0;
 	for (const packSet of displayed) {
+		// had problems with nested async mapping so this is easier for everyone
 		loadedImages.push([]);
 		for (const pack of packSet) {
 			const imgUrl = `${client.tokens.apiUrl}textures/${id}/url/${pack}/latest`;
 			try {
-				loadedImages[i].push(await loadImage(imgUrl));
+				loadedImages.at(-1).push(await loadImage(imgUrl));
 			} catch {
 				// image doesn't exist yet
 			}
 		}
-		++i; // can't use forEach because of scope problems (blame js)
 	}
 
-	const longestRow = loadedImages.reduce((acc, item) => Math.max(acc, item.length), 0);
-	const stitched = await stitch(loadedImages, longestRow == 3 ? 4 : 2);
-
+	const stitched = await stitch(loadedImages);
 	const magnified = await magnifyToAttachment(stitched);
 
 	const embed = new EmbedBuilder()
@@ -94,10 +88,31 @@ export default async function textureComparison(
 		.addFields(addPathsToEmbed(result))
 		.setFooter({ text: `Displaying: ${display ?? "All"}` });
 
-	// empty array overwrites select menu choices if needed
 	return {
 		embeds: [embed],
 		files: [magnified],
 		components: [new ActionRowBuilder<ButtonBuilder>().addComponents(template)],
 	};
+}
+
+/**
+ * Warn the user that the image is too large
+ * @author Evorp
+ * @param interaction interaction to reply to
+ */
+export async function comparisonTooBig(
+	interaction:
+		| ButtonInteraction
+		| ChatInputCommandInteraction
+		| StringSelectMenuInteraction
+		| Message,
+) {
+	// force english if it's a message
+	return warnUser(
+		interaction,
+		interaction
+			.strings(interaction instanceof Message)
+			.command.images.too_big.replace("%ACTION%", "compare"),
+		interaction.strings(interaction instanceof Message).command.images.max_size,
+	);
 }

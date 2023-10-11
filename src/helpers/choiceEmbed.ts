@@ -64,13 +64,13 @@ export async function generalChoiceEmbed(
  * @param interaction interaction to reply to
  * @param menuID which id the result gets sent to
  * @param results textures to embed
- * @param constValue extra info to send to the menuID (separate multiple values with "__")
+ * @param constValues extra info to send to the menuID
  */
 export async function textureChoiceEmbed(
 	interaction: ChatInputCommandInteraction,
 	menuID: string,
 	results: Texture[],
-	constValue: string,
+	...constValues: string[]
 ) {
 	const mappedResults: SelectMenuComponentOptionData[] = [];
 	for (const result of results) {
@@ -79,7 +79,7 @@ export async function textureChoiceEmbed(
 				result.name
 			}`,
 			description: result.paths[0].name,
-			value: `${result.id}__${constValue}`,
+			value: `${result.id}__${constValues.join("__")}`,
 		});
 	}
 

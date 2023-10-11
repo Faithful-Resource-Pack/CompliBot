@@ -61,7 +61,8 @@ export const command: SlashCommand = {
 			interaction,
 			"cycleSelect",
 			results,
-			`${display}__${framerate}`, // storing multiple things in value
+			display,
+			framerate.toString(), // storing multiple things in value
 		);
 	},
 };

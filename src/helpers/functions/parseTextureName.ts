@@ -17,9 +17,8 @@ export default async function parseTextureName(
 	name = name.toLowerCase().trim().replace(".png", "").replace("#", "").replace(/ /g, "_");
 
 	if (name.length < 3 && isNaN(Number(name))) {
-		// stupid workaround for already having deferred the message
-		await interaction.editReply({ content: "** **" }).then((reply) => reply.delete());
-
+		// it's already deferred so we delete the non-ephemeral message
+		await interaction.deleteReply();
 		interaction.followUp({
 			embeds: [
 				new EmbedBuilder()
@@ -43,8 +42,7 @@ export default async function parseTextureName(
 	const out = Array.isArray(results) ? results : [results];
 
 	if (!out.length) {
-		await interaction.editReply({ content: "** **" }).then((reply) => reply.delete());
-
+		await interaction.deleteReply();
 		await interaction.followUp({
 			embeds: [
 				new EmbedBuilder()

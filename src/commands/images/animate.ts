@@ -39,8 +39,7 @@ export const command: SlashCommand = {
 		// magnify beforehand since you can't magnify a gif currently
 		const { magnified, width, height } = await magnify(image, { isAnimation: true });
 		if (height > width * 32) {
-			await interaction.editReply({ content: "** **" }).then((reply) => reply.delete());
-
+			await interaction.deleteReply();
 			return interaction.followUp({
 				embeds: [
 					new EmbedBuilder()
