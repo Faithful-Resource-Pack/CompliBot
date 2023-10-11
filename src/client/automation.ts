@@ -34,12 +34,12 @@ export class Automation {
 		}
 	}
 
-	private pollCheck(p: Poll) {
+	private pollCheck(p: Poll): void {
 		const poll = new Poll(p); // get methods back
 
 		if (poll.isTimeout()) {
 			poll.setStatus("ended");
-			poll.updateEmbed(this.client).then(() => this.client.polls.delete(poll.id)).catch(() => {});
+			poll.updateEmbed(this.client).then(() => this.client.polls.delete(poll.id));
 		}
 	}
 }

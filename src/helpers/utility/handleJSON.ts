@@ -43,7 +43,7 @@ export function getData(options: GetOptions) {
  * @param options data to set
  */
 export function setData(options: SetOptions) {
-	const folder = path.resolve(__dirname, options.relative_path);
+	let folder = path.resolve(__dirname, options.relative_path);
 	const file = path.resolve(folder, options.filename);
 
 	try {
