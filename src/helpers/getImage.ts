@@ -1,4 +1,5 @@
 import { Image } from "@napi-rs/canvas";
+import { Readable } from "stream";
 import {
 	Message,
 	ChatInputCommandInteraction,
@@ -11,17 +12,11 @@ import warnUser from "./warnUser";
 // remove stupid discord metadata (idk why they even added it)
 export const removeMetadata = (url: string) => url.split("?")[0];
 
-export const isImage = (url: string) => /(png|gif|jpg|jpeg|webp)$/g.test(removeMetadata(url));
+export const isImage = (url: string) =>
+	url && /(png|gif|jpg|jpeg|webp)$/g.test(removeMetadata(url));
 
 // taken from loadImage();
-export type ImageSource =
-	| string
-	| URL
-	| Buffer
-	| ArrayBufferLike
-	| Uint8Array
-	| Image
-	| import("stream").Readable;
+export type ImageSource = string | URL | Buffer | ArrayBufferLike | Uint8Array | Image | Readable;
 
 /**
  * Get image URL from a given message if possible
@@ -30,16 +25,20 @@ export type ImageSource =
  * @returns untreated URL (may have metadata)
  */
 export async function getImageFromMessage(message: Message) {
-	if (message.attachments.size) return message.attachments?.first().url;
-	const embed = message.embeds?.[0];
-	if (!embed) return "";
-	let url = embed.thumbnail?.url || embed.image?.url;
-	if (url && isImage(url)) return url;
+	let url: string;
+	if (message.attachments.size) url = message.attachments?.first().url;
+	if (isImage(url)) return url;
+
+	if (message.embeds)
+		for (const embed of message.embeds) {
+			url = embed.image?.url || embed.thumbnail?.url;
+			if (isImage(url)) return url;
+		}
 
 	// search for image urls
 	url = message.content?.split(" ").find((i) => i.startsWith("http"));
 	// check if url points to valid image
-	if (url && isImage(url)) return url;
+	if (isImage(url)) return url;
 
 	// nothing found
 	return "";
@@ -62,7 +61,7 @@ export async function getImageFromChannel(msgOrInteraction: Message | Interactio
 
 	for (const message of messages.sort((a, b) => b.createdTimestamp - a.createdTimestamp)) {
 		const url = await getImageFromMessage(message);
-		if (url && isImage(url)) return url;
+		if (isImage(url)) return url;
 	}
 
 	// no image found in last 20 messages
@@ -83,7 +82,7 @@ export default async function getImage(msgOrInteraction: Message | Interaction) 
 	if (msgOrInteraction instanceof Message) {
 		author = msgOrInteraction.author.id;
 		url = await getImageFromMessage(msgOrInteraction);
-		if (url && isImage(url)) return removeMetadata(url);
+		if (isImage(url)) return removeMetadata(url);
 
 		// if there's no attachment we check if it's a reply
 		if (msgOrInteraction.type === MessageType.Reply) {
@@ -92,19 +91,19 @@ export default async function getImage(msgOrInteraction: Message | Interaction) 
 				original = await msgOrInteraction.fetchReference();
 			} catch {}
 			if (original) url = await getImageFromMessage(original);
-			if (url && isImage(url)) return removeMetadata(url);
+			if (isImage(url)) return removeMetadata(url);
 		}
 	}
 
 	// if it's a slash command we check if the image property exists and use that
 	if (msgOrInteraction instanceof ChatInputCommandInteraction) {
 		url = msgOrInteraction.options.getAttachment("image", false)?.url;
-		if (url && isImage(url)) return removeMetadata(url);
+		if (isImage(url)) return removeMetadata(url);
 	}
 
 	// no url in message found so we search the channel
 	url = await getImageFromChannel(msgOrInteraction);
-	if (url && isImage(url)) return removeMetadata(url);
+	if (isImage(url)) return removeMetadata(url);
 
 	// no URL found at all
 	return "";
