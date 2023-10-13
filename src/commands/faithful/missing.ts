@@ -104,11 +104,10 @@ export const command: SlashCommand = {
 			let errMessage = (err as Error).message;
 			if (!errMessage) {
 				console.error(err);
-				errMessage =
-					`An error occured when running /missing.\n\nInformation: ${err}`;
+				errMessage = `An error occured when running /missing.\n\nInformation: ${err}`;
 			}
 
-			if (!this.client.tokens.dev)
+			if (!interaction.client.tokens.dev)
 				devLogger(interaction.client, (err as Error).stack ?? (err as string), { codeBlocks: "" });
 
 			return [null, [errMessage], options];
