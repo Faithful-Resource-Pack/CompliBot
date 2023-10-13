@@ -3,7 +3,7 @@ import { existsSync, readdirSync, statSync } from "fs";
 import { mkdir } from "fs/promises";
 import formatName from "@utility/formatName";
 import { Client } from "@client";
-import { Channel, ChannelType, VoiceChannel } from "discord.js";
+import { ChannelType, VoiceChannel } from "discord.js";
 import { join, normalize } from "path";
 
 import os from "os";
@@ -150,7 +150,7 @@ export const compute = async (
 
 	await callback("Searching for differences...").catch((err: any) => Promise.reject(err));
 
-	const editionFilter = blacklistedTextures[edition].map((i: string) => i.normalize());
+	const editionFilter = blacklistedTextures[edition].map(normalize);
 
 	const texturesDefault = getAllFilesFromDir(tmpDirPathDefault, editionFilter).map((f) =>
 		normalize(f).replace(tmpDirPathDefault, ""),
