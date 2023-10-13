@@ -12,6 +12,7 @@ import {
 import axios from "axios";
 import formatName from "@utility/formatName";
 import minecraftSorter from "@utility/minecraftSorter";
+import { devLogger } from "@helpers/logger";
 
 export const command: SlashCommand = {
 	async data(client: Client): Promise<SyncSlashCommandBuilder> {
@@ -104,8 +105,11 @@ export const command: SlashCommand = {
 			if (!errMessage) {
 				console.error(err);
 				errMessage =
-					"An error occured when running /missing. Please check the console error output for more information.";
+					`An error occured when running /missing.\n\nInformation: ${err}`;
 			}
+
+			if (!this.client.tokens.dev)
+				devLogger(interaction.client, (err as Error).stack ?? (err as string), { codeBlocks: "" });
 
 			return [null, [errMessage], options];
 		};
@@ -158,9 +162,7 @@ export const command: SlashCommand = {
 				}
 
 				resultEmbed.addFields({
-					name: `${formatName(response[2].pack)[0]} - ${
-						response[2].version
-					}`,
+					name: `${formatName(response[2].pack)[0]} - ${response[2].version}`,
 					value: `${response[2].completion}% complete\n> ${response[1].length} ${
 						response[1].length == 1 ? "texture" : "textures"
 					} missing of ${response[2].total} total.`,
