@@ -66,13 +66,9 @@ export const computeAndUpdate = async (
 	const packProgress = (await axios.get(`${client.tokens.apiUrl}settings/channels.pack_progress`))
 		.data;
 
-	let channel: Channel;
-	try {
-		channel = await client.channels.fetch(packProgress[results[2].pack][results[2].edition]);
-	} catch {
-		// channel doesn't exist or can't be fetched, return early
-		return results;
-	}
+	const channel = client.channels.cache.get(packProgress[results[2].pack][results[2].edition]);
+	// channel doesn't exist or can't be fetched, return early
+	if (!channel) return results;
 
 	// you can add different patterns depending on the channel type
 	switch (channel.type) {
