@@ -18,6 +18,7 @@ export interface MissingOptions {
 	version: string;
 	total?: number;
 }
+
 export type MissingResult = [Buffer, string[], MissingOptions, Buffer?];
 
 export const computeAll = async (
@@ -133,7 +134,7 @@ export const compute = async (
 	}
 
 	const versions: string[] = (
-		await axios.get(`${client.tokens.apiUrl}settings/versions.${edition}`)
+		await axios.get(`${client.tokens.apiUrl}textures/versions/${edition}`)
 	).data;
 	// latest version if versions doesn't include version (unexisting/unsupported)
 	if (!versions.includes(version)) version = versions[0];

@@ -158,7 +158,7 @@ export const command: SlashCommand = {
 				}
 
 				resultEmbed.addFields({
-					name: `${formatName(response[2].pack)[0]} - ${response[2].edition} - ${
+					name: `${formatName(response[2].pack)[0]} - ${
 						response[2].version
 					}`,
 					value: `${response[2].completion}% complete\n> ${response[1].length} ${
