@@ -11,11 +11,12 @@ export interface Pack {
 	time_to_council?: number; // not used if council disabled
 	contributor_role?: string;
 	github: {
-		[edition: string]: { // java and bedrock
+		// java and bedrock
+		[edition: string]: {
 			repo: string;
 			org: string;
-		}
-	}
+		};
+	};
 }
 
 // just the channels

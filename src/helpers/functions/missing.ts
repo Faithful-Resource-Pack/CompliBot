@@ -3,7 +3,7 @@ import { existsSync, readdirSync, statSync } from "fs";
 import { mkdir } from "fs/promises";
 import formatName from "@utility/formatName";
 import { Client } from "@client";
-import { ChannelType, VoiceChannel } from "discord.js";
+import { ChannelType } from "discord.js";
 import { join, normalize } from "path";
 
 import os from "os";
@@ -30,9 +30,9 @@ export const computeAll = async (
 	const editions: string[] = (await axios.get(`${client.tokens.apiUrl}textures/editions`)).data;
 
 	return Promise.all(
-		editions.map(async (edition: string) => {
-			return await compute(client, pack, edition, version, callback);
-		}),
+		editions.map(
+			async (edition: string) => await compute(client, pack, edition, version, callback),
+		),
 	);
 };
 
@@ -45,9 +45,9 @@ export const computeAndUpdateAll = async (
 	const editions: string[] = (await axios.get(`${client.tokens.apiUrl}textures/editions`)).data;
 
 	return Promise.all(
-		editions.map(async (edition: string) => {
-			return await computeAndUpdate(client, pack, edition, version, callback);
-		}),
+		editions.map(
+			async (edition: string) => await computeAndUpdate(client, pack, edition, version, callback),
+		),
 	);
 };
 
@@ -77,7 +77,7 @@ export const computeAndUpdate = async (
 			if (channel.name.match(pattern)?.[0] == results[2].completion.toString()) break;
 
 			const updatedName = channel.name.replace(pattern, results[2].completion.toString());
-			await (channel as VoiceChannel).setName(updatedName);
+			channel.setName(updatedName).catch(console.error);
 			break;
 	}
 
@@ -114,16 +114,14 @@ export const compute = async (
 
 	// CLONE REPO IF NOT ALREADY CLONED
 	if (!existsSync(tmpDirPathDefault)) {
-		await callback(`Downloading default ${edition} pack...`).catch((err: any) =>
-			Promise.reject(err),
-		);
+		await callback(`Downloading default ${edition} pack...`).catch(Promise.reject);
 		mkdir(tmpDirPathDefault);
 		await exec(`git clone ${repoDefault} .`, { cwd: tmpDirPathDefault });
 	}
 
 	if (!existsSync(tmpDirPathRequest)) {
 		await callback(`Downloading \`${formatName(pack)[0]}\` (${edition}) pack...`).catch(
-			(err: any) => Promise.reject(err),
+			Promise.reject,
 		);
 		mkdir(tmpDirPathRequest);
 		await exec(`git clone ${repoRequest} .`, { cwd: tmpDirPathRequest });
@@ -135,7 +133,7 @@ export const compute = async (
 	// latest version if versions doesn't include version (unexisting/unsupported)
 	if (!versions.includes(version)) version = versions[0];
 	await callback(`Updating packs with latest version of \`${version}\` known...`).catch(
-		(err: any) => Promise.reject(err),
+		Promise.reject,
 	);
 
 	// for some reason specifying the steps in a variable and loading it here breaks?
@@ -146,9 +144,9 @@ export const compute = async (
 		series(["git stash", "git remote update", "git fetch", `git checkout ${version}`, `git pull`], {
 			cwd: tmpDirPathRequest,
 		}),
-	]).catch((err) => Promise.reject(err));
+	]).catch(Promise.reject);
 
-	await callback("Searching for differences...").catch((err: any) => Promise.reject(err));
+	await callback("Searching for differences...").catch(Promise.reject);
 
 	const editionFilter = blacklistedTextures[edition].map(normalize);
 
@@ -197,16 +195,13 @@ export const getAllFilesFromDir = (dir: string, filter: string[] = []): string[]
 		file = normalize(join(dir, file));
 		const stat = statSync(file);
 
-		if (!file.includes(".git")) {
-			if (stat.isDirectory()) fileList.push(...getAllFilesFromDir(file, filter));
-			else {
-				if (
-					(file.endsWith(".png") || file.endsWith(".tga")) &&
-					!filter.some((i) => file.includes(i))
-				)
-					fileList.push(file);
-			}
-		}
+		if (file.includes(".git")) return;
+		if (stat.isDirectory()) return fileList.push(...getAllFilesFromDir(file, filter));
+		if (
+			blacklistedTextures.allowed_extensions.some((ex) => file.endsWith(`.${ex}`)) &&
+			!filter.some((i) => file.includes(i))
+		)
+			fileList.push(file);
 	});
 
 	return fileList;

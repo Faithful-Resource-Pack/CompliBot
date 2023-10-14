@@ -1,4 +1,5 @@
 {
+    "allowed_extensions": ["png", "tga", "mcmeta"],
     "java": [
         "environment/end_sky",
         "gui/title/mojangstudios",
