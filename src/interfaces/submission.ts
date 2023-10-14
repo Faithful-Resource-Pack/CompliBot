@@ -10,6 +10,12 @@ export interface Pack {
 	time_to_results: number;
 	time_to_council?: number; // not used if council disabled
 	contributor_role?: string;
+	github: {
+		[edition: string]: { // java and bedrock
+			repo: string;
+			org: string;
+		}
+	}
 }
 
 // just the channels
