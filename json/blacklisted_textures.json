@@ -107,7 +107,15 @@
         "assets/fabric/",
         "assets/forge/",
         "assets/fml/",
-        "assets/modmenu/"
+        "assets/modmenu/",
+        "entity/villager/type/desert.png.mcmeta",
+        "entity/villager/type/snow.png.mcmeta",
+        "gui/sprites/container/bundle/background.png.mcmeta",
+        "gui/sprites/icon/trial_available.png.mcmeta",
+        "gui/sprites/widget/slider_handle.png.mcmeta",
+        "gui/sprites/widget/slider_handle_highlighted.png.mcmeta",
+        "gui/sprites/widget/text_field.png.mcmeta",
+        "gui/sprites/widget/text_field_highlighted.png.mcmeta"
     ],
     "bedrock": [
         "spit",
