@@ -115,15 +115,13 @@ export const compute = async (
 
 	// CLONE REPO IF NOT ALREADY CLONED
 	if (!existsSync(tmpDirPathDefault)) {
-		await callback(`Downloading default ${edition} pack...`).catch(Promise.reject);
+		await callback(`Downloading default ${edition} pack...`);
 		mkdir(tmpDirPathDefault);
 		await exec(`git clone ${repoDefault} .`, { cwd: tmpDirPathDefault });
 	}
 
 	if (!existsSync(tmpDirPathRequest)) {
-		await callback(`Downloading \`${formatName(pack)[0]}\` (${edition}) pack...`).catch(
-			Promise.reject,
-		);
+		await callback(`Downloading \`${formatName(pack)[0]}\` (${edition}) pack...`);
 		mkdir(tmpDirPathRequest);
 		await exec(`git clone ${repoRequest} .`, { cwd: tmpDirPathRequest });
 	}
@@ -133,9 +131,7 @@ export const compute = async (
 	).data;
 	// latest version if versions doesn't include version (unexisting/unsupported)
 	if (!versions.includes(version)) version = versions[0];
-	await callback(`Updating packs with latest version of \`${version}\` known...`).catch(
-		Promise.reject,
-	);
+	await callback(`Updating packs with latest version of \`${version}\` known...`);
 
 	// for some reason specifying the steps in a variable and loading it here breaks?
 	await Promise.all([
@@ -145,9 +141,9 @@ export const compute = async (
 		series(["git stash", "git remote update", "git fetch", `git checkout ${version}`, `git pull`], {
 			cwd: tmpDirPathRequest,
 		}),
-	]).catch(Promise.reject);
+	]);
 
-	await callback("Searching for differences...").catch(Promise.reject);
+	await callback("Searching for differences...");
 
 	const editionFilter = blacklistedTextures[edition].map(normalize);
 
