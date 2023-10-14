@@ -62,7 +62,7 @@ export const computeAndUpdate = async (
 	callback: Function,
 ): Promise<MissingResult> => {
 	const results = await compute(client, pack, edition, version, callback);
-	if (!client) return results;
+	/* if (!client) return results;
 	const packProgress = (await axios.get(`${client.tokens.apiUrl}settings/channels.pack_progress`))
 		.data;
 
@@ -80,6 +80,7 @@ export const computeAndUpdate = async (
 			channel.setName(updatedName).catch(console.error);
 			break;
 	}
+	*/
 
 	return results;
 };
