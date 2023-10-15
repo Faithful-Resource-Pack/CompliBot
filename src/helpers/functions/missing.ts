@@ -66,8 +66,7 @@ export const computeAndUpdate = async (
 
 	console.log("compute results fetched");
 
-	const packProgress = (await axios.get(`${client.tokens.apiUrl}settings/channels.pack_progress`))
-		.data;
+	const packProgress = await axios.get(`${client.tokens.apiUrl}settings/channels.pack_progress`, { proxy: false });
 
 	console.log(`pack progress fetched successfully: ${JSON.stringify(packProgress)}`);
 
