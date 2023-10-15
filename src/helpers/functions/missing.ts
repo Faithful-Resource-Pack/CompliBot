@@ -66,6 +66,8 @@ export const computeAndUpdate = async (
 
 	console.log("compute results fetched");
 
+	console.log(`url to use by axios: ${client.tokens.apiUrl}settings/channels.pack_progress}`)
+
 	const packProgress = (
 		await axios.get(`${client.tokens.apiUrl}settings/channels.pack_progress`, { proxy: false })
 	).data;
@@ -83,16 +85,8 @@ export const computeAndUpdate = async (
 		case ChannelType.GuildVoice:
 			const pattern = /[.\d+]+(?!.*[.\d+])/;
 			if (channel.name.match(pattern)?.[0] == results[2].completion.toString()) break;
-
-			console.log(`channel hasn't been updated yet: ${channel.name.match(pattern)?.[0]}`);
-
 			const updatedName = channel.name.replace(pattern, results[2].completion.toString());
-
-			console.log(`name has been changed to ${updatedName}`);
-
 			channel.setName(updatedName).catch(console.error);
-
-			console.log("channel name set successfully");
 			break;
 	}
 
