@@ -64,21 +64,16 @@ export const computeAndUpdate = async (
 	const results = await compute(client, pack, edition, version, callback);
 	if (!client) return results;
 
-	console.log("compute results fetched");
+	const url = `${client.tokens.apiUrl}settings/channels.pack_progress`;
+	console.log(url);
 
-	console.log(`url to use by axios: ${client.tokens.apiUrl}settings/channels.pack_progress}`)
-
-	const packProgress = (
-		await axios.get(`${client.tokens.apiUrl}settings/channels.pack_progress`, { proxy: false })
-	).data;
+	const packProgress = (await axios.get(url)).data;
 
 	console.log(`pack progress fetched successfully: ${JSON.stringify(packProgress)}`);
 
 	const channel = client.channels.cache.get(packProgress[results[2].pack][results[2].edition]);
 	// channel doesn't exist or can't be fetched, return early
 	if (!channel) return results;
-
-	console.log(`channel fetched successfully: ${(channel as VoiceChannel).name}`);
 
 	// you can add different patterns depending on the channel type
 	switch (channel.type) {
