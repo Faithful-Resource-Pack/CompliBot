@@ -4,18 +4,18 @@ import { ChatInputCommandInteraction, EmbedBuilder, Message } from "@client";
 import getImage, { imageNotFound } from "@helpers/getImage";
 import { animateToAttachment, MCMETA } from "@helpers/images/animate";
 import mcmetaList from "@json/mcmetas.json";
-import { loadImage } from "@napi-rs/canvas";
 import { magnify } from "@helpers/images/magnify";
 import { colors } from "@utility/colors";
+import axios from "axios";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
 		.setName("animate")
-		.setDescription("Animate a vertical tilesheet.")
+		.setDescription("Animate a vertical tilesheet with standard MCMETA rules.")
 		.addStringOption((option) =>
 			option
-				.setName("style")
-				.setDescription("The style of animation to use (Default is None)")
+				.setName("preset-mcmeta")
+				.setDescription("Curated MCMETA presets for the most common rules.")
 				.addChoices(
 					{ name: "Prismarine", value: "prismarine" },
 					{ name: "Fire", value: "fire" },
@@ -26,13 +26,70 @@ export const command: SlashCommand = {
 				)
 				.setRequired(false),
 		)
+		.addStringOption((option) =>
+			option
+				.setName("custom-mcmeta-text")
+				.setDescription("Write your own MCMETA rules here (JSON-like format).")
+				.setRequired(false),
+		)
+		.addAttachmentOption((option) =>
+			option.setName("custom-mcmeta-file").setDescription("Add your own MCMETA file here."),
+		)
 		.addAttachmentOption((o) =>
 			o.setName("image").setDescription("The tilesheet to animate").setRequired(false),
 		),
 	async execute(interaction: ChatInputCommandInteraction) {
 		await interaction.deferReply();
 
-		const style = interaction.options.getString("style", false) ?? "none";
+		// fallback if user hasn't provided an mcmeta
+		const preset = interaction.options.getString("preset-mcmeta", false) ?? "none";
+		let mcmetaText = interaction.options.getString("custom-mcmeta-text", false);
+		const mcmetaFile = interaction.options.getAttachment("custom-mcmeta-file", false);
+
+		let mcmeta: MCMETA;
+		if (mcmetaText) {
+			// add surrounding braces if needed to parse properly
+			if (!mcmetaText.endsWith("}")) mcmetaText += "}";
+			if (!mcmetaText.startsWith("{")) mcmetaText = "{" + mcmetaText;
+
+			let parsed: any;
+			try {
+				parsed = JSON.parse(mcmetaText);
+			} catch {
+				await interaction.deleteReply();
+				return await interaction.followUp({
+					embeds: [
+						new EmbedBuilder()
+							.setTitle(interaction.strings().command.animate.invalid_text.title)
+							.setDescription(
+								interaction.strings().command.animate.invalid_text.description,
+							)
+							.setColor(colors.red),
+					],
+					ephemeral: true,
+				});
+			}
+
+			if (parsed.animation) mcmeta = parsed;
+			else mcmeta = { animation: parsed };
+		} else if (mcmetaFile) {
+			mcmeta = (await axios.get(mcmetaFile.url)).data;
+
+			// invalid mcmeta file given (filters basically everything out)
+			if (!mcmeta.animation) {
+				await interaction.deleteReply();
+				return await interaction.followUp({
+					embeds: [
+						new EmbedBuilder()
+							.setTitle(interaction.strings().command.animate.invalid_file.title)
+							.setDescription(interaction.strings().command.animate.invalid_file.description)
+							.setColor(colors.red),
+					],
+					ephemeral: true,
+				});
+			}
+		} else mcmeta = mcmetaList[preset];
+
 		const image = await getImage(interaction);
 		if (!image) return imageNotFound(interaction);
 
@@ -51,8 +108,7 @@ export const command: SlashCommand = {
 			});
 		}
 
-		const mcmeta: MCMETA = mcmetaList[style];
-		const file = await animateToAttachment(magnified, mcmeta, `${style}.gif`);
+		const file = await animateToAttachment(magnified, mcmeta);
 		await interaction
 			.editReply({ files: [file] })
 			.then((message: Message) => message.deleteButton());
