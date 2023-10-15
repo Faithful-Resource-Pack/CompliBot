@@ -1,5 +1,15 @@
 {
     "command": {
+        "animate": {
+            "invalid_text": {
+                "title": "Your MCMETA rules are invalid!",
+                "description": "Common errors include not double-quoting property key names or misplacing a character."
+            },
+            "invalid_file": {
+                "title": "Invalid MCMETA file!",
+                "description": "No `animation` property was found on the file. Please check that you uploaded the correct file."
+            }
+        },
         "botban": {
             "view": {
                 "unbannable": "You cannot audit this user's entry in the bot ban list!"
