@@ -66,7 +66,9 @@ export const computeAndUpdate = async (
 
 	console.log("compute results fetched");
 
-	const packProgress = await axios.get(`${client.tokens.apiUrl}settings/channels.pack_progress`, { proxy: false });
+	const packProgress = (
+		await axios.get(`${client.tokens.apiUrl}settings/channels.pack_progress`, { proxy: false })
+	).data;
 
 	console.log(`pack progress fetched successfully: ${JSON.stringify(packProgress)}`);
 
@@ -82,7 +84,7 @@ export const computeAndUpdate = async (
 			const pattern = /[.\d+]+(?!.*[.\d+])/;
 			if (channel.name.match(pattern)?.[0] == results[2].completion.toString()) break;
 
-			console.log(`channel hasn't been updated yet: ${channel.name.match(pattern)?.[0]}`)
+			console.log(`channel hasn't been updated yet: ${channel.name.match(pattern)?.[0]}`);
 
 			const updatedName = channel.name.replace(pattern, results[2].completion.toString());
 
