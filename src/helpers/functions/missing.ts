@@ -3,7 +3,7 @@ import { existsSync, readdirSync, statSync } from "fs";
 import { mkdir } from "fs/promises";
 import formatName from "@utility/formatName";
 import { Client } from "@client";
-import { ChannelType } from "discord.js";
+import { ChannelType, VoiceChannel } from "discord.js";
 import { join, normalize } from "path";
 
 import os from "os";
@@ -62,13 +62,20 @@ export const computeAndUpdate = async (
 	callback: Function,
 ): Promise<MissingResult> => {
 	const results = await compute(client, pack, edition, version, callback);
-	/* if (!client) return results;
+	if (!client) return results;
+
+	console.log("compute results fetched");
+
 	const packProgress = (await axios.get(`${client.tokens.apiUrl}settings/channels.pack_progress`))
 		.data;
+
+	console.log(`pack progress fetched successfully: ${JSON.stringify(packProgress)}`);
 
 	const channel = client.channels.cache.get(packProgress[results[2].pack][results[2].edition]);
 	// channel doesn't exist or can't be fetched, return early
 	if (!channel) return results;
+
+	console.log(`channel fetched successfully: ${(channel as VoiceChannel).name}`);
 
 	// you can add different patterns depending on the channel type
 	switch (channel.type) {
@@ -76,11 +83,17 @@ export const computeAndUpdate = async (
 			const pattern = /[.\d+]+(?!.*[.\d+])/;
 			if (channel.name.match(pattern)?.[0] == results[2].completion.toString()) break;
 
+			console.log(`channel hasn't been updated yet: ${channel.name.match(pattern)?.[0]}`)
+
 			const updatedName = channel.name.replace(pattern, results[2].completion.toString());
+
+			console.log(`name has been changed to ${updatedName}`);
+
 			channel.setName(updatedName).catch(console.error);
+
+			console.log("channel name set successfully");
 			break;
 	}
-	*/
 
 	return results;
 };
