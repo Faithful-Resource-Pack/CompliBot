@@ -5,11 +5,10 @@ import {
 	StringSelectMenuInteraction,
 	Message,
 } from "@client";
-import { Canvas, createCanvas, loadImage } from "@napi-rs/canvas";
+import { createCanvas, loadImage } from "@napi-rs/canvas";
 import { AttachmentBuilder } from "discord.js";
 import ColorManager from "@images/colors";
 import { ImageSource } from "@helpers/getImage";
-import { colors } from "@utility/colors";
 import warnUser from "@helpers/warnUser";
 
 const COOLORS_URL = "https://coolors.co/";
@@ -44,12 +43,12 @@ export async function palette(origin: ImageSource) {
 	const imageToDraw = await loadImage(origin);
 	// 1048576px is the same size as a magnified image
 	if (imageToDraw.width * imageToDraw.height > 1048576) return { image: null, embed: null };
-	const canvas: Canvas = createCanvas(imageToDraw.width, imageToDraw.height);
-	const context = canvas.getContext("2d");
-	context.drawImage(imageToDraw, 0, 0);
+	const canvas = createCanvas(imageToDraw.width, imageToDraw.height);
+	const ctx = canvas.getContext("2d");
+	ctx.drawImage(imageToDraw, 0, 0);
 
 	const allColors: AllColors = {};
-	const imageData = context.getImageData(0, 0, imageToDraw.width, imageToDraw.height).data;
+	const imageData = ctx.getImageData(0, 0, imageToDraw.width, imageToDraw.height).data;
 
 	for (let x = 0; x < imageToDraw.width; ++x) {
 		for (let y = 0; y < imageToDraw.height; ++y) {
@@ -63,7 +62,7 @@ export async function palette(origin: ImageSource) {
 			if (!a) continue;
 			let hex = new ColorManager({ rgb: { r, g, b } }).toHEX().value;
 
-			if (!(hex in allColors)) allColors[hex] = { hex: hex, opacity: [], rgb: [r, g, b], count: 0 };
+			if (!(hex in allColors)) allColors[hex] = { hex, opacity: [], rgb: [r, g, b], count: 0 };
 
 			++allColors[hex].count;
 			allColors[hex].opacity.push(a);
@@ -166,12 +165,12 @@ export async function palette(origin: ImageSource) {
 		});
 
 	const colorCanvas = createCanvas(bandWidth * allColorsSorted.length, GRADIENT_HEIGHT);
-	const ctx = colorCanvas.getContext("2d");
+	const colorCtx = colorCanvas.getContext("2d");
 
 	allColorsSorted.forEach((color, index) => {
-		ctx.fillStyle = `#${color.hex}`;
-		ctx.globalAlpha = color.opacity.reduce((acc, val, i) => (acc * i + val) / (i + 1)); // average alpha
-		ctx.fillRect(bandWidth * index, 0, bandWidth, GRADIENT_HEIGHT);
+		colorCtx.fillStyle = `#${color.hex}`;
+		colorCtx.globalAlpha = color.opacity.reduce((acc, val, i) => (acc * i + val) / (i + 1)); // average alpha
+		colorCtx.fillRect(bandWidth * index, 0, bandWidth, GRADIENT_HEIGHT);
 	});
 
 	return { image: colorCanvas.toBuffer("image/png"), embed };

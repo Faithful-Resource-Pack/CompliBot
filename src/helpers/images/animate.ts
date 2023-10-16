@@ -59,22 +59,22 @@ export async function animate(origin: ImageSource, mcmeta: MCMETA): Promise<Buff
 
 	// initialize gif encoder and final canvas
 	const canvas = createCanvas(mcmeta.animation.width, mcmeta.animation.height);
-	const context = canvas.getContext("2d");
-	context.imageSmoothingEnabled = false;
+	const ctx = canvas.getContext("2d");
+	ctx.imageSmoothingEnabled = false;
 	const encoder = new GIFEncoder(mcmeta.animation.width, mcmeta.animation.height);
 	encoder.start();
 	encoder.setTransparent(true);
-	context.globalCompositeOperation = "copy";
+	ctx.globalCompositeOperation = "copy";
 
 	if (mcmeta.animation.interpolate) {
 		for (let i = 0; i < frames.length; ++i) {
 			for (let y = 1; y <= frametime; ++y) {
-				context.clearRect(0, 0, mcmeta.animation.width, mcmeta.animation.height);
-				context.globalAlpha = 1;
-				context.globalCompositeOperation = "copy";
+				ctx.clearRect(0, 0, mcmeta.animation.width, mcmeta.animation.height);
+				ctx.globalAlpha = 1;
+				ctx.globalCompositeOperation = "copy";
 
 				// frame i (always 100% opacity)
-				context.drawImage(
+				ctx.drawImage(
 					baseCanvas, // image
 					0,
 					mcmeta.animation.height * frames[i].index, // sx, sy
@@ -86,11 +86,11 @@ export async function animate(origin: ImageSource, mcmeta: MCMETA): Promise<Buff
 					mcmeta.animation.height, // dWidth, dHeight
 				);
 
-				context.globalAlpha = ((100 / frametime) * y) / 100;
-				context.globalCompositeOperation = "source-atop";
+				ctx.globalAlpha = ((100 / frametime) * y) / 100;
+				ctx.globalCompositeOperation = "source-atop";
 
 				// frame i + 1 (transition)
-				context.drawImage(
+				ctx.drawImage(
 					baseCanvas, // image
 					0,
 					mcmeta.animation.height * frames[(i + 1) % frames.length].index, // sx, sy
@@ -101,16 +101,16 @@ export async function animate(origin: ImageSource, mcmeta: MCMETA): Promise<Buff
 					mcmeta.animation.width,
 					mcmeta.animation.height, // dWidth, dHeight
 				);
-				encoder.addFrame(context);
+				encoder.addFrame(ctx);
 			}
 		}
 	} else {
 		for (let i = 0; i < frames.length; ++i) {
-			context.clearRect(0, 0, mcmeta.animation.width, mcmeta.animation.height);
-			context.globalAlpha = 1;
+			ctx.clearRect(0, 0, mcmeta.animation.width, mcmeta.animation.height);
+			ctx.globalAlpha = 1;
 
 			// see: https://mdn.dev/archives/media/attachments/2012/07/09/225/46ffb06174df7c077c89ff3055e6e524/Canvas_drawimage.jpg
-			context.drawImage(
+			ctx.drawImage(
 				baseCanvas, // image
 				0,
 				mcmeta.animation.height * frames[i].index, // sx, sy
@@ -123,7 +123,7 @@ export async function animate(origin: ImageSource, mcmeta: MCMETA): Promise<Buff
 			);
 
 			encoder.setDelay(50 * frames[i].duration);
-			encoder.addFrame(context);
+			encoder.addFrame(ctx);
 		}
 	}
 

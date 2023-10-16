@@ -63,9 +63,9 @@ export async function tile(origin: ImageSource, options: TileOptions = {}): Prom
 
 	/**
 	 * Follows this pattern:
-	 *  x x x	     x x x      . x .     . x .     . . .
-	 *  x x x  ->    x . x  ->  x x x  -> . x .  OR x x x
-	 *  x x x	     x x x      . x .     . x .     . . .
+	 *  x x x	   x x x      . x .      . x .      . . .
+	 *  x x x  ->  x . x  ->  x x x  ->  . x .  OR  x x x
+	 *  x x x	   x x x      . x .      . x .      . . .
 	 */
 
 	if (options?.random == "rotation") {

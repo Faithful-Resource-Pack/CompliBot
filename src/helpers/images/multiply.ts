@@ -50,17 +50,17 @@ export const mcColorsOptions: { name: string; value: string }[] = Object.keys(mc
 export async function multiply(origin: ImageSource, color: string) {
 	const imageToDraw = await loadImage(origin);
 	const canvas = createCanvas(imageToDraw.width, imageToDraw.height);
-	const context = canvas.getContext("2d");
+	const ctx = canvas.getContext("2d");
 
-	context.imageSmoothingEnabled = false;
+	ctx.imageSmoothingEnabled = false;
 
-	context.drawImage(imageToDraw, 0, 0, imageToDraw.width, imageToDraw.height);
-	context.globalCompositeOperation = "multiply";
+	ctx.drawImage(imageToDraw, 0, 0, imageToDraw.width, imageToDraw.height);
+	ctx.globalCompositeOperation = "multiply";
 
-	context.fillStyle = color;
-	context.fillRect(0, 0, imageToDraw.width, imageToDraw.height);
+	ctx.fillStyle = color;
+	ctx.fillRect(0, 0, imageToDraw.width, imageToDraw.height);
 
-	const data = context.getImageData(0, 0, imageToDraw.width, imageToDraw.height);
+	const data = ctx.getImageData(0, 0, imageToDraw.width, imageToDraw.height);
 
 	for (let i = 0; i < data.data.length; i += 4) {
 		const r = data.data[i];
@@ -73,7 +73,7 @@ export async function multiply(origin: ImageSource, color: string) {
 		}
 	}
 
-	context.putImageData(data, 0, 0);
+	ctx.putImageData(data, 0, 0);
 
 	return canvas.toBuffer("image/png");
 }
