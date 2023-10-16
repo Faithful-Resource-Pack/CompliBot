@@ -11,15 +11,8 @@
 
 ---
 
-## Online on:
-
-- [Faithful](https://discord.gg/sN9YRQbBv7)
-- [Classic Faithful](https://discord.gg/KSEhCVtg4J)
-
----
-
 ## Found an issue?
-Please submit it using our [bug tracker](https://github.com/Faithful-Resource-Pack/CompliBot/issues/new/choose) or by using the `/feedback` form on our bot. Both will create a GitHub issue so either option is valid.
+Please submit it using our [bug tracker](https://github.com/Faithful-Resource-Pack/CompliBot/issues/new/choose) or by using the `/feedback` form on our bot.
 
 ---
 
