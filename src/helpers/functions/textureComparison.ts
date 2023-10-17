@@ -10,7 +10,6 @@ import {
 	Message,
 } from "@client";
 import { addPathsToEmbed } from "@functions/getTexture";
-import getDimensions from "@images/getDimensions";
 import { Texture } from "@interfaces";
 import axios from "axios";
 import { ActionRowBuilder, ButtonBuilder } from "discord.js";
@@ -60,8 +59,8 @@ export default async function textureComparison(
 
 	const defaultURL = `${client.tokens.apiUrl}textures/${id}/url/default/latest`;
 
-	const dimension = await getDimensions(defaultURL);
-	if (dimension.width * dimension.height * displayed.flat().length > 262144) return null;
+	const baseImage = await loadImage(defaultURL);
+	if (baseImage.width * baseImage.height * displayed.flat().length > 262144) return null;
 
 	// get texture urls into 2d array using the parsed display
 	const loadedImages = [];

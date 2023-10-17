@@ -2,17 +2,15 @@ import { EmbedBuilder } from "@client";
 import TokenJson from "@json/tokens.json";
 import { Contributor, Tokens } from "@interfaces";
 import axios from "axios";
-import getDimensions from "@images/getDimensions";
 import { APIEmbedField, AttachmentBuilder, Guild } from "discord.js";
 import { magnify, magnifyToAttachment } from "@images/magnify";
-import { ISizeCalculationResult } from "image-size/dist/types/interface";
 import { colors } from "@utility/colors";
 import { Texture, Contribution } from "@interfaces";
 import { animateToAttachment } from "@images/animate";
 import minecraftSorter from "@utility/minecraftSorter";
 import formatName from "@utility/formatName";
 import { textureButtons } from "@utility/buttons";
-import { loadImage } from "@napi-rs/canvas";
+import { Image, loadImage } from "@napi-rs/canvas";
 
 /**
  * Create a full texture embed with provided information
@@ -67,10 +65,9 @@ export const getTexture = async (options: {
 	}
 
 	// test if url isn't a 404
-	let dimension: ISizeCalculationResult;
+	let image: Image;
 	try {
-		// getDimensions also validates a url
-		dimension = await getDimensions(textureURL);
+		image = await loadImage(textureURL);
 	} catch (err) {
 		const errorEmbed = new EmbedBuilder()
 			.setTitle("Image not found!")
@@ -82,7 +79,7 @@ export const getTexture = async (options: {
 
 	embed
 		.setURL(`https://webapp.faithfulpack.net/#/gallery/java/32x/latest/all/?show=${texture.id}`)
-		.addFields({ name: "Resolution", value: `${dimension.width}×${dimension.height}` })
+		.addFields({ name: "Resolution", value: `${image.width}×${image.height}` })
 		.setThumbnail(textureURL)
 		.setImage(`attachment://${animated ? "animated.gif" : "magnified.png"}`);
 
