@@ -64,12 +64,13 @@ export const computeAndUpdate = async (
 	const results = await compute(client, pack, edition, version, callback);
 	if (!client) return results;
 
-	const url = `${client.tokens.apiUrl}settings/channels.pack_progress`;
-	console.log(url);
-
-	const packProgress = (await axios.get(url, { proxy: false })).data;
-
-	console.log(`pack progress fetched successfully: ${JSON.stringify(packProgress)}`);
+	let packProgress: any;
+	try {
+		/** @todo fix "Error: socket hang up" from this line of code */
+		packProgress = (await axios.get(`${client.tokens.apiUrl}settings/channels.pack_progress`)).data;
+	} catch {
+		return results;
+	}
 
 	const channel = client.channels.cache.get(packProgress[results[2].pack][results[2].edition]);
 	// channel doesn't exist or can't be fetched, return early
