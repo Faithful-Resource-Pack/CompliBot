@@ -61,9 +61,7 @@ export const command: SlashCommand = {
 					embeds: [
 						new EmbedBuilder()
 							.setTitle(interaction.strings().command.animate.invalid_text.title)
-							.setDescription(
-								interaction.strings().command.animate.invalid_text.description,
-							)
+							.setDescription(interaction.strings().command.animate.invalid_text.description)
 							.setColor(colors.red),
 					],
 					ephemeral: true,
