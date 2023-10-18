@@ -116,7 +116,7 @@
     },
     {
         "question": "How can I submit my tweak?",
-        "answer": "For the time being, Tweaks can be submitted as Add-ons, using the method mentioned above. A Vanilla Tweaks-styled customiser is planned for the future, but its development is currently on pause due to us having no developer for it.",
+        "answer": "For the time being, tweaks can be submitted as add-ons using the standard add-on creation process. A Vanilla Tweaks-styled customiser is planned for the future, but we currently have no developer for it.",
         "keywords": ["tweak", "tweaks"]
     },
     {
@@ -131,7 +131,7 @@
     },
     {
         "question": "How do I get the translator role?",
-        "answer": "Visit [our Crowdin](https://translate.faithfulpack.net) and see if you can help translate our Discord bot or webapp. However, please don't translate anything from the current site, since it's currently getting rewritten and your hard work may get replaced later otherwise. Once your translations get accepted, ping an online Manager to add the role.",
+        "answer": "Visit [our Crowdin](https://translate.faithfulpack.net) and see if you can help translate our Discord Bot or Web App. However, please don't translate anything from the current site, since it's currently getting rewritten and your hard work may get replaced later otherwise. Once your translations get accepted, ping an online Manager to add the role.",
         "keywords": ["crowdin", "translator", "translation"]
     },
     {
