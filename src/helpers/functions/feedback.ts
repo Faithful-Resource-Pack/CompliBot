@@ -24,7 +24,7 @@ export default async function sendFeedback(
 			owner: "Faithful-Resource-Pack",
 			repo: "CompliBot",
 			title,
-			body: `*Issue originally created by \`${interaction.user.username}\` on Discord*\n\n${description}`,
+			body: `*Issue originally created by \`${interaction.user.displayName}\` on Discord*\n\n${description}`,
 		});
 	} catch (err) {
 		interaction.followUp({

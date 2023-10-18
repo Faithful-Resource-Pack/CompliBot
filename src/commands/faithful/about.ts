@@ -40,7 +40,7 @@ export const command: SlashCommand = {
 			).data;
 		} catch {
 			const finalEmbed = new EmbedBuilder()
-				.setTitle(`${user.username} has no contributions!`)
+				.setTitle(`${user.displayName} has no contributions!`)
 				.setDescription(
 					"No database profile was found for this user. If this data looks incorrect, register at https://webapp.faithfulpack.net.",
 				);
@@ -101,7 +101,7 @@ export const command: SlashCommand = {
 
 		const finalEmbed = new EmbedBuilder()
 			.setTitle(
-				`${user.username} has ${finalData.length} ${
+				`${user.displayName} has ${finalData.length} ${
 					finalData.length == 1 ? "contribution" : "contributions"
 				}!`,
 			)

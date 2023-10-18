@@ -46,7 +46,7 @@ export const command: SlashCommand = {
 		if (!interaction.hasPermission("dev")) return;
 
 		const activity = interaction.options.getString("activity", true);
-		const presence = interaction.options.getString("presence", true);
+		const presence = interaction.options.getString("presence", true) as PresenceStatusData;
 		const message = interaction.options.getString("message", true);
 
 		interaction.client.user.setPresence({
@@ -56,7 +56,7 @@ export const command: SlashCommand = {
 					type: ActivityType[activity],
 				},
 			],
-			status: presence as PresenceStatusData,
+			status: presence,
 		});
 
 		await interaction.reply({
