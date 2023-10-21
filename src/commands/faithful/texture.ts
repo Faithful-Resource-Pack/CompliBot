@@ -33,7 +33,7 @@ export const command: SlashCommand = {
 	async execute(interaction: ChatInputCommandInteraction) {
 		const name = interaction.options.getString("name");
 
-		// sometimes it takes too long otherwise
+		// fetching takes too long for big results
 		await interaction.deferReply();
 		const results = await parseTextureName(name, interaction);
 
@@ -48,10 +48,8 @@ export const command: SlashCommand = {
 				guild: interaction.guild,
 			});
 
-			if (!replyOptions.files) {
-				await interaction.deleteReply();
-				return interaction.followUp({ ...replyOptions, ephemeral: true });
-			}
+			// no results found
+			if (!replyOptions.files) return interaction.ephemeralReply(replyOptions);
 
 			return interaction.editReply(replyOptions).then((message: Message) => message.deleteButton());
 		}

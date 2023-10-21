@@ -8,74 +8,86 @@ import {
 } from "discord.js";
 import { readFileSync, writeFileSync } from "fs";
 import { join } from "path";
+import { colors } from "@utility/colors";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
 		.setName("botban")
-		.setDescription("Manages the ban list (devs naughty list :D).")
+		.setDescription("Manage the ban list (devs naughty list :D).")
 		.addSubcommand((view) =>
 			view
 				.setName("view")
-				.setDescription("View the ban list")
+				.setDescription("View the botban list")
 				.addStringOption((option) =>
 					option
 						.setName("format")
-						.setDescription("The format the ban list should be displayed in.")
+						.setDescription("The format the ban list should be displayed in (default is text).")
 						.setRequired(false)
 						.addChoices(
-							{ name: "Json", value: "json" },
-							{ name: "Embed", value: "emb" },
-							{ name: "Text", value: "txt" },
-							{ name: "Mentions", value: "ment" },
+							{ name: "JSON", value: "json" },
+							{ name: "Embed", value: "embed" },
+							{ name: "Text", value: "text" },
+							{ name: "Mentions", value: "mentions" },
 						),
 				),
 		)
-		.addSubcommand((audit) =>
-			audit
-				.setName("audit")
-				.setDescription("change the banlist")
+		.addSubcommand((edit) =>
+			edit
+				.setName("edit")
+				.setDescription("Change the banlist")
 				.addUserOption((option) =>
 					option
 						.setName("subject")
 						.setDescription("The user to edit the permissions of.")
 						.setRequired(true),
 				)
-				.addBooleanOption((option) =>
+				.addStringOption((option) =>
 					option
-						.setName("pardon")
-						.setDescription("Whether to undo an oopsie or not.")
-						.setRequired(false),
+						.setName("action")
+						.setDescription("What to do with this user")
+						.addChoices({ name: "Add", value: "add" }, { name: "Remove", value: "remove" })
+						.setRequired(true),
 				),
 		)
-		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+		.setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages),
 	execute: new Collection<string, SlashCommandI>()
-		.set("audit", async (interaction: ChatInputCommandInteraction) => {
-			if (!interaction.hasPermission("dev")) return;
+		.set("edit", async (interaction: ChatInputCommandInteraction) => {
+			const isAdding = interaction.options.getString("action", true) == "add";
 
 			await interaction.deferReply({ ephemeral: true });
 			const banlist = require("@json/botbans.json");
-			// const banlist = JSON.parse(banlistJSON);
-			const victimID = interaction.options.getUser("subject").id;
+			const victim = interaction.options.getUser("subject");
+			const member = await interaction.guild.members.fetch(victim.id);
+
 			if (
-				interaction.client.tokens.developers.includes(victimID) ||
-				victimID == interaction.client.user.id // self
+				interaction.client.tokens.developers.includes(victim.id) ||
+				member.permissions.has(PermissionFlagsBits.ManageMessages) ||
+				victim.id == interaction.client.user.id // self
 			)
-				return interaction.followUp(interaction.strings().command.botban.view.unbannable);
-
-			if (interaction.options.getBoolean("pardon")) {
-				banlist.ids.filter(async (v: string) => {
-					return v != victimID; // removes only the id of the victim
+				return interaction.editReply({
+					embeds: [
+						new EmbedBuilder()
+							.setTitle(interaction.strings().command.botban.unbannable.title)
+							.setDescription(interaction.strings().command.botban.unbannable.description)
+							.setColor(colors.red),
+					],
 				});
-			} else {
-				banlist.ids.push(victimID);
-			}
-			writeFileSync(join(__dirname, "../../../json/botbans.json"), JSON.stringify(banlist));
 
-			interaction.followUp({
-				content: `Bot-${
-					interaction.options.getBoolean("revoke") ? "Unbanned" : "Banned"
-				} <@${victimID}>`,
-				ephemeral: true,
+			writeFileSync(
+				join(__dirname, "../../../json/botbans.json"),
+				JSON.stringify(
+					isAdding
+						? banlist.ids.concat([victim.id])
+						: banlist.ids.filter((v: string) => v != victim.id),
+				),
+			);
+
+			interaction.editReply({
+				embeds: [
+					new EmbedBuilder().setDescription(
+						`<@${victim.id}> has been ${isAdding ? "botbanned" : "un-botbanned"}.`,
+					),
+				],
 			});
 		})
 		.set("view", async (interaction: ChatInputCommandInteraction) => {
@@ -90,27 +102,23 @@ export const command: SlashCommand = {
 
 			switch (interaction.options.getString("format")) {
 				case "json":
-					return interaction.followUp({
+					return interaction.editReply({
 						files: [new AttachmentBuilder(buffer, { name: "bans.json" })],
-						ephemeral: true,
 					});
-				case "emb":
+				case "embed":
 					const emb = new EmbedBuilder()
 						.setTitle("Botbanned IDs:")
 						.setDescription(JSON.parse(buffer.toString("utf-8"))["ids"].join("\n"));
-					return interaction.followUp({ embeds: [emb], ephemeral: true });
-				case "ment":
+					return interaction.editReply({ embeds: [emb] });
+				case "mentions":
 					const pingEmb = new EmbedBuilder()
 						.setTitle("Botbanned Users:")
 						.setDescription("<@" + JSON.parse(buffer.toString("utf-8"))["ids"].join(">\n<@") + ">");
-					return interaction.followUp({ embeds: [pingEmb], ephemeral: true });
-				case "txt":
-				default:
-					interaction.followUp({
+					return interaction.editReply({ embeds: [pingEmb] });
+				default: // also text
+					interaction.editReply({
 						files: [new AttachmentBuilder(txtBuff, { name: "bans.txt" })],
-						ephemeral: true,
 					});
-					break;
 			}
 		}),
 };

@@ -17,16 +17,13 @@ export default async function parseTextureName(
 	name = name.toLowerCase().trim().replace(".png", "").replace("#", "").replace(/ /g, "_");
 
 	if (name.length < 3 && isNaN(Number(name))) {
-		// it's already deferred so we delete the non-ephemeral message
-		await interaction.deleteReply();
-		interaction.followUp({
+		await interaction.ephemeralReply({
 			embeds: [
 				new EmbedBuilder()
 					.setTitle("Action failed!")
 					.setDescription("You need at least three characters to start a texture search!")
 					.setColor(colors.red),
 			],
-			ephemeral: true,
 		});
 		return;
 	}
@@ -42,8 +39,7 @@ export default async function parseTextureName(
 	const out = Array.isArray(results) ? results : [results];
 
 	if (!out.length) {
-		await interaction.deleteReply();
-		await interaction.followUp({
+		await interaction.ephemeralReply({
 			embeds: [
 				new EmbedBuilder()
 					.setTitle("No results found!")
@@ -52,9 +48,7 @@ export default async function parseTextureName(
 					)
 					.setColor(colors.red),
 			],
-			ephemeral: true,
 		});
-
 		return;
 	}
 

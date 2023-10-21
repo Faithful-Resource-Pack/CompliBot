@@ -95,6 +95,7 @@ export default {
 
 		if (message.content.toLocaleLowerCase().includes("forgor")) await message.react("💀");
 
+		/** @todo remove this in a few months when people forgot it existed */
 		const results = message.content.match(/(?<=\[\#)(.*?)(?=\])/g) ?? [];
 		if (!results.length) return;
 		message

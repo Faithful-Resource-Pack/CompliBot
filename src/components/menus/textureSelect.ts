@@ -30,10 +30,7 @@ export default {
 			guild: interaction.guild,
 		});
 
-		if (!editOptions.files) {
-			await interaction.deleteReply();
-			return interaction.followUp({ ...editOptions, ephemeral: true });
-		}
+		if (!editOptions.files) return await interaction.ephemeralReply(editOptions);
 
 		return message.edit(editOptions).then((message: Message) => message.deleteButton());
 	},

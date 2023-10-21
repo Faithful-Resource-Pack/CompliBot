@@ -56,15 +56,13 @@ export const command: SlashCommand = {
 			try {
 				parsed = JSON.parse(mcmetaText);
 			} catch {
-				await interaction.deleteReply();
-				return await interaction.followUp({
+				return await interaction.ephemeralReply({
 					embeds: [
 						new EmbedBuilder()
 							.setTitle(interaction.strings().command.animate.invalid_text.title)
 							.setDescription(interaction.strings().command.animate.invalid_text.description)
 							.setColor(colors.red),
 					],
-					ephemeral: true,
 				});
 			}
 
@@ -75,15 +73,13 @@ export const command: SlashCommand = {
 
 			// invalid mcmeta file given (filters basically everything out)
 			if (!mcmeta.animation) {
-				await interaction.deleteReply();
-				return await interaction.followUp({
+				return await interaction.ephemeralReply({
 					embeds: [
 						new EmbedBuilder()
 							.setTitle(interaction.strings().command.animate.invalid_file.title)
 							.setDescription(interaction.strings().command.animate.invalid_file.description)
 							.setColor(colors.red),
 					],
-					ephemeral: true,
 				});
 			}
 		} else mcmeta = mcmetaList[preset];
@@ -94,15 +90,13 @@ export const command: SlashCommand = {
 		// magnify beforehand since you can't magnify a gif currently
 		const { magnified, width, height } = await magnify(image, { isAnimation: true });
 		if (height > width * 32) {
-			await interaction.deleteReply();
-			return interaction.followUp({
+			return interaction.ephemeralReply({
 				embeds: [
 					new EmbedBuilder()
 						.setTitle(interaction.strings().command.images.too_long)
 						.setDescription(interaction.strings().command.images.max_length)
 						.setColor(colors.red),
 				],
-				ephemeral: true,
 			});
 		}
 
