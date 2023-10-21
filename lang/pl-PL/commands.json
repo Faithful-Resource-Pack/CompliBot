@@ -2,55 +2,55 @@
     "command": {
         "animate": {
             "invalid_text": {
-                "title": "Your MCMETA rules are invalid!",
+                "title": "Twoje reguły MCMETA są nieprawidłowe!",
                 "description": "Common errors include not double-quoting property key names or misplacing a character."
             },
             "invalid_file": {
-                "title": "Invalid MCMETA file!",
-                "description": "No `animation` property was found on the file. Please check that you uploaded the correct file."
+                "title": "Nieprawidłowy plik MCMETA!",
+                "description": "Nie znaleziono właściwości `animacja` w pliku. Sprawdź, czy przesłałeś poprawny plik."
             }
         },
         "botban": {
             "unbannable": {
-                "title": "This user cannot be botbanned!",
-                "description": "You cannot botban yourself, a developer, or someone with administrator permissions."
+                "title": "Temu użytkownikowi nie można odebrać uprawnień do korzystania z bota!",
+                "description": "Nie możesz odebrać sobie, programiście lub komuś z uprawnieniami administratora uprawnień do korzystania z bota."
             }
         },
         "in_submission": {
-            "title": "You cannot run slash commands in a submission channel!",
-            "description": "Please use the appropriate bot command channel instead."
+            "title": "Nie możesz używać poleceń na kanale zgłaszania!",
+            "description": "Proszę użyć odpowiedniego kanału poleceń bota."
         },
         "images": {
-            "too_big": "This image is too big to %ACTION%!",
-            "too_long": "This image is too long to animate!",
-            "max_size": "The maximum size for an image is 1024px².",
-            "max_length": "The maximum length for a tilesheet is 32 frames.",
-            "not_found": "No image was found!",
-            "suggestion": "Make sure you uploaded an image, replied to a valid image, used a valid image URL, or were in the correct channel."
+            "too_big": "Ten obraz jest zbyt duży, aby wykonać na nim %ACTION%!",
+            "too_long": "Ten obraz jest zbyt długi, aby go zanimować!",
+            "max_size": "Maksymalny rozmiar obrazu to 1024px².",
+            "max_length": "Maksymalna długość arkusza wynosi 32 ramki.",
+            "not_found": "Nie znaleziono żadnego obrazu!",
+            "suggestion": "Upewnij się, że przesłałeś obraz, odpowiedziałeś na poprawny obraz, użyłeś poprawnego adresu URL obrazu, lub że znajdujesz się na właściwym kanale."
         },
         "embed": {
-            "not_enough_arguments": "Not enough information was provided!",
-            "need_more_info": "You need to have either a description or title for an embed."
+            "not_enough_arguments": "Podano zbyt mało informacji!",
+            "need_more_info": "Twoje osadzenie musi mieć tytuł lub opis."
         },
         "stats": {
-            "footer": "Made with love",
-            "usage": "%COMMAND% has ran %USE% times.",
-            "top_ten": "Top 10 most used commands:",
-            "not_found": "The command `%COMMAND%` doesn't exist!"
+            "footer": "Stworzono z miłością",
+            "usage": "Polecenie %COMMAND% wykonano %USE% razy.",
+            "top_ten": "10 najczęściej używanych poleceń:",
+            "not_found": "Polecenie `%COMMAND%` nie istnieje!"
         },
         "texture": {
-            "not_found": "No results were found for %TEXTURENAME%. Have you made a typo?"
+            "not_found": "Nie znaleziono wyników dla: %TEXTURENAME%. Czy zrobiłeś literówkę?"
         },
         "info": {
-            "title": "Hi, I'm CompliBot. I was made for the Faithful Discord servers.",
-            "subtitle": "And I think I turned out pretty well.",
+            "title": "Cześć, jestem CompliBot. Zostałem stworzony dla Discord'owych serwerów Faithful'a.",
+            "subtitle": "I myślę, że wyszedłem całkiem nieźle.",
             "features": {
-                "title": "Features",
-                "description": "- Real-time texture interaction using `/texture`, `/compare`, and `/cycle`.\n- Check resource pack progress with `/missing` or check your contributions with `/about`.\n- Image manipulation utilities such as `/magnify`, `/tile`, `/palette`, and `/animate`."
+                "title": "Funkcje",
+                "description": "- Interakcja z teksturami w czasie rzeczywistym za pomocą `/texture`, `/compare` i `/cycle`.\n- Sprawdź postęp paczki zasobów za pomocą `/missing` lub sprawdź swój wkład za pomocą `/about`.\n- Narzędzia do manipulowania obrazami takie jak `/magnify`, `/tile`, `/palette` i `/animate`."
             },
             "developing": {
-                "title": "Developing",
-                "description": "I'm fully open source (written in TypeScript and Discord.js) and can be cloned at my GitHub repository [here](https://github.com/faithful-resource-pack/complibot).\n\nIf you're interested in developing, contact <@!473860522710794250>, <@!360249987927638016>, or <@!173336582265241601> for more information."
+                "title": "Rozwój",
+                "description": "Mam w pełni otwarty kod źródłowy (napisany w TypeScript i Discord.js) i można go sklonować w moim repozytorium GitHub [tutaj](https://github.com/faithful-resource-pack/complibot).\n\nJeśli jesteś zainteresowany rozwijaniem mnie, skontaktuj się z <@!473860522710794250>, <@!360249987927638016>, lub <@!173336582265241601> aby uzyskać więcej informacji."
             }
         }
     }
