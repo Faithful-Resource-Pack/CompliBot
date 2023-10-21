@@ -11,8 +11,9 @@
             }
         },
         "botban": {
-            "view": {
-                "unbannable": "You cannot audit this user's entry in the bot ban list!"
+            "unbannable": {
+                "title": "This user cannot be botbanned!",
+                "description": "You cannot botban yourself, a developer, or someone with administrator permissions."
             }
         },
         "in_submission": {
