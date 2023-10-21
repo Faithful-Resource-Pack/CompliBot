@@ -9,7 +9,7 @@ import {
 import { ChatInputCommandInteraction } from "@client";
 
 // I'm sorry...
-const feedbackFormat = {
+export const feedbackFormat = {
 	bug: [
 		new TextInputBuilder()
 			.setCustomId("bugTitle")
@@ -70,7 +70,7 @@ export const command: SlashCommand = {
 		),
 	async execute(interaction: ChatInputCommandInteraction) {
 		const type = interaction.options.getString("type");
-		const modal = new ModalBuilder().setCustomId(`${type}Ticket`).setTitle(`New ${type} Issue`);
+		const modal = new ModalBuilder().setCustomId(`${type}Ticket`).setTitle(`New ${type} issue`);
 
 		modal.addComponents(
 			// every modal input needs to be in a new action row (blame djs)

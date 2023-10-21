@@ -1,4 +1,3 @@
-import { duration } from "moment";
 import { SlashCommand, SlashCommandI } from "@interfaces";
 import { SlashCommandBuilder, Collection, Guild, version as djsVersion } from "discord.js";
 import { Client, EmbedBuilder, ChatInputCommandInteraction, Message } from "@client";
@@ -46,9 +45,12 @@ export const command: SlashCommand = {
 				.setTitle(`${client.user.username}'s Statistics`)
 				.setThumbnail(client.user.displayAvatarURL())
 				.addFields(
-					// TODO: remove the prefix since there are no prefix commands on the bot
 					{ name: "Prefix", value: interaction.client.tokens.prefix, inline: true },
-					{ name: "Uptime", value: duration(client.uptime).humanize(), inline: true },
+					{
+						name: "Uptime",
+						value: `<t:${Math.round((new Date().getTime() - client.uptime) / 1000)}:R>`,
+						inline: true,
+					},
 					{ name: "Server Count", value: client.guilds.cache.size.toString(), inline: true },
 					{
 						name: "Memory Usage",
