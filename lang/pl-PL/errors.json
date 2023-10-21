@@ -1,21 +1,21 @@
 {
     "error": {
-        "placeholder": "This feature has not been implemented yet!",
-        "botbanned": "You cannot use the bot as you have been bot banned!",
+        "placeholder": "Ta funkcja nie została jeszcze zaimplementowana!",
+        "botbanned": "Nie możesz użyć bota, ponieważ odebrano Ci uprawnienia!",
         "message": {
-            "deleted": "This message has already been deleted!"
+            "deleted": "Ta wiadomość została już usunięta!"
         },
-        "command": "One of my developers made an error while making this command! Don't worry, the error is not on your side. Please contact <@360249987927638016>, <@473860522710794250>, or <@173336582265241601> if this keeps occurring.",
-        "not_found": "%THING% not found!",
+        "command": "Jeden z moich deweloperów popełnił błąd podczas tworzenia tego polecenia! Nie martw się, błąd nie jest po Twojej stronie. Jeśli znów to nastąpi, skontaktuj się z <@360249987927638016>, <@473860522710794250>, lub <@173336582265241601>.",
+        "not_found": "Nie znaleziono: %THING%!",
         "interaction": {
-            "reserved": "This interaction is reserved for %USER%!"
+            "reserved": "Ta interakcja jest zarezerwowana dla: %USER%!"
         },
         "permission": {
-            "title": "You don't have permission to do that!",
-            "description": "Only %TYPE%s can use this command."
+            "title": "Nie masz do tego uprawnień!",
+            "description": "Tylko %TYPE% może użyć tej komendy."
         },
         "timeout": {
-            "no_type_given": "The given timeout doesn't specify which length it is!\nExample: `30s`, `1 min`, `10 hours`, `1 day`, `1 week`, `1 month`, `1 year`"
+            "no_type_given": "Podany limit czasu nie określa długości!\nPrzykład: `30s`, `1 min`, `10 godzin`, `1 dzień`, `1 tydzień`, `1 miesiąc`, `1 rok`"
         }
     }
 }
