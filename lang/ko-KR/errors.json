@@ -1,6 +1,6 @@
 {
     "error": {
-        "placeholder": "This feature has not been implemented yet.",
+        "placeholder": "This feature has not been implemented yet!",
         "botbanned": "You cannot use the bot as you have been bot banned!",
         "message": {
             "deleted": "This message has already been deleted!"
@@ -9,6 +9,10 @@
         "not_found": "%THING% not found!",
         "interaction": {
             "reserved": "This interaction is reserved for %USER%!"
+        },
+        "permission": {
+            "title": "You don't have permission to do that!",
+            "description": "Only %TYPE%s can use this command."
         },
         "timeout": {
             "no_type_given": "The given timeout doesn't specify which length it is!\nExample: `30s`, `1 min`, `10 hours`, `1 day`, `1 week`, `1 month`, `1 year`"
