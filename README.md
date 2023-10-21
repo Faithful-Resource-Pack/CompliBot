@@ -6,7 +6,7 @@
 ![RepoSize](https://img.shields.io/github/repo-size/Faithful-Resource-Pack/CompliBot)
 ![Issues](https://img.shields.io/github/issues/Faithful-Resource-Pack/CompliBot)
 ![PullRequests](https://img.shields.io/github/issues-pr/Faithful-Resource-Pack/CompliBot)
-[![Crowdin](https://badges.crowdin.net/e/1602cfd1a52793da79736586c4493097/localized.svg)](https://faithful.crowdin.com/complibot)
+[![Crowdin](https://badges.crowdin.net/e/656f9fc7c628d23c87426953b11cf26c/localized.svg)](https://faithful.crowdin.com/complibot)
 </div>
 
 ---
