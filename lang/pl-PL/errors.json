@@ -1,4 +1,7 @@
 {
+    "translation_credits": [
+        "jogurciQ"
+    ],
     "error": {
         "placeholder": "Ta funkcja nie została jeszcze zaimplementowana!",
         "botbanned": "Nie możesz użyć bota, ponieważ odebrano Ci uprawnienia!",

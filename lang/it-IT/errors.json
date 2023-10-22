@@ -1,4 +1,7 @@
 {
+    "translation_credits": [
+        "Banjoei"
+    ],
     "error": {
         "placeholder": "Questa caratteristica non è ancora stata implementata!",
         "botbanned": "Non puoi usare il bot perché sei stato espulso dall'uso!",

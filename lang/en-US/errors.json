@@ -1,4 +1,7 @@
 {
+    "translation_credits": [
+        "Put your name here on your respective language's file if you've translated!"
+    ],
     "error": {
         "placeholder": "This feature has not been implemented yet!",
         "botbanned": "You cannot use the bot as you have been bot banned!",
