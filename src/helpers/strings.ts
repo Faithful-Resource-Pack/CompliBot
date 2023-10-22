@@ -17,15 +17,15 @@ export function strings(forceEnglish = false): AllStrings {
 	for (const json of JSONFiles)
 		lang = {
 			...lang,
-			...require(`@/lang/en-US/${json}.json`), // fallback
+			...require(`@/lang/en-US/${json}.json`),
 		};
 
 	if (countryCode == "en-GB" || countryCode == "en-US" || forceEnglish) return lang;
 
-	// because the fallback is already IN ENGLISH
+	// not in english
 	for (const json of JSONFiles)
 		try {
-			//* We try the import before spreading the object to avoid issues, we only want to check if the file exists
+			// try importing before adding to prevent errors if language isn't done
 			const lang2 = require(`@/lang/${countryCode}/${json}.json`);
 			lang = { ...lang, ...lang2 };
 		} catch {} // file not found
