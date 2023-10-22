@@ -3,11 +3,11 @@
         "animate": {
             "invalid_text": {
                 "title": "¡Las reglas del MCMETA son inválidas!",
-                "description": "Common errors include not double-quoting property key names or misplacing a character."
+                "description": "Errores comunes incluyen no entrecomillando las propiedades dos veces o colocando mal un carácter."
             },
             "invalid_file": {
-                "title": "Invalid MCMETA file!",
-                "description": "No `animation` property was found on the file. Please check that you uploaded the correct file."
+                "title": "¡Archivo MCMETA inválido!",
+                "description": "No se ha encontrado ninguna función `animation` en el archivo. Compruebe que cargó el archivo correcto."
             }
         },
         "botban": {
