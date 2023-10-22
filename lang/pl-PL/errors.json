@@ -1,0 +1,21 @@
+{
+    "error": {
+        "placeholder": "Ta funkcja nie została jeszcze zaimplementowana!",
+        "botbanned": "Nie możesz użyć bota, ponieważ odebrano Ci uprawnienia!",
+        "message": {
+            "deleted": "Ta wiadomość została już usunięta!"
+        },
+        "command": "Jeden z moich deweloperów popełnił błąd podczas tworzenia tego polecenia! Nie martw się, błąd nie jest po Twojej stronie. Jeśli znów to nastąpi, skontaktuj się z <@360249987927638016>, <@473860522710794250>, lub <@173336582265241601>.",
+        "not_found": "Nie znaleziono: %THING%!",
+        "interaction": {
+            "reserved": "Ta interakcja jest zarezerwowana dla: %USER%!"
+        },
+        "permission": {
+            "title": "Nie masz do tego uprawnień!",
+            "description": "Tylko %TYPE% może użyć tej komendy."
+        },
+        "timeout": {
+            "no_type_given": "Podany limit czasu nie określa długości!\nPrzykład: `30s`, `1 min`, `10 godzin`, `1 dzień`, `1 tydzień`, `1 miesiąc`, `1 rok`"
+        }
+    }
+}
