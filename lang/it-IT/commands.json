@@ -1,0 +1,56 @@
+{
+    "command": {
+        "animate": {
+            "invalid_text": {
+                "title": "Le regole del MCMETA non sono valide!",
+                "description": "Gli errori più comuni includono il mancato inserimento dei doppi apici nei nomi delle chiavi delle proprietà o l'errata collocazione di un carattere."
+            },
+            "invalid_file": {
+                "title": "File MCMETA non valido!",
+                "description": "Non è stata trovata alcuna proprietà `animation` nel file. Verificare di aver caricato il file corretto."
+            }
+        },
+        "botban": {
+            "unbannable": {
+                "title": "A questo utente non può essere espulso l'uso del bot!",
+                "description": "Non è possibile espellere se stessi dal bot, espellere uno sviluppatore o qualcuno con permessi di amministratore."
+            }
+        },
+        "in_submission": {
+            "title": "Non è possibile eseguire comandi di barra in un canale d'invio!",
+            "description": "Si prega invece di utilizzare il canale appropriato per i comandi del bot."
+        },
+        "images": {
+            "too_big": "Questa immagine è troppo grande per essere %ACTION%!",
+            "too_long": "L'immagine è troppo lunga per essere animata!",
+            "max_size": "La dimensione massima di un'immagine è di 1024px².",
+            "max_length": "La lunghezza massima di un tileset è di 32 fotogrammi.",
+            "not_found": "Nessuna immagine è stata trovata!",
+            "suggestion": "Assicuratevi di aver caricato un'immagine, di aver risposto a un'immagine valida, di aver usato un URL d'immagine valido o di essere nel canale corretto."
+        },
+        "embed": {
+            "not_enough_arguments": "Non sono state fornite informazioni sufficienti!",
+            "need_more_info": "Un incorporamento richiede una descrizione o un titolo."
+        },
+        "stats": {
+            "usage": "%COMMAND% è stato eseguito %USE% volte.",
+            "top_ten": "I 10 comandi più utilizzati:",
+            "not_found": "Il comando `%COMMAND%` non esiste!"
+        },
+        "texture": {
+            "not_found": "Non sono stati trovati risultati per %TEXTURENAME%. Hai fatto un refuso?"
+        },
+        "info": {
+            "title": "Ciao, sono CompliBot. Sono stato creato per i server Discord di Faithful.",
+            "subtitle": "E credo di esserne uscito abbastanza bene.",
+            "features": {
+                "title": "Caratteristiche",
+                "description": "- Interazione in tempo reale con le texture usando `/texture`, `/compare` e `/cycle`.\n- Controllare i progressi del pacchetto di risorse con `/missing` o controllare i propri contributi con `/about`.\n- Utilità di manipolazione delle immagini come `/magnify`, `/tile`, `/palette` e `/animate`."
+            },
+            "developing": {
+                "title": "Sviluppo",
+                "description": "Il mio codice è completamente pubblico (scritto in TypeScript e Discord.js) e può essere clonato sul mio repository GitHub [qui](https://github.com/faithful-resource-pack/complibot).\n\nSe siete interessati a sviluppare, contattate <@!473860522710794250>, <@!360249987927638016>, o <@!173336582265241601> per maggiori informazioni."
+            }
+        }
+    }
+}
