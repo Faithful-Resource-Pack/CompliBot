@@ -33,7 +33,6 @@
             "need_more_info": "You need to have either a description or title for an embed."
         },
         "stats": {
-            "footer": "Made with love",
             "usage": "%COMMAND% has ran %USE% times.",
             "top_ten": "Top 10 most used commands:",
             "not_found": "The command `%COMMAND%` doesn't exist!"
