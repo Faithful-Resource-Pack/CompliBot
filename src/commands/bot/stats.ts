@@ -65,18 +65,19 @@ export const command: SlashCommand = {
 					{ name: "Operating System", value: version },
 				)
 				.setFooter({
-					text: interaction.strings().command.stats.footer,
+					text: "Made with love",
 					iconURL: image,
 				});
 			interaction
 				.reply({ embeds: [embed], fetchReply: true })
 				.then((message: Message) => message.deleteButton());
 		})
-		.set("command", async (interaction: ChatInputCommandInteraction, client: Client) => {
+		.set("command", async (interaction: ChatInputCommandInteraction) => {
 			//if the command args are provided and the command does not exist in commandsProcessed:
 			if (
 				interaction.options.getString("command") &&
-				client.commandsProcessed.get(interaction.options.getString("command")) === undefined
+				interaction.client.commandsProcessed.get(interaction.options.getString("command")) ===
+					undefined
 			)
 				return interaction.reply({
 					ephemeral: true,
@@ -92,14 +93,17 @@ export const command: SlashCommand = {
 						.command.stats.usage.replace("%COMMAND%", interaction.options.getString("command"))
 						.replace(
 							"%USE%",
-							client.commandsProcessed.get(interaction.options.getString("command")).toString() ??
-								"0",
+							interaction.client.commandsProcessed
+								.get(interaction.options.getString("command"))
+								.toString() ?? "0",
 						),
 				);
-				interaction.reply({ ephemeral: true, embeds: [embed], fetchReply: true });
+				interaction.reply({ ephemeral: true, embeds: [embed] });
 			} else {
 				//sorts commands by usage: 4,3,2,1
-				const sorted = new Map([...client.commandsProcessed.entries()].sort((a, b) => b[1] - a[1]));
+				const sorted = new Map(
+					[...interaction.client.commandsProcessed.entries()].sort((a, b) => b[1] - a[1]),
+				);
 				const data = [[...sorted.keys()], [...sorted.values()]];
 
 				const embed = new EmbedBuilder()
