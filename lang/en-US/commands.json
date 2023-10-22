@@ -1,4 +1,8 @@
 {
+    "translation_credits": [
+        "Faithful Developers",
+        "Put your name here on your respective language if you've translated!"
+    ],
     "command": {
         "animate": {
             "invalid_text": {
