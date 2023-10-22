@@ -1,21 +1,24 @@
 {
+    "translation_credits": [
+        "Banjoei"
+    ],
     "error": {
-        "placeholder": "This feature has not been implemented yet!",
-        "botbanned": "You cannot use the bot as you have been bot banned!",
+        "placeholder": "¡Esta funcionalidad aún no se ha implementado!",
+        "botbanned": "¡No puedes usar el bot porque has sido expulsado del bot!",
         "message": {
-            "deleted": "This message has already been deleted!"
+            "deleted": "¡Este mensaje ya ha sido borrado!"
         },
-        "command": "One of my developers made an error while making this command! Don't worry, the error is not on your side. Please contact <@360249987927638016>, <@473860522710794250>, or <@173336582265241601> if this keeps occurring.",
-        "not_found": "%THING% not found!",
+        "command": "Uno de mis desarrolladores cometió un error al crear este comando! No te preocupes, el error no es tuyo. Por favor, contacte a <@360249987927638016>, <@473860522710794250>, o <@173336582265241601> si esto sigue ocurriendo.",
+        "not_found": "¡%THING% no se ha encontrado!",
         "interaction": {
-            "reserved": "This interaction is reserved for %USER%!"
+            "reserved": "¡Esta interacción está reservada para %USER%!"
         },
         "permission": {
-            "title": "You don't have permission to do that!",
-            "description": "Only %TYPE%s can use this command."
+            "title": "¡No tienes permiso para hacer eso!",
+            "description": "Sólo los %TYPE%s pueden utilizar este comando."
         },
         "timeout": {
-            "no_type_given": "The given timeout doesn't specify which length it is!\nExample: `30s`, `1 min`, `10 hours`, `1 day`, `1 week`, `1 month`, `1 year`"
+            "no_type_given": "¡El límite temporal indicado no especifica de qué duración es!\nEjemplo: `30s`, `1 min`, `10 hours`, `1 day`, `1 week`, `1 month`, `1 year`"
         }
     }
 }
