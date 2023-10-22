@@ -42,3 +42,7 @@ ___
 ## API Reference:
 
 This project is heavily developed around our public API. Check out our API documentation at https://api.faithfulpack.net/docs for more information about endpoints and making requests.
+
+## Translating:
+
+Many messages shown throughout the bot can be translated into users' native languages for easier usage. Our translation service is powered by Crowdin, and you can start translating there: https://faithful.crowdin.com/complibot. If you're a native speaker of a language that hasn't been done yet, click on the language in the list and click on the JSON files that are translatable.
