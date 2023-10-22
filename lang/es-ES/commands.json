@@ -2,7 +2,7 @@
     "command": {
         "animate": {
             "invalid_text": {
-                "title": "Your MCMETA rules are invalid!",
+                "title": "¡Las reglas del MCMETA son inválidas!",
                 "description": "Common errors include not double-quoting property key names or misplacing a character."
             },
             "invalid_file": {
