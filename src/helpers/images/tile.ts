@@ -2,13 +2,11 @@ import { createCanvas, loadImage, Image, DOMMatrix } from "@napi-rs/canvas";
 import { AttachmentBuilder } from "discord.js";
 import { ImageSource } from "@helpers/getImage";
 import {
-	EmbedBuilder,
 	ButtonInteraction,
 	ChatInputCommandInteraction,
 	StringSelectMenuInteraction,
 	Message,
 } from "@client";
-import { colors } from "@utility/colors";
 import warnUser from "@helpers/warnUser";
 
 export type TileShape = "grid" | "vertical" | "horizontal" | "hollow" | "plus";
