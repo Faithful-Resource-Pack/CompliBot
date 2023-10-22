@@ -33,7 +33,6 @@
             "need_more_info": "Twoje osadzenie musi mieć tytuł lub opis."
         },
         "stats": {
-            "footer": "Stworzono z miłością",
             "usage": "Polecenie %COMMAND% wykonano %USE% razy.",
             "top_ten": "10 najczęściej używanych poleceń:",
             "not_found": "Polecenie `%COMMAND%` nie istnieje!"
