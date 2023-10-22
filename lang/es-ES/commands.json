@@ -12,12 +12,12 @@
         },
         "botban": {
             "unbannable": {
-                "title": "This user cannot be botbanned!",
-                "description": "You cannot botban yourself, a developer, or someone with administrator permissions."
+                "title": "¡Este usuario no puede ser expulsado por un bot!",
+                "description": "No puedes ser expulsado por un bot, expulsar un desarrollador o a alguien con permisos de administrador."
             }
         },
         "in_submission": {
-            "title": "You cannot run slash commands in a submission channel!",
+            "title": "¡No puedes ejecutar comandos de barrita en un canal!",
             "description": "Please use the appropriate bot command channel instead."
         },
         "images": {
@@ -33,23 +33,23 @@
             "need_more_info": "You need to have either a description or title for an embed."
         },
         "stats": {
-            "usage": "%COMMAND% has ran %USE% times.",
-            "top_ten": "Top 10 most used commands:",
-            "not_found": "The command `%COMMAND%` doesn't exist!"
+            "usage": "%COMMAND% se ha ejecutado %USE% veces.",
+            "top_ten": "Los 10 comandos más utilizados:",
+            "not_found": "¡El comando `%COMMAND%` no existe!"
         },
         "texture": {
-            "not_found": "No results were found for %TEXTURENAME%. Have you made a typo?"
+            "not_found": "No se han encontrado resultados para %TEXTURENAME%. ¿Quizás te has equivocado con el texto?"
         },
         "info": {
-            "title": "Hi, I'm CompliBot. I was made for the Faithful Discord servers.",
-            "subtitle": "And I think I turned out pretty well.",
+            "title": "Hola, soy CompliBot. Fui hecho para los servidores de Faithful en Discord.",
+            "subtitle": "Y creo que resulté bastante bien.",
             "features": {
-                "title": "Features",
-                "description": "- Real-time texture interaction using `/texture`, `/compare`, and `/cycle`.\n- Check resource pack progress with `/missing` or check your contributions with `/about`.\n- Image manipulation utilities such as `/magnify`, `/tile`, `/palette`, and `/animate`."
+                "title": "Funcionalidades",
+                "description": "- Interacción con texturas en tiempo real utilizando `/texture`, `/compare` y `/cycle`.\n- Comprueba el progreso del paquete de recursos con `/missing` o comprueba tus contribuciones con `/about`.\n- Utilidades para la modificación de imágenes como `/magnify`, `/tile`, `/palette` y `/animate`."
             },
             "developing": {
-                "title": "Developing",
-                "description": "I'm fully open source (written in TypeScript and Discord.js) and can be cloned at my GitHub repository [here](https://github.com/faithful-resource-pack/complibot).\n\nIf you're interested in developing, contact <@!473860522710794250>, <@!360249987927638016>, or <@!173336582265241601> for more information."
+                "title": "Desarrollando",
+                "description": "Mi código es totalmente público (escrito en TypeScript y Discord.js) y se puede clonar en mi repositorio de GitHub [aquí](https://github.com/faithful-resource-pack/complibot).\n\nSi estás interesado en desarrollar, contacta a <@!473860522710794250>, <@!360249987927638016> o <@!173336582265241601> para más información."
             }
         }
     }
