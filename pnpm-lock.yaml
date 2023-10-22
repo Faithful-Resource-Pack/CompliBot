@@ -29,9 +29,6 @@ dependencies:
   jszip:
     specifier: ^3.10.1
     version: 3.10.1
-  linux-os-info:
-    specifier: ^2.0.0
-    version: 2.0.0
   ts-node:
     specifier: ^10.9.1
     version: 10.9.1(@types/node@20.8.7)(typescript@5.2.2)
@@ -709,10 +706,6 @@ packages:
     resolution: {integrity: sha512-UaiMJzeWRlEujzAuw5LokY1L5ecNQYZKfmyZ9L7wDHb/p5etKaxXhohBcrw0EYby+G/NA52vRSN4N39dxHAIwQ==}
     dependencies:
       immediate: 3.0.6
-    dev: false
-
-  /linux-os-info@2.0.0:
-    resolution: {integrity: sha512-ZopyH4kT2Ehnmix8iUgS/41pfv7fSlUV1JukIn3DB3qD3byvhBNtgCbUApoAtiqcHRLKXCY3zakXlJgiExm2Qg==}
     dev: false
 
   /lodash.snakecase@4.1.1:

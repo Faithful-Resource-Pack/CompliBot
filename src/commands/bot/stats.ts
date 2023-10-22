@@ -1,8 +1,6 @@
 import { SlashCommand, SlashCommandI } from "@interfaces";
 import { SlashCommandBuilder, Collection, Guild, version as djsVersion } from "discord.js";
-import { Client, EmbedBuilder, ChatInputCommandInteraction, Message } from "@client";
-import os from "os";
-import linuxOs from "linux-os-info";
+import { EmbedBuilder, ChatInputCommandInteraction, Message } from "@client";
 import axios from "axios";
 
 export const command: SlashCommand = {
@@ -27,19 +25,14 @@ export const command: SlashCommand = {
 		.set("bot", async (interaction: ChatInputCommandInteraction) => {
 			// easier to get extended properties
 			const client = interaction.client;
-			let sumMembers = 0;
-			let version: string;
+			const sumMembers = client.guilds.cache.reduce(
+				(acc: number, guild: Guild) => acc + guild.memberCount,
+				0,
+			);
 
-			client.guilds.cache.each((guild: Guild) => {
-				sumMembers += guild.memberCount;
-			});
-
-			const number = [...client.commandsProcessed.values()].reduce((a, b) => a + b, 0) + 1;
-
-			if (os.platform() == "linux") version = linuxOs({ mode: "sync" }).pretty_name;
-			else version = os.version();
-
-			const image: string = (await axios.get(`${client.tokens.apiUrl}settings/images.heart`)).data;
+			const commandCount =
+				[...client.commandsProcessed.values()].reduce((acc, cur) => acc + cur, 0) + 1;
+			const heart: string = (await axios.get(`${client.tokens.apiUrl}settings/images.heart`)).data;
 
 			const embed = new EmbedBuilder()
 				.setTitle(`${client.user.username}'s Statistics`)
@@ -60,72 +53,63 @@ export const command: SlashCommand = {
 					{ name: "Discord Library", value: `Discord.js ${djsVersion}`, inline: true },
 					{ name: "Node.js", value: `${process.version}`, inline: true },
 					{ name: "Total Commands", value: `${client.slashCommands.size}`, inline: true },
-					{ name: "Commands Processed", value: `${number}`, inline: true },
+					{ name: "Commands Processed", value: `${commandCount}`, inline: true },
 					{ name: "Members Across Servers", value: `${sumMembers}`, inline: true },
-					{ name: "Operating System", value: version },
 				)
 				.setFooter({
 					text: "Made with love",
-					iconURL: image,
+					iconURL: heart,
 				});
 			interaction
 				.reply({ embeds: [embed], fetchReply: true })
 				.then((message: Message) => message.deleteButton());
 		})
 		.set("command", async (interaction: ChatInputCommandInteraction) => {
-			//if the command args are provided and the command does not exist in commandsProcessed:
-			if (
-				interaction.options.getString("command") &&
-				interaction.client.commandsProcessed.get(interaction.options.getString("command")) ===
-					undefined
-			)
-				return interaction.reply({
-					ephemeral: true,
-					content: interaction
-						.strings()
-						.command.stats.not_found.replace("%COMMAND%", interaction.options.getString("command")),
-				});
+			const command = interaction.options.getString("command");
+			if (command) {
+				// command doesn't exist
+				if (interaction.client.commandsProcessed.get(command) === undefined)
+					return interaction.reply({
+						ephemeral: true,
+						content: interaction.strings().command.stats.not_found.replace("%COMMAND%", command),
+					});
 
-			if (interaction.options.getString("command")) {
 				const embed = new EmbedBuilder().setTimestamp().setTitle(
 					interaction
 						.strings()
-						.command.stats.usage.replace("%COMMAND%", interaction.options.getString("command"))
-						.replace(
-							"%USE%",
-							interaction.client.commandsProcessed
-								.get(interaction.options.getString("command"))
-								.toString() ?? "0",
-						),
+						.command.stats.usage.replace("%COMMAND%", command)
+						.replace("%USE%", interaction.client.commandsProcessed.get(command).toString() ?? "0"),
 				);
-				interaction.reply({ ephemeral: true, embeds: [embed] });
-			} else {
-				//sorts commands by usage: 4,3,2,1
-				const sorted = new Map(
-					[...interaction.client.commandsProcessed.entries()].sort((a, b) => b[1] - a[1]),
-				);
-				const data = [[...sorted.keys()], [...sorted.values()]];
 
-				const embed = new EmbedBuilder()
-					.setTimestamp()
-					.setTitle(interaction.strings().command.stats.top_ten).setDescription(`
-${data[0]
-	.slice(0, data[0].length > 10 ? 10 : data[0].length)
-	.map((key: any, index: any) => {
-		let place = `\`${index + 1 < 10 ? ` ${index + 1}` : index + 1}.`;
-		place += ` `.repeat(4 - place.length);
-		place += "`";
-		let command = `\`${key}`;
-		command += ` `.repeat(13 - command.length);
-		command += "`";
-		let uses = `\`${data[1][index]}`;
-		uses += "`";
-
-		return `${place} ${command} - ${uses}`;
-	})
-	.join("\n")}`);
-
-				interaction.reply({ ephemeral: true, embeds: [embed] });
+				return interaction.reply({ ephemeral: true, embeds: [embed] });
 			}
+
+			//sorts commands by usage: 4,3,2,1
+			const sorted = new Map(
+				[...interaction.client.commandsProcessed.entries()].sort((a, b) => b[1] - a[1]),
+			);
+			const data = [[...sorted.keys()], [...sorted.values()]];
+
+			interaction.reply({
+				ephemeral: true,
+				embeds: [
+					new EmbedBuilder()
+						.setTimestamp()
+						.setTitle(interaction.strings().command.stats.top_ten)
+						.setDescription(
+							data[0]
+								.slice(0, data[0].length > 10 ? 10 : data[0].length)
+								.map((key: any, index: any) => {
+									let place = `\`${index + 1 < 10 ? ` ${index + 1}` : index + 1}.`;
+									place += ` `.repeat(4 - place.length) + "`";
+									let command = `\`${key}`;
+									command += ` `.repeat(13 - command.length) + "`";
+									const uses = `\`${data[1][index]}\``;
+									return `${place} ${command} - ${uses}`;
+								})
+								.join("\n"),
+						),
+				],
+			});
 		}),
 };

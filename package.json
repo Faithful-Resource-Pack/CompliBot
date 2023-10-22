@@ -21,7 +21,6 @@
         "discord.js": "^14.13.0",
         "gif-encoder-2": "^1.0.5",
         "jszip": "^3.10.1",
-        "linux-os-info": "^2.0.0",
         "ts-node": "^10.9.1",
         "tsconfig-paths": "^4.2.0"
     }
