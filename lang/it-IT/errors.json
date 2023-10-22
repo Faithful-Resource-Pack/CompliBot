@@ -1,0 +1,21 @@
+{
+    "error": {
+        "placeholder": "Questa caratteristica non è ancora stata implementata!",
+        "botbanned": "Non puoi usare il bot perché sei stato espulso dall'uso!",
+        "message": {
+            "deleted": "Questo messaggio è già stato cancellato!"
+        },
+        "command": "Uno dei miei sviluppatori ha commesso un errore durante la creazione di questo comando! Non preoccupatevi, l'errore non dipende da voi. Si prega di contattare <@360249987927638016>, <@473860522710794250>, o <@173336582265241601> se l'errore continua a verificarsi.",
+        "not_found": "%THING% non trovato!",
+        "interaction": {
+            "reserved": "Questa interazione è riservata a %USER%!"
+        },
+        "permission": {
+            "title": "Non hai il permesso di farlo!",
+            "description": "Solo %TYPE%i può utilizzare questo comando."
+        },
+        "timeout": {
+            "no_type_given": "La restrizione temporanea non specifica quale sia la lunghezza!\nEsempio: `30s`, `1 min`, `10 hours`, `1 day`, `1 week`, `1 month`, `1 year`"
+        }
+    }
+}
