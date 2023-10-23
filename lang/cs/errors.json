@@ -1,0 +1,24 @@
+{
+    "translation_credits": [
+        "Pomi108"
+    ],
+    "error": {
+        "placeholder": "Tato funkce zatím nebyla implementována!",
+        "botbanned": "Dostal(a) jsi zákaz používání bota. Nejsou ti dostupné žádné jeho funkce.",
+        "message": {
+            "deleted": "Tato zpráva už byla smazána!"
+        },
+        "command": "Jeden z mých vývojářů při psaní tohoto příkazu někde udělal chybu! Nezoufej, chyba není na tvojí straně. Kontaktuj prosím <@360249987927638016>, <@473860522710794250> nebo <@173336582265241601> pokud k chybě dochází opakovaně.",
+        "not_found": "Nenalezeno: %THING%",
+        "interaction": {
+            "reserved": "Tato interakce je vyhrazena pro %USER%!"
+        },
+        "permission": {
+            "title": "K této akci nemáš oprávnění!",
+            "description": "Pouze uživatelé s rolí %TYPE% mohou použít tento příkaz."
+        },
+        "timeout": {
+            "no_type_given": "Zadanému časovému limitu chybí jednotka!\nPříklad: `30s`, `1 min`, `10 hours`, `1 day`, `1 week`, `1 month`, `1 year`"
+        }
+    }
+}
