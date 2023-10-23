@@ -1,0 +1,59 @@
+{
+    "translation_credits": [
+        "Pomi108"
+    ],
+    "command": {
+        "animate": {
+            "invalid_text": {
+                "title": "Zadal(a) jsi neplatná pravidla formátu MCMETA!",
+                "description": "Častou chybou je opomenutí dvojitých uvozovek kolem názvů klíčů či chybné umístění nějakého znaku."
+            },
+            "invalid_file": {
+                "title": "Neplatný MCMETA soubor!",
+                "description": "V souboru nebyl nalezen žádný objekt s názvem `animation`. Zkontroluj prosím, zda jsi nahrál(a) správný soubor."
+            }
+        },
+        "botban": {
+            "unbannable": {
+                "title": "Tomuto uživateli nelze zakázat používání bota!",
+                "description": "Používání bota nemůžeš zakázat sám sobě, vývojáři ani nikomu s oprávněními správce."
+            }
+        },
+        "in_submission": {
+            "title": "V kanálu pro navrhování textur nelze používat lomítkové příkazy!",
+            "description": "Použij místo toho kanál určený pro příkazy bota."
+        },
+        "images": {
+            "too_big": "Tento obrázek je příliš velký na %ACTION%!",
+            "too_long": "Tento obrázek je pro animaci příliš dlouhý!",
+            "max_size": "Maximální povolená velikost obrázku je 1024px².",
+            "max_length": "Maximální povolená délka animačního pásu je 32 snímků.",
+            "not_found": "Nebyl nalezen žádný obrázek!",
+            "suggestion": "Ujisti se, žes nahrál obrázek, odpověděl(a) na zprávu s platným obrázkem nebo použil(a) platný odkaz na obrázek a žes byl(a) ve správném kanále."
+        },
+        "embed": {
+            "not_enough_arguments": "Nebyl poskytnut dostatek informací!",
+            "need_more_info": "Pro vložení je třeba definovat nadpis nebo popisek."
+        },
+        "stats": {
+            "usage": "Příkaz %COMMAND% byl použit %USE%krát.",
+            "top_ten": "10 nejpoužívanějších příkazů:",
+            "not_found": "Příkaz `%COMMAND%` neexistuje!"
+        },
+        "texture": {
+            "not_found": "Nebyly nalezeny žádné výsledky pro %TEXTURENAME%. Nepřepsal(a) ses?"
+        },
+        "info": {
+            "title": "Ahoj, já jsem CompliBot. Byl jsem vytvořen pro potřeby Discord serverů Faithfulu.",
+            "subtitle": "A myslím, že jsem se docela povedl.",
+            "features": {
+                "title": "Funkce",
+                "description": "- Interakce s texturami v reálném čase pomocí `/texture`, `/compare` a `/cycle`.\n- Zjisti momentální stav úplnosti resource packu díky `/missing` nebo se podívej na tvoje vlastní příspěvky s `/about`.\n- Utility pro práci s obrázky jako třeba `/magnify`, `/tile`, `/palette` nebo `/animate`."
+            },
+            "developing": {
+                "title": "Vývoj",
+                "description": "Můj zdrojový kód (napsaný v TypeScriptu a Discord.js) je plně otevřený; můžeš si jej naklonovat z mého GitHub repozitáře [zde](https://github.com/faithful-resource-pack/complibot).\n\nPokud máš zájem pomoct s vývojem, kontaktuj <@!473860522710794250>, <@!360249987927638016> nebo <@!173336582265241601> (anglicky) pro více informací."
+            }
+        }
+    }
+}
