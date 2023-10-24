@@ -21,12 +21,12 @@ export interface MCMETA {
  * @returns animated GIF as buffer
  */
 export async function animate(origin: ImageSource, mcmeta: MCMETA): Promise<Buffer> {
-	const baseCanvas = await loadImage(origin);
+	const tileSheet = await loadImage(origin);
 	if (!mcmeta.animation) mcmeta.animation = {};
 
-	if (!mcmeta.animation?.width) mcmeta.animation.width = baseCanvas.width;
+	if (!mcmeta.animation?.width) mcmeta.animation.width = tileSheet.width;
 	// assume square image if not declared explicitly (baseCanvas.height is full spritesheet)
-	if (!mcmeta.animation?.height) mcmeta.animation.height = baseCanvas.width;
+	if (!mcmeta.animation?.height) mcmeta.animation.height = tileSheet.width;
 
 	// cap frametime at 15 to not crash the bot from rendering 6000 frames of prismarine
 	let frametime = mcmeta.animation?.frametime || 1;
@@ -52,7 +52,7 @@ export async function animate(origin: ImageSource, mcmeta: MCMETA): Promise<Buff
 		}
 	} else {
 		// just animate directly downwards if nothing specified
-		for (let i = 0; i < baseCanvas.height / mcmeta.animation.height; ++i) {
+		for (let i = 0; i < tileSheet.height / mcmeta.animation.height; ++i) {
 			frames.push({ index: i, duration: frametime });
 		}
 	}
@@ -75,7 +75,7 @@ export async function animate(origin: ImageSource, mcmeta: MCMETA): Promise<Buff
 
 				// frame i (always 100% opacity)
 				ctx.drawImage(
-					baseCanvas, // image
+					tileSheet, // image
 					0,
 					mcmeta.animation.height * frames[i].index, // sx, sy
 					mcmeta.animation.width,
@@ -91,7 +91,7 @@ export async function animate(origin: ImageSource, mcmeta: MCMETA): Promise<Buff
 
 				// frame i + 1 (transition)
 				ctx.drawImage(
-					baseCanvas, // image
+					tileSheet, // image
 					0,
 					mcmeta.animation.height * frames[(i + 1) % frames.length].index, // sx, sy
 					mcmeta.animation.width,
@@ -111,7 +111,7 @@ export async function animate(origin: ImageSource, mcmeta: MCMETA): Promise<Buff
 
 			// see: https://mdn.dev/archives/media/attachments/2012/07/09/225/46ffb06174df7c077c89ff3055e6e524/Canvas_drawimage.jpg
 			ctx.drawImage(
-				baseCanvas, // image
+				tileSheet, // image
 				0,
 				mcmeta.animation.height * frames[i].index, // sx, sy
 				mcmeta.animation.width,

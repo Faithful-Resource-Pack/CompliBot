@@ -15,7 +15,7 @@ export interface MagnifyOptions {
  * @returns buffer for magnified image
  */
 export async function magnify(origin: ImageSource, options: MagnifyOptions = {}) {
-	const input = await loadImage(origin).catch((err) => Promise.reject(err));
+	const input = await loadImage(origin);
 
 	// ignore height if tilesheet, otherwise it's not scaled as much
 	const surface = options.isAnimation ? input.width * 16 : input.width * input.height;

@@ -53,14 +53,11 @@ export default class ColorManager {
 		let ctx = canvas.getContext("2d");
 		ctx.imageSmoothingEnabled = false;
 
-		let imgToDraw = await loadImage(options.url).catch((err) => {
-			console.trace(err);
-			return Promise.reject(err);
-		});
+		const imgToDraw = await loadImage(options.url);
 
 		ctx.drawImage(imgToDraw, 0, 0, canvas.width, canvas.height);
 
-		let img = ctx.getImageData(0, 0, canvas.width, canvas.height);
+		const img = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
 		for (let i = 0; i < img.data.length; i += 4) {
 			// only met when its the same color as the target color
