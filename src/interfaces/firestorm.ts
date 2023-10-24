@@ -24,9 +24,10 @@ export interface Path {
 export interface Use {
 	id: string;
 	name: string;
-	edition: "java" | "bedrock" | "dungeons";
+	edition: "java" | "bedrock";
 }
 
+// when you don't add the "all" flag when searching on the API
 export interface BaseTexture {
 	id: string;
 	name: string;
@@ -34,8 +35,8 @@ export interface BaseTexture {
 }
 
 export interface Texture extends BaseTexture {
-	uses?: Use[];
-	paths?: Path[];
+	uses: Use[];
+	paths: Path[];
 	contributions?: Contribution[];
 }
 
