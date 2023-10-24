@@ -1,6 +1,6 @@
 import { EmbedBuilder } from "@client";
 import TokenJson from "@json/tokens.json";
-import { Contributor, Tokens } from "@interfaces";
+import { Contributor, GalleryTexture, Tokens } from "@interfaces";
 import axios from "axios";
 import { APIEmbedField, AttachmentBuilder, Guild } from "discord.js";
 import { magnify, magnifyToAttachment } from "@images/magnify";
@@ -133,7 +133,7 @@ export const getTexture = async (options: {
  * @param texture texture to get paths and uses from
  * @returns usable embed field data
  */
-export const addPathsToEmbed = (texture: Texture): APIEmbedField[] => {
+export const addPathsToEmbed = (texture: GalleryTexture | Texture): APIEmbedField[] => {
 	const tmp = {};
 	texture.uses.forEach((use) => {
 		texture.paths

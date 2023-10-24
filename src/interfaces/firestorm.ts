@@ -27,13 +27,22 @@ export interface Use {
 	edition: "java" | "bedrock" | "dungeons";
 }
 
-export interface Texture {
+export interface BaseTexture {
 	id: string;
 	name: string;
 	tags: string[];
+}
+
+export interface Texture extends BaseTexture {
 	uses?: Use[];
 	paths?: Path[];
 	contributions?: Contribution[];
+}
+
+// used for comparison loader
+export interface GalleryTexture extends Omit<Texture, keyof BaseTexture> {
+	texture: BaseTexture;
+	urls: [string, string];
 }
 
 export interface Contributor {

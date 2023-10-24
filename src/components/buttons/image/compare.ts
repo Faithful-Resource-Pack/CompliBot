@@ -2,7 +2,7 @@ import { Component } from "@interfaces";
 import { info } from "@helpers/logger";
 import { Client, Message, ButtonInteraction, EmbedBuilder } from "@client";
 import textureComparison, { comparisonTooBig } from "@functions/textureComparison";
-import { InteractionEditReplyOptions, EmbedFooterData } from "discord.js";
+import { InteractionEditReplyOptions } from "discord.js";
 
 export default {
 	id: "compare",

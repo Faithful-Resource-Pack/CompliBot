@@ -1,6 +1,6 @@
 import stitch from "@images/stitch";
 import { magnifyToAttachment } from "@images/magnify";
-import { loadImage } from "@napi-rs/canvas";
+import { Image, loadImage } from "@napi-rs/canvas";
 import {
 	Client,
 	EmbedBuilder,
@@ -10,7 +10,7 @@ import {
 	Message,
 } from "@client";
 import { addPathsToEmbed } from "@functions/getTexture";
-import { Texture } from "@interfaces";
+import { GalleryTexture } from "@interfaces";
 import axios from "axios";
 import { ActionRowBuilder, ButtonBuilder } from "discord.js";
 import { template } from "@utility/buttons";
@@ -51,26 +51,29 @@ export function parseDisplay(display: string) {
  */
 export default async function textureComparison(
 	client: Client,
-	id: number | string,
+	id: string,
 	display: string = "all",
 ): Promise<any> {
-	const result: Texture = (await axios.get(`${client.tokens.apiUrl}textures/${id}/all`)).data;
+	const result: GalleryTexture = (
+		await axios.get(`${client.tokens.apiUrl}gallery/modal/${id}/latest`)
+	).data;
+
 	const displayed = parseDisplay(display);
+	const defaultURL = result.urls.find((url) => url[0] == "default")?.[1];
 
-	const defaultURL = `${client.tokens.apiUrl}textures/${id}/url/default/latest`;
-
-	const baseImage = await loadImage(defaultURL);
-	if (baseImage.width * baseImage.height * displayed.flat().length > 262144) return null;
+	const dimension = await loadImage(defaultURL);
+	if (dimension.width * dimension.height * displayed.flat().length > 262144) return null;
 
 	// get texture urls into 2d array using the parsed display
-	const loadedImages = [];
+	const loadedImages: Image[][] = [];
 	for (const packSet of displayed) {
 		// had problems with nested async mapping so this is easier for everyone
 		loadedImages.push([]);
 		for (const pack of packSet) {
-			const imgUrl = `${client.tokens.apiUrl}textures/${id}/url/${pack}/latest`;
+			const image = result.urls.find((url) => url[0] == pack)?.[1];
+			if (!image) continue;
 			try {
-				loadedImages.at(-1).push(await loadImage(imgUrl));
+				loadedImages.at(-1).push(await loadImage(image));
 			} catch {
 				// image doesn't exist yet
 			}
@@ -82,7 +85,7 @@ export default async function textureComparison(
 
 	const embed = new EmbedBuilder()
 		.setImage("attachment://magnified.png")
-		.setTitle(`[#${result.id}] ${result.name}`)
+		.setTitle(`[#${result.texture.id}] ${result.texture.name}`)
 		.setURL(`https://webapp.faithfulpack.net/#/gallery/java/32x/latest/all/?show=${id}`)
 		.addFields(addPathsToEmbed(result))
 		.setFooter({ text: `Displaying: ${display ?? "All"}` });
