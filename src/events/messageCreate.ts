@@ -22,45 +22,26 @@ export default {
 		if (submissionChannels.includes(message.channel.id)) return;
 
 		if (message.content.startsWith(client.tokens.prefix)) return prefixCommandHandler(message);
+
 		/**
 		 * easter eggs
 		 */
 		switch (message.content.toLocaleLowerCase()) {
 			case "engineer gaming":
-				try {
-					await message.react("👷");
-				} catch (err) {
-					/* can't react */
-				}
-				break;
+				return await message.react("👷").catch(() => {});
 			case "rip":
 			case "f":
-				try {
-					await message.react("🇫");
-				} catch (err) {
-					/* can't react */
-				}
-				break;
+				return await message.react("🇫").catch(() => {});
 			case "band":
 			case "banding":
-				["🎤", "🎸", "🥁", "🪘", "🎺", "🎷", "🎹", "🪗", "🎻"].forEach(async (emoji) => {
-					try {
-						await message.react(emoji);
-					} catch (err) {
-						/* can't react */
-					}
+				return ["🎤", "🎸", "🥁", "🪘", "🎺", "🎷", "🎹", "🪗", "🎻"].forEach(async (emoji) => {
+					await message.react(emoji);
 				});
-				break;
 			case "monke":
 			case "monkee":
-				["🎷", "🐒"].forEach(async (emoji) => {
-					try {
-						await message.react(emoji);
-					} catch (err) {
-						/* can't react */
-					}
+				return ["🎷", "🐒"].forEach(async (emoji) => {
+					await message.react(emoji).catch(() => {});
 				});
-				break;
 			case "hello there":
 				message
 					.reply({
@@ -93,7 +74,7 @@ export default {
 				.then((message) => message.deleteButton());
 		}
 
-		if (message.content.toLocaleLowerCase().includes("forgor")) await message.react("💀");
+		if (/\bforgor\b/.test(message.content.toLocaleLowerCase())) await message.react("💀");
 
 		/** @todo remove this in a few months when people forgot it existed */
 		const results = message.content.match(/(?<=\[\#)(.*?)(?=\])/g) ?? [];
