@@ -16,7 +16,7 @@
         "botban": {
             "unbannable": {
                 "title": "¡No se puede prohibir a este usuario el uso del bot!",
-                "description": "No se puede prohibir el uso del bot a los desarrolladores ni a las personas con privilegios de administrador."
+                "description": "No se puede prohibir el uso del bot a ti mismo, los desarrolladores, ni a las personas con privilegios de administrador."
             }
         },
         "in_submission": {
