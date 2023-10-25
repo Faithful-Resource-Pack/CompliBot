@@ -4,11 +4,11 @@
     ],
     "error": {
         "placeholder": "Questa caratteristica non è ancora stata implementata!",
-        "botbanned": "Non puoi usare il bot perché sei stato espulso dall'uso!",
+        "botbanned": "Non puoi usare il bot perché ti è stato vietato di usarlo!",
         "message": {
             "deleted": "Questo messaggio è già stato cancellato!"
         },
-        "command": "Uno dei miei sviluppatori ha commesso un errore durante la creazione di questo comando! Non preoccupatevi, l'errore non dipende da voi. Si prega di contattare <@360249987927638016>, <@473860522710794250>, o <@173336582265241601> se l'errore continua a verificarsi.",
+        "command": "Uno dei miei sviluppatori ha commesso un errore durante la creazione di questo comando! Non preoccupatevi, l'errore non dipende da voi. Si prega di contattare <@360249987927638016>, <@473860522710794250>, o <@173336582265241601> (in inglese) se l'errore continua a verificarsi.",
         "not_found": "%THING% non trovato!",
         "interaction": {
             "reserved": "Questa interazione è riservata a %USER%!"

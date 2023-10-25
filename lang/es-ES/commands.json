@@ -6,7 +6,7 @@
         "animate": {
             "invalid_text": {
                 "title": "¡Las reglas del MCMETA son inválidas!",
-                "description": "Errores comunes incluyen no entrecomillando las propiedades dos veces o colocando mal un carácter."
+                "description": "Errores comunes incluyen no entrecomillando las propiedades o colocando mal un carácter."
             },
             "invalid_file": {
                 "title": "¡Archivo MCMETA inválido!",
@@ -15,8 +15,8 @@
         },
         "botban": {
             "unbannable": {
-                "title": "¡Este usuario no puede ser expulsado de utilizar el bot!",
-                "description": "No puedes expulsarte de utilizar el bot a ti mismo, expulsar a un desarrollador o a alguien con permisos de administrador."
+                "title": "¡No se puede prohibir a este usuario el uso del bot!",
+                "description": "No se puede prohibir el uso del bot a ti mismo, los desarrolladores, ni a las personas con privilegios de administrador."
             }
         },
         "in_submission": {
@@ -25,6 +25,11 @@
         },
         "images": {
             "too_big": "¡Esta imagen es demasiado grande para %ACTION%!",
+            "actions": {
+                "tile": "ponerla en mosaico",
+                "palette": "obtener sus colores",
+                "compare": "comparar"
+            },
             "too_long": "¡Esta imagen es demasiado larga para animar!",
             "max_size": "El tamaño máximo para una imagen es 1024px².",
             "max_length": "La longitud máxima de un tilesheet es de 32 fotogramas.",
@@ -52,7 +57,7 @@
             },
             "developing": {
                 "title": "Desarrollando",
-                "description": "Mi código es totalmente público (escrito en TypeScript y Discord.js) y se puede clonar en mi repositorio de GitHub [aquí](https://github.com/faithful-resource-pack/complibot).\n\nSi estás interesado en desarrollar, contacta a <@!473860522710794250>, <@!360249987927638016> o <@!173336582265241601> para más información."
+                "description": "Mi código es totalmente público (escrito en TypeScript y Discord.js) y se puede clonar en mi repositorio de GitHub [aquí](https://github.com/faithful-resource-pack/complibot).\n\nSi estás interesado en desarrollar, contacta a <@!473860522710794250>, <@!360249987927638016> o <@!173336582265241601> (en inglés) por más información."
             }
         }
     }
