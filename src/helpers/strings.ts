@@ -9,29 +9,21 @@ export type AllStrings = typeof baseTranslations;
 /**
  * Load strings based on interaction language
  * @author Evorp
- * @returns string output in correct language
+ * @param forceEnglish whether to only use english or determine language
+ * @returns all strings in the correct language
  */
 export function strings(forceEnglish = false): AllStrings {
-	const countryCode = this.locale;
-	let baseLang: AllStrings;
-	// load all english strings into one lang object
-	for (const json of JSONFiles)
-		baseLang = {
-			...baseLang,
-			...require(`@/lang/en-US/${json}.json`),
-		};
-
-	if (forceEnglish || ["en-GB", "en-US"].includes(countryCode)) return baseLang;
+	if (forceEnglish || ["en-GB", "en-US"].includes(this.locale)) return baseTranslations;
 
 	// not in english
-	for (const json of JSONFiles)
+	return JSONFiles.reduce((acc, json) => {
+		let out: AllStrings;
 		try {
-			// try importing before adding to prevent errors if language isn't done
-			const translatedLang = require(`@/lang/${countryCode}/${json}.json`);
-
-			// merge all properties of object (if translation not done/updated yet on crowdin it falls back to english)
-			baseLang = mergeDeep({}, baseLang, translatedLang);
-		} catch {} // file not found
-
-	return baseLang;
+			// prevent errors if language isn't done
+			out = mergeDeep({}, acc, require(`@/lang/${this.locale}/${json}.json`));
+		} catch {
+			out = acc;
+		}
+		return out;
+	}, baseTranslations);
 }

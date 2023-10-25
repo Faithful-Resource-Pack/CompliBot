@@ -22,8 +22,8 @@ declare module "discord.js" {
 		/**
 		 * Load strings for a given interaction
 		 * @author Evorp
-		 * @param forceEnglish whether to only use english or determine locale
-		 * @returns all strings in the correct locale
+		 * @param forceEnglish whether to only use english or determine language
+		 * @returns all strings in the correct language
 		 */
 		strings(forceEnglish?: boolean): AllStrings;
 		/**
