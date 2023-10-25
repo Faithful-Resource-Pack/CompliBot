@@ -253,12 +253,12 @@ export class ExtendedClient extends Client {
 			});
 
 		const guilds = { global: [] };
-		commandsArr.forEach((el) => {
-			if (el.servers === null || el.servers === undefined) guilds.global.push(el.command);
+		commandsArr.forEach((cmd) => {
+			if (!cmd.servers) guilds.global.push(cmd.command);
 			else
-				el.servers.forEach((server) => {
+				cmd.servers.forEach((server) => {
 					if (guilds[server] === undefined) guilds[server] = [];
-					guilds[server].push(el.command);
+					guilds[server].push(cmd.command);
 				});
 		});
 

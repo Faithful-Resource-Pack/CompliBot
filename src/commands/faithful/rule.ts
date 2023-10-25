@@ -37,7 +37,7 @@ export const command: SlashCommand = {
 		// fetch the whole collection since we're using it multiple times
 		const settings = (await axios.get(`${interaction.client.tokens.apiUrl}settings/raw`)).data;
 
-		if (choice == "all" || choice == "server") {
+		if (["all", "server"].includes(choice)) {
 			if (!interaction.hasPermission("manager")) return;
 
 			interaction
