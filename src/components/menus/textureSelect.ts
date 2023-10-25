@@ -24,11 +24,11 @@ export default {
 		interaction.deferUpdate();
 
 		const [id, pack] = interaction.values[0].split("__");
-		const editOptions = await getTexture({
-			texture: (await axios.get(`${interaction.client.tokens.apiUrl}textures/${id}/all`)).data,
-			pack: pack,
-			guild: interaction.guild,
-		});
+		const editOptions = await getTexture(
+			interaction,
+			(await axios.get(`${interaction.client.tokens.apiUrl}textures/${id}/all`)).data,
+			pack,
+		);
 
 		if (!editOptions.files) return await interaction.ephemeralReply(editOptions);
 

@@ -42,11 +42,11 @@ export const command: SlashCommand = {
 
 		// only one result
 		if (results.length === 1) {
-			const replyOptions = await getTexture({
-				texture: results[0],
-				pack: interaction.options.getString("pack", true),
-				guild: interaction.guild,
-			});
+			const replyOptions = await getTexture(
+				interaction,
+				results[0],
+				interaction.options.getString("pack", true),
+			);
 
 			// no results found
 			if (!replyOptions.files) return interaction.ephemeralReply(replyOptions);

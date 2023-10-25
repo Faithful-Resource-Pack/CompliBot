@@ -2,7 +2,7 @@ import { EmbedBuilder } from "@client";
 import TokenJson from "@json/tokens.json";
 import { Contributor, GalleryTexture, Tokens } from "@interfaces";
 import axios from "axios";
-import { APIEmbedField, AttachmentBuilder, Guild } from "discord.js";
+import { APIEmbedField, AttachmentBuilder, Interaction } from "discord.js";
 import { magnify, magnifyToAttachment } from "@images/magnify";
 import { colors } from "@utility/colors";
 import { Texture, Contribution } from "@interfaces";
@@ -15,23 +15,21 @@ import { Image, loadImage } from "@napi-rs/canvas";
 /**
  * Create a full texture embed with provided information
  * @author Juknum, Evorp, RobertR11
- * @param options what textures to load
  * @returns reply options
  */
-export const getTexture = async (options: {
-	texture: Texture;
-	pack: string;
-	guild: Guild;
-}): Promise<any> => {
+export async function getTexture(
+	interaction: Interaction,
+	texture: Texture,
+	pack: string,
+): Promise<any> {
 	const tokens: Tokens = TokenJson;
-	const { texture, pack, guild } = options;
 	const { paths, contributions: allContributions } = texture;
-	const animated = paths.filter((p) => p.mcmeta === true).length !== 0;
+	const isAnimated = paths.filter((p) => p.mcmeta === true).length !== 0;
 	const contributionJSON: Contributor[] = (await axios.get(`${tokens.apiUrl}contributions/authors`))
 		.data;
 
 	let mcmeta: any = {};
-	if (animated) {
+	if (isAnimated) {
 		const animatedPath = paths.filter((p) => p.mcmeta === true)[0];
 		const raw = (await axios.get(`${tokens.apiUrl}settings/repositories.raw`)).data;
 
@@ -52,7 +50,7 @@ export const getTexture = async (options: {
 
 	const files: AttachmentBuilder[] = [];
 	const embed = new EmbedBuilder().setTitle(`[#${texture.id}] ${texture.name}`).setFooter({
-		text: `${strPack}`,
+		text: strPack,
 		iconURL: strIconURL,
 	});
 
@@ -70,8 +68,13 @@ export const getTexture = async (options: {
 		image = await loadImage(textureURL);
 	} catch (err) {
 		const errorEmbed = new EmbedBuilder()
-			.setTitle("Image not found!")
-			.setDescription(`\`${texture.name}\` hasn't been made for ${strPack} yet or is blacklisted!`)
+			.setTitle(interaction.strings().command.texture.no_image.title)
+			.setDescription(
+				interaction
+					.strings()
+					.command.texture.no_image.description.replace("%TEXTURENAME%", texture.name)
+					.replace("%PACK%", strPack),
+			)
 			.setColor(colors.red);
 		// missing texture so we break early
 		return { embeds: [errorEmbed], components: [] };
@@ -81,7 +84,7 @@ export const getTexture = async (options: {
 		.setURL(`https://webapp.faithfulpack.net/#/gallery/java/32x/latest/all/?show=${texture.id}`)
 		.addFields({ name: "Resolution", value: `${image.width}×${image.height}` })
 		.setThumbnail(textureURL)
-		.setImage(`attachment://${animated ? "animated.gif" : "magnified.png"}`);
+		.setImage(`attachment://${isAnimated ? "animated.gif" : "magnified.png"}`);
 
 	let mainContribution: Contribution;
 	if (allContributions.length) {
@@ -92,7 +95,7 @@ export const getTexture = async (options: {
 
 	if (mainContribution) {
 		const authors = mainContribution.authors.map((authorId) => {
-			if (guild.members.cache.get(authorId)) return `<@!${authorId}>`;
+			if (interaction.guild.members.cache.get(authorId)) return `<@!${authorId}>`;
 
 			// fetch username if not in server
 			return contributionJSON.find((user) => user.id == authorId)?.username ?? "Anonymous";
@@ -113,7 +116,7 @@ export const getTexture = async (options: {
 	embed.addFields(addPathsToEmbed(texture));
 
 	// magnifying the texture in thumbnail
-	if (animated) {
+	if (isAnimated) {
 		if (Object.keys(mcmeta?.animation ?? {}).length)
 			embed.addFields({
 				name: "MCMETA",
@@ -125,7 +128,7 @@ export const getTexture = async (options: {
 	} else files.push(await magnifyToAttachment(textureURL));
 
 	return { embeds: [embed], files: files, components: [textureButtons], ephemeral: false };
-};
+}
 
 /**
  * Generate embed fields for a given texture's paths
