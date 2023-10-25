@@ -106,15 +106,15 @@ export const command: SlashCommand = {
 						files: [new AttachmentBuilder(buffer, { name: "bans.json" })],
 					});
 				case "embed":
-					const emb = new EmbedBuilder()
+					const embed = new EmbedBuilder()
 						.setTitle("Botbanned IDs:")
 						.setDescription(JSON.parse(buffer.toString("utf-8"))["ids"].join("\n"));
-					return interaction.editReply({ embeds: [emb] });
+					return interaction.editReply({ embeds: [embed] });
 				case "mentions":
-					const pingEmb = new EmbedBuilder()
+					const pingEmbed = new EmbedBuilder()
 						.setTitle("Botbanned Users:")
 						.setDescription("<@" + JSON.parse(buffer.toString("utf-8"))["ids"].join(">\n<@") + ">");
-					return interaction.editReply({ embeds: [pingEmb] });
+					return interaction.editReply({ embeds: [pingEmbed] });
 				default: // also text
 					interaction.editReply({
 						files: [new AttachmentBuilder(txtBuff, { name: "bans.txt" })],

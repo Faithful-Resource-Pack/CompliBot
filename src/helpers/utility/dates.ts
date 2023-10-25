@@ -1,26 +1,12 @@
 /**
- * Add minutes to a date
- * @author Juknum
- * @param d the date to add minutes to
- * @param minutes the number of minutes to add
- * @returns the new date
- */
-export const addMinutes = (d: Date, minutes?: number): Date => {
-	if (minutes === null || minutes === undefined) minutes = 1;
-	d.setMinutes(d.getMinutes() + minutes);
-	return d;
-};
-
-/**
  * Add seconds to a date
  * @author Juknum
  * @param d the date to add seconds to
  * @param seconds the number of seconds to add
  * @returns the new date
  */
-export const addSeconds = (d: Date, seconds?: number): Date => {
-	if (seconds === null || seconds === undefined) seconds = 1;
-	d.setSeconds(d.getSeconds() + seconds);
+export const addSeconds = (d: Date, seconds?: number) => {
+	d.setSeconds(d.getSeconds() + seconds ?? 1);
 	return d;
 };
 
@@ -52,10 +38,10 @@ export const parseDate = (d: string) => {
  * @param t timestamp to convert
  * @returns human readable format
  */
-export const fromTimestampToHumanReadable = (t: number): string => {
+export const fromTimestampToHumanReadable = (t: number) => {
 	if (t === undefined) return "01/01/1970";
 
-	let date = new Date(parseInt(t.toString())); // cast to int because it might be a string
+	let date = new Date(Number(t)); // cast to int because it might be a string
 	return `${date.getDate() < 10 ? `0${date.getDate()}` : date.getDate()}/${
 		date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1
 	}/${date.getFullYear()}`;

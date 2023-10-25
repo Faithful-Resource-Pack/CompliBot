@@ -1,7 +1,7 @@
 import { Client, Message, StringSelectMenuInteraction } from "@client";
 import { Component } from "@interfaces";
 import { info } from "@helpers/logger";
-import { MessageEditOptions, MessageInteraction } from "discord.js";
+import { MessageInteraction } from "discord.js";
 import { getTexture } from "@functions/getTexture";
 import axios from "axios";
 
