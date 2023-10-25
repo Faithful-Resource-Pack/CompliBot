@@ -24,7 +24,12 @@
             "description": "Si prega invece di utilizzare il canale appropriato per i comandi del bot."
         },
         "images": {
-            "too_big": "Questa immagine è troppo grande per essere %ACTION%!",
+            "too_big": "Questa immagine è troppo grande per %ACTION%!",
+            "actions": {
+                "tile": "essere piastrellata",
+                "palette": "prendere i colori",
+                "compare": "essere confrontata"
+            },
             "too_long": "L'immagine è troppo lunga per essere animata!",
             "max_size": "La dimensione massima di un'immagine è di 1024px².",
             "max_length": "La lunghezza massima di un tileset è di 32 fotogrammi.",
