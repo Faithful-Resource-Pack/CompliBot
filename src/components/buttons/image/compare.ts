@@ -1,8 +1,9 @@
 import { Component } from "@interfaces";
 import { info } from "@helpers/logger";
 import { Client, Message, ButtonInteraction, EmbedBuilder } from "@client";
-import textureComparison, { comparisonTooBig } from "@functions/textureComparison";
+import textureComparison from "@functions/textureComparison";
 import { InteractionEditReplyOptions } from "discord.js";
+import { imageTooBig } from "@helpers/warnUser";
 
 export default {
 	id: "compare",
@@ -17,7 +18,7 @@ export default {
 		if (!messageOptions) {
 			// stupid workaround for already having deferred the message
 			await interaction.deleteReply();
-			return comparisonTooBig(interaction);
+			return await imageTooBig(interaction, "compare");
 		}
 
 		const embed = messageOptions.embeds[0] as EmbedBuilder;

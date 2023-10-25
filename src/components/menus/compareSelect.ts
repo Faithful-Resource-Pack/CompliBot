@@ -2,7 +2,8 @@ import { Client, Message, StringSelectMenuInteraction } from "@client";
 import { Component } from "@interfaces";
 import { info } from "@helpers/logger";
 import { MessageEditOptions, MessageInteraction } from "discord.js";
-import textureComparison, { comparisonTooBig } from "@functions/textureComparison";
+import textureComparison from "@functions/textureComparison";
+import { imageTooBig } from "@helpers/warnUser";
 
 export default {
 	id: "compareSelect",
@@ -32,7 +33,7 @@ export default {
 		if (!editOptions) {
 			// stupid workaround for already having deferred the message
 			await interaction.deleteReply();
-			return comparisonTooBig(interaction);
+			return await imageTooBig(interaction, "compare");
 		}
 
 		message.edit(editOptions).then((message: Message) => message.deleteButton());

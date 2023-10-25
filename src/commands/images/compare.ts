@@ -1,9 +1,10 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "discord.js";
 import { ChatInputCommandInteraction, Message } from "@client";
-import textureComparison, { comparisonTooBig } from "@functions/textureComparison";
+import textureComparison from "@functions/textureComparison";
 import parseTextureName from "@functions/parseTextureName";
 import { textureChoiceEmbed } from "@helpers/choiceEmbed";
+import { imageTooBig } from "@helpers/warnUser";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -44,7 +45,7 @@ export const command: SlashCommand = {
 			const replyOptions = await textureComparison(interaction.client, results[0].id, display);
 			if (!replyOptions) {
 				await interaction.deleteReply();
-				return comparisonTooBig(interaction);
+				return await imageTooBig(interaction, "compare");
 			}
 
 			return interaction.editReply(replyOptions).then((message: Message) => message.deleteButton());

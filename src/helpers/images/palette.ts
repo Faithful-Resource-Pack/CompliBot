@@ -1,15 +1,8 @@
-import {
-	EmbedBuilder,
-	ButtonInteraction,
-	ChatInputCommandInteraction,
-	StringSelectMenuInteraction,
-	Message,
-} from "@client";
+import { EmbedBuilder } from "@client";
 import { createCanvas, loadImage } from "@napi-rs/canvas";
 import { AttachmentBuilder } from "discord.js";
 import ColorManager from "@images/colors";
 import { ImageSource } from "@helpers/getImage";
-import warnUser from "@helpers/warnUser";
 
 const COOLORS_URL = "https://coolors.co/";
 
@@ -191,26 +184,4 @@ export async function paletteToAttachment(
 	// too big
 	if (!image || !embed) return [null, null];
 	return [new AttachmentBuilder(image, { name }), embed];
-}
-
-/**
- * Warn the user that the image is too large
- * @author Evorp
- * @param interaction interaction to reply to
- */
-export async function paletteTooBig(
-	interaction:
-		| ButtonInteraction
-		| ChatInputCommandInteraction
-		| StringSelectMenuInteraction
-		| Message,
-) {
-	// force english if it's a message
-	return warnUser(
-		interaction,
-		interaction
-			.strings(interaction instanceof Message)
-			.command.images.too_big.replace("%ACTION%", "take the palette of"),
-		interaction.strings(interaction instanceof Message).command.images.max_size,
-	);
 }

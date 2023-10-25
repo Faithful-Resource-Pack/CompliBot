@@ -1,10 +1,10 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "discord.js";
-import { ChatInputCommandInteraction, EmbedBuilder, Message } from "@client";
-import { tileToAttachment, TileShape, TileRandom, tileTooBig } from "@images/tile";
+import { ChatInputCommandInteraction, Message } from "@client";
+import { tileToAttachment, TileShape, TileRandom } from "@images/tile";
 import getImage, { imageNotFound } from "@helpers/getImage";
 import { imageButtons } from "@utility/buttons";
-import { colors } from "@utility/colors";
+import { imageTooBig } from "@helpers/warnUser";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -46,7 +46,7 @@ export const command: SlashCommand = {
 		const file = await tileToAttachment(image, { random, shape });
 
 		if (!file) {
-			return await tileTooBig(interaction);
+			return await imageTooBig(interaction, "tile");
 		}
 		await interaction
 			.reply({

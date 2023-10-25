@@ -7,7 +7,7 @@ import {
 	StringSelectMenuInteraction,
 } from "@client";
 import { Interaction, MessageType } from "discord.js";
-import warnUser from "./warnUser";
+import { warnUser } from "./warnUser";
 
 // remove stupid discord metadata (idk why they even added it)
 export const removeMetadata = (url: string) => url.split("?")[0];
@@ -110,7 +110,7 @@ export default async function getImage(msgOrInteraction: Message | Interaction) 
 }
 
 /**
- * Warn the user that the image is too large
+ * Warn the user that the image could not be found
  * @author Evorp
  * @param interaction interaction to reply to
  */
@@ -123,7 +123,7 @@ export async function imageNotFound(
 ) {
 	return warnUser(
 		interaction,
-		interaction.strings().command.images.not_found,
-		interaction.strings().command.images.suggestion,
+		interaction.strings(interaction instanceof Message).command.images.not_found,
+		interaction.strings(interaction instanceof Message).command.images.suggestion,
 	);
 }

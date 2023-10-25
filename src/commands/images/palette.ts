@@ -1,8 +1,9 @@
 import { SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "discord.js";
 import { ChatInputCommandInteraction, Message } from "@client";
-import { paletteToAttachment, paletteTooBig } from "@images/palette";
+import { paletteToAttachment } from "@images/palette";
 import getImage, { imageNotFound } from "@helpers/getImage";
+import { imageTooBig } from "@helpers/warnUser";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -17,7 +18,7 @@ export const command: SlashCommand = {
 
 		const [file, embed] = await paletteToAttachment(image);
 
-		if (!file || !embed) return await paletteTooBig(interaction);
+		if (!file || !embed) return await imageTooBig(interaction, "palette");
 
 		await interaction
 			.reply({

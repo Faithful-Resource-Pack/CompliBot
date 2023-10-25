@@ -1,9 +1,10 @@
 import { Message } from "@client";
 import { magnifyToAttachment } from "./images/magnify";
 import getImage, { imageNotFound } from "./getImage";
-import { tileToAttachment, tileTooBig } from "./images/tile";
-import { paletteToAttachment, paletteTooBig } from "./images/palette";
+import { tileToAttachment } from "./images/tile";
+import { paletteToAttachment } from "./images/palette";
 import { imageButtons, magnifyButtons } from "@utility/buttons";
+import { imageTooBig } from "./warnUser";
 
 export default async function prefixCommandHandler(message: Message) {
 	const args = message.content.split(" ");
@@ -30,13 +31,13 @@ export default async function prefixCommandHandler(message: Message) {
 				.then((message: Message) => message.deleteButton());
 		case "t":
 			const file = await tileToAttachment(url);
-			if (!file) return tileTooBig(message);
+			if (!file) return await imageTooBig(message, "tile");
 			return await message
 				.reply({ files: [file], components: [imageButtons] })
 				.then((message: Message) => message.deleteButton());
 		case "p":
 			const [attachment, embed] = await paletteToAttachment(url);
-			if (!attachment || !embed) return paletteTooBig(message);
+			if (!attachment || !embed) return await imageTooBig(message, "palette");
 			return await message
 				.reply({ files: [attachment], embeds: [embed] })
 				.then((message: Message) => message.deleteButton());

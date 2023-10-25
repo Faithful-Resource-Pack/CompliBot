@@ -1,20 +1,12 @@
 import stitch from "@images/stitch";
 import { magnifyToAttachment } from "@images/magnify";
 import { Image, loadImage } from "@napi-rs/canvas";
-import {
-	Client,
-	EmbedBuilder,
-	ButtonInteraction,
-	ChatInputCommandInteraction,
-	StringSelectMenuInteraction,
-	Message,
-} from "@client";
+import { Client, EmbedBuilder } from "@client";
 import { addPathsToEmbed } from "@functions/getTexture";
 import { GalleryTexture } from "@interfaces";
 import axios from "axios";
 import { ActionRowBuilder, ButtonBuilder } from "discord.js";
 import { template } from "@utility/buttons";
-import warnUser from "@helpers/warnUser";
 
 /**
  * Get the corresponding pack IDs for a given display choice
@@ -95,26 +87,4 @@ export default async function textureComparison(
 		files: [magnified],
 		components: [new ActionRowBuilder<ButtonBuilder>().addComponents(template)],
 	};
-}
-
-/**
- * Warn the user that the image is too large
- * @author Evorp
- * @param interaction interaction to reply to
- */
-export async function comparisonTooBig(
-	interaction:
-		| ButtonInteraction
-		| ChatInputCommandInteraction
-		| StringSelectMenuInteraction
-		| Message,
-) {
-	// force english if it's a message
-	return warnUser(
-		interaction,
-		interaction
-			.strings(interaction instanceof Message)
-			.command.images.too_big.replace("%ACTION%", "compare"),
-		interaction.strings(interaction instanceof Message).command.images.max_size,
-	);
 }

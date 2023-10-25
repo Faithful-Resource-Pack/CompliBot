@@ -7,7 +7,6 @@ import {
 	StringSelectMenuInteraction,
 	Message,
 } from "@client";
-import warnUser from "@helpers/warnUser";
 
 export type TileShape = "grid" | "vertical" | "horizontal" | "hollow" | "plus";
 export type TileRandom = "flip" | "rotation";
@@ -140,26 +139,4 @@ export async function tileToAttachment(
 	// image too big so we returned early
 	if (!buf) return null;
 	return new AttachmentBuilder(buf, { name });
-}
-
-/**
- * Warn the user that the image is too large
- * @author Evorp
- * @param interaction interaction to reply to
- */
-export async function tileTooBig(
-	interaction:
-		| ButtonInteraction
-		| ChatInputCommandInteraction
-		| StringSelectMenuInteraction
-		| Message,
-) {
-	// force english if it's a message
-	return warnUser(
-		interaction,
-		interaction
-			.strings(interaction instanceof Message)
-			.command.images.too_big.replace("%ACTION%", "be tiled"),
-		interaction.strings(interaction instanceof Message).command.images.max_size,
-	);
 }
