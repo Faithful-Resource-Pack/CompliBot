@@ -11,7 +11,7 @@ export default {
 		client.loadSlashCommands();
 
 		const embed = new EmbedBuilder()
-			.setTitle("Thanks for Inviting me")
+			.setTitle("Thanks for inviting me")
 			.setDescription("To get started, try to type `/` to see all available slash commands!");
 
 		guild.systemChannel?.send({ embeds: [embed] });

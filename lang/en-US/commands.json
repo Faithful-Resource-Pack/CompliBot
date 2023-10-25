@@ -46,7 +46,12 @@
             "not_found": "The command `%COMMAND%` doesn't exist!"
         },
         "texture": {
-            "not_found": "No results were found for %TEXTURENAME%. Have you made a typo?"
+            "failed_search": "Texture search failed!",
+            "too_short": "You need at least three characters to start a texture search!",
+            "no_results": {
+                "title": "No results found!",
+                "description": "No results were found for %TEXTURENAME%. Have you made a typo?"
+            }
         },
         "info": {
             "title": "Hi, I'm CompliBot. I was made for the Faithful Discord servers.",
