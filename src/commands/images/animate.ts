@@ -51,6 +51,8 @@ export const command: SlashCommand = {
 			// add surrounding braces if needed to parse properly
 			if (!mcmetaText.endsWith("}")) mcmetaText += "}";
 			if (!mcmetaText.startsWith("{")) mcmetaText = "{" + mcmetaText;
+			// replace single quotes with double quotes
+			mcmetaText = mcmetaText.replace(/\'/g, '"');
 
 			let parsed: any;
 			try {
