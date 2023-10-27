@@ -18,8 +18,10 @@ export const command: SlashCommand = {
 		)
 		.addStringOption((o) =>
 			o
-				.setName("color")
-				.setDescription("Set the color on the side of the embed.")
+				.setName("colour")
+				.setNameLocalization("en-US", "color")
+				.setDescription("Set the colour on the side of the embed.")
+				.setDescriptionLocalization("en-US", "Set the color on the side of the embed.")
 				.setRequired(false),
 		)
 		.addStringOption((o) =>

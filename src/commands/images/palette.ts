@@ -8,7 +8,8 @@ import { imageTooBig } from "@helpers/warnUser";
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
 		.setName("palette")
-		.setDescription("Get the color palette of an image.")
+		.setDescription("Get the colour palette of an image.")
+		.setDescriptionLocalization("en-US", "Get the color palette of an image.")
 		.addAttachmentOption((o) =>
 			o.setName("image").setDescription("The image to palette").setRequired(false),
 		),
