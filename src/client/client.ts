@@ -242,7 +242,7 @@ export class ExtendedClient extends Client {
 		}
 
 		const rest = new REST({ version: "10" }).setToken(this.tokens.token);
-		const allGuilds: { [name: string]: string } = (
+		const allGuilds: Record<string, string> = (
 			await axios.get(`${this.tokens.apiUrl}settings/guilds`)
 		).data;
 

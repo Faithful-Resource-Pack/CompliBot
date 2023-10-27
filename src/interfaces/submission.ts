@@ -1,7 +1,5 @@
 // settings.submission.packs
-export interface Submissions {
-	[pack: string]: Pack;
-}
+export type Submissions = Record<string, Pack>;
 
 // one specific pack instance
 export interface Pack {

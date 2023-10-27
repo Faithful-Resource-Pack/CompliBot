@@ -25,7 +25,7 @@ export const command: SlashCommand = {
 		const key = interaction.options.getString("name", false) ?? "default";
 
 		// you can't import images directly in infoembed.ts so you have to do it here (blame TS)
-		const images: { [name: string]: string } = (
+		const images: Record<string, string> = (
 			await axios.get(`${interaction.client.tokens.apiUrl}settings/images`)
 		).data;
 

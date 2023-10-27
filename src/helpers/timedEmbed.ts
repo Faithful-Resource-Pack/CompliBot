@@ -1,9 +1,7 @@
 import { TextChannel } from "discord.js";
 import { Message } from "@client";
 
-export type Votes = {
-	[key: string]: string[];
-};
+export type Votes = Record<string, string[]>;
 
 interface AllVotes {
 	upvote: number;

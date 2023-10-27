@@ -1,15 +1,10 @@
 import { ColorResolvable } from "discord.js";
 
-// discord.js will complain strings can't resolve as colors otherwise
-type ColorType = {
-	[name: string]: ColorResolvable;
-};
-
 /**
  * Can't fetch from settings.json since djs complains about color resolving
  * so we declare them all here
  */
-export const colors: ColorType = {
+export const colors: Record<string, ColorResolvable> = {
 	// status/generic colors
 	red: "#f44336",
 	yellow: "#ffeb3b",

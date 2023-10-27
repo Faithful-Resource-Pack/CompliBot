@@ -21,7 +21,7 @@ export const zipToAttachmentBuilders = async (url: string): Promise<AttachmentBu
 	).data;
 
 	// get files inside the zip as an object: { "filename": "Buffer" }
-	const zipFiles: { [key: string]: Buffer } = await JSZip.loadAsync(arrayBufferToBufferCycle(zip))
+	const zipFiles: Record<string, Buffer> = await JSZip.loadAsync(arrayBufferToBufferCycle(zip))
 		.then((zip) => {
 			const ext = /(.png|.tga)$/;
 			let promises = Object.keys(zip.files)
@@ -35,7 +35,7 @@ export const zipToAttachmentBuilders = async (url: string): Promise<AttachmentBu
 
 			return Promise.all(promises);
 		})
-		.then((res): { [key: string]: Buffer } => {
+		.then((res): Record<string, Buffer> => {
 			return res.reduce((acc, val: [key: string, buff: Buffer]) => {
 				const splitted = val[0].split("/");
 				const key = splitted.at(-1);
