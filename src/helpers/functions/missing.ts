@@ -3,7 +3,7 @@ import { existsSync, readdirSync, statSync } from "fs";
 import { mkdir } from "fs/promises";
 import formatName from "@utility/formatName";
 import { Client } from "@client";
-import { ChannelType, VoiceChannel } from "discord.js";
+import { ChannelType } from "discord.js";
 import { join, normalize } from "path";
 
 import os from "os";
@@ -68,7 +68,7 @@ export const computeAndUpdate = async (
 	let packProgress: any;
 	try {
 		/** @todo fix "Error: socket hang up" from this line of code */
-		packProgress = (await axios.get(`${client.tokens.apiUrl}settings/channels.pack_progress`)).data;
+		packProgress = (await axios.get(`${client.tokens.apiUrl}settings/raw`)).data.channels.pack_progress;
 	} catch {
 		return results;
 	}
