@@ -132,9 +132,10 @@ export class Poll extends TimedEmbed {
 		embed.setTitle(options.question);
 		embed.setFooter({ text: `${this.id} | Use /poll to make a poll!` });
 		embed.addFields(
-			options.answersArr.map((answer: string) => {
-				return { name: `${answer}`, value: `No votes yet.` };
-			}),
+			options.answersArr.map((answer: string) => ({
+				name: `${answer}`,
+				value: `No votes yet.`,
+			})),
 		);
 
 		// votes options setup

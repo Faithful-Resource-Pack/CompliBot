@@ -1,4 +1,4 @@
-import { SlashCommand, SyncSlashCommandBuilder } from "@interfaces";
+import { FaithfulPack, SlashCommand, SyncSlashCommandBuilder } from "@interfaces";
 import { Client, ChatInputCommandInteraction, EmbedBuilder } from "@client";
 import { SlashCommandBuilder, Message, AttachmentBuilder } from "discord.js";
 import {
@@ -53,9 +53,7 @@ export const command: SlashCommand = {
 						...versions
 							.sort(minecraftSorter)
 							.reverse() // newest at top
-							.map((i: string) => {
-								return { name: i, value: i };
-							}),
+							.map((i: string) => ({ name: i, value: i })),
 					)
 					.setRequired(false),
 			)
@@ -70,7 +68,7 @@ export const command: SlashCommand = {
 		await interaction.deferReply();
 
 		const edition = interaction.options.getString("edition", true);
-		const pack = interaction.options.getString("pack", true);
+		const pack = interaction.options.getString("pack", true) as FaithfulPack;
 		const version = interaction.options.getString("version") ?? "latest";
 
 		const updateChannels = version === "latest";

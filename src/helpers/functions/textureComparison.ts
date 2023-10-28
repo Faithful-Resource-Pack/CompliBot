@@ -3,7 +3,7 @@ import { magnifyToAttachment } from "@images/magnify";
 import { Image, loadImage } from "@napi-rs/canvas";
 import { Client, EmbedBuilder } from "@client";
 import { addPathsToEmbed } from "@functions/getTexture";
-import { GalleryTexture } from "@interfaces";
+import { AnyPack, GalleryTexture } from "@interfaces";
 import axios from "axios";
 import { ActionRowBuilder, ButtonBuilder } from "discord.js";
 import { template } from "@utility/buttons";
@@ -15,7 +15,7 @@ import { template } from "@utility/buttons";
  * @returns selected packs
  */
 export function parseDisplay(display: string) {
-	const PACKS = [
+	const PACKS: AnyPack[][] = [
 		["default", "faithful_32x", "faithful_64x"],
 		["default", "classic_faithful_32x", "classic_faithful_64x"],
 		["progart", "classic_faithful_32x_progart"],
@@ -45,7 +45,7 @@ export default async function textureComparison(
 	client: Client,
 	id: string,
 	display: string = "all",
-): Promise<any> {
+) {
 	const result: GalleryTexture = (
 		await axios.get(`${client.tokens.apiUrl}gallery/modal/${id}/latest`)
 	).data;

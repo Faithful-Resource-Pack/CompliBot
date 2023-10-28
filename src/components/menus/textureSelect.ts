@@ -1,7 +1,6 @@
 import { Client, Message, StringSelectMenuInteraction } from "@client";
-import { Component } from "@interfaces";
+import { Component, FaithfulPack } from "@interfaces";
 import { info } from "@helpers/logger";
-import { MessageInteraction } from "discord.js";
 import { getTexture } from "@functions/getTexture";
 import axios from "axios";
 
@@ -10,8 +9,8 @@ export default {
 	async execute(client: Client, interaction: StringSelectMenuInteraction) {
 		if (client.verbose) console.log(`${info}Texture selected!`);
 
-		const messageInteraction = interaction.message.interaction as MessageInteraction;
-		const message = interaction.message as Message;
+		const messageInteraction = interaction.message.interaction;
+		const message = interaction.message;
 
 		if (interaction.user.id !== messageInteraction.user.id)
 			return interaction.reply({
@@ -27,7 +26,7 @@ export default {
 		const editOptions = await getTexture(
 			interaction,
 			(await axios.get(`${interaction.client.tokens.apiUrl}textures/${id}/all`)).data,
-			pack,
+			pack as FaithfulPack,
 		);
 
 		if (!editOptions.files) return await interaction.ephemeralReply(editOptions);

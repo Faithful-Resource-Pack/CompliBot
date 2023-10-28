@@ -1,12 +1,12 @@
 import { info } from "@helpers/logger";
-import { Client, Message, ButtonInteraction } from "@client";
+import { Client, ButtonInteraction } from "@client";
 import { Component } from "@interfaces";
 
 export default {
 	id: "deleteMessage",
 	async execute(client: Client, interaction: ButtonInteraction) {
 		if (client.verbose) console.log(`${info}Message deleted!`);
-		const message = interaction.message as Message;
+		const message = interaction.message;
 		// if there's no interaction we store the author ID in the footer
 		const authorId = interaction.message.embeds[0].footer?.text.split(" | ")[1];
 

@@ -1,7 +1,6 @@
 import { Client, Message, StringSelectMenuInteraction } from "@client";
 import { Component } from "@interfaces";
 import { info } from "@helpers/logger";
-import { MessageInteraction } from "discord.js";
 import { cycleComparison } from "@images/cycle";
 
 export default {
@@ -9,8 +8,8 @@ export default {
 	async execute(client: Client, interaction: StringSelectMenuInteraction) {
 		if (client.verbose) console.log(`${info}Texture selected!`);
 
-		const messageInteraction = interaction.message.interaction as MessageInteraction;
-		const message = interaction.message as Message;
+		const messageInteraction = interaction.message.interaction;
+		const message = interaction.message;
 
 		if (interaction.user.id !== messageInteraction.user.id)
 			return interaction.reply({

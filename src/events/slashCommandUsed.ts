@@ -1,4 +1,4 @@
-import { Pack, SlashCommandI } from "@interfaces";
+import { SlashCommandI, Submissions } from "@interfaces";
 import { Collection } from "discord.js";
 import { Event } from "@interfaces";
 import { Client, ChatInputCommandInteraction, EmbedBuilder } from "@client";
@@ -9,7 +9,7 @@ export default {
 	name: "slashCommandUsed",
 	async execute(client: Client, interaction: ChatInputCommandInteraction) {
 		client.storeAction("slashCommand", interaction);
-		const packs: Pack[] = (await axios.get(`${client.tokens.apiUrl}settings/submission.packs`))
+		const packs: Submissions = (await axios.get(`${client.tokens.apiUrl}settings/submission.packs`))
 			.data;
 
 		const submissionChannels = Object.values(packs).map((pack) => pack.channels.submit);

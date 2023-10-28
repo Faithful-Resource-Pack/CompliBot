@@ -12,8 +12,7 @@ import { warnUser } from "./warnUser";
 // remove stupid discord metadata (idk why they even added it)
 export const removeMetadata = (url: string) => url.split("?")[0];
 
-export const isImage = (url: string) =>
-	url && /(png|jpg|jpeg|webp)$/g.test(removeMetadata(url));
+export const isImage = (url: string) => url && /(png|jpg|jpeg|webp)$/g.test(removeMetadata(url));
 
 // taken from loadImage();
 export type ImageSource = string | URL | Buffer | ArrayBufferLike | Uint8Array | Image | Readable;

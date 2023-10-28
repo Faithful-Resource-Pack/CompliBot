@@ -1,12 +1,12 @@
 import { Component } from "@interfaces";
-import { Client, Message, ButtonInteraction } from "@client";
+import { Client, ButtonInteraction } from "@client";
 import { Poll } from "@helpers/poll";
 
 export default {
 	id: "pollVote",
 	async execute(client: Client, interaction: ButtonInteraction) {
 		await interaction.deferUpdate();
-		const message = interaction.message as Message;
+		const message = interaction.message;
 		const embed = message.embeds[0];
 
 		// get poll, update it

@@ -13,32 +13,30 @@ import { Texture } from "@interfaces";
  * @param framerate framerate of the gif
  * @returns gif as a message attachment
  */
-export async function imagesToGIF(images: Image[], framerate: number): Promise<AttachmentBuilder> {
+export async function imagesToGIF(images: Image[], framerate = 1) {
 	const biggestImage = images.reduce((a, e) => (a.width > e.width ? a : e), {
 		width: 0,
 		height: 0,
 	});
 
 	// magnify all images to an equal size
-	let finalWidth: number;
-	let finalHeight: number;
 	const maxWidth = 1024;
 	const maxHeight = 1024;
 	const maxAspect = maxWidth / maxHeight;
 	const aspect = biggestImage.width / biggestImage.height;
-	if (maxAspect < aspect) {
-		finalWidth = maxWidth;
-		finalHeight = maxWidth / aspect;
-	} else {
-		finalHeight = maxHeight;
-		finalWidth = maxWidth * aspect;
-	}
+
+	let finalWidth = maxWidth;
+	let finalHeight = maxHeight;
+
+	if (maxAspect < aspect) finalHeight = maxWidth / aspect;
+	else finalWidth = maxWidth * aspect;
 
 	const encoder = new GIFEncoder(finalWidth, finalHeight);
 	encoder.start();
 	encoder.setTransparent(true);
+
 	for (const image of images) {
-		// converting the Image() object to a Canvas() object
+		// convert Image to a Canvas so the encoder can accept it
 		const canvas = createCanvas(finalWidth, finalHeight);
 		const ctx = canvas.getContext("2d");
 		ctx.imageSmoothingEnabled = false;
@@ -62,10 +60,10 @@ export async function imagesToGIF(images: Image[], framerate: number): Promise<A
  */
 export async function cycleComparison(
 	client: Client,
-	id: number | string,
+	id: string,
 	display: string,
-	framerate = 1,
-): Promise<any> {
+	framerate?: number,
+) {
 	const result: Texture = (await axios.get(`${client.tokens.apiUrl}textures/${id}/all`)).data;
 
 	let packText: string;

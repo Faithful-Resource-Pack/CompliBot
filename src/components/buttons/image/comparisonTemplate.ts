@@ -1,6 +1,6 @@
 import { Component } from "@interfaces";
 import { info } from "@helpers/logger";
-import { Client, Message, ButtonInteraction, EmbedBuilder } from "@client";
+import { Client, ButtonInteraction, EmbedBuilder } from "@client";
 import { magnifyToAttachment } from "@images/magnify";
 import { parseDisplay } from "@functions/textureComparison";
 import formatName from "@utility/formatName";
@@ -13,7 +13,7 @@ export default {
 		if (client.verbose) console.log(`${info}Comparison template requested!`);
 		await interaction.deferReply({ ephemeral: true });
 
-		const message = interaction.message as Message;
+		const message = interaction.message;
 		const display = message.embeds[0].footer.text.split(":")[1].trim();
 		const packs = parseDisplay(display);
 

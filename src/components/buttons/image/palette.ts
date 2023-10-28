@@ -10,7 +10,7 @@ export default {
 	async execute(client: Client, interaction: ButtonInteraction) {
 		if (client.verbose) console.log(`${info}Image palette was requested!`);
 
-		const message = interaction.message as Message;
+		const message = interaction.message;
 		const url = await getImage(message);
 		if (!url) return imageNotFound(interaction);
 		const [file, embed] = await paletteToAttachment(url);

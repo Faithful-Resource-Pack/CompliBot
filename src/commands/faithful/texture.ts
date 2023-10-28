@@ -1,4 +1,4 @@
-import { SlashCommand } from "@interfaces";
+import { FaithfulPack, SlashCommand } from "@interfaces";
 import { SlashCommandBuilder } from "discord.js";
 import { ChatInputCommandInteraction, Message } from "@client";
 import { getTexture } from "@functions/getTexture";
@@ -45,7 +45,7 @@ export const command: SlashCommand = {
 			const replyOptions = await getTexture(
 				interaction,
 				results[0],
-				interaction.options.getString("pack", true),
+				interaction.options.getString("pack", true) as FaithfulPack,
 			);
 
 			// no results found

@@ -1,15 +1,14 @@
 import { Component } from "@interfaces";
 import { info } from "@helpers/logger";
-import { Client, Message, ButtonInteraction } from "@client";
-import { MessageInteraction } from "discord.js";
+import { Client, ButtonInteraction } from "@client";
 
 export default {
 	id: "deleteInteraction",
 	async execute(client: Client, interaction: ButtonInteraction) {
 		if (client.verbose) console.log(`${info}Interaction Message deleted!`);
 
-		const messageInteraction = interaction.message.interaction as MessageInteraction;
-		const message = interaction.message as Message;
+		const messageInteraction = interaction.message.interaction;
+		const message = interaction.message;
 
 		if (messageInteraction != undefined && interaction.user.id != messageInteraction.user.id)
 			return interaction.reply({

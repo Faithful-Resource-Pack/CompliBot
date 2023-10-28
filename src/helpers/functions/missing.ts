@@ -9,12 +9,13 @@ import { join, normalize } from "path";
 import os from "os";
 import blacklistedTextures from "@json/blacklisted_textures.json";
 import axios from "axios";
+import { FaithfulPack } from "@interfaces";
 
 // return value for the compute function
 export interface MissingOptions {
 	completion: number;
 	edition: string;
-	pack: string;
+	pack: FaithfulPack;
 	version: string;
 	total?: number;
 }
@@ -23,7 +24,7 @@ export type MissingResult = [Buffer, string[], MissingOptions, Buffer?];
 
 export const computeAll = async (
 	client: Client,
-	pack: string,
+	pack: FaithfulPack,
 	version: string,
 	callback: Function,
 ): Promise<MissingResult[]> => {
@@ -38,7 +39,7 @@ export const computeAll = async (
 
 export const computeAndUpdateAll = async (
 	client: Client,
-	pack: string,
+	pack: FaithfulPack,
 	version: string,
 	callback: Function,
 ): Promise<MissingResult[]> => {
@@ -56,7 +57,7 @@ export const computeAndUpdateAll = async (
  */
 export const computeAndUpdate = async (
 	client: Client,
-	pack: string,
+	pack: FaithfulPack,
 	edition: string,
 	version: string,
 	callback: Function,
@@ -94,7 +95,7 @@ export const computeAndUpdate = async (
  */
 export const compute = async (
 	client: Client,
-	pack: string,
+	pack: FaithfulPack,
 	edition: string,
 	version: string,
 	callback: Function,

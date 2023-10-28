@@ -1,6 +1,6 @@
 import { Event } from "@interfaces";
 import { Client, Message, EmbedBuilder } from "@client";
-import { Pack } from "@interfaces";
+import { Submissions } from "@interfaces";
 import { colors } from "@utility/colors";
 import axios from "axios";
 import * as Random from "@utility/random";
@@ -14,7 +14,7 @@ export default {
 
 		if (message.author.bot) return;
 
-		const packs: Pack[] = (await axios.get(`${client.tokens.apiUrl}settings/submission.packs`))
+		const packs: Submissions = (await axios.get(`${client.tokens.apiUrl}settings/submission.packs`))
 			.data;
 
 		const submissionChannels = Object.values(packs).map((pack) => pack.channels.submit);

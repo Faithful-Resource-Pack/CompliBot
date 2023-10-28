@@ -1,16 +1,30 @@
+export type Edition = "java" | "bedrock";
+
+export type FaithfulPack =
+	| "faithful_32x"
+	| "faithful_64x"
+	| "classic_faithful_32x"
+	| "classic_faithful_32x_progart"
+	| "classic_faithful_64x";
+
+export type VanillaPack = "default" | "progart";
+
+export type AnyPack = FaithfulPack | VanillaPack;
+
 export interface Contribution {
 	id: string;
 	date: number; // unix timestamp
 	texture: string; // texture ID
 	resolution: number; // texture resolution
-	pack:
-		| "faithful_64x"
-		| "faithful_32x"
-		| "classic_faithful_32x"
-		| "classic_faithful_64x"
-		| "classic_faithful_32x_progart"
-		| "classic_faithful_64x_progart";
+	pack: FaithfulPack;
 	authors: string[];
+}
+
+export interface Contributor {
+	id: string;
+	contributions: number;
+	username?: string;
+	uuid?: string;
 }
 
 export interface Path {
@@ -24,7 +38,7 @@ export interface Path {
 export interface Use {
 	id: string;
 	name: string;
-	edition: "java" | "bedrock";
+	edition: Edition;
 }
 
 // when you don't add the "all" flag when searching on the API
@@ -42,13 +56,7 @@ export interface Texture extends BaseTexture {
 
 // used for comparison loader
 export interface GalleryTexture extends Omit<Texture, keyof BaseTexture> {
+	// texture properties are moved into their own object
 	texture: BaseTexture;
 	urls: [string, string];
-}
-
-export interface Contributor {
-	id: string;
-	contributions: number;
-	username?: string;
-	uuid?: string;
 }

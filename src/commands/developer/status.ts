@@ -18,9 +18,10 @@ export const command: SlashCommand = {
 				.addChoices(
 					...Object.values(ActivityType)
 						.filter((x) => typeof x == "string")
-						.map((i: string) => {
-							return { name: i, value: i };
-						}),
+						.map((i: string) => ({
+							name: i,
+							value: i,
+						})),
 				)
 				.setRequired(true),
 		)

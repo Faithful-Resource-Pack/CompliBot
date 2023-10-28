@@ -1,6 +1,6 @@
 import { EmbedBuilder } from "@client";
 import TokenJson from "@json/tokens.json";
-import { Contributor, GalleryTexture, Tokens } from "@interfaces";
+import { Contributor, FaithfulPack, GalleryTexture, Tokens } from "@interfaces";
 import axios from "axios";
 import { APIEmbedField, AttachmentBuilder, Interaction } from "discord.js";
 import { magnify, magnifyToAttachment } from "@images/magnify";
@@ -17,11 +17,7 @@ import { Image, loadImage } from "@napi-rs/canvas";
  * @author Juknum, Evorp, RobertR11
  * @returns reply options
  */
-export async function getTexture(
-	interaction: Interaction,
-	texture: Texture,
-	pack: string,
-): Promise<any> {
+export async function getTexture(interaction: Interaction, texture: Texture, pack: FaithfulPack) {
 	const tokens: Tokens = TokenJson;
 	const { paths, contributions: allContributions } = texture;
 	const isAnimated = paths.filter((p) => p.mcmeta === true).length !== 0;
