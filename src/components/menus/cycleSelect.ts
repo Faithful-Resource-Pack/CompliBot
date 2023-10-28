@@ -1,7 +1,7 @@
 import { Client, Message, StringSelectMenuInteraction } from "@client";
 import { Component } from "@interfaces";
 import { info } from "@helpers/logger";
-import { cycleComparison } from "@images/cycle";
+import { cycleComparison } from "@functions/cycleComparison";
 
 export default {
 	id: "cycleSelect",

@@ -1,6 +1,6 @@
 import { Image, createCanvas, loadImage } from "@napi-rs/canvas";
 import { AttachmentBuilder } from "discord.js";
-import GIFEncoder from "./GIFEncoder";
+import GIFEncoder from "@images/GIFEncoder";
 import { Client, EmbedBuilder } from "@client";
 import { addPathsToEmbed } from "@functions/getTexture";
 import axios from "axios";
@@ -35,16 +35,19 @@ export async function imagesToGIF(images: Image[], framerate = 1) {
 	encoder.start();
 	encoder.setTransparent(true);
 
+	const canvas = createCanvas(finalWidth, finalHeight);
+	const ctx = canvas.getContext("2d");
+	ctx.imageSmoothingEnabled = false;
 	for (const image of images) {
+		ctx.clearRect(0, 0, finalWidth, finalHeight);
 		// convert Image to a Canvas so the encoder can accept it
-		const canvas = createCanvas(finalWidth, finalHeight);
-		const ctx = canvas.getContext("2d");
-		ctx.imageSmoothingEnabled = false;
 		ctx.drawImage(image, 0, 0, finalWidth, finalHeight);
+
 		// interface takes ms but our framerate is in seconds
 		encoder.setDelay(1000 * framerate);
 		encoder.addFrame(ctx);
 	}
+
 	encoder.finish();
 	return new AttachmentBuilder(encoder.out.getData(), { name: "cycled.gif" });
 }
