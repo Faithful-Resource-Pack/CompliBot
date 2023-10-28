@@ -68,7 +68,8 @@ export const computeAndUpdate = async (
 	let packProgress: any;
 	try {
 		/** @todo fix "Error: socket hang up" from this line of code */
-		packProgress = (await axios.get(`${client.tokens.apiUrl}settings/raw`)).data.channels.pack_progress;
+		packProgress = (await axios.get(`${client.tokens.apiUrl}settings/raw`)).data.channels
+			.pack_progress;
 	} catch {
 		return results;
 	}

@@ -1,16 +1,15 @@
 import { createCanvas, loadImage } from "@napi-rs/canvas";
 import { AttachmentBuilder } from "discord.js";
-import ColorManager from "@images/colors";
 import { ImageSource } from "@helpers/getImage";
 
 export const mcColors = {
 	Foliage: "#5BAB46",
 	ColdFoliage: "#60A17B",
-	HotFoliage: "#1ABF00",
+	LushFoliage: "#1ABF00",
 	DryFoliage: "#AEA42A",
 	Grass: "#7CBD6B",
 	ColdGrass: "#80B497",
-	HotGrass: "#47CD33",
+	LushGrass: "#47CD33",
 	DryGrass: "#BFB755",
 	WhiteDye: "#F9FFFE",
 	OrangeDye: "#F9801D",
@@ -57,21 +56,6 @@ export async function multiply(origin: ImageSource, color: string) {
 
 	ctx.fillStyle = color;
 	ctx.fillRect(0, 0, imageToDraw.width, imageToDraw.height);
-
-	const data = ctx.getImageData(0, 0, imageToDraw.width, imageToDraw.height);
-
-	for (let i = 0; i < data.data.length; i += 4) {
-		const r = data.data[i];
-		const g = data.data[i + 1];
-		const b = data.data[i + 2];
-
-		const hex = new ColorManager({ rgb: { r, g, b } }).toHEX().value;
-		if (hex.toUpperCase() == color.substring(1)) {
-			data.data[i + 3] = 0;
-		}
-	}
-
-	ctx.putImageData(data, 0, 0);
 
 	return canvas.toBuffer("image/png");
 }
