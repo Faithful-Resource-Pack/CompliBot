@@ -3,4 +3,3 @@ export { ExtendedEmbedBuilder as EmbedBuilder } from "./embed";
 export * from "./message";
 export * from "./automation";
 export * from "./interaction";
-export * from "./emittingCollection";

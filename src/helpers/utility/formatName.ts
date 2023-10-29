@@ -1,4 +1,4 @@
-import { AnyPack } from "@interfaces";
+import { AnyPack } from "@interfaces/firestorm";
 
 /**
  * Format a pack ID into a displayable name and icon

@@ -1,4 +1,4 @@
-import { Event } from "@interfaces";
+import { Event } from "@interfaces/events";
 import { success } from "@helpers/logger";
 import { ActivityType } from "discord.js";
 

@@ -25,7 +25,7 @@
 			"@functions/*": ["helpers/functions/*"],
 			"@utility/*": ["helpers/utility/*"],
 			"@helpers/*": ["helpers/*"],
-			"@interfaces": ["interfaces"],
+			"@interfaces/*": ["interfaces/*"],
 			"@json/*": ["../json/*"],
 			"@images/*": ["helpers/images/*"]
 		}

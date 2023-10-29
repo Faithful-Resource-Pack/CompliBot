@@ -1,5 +1,5 @@
 import { Client, Message, StringSelectMenuInteraction } from "@client";
-import { Component } from "@interfaces";
+import { Component } from "@interfaces/components";
 import { info } from "@helpers/logger";
 import { MessageEditOptions } from "discord.js";
 import textureComparison from "@functions/textureComparison";

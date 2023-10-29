@@ -1,4 +1,4 @@
-import { Event } from "@interfaces";
+import { Event } from "@interfaces/events";
 import { Client, ModalSubmitInteraction } from "@client";
 
 export default {

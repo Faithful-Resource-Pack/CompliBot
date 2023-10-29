@@ -3,7 +3,7 @@
 		"prefix": "net",
 		"description": "Client-emitted event template.",
 		"body": [
-			"import { Event } from \"@interfaces\";",
+			"import { Event } from \"@interfaces/events\";",
 			"import { Client } from \"@client\"",
 			"\nexport default {",
 			"\tname: \"${1:Name}\",",
@@ -17,7 +17,7 @@
 		"prefix": "nact",
 		"description": "For non-static slash command data.",
 		"body": [
-			"import { SlashCommand, SyncSlashCommandBuilder } from \"@interfaces\";",
+			"import { SlashCommand, SyncSlashCommandBuilder } from \"@interfaces/commands\";",
 			"import { Client, ChatInputCommandInteraction, EmbedBuilder } from \"@client\";",
 			"import { SlashCommandBuilder } from \"discord.js\";",
 			"\nexport const command: SlashCommand = {",
@@ -39,7 +39,7 @@
 		"prefix": "nct",
 		"description": "Regular slash command template.",
 		"body": [
-			"import { SlashCommand } from \"@interfaces\";",
+			"import { SlashCommand } from \"@interfaces/commands\";",
 			"import { Client, ChatInputCommandInteraction, EmbedBuilder } from \"@client\";",
 			"import { SlashCommandBuilder } from \"discord.js\";",
 			"\nexport const command: SlashCommand = {",

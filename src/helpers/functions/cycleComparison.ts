@@ -4,7 +4,7 @@ import GIFEncoder from "@images/GIFEncoder";
 import { Client, EmbedBuilder } from "@client";
 import { addPathsToEmbed } from "@functions/getTexture";
 import axios from "axios";
-import { Texture } from "@interfaces";
+import { Texture } from "@interfaces/firestorm";
 
 /**
  * Turn array of canvas images into a gif

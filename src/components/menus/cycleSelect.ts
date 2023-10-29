@@ -1,5 +1,5 @@
 import { Client, Message, StringSelectMenuInteraction } from "@client";
-import { Component } from "@interfaces";
+import { Component } from "@interfaces/components";
 import { info } from "@helpers/logger";
 import { cycleComparison } from "@functions/cycleComparison";
 

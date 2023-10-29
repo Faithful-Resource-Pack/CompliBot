@@ -1,11 +1,17 @@
 import { EmbedBuilder } from "@client";
 import TokenJson from "@json/tokens.json";
-import { Contributor, FaithfulPack, GalleryTexture, Tokens } from "@interfaces";
+import { Tokens } from "@interfaces/tokens";
 import axios from "axios";
 import { APIEmbedField, AttachmentBuilder, Interaction } from "discord.js";
 import { magnify, magnifyToAttachment } from "@images/magnify";
 import { colors } from "@utility/colors";
-import { Texture, Contribution } from "@interfaces";
+import {
+	Texture,
+	Contribution,
+	FaithfulPack,
+	Contributor,
+	GalleryTexture,
+} from "@interfaces/firestorm";
 import { animateToAttachment } from "@images/animate";
 import minecraftSorter from "@utility/minecraftSorter";
 import formatName from "@utility/formatName";

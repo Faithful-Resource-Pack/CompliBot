@@ -1,4 +1,4 @@
-import { SlashCommand, SlashCommandI } from "@interfaces";
+import { SlashCommand, SlashCommandI } from "@interfaces/commands";
 import { SlashCommandBuilder, Collection, Guild, version as djsVersion } from "discord.js";
 import { EmbedBuilder, ChatInputCommandInteraction, Message } from "@client";
 import axios from "axios";

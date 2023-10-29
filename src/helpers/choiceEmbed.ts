@@ -4,7 +4,7 @@ import {
 	SelectMenuComponentOptionData,
 	StringSelectMenuBuilder,
 } from "discord.js";
-import { Texture } from "@interfaces";
+import { Texture } from "@interfaces/firestorm";
 import minecraftSorter from "@utility/minecraftSorter";
 import axios from "axios";
 

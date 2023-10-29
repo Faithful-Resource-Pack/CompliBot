@@ -1,5 +1,5 @@
-import fs from "fs";
-import path from "path";
+import { readFileSync, existsSync, mkdirSync, writeFileSync } from "fs";
+import { resolve } from "path";
 
 interface GetOptions {
 	relative_path: string;
@@ -21,16 +21,16 @@ interface SetOptions {
  */
 export function getData(options: GetOptions) {
 	let data: JSON;
-	const folder = path.resolve(__dirname, options.relative_path);
-	const file = path.resolve(folder, options.filename);
+	const folder = resolve(__dirname, options.relative_path);
+	const file = resolve(folder, options.filename);
 
 	try {
-		data = JSON.parse(fs.readFileSync(file).toString());
+		data = JSON.parse(readFileSync(file).toString());
 	} catch (_err) {
 		// file/folder isn't valid
-		if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
+		if (!existsSync(folder)) mkdirSync(folder, { recursive: true });
 
-		fs.writeFileSync(file, options.default_value || "{}");
+		writeFileSync(file, options.default_value || "{}");
 
 		return getData(options); // check another time
 	}
@@ -43,15 +43,15 @@ export function getData(options: GetOptions) {
  * @param options data to set
  */
 export function setData(options: SetOptions) {
-	const folder = path.resolve(__dirname, options.relative_path);
-	const file = path.resolve(folder, options.filename);
+	const folder = resolve(__dirname, options.relative_path);
+	const file = resolve(folder, options.filename);
 
 	try {
-		fs.writeFileSync(file, JSON.stringify(options.data));
+		writeFileSync(file, JSON.stringify(options.data));
 	} catch (_err) {
 		// file/folder isn't valid
-		if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
+		if (!existsSync(folder)) mkdirSync(folder, { recursive: true });
 
-		fs.writeFileSync(file, JSON.stringify(options.data));
+		writeFileSync(file, JSON.stringify(options.data));
 	}
 }

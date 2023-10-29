@@ -1,4 +1,4 @@
-import { Component } from "@interfaces";
+import { Component } from "@interfaces/components";
 import { info } from "@helpers/logger";
 import { Client, Message, ButtonInteraction } from "@client";
 import { paletteToAttachment } from "@images/palette";

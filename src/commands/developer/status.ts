@@ -5,7 +5,7 @@ import {
 	PresenceStatusData,
 } from "discord.js";
 import { EmbedBuilder, ChatInputCommandInteraction } from "@client";
-import { SlashCommand } from "@interfaces";
+import { SlashCommand } from "@interfaces/commands";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()

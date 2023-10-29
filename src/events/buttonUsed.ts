@@ -1,4 +1,5 @@
-import { Event, Component } from "@interfaces";
+import { Component } from "@interfaces/components";
+import { Event } from "@interfaces/events";
 import { Client, ButtonInteraction } from "@client";
 import { info } from "@helpers/logger";
 

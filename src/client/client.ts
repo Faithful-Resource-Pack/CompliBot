@@ -12,8 +12,12 @@ import {
 	Routes,
 	REST,
 } from "discord.js";
-import { Message, EmittingCollection, Automation } from "@client";
-import { Tokens, Component, SlashCommand, Event } from "@interfaces";
+import { Message, Automation } from "@client";
+import { Tokens } from "@interfaces/tokens";
+import { Component } from "@interfaces/components";
+import { SlashCommand } from "@interfaces/commands";
+import { Event } from "@interfaces/events";
+import { EmittingCollection } from "@helpers/emittingCollection";
 import { setData, getData } from "@utility/handleJSON";
 import { errorHandler } from "@functions/errorHandler";
 import { err, info, success } from "@helpers/logger";
@@ -172,12 +176,12 @@ export class ExtendedClient extends Client {
 			collection.set(key, obj[key]);
 		});
 
-		collection.events.on("dataSet", (key: string, value: any) => {
-			this.saveEmittingCollection(collection, filename, relative_path);
-		});
-		collection.events.on("dataDeleted", (key: string) => {
-			this.saveEmittingCollection(collection, filename, relative_path);
-		});
+		collection.events.on("dataSet", (key: string, value: any) =>
+			this.saveEmittingCollection(collection, filename, relative_path),
+		);
+		collection.events.on("dataDeleted", (key: string) =>
+			this.saveEmittingCollection(collection, filename, relative_path),
+		);
 	}
 
 	/**

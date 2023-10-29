@@ -1,6 +1,7 @@
-import { SlashCommandI, Submissions } from "@interfaces";
+import { SlashCommandI } from "@interfaces/commands";
+import { Submissions } from "@interfaces/firestorm";
 import { Collection } from "discord.js";
-import { Event } from "@interfaces";
+import { Event } from "@interfaces/events";
 import { Client, ChatInputCommandInteraction, EmbedBuilder } from "@client";
 import { colors } from "@utility/colors";
 import axios from "axios";

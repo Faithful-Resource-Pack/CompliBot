@@ -1,4 +1,4 @@
-import { SlashCommand, SlashCommandI } from "@interfaces";
+import { SlashCommand, SlashCommandI } from "@interfaces/commands";
 import { EmbedBuilder, ChatInputCommandInteraction } from "@client";
 import {
 	Collection,

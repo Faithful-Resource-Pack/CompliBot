@@ -1,6 +1,6 @@
 import { info } from "@helpers/logger";
 import { Client, ButtonInteraction } from "@client";
-import { Component } from "@interfaces";
+import { Component } from "@interfaces/components";
 
 export default {
 	id: "deleteMessage",

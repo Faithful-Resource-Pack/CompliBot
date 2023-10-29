@@ -1,5 +1,6 @@
 import { Client, Message, StringSelectMenuInteraction } from "@client";
-import { Component, FaithfulPack } from "@interfaces";
+import { Component } from "@interfaces/components";
+import { FaithfulPack } from "@interfaces/firestorm";
 import { info } from "@helpers/logger";
 import { getTexture } from "@functions/getTexture";
 import axios from "axios";

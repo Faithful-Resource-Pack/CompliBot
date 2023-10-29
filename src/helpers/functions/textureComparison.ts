@@ -3,7 +3,7 @@ import { magnifyToAttachment } from "@images/magnify";
 import { Image, loadImage } from "@napi-rs/canvas";
 import { Client, EmbedBuilder } from "@client";
 import { addPathsToEmbed } from "@functions/getTexture";
-import { AnyPack, GalleryTexture } from "@interfaces";
+import { AnyPack, GalleryTexture } from "@interfaces/firestorm";
 import axios from "axios";
 import { ActionRowBuilder, ButtonBuilder } from "discord.js";
 import { template } from "@utility/buttons";

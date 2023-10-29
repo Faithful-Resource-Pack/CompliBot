@@ -1,6 +1,6 @@
-import { Event } from "@interfaces";
+import { Event } from "@interfaces/events";
 import { Client, Message, EmbedBuilder } from "@client";
-import { Submissions } from "@interfaces";
+import { Submissions } from "@interfaces/firestorm";
 import { colors } from "@utility/colors";
 import axios from "axios";
 import * as Random from "@utility/random";

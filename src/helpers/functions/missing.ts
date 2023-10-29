@@ -9,7 +9,7 @@ import { join, normalize } from "path";
 import os from "os";
 import blacklistedTextures from "@json/blacklisted_textures.json";
 import axios from "axios";
-import { FaithfulPack } from "@interfaces";
+import { FaithfulPack } from "@interfaces/firestorm";
 
 // return value for the compute function
 export interface MissingOptions {

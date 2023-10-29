@@ -1,4 +1,4 @@
-import { Component } from "@interfaces";
+import { Component } from "@interfaces/components";
 import { info } from "@helpers/logger";
 import { Client, EmbedBuilder, ModalSubmitInteraction } from "@client";
 import sendFeedback from "@functions/feedback";

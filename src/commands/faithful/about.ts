@@ -1,9 +1,9 @@
-import { SlashCommand } from "@interfaces";
+import { SlashCommand } from "@interfaces/commands";
 import { Message, EmbedBuilder, ChatInputCommandInteraction } from "@client";
 import { SlashCommandBuilder, AttachmentBuilder } from "discord.js";
 import axios from "axios";
 import formatName from "@utility/formatName";
-import { Contribution, Texture } from "@interfaces";
+import { Contribution, Texture } from "@interfaces/firestorm";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()

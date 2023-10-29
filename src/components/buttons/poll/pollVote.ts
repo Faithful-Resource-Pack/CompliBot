@@ -1,4 +1,4 @@
-import { Component } from "@interfaces";
+import { Component } from "@interfaces/components";
 import { Client, ButtonInteraction } from "@client";
 import { Poll } from "@helpers/poll";
 

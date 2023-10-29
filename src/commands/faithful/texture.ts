@@ -1,4 +1,5 @@
-import { FaithfulPack, SlashCommand } from "@interfaces";
+import { SlashCommand } from "@interfaces/commands";
+import { FaithfulPack } from "@interfaces/firestorm";
 import { SlashCommandBuilder } from "discord.js";
 import { ChatInputCommandInteraction, Message } from "@client";
 import { getTexture } from "@functions/getTexture";

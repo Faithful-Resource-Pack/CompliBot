@@ -1,4 +1,5 @@
-import { FaithfulPack, SlashCommand, SyncSlashCommandBuilder } from "@interfaces";
+import { SlashCommand, SyncSlashCommandBuilder } from "@interfaces/commands";
+import { FaithfulPack } from "@interfaces/firestorm";
 import { Client, ChatInputCommandInteraction, EmbedBuilder } from "@client";
 import { SlashCommandBuilder, Message, AttachmentBuilder } from "discord.js";
 import {
