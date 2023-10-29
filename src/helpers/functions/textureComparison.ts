@@ -51,7 +51,7 @@ export default async function textureComparison(
 	).data;
 
 	const displayed = parseDisplay(display);
-	const defaultURL = result.urls.find((url) => url[0] == "default")?.[1];
+	const defaultURL = Object.fromEntries(result.urls).default;
 
 	const dimension = await loadImage(defaultURL);
 	if (dimension.width * dimension.height * displayed.flat().length > 262144) return null;
@@ -62,7 +62,7 @@ export default async function textureComparison(
 		// had problems with nested async mapping so this is easier for everyone
 		loadedImages.push([]);
 		for (const pack of packSet) {
-			const image = result.urls.find((url) => url[0] == pack)?.[1];
+			const image = Object.fromEntries(result.urls)[pack];
 			if (!image) continue;
 			try {
 				loadedImages.at(-1).push(await loadImage(image));
