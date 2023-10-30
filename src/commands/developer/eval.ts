@@ -10,7 +10,8 @@ export const command: SlashCommand = {
 		.addStringOption((option) =>
 			option.setName("code").setDescription("The code to evaluate.").setRequired(true),
 		)
-		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
+		.setDMPermission(false),
 	async execute(interaction: ChatInputCommandInteraction) {
 		if (!interaction.hasPermission("dev")) return;
 		const clean = async (text: any, client: Client): Promise<string> => {

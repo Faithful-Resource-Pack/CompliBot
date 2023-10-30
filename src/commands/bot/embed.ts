@@ -36,7 +36,8 @@ export const command: SlashCommand = {
 				.setDescription("Add a thumbnail to the top right corner of the embed")
 				.setRequired(false),
 		)
-		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
+		.setDMPermission(false),
 	async execute(interaction: ChatInputCommandInteraction) {
 		if (!interaction.options.getString("title") && !interaction.options.getString("description")) {
 			return await interaction.reply({

@@ -42,7 +42,8 @@ export const command: SlashCommand = {
 				.setDescription("Message to show after the bot activity")
 				.setRequired(true),
 		)
-		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
+		.setDMPermission(false),
 	async execute(interaction: ChatInputCommandInteraction) {
 		if (!interaction.hasPermission("dev")) return;
 

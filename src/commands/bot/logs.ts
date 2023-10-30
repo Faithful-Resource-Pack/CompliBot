@@ -7,10 +7,12 @@ export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
 		.setName("logs")
 		.setDescription("Get logs of the bot.")
-		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
+		.setDMPermission(false),
 	async execute(interaction: ChatInputCommandInteraction) {
 		if (!interaction.hasPermission("dev")) return;
 
-		await interaction.reply({ files: [logConstructor(interaction.client)] }).catch(console.error);
+		await interaction.deferReply();
+		await interaction.editReply({ files: [logConstructor(interaction.client)] }).catch(console.error);
 	},
 };

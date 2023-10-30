@@ -49,7 +49,8 @@ export const command: SlashCommand = {
 						.setRequired(true),
 				),
 		)
-		.setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages),
+		.setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
+		.setDMPermission(false),
 	execute: new Collection<string, SlashCommandI>()
 		.set("edit", async (interaction: ChatInputCommandInteraction) => {
 			const isAdding = interaction.options.getString("action", true) == "add";
