@@ -13,6 +13,8 @@ export const command: SlashCommand = {
 		if (!interaction.hasPermission("dev")) return;
 
 		await interaction.deferReply();
-		await interaction.editReply({ files: [logConstructor(interaction.client)] }).catch(console.error);
+		await interaction
+			.editReply({ files: [logConstructor(interaction.client)] })
+			.catch(console.error);
 	},
 };

@@ -100,17 +100,17 @@ export const command: SlashCommand = {
 			files = [new AttachmentBuilder(textBuf, { name: "about.txt" })];
 		}
 
-		const finalEmbed = new EmbedBuilder()
-			.setTitle(
-				`${user.displayName} has ${finalData.length} ${
-					finalData.length == 1 ? "contribution" : "contributions"
-				}!`,
-			)
-			.setDescription(
-				Object.entries(packCount)
-					.map((i) => i.join(": "))
-					.join("\n"),
-			);
+		const finalEmbed = new EmbedBuilder().setTitle(
+			`${user.displayName} has ${finalData.length} ${
+				finalData.length == 1 ? "contribution" : "contributions"
+			}!`,
+		);
+
+		const finalPackData = Object.entries(packCount)
+			.map((i) => i.join(": "))
+			.join("\n");
+
+		if (finalPackData) finalEmbed.setDescription(finalPackData);
 
 		await interaction.editReply({ embeds: [finalEmbed], files: files });
 	},

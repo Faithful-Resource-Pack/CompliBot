@@ -14,6 +14,8 @@ export const command: SlashCommand = {
 		.setDMPermission(false),
 	async execute(interaction: ChatInputCommandInteraction) {
 		if (!interaction.hasPermission("dev")) return;
+		await interaction.deferReply({ ephemeral: true });
+
 		const clean = async (text: any, client: Client): Promise<string> => {
 			if (text && text.constructor.name === "Promise") text = await text;
 			if (typeof text !== "string") text = require("util").inspect(text, { depth: 1 });
@@ -41,8 +43,7 @@ export const command: SlashCommand = {
 			}})() } catch (e) { return e } })()`,
 		);
 
-		interaction.reply({
-			ephemeral: true,
+		interaction.editReply({
 			embeds: [
 				new EmbedBuilder().setDescription(
 					`\`\`\`js\n${(await clean(evaluated, interaction.client)).slice(0, 4085)}\`\`\``,
