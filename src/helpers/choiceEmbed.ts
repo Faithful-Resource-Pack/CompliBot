@@ -29,7 +29,7 @@ export async function generalChoiceEmbed(
 	// dividing into maximum of 25 choices per menu
 	// 4 menus max
 	const maxRows = 4; // actually 5 but - 1 because we are adding a delete button to it (the 5th one)
-	for (let currentRow = 0; currentRow <= maxRows && choices.length; ++currentRow) {
+	for (let currentRow = 0; currentRow < maxRows && choices.length; ++currentRow) {
 		const options: SelectMenuComponentOptionData[] = [];
 
 		for (let i = 0; i < emojis.length; ++i)

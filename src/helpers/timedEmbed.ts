@@ -54,7 +54,7 @@ export class TimedEmbed {
 
 	/**
 	 * Global setter for votes
-	 * @param votes - the votes to set
+	 * @param votes the votes to set
 	 */
 	public setVotes(votes: Votes) {
 		this.votes = votes;
@@ -198,11 +198,9 @@ export class TimedEmbed {
 
 	/**
 	 * Set the Discord Channel Id of the embed
-	 * @param channel - Discord Channel OR Discord Channel Id
+	 * @param channel Discord Channel OR Discord Channel Id
 	 */
-	public setChannelId(channel: string): this;
-	public setChannelId(channel: TextChannel): this;
-	public setChannelId(channel: any) {
+	public setChannelId(channel: any | string | TextChannel) {
 		if (channel.id) this.channelId = channel.id;
 		// discord object
 		else this.channelId = channel; // string
