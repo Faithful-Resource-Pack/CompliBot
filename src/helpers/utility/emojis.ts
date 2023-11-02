@@ -1,5 +1,5 @@
 // note: the key name should be the same as the actual name
-export const ids = {
+export const emojis = {
 	bug: "959344133145755648",
 	suggestion: "959344133158350869",
 	view_votes: "949830600125194281",
@@ -40,8 +40,8 @@ export const ids = {
  * @param id emoji id
  * @returns usable string
  */
-export function parseId(id: string) {
-	return `<:${Object.keys(ids).find((key) => ids[key] === id)}:${id}>`;
+export function parseID(id: string) {
+	return `<:${Object.keys(emojis).find((key) => emojis[key] === id)}:${id}>`;
 }
 
-export type emojiTypes = keyof typeof ids;
+export type emojiTypes = keyof typeof emojis;

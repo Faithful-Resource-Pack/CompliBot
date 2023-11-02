@@ -2,7 +2,7 @@ import { SlashCommandBuilder, EmbedField } from "discord.js";
 import { SlashCommand } from "@interfaces/commands";
 import { Poll } from "@helpers/poll";
 import { addSeconds, parseDate } from "@utility/dates";
-import { ids, parseId } from "@utility/emojis";
+import { emojis, parseID } from "@utility/emojis";
 import { ChatInputCommandInteraction, EmbedBuilder, Message } from "@client";
 
 export const command: SlashCommand = {
@@ -82,7 +82,7 @@ export const command: SlashCommand = {
 		const filter = (m: Message) => m.author.id === interaction.member.user.id;
 
 		const answersArr: string[] = [];
-		const yesnoEmojis = [parseId(ids.upvote), parseId(ids.downvote)];
+		const yesnoEmojis = [parseID(emojis.upvote), parseID(emojis.downvote)];
 		const numberEmojis = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"];
 		const fields = [{ name: "Answers", value: "None", inline: true }];
 		do {

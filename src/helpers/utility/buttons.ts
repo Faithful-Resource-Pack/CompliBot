@@ -1,35 +1,35 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
-import { ids } from "@utility/emojis";
+import { emojis } from "@utility/emojis";
 
 export const compare = new ButtonBuilder()
 	.setStyle(ButtonStyle.Primary)
-	.setEmoji(ids.compare)
+	.setEmoji(emojis.compare)
 	.setCustomId("compare");
 export const palette = new ButtonBuilder()
 	.setStyle(ButtonStyle.Primary)
-	.setEmoji(ids.palette)
+	.setEmoji(emojis.palette)
 	.setCustomId("palette");
 export const magnify = new ButtonBuilder()
 	.setStyle(ButtonStyle.Primary)
-	.setEmoji(ids.magnify)
+	.setEmoji(emojis.magnify)
 	.setCustomId("magnify");
 export const tile = new ButtonBuilder()
 	.setStyle(ButtonStyle.Primary)
-	.setEmoji(ids.tile)
+	.setEmoji(emojis.tile)
 	.setCustomId("tile");
 
 export const template = new ButtonBuilder()
 	.setStyle(ButtonStyle.Primary)
-	.setEmoji(ids.flip)
+	.setEmoji(emojis.flip)
 	.setCustomId("comparisonTemplate");
 
 export const deleteMessage = new ButtonBuilder()
 	.setStyle(ButtonStyle.Danger)
-	.setEmoji(ids.delete)
+	.setEmoji(emojis.delete)
 	.setCustomId("deleteMessage");
 export const deleteInteraction = new ButtonBuilder()
 	.setStyle(ButtonStyle.Danger)
-	.setEmoji(ids.delete)
+	.setEmoji(emojis.delete)
 	.setCustomId("deleteInteraction");
 
 export const pollVote1 = new ButtonBuilder()
@@ -55,16 +55,16 @@ export const pollVote5 = new ButtonBuilder()
 
 export const pollUpvote = new ButtonBuilder()
 	.setStyle(ButtonStyle.Success)
-	.setEmoji(ids.upvote)
+	.setEmoji(emojis.upvote)
 	.setCustomId("pollVote__upvote");
 export const pollDownvote = new ButtonBuilder()
 	.setStyle(ButtonStyle.Danger)
-	.setEmoji(ids.downvote)
+	.setEmoji(emojis.downvote)
 	.setCustomId("pollVote__downvote");
 
 export const pollDelete = new ButtonBuilder()
 	.setStyle(ButtonStyle.Danger)
-	.setEmoji(ids.delete)
+	.setEmoji(emojis.delete)
 	.setCustomId("pollDelete");
 
 export const pollVotes = [pollVote1, pollVote2, pollVote3, pollVote4, pollVote5];

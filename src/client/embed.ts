@@ -1,4 +1,5 @@
-import { Colors, EmbedBuilder, EmbedData, APIEmbed } from "discord.js";
+import { EmbedBuilder, EmbedData, APIEmbed } from "discord.js";
+import { colors } from "@utility/colors";
 
 /**
  * Automatically sets embed color to blurple
@@ -9,6 +10,6 @@ export class ExtendedEmbedBuilder extends EmbedBuilder {
 		super(data);
 		if (data) return; // do not override existing data
 
-		this.setColor(Colors.Blurple);
+		this.setColor(colors.blue);
 	}
 }

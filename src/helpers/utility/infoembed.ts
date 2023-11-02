@@ -1,151 +1,108 @@
-import { ColorResolvable } from "discord.js";
-import { colors } from "@utility/colors";
-import { parseId, ids } from "@utility/emojis";
+import { parseID, emojis } from "@utility/emojis";
 
 export interface MediaI {
 	[name: string]: {
-		color: ColorResolvable;
 		title: string;
 		description: string;
 	};
 }
 
-// sorry for the questionable indentation and formatting
-// blame prettier for most of it but also discord sometimes rendering whitespace weirdly
+//prettier-ignore
 export const media: MediaI = {
 	faithful_32x: {
-		color: colors.f32,
 		title: `Faithful 32x:`,
 		description: `
-[${parseId(ids.faithful_logo)} Website](https://faithfulpack.net/faithful32x/latest)
+[${parseID(emojis.faithful_logo)} Website](https://faithfulpack.net/faithful32x/latest)
 
-[${parseId(
-			ids.curseforge,
-		)} Java Edition CurseForge](https://curseforge.com/minecraft/texture-packs/faithful-32x)
+[${parseID(emojis.curseforge)} Java Edition CurseForge](https://curseforge.com/minecraft/texture-packs/faithful-32x)
 
-[${parseId(
-			ids.curseforge,
-		)} Bedrock Edition CurseForge](https://www.curseforge.com/minecraft-bedrock/addons/faithful-32x-bedrock)
+[${parseID(emojis.curseforge)} Bedrock Edition CurseForge](https://www.curseforge.com/minecraft-bedrock/addons/faithful-32x-bedrock)
 
-[${parseId(ids.modrinth)} Modrinth](https://modrinth.com/resourcepack/faithful-32x)
+[${parseID(emojis.modrinth)} Modrinth](https://modrinth.com/resourcepack/faithful-32x)
 
-[${parseId(ids.pmc)} Planet Minecraft](https://planetminecraft.com/texture-pack/faithful-32x/)
+[${parseID(emojis.pmc)} Planet Minecraft](https://planetminecraft.com/texture-pack/faithful-32x/)
 
-[${parseId(ids.mcpedl)} MCPEDL](https://mcpedl.com/faithful-32x/)
+[${parseID(emojis.mcpedl)} MCPEDL](https://mcpedl.com/faithful-32x/)
 
-[${parseId(
-			ids.github,
-		)} Java Edition GitHub](https://github.com/faithful-resource-pack/faithful-java-32x)
+[${parseID(emojis.github)} Java Edition GitHub](https://github.com/faithful-resource-pack/faithful-java-32x)
 
-[${parseId(
-			ids.github,
-		)} Bedrock Edition GitHub](https://github.com/faithful-resource-pack/faithful-bedrock-32x)`,
+[${parseID(emojis.github)} Bedrock Edition GitHub](https://github.com/faithful-resource-pack/faithful-bedrock-32x)`,
 	},
-
 	faithful_64x: {
-		color: colors.f64,
 		title: "Faithful 64x:",
 		description: `
-[${parseId(ids.faithful_logo)} Website](https://faithfulpack.net/faithful64x/latest)
+[${parseID(emojis.faithful_logo)} Website](https://faithfulpack.net/faithful64x/latest)
 
-[${parseId(
-			ids.curseforge,
-		)} Java Edition CurseForge](https://curseforge.com/minecraft/texture-packs/faithful-64x)
+[${parseID(emojis.curseforge)} Java Edition CurseForge](https://curseforge.com/minecraft/texture-packs/faithful-64x)
 
-[${parseId(
-			ids.curseforge,
-		)} Bedrock Edition CurseForge](https://www.curseforge.com/minecraft-bedrock/addons/faithful-64x-bedrock)
+[${parseID(emojis.curseforge)} Bedrock Edition CurseForge](https://www.curseforge.com/minecraft-bedrock/addons/faithful-64x-bedrock)
 
-[${parseId(ids.modrinth)} Modrinth](https://modrinth.com/resourcepack/faithful-64x)
+[${parseID(emojis.modrinth)} Modrinth](https://modrinth.com/resourcepack/faithful-64x)
 
-[${parseId(ids.pmc)} Planet Minecraft](https://planetminecraft.com/texture-pack/faithful-64x/)
+[${parseID(emojis.pmc)} Planet Minecraft](https://planetminecraft.com/texture-pack/faithful-64x/)
 
-[${parseId(ids.mcpedl)} MCPEDL](https://mcpedl.com/faithful-64x/)
+[${parseID(emojis.mcpedl)} MCPEDL](https://mcpedl.com/faithful-64x/)
 
-[${parseId(
-			ids.github,
-		)} Java Edition GitHub](https://github.com/faithful-resource-pack/faithful-java-64x)
+[${parseID(emojis.github)} Java Edition GitHub](https://github.com/faithful-resource-pack/faithful-java-64x)
 
-[${parseId(
-			ids.github,
-		)} Bedrock Edition GitHub](https://github.com/faithful-resource-pack/faithful-bedrock-64x)
+[${parseID(emojis.github)} Bedrock Edition GitHub](https://github.com/faithful-resource-pack/faithful-bedrock-64x)
     `,
 	},
 
 	classic_faithful_32x: {
-		color: colors.cf32,
 		title: "Classic Faithful 32x Jappa:",
 		description: `
-[${parseId(ids.faithful_logo)} Website](https://faithfulpack.net/classicfaithful/32x-jappa)
+[${parseID(emojis.faithful_logo)} Website](https://faithfulpack.net/classicfaithful/32x-jappa)
 
-[${parseId(
-			ids.curseforge,
-		)} CurseForge](https://curseforge.com/minecraft/texture-packs/classic-faithful-32x-jappa)
+[${parseID(emojis.curseforge)} CurseForge](https://curseforge.com/minecraft/texture-packs/classic-faithful-32x-jappa)
 
-[${parseId(
-			ids.pmc,
-		)} Planet Minecraft](https://planetminecraft.com/texture-pack/classic-faithful-32x)
+[${parseID(emojis.modrinth)} Modrinth](https://modrinth.com/resourcepack/classic-faithful-32x-jappa)
 
-[${parseId(ids.github)} Java Edition GitHub](https://github.com/classicfaithful/32x-jappa)
+[${parseID(emojis.pmc)} Planet Minecraft](https://planetminecraft.com/texture-pack/classic-faithful-32x)
 
-[${parseId(
-			ids.github,
-		)} Bedrock Edition GitHub](https://github.com/classicfaithful/32x-jappa-bedrock)
+[${parseID(emojis.github)} Java Edition GitHub](https://github.com/classicfaithful/32x-jappa)
 
-[${parseId(ids.github)} Add-ons GitHub](https://github.com/classicfaithful/32x-jappa-add-ons)
+[${parseID(emojis.github)} Bedrock Edition GitHub](https://github.com/classicfaithful/32x-jappa-bedrock)
+
+[${parseID(emojis.github)} Add-ons GitHub](https://github.com/classicfaithful/32x-jappa-add-ons)
     `,
 	},
 
 	classic_faithful_32x_progart: {
-		color: colors.cf32pa,
 		title: "Classic Faithful 32x PA:",
 		description: `
-[${parseId(ids.faithful_logo)} Website](https://faithfulpack.net/classicfaithful/32x-programmer-art)
+[${parseID(emojis.faithful_logo)} Website](https://faithfulpack.net/classicfaithful/32x-programmer-art)
 
-[${parseId(
-			ids.curseforge,
-		)} CurseForge](https://curseforge.com/minecraft/texture-packs/classic-faithful-32x-pa)
+[${parseID(emojis.curseforge)} CurseForge](https://curseforge.com/minecraft/texture-packs/classic-faithful-32x-pa)
 
-[${parseId(
-			ids.pmc,
-		)} Planet Minecraft](https://planetminecraft.com/texture-pack/classic-faithful-32x-pa)
+[${parseID(emojis.pmc)} Planet Minecraft](https://planetminecraft.com/texture-pack/classic-faithful-32x-pa)
 
-[${parseId(ids.github)} Java Edition GitHub](https://github.com/classicfaithful/32x-programmer-art)
+[${parseID(emojis.modrinth)} Modrinth](https://modrinth.com/resourcepack/classic-faithful-32x-programmer-art)
 
-[${parseId(
-			ids.github,
-		)} Bedrock Edition GitHub](https://github.com/classicfaithful/32x-programmer-art-bedrock)
+[${parseID(emojis.github)} Java Edition GitHub](https://github.com/classicfaithful/32x-programmer-art)
 
-[${parseId(
-			ids.github,
-		)} Add-ons GitHub](https://github.com/classicfaithful/32x-programmer-art-add-ons)
+[${parseID(emojis.github)} Bedrock Edition GitHub](https://github.com/classicfaithful/32x-programmer-art-bedrock)
+
+[${parseID(emojis.github)} Add-ons GitHub](https://github.com/classicfaithful/32x-programmer-art-add-ons)
     `,
 	},
 
 	classic_faithful_64x: {
-		color: colors.cf64,
 		title: "Classic Faithful 64x:",
 		description: `
-[${parseId(ids.faithful_logo)} Website](https://faithfulpack.net/classicfaithful/64x-jappa)
+[${parseID(emojis.faithful_logo)} Website](https://faithfulpack.net/classicfaithful/64x-jappa)
 
-[${parseId(
-			ids.curseforge,
-		)} CurseForge](https://curseforge.com/minecraft/texture-packs/classic-faithful-64x)
+[${parseID(emojis.curseforge)} CurseForge](https://curseforge.com/minecraft/texture-packs/classic-faithful-64x)
 
-[${parseId(
-			ids.pmc,
-		)} Planet Minecraft](https://planetminecraft.com/texture-pack/classic-faithful-64x/)
+[${parseID(emojis.pmc)} Planet Minecraft](https://planetminecraft.com/texture-pack/classic-faithful-64x/)
 
-[${parseId(ids.github)} Java Edition GitHub](https://github.com/classicfaithful/64x-jappa)
+[${parseID(emojis.github)} Java Edition GitHub](https://github.com/classicfaithful/64x-jappa)
 
-[${parseId(
-			ids.github,
-		)} Bedrock Edition GitHub](https://github.com/classicfaithful/64x-jappa-bedrock)
+[${parseID(emojis.github)} Bedrock Edition GitHub](https://github.com/classicfaithful/64x-jappa-bedrock)
     `,
 	},
 
 	default: {
-		color: colors.brand,
 		title: "Useful Links:",
 		description: `
 ### General:

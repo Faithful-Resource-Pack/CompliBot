@@ -15,9 +15,9 @@ export const colors: Record<string, ColorResolvable> = {
 	coin: "#ffdc16",
 	// branding colors
 	brand: "#76c945",
-	f32: "#00a2ff",
-	f64: "#d8158d",
-	cf32: "#00c756",
-	cf64: "#9f00cf",
-	cf32pa: "#a1db12",
+	faithful_32x: "#00a2ff",
+	faithful_64x: "#d8158d",
+	classic_faithful_32x: "#00c756",
+	classic_faithful_32x_progart: "#a1db12",
+	classic_faithful_64x: "#9f00cf",
 };

@@ -32,7 +32,7 @@ declare module "discord.js" {
 		 * @param type what role to check for
 		 * @returns whether the user has permission or not
 		 */
-		hasPermission(type: PermissionType): boolean;
+		hasPermission(type: PermissionType, warnUser?: boolean): boolean;
 		/**
 		 * Sends an ephemeral message to an already-deferred interaction
 		 * @author Evorp
@@ -43,7 +43,7 @@ declare module "discord.js" {
 	}
 }
 
-function hasPermission(type: PermissionType): boolean {
+function hasPermission(type: PermissionType, warnUser = true): boolean {
 	const hasManager = this.member.permissions.has(PermissionFlagsBits.Administrator);
 	const hasModerator = this.member.permissions.has(PermissionFlagsBits.ManageMessages);
 	const hasDev = this.client.tokens.developers.includes(this.member.id);
@@ -68,7 +68,7 @@ function hasPermission(type: PermissionType): boolean {
 			out = hasModerator;
 	}
 
-	if (!out) this.reply({ embeds: [noPermission], ephemeral: true });
+	if (!out && warnUser) this.reply({ embeds: [noPermission], ephemeral: true });
 	return out;
 }
 
