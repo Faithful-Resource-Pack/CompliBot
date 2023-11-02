@@ -90,6 +90,7 @@ export const command: SlashCommand = {
 		if (finalData.length) {
 			const textBuf = Buffer.from(
 				finalData
+					.sort((a, b) => b.date - a.date) // most recent on top
 					.map((data: Contribution & Texture) => {
 						const packName = formatName(data.pack)[0];
 						packCount[packName] = (packCount[packName] ?? 0) + 1;
