@@ -53,7 +53,7 @@ export async function palette(origin: ImageSource) {
 
 			// avoid transparent colors
 			if (!a) continue;
-			let hex = new ColorManager({ rgb: { r, g, b } }).toHEX().value;
+			const hex = new ColorManager({ rgb: { r, g, b } }).toHEX().value;
 
 			if (!(hex in allColors)) allColors[hex] = { hex, opacity: [], rgb: [r, g, b], count: 0 };
 
@@ -68,7 +68,9 @@ export async function palette(origin: ImageSource) {
 		.slice(0, COLORS_TOP)
 		.map((el) => el.hex);
 
-	const embed = new EmbedBuilder().setTitle("Palette results").setDescription("List of colors:\n");
+	const embed = new EmbedBuilder()
+		.setTitle("Palette results")
+		.setDescription(`Total: ${Object.keys(allColors).length}`);
 
 	const fieldGroups: string[][][] = [];
 	let group: number;
@@ -93,6 +95,7 @@ export async function palette(origin: ImageSource) {
 				line.map((color: string) => `[\`#${color}\`](${COOLORS_URL}${color})`).join(" "),
 			)
 			.join(" ");
+
 		embed.addFields({
 			name: "Hex" + (fieldGroups.length > 1 ? ` part ${index + 1}` : "") + ": ",
 			value: groupValue,
@@ -110,25 +113,25 @@ export async function palette(origin: ImageSource) {
 
 	// create URLs
 	const paletteUrls: string[] = [];
-	let descriptionLength = embed.data.description.length;
+	let groupLength = 0;
 
 	for (let i = 0; i < paletteGroups.length; ++i) {
 		const link = `**[Palette${
 			paletteGroups.length > 1 ? " part " + (i + 1) : ""
 		}](${COOLORS_URL}${paletteGroups[i].join("-")})**`;
 
-		if (descriptionLength + link.length + 3 > 1024) break;
+		if (groupLength + link.length + 3 > 1024) break;
 
 		paletteUrls.push(link);
-		descriptionLength += link.length;
+		groupLength += link.length;
 	}
 
-	// add generate palette link && append palette to description
-	embed.setDescription(
-		`Total: ${Object.values(allColors).length}\n\n` +
-			embed.data.description +
-			paletteUrls.join(" - "),
-	);
+	// add field at top
+	embed.spliceFields(0, 0, {
+		name: "List of colors:",
+		value: paletteUrls.join(" - "),
+		inline: false,
+	});
 
 	// create gradient canvas for top GRADIENT_TOP colors
 	const bandWidth =
