@@ -26,8 +26,8 @@ export const command: SlashCommand = {
 				.setRequired(false),
 		),
 	async execute(interaction: ChatInputCommandInteraction) {
-		let contents: string;
-		let keyword = interaction.options.getString("choice");
+		let content: string;
+		const keyword = interaction.options.getString("choice")?.toLocaleLowerCase();
 		const pack = interaction.options.getString("pack");
 		const errorEmbed = new EmbedBuilder()
 			.setTitle("Invalid choice!")
@@ -38,18 +38,17 @@ export const command: SlashCommand = {
 
 		switch (pack) {
 			case "faithful_32x":
-				contents = "https://docs.faithfulpack.net/pages/textures/f32-texturing-guidelines";
+				content = "https://docs.faithfulpack.net/pages/textures/f32-texturing-guidelines";
 				break;
 			case "faithful_64x":
-				contents = "https://docs.faithfulpack.net/pages/textures/f64-texturing-guidelines";
+				content = "https://docs.faithfulpack.net/pages/textures/f64-texturing-guidelines";
 				break;
 			case "classic_faithful_32x":
-				contents = "https://docs.faithfulpack.net/pages/textures/cf32-texturing-guidelines";
+				content = "https://docs.faithfulpack.net/pages/textures/cf32-texturing-guidelines";
 				break;
 		}
 
 		if (keyword) {
-			keyword = keyword.toLocaleLowerCase(); // remove case sensitivity for easier parsing
 			if (
 				!guidelineJSON
 					.map((i) => i.keywords)
@@ -66,12 +65,12 @@ export const command: SlashCommand = {
 					// if you pick an option that isn't present in the pack you selected
 					return interaction.reply({ embeds: [errorEmbed], ephemeral: true });
 				}
-				contents += `#${choice[pack]}`; // adds the html id specified in the json
+				content += `#${choice[pack]}`; // adds the html id specified in the json
 				break;
 			}
 		}
 		interaction
-			.reply({ content: contents, fetchReply: true })
+			.reply({ content, fetchReply: true })
 			.then((message: Message) => message.deleteButton());
 	},
 };
