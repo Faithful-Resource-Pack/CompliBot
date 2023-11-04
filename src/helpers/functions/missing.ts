@@ -67,9 +67,11 @@ export const computeAndUpdate = async (
 
 	let packProgress: any;
 	try {
-		/** @todo fix "Error: socket hang up" from this line of code */
-		packProgress = (await axios.get(`${client.tokens.apiUrl}settings/raw`)).data.channels
-			.pack_progress;
+		const prom = await axios
+			.get(`${client.tokens.apiUrl}settings/channels.pack_progress`)
+			// fix for "Error: socket hang up"
+			.catch(() => axios.get(`https://api.faithfulpack.net/v2/settings/channels.pack_progress`));
+		packProgress = prom.data;
 	} catch {
 		return results;
 	}
