@@ -18,7 +18,7 @@
             "description": "Seulement %TYPE%s peuvent utiliser cette commande."
         },
         "timeout": {
-            "no_type_given": "Le délai d'expiration donné ne spécifie pas quelle longueur il est!\nExemple: `30s`, `1 min`, `10 heures`, `1 jour`, `1 semaine`, `1 mois`, `1 an`"
+            "no_type_given": "Le délai d'expiration donné ne spécifie pas quelle longueur il est!\nExemple: `30s`, `1 min`, `10 hours`, `1 day`, `1 week`, `1 month`, `1 year`"
         }
     }
 }
