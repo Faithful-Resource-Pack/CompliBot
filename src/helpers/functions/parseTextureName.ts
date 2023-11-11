@@ -14,7 +14,7 @@ export default async function parseTextureName(
 	name: string,
 	interaction: ChatInputCommandInteraction,
 ): Promise<Texture[]> {
-	name = name.toLowerCase().trim().replace(".png", "").replace("#", "").replace(/ /g, "_");
+	name = name.trim().replace(".png", "").replace("#", "").replace(/ /g, "_");
 
 	if (name.length < 3 && isNaN(Number(name))) {
 		await interaction.ephemeralReply({
