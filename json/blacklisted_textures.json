@@ -409,6 +409,23 @@
         "ui/navy_blue.png",
         "ui/realms_gradient_top.png",
         "ui/realms_title.png",
-        "misc/enchanted_actor_glint.png"
+        "misc/enchanted_actor_glint.png",
+        "ui/csbBannerBackground.png",
+        "ui/csb_background.png",
+        "ui/csb_faq_bee.png",
+        "ui/csb_faq_fox.png",
+        "ui/csb_faq_horse.png",
+        "ui/csb_faq_parrot.png",
+        "ui/csb_faq_pig.png",
+        "ui/csb_filter_gradient.png",
+        "ui/csb_filter_particles.png",
+        "ui/csb_key_art1.png",
+        "ui/csb_key_art2.png",
+        "ui/csb_particles.png",
+        "ui/csb_purchase_amazondevicewarning.png",
+        "ui/csb_purchase_error.png",
+        "ui/csb_sparkles.png",
+        "ui/csb_title.png",
+        "ui/csb_welcome.png"
     ]
 }
