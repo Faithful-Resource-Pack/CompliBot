@@ -18,7 +18,7 @@ export type PermissionType = "manager" | "dev" | "moderator" | "council";
 declare module "discord.js" {
 	// applies to all interaction subtypes, much more convenient
 	interface BaseInteraction {
-		client: ExtendedClient; // so you don't have to cast it every time
+		readonly client: ExtendedClient<true>; // so you don't have to cast it every time
 		/**
 		 * Load strings for a given interaction
 		 * @author Evorp

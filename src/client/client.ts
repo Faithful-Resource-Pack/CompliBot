@@ -58,8 +58,9 @@ export type Log = {
 /**
  * Extend client class to add message component collections, tokens, and slash commands directly
  * @author Nick, Evorp, Juknum
+ * @template Ready so interfaces don't complain about overriding classes wrong
  */
-export class ExtendedClient extends Client {
+export class ExtendedClient<Ready extends boolean = boolean> extends Client<Ready> {
 	public verbose = false;
 	public firstStart = true; // used for prettier restarting in dev mode
 	public tokens: Tokens;

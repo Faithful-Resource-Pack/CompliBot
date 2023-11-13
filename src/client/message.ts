@@ -6,7 +6,7 @@ import { strings, AllStrings } from "@helpers/strings";
 
 declare module "discord.js" {
 	interface Message {
-		client: ExtendedClient; // so you don't have to cast it every time
+		readonly client: ExtendedClient<true>; // so you don't have to cast it every time
 		/** @param hasAuthorID whether to search for an author id in the footer or the interaction owner */
 		deleteButton(hasAuthorID?: boolean): Promise<Message>;
 		strings(forceEnglish?: boolean): AllStrings;
