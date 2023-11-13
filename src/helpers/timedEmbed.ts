@@ -3,10 +3,12 @@ import { Message } from "@client";
 
 export type Votes = Record<string, string[]>;
 
-interface AllVotes {
-	upvote: number;
-	downvote: number;
+export interface AllVotes {
+	readonly upvote: number;
+	readonly downvote: number;
 }
+
+export type EmbedStatus = "pending" | "ended";
 
 /**
  * Base class for polls and other miscellaneous timed embeds
@@ -17,7 +19,7 @@ export class TimedEmbed {
 	private messageId: string;
 	private channelId: string;
 	private votes: Votes;
-	private status = "pending";
+	private status: EmbedStatus = "pending";
 	private timeout = 0; // used for end of events (pending until...)
 	private anonymous = true;
 	private multipleAnswers = false;
@@ -210,23 +212,15 @@ export class TimedEmbed {
 	/**
 	 * Get the status of the embed
 	 */
-	public getStatus(): string {
+	public getStatus() {
 		return this.status;
 	}
 
 	/**
-	 * Get the status displayed in the embed of the embed
+	 * Set embed status
 	 */
-	public getStatusUI(): string {
-		return this.status;
-	}
-
-	/**
-	 * This functions needs to be defined here, but it is overwritten in the child classes
-	 * @ignore
-	 */
-	public setStatus(...status: any): this {
-		this.status = status[0];
+	public setStatus(status: EmbedStatus) {
+		this.status = status;
 		return this;
 	}
 
@@ -252,7 +246,7 @@ export class TimedEmbed {
 	 */
 	public setTimeout(number: number): this;
 	public setTimeout(date: Date): this;
-	public setTimeout(value: any): this {
+	public setTimeout(value: any) {
 		if (value instanceof Date) this.timeout = parseInt((value.getTime() / 1000).toFixed(0));
 		else this.timeout = value;
 		return this;

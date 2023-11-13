@@ -1,7 +1,7 @@
 import { pollDelete, pollVotes, pollYesNo } from "@utility/buttons";
 import { Client, ChatInputCommandInteraction, Message, EmbedBuilder } from "@client";
-import { ActionRowBuilder, ButtonBuilder, TextChannel, EmbedField } from "discord.js";
-import { TimedEmbed } from "@helpers/timedEmbed";
+import { ActionRowBuilder, ButtonBuilder, TextChannel } from "discord.js";
+import { AllVotes, TimedEmbed } from "@helpers/timedEmbed";
 
 export interface PollOptions {
 	question: string;
@@ -20,10 +20,35 @@ export class Poll extends TimedEmbed {
 	}
 
 	/**
+	 * More elegant way of getting the timeout string for an outcome option
+	 * @author Evorp
+	 * @param votes votes to check
+	 * @returns appropriate string
+	 */
+	private getTimeoutString(votes: AllVotes) {
+		if (votes.upvote > votes.downvote) return "has passed!";
+		if (votes.upvote < votes.downvote) return "has not passed!";
+		return "has tied!";
+	}
+
+	/**
+	 * Another helper method to stop a billion nested ternaries
+	 * @author Evorp
+	 * @param votesCount data
+	 * @param index which field
+	 * @returns data in formatted string
+	 */
+	private getOptionString(votesCount: number[], index: number) {
+		const voteCount = votesCount[index - 1];
+		const totalVotes = votesCount.reduce((partialSum, a) => partialSum + a, 0);
+		return `> ${voteCount} / ${totalVotes} (${((voteCount / totalVotes) * 100).toFixed(2)}%)\n`;
+	}
+
+	/**
 	 * Update the discord message with the poll embed
 	 * @param client Discord Client
 	 */
-	public async updateEmbed(client: Client): Promise<void> {
+	public async updateEmbed(client: Client) {
 		let channel: TextChannel;
 		let message: Message;
 
@@ -36,61 +61,54 @@ export class Poll extends TimedEmbed {
 		}
 
 		const embed = EmbedBuilder.from(message.embeds[0]);
-		let components = [...message.components];
-		let isYesno = false;
+		const components = this.getStatus() === "ended" ? [] : [...message.components];
+		const isYesno = this.getVoteNames()[0] == "upvote";
 
-		if (this.getStatus() === "ended") components = [];
-		if (this.getVoteNames()[0] == "upvote") isYesno = true;
-		let bestOption = [0, ""];
+		const bestOption = {
+			value: 0,
+			message: "",
+		};
 
-		// djs v14 workaround
 		embed.setFields(
-			...message.embeds[0].fields.map((field: EmbedField, index: number) => {
+			...message.embeds[0].fields.map((field, index) => {
+				// information field, never gets changed
 				if (index === 0) return field;
-				const val = parseInt(field.value.substring(2, 3));
-				if (!Number.isNaN(val)) {
-					// if it can't be casted to a number no votes have been made yet
-					if ((bestOption[0] as number) < val) {
-						bestOption[0] = val;
-						bestOption[1] = isYesno
-							? `This vote ${
-									this.getAllVotes().upvote > this.getAllVotes().downvote
-										? "has passed!"
-										: this.getAllVotes().upvote == this.getAllVotes().downvote
-										? "has tied!"
-										: "has not passed!"
-							  }`
+				const val = Number(field.value.substring(2, 3));
+
+				// try for higher scoring option every interation
+				if (!isNaN(val)) {
+					if (bestOption.value < val) {
+						bestOption.value = val;
+						bestOption.message = isYesno
+							? this.getTimeoutString(this.getAllVotes())
 							: `Option **${field.name}** won!`;
-					} else if ((bestOption[0] as number) === val) {
-						bestOption[1] = "This vote was a tie!";
-					}
+					} else if (bestOption.value === val) bestOption.message = "This vote was a tie!";
 				}
+
+				// status field is at the end so you can guarantee every option has been counted
 				if (field.name === "Status") {
-					if (this.getStatus() === "ended") {
-						field.value = "";
-						if (bestOption[1] !== "") field.value = `${bestOption[1]}\n\n`;
-						field.value += `*Ended <t:${this.getTimeout()}:R>*`;
-					}
+					if (this.getStatus() !== "ended") return field;
+
+					field.value = `${bestOption.message}\n\n`;
+					if (bestOption.message === "") field.value = "";
+
+					field.value += `*Ended <t:${this.getTimeout()}:R>*`;
 					return field;
 				}
 
 				const votesCount = this.getVotesCount();
 				const votes = this.getVotes();
 
+				// set formatted percentages in field
 				field.value =
 					votesCount[index - 1] === 0
 						? this.getStatus() === "ended"
-							? "Nobody has voted."
+							? "Nobody voted."
 							: "No votes yet."
-						: `> ${votesCount[index - 1]} / ${votesCount.reduce(
-								(partialSum, a) => partialSum + a,
-								0,
-						  )} (${(
-								(votesCount[index - 1] / votesCount.reduce((partialSum, a) => partialSum + a, 0)) *
-								100
-						  ).toFixed(2)}%)\n`;
+						: this.getOptionString(votesCount, index);
 
-				if (this.isAnonymous() === false) {
+				// add people who voted in embed
+				if (!this.isAnonymous()) {
 					let i = 0;
 
 					while (
@@ -98,7 +116,7 @@ export class Poll extends TimedEmbed {
 						field.value.length + votes[index - 1][i].length < 1024
 					) {
 						field.value += `<@!${votes[index - 1][i]}> `;
-						i++;
+						++i;
 					}
 
 					if (
