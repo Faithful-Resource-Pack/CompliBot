@@ -66,6 +66,7 @@ export type Submissions = Record<FaithfulPack, SubmissionPack>;
 
 // one specific pack instance
 export interface SubmissionPack {
+	display_name: string;
 	channels: Channels;
 	council_enabled: boolean;
 	time_to_results: number;
