@@ -95,6 +95,11 @@
         "keywords": ["mod support", "mods", "mod"]
     },
     {
+        "question": "What happened to the existing Faithful mod support?",
+        "answer": "Mod support textures for Vattic-era Faithful were made by numerous people, and were collected and hosted by a group called the F32Organisation. Their website that hosts the textures still exists at http://f32.me/, but goes down often (it has most likely gone down indefinitely at the time of writing). Currently, the most reliable place to get the old Faithful mod textures is [the F32Organisation GitHub](https://github.com/F32Organization).\nWe used to host these textures on our website as well, but over time our mod picker broke down, leading to us removing the webpage. When the time is right, we intend to group the old F32Org textures with Classic Faithful 32x and give them a mod picker on the rewritten website alongside the new Faithful 32x mod support.",
+        "keywords": ["f32", "f32org", "old mod support"]
+    },
+    {
         "question": "CompliBot is offline! What do I do?",
         "answer": "If the bot ever goes offline without previous notice from the developers, please ping __one__ of the online bot devs (<@473860522710794250>, <@360249987927638016>, or <@173336582265241601>) and alert them of the issue.",
         "keywords": ["bot offline", "bot dead", "bot down"]
