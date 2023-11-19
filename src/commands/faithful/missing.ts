@@ -84,7 +84,9 @@ export const command: SlashCommand = {
 			.setThumbnail(loading)
 			.addFields({ name: "Steps", value: "\u200b" });
 
-		await interaction.editReply({ embeds: [loadingEmbed] });
+		await interaction
+			.editReply({ embeds: [loadingEmbed] })
+			.then((message: Message) => message.deleteButton());
 		let steps: string[] = [];
 
 		const stepCallback = async (step: string) => {
@@ -141,7 +143,6 @@ export const command: SlashCommand = {
 		const resultEmbed = new EmbedBuilder();
 
 		responses.forEach((response) => {
-			console.log(response);
 			// no repo found for the asked pack + edition
 			if (response.diffFile === null)
 				return resultEmbed.addFields({
@@ -172,8 +173,6 @@ export const command: SlashCommand = {
 			});
 		});
 
-		return interaction
-			.editReply({ embeds: [resultEmbed], files: files })
-			.then((message: Message) => message.deleteButton());
+		return interaction.editReply({ embeds: [resultEmbed], files: files });
 	},
 };
