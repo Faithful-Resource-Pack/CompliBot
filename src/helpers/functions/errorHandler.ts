@@ -21,7 +21,7 @@ export const logConstructor = (
 	client: Client,
 	reason: any = { stack: "You requested it with /logs ¯\\_(ツ)_/¯" },
 ): AttachmentBuilder => {
-	const logTemplate = readFileSync(join(__dirname + "/errorHandler.log"), {
+	const logTemplate = readFileSync(join(__dirname, "/errorHandler.log"), {
 		encoding: "utf-8",
 	});
 	const template = logTemplate.match(new RegExp(/\%templateStart%([\s\S]*?)%templateEnd/))[1]; // get message template

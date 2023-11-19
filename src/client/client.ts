@@ -29,7 +29,7 @@ import StartClient from "index";
 import walkSync from "@helpers/walkSync";
 import axios from "axios";
 
-const JSON_PATH = join(__dirname, "../../json/dynamic"); // json folder at root
+const JSON_PATH = join(process.cwd(), "json", "dynamic"); // json folder at root
 const POLLS_FILENAME = "polls.json";
 const COMMANDS_PROCESSED_FILENAME = "commandsProcessed.json";
 

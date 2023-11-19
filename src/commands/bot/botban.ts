@@ -75,7 +75,7 @@ export const command: SlashCommand = {
 				});
 
 			writeFileSync(
-				join(__dirname, "../../../json/botbans.json"),
+				join(process.cwd(), "json", "botbans.json"),
 				JSON.stringify(
 					isAdding
 						? banlist.ids.concat([victim.id])
@@ -95,7 +95,7 @@ export const command: SlashCommand = {
 			if (!interaction.hasPermission("dev")) return;
 
 			await interaction.deferReply({ ephemeral: true });
-			const buffer = readFileSync(join(__dirname, "../../../json/botbans.json"));
+			const buffer = readFileSync(join(process.cwd(), "json", "botbans.json"));
 			const txtBuff = Buffer.from(
 				`Botbanned IDs:\n\n${JSON.parse(buffer.toString("utf-8"))["ids"].join("\n")}`,
 				"utf-8",

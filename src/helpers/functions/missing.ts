@@ -1,18 +1,19 @@
 import { exec, series } from "@helpers/exec";
-import { existsSync, readdirSync, statSync } from "fs";
-import { mkdir } from "fs/promises";
+import { existsSync, mkdirSync, readdirSync, statSync } from "fs";
 import formatName from "@utility/formatName";
 import { Client } from "@client";
 import { ChannelType } from "discord.js";
 import { join, normalize } from "path";
 
-import os from "os";
 import blacklistedTextures from "@json/blacklisted_textures.json";
 import axios from "axios";
 import { FaithfulPack } from "@interfaces/firestorm";
 
+// starting from process.cwd()
+export const BASE_REPOS_PATH = "repos";
+
 // return value for the compute function
-export interface MissingOptions {
+export interface MissingData {
 	completion: number;
 	edition: string;
 	pack: FaithfulPack;
@@ -20,7 +21,12 @@ export interface MissingOptions {
 	total?: number;
 }
 
-export type MissingResult = [Buffer, string[], MissingOptions, Buffer?];
+export interface MissingResult {
+	diffFile: Buffer;
+	results: string[];
+	data: MissingData;
+	nonvanillaFile?: Buffer;
+}
 
 export const computeAll = async (
 	client: Client,
@@ -76,7 +82,7 @@ export const computeAndUpdate = async (
 		return results;
 	}
 
-	const channel = client.channels.cache.get(packProgress[results[2].pack][results[2].edition]);
+	const channel = client.channels.cache.get(packProgress[results.data.pack][results.data.edition]);
 	// channel doesn't exist or can't be fetched, return early
 	if (!channel) return results;
 
@@ -84,8 +90,8 @@ export const computeAndUpdate = async (
 	switch (channel.type) {
 		case ChannelType.GuildVoice:
 			const pattern = /[.\d+]+(?!.*[.\d+])/;
-			if (channel.name.match(pattern)?.[0] == results[2].completion.toString()) break;
-			const updatedName = channel.name.replace(pattern, results[2].completion.toString());
+			if (channel.name.match(pattern)?.[0] == results.data.completion.toString()) break;
+			const updatedName = channel.name.replace(pattern, results.data.completion.toString());
 			channel.setName(updatedName).catch(console.error);
 			break;
 	}
@@ -111,27 +117,27 @@ export const compute = async (
 
 	// pack doesn't support edition yet
 	if (repoRequest === undefined)
-		return [
-			null,
-			[`${formatName(pack)[0]} doesn't support ${edition} edition.`],
-			{ completion: 0, pack: pack, edition: edition, version: version },
-		];
+		return {
+			diffFile: null,
+			results: [`${formatName(pack)[0]} doesn't support ${edition} edition.`],
+			data: { completion: 0, pack, edition, version },
+		};
 
-	const tmpDirPath = normalize(os.tmpdir());
-	const tmpDirPathDefault = join(tmpDirPath, `missing-default-${edition}`);
-	const tmpDirPathRequest = join(tmpDirPath, `missing-${pack}-${edition}`);
+	const basePath = join(process.cwd(), BASE_REPOS_PATH);
+	const defaultPath = join(basePath, `missing-default-${edition}`);
+	const packPath = join(basePath, `missing-${pack}-${edition}`);
 
 	// CLONE REPO IF NOT ALREADY CLONED
-	if (!existsSync(tmpDirPathDefault)) {
+	if (!existsSync(defaultPath)) {
 		await callback(`Downloading default ${edition} pack...`);
-		mkdir(tmpDirPathDefault);
-		await exec(`git clone ${repoDefault} .`, { cwd: tmpDirPathDefault });
+		mkdirSync(defaultPath, { recursive: true });
+		await exec(`git clone ${repoDefault} .`, { cwd: defaultPath });
 	}
 
-	if (!existsSync(tmpDirPathRequest)) {
+	if (!existsSync(packPath)) {
 		await callback(`Downloading \`${formatName(pack)[0]}\` (${edition}) pack...`);
-		mkdir(tmpDirPathRequest);
-		await exec(`git clone ${repoRequest} .`, { cwd: tmpDirPathRequest });
+		mkdirSync(packPath, { recursive: true });
+		await exec(`git clone ${repoRequest} .`, { cwd: packPath });
 	}
 
 	const versions: string[] = (
@@ -144,10 +150,10 @@ export const compute = async (
 	// for some reason specifying the steps in a variable and loading it here breaks?
 	await Promise.all([
 		series(["git stash", "git remote update", "git fetch", `git checkout ${version}`, `git pull`], {
-			cwd: tmpDirPathDefault,
+			cwd: defaultPath,
 		}),
 		series(["git stash", "git remote update", "git fetch", `git checkout ${version}`, `git pull`], {
-			cwd: tmpDirPathRequest,
+			cwd: packPath,
 		}),
 	]);
 
@@ -155,11 +161,11 @@ export const compute = async (
 
 	const editionFilter = blacklistedTextures[edition].map(normalize);
 
-	const texturesDefault = getAllFilesFromDir(tmpDirPathDefault, editionFilter).map((f) =>
-		normalize(f).replace(tmpDirPathDefault, ""),
+	const texturesDefault = getAllFilesFromDir(defaultPath, editionFilter).map((f) =>
+		normalize(f).replace(defaultPath, ""),
 	);
-	const texturesRequest = getAllFilesFromDir(tmpDirPathRequest, editionFilter).map((f) =>
-		normalize(f).replace(tmpDirPathRequest, ""),
+	const texturesRequest = getAllFilesFromDir(packPath, editionFilter).map((f) =>
+		normalize(f).replace(packPath, ""),
 	);
 
 	// instead of looping in the check array for each checked element, we directly check if the
@@ -180,18 +186,18 @@ export const compute = async (
 
 	const progress = Number((100 * (1 - diffResult.length / texturesDefault.length)).toFixed(2));
 
-	return [
-		Buffer.from(formatResults(diffResult), "utf8"),
-		diffResult,
-		{
+	return {
+		diffFile: Buffer.from(formatResults(diffResult), "utf8"),
+		results: diffResult,
+		data: {
 			completion: progress,
-			edition: edition,
-			pack: pack,
-			version: version,
+			edition,
+			pack,
+			version,
 			total: texturesDefault.length,
 		},
-		Buffer.from(formatResults(nonvanillaTextures), "utf8"),
-	];
+		nonvanillaFile: Buffer.from(formatResults(nonvanillaTextures), "utf8"),
+	};
 };
 
 export const getAllFilesFromDir = (dir: string, filter: string[] = []): string[] => {

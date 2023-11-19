@@ -7,7 +7,7 @@ import {
 	computeAll,
 	computeAndUpdate,
 	computeAndUpdateAll,
-	MissingOptions,
+	MissingData,
 	MissingResult,
 } from "@functions/missing";
 import axios from "axios";
@@ -87,7 +87,7 @@ export const command: SlashCommand = {
 		await interaction.editReply({ embeds: [loadingEmbed] });
 		let steps: string[] = [];
 
-		let stepCallback = async (step: string) => {
+		const stepCallback = async (step: string) => {
 			// when in the computing function this function is called when a step is being executed
 			if (step === "") steps = ["Next one..."];
 			else {
@@ -99,7 +99,7 @@ export const command: SlashCommand = {
 			await interaction.editReply({ embeds: [loadingEmbed] });
 		};
 
-		const catchErr = (err: string | Error, options: MissingOptions): MissingResult => {
+		const catchErr = (err: string | Error, options: MissingData): MissingResult => {
 			let errMessage = (err as Error).message;
 			if (!errMessage) {
 				console.error(err);
@@ -109,14 +109,18 @@ export const command: SlashCommand = {
 			if (!interaction.client.tokens.dev)
 				devLogger(interaction.client, (err as Error).stack ?? (err as string), { codeBlocks: "" });
 
-			return [null, [errMessage], options];
+			return {
+				diffFile: null,
+				results: [errMessage],
+				data: options,
+			};
 		};
 
 		let responses: MissingResult[];
 
 		if (edition === "all") {
 			// you can edit the function being called so you don't need like 50 different if statements with the same args
-			const updateCallback: Function = updateChannels ? computeAndUpdateAll : computeAll;
+			const updateCallback = updateChannels ? computeAndUpdateAll : computeAll;
 			responses = await updateCallback(interaction.client, pack, version, stepCallback).catch(
 				(err: any) => [
 					catchErr(err, { completion: 0, pack: pack, version: version, edition: edition }),
@@ -124,7 +128,7 @@ export const command: SlashCommand = {
 			);
 		} else {
 			// the args and error handling here change so we can't just switch out the args
-			const updateCallback: Function = updateChannels ? computeAndUpdate : compute;
+			const updateCallback = updateChannels ? computeAndUpdate : compute;
 			responses = [
 				await updateCallback(interaction.client, pack, edition, version, stepCallback).catch(
 					(err: any) =>
@@ -136,36 +140,36 @@ export const command: SlashCommand = {
 		const files: AttachmentBuilder[] = [];
 		const resultEmbed = new EmbedBuilder();
 
-		responses.forEach((response: MissingResult) => {
+		responses.forEach((response) => {
+			console.log(response);
 			// no repo found for the asked pack + edition
-			if (response[0] === null)
-				resultEmbed.addFields({
-					name: `${formatName(response[2].pack)[0]} - ${response[2].version}`,
-					value: `${response[2].completion}% complete\n> ${response[1][0]}`,
+			if (response.diffFile === null)
+				return resultEmbed.addFields({
+					name: `${formatName(response.data.pack)[0]} - ${response.data.version}`,
+					value: `${response.data.completion}% complete\n> ${response.results[0]}`,
 				});
-			else {
-				if (response[1].length !== 0)
-					files.push(
-						new AttachmentBuilder(response[0], {
-							name: `missing-${response[2].pack}-${response[2].edition}.txt`,
-						}),
-					);
 
-				if (response[3]?.length && interaction.options.getBoolean("nonvanilla", false)) {
-					files.push(
-						new AttachmentBuilder(response[3], {
-							name: `nonvanilla-${response[2].pack}-${response[2].edition}.txt`,
-						}),
-					);
-				}
+			if (response.results.length !== 0)
+				files.push(
+					new AttachmentBuilder(response.diffFile, {
+						name: `missing-${response.data.pack}-${response.data.edition}.txt`,
+					}),
+				);
 
-				resultEmbed.addFields({
-					name: `${formatName(response[2].pack)[0]} - ${response[2].version}`,
-					value: `${response[2].completion}% complete\n> ${response[1].length} ${
-						response[1].length == 1 ? "texture" : "textures"
-					} missing of ${response[2].total} total.`,
-				});
+			if (response.nonvanillaFile && interaction.options.getBoolean("nonvanilla", false)) {
+				files.push(
+					new AttachmentBuilder(response.nonvanillaFile, {
+						name: `nonvanilla-${response.data.pack}-${response.data.edition}.txt`,
+					}),
+				);
 			}
+
+			resultEmbed.addFields({
+				name: `${formatName(response.data.pack)[0]} - ${response.data.version}`,
+				value: `${response.data.completion}% complete\n> ${response.results.length} ${
+					response.results.length == 1 ? "texture" : "textures"
+				} missing of ${response.data.total} total.`,
+			});
 		});
 
 		return interaction
