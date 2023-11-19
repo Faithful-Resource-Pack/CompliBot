@@ -22,25 +22,18 @@ export async function warnUser(
 	};
 
 	// make ephemeral if possible
-	if (!(interaction instanceof Message)) {
+	if (interaction instanceof Message) {
+		const reply = await interaction.reply(args);
+		console.log("message reply");
+		reply.deleteButton();
+	} else {
 		args.ephemeral = true;
-		args.fetchReply = true;
-	}
 
-	let reply: Message;
-	try {
-		reply = await (interaction as ChatInputCommandInteraction).reply(args);
-	} catch {
-		try {
-			// check if deferred
-			reply = await (interaction as ChatInputCommandInteraction).editReply(args);
-		} catch {
-			// follow up if original message not found
-			reply = await (interaction as ChatInputCommandInteraction).followUp(args);
-		}
+		// no need for delete button because we force ephemeral always
+		await (interaction as ChatInputCommandInteraction)
+			.reply(args)
+			.catch(async () => await (interaction as ChatInputCommandInteraction).ephemeralReply(args));
 	}
-
-	if (interaction instanceof Message) reply.deleteButton();
 }
 
 /**
