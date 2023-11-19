@@ -12,7 +12,7 @@ import { FaithfulPack } from "@interfaces/firestorm";
 // starting from process.cwd()
 export const BASE_REPOS_PATH = "repos";
 
-// return value for the compute function
+// the stuff that was computed
 export interface MissingData {
 	completion: number;
 	edition: string;
@@ -21,6 +21,7 @@ export interface MissingData {
 	total?: number;
 }
 
+// files, context, etc
 export interface MissingResult {
 	diffFile: Buffer;
 	results: string[];
@@ -28,12 +29,12 @@ export interface MissingResult {
 	nonvanillaFile?: Buffer;
 }
 
-export const computeAll = async (
+export async function computeAll(
 	client: Client,
 	pack: FaithfulPack,
 	version: string,
 	callback: Function,
-): Promise<MissingResult[]> => {
+) {
 	const editions: string[] = (await axios.get(`${client.tokens.apiUrl}textures/editions`)).data;
 
 	return Promise.all(
@@ -41,14 +42,14 @@ export const computeAll = async (
 			async (edition: string) => await compute(client, pack, edition, version, callback),
 		),
 	);
-};
+}
 
-export const computeAndUpdateAll = async (
+export async function computeAndUpdateAll(
 	client: Client,
 	pack: FaithfulPack,
 	version: string,
 	callback: Function,
-): Promise<MissingResult[]> => {
+) {
 	const editions: string[] = (await axios.get(`${client.tokens.apiUrl}textures/editions`)).data;
 
 	return Promise.all(
@@ -56,18 +57,18 @@ export const computeAndUpdateAll = async (
 			async (edition: string) => await computeAndUpdate(client, pack, edition, version, callback),
 		),
 	);
-};
+}
 
 /**
  * same interface as compute but updates the VCs too
  */
-export const computeAndUpdate = async (
+export async function computeAndUpdate(
 	client: Client,
 	pack: FaithfulPack,
 	edition: string,
 	version: string,
 	callback: Function,
-): Promise<MissingResult> => {
+) {
 	const results = await compute(client, pack, edition, version, callback);
 	if (!client) return results;
 
@@ -75,7 +76,7 @@ export const computeAndUpdate = async (
 	try {
 		const prom = await axios
 			.get(`${client.tokens.apiUrl}settings/channels.pack_progress`)
-			// fix for "Error: socket hang up"
+			// fix for "Error: socket hang up", I know it's stupid but it works somehow
 			.catch(() => axios.get(`https://api.faithfulpack.net/v2/settings/channels.pack_progress`));
 		packProgress = prom.data;
 	} catch {
@@ -97,26 +98,27 @@ export const computeAndUpdate = async (
 	}
 
 	return results;
-};
+}
 
 /**
- * this is the main computing function that all the other ones use internally
+ * Compute missing results for a given pack, edition, and version
+ * @author Juknum, Evorp
  */
-export const compute = async (
+export async function compute(
 	client: Client,
 	pack: FaithfulPack,
 	edition: string,
 	version: string,
 	callback: Function,
-): Promise<MissingResult> => {
+): Promise<MissingResult> {
 	if (callback === undefined) callback = async () => {};
 
 	const repo = (await axios.get(`${client.tokens.apiUrl}settings/repositories.git`)).data;
-	const repoDefault = repo.default[edition];
-	const repoRequest = repo[pack][edition];
+	const defaultRepo = repo.default[edition];
+	const requestRepo = repo[pack][edition];
 
 	// pack doesn't support edition yet
-	if (repoRequest === undefined)
+	if (requestRepo === undefined)
 		return {
 			diffFile: null,
 			results: [`${formatName(pack)[0]} doesn't support ${edition} edition.`],
@@ -124,20 +126,20 @@ export const compute = async (
 		};
 
 	const basePath = join(process.cwd(), BASE_REPOS_PATH);
-	const defaultPath = join(basePath, `missing-default-${edition}`);
-	const packPath = join(basePath, `missing-${pack}-${edition}`);
+	const defaultPath = join(basePath, getNameFromGit(defaultRepo));
+	const requestPath = join(basePath, getNameFromGit(requestRepo));
 
 	// CLONE REPO IF NOT ALREADY CLONED
 	if (!existsSync(defaultPath)) {
 		await callback(`Downloading default ${edition} pack...`);
 		mkdirSync(defaultPath, { recursive: true });
-		await exec(`git clone ${repoDefault} .`, { cwd: defaultPath });
+		await exec(`git clone ${defaultRepo} .`, { cwd: defaultPath });
 	}
 
-	if (!existsSync(packPath)) {
+	if (!existsSync(requestPath)) {
 		await callback(`Downloading \`${formatName(pack)[0]}\` (${edition}) pack...`);
-		mkdirSync(packPath, { recursive: true });
-		await exec(`git clone ${repoRequest} .`, { cwd: packPath });
+		mkdirSync(requestPath, { recursive: true });
+		await exec(`git clone ${requestRepo} .`, { cwd: requestPath });
 	}
 
 	const versions: string[] = (
@@ -147,13 +149,21 @@ export const compute = async (
 	if (!versions.includes(version)) version = versions[0];
 	await callback(`Updating packs with latest version of \`${version}\` known...`);
 
-	// for some reason specifying the steps in a variable and loading it here breaks?
+	const steps = [
+		"git stash",
+		"git remote update",
+		"git fetch",
+		`git checkout ${version}`,
+		`git pull`,
+	];
+
+	// same steps, just with different packs
 	await Promise.all([
-		series(["git stash", "git remote update", "git fetch", `git checkout ${version}`, `git pull`], {
+		series(structuredClone(steps), {
 			cwd: defaultPath,
 		}),
-		series(["git stash", "git remote update", "git fetch", `git checkout ${version}`, `git pull`], {
-			cwd: packPath,
+		series(structuredClone(steps), {
+			cwd: requestPath,
 		}),
 	]);
 
@@ -161,22 +171,22 @@ export const compute = async (
 
 	const editionFilter = blacklistedTextures[edition].map(normalize);
 
-	const texturesDefault = getAllFilesFromDir(defaultPath, editionFilter).map((f) =>
+	const defaultTextures = getAllFilesFromDir(defaultPath, editionFilter).map((f) =>
 		normalize(f).replace(defaultPath, ""),
 	);
-	const texturesRequest = getAllFilesFromDir(packPath, editionFilter).map((f) =>
-		normalize(f).replace(packPath, ""),
+	const requestTextures = getAllFilesFromDir(requestPath, editionFilter).map((f) =>
+		normalize(f).replace(requestPath, ""),
 	);
 
 	// instead of looping in the check array for each checked element, we directly check if the
 	// object has a value for the checked key
-	const check = texturesRequest.reduce((o, key) => ({ ...o, [key]: true }), {});
+	const check = requestTextures.reduce((o, key) => ({ ...o, [key]: true }), {});
 
 	// get texture that aren't in the check object
-	const diffResult = texturesDefault.filter((v) => !check[v]);
-	const nonvanillaTextures = texturesRequest.filter(
+	const diffResult = defaultTextures.filter((v) => !check[v]);
+	const nonvanillaTextures = requestTextures.filter(
 		(texture) =>
-			!texturesDefault.includes(texture) &&
+			!defaultTextures.includes(texture) &&
 			!texture.endsWith("huge_chungus.png") && // we do a little trolling
 			!editionFilter.includes(texture) &&
 			(texture.replace(/\\/g, "/").startsWith("/assets/minecraft/textures") ||
@@ -184,22 +194,32 @@ export const compute = async (
 				texture.replace(/\\/g, "/").startsWith("/textures")),
 	);
 
-	const progress = Number((100 * (1 - diffResult.length / texturesDefault.length)).toFixed(2));
+	// fix for returning an empty buffer which is still truthy
+	const nonvanillaFile = nonvanillaTextures.length
+		? Buffer.from(formatResults(nonvanillaTextures), "utf8")
+		: null;
 
 	return {
 		diffFile: Buffer.from(formatResults(diffResult), "utf8"),
 		results: diffResult,
 		data: {
-			completion: progress,
+			completion: Number((100 * (1 - diffResult.length / defaultTextures.length)).toFixed(2)),
 			edition,
 			pack,
 			version,
-			total: texturesDefault.length,
+			total: defaultTextures.length,
 		},
-		nonvanillaFile: Buffer.from(formatResults(nonvanillaTextures), "utf8"),
+		nonvanillaFile,
 	};
-};
+}
 
+/**
+ * Recursively get all files from a directory with a given filter
+ * @author Evorp, Juknum
+ * @param dir directory used for recursion
+ * @param filter stuff to disallow
+ * @returns array of all paths in the directory
+ */
 export const getAllFilesFromDir = (dir: string, filter: string[] = []): string[] => {
 	const fileList = [];
 	readdirSync(dir).forEach((file) => {
@@ -218,6 +238,12 @@ export const getAllFilesFromDir = (dir: string, filter: string[] = []): string[]
 	return fileList;
 };
 
+/**
+ * Format an array of paths into a more human-readable format
+ * @author Evorp
+ * @param results array of results
+ * @returns human readable string
+ */
 export const formatResults = (results: string[]) =>
 	results
 		.join("\n")
@@ -225,3 +251,12 @@ export const formatResults = (results: string[]) =>
 		.replace(/\/assets\/minecraft/g, "")
 		// only match at start of line so realms/optifine aren't affected
 		.replace(/^\/textures\//gm, "");
+
+/**
+ * Get repository name from a .git URL
+ * @author Evorp
+ * @param url git URL
+ * @returns repository name
+ */
+export const getNameFromGit = (url: string) =>
+	(url.endsWith("/") ? url.slice(0, -1) : url).split("/").at(-1).split(".")[0];
