@@ -6,7 +6,7 @@ import tokens from "@json/tokens.json";
 export default function StartClient(firstStart = true, interaction?: ChatInputCommandInteraction) {
 	new Client(
 		{
-			tokens: tokens,
+			tokens,
 			// remove this line to die instantly ~JackDotJS 2021
 			allowedMentions: { parse: ["users", "roles"], repliedUser: false },
 			partials: [

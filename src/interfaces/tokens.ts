@@ -2,7 +2,7 @@ export interface Tokens {
 	prefix: string; // for shorthand prefix commands
 	token: string;
 	apiUrl: string;
-	apiPassword?: string; // for api authentication
+	apiToken?: string; // for api authentication
 	errorChannel: string; // error channel where errors are sent
 	developers: string[]; // people authorized to use dev-only commands and features
 	gitToken: string; // for feedback system
