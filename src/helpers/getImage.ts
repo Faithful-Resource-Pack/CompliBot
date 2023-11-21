@@ -30,7 +30,9 @@ export async function getImageFromMessage(message: Message) {
 
 	if (message.embeds)
 		for (const embed of message.embeds) {
-			url = embed.image?.url || embed.thumbnail?.url;
+			url = embed.image?.url;
+			if (isImage(url)) return url;
+			url = embed.thumbnail?.url;
 			if (isImage(url)) return url;
 		}
 
