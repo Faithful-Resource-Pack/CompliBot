@@ -1,3 +1,5 @@
+import { MCMETA } from "@helpers/images/animate";
+
 export type MinecraftEdition = "java" | "bedrock";
 
 export type FaithfulPack =
@@ -35,16 +37,6 @@ export interface Path {
 	versions: string[]; // texture versions
 }
 
-export interface MCMeta {
-	animation: {
-		frametime?: number;
-		interpolate?: boolean;
-		frames?: (number | { index?: number; time?: number })[];
-		height?: number;
-		width?: number;
-	};
-}
-
 export interface Use {
 	id: string;
 	name: string;
@@ -62,6 +54,7 @@ export interface Texture extends BaseTexture {
 	uses: Use[];
 	paths: Path[];
 	contributions?: Contribution[];
+	mcmeta?: MCMETA;
 }
 
 // used for comparison loader

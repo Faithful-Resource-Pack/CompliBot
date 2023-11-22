@@ -3,11 +3,11 @@ import { magnify, magnifyToAttachment } from "@images/magnify";
 import { Image, loadImage, createCanvas, Canvas } from "@napi-rs/canvas";
 import { Client, EmbedBuilder } from "@client";
 import { addPathsToEmbed } from "@functions/getTexture";
-import { AnyPack, GalleryTexture, MCMeta } from "@interfaces/firestorm";
+import { AnyPack, GalleryTexture } from "@interfaces/firestorm";
 import axios from "axios";
 import { ActionRowBuilder, AttachmentBuilder, ButtonBuilder } from "discord.js";
 import { template } from "@utility/buttons";
-import { animateToAttachment } from "@helpers/images/animate";
+import { animateToAttachment, MCMETA } from "@helpers/images/animate";
 
 /**
  * Get the corresponding pack IDs for a given display choice
@@ -35,6 +35,44 @@ export function parseDisplay(display: string) {
 	}
 }
 
+export async function tileSheetArraySlicer(
+	loadedImages: Image[][],
+	dimension: Image,
+	mcmeta: MCMETA,
+) {
+	const frameCount: number = !mcmeta.animation?.height ? dimension.height / dimension.width : dimension.height / mcmeta.animation.height; // if height is not specified, assume square image
+	let canvasArray: Canvas[][][] = [];
+	for (const images of loadedImages) {
+		canvasArray.push([]);
+		for (const image of images) {
+			canvasArray.at(-1).push([]);
+			let individualHeight = image.height / frameCount;	// height of each frame adjusted for resolution
+			for (let i = 0; i < frameCount; ++i) {
+				const canvas = createCanvas(image.width, individualHeight);   // canvas for each frame adjusted for resolution
+				const ctx = canvas.getContext("2d");
+				ctx.imageSmoothingEnabled = false;
+				ctx.clearRect(0, 0, image.width, individualHeight);
+				ctx.globalAlpha = 1;
+				ctx.globalCompositeOperation = "copy"; // just canvas stuff
+	
+				ctx.drawImage(
+					image, // image
+					0,
+					individualHeight * i, // sx, sy
+					image.width,
+					individualHeight, // sWidth, sHeight
+					0,
+					0, // dx, dy
+					image.width,
+					individualHeight, // dWidth, dHeight
+				);
+				canvasArray.at(-1).at(-1).push(canvas); // putting the new frame into the array
+			}
+		}
+	}
+	return {canvasArray, frameCount}; // returns the 3D array with all of the frames and the number of frames
+}
+
 /**
  * Generate a texture comparison by ID
  * @author Evorp
@@ -52,11 +90,7 @@ export default async function textureComparison(
 	).data;
 
 	const isAnimated = result.paths.filter((p) => p.mcmeta === true).length !== 0;
-
-	let mcmeta: MCMeta;
-	if (isAnimated) {
-		mcmeta = (await axios.get(`${client.tokens.apiUrl}gallery/modal/${id}/latest`)).data.mcmeta;
-	}
+	const mcmeta: MCMETA = result.mcmeta ?? {} as MCMETA;
 	
 	const displayed = parseDisplay(display);
 	const defaultURL = result.urls.default;
@@ -80,56 +114,19 @@ export default async function textureComparison(
 		}
 	}
 
-	let canvasArray: Canvas[][][] = [];
 	let animatedGif: AttachmentBuilder;
-
 	if (isAnimated) {
-
-		let frameCount: number;
-		if (!mcmeta.animation?.height) frameCount = dimension.height / dimension.width;
-		else frameCount = dimension.height / mcmeta.animation.height;
-
-		for (const images of loadedImages) {
-			canvasArray.push([]);
-			for (const image of images) {
-				canvasArray.at(-1).push([]);
-				let individualHeight = image.height / frameCount;
-				for (let i = 0; i < frameCount; ++i) {
-					const canvas = createCanvas(image.width, individualHeight);
-					const ctx = canvas.getContext("2d");
-					ctx.imageSmoothingEnabled = false;
-					ctx.clearRect(0, 0, image.width, individualHeight);
-					ctx.globalAlpha = 1;
-					ctx.globalCompositeOperation = "copy";
-		
-					ctx.drawImage(
-						image, // image
-						0,
-						individualHeight * i, // sx, sy
-						image.width,
-						individualHeight, // sWidth, sHeight
-						0,
-						0, // dx, dy
-						image.width,
-						individualHeight, // dWidth, dHeight
-					);
-					canvasArray.at(-1).at(-1).push(canvas);
-				}
-			}
-		}
+		const { canvasArray, frameCount } = await tileSheetArraySlicer(loadedImages, dimension, mcmeta);
 		let stitchedFrames: Image [][] = [];
-		for (let i = 0; i < frameCount; ++i) {
+		for (let i = 0; i < frameCount; ++i) { // This is to orient the frames vertically so they stitch properly
 			stitchedFrames.push([]);
 			stitchedFrames.at(-1).push(await loadImage(await stitch(canvasArray.map((c) => c.map((c2) => c2[i])))));
 		}
-		const firstTileSheet = await loadImage(await stitch(stitchedFrames, 0));
-		const { magnified } = await magnify(firstTileSheet, { isAnimation: true, factor: 4 }); // 4 was chosen as a middle ground to prevent too much lag
-		const imageMagnified = await loadImage(magnified);
+		const firstTileSheet = await stitch(stitchedFrames, 0);
+		const { magnified, factor, height, width } = await magnify(firstTileSheet, { isAnimation: true });
 		if (!mcmeta.animation) mcmeta.animation = {};
-		if (!mcmeta.animation?.height) mcmeta.animation.height = imageMagnified.height / frameCount;
-		else mcmeta.animation.height *= 4;
-		if (!mcmeta.animation?.width) mcmeta.animation.width = imageMagnified.width;
-		else mcmeta.animation.width *= 4;
+		mcmeta.animation.height = !mcmeta.animation?.height ? height / frameCount : mcmeta.animation.height * factor; // These scale the mcmeta info for the new resolution
+		mcmeta.animation.width = !mcmeta.animation?.width ? width : mcmeta.animation.width * factor;
 		animatedGif = await animateToAttachment(magnified, mcmeta);
 	}
 
