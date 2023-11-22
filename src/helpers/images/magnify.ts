@@ -18,8 +18,7 @@ export async function magnify(origin: ImageSource, options: MagnifyOptions = {})
 	const input = await loadImage(origin);
 
 	// ignore height if tilesheet, otherwise it's not scaled as much
-	const surface = options.isAnimation ? input.width * 32 : input.width * input.height;
-
+	const surface = options.isAnimation ? input.width ** 2 : input.width * input.height;
 	// no custom factor provided
 	let factor = 64;
 	if (surface <= 256) factor = 32;

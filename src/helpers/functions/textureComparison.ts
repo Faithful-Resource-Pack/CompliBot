@@ -2,7 +2,7 @@ import stitch from "@images/stitch";
 import { magnify, magnifyToAttachment } from "@images/magnify";
 import { Image, loadImage, createCanvas, Canvas } from "@napi-rs/canvas";
 import { Client, EmbedBuilder } from "@client";
-import { addPathsToEmbed } from "@functions/getTexture";
+import { addMCMetaToEmbed, addPathsToEmbed } from "@functions/getTexture";
 import { AnyPack, GalleryTexture } from "@interfaces/firestorm";
 import axios from "axios";
 import { ActionRowBuilder, AttachmentBuilder, ButtonBuilder } from "discord.js";
@@ -40,21 +40,23 @@ export async function tileSheetArraySlicer(
 	dimension: Image,
 	mcmeta: MCMETA,
 ) {
-	const frameCount: number = !mcmeta.animation?.height ? dimension.height / dimension.width : dimension.height / mcmeta.animation.height; // if height is not specified, assume square image
+	const frameCount: number = !mcmeta.animation?.height
+		? dimension.height / dimension.width
+		: dimension.height / mcmeta.animation.height; // if height is not specified, assume square image
 	let canvasArray: Canvas[][][] = [];
 	for (const images of loadedImages) {
 		canvasArray.push([]);
 		for (const image of images) {
 			canvasArray.at(-1).push([]);
-			let individualHeight = image.height / frameCount;	// height of each frame adjusted for resolution
+			let individualHeight = image.height / frameCount; // height of each frame adjusted for resolution
 			for (let i = 0; i < frameCount; ++i) {
-				const canvas = createCanvas(image.width, individualHeight);   // canvas for each frame adjusted for resolution
+				const canvas = createCanvas(image.width, individualHeight); // canvas for each frame adjusted for resolution
 				const ctx = canvas.getContext("2d");
 				ctx.imageSmoothingEnabled = false;
 				ctx.clearRect(0, 0, image.width, individualHeight);
 				ctx.globalAlpha = 1;
 				ctx.globalCompositeOperation = "copy"; // just canvas stuff
-	
+
 				ctx.drawImage(
 					image, // image
 					0,
@@ -70,7 +72,7 @@ export async function tileSheetArraySlicer(
 			}
 		}
 	}
-	return {canvasArray, frameCount}; // returns the 3D array with all of the frames and the number of frames
+	return { canvasArray, frameCount }; // returns the 3D array with all of the frames and the number of frames
 }
 
 /**
@@ -90,8 +92,9 @@ export default async function textureComparison(
 	).data;
 
 	const isAnimated = result.paths.filter((p) => p.mcmeta === true).length !== 0;
-	const mcmeta: MCMETA = result.mcmeta ?? {} as MCMETA;
-	
+	const mcmeta: MCMETA = result.mcmeta ?? ({} as MCMETA);
+	const displayMCMETA: MCMETA = structuredClone(mcmeta);
+
 	const displayed = parseDisplay(display);
 	const defaultURL = result.urls.default;
 
@@ -117,15 +120,22 @@ export default async function textureComparison(
 	let animatedGif: AttachmentBuilder;
 	if (isAnimated) {
 		const { canvasArray, frameCount } = await tileSheetArraySlicer(loadedImages, dimension, mcmeta);
-		let stitchedFrames: Image [][] = [];
-		for (let i = 0; i < frameCount; ++i) { // This is to orient the frames vertically so they stitch properly
+		let stitchedFrames: Image[][] = [];
+		for (let i = 0; i < frameCount; ++i) {
+			// This is to orient the frames vertically so they stitch properly
 			stitchedFrames.push([]);
-			stitchedFrames.at(-1).push(await loadImage(await stitch(canvasArray.map((c) => c.map((c2) => c2[i])))));
+			stitchedFrames
+				.at(-1)
+				.push(await loadImage(await stitch(canvasArray.map((c) => c.map((c2) => c2[i])))));
 		}
 		const firstTileSheet = await stitch(stitchedFrames, 0);
-		const { magnified, factor, height, width } = await magnify(firstTileSheet, { isAnimation: true });
+		const { magnified, factor, height, width } = await magnify(firstTileSheet, {
+			isAnimation: true,
+		});
 		if (!mcmeta.animation) mcmeta.animation = {};
-		mcmeta.animation.height = !mcmeta.animation?.height ? height / frameCount : mcmeta.animation.height * factor; // These scale the mcmeta info for the new resolution
+		mcmeta.animation.height = !mcmeta.animation?.height
+			? height / frameCount
+			: mcmeta.animation.height * factor; // These scale the mcmeta info for the new resolution
 		mcmeta.animation.width = !mcmeta.animation?.width ? width : mcmeta.animation.width * factor;
 		animatedGif = await animateToAttachment(magnified, mcmeta);
 	}
@@ -136,12 +146,14 @@ export default async function textureComparison(
 		magnified = await magnifyToAttachment(stitched);
 	}
 
-	const embed = new EmbedBuilder()
+	let embed = new EmbedBuilder()
 		.setImage(`attachment://${isAnimated ? "animated.gif" : "magnified.png"}`)
 		.setTitle(`[#${result.texture.id}] ${result.texture.name}`)
 		.setURL(`https://webapp.faithfulpack.net/#/gallery/java/32x/latest/all/?show=${id}`)
 		.addFields(addPathsToEmbed(result))
 		.setFooter({ text: `Displaying: ${display ?? "All"}` });
+
+	if (Object.keys(displayMCMETA?.animation ?? {}).length) addMCMetaToEmbed(embed, displayMCMETA);
 
 	return {
 		embeds: [embed],

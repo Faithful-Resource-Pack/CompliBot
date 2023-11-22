@@ -12,7 +12,7 @@ import {
 	Contributor,
 	GalleryTexture,
 } from "@interfaces/firestorm";
-import { animateToAttachment } from "@images/animate";
+import { MCMETA, animateToAttachment } from "@images/animate";
 import minecraftSorter from "@utility/minecraftSorter";
 import formatName from "@utility/formatName";
 import { textureButtons } from "@utility/buttons";
@@ -30,7 +30,7 @@ export async function getTexture(interaction: Interaction, texture: Texture, pac
 	const contributionJSON: Contributor[] = (await axios.get(`${tokens.apiUrl}contributions/authors`))
 		.data;
 
-	let mcmeta: any = {};
+	let mcmeta: MCMETA;
 	if (isAnimated) {
 		const animatedPath = paths.filter((p) => p.mcmeta === true)[0];
 		const raw = (await axios.get(`${tokens.apiUrl}settings/repositories.raw`)).data;
@@ -51,7 +51,7 @@ export async function getTexture(interaction: Interaction, texture: Texture, pac
 	const [strPack, strIconURL] = formatName(pack);
 
 	const files: AttachmentBuilder[] = [];
-	const embed = new EmbedBuilder().setTitle(`[#${texture.id}] ${texture.name}`).setFooter({
+	let embed = new EmbedBuilder().setTitle(`[#${texture.id}] ${texture.name}`).setFooter({
 		text: strPack,
 		iconURL: strIconURL,
 	});
@@ -119,18 +119,23 @@ export async function getTexture(interaction: Interaction, texture: Texture, pac
 
 	// magnifying the texture in thumbnail
 	if (isAnimated) {
-		if (Object.keys(mcmeta?.animation ?? {}).length)
-			embed.addFields({
-				name: "MCMETA",
-				value: `\`\`\`json\n${JSON.stringify(mcmeta.animation)}\`\`\``,
-			});
-
+		if (Object.keys(mcmeta?.animation ?? {}).length) addMCMetaToEmbed(embed, mcmeta);
 		const { magnified } = await magnify(textureURL, { isAnimation: true });
 		files.push(await animateToAttachment(magnified, mcmeta));
 	} else files.push(await magnifyToAttachment(textureURL));
 
 	return { embeds: [embed], files: files, components: [textureButtons], ephemeral: false };
 }
+
+export const addMCMetaToEmbed = (embed: EmbedBuilder, mcmeta: MCMETA) => {
+	embed.addFields({
+		name: "MCMETA",
+		value: `\`\`\`json\n${JSON.stringify(mcmeta.animation)}\`\`\``,
+	});
+	return {
+		embed,
+	};
+};
 
 /**
  * Generate embed fields for a given texture's paths
