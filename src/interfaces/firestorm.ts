@@ -35,6 +35,16 @@ export interface Path {
 	versions: string[]; // texture versions
 }
 
+export interface MCMeta {
+	animation: {
+		frametime?: number;
+		interpolate?: boolean;
+		frames?: (number | { index?: number; time?: number })[];
+		height?: number;
+		width?: number;
+	};
+}
+
 export interface Use {
 	id: string;
 	name: string;
