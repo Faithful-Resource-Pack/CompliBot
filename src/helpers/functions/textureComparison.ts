@@ -125,6 +125,7 @@ export default async function textureComparison(
 		const firstTileSheet = await loadImage(await stitch(stitchedFrames, 0));
 		const { magnified } = await magnify(firstTileSheet, { isAnimation: true, factor: 4 }); // 4 was chosen as a middle ground to prevent too much lag
 		const imageMagnified = await loadImage(magnified);
+		if (!mcmeta.animation) mcmeta.animation = {};
 		if (!mcmeta.animation?.height) mcmeta.animation.height = imageMagnified.height / frameCount;
 		else mcmeta.animation.height *= 4;
 		if (!mcmeta.animation?.width) mcmeta.animation.width = imageMagnified.width;
