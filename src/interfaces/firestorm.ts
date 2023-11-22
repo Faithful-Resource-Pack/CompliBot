@@ -58,7 +58,7 @@ export interface Texture extends BaseTexture {
 export interface GalleryTexture extends Omit<Texture, keyof BaseTexture> {
 	// texture properties are moved into their own object
 	texture: BaseTexture;
-	urls: Record<AnyPack, URL>;
+	urls: Record<AnyPack, string>;
 }
 
 // settings.submission.packs
