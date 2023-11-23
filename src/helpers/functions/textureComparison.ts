@@ -36,14 +36,14 @@ export function parseDisplay(display: string) {
 }
 
 /**
- * Takes in a 2D array of tilesheets and slices them into individual frames, then returns a 3D array with all of the frames and the number of frames
+ * Slices tilesheets into individual frames and calculates the number of frames
  * @author Superboxer47
  * @param loadedImages Array of loaded images
  * @param dimension Base image for dimensions
  * @param mcmeta mcmeta for the texture, used for the dimensions of a single frame
  * @returns 3D array with all of the frames and the number of frames
  */
-export function tileSheetSlicer(loadedImages: Image[][], dimension: Image, mcmeta: MCMETA) {
+export function sliceTileSheet(loadedImages: Image[][], dimension: Image, mcmeta: MCMETA) {
 	const frameCount: number = !mcmeta.animation?.height
 		? dimension.height / dimension.width
 		: dimension.height / mcmeta.animation.height; // if height is not specified, assume square image
@@ -57,9 +57,6 @@ export function tileSheetSlicer(loadedImages: Image[][], dimension: Image, mcmet
 				const canvas = createCanvas(image.width, individualHeight); // canvas for each frame adjusted for resolution
 				const ctx = canvas.getContext("2d");
 				ctx.imageSmoothingEnabled = false;
-				ctx.clearRect(0, 0, image.width, individualHeight);
-				ctx.globalAlpha = 1;
-				ctx.globalCompositeOperation = "copy"; // just canvas stuff
 
 				ctx.drawImage(
 					image, // image
@@ -121,16 +118,16 @@ export default async function textureComparison(
 		}
 	}
 
-	let animatedGif: AttachmentBuilder;
+	let attachment;
 	if (isAnimated) {
-		const { canvasArray, frameCount } = tileSheetSlicer(loadedImages, dimension, mcmeta);
+		const { canvasArray, frameCount } = sliceTileSheet(loadedImages, dimension, mcmeta);
 		const stitchedFrames: Image[][] = [];
 		for (let i = 0; i < frameCount; ++i) {
 			// This is to orient the frames vertically so they stitch properly
 			stitchedFrames.push([]);
 			stitchedFrames
 				.at(-1)
-				.push(await loadImage(await stitch(canvasArray.map((c) => c.map((c2) => c2[i])))));
+				.push(await loadImage(await stitch(canvasArray.map((imageSet) => imageSet.map((image) => image[i]))))); // image[i] is the frame of the image
 		}
 		const firstTileSheet = await stitch(stitchedFrames, 0);
 		const { magnified, factor, height, width } = await magnify(firstTileSheet, {
@@ -141,13 +138,11 @@ export default async function textureComparison(
 			? height / frameCount
 			: mcmeta.animation.height * factor; // These scale the mcmeta info for the new resolution
 		mcmeta.animation.width = !mcmeta.animation?.width ? width : mcmeta.animation.width * factor;
-		animatedGif = await animateToAttachment(magnified, mcmeta);
+		attachment = await animateToAttachment(magnified, mcmeta);
 	}
-
-	let magnified;
-	if (!isAnimated) {
+	else {
 		const stitched = await stitch(loadedImages);
-		magnified = await magnifyToAttachment(stitched);
+		attachment = await magnifyToAttachment(stitched);
 	}
 
 	const embed = new EmbedBuilder()
@@ -165,7 +160,7 @@ export default async function textureComparison(
 
 	return {
 		embeds: [embed],
-		files: [isAnimated ? animatedGif : magnified],
+		files: [attachment],
 		components: [new ActionRowBuilder<ButtonBuilder>().addComponents(template)],
 	};
 }
