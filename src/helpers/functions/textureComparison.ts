@@ -2,7 +2,7 @@ import stitch from "@images/stitch";
 import { magnify, magnifyToAttachment } from "@images/magnify";
 import { Image, loadImage, createCanvas, Canvas } from "@napi-rs/canvas";
 import { Client, EmbedBuilder } from "@client";
-import { addMCMetaToEmbed, addPathsToEmbed } from "@functions/getTexture";
+import { addPathsToEmbed } from "@functions/getTexture";
 import { AnyPack, GalleryTexture } from "@interfaces/firestorm";
 import axios from "axios";
 import { ActionRowBuilder, AttachmentBuilder, ButtonBuilder } from "discord.js";
@@ -35,11 +35,15 @@ export function parseDisplay(display: string) {
 	}
 }
 
-export async function tileSheetArraySlicer(
-	loadedImages: Image[][],
-	dimension: Image,
-	mcmeta: MCMETA,
-) {
+/**
+ * Takes in a 2D array of tilesheets and slices them into individual frames, then returns a 3D array with all of the frames and the number of frames
+ * @author Superboxer47
+ * @param loadedImages Array of loaded images
+ * @param dimension Base image for dimensions
+ * @param mcmeta mcmeta for the texture, used for the dimensions of a single frame
+ * @returns 3D array with all of the frames and the number of frames
+ */
+export function tileSheetSlicer(loadedImages: Image[][], dimension: Image, mcmeta: MCMETA) {
 	const frameCount: number = !mcmeta.animation?.height
 		? dimension.height / dimension.width
 		: dimension.height / mcmeta.animation.height; // if height is not specified, assume square image
@@ -119,8 +123,8 @@ export default async function textureComparison(
 
 	let animatedGif: AttachmentBuilder;
 	if (isAnimated) {
-		const { canvasArray, frameCount } = await tileSheetArraySlicer(loadedImages, dimension, mcmeta);
-		let stitchedFrames: Image[][] = [];
+		const { canvasArray, frameCount } = tileSheetSlicer(loadedImages, dimension, mcmeta);
+		const stitchedFrames: Image[][] = [];
 		for (let i = 0; i < frameCount; ++i) {
 			// This is to orient the frames vertically so they stitch properly
 			stitchedFrames.push([]);
@@ -146,14 +150,18 @@ export default async function textureComparison(
 		magnified = await magnifyToAttachment(stitched);
 	}
 
-	let embed = new EmbedBuilder()
+	const embed = new EmbedBuilder()
 		.setImage(`attachment://${isAnimated ? "animated.gif" : "magnified.png"}`)
 		.setTitle(`[#${result.texture.id}] ${result.texture.name}`)
 		.setURL(`https://webapp.faithfulpack.net/#/gallery/java/32x/latest/all/?show=${id}`)
 		.addFields(addPathsToEmbed(result))
 		.setFooter({ text: `Displaying: ${display ?? "All"}` });
 
-	if (Object.keys(displayMCMETA?.animation ?? {}).length) addMCMetaToEmbed(embed, displayMCMETA);
+	if (Object.keys(displayMCMETA?.animation ?? {}).length)
+		embed.addFields({
+			name: "MCMETA",
+			value: `\`\`\`json\n${JSON.stringify(displayMCMETA.animation)}\`\`\``,
+		});
 
 	return {
 		embeds: [embed],

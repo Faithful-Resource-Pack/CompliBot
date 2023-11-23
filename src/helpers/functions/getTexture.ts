@@ -51,7 +51,7 @@ export async function getTexture(interaction: Interaction, texture: Texture, pac
 	const [strPack, strIconURL] = formatName(pack);
 
 	const files: AttachmentBuilder[] = [];
-	let embed = new EmbedBuilder().setTitle(`[#${texture.id}] ${texture.name}`).setFooter({
+	const embed = new EmbedBuilder().setTitle(`[#${texture.id}] ${texture.name}`).setFooter({
 		text: strPack,
 		iconURL: strIconURL,
 	});
@@ -119,23 +119,18 @@ export async function getTexture(interaction: Interaction, texture: Texture, pac
 
 	// magnifying the texture in thumbnail
 	if (isAnimated) {
-		if (Object.keys(mcmeta?.animation ?? {}).length) addMCMetaToEmbed(embed, mcmeta);
+		if (Object.keys(mcmeta?.animation ?? {}).length)
+			embed.addFields({
+				name: "MCMETA",
+				value: `\`\`\`json\n${JSON.stringify(mcmeta.animation)}\`\`\``,
+			});
+
 		const { magnified } = await magnify(textureURL, { isAnimation: true });
 		files.push(await animateToAttachment(magnified, mcmeta));
 	} else files.push(await magnifyToAttachment(textureURL));
 
 	return { embeds: [embed], files: files, components: [textureButtons], ephemeral: false };
 }
-
-export const addMCMetaToEmbed = (embed: EmbedBuilder, mcmeta: MCMETA) => {
-	embed.addFields({
-		name: "MCMETA",
-		value: `\`\`\`json\n${JSON.stringify(mcmeta.animation)}\`\`\``,
-	});
-	return {
-		embed,
-	};
-};
 
 /**
  * Generate embed fields for a given texture's paths
