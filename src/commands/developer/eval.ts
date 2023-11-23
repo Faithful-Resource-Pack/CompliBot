@@ -37,11 +37,16 @@ export const command: SlashCommand = {
 		// ----
 
 		const code = interaction.options.getString("code", true);
-		const evaluated = await eval(
-			`(async () => { try { return await (async () => {${
-				code.includes("return") ? code : `return ${code}`
-			}})() } catch (e) { return e } })()`,
-		);
+		let evaluated: any;
+		try {
+			evaluated = await eval(
+				`(async () => { try { return await (async () => {${
+					code.includes("return") ? code : `return ${code}`
+				}})() } catch (e) { return e } })()`,
+			);
+		} catch (e) {
+			evaluated = e;
+		}
 
 		interaction.editReply({
 			embeds: [
