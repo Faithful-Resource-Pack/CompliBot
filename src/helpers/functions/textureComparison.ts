@@ -47,12 +47,13 @@ export function sliceTileSheet(loadedImages: Image[][], dimension: Image, mcmeta
 	const frameCount: number = !mcmeta.animation?.height
 		? dimension.height / dimension.width
 		: dimension.height / mcmeta.animation.height; // if height is not specified, assume square image
-	let canvasArray: Canvas[][][] = [];
+
+	const canvasArray: Canvas[][][] = [];
 	for (const images of loadedImages) {
 		canvasArray.push([]);
 		for (const image of images) {
 			canvasArray.at(-1).push([]);
-			let individualHeight = image.height / frameCount; // height of each frame adjusted for resolution
+			const individualHeight = image.height / frameCount; // height of each frame adjusted for resolution
 			for (let i = 0; i < frameCount; ++i) {
 				const canvas = createCanvas(image.width, individualHeight); // canvas for each frame adjusted for resolution
 				const ctx = canvas.getContext("2d");
@@ -94,7 +95,7 @@ export default async function textureComparison(
 
 	const isAnimated = result.paths.filter((p) => p.mcmeta === true).length !== 0;
 	const mcmeta: MCMETA = result.mcmeta ?? ({} as MCMETA);
-	const displayMCMETA: MCMETA = structuredClone(mcmeta);
+	const displayMcmeta = structuredClone(mcmeta);
 
 	const displayed = parseDisplay(display);
 	const defaultURL = result.urls.default;
@@ -118,29 +119,34 @@ export default async function textureComparison(
 		}
 	}
 
-	let attachment;
+	let attachment: AttachmentBuilder;
 	if (isAnimated) {
 		const { canvasArray, frameCount } = sliceTileSheet(loadedImages, dimension, mcmeta);
 		const stitchedFrames: Image[][] = [];
 		for (let i = 0; i < frameCount; ++i) {
-			// This is to orient the frames vertically so they stitch properly
+			// orient the frames vertically so they stitch properly
 			stitchedFrames.push([]);
-			stitchedFrames
-				.at(-1)
-				.push(await loadImage(await stitch(canvasArray.map((imageSet) => imageSet.map((image) => image[i]))))); // image[i] is the frame of the image
+			stitchedFrames.at(-1).push(
+				await loadImage(
+					// image[i] is the frame of the image
+					await stitch(canvasArray.map((imageSet) => imageSet.map((image) => image[i]))),
+				),
+			);
 		}
 		const firstTileSheet = await stitch(stitchedFrames, 0);
 		const { magnified, factor, height, width } = await magnify(firstTileSheet, {
 			isAnimation: true,
 		});
+
 		if (!mcmeta.animation) mcmeta.animation = {};
+
+		// scale mcmeta info for new resolution
 		mcmeta.animation.height = !mcmeta.animation?.height
 			? height / frameCount
-			: mcmeta.animation.height * factor; // These scale the mcmeta info for the new resolution
+			: mcmeta.animation.height * factor;
 		mcmeta.animation.width = !mcmeta.animation?.width ? width : mcmeta.animation.width * factor;
 		attachment = await animateToAttachment(magnified, mcmeta);
-	}
-	else {
+	} else {
 		const stitched = await stitch(loadedImages);
 		attachment = await magnifyToAttachment(stitched);
 	}
@@ -152,10 +158,10 @@ export default async function textureComparison(
 		.addFields(addPathsToEmbed(result))
 		.setFooter({ text: `Displaying: ${display ?? "All"}` });
 
-	if (Object.keys(displayMCMETA?.animation ?? {}).length)
+	if (Object.keys(displayMcmeta?.animation ?? {}).length)
 		embed.addFields({
 			name: "MCMETA",
-			value: `\`\`\`json\n${JSON.stringify(displayMCMETA.animation)}\`\`\``,
+			value: `\`\`\`json\n${JSON.stringify(displayMcmeta.animation)}\`\`\``,
 		});
 
 	return {
