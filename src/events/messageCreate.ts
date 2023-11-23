@@ -62,7 +62,7 @@ export default {
 
 		if (message.mentions.has(client.user.id)) await message.react("1131383751713243277");
 
-		if (message.content.toLocaleLowerCase().includes("mhhh")) {
+		if (/\bmhhh+/.test(message.content.toLocaleLowerCase())) {
 			message
 				.reply({
 					embeds: [
