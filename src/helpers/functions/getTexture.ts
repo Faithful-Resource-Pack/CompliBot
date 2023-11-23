@@ -12,7 +12,7 @@ import {
 	Contributor,
 	GalleryTexture,
 } from "@interfaces/firestorm";
-import { animateToAttachment } from "@images/animate";
+import { MCMETA, animateToAttachment } from "@images/animate";
 import minecraftSorter from "@utility/minecraftSorter";
 import formatName from "@utility/formatName";
 import { textureButtons } from "@utility/buttons";
@@ -30,7 +30,7 @@ export async function getTexture(interaction: Interaction, texture: Texture, pac
 	const contributionJSON: Contributor[] = (await axios.get(`${tokens.apiUrl}contributions/authors`))
 		.data;
 
-	let mcmeta: any = {};
+	let mcmeta: MCMETA;
 	if (isAnimated) {
 		const animatedPath = paths.filter((p) => p.mcmeta === true)[0];
 		const raw = (await axios.get(`${tokens.apiUrl}settings/repositories.raw`)).data;
