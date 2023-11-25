@@ -33,7 +33,7 @@ export async function computeAll(
 	client: Client,
 	pack: FaithfulPack,
 	version: string,
-	callback: Function,
+	callback?: (step: string) => Promise<void>,
 ) {
 	const editions: string[] = (await axios.get(`${client.tokens.apiUrl}textures/editions`)).data;
 
@@ -48,7 +48,7 @@ export async function computeAndUpdateAll(
 	client: Client,
 	pack: FaithfulPack,
 	version: string,
-	callback: Function,
+	callback?: (step: string) => Promise<void>,
 ) {
 	const editions: string[] = (await axios.get(`${client.tokens.apiUrl}textures/editions`)).data;
 
@@ -67,7 +67,7 @@ export async function computeAndUpdate(
 	pack: FaithfulPack,
 	edition: string,
 	version: string,
-	callback: Function,
+	callback?: (step: string) => Promise<void>,
 ) {
 	const results = await compute(client, pack, edition, version, callback);
 	if (!client) return results;
@@ -109,16 +109,16 @@ export async function compute(
 	pack: FaithfulPack,
 	edition: string,
 	version: string,
-	callback: Function,
+	callback?: (step: string) => Promise<void>,
 ): Promise<MissingResult> {
-	if (callback === undefined) callback = async () => {};
+	if (!callback) callback = async () => {};
 
 	const repo = (await axios.get(`${client.tokens.apiUrl}settings/repositories.git`)).data;
 	const defaultRepo = repo.default[edition];
 	const requestRepo = repo[pack][edition];
 
 	// pack doesn't support edition yet
-	if (requestRepo === undefined)
+	if (!requestRepo)
 		return {
 			diffFile: null,
 			results: [`${formatName(pack)[0]} doesn't support ${edition} edition.`],
