@@ -36,19 +36,23 @@ export async function tile(origin: ImageSource, options: TileOptions = {}): Prom
 		scale: number,
 		rotation: number,
 	) => {
-		ctx.clearRect(x, y, input.width, input.height);
-		ctx.setTransform(new DOMMatrix([scale, 0, 0, scale, x, y])); // sets scale and origin
+		ctx.setTransform(new DOMMatrix([scale, 0, 0, scale, x, y]));
 		ctx.rotate(rotation * (Math.PI / 180)); // cast to radians
-		ctx.drawImage(image, -image.width / 2, -image.height / 2);
+
+		// non-square images get stretched to always fit the canvas size
+		const w = rotation % 180 === 0 ? input.width : input.height;
+		const h = rotation % 180 === 0 ? input.height : input.width;
+
+		ctx.drawImage(image, -w / 2, -h / 2, w, h);
 	};
 
 	const drawMirroredImage = (x = 0, y = 0) => {
 		ctx.save();
 		ctx.scale(-1, 1); //scales the entire canvas
 
-		// draw in negative space (* -1) since its flipped by .scale()
+		// draw in negative space since its flipped by .scale()
 		// and account for image width since the corner is also flipped
-		ctx.drawImage(input, x * -1 - input.width, y);
+		ctx.drawImage(input, -x - input.width, y);
 		ctx.restore();
 	};
 
