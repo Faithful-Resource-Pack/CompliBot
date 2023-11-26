@@ -3,7 +3,7 @@ import { SlashCommandBuilder } from "discord.js";
 import { ChatInputCommandInteraction, Message } from "@client";
 import { tileToAttachment, TileShape, TileRandom } from "@images/tile";
 import getImage, { imageNotFound } from "@helpers/getImage";
-import { imageButtons } from "@utility/buttons";
+import { tileButtons } from "@utility/buttons";
 import { imageTooBig } from "@helpers/warnUser";
 
 export const command: SlashCommand = {
@@ -13,7 +13,7 @@ export const command: SlashCommand = {
 		.addStringOption((option) =>
 			option
 				.setName("random")
-				.setDescription("Should individual tiles be randomly rotated?")
+				.setDescription("Whether individual tiles should be randomly rotated or flipped.")
 				.setRequired(false)
 				.addChoices(
 					{ name: "rotation", value: "rotation" },
@@ -29,9 +29,14 @@ export const command: SlashCommand = {
 					{ name: "grid", value: "grid" },
 					{ name: "vertical", value: "vertical" },
 					{ name: "horizontal", value: "horizontal" },
-					{ name: "hollow", value: "hollow" },
 					{ name: "plus", value: "plus" },
 				),
+		)
+		.addBooleanOption((option) =>
+			option
+				.setName("magnify")
+				.setDescription("Whether the image should be magnified (default is true).")
+				.setRequired(false),
 		)
 		.addAttachmentOption((o) =>
 			o.setName("image").setDescription("The image to tile").setRequired(false),
@@ -39,20 +44,21 @@ export const command: SlashCommand = {
 	async execute(interaction: ChatInputCommandInteraction) {
 		const random = interaction.options.getString("random") as TileRandom;
 		const shape = interaction.options.getString("type") as TileShape;
+		const magnify = interaction.options.getBoolean("magnify", false) ?? true;
+		await interaction.deferReply();
 
 		const image = await getImage(interaction);
 		if (!image) return imageNotFound(interaction);
 
-		const file = await tileToAttachment(image, { random, shape });
+		const file = await tileToAttachment(image, { random, shape, magnify });
 
 		if (!file) {
 			return await imageTooBig(interaction, "tile");
 		}
 		await interaction
-			.reply({
+			.editReply({
 				files: [file],
-				components: [imageButtons],
-				fetchReply: true,
+				components: [tileButtons],
 			})
 			.then((message: Message) => message.deleteButton());
 	},

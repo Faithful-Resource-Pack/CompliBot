@@ -7,12 +7,14 @@ import {
 	StringSelectMenuInteraction,
 	Message,
 } from "@client";
+import { magnifyToAttachment } from "./magnify";
 
-export type TileShape = "grid" | "vertical" | "horizontal" | "hollow" | "plus";
+export type TileShape = "grid" | "vertical" | "horizontal" | "plus";
 export type TileRandom = "flip" | "rotation";
 interface TileOptions {
 	shape?: TileShape;
 	random?: TileRandom;
+	magnify?: boolean;
 }
 
 /**
@@ -98,26 +100,49 @@ export async function tile(origin: ImageSource, options: TileOptions = {}): Prom
 		}
 
 	switch (options.shape) {
-		case "hollow":
-			context.clearRect(input.width, input.height, input.width, input.height); // middle middle
-			break;
 		case "plus":
-		case "horizontal":
-		case "vertical":
 			context.clearRect(0, 0, input.width, input.height); // top left
 			context.clearRect(input.width * 2, 0, input.width, input.height); // top right
 			context.clearRect(input.width * 2, input.height * 2, input.width, input.height); // bottom right
 			context.clearRect(0, input.height * 2, input.width, input.height); // bottom left
 			break;
 		case "horizontal":
-			context.clearRect(input.width, 0, input.width, input.height); // top middle
-			context.clearRect(input.width, input.height * 2, input.width, input.height); // bottom middle
+			context.clearRect(0, 0, input.width * 3, input.height); // top row
+			context.clearRect(0, input.height * 2, input.width * 3, input.height); // bottom row
 			break;
 		case "vertical":
-			context.clearRect(input.width * 2, input.height, input.width, input.height); // middle left
-			context.clearRect(0, input.height, input.width, input.height); // middle right
+			context.clearRect(0, 0, input.width, input.height * 3); // left side
+			context.clearRect(input.width * 2, 0, input.width, input.height * 3); // right side
 			break;
 	}
+	return canvas.toBuffer("image/png");
+}
+
+/**
+ * Untiles an image to get the original image back
+ * @author Superboxer47
+ * @param origin image to untile
+ * @returns original image as buffer
+ */
+export async function untile(origin: ImageSource): Promise<Buffer> {
+	const input = await loadImage(origin);
+
+	const canvas = createCanvas(input.width / 3, input.height / 3);
+	const context = canvas.getContext("2d");
+
+	context.imageSmoothingEnabled = false;
+
+	context.drawImage(
+		input, // image
+		input.width / 3,
+		input.height / 3, // sx, sy
+		input.width / 3,
+		input.height / 3, // sWidth, sHeight
+		0,
+		0, // dx, dy
+		input.width / 3,
+		input.height / 3, // dWidth, dHeight
+	);
 
 	return canvas.toBuffer("image/png");
 }
@@ -138,5 +163,8 @@ export async function tileToAttachment(
 	const buf = await tile(origin, options);
 	// image too big so we returned early
 	if (!buf) return null;
+	if (options.magnify) {
+		return await magnifyToAttachment(buf);
+	}
 	return new AttachmentBuilder(buf, { name });
 }

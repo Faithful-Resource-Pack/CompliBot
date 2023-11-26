@@ -17,6 +17,14 @@ export const tile = new ButtonBuilder()
 	.setStyle(ButtonStyle.Primary)
 	.setEmoji(emojis.tile)
 	.setCustomId("tile");
+export const flip = new ButtonBuilder()
+	.setStyle(ButtonStyle.Primary)
+	.setEmoji(emojis.flip)
+	.setCustomId("flip");
+export const rotate = new ButtonBuilder()
+	.setStyle(ButtonStyle.Primary)
+	.setEmoji(emojis.rotate)
+	.setCustomId("rotate");
 
 export const template = new ButtonBuilder()
 	.setStyle(ButtonStyle.Primary)
@@ -78,6 +86,12 @@ export const magnifyButtons = new ActionRowBuilder<ButtonBuilder>().addComponent
 export const imageButtons = new ActionRowBuilder<ButtonBuilder>().addComponents(
 	magnify,
 	tile,
+	palette,
+);
+export const tileButtons = new ActionRowBuilder<ButtonBuilder>().addComponents(
+	tile,
+	flip,
+	rotate,
 	palette,
 );
 export const textureButtons = new ActionRowBuilder<ButtonBuilder>().addComponents(
