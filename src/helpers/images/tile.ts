@@ -61,7 +61,7 @@ export async function tile(origin: ImageSource, options: TileOptions = {}): Prom
 	 *  x x x	   x x x      . x .      . x .      . . .
 	 */
 
-	if (options?.random == "rotation") {
+	if (options.random == "rotation") {
 		// grid to get all possible rotation states matched with each other
 		// specific configuration originally by Pomi108
 		const angles = [
@@ -87,7 +87,7 @@ export async function tile(origin: ImageSource, options: TileOptions = {}): Prom
 	else {
 		for (let x = 0; x < 3; ++x) {
 			for (let y = 0; y < 3; ++y) {
-				if (options?.random == "flip" && Math.random() < 0.5)
+				if (options.random == "flip" && Math.random() < 0.5)
 					drawMirroredImage(x * input.width, y * input.height);
 				else ctx.drawImage(input, x * input.width, y * input.height);
 			}
@@ -160,6 +160,6 @@ export async function tileToAttachment(
 	const buf = await tile(origin, options);
 	// image too big so we returned early
 	if (!buf) return null;
-	if (options.magnify) return await magnifyToAttachment(buf);
+	if (options?.magnify) return await magnifyToAttachment(buf);
 	return new AttachmentBuilder(buf, { name });
 }

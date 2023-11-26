@@ -16,8 +16,8 @@ export const command: SlashCommand = {
 				res > 0.5
 					? "https://database.faithfulpack.net/images/bot/coin_heads.png?w=240&enlarge=1"
 					: res < 0.5
-					? "https://database.faithfulpack.net/images/bot/coin_tails.png?w=240&enlarge=1"
-					: "https://database.faithfulpack.net/images/bot/coin_edge.png?w=240&enlarge=1",
+					  ? "https://database.faithfulpack.net/images/bot/coin_tails.png?w=240&enlarge=1"
+					  : "https://database.faithfulpack.net/images/bot/coin_edge.png?w=240&enlarge=1",
 			)
 			.setColor(colors.coin);
 

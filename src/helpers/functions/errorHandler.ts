@@ -47,14 +47,18 @@ export const logConstructor = (
 					log.type === "slashCommand"
 						? `${log.type} [${log.data.commandName}]`
 						: log.type === "guildMemberUpdate"
-						? `${log.type} | ${log.data.user.username} ${
-								log.data.reason === "added" ? "joined" : "left"
-						  } ${log.data.guild.name}`
-						: log.type === "message"
-						? `${log.type} | ${
-								log.data.author ? (log.data.author.bot ? "BOT" : "USER") : "Unknown (likely bot)"
-						  } | ${log.data.author ? log.data.author.username : "Unknown"}`
-						: log.type,
+						  ? `${log.type} | ${log.data.user.username} ${
+									log.data.reason === "added" ? "joined" : "left"
+						    } ${log.data.guild.name}`
+						  : log.type === "message"
+						    ? `${log.type} | ${
+										log.data.author
+											? log.data.author.bot
+												? "BOT"
+												: "USER"
+											: "Unknown (likely bot)"
+						      } | ${log.data.author ? log.data.author.username : "Unknown"}`
+						    : log.type,
 				)
 				.replace(
 					"%templateCreatedTimestamp%",
@@ -72,14 +76,14 @@ export const logConstructor = (
 					log.data.url
 						? log.data.url
 						: log.data.message
-						? log.data.message.url // interaction
-						: log.data.guildId && log.data.channelId
-						? `https://discord.com/channels/${log.data.guildId}/${log.data.channelId}/${
-								log.data.messageId ? log.data.messageId : ""
-						  }` // slash command constructed url
-						: log.data.guild
-						? `Guild ID is ${log.data.guild.id}`
-						: "Unknown",
+						  ? log.data.message.url // interaction
+						  : log.data.guildId && log.data.channelId
+						    ? `https://discord.com/channels/${log.data.guildId}/${log.data.channelId}/${
+										log.data.messageId ? log.data.messageId : ""
+						      }` // slash command constructed url
+						    : log.data.guild
+						      ? `Guild ID is ${log.data.guild.id}`
+						      : "Unknown",
 				)
 
 				.replace("%templateChannelType%", log.data.channel ? log.data.channel.type : "Not relevant")
@@ -90,12 +94,12 @@ export const logConstructor = (
 							? "Empty"
 							: log.data.content
 						: log.data.customId
-						? log.data.customId // button
-						: log.data.options
-						? `Parameters: ${JSON.stringify(log.data.options._hoistedOptions)}` // slash commands interaction
-						: log.type === "guildMemberUpdate"
-						? "Not relevant"
-						: "Unknown",
+						  ? log.data.customId // button
+						  : log.data.options
+						    ? `Parameters: ${JSON.stringify(log.data.options._hoistedOptions)}` // slash commands interaction
+						    : log.type === "guildMemberUpdate"
+						      ? "Not relevant"
+						      : "Unknown",
 				)
 				.replace(
 					"%templateEmbeds%",
