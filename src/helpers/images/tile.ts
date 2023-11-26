@@ -1,17 +1,11 @@
 import { createCanvas, loadImage, Image, DOMMatrix } from "@napi-rs/canvas";
 import { AttachmentBuilder } from "discord.js";
 import { ImageSource } from "@helpers/getImage";
-import {
-	ButtonInteraction,
-	ChatInputCommandInteraction,
-	StringSelectMenuInteraction,
-	Message,
-} from "@client";
 import { magnifyToAttachment } from "./magnify";
 
 export type TileShape = "grid" | "vertical" | "horizontal" | "plus";
 export type TileRandom = "flip" | "rotation";
-interface TileOptions {
+export interface TileOptions {
 	shape?: TileShape;
 	random?: TileRandom;
 	magnify?: boolean;
@@ -31,9 +25,9 @@ export async function tile(origin: ImageSource, options: TileOptions = {}): Prom
 	if (input.width * input.height * 3 > 1048576) return null;
 
 	const canvas = createCanvas(input.width * 3, input.height * 3);
-	const context = canvas.getContext("2d");
+	const ctx = canvas.getContext("2d");
 
-	context.imageSmoothingEnabled = false;
+	ctx.imageSmoothingEnabled = false;
 
 	const drawRotatedImage = (
 		image: Image,
@@ -42,22 +36,22 @@ export async function tile(origin: ImageSource, options: TileOptions = {}): Prom
 		scale: number,
 		rotation: number,
 	) => {
-		context.clearRect(x, y, input.width, input.height);
-		context.setTransform(new DOMMatrix([scale, 0, 0, scale, x, y])); // sets scale and origin
-		context.rotate(rotation * (Math.PI / 180));
-		context.drawImage(image, -image.width / 2, -image.height / 2);
+		ctx.clearRect(x, y, input.width, input.height);
+		ctx.setTransform(new DOMMatrix([scale, 0, 0, scale, x, y])); // sets scale and origin
+		ctx.rotate(rotation * (Math.PI / 180));
+		ctx.drawImage(image, -image.width / 2, -image.height / 2);
 
-		context.restore(); // reset context position to its origin
+		ctx.restore(); // reset context position to its origin
 	};
 
 	const drawMirroredImage = (x = 0, y = 0) => {
-		context.save();
-		context.scale(-1, 1); //scales the entire canvas
+		ctx.save();
+		ctx.scale(-1, 1); //scales the entire canvas
 
 		// draw in negative space (* -1) since its flipped by .scale()
 		// and account for image width since the corner is also flipped
-		context.drawImage(input, x * -1 - input.width, y);
-		context.restore();
+		ctx.drawImage(input, x * -1 - input.width, y);
+		ctx.restore();
 	};
 
 	/**
@@ -90,58 +84,61 @@ export async function tile(origin: ImageSource, options: TileOptions = {}): Prom
 	}
 
 	// base grid
-	else
+	else {
 		for (let x = 0; x < 3; ++x) {
 			for (let y = 0; y < 3; ++y) {
-				if (options?.random == "flip" && Math.random() < 0.5) {
+				if (options?.random == "flip" && Math.random() < 0.5)
 					drawMirroredImage(x * input.width, y * input.height);
-				} else context.drawImage(input, x * input.width, y * input.height);
+				else ctx.drawImage(input, x * input.width, y * input.height);
 			}
 		}
+	}
 
 	switch (options.shape) {
 		case "plus":
-			context.clearRect(0, 0, input.width, input.height); // top left
-			context.clearRect(input.width * 2, 0, input.width, input.height); // top right
-			context.clearRect(input.width * 2, input.height * 2, input.width, input.height); // bottom right
-			context.clearRect(0, input.height * 2, input.width, input.height); // bottom left
+			ctx.clearRect(0, 0, input.width, input.height); // top left
+			ctx.clearRect(input.width * 2, 0, input.width, input.height); // top right
+			ctx.clearRect(input.width * 2, input.height * 2, input.width, input.height); // bottom right
+			ctx.clearRect(0, input.height * 2, input.width, input.height); // bottom left
 			break;
 		case "horizontal":
-			context.clearRect(0, 0, input.width * 3, input.height); // top row
-			context.clearRect(0, input.height * 2, input.width * 3, input.height); // bottom row
+			ctx.clearRect(0, 0, input.width * 3, input.height); // top row
+			ctx.clearRect(0, input.height * 2, input.width * 3, input.height); // bottom row
 			break;
 		case "vertical":
-			context.clearRect(0, 0, input.width, input.height * 3); // left side
-			context.clearRect(input.width * 2, 0, input.width, input.height * 3); // right side
+			ctx.clearRect(0, 0, input.width, input.height * 3); // left side
+			ctx.clearRect(input.width * 2, 0, input.width, input.height * 3); // right side
 			break;
 	}
+
 	return canvas.toBuffer("image/png");
 }
 
 /**
- * Untiles an image to get the original image back
+ * Get the original image back from a tiled grid
  * @author Superboxer47
  * @param origin image to untile
+ * @param gridSize size of grid
  * @returns original image as buffer
  */
-export async function untile(origin: ImageSource): Promise<Buffer> {
+export async function untile(origin: ImageSource, gridSize = 3): Promise<Buffer> {
 	const input = await loadImage(origin);
 
-	const canvas = createCanvas(input.width / 3, input.height / 3);
-	const context = canvas.getContext("2d");
+	const canvas = createCanvas(input.width / gridSize, input.height / gridSize);
+	const ctx = canvas.getContext("2d");
 
-	context.imageSmoothingEnabled = false;
+	ctx.imageSmoothingEnabled = false;
 
-	context.drawImage(
+	ctx.drawImage(
 		input, // image
-		input.width / 3,
-		input.height / 3, // sx, sy
-		input.width / 3,
-		input.height / 3, // sWidth, sHeight
+		input.width / gridSize,
+		input.height / gridSize, // sx, sy
+		input.width / gridSize,
+		input.height / gridSize, // sWidth, sHeight
 		0,
 		0, // dx, dy
-		input.width / 3,
-		input.height / 3, // dWidth, dHeight
+		input.width / gridSize,
+		input.height / gridSize, // dWidth, dHeight
 	);
 
 	return canvas.toBuffer("image/png");
@@ -163,8 +160,6 @@ export async function tileToAttachment(
 	const buf = await tile(origin, options);
 	// image too big so we returned early
 	if (!buf) return null;
-	if (options.magnify) {
-		return await magnifyToAttachment(buf);
-	}
+	if (options.magnify) return await magnifyToAttachment(buf);
 	return new AttachmentBuilder(buf, { name });
 }
