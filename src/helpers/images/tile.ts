@@ -115,12 +115,7 @@ export async function tile(origin: ImageSource, options: TileOptions = {}): Prom
 			context.clearRect(input.width * 2, 0, input.width, input.height * 3); // right side
 			break;
 	}
-	if (options.magnify) {
-		const { magnified } = await magnify(canvas.toBuffer("image/png"));
-		return magnified;
-	} else {
-		return canvas.toBuffer("image/png");
-	}
+	return canvas.toBuffer("image/png");
 }
 
 /**
@@ -166,7 +161,14 @@ export async function tileToAttachment(
 	name = "tiled.png",
 ) {
 	const buf = await tile(origin, options);
+	let output: Buffer;
 	// image too big so we returned early
 	if (!buf) return null;
-	return new AttachmentBuilder(buf, { name });
+	if (options.magnify) {
+		const { magnified } = await magnify(buf);
+		output = magnified;
+	} else {
+		output = buf;
+	}
+	return new AttachmentBuilder(output, { name });
 }
