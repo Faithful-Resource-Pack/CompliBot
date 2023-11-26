@@ -1,6 +1,5 @@
 import { EmbedBuilder } from "@client";
-import TokenJson from "@json/tokens.json";
-import { Tokens } from "@interfaces/tokens";
+import { apiUrl } from "@json/tokens.json";
 import axios from "axios";
 import { APIEmbedField, AttachmentBuilder, Interaction } from "discord.js";
 import { magnify, magnifyToAttachment } from "@images/magnify";
@@ -12,7 +11,7 @@ import {
 	Contributor,
 	GalleryTexture,
 } from "@interfaces/firestorm";
-import { MCMETA, animateToAttachment } from "@images/animate";
+import { animateToAttachment } from "@images/animate";
 import minecraftSorter from "@utility/minecraftSorter";
 import formatName from "@utility/formatName";
 import { textureButtons } from "@utility/buttons";
@@ -24,29 +23,8 @@ import { Image, loadImage } from "@napi-rs/canvas";
  * @returns reply options
  */
 export async function getTexture(interaction: Interaction, texture: Texture, pack: FaithfulPack) {
-	const tokens: Tokens = TokenJson;
-	const { paths, contributions: allContributions } = texture;
-	const isAnimated = paths.filter((p) => p.mcmeta === true).length !== 0;
-	const contributionJSON: Contributor[] = (await axios.get(`${tokens.apiUrl}contributions/authors`))
-		.data;
-
-	let mcmeta: MCMETA;
-	if (isAnimated) {
-		const animatedPath = paths.filter((p) => p.mcmeta === true)[0];
-		const raw = (await axios.get(`${tokens.apiUrl}settings/repositories.raw`)).data;
-
-		try {
-			mcmeta = (
-				await axios.get(
-					`${raw[pack].java}${animatedPath.versions.sort(minecraftSorter).reverse()[0]}/${
-						animatedPath.name
-					}.mcmeta`,
-				)
-			).data;
-		} catch {
-			mcmeta = { animation: {} };
-		}
-	}
+	const isAnimated = Object.keys(texture.mcmeta).length;
+	const contributionJSON: Contributor[] = (await axios.get(`${apiUrl}contributions/authors`)).data;
 
 	const [strPack, strIconURL] = formatName(pack);
 
@@ -58,8 +36,8 @@ export async function getTexture(interaction: Interaction, texture: Texture, pac
 
 	let textureURL: string;
 	try {
-		textureURL = (await axios.get(`${tokens.apiUrl}textures/${texture.id}/url/${pack}/latest`))
-			.request.res.responseUrl;
+		textureURL = (await axios.get(`${apiUrl}textures/${texture.id}/url/${pack}/latest`)).request.res
+			.responseUrl;
 	} catch {
 		textureURL = "";
 	}
@@ -89,9 +67,9 @@ export async function getTexture(interaction: Interaction, texture: Texture, pac
 		.setImage(`attachment://${isAnimated ? "animated.gif" : "magnified.png"}`);
 
 	let mainContribution: Contribution;
-	if (allContributions.length) {
-		mainContribution = allContributions
-			.filter((c) => strPack.includes(c.resolution.toString()) && pack === c.pack)
+	if (texture.contributions.length) {
+		mainContribution = texture.contributions
+			.filter((contribution) => pack === contribution.pack)
 			.sort((a, b) => (a.date > b.date ? -1 : 1))[0];
 	}
 
@@ -119,14 +97,14 @@ export async function getTexture(interaction: Interaction, texture: Texture, pac
 
 	// magnifying the texture in thumbnail
 	if (isAnimated) {
-		if (Object.keys(mcmeta?.animation ?? {}).length)
+		if (Object.keys(texture.mcmeta?.animation ?? {}).length)
 			embed.addFields({
 				name: "MCMETA",
-				value: `\`\`\`json\n${JSON.stringify(mcmeta.animation)}\`\`\``,
+				value: `\`\`\`json\n${JSON.stringify(texture.mcmeta.animation)}\`\`\``,
 			});
 
 		const { magnified } = await magnify(textureURL, { isAnimation: true });
-		files.push(await animateToAttachment(magnified, mcmeta));
+		files.push(await animateToAttachment(magnified, texture.mcmeta));
 	} else files.push(await magnifyToAttachment(textureURL));
 
 	return { embeds: [embed], files: files, components: [textureButtons], ephemeral: false };
