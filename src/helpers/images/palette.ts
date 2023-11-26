@@ -1,5 +1,5 @@
 import { EmbedBuilder } from "@client";
-import { createCanvas, loadImage } from "@napi-rs/canvas";
+import { ImageData, createCanvas, loadImage } from "@napi-rs/canvas";
 import { AttachmentBuilder } from "discord.js";
 import ColorManager from "@images/colors";
 import { ImageSource } from "@helpers/getImage";
@@ -41,7 +41,7 @@ export async function palette(origin: ImageSource) {
 	ctx.drawImage(imageToDraw, 0, 0);
 
 	const allColors: AllColors = {};
-	const imageData = ctx.getImageData(0, 0, imageToDraw.width, imageToDraw.height).data;
+	const imageData: ImageData = ctx.getImageData(0, 0, imageToDraw.width, imageToDraw.height).data;
 
 	for (let x = 0; x < imageToDraw.width; ++x) {
 		for (let y = 0; y < imageToDraw.height; ++y) {

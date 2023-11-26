@@ -1,4 +1,4 @@
-import { createCanvas, loadImage } from "@napi-rs/canvas";
+import { ImageData, createCanvas, loadImage } from "@napi-rs/canvas";
 
 export interface HEXA extends HEX {}
 
@@ -64,7 +64,7 @@ export default class ColorManager {
 
 		ctx.drawImage(imgToDraw, 0, 0, canvas.width, canvas.height);
 
-		const img = ctx.getImageData(0, 0, canvas.width, canvas.height);
+		const img: ImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
 		for (let i = 0; i < img.data.length; i += 4) {
 			// only met when its the same color as the target color

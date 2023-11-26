@@ -1,7 +1,6 @@
-import { createCanvas, loadImage } from "@napi-rs/canvas";
+import { ImageData, createCanvas, loadImage } from "@napi-rs/canvas";
 import { AttachmentBuilder } from "discord.js";
 import { ImageSource } from "@helpers/getImage";
-import ColorManager from "./colors";
 
 export const mcColors = {
 	Foliage: "#5BAB46",
@@ -53,7 +52,7 @@ export async function multiply(origin: ImageSource, color: string) {
 	ctx.imageSmoothingEnabled = false;
 	ctx.drawImage(imageToDraw, 0, 0, imageToDraw.width, imageToDraw.height);
 
-	const before = ctx.getImageData(0, 0, imageToDraw.width, imageToDraw.height);
+	const before: ImageData = ctx.getImageData(0, 0, imageToDraw.width, imageToDraw.height);
 
 	// save alpha to undo later
 	const savedAlpha = structuredClone(before);
@@ -67,7 +66,7 @@ export async function multiply(origin: ImageSource, color: string) {
 	ctx.fillStyle = color;
 	ctx.fillRect(0, 0, imageToDraw.width, imageToDraw.height);
 
-	const after = ctx.getImageData(0, 0, imageToDraw.width, imageToDraw.height);
+	const after: ImageData = ctx.getImageData(0, 0, imageToDraw.width, imageToDraw.height);
 	for (let i = 0; i < after.data.length; i += 4) after.data[i + 3] = savedAlpha.data[i + 3];
 
 	// revert to original alpha version
