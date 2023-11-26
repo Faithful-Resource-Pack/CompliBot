@@ -2,7 +2,7 @@ import { Component } from "@interfaces/components";
 import { info } from "@helpers/logger";
 import { Client, Message, ButtonInteraction, EmbedBuilder } from "@client";
 import { tileToAttachment } from "@images/tile";
-import { imageButtons } from "@utility/buttons";
+import { tileButtons } from "@utility/buttons";
 import getImage, { imageNotFound } from "@helpers/getImage";
 import { imageTooBig } from "@helpers/warnUser";
 
@@ -27,7 +27,7 @@ export default {
 						.setTimestamp(),
 				],
 				files: [attachment],
-				components: [imageButtons],
+				components: [tileButtons],
 				fetchReply: true,
 			})
 			.then((message: Message) => {
