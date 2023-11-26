@@ -3,7 +3,7 @@ import { magnifyToAttachment } from "./images/magnify";
 import getImage, { imageNotFound } from "./getImage";
 import { tileToAttachment } from "./images/tile";
 import { paletteToAttachment } from "./images/palette";
-import { imageButtons, magnifyButtons } from "@utility/buttons";
+import { magnifyButtons, tileButtons } from "@utility/buttons";
 import { imageTooBig } from "./warnUser";
 
 export default async function prefixCommandHandler(message: Message) {
@@ -33,7 +33,7 @@ export default async function prefixCommandHandler(message: Message) {
 			const file = await tileToAttachment(url);
 			if (!file) return await imageTooBig(message, "tile");
 			return await message
-				.reply({ files: [file], components: [imageButtons] })
+				.reply({ files: [file], components: [tileButtons] })
 				.then((message: Message) => message.deleteButton());
 		case "p":
 			const [attachment, embed] = await paletteToAttachment(url);
