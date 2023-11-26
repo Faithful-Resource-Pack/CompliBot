@@ -1,5 +1,4 @@
 import { EmbedBuilder } from "@client";
-import { apiUrl } from "@json/tokens.json";
 import axios from "axios";
 import { APIEmbedField, AttachmentBuilder, Interaction } from "discord.js";
 import { magnify, magnifyToAttachment } from "@images/magnify";
@@ -23,6 +22,7 @@ import { Image, loadImage } from "@napi-rs/canvas";
  * @returns reply options
  */
 export async function getTexture(interaction: Interaction, texture: Texture, pack: FaithfulPack) {
+	const apiUrl = interaction.client.tokens.apiUrl;
 	const isAnimated = Object.keys(texture.mcmeta).length;
 	const contributionJSON: Contributor[] = (await axios.get(`${apiUrl}contributions/authors`)).data;
 
@@ -73,6 +73,7 @@ export async function getTexture(interaction: Interaction, texture: Texture, pac
 			.sort((a, b) => (a.date > b.date ? -1 : 1))[0];
 	}
 
+	// field gets skipped for 16x and textures without contributions
 	if (mainContribution) {
 		const authors = mainContribution.authors.map((authorId) => {
 			if (interaction.guild.members.cache.get(authorId)) return `<@!${authorId}>`;
@@ -85,18 +86,16 @@ export async function getTexture(interaction: Interaction, texture: Texture, pac
 			", ",
 		)}`;
 
-		if (displayContribution != undefined) {
-			embed.addFields({
-				name: authors.length == 1 ? "Latest Author" : "Latest Authors",
-				value: displayContribution,
-			});
-		}
+		embed.addFields({
+			name: authors.length == 1 ? "Latest Author" : "Latest Authors",
+			value: displayContribution,
+		});
 	}
 
 	embed.addFields(addPathsToEmbed(texture));
 
-	// magnifying the texture in thumbnail
 	if (isAnimated) {
+		// only add mcmeta field if there's special properties there
 		if (Object.keys(texture.mcmeta?.animation ?? {}).length)
 			embed.addFields({
 				name: "MCMETA",

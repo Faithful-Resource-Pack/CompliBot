@@ -29,82 +29,11 @@ export interface MissingResult {
 	nonvanillaFile?: Buffer;
 }
 
-export async function computeAll(
-	client: Client,
-	pack: FaithfulPack,
-	version: string,
-	callback?: (step: string) => Promise<void>,
-) {
-	const editions: string[] = (await axios.get(`${client.tokens.apiUrl}textures/editions`)).data;
-
-	return Promise.all(
-		editions.map(
-			async (edition: string) => await compute(client, pack, edition, version, callback),
-		),
-	);
-}
-
-export async function computeAndUpdateAll(
-	client: Client,
-	pack: FaithfulPack,
-	version: string,
-	callback?: (step: string) => Promise<void>,
-) {
-	const editions: string[] = (await axios.get(`${client.tokens.apiUrl}textures/editions`)).data;
-
-	return Promise.all(
-		editions.map(
-			async (edition: string) => await computeAndUpdate(client, pack, edition, version, callback),
-		),
-	);
-}
-
-/**
- * same interface as compute but updates the VCs too
- */
-export async function computeAndUpdate(
-	client: Client,
-	pack: FaithfulPack,
-	edition: string,
-	version: string,
-	callback?: (step: string) => Promise<void>,
-) {
-	const results = await compute(client, pack, edition, version, callback);
-	if (!client) return results;
-
-	let packProgress: any;
-	try {
-		const prom = await axios
-			.get(`${client.tokens.apiUrl}settings/channels.pack_progress`)
-			// fix for "Error: socket hang up", I know it's stupid but it works somehow
-			.catch(() => axios.get(`https://api.faithfulpack.net/v2/settings/channels.pack_progress`));
-		packProgress = prom.data;
-	} catch {
-		return results;
-	}
-
-	const channel = client.channels.cache.get(packProgress[results.data.pack][results.data.edition]);
-	// channel doesn't exist or can't be fetched, return early
-	if (!channel) return results;
-
-	// you can add different patterns depending on the channel type
-	switch (channel.type) {
-		case ChannelType.GuildVoice:
-			const pattern = /[.\d+]+(?!.*[.\d+])/;
-			if (channel.name.match(pattern)?.[0] == results.data.completion.toString()) break;
-			const updatedName = channel.name.replace(pattern, results.data.completion.toString());
-			channel.setName(updatedName).catch(console.error);
-			break;
-	}
-
-	return results;
-}
-
 /**
  * Compute missing results for a given pack, edition, and version
  * @author Juknum, Evorp
  */
-export async function compute(
+export async function computeMissingResults(
 	client: Client,
 	pack: FaithfulPack,
 	edition: string,
@@ -211,6 +140,49 @@ export async function compute(
 		},
 		nonvanillaFile,
 	};
+}
+
+export async function computeAllEditions(
+	client: Client,
+	pack: FaithfulPack,
+	version: string,
+	callback?: (step: string) => Promise<void>,
+) {
+	const editions: string[] = (await axios.get(`${client.tokens.apiUrl}textures/editions`)).data;
+
+	return Promise.all(
+		editions.map(
+			async (edition: string) =>
+				await computeMissingResults(client, pack, edition, version, callback),
+		),
+	);
+}
+
+export async function updateVoiceChannel(client: Client, results: MissingData) {
+	let packProgress: any;
+	try {
+		const prom = await axios
+			.get(`${client.tokens.apiUrl}settings/channels.pack_progress`)
+			// fix for "Error: socket hang up", I know it's stupid but it works somehow
+			.catch(() => axios.get(`https://api.faithfulpack.net/v2/settings/channels.pack_progress`));
+		packProgress = prom.data;
+	} catch {
+		return;
+	}
+
+	const channel = client.channels.cache.get(packProgress[results.pack][results.edition]);
+	// channel doesn't exist or can't be fetched, return early
+	if (!channel) return;
+
+	// you can add different patterns depending on the channel type
+	switch (channel.type) {
+		case ChannelType.GuildVoice:
+			const pattern = /[.\d+]+(?!.*[.\d+])/;
+			if (channel.name.match(pattern)?.[0] == results.completion.toString()) break;
+			const updatedName = channel.name.replace(pattern, results.completion.toString());
+			channel.setName(updatedName).catch(console.error);
+			break;
+	}
 }
 
 /**

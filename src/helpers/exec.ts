@@ -4,6 +4,8 @@
 // released under MIT License
 // version: 0.1.0 (2021/08/13)
 
+import { dev } from "@json/tokens.json";
+
 /**
  * execute a single shell command where "cmd" is a string
  * @author Juknum
@@ -16,7 +18,9 @@ export const execSync = (cmd: string, cb: Function, options = undefined) => {
 	const child_process = require("child_process");
 	const parts = cmd.split(/\s+/g);
 
-	let opt = { stdio: "inherit" };
+	// don't spam console logs in production with command outputs
+	let opt = { stdio: dev ? "inherit" : "ignore" };
+
 	if (options !== undefined) opt = Object.assign({}, opt, options);
 
 	const p = child_process.spawn(parts[0], parts.slice(1), opt);

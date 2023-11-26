@@ -3,12 +3,11 @@ import { FaithfulPack } from "@interfaces/firestorm";
 import { Client, ChatInputCommandInteraction, EmbedBuilder } from "@client";
 import { SlashCommandBuilder, Message, AttachmentBuilder } from "discord.js";
 import {
-	compute,
-	computeAll,
-	computeAndUpdate,
-	computeAndUpdateAll,
+	computeMissingResults,
+	computeAllEditions,
 	MissingData,
 	MissingResult,
+	updateVoiceChannel,
 } from "@functions/missing";
 import axios from "axios";
 import formatName from "@utility/formatName";
@@ -121,20 +120,14 @@ export const command: SlashCommand = {
 		let responses: MissingResult[];
 
 		if (edition === "all") {
-			// you can edit the function being called so you don't need like 50 different if statements with the same args
-			const updateCallback = updateChannels ? computeAndUpdateAll : computeAll;
-			responses = await updateCallback(interaction.client, pack, version, stepCallback).catch(
-				(err: any) => [
-					catchErr(err, { completion: 0, pack: pack, version: version, edition: edition }),
-				],
+			responses = await computeAllEditions(interaction.client, pack, version, stepCallback).catch(
+				(err: any) => [catchErr(err, { completion: 0, pack, version, edition })],
 			);
 		} else {
 			// the args and error handling here change so we can't just switch out the args
-			const updateCallback = updateChannels ? computeAndUpdate : compute;
 			responses = [
-				await updateCallback(interaction.client, pack, edition, version, stepCallback).catch(
-					(err: any) =>
-						catchErr(err, { completion: 0, pack: pack, version: version, edition: edition }),
+				await computeMissingResults(interaction.client, pack, edition, version, stepCallback).catch(
+					(err: any) => catchErr(err, { completion: 0, pack, version, edition }),
 				),
 			];
 		}
@@ -142,28 +135,29 @@ export const command: SlashCommand = {
 		const files: AttachmentBuilder[] = [];
 		const resultEmbed = new EmbedBuilder();
 
-		responses.forEach((response) => {
+		for (const response of responses) {
+			if (updateChannels) await updateVoiceChannel(interaction.client, response.data);
+
 			// no repo found for the asked pack + edition
-			if (response.diffFile === null)
+			if (!response.diffFile)
 				return resultEmbed.addFields({
 					name: `${formatName(response.data.pack)[0]} - ${response.data.version}`,
 					value: `${response.data.completion}% complete\n> ${response.results[0]}`,
 				});
 
-			if (response.results.length !== 0)
+			if (response.results.length)
 				files.push(
 					new AttachmentBuilder(response.diffFile, {
 						name: `missing-${response.data.pack}-${response.data.edition}.txt`,
 					}),
 				);
 
-			if (response.nonvanillaFile && interaction.options.getBoolean("nonvanilla", false)) {
+			if (response.nonvanillaFile && interaction.options.getBoolean("nonvanilla", false))
 				files.push(
 					new AttachmentBuilder(response.nonvanillaFile, {
 						name: `nonvanilla-${response.data.pack}-${response.data.edition}.txt`,
 					}),
 				);
-			}
 
 			resultEmbed.addFields({
 				name: `${formatName(response.data.pack)[0]} - ${response.data.version}`,
@@ -171,7 +165,7 @@ export const command: SlashCommand = {
 					response.results.length == 1 ? "texture" : "textures"
 				} missing of ${response.data.total} total.`,
 			});
-		});
+		}
 
 		return interaction.editReply({ embeds: [resultEmbed], files: files });
 	},
