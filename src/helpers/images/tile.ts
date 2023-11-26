@@ -38,10 +38,8 @@ export async function tile(origin: ImageSource, options: TileOptions = {}): Prom
 	) => {
 		ctx.clearRect(x, y, input.width, input.height);
 		ctx.setTransform(new DOMMatrix([scale, 0, 0, scale, x, y])); // sets scale and origin
-		ctx.rotate(rotation * (Math.PI / 180));
+		ctx.rotate(rotation * (Math.PI / 180)); // cast to radians
 		ctx.drawImage(image, -image.width / 2, -image.height / 2);
-
-		ctx.restore(); // reset context position to its origin
 	};
 
 	const drawMirroredImage = (x = 0, y = 0) => {
@@ -74,7 +72,7 @@ export async function tile(origin: ImageSource, options: TileOptions = {}): Prom
 			for (let y = 0; y < 3; ++y) {
 				drawRotatedImage(
 					input,
-					x * input.width + input.width / 2,
+					x * input.width + input.width / 2, // middle of tile
 					y * input.height + input.height / 2,
 					1,
 					angles[y][x],

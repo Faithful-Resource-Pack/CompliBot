@@ -90,8 +90,8 @@ export const imageButtons = new ActionRowBuilder<ButtonBuilder>().addComponents(
 );
 export const tileButtons = new ActionRowBuilder<ButtonBuilder>().addComponents(
 	tile,
-	flip,
 	rotate,
+	flip,
 	palette,
 );
 export const textureButtons = new ActionRowBuilder<ButtonBuilder>().addComponents(
