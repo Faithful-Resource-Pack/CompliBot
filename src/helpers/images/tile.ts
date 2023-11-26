@@ -7,7 +7,7 @@ import {
 	StringSelectMenuInteraction,
 	Message,
 } from "@client";
-import { magnify } from "./magnify";
+import { magnifyToAttachment } from "./magnify";
 
 export type TileShape = "grid" | "vertical" | "horizontal" | "plus";
 export type TileRandom = "flip" | "rotation";
@@ -161,14 +161,10 @@ export async function tileToAttachment(
 	name = "tiled.png",
 ) {
 	const buf = await tile(origin, options);
-	let output: Buffer;
 	// image too big so we returned early
 	if (!buf) return null;
 	if (options.magnify) {
-		const { magnified } = await magnify(buf);
-		output = magnified;
-	} else {
-		output = buf;
+		return await magnifyToAttachment(buf);
 	}
-	return new AttachmentBuilder(output, { name });
+	return new AttachmentBuilder(buf, { name });
 }

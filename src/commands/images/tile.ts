@@ -13,7 +13,7 @@ export const command: SlashCommand = {
 		.addStringOption((option) =>
 			option
 				.setName("random")
-				.setDescription("Should individual tiles be randomly rotated?")
+				.setDescription("Whether individual tiles should be randomly rotated or flipped.")
 				.setRequired(false)
 				.addChoices(
 					{ name: "rotation", value: "rotation" },
@@ -35,7 +35,7 @@ export const command: SlashCommand = {
 		.addBooleanOption((option) =>
 			option
 				.setName("magnify")
-				.setDescription("Should the image get magnified?")
+				.setDescription("Whether the image should be magnified (default is true).")
 				.setRequired(false),
 		)
 		.addAttachmentOption((o) =>
