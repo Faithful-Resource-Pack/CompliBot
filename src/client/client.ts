@@ -29,9 +29,26 @@ import StartClient from "index";
 import walkSync from "@helpers/walkSync";
 import axios from "axios";
 
-const JSON_PATH = join(process.cwd(), "json", "dynamic"); // json folder at root
 const POLLS_FILENAME = "polls.json";
 const COMMANDS_PROCESSED_FILENAME = "commandsProcessed.json";
+
+const paths = {
+	json: join(process.cwd(), "json", "dynamic"), // json folder at root
+	slashCommands: join(__dirname, "..", "commands"),
+	events: join(__dirname, "..", "events"),
+	components: {
+		buttons: join(__dirname, "..", "components", "buttons"),
+		menus: join(__dirname, "..", "components", "menus"),
+		modals: join(__dirname, "..", "components", "modals"),
+	},
+};
+
+const restarts = ["SIGUSR1", "SIGUSR2", "SIGTERM"];
+const errors = {
+	disconnect: "Disconnect",
+	unhandledRejection: "Unhandled Rejection",
+	uncaughtException: "Uncaught Exception",
+};
 
 export type ActionsStr =
 	| "message"
@@ -63,8 +80,8 @@ export type Log = {
 export class ExtendedClient<Ready extends boolean = boolean> extends Client<Ready> {
 	public verbose = false;
 	public firstStart = true; // used for prettier restarting in dev mode
-	public tokens: Tokens;
-	public automation = new Automation(this);
+	public readonly tokens: Tokens;
+	public readonly automation = new Automation(this);
 
 	private logs: Log[] = [];
 	private maxLogs = 50;
@@ -84,6 +101,43 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 		this.verbose = data.tokens.verbose;
 		this.tokens = data.tokens;
 		this.firstStart = firstStart;
+	}
+
+	public init(interaction?: ChatInputCommandInteraction) {
+		// pretty stuff so it doesnt print the logo upon restart
+		if (!this.firstStart) {
+			console.log(`${success}Restarted`);
+			if (interaction) interaction.editReply("Reboot succeeded!");
+		} else this.asciiArt();
+
+		// login client
+		this.login(this.tokens.token)
+			.catch((e) => {
+				// Allows for showing different errors like missing privileged gateway intents, this caused me so much pain >:(
+				console.log(`${err}${e}`);
+				process.exit(1);
+			})
+			.then(() => {
+				this.loadSlashCommands();
+
+				this.loadComponents();
+				this.loadEvents();
+				this.loadCollections();
+
+				this.automation.start();
+			});
+
+		// all possible restart events (might depend on OS?)
+		restarts.forEach((event) => process.on(event, () => this.restart()));
+
+		// all error types
+		Object.entries(errors).forEach(([err, errDisplay]) =>
+			process.on(err, (reason) => {
+				if (reason) errorHandler(this, reason, errDisplay);
+			}),
+		);
+
+		return this;
 	}
 
 	public async restart(interaction?: ChatInputCommandInteraction) {
@@ -111,53 +165,9 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 		console.log(chalk.hex(darkColor)(`                                  888                `)  + chalk.gray.italic(this.tokens.maintenance === false ? "~ Made lovingly with pain\n" : "    Maintenance mode!\n"));
 	}
 
-	public init(interaction?: ChatInputCommandInteraction) {
-		// pretty stuff so it doesnt print the logo upon restart
-		if (!this.firstStart) {
-			console.log(`${success}Restarted`);
-			if (interaction) interaction.editReply("Reboot succeeded!");
-		} else this.asciiArt();
-
-		// login client
-		this.login(this.tokens.token)
-			.catch((e) => {
-				// Allows for showing different errors like missing privileged gateway intents, this caused me so much pain >:(
-				console.log(`${err}${e}`);
-				process.exit(1);
-			})
-			.then(() => {
-				this.loadSlashCommands();
-
-				this.loadComponents();
-				this.loadEvents();
-				this.loadCollections();
-
-				this.automation.start();
-			});
-
-		// I know this restarting stuff kinda sucks but you can't guarantee which one is triggered
-		// might depend on the OS maybe?
-		process.on("SIGUSR1", () => this.restart());
-		process.on("SIGUSR2", () => this.restart());
-		process.on("SIGTERM", () => this.restart());
-
-		process.on("disconnect", (code: number) => {
-			if (code !== undefined) errorHandler(this, code, "Disconnect");
-		});
-		process.on("uncaughtException", (error) => {
-			if (error) errorHandler(this, error, "Uncaught Exception");
-		});
-		process.on("unhandledRejection", (reason) => {
-			// always have a reason because of some weird bugs with discord
-			if (reason) errorHandler(this, reason, "Unhandled Rejection");
-		});
-
-		return this;
-	}
-
 	private loadCollections() {
-		this.loadCollection(this.polls, POLLS_FILENAME, JSON_PATH);
-		this.loadCollection(this.commandsProcessed, COMMANDS_PROCESSED_FILENAME, JSON_PATH);
+		this.loadCollection(this.polls, POLLS_FILENAME, paths.json);
+		this.loadCollection(this.commandsProcessed, COMMANDS_PROCESSED_FILENAME, paths.json);
 		if (this.verbose) console.log(`${info}Loaded collection data`);
 	}
 
@@ -222,13 +232,12 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 	 * SLASH COMMANDS HANDLER
 	 */
 	public async loadSlashCommands() {
-		const slashCommandsPath = join(__dirname, "..", "commands");
 		const commandsArr: {
 			servers: string[];
 			command: RESTPostAPIApplicationCommandsJSONBody;
 		}[] = [];
 
-		const commands = walkSync(slashCommandsPath).filter((file) => file.endsWith(".ts"));
+		const commands = walkSync(paths.slashCommands).filter((file) => file.endsWith(".ts"));
 		for (const file of commands) {
 			const command: SlashCommand = require(file).command;
 
@@ -303,8 +312,7 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 				this.user.setStatus("idle");
 			});
 
-		const eventPath = join(__dirname, "..", "events");
-		const events = walkSync(eventPath).filter((file) => file.endsWith(".ts"));
+		const events = walkSync(paths.events).filter((file) => file.endsWith(".ts"));
 		for (const file of events) {
 			const event: Event = require(file).default;
 			this.on(event.name as string, event.execute.bind(null, this));
@@ -315,9 +323,7 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 	 * Convenience method to load all components at once
 	 */
 	private loadComponents() {
-		this.loadComponent(this.buttons, join(__dirname, "..", "components", "buttons"));
-		this.loadComponent(this.menus, join(__dirname, "..", "components", "menus"));
-		this.loadComponent(this.modals, join(__dirname, "..", "components", "modals"));
+		for (const [key, path] of Object.entries(paths.components)) this.loadComponent(this[key], path);
 		if (this.verbose) console.log(`${info}Loaded Discord components`);
 	}
 
