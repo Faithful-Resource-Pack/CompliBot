@@ -50,7 +50,7 @@ const errors = {
 	uncaughtException: "Uncaught Exception",
 };
 
-export type ActionsStr =
+export type LogAction =
 	| "message"
 	| "slashCommand"
 	| "button"
@@ -59,7 +59,7 @@ export type ActionsStr =
 	| "guildMemberUpdate"
 	| "guildJoined";
 
-export type Actions =
+export type LogData =
 	| Message
 	| Guild
 	| ButtonInteraction
@@ -68,8 +68,8 @@ export type Actions =
 	| ModalSubmitInteraction;
 
 export type Log = {
-	type: ActionsStr;
-	data: any;
+	type: LogAction;
+	data: any; // technically LogData but TS breaks without this
 };
 
 /**
@@ -83,7 +83,7 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 	public readonly tokens: Tokens;
 	public readonly automation = new Automation(this);
 
-	private logs: Log[] = [];
+	private readonly logs: Log[] = [];
 	private maxLogs = 50;
 	private lastLogIndex = 0;
 
@@ -344,7 +344,7 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 	 * @param type
 	 * @param data
 	 */
-	public storeAction(type: ActionsStr, data: Actions): void {
+	public storeAction(type: LogAction, data: LogData): void {
 		this.logs[this.lastLogIndex++ % this.maxLogs] = { type, data };
 	}
 
