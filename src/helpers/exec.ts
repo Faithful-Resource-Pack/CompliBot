@@ -1,29 +1,33 @@
-// spawn a child process and execute shell command
-// borrowed from https://github.com/mout/mout/ build script
-// borrowed from Miller Medeiros on https://gist.github.com/millermedeiros/4724047
-// released under MIT License
-// version: 0.1.0 (2021/08/13)
-
 import { dev } from "@json/tokens.json";
+import { spawn, SpawnOptions } from "child_process";
+
+/**
+ * spawn a child process and execute shell command
+ * borrowed from https://github.com/mout/mout/ build script
+ * borrowed from Miller Medeiros on https://gist.github.com/millermedeiros/4724047
+ * released under MIT License
+ * version: 0.1.0 (2021/08/13)
+ */
 
 /**
  * execute a single shell command where "cmd" is a string
- * @author Juknum
+ * @author Miller Medeiros
  * @param cmd what command to run
- * @param cb what to run afterwards (grabs error too)
+ * @param cb callback to run afterwards (grabs error too)
  * @param options extra command line options for child_process
  */
-export const execSync = (cmd: string, cb: Function, options = undefined) => {
+export const execSync = (cmd: string, cb: Function, options: SpawnOptions = {}) => {
 	// this would be way easier on a shell/bash script :P
-	const child_process = require("child_process");
 	const parts = cmd.split(/\s+/g);
 
 	// don't spam console logs in production with command outputs
-	let opt = { stdio: dev ? "inherit" : "ignore" };
+	const opt: SpawnOptions = {
+		// ordered as [stdin, stdout, stderr]
+		stdio: dev ? "inherit" : ["ignore", "ignore", "inherit"],
+		...options,
+	};
 
-	if (options !== undefined) opt = Object.assign({}, opt, options);
-
-	const p = child_process.spawn(parts[0], parts.slice(1), opt);
+	const p = spawn(parts[0], parts.slice(1), opt);
 	p.on("exit", (code: number) => {
 		let err = null;
 		if (code) {
@@ -38,7 +42,7 @@ export const execSync = (cmd: string, cb: Function, options = undefined) => {
 
 // execute multiple commands in series
 // this could be replaced by any flow control lib
-export const seriesSync = (cmds: string[], cb: Function, options = undefined) => {
+export const seriesSync = (cmds: string[], cb: Function, options: SpawnOptions = {}) => {
 	const execNext = () => {
 		execSync(
 			cmds.shift(),
@@ -56,7 +60,7 @@ export const seriesSync = (cmds: string[], cb: Function, options = undefined) =>
 	execNext();
 };
 
-export const exec = async (cmd: string, options: any = undefined) => {
+export const exec = async (cmd: string, options: SpawnOptions = {}) => {
 	return new Promise((res, rej) => {
 		execSync(
 			cmd,
@@ -69,7 +73,7 @@ export const exec = async (cmd: string, options: any = undefined) => {
 	});
 };
 
-export const series = async (cmds: string[], options = undefined) => {
+export const series = async (cmds: string[], options: SpawnOptions = {}) => {
 	return new Promise((res, rej) => {
 		seriesSync(
 			cmds,

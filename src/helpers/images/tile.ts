@@ -56,13 +56,6 @@ export async function tile(origin: ImageSource, options: TileOptions = {}): Prom
 		ctx.restore();
 	};
 
-	/**
-	 * Follows this pattern:
-	 *  x x x	   x x x      . x .      . x .      . . .
-	 *  x x x  ->  x . x  ->  x x x  ->  . x .  OR  x x x
-	 *  x x x	   x x x      . x .      . x .      . . .
-	 */
-
 	if (options.random == "rotation") {
 		// grid to get all possible rotation states matched with each other
 		// specific configuration originally by Pomi108
