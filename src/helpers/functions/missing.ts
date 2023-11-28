@@ -158,6 +158,12 @@ export async function computeAllEditions(
 	);
 }
 
+/**
+ * Updates a progress VC channel with computed data
+ * @author Evorp
+ * @param client client to get channel with
+ * @param results results to format channel with
+ */
 export async function updateVoiceChannel(client: Client, results: MissingData) {
 	let packProgress: any;
 	try {
