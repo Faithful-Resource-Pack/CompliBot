@@ -142,6 +142,10 @@ export async function computeMissingResults(
 	};
 }
 
+/**
+ * Compute missing results for all Minecraft editions
+ * @author Juknum
+ */
 export async function computeAllEditions(
 	client: Client,
 	pack: FaithfulPack,
@@ -165,16 +169,10 @@ export async function computeAllEditions(
  * @param results results to format channel with
  */
 export async function updateVoiceChannel(client: Client, results: MissingData) {
-	let packProgress: any;
-	try {
-		const prom = await axios
-			.get(`${client.tokens.apiUrl}settings/channels.pack_progress`)
-			// fix for "Error: socket hang up", I know it's stupid but it works somehow
-			.catch(() => axios.get(`https://api.faithfulpack.net/v2/settings/channels.pack_progress`));
-		packProgress = prom.data;
-	} catch {
-		return;
-	}
+	const { data: packProgress } = await axios
+		.get(`${client.tokens.apiUrl}settings/channels.pack_progress`)
+		// fix for "Error: socket hang up", I know it's stupid but it works somehow
+		.catch(() => axios.get(`https://api.faithfulpack.net/v2/settings/channels.pack_progress`));
 
 	const channel = client.channels.cache.get(packProgress[results.pack][results.edition]);
 	// channel doesn't exist or can't be fetched, return early
