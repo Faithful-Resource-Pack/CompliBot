@@ -3,7 +3,7 @@ import { info } from "@helpers/logger";
 import { Client, Message, ButtonInteraction, EmbedBuilder } from "@client";
 import { magnifyToAttachment } from "@images/magnify";
 import { magnifyButtons } from "@utility/buttons";
-import getImage, { imageNotFound } from "@helpers/getImage";
+import getImage, { imageNotFound } from "@images/getImage";
 
 export default {
 	id: "magnify",

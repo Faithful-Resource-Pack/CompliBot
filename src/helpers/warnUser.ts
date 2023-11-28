@@ -6,7 +6,7 @@ import {
 	EmbedBuilder,
 } from "@client";
 import { colors } from "@utility/colors";
-import { AllStrings } from "./strings";
+import { AllStrings } from "@helpers/strings";
 
 export async function warnUser(
 	interaction:

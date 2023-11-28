@@ -1,7 +1,7 @@
 import { SlashCommand } from "@interfaces/commands";
 import { SlashCommandBuilder } from "discord.js";
 import { ChatInputCommandInteraction, EmbedBuilder, Message } from "@client";
-import getImage, { imageNotFound } from "@helpers/getImage";
+import getImage, { imageNotFound } from "@images/getImage";
 import { animateToAttachment, MCMETA } from "@helpers/images/animate";
 import mcmetaList from "@json/mcmetas.json";
 import { magnify } from "@helpers/images/magnify";

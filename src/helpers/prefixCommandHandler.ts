@@ -1,10 +1,10 @@
 import { Message } from "@client";
-import { magnifyToAttachment } from "./images/magnify";
-import getImage, { imageNotFound } from "./getImage";
-import { tileToAttachment } from "./images/tile";
-import { paletteToAttachment } from "./images/palette";
+import { magnifyToAttachment } from "@images/magnify";
+import getImage, { imageNotFound } from "@images/getImage";
+import { tileToAttachment } from "@images/tile";
+import { paletteToAttachment } from "@images/palette";
 import { magnifyButtons, tileButtons } from "@utility/buttons";
-import { imageTooBig } from "./warnUser";
+import { imageTooBig } from "@helpers/warnUser";
 
 export default async function prefixCommandHandler(message: Message) {
 	const args = message.content.split(" ");

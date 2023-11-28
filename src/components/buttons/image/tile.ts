@@ -3,7 +3,7 @@ import { info } from "@helpers/logger";
 import { Client, Message, ButtonInteraction, EmbedBuilder } from "@client";
 import { tileToAttachment } from "@images/tile";
 import { tileButtons } from "@utility/buttons";
-import getImage, { imageNotFound } from "@helpers/getImage";
+import getImage, { imageNotFound } from "@images/getImage";
 import { imageTooBig } from "@helpers/warnUser";
 
 export default {

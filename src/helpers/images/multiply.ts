@@ -1,6 +1,6 @@
 import { ImageData, createCanvas, loadImage } from "@napi-rs/canvas";
 import { AttachmentBuilder } from "discord.js";
-import { ImageSource } from "@helpers/getImage";
+import { ImageSource } from "@images/getImage";
 
 export const mcColors = {
 	Foliage: "#5BAB46",

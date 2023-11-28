@@ -1,7 +1,7 @@
 import { createCanvas, loadImage, Image, DOMMatrix } from "@napi-rs/canvas";
 import { AttachmentBuilder } from "discord.js";
-import { ImageSource } from "@helpers/getImage";
-import { magnifyToAttachment } from "./magnify";
+import { ImageSource } from "@images/getImage";
+import { magnifyToAttachment } from "@images/magnify";
 
 export type TileShape = "grid" | "vertical" | "horizontal" | "plus";
 export type TileRandom = "flip" | "rotation";

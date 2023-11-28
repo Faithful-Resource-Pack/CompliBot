@@ -2,7 +2,7 @@ import { SlashCommand } from "@interfaces/commands";
 import { SlashCommandBuilder } from "discord.js";
 import { ChatInputCommandInteraction, Message } from "@client";
 import { tileToAttachment, TileShape, TileRandom } from "@images/tile";
-import getImage, { imageNotFound } from "@helpers/getImage";
+import getImage, { imageNotFound } from "@images/getImage";
 import { tileButtons } from "@utility/buttons";
 import { imageTooBig } from "@helpers/warnUser";
 

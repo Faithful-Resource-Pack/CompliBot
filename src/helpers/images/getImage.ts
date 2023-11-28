@@ -7,7 +7,7 @@ import {
 	StringSelectMenuInteraction,
 } from "@client";
 import { Interaction, MessageType } from "discord.js";
-import { warnUser } from "./warnUser";
+import { warnUser } from "@helpers/warnUser";
 
 // remove stupid discord metadata (idk why they even added it)
 export const removeMetadata = (url: string) => url.split("?")[0];
@@ -25,8 +25,12 @@ export type ImageSource = string | URL | Buffer | ArrayBufferLike | Uint8Array |
  */
 export async function getImageFromMessage(message: Message) {
 	let url: string;
-	if (message.attachments.size) url = message.attachments?.first().url;
-	if (isImage(url)) return url;
+	if (message.attachments.size) {
+		for (const attachment of message.attachments.values()) {
+			url = attachment.url;
+			if (isImage(url)) return url;
+		}
+	}
 
 	if (message.embeds)
 		for (const embed of message.embeds) {

@@ -2,7 +2,7 @@ import { EmbedBuilder } from "@client";
 import { ImageData, createCanvas, loadImage } from "@napi-rs/canvas";
 import { AttachmentBuilder } from "discord.js";
 import ColorManager from "@images/colors";
-import { ImageSource } from "@helpers/getImage";
+import { ImageSource } from "@images/getImage";
 
 const COOLORS_URL = "https://coolors.co/";
 

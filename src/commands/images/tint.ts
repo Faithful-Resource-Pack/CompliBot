@@ -2,7 +2,7 @@ import { SlashCommand } from "@interfaces/commands";
 import { ChatInputCommandInteraction, Message } from "@client";
 import { SlashCommandBuilder } from "discord.js";
 import { mcColorsOptions, multiplyToAttachment } from "@images/multiply";
-import getImage, { imageNotFound } from "@helpers/getImage";
+import getImage, { imageNotFound } from "@images/getImage";
 import { imageButtons } from "@utility/buttons";
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()

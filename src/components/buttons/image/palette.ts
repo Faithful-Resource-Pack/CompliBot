@@ -2,7 +2,7 @@ import { Component } from "@interfaces/components";
 import { info } from "@helpers/logger";
 import { Client, Message, ButtonInteraction } from "@client";
 import { paletteToAttachment } from "@images/palette";
-import getImage, { imageNotFound } from "@helpers/getImage";
+import getImage, { imageNotFound } from "@images/getImage";
 import { imageTooBig } from "@helpers/warnUser";
 
 export default {

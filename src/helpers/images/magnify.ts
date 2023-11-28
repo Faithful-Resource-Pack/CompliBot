@@ -1,6 +1,6 @@
 import { createCanvas, loadImage, Image } from "@napi-rs/canvas";
 import { AttachmentBuilder } from "discord.js";
-import { ImageSource } from "@helpers/getImage";
+import { ImageSource } from "@images/getImage";
 
 export interface MagnifyOptions {
 	isAnimation?: boolean;

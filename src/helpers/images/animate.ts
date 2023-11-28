@@ -1,7 +1,7 @@
 import { createCanvas, loadImage } from "@napi-rs/canvas";
-import GIFEncoder from "./GIFEncoder";
+import GIFEncoder from "@images/GIFEncoder";
 import { AttachmentBuilder } from "discord.js";
-import { ImageSource } from "@helpers/getImage";
+import { ImageSource } from "@images/getImage";
 
 export interface MCMETA {
 	animation: {

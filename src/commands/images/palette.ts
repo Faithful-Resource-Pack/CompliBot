@@ -2,7 +2,7 @@ import { SlashCommand } from "@interfaces/commands";
 import { SlashCommandBuilder } from "discord.js";
 import { ChatInputCommandInteraction, Message } from "@client";
 import { paletteToAttachment } from "@images/palette";
-import getImage, { imageNotFound } from "@helpers/getImage";
+import getImage, { imageNotFound } from "@images/getImage";
 import { imageTooBig } from "@helpers/warnUser";
 
 export const command: SlashCommand = {
