@@ -197,7 +197,7 @@ export async function updateVoiceChannel(client: Client, results: MissingData) {
  * @returns array of all paths in the directory
  */
 export const getAllFilesFromDir = (dir: string, filter: string[] = []): string[] => {
-	const fileList = [];
+	const fileList: string[] = [];
 	readdirSync(dir).forEach((file) => {
 		file = normalize(join(dir, file));
 		const stat = statSync(file);

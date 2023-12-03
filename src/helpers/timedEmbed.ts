@@ -114,9 +114,7 @@ export class TimedEmbed {
 	public addVote(type: string, id: string) {
 		if (!this.multipleAnswers) {
 			// remove user vote for all others categories
-			Object.keys(this.votes).forEach((key: string) => {
-				this.removeVote(key, id);
-			});
+			Object.keys(this.votes).forEach((key: string) => this.removeVote(key, id));
 		}
 
 		if (this.hasVotedFor(type, id)) this.removeVote(type, id);

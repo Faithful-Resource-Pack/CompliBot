@@ -183,9 +183,7 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 		relative_path: string,
 	) {
 		const obj = getData({ filename, relative_path });
-		Object.keys(obj).forEach((key: string) => {
-			collection.set(key, obj[key]);
-		});
+		Object.keys(obj).forEach((key: string) => collection.set(key, obj[key]));
 
 		collection.events.on("dataSet", (key: string, value: any) =>
 			this.saveEmittingCollection(collection, filename, relative_path),
@@ -267,15 +265,15 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 				el.servers = ["dev"];
 			});
 
-		const guilds = { global: [] };
-		commandsArr.forEach((cmd) => {
+		const guilds: Record<string, RESTPostAPIApplicationCommandsJSONBody[]> = { global: [] };
+		for (const cmd of commandsArr) {
 			if (!cmd.servers) guilds.global.push(cmd.command);
 			else
 				cmd.servers.forEach((server) => {
-					if (guilds[server] === undefined) guilds[server] = [];
+					if (!guilds[server]) guilds[server] = [];
 					guilds[server].push(cmd.command);
 				});
-		});
+		}
 
 		for (const [name, id] of Object.entries(allGuilds).filter((obj) => obj[1] != "id")) {
 			// if the client isn't in the guild, skip it

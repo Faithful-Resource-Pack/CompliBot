@@ -1,7 +1,7 @@
 import { pollDelete, pollVotes, pollYesNo } from "@utility/buttons";
 import { Client, ChatInputCommandInteraction, Message, EmbedBuilder } from "@client";
 import { ActionRowBuilder, ButtonBuilder, TextChannel } from "discord.js";
-import { AllVotes, TimedEmbed } from "@helpers/timedEmbed";
+import { AllVotes, TimedEmbed, Votes } from "@helpers/timedEmbed";
 
 export interface PollOptions {
 	question: string;
@@ -160,7 +160,7 @@ export class Poll extends TimedEmbed {
 		if (options.yesno) {
 			this.setVotes({ upvote: [], downvote: [] });
 		} else {
-			let tmp = {};
+			let tmp: Votes = {};
 			for (let i = 0; i < options.answersArr.length; ++i) tmp[i] = [];
 			this.setVotes(tmp);
 		}
@@ -176,7 +176,7 @@ export class Poll extends TimedEmbed {
 		if (options.yesno) components.push(pollYesNo);
 		else {
 			const btns: ButtonBuilder[] = [];
-			options.answersArr.forEach((el, index) => btns.push(pollVotes[index]));
+			options.answersArr.forEach((_, index) => btns.push(pollVotes[index]));
 			components.push(new ActionRowBuilder<ButtonBuilder>().addComponents(btns));
 		}
 

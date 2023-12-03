@@ -34,9 +34,9 @@ export async function generalChoiceEmbed(
 
 		for (let i = 0; i < emojis.length; ++i)
 			if (choices[0] !== undefined) {
-				let t = choices.shift();
-				t.emoji = emojis[i % emojis.length];
-				options.push(t);
+				const choice = choices.shift();
+				choice.emoji = emojis[i % emojis.length];
+				options.push(choice);
 			}
 
 		const menu = new StringSelectMenuBuilder()

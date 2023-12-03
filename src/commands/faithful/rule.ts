@@ -46,7 +46,7 @@ export const command: SlashCommand = {
 				interaction.guildId == settings.guilds.classic_faithful
 					? settings.images.cf_plain
 					: settings.images.plain;
-			let embedArray = [];
+			let embedArray: EmbedBuilder[] = [];
 			let i = 0;
 
 			if (choice == "all")
