@@ -51,10 +51,7 @@ export const command: SlashCommand = {
 			});
 		}
 
-		// complete interaction so there's no status errors on the client end
-		interaction
-			.reply({ content: "** **", fetchReply: true })
-			.then((message: Message) => message.delete());
+		await interaction.complete();
 
 		const embed = new EmbedBuilder();
 

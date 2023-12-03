@@ -40,9 +40,7 @@ export const command: SlashCommand = {
 		if (["all", "server"].includes(choice)) {
 			if (!interaction.hasPermission("manager")) return;
 
-			interaction
-				.reply({ content: "** **", fetchReply: true })
-				.then((message: Message) => message.delete());
+			await interaction.complete();
 
 			const thumbnail =
 				interaction.guildId == settings.guilds.classic_faithful

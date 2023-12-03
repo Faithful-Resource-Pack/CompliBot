@@ -29,9 +29,7 @@ export const command: SlashCommand = {
 				break;
 			case "all":
 				if (!interaction.hasPermission("manager")) return;
-				await interaction
-					.reply({ content: "** **", fetchReply: true })
-					.then((message: Message) => message.delete());
+				await interaction.complete();
 
 				return await interaction.channel.send({
 					content: `### Faithful:\nhttps://discord.gg/sN9YRQbBv7\n### Classic Faithful:\nhttps://discord.gg/KSEhCVtg4J\n### Minecraft:\nhttps://discord.gg/minecraft`,

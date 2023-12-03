@@ -8,7 +8,7 @@ export const command: SlashCommand = {
 		.setDescription("Say something with the bot")
 		.addStringOption((option) =>
 			option
-				.setName("sentence")
+				.setName("message")
 				.setDescription("The funny thing you want the bot to say.")
 				.setRequired(true),
 		)
@@ -16,12 +16,10 @@ export const command: SlashCommand = {
 		.setDMPermission(false),
 	async execute(interaction: ChatInputCommandInteraction) {
 		if (!interaction.hasPermission("dev")) return;
+		await interaction.complete();
 
-		interaction
-			.reply({ content: "** **", fetchReply: true })
-			.then((message: Message) => message.delete());
-
-		interaction.channel.send({ content: interaction.options.getString("sentence", true) });
-		return;
+		return await interaction.channel.send({
+			content: interaction.options.getString("message", true),
+		});
 	},
 };

@@ -11,7 +11,7 @@ import {
 import { strings, AllStrings } from "@helpers/strings";
 import { EmbedBuilder } from "@client";
 import { colors } from "@utility/colors";
-import { ExtendedClient } from "./client";
+import { Client as ExtendedClient, Message } from "@client";
 
 export type PermissionType = "manager" | "dev" | "moderator" | "council";
 
@@ -40,6 +40,11 @@ declare module "discord.js" {
 		 * @returns sent message
 		 */
 		ephemeralReply(options: InteractionReplyOptions): Promise<Message>;
+		/**
+		 * Hack to remove the "The application did not respond" message when not replying
+		 * @author Evorp
+		 */
+		complete(): Promise<Message>;
 	}
 }
 
@@ -72,17 +77,23 @@ function hasPermission(type: PermissionType, warnUser = true): boolean {
 	return out;
 }
 
-// quick utility method for ephemerally replying to an already-deferred message
 async function ephemeralReply(options: InteractionReplyOptions) {
 	// it's already deferred so we delete the non-ephemeral message
 	await this.deleteReply();
 	return await this.followUp({ ...options, ephemeral: true });
 }
 
+async function complete() {
+	return this.reply({ content: "** **", fetchReply: true }).then((message: Message) =>
+		message.delete(),
+	);
+}
+
 // add methods to just the base so it applies to all interaction types
 BaseInteraction.prototype.hasPermission = hasPermission;
 BaseInteraction.prototype.strings = strings;
 BaseInteraction.prototype.ephemeralReply = ephemeralReply;
+BaseInteraction.prototype.complete = complete;
 
 export {
 	ChatInputCommandInteraction,

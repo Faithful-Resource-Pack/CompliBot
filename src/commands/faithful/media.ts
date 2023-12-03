@@ -32,9 +32,7 @@ export const command: SlashCommand = {
 
 		if (key === "all") {
 			if (!interaction.hasPermission("manager")) return;
-			interaction
-				.reply({ content: "** **", fetchReply: true })
-				.then((message: Message) => message.delete());
+			await interaction.complete();
 
 			return await interaction.channel.send({
 				embeds: Object.entries(media).map(

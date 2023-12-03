@@ -18,11 +18,9 @@ export const command: SlashCommand = {
 		if (choice == "all") {
 			if (!interaction.hasPermission("manager")) return;
 
-			interaction
-				.reply({ content: "** **", fetchReply: true })
-				.then((message: Message) => message.delete());
+			await interaction.complete();
 
-			let embedArray = [];
+			let embedArray: EmbedBuilder[] = [];
 			let i = 0;
 
 			for (const faq of faqStrings) {
@@ -46,7 +44,7 @@ export const command: SlashCommand = {
 			return;
 		}
 
-		const faqChoice = faqStrings.filter((faq) => faq.keywords.includes(choice))?.[0];
+		const faqChoice = faqStrings.find((faq) => faq.keywords.includes(choice));
 
 		if (!faqChoice) {
 			const errorEmbed = new EmbedBuilder()
@@ -54,8 +52,7 @@ export const command: SlashCommand = {
 				.setDescription(`\`${choice}\` is not a valid FAQ keyword! Have you made a typo?`)
 				.setColor(colors.red);
 
-			await interaction.reply({ embeds: [errorEmbed], ephemeral: true });
-			return;
+			return await interaction.reply({ embeds: [errorEmbed], ephemeral: true });
 		}
 
 		const question: string = (

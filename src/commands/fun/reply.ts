@@ -8,12 +8,12 @@ export const command: SlashCommand = {
 		.setDescription("Say something with the bot")
 		.addStringOption((option) =>
 			option
-				.setName("sentence")
+				.setName("message")
 				.setDescription("The funny thing you want the bot to say.")
 				.setRequired(true),
 		)
 		.addStringOption((option) =>
-			option.setName("message").setDescription("Message ID to reply to").setRequired(true),
+			option.setName("reply").setDescription("Message ID to reply to").setRequired(true),
 		)
 		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
 		.setDMPermission(false),
@@ -22,15 +22,16 @@ export const command: SlashCommand = {
 
 		let msg: Message;
 		try {
-			msg = await interaction.channel.messages.fetch(interaction.options.getString("message"));
+			msg = await interaction.channel.messages.fetch(interaction.options.getString("reply"));
 		} catch {
-			return interaction.reply({ content: "Message can't be fetched!", ephemeral: true });
+			return interaction.reply({
+				content: interaction.strings().error.not_found.replace("%THING%", "Message"),
+				ephemeral: true,
+			});
 		} // message can't be fetched
 
-		interaction
-			.reply({ content: "** **", fetchReply: true })
-			.then((message: Message) => message.delete());
+		await interaction.complete();
 
-		msg.reply({ content: interaction.options.getString("sentence", true) });
+		msg.reply({ content: interaction.options.getString("message", true) });
 	},
 };
