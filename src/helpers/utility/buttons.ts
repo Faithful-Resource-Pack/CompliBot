@@ -28,7 +28,7 @@ export const rotate = new ButtonBuilder()
 
 export const template = new ButtonBuilder()
 	.setStyle(ButtonStyle.Primary)
-	.setEmoji(emojis.flip)
+	.setEmoji(emojis.question_mark)
 	.setCustomId("comparisonTemplate");
 
 export const deleteMessage = new ButtonBuilder()

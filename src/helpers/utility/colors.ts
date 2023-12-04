@@ -1,10 +1,8 @@
-import { ColorResolvable } from "discord.js";
-
 /**
  * Can't fetch from settings.json since djs complains about color resolving
  * so we declare them all here
  */
-export const colors: Record<string, ColorResolvable> = {
+export const colors = {
 	// status/generic colors
 	red: "#f44336",
 	yellow: "#ffeb3b",
@@ -20,4 +18,4 @@ export const colors: Record<string, ColorResolvable> = {
 	classic_faithful_32x: "#00c756",
 	classic_faithful_32x_progart: "#a1db12",
 	classic_faithful_64x: "#9f00cf",
-};
+} as const;
