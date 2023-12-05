@@ -40,7 +40,7 @@ export const command: SlashCommand = {
 		let evaluated: any;
 		try {
 			evaluated = await eval(
-				`(async () => { try { return (async () => {${
+				`(async () => { try { return await (async () => {${
 					code.includes("return") ? code : `return ${code}`
 				}})() } catch (e) { return e } })()`,
 			);
