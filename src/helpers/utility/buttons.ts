@@ -88,14 +88,15 @@ export const imageButtons = new ActionRowBuilder<ButtonBuilder>().addComponents(
 	tile,
 	palette,
 );
+
 export const tileButtons = new ActionRowBuilder<ButtonBuilder>().addComponents(
 	tile,
 	rotate,
 	flip,
 	palette,
 );
+
 export const textureButtons = new ActionRowBuilder<ButtonBuilder>().addComponents(
-	magnify,
 	tile,
 	palette,
 	compare,
