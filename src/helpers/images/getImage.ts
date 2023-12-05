@@ -81,11 +81,9 @@ export async function getImageFromChannel(msgOrInteraction: Message | Interactio
  */
 export default async function getImage(msgOrInteraction: Message | Interaction) {
 	let url: string;
-	let author: string;
 
 	// if it's a message we check if the message itself has an attachment
 	if (msgOrInteraction instanceof Message) {
-		author = msgOrInteraction.author.id;
 		url = await getImageFromMessage(msgOrInteraction);
 		if (isImage(url)) return removeMetadata(url);
 
