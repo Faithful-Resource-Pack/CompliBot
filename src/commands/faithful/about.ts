@@ -45,7 +45,7 @@ export const command: SlashCommand = {
 					"No database profile was found for this user. If this data looks incorrect, register at https://webapp.faithfulpack.net.",
 				);
 
-			return await interaction.editReply({ embeds: [finalEmbed] });
+			return interaction.editReply({ embeds: [finalEmbed] });
 		}
 
 		contributionData.sort((a: Contribution, b: Contribution) => b.date - a.date);

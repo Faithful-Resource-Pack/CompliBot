@@ -99,11 +99,11 @@ export const command: SlashCommand = {
 					});
 			}
 
-			return await interaction.channel.send({ embeds: [embedExpandedRules, embedChanges] });
+			return interaction.channel.send({ embeds: [embedExpandedRules, embedChanges] });
 		}
 
 		const ruleChoice = ruleStrings.rules[choice];
-		return await interaction
+		return interaction
 			.reply({
 				embeds: [
 					new EmbedBuilder()

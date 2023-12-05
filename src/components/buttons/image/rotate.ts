@@ -17,7 +17,7 @@ export default {
 		const image = await untile(url);
 		const attachment = await tileToAttachment(image, { random: "rotation", magnify: true });
 
-		if (!attachment) return await imageTooBig(interaction, "tile");
+		if (!attachment) return imageTooBig(interaction, "tile");
 
 		return interaction
 			.reply({

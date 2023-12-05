@@ -83,5 +83,5 @@ export async function textureChoiceEmbed(
 		});
 	}
 
-	return await generalChoiceEmbed(interaction, menuID, mappedResults);
+	return generalChoiceEmbed(interaction, menuID, mappedResults);
 }

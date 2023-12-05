@@ -30,7 +30,7 @@ export default {
 			pack as FaithfulPack,
 		);
 
-		if (!editOptions.files) return await interaction.ephemeralReply(editOptions);
+		if (!editOptions.files) return interaction.ephemeralReply(editOptions);
 
 		return message.edit(editOptions).then((message: Message) => message.deleteButton());
 	},

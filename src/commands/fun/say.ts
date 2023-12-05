@@ -18,7 +18,7 @@ export const command: SlashCommand = {
 		if (!interaction.hasPermission("dev")) return;
 		await interaction.complete();
 
-		return await interaction.channel.send({
+		return interaction.channel.send({
 			content: interaction.options.getString("message", true),
 		});
 	},

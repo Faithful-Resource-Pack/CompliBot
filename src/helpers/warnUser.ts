@@ -23,7 +23,7 @@ export async function warnUser(
 
 	// make ephemeral if possible
 	if (interaction instanceof Message)
-		return await interaction.reply(args).then((message: Message) => message.deleteButton());
+		return interaction.reply(args).then((message: Message) => message.deleteButton());
 
 	// no need for delete button because it's guaranteed ephemeral
 

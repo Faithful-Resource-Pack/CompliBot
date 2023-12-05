@@ -17,7 +17,7 @@ export default {
 
 		// disable commands
 		if (submissionChannels.includes(interaction.channel.id))
-			return await interaction.reply({
+			return interaction.reply({
 				embeds: [
 					new EmbedBuilder()
 						.setTitle(interaction.strings().command.in_submission.title)

@@ -28,10 +28,10 @@ export default {
 		 */
 		switch (message.content.toLocaleLowerCase()) {
 			case "engineer gaming":
-				return await message.react("👷").catch(() => {});
+				return message.react("👷").catch(() => {});
 			case "rip":
 			case "f":
-				return await message.react("🇫").catch(() => {});
+				return message.react("🇫").catch(() => {});
 			case "band":
 			case "banding":
 				return ["🎤", "🎸", "🥁", "🪘", "🎺", "🎷", "🎹", "🪗", "🎻"].forEach(async (emoji) => {

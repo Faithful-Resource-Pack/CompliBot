@@ -33,7 +33,7 @@ export default {
 		if (!editOptions) {
 			// stupid workaround for already having deferred the message
 			await interaction.deleteReply();
-			return await imageTooBig(interaction, "compare");
+			return imageTooBig(interaction, "compare");
 		}
 
 		message.edit(editOptions).then((message: Message) => message.deleteButton());

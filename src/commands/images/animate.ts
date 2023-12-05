@@ -58,7 +58,7 @@ export const command: SlashCommand = {
 			try {
 				parsed = JSON.parse(mcmetaText);
 			} catch {
-				return await interaction.ephemeralReply({
+				return interaction.ephemeralReply({
 					embeds: [
 						new EmbedBuilder()
 							.setTitle(interaction.strings().command.animate.invalid_text.title)
@@ -75,7 +75,7 @@ export const command: SlashCommand = {
 
 			// invalid mcmeta file given (filters basically everything out)
 			if (!mcmeta.animation) {
-				return await interaction.ephemeralReply({
+				return interaction.ephemeralReply({
 					embeds: [
 						new EmbedBuilder()
 							.setTitle(interaction.strings().command.animate.invalid_file.title)

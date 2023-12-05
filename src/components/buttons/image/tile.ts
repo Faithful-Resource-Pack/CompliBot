@@ -16,7 +16,7 @@ export default {
 		if (!url) return imageNotFound(interaction);
 		const attachment = await tileToAttachment(url);
 
-		if (!attachment) return await imageTooBig(interaction, "tile");
+		if (!attachment) return imageTooBig(interaction, "tile");
 
 		return interaction
 			.reply({

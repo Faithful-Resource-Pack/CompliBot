@@ -31,7 +31,7 @@ export default {
 			.setImage("attachment://magnified.png")
 			.setTitle(`Comparison Template`);
 
-		return await interaction.editReply({
+		return interaction.editReply({
 			embeds: [embed],
 			files: [magnified],
 		});

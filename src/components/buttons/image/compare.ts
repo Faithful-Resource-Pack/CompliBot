@@ -18,7 +18,7 @@ export default {
 		if (!messageOptions) {
 			// stupid workaround for already having deferred the message
 			await interaction.deleteReply();
-			return await imageTooBig(interaction, "compare");
+			return imageTooBig(interaction, "compare");
 		}
 
 		const embed = messageOptions.embeds[0] as EmbedBuilder;

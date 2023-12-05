@@ -31,7 +31,7 @@ export const command: SlashCommand = {
 				if (!interaction.hasPermission("manager")) return;
 				await interaction.complete();
 
-				return await interaction.channel.send({
+				return interaction.channel.send({
 					content: `### Faithful:\nhttps://discord.gg/sN9YRQbBv7\n### Classic Faithful:\nhttps://discord.gg/KSEhCVtg4J\n### Minecraft:\nhttps://discord.gg/minecraft`,
 				});
 		}

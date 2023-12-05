@@ -155,6 +155,6 @@ export async function tileToAttachment(
 	const buf = await tile(origin, options);
 	// image too big so we returned early
 	if (!buf) return null;
-	if (options?.magnify) return await magnifyToAttachment(buf);
+	if (options?.magnify) return magnifyToAttachment(buf);
 	return new AttachmentBuilder(buf, { name });
 }

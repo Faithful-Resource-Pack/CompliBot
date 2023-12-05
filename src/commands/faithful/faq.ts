@@ -52,7 +52,7 @@ export const command: SlashCommand = {
 				.setDescription(`\`${choice}\` is not a valid FAQ keyword! Have you made a typo?`)
 				.setColor(colors.red);
 
-			return await interaction.reply({ embeds: [errorEmbed], ephemeral: true });
+			return interaction.reply({ embeds: [errorEmbed], ephemeral: true });
 		}
 
 		const question: string = (

@@ -34,7 +34,7 @@ export const command: SlashCommand = {
 			if (!interaction.hasPermission("manager")) return;
 			await interaction.complete();
 
-			return await interaction.channel.send({
+			return interaction.channel.send({
 				embeds: Object.entries(media).map(
 					([key, mediaInfo]) =>
 						new EmbedBuilder()

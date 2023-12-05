@@ -40,7 +40,7 @@ export const command: SlashCommand = {
 		.setDMPermission(false),
 	async execute(interaction: ChatInputCommandInteraction) {
 		if (!interaction.options.getString("title") && !interaction.options.getString("description")) {
-			return await interaction.reply({
+			return interaction.reply({
 				embeds: [
 					new EmbedBuilder()
 						.setTitle(interaction.strings().command.embed.not_enough_arguments)
@@ -74,6 +74,6 @@ export const command: SlashCommand = {
 		if (image) embed.setImage(image);
 		if (thumbnail) embed.setThumbnail(thumbnail);
 
-		return await interaction.channel.send({ embeds: [embed] });
+		return interaction.channel.send({ embeds: [embed] });
 	},
 };

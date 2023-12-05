@@ -23,7 +23,7 @@ export default async function prefixCommandHandler(message: Message) {
 	switch (command) {
 		case "m":
 		case "z":
-			return await message
+			return message
 				.reply({
 					files: [await magnifyToAttachment(url)],
 					components: [magnifyButtons],
@@ -31,14 +31,14 @@ export default async function prefixCommandHandler(message: Message) {
 				.then((message: Message) => message.deleteButton());
 		case "t":
 			const file = await tileToAttachment(url);
-			if (!file) return await imageTooBig(message, "tile");
-			return await message
+			if (!file) return imageTooBig(message, "tile");
+			return message
 				.reply({ files: [file], components: [tileButtons] })
 				.then((message: Message) => message.deleteButton());
 		case "p":
 			const [attachment, embed] = await paletteToAttachment(url);
-			if (!attachment || !embed) return await imageTooBig(message, "palette");
-			return await message
+			if (!attachment || !embed) return imageTooBig(message, "palette");
+			return message
 				.reply({ files: [attachment], embeds: [embed] })
 				.then((message: Message) => message.deleteButton());
 	}

@@ -45,13 +45,13 @@ export const command: SlashCommand = {
 			const replyOptions = await textureComparison(interaction.client, results[0].id, display);
 			if (!replyOptions) {
 				await interaction.deleteReply();
-				return await imageTooBig(interaction, "compare");
+				return imageTooBig(interaction, "compare");
 			}
 
 			return interaction.editReply(replyOptions).then((message: Message) => message.deleteButton());
 		}
 
 		// multiple results
-		return await textureChoiceEmbed(interaction, "compareSelect", results, display);
+		return textureChoiceEmbed(interaction, "compareSelect", results, display);
 	},
 };

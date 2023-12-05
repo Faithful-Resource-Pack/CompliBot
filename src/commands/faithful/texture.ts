@@ -56,7 +56,7 @@ export const command: SlashCommand = {
 		}
 
 		// multiple results
-		return await textureChoiceEmbed(
+		return textureChoiceEmbed(
 			interaction,
 			"textureSelect",
 			results,

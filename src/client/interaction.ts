@@ -80,7 +80,7 @@ function hasPermission(type: PermissionType, warnUser = true): boolean {
 async function ephemeralReply(options: InteractionReplyOptions) {
 	// it's already deferred so we delete the non-ephemeral message
 	await this.deleteReply();
-	return await this.followUp({ ...options, ephemeral: true });
+	return this.followUp({ ...options, ephemeral: true });
 }
 
 async function complete() {
