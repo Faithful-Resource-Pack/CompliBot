@@ -5,7 +5,7 @@
 export const colors = {
 	// status/generic colors
 	red: "#f44336",
-	yellow: "#ffeb3b",
+	yellow: "#ffdc16",
 	blue: "#5865F2",
 	black: "#000000",
 	council: "#9c3848",
