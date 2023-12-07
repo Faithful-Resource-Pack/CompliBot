@@ -123,7 +123,7 @@ export const logConstructor = (
  * @param type error title
  */
 export async function errorHandler(client: Client, error: any, type: string) {
-	if (client.tokens.dev) return console.trace(`${err}${error?.stack ?? error}`);
+	if (client.tokens.dev) return console.error(`${err}${error?.stack ?? error}`);
 
 	let eprotoError = false;
 	let description = error.stack;
