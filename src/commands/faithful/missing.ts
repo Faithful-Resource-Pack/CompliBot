@@ -12,7 +12,6 @@ import {
 import axios from "axios";
 import formatName from "@utility/formatName";
 import minecraftSorter from "@utility/minecraftSorter";
-import { devLogger } from "@helpers/logger";
 
 export const command: SlashCommand = {
 	async data(client: Client): Promise<SyncSlashCommandBuilder> {
@@ -107,9 +106,6 @@ export const command: SlashCommand = {
 				errMessage = `An error occured when running /missing.\n\nInformation: ${err}`;
 			}
 
-			if (!interaction.client.tokens.dev)
-				devLogger(interaction.client, (err as Error).stack ?? (err as string), { codeBlocks: "" });
-
 			return {
 				diffFile: null,
 				results: [errMessage],
@@ -136,13 +132,14 @@ export const command: SlashCommand = {
 		const resultEmbed = new EmbedBuilder();
 
 		for (const response of responses) {
+			const pack = formatName(response.data.pack)[0];
 			if (updateChannels) await updateVoiceChannel(interaction.client, response.data);
 
 			// no repo found for the asked pack + edition
 			if (!response.diffFile)
 				return resultEmbed.addFields({
-					name: `${formatName(response.data.pack)[0]} - ${response.data.version}`,
-					value: `${response.data.completion}% complete\n> ${response.results[0]}`,
+					name: `${pack} - ${response.data.version}`,
+					value: response.results[0],
 				});
 
 			if (response.results.length)
@@ -160,8 +157,8 @@ export const command: SlashCommand = {
 				);
 
 			resultEmbed.addFields({
-				name: `${formatName(response.data.pack)[0]} - ${response.data.version}`,
-				value: `${response.data.completion}% complete\n> ${response.results.length} ${
+				name: `${pack} - ${response.data.version}`,
+				value: `${response.data.completion}% complete:\n> ${response.results.length} ${
 					response.results.length == 1 ? "texture" : "textures"
 				} missing of ${response.data.total} total.`,
 			});

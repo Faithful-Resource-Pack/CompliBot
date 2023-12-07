@@ -14,18 +14,19 @@ export const BASE_REPOS_PATH = "repos";
 
 // the stuff that was computed
 export interface MissingData {
-	completion: number;
 	edition: string;
 	pack: FaithfulPack;
 	version: string;
+	// only created if everything exists
+	completion?: number;
 	total?: number;
 }
 
 // files, context, etc
 export interface MissingResult {
-	diffFile: Buffer;
-	results: string[];
 	data: MissingData;
+	results: string[];
+	diffFile?: Buffer;
 	nonvanillaFile?: Buffer;
 }
 
@@ -46,12 +47,12 @@ export async function computeMissingResults(
 	const defaultRepo = repo.default[edition];
 	const requestRepo = repo[pack][edition];
 
+	const baseData = { pack, edition, version };
 	// pack doesn't support edition yet
 	if (!requestRepo)
 		return {
-			diffFile: null,
 			results: [`${formatName(pack)[0]} doesn't support ${edition} edition.`],
-			data: { completion: 0, pack, edition, version },
+			data: { ...baseData, completion: 0 },
 		};
 
 	const basePath = join(process.cwd(), BASE_REPOS_PATH);
@@ -129,15 +130,13 @@ export async function computeMissingResults(
 		: null;
 
 	return {
-		diffFile: Buffer.from(formatResults(diffResult), "utf8"),
-		results: diffResult,
 		data: {
+			...baseData,
 			completion: Number((100 * (1 - diffResult.length / defaultTextures.length)).toFixed(2)),
-			edition,
-			pack,
-			version,
 			total: defaultTextures.length,
 		},
+		results: diffResult,
+		diffFile: Buffer.from(formatResults(diffResult), "utf8"),
 		nonvanillaFile,
 	};
 }
