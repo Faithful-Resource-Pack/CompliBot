@@ -19,10 +19,6 @@
                 "description": "Používání bota nemůžeš zakázat sám sobě, vývojáři ani nikomu s oprávněními správce."
             }
         },
-        "in_submission": {
-            "title": "V kanálu pro navrhování textur nelze používat lomítkové příkazy!",
-            "description": "Použij místo toho kanál určený pro příkazy bota."
-        },
         "images": {
             "too_big": "Tento obrázek je příliš velký na %ACTION%!",
             "actions": {
