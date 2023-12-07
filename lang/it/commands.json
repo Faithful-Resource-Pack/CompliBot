@@ -19,10 +19,6 @@
                 "description": "Non è possibile vietare l'uso del bot a voi, agli sviluppatori e alle persone con privilegi di amministratore."
             }
         },
-        "in_submission": {
-            "title": "Non è possibile eseguire comandi di barra in un canale d'invio!",
-            "description": "Si prega invece di utilizzare il canale appropriato per i comandi del bot."
-        },
         "images": {
             "too_big": "Questa immagine è troppo grande per %ACTION%!",
             "actions": {
