@@ -19,10 +19,6 @@
                 "description": "You cannot botban yourself, a developer, or someone with administrator permissions."
             }
         },
-        "in_submission": {
-            "title": "You cannot run slash commands in a submission channel!",
-            "description": "Please use the appropriate bot command channel instead."
-        },
         "images": {
             "too_big": "This image is too big to %ACTION%!",
             "actions": {

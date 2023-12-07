@@ -1,31 +1,12 @@
 import { SlashCommandI } from "@interfaces/commands";
-import { Submissions } from "@interfaces/firestorm";
 import { Collection } from "discord.js";
 import { Event } from "@interfaces/events";
-import { Client, ChatInputCommandInteraction, EmbedBuilder } from "@client";
-import { colors } from "@utility/colors";
-import axios from "axios";
+import { Client, ChatInputCommandInteraction } from "@client";
 
 export default {
 	name: "slashCommandUsed",
 	async execute(client: Client, interaction: ChatInputCommandInteraction) {
 		client.storeAction("slashCommand", interaction);
-		const packs: Submissions = (await axios.get(`${client.tokens.apiUrl}settings/submission.packs`))
-			.data;
-
-		const submissionChannels = Object.values(packs).map((pack) => pack.channels.submit);
-
-		// disable commands
-		if (submissionChannels.includes(interaction.channel.id))
-			return interaction.reply({
-				embeds: [
-					new EmbedBuilder()
-						.setTitle(interaction.strings().command.in_submission.title)
-						.setDescription(interaction.strings().command.in_submission.description)
-						.setColor(colors.red),
-				],
-				ephemeral: true,
-			});
 
 		// get command name
 		const { commandName } = interaction;
