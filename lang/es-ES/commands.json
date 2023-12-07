@@ -19,10 +19,6 @@
                 "description": "No se puede prohibir el uso del bot a ti mismo, los desarrolladores, ni a las personas con privilegios de administrador."
             }
         },
-        "in_submission": {
-            "title": "¡No puedes ejecutar comandos de barrita en un canal de entrega!",
-            "description": "Por favor, utilice el canal apropiado para bots en su lugar."
-        },
         "images": {
             "too_big": "¡Esta imagen es demasiado grande para %ACTION%!",
             "actions": {
