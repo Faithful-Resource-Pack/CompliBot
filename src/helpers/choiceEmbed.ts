@@ -75,7 +75,7 @@ export async function textureChoiceEmbed(
 	const mappedResults: SelectMenuComponentOptionData[] = [];
 	for (const result of results) {
 		mappedResults.push({
-			label: `[#${result.id}] (${result.paths[0].versions.sort(minecraftSorter).reverse()[0]}) ${
+			label: `[#${result.id}] (${result.paths[0].versions.sort(minecraftSorter).at(-1)}) ${
 				result.name
 			}`,
 			description: result.paths[0].name,

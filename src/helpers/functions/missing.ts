@@ -8,6 +8,7 @@ import { join, normalize } from "path";
 import blacklistedTextures from "@json/blacklisted_textures.json";
 import axios from "axios";
 import { FaithfulPack } from "@interfaces/firestorm";
+import minecraftSorter from "@utility/minecraftSorter";
 
 // starting from process.cwd()
 export const BASE_REPOS_PATH = "repos";
@@ -59,7 +60,7 @@ export async function computeMissingResults(
 	const defaultPath = join(basePath, getNameFromGit(defaultRepo));
 	const requestPath = join(basePath, getNameFromGit(requestRepo));
 
-	// CLONE REPO IF NOT ALREADY CLONED
+	// clone repos if not already done (saves a lot of init lol)
 	if (!existsSync(defaultPath)) {
 		await callback(`Downloading default ${edition} pack...`);
 		mkdirSync(defaultPath, { recursive: true });
@@ -76,9 +77,10 @@ export async function computeMissingResults(
 		await axios.get(`${client.tokens.apiUrl}textures/versions/${edition}`)
 	).data;
 	// latest version if versions doesn't include version (unexisting/unsupported)
-	if (!versions.includes(version)) version = versions[0];
+	if (!versions.includes(version)) version = versions.sort(minecraftSorter).at(-1);
 	await callback(`Updating packs with latest version of \`${version}\` known...`);
 
+	// same steps are used for both packs
 	const steps = [
 		"git stash",
 		"git remote update",
@@ -87,16 +89,10 @@ export async function computeMissingResults(
 		`git pull`,
 	];
 
-	// same steps, just with different packs
-	await Promise.all([
-		series(structuredClone(steps), {
-			cwd: defaultPath,
-		}),
-		series(structuredClone(steps), {
-			cwd: requestPath,
-		}),
-	]);
+	await series(structuredClone(steps), { cwd: defaultPath });
+	await series(structuredClone(steps), { cwd: requestPath });
 
+	// now both repos are pointing to the same version and are ready to compare
 	await callback("Searching for differences...");
 
 	const editionFilter = blacklistedTextures[edition].map(normalize);
