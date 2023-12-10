@@ -93,7 +93,7 @@ export default async function textureComparison(
 		await axios.get(`${client.tokens.apiUrl}gallery/modal/${id}/latest`)
 	).data;
 
-	const isAnimated = result.paths.filter((p) => p.mcmeta === true).length !== 0;
+	const isAnimated = result.paths.some((p) => p.mcmeta === true);
 	const mcmeta: MCMETA = result.mcmeta ?? ({} as MCMETA);
 	const displayMcmeta = structuredClone(mcmeta);
 
