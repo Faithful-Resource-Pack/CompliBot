@@ -3,7 +3,7 @@ import { info } from "@helpers/logger";
 import { Client, ButtonInteraction, EmbedBuilder } from "@client";
 import { magnifyToAttachment } from "@images/magnify";
 import { parseDisplay } from "@functions/textureComparison";
-import formatName from "@utility/formatName";
+import formatPack from "@utility/formatPack";
 import { loadImage } from "@napi-rs/canvas";
 import stitch from "@helpers/images/stitch";
 
@@ -21,7 +21,7 @@ export default {
 		for (const packSet of packs) {
 			loadedImages.push([]);
 			for (const pack of packSet)
-				loadedImages.at(-1).push(await loadImage(formatName(pack, "64")[1]));
+				loadedImages.at(-1).push(await loadImage(formatPack(pack, "64").iconURL));
 		}
 
 		const stitched = await stitch(loadedImages);

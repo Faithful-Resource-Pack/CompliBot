@@ -2,7 +2,7 @@ import { SlashCommand } from "@interfaces/commands";
 import { Message, EmbedBuilder, ChatInputCommandInteraction } from "@client";
 import { SlashCommandBuilder, AttachmentBuilder } from "discord.js";
 import axios from "axios";
-import formatName from "@utility/formatName";
+import formatPack from "@utility/formatPack";
 import { Contribution, Texture } from "@interfaces/firestorm";
 
 export const command: SlashCommand = {
@@ -48,51 +48,50 @@ export const command: SlashCommand = {
 			return interaction.editReply({ embeds: [finalEmbed] });
 		}
 
-		contributionData.sort((a: Contribution, b: Contribution) => b.date - a.date);
+		// group ids into 30-long nested arrays
+		const groupedIDs = contributionData
+			.map((contribution) => contribution.texture)
+			.filter((v, i, a) => a.indexOf(v) === i) // remove duplicates
+			.reduce((acc: string[][], cur, index) => {
+				if (index % 30 === 0) acc.push([]);
+				acc.at(-1).push(cur);
+				return acc;
+			}, []);
+
 		const textureData: Texture[] = (
 			await Promise.all(
-				contributionData
-					// convert to ids
-					.map((texture: Contribution) => texture.texture)
-					// convert to 30-long nested arrays
-					.reduce((acc: string[][], cur: string, index: number) => {
-						if (index % 30 === 0) {
-							acc.push([]);
-						}
-						acc.at(-1).push(cur);
-						return acc;
-					}, [])
-					.map(async (ids: string[]) => {
-						// optimize array search by deleting double
-						let data: any[];
-						try {
-							data = (
-								await axios.get(
-									`${interaction.client.tokens.apiUrl}textures/${ids
-										.filter((v, i, a) => a.indexOf(v) === i)
-										.join(",")}`,
-								)
-							).data;
-						} catch {}
-						if (data) return data;
-					}),
+				groupedIDs.map(
+					async (ids: string[]) =>
+						// get texture data in batches of 30
+						(
+							await axios
+								.get(`${interaction.client.tokens.apiUrl}textures/${ids.join(",")}`)
+								.catch(() => ({ data: null }))
+						).data,
+				),
 			)
 		).flat();
 
 		// merge the two objects by id
-		const finalData = contributionData.map((contribution: Contribution) => ({
-			...contribution,
-			...textureData.find((val) => val?.id == contribution.texture),
-		}));
+		const finalData: (Contribution & Texture)[] = contributionData.map(
+			(contribution: Contribution) => ({
+				...contribution,
+				...textureData.find((texture) => texture.id == contribution.texture),
+			}),
+		);
 
-		let packCount = {};
+		console.log(contributionData.slice(0, 10));
+		console.log(textureData.slice(0, 10));
+		console.log(finalData.slice(0, 10));
+
+		const packCount = {};
 		let files: AttachmentBuilder[] | undefined;
 		if (finalData.length) {
 			const textBuf = Buffer.from(
 				finalData
 					.sort((a, b) => b.date - a.date) // most recent on top
-					.map((data: Contribution & Texture) => {
-						const packName = formatName(data.pack)[0];
+					.map((data) => {
+						const packName = formatPack(data.pack).name;
 						packCount[packName] = (packCount[packName] ?? 0) + 1;
 						return `${packName}: [#${data.texture}] ${data.name}`;
 					})
@@ -113,6 +112,6 @@ export const command: SlashCommand = {
 
 		if (finalPackData) finalEmbed.setDescription(finalPackData);
 
-		await interaction.editReply({ embeds: [finalEmbed], files: files });
+		await interaction.editReply({ embeds: [finalEmbed], files });
 	},
 };

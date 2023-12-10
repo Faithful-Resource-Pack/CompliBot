@@ -1,6 +1,6 @@
 import { exec, series } from "@helpers/exec";
 import { existsSync, mkdirSync, readdirSync, statSync } from "fs";
-import formatName from "@utility/formatName";
+import formatPack from "@utility/formatPack";
 import { Client } from "@client";
 import { ChannelType } from "discord.js";
 import { join, normalize } from "path";
@@ -52,7 +52,7 @@ export async function computeMissingResults(
 	// pack doesn't support edition yet
 	if (!requestRepo)
 		return {
-			results: [`${formatName(pack)[0]} doesn't support ${edition} edition.`],
+			results: [`${formatPack(pack).name} doesn't support ${edition} edition.`],
 			data: { ...baseData, completion: 0 },
 		};
 
@@ -68,7 +68,7 @@ export async function computeMissingResults(
 	}
 
 	if (!existsSync(requestPath)) {
-		await callback(`Downloading \`${formatName(pack)[0]}\` (${edition}) pack...`);
+		await callback(`Downloading \`${formatPack(pack)[0]}\` (${edition}) pack...`);
 		mkdirSync(requestPath, { recursive: true });
 		await exec(`git clone ${requestRepo} .`, { cwd: requestPath });
 	}

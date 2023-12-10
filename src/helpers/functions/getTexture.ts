@@ -12,7 +12,7 @@ import {
 } from "@interfaces/firestorm";
 import { animateToAttachment } from "@images/animate";
 import minecraftSorter from "@utility/minecraftSorter";
-import formatName from "@utility/formatName";
+import formatPack from "@utility/formatPack";
 import { textureButtons } from "@utility/buttons";
 import { Image, loadImage } from "@napi-rs/canvas";
 
@@ -26,21 +26,17 @@ export async function getTexture(interaction: Interaction, texture: Texture, pac
 	const isAnimated = Object.keys(texture.mcmeta).length;
 	const contributionJSON: Contributor[] = (await axios.get(`${apiUrl}contributions/authors`)).data;
 
-	const [strPack, strIconURL] = formatName(pack);
+	const { name, iconURL } = formatPack(pack);
 
 	const files: AttachmentBuilder[] = [];
 	const embed = new EmbedBuilder().setTitle(`[#${texture.id}] ${texture.name}`).setFooter({
-		text: strPack,
-		iconURL: strIconURL,
+		text: name,
+		iconURL,
 	});
 
-	let textureURL: string;
-	try {
-		textureURL = (await axios.get(`${apiUrl}textures/${texture.id}/url/${pack}/latest`)).request.res
-			.responseUrl;
-	} catch {
-		textureURL = "";
-	}
+	const { data: textureURL } = await axios
+		.get(`${apiUrl}textures/${texture.id}/url/${pack}/latest`)
+		.catch(() => ({ data: "" }));
 
 	// test if url isn't a 404
 	let image: Image;
@@ -53,7 +49,7 @@ export async function getTexture(interaction: Interaction, texture: Texture, pac
 				interaction
 					.strings()
 					.command.texture.no_image.description.replace("%TEXTURENAME%", texture.name)
-					.replace("%PACK%", strPack),
+					.replace("%PACK%", name),
 			)
 			.setColor(colors.red);
 		// missing texture so we break early

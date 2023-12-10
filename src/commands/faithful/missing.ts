@@ -10,7 +10,7 @@ import {
 	updateVoiceChannel,
 } from "@functions/missing";
 import axios from "axios";
-import formatName from "@utility/formatName";
+import formatPack from "@utility/formatPack";
 import minecraftSorter from "@utility/minecraftSorter";
 
 export const command: SlashCommand = {
@@ -132,7 +132,7 @@ export const command: SlashCommand = {
 		const resultEmbed = new EmbedBuilder();
 
 		for (const response of responses) {
-			const pack = formatName(response.data.pack)[0];
+			const pack = formatPack(response.data.pack).name;
 			if (updateChannels) await updateVoiceChannel(interaction.client, response.data);
 
 			// no repo found for the asked pack + edition
