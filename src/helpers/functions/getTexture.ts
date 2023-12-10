@@ -34,9 +34,13 @@ export async function getTexture(interaction: Interaction, texture: Texture, pac
 		iconURL,
 	});
 
-	const { data: textureURL } = await axios
-		.get(`${apiUrl}textures/${texture.id}/url/${pack}/latest`)
-		.catch(() => ({ data: "" }));
+	let textureURL: string;
+	try {
+		textureURL = (await axios.get(`${apiUrl}textures/${texture.id}/url/${pack}/latest`)).request.res
+			.responseUrl;
+	} catch {
+		textureURL = "";
+	}
 
 	// test if url isn't a 404
 	let image: Image;
