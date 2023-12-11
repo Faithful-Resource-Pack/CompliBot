@@ -2,9 +2,10 @@ import { Component } from "@interfaces/components";
 import { info } from "@helpers/logger";
 import { Client, Message, ButtonInteraction, EmbedBuilder } from "@client";
 import { tileToAttachment, untile } from "@images/tile";
-import { tileButtons } from "@utility/buttons";
+import { palette, flip, tile } from "@utility/buttons";
 import getImage, { imageNotFound } from "@images/getImage";
 import { imageTooBig } from "@helpers/warnUser";
+import { ActionRowBuilder, ButtonBuilder } from "discord.js";
 
 export default {
 	id: "rotate",
@@ -28,7 +29,7 @@ export default {
 						.setTimestamp(),
 				],
 				files: [attachment],
-				components: [tileButtons],
+				components: [new ActionRowBuilder<ButtonBuilder>().addComponents(tile, flip, palette)],
 				fetchReply: true,
 			})
 			.then((message: Message) => {
