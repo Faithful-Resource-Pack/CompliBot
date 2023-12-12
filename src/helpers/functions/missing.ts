@@ -8,7 +8,6 @@ import { join, normalize } from "path";
 import blacklistedTextures from "@json/blacklisted_textures.json";
 import axios from "axios";
 import { FaithfulPack } from "@interfaces/firestorm";
-import minecraftSorter from "@utility/minecraftSorter";
 
 // starting from process.cwd()
 export const BASE_REPOS_PATH = "repos";
