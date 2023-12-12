@@ -76,8 +76,9 @@ export async function computeMissingResults(
 	const versions: string[] = (
 		await axios.get(`${client.tokens.apiUrl}textures/versions/${edition}`)
 	).data;
+
 	// latest version if versions doesn't include version (unexisting/unsupported)
-	if (!versions.includes(version)) version = versions.sort(minecraftSorter).at(-1);
+	if (!versions.includes(version)) version = versions[0];
 	await callback(`Updating packs with latest version of \`${version}\` known...`);
 
 	// same steps are used for both packs
