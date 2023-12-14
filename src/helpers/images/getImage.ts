@@ -32,13 +32,14 @@ export async function getImageFromMessage(message: Message) {
 		}
 	}
 
-	if (message.embeds)
+	if (message.embeds.length) {
 		for (const embed of message.embeds) {
 			url = embed.image?.url;
 			if (isImage(url)) return url;
 			url = embed.thumbnail?.url;
 			if (isImage(url)) return url;
 		}
+	}
 
 	// search for image urls
 	url = message.content?.split(" ").find((i) => i.startsWith("http"));
