@@ -2,12 +2,12 @@ import { SlashCommand } from "@interfaces/commands";
 import { SlashCommandBuilder } from "discord.js";
 import { EmbedBuilder, ChatInputCommandInteraction, Message } from "@client";
 import { ping } from "@json/quotes.json";
-import * as Random from "@utility/random";
+import { choice } from "@utility/methods";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder().setName("ping").setDescription("Check the bot and API latency."),
 	async execute(interaction: ChatInputCommandInteraction) {
-		const quote = Random.choice(ping);
+		const quote = choice(ping);
 
 		// NEVER USE AWAIT ASYNC
 		// only send response to maximize response time

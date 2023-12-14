@@ -4,7 +4,7 @@ import { readFileSync } from "fs";
 import { devLogger, err } from "@helpers/logger";
 import { Log } from "client/client";
 import { join } from "path";
-import * as Random from "@utility/random";
+import { choice } from "@utility/methods";
 import { error as randomSentences } from "@json/quotes.json";
 
 const lastReasons = [];
@@ -26,7 +26,7 @@ export const logConstructor = (
 	});
 	const template = logTemplate.match(new RegExp(/\%templateStart%([\s\S]*?)%templateEnd/))[1]; // get message template
 
-	const sentence = Random.choice(randomSentences);
+	const sentence = choice(randomSentences);
 	let logText = logTemplate
 		.replace("%date%", new Date().toUTCString())
 		.replace("%stack%", reason.stack || JSON.stringify(reason))

@@ -12,6 +12,7 @@ import {
 import axios from "axios";
 import formatPack from "@utility/formatPack";
 import minecraftSorter from "@utility/minecraftSorter";
+import { toTitleCase } from "@utility/methods";
 
 export const command: SlashCommand = {
 	async data(client: Client): Promise<SyncSlashCommandBuilder> {
@@ -68,7 +69,10 @@ export const command: SlashCommand = {
 
 		const edition = interaction.options.getString("edition", true);
 		const pack = interaction.options.getString("pack", true) as FaithfulPack;
-		const version = interaction.options.getString("version") ?? "latest";
+		const version =
+			edition == "bedrock"
+				? "latest" // always use latest bedrock version, easier to format
+				: interaction.options.getString("version") ?? "latest";
 
 		const updateChannels = version === "latest";
 
@@ -132,32 +136,32 @@ export const command: SlashCommand = {
 		const resultEmbed = new EmbedBuilder();
 
 		for (const response of responses) {
-			const pack = formatPack(response.data.pack).name;
+			const packName = formatPack(pack).name;
 			if (updateChannels) await updateVoiceChannel(interaction.client, response.data);
 
 			// no repo found for the asked pack + edition
 			if (!response.diffFile)
 				return resultEmbed.addFields({
-					name: `${pack} - ${response.data.version}`,
+					name: `${packName} – ${toTitleCase(edition)} ${toTitleCase(version)}`,
 					value: response.results[0],
 				});
 
 			if (response.results.length)
 				files.push(
 					new AttachmentBuilder(response.diffFile, {
-						name: `missing-${response.data.pack}-${response.data.edition}.txt`,
+						name: `missing-${pack}-${edition}.txt`,
 					}),
 				);
 
 			if (response.nonvanillaFile && interaction.options.getBoolean("nonvanilla", false))
 				files.push(
 					new AttachmentBuilder(response.nonvanillaFile, {
-						name: `nonvanilla-${response.data.pack}-${response.data.edition}.txt`,
+						name: `nonvanilla-${pack}-${edition}.txt`,
 					}),
 				);
 
 			resultEmbed.addFields({
-				name: `${pack} - ${response.data.version}`,
+				name: `${packName} – ${toTitleCase(edition)} ${toTitleCase(version)}`,
 				value: `${response.data.completion}% complete:\n> ${response.results.length} ${
 					response.results.length == 1 ? "texture" : "textures"
 				} missing of ${response.data.total} total.`,

@@ -9,12 +9,14 @@ import {
 	FaithfulPack,
 	Contributor,
 	GalleryTexture,
+	MinecraftEdition,
 } from "@interfaces/firestorm";
 import { animateToAttachment } from "@images/animate";
 import minecraftSorter from "@utility/minecraftSorter";
 import formatPack from "@utility/formatPack";
 import { textureButtons } from "@utility/buttons";
 import { Image, loadImage } from "@napi-rs/canvas";
+import { toTitleCase } from "@utility/methods";
 
 /**
  * Create a full texture embed with provided information
@@ -82,7 +84,7 @@ export async function getTexture(interaction: Interaction, texture: Texture, pac
 			return contributionJSON.find((user) => user.id == authorId)?.username ?? "Anonymous";
 		});
 
-		const displayContribution = `<t:${Math.trunc(mainContribution.date / 1000)}:d> — ${authors.join(
+		const displayContribution = `<t:${Math.trunc(mainContribution.date / 1000)}:d> – ${authors.join(
 			", ",
 		)}`;
 
@@ -116,14 +118,15 @@ export async function getTexture(interaction: Interaction, texture: Texture, pac
  * @returns usable embed field data
  */
 export const addPathsToEmbed = (texture: GalleryTexture | Texture): APIEmbedField[] => {
-	const tmp = {};
+	const tmp: Record<MinecraftEdition, string[]> = {} as any;
+
 	texture.uses.forEach((use) => {
 		texture.paths
 			.filter((el) => el.use === use.id)
 			.forEach((p) => {
 				const versions = p.versions.sort(minecraftSorter);
 				const versionRange = `\`[${
-					versions.length > 1 ? `${versions[0]} — ${versions.at(-1)}` : versions[0]
+					versions.length > 1 ? `${versions[0]} – ${versions.at(-1)}` : versions[0]
 				}]\``;
 				const formatted = `${versionRange} ${p.name}`;
 				if (tmp[use.edition]) tmp[use.edition].push(formatted);
@@ -134,7 +137,7 @@ export const addPathsToEmbed = (texture: GalleryTexture | Texture): APIEmbedFiel
 	return Object.keys(tmp).map((edition) => {
 		if (tmp[edition].length) {
 			return {
-				name: edition.charAt(0).toLocaleUpperCase() + edition.slice(1),
+				name: toTitleCase(edition),
 				value: tmp[edition].join("\n"),
 			};
 		}

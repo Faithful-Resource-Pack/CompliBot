@@ -3,7 +3,7 @@ import { Client, Message, EmbedBuilder } from "@client";
 import { Submissions } from "@interfaces/firestorm";
 import { colors } from "@utility/colors";
 import axios from "axios";
-import * as Random from "@utility/random";
+import { randint } from "@utility/methods";
 import prefixCommandHandler from "@helpers/prefixCommandHandler";
 
 export default {
@@ -47,7 +47,7 @@ export default {
 					.reply({
 						embeds: [
 							new EmbedBuilder().setImage(
-								Random.randint(0, 4) == 1
+								randint(0, 4) == 1
 									? "https://i.imgur.com/hAuUsnD.png"
 									: "https://media1.tenor.com/images/8dc53503f5a5bb23ef12b2c83a0e1d4d/tenor.gif",
 							),
