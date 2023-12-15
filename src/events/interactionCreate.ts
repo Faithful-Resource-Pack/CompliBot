@@ -1,10 +1,5 @@
 import { Event } from "@interfaces/events";
-import {
-	Client,
-	ChatInputCommandInteraction,
-	ButtonInteraction,
-	StringSelectMenuInteraction,
-} from "@client";
+import { Client, ChatInputCommandInteraction } from "@client";
 import { Interaction } from "discord.js";
 
 export default {
@@ -14,22 +9,14 @@ export default {
 
 		const banlist = require("@json/botbans.json");
 		if (banlist.ids.indexOf(interaction.user.id) > -1) {
-			(
-				interaction as ChatInputCommandInteraction | ButtonInteraction | StringSelectMenuInteraction
-			).reply({
-				content: (
-					interaction as
-						| ChatInputCommandInteraction
-						| ButtonInteraction
-						| StringSelectMenuInteraction
-				).strings().error.botbanned,
+			// all interactions have the string() and reply() methods
+			return (interaction as ChatInputCommandInteraction).reply({
+				content: interaction.strings().error.botbanned,
 				ephemeral: true,
 			});
-			return;
 		}
 
 		if (interaction.isCommand()) client.emit("slashCommandUsed", (client as Client, interaction));
-
 		if (interaction.isButton()) client.emit("buttonUsed", (client as Client, interaction));
 
 		if (interaction.isStringSelectMenu())

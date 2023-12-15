@@ -15,7 +15,7 @@ export default {
 			return interaction.reply({
 				content: interaction
 					.strings()
-					.error.interaction.reserved.replace("%USER%", `<@!${messageInteraction.user.id}>`),
+					.error.permission.user_locked.replace("%USER%", `<@!${messageInteraction.user.id}>`),
 				ephemeral: true,
 			});
 

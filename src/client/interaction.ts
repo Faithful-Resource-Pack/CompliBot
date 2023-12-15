@@ -57,8 +57,8 @@ function hasPermission(type: PermissionType, warnUser = true): boolean {
 	);
 
 	const noPermission = new EmbedBuilder()
-		.setTitle(this.strings().error.permission.title)
-		.setDescription(this.strings().error.permission.description.replace("%TYPE%", type))
+		.setTitle(this.strings().error.permission.notice)
+		.setDescription(this.strings().error.permission.role_locked.replace("%TYPE%", type))
 		.setColor(colors.red);
 
 	let out: boolean;

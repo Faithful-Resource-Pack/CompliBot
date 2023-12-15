@@ -8,7 +8,7 @@ export const command: SlashCommand = {
 		.setDescription("Shows the license for the Faithful Resource Pack."),
 	async execute(interaction: ChatInputCommandInteraction) {
 		interaction
-			.reply({ content: "https://www.faithfulpack.net/license", fetchReply: true })
+			.reply({ content: "https://faithfulpack.net/license", fetchReply: true })
 			.then((message: Message) => message.deleteButton());
 	},
 };

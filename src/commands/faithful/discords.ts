@@ -19,13 +19,13 @@ export const command: SlashCommand = {
 		),
 	async execute(interaction: ChatInputCommandInteraction) {
 		const choice = interaction.options.getString("server", true);
-		let contents: string;
+		let content: string;
 		switch (choice) {
 			case "faithful":
-				contents = "https://discord.gg/sN9YRQbBv7";
+				content = "https://discord.gg/sN9YRQbBv7";
 				break;
 			case "classic_faithful":
-				contents = "https://discord.gg/KSEhCVtg4J";
+				content = "https://discord.gg/KSEhCVtg4J";
 				break;
 			case "all":
 				if (!interaction.hasPermission("manager")) return;
@@ -36,6 +36,6 @@ export const command: SlashCommand = {
 				});
 		}
 
-		await interaction.reply({ content: contents });
+		await interaction.reply({ content });
 	},
 };

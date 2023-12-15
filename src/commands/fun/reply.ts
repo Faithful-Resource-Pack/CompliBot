@@ -1,6 +1,7 @@
 import { SlashCommand } from "@interfaces/commands";
 import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
-import { ChatInputCommandInteraction, Message } from "@client";
+import { ChatInputCommandInteraction, EmbedBuilder, Message } from "@client";
+import { colors } from "@utility/colors";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -25,7 +26,12 @@ export const command: SlashCommand = {
 			msg = await interaction.channel.messages.fetch(interaction.options.getString("reply"));
 		} catch {
 			return interaction.reply({
-				content: interaction.strings().error.not_found.replace("%THING%", "Message"),
+				embeds: [
+					new EmbedBuilder()
+						.setTitle(interaction.strings().error.message.invalid.title)
+						.setDescription(interaction.strings().error.message.invalid.description)
+						.setColor(colors.red),
+				],
 				ephemeral: true,
 			});
 		} // message can't be fetched

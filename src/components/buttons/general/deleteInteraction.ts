@@ -1,6 +1,7 @@
 import { Component } from "@interfaces/components";
 import { info } from "@helpers/logger";
-import { Client, ButtonInteraction } from "@client";
+import { Client, ButtonInteraction, EmbedBuilder } from "@client";
+import { colors } from "@utility/colors";
 
 export default {
 	id: "deleteInteraction",
@@ -12,9 +13,19 @@ export default {
 
 		if (messageInteraction != undefined && interaction.user.id != messageInteraction.user.id)
 			return interaction.reply({
-				content: interaction
-					.strings()
-					.error.interaction.reserved.replace("%USER%", `<@!${messageInteraction.user.id}>`),
+				embeds: [
+					new EmbedBuilder()
+						.setTitle(interaction.strings().error.permission.notice)
+						.setDescription(
+							interaction
+								.strings()
+								.error.permission.user_locked.replace(
+									"%USER%",
+									`<@!${messageInteraction.user.id}>`,
+								),
+						)
+						.setColor(colors.red),
+				],
 				ephemeral: true,
 			});
 
@@ -25,12 +36,19 @@ export default {
 
 		if (message.reference !== undefined && fetchedRef)
 			return interaction.reply({
-				content: interaction
-					.strings()
-					.error.interaction.reserved.replace(
-						"%USER%",
-						`<@!${(await message.fetchReference()).author.id}>`,
-					),
+				embeds: [
+					new EmbedBuilder()
+						.setTitle(interaction.strings().error.permission.notice)
+						.setDescription(
+							interaction
+								.strings()
+								.error.permission.user_locked.replace(
+									"%USER%",
+									`<@!${(await message.fetchReference()).author.id}>`,
+								),
+						)
+						.setColor(colors.red),
+				],
 				ephemeral: true,
 			});
 

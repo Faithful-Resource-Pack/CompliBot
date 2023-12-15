@@ -107,7 +107,7 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 		// pretty stuff so it doesnt print the logo upon restart
 		if (!this.firstStart) {
 			console.log(`${success}Restarted`);
-			if (interaction) interaction.editReply("Reboot succeeded!");
+			if (interaction) interaction.editReply({ content: "Reboot succeeded!" });
 		} else this.asciiArt();
 
 		// login client

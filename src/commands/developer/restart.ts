@@ -11,7 +11,7 @@ export const command: SlashCommand = {
 	async execute(interaction: ChatInputCommandInteraction) {
 		if (!interaction.hasPermission("dev")) return;
 
-		await interaction.reply({ content: "restarting...", ephemeral: true });
+		await interaction.reply({ content: "Restarting...", ephemeral: true });
 		await interaction.client.restart(interaction);
 	},
 };

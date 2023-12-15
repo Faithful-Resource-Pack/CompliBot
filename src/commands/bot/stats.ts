@@ -74,17 +74,25 @@ export const command: SlashCommand = {
 						content: interaction.strings().command.stats.not_found.replace("%COMMAND%", command),
 					});
 
-				const embed = new EmbedBuilder().setTimestamp().setTitle(
-					interaction
-						.strings()
-						.command.stats.usage.replace("%COMMAND%", command)
-						.replace("%USE%", interaction.client.commandsProcessed.get(command).toString() ?? "0"),
-				);
-
-				return interaction.reply({ ephemeral: true, embeds: [embed] });
+				return interaction.reply({
+					embeds: [
+						new EmbedBuilder()
+							.setTitle(
+								interaction
+									.strings()
+									.command.stats.usage.replace("%COMMAND%", command)
+									.replace(
+										"%USE%",
+										interaction.client.commandsProcessed.get(command).toString() ?? "0",
+									),
+							)
+							.setTimestamp(),
+					],
+					ephemeral: true,
+				});
 			}
 
-			//sorts commands by usage: 4,3,2,1
+			//sorts commands by usage: [4, 3, 2, 1]
 			const sorted = new Map(
 				[...interaction.client.commandsProcessed.entries()].sort((a, b) => b[1] - a[1]),
 			);

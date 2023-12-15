@@ -1,6 +1,7 @@
 import { info } from "@helpers/logger";
-import { Client, ButtonInteraction } from "@client";
+import { Client, ButtonInteraction, EmbedBuilder } from "@client";
 import { Component } from "@interfaces/components";
+import { colors } from "@utility/colors";
 
 export default {
 	id: "deleteMessage",
@@ -13,16 +14,23 @@ export default {
 		// additional checking for undefined embeds and footers and stuff
 		if (!message.reference && !authorId)
 			return interaction.reply({
-				content: interaction.strings().error.not_found.replace("%THING%", `Author ID in footer`),
+				content: interaction.strings().error.message.no_author,
 				ephemeral: true,
 			});
 
 		if (!message.reference && interaction.user.id != authorId)
 			// stupid check because undefined
 			return interaction.reply({
-				content: interaction
-					.strings()
-					.error.interaction.reserved.replace("%USER%", `<@!${authorId}>`),
+				embeds: [
+					new EmbedBuilder()
+						.setTitle(interaction.strings().error.permission.notice)
+						.setDescription(
+							interaction
+								.strings()
+								.error.permission.user_locked.replace("%USER%", `<@!${authorId}>`),
+						)
+						.setColor(colors.red),
+				],
 				ephemeral: true,
 			});
 

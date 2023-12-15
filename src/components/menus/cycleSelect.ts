@@ -1,7 +1,8 @@
-import { Client, Message, StringSelectMenuInteraction } from "@client";
+import { Client, Message, StringSelectMenuInteraction, EmbedBuilder } from "@client";
 import { Component } from "@interfaces/components";
 import { info } from "@helpers/logger";
 import { cycleComparison } from "@functions/cycleComparison";
+import { colors } from "@utility/colors";
 
 export default {
 	id: "cycleSelect",
@@ -13,9 +14,19 @@ export default {
 
 		if (interaction.user.id !== messageInteraction.user.id)
 			return interaction.reply({
-				content: interaction
-					.strings()
-					.error.interaction.reserved.replace("%USER%", `<@!${messageInteraction.user.id}>`),
+				embeds: [
+					new EmbedBuilder()
+						.setTitle(interaction.strings().error.permission.notice)
+						.setDescription(
+							interaction
+								.strings()
+								.error.permission.user_locked.replace(
+									"%USER%",
+									`<@!${messageInteraction.user.id}>`,
+								),
+						)
+						.setColor(colors.red),
+				],
 				ephemeral: true,
 			});
 
