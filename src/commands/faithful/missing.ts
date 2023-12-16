@@ -137,31 +137,35 @@ export const command: SlashCommand = {
 
 		for (const response of responses) {
 			const packName = formatPack(pack).name;
+			const fieldTitle = `${packName} – ${toTitleCase(response.data.edition)} ${toTitleCase(
+				// stupid fix to solve "Bedrock Bedrock Latest" etc
+				response.data.version.endsWith("latest") ? "latest" : response.data.version,
+			)}`;
 			if (updateChannels) await updateVoiceChannel(interaction.client, response.data);
 
 			// no repo found for the asked pack + edition
 			if (!response.diffFile)
 				return resultEmbed.addFields({
-					name: `${packName} – ${toTitleCase(edition)} ${toTitleCase(version)}`,
+					name: fieldTitle,
 					value: response.results[0],
 				});
 
 			if (response.results.length)
 				files.push(
 					new AttachmentBuilder(response.diffFile, {
-						name: `missing-${pack}-${edition}.txt`,
+						name: `missing-${pack}-${response.data.edition}.txt`,
 					}),
 				);
 
 			if (response.nonvanillaFile && interaction.options.getBoolean("nonvanilla", false))
 				files.push(
 					new AttachmentBuilder(response.nonvanillaFile, {
-						name: `nonvanilla-${pack}-${edition}.txt`,
+						name: `nonvanilla-${pack}-${response.data.edition}.txt`,
 					}),
 				);
 
 			resultEmbed.addFields({
-				name: `${packName} – ${toTitleCase(edition)} ${toTitleCase(version)}`,
+				name: fieldTitle,
 				value: `${response.data.completion}% complete:\n> ${response.results.length} ${
 					response.results.length == 1 ? "texture" : "textures"
 				} missing of ${response.data.total} total.`,
