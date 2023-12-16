@@ -47,12 +47,12 @@ export async function computeMissingResults(
 	const defaultRepo = repo.default[edition];
 	const requestRepo = repo[pack][edition];
 
-	const baseData = { pack, edition, version };
+	const baseData = { pack, edition };
 	// pack doesn't support edition yet
 	if (!requestRepo)
 		return {
 			results: [`${formatPack(pack).name} doesn't support ${edition} edition.`],
-			data: { ...baseData, completion: 0 },
+			data: { ...baseData, version, completion: 0 },
 		};
 
 	const basePath = join(process.cwd(), BASE_REPOS_PATH);
@@ -128,6 +128,7 @@ export async function computeMissingResults(
 	return {
 		data: {
 			...baseData,
+			version,
 			completion: Number((100 * (1 - diffResult.length / defaultTextures.length)).toFixed(2)),
 			total: defaultTextures.length,
 		},
