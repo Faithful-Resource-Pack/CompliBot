@@ -80,10 +80,6 @@ export const command: SlashCommand = {
 			}),
 		);
 
-		console.log(contributionData.slice(0, 10));
-		console.log(textureData.slice(0, 10));
-		console.log(finalData.slice(0, 10));
-
 		const packCount = {};
 		let files: AttachmentBuilder[] | undefined;
 		if (finalData.length) {
