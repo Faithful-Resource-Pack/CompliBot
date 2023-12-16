@@ -2,6 +2,7 @@ import { Component } from "@interfaces/components";
 import { info } from "@helpers/logger";
 import { Client, ButtonInteraction, EmbedBuilder } from "@client";
 import { colors } from "@utility/colors";
+import { PermissionFlagsBits, PermissionsBitField } from "discord.js";
 
 export default {
 	id: "deleteInteraction",
@@ -11,7 +12,13 @@ export default {
 		const messageInteraction = interaction.message.interaction;
 		const message = interaction.message;
 
-		if (messageInteraction != undefined && interaction.user.id != messageInteraction.user.id)
+		if (
+			messageInteraction != undefined &&
+			interaction.user.id != messageInteraction.user.id &&
+			!(interaction.member.permissions as PermissionsBitField).has(
+				PermissionFlagsBits.ManageMessages,
+			)
+		)
 			return interaction.reply({
 				embeds: [
 					new EmbedBuilder()
@@ -34,7 +41,13 @@ export default {
 			fetchedRef = (await message.fetchReference()).author.id != interaction.user.id;
 		} catch {} // ref deleted or author not matching
 
-		if (message.reference !== undefined && fetchedRef)
+		if (
+			message.reference !== undefined &&
+			fetchedRef &&
+			!(interaction.member.permissions as PermissionsBitField).has(
+				PermissionFlagsBits.ManageMessages,
+			)
+		)
 			return interaction.reply({
 				embeds: [
 					new EmbedBuilder()
