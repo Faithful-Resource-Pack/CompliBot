@@ -98,9 +98,9 @@ export default async function textureComparison(
 	const displayMcmeta = structuredClone(mcmeta);
 
 	const displayed = parseDisplay(display);
-	const defaultURL = result.urls.default;
 
-	const dimension = await loadImage(defaultURL);
+	const dimension = await loadImage(result.urls.default).catch(() => null);
+	if (!dimension) return null; // default image doesn't exist, something is probably set up wrong
 	if (dimension.width * dimension.height * displayed.flat().length > 262144) return null;
 
 	// get texture urls into 2d array using the parsed display
