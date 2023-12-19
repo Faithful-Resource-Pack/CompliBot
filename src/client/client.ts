@@ -25,14 +25,14 @@ import { Poll } from "@helpers/poll";
 
 import { join } from "path";
 import chalk from "chalk";
-import StartClient from "index";
+import startClient from "index";
 import walkSync from "@helpers/walkSync";
 import axios from "axios";
 
 const POLLS_FILENAME = "polls.json";
 const COMMANDS_PROCESSED_FILENAME = "commandsProcessed.json";
 
-const paths = {
+export const paths = {
 	json: join(process.cwd(), "json", "dynamic"), // json folder at root
 	slashCommands: join(__dirname, "..", "commands"),
 	events: join(__dirname, "..", "events"),
@@ -43,8 +43,8 @@ const paths = {
 	},
 };
 
-const restarts = ["SIGUSR1", "SIGUSR2", "SIGTERM"];
-const errors = {
+export const restarts = ["SIGUSR1", "SIGUSR2", "SIGTERM"];
+export const errors = {
 	disconnect: "Disconnect",
 	unhandledRejection: "Unhandled Rejection",
 	uncaughtException: "Uncaught Exception",
@@ -83,7 +83,7 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 	public readonly tokens: Tokens;
 	public readonly automation = new Automation(this);
 
-	private readonly logs: Log[] = [];
+	private readonly _logs: Log[] = [];
 	private maxLogs = 50;
 	private lastLogIndex = 0;
 
@@ -143,7 +143,7 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 	public async restart(interaction?: ChatInputCommandInteraction) {
 		console.log(`${info}Restarting bot...`);
 		this.destroy();
-		StartClient(false, interaction);
+		startClient(false, interaction);
 	}
 
 	//prettier-ignore
@@ -298,7 +298,6 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 
 	/**
 	 * Read "Events" directory and add them as events
-	 * !! broke if dir doesn't exist
 	 */
 	private loadEvents() {
 		if (this.tokens.maintenance)
@@ -313,6 +312,7 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 		const events = walkSync(paths.events).filter((file) => file.endsWith(".ts"));
 		for (const file of events) {
 			const event: Event = require(file).default;
+			// bind is just for adding ExtendedClient as the first argument always
 			this.on(event.name as string, event.execute.bind(null, this));
 		}
 	}
@@ -331,7 +331,7 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 	private loadComponent(collection: Collection<string, Component>, path: string) {
 		const components = walkSync(path).filter((file) => file.endsWith(".ts"));
 		for (const file of components) {
-			const { default: component }: { default: Component } = require(file);
+			const component: Component = require(file).default;
 			collection.set(component.id, component);
 		}
 		return collection;
@@ -346,11 +346,7 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 		this.logs[this.lastLogIndex++ % this.maxLogs] = { type, data };
 	}
 
-	/**
-	 * Get the whole logs
-	 * @returns {Log[]}
-	 */
-	public getAction(): Log[] {
-		return this.logs;
+	public get logs() {
+		return this._logs;
 	}
 }

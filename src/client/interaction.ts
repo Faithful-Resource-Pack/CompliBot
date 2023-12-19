@@ -84,9 +84,9 @@ async function ephemeralReply(options: InteractionReplyOptions) {
 }
 
 async function complete() {
-	return this.reply({ content: "** **", fetchReply: true }).then((message: Message) =>
-		message.delete(),
-	).catch(() => {});
+	return this.reply({ content: "** **", fetchReply: true })
+		.then((message: Message) => message.delete())
+		.catch(() => {});
 }
 
 // add methods to just the base so it applies to all interaction types

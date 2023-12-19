@@ -3,7 +3,7 @@ import { ChatInputCommandInteraction, GatewayIntentBits, Partials } from "discor
 
 import tokens from "@json/tokens.json";
 
-export default function StartClient(firstStart = true, interaction?: ChatInputCommandInteraction) {
+export default function startClient(firstStart = true, interaction?: ChatInputCommandInteraction) {
 	new Client(
 		{
 			tokens,
@@ -37,4 +37,4 @@ export default function StartClient(firstStart = true, interaction?: ChatInputCo
 	).init(interaction);
 }
 
-StartClient();
+startClient();

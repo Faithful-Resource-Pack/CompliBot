@@ -9,12 +9,12 @@ import {
 import { Interaction, MessageType } from "discord.js";
 import { warnUser } from "@helpers/warnUser";
 
-// remove stupid discord metadata (idk why they even added it)
+// remove url authentication (automatically refreshed in client)
 export const removeMetadata = (url: string) => url.split("?")[0];
 
 export const isImage = (url: string) => url && /(png|jpg|jpeg|webp)$/g.test(removeMetadata(url));
 
-// taken from loadImage();
+// taken from @napi-rs/canvas.loadImage;
 export type ImageSource = string | URL | Buffer | ArrayBufferLike | Uint8Array | Image | Readable;
 
 /**
