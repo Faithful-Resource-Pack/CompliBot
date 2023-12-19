@@ -9,7 +9,7 @@
                 "description": "Errores comunes incluyen no entrecomillando las propiedades o colocando mal un carácter."
             },
             "invalid_file": {
-                "title": "¡Archivo MCMETA inválido!",
+                "title": "¡Archivo MCMETA no válido!",
                 "description": "No se ha encontrado ninguna función `animation` en el archivo. Compruebe que cargó el archivo correcto."
             }
         },
@@ -19,22 +19,23 @@
                 "description": "No se puede prohibir el uso del bot a ti mismo, los desarrolladores, ni a las personas con privilegios de administrador."
             }
         },
-        "images": {
-            "too_big": "¡Esta imagen es demasiado grande para %ACTION%!",
-            "actions": {
-                "tile": "ponerla en mosaico",
-                "palette": "obtener sus colores",
-                "compare": "comparar"
-            },
-            "too_long": "¡Esta imagen es demasiado larga para animar!",
-            "max_size": "El tamaño máximo para una imagen es 1024px².",
-            "max_length": "La longitud máxima de un tilesheet es de 32 fotogramas.",
-            "not_found": "¡No se ha encontrado ninguna imagen!",
-            "suggestion": "Asegúrate de que has subido una imagen, has respondido a una imagen válida, has utilizado una URL de imagen válida o estabas en el canal correcto."
-        },
         "embed": {
             "not_enough_arguments": "¡No se aportó suficiente información!",
             "need_more_info": "Es necesario tener una descripción o un título para una inserción."
+        },
+        "poll": {
+            "ended": "¡Esta encuesta ha terminado!",
+            "suggestion": "¡Usa /poll para hacer una encuesta!",
+            "vote": {
+                "counted": "¡Su voto ha sido añadido!",
+                "counted_suggestion": "Puedes retirar tu voto usando otra reacción.",
+                "removed": "¡Su voto ha sido eliminado!",
+                "removed_suggestion": "Puedes añadir un nuevo voto usando otra reacción."
+            },
+            "timeout": {
+                "no_type_given": "¡El tiempo dado no especifica cuánto dura!",
+                "example_types": "Ejemplo: `30s`, `1 min`, `10 hours`, `1 day`, `1 week`, `1 month`, `1 year`"
+            }
         },
         "stats": {
             "usage": "%COMMAND% se ha ejecutado %USE% veces.",
@@ -43,7 +44,7 @@
         },
         "info": {
             "title": "Hola, soy CompliBot. Fui hecho para los servidores de Faithful en Discord.",
-            "subtitle": "Y creo que resulté bastante bien.",
+            "subtitle": "Y creo que salí bastante bien.",
             "features": {
                 "title": "Funcionalidades",
                 "description": "- Interacción con texturas en tiempo real utilizando `/texture`, `/compare` y `/cycle`.\n- Comprueba el progreso del paquete de recursos con `/missing` o revisa tus contribuciones con `/about`.\n- Utilidades para la modificación de imágenes como `/magnify`, `/tile`, `/palette` y `/animate`."
