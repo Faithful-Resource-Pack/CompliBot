@@ -13,6 +13,18 @@
         "interaction": {
             "reserved": "Questa interazione è riservata a %USER%!"
         },
+        "texture": {
+            "failed_search": "Ricerca fallita!",
+            "too_short": "Per avviare una ricerca sono necessari almeno tre caratteri!",
+            "no_results": {
+                "title": "Nessun risultato trovato!",
+                "description": "Non sono stati trovati risultati per %TEXTURENAME%. Hai fatto un refuso?"
+            },
+            "no_image": {
+                "title": "Immagine non trovata!",
+                "description": "`%TEXTURENAME%` non è ancora stata realizzata per %PACK% o non è una texture che realizzeremo!"
+            }
+        },
         "permission": {
             "title": "Non hai il permesso di farlo!",
             "description": "Solo %TYPE%i può utilizzare questo comando."

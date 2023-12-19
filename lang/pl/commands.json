@@ -40,9 +40,6 @@
             "top_ten": "10 najczęściej używanych poleceń:",
             "not_found": "Polecenie `%COMMAND%` nie istnieje!"
         },
-        "texture": {
-            "not_found": "Nie znaleziono wyników dla: %TEXTURENAME%. Czy zrobiłeś literówkę?"
-        },
         "info": {
             "title": "Cześć, jestem CompliBot. Zostałem stworzony dla Discord'owych serwerów Faithful'a.",
             "subtitle": "I myślę, że wyszedłem całkiem nieźle.",

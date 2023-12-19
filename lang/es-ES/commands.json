@@ -41,18 +41,6 @@
             "top_ten": "Los 10 comandos más utilizados:",
             "not_found": "¡El comando `%COMMAND%` no existe!"
         },
-        "texture": {
-            "failed_search": "¡Búsqueda fallida!",
-            "too_short": "¡Necesitas al menos tres caracteres para iniciar una búsqueda!",
-            "no_results": {
-                "title": "¡No se han encontrado resultados!",
-                "description": "No se han encontrado resultados para %TEXTURENAME%. ¿Has hecho un dedazo?"
-            },
-            "no_image": {
-                "title": "¡Imagen no encontrada!",
-                "description": "¡La textura `%TEXTURENAME%` aún no se ha creado para %PACK% o no es una textura que vamos a crear!"
-            }
-        },
         "info": {
             "title": "Hola, soy CompliBot. Fui hecho para los servidores de Faithful en Discord.",
             "subtitle": "Y creo que resulté bastante bien.",

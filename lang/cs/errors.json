@@ -13,6 +13,18 @@
         "interaction": {
             "reserved": "Tato interakce je vyhrazena pro %USER%!"
         },
+        "texture": {
+            "failed_search": "Hledání textur se nezdařilo!",
+            "too_short": "Pro zahájení vyhledávání je třeba zadat alespoň tři znaky!",
+            "no_results": {
+                "title": "Nebyly nalezeny žádné výsledky!",
+                "description": "Nebyly nalezeny žádné výsledky pro %TEXTURENAME%. Nepřepsal(a) ses?"
+            },
+            "no_image": {
+                "title": "Obrázek nenalezen!",
+                "description": "Textura %TEXTURENAME% pro %PACK% zatím ještě nebyla vytvořena, nebo se s ní není žádoucí zabývat!"
+            }
+        },
         "permission": {
             "title": "K této akci nemáš oprávnění!",
             "description": "Pouze uživatelé s rolí %TYPE% mohou použít tento příkaz."
