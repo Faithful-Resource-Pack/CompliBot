@@ -62,7 +62,7 @@ export const command: SlashCommand = {
 
 			if (
 				interaction.client.tokens.developers.includes(victim.id) ||
-				member.permissions.has(PermissionFlagsBits.ManageMessages) ||
+				interaction.hasPermission("moderator", false) ||
 				victim.id == interaction.client.user.id // self
 			)
 				return interaction.editReply({
