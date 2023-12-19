@@ -75,7 +75,7 @@ export class Poll extends TimedEmbed {
 				if (index === 0) return field;
 				const val = Number(field.value.substring(2, 3));
 
-				// try for higher scoring option every interation
+				// try for higher scoring option every iteration
 				if (!isNaN(val)) {
 					if (bestOption.value < val) {
 						bestOption.value = val;
