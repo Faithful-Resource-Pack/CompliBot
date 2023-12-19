@@ -54,22 +54,23 @@ export const command: SlashCommand = {
 			// replace single quotes with double quotes
 			mcmetaText = mcmetaText.replace(/\'/g, '"');
 
+			const invalidTextEmbed = new EmbedBuilder()
+				.setTitle(interaction.strings().command.animate.invalid_text.title)
+				.setDescription(interaction.strings().command.animate.invalid_text.description)
+				.setColor(colors.red);
 			let parsed: any;
 			try {
 				parsed = JSON.parse(mcmetaText);
 			} catch {
 				return interaction.ephemeralReply({
-					embeds: [
-						new EmbedBuilder()
-							.setTitle(interaction.strings().command.animate.invalid_text.title)
-							.setDescription(interaction.strings().command.animate.invalid_text.description)
-							.setColor(colors.red),
-					],
+					embeds: [invalidTextEmbed],
 				});
 			}
 
-			if (parsed.animation) mcmeta = parsed;
-			else mcmeta = { animation: parsed };
+			mcmeta = parsed.animation ? parsed : { animation: parsed };
+
+			if (mcmeta.animation.frametime <= 0)
+				return interaction.ephemeralReply({ embeds: [invalidTextEmbed] });
 		} else if (mcmetaFile) {
 			mcmeta = (await axios.get(mcmetaFile.url)).data;
 
