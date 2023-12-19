@@ -41,18 +41,6 @@
             "top_ten": "10 nejpoužívanějších příkazů:",
             "not_found": "Příkaz `%COMMAND%` neexistuje!"
         },
-        "texture": {
-            "failed_search": "Hledání textur se nezdařilo!",
-            "too_short": "Pro zahájení vyhledávání je třeba zadat alespoň tři znaky!",
-            "no_results": {
-                "title": "Nebyly nalezeny žádné výsledky!",
-                "description": "Nebyly nalezeny žádné výsledky pro %TEXTURENAME%. Nepřepsal(a) ses?"
-            },
-            "no_image": {
-                "title": "Obrázek nenalezen!",
-                "description": "Textura %TEXTURENAME% pro %PACK% zatím ještě nebyla vytvořena, nebo se s ní není žádoucí zabývat!"
-            }
-        },
         "info": {
             "title": "Ahoj, já jsem CompliBot. Byl jsem vytvořen pro potřeby Discord serverů Faithfulu.",
             "subtitle": "A myslím, že jsem se docela povedl.",
