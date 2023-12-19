@@ -4,14 +4,15 @@
     ],
     "error": {
         "placeholder": "¡Esta funcionalidad aún no se ha implementado!",
+        "generic": "Acción Fallida",
         "botbanned": "¡No puedes utilizar el bot porque se te ha prohibido su uso!",
         "message": {
-            "deleted": "¡Este mensaje ya ha sido borrado!"
-        },
-        "command": "Uno de mis desarrolladores cometió un error al crear este comando! No te preocupes, el error no es tuyo. Por favor, contacte a <@360249987927638016>, <@473860522710794250>, o <@173336582265241601> (en inglés) si esto sigue ocurriendo.",
-        "not_found": "¡%THING% no se ha encontrado!",
-        "interaction": {
-            "reserved": "¡Esta interacción está reservada para %USER%!"
+            "deleted": "¡Este mensaje ya ha sido borrado!",
+            "invalid": {
+                "title": "¡ID de mensaje no válido!",
+                "description": "Asegúrate de que el mensaje no se ha borrado y de que se puede recuperar."
+            },
+            "no_author": "¡No se pudo encontrar al autor de este mensaje!"
         },
         "texture": {
             "failed_search": "¡Búsqueda fallida!",
@@ -25,12 +26,19 @@
                 "description": "¡La textura `%TEXTURENAME%` aún no se ha creado para %PACK% o no es una textura que vamos a crear!"
             }
         },
-        "permission": {
-            "title": "¡No tienes permiso para hacer eso!",
-            "description": "Sólo los %TYPE%s pueden utilizar este comando."
+        "image": {
+            "too_big": "¡Esta imagen es demasiado grande!",
+            "too_long": "¡Esta imagen es demasiado larga!",
+            "max_size": "El tamaño máximo para una imagen es 1024px².",
+            "max_length": "La longitud máxima de un tilesheet es de 32 fotogramas.",
+            "not_found": "¡No se ha encontrado ninguna imagen!",
+            "suggestion": "Asegúrate de que has subido una imagen, has respondido a una imagen válida, has usado una URL con una imagen válida o estás en el canal correcto."
         },
-        "timeout": {
-            "no_type_given": "¡El límite temporal indicado no especifica de qué duración es!\nEjemplo: `30s`, `1 min`, `10 hours`, `1 day`, `1 week`, `1 month`, `1 year`"
+        "command": "Uno de mis desarrolladores cometió un error al crear este comando! No te preocupes, el error no es tuyo. Por favor, contacte a <@360249987927638016>, <@473860522710794250>, o <@173336582265241601> (en inglés) si esto sigue ocurriendo.",
+        "permission": {
+            "notice": "¡No tienes permiso para hacer eso!",
+            "role_locked": "Sólo los %TYPE%s pueden usar esto.",
+            "user_locked": "Sólo %USER% puede usar esto."
         }
     }
 }
