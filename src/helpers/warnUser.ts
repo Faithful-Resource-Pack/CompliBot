@@ -6,7 +6,6 @@ import {
 	EmbedBuilder,
 } from "@client";
 import { colors } from "@utility/colors";
-import { AllStrings } from "@helpers/strings";
 
 export async function warnUser(
 	interaction:
@@ -47,13 +46,8 @@ export async function imageTooBig(
 		| ChatInputCommandInteraction
 		| StringSelectMenuInteraction
 		| Message,
-	action: keyof AllStrings["command"]["images"]["actions"],
 ) {
 	// force english if it's a message
-	const imageStrings = interaction.strings(interaction instanceof Message).command.images;
-	return warnUser(
-		interaction,
-		imageStrings.too_big.replace("%ACTION%", imageStrings.actions[action]),
-		imageStrings.max_size,
-	);
+	const imageStrings = interaction.strings(interaction instanceof Message).error.image;
+	return warnUser(interaction, imageStrings.too_big, imageStrings.max_size);
 }

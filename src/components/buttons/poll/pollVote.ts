@@ -1,6 +1,7 @@
 import { Component } from "@interfaces/components";
-import { Client, ButtonInteraction } from "@client";
+import { Client, ButtonInteraction, EmbedBuilder } from "@client";
 import { Poll } from "@helpers/poll";
+import { colors } from "@utility/colors";
 
 export default {
 	id: "pollVote",
@@ -24,13 +25,23 @@ export default {
 		if (poll.isAnonymous()) {
 			if (poll.getStatus() === "ended")
 				return interaction.followUp({
+					embeds: [
+						new EmbedBuilder()
+							.setTitle(interaction.strings().command.poll.ended)
+							.setDescription(interaction.strings().command.poll.suggestion)
+							.setColor(colors.red),
+					],
 					ephemeral: true,
-					content: "This poll has ended!",
 				});
+			const userVoteStatus = poll.hasVotedFor(type, id) ? "counted" : "removed";
 			interaction.followUp({
-				content: poll.hasVotedFor(type, id)
-					? "Your vote has been counted."
-					: "Your vote has been removed.",
+				embeds: [
+					new EmbedBuilder()
+						.setTitle(interaction.strings().command.poll.vote[userVoteStatus])
+						.setDescription(
+							interaction.strings().command.poll.vote[`${userVoteStatus}_suggestion`],
+						),
+				],
 				ephemeral: true,
 			});
 		}

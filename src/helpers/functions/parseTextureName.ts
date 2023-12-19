@@ -20,8 +20,8 @@ export default async function parseTextureName(
 		await interaction.ephemeralReply({
 			embeds: [
 				new EmbedBuilder()
-					.setTitle(interaction.strings().command.texture.failed_search)
-					.setDescription(interaction.strings().command.texture.too_short)
+					.setTitle(interaction.strings().error.texture.failed_search)
+					.setDescription(interaction.strings().error.texture.too_short)
 					.setColor(colors.red),
 			],
 		});
@@ -42,11 +42,11 @@ export default async function parseTextureName(
 		await interaction.ephemeralReply({
 			embeds: [
 				new EmbedBuilder()
-					.setTitle(interaction.strings().command.texture.no_results.title)
+					.setTitle(interaction.strings().error.texture.no_results.title)
 					.setDescription(
 						interaction
 							.strings()
-							.command.texture.no_results.description.replace("%TEXTURENAME%", `\`${name}\``),
+							.error.texture.no_results.description.replace("%TEXTURENAME%", `\`${name}\``),
 					)
 					.setColor(colors.red),
 			],

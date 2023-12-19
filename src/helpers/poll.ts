@@ -148,7 +148,7 @@ export class Poll extends TimedEmbed {
 		options: PollOptions,
 	): Promise<void> {
 		embed.setTitle(options.question);
-		embed.setFooter({ text: `${this.id} | Use /poll to make a poll!` });
+		embed.setFooter({ text: `${this.id} | ${interaction.strings(true).command.poll.suggestion}` });
 		embed.addFields(
 			options.answersArr.map((answer: string) => ({
 				name: `${answer}`,

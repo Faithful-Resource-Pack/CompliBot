@@ -95,8 +95,8 @@ export const command: SlashCommand = {
 			return interaction.ephemeralReply({
 				embeds: [
 					new EmbedBuilder()
-						.setTitle(interaction.strings().command.images.too_long)
-						.setDescription(interaction.strings().command.images.max_length)
+						.setTitle(interaction.strings().error.image.too_long)
+						.setDescription(interaction.strings().error.image.max_length)
 						.setColor(colors.red),
 				],
 			});

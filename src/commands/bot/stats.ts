@@ -2,6 +2,7 @@ import { SlashCommand, SlashCommandI } from "@interfaces/commands";
 import { SlashCommandBuilder, Collection, Guild, version as djsVersion } from "discord.js";
 import { EmbedBuilder, ChatInputCommandInteraction, Message } from "@client";
 import axios from "axios";
+import { colors } from "@utility/colors";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -25,7 +26,7 @@ export const command: SlashCommand = {
 		.set("bot", async (interaction: ChatInputCommandInteraction) => {
 			// easier to get extended properties
 			const client = interaction.client;
-			const sumMembers = client.guilds.cache.reduce(
+			const memberCount = client.guilds.cache.reduce(
 				(acc: number, guild: Guild) => acc + guild.memberCount,
 				0,
 			);
@@ -47,14 +48,14 @@ export const command: SlashCommand = {
 					{ name: "Server Count", value: client.guilds.cache.size.toString(), inline: true },
 					{
 						name: "Memory Usage",
-						value: `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB`,
+						value: `${(process.memoryUsage().heapUsed / 1048576).toFixed(2)} MB`,
 						inline: true,
 					},
 					{ name: "Discord Library", value: `Discord.js ${djsVersion}`, inline: true },
 					{ name: "Node.js", value: `${process.version}`, inline: true },
 					{ name: "Total Commands", value: `${client.slashCommands.size}`, inline: true },
 					{ name: "Commands Processed", value: `${commandCount}`, inline: true },
-					{ name: "Members Across Servers", value: `${sumMembers}`, inline: true },
+					{ name: "Members Across Servers", value: `${memberCount}`, inline: true },
 				)
 				.setFooter({
 					text: "Made with love",
@@ -71,7 +72,14 @@ export const command: SlashCommand = {
 				if (interaction.client.commandsProcessed.get(command) === undefined)
 					return interaction.reply({
 						ephemeral: true,
-						content: interaction.strings().command.stats.not_found.replace("%COMMAND%", command),
+						embeds: [
+							new EmbedBuilder()
+								.setTitle(interaction.strings().error.generic)
+								.setDescription(
+									interaction.strings().command.stats.not_found.replace("%COMMAND%", command),
+								)
+								.setColor(colors.red),
+						],
 					});
 
 				return interaction.reply({

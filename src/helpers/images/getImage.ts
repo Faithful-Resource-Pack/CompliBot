@@ -127,7 +127,7 @@ export async function imageNotFound(
 ) {
 	return warnUser(
 		interaction,
-		interaction.strings(interaction instanceof Message).command.images.not_found,
-		interaction.strings(interaction instanceof Message).command.images.suggestion,
+		interaction.strings(interaction instanceof Message).error.image.not_found,
+		interaction.strings(interaction instanceof Message).error.image.suggestion,
 	);
 }

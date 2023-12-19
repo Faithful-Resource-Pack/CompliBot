@@ -4,6 +4,7 @@ import { Poll } from "@helpers/poll";
 import { addSeconds, parseDate } from "@utility/dates";
 import { emojis, parseID } from "@utility/emojis";
 import { ChatInputCommandInteraction, EmbedBuilder, Message } from "@client";
+import { colors } from "@utility/colors";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -65,7 +66,12 @@ export const command: SlashCommand = {
 		if (timeoutVal !== null) {
 			if (parseInt(timeoutVal, 10).toString() === timeoutVal)
 				return interaction.reply({
-					content: interaction.strings().error.timeout.no_type_given,
+					embeds: [
+						new EmbedBuilder()
+							.setTitle(interaction.strings().command.poll.timeout.no_type_given)
+							.setDescription(interaction.strings().command.poll.timeout.example_types)
+							.setColor(colors.red),
+					],
 					ephemeral: true,
 				});
 			poll.setTimeout(addSeconds(new Date(), parseDate(timeoutVal)));

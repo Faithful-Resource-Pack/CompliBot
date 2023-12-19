@@ -31,13 +31,13 @@ export default async function prefixCommandHandler(message: Message) {
 				.then((message: Message) => message.deleteButton());
 		case "t":
 			const file = await tileToAttachment(url);
-			if (!file) return imageTooBig(message, "tile");
+			if (!file) return imageTooBig(message);
 			return message
 				.reply({ files: [file], components: [tileButtons] })
 				.then((message: Message) => message.deleteButton());
 		case "p":
 			const [attachment, embed] = await paletteToAttachment(url);
-			if (!attachment || !embed) return imageTooBig(message, "palette");
+			if (!attachment || !embed) return imageTooBig(message);
 			return message
 				.reply({ files: [attachment], embeds: [embed] })
 				.then((message: Message) => message.deleteButton());

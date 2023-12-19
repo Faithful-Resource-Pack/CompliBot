@@ -19,7 +19,7 @@ export const command: SlashCommand = {
 
 		const [file, embed] = await paletteToAttachment(image);
 
-		if (!file || !embed) return imageTooBig(interaction, "palette");
+		if (!file || !embed) return imageTooBig(interaction);
 
 		await interaction
 			.reply({

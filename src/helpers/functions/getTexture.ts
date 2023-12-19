@@ -50,11 +50,11 @@ export async function getTexture(interaction: Interaction, texture: Texture, pac
 		image = await loadImage(textureURL);
 	} catch (err) {
 		const errorEmbed = new EmbedBuilder()
-			.setTitle(interaction.strings().command.texture.no_image.title)
+			.setTitle(interaction.strings().error.texture.no_image.title)
 			.setDescription(
 				interaction
 					.strings()
-					.command.texture.no_image.description.replace("%TEXTURENAME%", texture.name)
+					.error.texture.no_image.description.replace("%TEXTURENAME%", texture.name)
 					.replace("%PACK%", name),
 			)
 			.setColor(colors.red);

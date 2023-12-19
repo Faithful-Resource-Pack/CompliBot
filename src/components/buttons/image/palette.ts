@@ -15,7 +15,7 @@ export default {
 		if (!url) return imageNotFound(interaction);
 		const [file, embed] = await paletteToAttachment(url);
 
-		if (!file || !embed) return imageTooBig(interaction, "palette");
+		if (!file || !embed) return imageTooBig(interaction);
 
 		return interaction
 			.reply({
