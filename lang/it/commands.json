@@ -19,22 +19,23 @@
                 "description": "Non è possibile vietare l'uso del bot a voi, agli sviluppatori e alle persone con privilegi di amministratore."
             }
         },
-        "images": {
-            "too_big": "Questa immagine è troppo grande per %ACTION%!",
-            "actions": {
-                "tile": "essere piastrellata",
-                "palette": "prendere i colori",
-                "compare": "essere confrontata"
-            },
-            "too_long": "L'immagine è troppo lunga per essere animata!",
-            "max_size": "La dimensione massima di un'immagine è di 1024px².",
-            "max_length": "La lunghezza massima di un tileset è di 32 fotogrammi.",
-            "not_found": "Nessuna immagine è stata trovata!",
-            "suggestion": "Assicuratevi di aver caricato un'immagine, di aver risposto a un'immagine valida, di aver usato un URL d'immagine valido o di essere nel canale corretto."
-        },
         "embed": {
             "not_enough_arguments": "Non sono state fornite informazioni sufficienti!",
             "need_more_info": "Un incorporamento richiede una descrizione o un titolo."
+        },
+        "poll": {
+            "ended": "Questo sondaggio è terminato!",
+            "suggestion": "Utilizza /poll per creare un sondaggio!",
+            "vote": {
+                "counted": "Il tuo voto è stato registrato!",
+                "counted_suggestion": "Puoi togliere il tuo voto reagendo nuovamente.",
+                "removed": "Hai tolto il tuo voto!",
+                "removed_suggestion": "Puoi aggiungere un altro voto reagendo nuovamente."
+            },
+            "timeout": {
+                "no_type_given": "Il tempo di silenziamento non è stato specificato correttamente!",
+                "example_types": "Esempio: `30s`, `1 min`, `10 hours`, `1 day`, `1 week`, `1 month`, `1 year`"
+            }
         },
         "stats": {
             "usage": "%COMMAND% è stato eseguito %USE% volte.",
