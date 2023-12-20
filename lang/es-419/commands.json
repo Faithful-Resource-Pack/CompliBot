@@ -1,0 +1,58 @@
+{
+    "translation_credits": [
+        "Banjoei :3"
+    ],
+    "command": {
+        "animate": {
+            "invalid_text": {
+                "title": "¡Las reglas de tu MCMETA no son válidas!",
+                "description": "Errores comunes incluyen no entrecomillar los nombres de las propiedades o colocando un carácter de forma incorrecta."
+            },
+            "invalid_file": {
+                "title": "¡Archivo MCMETA inválido!",
+                "description": "No se encontró la propiedad `animation` en el archivo. Por favor, comprueba que has cargado el archivo correcto."
+            }
+        },
+        "botban": {
+            "unbannable": {
+                "title": "¡No se puede prohibir el uso del bot a este usuario!",
+                "description": "No puedes prohibir el uso del bot a ti mismo, a un desarrollador ni a alguien con permisos de administrador."
+            }
+        },
+        "embed": {
+            "not_enough_arguments": "¡No se brindó suficiente información!",
+            "need_more_info": "Es necesario tener una descripción o un título para una inserción."
+        },
+        "poll": {
+            "ended": "¡Esta encuesta ha concluido!",
+            "suggestion": "¡Usa /poll para hacer una encuesta!",
+            "vote": {
+                "counted": "¡Tu voto ha sido contado!",
+                "counted_suggestion": "Puedes retirar tu voto reaccionando de nuevo.",
+                "removed": "¡Tu voto ha sido eliminado!",
+                "removed_suggestion": "Puedes agregar un nuevo voto reaccionando de nuevo."
+            },
+            "timeout": {
+                "no_type_given": "¡El tiempo dado no especifica cuánto dura!",
+                "example_types": "Ejemplo: `30s`, `1 min`, `10 hours`, `1 day`, `1 week`, `1 month`, `1 year`"
+            }
+        },
+        "stats": {
+            "usage": "%COMMAND% ha sido ejecutado %USE% veces.",
+            "top_ten": "Los 10 comandos más utilizados:",
+            "not_found": "¡El comando `%COMMAND%` no existe!"
+        },
+        "info": {
+            "title": "Hola, soy CompliBot. Fui creado para los servidores de Faithful en Discord.",
+            "subtitle": "Y creo que quedé bastante bien.",
+            "features": {
+                "title": "Características",
+                "description": "- Interacción en tiempo real con texturas mediante `/texture`, `/compare`, y `/cycle`.\n- Verifica el progreso del paquete de recursos con `/missing` o revisa tus contribuciones con `/about`.\n- Utilidades de manipulación de imágenes como `/magnify`, `/tile`, `/palette` y `/animate`."
+            },
+            "developing": {
+                "title": "Desarrollando",
+                "description": "Mi código es totalmente público (escrito en TypeScript y Discord.js) y puede ser clonado desde mi repositorio en GitHub [aquí](https://github.com/faithful-resource-pack/complibot).\n\nSi estás interesado en desarrollar, ponte en contacto con <@!473860522710794250>, <@!360249987927638016> o <@!173336582265241601> (en inglés) para obtener más información."
+            }
+        }
+    }
+}
