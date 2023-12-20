@@ -1,0 +1,44 @@
+{
+    "translation_credits": [
+        "Banjoei :3"
+    ],
+    "error": {
+        "placeholder": "¡Esta función aún no ha sido implementada!",
+        "generic": "Acción Fallida",
+        "botbanned": "¡No puedes utilizar el bot porque se te ha prohibido su uso!",
+        "message": {
+            "deleted": "¡Este mensaje ya ha sido borrado!",
+            "invalid": {
+                "title": "¡ID de mensaje no válido!",
+                "description": "Asegúrate de que el mensaje no se haya borrado y de que se puede obtener."
+            },
+            "no_author": "¡No se pudo encontrar al autor de este mensaje!"
+        },
+        "texture": {
+            "failed_search": "¡Búsqueda fallada!",
+            "too_short": "¡Necesitas al menos tres caracteres para iniciar una búsqueda!",
+            "no_results": {
+                "title": "¡No se han encontrado resultados!",
+                "description": "No se encontraron resultados para %TEXTURENAME%. ¿Has cometido un error tipográfico?"
+            },
+            "no_image": {
+                "title": "¡Imagen no encontrada!",
+                "description": "¡La textura `%TEXTURENAME%` aún no ha sido creada para %PACK% o no es una textura que vamos a crear!"
+            }
+        },
+        "image": {
+            "too_big": "¡Esta imagen es demasiado grande!",
+            "too_long": "¡Esta imagen es demasiado larga!",
+            "max_size": "El tamaño máximo para una imagen es 1024px².",
+            "max_length": "La longitud máxima de un tilesheet es de 32 cuadros.",
+            "not_found": "¡No se encontró ninguna imagen!",
+            "suggestion": "Asegúrate de que has subido una imagen, has respondido a una imagen válida, has usado una URL con una imagen válida o estás en el canal correcto."
+        },
+        "command": "¡Uno de mis desarrolladores cometió un error al crear este comando! No te preocupes, el error no es tuyo. Por favor, contacta con <@360249987927638016>, <@473860522710794250>, o <@173336582265241601> (en inglés) si esto sigue ocurriendo.",
+        "permission": {
+            "notice": "¡No tienes permiso para hacer eso!",
+            "role_locked": "Sólo los %TYPE%s pueden usar esto.",
+            "user_locked": "Sólo %USER% puede usar esto."
+        }
+    }
+}
