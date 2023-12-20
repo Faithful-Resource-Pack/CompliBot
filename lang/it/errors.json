@@ -4,14 +4,15 @@
     ],
     "error": {
         "placeholder": "Questa caratteristica non è ancora stata implementata!",
+        "generic": "Azione non riuscita",
         "botbanned": "Non puoi usare il bot perché ti è stato vietato di usarlo!",
         "message": {
-            "deleted": "Questo messaggio è già stato cancellato!"
-        },
-        "command": "Uno dei miei sviluppatori ha commesso un errore durante la creazione di questo comando! Non preoccupatevi, l'errore non dipende da voi. Si prega di contattare <@360249987927638016>, <@473860522710794250>, o <@173336582265241601> (in inglese) se l'errore continua a verificarsi.",
-        "not_found": "%THING% non trovato!",
-        "interaction": {
-            "reserved": "Questa interazione è riservata a %USER%!"
+            "deleted": "Questo messaggio è già stato cancellato!",
+            "invalid": {
+                "title": "ID messaggio non valido!",
+                "description": "Assicurati che il messaggio non sia stato eliminato e che possa essere recuperato."
+            },
+            "no_author": "L'autore di questo messaggio non può essere trovato!"
         },
         "texture": {
             "failed_search": "Ricerca fallita!",
@@ -25,12 +26,19 @@
                 "description": "`%TEXTURENAME%` non è ancora stata realizzata per %PACK% o non è una texture che realizzeremo!"
             }
         },
-        "permission": {
-            "title": "Non hai il permesso di farlo!",
-            "description": "Solo %TYPE%i può utilizzare questo comando."
+        "image": {
+            "too_big": "Questa immagine è troppo grande!",
+            "too_long": "Questa immagine è troppo lunga!",
+            "max_size": "La dimensione massima di un'immagine è di 1024px².",
+            "max_length": "La lunghezza massima di un tileset è di 32 fotogrammi.",
+            "not_found": "Nessuna immagine è stata trovata!",
+            "suggestion": "Assicurati di aver caricato un'immagine, risposto a un'immagine valida, utilizzato un URL di immagine valido o di essere nel canale corretto."
         },
-        "timeout": {
-            "no_type_given": "La restrizione temporanea non specifica quale sia la lunghezza!\nEsempio: `30s`, `1 min`, `10 hours`, `1 day`, `1 week`, `1 month`, `1 year`"
+        "command": "Uno dei miei sviluppatori ha commesso un errore durante la creazione di questo comando! Non preoccupatevi, l'errore non dipende da voi. Si prega di contattare <@360249987927638016>, <@473860522710794250>, o <@173336582265241601> (in inglese) se l'errore continua a verificarsi.",
+        "permission": {
+            "notice": "Non hai il permesso di farlo!",
+            "role_locked": "Solo %TYPE%i possono utilizzare questo.",
+            "user_locked": "Solo %USER% può utilizzare questo."
         }
     }
 }
