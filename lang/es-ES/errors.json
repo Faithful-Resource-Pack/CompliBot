@@ -5,12 +5,12 @@
     "error": {
         "placeholder": "¡Esta funcionalidad aún no se ha implementado!",
         "generic": "Acción Fallida",
-        "botbanned": "¡No puedes utilizar el bot porque se te ha prohibido su uso!",
+        "botbanned": "¡No puedes usar el bot porque se te ha prohibido su uso!",
         "message": {
             "deleted": "¡Este mensaje ya ha sido borrado!",
             "invalid": {
                 "title": "¡ID de mensaje no válido!",
-                "description": "Asegúrate de que el mensaje no se ha borrado y de que se puede recuperar."
+                "description": "Asegúrate de que el mensaje no haya sido eliminado y de que se puede obtener."
             },
             "no_author": "¡No se pudo encontrar al autor de este mensaje!"
         },
