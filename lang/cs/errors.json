@@ -4,14 +4,15 @@
     ],
     "error": {
         "placeholder": "Tato funkce zatím nebyla implementována!",
+        "generic": "Akce se nezdařila",
         "botbanned": "Dostal(a) jsi zákaz používání bota. Nejsou ti dostupné žádné jeho funkce.",
         "message": {
-            "deleted": "Tato zpráva už byla smazána!"
-        },
-        "command": "Jeden z mých vývojářů při psaní tohoto příkazu někde udělal chybu! Nezoufej, chyba není na tvojí straně. Kontaktuj prosím <@360249987927638016>, <@473860522710794250> nebo <@173336582265241601> pokud k chybě dochází opakovaně.",
-        "not_found": "Nenalezeno: %THING%",
-        "interaction": {
-            "reserved": "Tato interakce je vyhrazena pro %USER%!"
+            "deleted": "Tato zpráva už byla smazána!",
+            "invalid": {
+                "title": "Neplatné ID zprávy!",
+                "description": "Ujisti se, že zpráva nebyla odstraněna a že ji lze načíst."
+            },
+            "no_author": "Nepodařilo se nalézt odesílatele této zprávy!"
         },
         "texture": {
             "failed_search": "Hledání textur se nezdařilo!",
@@ -25,12 +26,19 @@
                 "description": "Textura %TEXTURENAME% pro %PACK% zatím ještě nebyla vytvořena, nebo se s ní není žádoucí zabývat!"
             }
         },
-        "permission": {
-            "title": "K této akci nemáš oprávnění!",
-            "description": "Pouze uživatelé s rolí %TYPE% mohou použít tento příkaz."
+        "image": {
+            "too_big": "Tento obrázek je příliš velký!",
+            "too_long": "Tento obrázek je příliš dlouhý!",
+            "max_size": "Maximální povolená velikost obrázku je 1024px².",
+            "max_length": "Maximální povolená délka animačního pásu je 32 snímků.",
+            "not_found": "Nebyl nalezen žádný obrázek!",
+            "suggestion": "Zkontroluj, zda jsi nahrál(a) funkční obrázek, odpověděl(a) na funkční obrázek nebo použil(a) platný odkaz na obrázek a že jsi ve správném kanále."
         },
-        "timeout": {
-            "no_type_given": "Zadanému časovému limitu chybí jednotka!\nPříklad: `30s`, `1 min`, `10 hours`, `1 day`, `1 week`, `1 month`, `1 year`"
+        "command": "Jeden z mých vývojářů při psaní tohoto příkazu někde udělal chybu! Nezoufej, chyba není na tvojí straně. Kontaktuj prosím <@360249987927638016>, <@473860522710794250> nebo <@173336582265241601> pokud k chybě dochází opakovaně.",
+        "permission": {
+            "notice": "K této akci nemáš oprávnění!",
+            "role_locked": "Toto mohou použít pouze uživatelé s rolí %TYPE%.",
+            "user_locked": "Toto může použít pouze %USER%."
         }
     }
 }
