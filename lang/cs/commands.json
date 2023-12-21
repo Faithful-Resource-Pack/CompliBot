@@ -19,22 +19,23 @@
                 "description": "Používání bota nemůžeš zakázat sám sobě, vývojáři ani nikomu s oprávněními správce."
             }
         },
-        "images": {
-            "too_big": "Tento obrázek je příliš velký na %ACTION%!",
-            "actions": {
-                "tile": "zobrazení náhledu vzorku",
-                "palette": "sestavení palety barev",
-                "compare": "porovnání"
-            },
-            "too_long": "Tento obrázek je pro animaci příliš dlouhý!",
-            "max_size": "Maximální povolená velikost obrázku je 1024px².",
-            "max_length": "Maximální povolená délka animačního pásu je 32 snímků.",
-            "not_found": "Nebyl nalezen žádný obrázek!",
-            "suggestion": "Ujisti se, žes nahrál obrázek, odpověděl(a) na zprávu s platným obrázkem nebo použil(a) platný odkaz na obrázek a žes byl(a) ve správném kanále."
-        },
         "embed": {
             "not_enough_arguments": "Nebyl poskytnut dostatek informací!",
             "need_more_info": "Pro vložení je třeba definovat nadpis nebo popisek."
+        },
+        "poll": {
+            "ended": "Tato anketa již skončila!",
+            "suggestion": "Anketa lze vytvořit pomocí příkazu /poll.",
+            "vote": {
+                "counted": "Tvůj hlas byl započítán!",
+                "counted_suggestion": "Svůj hlas můžeš odebrat opětovnou reakcí.",
+                "removed": "Tvůj hlas byl odebrán!",
+                "removed_suggestion": "Hlasovat můžeš opětovnou reakcí."
+            },
+            "timeout": {
+                "no_type_given": "Zadanému časovému limitu chybí jednotka času!",
+                "example_types": "Příklady: `30s`, `1 min`, `10 hours`, `1 day`, `1 week`, `1 month`, `1 year`"
+            }
         },
         "stats": {
             "usage": "Příkaz %COMMAND% byl použit %USE%krát.",
