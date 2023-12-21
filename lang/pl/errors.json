@@ -4,21 +4,41 @@
     ],
     "error": {
         "placeholder": "Ta funkcja nie została jeszcze zaimplementowana!",
+        "generic": "Akcja się nie powiodła",
         "botbanned": "Nie możesz użyć bota, ponieważ odebrano Ci uprawnienia!",
         "message": {
-            "deleted": "Ta wiadomość została już usunięta!"
+            "deleted": "Ta wiadomość została już usunięta!",
+            "invalid": {
+                "title": "Nieprawidłowe ID wiadomości!",
+                "description": "Upewnij się, że wiadomość nie została usunięta i że może zostać odnaleziona."
+            },
+            "no_author": "Autor tej wiadomości nie został znaleziony!"
+        },
+        "texture": {
+            "failed_search": "Wyszukiwanie tekstur nie powiodło się!",
+            "too_short": "Potrzebujesz co najmniej trzech znaków, aby rozpocząć wyszukiwanie tekstur!",
+            "no_results": {
+                "title": "Brak wyników!",
+                "description": "Nie znaleziono wyników dla: %TEXTURENAME%. Czy zrobiłeś literówkę?"
+            },
+            "no_image": {
+                "title": "Nie znaleziono obrazu!",
+                "description": "`%TEXTURENAME%` nie został jeszcze stworzony dla %PACK% lub jest na czarnej liście!"
+            }
+        },
+        "image": {
+            "too_big": "Ten obraz jest za duży!",
+            "too_long": "Ten obraz jest za długi!",
+            "max_size": "Maksymalny rozmiar obrazu to 1024px².",
+            "max_length": "Maksymalna długość arkusza wynosi 32 ramki.",
+            "not_found": "Nie znaleziono żadnego obrazu!",
+            "suggestion": "Upewnij się, że przesłałeś obraz, odpowiedziałeś na poprawny obraz, użyłeś poprawnego adresu URL obrazu, lub że znajdujesz się na właściwym kanale."
         },
         "command": "Jeden z moich deweloperów popełnił błąd podczas tworzenia tego polecenia! Nie martw się, błąd nie jest po Twojej stronie. Jeśli znów to nastąpi, skontaktuj się z <@360249987927638016>, <@473860522710794250>, lub <@173336582265241601>.",
-        "not_found": "Nie znaleziono: %THING%!",
-        "interaction": {
-            "reserved": "Ta interakcja jest zarezerwowana dla: %USER%!"
-        },
         "permission": {
-            "title": "Nie masz do tego uprawnień!",
-            "description": "Tylko %TYPE% może użyć tej komendy."
-        },
-        "timeout": {
-            "no_type_given": "Podany limit czasu nie określa długości!\nPrzykład: `30s`, `1 min`, `10 godzin`, `1 dzień`, `1 tydzień`, `1 miesiąc`, `1 rok`"
+            "notice": "Nie masz do tego uprawnień!",
+            "role_locked": "Tylko ktoś z rolą %TYPE% może tego użyć.",
+            "user_locked": "Tylko %USER% może tego użyć."
         }
     }
 }
