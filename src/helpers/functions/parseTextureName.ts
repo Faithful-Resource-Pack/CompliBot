@@ -28,11 +28,22 @@ export default async function parseTextureName(
 		return;
 	}
 
-	let results: any;
+	const noResultEmbed = new EmbedBuilder()
+		.setTitle(interaction.strings().error.texture.no_results.title)
+		.setDescription(
+			interaction
+				.strings()
+				.error.texture.no_results.description.replace("%TEXTURENAME%", `\`${name}\``),
+		)
+		.setColor(colors.red);
+
+	let results: Texture | Texture[];
 	try {
 		results = (await axios.get(`${interaction.client.tokens.apiUrl}textures/${name}/all`)).data;
 	} catch {
-		return [];
+		// invalid request
+		await interaction.ephemeralReply({ embeds: [noResultEmbed] });
+		return;
 	}
 
 	// cast to array if it isn't one already (texture id returns single result)
@@ -40,16 +51,7 @@ export default async function parseTextureName(
 
 	if (!out.length) {
 		await interaction.ephemeralReply({
-			embeds: [
-				new EmbedBuilder()
-					.setTitle(interaction.strings().error.texture.no_results.title)
-					.setDescription(
-						interaction
-							.strings()
-							.error.texture.no_results.description.replace("%TEXTURENAME%", `\`${name}\``),
-					)
-					.setColor(colors.red),
-			],
+			embeds: [noResultEmbed],
 		});
 		return;
 	}
