@@ -28,10 +28,10 @@ export default {
 				? {
 						text: `${embed.data.footer.text} | ${interaction.user.id}`,
 						iconURL: embed.data.footer?.icon_url,
-				  }
+					}
 				: {
 						text: interaction.user.id,
-				  },
+					},
 		);
 
 		(messageOptions.embeds[0] as EmbedBuilder).setTimestamp();

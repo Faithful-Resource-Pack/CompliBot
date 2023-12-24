@@ -5,8 +5,8 @@ import { AnyPack } from "@interfaces/firestorm";
  * @author Evorp
  * @param pack pack to format
  * @param size optionally specify size of image
- * @todo migrate this to somewhere better for extensibility (api probably)
- * @returns formatted string and icon in that order
+ * @todo move this to pack api when that's finished
+ * @returns formatted string and pack's image URL
  */
 export default function formatPack(pack: AnyPack, size = "512") {
 	let name: string;
