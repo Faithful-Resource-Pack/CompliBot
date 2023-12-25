@@ -29,6 +29,12 @@
             "not_enough_arguments": "Not enough information was provided!",
             "need_more_info": "You need to have either a description or title for an embed."
         },
+        "faq": {
+            "invalid_choice": {
+                "title": "Invalid choice!",
+                "description": "`%CHOICE%` is not a valid FAQ keyword! Have you made a typo?"
+            }
+        },
         "poll": {
             "ended": "This poll has ended!",
             "suggestion": "Use /poll to make a poll!",

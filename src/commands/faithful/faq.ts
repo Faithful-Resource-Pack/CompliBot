@@ -46,14 +46,16 @@ export const command: SlashCommand = {
 
 		const faqChoice = faqStrings.find((faq) => faq.keywords.includes(choice));
 
-		if (!faqChoice) {
-			const errorEmbed = new EmbedBuilder()
-				.setTitle("Invalid choice!")
-				.setDescription(`\`${choice}\` is not a valid FAQ keyword! Have you made a typo?`)
-				.setColor(colors.red);
-
-			return interaction.reply({ embeds: [errorEmbed], ephemeral: true });
-		}
+		if (!faqChoice)
+			return interaction.reply({
+				embeds: [
+					new EmbedBuilder()
+						.setTitle(interaction.strings().command.faq.invalid_choice.title)
+						.setDescription(interaction.strings().command.faq.invalid_choice.description)
+						.setColor(colors.red),
+				],
+				ephemeral: true,
+			});
 
 		const question: string = (
 			await axios.get(`${interaction.client.tokens.apiUrl}settings/images.question`)
