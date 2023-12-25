@@ -1,7 +1,7 @@
 import { SlashCommand } from "@interfaces/commands";
 import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
 import { ChatInputCommandInteraction } from "@client";
-import { logConstructor } from "@functions/errorHandler";
+import { constructLogFile } from "@functions/errorHandler";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -14,7 +14,7 @@ export const command: SlashCommand = {
 
 		await interaction.deferReply();
 		await interaction
-			.editReply({ files: [logConstructor(interaction.client)] })
+			.editReply({ files: [constructLogFile(interaction.client)] })
 			.catch(console.error);
 	},
 };

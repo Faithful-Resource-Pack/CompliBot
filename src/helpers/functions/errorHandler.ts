@@ -6,6 +6,7 @@ import { Log } from "client/client";
 import { join } from "path";
 import { choice } from "@utility/methods";
 import { error as randomSentences } from "@json/quotes.json";
+import { formatLogContent, formatLogType, formatLogURL } from "@functions/formatLog";
 
 const lastReasons = [];
 const loopLimit = 3; // how many times the same error needs to be made to trigger a loop
@@ -17,13 +18,14 @@ const loopLimit = 3; // how many times the same error needs to be made to trigge
  * @param reason reason for requesting logs
  * @returns whole log as a text file
  */
-export const logConstructor = (
+export const constructLogFile = (
 	client: Client,
 	reason: any = { stack: "You requested it with /logs ¯\\_(ツ)_/¯" },
 ): AttachmentBuilder => {
-	const logTemplate = readFileSync(join(__dirname, "/errorHandler.log"), {
+	const logTemplate = readFileSync(join(__dirname, "logTemplate.log"), {
 		encoding: "utf-8",
 	});
+
 	const template = logTemplate.match(new RegExp(/\%templateStart%([\s\S]*?)%templateEnd/))[1]; // get message template
 
 	const sentence = choice(randomSentences);
@@ -40,25 +42,7 @@ export const logConstructor = (
 			acc +
 			template
 				.replace("%templateIndex%", `${client.logs.length - index}`)
-				.replace(
-					"%templateType%",
-					/** @todo kill this with fire */
-					log.type === "slashCommand"
-						? `${log.type} [${log.data.commandName}]`
-						: log.type === "guildMemberUpdate"
-							? `${log.type} | ${log.data.user.username} ${
-									log.data.reason === "added" ? "joined" : "left"
-								} ${log.data.guild.name}`
-							: log.type === "message"
-								? `${log.type} | ${
-										log.data.author
-											? log.data.author.bot
-												? "BOT"
-												: "USER"
-											: "Unknown (likely bot)"
-									} | ${log.data.author ? log.data.author.username : "Unknown"}`
-								: log.type,
-				)
+				.replace("%templateType%", formatLogType(log))
 				.replace(
 					"%templateCreatedTimestamp%",
 					`${log.data.createdTimestamp} | ${new Date(log.data.createdTimestamp).toLocaleDateString(
@@ -70,36 +54,9 @@ export const logConstructor = (
 						timeZone: "UTC",
 					})} (UTC)`,
 				)
-				.replace(
-					"%templateURL%",
-					log.data.url
-						? log.data.url
-						: log.data.message
-							? log.data.message.url // interaction
-							: log.data.guildId && log.data.channelId
-								? `https://discord.com/channels/${log.data.guildId}/${log.data.channelId}/${
-										log.data.messageId ? log.data.messageId : ""
-									}` // slash command constructed url
-								: log.data.guild
-									? `Guild ID is ${log.data.guild.id}`
-									: "Unknown",
-				)
-
+				.replace("%templateURL%", formatLogURL(log.data))
 				.replace("%templateChannelType%", log.data.channel ? log.data.channel.type : "Not relevant")
-				.replace(
-					"%templateContent%",
-					log.data.content !== undefined
-						? log.data.content === ""
-							? "Empty"
-							: log.data.content
-						: log.data.customId
-							? log.data.customId // button
-							: log.data.options
-								? `Parameters: ${JSON.stringify(log.data.options._hoistedOptions)}` // slash commands interaction
-								: log.type === "guildMemberUpdate"
-									? "Not relevant"
-									: "Unknown",
-				)
+				.replace("%templateContent%", formatLogContent(log))
 				.replace(
 					"%templateEmbeds%",
 					log.data.embeds?.length > 0 ? `${JSON.stringify(log.data.embeds)}` : "None",
@@ -108,11 +65,10 @@ export const logConstructor = (
 					"%templateComponents%",
 					log.data.components?.length > 0 ? `${JSON.stringify(log.data.components)}` : "None",
 				),
-		"",
+		"", // start from empty string
 	);
 
-	const buffer = Buffer.from(logText, "utf8");
-	return new AttachmentBuilder(buffer, { name: "stack.log" });
+	return new AttachmentBuilder(Buffer.from(logText, "utf8"), { name: "stack.log" });
 };
 
 /**
@@ -150,7 +106,7 @@ export async function errorHandler(client: Client, error: any, type: string) {
 
 	devLogger(client, description, {
 		title: type,
-		file: logConstructor(client, error),
+		file: constructLogFile(client, error),
 		codeBlocks,
 	}).catch(console.error);
 }
