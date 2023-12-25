@@ -17,9 +17,8 @@ export default {
 		const packs: Submissions = (await axios.get(`${client.tokens.apiUrl}settings/submission.packs`))
 			.data;
 
-		const submissionChannels = Object.values(packs).map((pack) => pack.channels.submit);
 		// returns early if you're in a submission channel
-		if (submissionChannels.includes(message.channel.id)) return;
+		if (Object.values(packs).some((pack) => pack.channels.submit == message.channel.id)) return;
 
 		if (message.content.startsWith(client.tokens.prefix)) return prefixCommandHandler(message);
 
