@@ -1,5 +1,11 @@
 {
     "allowed_extensions": ["png", "tga", "mcmeta"],
+    "modded": [
+        "assets/fabric/",
+        "assets/forge/",
+        "assets/fml/",
+        "assets/modmenu/"
+    ],
     "java": [
         "environment/end_sky",
         "gui/title/mojangstudios",
@@ -103,10 +109,6 @@
         "gui/sprites/backup/changes_highlighted.png",
         "gui/sprites/hud/crosshair.png",
         "gui/sprites/container/loom/error.png",
-        "assets/fabric/",
-        "assets/forge/",
-        "assets/fml/",
-        "assets/modmenu/",
         "entity/villager/type/desert.png.mcmeta",
         "entity/villager/type/snow.png.mcmeta",
         "entity/villager/profession/butcher.png.mcmeta",

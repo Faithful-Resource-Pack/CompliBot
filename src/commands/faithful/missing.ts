@@ -8,6 +8,7 @@ import {
 	MissingData,
 	MissingResult,
 	updateVoiceChannel,
+	MissingEdition,
 } from "@functions/missing";
 import axios from "axios";
 import formatPack from "@utility/formatPack";
@@ -59,6 +60,12 @@ export const command: SlashCommand = {
 			)
 			.addBooleanOption((option) =>
 				option
+					.setName("modded")
+					.setDescription("Also scan modded textures (e.g. Forge, Fabric).")
+					.setRequired(false),
+			)
+			.addBooleanOption((option) =>
+				option
 					.setName("nonvanilla")
 					.setDescription("Show nonvanilla textures in addition to the missing list.")
 					.setRequired(false),
@@ -67,8 +74,9 @@ export const command: SlashCommand = {
 	async execute(interaction: ChatInputCommandInteraction) {
 		await interaction.deferReply();
 
-		const edition = interaction.options.getString("edition", true);
+		const edition = interaction.options.getString("edition", true) as MissingEdition;
 		const pack = interaction.options.getString("pack", true) as FaithfulPack;
+		const checkModded = interaction.options.getBoolean("modded", false) ?? false;
 		const version =
 			edition == "bedrock"
 				? "latest" // always use latest bedrock version, easier to format
@@ -120,15 +128,24 @@ export const command: SlashCommand = {
 		let responses: MissingResult[];
 
 		if (edition === "all") {
-			responses = await computeAllEditions(interaction.client, pack, version, stepCallback).catch(
-				(err: any) => [catchErr(err, { completion: 0, pack, version, edition })],
-			);
+			responses = await computeAllEditions(
+				interaction.client,
+				pack,
+				version,
+				checkModded,
+				stepCallback,
+			).catch((err: any) => [catchErr(err, { completion: 0, pack, version, edition })]);
 		} else {
 			// the args and error handling here change so we can't just switch out the args
 			responses = [
-				await computeMissingResults(interaction.client, pack, edition, version, stepCallback).catch(
-					(err: any) => catchErr(err, { completion: 0, pack, version, edition }),
-				),
+				await computeMissingResults(
+					interaction.client,
+					pack,
+					edition,
+					version,
+					checkModded,
+					stepCallback,
+				).catch((err: any) => catchErr(err, { completion: 0, pack, version, edition })),
 			];
 		}
 
@@ -141,12 +158,16 @@ export const command: SlashCommand = {
 				// stupid fix to solve "Bedrock Bedrock Latest" etc
 				response.data.version.endsWith("latest") ? "latest" : response.data.version,
 			)}`;
-			if (updateChannels) await updateVoiceChannel(interaction.client, response.data);
+
+			// modded messes with the percentage so we don't update VCs if it's enabled
+			if (updateChannels && !checkModded)
+				await updateVoiceChannel(interaction.client, response.data);
 
 			// no repo found for the asked pack + edition
 			if (!response.diffFile)
 				return resultEmbed.addFields({
 					name: fieldTitle,
+					// errors messages are stored in response.results[0] (stupid I know)
 					value: response.results[0],
 				});
 

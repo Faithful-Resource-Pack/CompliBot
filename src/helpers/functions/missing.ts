@@ -7,7 +7,7 @@ import { join, normalize } from "path";
 
 import blacklistedTextures from "@json/blacklisted_textures.json";
 import axios from "axios";
-import { FaithfulPack } from "@interfaces/firestorm";
+import { FaithfulPack, MinecraftEdition } from "@interfaces/firestorm";
 
 // starting from process.cwd()
 export const BASE_REPOS_PATH = "repos";
@@ -30,6 +30,8 @@ export interface MissingResult {
 	nonvanillaFile?: Buffer;
 }
 
+export type MissingEdition = MinecraftEdition | "all";
+
 /**
  * Compute missing results for a given pack, edition, and version
  * @author Juknum, Evorp
@@ -37,8 +39,9 @@ export interface MissingResult {
 export async function computeMissingResults(
 	client: Client,
 	pack: FaithfulPack,
-	edition: string,
+	edition: MissingEdition,
 	version: string,
+	checkModded: boolean,
 	callback?: (step: string) => Promise<void>,
 ): Promise<MissingResult> {
 	if (!callback) callback = async () => {};
@@ -95,12 +98,17 @@ export async function computeMissingResults(
 	// now both repos are pointing to the same version and are ready to compare
 	await callback("Searching for differences...");
 
-	const editionFilter = blacklistedTextures[edition].map(normalize);
+	// blacklist modded textures if we aren't checking modded
+	const editionFilter = (
+		checkModded && edition === "java"
+			? blacklistedTextures[edition]
+			: [...blacklistedTextures.modded, ...blacklistedTextures[edition]]
+	).map(normalize);
 
-	const defaultTextures = getAllFilesFromDir(defaultPath, editionFilter).map((f) =>
+	const defaultTextures = getAllFiles(defaultPath, editionFilter).map((f) =>
 		normalize(f).replace(defaultPath, ""),
 	);
-	const requestTextures = getAllFilesFromDir(requestPath, editionFilter).map((f) =>
+	const requestTextures = getAllFiles(requestPath, editionFilter).map((f) =>
 		normalize(f).replace(requestPath, ""),
 	);
 
@@ -146,14 +154,14 @@ export async function computeAllEditions(
 	client: Client,
 	pack: FaithfulPack,
 	version: string,
+	checkModded: boolean,
 	callback?: (step: string) => Promise<void>,
 ) {
 	const editions: string[] = (await axios.get(`${client.tokens.apiUrl}textures/editions`)).data;
 
 	return Promise.all(
-		editions.map(
-			async (edition: string) =>
-				await computeMissingResults(client, pack, edition, version, callback),
+		editions.map((edition: MissingEdition) =>
+			computeMissingResults(client, pack, edition, version, checkModded, callback),
 		),
 	);
 }
@@ -192,14 +200,14 @@ export async function updateVoiceChannel(client: Client, results: MissingData) {
  * @param filter stuff to disallow
  * @returns array of all paths in the directory
  */
-export const getAllFilesFromDir = (dir: string, filter: string[] = []): string[] => {
+export const getAllFiles = (dir: string, filter: string[] = []): string[] => {
 	const fileList: string[] = [];
 	readdirSync(dir).forEach((file) => {
 		file = normalize(join(dir, file));
 		const stat = statSync(file);
 
 		if (file.includes(".git")) return;
-		if (stat.isDirectory()) return fileList.push(...getAllFilesFromDir(file, filter));
+		if (stat.isDirectory()) return fileList.push(...getAllFiles(file, filter));
 		if (
 			blacklistedTextures.allowed_extensions.some((ex) => file.endsWith(`.${ex}`)) &&
 			!filter.some((i) => file.includes(i))
