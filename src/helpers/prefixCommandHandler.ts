@@ -6,6 +6,11 @@ import { paletteToAttachment } from "@images/palette";
 import { magnifyButtons, tileButtons } from "@utility/buttons";
 import { imageTooBig } from "@helpers/warnUser";
 
+/**
+ * Basic prefix command handler for shorthand image commands
+ * @author Evorp
+ * @param message message to reply to
+ */
 export default async function prefixCommandHandler(message: Message) {
 	const args = message.content.split(" ");
 
@@ -30,7 +35,7 @@ export default async function prefixCommandHandler(message: Message) {
 				})
 				.then((message: Message) => message.deleteButton());
 		case "t":
-			const file = await tileToAttachment(url);
+			const file = await tileToAttachment(url, { magnify: true });
 			if (!file) return imageTooBig(message);
 			return message
 				.reply({ files: [file], components: [tileButtons] })
