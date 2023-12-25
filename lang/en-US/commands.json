@@ -14,8 +14,8 @@
             }
         },
         "coin": {
-            "reroll": {
-                "title": "Coin rerolled!",
+            "reflip": {
+                "title": "Coin re-flipped!",
                 "description": "If you don't get the result you want, try, try again..."
             }
         },

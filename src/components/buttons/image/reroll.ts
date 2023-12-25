@@ -2,7 +2,7 @@ import { Component } from "@interfaces/components";
 import { Client, ButtonInteraction, EmbedBuilder } from "@client";
 
 export default {
-	id: "reroll",
+	id: "reflip",
 	async execute(_client: Client, interaction: ButtonInteraction) {
 		const res = Math.round(Math.random() * 100) / 100; // round to 2 decimal places
 
@@ -19,8 +19,8 @@ export default {
 		return interaction.reply({
 			embeds: [
 				new EmbedBuilder()
-					.setTitle(interaction.strings().command.coin.reroll.title)
-					.setDescription(interaction.strings().command.coin.reroll.description),
+					.setTitle(interaction.strings().command.coin.reflip.title)
+					.setDescription(interaction.strings().command.coin.reflip.description),
 			],
 			ephemeral: true,
 		});

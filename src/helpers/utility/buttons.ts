@@ -31,10 +31,10 @@ export const template = new ButtonBuilder()
 	.setEmoji(emojis.question_mark)
 	.setCustomId("comparisonTemplate");
 
-export const reroll = new ButtonBuilder()
+export const reflip = new ButtonBuilder()
 	.setStyle(ButtonStyle.Primary)
 	.setEmoji(emojis.cycle)
-	.setCustomId("reroll");
+	.setCustomId("reflip");
 
 export const deleteMessage = new ButtonBuilder()
 	.setStyle(ButtonStyle.Danger)
