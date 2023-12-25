@@ -1,7 +1,8 @@
 import { SlashCommand } from "@interfaces/commands";
-import { SlashCommandBuilder } from "discord.js";
+import { ActionRowBuilder, ButtonBuilder, SlashCommandBuilder } from "discord.js";
 import { ChatInputCommandInteraction, Message, EmbedBuilder } from "@client";
 import { colors } from "@utility/colors";
+import { reroll } from "@utility/buttons";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -20,7 +21,11 @@ export const command: SlashCommand = {
 			.setColor(colors.coin);
 
 		interaction
-			.reply({ embeds: [embed], fetchReply: true })
+			.reply({
+				embeds: [embed],
+				components: [new ActionRowBuilder<ButtonBuilder>().addComponents(reroll)],
+				fetchReply: true,
+			})
 			.then((message: Message) => message.deleteButton());
 	},
 };

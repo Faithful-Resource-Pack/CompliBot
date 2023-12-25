@@ -13,6 +13,12 @@
                 "description": "No `animation` property was found on the file. Please check that you uploaded the correct file."
             }
         },
+        "coin": {
+            "reroll": {
+                "title": "Coin rerolled!",
+                "description": "If you don't get the result you want, try, try again..."
+            }
+        },
         "botban": {
             "unbannable": {
                 "title": "This user cannot be botbanned!",
