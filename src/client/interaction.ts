@@ -65,12 +65,16 @@ function hasPermission(type: PermissionType, warnUser = true): boolean {
 	switch (type) {
 		case "manager":
 			out = hasManager;
+			break;
 		case "council":
 			out = hasCouncil;
+			break;
 		case "dev":
 			out = hasDev;
+			break;
 		case "moderator":
 			out = hasModerator;
+			break;
 	}
 
 	if (!out && warnUser) this.reply({ embeds: [noPermission], ephemeral: true });
