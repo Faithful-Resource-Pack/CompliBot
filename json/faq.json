@@ -86,8 +86,8 @@
     },
     {
         "question": "How can I submit my add-on to the website?",
-        "answer": "On https://webapp.faithfulpack.net/, log in with your Discord account. Next, in the navigation bar at the top, click Add-ons and select Upload. Finally, fill out the form that you're presented with, and when you're finished, click the Submit button. Your Add-on will appear on the website when it has been reviewed and approved by a Manager.",
-        "keywords": ["submit add-on", "add-on", "addon", "webapp"]
+        "answer": "On https://webapp.faithfulpack.net/, log in with your Discord account. Next, in the navigation bar at the top, click Add-ons and select Upload. Finally, fill out the form that you're presented with, and when you're finished, click the Submit button. Your add-on will appear on the website when it has been reviewed and approved by a Manager.",
+        "keywords": ["submit add-on", "add-on", "addon"]
     },
     {
         "question": "Does Faithful support mods?",
@@ -116,7 +116,7 @@
     },
     {
         "question": "What's the difference between an add-on and a tweak?",
-        "answer": "We define the differences in the following way:\n**Tweak**: A Tweak changes existing aspects about the game. They are one-off and smaller than an Add-on – changes of multiple themes should not be grouped into one Tweak. Examples: 3D items, Consistent Bedrock.\n**Add-on**: An Add-on adds new features to the game, and/or is usually larger in scope than a Tweak. Examples: New random variations for blocks/mobs.\nAdditionally, due to technical limitations, PBR resource packs cannot reuse textures from the main Faithful pack, and therefore can function as standalone – but for the sake of simplicity, they are also considered Add-ons.\nLastly, collections of Tweaks that the author chooses not to submit individually are considered Add-ons as well.",
+        "answer": "We define the differences in the following way:\n**Tweak**: A Tweak changes existing aspects about the game. They are one-off and smaller than an Add-on – changes of multiple themes should not be grouped into one Tweak. Examples: 3D items, Consistent Bedrock.\n**Add-on**: An add-on adds new features to the game, and/or is usually larger in scope than a Tweak. Examples: New random variations for blocks/mobs.\nAdditionally, due to technical limitations, PBR resource packs cannot reuse textures from the main Faithful pack, and therefore can function as standalone – but for the sake of simplicity, they are also considered add-ons.\nLastly, collections of Tweaks that the author chooses not to submit individually are considered add-ons as well.",
         "keywords": ["add-on vs tweak", "tweak vs add-on"]
     },
     {
