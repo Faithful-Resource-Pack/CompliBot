@@ -4,7 +4,7 @@ import {
 	PermissionFlagsBits,
 	PresenceStatusData,
 } from "discord.js";
-import { EmbedBuilder, ChatInputCommandInteraction } from "@client";
+import { EmbedBuilder, ChatInputCommandInteraction, Message } from "@client";
 import { SlashCommand } from "@interfaces/commands";
 
 export const command: SlashCommand = {
@@ -61,9 +61,11 @@ export const command: SlashCommand = {
 			status: presence,
 		});
 
-		await interaction.reply({
-			embeds: [new EmbedBuilder().setTitle("Bot status successfully changed!")],
-			ephemeral: true,
-		});
+		await interaction
+			.reply({
+				embeds: [new EmbedBuilder().setTitle("Bot status successfully changed!")],
+				fetchReply: true,
+			})
+			.then((message: Message) => message.deleteButton());
 	},
 };
