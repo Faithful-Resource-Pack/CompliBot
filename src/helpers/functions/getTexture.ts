@@ -92,6 +92,10 @@ export async function getTexture(interaction: Interaction, texture: Texture, pac
 			name: authors.length == 1 ? "Latest Author" : "Latest Authors",
 			value: displayContribution,
 		});
+
+		/** @todo remove this when classic faithful credits are reasonably finished */
+		if (["classic_faithful_32x"].includes(pack))
+			embed.setAuthor({ name: "Note: This pack may have misleading or outdated credits." })
 	}
 
 	embed.addFields(addPathsToEmbed(texture));
