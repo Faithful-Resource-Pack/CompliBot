@@ -88,7 +88,7 @@ export async function cycleComparison(
 
 	const embed = new EmbedBuilder()
 		.setTitle(`[#${result.id}] ${result.name}`)
-		.setURL(`https://webapp.faithfulpack.net/#/gallery/java/32x/latest/all/?show=${id}`)
+		.setURL(`https://webapp.faithfulpack.net/#/gallery/java/faithful_32x/latest/all/?show=${id}`)
 		.addFields(addPathsToEmbed(result))
 		.setFooter({ text: packText });
 
