@@ -63,7 +63,7 @@ export async function getTexture(interaction: Interaction, texture: Texture, pac
 	}
 
 	embed
-		.setURL(`https://webapp.faithfulpack.net/#/gallery/java/${pack}/latest/all/?show=${texture.id}`)
+		.setURL(`https://webapp.faithfulpack.net/?#/gallery/java/${pack}/latest/all/?show=${texture.id}`)
 		.addFields({ name: "Resolution", value: `${image.width}×${image.height}` })
 		.setThumbnail(textureURL)
 		.setImage(`attachment://${isAnimated ? "animated.gif" : "magnified.png"}`);
