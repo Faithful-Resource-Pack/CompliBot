@@ -428,6 +428,11 @@
         "ui/csb_purchase_error.png",
         "ui/csb_sparkles.png",
         "ui/csb_title.png",
-        "ui/csb_welcome.png"
+        "ui/csb_welcome.png",
+        "ui/csb_purchase_warning.png",
+        "ui/csb_subscribe_banner.png",
+        "ui/realms_header_art.png",
+        "ui/realms_poster_art_with_logo.png",
+        "ui/realms_purchase_warning.png"
     ]
 }
