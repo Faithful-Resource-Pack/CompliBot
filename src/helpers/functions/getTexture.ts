@@ -63,7 +63,9 @@ export async function getTexture(interaction: Interaction, texture: Texture, pac
 	}
 
 	embed
-		.setURL(`https://webapp.faithfulpack.net/?#/gallery/${texture.uses[0].edition}/${pack}/latest/all/?show=${texture.id}`)
+		.setURL(
+			`https://webapp.faithfulpack.net/?#/gallery/${texture.uses[0].edition}/${pack}/latest/all/?show=${texture.id}`,
+		)
 		.addFields({ name: "Resolution", value: `${image.width}×${image.height}` })
 		.setThumbnail(textureURL)
 		.setImage(`attachment://${isAnimated ? "animated.gif" : "magnified.png"}`);
@@ -95,7 +97,7 @@ export async function getTexture(interaction: Interaction, texture: Texture, pac
 
 		/** @todo remove this when classic faithful credits are reasonably finished */
 		if (["classic_faithful_32x"].includes(pack))
-			embed.setAuthor({ name: "Note: This pack may have misleading or outdated credits." })
+			embed.setAuthor({ name: "Note: This pack may have misleading or outdated credits." });
 	}
 
 	embed.addFields(addPathsToEmbed(texture));
