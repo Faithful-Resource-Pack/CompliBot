@@ -25,6 +25,7 @@ export const command: SlashCommand = {
 					{ name: "Classic Faithful Jappa", value: "Classic Faithful Jappa" },
 					{ name: "Classic Faithful Programmer Art", value: "Classic Faithful PA" },
 					{ name: "Jappa", value: "Jappa" },
+					{ name: "Classic Faithful", value: "Classic Faithful" },
 					{ name: "All", value: "All" },
 				)
 				.setRequired(false),

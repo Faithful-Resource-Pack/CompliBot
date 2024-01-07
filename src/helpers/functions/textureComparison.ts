@@ -30,6 +30,8 @@ export function parseDisplay(display: string) {
 			return [PACKS[2]];
 		case "Jappa":
 			return [PACKS[0], PACKS[1]];
+		case "Classic Faithful":
+			return [PACKS[1], PACKS[2]];
 		default:
 			return PACKS;
 	}
