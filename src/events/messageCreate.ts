@@ -44,13 +44,10 @@ export default {
 			case "hello there":
 				message
 					.reply({
-						embeds: [
-							new EmbedBuilder().setImage(
-								randint(0, 4) == 1
-									? "https://i.imgur.com/hAuUsnD.png"
-									: "https://media1.tenor.com/images/8dc53503f5a5bb23ef12b2c83a0e1d4d/tenor.gif",
-							),
-						],
+						content:
+							randint(0, 4) == 1
+								? "https://i.imgur.com/hAuUsnD.png"
+								: "https://media1.tenor.com/images/8dc53503f5a5bb23ef12b2c83a0e1d4d/tenor.gif",
 					})
 					.then((message) => message.deleteButton());
 				break;
@@ -75,7 +72,7 @@ export default {
 
 		if (/\bforgor\b/.test(message.content.toLocaleLowerCase())) await message.react("💀");
 
-		/** @todo remove this in a few months when people forgot it existed */
+		/** @todo remove this in a few months when people forget it existed */
 		const results = message.content.match(/(?<=\[\#)(.*?)(?=\])/g) ?? [];
 		if (!results.length) return;
 		message

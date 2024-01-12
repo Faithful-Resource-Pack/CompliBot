@@ -3,7 +3,8 @@ import axios from "axios";
 import { ChannelType } from "discord.js";
 
 export default async function memberLog(client: Client, guildID: string) {
-	const settings: Record<string, any> = (await axios.get(`${client.tokens.apiUrl}settings/raw`)).data;
+	const settings: Record<string, any> = (await axios.get(`${client.tokens.apiUrl}settings/raw`))
+		.data;
 
 	const [server, serverID] = Object.entries(settings.guilds as Record<string, string>).find(
 		(el) => el[1] == guildID,
