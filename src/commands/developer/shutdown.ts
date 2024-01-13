@@ -1,6 +1,7 @@
 import { SlashCommand } from "@interfaces/commands";
 import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
-import { ChatInputCommandInteraction, EmbedBuilder } from "@client";
+import { ChatInputCommandInteraction, EmbedBuilder, Message } from "@client";
+import { colors } from "@utility/colors";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -9,7 +10,24 @@ export const command: SlashCommand = {
 		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
 		.setDMPermission(false),
 	async execute(interaction: ChatInputCommandInteraction) {
-		if (!interaction.hasPermission("dev")) return;
+		if (!interaction.hasPermission("dev", false)) {
+			return interaction
+				.reply({
+					embeds: [
+						new EmbedBuilder()
+							.setAuthor({
+								name: "Member banned",
+								iconURL:
+									"https://raw.githubusercontent.com/Faithful-Resource-Pack/Branding/main/role%20icons/5%20-%20Moderator.png",
+							})
+							.setDescription(`<@${interaction.user.id}> has been banned`)
+							.addFields({ name: "Reason", value: "trying to stop me lmao" })
+							.setColor(colors.red),
+					],
+					fetchReply: true,
+				})
+				.then((message: Message) => message.deleteButton());
+		}
 		await interaction.reply({
 			embeds: [new EmbedBuilder().setTitle("Shutting down...")],
 		});
