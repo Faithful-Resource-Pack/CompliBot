@@ -6,14 +6,15 @@ export default async function memberLog(client: Client, guildID: string) {
 	const settings: Record<string, any> = (await axios.get(`${client.tokens.apiUrl}settings/raw`))
 		.data;
 
-	const [server, serverID] = Object.entries(settings.guilds as Record<string, string>).find(
+	const serverData = Object.entries(settings.guilds as Record<string, string>).find(
 		(el) => el[1] == guildID,
 	);
 
-	const channel = client.channels.cache.get(settings.channels.member_log[server]);
+	// server doesn't have channel for member logging
+	if (!serverData) return;
+	const [server, serverID] = serverData;
 
-	// channel doesn't exist or can't be fetched, return early
-	if (!channel) return;
+	const channel = client.channels.cache.get(settings.channels.member_log[server]);
 	const count = client.guilds.cache.get(serverID).memberCount;
 
 	// you can add different patterns depending on the channel type
