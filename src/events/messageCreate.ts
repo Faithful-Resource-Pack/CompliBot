@@ -1,6 +1,6 @@
 import { Event } from "@interfaces/events";
 import { Client, Message, EmbedBuilder } from "@client";
-import { Submissions } from "@interfaces/firestorm";
+import { FaithfulPack, SubmissionPack } from "@interfaces/firestorm";
 import { colors } from "@utility/colors";
 import axios from "axios";
 import { randint } from "@utility/methods";
@@ -14,8 +14,9 @@ export default {
 
 		if (message.author.bot) return;
 
-		const packs: Submissions = (await axios.get(`${client.tokens.apiUrl}settings/submission.packs`))
-			.data;
+		const packs: Record<FaithfulPack, SubmissionPack> = (
+			await axios.get(`${client.tokens.apiUrl}settings/submission.packs`)
+		).data;
 
 		// returns early if you're in a submission channel
 		if (Object.values(packs).some((pack) => pack.channels.submit == message.channel.id)) return;

@@ -1,5 +1,5 @@
 import { SlashCommand, SyncSlashCommandBuilder } from "@interfaces/commands";
-import { FaithfulPack } from "@interfaces/firestorm";
+import { FaithfulPack, Pack } from "@interfaces/firestorm";
 import { Client, ChatInputCommandInteraction, EmbedBuilder } from "@client";
 import { SlashCommandBuilder, Message, AttachmentBuilder } from "discord.js";
 import {
@@ -18,6 +18,8 @@ import { toTitleCase } from "@utility/methods";
 export const command: SlashCommand = {
 	async data(client: Client): Promise<SyncSlashCommandBuilder> {
 		const versions: string[] = (await axios.get(`${client.tokens.apiUrl}textures/versions`)).data;
+		const packs: Pack[] = (await axios.get(`${client.tokens.apiUrl}packs/search?type=submission`))
+			.data;
 		return new SlashCommandBuilder()
 			.setName("missing")
 			.setDescription("Displays the missing textures for a particular resource pack")
@@ -25,13 +27,7 @@ export const command: SlashCommand = {
 				option
 					.setName("pack")
 					.setDescription("The resource pack.")
-					.addChoices(
-						{ name: "Faithful 32x", value: "faithful_32x" },
-						{ name: "Faithful 64x", value: "faithful_64x" },
-						{ name: "Classic Faithful 32x Jappa", value: "classic_faithful_32x" },
-						{ name: "Classic Faithful 32x Programmer Art", value: "classic_faithful_32x_progart" },
-						{ name: "Classic Faithful 64x", value: "classic_faithful_64x" },
-					)
+					.addChoices(...packs.map((v) => ({ name: v.name, value: v.id })))
 					.setRequired(true),
 			)
 			.addStringOption((option) =>

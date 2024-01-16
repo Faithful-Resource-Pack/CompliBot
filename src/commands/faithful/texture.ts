@@ -1,36 +1,34 @@
 import { SlashCommand } from "@interfaces/commands";
-import { FaithfulPack } from "@interfaces/firestorm";
+import { FaithfulPack, Pack } from "@interfaces/firestorm";
 import { SlashCommandBuilder } from "discord.js";
-import { ChatInputCommandInteraction, Message } from "@client";
+import { ChatInputCommandInteraction, Message, Client } from "@client";
 import { getTexture } from "@functions/getTexture";
 import parseTextureName from "@functions/parseTextureName";
 import { textureChoiceEmbed } from "@helpers/choiceEmbed";
+import axios from "axios";
 
 export const command: SlashCommand = {
-	data: new SlashCommandBuilder()
-		.setName("texture")
-		.setDescription("Displays a specified texture from either vanilla Minecraft or Faithful.")
-		.addStringOption((option) =>
-			option
-				.setName("name")
-				.setDescription("Name or ID of the texture you are searching for.")
-				.setRequired(true),
-		)
-		.addStringOption((option) =>
-			option
-				.setName("pack")
-				.setDescription("Resource pack of the texture you are searching for.")
-				.addChoices(
-					{ name: "Default Jappa", value: "default" },
-					{ name: "Default Programmer Art", value: "progart" },
-					{ name: "Faithful 32x", value: "faithful_32x" },
-					{ name: "Faithful 64x", value: "faithful_64x" },
-					{ name: "Classic Faithful 32x Jappa", value: "classic_faithful_32x" },
-					{ name: "Classic Faithful 32x Programmer Art", value: "classic_faithful_32x_progart" },
-					{ name: "Classic Faithful 64x", value: "classic_faithful_64x" },
-				)
-				.setRequired(true),
-		),
+	async data(client: Client) {
+		const packs: Record<string, Pack> = (
+			await axios.get(`${client.tokens.apiUrl}packs/search?type=all`)
+		).data;
+		return new SlashCommandBuilder()
+			.setName("texture")
+			.setDescription("Displays a specified texture from either vanilla Minecraft or Faithful.")
+			.addStringOption((option) =>
+				option
+					.setName("name")
+					.setDescription("Name or ID of the texture you are searching for.")
+					.setRequired(true),
+			)
+			.addStringOption((option) =>
+				option
+					.setName("pack")
+					.setDescription("Resource pack of the texture you are searching for.")
+					.addChoices(...Object.values(packs).map((v) => ({ name: v.name, value: v.id })))
+					.setRequired(true),
+			);
+	},
 	async execute(interaction: ChatInputCommandInteraction) {
 		const name = interaction.options.getString("name");
 

@@ -1,14 +1,7 @@
 import { parseID, emojis } from "@utility/emojis";
 
-export interface MediaI {
-	[name: string]: {
-		title: string;
-		description: string;
-	};
-}
-
 //prettier-ignore
-export const media: MediaI = {
+export const media: Record<string, { title: string, description: string }> = {
 	faithful_32x: {
 		title: `Faithful 32x:`,
 		description: `

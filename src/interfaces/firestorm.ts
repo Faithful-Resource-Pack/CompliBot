@@ -64,8 +64,13 @@ export interface GalleryTexture extends Omit<Texture, keyof BaseTexture> {
 	urls: Record<AnyPack, string>;
 }
 
-// settings.submission.packs
-export type Submissions = Record<FaithfulPack, SubmissionPack>;
+export interface Pack {
+	name: string;
+	id: string;
+	tags: string[];
+	resolution: number;
+	github: Record<MinecraftEdition, { repo: string; org: string }>;
+}
 
 // one specific pack instance
 export interface SubmissionPack {
