@@ -7,7 +7,7 @@ import { join, normalize } from "path";
 
 import blacklistedTextures from "@json/blacklisted_textures.json";
 import axios from "axios";
-import { FaithfulPack, MinecraftEdition } from "@interfaces/firestorm";
+import { AnyPack, FaithfulPack, MinecraftEdition, Pack, PackGitHub } from "@interfaces/firestorm";
 
 // starting from process.cwd()
 export const BASE_REPOS_PATH = "repos";
@@ -46,9 +46,9 @@ export async function computeMissingResults(
 ): Promise<MissingResult> {
 	if (!callback) callback = async () => {};
 
-	const repo = (await axios.get(`${client.tokens.apiUrl}settings/repositories.git`)).data;
-	const defaultRepo = repo.default[edition];
-	const requestRepo = repo[pack][edition];
+	const packs: Record<AnyPack, Pack> = (await axios.get(`${client.tokens.apiUrl}packs/raw`)).data;
+	const defaultRepo = gitToURL(packs.default.github[edition]);
+	const requestRepo = gitToURL(packs[pack].github[edition]);
 
 	const baseData = { pack, edition };
 	// pack doesn't support edition yet
@@ -59,8 +59,8 @@ export async function computeMissingResults(
 		};
 
 	const basePath = join(process.cwd(), BASE_REPOS_PATH);
-	const defaultPath = join(basePath, getNameFromGit(defaultRepo));
-	const requestPath = join(basePath, getNameFromGit(requestRepo));
+	const defaultPath = join(basePath, packs.default.github[edition].repo);
+	const requestPath = join(basePath, packs[pack].github[edition].repo);
 
 	// clone repos if not already done (saves a lot of init lol)
 	if (!existsSync(defaultPath)) {
@@ -233,10 +233,10 @@ export const formatResults = (results: string[]) =>
 		.replace(/^\/textures\//gm, "");
 
 /**
- * Get repository name from a .git URL
+ * Get GitHub git URL from org and repo data
  * @author Evorp
- * @param url git URL
- * @returns repository name
+ * @param github git information
+ * @returns valid url
  */
-export const getNameFromGit = (url: string) =>
-	(url.endsWith("/") ? url.slice(0, -1) : url).split("/").at(-1).split(".")[0];
+export const gitToURL = ({ org, repo }: PackGitHub) =>
+	`https://github.com/${org}/${repo}.git`;
