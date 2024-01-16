@@ -9,9 +9,7 @@ import axios from "axios";
 
 export const command: SlashCommand = {
 	async data(client: Client) {
-		const packs: Record<string, Pack> = (
-			await axios.get(`${client.tokens.apiUrl}packs/search?type=all`)
-		).data;
+		const packs: Record<string, Pack> = (await axios.get(`${client.tokens.apiUrl}packs/raw`)).data;
 		return new SlashCommandBuilder()
 			.setName("texture")
 			.setDescription("Displays a specified texture from either vanilla Minecraft or Faithful.")
