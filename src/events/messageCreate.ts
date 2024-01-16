@@ -15,7 +15,7 @@ export default {
 		if (message.author.bot) return;
 
 		const packs: Record<FaithfulPack, Submission> = (
-			await axios.get(`${client.tokens.apiUrl}settings/submissions/raw`)
+			await axios.get(`${client.tokens.apiUrl}submissions/raw`)
 		).data;
 
 		// returns early if you're in a submission channel
