@@ -26,6 +26,7 @@ export interface Pack {
 
 export interface Submission {
 	id: FaithfulPack;
+	reference: AnyPack | null;
 	channels: SubmissionChannels;
 	council_enabled: boolean;
 	time_to_results: number;

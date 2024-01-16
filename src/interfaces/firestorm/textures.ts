@@ -11,7 +11,7 @@ export interface Path {
 
 export interface Use {
 	id: string;
-	name: string;
+	name: string | null;
 	edition: MinecraftEdition;
 }
 

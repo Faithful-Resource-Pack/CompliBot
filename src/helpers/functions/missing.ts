@@ -238,5 +238,4 @@ export const formatResults = (results: string[]) =>
  * @param github git information
  * @returns valid url
  */
-export const gitToURL = ({ org, repo }: PackGitHub) =>
-	`https://github.com/${org}/${repo}.git`;
+export const gitToURL = ({ org, repo }: PackGitHub) => `https://github.com/${org}/${repo}.git`;
