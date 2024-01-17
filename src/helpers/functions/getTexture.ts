@@ -6,7 +6,6 @@ import { colors } from "@utility/colors";
 import {
 	Texture,
 	Contribution,
-	FaithfulPack,
 	Contributor,
 	GalleryTexture,
 	MinecraftEdition,
@@ -23,7 +22,7 @@ import { toTitleCase } from "@utility/methods";
  * @author Juknum, Evorp, RobertR11
  * @returns reply options
  */
-export async function getTexture(interaction: Interaction, texture: Texture, pack: FaithfulPack) {
+export async function getTexture(interaction: Interaction, texture: Texture, pack: string) {
 	const apiUrl = interaction.client.tokens.apiUrl;
 	const isAnimated = Object.keys(texture.mcmeta).length;
 	const contributionJSON: Contributor[] = (await axios.get(`${apiUrl}contributions/authors`)).data;

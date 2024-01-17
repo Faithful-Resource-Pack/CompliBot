@@ -7,7 +7,7 @@ import { join, normalize } from "path";
 
 import blacklistedTextures from "@json/blacklisted_textures.json";
 import axios from "axios";
-import { AnyPack, FaithfulPack, MinecraftEdition, Pack, PackGitHub } from "@interfaces/firestorm";
+import { MinecraftEdition, Pack, PackGitHub } from "@interfaces/firestorm";
 
 // starting from process.cwd()
 export const BASE_REPOS_PATH = "repos";
@@ -15,7 +15,7 @@ export const BASE_REPOS_PATH = "repos";
 // the stuff that was computed
 export interface MissingData {
 	edition: string;
-	pack: FaithfulPack;
+	pack: string;
 	version: string;
 	// only created if everything exists
 	completion?: number;
@@ -38,7 +38,7 @@ export type MissingEdition = MinecraftEdition | "all";
  */
 export async function computeMissingResults(
 	client: Client,
-	pack: FaithfulPack,
+	pack: string,
 	edition: MissingEdition,
 	version: string,
 	checkModded: boolean,
@@ -46,7 +46,7 @@ export async function computeMissingResults(
 ): Promise<MissingResult> {
 	if (!callback) callback = async () => {};
 
-	const packs: Record<AnyPack, Pack> = (await axios.get(`${client.tokens.apiUrl}packs/raw`)).data;
+	const packs: Record<string, Pack> = (await axios.get(`${client.tokens.apiUrl}packs/raw`)).data;
 	const defaultRepo = gitToURL(packs.default.github[edition]);
 	const requestRepo = gitToURL(packs[pack].github[edition]);
 
@@ -152,7 +152,7 @@ export async function computeMissingResults(
  */
 export async function computeAllEditions(
 	client: Client,
-	pack: FaithfulPack,
+	pack: string,
 	version: string,
 	checkModded: boolean,
 	callback?: (step: string) => Promise<void>,

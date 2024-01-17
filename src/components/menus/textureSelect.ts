@@ -1,6 +1,5 @@
 import { Client, Message, StringSelectMenuInteraction, EmbedBuilder } from "@client";
 import { Component } from "@interfaces/components";
-import { FaithfulPack } from "@interfaces/firestorm";
 import { info } from "@helpers/logger";
 import { getTexture } from "@functions/getTexture";
 import axios from "axios";
@@ -38,7 +37,7 @@ export default {
 		const editOptions = await getTexture(
 			interaction,
 			(await axios.get(`${interaction.client.tokens.apiUrl}textures/${id}/all`)).data,
-			pack as FaithfulPack,
+			pack,
 		);
 
 		if (!editOptions.files) return interaction.ephemeralReply(editOptions);

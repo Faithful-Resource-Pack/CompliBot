@@ -1,5 +1,5 @@
 import { SlashCommand, SyncSlashCommandBuilder } from "@interfaces/commands";
-import { FaithfulPack, Pack } from "@interfaces/firestorm";
+import { Pack } from "@interfaces/firestorm";
 import { Client, ChatInputCommandInteraction, EmbedBuilder } from "@client";
 import { SlashCommandBuilder, Message, AttachmentBuilder } from "discord.js";
 import {
@@ -71,7 +71,7 @@ export const command: SlashCommand = {
 		await interaction.deferReply();
 
 		const edition = interaction.options.getString("edition", true) as MissingEdition;
-		const pack = interaction.options.getString("pack", true) as FaithfulPack;
+		const pack = interaction.options.getString("pack", true);
 		const checkModded = interaction.options.getBoolean("modded", false) ?? false;
 		const version =
 			edition == "bedrock"

@@ -3,7 +3,7 @@ import { magnify, magnifyToAttachment } from "@images/magnify";
 import { Image, loadImage, createCanvas, Canvas } from "@napi-rs/canvas";
 import { Client, EmbedBuilder } from "@client";
 import { addPathsToEmbed } from "@functions/getTexture";
-import { AnyPack, GalleryTexture } from "@interfaces/firestorm";
+import { GalleryTexture } from "@interfaces/firestorm";
 import axios from "axios";
 import { ActionRowBuilder, AttachmentBuilder, ButtonBuilder } from "discord.js";
 import { template } from "@utility/buttons";
@@ -16,7 +16,7 @@ import { animateToAttachment, MCMETA } from "@helpers/images/animate";
  * @returns selected packs
  */
 export function parseDisplay(display: string) {
-	const PACKS: AnyPack[][] = [
+	const PACKS = [
 		["default", "faithful_32x", "faithful_64x"],
 		["default", "classic_faithful_32x", "classic_faithful_64x"],
 		["progart", "classic_faithful_32x_progart"],

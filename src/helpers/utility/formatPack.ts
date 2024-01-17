@@ -1,5 +1,3 @@
-import { AnyPack } from "@interfaces/firestorm";
-
 /**
  * Format a pack ID into a displayable name and icon
  * @author Evorp
@@ -8,7 +6,7 @@ import { AnyPack } from "@interfaces/firestorm";
  * @todo move this to pack api when that's finished
  * @returns formatted string and pack's image URL
  */
-export default function formatPack(pack: AnyPack, size = "512") {
+export default function formatPack(pack: string, size = "512") {
 	let name: string;
 	let iconURL = `https://database.faithfulpack.net/images/branding/logos/transparent/${size}/`;
 	switch (pack) {

@@ -1,6 +1,6 @@
 import { Event } from "@interfaces/events";
 import { Client, Message, EmbedBuilder } from "@client";
-import { FaithfulPack, Submission } from "@interfaces/firestorm";
+import { Submission } from "@interfaces/firestorm";
 import { colors } from "@utility/colors";
 import axios from "axios";
 import { randint } from "@utility/methods";
@@ -14,7 +14,7 @@ export default {
 
 		if (message.author.bot) return;
 
-		const packs: Record<FaithfulPack, Submission> = (
+		const packs: Record<string, Submission> = (
 			await axios.get(`${client.tokens.apiUrl}submissions/raw`)
 		).data;
 

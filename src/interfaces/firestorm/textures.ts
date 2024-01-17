@@ -1,5 +1,5 @@
 import { MCMETA } from "@helpers/images/animate";
-import { AnyPack, FaithfulPack, MinecraftEdition } from "./packs";
+import { MinecraftEdition } from "./packs";
 
 export interface Path {
 	id: string;
@@ -33,7 +33,7 @@ export interface Texture extends BaseTexture {
 export interface GalleryTexture extends Omit<Texture, keyof BaseTexture> {
 	// texture properties are moved into their own key
 	texture: BaseTexture;
-	urls: Record<AnyPack, string>;
+	urls: Record<string, string>;
 }
 
 export interface Contribution {
@@ -41,7 +41,7 @@ export interface Contribution {
 	date: number; // unix timestamp
 	texture: string; // texture ID
 	resolution: number; // texture resolution
-	pack: FaithfulPack;
+	pack: string;
 	authors: string[];
 }
 

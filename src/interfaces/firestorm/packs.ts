@@ -1,23 +1,12 @@
 export type MinecraftEdition = "java" | "bedrock";
 
-export type FaithfulPack =
-	| "faithful_32x"
-	| "faithful_64x"
-	| "classic_faithful_32x"
-	| "classic_faithful_32x_progart"
-	| "classic_faithful_64x";
-
-export type VanillaPack = "default" | "progart";
-
-export type AnyPack = FaithfulPack | VanillaPack;
-
 export interface PackGitHub {
 	repo: string;
 	org: string;
 }
 
 export interface Pack {
-	id: AnyPack;
+	id: string;
 	name: string;
 	tags: string[];
 	logo: string;
@@ -26,8 +15,8 @@ export interface Pack {
 }
 
 export interface Submission {
-	id: FaithfulPack;
-	reference: AnyPack | null;
+	id: string;
+	reference: string | null;
 	channels: SubmissionChannels;
 	council_enabled: boolean;
 	time_to_results: number;
