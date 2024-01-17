@@ -20,6 +20,7 @@ export interface Pack {
 	id: AnyPack;
 	name: string;
 	tags: string[];
+	logo: string;
 	resolution: number;
 	github: Record<MinecraftEdition, PackGitHub>;
 }
