@@ -1,5 +1,5 @@
 import { SlashCommand, SyncSlashCommandBuilder } from "@interfaces/commands";
-import { Pack } from "@interfaces/firestorm";
+import { Pack } from "@interfaces/database";
 import { Client, ChatInputCommandInteraction, EmbedBuilder } from "@client";
 import { SlashCommandBuilder, Message, AttachmentBuilder } from "discord.js";
 import {

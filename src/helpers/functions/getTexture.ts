@@ -9,7 +9,7 @@ import {
 	Contributor,
 	GalleryTexture,
 	MinecraftEdition,
-} from "@interfaces/firestorm";
+} from "@interfaces/database";
 import { animateToAttachment } from "@images/animate";
 import minecraftSorter from "@utility/minecraftSorter";
 import formatPack from "@utility/formatPack";

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { ChatInputCommandInteraction, EmbedBuilder } from "@client";
 import { colors } from "@utility/colors";
-import { Texture } from "@interfaces/firestorm";
+import { Texture } from "@interfaces/database";
 
 /**
  * Validate and parse a texture name into a series of texture objects

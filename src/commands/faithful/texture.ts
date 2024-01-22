@@ -1,5 +1,5 @@
 import { SlashCommand } from "@interfaces/commands";
-import { Pack } from "@interfaces/firestorm";
+import { Pack } from "@interfaces/database";
 import { SlashCommandBuilder } from "discord.js";
 import { ChatInputCommandInteraction, Message, Client } from "@client";
 import { getTexture } from "@functions/getTexture";

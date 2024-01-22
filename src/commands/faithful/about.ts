@@ -3,7 +3,7 @@ import { Message, EmbedBuilder, ChatInputCommandInteraction } from "@client";
 import { SlashCommandBuilder, AttachmentBuilder } from "discord.js";
 import axios from "axios";
 import formatPack from "@utility/formatPack";
-import { Contribution, Texture } from "@interfaces/firestorm";
+import { Contribution, Texture } from "@interfaces/database";
 import { colors } from "@utility/colors";
 
 export const command: SlashCommand = {

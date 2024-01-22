@@ -7,7 +7,7 @@ import { join, normalize } from "path";
 
 import blacklistedTextures from "@json/blacklisted_textures.json";
 import axios from "axios";
-import { MinecraftEdition, Pack, PackGitHub } from "@interfaces/firestorm";
+import { MinecraftEdition, Pack, PackGitHub } from "@interfaces/database";
 
 // starting from process.cwd()
 export const BASE_REPOS_PATH = "repos";

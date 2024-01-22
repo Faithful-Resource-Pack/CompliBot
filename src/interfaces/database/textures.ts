@@ -1,5 +1,6 @@
 import { MCMETA } from "@helpers/images/animate";
-import { MinecraftEdition } from "./packs";
+
+export type MinecraftEdition = "java" | "bedrock";
 
 export interface Path {
 	id: string;

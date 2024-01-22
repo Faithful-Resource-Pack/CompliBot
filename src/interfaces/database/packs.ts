@@ -1,4 +1,4 @@
-export type MinecraftEdition = "java" | "bedrock";
+import { MinecraftEdition } from "./textures";
 
 export interface PackGitHub {
 	repo: string;
