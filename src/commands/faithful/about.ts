@@ -4,6 +4,7 @@ import { SlashCommandBuilder, AttachmentBuilder } from "discord.js";
 import axios from "axios";
 import formatPack from "@utility/formatPack";
 import { Contribution, Texture } from "@interfaces/firestorm";
+import { colors } from "@utility/colors";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -40,12 +41,20 @@ export const command: SlashCommand = {
 			).data;
 		} catch {
 			const finalEmbed = new EmbedBuilder()
-				.setTitle(`${user.displayName} has no contributions!`)
+				.setTitle(
+					interaction
+						.strings()
+						.command.about.missing_profile.title.replace("%USER%", user.displayName),
+				)
 				.setDescription(
-					"No database profile was found for this user. If this data looks incorrect, register at https://webapp.faithfulpack.net.",
-				);
+					// only tell user to register if they actually can register
+					interaction.strings().command.about.missing_profile[
+						user.id === interaction.user.id ? "register" : "description"
+					],
+				)
+				.setColor(colors.red);
 
-			return interaction.editReply({ embeds: [finalEmbed] });
+			return interaction.ephemeralReply({ embeds: [finalEmbed] });
 		}
 
 		// group ids into 30-long nested arrays
@@ -58,19 +67,20 @@ export const command: SlashCommand = {
 				return acc;
 			}, []);
 
-		const textureData: Texture[] = (
-			await Promise.all(
-				groupedIDs.map(
-					async (ids: string[]) =>
+		const textureData: Texture[] =
+			// faster to resolve all promises at once than to wait for each one to finish
+			(
+				await Promise.all(
+					groupedIDs.map((ids: string[]) =>
 						// get texture data in batches of 30
-						(
-							await axios
-								.get(`${interaction.client.tokens.apiUrl}textures/${ids.join(",")}`)
-								.catch(() => ({ data: null }))
-						).data,
-				),
+						axios
+							.get(`${interaction.client.tokens.apiUrl}textures/${ids.join(",")}`)
+							.catch(() => ({ data: null })),
+					),
+				)
 			)
-		).flat();
+				.map((res) => res.data)
+				.flat();
 
 		// merge the two objects by id
 		const finalData: (Contribution & Texture)[] = contributionData.map(
