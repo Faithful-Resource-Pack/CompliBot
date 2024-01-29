@@ -9,10 +9,10 @@ import {
 	Contributor,
 	GalleryTexture,
 	MinecraftEdition,
+	Pack,
 } from "@interfaces/database";
 import { animateToAttachment } from "@images/animate";
 import minecraftSorter from "@utility/minecraftSorter";
-import formatPack from "@utility/formatPack";
 import { textureButtons } from "@utility/buttons";
 import { Image, loadImage } from "@napi-rs/canvas";
 import { toTitleCase } from "@utility/methods";
@@ -20,6 +20,9 @@ import { toTitleCase } from "@utility/methods";
 /**
  * Create a full texture embed with provided information
  * @author Juknum, Evorp, RobertR11
+ * @param interaction interaction to reply to
+ * @param texture texture data to use
+ * @param pack pack to get authors and formatting from
  * @returns reply options
  */
 export async function getTexture(interaction: Interaction, texture: Texture, pack: string) {
@@ -27,7 +30,7 @@ export async function getTexture(interaction: Interaction, texture: Texture, pac
 	const isAnimated = Object.keys(texture.mcmeta).length;
 	const contributionJSON: Contributor[] = (await axios.get(`${apiUrl}contributions/authors`)).data;
 
-	const { data: packData } = await axios.get(`${apiUrl}packs/${pack}`);
+	const packData: Pack = (await axios.get(`${apiUrl}packs/${pack}`)).data;
 
 	const files: AttachmentBuilder[] = [];
 	const embed = new EmbedBuilder().setTitle(`[#${texture.id}] ${texture.name}`).setFooter({
