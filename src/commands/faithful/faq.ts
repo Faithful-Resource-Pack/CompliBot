@@ -51,7 +51,11 @@ export const command: SlashCommand = {
 				embeds: [
 					new EmbedBuilder()
 						.setTitle(interaction.strings().command.faq.invalid_choice.title)
-						.setDescription(interaction.strings().command.faq.invalid_choice.description)
+						.setDescription(
+							interaction
+								.strings()
+								.command.faq.invalid_choice.description.replace("%CHOICE%", choice),
+						)
 						.setColor(colors.red),
 				],
 				ephemeral: true,
