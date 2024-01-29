@@ -27,12 +27,12 @@ export async function getTexture(interaction: Interaction, texture: Texture, pac
 	const isAnimated = Object.keys(texture.mcmeta).length;
 	const contributionJSON: Contributor[] = (await axios.get(`${apiUrl}contributions/authors`)).data;
 
-	const { name, iconURL } = formatPack(pack);
+	const { data: packData } = await axios.get(`${apiUrl}packs/${pack}`);
 
 	const files: AttachmentBuilder[] = [];
 	const embed = new EmbedBuilder().setTitle(`[#${texture.id}] ${texture.name}`).setFooter({
-		text: name,
-		iconURL,
+		text: packData.name,
+		iconURL: packData.logo,
 	});
 
 	let textureURL: string;
@@ -54,7 +54,7 @@ export async function getTexture(interaction: Interaction, texture: Texture, pac
 				interaction
 					.strings()
 					.error.texture.no_image.description.replace("%TEXTURENAME%", texture.name)
-					.replace("%PACK%", name),
+					.replace("%PACK%", packData.name),
 			)
 			.setColor(colors.red);
 		// missing texture so we break early
