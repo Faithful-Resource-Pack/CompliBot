@@ -3,14 +3,7 @@ import axios from "axios";
 import { APIEmbedField, AttachmentBuilder, Interaction } from "discord.js";
 import { magnify, magnifyToAttachment } from "@images/magnify";
 import { colors } from "@utility/colors";
-import {
-	Texture,
-	Contribution,
-	Contributor,
-	GalleryTexture,
-	MinecraftEdition,
-	Pack,
-} from "@interfaces/database";
+import { Texture, Contributor, GalleryTexture, MinecraftEdition, Pack } from "@interfaces/database";
 import { animateToAttachment } from "@images/animate";
 import minecraftSorter from "@utility/minecraftSorter";
 import { textureButtons } from "@utility/buttons";
@@ -27,9 +20,7 @@ import { toTitleCase } from "@utility/methods";
  */
 export async function getTexture(interaction: Interaction, texture: Texture, pack: string) {
 	const apiUrl = interaction.client.tokens.apiUrl;
-	const isAnimated = Object.keys(texture.mcmeta).length;
-	const contributionJSON: Contributor[] = (await axios.get(`${apiUrl}contributions/authors`)).data;
-
+	const isAnimated = texture.paths.some((p) => p.mcmeta === true);
 	const packData: Pack = (await axios.get(`${apiUrl}packs/${pack}`)).data;
 
 	const files: AttachmentBuilder[] = [];
@@ -38,13 +29,10 @@ export async function getTexture(interaction: Interaction, texture: Texture, pac
 		iconURL: packData.logo,
 	});
 
-	let textureURL: string;
-	try {
-		textureURL = (await axios.get(`${apiUrl}textures/${texture.id}/url/${pack}/latest`)).request.res
-			.responseUrl;
-	} catch {
-		textureURL = "";
-	}
+	const textureURL = await axios
+		.get(`${apiUrl}textures/${texture.id}/url/${pack}/latest`)
+		.then((res) => res.request.res.responseUrl)
+		.catch(() => "");
 
 	// test if url isn't a 404
 	let image: Image;
@@ -72,15 +60,15 @@ export async function getTexture(interaction: Interaction, texture: Texture, pac
 		.setThumbnail(textureURL)
 		.setImage(`attachment://${isAnimated ? "animated.gif" : "magnified.png"}`);
 
-	let mainContribution: Contribution;
-	if (texture.contributions.length) {
-		mainContribution = texture.contributions
-			.filter((contribution) => pack === contribution.pack)
-			.sort((a, b) => (a.date > b.date ? -1 : 1))[0];
-	}
+	const mainContribution = texture.contributions
+		.filter((contribution) => pack === contribution.pack)
+		.sort((a, b) => (a.date > b.date ? -1 : 1))?.[0];
 
-	// field gets skipped for 16x and textures without contributions
 	if (mainContribution) {
+		// surprisingly faster to fetch all users and filter on the client than doing a bunch of requests
+		const contributionJSON: Contributor[] = (await axios.get(`${apiUrl}contributions/authors`))
+			.data;
+
 		const authors = mainContribution.authors.map((authorId) => {
 			if (interaction.guild.members.cache.get(authorId)) return `<@!${authorId}>`;
 
@@ -116,7 +104,7 @@ export async function getTexture(interaction: Interaction, texture: Texture, pac
 		files.push(await animateToAttachment(magnified, texture.mcmeta));
 	} else files.push(await magnifyToAttachment(textureURL));
 
-	return { embeds: [embed], files: files, components: [textureButtons], ephemeral: false };
+	return { embeds: [embed], files, components: [textureButtons], ephemeral: false };
 }
 
 /**
@@ -126,7 +114,7 @@ export async function getTexture(interaction: Interaction, texture: Texture, pac
  * @returns usable embed field data
  */
 export const addPathsToEmbed = (texture: GalleryTexture | Texture): APIEmbedField[] => {
-	const tmp: Record<MinecraftEdition, string[]> = {} as any;
+	const tmp = {} as Record<MinecraftEdition, string[]>;
 
 	texture.uses.forEach((use) => {
 		texture.paths
@@ -142,12 +130,8 @@ export const addPathsToEmbed = (texture: GalleryTexture | Texture): APIEmbedFiel
 			});
 	});
 
-	return Object.keys(tmp).map((edition) => {
-		if (tmp[edition].length) {
-			return {
-				name: toTitleCase(edition),
-				value: tmp[edition].join("\n"),
-			};
-		}
-	});
+	return Object.entries(tmp).map(([edition, paths]) => ({
+		name: toTitleCase(edition),
+		value: paths.join("\n"),
+	}));
 };
