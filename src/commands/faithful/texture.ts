@@ -1,14 +1,14 @@
-import { SlashCommand } from "@interfaces/commands";
+import { SlashCommand } from "@interfaces/interactions";
 import { Pack } from "@interfaces/database";
 import { SlashCommandBuilder } from "discord.js";
-import { ChatInputCommandInteraction, Message, Client } from "@client";
+import { Message } from "@client";
 import { getTexture } from "@functions/getTexture";
 import parseTextureName from "@functions/parseTextureName";
 import { textureChoiceEmbed } from "@helpers/choiceEmbed";
 import axios from "axios";
 
 export const command: SlashCommand = {
-	async data(client: Client) {
+	async data(client) {
 		const packs: Record<string, Pack> = (await axios.get(`${client.tokens.apiUrl}packs/raw`)).data;
 		return new SlashCommandBuilder()
 			.setName("texture")
@@ -27,7 +27,7 @@ export const command: SlashCommand = {
 					.setRequired(true),
 			);
 	},
-	async execute(interaction: ChatInputCommandInteraction) {
+	async execute(interaction) {
 		const name = interaction.options.getString("name");
 
 		// fetching takes too long for big results

@@ -3,7 +3,7 @@ import { Client, StringSelectMenuInteraction } from "@client";
 
 export default {
 	name: "selectMenuUsed",
-	async execute(client: Client, interaction: StringSelectMenuInteraction) {
+	async execute(client, interaction) {
 		client.storeAction("selectMenu", interaction);
 
 		const selectMenu = client.menus.get(interaction.customId.split("_")[0]);

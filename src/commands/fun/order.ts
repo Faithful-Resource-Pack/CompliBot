@@ -1,6 +1,6 @@
-import { SlashCommand } from "@interfaces/commands";
+import { SlashCommand } from "@interfaces/interactions";
 import { SlashCommandBuilder, AttachmentBuilder } from "discord.js";
-import { Message, ChatInputCommandInteraction } from "@client";
+import { Message } from "@client";
 
 interface OrderOptions {
 	[order: string]: {
@@ -48,7 +48,7 @@ export const command: SlashCommand = {
 				)
 				.setRequired(true),
 		),
-	async execute(interaction: ChatInputCommandInteraction) {
+	async execute(interaction) {
 		const choice = options[interaction.options.getString("item")];
 		interaction
 			.reply({

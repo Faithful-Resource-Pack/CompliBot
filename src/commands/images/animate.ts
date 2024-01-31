@@ -1,6 +1,6 @@
-import { SlashCommand } from "@interfaces/commands";
+import { SlashCommand } from "@interfaces/interactions";
 import { SlashCommandBuilder } from "discord.js";
-import { ChatInputCommandInteraction, EmbedBuilder, Message } from "@client";
+import { EmbedBuilder, Message } from "@client";
 import getImage, { imageNotFound } from "@images/getImage";
 import { animateToAttachment, MCMETA } from "@helpers/images/animate";
 import mcmetaList from "@json/mcmetas.json";
@@ -38,7 +38,7 @@ export const command: SlashCommand = {
 		.addAttachmentOption((o) =>
 			o.setName("image").setDescription("The tilesheet to animate").setRequired(false),
 		),
-	async execute(interaction: ChatInputCommandInteraction) {
+	async execute(interaction) {
 		await interaction.deferReply();
 
 		// fallback if user hasn't provided an mcmeta

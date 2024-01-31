@@ -1,9 +1,9 @@
 import { SlashCommandBuilder, EmbedField } from "discord.js";
-import { SlashCommand } from "@interfaces/commands";
+import { SlashCommand } from "@interfaces/interactions";
 import { Poll } from "@helpers/poll";
 import { addSeconds, parseDate } from "@utility/dates";
 import { emojis, parseID } from "@utility/emojis";
-import { ChatInputCommandInteraction, EmbedBuilder, Message } from "@client";
+import { EmbedBuilder, Message } from "@client";
 import { colors } from "@utility/colors";
 
 export const command: SlashCommand = {
@@ -46,7 +46,7 @@ export const command: SlashCommand = {
 		.addStringOption((option) =>
 			option.setName("description").setDescription("Add more information about your poll here."),
 		),
-	async execute(interaction: ChatInputCommandInteraction) {
+	async execute(interaction) {
 		const question = interaction.options.getString("question", true);
 		const multipleAnswers =
 			interaction.options.getBoolean("allow-multiple-answers", false) === true ? true : false;

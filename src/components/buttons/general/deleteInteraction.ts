@@ -1,11 +1,11 @@
 import { Component } from "@interfaces/components";
 import { info } from "@helpers/logger";
-import { Client, ButtonInteraction, EmbedBuilder } from "@client";
+import { ButtonInteraction, EmbedBuilder } from "@client";
 import { colors } from "@utility/colors";
 
 export default {
 	id: "deleteInteraction",
-	async execute(client: Client, interaction: ButtonInteraction) {
+	async execute(client, interaction) {
 		if (client.verbose) console.log(`${info}Interaction Message deleted!`);
 
 		const messageInteraction = interaction.message.interaction;
@@ -69,4 +69,4 @@ export default {
 			});
 		}
 	},
-} as Component;
+} as Component<ButtonInteraction>;

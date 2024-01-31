@@ -1,6 +1,6 @@
-import { SlashCommand } from "@interfaces/commands";
+import { SlashCommand } from "@interfaces/interactions";
 import { SlashCommandBuilder } from "discord.js";
-import { ChatInputCommandInteraction, Message } from "@client";
+import { Message } from "@client";
 import { cycleComparison } from "@functions/cycleComparison";
 import parseTextureName from "@functions/parseTextureName";
 import { textureChoiceEmbed } from "@helpers/choiceEmbed";
@@ -32,7 +32,7 @@ export const command: SlashCommand = {
 				.setDescription("Seconds between each frame (default is 1).")
 				.setRequired(false),
 		),
-	async execute(interaction: ChatInputCommandInteraction) {
+	async execute(interaction) {
 		const display = interaction.options.getString("packs", true);
 		const name = interaction.options.getString("texture", true);
 		const framerate = interaction.options.getNumber("framerate", false) ?? 1;

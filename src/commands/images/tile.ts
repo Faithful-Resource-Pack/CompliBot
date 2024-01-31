@@ -1,6 +1,6 @@
-import { SlashCommand } from "@interfaces/commands";
+import { SlashCommand } from "@interfaces/interactions";
 import { SlashCommandBuilder } from "discord.js";
-import { ChatInputCommandInteraction, Message } from "@client";
+import { Message } from "@client";
 import { tileToAttachment, TileShape, TileRandom } from "@images/tile";
 import getImage, { imageNotFound } from "@images/getImage";
 import { tileButtons } from "@utility/buttons";
@@ -41,7 +41,7 @@ export const command: SlashCommand = {
 		.addAttachmentOption((o) =>
 			o.setName("image").setDescription("The image to tile").setRequired(false),
 		),
-	async execute(interaction: ChatInputCommandInteraction) {
+	async execute(interaction) {
 		const random = interaction.options.getString("random") as TileRandom;
 		const shape = interaction.options.getString("type") as TileShape;
 		const magnify = interaction.options.getBoolean("magnify", false) ?? true;

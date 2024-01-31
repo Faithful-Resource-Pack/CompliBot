@@ -1,6 +1,6 @@
-import { SlashCommand, SyncSlashCommandBuilder } from "@interfaces/commands";
+import { SlashCommand, SyncSlashCommandBuilder } from "@interfaces/interactions";
 import { Pack } from "@interfaces/database";
-import { Client, ChatInputCommandInteraction, EmbedBuilder } from "@client";
+import { EmbedBuilder } from "@client";
 import { SlashCommandBuilder, Message, AttachmentBuilder } from "discord.js";
 import {
 	computeMissingResults,
@@ -16,7 +16,7 @@ import minecraftSorter from "@utility/minecraftSorter";
 import { toTitleCase } from "@utility/methods";
 
 export const command: SlashCommand = {
-	async data(client: Client): Promise<SyncSlashCommandBuilder> {
+	async data(client): Promise<SyncSlashCommandBuilder> {
 		const versions: string[] = (await axios.get(`${client.tokens.apiUrl}textures/versions`)).data;
 		const packs: Pack[] = (await axios.get(`${client.tokens.apiUrl}packs/search?type=submission`))
 			.data;
@@ -67,7 +67,7 @@ export const command: SlashCommand = {
 					.setRequired(false),
 			);
 	},
-	async execute(interaction: ChatInputCommandInteraction) {
+	async execute(interaction) {
 		await interaction.deferReply();
 
 		const edition = interaction.options.getString("edition", true) as MissingEdition;

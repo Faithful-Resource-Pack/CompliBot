@@ -93,7 +93,7 @@ async function complete() {
 		.catch(() => {});
 }
 
-// add methods to just the base so it applies to all interaction types
+// no idea how adding methods here adds them everywhere but I'm not complaining
 BaseInteraction.prototype.hasPermission = hasPermission;
 BaseInteraction.prototype.strings = strings;
 BaseInteraction.prototype.ephemeralReply = ephemeralReply;

@@ -1,5 +1,5 @@
-import { SlashCommand, SlashCommandI } from "@interfaces/commands";
-import { EmbedBuilder, ChatInputCommandInteraction } from "@client";
+import { SlashCommand, SlashCommandI } from "@interfaces/interactions";
+import { EmbedBuilder } from "@client";
 import {
 	Collection,
 	AttachmentBuilder,
@@ -52,13 +52,12 @@ export const command: SlashCommand = {
 		.setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
 		.setDMPermission(false),
 	execute: new Collection<string, SlashCommandI>()
-		.set("edit", async (interaction: ChatInputCommandInteraction) => {
+		.set("edit", async (interaction) => {
 			const isAdding = interaction.options.getString("action", true) == "add";
 
 			await interaction.deferReply({ ephemeral: true });
 			const banlist = require("@json/botbans.json");
 			const victim = interaction.options.getUser("subject");
-			const member = await interaction.guild.members.fetch(victim.id);
 
 			if (
 				interaction.client.tokens.developers.includes(victim.id) ||
@@ -91,7 +90,7 @@ export const command: SlashCommand = {
 				],
 			});
 		})
-		.set("view", async (interaction: ChatInputCommandInteraction) => {
+		.set("view", async (interaction) => {
 			if (!interaction.hasPermission("dev")) return;
 
 			await interaction.deferReply({ ephemeral: true });

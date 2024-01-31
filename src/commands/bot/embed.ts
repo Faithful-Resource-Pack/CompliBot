@@ -1,5 +1,5 @@
-import { SlashCommand } from "@interfaces/commands";
-import { ChatInputCommandInteraction, EmbedBuilder, Message } from "@client";
+import { SlashCommand } from "@interfaces/interactions";
+import { EmbedBuilder, Message } from "@client";
 import { ColorResolvable, PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
 import { colors } from "@utility/colors";
 
@@ -38,7 +38,7 @@ export const command: SlashCommand = {
 		)
 		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
 		.setDMPermission(false),
-	async execute(interaction: ChatInputCommandInteraction) {
+	async execute(interaction) {
 		if (!interaction.options.getString("title") && !interaction.options.getString("description")) {
 			return interaction.reply({
 				embeds: [

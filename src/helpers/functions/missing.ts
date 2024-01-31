@@ -64,13 +64,13 @@ export async function computeMissingResults(
 
 	// clone repos if not already done (saves a lot of init lol)
 	if (!existsSync(defaultPath)) {
-		await callback(`Downloading default ${edition} pack...`);
+		await callback(`Downloading default ${edition} pack…`);
 		mkdirSync(defaultPath, { recursive: true });
 		await exec(`git clone ${defaultRepo} .`, { cwd: defaultPath });
 	}
 
 	if (!existsSync(requestPath)) {
-		await callback(`Downloading \`${formatPack(pack)[0]}\` (${edition}) pack...`);
+		await callback(`Downloading \`${formatPack(pack)[0]}\` (${edition}) pack…`);
 		mkdirSync(requestPath, { recursive: true });
 		await exec(`git clone ${requestRepo} .`, { cwd: requestPath });
 	}
@@ -81,7 +81,7 @@ export async function computeMissingResults(
 
 	// latest version if versions doesn't include version (unexisting/unsupported)
 	if (!versions.includes(version)) version = versions[0];
-	await callback(`Updating packs with latest version of \`${version}\` known...`);
+	await callback(`Updating packs with latest version of \`${version}\` known…`);
 
 	// same steps are used for both packs
 	const steps = [
@@ -96,7 +96,7 @@ export async function computeMissingResults(
 	await series(structuredClone(steps), { cwd: requestPath });
 
 	// now both repos are pointing to the same version and are ready to compare
-	await callback("Searching for differences...");
+	await callback("Searching for differences…");
 
 	// blacklist modded textures if we aren't checking modded
 	const editionFilter = (

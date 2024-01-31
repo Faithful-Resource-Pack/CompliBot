@@ -1,10 +1,10 @@
 import { Component } from "@interfaces/components";
 import { info } from "@helpers/logger";
-import { Client, ButtonInteraction } from "@client";
+import { ButtonInteraction } from "@client";
 
 export default {
 	id: "pollDelete",
-	async execute(client: Client, interaction: ButtonInteraction) {
+	async execute(client, interaction) {
 		if (client.verbose) console.log(`${info}Poll Message deleted!`);
 
 		const messageInteraction = interaction.message.interaction;
@@ -37,4 +37,4 @@ export default {
 
 		return;
 	},
-} as Component;
+} as Component<ButtonInteraction>;

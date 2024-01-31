@@ -1,5 +1,5 @@
-import { SlashCommand } from "@interfaces/commands";
-import { Message, EmbedBuilder, ChatInputCommandInteraction } from "@client";
+import { SlashCommand } from "@interfaces/interactions";
+import { Message, EmbedBuilder } from "@client";
 import { SlashCommandBuilder, AttachmentBuilder } from "discord.js";
 import axios from "axios";
 import formatPack from "@utility/formatPack";
@@ -16,7 +16,7 @@ export const command: SlashCommand = {
 				.setDescription("User you want to look up (leave blank if you want to search yourself).")
 				.setRequired(false),
 		),
-	async execute(interaction: ChatInputCommandInteraction) {
+	async execute(interaction) {
 		await interaction.deferReply();
 
 		const loading: string = (

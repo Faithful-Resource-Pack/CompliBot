@@ -4,10 +4,9 @@
 		"description": "Client-emitted event template.",
 		"body": [
 			"import { Event } from \"@interfaces/events\";",
-			"import { Client } from \"@client\"",
 			"\nexport default {",
 			"\tname: \"${1:Name}\",",
-			"\tasync execute(client: Client, ${2:/* args */}) {",
+			"\tasync execute(client, ${2:/* args */}) {",
 			"\t\t${3://todo: implement event",
 			"\t}},\n} as Event;"
 		]
@@ -17,11 +16,11 @@
 		"prefix": "nact",
 		"description": "For non-static slash command data.",
 		"body": [
-			"import { SlashCommand, SyncSlashCommandBuilder } from \"@interfaces/commands\";",
-			"import { Client, ChatInputCommandInteraction, EmbedBuilder } from \"@client\";",
+			"import { SlashCommand, SyncSlashCommandBuilder } from \"@interfaces/interactions\";",
+			"import { EmbedBuilder } from \"@client\";",
 			"import { SlashCommandBuilder } from \"discord.js\";",
 			"\nexport const command: SlashCommand = {",
-			"\tasync data(client: Client): Promise<SyncSlashCommandBuilder> {",
+			"\tasync data(client): Promise<SyncSlashCommandBuilder> {",
 			"\t\t/**",
 			"\t\t * todo: implement fetched stuff here",
 			"\t\t */",
@@ -29,7 +28,7 @@
 			"\t\t\t.setName(\"${1:Name}\")",
 			"\t\t\t.setDescription(\"${2:Description}\");",
 			"\t},",
-			"\tasync execute(interaction: ChatInputCommandInteraction) {",
+			"\tasync execute(interaction) {",
 			"\t\t${3://todo: implement command}",
 			"\t},\n};"
 		]
@@ -39,14 +38,14 @@
 		"prefix": "nct",
 		"description": "Regular slash command template.",
 		"body": [
-			"import { SlashCommand } from \"@interfaces/commands\";",
-			"import { Client, ChatInputCommandInteraction, EmbedBuilder } from \"@client\";",
+			"import { SlashCommand } from \"@interfaces/interactions\";",
+			"import { Client, EmbedBuilder } from \"@client\";",
 			"import { SlashCommandBuilder } from \"discord.js\";",
 			"\nexport const command: SlashCommand = {",
 			"\tdata: new SlashCommandBuilder()",
 			"\t\t.setName(\"${1:Name}\")",
 			"\t\t.setDescription(`${2:Description}`),",
-			"\tasync execute(interaction: ChatInputCommandInteraction) {",
+			"\tasync execute(interaction) {",
 			"\t\t${3://todo: implement command}",
 			"\t},\n};"
 		]
@@ -57,13 +56,12 @@
 		"description": "Generic component template for buttons, menus, and modals."
 		"body": [
 			"import { Component } from \"@interfaces\";",
-			"import { Client } from \"@client\";",
 			"\nexport default {",
 			"\tid: \"${1:Name}\"",
-			"\tasync execute(client: Client, interaction: \"${2:Interaction}\") {"
+			"\tasync execute(client, interaction) {"
 			"\t\t${3://todo: implement component}",
 			"\t}"
-			"} as Component;"
+			"} as Component<${2:Interaction}>;"
 		]
 	},
 

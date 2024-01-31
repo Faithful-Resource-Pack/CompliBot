@@ -1,11 +1,11 @@
 import { Component } from "@interfaces/components";
-import { Client, ButtonInteraction, EmbedBuilder } from "@client";
+import { ButtonInteraction, EmbedBuilder } from "@client";
 import { colors } from "@utility/colors";
 import { info } from "@helpers/logger";
 
 export default {
 	id: "reflip",
-	async execute(client: Client, interaction: ButtonInteraction) {
+	async execute(client, interaction) {
 		if (client.verbose) console.log(`${info}Coin re-flipped!`);
 
 		const messageInteraction = interaction.message.interaction;
@@ -49,4 +49,4 @@ export default {
 			ephemeral: true,
 		});
 	},
-} as Component;
+} as Component<ButtonInteraction>;

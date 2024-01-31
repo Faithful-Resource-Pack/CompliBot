@@ -1,13 +1,13 @@
 import { Component } from "@interfaces/components";
 import { info } from "@helpers/logger";
-import { Client, Message, ButtonInteraction, EmbedBuilder } from "@client";
+import { Message, ButtonInteraction, EmbedBuilder } from "@client";
 import { magnifyToAttachment } from "@images/magnify";
 import { magnifyButtons } from "@utility/buttons";
 import getImage, { imageNotFound } from "@images/getImage";
 
 export default {
 	id: "magnify",
-	async execute(client: Client, interaction: ButtonInteraction) {
+	async execute(client, interaction) {
 		if (client.verbose) console.log(`${info}Image was magnified!`);
 
 		const message = interaction.message;
@@ -31,4 +31,4 @@ export default {
 				message.deleteButton(true);
 			});
 	},
-} as Component;
+} as Component<ButtonInteraction>;

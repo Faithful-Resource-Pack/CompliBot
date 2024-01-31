@@ -1,7 +1,8 @@
 import { pollDelete, pollVotes, pollYesNo } from "@utility/buttons";
-import { Client, ChatInputCommandInteraction, Message, EmbedBuilder } from "@client";
+import { Client, Message, EmbedBuilder } from "@client";
 import { ActionRowBuilder, ButtonBuilder, TextChannel } from "discord.js";
 import { AllVotes, TimedEmbed, Votes } from "@helpers/timedEmbed";
+import { AnyInteraction } from "@interfaces/interactions";
 
 export interface PollOptions {
 	question: string;
@@ -143,7 +144,7 @@ export class Poll extends TimedEmbed {
 	 * @param options different options for the poll
 	 */
 	public async postMessage(
-		interaction: ChatInputCommandInteraction,
+		interaction: AnyInteraction,
 		embed: EmbedBuilder,
 		options: PollOptions,
 	): Promise<void> {

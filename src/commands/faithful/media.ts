@@ -1,7 +1,7 @@
-import { SlashCommand } from "@interfaces/commands";
+import { SlashCommand } from "@interfaces/interactions";
 import { SlashCommandBuilder } from "discord.js";
 import { media } from "@utility/infoembed";
-import { Message, EmbedBuilder, ChatInputCommandInteraction } from "@client";
+import { Message, EmbedBuilder } from "@client";
 import axios from "axios";
 import { colors } from "@utility/colors";
 
@@ -22,7 +22,7 @@ export const command: SlashCommand = {
 					{ name: "All", value: "all" },
 				),
 		),
-	async execute(interaction: ChatInputCommandInteraction) {
+	async execute(interaction) {
 		const key = interaction.options.getString("name", false) ?? "default";
 
 		// you can't import images directly in infoembed.ts so you have to do it here (blame TS)

@@ -1,13 +1,10 @@
-import { Interaction } from "discord.js";
 import { Client } from "@client";
+import { AnyInteraction } from "./interactions";
 
-// same interface is used for buttons, select menus, modals, etc so they can be added to the bot much more easily
-
-export interface Component {
+// all components use same interface for reusable initialization
+export interface Component<T extends AnyInteraction = AnyInteraction> {
 	id: string;
-	execute: ComponentExecute;
+	execute: ComponentExecute<T>;
 }
 
-export interface ComponentExecute {
-	(client: Client, interaction: Interaction): void;
-}
+export type ComponentExecute<T> = (client: Client, interaction: T) => void;

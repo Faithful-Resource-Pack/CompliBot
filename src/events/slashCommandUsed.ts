@@ -1,4 +1,4 @@
-import { SlashCommandI } from "@interfaces/commands";
+import { SlashCommandI } from "@interfaces/interactions";
 import { Collection } from "discord.js";
 import { Event } from "@interfaces/events";
 import { Client, ChatInputCommandInteraction } from "@client";
@@ -28,7 +28,7 @@ export default {
 			// not a subcommand
 			try {
 				// execute command
-				(command.execute as SlashCommandI)(interaction as ChatInputCommandInteraction);
+				(command.execute as SlashCommandI)(interaction);
 			} catch (err) {
 				console.trace(err);
 				return interaction.reply({
@@ -41,7 +41,7 @@ export default {
 		}
 
 		// increase uses of that command
-		const count = client.commandsProcessed.get((command.data as SlashCommandI).name) + 1;
-		client.commandsProcessed.set((command.data as SlashCommandI).name, isNaN(count) ? 1 : count);
+		const count = client.commandsProcessed.get(command.data.name) + 1;
+		client.commandsProcessed.set(command.data.name, isNaN(count) ? 1 : count);
 	},
 } as Event;

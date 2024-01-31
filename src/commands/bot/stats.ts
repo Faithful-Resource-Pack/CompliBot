@@ -1,6 +1,6 @@
-import { SlashCommand, SlashCommandI } from "@interfaces/commands";
+import { SlashCommand, SlashCommandI } from "@interfaces/interactions";
 import { SlashCommandBuilder, Collection, Guild, version as djsVersion } from "discord.js";
-import { EmbedBuilder, ChatInputCommandInteraction, Message } from "@client";
+import { EmbedBuilder, Message } from "@client";
 import axios from "axios";
 import { colors } from "@utility/colors";
 
@@ -23,7 +23,7 @@ export const command: SlashCommand = {
 				),
 		),
 	execute: new Collection<string, SlashCommandI>()
-		.set("bot", async (interaction: ChatInputCommandInteraction) => {
+		.set("bot", async (interaction) => {
 			// easier to get extended properties
 			const client = interaction.client;
 			const memberCount = client.guilds.cache.reduce(
@@ -65,7 +65,7 @@ export const command: SlashCommand = {
 				.reply({ embeds: [embed], fetchReply: true })
 				.then((message: Message) => message.deleteButton());
 		})
-		.set("command", async (interaction: ChatInputCommandInteraction) => {
+		.set("command", async (interaction) => {
 			const command = interaction.options.getString("command");
 			if (command) {
 				// command doesn't exist

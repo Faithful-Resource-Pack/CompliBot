@@ -1,7 +1,8 @@
 import axios from "axios";
-import { ChatInputCommandInteraction, EmbedBuilder } from "@client";
+import { EmbedBuilder } from "@client";
 import { colors } from "@utility/colors";
 import { Texture } from "@interfaces/database";
+import { AnyInteraction } from "@interfaces/interactions";
 
 /**
  * Validate and parse a texture name into a series of texture objects
@@ -12,7 +13,7 @@ import { Texture } from "@interfaces/database";
  */
 export default async function parseTextureName(
 	name: string,
-	interaction: ChatInputCommandInteraction,
+	interaction: AnyInteraction,
 ): Promise<Texture[]> {
 	name = name.trim().replace(".png", "").replace("#", "").replace(/ /g, "_");
 

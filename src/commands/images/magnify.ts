@@ -1,6 +1,6 @@
-import { SlashCommand } from "@interfaces/commands";
+import { SlashCommand } from "@interfaces/interactions";
 import { SlashCommandBuilder } from "discord.js";
-import { ChatInputCommandInteraction, Message } from "@client";
+import { Message } from "@client";
 import { magnifyToAttachment } from "@images/magnify";
 import getImage, { imageNotFound } from "@images/getImage";
 import { magnifyButtons } from "@utility/buttons";
@@ -27,7 +27,7 @@ export const command: SlashCommand = {
 				.setDescription("The scale factor the image should be enlarged by.")
 				.setRequired(false);
 		}),
-	async execute(interaction: ChatInputCommandInteraction) {
+	async execute(interaction) {
 		await interaction.deferReply();
 		const image = await getImage(interaction);
 		if (!image) return imageNotFound(interaction);

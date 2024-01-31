@@ -2,13 +2,13 @@ import { readFileSync, existsSync, mkdirSync, writeFileSync } from "fs";
 import { resolve } from "path";
 
 interface GetOptions {
-	relative_path: string;
+	relativePath: string;
 	filename: string;
 	default_value?: "{}";
 }
 
 interface SetOptions {
-	relative_path: string;
+	relativePath: string;
 	filename: string;
 	data: {};
 }
@@ -20,8 +20,8 @@ interface SetOptions {
  * @returns json file
  */
 export function getData(options: GetOptions) {
-	let data: JSON;
-	const folder = resolve(__dirname, options.relative_path);
+	let data = {};
+	const folder = resolve(__dirname, options.relativePath);
 	const file = resolve(folder, options.filename);
 
 	try {
@@ -43,7 +43,7 @@ export function getData(options: GetOptions) {
  * @param options data to set
  */
 export function setData(options: SetOptions) {
-	const folder = resolve(__dirname, options.relative_path);
+	const folder = resolve(__dirname, options.relativePath);
 	const file = resolve(folder, options.filename);
 
 	try {

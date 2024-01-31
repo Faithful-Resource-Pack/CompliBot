@@ -1,21 +1,24 @@
 import {
 	ActivityType,
-	ButtonInteraction,
 	Client,
 	ClientOptions,
 	Collection,
-	ChatInputCommandInteraction,
 	Guild,
-	StringSelectMenuInteraction,
-	ModalSubmitInteraction,
 	RESTPostAPIApplicationCommandsJSONBody,
 	Routes,
 	REST,
 } from "discord.js";
-import { Message, Automation } from "@client";
+import {
+	Message,
+	Automation,
+	StringSelectMenuInteraction,
+	ButtonInteraction,
+	ModalSubmitInteraction,
+	ChatInputCommandInteraction,
+} from "@client";
 import { Tokens } from "@interfaces/tokens";
 import { Component } from "@interfaces/components";
-import { SlashCommand } from "@interfaces/commands";
+import { AnyInteraction, SlashCommand } from "@interfaces/interactions";
 import { Event } from "@interfaces/events";
 import { EmittingCollection } from "@helpers/emittingCollection";
 import { setData, getData } from "@utility/handleJSON";
@@ -59,13 +62,7 @@ export type LogAction =
 	| "guildMemberUpdate"
 	| "guildJoined";
 
-export type LogData =
-	| Message
-	| Guild
-	| ButtonInteraction
-	| StringSelectMenuInteraction
-	| ChatInputCommandInteraction
-	| ModalSubmitInteraction;
+export type LogData = Message | Guild | AnyInteraction;
 
 export type Log = {
 	type: LogAction;
@@ -87,11 +84,10 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 	private maxLogs = 50;
 	private lastLogIndex = 0;
 
-	// we reuse the same component type so one function can load all collections
-	public menus = new Collection<string, Component>();
-	public buttons = new Collection<string, Component>();
-	public modals = new Collection<string, Component>();
-	public slashCommands = new Collection<string, SlashCommand>();
+	public readonly menus = new Collection<string, Component<StringSelectMenuInteraction>>();
+	public readonly buttons = new Collection<string, Component<ButtonInteraction>>();
+	public readonly modals = new Collection<string, Component<ModalSubmitInteraction>>();
+	public readonly slashCommands = new Collection<string, SlashCommand>();
 
 	public polls = new EmittingCollection<string, Poll>();
 	public commandsProcessed = new EmittingCollection<string, number>();
@@ -103,7 +99,7 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 		this.firstStart = firstStart;
 	}
 
-	public init(interaction?: ChatInputCommandInteraction) {
+	public init(interaction?: AnyInteraction) {
 		// pretty stuff so it doesnt print the logo upon restart
 		if (!this.firstStart) {
 			console.log(`${success}Restarted`);
@@ -140,7 +136,7 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 		return this;
 	}
 
-	public async restart(interaction?: ChatInputCommandInteraction) {
+	public async restart(interaction?: AnyInteraction) {
 		console.log(`${info}Restarting bot...`);
 		this.destroy();
 		startClient(false, interaction);
@@ -172,62 +168,69 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 	}
 
 	/**
-	 * Read & Load data from json file into emitting collection & setup events handler
-	 * @param collection
+	 * Read and load data from a JSON file into emitting collection with events
+	 * @author Nick, Juknum
+	 * @param collection collection to load into
 	 * @param filename
-	 * @param relative_path
+	 * @param relativePath
 	 */
-	private loadCollection(
-		collection: EmittingCollection<any, any>,
+	private loadCollection<V>(
+		collection: EmittingCollection<string, V>,
 		filename: string,
-		relative_path: string,
+		relativePath: string,
 	) {
-		const obj = getData({ filename, relative_path });
-		Object.keys(obj).forEach((key: string) => collection.set(key, obj[key]));
+		const obj: Record<string, V> = getData({ filename, relativePath });
+		Object.entries(obj).forEach(([k, v]) => collection.set(k, v));
 
-		collection.events.on("dataSet", (key: string, value: any) =>
-			this.saveEmittingCollection(collection, filename, relative_path),
+		collection.events.on("dataSet", () =>
+			this.saveEmittingCollection(collection, filename, relativePath),
 		);
-		collection.events.on("dataDeleted", (key: string) =>
-			this.saveEmittingCollection(collection, filename, relative_path),
+
+		collection.events.on("dataDeleted", () =>
+			this.saveEmittingCollection(collection, filename, relativePath),
 		);
 	}
 
 	/**
 	 * Save an emitting collection into a JSON file
+	 * @author Nick, Juknum
 	 * @param collection
 	 * @param filename
-	 * @param relative_path
+	 * @param relativePath
 	 */
-	private saveEmittingCollection(
-		collection: EmittingCollection<any, any>,
+	private saveEmittingCollection<V>(
+		collection: EmittingCollection<string, V>,
 		filename: string,
-		relative_path: string,
+		relativePath: string,
 	) {
 		let data = {};
-		[...collection.keys()].forEach((k: string) => {
+		[...collection.keys()].forEach((k) => {
 			data[k] = collection.get(k);
 		});
-		setData({ filename, relative_path, data: JSON.parse(JSON.stringify(data)) });
+
+		setData({ filename, relativePath, data: JSON.parse(JSON.stringify(data)) });
 	}
 
 	/**
-	 * SLASH COMMANDS DELETION
+	 * Remove slash commands from the menu
+	 * @author Nick
 	 */
-	public deleteGlobalSlashCommands() {
+	public async deleteGlobalSlashCommands() {
 		console.log(`${success}deleting slash commands`);
 
 		const rest = new REST({ version: "10" }).setToken(this.tokens.token);
-		rest.get(Routes.applicationCommands(this.user.id)).then((data: any) => {
-			const promises = [];
-			for (const command of data)
-				promises.push(rest.delete(`${Routes.applicationCommands(this.user.id)}/${command.id}`));
-			return Promise.all(promises).then(() => console.log(`${success}Delete complete`));
-		});
+		const commands = (await rest.get(Routes.applicationCommands(this.user.id))) as any[];
+		await Promise.all(
+			commands.map((command) =>
+				rest.delete(`${Routes.applicationCommands(this.user.id)}/${command.id}`),
+			),
+		);
+		console.log(`${success}Delete complete`);
 	}
 
 	/**
-	 * SLASH COMMANDS HANDLER
+	 * Load slash commands
+	 * @author Nick, Juknum
 	 */
 	public async loadSlashCommands() {
 		const commandsArr: {
@@ -297,7 +300,8 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 	}
 
 	/**
-	 * Read "Events" directory and add them as events
+	 * Load client events
+	 * @author Nick
 	 */
 	private loadEvents() {
 		if (this.tokens.maintenance)
@@ -319,6 +323,7 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 
 	/**
 	 * Convenience method to load all components at once
+	 * @author Evorp
 	 */
 	private loadComponents() {
 		for (const [key, path] of Object.entries(paths.components)) this.loadComponent(this[key], path);
@@ -327,6 +332,9 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 
 	/**
 	 * Read given directory and add them to needed collection
+	 * @author Evorp
+	 * @param collection collection to load into
+	 * @param path filepath to read and load component data from
 	 */
 	private loadComponent(collection: Collection<string, Component>, path: string) {
 		const components = walkSync(path).filter((file) => file.endsWith(".ts"));
@@ -339,6 +347,7 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 
 	/**
 	 * Store any kind of action the bot does
+	 * @author Juknum
 	 * @param type
 	 * @param data
 	 */

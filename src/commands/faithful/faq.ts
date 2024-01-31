@@ -1,6 +1,6 @@
-import { SlashCommand } from "@interfaces/commands";
+import { SlashCommand } from "@interfaces/interactions";
 import { SlashCommandBuilder } from "discord.js";
-import { ChatInputCommandInteraction, Message, EmbedBuilder } from "@client";
+import { Message, EmbedBuilder } from "@client";
 import { colors } from "@utility/colors";
 import faqStrings from "@json/faq.json";
 import axios from "axios";
@@ -12,7 +12,7 @@ export const command: SlashCommand = {
 		.addStringOption((option) =>
 			option.setName("keyword").setDescription("The specific FAQ entry to view.").setRequired(true),
 		),
-	async execute(interaction: ChatInputCommandInteraction) {
+	async execute(interaction) {
 		const choice = interaction.options.getString("keyword", true).toLocaleLowerCase().trim();
 
 		if (choice == "all") {

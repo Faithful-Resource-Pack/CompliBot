@@ -1,18 +1,9 @@
-import {
-	Message,
-	ButtonInteraction,
-	ChatInputCommandInteraction,
-	StringSelectMenuInteraction,
-	EmbedBuilder,
-} from "@client";
+import { Message, EmbedBuilder } from "@client";
+import { AnyInteraction } from "@interfaces/interactions";
 import { colors } from "@utility/colors";
 
 export async function warnUser(
-	interaction:
-		| ButtonInteraction
-		| ChatInputCommandInteraction
-		| StringSelectMenuInteraction
-		| Message,
+	interaction: AnyInteraction | Message,
 	title: string,
 	description: string,
 ) {
@@ -28,10 +19,10 @@ export async function warnUser(
 
 	args.ephemeral = true;
 	try {
-		await (interaction as ChatInputCommandInteraction).reply(args);
+		await interaction.reply(args);
 	} catch {
 		// deferred
-		await (interaction as ChatInputCommandInteraction).ephemeralReply(args);
+		await interaction.ephemeralReply(args);
 	}
 }
 
@@ -40,13 +31,7 @@ export async function warnUser(
  * @author Evorp
  * @param interaction interaction to reply to
  */
-export async function imageTooBig(
-	interaction:
-		| ButtonInteraction
-		| ChatInputCommandInteraction
-		| StringSelectMenuInteraction
-		| Message,
-) {
+export async function imageTooBig(interaction: AnyInteraction | Message) {
 	// force english if it's a message
 	const imageStrings = interaction.strings(interaction instanceof Message).error.image;
 	return warnUser(interaction, imageStrings.too_big, imageStrings.max_size);

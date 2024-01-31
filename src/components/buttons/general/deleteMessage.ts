@@ -1,11 +1,11 @@
 import { info } from "@helpers/logger";
-import { Client, ButtonInteraction, EmbedBuilder } from "@client";
+import { ButtonInteraction, EmbedBuilder } from "@client";
 import { Component } from "@interfaces/components";
 import { colors } from "@utility/colors";
 
 export default {
 	id: "deleteMessage",
-	async execute(client: Client, interaction: ButtonInteraction) {
+	async execute(client, interaction) {
 		if (client.verbose) console.log(`${info}Message deleted!`);
 		const message = interaction.message;
 		// if there's no interaction we store the author ID in the footer
@@ -43,4 +43,4 @@ export default {
 			});
 		}
 	},
-} as Component;
+} as Component<ButtonInteraction>;

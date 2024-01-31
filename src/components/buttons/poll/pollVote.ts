@@ -1,11 +1,11 @@
 import { Component } from "@interfaces/components";
-import { Client, ButtonInteraction, EmbedBuilder } from "@client";
+import { ButtonInteraction, EmbedBuilder } from "@client";
 import { Poll } from "@helpers/poll";
 import { colors } from "@utility/colors";
 
 export default {
 	id: "pollVote",
-	async execute(client: Client, interaction: ButtonInteraction) {
+	async execute(client, interaction) {
 		await interaction.deferUpdate();
 		const message = interaction.message;
 		const embed = message.embeds[0];
@@ -48,4 +48,4 @@ export default {
 
 		client.polls.set(pid, poll);
 	},
-} as Component;
+} as Component<ButtonInteraction>;

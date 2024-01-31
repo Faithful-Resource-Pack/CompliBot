@@ -1,4 +1,4 @@
-import { SlashCommand } from "@interfaces/commands";
+import { SlashCommand } from "@interfaces/interactions";
 import {
 	ActionRowBuilder,
 	SlashCommandBuilder,
@@ -6,7 +6,6 @@ import {
 	TextInputStyle,
 	ModalBuilder,
 } from "discord.js";
-import { ChatInputCommandInteraction } from "@client";
 
 // I'm sorry...
 export const feedbackFormat = {
@@ -68,7 +67,7 @@ export const command: SlashCommand = {
 				)
 				.setRequired(true),
 		),
-	async execute(interaction: ChatInputCommandInteraction) {
+	async execute(interaction) {
 		const type = interaction.options.getString("type");
 		const modal = new ModalBuilder().setCustomId(`${type}Ticket`).setTitle(`New ${type} issue`);
 

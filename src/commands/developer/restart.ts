@@ -1,6 +1,5 @@
-import { SlashCommand } from "@interfaces/commands";
+import { SlashCommand } from "@interfaces/interactions";
 import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
-import { ChatInputCommandInteraction } from "@client";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -8,7 +7,7 @@ export const command: SlashCommand = {
 		.setDescription("Restarts the bot.")
 		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
 		.setDMPermission(false),
-	async execute(interaction: ChatInputCommandInteraction) {
+	async execute(interaction) {
 		if (!interaction.hasPermission("dev")) return;
 
 		await interaction.reply({ content: "Restarting...", ephemeral: true });

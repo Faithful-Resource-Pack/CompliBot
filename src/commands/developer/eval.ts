@@ -1,6 +1,6 @@
-import { SlashCommand } from "@interfaces/commands";
+import { SlashCommand } from "@interfaces/interactions";
 import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
-import { Client, ChatInputCommandInteraction, EmbedBuilder } from "@client";
+import { Client, EmbedBuilder } from "@client";
 
 export const command: SlashCommand = {
 	servers: ["dev"],
@@ -12,7 +12,7 @@ export const command: SlashCommand = {
 		)
 		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
 		.setDMPermission(false),
-	async execute(interaction: ChatInputCommandInteraction) {
+	async execute(interaction) {
 		if (!interaction.hasPermission("dev")) return;
 		await interaction.deferReply({ ephemeral: true });
 

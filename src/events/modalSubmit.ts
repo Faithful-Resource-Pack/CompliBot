@@ -3,7 +3,7 @@ import { Client, ModalSubmitInteraction } from "@client";
 
 export default {
 	name: "modalSubmit",
-	async execute(client: Client, interaction: ModalSubmitInteraction) {
+	async execute(client, interaction) {
 		client.storeAction("modal", interaction);
 
 		const modal = client.modals.get(interaction.customId);

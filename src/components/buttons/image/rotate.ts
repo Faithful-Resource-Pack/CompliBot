@@ -1,6 +1,6 @@
 import { Component } from "@interfaces/components";
 import { info } from "@helpers/logger";
-import { Client, Message, ButtonInteraction, EmbedBuilder } from "@client";
+import { Message, ButtonInteraction, EmbedBuilder } from "@client";
 import { tileToAttachment, untile } from "@images/tile";
 import { palette, flip, tile } from "@utility/buttons";
 import getImage, { imageNotFound } from "@images/getImage";
@@ -9,7 +9,7 @@ import { ActionRowBuilder, ButtonBuilder } from "discord.js";
 
 export default {
 	id: "rotate",
-	async execute(client: Client, interaction: ButtonInteraction) {
+	async execute(client, interaction) {
 		if (client.verbose) console.log(`${info}Image was rotated!`);
 
 		const message = interaction.message;
@@ -36,4 +36,4 @@ export default {
 				message.deleteButton(true);
 			});
 	},
-} as Component;
+} as Component<ButtonInteraction>;

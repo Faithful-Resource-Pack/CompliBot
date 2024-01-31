@@ -1,9 +1,10 @@
 import { Client } from "@client";
-import { ChatInputCommandInteraction, GatewayIntentBits, Partials } from "discord.js";
+import { GatewayIntentBits, Partials } from "discord.js";
+import { AnyInteraction } from "@interfaces/interactions";
 
 import tokens from "@json/tokens.json";
 
-export default function startClient(firstStart = true, interaction?: ChatInputCommandInteraction) {
+export default function startClient(firstStart = true, interaction?: AnyInteraction) {
 	new Client(
 		{
 			tokens,

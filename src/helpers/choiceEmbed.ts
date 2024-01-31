@@ -1,4 +1,4 @@
-import { EmbedBuilder, ChatInputCommandInteraction, Message } from "@client";
+import { EmbedBuilder, Message } from "@client";
 import {
 	ActionRowBuilder,
 	SelectMenuComponentOptionData,
@@ -7,6 +7,7 @@ import {
 import { Texture } from "@interfaces/database";
 import minecraftSorter from "@utility/minecraftSorter";
 import axios from "axios";
+import { AnyInteraction } from "@interfaces/interactions";
 
 /**
  * Construct custom choice embed with any given results
@@ -16,7 +17,7 @@ import axios from "axios";
  * @param choices pre-formatted choices to add in the menus
  */
 export async function generalChoiceEmbed(
-	interaction: ChatInputCommandInteraction,
+	interaction: AnyInteraction,
 	menuID: string,
 	choices: SelectMenuComponentOptionData[],
 ) {
@@ -67,7 +68,7 @@ export async function generalChoiceEmbed(
  * @param constValues extra info to send to the menuID
  */
 export async function textureChoiceEmbed(
-	interaction: ChatInputCommandInteraction,
+	interaction: AnyInteraction,
 	menuID: string,
 	results: Texture[],
 	...constValues: string[]

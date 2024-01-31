@@ -1,11 +1,11 @@
 import { Component } from "@interfaces/components";
 import { info } from "@helpers/logger";
-import { Client, EmbedBuilder, ModalSubmitInteraction } from "@client";
+import { EmbedBuilder, ModalSubmitInteraction } from "@client";
 import sendFeedback from "@functions/feedback";
 
 export default {
 	id: "suggestionTicket",
-	async execute(client: Client, interaction: ModalSubmitInteraction) {
+	async execute(client, interaction) {
 		if (client.verbose) console.log(`${info}Suggestion submitted!`);
 		await interaction.reply({
 			embeds: [
@@ -29,4 +29,4 @@ export default {
 
 		return sendFeedback(interaction, title, description);
 	},
-} as Component;
+} as Component<ModalSubmitInteraction>;

@@ -1,6 +1,6 @@
 import { Component } from "@interfaces/components";
 import { info } from "@helpers/logger";
-import { Client, ButtonInteraction, EmbedBuilder } from "@client";
+import { ButtonInteraction, EmbedBuilder } from "@client";
 import { magnifyToAttachment } from "@images/magnify";
 import { parseDisplay } from "@functions/textureComparison";
 import formatPack from "@utility/formatPack";
@@ -9,7 +9,7 @@ import stitch from "@helpers/images/stitch";
 
 export default {
 	id: "comparisonTemplate",
-	async execute(client: Client, interaction: ButtonInteraction) {
+	async execute(client, interaction) {
 		if (client.verbose) console.log(`${info}Comparison template requested!`);
 		await interaction.deferReply({ ephemeral: true });
 
@@ -36,4 +36,4 @@ export default {
 			files: [magnified],
 		});
 	},
-} as Component;
+} as Component<ButtonInteraction>;

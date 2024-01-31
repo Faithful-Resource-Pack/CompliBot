@@ -1,6 +1,6 @@
-import { SlashCommand } from "@interfaces/commands";
+import { SlashCommand } from "@interfaces/interactions";
 import { SlashCommandBuilder } from "discord.js";
-import { ChatInputCommandInteraction, Message, EmbedBuilder } from "@client";
+import { Message, EmbedBuilder } from "@client";
 import guidelineJSON from "@json/guidelines.json";
 import { colors } from "@utility/colors";
 
@@ -25,7 +25,7 @@ export const command: SlashCommand = {
 				.setDescription("A specific part of the guidelines you want to link to")
 				.setRequired(false),
 		),
-	async execute(interaction: ChatInputCommandInteraction) {
+	async execute(interaction) {
 		let content: string;
 		const keyword = interaction.options.getString("choice")?.toLocaleLowerCase();
 		const pack = interaction.options.getString("pack");

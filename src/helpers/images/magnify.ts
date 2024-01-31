@@ -1,4 +1,4 @@
-import { createCanvas, loadImage, Image } from "@napi-rs/canvas";
+import { createCanvas, loadImage } from "@napi-rs/canvas";
 import { AttachmentBuilder } from "discord.js";
 import { ImageSource } from "@images/getImage";
 
@@ -19,6 +19,7 @@ export async function magnify(origin: ImageSource, options: MagnifyOptions = {})
 
 	// ignore height if tilesheet, otherwise it's not scaled as much
 	const surface = options.isAnimation ? input.width ** 2 : input.width * input.height;
+
 	// no custom factor provided
 	let factor = 64;
 	if (surface <= 256) factor = 32;

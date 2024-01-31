@@ -1,10 +1,10 @@
 import { Event } from "@interfaces/events";
-import { Client, ButtonInteraction } from "@client";
+import { ButtonInteraction } from "@client";
 import { info } from "@helpers/logger";
 
 export default {
 	name: "buttonUsed",
-	async execute(client: Client, interaction: ButtonInteraction) {
+	async execute(client, interaction: ButtonInteraction) {
 		client.storeAction("button", interaction);
 
 		if (client.verbose) console.log(`${info}Button used!`);

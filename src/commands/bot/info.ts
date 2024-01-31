@@ -1,11 +1,11 @@
-import { SlashCommand } from "@interfaces/commands";
+import { SlashCommand } from "@interfaces/interactions";
 import { SlashCommandBuilder } from "discord.js";
-import { ChatInputCommandInteraction, EmbedBuilder } from "@client";
+import { EmbedBuilder } from "@client";
 import axios from "axios";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder().setName("info").setDescription("General info about CompliBot."),
-	async execute(interaction: ChatInputCommandInteraction) {
+	async execute(interaction) {
 		const image: string = (
 			await axios.get(`${interaction.client.tokens.apiUrl}settings/images.bot`)
 		).data;

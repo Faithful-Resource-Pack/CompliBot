@@ -1,13 +1,9 @@
 import { Image } from "@napi-rs/canvas";
 import { Readable } from "stream";
-import {
-	Message,
-	ChatInputCommandInteraction,
-	ButtonInteraction,
-	StringSelectMenuInteraction,
-} from "@client";
+import { Message, ChatInputCommandInteraction } from "@client";
 import { Interaction, MessageType } from "discord.js";
 import { warnUser } from "@helpers/warnUser";
+import { AnyInteraction } from "@interfaces/interactions";
 
 // remove url authentication (automatically refreshed in client)
 export const removeMetadata = (url: string) => url.split("?")[0];
@@ -80,7 +76,7 @@ export async function getImageFromChannel(msgOrInteraction: Message | Interactio
  * @param msgOrInteraction base interaction to start fetching around
  * @returns found image url (removed metadata)
  */
-export default async function getImage(msgOrInteraction: Message | Interaction) {
+export default async function getImage(msgOrInteraction: Message | AnyInteraction) {
 	let url: string;
 
 	// if it's a message we check if the message itself has an attachment
@@ -118,13 +114,7 @@ export default async function getImage(msgOrInteraction: Message | Interaction) 
  * @author Evorp
  * @param interaction interaction to reply to
  */
-export async function imageNotFound(
-	interaction:
-		| ButtonInteraction
-		| ChatInputCommandInteraction
-		| StringSelectMenuInteraction
-		| Message,
-) {
+export async function imageNotFound(interaction: AnyInteraction | Message) {
 	return warnUser(
 		interaction,
 		interaction.strings(interaction instanceof Message).error.image.not_found,

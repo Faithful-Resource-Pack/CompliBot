@@ -1,6 +1,6 @@
-import { SlashCommand } from "@interfaces/commands";
+import { SlashCommand } from "@interfaces/interactions";
 import { SlashCommandBuilder } from "discord.js";
-import { ChatInputCommandInteraction, Message, EmbedBuilder } from "@client";
+import { Message, EmbedBuilder } from "@client";
 import { colors } from "@utility/colors";
 import ruleStrings from "@json/rules.json";
 import axios from "axios";
@@ -30,7 +30,7 @@ export const command: SlashCommand = {
 				)
 				.setRequired(true),
 		),
-	async execute(interaction: ChatInputCommandInteraction) {
+	async execute(interaction) {
 		const baseUrl = "https://docs.faithfulpack.net/pages/manuals/expanded-server-rules";
 		const choice = interaction.options.getString("number", true);
 
