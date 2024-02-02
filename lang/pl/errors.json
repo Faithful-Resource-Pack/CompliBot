@@ -15,8 +15,6 @@
             "no_author": "Autor tej wiadomości nie został znaleziony!"
         },
         "texture": {
-            "failed_search": "Wyszukiwanie tekstur nie powiodło się!",
-            "too_short": "Potrzebujesz co najmniej trzech znaków, aby rozpocząć wyszukiwanie tekstur!",
             "no_results": {
                 "title": "Brak wyników!",
                 "description": "Nie znaleziono wyników dla: %TEXTURENAME%. Czy zrobiłeś literówkę?"
