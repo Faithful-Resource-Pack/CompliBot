@@ -15,8 +15,6 @@
             "no_author": "L'autore di questo messaggio non può essere trovato!"
         },
         "texture": {
-            "failed_search": "Ricerca fallita!",
-            "too_short": "Per avviare una ricerca sono necessari almeno tre caratteri!",
             "no_results": {
                 "title": "Nessun risultato trovato!",
                 "description": "Non sono stati trovati risultati per %TEXTURENAME%. Hai fatto un refuso?"
