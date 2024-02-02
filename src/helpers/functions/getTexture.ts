@@ -1,6 +1,6 @@
 import { EmbedBuilder } from "@client";
 import axios from "axios";
-import { APIEmbedField, AttachmentBuilder, Interaction } from "discord.js";
+import { APIEmbedField, AttachmentBuilder } from "discord.js";
 import { magnify, magnifyToAttachment } from "@images/magnify";
 import { colors } from "@utility/colors";
 import { Texture, Contributor, GalleryTexture, MinecraftEdition, Pack } from "@interfaces/database";
@@ -9,6 +9,7 @@ import minecraftSorter from "@utility/minecraftSorter";
 import { textureButtons } from "@utility/buttons";
 import { Image, loadImage } from "@napi-rs/canvas";
 import { toTitleCase } from "@utility/methods";
+import { AnyInteraction } from "@interfaces/interactions";
 
 /**
  * Create a full texture embed with provided information
@@ -18,7 +19,7 @@ import { toTitleCase } from "@utility/methods";
  * @param pack pack to get authors and formatting from
  * @returns reply options
  */
-export async function getTexture(interaction: Interaction, texture: Texture, pack: string) {
+export async function getTexture(interaction: AnyInteraction, texture: Texture, pack: string) {
 	const apiUrl = interaction.client.tokens.apiUrl;
 	const isAnimated = texture.paths.some((p) => p.mcmeta === true);
 	const packData: Pack = (await axios.get(`${apiUrl}packs/${pack}`)).data;

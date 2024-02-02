@@ -3,7 +3,7 @@
  * @author Evorp
  * @param pack pack to format
  * @param size optionally specify size of image
- * @todo move this to pack api when that's finished
+ * @todo phase out in favor of pack API
  * @returns formatted string and pack's image URL
  */
 export default function formatPack(pack: string, size = "512") {

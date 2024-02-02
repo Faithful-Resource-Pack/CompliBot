@@ -1,4 +1,4 @@
-import { SlashCommandSubcommandsOnlyBuilder, SlashCommandBuilder, Collection } from "discord.js";
+import { SlashCommandSubcommandsOnlyBuilder, SlashCommandBuilder, Collection, CacheType } from "discord.js";
 import {
 	Client,
 	ChatInputCommandInteraction,
@@ -7,11 +7,11 @@ import {
 	StringSelectMenuInteraction,
 } from "@client";
 
-export type AnyInteraction =
-	| ChatInputCommandInteraction
-	| ButtonInteraction
-	| ModalSubmitInteraction
-	| StringSelectMenuInteraction;
+export type AnyInteraction<Cached extends CacheType = CacheType> =
+	| ChatInputCommandInteraction<Cached>
+	| ButtonInteraction<Cached>
+	| ModalSubmitInteraction<Cached>
+	| StringSelectMenuInteraction<Cached>;
 
 export interface SlashCommand {
 	servers?: string[];
