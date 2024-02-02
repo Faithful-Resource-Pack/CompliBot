@@ -240,10 +240,7 @@ export class TimedEmbed {
 	public setTimeout(number: number): this;
 	public setTimeout(date: Date): this;
 	public setTimeout(value: any) {
-		this.timeout =
-			value instanceof Date
-				? (this.timeout = parseInt((value.getTime() / 1000).toFixed(0)))
-				: value;
+		this.timeout = value instanceof Date ? parseInt((value.getTime() / 1000).toFixed(0)) : value;
 		return this;
 	}
 
