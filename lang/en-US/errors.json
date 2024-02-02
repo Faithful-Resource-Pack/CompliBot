@@ -15,8 +15,6 @@
             "no_author": "The author of this message could not be found!"
         },
         "texture": {
-            "failed_search": "Texture search failed!",
-            "too_short": "You need at least three characters to start a texture search!",
             "no_results": {
                 "title": "No results found!",
                 "description": "No results were found for %TEXTURENAME%. Have you made a typo?"

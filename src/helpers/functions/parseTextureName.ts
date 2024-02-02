@@ -17,18 +17,6 @@ export default async function parseTextureName(
 ): Promise<Texture[]> {
 	name = name.trim().replace(".png", "").replace("#", "").replace(/ /g, "_");
 
-	if (name.length < 3 && isNaN(Number(name))) {
-		await interaction.ephemeralReply({
-			embeds: [
-				new EmbedBuilder()
-					.setTitle(interaction.strings().error.texture.failed_search)
-					.setDescription(interaction.strings().error.texture.too_short)
-					.setColor(colors.red),
-			],
-		});
-		return;
-	}
-
 	const noResultEmbed = new EmbedBuilder()
 		.setTitle(interaction.strings().error.texture.no_results.title)
 		.setDescription(
@@ -47,7 +35,7 @@ export default async function parseTextureName(
 		return;
 	}
 
-	// cast to array if it isn't one already (texture id returns single result)
+	// texture id returns single result, wrap in array for easier handling
 	const out = Array.isArray(results) ? results : [results];
 
 	if (!out.length) {

@@ -25,20 +25,16 @@ export class TimedEmbed {
 	private multipleAnswers = false;
 
 	constructor(data?: TimedEmbed) {
-		if (!data) {
-			this.id = new Date().getTime().toString();
-			this.setVotes({ upvote: [], downvote: [] });
-		} else {
-			const tmp: TimedEmbed = data;
-			this.id = tmp.id;
-			this.messageId = tmp.messageId;
-			this.channelId = tmp.channelId;
-			this.votes = tmp.votes;
-			this.status = tmp.status;
-			this.timeout = tmp.timeout;
-			this.anonymous = tmp.anonymous;
-			this.multipleAnswers = tmp.multipleAnswers;
+		if (data) {
+			// set all data equal
+			Object.entries(data).forEach(([k, v]) => {
+				this[k] = v;
+			});
+			return;
 		}
+
+		this.id = new Date().getTime().toString();
+		this.setVotes({ upvote: [], downvote: [] });
 	}
 
 	public isAnonymous() {
@@ -83,12 +79,11 @@ export class TimedEmbed {
 		return Object.keys(this.votes);
 	}
 
-	public getAllVotes() {
-		let total: AllVotes = { upvote: 0, downvote: 0 };
-		for (const [key, value] of Object.entries(this.votes)) {
-			total[key] = value.length;
-		}
-		return total;
+	public getAllVotes(): AllVotes {
+		return Object.entries(this.votes).reduce(
+			(acc, [key, value]) => ({ ...acc, [key]: value.length }),
+			{ upvote: 0, downvote: 0 },
+		);
 	}
 
 	/**
@@ -112,10 +107,9 @@ export class TimedEmbed {
 	 * @param id the user id to add
 	 */
 	public addVote(type: string, id: string) {
-		if (!this.multipleAnswers) {
+		if (!this.multipleAnswers)
 			// remove user vote for all others categories
 			Object.keys(this.votes).forEach((key: string) => this.removeVote(key, id));
-		}
 
 		if (this.hasVotedFor(type, id)) this.removeVote(type, id);
 		else this.votes[type].push(id);
@@ -153,7 +147,7 @@ export class TimedEmbed {
 	 * Void votes from the embed
 	 */
 	protected voidVotes(): this {
-		Object.values(this.votes).map((arr) => {
+		Object.values(this.votes).forEach((arr) => {
 			arr.length = 0;
 		});
 
@@ -184,31 +178,32 @@ export class TimedEmbed {
 	public setMessageId(message: string): this;
 	public setMessageId(message: Message): this;
 	public setMessageId(message: any) {
-		if (message.id) this.messageId = message.id; // discord message object
-		else this.messageId = message; // string
+		// if there's an id property it's a Message, else string
+		this.messageId = message.id ? message.id : message;
 		return this;
 	}
 
 	/**
-	 * Get the Discord Channel Id of the embed
+	 * Get the Discord channel ID of the embed
 	 */
 	public getChannelId(): string {
 		return this.channelId;
 	}
 
 	/**
-	 * Set the Discord Channel Id of the embed
-	 * @param channel Discord Channel OR Discord Channel Id
+	 * Set the Discord channel ID of the embed
+	 * @param channel Discord channel OR Discord channel ID
 	 */
-	public setChannelId(channel: any | string | TextChannel) {
-		if (channel.id) this.channelId = channel.id;
-		// discord object
-		else this.channelId = channel; // string
+	public setChannelId(channel: string): this;
+	public setChannelId(channel: TextChannel): this;
+	public setChannelId(channel: any) {
+		// if there's an id property it's a TextChannel, else string
+		this.channelId = channel.id ? channel.id : channel;
 		return this;
 	}
 
 	/**
-	 * Get the status of the embed
+	 * Get embed status
 	 */
 	public getStatus() {
 		return this.status;
@@ -245,8 +240,10 @@ export class TimedEmbed {
 	public setTimeout(number: number): this;
 	public setTimeout(date: Date): this;
 	public setTimeout(value: any) {
-		if (value instanceof Date) this.timeout = parseInt((value.getTime() / 1000).toFixed(0));
-		else this.timeout = value;
+		this.timeout =
+			value instanceof Date
+				? (this.timeout = parseInt((value.getTime() / 1000).toFixed(0)))
+				: value;
 		return this;
 	}
 
