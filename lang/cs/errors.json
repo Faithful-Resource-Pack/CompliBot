@@ -15,8 +15,6 @@
             "no_author": "Nepodařilo se nalézt odesílatele této zprávy!"
         },
         "texture": {
-            "failed_search": "Hledání textur se nezdařilo!",
-            "too_short": "Pro zahájení vyhledávání je třeba zadat alespoň tři znaky!",
             "no_results": {
                 "title": "Nebyly nalezeny žádné výsledky!",
                 "description": "Nebyly nalezeny žádné výsledky pro %TEXTURENAME%. Nepřepsal(a) ses?"
