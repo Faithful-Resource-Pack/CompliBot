@@ -15,8 +15,6 @@
             "no_author": "¡No se pudo encontrar al autor de este mensaje!"
         },
         "texture": {
-            "failed_search": "¡Búsqueda fallada!",
-            "too_short": "¡Necesitas al menos tres caracteres para iniciar una búsqueda!",
             "no_results": {
                 "title": "¡No se han encontrado resultados!",
                 "description": "No se encontraron resultados para %TEXTURENAME%. ¿Has cometido un error tipográfico?"
