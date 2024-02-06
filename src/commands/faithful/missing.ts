@@ -104,7 +104,7 @@ export const command: SlashCommand = {
 			}
 
 			loadingEmbed.spliceFields(0, 1, { name: "Steps", value: steps.join("\n") });
-			await interaction.editReply({ embeds: [loadingEmbed] });
+			await interaction.editReply({ embeds: [loadingEmbed] }).catch(() => {});
 		};
 
 		const catchErr = (err: string | Error, options: MissingData): MissingResult => {
@@ -189,6 +189,6 @@ export const command: SlashCommand = {
 			});
 		}
 
-		return interaction.editReply({ embeds: [resultEmbed], files: files });
+		return interaction.editReply({ embeds: [resultEmbed], files: files }).catch(() => {});
 	},
 };

@@ -118,6 +118,6 @@ export const command: SlashCommand = {
 
 		if (finalPackData) finalEmbed.setDescription(finalPackData);
 
-		await interaction.editReply({ embeds: [finalEmbed], files });
+		await interaction.editReply({ embeds: [finalEmbed], files }).catch(() => {});
 	},
 };
