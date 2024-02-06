@@ -1,6 +1,8 @@
 import { SlashCommand } from "@interfaces/interactions";
 import { SlashCommandBuilder } from "discord.js";
-import { Message } from "@client";
+import { EmbedBuilder, Message } from "@client";
+import axios from "axios";
+import { colors } from "@utility/colors";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -19,23 +21,32 @@ export const command: SlashCommand = {
 		),
 	async execute(interaction) {
 		const choice = interaction.options.getString("server", true);
-		let content: string;
-		switch (choice) {
-			case "faithful":
-				content = "https://discord.gg/sN9YRQbBv7";
-				break;
-			case "classic_faithful":
-				content = "https://discord.gg/KSEhCVtg4J";
-				break;
-			case "all":
-				if (!interaction.hasPermission("manager")) return;
-				await interaction.complete();
+		if (choice == "all") {
+			if (!interaction.hasPermission("manager")) return;
+			await interaction.complete();
 
-				return interaction.channel.send({
-					content: `### Faithful:\nhttps://discord.gg/sN9YRQbBv7\n### Classic Faithful:\nhttps://discord.gg/KSEhCVtg4J\n### Minecraft:\nhttps://discord.gg/minecraft`,
-				});
+			return interaction.channel.send({
+				content: `### Faithful:\nhttps://discord.gg/sN9YRQbBv7\n### Classic Faithful:\nhttps://discord.gg/KSEhCVtg4J\n### Minecraft:\nhttps://discord.gg/minecraft`,
+			});
 		}
 
-		await interaction.reply({ content });
+		const content: string = (
+			await axios.get(`${interaction.client.tokens.apiUrl}settings/discord.guilds`)
+		).data[choice]?.invite;
+
+		if (content)
+			return interaction
+				.reply({ content, fetchReply: true })
+				.then((message: Message) => message.deleteButton());
+
+		interaction.reply({
+			embeds: [
+				new EmbedBuilder()
+					.setTitle(interaction.strings().command.discord.unknown_invite.title)
+					.setDescription(interaction.strings().command.discord.unknown_invite.description)
+					.setColor(colors.red),
+			],
+			ephemeral: true,
+		});
 	},
 };

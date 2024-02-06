@@ -1,4 +1,9 @@
-import { SlashCommandSubcommandsOnlyBuilder, SlashCommandBuilder, Collection, CacheType } from "discord.js";
+import {
+	SlashCommandSubcommandsOnlyBuilder,
+	SlashCommandBuilder,
+	Collection,
+	CacheType,
+} from "discord.js";
 import {
 	Client,
 	ChatInputCommandInteraction,

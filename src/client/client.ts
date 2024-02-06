@@ -258,8 +258,8 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 		}
 
 		const rest = new REST({ version: "10" }).setToken(this.tokens.token);
-		const allGuilds: Record<string, string> = (
-			await axios.get(`${this.tokens.apiUrl}settings/guilds`)
+		const allGuilds: Record<string, any> = (
+			await axios.get(`${this.tokens.apiUrl}settings/discord.guilds`)
 		).data;
 
 		// lock all commands to dev server
@@ -270,31 +270,31 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 
 		const guilds: Record<string, RESTPostAPIApplicationCommandsJSONBody[]> = { global: [] };
 		for (const cmd of commandsArr) {
-			if (!cmd.servers) guilds.global.push(cmd.command);
-			else
+			if (cmd.servers) {
 				cmd.servers.forEach((server) => {
 					if (!guilds[server]) guilds[server] = [];
 					guilds[server].push(cmd.command);
 				});
+				continue;
+			}
+			guilds.global.push(cmd.command);
 		}
 
-		for (const [name, id] of Object.entries(allGuilds).filter((obj) => obj[1] != "id")) {
+		for (const [name, { id }] of Object.entries(allGuilds)) {
 			// if the client isn't in the guild, skip it
-			if (this.guilds.cache.get(id) === undefined) continue;
-			try {
-				// add guild-specific commands (e.g. /eval)
-				await rest.put(Routes.applicationGuildCommands(this.user.id, id), {
+			if (!this.guilds.cache.get(id)) continue;
+			// add guild-specific commands (e.g. /eval)
+			await rest
+				.put(Routes.applicationGuildCommands(this.user.id, id), {
 					body: guilds[name],
-				});
-				console.log(`${success}Successfully added slash commands to server: ${name}`);
-			} catch (err) {
-				console.error(err);
-			}
+				})
+				.then(() => console.log(`${success}Successfully added slash commands to server: ${name}`))
+				.catch((err) => console.error(err));
 		}
 
 		// we add global commands to all guilds (only if not in dev mode)
 		if (!this.tokens.dev) {
-			await rest.put(Routes.applicationCommands(this.user.id), { body: guilds["global"] });
+			await rest.put(Routes.applicationCommands(this.user.id), { body: guilds.global });
 			console.log(`${success}Successfully added global slash commands`);
 		}
 	}

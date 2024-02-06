@@ -4,6 +4,7 @@ import { Message, EmbedBuilder } from "@client";
 import { colors } from "@utility/colors";
 import ruleStrings from "@json/rules.json";
 import axios from "axios";
+import embedSeries from "@functions/embedSeries";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -34,8 +35,8 @@ export const command: SlashCommand = {
 		const baseUrl = "https://docs.faithfulpack.net/pages/manuals/expanded-server-rules";
 		const choice = interaction.options.getString("number", true);
 
-		// fetch the whole collection since we're using it multiple times
-		const settings = (await axios.get(`${interaction.client.tokens.apiUrl}settings/raw`)).data;
+		const { discord, images } = (await axios.get(`${interaction.client.tokens.apiUrl}settings/raw`))
+			.data;
 
 		if (["all", "server"].includes(choice)) {
 			if (!interaction.hasPermission("manager")) return;
@@ -43,11 +44,7 @@ export const command: SlashCommand = {
 			await interaction.complete();
 
 			const thumbnail =
-				interaction.guildId == settings.guilds.classic_faithful
-					? settings.images.cf_plain
-					: settings.images.plain;
-			let embedArray: EmbedBuilder[] = [];
-			let i = 0;
+				interaction.guildId == discord.guilds.classic_faithful.id ? images.cf_plain : images.plain;
 
 			if (choice == "all")
 				await interaction.channel.send({
@@ -61,22 +58,15 @@ export const command: SlashCommand = {
 					],
 				});
 
-			for (const rule of ruleStrings[choice == "all" ? "rules" : "server"]) {
-				++i;
-				embedArray.push(
+			await embedSeries(
+				interaction,
+				ruleStrings[choice == "all" ? "rules" : "server"].map((rule) =>
 					new EmbedBuilder()
 						.setTitle(rule.title)
 						.setDescription(rule.description)
 						.setColor(colors.brand),
-				);
-
-				if (i % 5 == 0) {
-					await interaction.channel.send({ embeds: embedArray });
-					embedArray = [];
-				}
-			}
-
-			if (embedArray.length) await interaction.channel.send({ embeds: embedArray }); // sends the leftovers if exists
+				),
+			);
 
 			if (choice != "all") return;
 
@@ -109,7 +99,7 @@ export const command: SlashCommand = {
 					new EmbedBuilder()
 						.setTitle(ruleChoice.title)
 						.setDescription(ruleChoice.description)
-						.setThumbnail(settings.images.rules)
+						.setThumbnail(images.rules)
 						.setURL(`${baseUrl}#${Number(choice) + 1}`),
 				],
 				fetchReply: true,

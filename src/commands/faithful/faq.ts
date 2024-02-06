@@ -4,6 +4,7 @@ import { Message, EmbedBuilder } from "@client";
 import { colors } from "@utility/colors";
 import faqStrings from "@json/faq.json";
 import axios from "axios";
+import embedSeries from "@functions/embedSeries";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -19,29 +20,16 @@ export const command: SlashCommand = {
 			if (!interaction.hasPermission("manager")) return;
 
 			await interaction.complete();
-
-			let embedArray: EmbedBuilder[] = [];
-			let i = 0;
-
-			for (const faq of faqStrings) {
-				embedArray.push(
+			return embedSeries(
+				interaction,
+				faqStrings.map((faq) =>
 					new EmbedBuilder()
 						.setTitle(faq.question)
 						.setDescription(faq.answer)
 						.setColor(colors.brand)
 						.setFooter({ text: `Keywords: ${faq.keywords.join(" • ")}` }),
-				);
-
-				if ((i + 1) % 5 == 0) {
-					// groups the embeds in batches of 5 to reduce API spam
-					await interaction.channel.send({ embeds: embedArray });
-					embedArray = [];
-				}
-				++i;
-			}
-
-			if (embedArray.length) await interaction.channel.send({ embeds: embedArray }); // sends the leftovers if exists
-			return;
+				),
+			);
 		}
 
 		const faqChoice = faqStrings.find((faq) => faq.keywords.includes(choice));
