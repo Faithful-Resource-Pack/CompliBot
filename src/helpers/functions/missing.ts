@@ -176,7 +176,9 @@ export async function updateVoiceChannel(client: Client, results: MissingData) {
 	const { data: packProgress } = await axios
 		.get(`${client.tokens.apiUrl}settings/discord.channels.pack_progress`)
 		// fix for "Error: socket hang up", I know it's stupid but it works somehow
-		.catch(() => axios.get(`https://api.faithfulpack.net/v2/settings/discord.channels.pack_progress`));
+		.catch(() =>
+			axios.get(`https://api.faithfulpack.net/v2/settings/discord.channels.pack_progress`),
+		);
 
 	const channel = client.channels.cache.get(packProgress[results.pack][results.edition]);
 	// channel doesn't exist or can't be fetched, return early

@@ -150,7 +150,7 @@ export default class ColorManager {
 		const diff = max - min;
 
 		let h: number;
-		if (diff == 0) h = 0;
+		if (!diff) h = 0;
 		else
 			switch (max) {
 				case r:
@@ -164,7 +164,7 @@ export default class ColorManager {
 					break;
 			}
 
-		const s = max == 0 ? 0 : diff / max;
+		const s = max === 0 ? 0 : diff / max;
 		const v = max;
 
 		return { h: +h.toFixed(0), s: +(s * 100).toFixed(1), v: +(v * 100).toFixed(1) };
@@ -191,10 +191,10 @@ export default class ColorManager {
 		y = Math.round(((y - k) / (1 - k)) * 10000) / 100;
 		k = Math.round(k * 10000) / 100;
 
-		c = isNaN(c) ? 0 : c;
-		m = isNaN(m) ? 0 : m;
-		y = isNaN(y) ? 0 : y;
-		k = isNaN(k) ? 0 : k;
+		c ||= 0;
+		m ||= 0;
+		y ||= 0;
+		k ||= 0;
 
 		return {
 			c: Math.round(c),

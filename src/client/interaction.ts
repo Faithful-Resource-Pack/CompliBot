@@ -81,13 +81,14 @@ function hasPermission(type: PermissionType, warnUser = true): boolean {
 	return out;
 }
 
-async function ephemeralReply(options: InteractionReplyOptions) {
+function ephemeralReply(options: InteractionReplyOptions) {
 	// it's already deferred so we delete the non-ephemeral message
-	await this.deleteReply().catch(() => {});
-	return this.followUp({ ...options, ephemeral: true });
+	return this.deleteReply()
+		.then(() => this.followUp({ ...options, ephemeral: true }))
+		.catch(() => {});
 }
 
-async function complete() {
+function complete() {
 	return this.reply({ content: "** **", fetchReply: true })
 		.then((message: Message) => message.delete())
 		.catch(() => {});
