@@ -5,7 +5,7 @@ import { Client } from "@client";
 import { ChannelType } from "discord.js";
 import { join, normalize } from "path";
 
-import blacklistedTextures from "@json/blacklisted_textures.json";
+import ignoredTextures from "@json/ignored_textures.json";
 import axios from "axios";
 import { MinecraftEdition, Pack, PackGitHub } from "@interfaces/database";
 
@@ -98,11 +98,11 @@ export async function computeMissingResults(
 	// now both repos are pointing to the same version and are ready to compare
 	await callback("Searching for differences…");
 
-	// blacklist modded textures if we aren't checking modded
+	// ignore modded textures if we aren't checking modded
 	const editionFilter = (
 		checkModded && edition === "java"
-			? blacklistedTextures[edition]
-			: [...blacklistedTextures.modded, ...blacklistedTextures[edition]]
+			? ignoredTextures[edition]
+			: [...ignoredTextures.modded, ...ignoredTextures[edition]]
 	).map(normalize);
 
 	const defaultTextures = getAllFiles(defaultPath, editionFilter).map((f) =>
@@ -209,7 +209,7 @@ export const getAllFiles = (dir: string, filter: string[] = []): string[] => {
 		if (file.includes(".git")) return;
 		if (stat.isDirectory()) return fileList.push(...getAllFiles(file, filter));
 		if (
-			blacklistedTextures.allowed_extensions.some((ex) => file.endsWith(`.${ex}`)) &&
+			ignoredTextures.allowed_extensions.some((ex) => file.endsWith(`.${ex}`)) &&
 			!filter.some((i) => file.includes(i))
 		)
 			fileList.push(file);

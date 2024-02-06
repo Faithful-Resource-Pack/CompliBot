@@ -21,7 +21,7 @@
             },
             "no_image": {
                 "title": "Image not found!",
-                "description": "`%TEXTURENAME%` hasn't been made for %PACK% yet or is blacklisted!"
+                "description": "`%TEXTURENAME%` hasn't been made for %PACK% yet or is ignored!"
             }
         },
         "image": {
