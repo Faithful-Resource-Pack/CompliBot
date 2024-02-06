@@ -14,7 +14,6 @@ import {
 	StringSelectMenuInteraction,
 	ButtonInteraction,
 	ModalSubmitInteraction,
-	ChatInputCommandInteraction,
 } from "@client";
 import { Tokens } from "@interfaces/tokens";
 import { Component } from "@interfaces/components";
@@ -68,6 +67,12 @@ export type Log = {
 	type: LogAction;
 	data: any; // technically LogData but TS breaks without this
 };
+
+export interface FaithfulGuild {
+	id: string;
+	invite?: string;
+	member_log?: string;
+}
 
 /**
  * Extend client class to add message component collections, tokens, and slash commands directly
@@ -258,7 +263,7 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 		}
 
 		const rest = new REST({ version: "10" }).setToken(this.tokens.token);
-		const allGuilds: Record<string, any> = (
+		const allGuilds: Record<string, FaithfulGuild> = (
 			await axios.get(`${this.tokens.apiUrl}settings/discord.guilds`)
 		).data;
 

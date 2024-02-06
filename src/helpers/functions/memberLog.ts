@@ -1,21 +1,20 @@
 import { Client } from "@client";
 import axios from "axios";
+import { FaithfulGuild } from "client/client";
 import { ChannelType } from "discord.js";
 
 export default async function memberLog(client: Client, guildID: string) {
-	const settings: Record<string, any> = (await axios.get(`${client.tokens.apiUrl}settings/raw`))
-		.data;
+	const guilds: Record<string, FaithfulGuild> = (
+		await axios.get(`${client.tokens.apiUrl}settings/discord.guilds`)
+	).data;
 
-	const serverData = Object.entries(settings.guilds as Record<string, string>).find(
-		(el) => el[1] == guildID,
-	);
+	const server = Object.values(guilds).find((el) => el.id === guildID);
 
 	// server doesn't have channel for member logging
-	if (!serverData) return;
-	const [server, serverID] = serverData;
+	if (!server?.member_log) return;
 
-	const channel = client.channels.cache.get(settings.channels.member_log[server]);
-	const count = client.guilds.cache.get(serverID).memberCount;
+	const channel = client.channels.cache.get(server.member_log);
+	const count = client.guilds.cache.get(server.id).memberCount;
 
 	// you can add different patterns depending on the channel type
 	switch (channel.type) {
