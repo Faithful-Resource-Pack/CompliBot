@@ -5,7 +5,7 @@ import { Interaction, MessageType } from "discord.js";
 import { warnUser } from "@helpers/warnUser";
 import { AnyInteraction } from "@interfaces/interactions";
 
-// remove url authentication (automatically refreshed in client)
+// remove url metadata to use url itself (discord adds for authentication)
 export const removeMetadata = (url: string) => url.split("?")[0];
 
 export const isImage = (url: string) => url && /(png|jpg|jpeg|webp)$/g.test(removeMetadata(url));
@@ -103,7 +103,7 @@ export default async function getImage(msgOrInteraction: Message | AnyInteractio
 
 	// no url in message found so we search the channel
 	url = await getImageFromChannel(msgOrInteraction);
-	if (isImage(url)) return removeMetadata(url);
+	if (isImage(url)) return url;
 
 	// no URL found at all
 	return "";
