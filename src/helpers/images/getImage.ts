@@ -82,7 +82,7 @@ export default async function getImage(msgOrInteraction: Message | AnyInteractio
 	// if it's a message we check if the message itself has an attachment
 	if (msgOrInteraction instanceof Message) {
 		url = await getImageFromMessage(msgOrInteraction);
-		if (isImage(url)) return removeMetadata(url);
+		if (isImage(url)) return url;
 
 		// if there's no attachment we check if it's a reply
 		if (msgOrInteraction.type === MessageType.Reply) {
@@ -91,14 +91,14 @@ export default async function getImage(msgOrInteraction: Message | AnyInteractio
 				original = await msgOrInteraction.fetchReference();
 			} catch {}
 			if (original) url = await getImageFromMessage(original);
-			if (isImage(url)) return removeMetadata(url);
+			if (isImage(url)) return url;
 		}
 	}
 
 	// if it's a slash command we check if the image property exists and use that
 	if (msgOrInteraction instanceof ChatInputCommandInteraction) {
 		url = msgOrInteraction.options.getAttachment("image", false)?.url;
-		if (isImage(url)) return removeMetadata(url);
+		if (isImage(url)) return url;
 	}
 
 	// no url in message found so we search the channel
