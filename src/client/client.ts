@@ -149,21 +149,21 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 
 	//prettier-ignore
 	private asciiArt() {
-		const darkColor = this.tokens.maintenance === false ? "#0026ff" : "#ff8400";
-		const lightColor = this.tokens.maintenance === false ? "#0066ff" : "#ffc400";
+		const darkColor = chalk.hex(this.tokens.maintenance === false ? "#0026ff" : "#ff8400");
+		const lightColor = chalk.hex(this.tokens.maintenance === false ? "#0066ff" : "#ffc400");
 
 		console.log("\n\n")
-		console.log(chalk.hex(darkColor)(` .d8888b.                                  888 d8b `) + chalk.hex(lightColor)(`888888b.            888`));
-		console.log(chalk.hex(darkColor)(`d88P  Y88b                                 888 Y8P `) + chalk.hex(lightColor)(`888  "88b           888`));
-		console.log(chalk.hex(darkColor)(`888    888                                 888     `) + chalk.hex(lightColor)(`888  .88P           888`));
-		console.log(chalk.hex(darkColor)(`888         .d88b.  88888b.d88b.  88888b.  888 888 `) + chalk.hex(lightColor)(`8888888K.   .d88b.  888888`));
-		console.log(chalk.hex(darkColor)(`888        d88""88b 888 "888 "88b 888 "88b 888 888 `) + chalk.hex(lightColor)(`888  "Y88b d88""88b 888`));
-		console.log(chalk.hex(darkColor)(`888    888 888  888 888  888  888 888  888 888 888 `) + chalk.hex(lightColor)(`888    888 888  888 888`));
-		console.log(chalk.hex(darkColor)(`Y88b  d88P Y88..88P 888  888  888 888 d88P 888 888 `) + chalk.hex(lightColor)(`888   d88P Y88..88P Y88b.`));
-		console.log(chalk.hex(darkColor)(` "Y8888P"   "Y88P"  888  888  888 88888P"  888 888 `) + chalk.hex(lightColor)(`8888888P"   "Y88P"   "Y888`));
-		console.log(chalk.hex(darkColor)(`                                  888`));
-		console.log(chalk.hex(darkColor)(`                                  888                   `)+ chalk.white.bold(`Faithful Devs. ${new Date().getFullYear()}`));
-		console.log(chalk.hex(darkColor)(`                                  888                `)  + chalk.gray.italic(this.tokens.maintenance === false ? "~ Made lovingly with pain\n" : "    Maintenance mode!\n"));
+		console.log(darkColor` .d8888b.                                  888 d8b ` + lightColor`888888b.            888`);
+		console.log(darkColor`d88P  Y88b                                 888 Y8P ` + lightColor`888  "88b           888`);
+		console.log(darkColor`888    888                                 888     ` + lightColor`888  .88P           888`);
+		console.log(darkColor`888         .d88b.  88888b.d88b.  88888b.  888 888 ` + lightColor`8888888K.   .d88b.  888888`);
+		console.log(darkColor`888        d88""88b 888 "888 "88b 888 "88b 888 888 ` + lightColor`888  "Y88b d88""88b 888`);
+		console.log(darkColor`888    888 888  888 888  888  888 888  888 888 888 ` + lightColor`888    888 888  888 888`);
+		console.log(darkColor`Y88b  d88P Y88..88P 888  888  888 888 d88P 888 888 ` + lightColor`888   d88P Y88..88P Y88b.`);
+		console.log(darkColor` "Y8888P"   "Y88P"  888  888  888 88888P"  888 888 ` + lightColor`8888888P"   "Y88P"   "Y888`);
+		console.log(darkColor`                                  888`);
+		console.log(darkColor`                                  888                   ` + chalk.white.bold`Faithful Devs. ${new Date().getFullYear()}`);
+		console.log(darkColor`                                  888                ` + chalk.gray.italic(this.tokens.maintenance === false ? "~ Made lovingly with pain\n" : "    Maintenance mode!\n"));
 	}
 
 	private loadCollections() {
