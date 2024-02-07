@@ -16,7 +16,7 @@ import minecraftSorter from "@utility/minecraftSorter";
 import { toTitleCase } from "@utility/methods";
 
 export const command: SlashCommand = {
-	async data(client): Promise<SyncSlashCommandBuilder> {
+	async data(client) {
 		const versions: string[] = (await axios.get(`${client.tokens.apiUrl}textures/versions`)).data;
 		const packs: Pack[] = (await axios.get(`${client.tokens.apiUrl}packs/search?type=submission`))
 			.data;

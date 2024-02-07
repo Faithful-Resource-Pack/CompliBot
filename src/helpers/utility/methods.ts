@@ -32,7 +32,7 @@ export function mergeDeep(target: any, ...sources: any[]) {
 /** make the first letter of each word in a string uppercase */
 export const toTitleCase = (str: string) =>
 	str
-		.split(" ")
+		.split(/_| /g)
 		.map((word) => word[0].toUpperCase() + word.slice(1))
 		.join(" ");
 

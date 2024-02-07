@@ -26,12 +26,6 @@
                 "description": "If you don't get the result you want, try, try again..."
             }
         },
-        "discord": {
-            "unknown_invite": {
-                "title": "Unknown server invite!",
-                "description": "Please contact a manager if this keeps happening."
-            }
-        },
         "botban": {
             "unbannable": {
                 "title": "This user cannot be botbanned!",
