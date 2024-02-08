@@ -1,4 +1,4 @@
-import { SlashCommand } from "@interfaces/interactions";
+import type { SlashCommand } from "@interfaces/interactions";
 import {
 	ActionRowBuilder,
 	SlashCommandBuilder,

@@ -1,6 +1,6 @@
-import { Event } from "@interfaces/events";
+import type { Event } from "@interfaces/events";
 import { Client, Message, EmbedBuilder } from "@client";
-import { Submission } from "@interfaces/database";
+import type { Submission } from "@interfaces/database";
 import { colors } from "@utility/colors";
 import axios from "axios";
 import { randint } from "@utility/methods";

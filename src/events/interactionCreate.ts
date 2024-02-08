@@ -1,5 +1,5 @@
-import { Event } from "@interfaces/events";
-import { AnyInteraction } from "@interfaces/interactions";
+import type { Event } from "@interfaces/events";
+import type { AnyInteraction } from "@interfaces/interactions";
 
 export default {
 	name: "interactionCreate",

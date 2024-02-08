@@ -1,5 +1,5 @@
 import { Message, EmbedBuilder } from "@client";
-import { AnyInteraction } from "@interfaces/interactions";
+import type { AnyInteraction } from "@interfaces/interactions";
 import { colors } from "@utility/colors";
 
 export async function warnUser(

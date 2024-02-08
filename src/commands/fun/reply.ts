@@ -1,4 +1,4 @@
-import { SlashCommand } from "@interfaces/interactions";
+import type { SlashCommand } from "@interfaces/interactions";
 import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
 import { EmbedBuilder, Message } from "@client";
 import { colors } from "@utility/colors";

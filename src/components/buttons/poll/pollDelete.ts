@@ -1,4 +1,4 @@
-import { Component } from "@interfaces/components";
+import type { Component } from "@interfaces/components";
 import { info } from "@helpers/logger";
 import { ButtonInteraction } from "@client";
 

@@ -1,4 +1,4 @@
-import { SlashCommand } from "@interfaces/interactions";
+import type { SlashCommand } from "@interfaces/interactions";
 import { SlashCommandBuilder } from "discord.js";
 import { EmbedBuilder, Message } from "@client";
 import getImage, { imageNotFound } from "@images/getImage";

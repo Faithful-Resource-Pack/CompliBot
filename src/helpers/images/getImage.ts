@@ -3,7 +3,7 @@ import { Readable } from "stream";
 import { Message, ChatInputCommandInteraction } from "@client";
 import { Interaction, MessageType } from "discord.js";
 import { warnUser } from "@helpers/warnUser";
-import { AnyInteraction } from "@interfaces/interactions";
+import type { AnyInteraction } from "@interfaces/interactions";
 
 // remove url metadata to use url itself (discord adds for authentication)
 export const removeMetadata = (url: string) => url.split("?")[0];

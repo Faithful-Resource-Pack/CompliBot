@@ -7,7 +7,7 @@ import { join, normalize } from "path";
 
 import ignoredTextures from "@json/ignored_textures.json";
 import axios from "axios";
-import { MinecraftEdition, Pack, PackGitHub } from "@interfaces/database";
+import type { MinecraftEdition, Pack, PackGitHub } from "@interfaces/database";
 
 // starting from process.cwd()
 export const BASE_REPOS_PATH = "repos";

@@ -1,6 +1,6 @@
-import { SlashCommandI } from "@interfaces/interactions";
+import type { SlashCommandI } from "@interfaces/interactions";
 import { Collection } from "discord.js";
-import { Event } from "@interfaces/events";
+import type { Event } from "@interfaces/events";
 import { Client, ChatInputCommandInteraction } from "@client";
 
 export default {

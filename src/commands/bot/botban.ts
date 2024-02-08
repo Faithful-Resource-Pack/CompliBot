@@ -1,4 +1,4 @@
-import { SlashCommand, SlashCommandI } from "@interfaces/interactions";
+import type { SlashCommand, SlashCommandI } from "@interfaces/interactions";
 import { EmbedBuilder } from "@client";
 import {
 	Collection,

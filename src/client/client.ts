@@ -15,10 +15,10 @@ import {
 	ButtonInteraction,
 	ModalSubmitInteraction,
 } from "@client";
-import { Tokens } from "@interfaces/tokens";
-import { Component } from "@interfaces/components";
-import { AnyInteraction, SlashCommand } from "@interfaces/interactions";
-import { Event } from "@interfaces/events";
+import type { Tokens } from "@interfaces/tokens";
+import type { Component } from "@interfaces/components";
+import type { AnyInteraction, SlashCommand } from "@interfaces/interactions";
+import type { Event } from "@interfaces/events";
 import { EmittingCollection } from "@helpers/emittingCollection";
 import { setData, getData } from "@utility/handleJSON";
 import { errorHandler } from "@functions/errorHandler";

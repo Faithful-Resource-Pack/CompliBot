@@ -1,5 +1,5 @@
 import { SlashCommandBuilder, EmbedField } from "discord.js";
-import { SlashCommand } from "@interfaces/interactions";
+import type { SlashCommand } from "@interfaces/interactions";
 import { Poll } from "@helpers/poll";
 import { addSeconds, parseDate } from "@utility/dates";
 import { emojis, parseID } from "@utility/emojis";

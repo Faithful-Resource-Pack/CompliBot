@@ -1,4 +1,4 @@
-import { Component } from "@interfaces/components";
+import type { Component } from "@interfaces/components";
 import { ButtonInteraction, EmbedBuilder } from "@client";
 import { Poll } from "@helpers/poll";
 import { colors } from "@utility/colors";

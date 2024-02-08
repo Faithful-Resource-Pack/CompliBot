@@ -1,5 +1,5 @@
-import { SlashCommand, SyncSlashCommandBuilder } from "@interfaces/interactions";
-import { Pack } from "@interfaces/database";
+import type { SlashCommand, SyncSlashCommandBuilder } from "@interfaces/interactions";
+import type { Pack } from "@interfaces/database";
 import { EmbedBuilder } from "@client";
 import { SlashCommandBuilder, Message, AttachmentBuilder } from "discord.js";
 import {

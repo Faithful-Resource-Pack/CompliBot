@@ -1,6 +1,6 @@
 import { info } from "@helpers/logger";
 import { ButtonInteraction, EmbedBuilder } from "@client";
-import { Component } from "@interfaces/components";
+import type { Component } from "@interfaces/components";
 import { colors } from "@utility/colors";
 
 export default {

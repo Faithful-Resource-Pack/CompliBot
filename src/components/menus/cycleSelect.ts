@@ -1,5 +1,5 @@
 import { Message, StringSelectMenuInteraction, EmbedBuilder } from "@client";
-import { Component } from "@interfaces/components";
+import type { Component } from "@interfaces/components";
 import { info } from "@helpers/logger";
 import { cycleComparison } from "@functions/cycleComparison";
 import { colors } from "@utility/colors";

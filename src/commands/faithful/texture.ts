@@ -1,5 +1,5 @@
-import { SlashCommand } from "@interfaces/interactions";
-import { Pack } from "@interfaces/database";
+import type { SlashCommand } from "@interfaces/interactions";
+import type { Pack } from "@interfaces/database";
 import { SlashCommandBuilder } from "discord.js";
 import { Message } from "@client";
 import { getTexture } from "@functions/getTexture";

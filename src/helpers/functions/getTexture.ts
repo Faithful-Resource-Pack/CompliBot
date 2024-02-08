@@ -3,13 +3,19 @@ import axios from "axios";
 import { APIEmbedField, AttachmentBuilder } from "discord.js";
 import { magnify, magnifyToAttachment } from "@images/magnify";
 import { colors } from "@utility/colors";
-import { Texture, Contributor, GalleryTexture, MinecraftEdition, Pack } from "@interfaces/database";
+import type {
+	Texture,
+	Contributor,
+	GalleryTexture,
+	MinecraftEdition,
+	Pack,
+} from "@interfaces/database";
 import { animateToAttachment } from "@images/animate";
 import minecraftSorter from "@utility/minecraftSorter";
 import { textureButtons } from "@utility/buttons";
 import { Image, loadImage } from "@napi-rs/canvas";
 import { toTitleCase } from "@utility/methods";
-import { AnyInteraction } from "@interfaces/interactions";
+import type { AnyInteraction } from "@interfaces/interactions";
 
 /**
  * Create a full texture embed with provided information

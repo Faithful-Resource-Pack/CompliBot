@@ -4,10 +4,10 @@ import {
 	SelectMenuComponentOptionData,
 	StringSelectMenuBuilder,
 } from "discord.js";
-import { Texture } from "@interfaces/database";
+import type { Texture } from "@interfaces/database";
 import minecraftSorter from "@utility/minecraftSorter";
 import axios from "axios";
-import { AnyInteraction } from "@interfaces/interactions";
+import type { AnyInteraction } from "@interfaces/interactions";
 
 /**
  * Construct custom choice embed with any given results

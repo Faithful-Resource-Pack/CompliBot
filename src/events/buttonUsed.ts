@@ -1,4 +1,4 @@
-import { Event } from "@interfaces/events";
+import type { Event } from "@interfaces/events";
 import { ButtonInteraction } from "@client";
 import { info } from "@helpers/logger";
 

@@ -1,5 +1,5 @@
 import { EmbedBuilder } from "@client";
-import { AnyInteraction } from "@interfaces/interactions";
+import type { AnyInteraction } from "@interfaces/interactions";
 
 /**
  * Send a series of embeds in batches to reduce spam from sending individually

@@ -3,7 +3,7 @@
 		"prefix": "net",
 		"description": "Client-emitted event template.",
 		"body": [
-			"import { Event } from \"@interfaces/events\";",
+			"import type { Event } from \"@interfaces/events\";",
 			"\nexport default {",
 			"\tname: \"${1:Name}\",",
 			"\tasync execute(client, ${2:/* args */}) {",
@@ -16,7 +16,7 @@
 		"prefix": "nact",
 		"description": "For non-static slash command data.",
 		"body": [
-			"import { SlashCommand, SyncSlashCommandBuilder } from \"@interfaces/interactions\";",
+			"import type { SlashCommand, SyncSlashCommandBuilder } from \"@interfaces/interactions\";",
 			"import { EmbedBuilder } from \"@client\";",
 			"import { SlashCommandBuilder } from \"discord.js\";",
 			"\nexport const command: SlashCommand = {",
@@ -38,7 +38,7 @@
 		"prefix": "nct",
 		"description": "Regular slash command template.",
 		"body": [
-			"import { SlashCommand } from \"@interfaces/interactions\";",
+			"import type { SlashCommand } from \"@interfaces/interactions\";",
 			"import { Client, EmbedBuilder } from \"@client\";",
 			"import { SlashCommandBuilder } from \"discord.js\";",
 			"\nexport const command: SlashCommand = {",
@@ -53,9 +53,9 @@
 
 	"New component template": {
 		"prefix": "ncpt",
-		"description": "Generic component template for buttons, menus, and modals."
+		"description": "Generic component template for buttons, menus, and modals.",
 		"body": [
-			"import { Component } from \"@interfaces\";",
+			"import type { Component } from \"@interfaces\";",
 			"\nexport default {",
 			"\tid: \"${1:Name}\"",
 			"\tasync execute(client, interaction) {"

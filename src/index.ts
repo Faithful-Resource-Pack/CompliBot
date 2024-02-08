@@ -1,6 +1,6 @@
 import { Client } from "@client";
 import { GatewayIntentBits, Partials } from "discord.js";
-import { AnyInteraction } from "@interfaces/interactions";
+import type { AnyInteraction } from "@interfaces/interactions";
 
 import tokens from "@json/tokens.json";
 

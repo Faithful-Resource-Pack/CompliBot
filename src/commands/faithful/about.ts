@@ -1,9 +1,9 @@
-import { SlashCommand } from "@interfaces/interactions";
+import type { SlashCommand } from "@interfaces/interactions";
 import { Message, EmbedBuilder } from "@client";
 import { SlashCommandBuilder, AttachmentBuilder } from "discord.js";
 import axios from "axios";
 import formatPack from "@utility/formatPack";
-import { Contribution, Texture } from "@interfaces/database";
+import type { Contribution, Texture } from "@interfaces/database";
 import { colors } from "@utility/colors";
 
 export const command: SlashCommand = {

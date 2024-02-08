@@ -2,7 +2,7 @@ import { pollDelete, pollVotes, pollYesNo } from "@utility/buttons";
 import { Client, Message, EmbedBuilder } from "@client";
 import { ActionRowBuilder, ButtonBuilder, TextChannel } from "discord.js";
 import { AllVotes, TimedEmbed, Votes } from "@helpers/timedEmbed";
-import { AnyInteraction } from "@interfaces/interactions";
+import type { AnyInteraction } from "@interfaces/interactions";
 
 export interface PollOptions {
 	question: string;

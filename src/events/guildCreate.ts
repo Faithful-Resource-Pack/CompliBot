@@ -1,6 +1,6 @@
 import { Guild } from "discord.js";
 import { EmbedBuilder } from "@client";
-import { Event } from "@interfaces/events";
+import type { Event } from "@interfaces/events";
 import { info } from "@helpers/logger";
 
 export default {
