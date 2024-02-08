@@ -1,6 +1,6 @@
 {
     "translation_credits": [
-        "Banjoei :3"
+        "Banjoei :3\nAlexander_zeuselpro"
     ],
     "command": {
         "animate": {
@@ -13,6 +13,19 @@
                 "description": "No se encontró la propiedad `animation` en el archivo. Por favor, comprueba que has cargado el archivo correcto."
             }
         },
+        "about": {
+            "missing_profile": {
+                "title": "¡%USER% no tiene contribuciones!",
+                "description": "No se ha encontrado ningún perfil de base de datos para este usuario.",
+                "register": "Regístrese en https://webapp.faithfulpack.net para obtener información precisa sobre contribuciones y créditos."
+            }
+        },
+        "coin": {
+            "reflip": {
+                "title": "¡Moneda volteada!",
+                "description": "Si no obtiene el resultado que desea, pruebe de nuevo..."
+            }
+        },
         "botban": {
             "unbannable": {
                 "title": "¡No se puede prohibir el uso del bot a este usuario!",
@@ -22,6 +35,12 @@
         "embed": {
             "not_enough_arguments": "¡No se brindó suficiente información!",
             "need_more_info": "Es necesario tener una descripción o un título para una inserción."
+        },
+        "faq": {
+            "invalid_choice": {
+                "title": "¡Opción no válida!",
+                "description": "`%CHOICE%` no es una palabra clave de FAQ válida! ¿Se le escapó el dedo?"
+            }
         },
         "poll": {
             "ended": "¡Esta encuesta ha concluido!",
