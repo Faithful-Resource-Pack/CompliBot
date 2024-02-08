@@ -106,6 +106,7 @@
         "gui/sprites/backup/changes_highlighted.png",
         "gui/sprites/hud/crosshair.png",
         "gui/sprites/container/loom/error.png",
+        "particle/vault_connection.png",
         "entity/villager/type/desert.png.mcmeta",
         "entity/villager/type/snow.png.mcmeta",
         "entity/villager/profession/butcher.png.mcmeta",
