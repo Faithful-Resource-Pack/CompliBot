@@ -21,7 +21,7 @@
             },
             "no_image": {
                 "title": "¡Imagen no encontrada!",
-                "description": "¡La textura `%TEXTURENAME%` aún no ha sido creada para %PACK% o no es una textura que vamos a crear!"
+                "description": "¡La textura `%TEXTURENAME%` aún no se ha creado para %PACK% o no es una textura que vamos a crear!"
             }
         },
         "image": {
