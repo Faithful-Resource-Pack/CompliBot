@@ -62,17 +62,17 @@
     {
         "question": "What are Jappa and Programmer Art textures?",
         "answer": "*JAPPA* is the online nickname of Jasper Boerstra, Minecraft's lead artist and the author of the majority of textures used in versions 1.14 and newer. The \"new\" Minecraft textures are often called Jappa textures in his honour.\nProgrammer Art (oftentimes abbreviated as \"progart\" or \"PA\") is the name given by Mojang and used by the Minecraft artist community for the old textures, used in Minecraft prior to release 1.14. It's also the name of the built-in resource pack featured in newer versions that contains the old textures.\n*Whether a texture is Jappa or Programmer Art is not related to its pixel resolution (e.g. 16x16, 32x, 64x).*",
-        "keywords": ["jappa vs programmer art", "programmer art vs jappa"]
+        "keywords": ["jappa", "progart", "prog art"]
     },
     {
         "question": "What is the difference between 16x, 32x, and 64x?",
         "answer": "\"32x\" means the textures, as a base, are 32 by 32 pixels (rather than default's 16 by 16 pixels). \"64x\" means the textures are 64 by 64 pixels. Higher numbers mean higher resolution textures. While these values are technically arbitrary, anything other than powers of two can cause issues in-game.\n*The pixel resolution of the textures aren't related to whether they are \"Jappa\" or \"Programmer Art\".*",
-        "keywords": ["16x vs 32x", "32x vs 64x", "16x vs 64x", "resolution"]
+        "keywords": ["resolution", "16x vs 32x", "32x vs 64x", "16x vs 64x"]
     },
     {
         "question": "But I don't like the new Minecraft textures! Faithful Programmer Art when?",
         "answer": "You can use [Classic Faithful 32x Programmer Art](https://faithfulpack.net/classicfaithful/32x-programmer-art). There are plans for a dedicated Faithful Programmer Art pack in the future, but for the time being all main Faithful packs are based off the newest, \"Jappa\" textures.",
-        "keywords": ["programmer art", "progart", "prog art"]
+        "keywords": ["faithful programmer art", "faithful progart", "faithful pa"]
     },
     {
         "question": "I've found a bug in Faithful! Where do I report it?",
