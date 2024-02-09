@@ -24,7 +24,7 @@ export interface SlashCommand {
 	execute: Collection<string, SlashCommandI> | SlashCommandI;
 }
 
-export type SlashCommandI = (interaction: ChatInputCommandInteraction) => any;
+export type SlashCommandI = (interaction: ChatInputCommandInteraction) => Promise<any>;
 
 export type SyncSlashCommandBuilder =
 	| SlashCommandSubcommandsOnlyBuilder

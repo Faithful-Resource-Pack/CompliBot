@@ -19,11 +19,9 @@ export default {
 
 		try {
 			// try if there is a subcommand
-			interaction.options.getSubcommand();
+			const subCommand = interaction.options.getSubcommand();
 			// execute it if so
-			(command.execute as Collection<string, SlashCommandI>).get(
-				interaction.options.getSubcommand(),
-			)(interaction);
+			(command.execute as Collection<string, SlashCommandI>).get(subCommand)(interaction);
 		} catch (_err) {
 			// not a subcommand
 			try {

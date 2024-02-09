@@ -8,11 +8,9 @@ interface AllEvents extends ClientEvents {
 	modalSubmit: string;
 }
 
-interface Execute {
-	(client: Client, ...args: any[]);
-}
-
 export interface Event {
 	name: keyof AllEvents;
-	execute: Execute;
+	execute: EventExecute;
 }
+
+export type EventExecute = (client: Client, ...args: any[]) => Promise<any>;
