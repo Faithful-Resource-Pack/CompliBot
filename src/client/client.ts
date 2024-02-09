@@ -45,7 +45,6 @@ export const paths = {
 	},
 };
 
-export const restarts = ["SIGUSR1", "SIGUSR2", "SIGTERM"];
 export const errors = {
 	disconnect: "Disconnect",
 	unhandledRejection: "Unhandled Rejection",
@@ -128,9 +127,6 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 				this.automation.start();
 			});
 
-		// all possible restart events (might depend on OS?)
-		restarts.forEach((event) => process.on(event, () => this.restart()));
-
 		// all error types
 		Object.entries(errors).forEach(([err, errDisplay]) =>
 			process.on(err, (reason) => {
@@ -162,8 +158,8 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 		console.log(darkColor`Y88b  d88P Y88..88P 888  888  888 888 d88P 888 888 ` + lightColor`888   d88P Y88..88P Y88b.`);
 		console.log(darkColor` "Y8888P"   "Y88P"  888  888  888 88888P"  888 888 ` + lightColor`8888888P"   "Y88P"   "Y888`);
 		console.log(darkColor`                                  888`);
-		console.log(darkColor`                                  888                   ` + chalk.white.bold`Faithful Devs. ${new Date().getFullYear()}`);
-		console.log(darkColor`                                  888                ` + chalk.gray.italic(this.tokens.maintenance === false ? "~ Made lovingly with pain\n" : "    Maintenance mode!\n"));
+		console.log(darkColor`                                  888              ` + chalk.white.bold`    Faithful Devs. ${new Date().getFullYear()}   `);
+		console.log(darkColor`                                  888              ` + chalk.gray.italic(this.tokens.maintenance === false ? " ~ Made lovingly with pain\n" : "    Maintenance mode!\n"));
 	}
 
 	private loadCollections() {
