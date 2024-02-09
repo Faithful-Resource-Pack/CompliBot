@@ -1,4 +1,4 @@
-import type { SlashCommand, SyncSlashCommandBuilder } from "@interfaces/interactions";
+import type { SlashCommand } from "@interfaces/interactions";
 import type { Pack } from "@interfaces/database";
 import { EmbedBuilder } from "@client";
 import { SlashCommandBuilder, Message, AttachmentBuilder } from "discord.js";
