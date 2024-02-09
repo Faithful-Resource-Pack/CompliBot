@@ -29,44 +29,45 @@ export const constructLogFile = (
 	const template = logTemplate.match(new RegExp(/\%templateStart%([\s\S]*?)%templateEnd/))[1]; // get message template
 
 	const sentence = choice(randomSentences);
-	let logText = logTemplate
-		.replace("%date%", new Date().toUTCString())
-		.replace("%stack%", reason.stack || JSON.stringify(reason))
-		.replace("%randomSentence%", sentence)
-		.replace("%randomSentenceUnderline%", "-".repeat(sentence.length));
-
-	logText = logText.split("%templateStart%")[0]; // remove message template
-
-	logText += client.logs.reverse().reduce(
-		(acc, log: Log, index) =>
-			acc +
-			template
-				.replace("%templateIndex%", `${client.logs.length - index}`)
-				.replace("%templateType%", formatLogType(log))
-				.replace(
-					"%templateCreatedTimestamp%",
-					`${log.data.createdTimestamp} | ${new Date(log.data.createdTimestamp).toLocaleDateString(
-						"en-UK",
-						{
+	const logText =
+		logTemplate
+			.replace("%date%", new Date().toUTCString())
+			.replace("%stack%", reason.stack || JSON.stringify(reason))
+			.replace("%randomSentence%", sentence)
+			.replace("%randomSentenceUnderline%", "-".repeat(sentence.length))
+			.split("%templateStart%")[0] +
+		client.logs.reverse().reduce(
+			(acc, log: Log, index) =>
+				acc +
+				template
+					.replace("%templateIndex%", `${client.logs.length - index}`)
+					.replace("%templateType%", formatLogType(log))
+					.replace(
+						"%templateCreatedTimestamp%",
+						`${log.data.createdTimestamp} | ${new Date(
+							log.data.createdTimestamp,
+						).toLocaleDateString("en-UK", {
 							timeZone: "UTC",
-						},
-					)} ${new Date(log.data.createdTimestamp).toLocaleTimeString("en-US", {
-						timeZone: "UTC",
-					})} (UTC)`,
-				)
-				.replace("%templateURL%", formatLogURL(log.data))
-				.replace("%templateChannelType%", log.data.channel ? log.data.channel.type : "Not relevant")
-				.replace("%templateContent%", formatLogContent(log))
-				.replace(
-					"%templateEmbeds%",
-					log.data.embeds?.length > 0 ? `${JSON.stringify(log.data.embeds)}` : "None",
-				)
-				.replace(
-					"%templateComponents%",
-					log.data.components?.length > 0 ? `${JSON.stringify(log.data.components)}` : "None",
-				),
-		"", // start from empty string
-	);
+						})} ${new Date(log.data.createdTimestamp).toLocaleTimeString("en-US", {
+							timeZone: "UTC",
+						})} (UTC)`,
+					)
+					.replace("%templateURL%", formatLogURL(log.data))
+					.replace(
+						"%templateChannelType%",
+						log.data.channel ? log.data.channel.type : "Not relevant",
+					)
+					.replace("%templateContent%", formatLogContent(log))
+					.replace(
+						"%templateEmbeds%",
+						log.data.embeds?.length > 0 ? `${JSON.stringify(log.data.embeds)}` : "None",
+					)
+					.replace(
+						"%templateComponents%",
+						log.data.components?.length > 0 ? `${JSON.stringify(log.data.components)}` : "None",
+					),
+			"", // start from empty string
+		);
 
 	return new AttachmentBuilder(Buffer.from(logText, "utf8"), { name: "stack.log" });
 };

@@ -32,8 +32,6 @@ export default {
 				components: [new ActionRowBuilder<ButtonBuilder>().addComponents(tile, rotate, palette)],
 				fetchReply: true,
 			})
-			.then((message: Message) => {
-				message.deleteButton(true);
-			});
+			.then((message: Message) => message.deleteButton(true));
 	},
 } as Component<ButtonInteraction>;

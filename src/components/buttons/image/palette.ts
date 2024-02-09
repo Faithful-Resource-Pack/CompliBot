@@ -27,8 +27,6 @@ export default {
 				files: [file],
 				fetchReply: true,
 			})
-			.then((message: Message) => {
-				message.deleteButton(true);
-			});
+			.then((message: Message) => message.deleteButton(true));
 	},
 } as Component<ButtonInteraction>;

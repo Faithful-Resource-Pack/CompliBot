@@ -52,9 +52,8 @@ export const command: SlashCommand = {
 
 		const file = await tileToAttachment(image, { random, shape, magnify });
 
-		if (!file) {
-			return imageTooBig(interaction);
-		}
+		if (!file) return imageTooBig(interaction);
+
 		await interaction
 			.editReply({
 				files: [file],

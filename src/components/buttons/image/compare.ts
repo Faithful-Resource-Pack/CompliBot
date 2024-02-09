@@ -15,11 +15,7 @@ export default {
 
 		await interaction.deferReply();
 		const messageOptions: InteractionEditReplyOptions = await textureComparison(client, ids[0]);
-		if (!messageOptions) {
-			// stupid workaround for already having deferred the message
-			await interaction.deleteReply();
-			return imageTooBig(interaction);
-		}
+		if (!messageOptions) return imageTooBig(interaction);
 
 		const embed = messageOptions.embeds[0] as EmbedBuilder;
 
@@ -36,8 +32,8 @@ export default {
 
 		(messageOptions.embeds[0] as EmbedBuilder).setTimestamp();
 
-		return interaction.editReply(messageOptions).then((message: Message) => {
-			message.deleteButton(true);
-		});
+		return interaction
+			.editReply(messageOptions)
+			.then((message: Message) => message.deleteButton(true));
 	},
 } as Component<ButtonInteraction>;

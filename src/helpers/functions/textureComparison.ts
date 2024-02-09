@@ -86,11 +86,7 @@ export function sliceTileSheet(loadedImages: Image[][], dimension: Image, mcmeta
  * @param id texture id to look up
  * @returns reply and edit options
  */
-export default async function textureComparison(
-	client: Client,
-	id: string,
-	display: string = "all",
-) {
+export default async function textureComparison(client: Client, id: string, display = "all") {
 	const result: GalleryTexture = (
 		await axios.get(`${client.tokens.apiUrl}gallery/modal/${id}/latest`)
 	).data;
@@ -102,8 +98,8 @@ export default async function textureComparison(
 	const displayed = parseDisplay(display);
 
 	const dimension = await loadImage(result.urls.default).catch(() => null);
-	if (!dimension) return null; // default image doesn't exist, something is probably set up wrong
-	if (dimension.width * dimension.height * displayed.flat().length > 262144) return null;
+	if (!dimension || dimension.width * dimension.height * displayed.flat().length > 262144)
+		return null;
 
 	// get texture urls into 2d array using the parsed display
 	const loadedImages: Image[][] = [];
