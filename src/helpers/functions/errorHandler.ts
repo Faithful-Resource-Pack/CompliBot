@@ -86,12 +86,7 @@ export async function errorHandler(client: Client, error: any, type: string) {
 	let description = error.stack;
 	let codeBlocks = "";
 
-	if (error.isAxiosError) {
-		// axios errors are JSON
-		description = JSON.stringify(error.toJSON());
-		eprotoError = error.code === "EPROTO";
-		codeBlocks = "json";
-	} else if (!description) {
+	if (!description) {
 		// no stack trace so it's JSON
 		description = JSON.stringify(error);
 		codeBlocks = "json";
