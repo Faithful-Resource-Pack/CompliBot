@@ -1,6 +1,6 @@
 import type { SlashCommand } from "@interfaces/interactions";
 import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
-import { constructLogFile } from "@functions/errorHandler";
+import { constructLogFile } from "@functions/handleError";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
