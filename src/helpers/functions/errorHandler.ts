@@ -82,23 +82,19 @@ export const constructLogFile = (
 export async function errorHandler(client: Client, error: any, type: string) {
 	if (client.tokens.dev) return console.error(`${err}${error?.stack ?? error}`);
 
-	let eprotoError = false;
-	let description = error.stack;
-	let codeBlocks = "";
+	const description = error.stack || JSON.stringify(error);
+	// if there's no stack, interpret the error as json
+	const codeBlocks = error.stack ? "" : "json";
 
-	if (!description) {
-		// no stack trace so it's JSON
-		description = JSON.stringify(error);
-		codeBlocks = "json";
-	} else if (error instanceof DiscordAPIError)
-		// not on our end, just clutters logs
+	if (error instanceof DiscordAPIError)
+		// not on our end
 		return console.error(error, type, description);
 
 	// silence EPROTO errors
-	if (eprotoError) return console.error(error, type, description);
+	if (error.code == "EPROTO") return console.error(error, type, description);
 
-	if (lastReasons.length == loopLimit) lastReasons.pop(); // pop removes an item from the end of an array
-	lastReasons.push(error); // push adds one to the start
+	if (lastReasons.length == loopLimit) lastReasons.shift(); // remove first logged reason
+	lastReasons.push(error);
 
 	devLogger(client, description, {
 		title: type,
