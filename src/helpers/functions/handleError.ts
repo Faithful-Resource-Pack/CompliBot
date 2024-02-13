@@ -74,12 +74,12 @@ export const constructLogFile = (
 
 /**
  * Handle and log errors
- * @author Juknum
+ * @author TheRolf, Evorp
  * @param client discord client
  * @param error error description
  * @param type error title
  */
-export async function errorHandler(client: Client, error: any, type: string) {
+export async function handleError(client: Client, error: any, type: string) {
 	if (client.tokens.dev) return console.error(`${err}${error?.stack ?? error}`);
 
 	const description = error.stack || JSON.stringify(error);
@@ -96,6 +96,7 @@ export async function errorHandler(client: Client, error: any, type: string) {
 	if (lastReasons.length == loopLimit) lastReasons.shift(); // remove first logged reason
 	lastReasons.push(error);
 
+	// DO NOT DELETE THIS CATCH, IT AVOIDS INFINITE LOOP IF THIS PROMISE REJECTS
 	devLogger(client, description, {
 		title: type,
 		file: constructLogFile(client, error),
