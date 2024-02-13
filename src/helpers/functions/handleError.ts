@@ -87,7 +87,7 @@ export async function handleError(client: Client, error: any, type: string) {
 	const codeBlocks = error.stack ? "" : "json";
 
 	if (error instanceof DiscordAPIError)
-		// not on our end
+		// discord's problem (usually), not ours
 		return console.error(error, type, description);
 
 	// silence EPROTO errors
