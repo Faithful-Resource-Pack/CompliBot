@@ -31,9 +31,7 @@ import startClient from "index";
 import walkSync from "@helpers/walkSync";
 import axios from "axios";
 
-const POLLS_FILENAME = "polls.json";
-const COMMANDS_PROCESSED_FILENAME = "commandsProcessed.json";
-
+// not in a config file because dynamic data
 export const paths = {
 	json: join(process.cwd(), "json", "dynamic"), // json folder at root
 	slashCommands: join(__dirname, "..", "commands"),
@@ -43,13 +41,15 @@ export const paths = {
 		menus: join(__dirname, "..", "components", "menus"),
 		modals: join(__dirname, "..", "components", "modals"),
 	},
+	polls: "polls.json",
+	commandsProcessed: "commandsProcessed.json",
 };
 
-export const errors = {
-	disconnect: "Disconnect",
-	unhandledRejection: "Unhandled Rejection",
-	uncaughtException: "Uncaught Exception",
-};
+export const errors = [
+	{ displayName: "Disconnect", error: "disconnect" },
+	{ displayName: "Unhandled Rejection", error: "unhandledRejection" },
+	{ displayName: "Uncaught Exception", error: "uncaughtException" },
+];
 
 export type LogAction =
 	| "message"
@@ -128,9 +128,9 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 			});
 
 		// all error types
-		Object.entries(errors).forEach(([err, errDisplay]) =>
-			process.on(err, (reason) => {
-				if (reason) handleError(this, reason, errDisplay);
+		errors.forEach(({ error, displayName }) =>
+			process.on(error, (reason) => {
+				if (reason) handleError(this, reason, displayName);
 			}),
 		);
 
@@ -141,6 +141,7 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 		console.log(`${info}Restarting bot...`);
 		this.destroy();
 		startClient(false, interaction);
+		return this;
 	}
 
 	//prettier-ignore
@@ -163,9 +164,10 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 	}
 
 	private loadCollections() {
-		this.loadCollection(this.polls, POLLS_FILENAME, paths.json);
-		this.loadCollection(this.commandsProcessed, COMMANDS_PROCESSED_FILENAME, paths.json);
+		this.loadCollection(this.polls, paths.polls, paths.json);
+		this.loadCollection(this.commandsProcessed, paths.commandsProcessed, paths.json);
 		if (this.verbose) console.log(`${info}Loaded collection data`);
+		return this;
 	}
 
 	/**
@@ -195,20 +197,16 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 	/**
 	 * Save an emitting collection into a JSON file
 	 * @author Nick, Juknum
-	 * @param collection
-	 * @param filename
-	 * @param relativePath
+	 * @param collection collection to save
+	 * @param filename where to save it
+	 * @param relativePath folder to save it
 	 */
 	private saveEmittingCollection<V>(
 		collection: EmittingCollection<string, V>,
 		filename: string,
 		relativePath: string,
 	) {
-		let data = {};
-		[...collection.keys()].forEach((k) => {
-			data[k] = collection.get(k);
-		});
-
+		const data = Object.fromEntries(collection);
 		setData({ filename, relativePath, data: JSON.parse(JSON.stringify(data)) });
 	}
 

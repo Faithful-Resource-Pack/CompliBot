@@ -22,15 +22,14 @@ export interface MCMETA {
  */
 export async function animate(origin: ImageSource, mcmeta: MCMETA): Promise<Buffer> {
 	const tileSheet = await loadImage(origin);
-	if (!mcmeta.animation) mcmeta.animation = {};
+	mcmeta.animation ||= {};
 
-	if (!mcmeta.animation?.width) mcmeta.animation.width = tileSheet.width;
-	// assume square image if not declared explicitly (baseCanvas.height is full spritesheet)
-	if (!mcmeta.animation?.height) mcmeta.animation.height = tileSheet.width;
+	// assume square image if not declared explicitly (tileSheet.height would be full spritesheet)
+	mcmeta.animation.height ||= tileSheet.width;
+	mcmeta.animation.width ||= tileSheet.width;
 
-	// cap frametime at 15 to not crash the bot from rendering 6000 frames of prismarine
-	let frametime = mcmeta.animation?.frametime || 1;
-	if (frametime > 15) frametime = 15;
+	// cap frametime at 15 (prismarine crashes otherwise)
+	const frametime = Math.min(15, mcmeta.animation.frametime || 1);
 
 	const frames: { index: number; duration: number }[] = [];
 	if (mcmeta.animation.frames?.length) {
