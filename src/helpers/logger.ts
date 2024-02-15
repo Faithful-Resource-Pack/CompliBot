@@ -22,20 +22,24 @@ export interface LogParams {
  * @param description what to log
  * @param params optional config
  */
-export async function devLogger(client: Client, description: string, params: LogParams = {}) {
+export async function devLogger(
+	client: Client,
+	description: string,
+	{ color, title, file, codeBlocks }: LogParams = {},
+) {
 	const channel = client.channels.cache.get(client.tokens.errorChannel) as TextChannel;
 	if (!channel) return; // avoid infinite loop when crash is outside of client
 
 	// empty strings still enable codeblocks, just no highlighting
-	if (params.codeBlocks != null) description = `\`\`\`${params.codeBlocks}\n${description}\`\`\``;
+	if (codeBlocks != null) description = `\`\`\`${codeBlocks}\n${description}\`\`\``;
 
 	const embed = new EmbedBuilder()
-		.setTitle(params.title ?? "Unhandled Rejection")
+		.setTitle(title || "Unhandled Rejection")
 		.setDescription(description)
-		.setColor(params.color ?? colors.red)
+		.setColor(color || colors.red)
 		.setTimestamp();
 
 	await channel.send({ embeds: [embed] }).catch(console.error);
 	// send after if provided
-	if (params.file) await channel.send({ files: [params.file] }).catch(console.error);
+	if (file) await channel.send({ files: [file] }).catch(console.error);
 }
