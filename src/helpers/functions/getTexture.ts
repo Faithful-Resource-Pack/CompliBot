@@ -67,23 +67,23 @@ export async function getTexture(interaction: AnyInteraction, texture: Texture, 
 		.setThumbnail(textureURL)
 		.setImage(`attachment://${isAnimated ? "animated.gif" : "magnified.png"}`);
 
-	const mainContribution = texture.contributions
-		.filter((contribution) => pack === contribution.pack)
+	const lastContribution = texture.contributions
+		.filter((contribution) => contribution.pack === pack)
 		.sort((a, b) => (a.date > b.date ? -1 : 1))?.[0];
 
-	if (mainContribution) {
+	if (lastContribution) {
 		// surprisingly faster to fetch all users and filter on the client than doing a bunch of requests
 		const contributionJSON: Contributor[] = (await axios.get(`${apiUrl}contributions/authors`))
 			.data;
 
-		const authors = mainContribution.authors.map((authorId) => {
+		const authors = lastContribution.authors.map((authorId) => {
 			if (interaction.guild.members.cache.get(authorId)) return `<@!${authorId}>`;
 
 			// fetch username if not in server
 			return contributionJSON.find((user) => user.id == authorId)?.username ?? "Anonymous";
 		});
 
-		const displayContribution = `<t:${Math.trunc(mainContribution.date / 1000)}:d> – ${authors.join(
+		const displayContribution = `<t:${Math.trunc(lastContribution.date / 1000)}:d> – ${authors.join(
 			", ",
 		)}`;
 
