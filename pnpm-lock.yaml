@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@napi-rs/canvas':
-    specifier: ^0.1.44
-    version: 0.1.44
+    specifier: ^0.1.45
+    version: 0.1.45
   '@octokit/rest':
     specifier: ^20.0.2
     version: 20.0.2
@@ -25,21 +25,21 @@ dependencies:
     version: 1.0.5
   ts-node:
     specifier: ^10.9.2
-    version: 10.9.2(@types/node@20.11.13)(typescript@5.3.3)
+    version: 10.9.2(@types/node@20.11.19)(typescript@5.3.3)
   tsconfig-paths:
     specifier: ^4.2.0
     version: 4.2.0
 
 devDependencies:
   '@types/node':
-    specifier: ^20.11.13
-    version: 20.11.13
+    specifier: ^20.11.19
+    version: 20.11.19
   nodemon:
     specifier: ^3.0.3
     version: 3.0.3
   prettier:
-    specifier: ^3.2.4
-    version: 3.2.4
+    specifier: ^3.2.5
+    version: 3.2.5
 
 packages:
 
@@ -139,8 +139,8 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.15
     dev: false
 
-  /@napi-rs/canvas-android-arm64@0.1.44:
-    resolution: {integrity: sha512-3UDlVf1CnibdUcM0+0xPH4L4/d/tCI895or0y7mr/Xlaa1tDmvcQCvBYl9G54IpXsm+e4T1XkVrGGJD4k1NfSg==}
+  /@napi-rs/canvas-android-arm64@0.1.45:
+    resolution: {integrity: sha512-ogC8zhiuxzFK0qBg0RHOI+UJ9Ne7/fM2k1+E+VShuuf3DqFgLvu+d1L0MgM3SnqgzIaPNUyc78yleG/xMhBJjA==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [android]
@@ -148,8 +148,8 @@ packages:
     dev: false
     optional: true
 
-  /@napi-rs/canvas-darwin-arm64@0.1.44:
-    resolution: {integrity: sha512-Y1Yx0H45Iicx2b6pcrlICjlwgylLtqi0t5OJgeUXnxLcJ1+aEpmjLr16tddqHkmGUw/nBRAwfPJrf3GaOwWowQ==}
+  /@napi-rs/canvas-darwin-arm64@0.1.45:
+    resolution: {integrity: sha512-7bbTZR6Y84SXau/WNUU+iskrnzXUva1RgF7Eto73mgkZa8KAXNLjCY/emN4Vjq2YxxI3BysVrRuZx53ZDVrFOQ==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [darwin]
@@ -157,8 +157,8 @@ packages:
     dev: false
     optional: true
 
-  /@napi-rs/canvas-darwin-x64@0.1.44:
-    resolution: {integrity: sha512-gbzeNz13DFH0Ak5ENyQ5ZEuSuCjNDxA/OV9P5f19lywbOVL5Ol+qgKX0BXBcP3O3IXWahruOvmmLUBn9h1MHpA==}
+  /@napi-rs/canvas-darwin-x64@0.1.45:
+    resolution: {integrity: sha512-/JHRIpkedmOXSDTUKleQjTKKo0lZt9aajPLPhVGZDl50vrY5s6r2RPa4lwp3OXbb7YyIoeYTGioID0zP5bDF2w==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [darwin]
@@ -166,8 +166,8 @@ packages:
     dev: false
     optional: true
 
-  /@napi-rs/canvas-linux-arm-gnueabihf@0.1.44:
-    resolution: {integrity: sha512-Sad3/eGyzTZiyJFeFrmX1M3aRp0n3qTAXeCm6EeAjCFGk8TWd4cINCGT3IRY4wmCvNnpe6C4fM03K07cU5YYwA==}
+  /@napi-rs/canvas-linux-arm-gnueabihf@0.1.45:
+    resolution: {integrity: sha512-rcsMEzb+TgXFXwhqtde31wFh0d9eXiSsGh40EuntS3RKK67+6G2amDjtGedlUFwetdF2DZHx3eJgCkVpTzg1rg==}
     engines: {node: '>= 10'}
     cpu: [arm]
     os: [linux]
@@ -175,8 +175,8 @@ packages:
     dev: false
     optional: true
 
-  /@napi-rs/canvas-linux-arm64-gnu@0.1.44:
-    resolution: {integrity: sha512-bCrI9naYGPRFHePMGN+wlrWzC+Swi6uc1YzFg4/wOYzHKSte8FXHrGspHOPPr12BCEmgg3yXK8nnLjxGdlAWtg==}
+  /@napi-rs/canvas-linux-arm64-gnu@0.1.45:
+    resolution: {integrity: sha512-IYXqmT4vx12XSPoNjQT0iKQdS79lNpafYqnEl27L3eTOV8Kh9W+f57lONNc/k05RUS0UD/H/aXv5vbRiGqn9Ng==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
@@ -184,8 +184,8 @@ packages:
     dev: false
     optional: true
 
-  /@napi-rs/canvas-linux-arm64-musl@0.1.44:
-    resolution: {integrity: sha512-gB/ao9zBQaOJik4arOKJisZaG+v7DuyBW7UdG+0L80msAuJTTH2UgWOnmXfZwPxzxNbFKzOa8r48uVzfTaAHGQ==}
+  /@napi-rs/canvas-linux-arm64-musl@0.1.45:
+    resolution: {integrity: sha512-gphILu2+CV9rj1cbklYRfWGGCOtlezwvszhlea6aus75AL4etQ4xlWn2DKHz8vphh13cRHS8QbChCUmwLuxdgg==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
@@ -193,8 +193,8 @@ packages:
     dev: false
     optional: true
 
-  /@napi-rs/canvas-linux-x64-gnu@0.1.44:
-    resolution: {integrity: sha512-pvHy1bJ0DDD4Bsx6yuFnqpIyBW7+2iIK5BpvmL36zXE+7w2MEeaYzLUWTBhrXj8rzHys6MwLmHNlkw65R80YbQ==}
+  /@napi-rs/canvas-linux-x64-gnu@0.1.45:
+    resolution: {integrity: sha512-gROXfmw5lmVZe6lRjxi1oX1VsmPAHA6kv2Kvl3j/g/maNm3KgLRE1sfolCbGvSglKyUvXQiemyUUEcnhppCDrA==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
@@ -202,8 +202,8 @@ packages:
     dev: false
     optional: true
 
-  /@napi-rs/canvas-linux-x64-musl@0.1.44:
-    resolution: {integrity: sha512-5QaeYqNZ/u1QI2E/UqvnmuORT6cI1qTtLosPp/y4awaK+/LXQEzotHNv0nan0z4EV/0mXsJswY9JpISRJzx+Kw==}
+  /@napi-rs/canvas-linux-x64-musl@0.1.45:
+    resolution: {integrity: sha512-hAgc/t03w+WwyR9ntc0kJpSqd2KNrx7l03+qrbdoYL95MP2sC4ycdhAC8UWM0zqowATBd2sOdGSrXdeHZihyzQ==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
@@ -211,8 +211,8 @@ packages:
     dev: false
     optional: true
 
-  /@napi-rs/canvas-win32-x64-msvc@0.1.44:
-    resolution: {integrity: sha512-pbeTGLox+I+sMVl/FFO21Xvp0PhijsuEr9gaynmN2X7FPTg+CCuuBDhfSU5iMAtcCCYFCk8ridZIWy5jkcf72w==}
+  /@napi-rs/canvas-win32-x64-msvc@0.1.45:
+    resolution: {integrity: sha512-gnYuSuNrKJojIaqWdZjAC5h92RPW9vdKKhPJzQgZPtUkQJ7Do3JfIDQObg7TS3E18Zf6A5+fRo25VIcKhCJvMg==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [win32]
@@ -220,19 +220,19 @@ packages:
     dev: false
     optional: true
 
-  /@napi-rs/canvas@0.1.44:
-    resolution: {integrity: sha512-IyhSndjw29LR1WqkUZvTJI4j8Ve1QGbZYtpdQjJjcFvsvJS4/WHzOWV8ZciLPJBhrYvSQf/JbZJy5LHmFV+plg==}
+  /@napi-rs/canvas@0.1.45:
+    resolution: {integrity: sha512-6BBOL62RvY8JFFpnScVT4BLJha/yya/NNtP2K1rIlhnLgfnzAQxKCISoLZZHjBVox6ngBOR4hHqJRoqoLFXhZQ==}
     engines: {node: '>= 10'}
     optionalDependencies:
-      '@napi-rs/canvas-android-arm64': 0.1.44
-      '@napi-rs/canvas-darwin-arm64': 0.1.44
-      '@napi-rs/canvas-darwin-x64': 0.1.44
-      '@napi-rs/canvas-linux-arm-gnueabihf': 0.1.44
-      '@napi-rs/canvas-linux-arm64-gnu': 0.1.44
-      '@napi-rs/canvas-linux-arm64-musl': 0.1.44
-      '@napi-rs/canvas-linux-x64-gnu': 0.1.44
-      '@napi-rs/canvas-linux-x64-musl': 0.1.44
-      '@napi-rs/canvas-win32-x64-msvc': 0.1.44
+      '@napi-rs/canvas-android-arm64': 0.1.45
+      '@napi-rs/canvas-darwin-arm64': 0.1.45
+      '@napi-rs/canvas-darwin-x64': 0.1.45
+      '@napi-rs/canvas-linux-arm-gnueabihf': 0.1.45
+      '@napi-rs/canvas-linux-arm64-gnu': 0.1.45
+      '@napi-rs/canvas-linux-arm64-musl': 0.1.45
+      '@napi-rs/canvas-linux-x64-gnu': 0.1.45
+      '@napi-rs/canvas-linux-x64-musl': 0.1.45
+      '@napi-rs/canvas-win32-x64-msvc': 0.1.45
     dev: false
 
   /@octokit/auth-token@4.0.0:
@@ -372,15 +372,15 @@ packages:
     resolution: {integrity: sha512-vxhUy4J8lyeyinH7Azl1pdd43GJhZH/tP2weN8TntQblOY+A0XbT8DJk1/oCPuOOyg/Ja757rG0CgHcWC8OfMA==}
     dev: false
 
-  /@types/node@20.11.13:
-    resolution: {integrity: sha512-5G4zQwdiQBSWYTDAH1ctw2eidqdhMJaNsiIDKHFr55ihz5Trl2qqR8fdrT732yPBho5gkNxXm67OxWFBqX9aPg==}
+  /@types/node@20.11.19:
+    resolution: {integrity: sha512-7xMnVEcZFu0DikYjWOlRq7NTPETrm7teqUT2WkQjrTIkEgUyyGdWsj/Zg8bEJt5TNklzbPD1X3fqfsHw3SpapQ==}
     dependencies:
       undici-types: 5.26.5
 
   /@types/ws@8.5.9:
     resolution: {integrity: sha512-jbdrY0a8lxfdTp/+r7Z4CkycbOFN8WX+IOchLJr3juT/xzbJ8URyTVSJ/hvNdadTgM1mnedb47n+Y31GsFnQlg==}
     dependencies:
-      '@types/node': 20.11.13
+      '@types/node': 20.11.19
     dev: false
 
   /@vladfrangu/async_event_emitter@2.2.4:
@@ -748,8 +748,8 @@ packages:
     engines: {node: '>=8.6'}
     dev: true
 
-  /prettier@3.2.4:
-    resolution: {integrity: sha512-FWu1oLHKCrtpO1ypU6J0SbK2d9Ckwysq6bHj/uaCP26DxrPpppCLQRGVuqAxSTvhF00AcvDRyYrLNW7ocBhFFQ==}
+  /prettier@3.2.5:
+    resolution: {integrity: sha512-3/GWa9aOC0YeD7LUfvOG2NiDyhOWRvt1k+rcKhOuYnMY24iiCphgneUfJDyFXd6rZCAnuLBv6UeAULtrhT/F4A==}
     engines: {node: '>=14'}
     hasBin: true
     dev: true
@@ -821,7 +821,7 @@ packages:
     resolution: {integrity: sha512-k43M7uCG1AkTyxgnmI5MPwKoUvS/bRvLvUb7+Pgpdlmok8AoqmUaZxUUw8zKM5B1lqZrt41GjYgnvAi0fppqgQ==}
     dev: false
 
-  /ts-node@10.9.2(@types/node@20.11.13)(typescript@5.3.3):
+  /ts-node@10.9.2(@types/node@20.11.19)(typescript@5.3.3):
     resolution: {integrity: sha512-f0FFpIdcHgn8zcPSbf1dRevwt047YMnaiJM3u2w2RewrB+fob/zePZcrOyQoLMMO7aBIddLcQIEK5dYjkLnGrQ==}
     hasBin: true
     peerDependencies:
@@ -840,7 +840,7 @@ packages:
       '@tsconfig/node12': 1.0.11
       '@tsconfig/node14': 1.0.3
       '@tsconfig/node16': 1.0.4
-      '@types/node': 20.11.13
+      '@types/node': 20.11.19
       acorn: 8.11.2
       acorn-walk: 8.3.1
       arg: 4.1.3
