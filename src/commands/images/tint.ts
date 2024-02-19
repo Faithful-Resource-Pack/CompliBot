@@ -10,8 +10,10 @@ export const command: SlashCommand = {
 		.setDescription(`Tint a grayscale image to a Minecraft color`)
 		.addStringOption((option) =>
 			option
-				.setName("color")
-				.setDescription("The color to tint the grayscale image to")
+				.setName("colour")
+				.setNameLocalization("en-US", "color")
+				.setDescription("The colour to tint the grayscale image to")
+				.setDescriptionLocalization("en-US", "The color to tint the grayscale image to")
 				.addChoices(...mcColorsOptions)
 				.setRequired(true),
 		)
@@ -23,7 +25,7 @@ export const command: SlashCommand = {
 		const image = await getImage(interaction);
 		if (!image) return imageNotFound(interaction);
 
-		const file = await multiplyToAttachment(image, interaction.options.getString("color"));
+		const file = await multiplyToAttachment(image, interaction.options.getString("colour"));
 		await interaction
 			.editReply({
 				files: [file],

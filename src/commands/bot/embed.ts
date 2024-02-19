@@ -58,17 +58,17 @@ export const command: SlashCommand = {
 		// a lot of copy/paste but this is the best djs can do lol
 		const title = interaction.options.getString("title", false);
 		const description = interaction.options.getString("description", false);
-		const baseColor = interaction.options.getString("color", false);
+		const color = interaction.options.getString("colour", false);
 		const footer = interaction.options.getString("footer", false);
 		const image = interaction.options.getAttachment("image", false)?.url;
 		const thumbnail = interaction.options.getAttachment("thumbnail", false)?.url;
 
 		if (title) embed.setTitle(title);
 		if (description) embed.setDescription(description);
-		if (baseColor) {
-			let color = baseColor;
-			if (!baseColor.startsWith("#")) embed.setColor(`#${color}`);
-			embed.setColor(color as ColorResolvable);
+		if (color) {
+			if (colors[color]) embed.setColor(colors[color]);
+			else if (!color.startsWith("#")) embed.setColor(`#${color}`);
+			else embed.setColor(color as ColorResolvable);
 		}
 		if (footer) embed.setFooter({ text: footer });
 		if (image) embed.setImage(image);
