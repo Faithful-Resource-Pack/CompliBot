@@ -29,7 +29,8 @@ pnpm install
 pnpm dev
 ```
 
-___
+---
+
 ## Bot setup:
 
 **DISCLAIMER: We won't help you rebrand the bot for any other server. If you really want to do that, then you need to figure it out yourself.**
@@ -45,4 +46,4 @@ This project is heavily developed around our public API. Check out our API docum
 
 ## Translating:
 
-Many messages shown throughout the bot can be translated into users' native languages for easier usage. Our translation service is powered by Crowdin, and you can start translating there: https://faithful.crowdin.com/complibot. If you're a native speaker of a language that hasn't been done yet, click on the language in the list and click on the JSON files that are translatable.
+Many messages shown throughout the bot can be translated into users' native languages for easier usage. Our translation service is powered by Crowdin, [and you can start translating there](https://faithful.crowdin.com/complibot) by clicking on your language in the list. All languages that Discord supports should be listed there.

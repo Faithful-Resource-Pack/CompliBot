@@ -1,4 +1,4 @@
-import { EmbedBuilder, Message } from "@client";
+import { EmbedBuilder, Message, StringSelectMenuInteraction } from "@client";
 import {
 	ActionRowBuilder,
 	SelectMenuComponentOptionData,
@@ -65,13 +65,13 @@ export async function generalChoiceEmbed(
  * @param interaction interaction to reply to
  * @param menuID which id the result gets sent to
  * @param results textures to embed
- * @param constValues extra info to send to the menuID
+ * @param values extra info to send to the menuID
  */
 export async function textureChoiceEmbed(
 	interaction: AnyInteraction,
 	menuID: string,
 	results: Texture[],
-	...constValues: string[]
+	...values: string[]
 ) {
 	const mappedResults: SelectMenuComponentOptionData[] = [];
 	for (const result of results) {
@@ -80,9 +80,18 @@ export async function textureChoiceEmbed(
 				result.name
 			}`,
 			description: result.paths[0].name,
-			value: `${result.id}__${constValues.join("__")}`,
+			value: `${result.id}__${values.join("__")}`,
 		});
 	}
 
 	return generalChoiceEmbed(interaction, menuID, mappedResults);
 }
+
+/**
+ * Convert interaction from choice embed into chosen option
+ * @author Evorp
+ * @param interaction interaction to unencode
+ * @returns chosen value (texture choice embeds always have the texture ID first)
+ */
+export const unencodeChoice = (interaction: StringSelectMenuInteraction) =>
+	interaction.values[0].split("__");

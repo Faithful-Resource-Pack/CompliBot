@@ -3,6 +3,7 @@ import type { Component } from "@interfaces/components";
 import { info } from "@helpers/logger";
 import { cycleComparison } from "@functions/cycleComparison";
 import { colors } from "@utility/colors";
+import { unencodeChoice } from "@helpers/choiceEmbed";
 
 export default {
 	id: "cycleSelect",
@@ -32,7 +33,7 @@ export default {
 
 		interaction.deferUpdate();
 
-		const [id, display, framerate] = interaction.values[0].split("__");
+		const [id, display, framerate] = unencodeChoice(interaction);
 		const editOptions = await cycleComparison(interaction.client, id, display, Number(framerate));
 
 		message.edit(editOptions).then((message: Message) => message.deleteButton());

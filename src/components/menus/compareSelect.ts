@@ -5,6 +5,7 @@ import { MessageEditOptions } from "discord.js";
 import textureComparison from "@functions/textureComparison";
 import { imageTooBig } from "@helpers/warnUser";
 import { colors } from "@utility/colors";
+import { unencodeChoice } from "@helpers/choiceEmbed";
 
 export default {
 	id: "compareSelect",
@@ -34,7 +35,7 @@ export default {
 
 		interaction.deferUpdate();
 
-		const [id, display] = interaction.values[0].split("__");
+		const [id, display] = unencodeChoice(interaction);
 		const editOptions: MessageEditOptions = await textureComparison(
 			interaction.client,
 			id,

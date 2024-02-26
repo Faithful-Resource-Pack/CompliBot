@@ -4,6 +4,7 @@ import { info } from "@helpers/logger";
 import { getTexture } from "@functions/getTexture";
 import axios from "axios";
 import { colors } from "@utility/colors";
+import { unencodeChoice } from "@helpers/choiceEmbed";
 
 export default {
 	id: "textureSelect",
@@ -33,7 +34,7 @@ export default {
 
 		interaction.deferUpdate();
 
-		const [id, pack] = interaction.values[0].split("__");
+		const [id, pack] = unencodeChoice(interaction);
 		const editOptions = await getTexture(
 			interaction,
 			(await axios.get(`${interaction.client.tokens.apiUrl}textures/${id}/all`)).data,
