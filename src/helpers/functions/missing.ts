@@ -35,67 +35,39 @@ export type MissingEdition = MinecraftEdition | "all";
 /**
  * Compute missing results for a given pack, edition, and version
  * @author Juknum, Evorp
+ * @returns Computed results
  */
 export async function computeMissingResults(
 	client: Client,
 	pack: string,
-	edition: MissingEdition,
+	edition: MinecraftEdition,
 	version: string,
 	checkModded: boolean,
 	callback?: (step: string) => Promise<void>,
 ): Promise<MissingResult> {
 	if (!callback) callback = async () => {};
 
-	const packs: Record<string, Pack> = (await axios.get(`${client.tokens.apiUrl}packs/raw`)).data;
-	const defaultRepo = gitToURL(packs.default.github[edition]);
-	const requestRepo = gitToURL(packs[pack].github[edition]);
-
 	const baseData = { pack, edition };
-	// pack doesn't support edition yet
-	if (!requestRepo)
+	const packs: Record<string, Pack> = (await axios.get(`${client.tokens.apiUrl}packs/raw`)).data;
+	if (!packs[pack].github[edition])
 		return {
 			results: [`${formatPack(pack).name} doesn't support ${edition} edition.`],
 			data: { ...baseData, version, completion: 0 },
 		};
 
-	const basePath = join(process.cwd(), BASE_REPOS_PATH);
-	const defaultPath = join(basePath, packs.default.github[edition].repo);
-	const requestPath = join(basePath, packs[pack].github[edition].repo);
-
-	// clone repos if not already done (saves a lot of init lol)
-	if (!existsSync(defaultPath)) {
-		await callback(`Downloading default ${edition} pack…`);
-		mkdirSync(defaultPath, { recursive: true });
-		await exec(`git clone ${defaultRepo} .`, { cwd: defaultPath });
-	}
-
-	if (!existsSync(requestPath)) {
-		await callback(`Downloading \`${formatPack(pack)[0]}\` (${edition}) pack…`);
-		mkdirSync(requestPath, { recursive: true });
-		await exec(`git clone ${requestRepo} .`, { cwd: requestPath });
-	}
-
 	const versions: string[] = (
 		await axios.get(`${client.tokens.apiUrl}textures/versions/${edition}`)
 	).data;
 
-	// latest version if versions doesn't include version (unexisting/unsupported)
+	// latest version if versions doesn't include version (doesn't exist)
 	if (!versions.includes(version)) version = versions[0];
-	await callback(`Updating packs with latest version of \`${version}\` known…`);
 
-	// same steps are used for both packs
-	const steps = [
-		"git stash",
-		"git remote update",
-		"git fetch",
-		`git checkout ${version}`,
-		`git pull`,
-	];
+	// same steps are reused for compared repos
+	const [defaultPath, requestPath] = await Promise.all([
+		createOrUpdateRepo(packs.default, edition, version, callback),
+		createOrUpdateRepo(packs[pack], edition, version, callback),
+	]);
 
-	await series(structuredClone(steps), { cwd: defaultPath });
-	await series(structuredClone(steps), { cwd: requestPath });
-
-	// now both repos are pointing to the same version and are ready to compare
 	await callback("Searching for differences…");
 
 	// ignore modded textures if we aren't checking modded
@@ -106,10 +78,11 @@ export async function computeMissingResults(
 	).map(normalize);
 
 	const defaultTextures = getAllFiles(defaultPath, editionFilter).map((f) =>
-		normalize(f).replace(defaultPath, ""),
+		f.replace(defaultPath, ""),
 	);
+
 	const requestTextures = getAllFiles(requestPath, editionFilter).map((f) =>
-		normalize(f).replace(requestPath, ""),
+		f.replace(requestPath, ""),
 	);
 
 	// instead of looping in the check array for each checked element, we directly check if the
@@ -149,6 +122,7 @@ export async function computeMissingResults(
 /**
  * Compute missing results for all Minecraft editions
  * @author Juknum
+ * @returns Array of computed results
  */
 export async function computeAllEditions(
 	client: Client,
@@ -157,10 +131,11 @@ export async function computeAllEditions(
 	checkModded: boolean,
 	callback?: (step: string) => Promise<void>,
 ) {
-	const editions: string[] = (await axios.get(`${client.tokens.apiUrl}textures/editions`)).data;
+	const editions: MinecraftEdition[] = (await axios.get(`${client.tokens.apiUrl}textures/editions`))
+		.data;
 
 	return Promise.all(
-		editions.map((edition: MissingEdition) =>
+		editions.map((edition) =>
 			computeMissingResults(client, pack, edition, version, checkModded, callback),
 		),
 	);
@@ -196,6 +171,36 @@ export async function updateVoiceChannel(client: Client, results: MissingData) {
 }
 
 /**
+ * Update or create a GitHub repository
+ * @author Evorp, Juknum
+ * @returns Cloned path
+ */
+export async function createOrUpdateRepo(
+	pack: Pack,
+	edition: MissingEdition,
+	version: string,
+	callback?: (step: string) => Promise<void>,
+) {
+	const githubInfo: PackGitHub = pack.github[edition];
+	const url = gitToURL(githubInfo);
+	const cwd = join(process.cwd(), BASE_REPOS_PATH, githubInfo.repo);
+
+	if (!existsSync(cwd)) {
+		await callback(`Downloading \`${pack.name}\` (${edition}) pack…`);
+		mkdirSync(cwd, { recursive: true });
+		await exec(`git clone ${url} .`, { cwd });
+	}
+
+	await callback(`Updating ${pack.name} with latest version of \`${version}\` known…`);
+	await series(
+		["git stash", "git remote update", "git fetch", `git checkout ${version}`, `git pull`],
+		{ cwd },
+	);
+
+	return cwd;
+}
+
+/**
  * Recursively get all files from a directory with a given filter
  * @author Evorp, Juknum
  * @param dir directory used for recursion
@@ -214,7 +219,7 @@ export const getAllFiles = (dir: string, filter: string[] = []): string[] => {
 			ignoredTextures.allowed_extensions.some((ex) => file.endsWith(`.${ex}`)) &&
 			!filter.some((i) => file.includes(i))
 		)
-			fileList.push(file);
+			fileList.push(normalize(file));
 	});
 
 	return fileList;
