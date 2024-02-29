@@ -126,7 +126,7 @@
     "bedrock": [
         "entity/llama/spit.png",
         "entity/llama/decor/decor_none.png",
-        "entity/wolf/wolf_armor_cracked_none.png"
+        "entity/wolf/wolf_armor_cracked_none.png",
         "font/",
         "colormap/",
         "gui/newgui/",
