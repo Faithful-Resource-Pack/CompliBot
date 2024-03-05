@@ -12,7 +12,7 @@ export const command: SlashCommand = {
 		.addStringOption((option) =>
 			option
 				.setName("texture")
-				.setDescription("Name or ID of the texture you want to cycle through.")
+				.setDescription("Texture name or ID to cycle through.")
 				.setRequired(true),
 		)
 		.addStringOption((option) =>
@@ -35,7 +35,7 @@ export const command: SlashCommand = {
 	async execute(interaction) {
 		const display = interaction.options.getString("packs", true);
 		const name = interaction.options.getString("texture", true);
-		const framerate = interaction.options.getNumber("framerate", false) ?? 1;
+		const framerate = interaction.options.getNumber("framerate", false) || 1;
 
 		// sometimes it takes too long otherwise
 		await interaction.deferReply();

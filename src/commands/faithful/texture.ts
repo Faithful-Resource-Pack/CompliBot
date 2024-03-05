@@ -6,29 +6,41 @@ import { getTexture } from "@functions/getTexture";
 import parseTextureName from "@functions/parseTextureName";
 import { textureChoiceEmbed } from "@helpers/choiceEmbed";
 import axios from "axios";
+import minecraftSorter from "@utility/minecraftSorter";
 
 export const command: SlashCommand = {
 	async data(client) {
 		const packs: Record<string, Pack> = (await axios.get(`${client.tokens.apiUrl}packs/raw`)).data;
+		const versions: string[] = (await axios.get(`${client.tokens.apiUrl}textures/versions`)).data;
 		return new SlashCommandBuilder()
 			.setName("texture")
 			.setDescription("Displays a specified texture from either vanilla Minecraft or Faithful.")
 			.addStringOption((option) =>
-				option
-					.setName("name")
-					.setDescription("Name or ID of the texture you are searching for.")
-					.setRequired(true),
+				option.setName("name").setDescription("Texture name or ID to search.").setRequired(true),
 			)
 			.addStringOption((option) =>
 				option
 					.setName("pack")
-					.setDescription("Resource pack of the texture you are searching for.")
-					.addChoices(...Object.values(packs).map((v) => ({ name: v.name, value: v.id })))
+					.setDescription("Resource pack to display.")
+					.addChoices(...Object.values(packs).map((pack) => ({ name: pack.name, value: pack.id })))
 					.setRequired(true),
+			)
+			.addStringOption((option) =>
+				option
+					.setName("version")
+					.setDescription("Version of the searched texture (defaults to latest).")
+					.addChoices(
+						...versions
+							.sort(minecraftSorter)
+							.reverse() // newest at top
+							.map((version) => ({ name: version, value: version })),
+					)
+					.setRequired(false),
 			);
 	},
 	async execute(interaction) {
 		const name = interaction.options.getString("name");
+		const version = interaction.options.getString("version", false) ?? "latest";
 
 		// fetching takes too long for big results
 		await interaction.deferReply();
@@ -43,6 +55,7 @@ export const command: SlashCommand = {
 				interaction,
 				results[0],
 				interaction.options.getString("pack", true),
+				version,
 			);
 
 			// no results found
@@ -57,6 +70,7 @@ export const command: SlashCommand = {
 			"textureSelect",
 			results,
 			interaction.options.getString("pack", true),
+			version,
 		);
 	},
 };

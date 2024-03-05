@@ -27,7 +27,7 @@ export const command: SlashCommand = {
 				option
 					.setName("pack")
 					.setDescription("The resource pack.")
-					.addChoices(...packs.map((v) => ({ name: v.name, value: v.id })))
+					.addChoices(...packs.map((pack) => ({ name: pack.name, value: pack.id })))
 					.setRequired(true),
 			)
 			.addStringOption((option) =>
@@ -50,7 +50,7 @@ export const command: SlashCommand = {
 						...versions
 							.sort(minecraftSorter)
 							.reverse() // newest at top
-							.map((i: string) => ({ name: i, value: i })),
+							.map((version) => ({ name: version, value: version })),
 					)
 					.setRequired(false),
 			)

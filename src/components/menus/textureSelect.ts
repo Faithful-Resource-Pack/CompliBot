@@ -34,11 +34,12 @@ export default {
 
 		interaction.deferUpdate();
 
-		const [id, pack] = unencodeChoice(interaction);
+		const [id, pack, version] = unencodeChoice(interaction);
 		const editOptions = await getTexture(
 			interaction,
 			(await axios.get(`${interaction.client.tokens.apiUrl}textures/${id}/all`)).data,
 			pack,
+			version,
 		);
 
 		if (!editOptions.files) return interaction.ephemeralReply(editOptions);

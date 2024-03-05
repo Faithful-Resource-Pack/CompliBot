@@ -23,9 +23,15 @@ import type { AnyInteraction } from "@interfaces/interactions";
  * @param interaction interaction to reply to
  * @param texture texture data to use
  * @param pack pack to get authors and formatting from
+ * @param version optionally specify specific version to search
  * @returns reply options
  */
-export async function getTexture(interaction: AnyInteraction, texture: Texture, pack: string) {
+export async function getTexture(
+	interaction: AnyInteraction,
+	texture: Texture,
+	pack: string,
+	version = "latest",
+) {
 	const apiUrl = interaction.client.tokens.apiUrl;
 	const isAnimated = texture.paths.some((p) => p.mcmeta === true);
 	const packData: Pack = (await axios.get(`${apiUrl}packs/${pack}`)).data;
@@ -37,7 +43,7 @@ export async function getTexture(interaction: AnyInteraction, texture: Texture, 
 	});
 
 	const textureURL = await axios
-		.get(`${apiUrl}textures/${texture.id}/url/${pack}/latest`)
+		.get(`${apiUrl}textures/${texture.id}/url/${pack}/${version}`)
 		.then((res) => res.request.res.responseUrl)
 		.catch(() => "");
 
@@ -52,6 +58,7 @@ export async function getTexture(interaction: AnyInteraction, texture: Texture, 
 				interaction
 					.strings()
 					.error.texture.no_image.description.replace("%TEXTURENAME%", texture.name)
+					.replace("%VERSION%", version)
 					.replace("%PACK%", packData.name),
 			)
 			.setColor(colors.red);
