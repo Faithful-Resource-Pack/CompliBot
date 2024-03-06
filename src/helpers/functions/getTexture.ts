@@ -42,6 +42,8 @@ export async function getTexture(
 		iconURL: packData.logo,
 	});
 
+	if (version !== "latest") embed.data.title += ` (${version})`;
+
 	const textureURL = await axios
 		.get(`${apiUrl}textures/${texture.id}/url/${pack}/${version}`)
 		.then((res) => res.request.res.responseUrl)
