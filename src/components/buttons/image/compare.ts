@@ -1,7 +1,7 @@
 import type { Component } from "@interfaces/components";
 import { info } from "@helpers/logger";
 import { Message, ButtonInteraction, EmbedBuilder } from "@client";
-import textureComparison from "@functions/textureComparison";
+import compareTexture from "@functions/compareTexture";
 import { InteractionEditReplyOptions } from "discord.js";
 import { imageTooBig } from "@helpers/warnUser";
 
@@ -14,7 +14,7 @@ export default {
 		const ids = message.embeds?.[0]?.title.match(/\d+/);
 
 		await interaction.deferReply();
-		const messageOptions: InteractionEditReplyOptions = await textureComparison(client, ids[0]);
+		const messageOptions: InteractionEditReplyOptions = await compareTexture(client, ids[0]);
 		if (!messageOptions) return imageTooBig(interaction);
 
 		const embed = messageOptions.embeds[0] as EmbedBuilder;

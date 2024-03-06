@@ -5,6 +5,7 @@ import { Client, EmbedBuilder } from "@client";
 import { addPathsToEmbed } from "@functions/getTexture";
 import axios from "axios";
 import type { Texture } from "@interfaces/database";
+import { parseDisplay } from "./compareTexture";
 
 /**
  * Turn array of canvas images into a gif
@@ -57,11 +58,11 @@ export async function imagesToGIF(images: Image[], framerate = 1) {
  * @author Evorp, Superboxer47
  * @param client Client used for getting config stuff
  * @param id texture id to look up
- * @param display which texture packs to display
+ * @param display which texture set to display
  * @param framerate speed
  * @returns reply and edit options
  */
-export async function cycleComparison(
+export async function cycleTexture(
 	client: Client,
 	id: string,
 	display: string,
@@ -69,31 +70,17 @@ export async function cycleComparison(
 ) {
 	const result: Texture = (await axios.get(`${client.tokens.apiUrl}textures/${id}/all`)).data;
 
-	let packText: string;
-	let displayed: string[];
-	switch (display) {
-		case "faithful":
-			displayed = ["default", "faithful_32x", "faithful_64x"];
-			packText = "Faithful";
-			break;
-		case "cfjappa":
-			displayed = ["default", "classic_faithful_32x", "classic_faithful_64x"];
-			packText = "Classic Faithful Jappa";
-			break;
-		case "cfpa":
-			displayed = ["progart", "classic_faithful_32x_progart"];
-			packText = "Classic Faithful Programmer Art";
-			break;
-	}
+	// no 2d arrays in cycle, but same id groups as compare, so we flatten it out
+	const packs = parseDisplay(display).flat();
 
 	const embed = new EmbedBuilder()
 		.setTitle(`[#${result.id}] ${result.name}`)
 		.setURL(`https://webapp.faithfulpack.net/?#/gallery?show=${id}`)
 		.addFields(addPathsToEmbed(result))
-		.setFooter({ text: packText });
+		.setFooter({ text: display });
 
 	const images: Image[] = [];
-	for (const pack of displayed) {
+	for (const pack of packs) {
 		const url = `${client.tokens.apiUrl}textures/${id}/url/${pack}/latest`;
 		try {
 			images.push(await loadImage(url));

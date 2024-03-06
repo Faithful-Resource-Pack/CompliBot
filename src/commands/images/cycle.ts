@@ -1,7 +1,7 @@
 import type { SlashCommand } from "@interfaces/interactions";
 import { SlashCommandBuilder } from "discord.js";
 import { Message } from "@client";
-import { cycleComparison } from "@functions/cycleComparison";
+import { cycleTexture } from "@functions/cycleTexture";
 import parseTextureName from "@functions/parseTextureName";
 import { textureChoiceEmbed } from "@helpers/choiceEmbed";
 
@@ -20,9 +20,9 @@ export const command: SlashCommand = {
 				.setName("packs")
 				.setDescription("Which set of packs you want to display.")
 				.addChoices(
-					{ name: "Faithful", value: "faithful" },
-					{ name: "Classic Faithful Jappa", value: "cfjappa" },
-					{ name: "Classic Faithful Programmer Art", value: "cfpa" },
+					{ name: "Faithful", value: "Faithful" },
+					{ name: "Classic Faithful Jappa", value: "Classic Faithful Jappa" },
+					{ name: "Classic Faithful Programmer Art", value: "Classic Faithful Programmer Art" },
 				)
 				.setRequired(true),
 		)
@@ -46,7 +46,7 @@ export const command: SlashCommand = {
 
 		// only one result
 		if (results.length === 1) {
-			const replyOptions = await cycleComparison(
+			const replyOptions = await cycleTexture(
 				interaction.client,
 				results[0].id,
 				display,

@@ -12,6 +12,7 @@ import { animateToAttachment, MCMETA } from "@helpers/images/animate";
 /**
  * Get the corresponding pack IDs for a given display choice
  * @author Evorp
+ * @todo move to pack API using pack tags
  * @param display displayed packs
  * @returns selected packs
  */
@@ -84,9 +85,10 @@ export function sliceTileSheet(loadedImages: Image[][], dimension: Image, mcmeta
  * @author Evorp
  * @param client Client used for getting config stuff
  * @param id texture id to look up
+ * @param display which texture sets to display
  * @returns reply and edit options
  */
-export default async function textureComparison(client: Client, id: string, display = "all") {
+export default async function compareTexture(client: Client, id: string, display = "all") {
 	const result: GalleryTexture = (
 		await axios.get(`${client.tokens.apiUrl}gallery/modal/${id}/latest`)
 	).data;
@@ -95,15 +97,14 @@ export default async function textureComparison(client: Client, id: string, disp
 	const mcmeta: MCMETA = result.mcmeta ?? ({} as MCMETA);
 	const displayMcmeta = structuredClone(mcmeta);
 
-	const displayed = parseDisplay(display);
+	const packs = parseDisplay(display);
 
 	const dimension = await loadImage(result.urls.default).catch(() => null);
-	if (!dimension || dimension.width * dimension.height * displayed.flat().length > 262144)
-		return null;
+	if (!dimension || dimension.width * dimension.height * packs.flat().length > 262144) return null;
 
 	// get texture urls into 2d array using the parsed display
 	const loadedImages: Image[][] = [];
-	for (const packSet of displayed) {
+	for (const packSet of packs) {
 		// had problems with nested async mapping so this is easier for everyone
 		loadedImages.push([]);
 		for (const pack of packSet) {

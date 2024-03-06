@@ -2,7 +2,7 @@ import type { Component } from "@interfaces/components";
 import { info } from "@helpers/logger";
 import { ButtonInteraction, EmbedBuilder } from "@client";
 import { magnifyToAttachment } from "@images/magnify";
-import { parseDisplay } from "@functions/textureComparison";
+import { parseDisplay } from "@functions/compareTexture";
 import formatPack from "@utility/formatPack";
 import { loadImage } from "@napi-rs/canvas";
 import stitch from "@helpers/images/stitch";
