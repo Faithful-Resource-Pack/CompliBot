@@ -156,14 +156,13 @@ export const command: SlashCommand = {
 			}`;
 
 			// modded messes with the percentage so we don't update VCs if it's enabled
-			if (updateChannels && !checkModded)
-				await updateVoiceChannel(interaction.client, response.data);
+			if (updateChannels && !checkModded) updateVoiceChannel(interaction.client, response.data);
 
 			// no repo found for the asked pack + edition
 			if (!response.diffFile)
 				return resultEmbed.addFields({
 					name: fieldTitle,
-					// errors messages are stored in response.results[0] (stupid I know)
+					// error messages are stored in response.results[0] (stupid I know)
 					value: response.results[0],
 				});
 
