@@ -150,10 +150,10 @@ export const command: SlashCommand = {
 
 		for (const response of responses) {
 			const packName = formatPack(pack).name;
-			const fieldTitle = `${packName} – ${toTitleCase(response.data.edition)} ${toTitleCase(
+			const fieldTitle = `${packName} – ${toTitleCase(response.data.edition)} ${
 				// stupid fix to solve "Bedrock Bedrock Latest" etc
-				response.data.version.endsWith("latest") ? "latest" : response.data.version,
-			)}`;
+				response.data.version.endsWith("latest") ? "Latest" : response.data.version
+			}`;
 
 			// modded messes with the percentage so we don't update VCs if it's enabled
 			if (updateChannels && !checkModded)
