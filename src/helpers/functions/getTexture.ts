@@ -70,7 +70,7 @@ export async function getTexture(
 
 	embed
 		.setURL(
-			`https://webapp.faithfulpack.net/?#/gallery/${texture.uses[0].edition}/${pack}/latest/all/?show=${texture.id}`,
+			`https://webapp.faithfulpack.net/gallery/${texture.uses[0].edition}/${pack}/latest/all/?show=${texture.id}`,
 		)
 		.addFields({ name: "Resolution", value: `${image.width}×${image.height}` })
 		.setThumbnail(textureURL)

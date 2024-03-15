@@ -153,7 +153,7 @@ export default async function compareTexture(client: Client, id: string, display
 	const embed = new EmbedBuilder()
 		.setImage(`attachment://${isAnimated ? "animated.gif" : "magnified.png"}`)
 		.setTitle(`[#${result.texture.id}] ${result.texture.name}`)
-		.setURL(`https://webapp.faithfulpack.net/?#/gallery?show=${id}`)
+		.setURL(`https://webapp.faithfulpack.net/gallery?show=${id}`)
 		.addFields(addPathsToEmbed(result))
 		.setFooter({ text: `Displaying: ${display ?? "All"}` });
 
