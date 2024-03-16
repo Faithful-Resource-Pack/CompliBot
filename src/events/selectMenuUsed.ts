@@ -1,5 +1,4 @@
 import type { Event } from "@interfaces/events";
-import { Client, StringSelectMenuInteraction } from "@client";
 
 export default {
 	name: "selectMenuUsed",

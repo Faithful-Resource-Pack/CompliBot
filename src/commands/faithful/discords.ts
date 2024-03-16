@@ -1,8 +1,7 @@
 import type { SlashCommand } from "@interfaces/interactions";
 import { SlashCommandBuilder } from "discord.js";
-import { EmbedBuilder, Message } from "@client";
+import { Message } from "@client";
 import axios from "axios";
-import { colors } from "@utility/colors";
 import { FaithfulGuild } from "client/client";
 import { toTitleCase } from "@utility/methods";
 

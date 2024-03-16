@@ -2,7 +2,6 @@ import { DiscordAPIError, AttachmentBuilder } from "discord.js";
 import { Client } from "@client";
 import { readFileSync } from "fs";
 import { devLogger, err } from "@helpers/logger";
-import { Log } from "client/client";
 import { join } from "path";
 import { choice } from "@utility/methods";
 import { error as randomSentences } from "@json/quotes.json";
@@ -20,7 +19,7 @@ const loopLimit = 3; // how many times the same error needs to be made to trigge
  */
 export const constructLogFile = (
 	client: Client,
-	reason: any = { stack: "You requested it with /logs ¯\\_(ツ)_/¯" },
+	reason: any = { stack: "Requested with /logs ¯\\_(ツ)_/¯" },
 ): AttachmentBuilder => {
 	const logTemplate = readFileSync(join(__dirname, "logTemplate.log"), {
 		encoding: "utf-8",
@@ -36,11 +35,12 @@ export const constructLogFile = (
 			.replace("%randomSentence%", sentence)
 			.replace("%randomSentenceUnderline%", "-".repeat(sentence.length))
 			.split("%templateStart%")[0] +
-		client.logs.reverse().reduce(
-			(acc, log: Log, index) =>
+		// reduceRight does reduce and reverse at once
+		client.logs.reduceRight(
+			(acc, log, index) =>
 				acc +
 				template
-					.replace("%templateIndex%", `${client.logs.length - index}`)
+					.replace("%templateIndex%", String(index))
 					.replace("%templateType%", formatLogType(log))
 					.replace(
 						"%templateCreatedTimestamp%",
@@ -53,10 +53,6 @@ export const constructLogFile = (
 						})} (UTC)`,
 					)
 					.replace("%templateURL%", formatLogURL(log.data))
-					.replace(
-						"%templateChannelType%",
-						log.data.channel ? log.data.channel.type : "Not relevant",
-					)
 					.replace("%templateContent%", formatLogContent(log))
 					.replace(
 						"%templateEmbeds%",

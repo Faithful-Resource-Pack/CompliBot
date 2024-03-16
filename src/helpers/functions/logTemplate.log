@@ -13,7 +13,6 @@ Actions:
   TYPE         : %templateType%
   TIMESTAMP    : %templateCreatedTimestamp%
   URL          : %templateURL%
-  CHANNEL_TYPE : %templateChannelType%
   CONTENT      : %templateContent%
   EMBEDS       : %templateEmbeds%
   COMPONENTS   : %templateComponents%

@@ -56,7 +56,7 @@ export type LogAction =
 	| "slashCommand"
 	| "button"
 	| "selectMenu"
-	| "modal"
+	| "modalSubmit"
 	| "guildMemberUpdate"
 	| "guildJoined";
 
@@ -64,7 +64,7 @@ export type LogData = Message | Guild | AnyInteraction;
 
 export type Log = {
 	type: LogAction;
-	data: any; // technically LogData but TS breaks without this
+	data: any; // technically LogData but TS union type validation is painful
 };
 
 export interface FaithfulGuild {
@@ -84,9 +84,8 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 	public readonly tokens: Tokens;
 	public readonly automation = new Automation(this);
 
-	private readonly _logs: Log[] = [];
-	private maxLogs = 50;
-	private lastLogIndex = 0;
+	public readonly logs: Log[] = [];
+	private readonly maxLogs = 50;
 
 	public readonly menus = new Collection<string, Component<StringSelectMenuInteraction>>();
 	public readonly buttons = new Collection<string, Component<ButtonInteraction>>();
@@ -120,8 +119,8 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 			.then(() => {
 				this.loadSlashCommands();
 
-				this.loadComponents();
 				this.loadEvents();
+				this.loadComponents();
 				this.loadCollections();
 
 				this.automation.start();
@@ -163,10 +162,14 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 		console.log(darkColor`                                  888              ` + chalk.gray.italic(this.tokens.maintenance === false ? " ~ Made lovingly with pain\n" : "    Maintenance mode!\n"));
 	}
 
+	/**
+	 * Convenience method to load all emitting collections at once
+	 * @author Juknum
+	 */
 	private loadCollections() {
+		if (this.verbose) console.log(`${info}Loading collection data...`);
 		this.loadCollection(this.polls, paths.polls, paths.json);
 		this.loadCollection(this.commandsProcessed, paths.commandsProcessed, paths.json);
-		if (this.verbose) console.log(`${info}Loaded collection data`);
 		return this;
 	}
 
@@ -174,8 +177,8 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 	 * Read and load data from a JSON file into emitting collection with events
 	 * @author Nick, Juknum
 	 * @param collection collection to load into
-	 * @param filename
-	 * @param relativePath
+	 * @param filename file to load data from
+	 * @param relativePath path to load data from
 	 */
 	private loadCollection<V>(
 		collection: EmittingCollection<string, V>,
@@ -211,7 +214,7 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 	}
 
 	/**
-	 * Remove slash commands from the menu
+	 * Remove slash commands
 	 * @author Nick
 	 */
 	public async deleteGlobalSlashCommands() {
@@ -312,6 +315,7 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 				this.user.setStatus("idle");
 			});
 
+		if (this.verbose) console.log(`${info}Loading event handlers...`);
 		const events = walkSync(paths.events).filter((file) => file.endsWith(".ts"));
 		for (const file of events) {
 			const event: Event = require(file).default;
@@ -325,8 +329,8 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 	 * @author Evorp
 	 */
 	private loadComponents() {
+		if (this.verbose) console.log(`${info}Loading Discord components...`);
 		for (const [key, path] of Object.entries(paths.components)) this.loadComponent(this[key], path);
-		if (this.verbose) console.log(`${info}Loaded Discord components`);
 	}
 
 	/**
@@ -350,11 +354,9 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 	 * @param type
 	 * @param data
 	 */
-	public storeAction(type: LogAction, data: LogData): void {
-		this.logs[this.lastLogIndex++ % this.maxLogs] = { type, data };
-	}
-
-	public get logs() {
-		return this._logs;
+	public storeAction(type: LogAction, data: LogData) {
+		// remove from start (oldest messages) on overflow
+		if (this.logs.length > this.maxLogs) this.logs.shift();
+		this.logs.push({ type, data });
 	}
 }
