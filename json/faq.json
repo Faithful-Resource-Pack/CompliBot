@@ -37,7 +37,7 @@
     {
         "question": "Why am I seeing missing/16x/vanilla textures while using Faithful?",
         "answer": "You're most likely using an incomplete pack. Currently, the only 100% finished packs are both Faithful 32x and Classic Faithful 32x (Jappa and PA) for Java Edition. You can see each pack's completion at the top of the channel list of their respective servers. If you want to help to get rid of these missing textures, you can help Faithful out by making a texture!",
-        "keywords": ["missing textues", "missing texture"]
+        "keywords": ["missing textures", "missing texture"]
     },
     {
         "question": "Will Faithful ever be available on the Bedrock Edition Marketplace?",
