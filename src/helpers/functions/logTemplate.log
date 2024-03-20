@@ -6,7 +6,7 @@ Date: %date%
 %stack%
 
 Actions:
-> last 50 bot actions: slash commands, chat messages, etc...
+> last %actionCount% bot actions: slash commands, chat messages, etc...
 
 %templateStart%
   INDEX        : %templateIndex%

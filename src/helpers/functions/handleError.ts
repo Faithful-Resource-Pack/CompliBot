@@ -32,6 +32,7 @@ export const constructLogFile = (
 		logTemplate
 			.replace("%date%", new Date().toUTCString())
 			.replace("%stack%", reason.stack || JSON.stringify(reason))
+			.replace("%actionCount%", String(client.logs.length))
 			.replace("%randomSentence%", sentence)
 			.replace("%randomSentenceUnderline%", "-".repeat(sentence.length))
 			.split("%templateStart%")[0] +
@@ -40,7 +41,7 @@ export const constructLogFile = (
 			(acc, log, index) =>
 				acc +
 				template
-					.replace("%templateIndex%", String(index))
+					.replace("%templateIndex%", String(index + 1))
 					.replace("%templateType%", formatLogType(log))
 					.replace(
 						"%templateCreatedTimestamp%",
