@@ -143,7 +143,7 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 		return this;
 	}
 
-	//prettier-ignore
+	// prettier-ignore
 	private asciiArt() {
 		const darkColor = chalk.hex(this.tokens.maintenance === false ? "#0026ff" : "#ff8400");
 		const lightColor = chalk.hex(this.tokens.maintenance === false ? "#0066ff" : "#ffc400");

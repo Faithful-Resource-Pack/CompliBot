@@ -100,7 +100,7 @@ export default async function compareTexture(client: Client, id: string, display
 	const packs = parseDisplay(display);
 
 	const dimension = await loadImage(result.urls.default).catch(() => null);
-	if (!dimension || dimension.width * dimension.height * packs.flat().length > 262144) return null;
+	if (!dimension || dimension.width * dimension.height * packs.flat().length > 262144) return;
 
 	// get texture urls into 2d array using the parsed display
 	const loadedImages: Image[][] = [];

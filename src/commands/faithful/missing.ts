@@ -9,7 +9,7 @@ import {
 	MissingResult,
 	updateVoiceChannel,
 	MissingEdition,
-} from "@functions/missing";
+} from "@functions/computeMissing";
 import axios from "axios";
 import formatPack from "@utility/formatPack";
 import minecraftSorter from "@utility/minecraftSorter";

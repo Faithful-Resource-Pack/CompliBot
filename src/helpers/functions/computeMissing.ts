@@ -64,8 +64,8 @@ export async function computeMissingResults(
 
 	// same steps are reused for compared repos
 	const [defaultPath, requestPath] = await Promise.all([
-		createOrUpdateRepo(packs.default, edition, version, callback),
-		createOrUpdateRepo(packs[pack], edition, version, callback),
+		syncRepo(packs.default, edition, version, callback),
+		syncRepo(packs[pack], edition, version, callback),
 	]);
 
 	await callback("Searching for differences…");
@@ -85,8 +85,7 @@ export async function computeMissingResults(
 		f.replace(requestPath, ""),
 	);
 
-	// instead of looping in the check array for each checked element, we directly check if the
-	// object has a value for the checked key
+	// object lookup is significantly faster than array finding when comparing
 	const check = requestTextures.reduce((o, key) => ({ ...o, [key]: true }), {});
 
 	// get texture that aren't in the check object
@@ -175,7 +174,7 @@ export async function updateVoiceChannel(client: Client, results: MissingData) {
  * @author Evorp, Juknum
  * @returns Cloned path
  */
-export async function createOrUpdateRepo(
+export async function syncRepo(
 	pack: Pack,
 	edition: MissingEdition,
 	version: string,
@@ -226,7 +225,7 @@ export const getAllFiles = (dir: string, filter: string[] = []): string[] => {
 };
 
 /**
- * Format an array of paths into a more human-readable format
+ * Format an array of texture paths into a more human-readable format
  * @author Evorp
  * @param results array of results
  * @returns human readable string

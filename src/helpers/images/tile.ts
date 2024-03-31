@@ -22,7 +22,7 @@ export async function tile(origin: ImageSource, options: TileOptions = {}): Prom
 	const input = await loadImage(origin);
 
 	// 1048576px is the same size as a magnified image
-	if (input.width * input.height * 3 > 1048576) return null;
+	if (input.width * input.height * 3 > 1048576) return;
 
 	const canvas = createCanvas(input.width * 3, input.height * 3);
 	const ctx = canvas.getContext("2d");
@@ -154,7 +154,7 @@ export async function tileToAttachment(
 ) {
 	const buf = await tile(origin, options);
 	// image too big so we returned early
-	if (!buf) return null;
+	if (!buf) return;
 	if (options?.magnify) return magnifyToAttachment(buf);
 	return new AttachmentBuilder(buf, { name });
 }
