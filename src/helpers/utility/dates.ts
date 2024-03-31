@@ -41,7 +41,7 @@ export function parseDate(d: string) {
 export function fromTimestampToHumanReadable(t: number) {
 	if (t === undefined) return "01/01/1970";
 
-	let date = new Date(Number(t)); // cast to int because it might be a string
+	const date = new Date(Number(t)); // cast to int because it might be a string
 	return `${date.getDate() < 10 ? `0${date.getDate()}` : date.getDate()}/${
 		date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1
 	}/${date.getFullYear()}`;

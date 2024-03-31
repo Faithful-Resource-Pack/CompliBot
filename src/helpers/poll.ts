@@ -161,7 +161,7 @@ export class Poll extends TimedEmbed {
 		if (options.yesno) {
 			this.setVotes({ upvote: [], downvote: [] });
 		} else {
-			let tmp: Votes = {};
+			const tmp: Votes = {};
 			for (let i = 0; i < options.answersArr.length; ++i) tmp[i] = [];
 			this.setVotes(tmp);
 		}

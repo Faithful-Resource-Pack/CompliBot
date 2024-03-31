@@ -25,7 +25,7 @@ export const constructLogFile = (
 		encoding: "utf-8",
 	});
 
-	const template = logTemplate.match(new RegExp(/\%templateStart%([\s\S]*?)%templateEnd/))[1]; // get message template
+	const template = logTemplate.match(new RegExp(/%templateStart%([\s\S]*?)%templateEnd/))[1]; // get message template
 
 	const sentence = choice(randomSentences);
 	const logText =

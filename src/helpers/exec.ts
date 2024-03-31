@@ -10,13 +10,13 @@ import { spawn, SpawnOptions } from "child_process";
  */
 
 /**
- * execute a single shell command where "cmd" is a string
+ * Execute a single shell command where "cmd" is a string
  * @author Miller Medeiros
  * @param cmd what command to run
  * @param cb callback to run afterwards (grabs error too)
  * @param options extra command line options for child_process
  */
-export const execSync = (cmd: string, cb: Function, options: SpawnOptions = {}) => {
+export const execSync = (cmd: string, cb: (err: any) => void, options: SpawnOptions = {}) => {
 	// this would be way easier on a shell/bash script :P
 	const parts = cmd.split(/\s+/g);
 
@@ -42,7 +42,7 @@ export const execSync = (cmd: string, cb: Function, options: SpawnOptions = {}) 
 
 // execute multiple commands in series
 // this could be replaced by any flow control lib
-export const seriesSync = (cmds: string[], cb: Function, options: SpawnOptions = {}) => {
+export const seriesSync = (cmds: string[], cb: (err: any) => void, options: SpawnOptions = {}) => {
 	const execNext = () => {
 		execSync(
 			cmds.shift(),

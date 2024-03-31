@@ -11,7 +11,7 @@ export default class GIFEncoderFixed extends GIFEncoder {
 		super(width, height);
 	}
 
-	findClosest(c: any) {
+	findClosest() {
 		return 0;
 	}
 }

@@ -74,7 +74,7 @@ export default {
 		if (/\bforgor\b/.test(message.content.toLocaleLowerCase())) await message.react("💀");
 
 		/** @todo remove this in a few months when people forget it existed */
-		const results = message.content.match(/(?<=\[\#)(.*?)(?=\])/g) ?? [];
+		const results = message.content.match(/(?<=\[#)(.*?)(?=\])/g) ?? [];
 		if (!results.length) return;
 		message
 			.reply({

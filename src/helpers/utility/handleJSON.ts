@@ -10,7 +10,7 @@ interface GetOptions {
 interface SetOptions {
 	relativePath: string;
 	filename: string;
-	data: {};
+	data: object;
 }
 
 /**

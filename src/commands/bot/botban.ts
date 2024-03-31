@@ -100,25 +100,31 @@ export const command: SlashCommand = {
 				"utf-8",
 			);
 
+			// curly brackets used to fix scoping issues
 			switch (interaction.options.getString("format")) {
-				case "json":
+				case "json": {
 					return interaction.editReply({
 						files: [new AttachmentBuilder(buffer, { name: "bans.json" })],
 					});
-				case "embed":
+				}
+				case "embed": {
 					const embed = new EmbedBuilder()
 						.setTitle("Botbanned IDs:")
 						.setDescription(JSON.parse(buffer.toString("utf-8"))["ids"].join("\n"));
 					return interaction.editReply({ embeds: [embed] });
-				case "mentions":
+				}
+				case "mentions": {
 					const pingEmbed = new EmbedBuilder()
 						.setTitle("Botbanned Users:")
 						.setDescription("<@" + JSON.parse(buffer.toString("utf-8"))["ids"].join(">\n<@") + ">");
 					return interaction.editReply({ embeds: [pingEmbed] });
-				default: // also text
+				}
+				default: {
+					// also text
 					interaction.editReply({
 						files: [new AttachmentBuilder(txtBuff, { name: "bans.txt" })],
 					});
+				}
 			}
 		}),
 };

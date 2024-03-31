@@ -31,8 +31,7 @@ export const command: SlashCommand = {
 		 * VARIABLES USED IN eval()
 		 */
 
-		const client = interaction.client;
-		const channel = interaction.channel;
+		const { client, channel, guild } = interaction;
 
 		// ----
 
