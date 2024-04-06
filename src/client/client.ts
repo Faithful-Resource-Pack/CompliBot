@@ -282,17 +282,19 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 			guilds.global.push(cmd.command);
 		}
 
-		for (const [name, { id }] of Object.entries(allGuilds)) {
-			// if the client isn't in the guild, skip it
-			if (!this.guilds.cache.get(id)) continue;
-			// add guild-specific commands (e.g. /eval)
-			await rest
-				.put(Routes.applicationGuildCommands(this.user.id, id), {
-					body: guilds[name],
-				})
-				.then(() => console.log(`${success}Successfully added slash commands to server: ${name}`))
-				.catch((err) => console.error(err));
-		}
+		// faster than for..of (order doesn't matter)
+		await Promise.all(
+			Object.entries(allGuilds)
+				// if the client isn't in the guild, skip it
+				.filter(([, { id }]) => this.guilds.cache.get(id))
+				.map(async ([name, { id }]) => {
+					// add guild-specific commands (e.g. /eval)
+					await rest.put(Routes.applicationGuildCommands(this.user.id, id), {
+						body: guilds[name],
+					});
+					console.log(`${success}Successfully added slash commands to server: ${name}`);
+				}),
+		);
 
 		// we add global commands to all guilds (only if not in dev mode)
 		if (!this.tokens.dev) {
@@ -307,7 +309,7 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 	 */
 	private loadEvents() {
 		if (this.tokens.maintenance)
-			return this.on("ready", async () => {
+			return this.on("ready", () => {
 				this.user.setPresence({
 					activities: [{ name: "under maintenance", type: ActivityType.Playing }],
 					status: "idle",

@@ -169,14 +169,14 @@ export const command: SlashCommand = {
 			if (response.results.length)
 				files.push(
 					new AttachmentBuilder(response.diffFile, {
-						name: `missing-${pack}-${response.data.edition}.txt`,
+						name: `missing-${pack.replace(/_/g, "-")}-${response.data.edition}.txt`,
 					}),
 				);
 
 			if (response.nonvanillaFile && interaction.options.getBoolean("nonvanilla", false))
 				files.push(
 					new AttachmentBuilder(response.nonvanillaFile, {
-						name: `nonvanilla-${pack}-${response.data.edition}.txt`,
+						name: `nonvanilla-${pack.replace(/_/g, "-")}-${response.data.edition}.txt`,
 					}),
 				);
 

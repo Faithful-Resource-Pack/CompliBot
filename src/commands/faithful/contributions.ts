@@ -56,8 +56,8 @@ export const command: SlashCommand = {
 			});
 		}
 
-		const files: AttachmentBuilder[] = [];
 		const embed = new EmbedBuilder();
+		const files: AttachmentBuilder[] = [];
 
 		// nested ternaries were getting really ugly here
 		let embedTitle = `${user.displayName} has ${response.results.length} `;
@@ -68,8 +68,11 @@ export const command: SlashCommand = {
 
 		if (response.count && !pack) embed.setDescription(response.count);
 
+		let fileName = `contributions-${user.username.replace(/\.|_/g, "-")}`;
+		if (pack) fileName += `-${pack.replace(/_/g, "-")}`;
+
 		if (response.results.length)
-			files.push(new AttachmentBuilder(response.file, { name: "about.txt" }));
+			files.push(new AttachmentBuilder(response.file, { name: `${fileName}.txt` }));
 
 		await interaction
 			.editReply({ embeds: [embed], files })
