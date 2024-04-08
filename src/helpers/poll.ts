@@ -74,16 +74,18 @@ export class Poll extends TimedEmbed {
 			...message.embeds[0].fields.map((field, index) => {
 				// information field, never gets changed
 				if (index === 0) return field;
-				const val = Number(field.value.substring(2, 3));
+
+				// get first number in field
+				const voteCount = Number(field.value.match(/(?<=> )(\d*?)(?= \/)/g)?.[0]);
 
 				// try for higher scoring option every iteration
-				if (!isNaN(val)) {
-					if (bestOption.value < val) {
-						bestOption.value = val;
+				if (!isNaN(voteCount)) {
+					if (bestOption.value < voteCount) {
+						bestOption.value = voteCount;
 						bestOption.message = isYesno
 							? this.getTimeoutString(this.getAllVotes())
 							: `Option **${field.name}** won!`;
-					} else if (bestOption.value === val) bestOption.message = "This vote was a tie!";
+					} else if (bestOption.value === voteCount) bestOption.message = "This vote was a tie!";
 				}
 
 				// status field is at the end so you can guarantee every option has been counted
