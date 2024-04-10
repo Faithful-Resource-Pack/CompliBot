@@ -10,6 +10,26 @@ export interface ContributionResult {
 	file?: Buffer;
 }
 
+// schema for sorting textures
+const PACK_ORDER = [
+	"faithful_32x",
+	"faithful_64x",
+	"classic_faithful_32x",
+	"classic_faithful_32x_progart",
+	"classic_faithful_64x",
+];
+
+const sortMethods: Record<
+	string,
+	(a: Contribution & Texture, b: Contribution & Texture) => number
+> = {
+	dateDesc: (a, b) => b.date - a.date,
+	dateAsc: (a, b) => a.date - b.date,
+	idDesc: (a, b) => Number(b.id) - Number(a.id),
+	idAsc: (a, b) => Number(a.id) - Number(b.id),
+	pack: (a, b) => PACK_ORDER.indexOf(a.pack) - PACK_ORDER.indexOf(b.pack),
+};
+
 /**
  * Get contributions for a given user and pack
  * @author Evorp
@@ -22,6 +42,7 @@ export default async function getContributions(
 	client: Client,
 	user: User,
 	pack?: string,
+	sort?: string,
 ): Promise<ContributionResult> {
 	let contributionData: Contribution[] = [];
 	try {
@@ -43,7 +64,7 @@ export default async function getContributions(
 	const packCount = {} as Record<string, number>;
 	const file = Buffer.from(
 		results
-			.sort((a, b) => b.date - a.date) // most recent on top
+			.sort(sortMethods[sort]) // most recent on top
 			.map((data) => {
 				const packName = formatPack(data.pack).name;
 				if (!packCount[packName]) packCount[packName] = 0;

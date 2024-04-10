@@ -26,6 +26,19 @@ export const command: SlashCommand = {
 					.setDescription("Filter contributions for a specific pack.")
 					.addChoices(...packs.map((pack) => ({ name: pack.name, value: pack.id })))
 					.setRequired(false),
+			)
+			.addStringOption((option) =>
+				option
+					.setName("sort")
+					.setDescription("Sort the found contributions (default is date descending).")
+					.addChoices(
+						{ name: "Date (newest → oldest)", value: "dateDesc" },
+						{ name: "Date (oldest → newest)", value: "dateAsc" },
+						{ name: "Texture ID (newest → oldest)", value: "idDesc" },
+						{ name: "Texture ID (oldest → newest)", value: "idAsc" },
+						{ name: "Resource Pack", value: "pack" },
+					)
+					.setRequired(false),
 			);
 	},
 	async execute(interaction) {
@@ -34,8 +47,9 @@ export const command: SlashCommand = {
 		// defaults to the person who asked
 		const user = interaction.options.getUser("user", false) ?? interaction.user;
 		const pack = interaction.options.getString("pack", false);
+		const sort = interaction.options.getString("sort", false) ?? "dateDesc";
 
-		const response = await getContributions(interaction.client, user, pack);
+		const response = await getContributions(interaction.client, user, pack, sort);
 		if (!response) {
 			interaction.ephemeralReply({
 				embeds: [
