@@ -1,4 +1,5 @@
 import { readdirSync, statSync } from "fs";
+import { sep } from "path";
 
 /**
  * Return an array of all filepaths in a directory
@@ -9,11 +10,11 @@ import { readdirSync, statSync } from "fs";
  */
 export default function walkSync(dir: string, filelist: string[] = []) {
 	// add trailing slash if not present
-	if (dir.at(-1) != "/") dir += "/";
+	if (dir.at(-1) != sep) dir += sep;
 	for (const file of readdirSync(dir)) {
 		if (statSync(dir + file).isDirectory())
 			// read directories inside directories recursively
-			filelist = walkSync(dir + file + "/", filelist);
+			filelist = walkSync(dir + file + sep, filelist);
 		else filelist.push(dir + file);
 	}
 	return filelist;
