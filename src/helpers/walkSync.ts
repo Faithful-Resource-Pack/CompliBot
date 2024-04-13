@@ -10,7 +10,7 @@ import { sep } from "path";
  */
 export default function walkSync(dir: string, filelist: string[] = []) {
 	// add trailing slash if not present
-	if (dir.at(-1) != sep) dir += sep;
+	if (!dir.endsWith(sep)) dir += sep;
 	for (const file of readdirSync(dir)) {
 		if (statSync(dir + file).isDirectory())
 			// read directories inside directories recursively
