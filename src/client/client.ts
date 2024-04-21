@@ -358,7 +358,7 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 	 */
 	public storeAction(type: LogAction, data: LogData) {
 		// remove from start (oldest messages) on overflow
-		if (this.logs.length > this.maxLogs) this.logs.shift();
+		if (this.logs.length >= this.maxLogs) this.logs.shift();
 		this.logs.push({ type, data });
 	}
 }
