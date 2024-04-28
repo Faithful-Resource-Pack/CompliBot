@@ -116,7 +116,7 @@
     },
     {
         "question": "What's the difference between an add-on and a tweak?",
-        "answer": "We define the differences in the following way:\n**Tweak**: A Tweak changes existing aspects about the game. They are one-off and smaller than an Add-on – changes of multiple themes should not be grouped into one Tweak. Examples: 3D items, Consistent Bedrock.\n**Add-on**: An add-on adds new features to the game, and/or is usually larger in scope than a Tweak. Examples: New random variations for blocks/mobs.\nAdditionally, due to technical limitations, PBR resource packs cannot reuse textures from the main Faithful pack, and therefore can function as standalone – but for the sake of simplicity, they are also considered add-ons.\nLastly, collections of Tweaks that the author chooses not to submit individually are considered add-ons as well.",
+        "answer": "We define the differences in the following way:\n**Tweak**: A tweak changes existing aspects about the game. They are one-off and smaller than an add-on – changes of multiple themes should not be grouped into one tweak. Examples: 3D items, Consistent Bedrock.\n**Add-on**: An add-on adds new features to the game, and/or is usually larger in scope than a tweak. Examples: New random variations for blocks/mobs.\nAdditionally, due to technical limitations, PBR resource packs cannot reuse textures from the main Faithful pack, and therefore can function as standalone – but for the sake of simplicity, they are also considered add-ons.\nLastly, collections of tweaks that the author chooses not to submit individually are considered add-ons as well.",
         "keywords": ["add-on vs tweak", "tweak vs add-on"]
     },
     {
