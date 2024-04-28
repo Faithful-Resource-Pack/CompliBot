@@ -102,21 +102,14 @@ export default async function compareTexture(client: Client, id: string, display
 	const dimension = await loadImage(result.urls.default).catch(() => null);
 	if (!dimension || dimension.width * dimension.height * packs.flat().length > 262144) return;
 
-	// get texture urls into 2d array using the parsed display
-	const loadedImages: Image[][] = [];
-	for (const packSet of packs) {
-		// had problems with nested async mapping so this is easier for everyone
-		loadedImages.push([]);
-		for (const pack of packSet) {
-			const image = result.urls[pack];
-			if (!image) continue;
-			try {
-				loadedImages.at(-1).push(await loadImage(image));
-			} catch {
-				// image doesn't exist yet
-			}
-		}
-	}
+	// load all images at same time using promise.all (faster)
+	const loadedImages: Image[][] = await Promise.all(
+		packs.map((packSet) =>
+			Promise.all(
+				packSet.map((pack) => result.urls[pack]).map((url) => loadImage(url).catch(() => null)),
+			).then((images) => images.filter((image) => image)),
+		),
+	);
 
 	let attachment: AttachmentBuilder;
 	if (isAnimated) {
@@ -124,14 +117,19 @@ export default async function compareTexture(client: Client, id: string, display
 		const stitchedFrames: Image[][] = [];
 		for (let i = 0; i < frameCount; ++i) {
 			// orient the frames vertically so they stitch properly
-			stitchedFrames.push([]);
-			stitchedFrames.at(-1).push(
-				await loadImage(
-					// image[i] is the frame of the image
-					await stitch(canvasArray.map((imageSet) => imageSet.map((image) => image[i]))),
+			const framePromise: Promise<Image>[] = [];
+			framePromise.push(
+				// image[i] is the frame of the image
+				stitch(canvasArray.map((imageSet) => imageSet.map((image) => image[i]))).then((buf) =>
+					loadImage(buf),
 				),
 			);
+
+			// technically still slowish, but faster than nested awaits
+			const resolvedFrame = await Promise.all(framePromise);
+			stitchedFrames.push(resolvedFrame);
 		}
+
 		const firstTileSheet = await stitch(stitchedFrames, 0);
 		const { magnified, factor, height, width } = await magnify(firstTileSheet, {
 			isAnimation: true,
