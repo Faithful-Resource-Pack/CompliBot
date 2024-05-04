@@ -29,19 +29,18 @@ export default {
 		switch (message.content.toLocaleLowerCase()) {
 			case "engineer gaming":
 				return message.react("👷").catch(() => {});
-			case "rip":
 			case "f":
 				return message.react("🇫").catch(() => {});
 			case "band":
 			case "banding":
-				return ["🎤", "🎸", "🥁", "🪘", "🎺", "🎷", "🎹", "🪗", "🎻"].forEach(async (emoji) => {
-					await message.react(emoji);
-				});
+				return Promise.all(
+					["🎤", "🎸", "🥁", "🪘", "🎺", "🎷", "🎹", "🪗", "🎻"].map((emoji) =>
+						message.react(emoji),
+					),
+				);
 			case "monke":
-			case "monkee":
-				return ["🎷", "🐒"].forEach(async (emoji) => {
-					await message.react(emoji).catch(() => {});
-				});
+				await message.react("🎷").catch(() => {});
+				await message.react("🐒").catch(() => {});
 			case "hello there":
 				message
 					.reply({
@@ -72,21 +71,5 @@ export default {
 		}
 
 		if (/\bforgor\b/.test(message.content.toLocaleLowerCase())) await message.react("💀");
-
-		/** @todo remove this in a few months when people forget it existed */
-		const results = message.content.match(/(?<=\[#)(.*?)(?=\])/g) ?? [];
-		if (!results.length) return;
-		message
-			.reply({
-				embeds: [
-					new EmbedBuilder()
-						.setTitle("Texture ID quoting has been removed!")
-						.setDescription(
-							"The feature was notoriously buggy, is based on a largely outdated Discord bot meta, and is entirely duplicated by `/compare`.\n\nTo replicate the functionality of ID quoting, simply run `/compare <id>`. [#template] is now a button on the embed for additional visibility.",
-						)
-						.setColor(colors.red),
-				],
-			})
-			.then((message: Message) => message.deleteButton());
 	},
 } as Event;
