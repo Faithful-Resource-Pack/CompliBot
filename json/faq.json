@@ -36,7 +36,7 @@
     },
     {
         "question": "Why am I seeing missing/16x/vanilla textures while using Faithful?",
-        "answer": "You're most likely using an incomplete pack. Currently, the only 100% finished packs are both Faithful 32x and Classic Faithful 32x (Jappa and PA) for Java Edition. You can see each pack's completion at the top of the channel list of their respective servers. If you want to help to get rid of these missing textures, you can help Faithful out by making a texture!",
+        "answer": "You're most likely using an incomplete pack. Currently, the only 100% finished packs are both Faithful 32x and Classic Faithful 32x (Jappa and PA) for Java Edition. You can see each pack's completion at the top of the channel list of their respective Discord servers. If you want to help to get rid of these missing textures, you can help Faithful out by making a texture!",
         "keywords": ["missing textures", "missing texture"]
     },
     {
@@ -82,7 +82,8 @@
     {
         "question": "How can I submit a texture to the pack? How does the approval process work?",
         "answer": "For the main Faithful packs, please read [The Faithful Contributor's Handbook](https://docs.faithfulpack.net/pages/manuals/contributor-handbook).\nTL;DR: You will need to accept the agreement in <#991031483089186826> first. To submit textures, upload them to the appropriate submission channel (the file has to have the same name as the default texture), and the bot will take over from there and format it for you. Any text you include with the message will be added as a comment, and people pinged in the comment will be added as co-authors.\nFor your texture to be added to the pack, it must pass a round of community voting (lasting 2 days) and a round of private Art Director Council voting (lasting one day).\nFor Classic Faithful, the submission process is exactly the same but only takes one day of community voting and no council vote instead.",
-        "keywords": ["submit", "approval"]
+        "keywords": ["submit", "approval"],
+        "discord": true
     },
     {
         "question": "How can I submit my add-on to the website?",
@@ -102,17 +103,20 @@
     {
         "question": "CompliBot is offline! What do I do?",
         "answer": "If the bot ever goes offline without previous notice from the developers, please ping __one__ of the online bot devs (<@473860522710794250>, <@360249987927638016>, or <@173336582265241601>) and alert them of the issue.",
-        "keywords": ["bot offline", "bot dead", "bot down"]
+        "keywords": ["bot offline", "bot dead", "bot down"],
+        "discord": true
     },
     {
         "question": "I have found a bug in CompliBot or Wynem and I want to request a fix and/or give feedback, how do I do it?",
         "answer": "If you find any bugs with CompliBot and/or have any requests, you can use the `/feedback` command to send feedback directly to the bot developers. For Wynem, you can use `e!suggest`. You can also report any CompliBot related problems directly by making an issue on the [GitHub repository](https://github.com/Faithful-Resource-Pack/CompliBot).",
-        "keywords": ["bot bug", "bot bugs", "bot issue"]
+        "keywords": ["bot bug", "bot bugs", "bot issue"],
+        "discord": true
     },
     {
         "question": "I need help from a moderator!",
         "answer": "You can use Wynem's `e!modping` command to call an online Moderator to help. We kindly ask not to misuse the command.",
-        "keywords": ["modping", "moderator ping"]
+        "keywords": ["modping", "moderator ping"],
+        "discord": true
     },
     {
         "question": "What's the difference between an add-on and a tweak?",
@@ -127,7 +131,8 @@
     {
         "question": "How do I submit a texture for a mod?",
         "answer": "For the time being, contact a Manager to receive further instructions. There are plans in the future to make this process easier to do.",
-        "keywords": ["submit mod"]
+        "keywords": ["submit mod"],
+        "discord": true
     },
     {
         "question": "Will Faithful affect my FPS?",
@@ -136,7 +141,7 @@
     },
     {
         "question": "How do I get the translator role?",
-        "answer": "Visit [our Crowdin](https://translate.faithfulpack.net) and see if you can help translate our Discord Bot or Web App. However, please don't translate anything from the current site, since it's currently getting rewritten and your hard work may get replaced later otherwise. Once your translations get accepted, ping an online Manager to add the role.",
+        "answer": "Visit [our Crowdin](https://translate.faithfulpack.net) and see if you can help translate our Discord bot or web app. Once your translations get accepted, ping an online Manager to add the role.",
         "keywords": ["crowdin", "translator", "translation"]
     },
     {
