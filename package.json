@@ -9,13 +9,13 @@
         "prettier": "prettier \"{,!(node_modules)/**/}*.ts\" --config .prettierrc --write"
     },
     "devDependencies": {
-        "@types/node": "^20.12.5",
+        "@types/node": "^20.12.11",
         "nodemon": "^3.1.0",
         "prettier": "^3.2.5"
     },
     "dependencies": {
-        "@napi-rs/canvas": "^0.1.51",
-        "@octokit/rest": "^20.1.0",
+        "@napi-rs/canvas": "^0.1.52",
+        "@octokit/rest": "^20.1.1",
         "axios": "^1.6.8",
         "chalk": "^4.1.2",
         "discord.js": "^14.14.1",

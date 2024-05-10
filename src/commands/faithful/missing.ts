@@ -150,21 +150,24 @@ export const command: SlashCommand = {
 
 		for (const response of responses) {
 			const packName = formatPack(pack).name;
-			const fieldTitle = `${packName} – ${toTitleCase(response.data.edition)} ${
-				// stupid fix to solve "Bedrock Bedrock Latest" etc
-				response.data.version.endsWith("latest") ? "Latest" : response.data.version
-			}`;
+			// filter standard numbered and special versions
+			const missingInfo = /\d/g.test(response.data.version)
+				? `${toTitleCase(response.data.edition)} ${response.data.version}`
+				: toTitleCase(response.data.version);
+			const fieldTitle = `${packName} – ${missingInfo}`;
 
 			// modded messes with the percentage so we don't update VCs if it's enabled
 			if (updateChannels && !checkModded) updateVoiceChannel(interaction.client, response.data);
 
 			// no repo found for the asked pack + edition
-			if (!response.diffFile)
-				return resultEmbed.addFields({
+			if (!response.diffFile) {
+				resultEmbed.addFields({
 					name: fieldTitle,
 					// error messages are stored in response.results[0] (stupid I know)
 					value: response.results[0],
 				});
+				break;
+			}
 
 			if (response.results.length)
 				files.push(
@@ -188,6 +191,6 @@ export const command: SlashCommand = {
 			});
 		}
 
-		return interaction.editReply({ embeds: [resultEmbed], files: files }).catch(() => {});
+		return interaction.editReply({ embeds: [resultEmbed], files }).catch(() => {});
 	},
 };
