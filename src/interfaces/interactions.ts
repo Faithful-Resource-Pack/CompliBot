@@ -1,8 +1,8 @@
 import {
 	SlashCommandSubcommandsOnlyBuilder,
-	SlashCommandBuilder,
 	Collection,
 	CacheType,
+	SlashCommandOptionsOnlyBuilder,
 } from "discord.js";
 import {
 	Client,
@@ -28,7 +28,7 @@ export type SlashCommandI = (interaction: ChatInputCommandInteraction) => Promis
 
 export type SyncSlashCommandBuilder =
 	| SlashCommandSubcommandsOnlyBuilder
-	| Omit<SlashCommandBuilder, "addSubcommand" | "addSubcommandGroup">;
+	| SlashCommandOptionsOnlyBuilder;
 
 /** Used for generating dynamic properties (e.g. /missing version list) */
 export type AsyncSlashCommandBuilder = (client: Client) => Promise<SyncSlashCommandBuilder>;
