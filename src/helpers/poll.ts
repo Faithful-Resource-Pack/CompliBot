@@ -62,7 +62,7 @@ export class Poll extends TimedEmbed {
 		}
 
 		const embed = EmbedBuilder.from(message.embeds[0]);
-		const components = this.getStatus() === "ended" ? [] : [...message.components];
+		const components = this.getStatus() === "ended" ? [] : Array.from(message.components);
 		const isYesno = this.getVoteNames()[0] == "upvote";
 
 		const bestOption = {
@@ -135,7 +135,7 @@ export class Poll extends TimedEmbed {
 		);
 
 		if (message.thread && message.thread.archived) return;
-		await message.edit({ embeds: [embed], components: [...components] });
+		await message.edit({ embeds: [embed], components: Array.from(components) });
 		return;
 	}
 

@@ -56,7 +56,8 @@ export async function getImageFromMessage(message: Message) {
 export async function getImageFromChannel(msgOrInteraction: Message | Interaction, limit = 20) {
 	let messages: Message[];
 	try {
-		messages = [...(await msgOrInteraction.channel.messages.fetch({ limit })).values()];
+		const fetched = await msgOrInteraction.channel.messages.fetch({ limit });
+		messages = Array.from(fetched.values());
 	} catch {
 		return "";
 	}

@@ -1,5 +1,5 @@
 import type { SlashCommand, SlashCommandI } from "@interfaces/interactions";
-import { SlashCommandBuilder, Collection, Guild, version as djsVersion } from "discord.js";
+import { SlashCommandBuilder, Collection, version as djsVersion } from "discord.js";
 import { EmbedBuilder, Message } from "@client";
 import axios from "axios";
 import { colors } from "@utility/colors";
@@ -25,14 +25,11 @@ export const command: SlashCommand = {
 	execute: new Collection<string, SlashCommandI>()
 		.set("bot", async (interaction) => {
 			// easier to get extended properties
-			const client = interaction.client;
-			const memberCount = client.guilds.cache.reduce(
-				(acc: number, guild: Guild) => acc + guild.memberCount,
-				0,
-			);
+			const { client } = interaction;
+			const memberCount = client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0);
 
 			const commandCount =
-				[...client.commandsProcessed.values()].reduce((acc, cur) => acc + cur, 0) + 1;
+				Array.from(client.commandsProcessed.values()).reduce((acc, cur) => acc + cur, 0) + 1;
 			const heart: string = (await axios.get(`${client.tokens.apiUrl}settings/images.heart`)).data;
 
 			const embed = new EmbedBuilder()
@@ -101,10 +98,9 @@ export const command: SlashCommand = {
 			}
 
 			//sorts commands by usage: [4, 3, 2, 1]
-			const sorted = new Map(
-				[...interaction.client.commandsProcessed.entries()].sort((a, b) => b[1] - a[1]),
+			const data = Array.from(interaction.client.commandsProcessed.entries()).sort(
+				(a, b) => b[1] - a[1],
 			);
-			const data = [[...sorted.keys()], [...sorted.values()]];
 
 			interaction.reply({
 				ephemeral: true,
@@ -113,15 +109,15 @@ export const command: SlashCommand = {
 						.setTimestamp()
 						.setTitle(interaction.strings().command.stats.top_ten)
 						.setDescription(
-							data[0]
-								.slice(0, data[0].length > 10 ? 10 : data[0].length)
-								.map((key: any, index: any) => {
-									let place = `\`${index + 1 < 10 ? ` ${index + 1}` : index + 1}.`;
-									place += ` `.repeat(4 - place.length) + "`";
+							data
+								.slice(0, data.length > 10 ? 10 : data.length)
+								.map(([key, value], i) => {
+									let index = `\`${i + 1}.`;
+									index += " ".repeat(Math.max(0, 4 - index.length)) + "`";
 									let command = `\`${key}`;
-									command += ` `.repeat(13 - command.length) + "`";
-									const uses = `\`${data[1][index]}\``;
-									return `${place} ${command} - ${uses}`;
+									command += " ".repeat(Math.max(0, 13 - command.length)) + "`";
+									const count = `\`${value}\``;
+									return `${index} ${command} – ${count}`;
 								})
 								.join("\n"),
 						),
