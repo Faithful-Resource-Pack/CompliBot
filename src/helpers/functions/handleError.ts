@@ -77,24 +77,25 @@ export const constructLogFile = (
  * @param type error title
  */
 export async function handleError(client: Client, error: any, type: string) {
-	if (client.tokens.dev) return console.error(`${err}${error?.stack ?? error}`);
+	const consoleDescription = `${err}${type}\n${error.stack || error}`;
+	if (client.tokens.dev) return console.error(consoleDescription);
 
-	const description = error.stack || JSON.stringify(error);
+	const embedDescription = error.stack || JSON.stringify(error);
 	// if there's no stack, interpret the error as json
 	const codeBlocks = error.stack ? "" : "json";
 
 	if (error instanceof DiscordAPIError)
 		// discord's problem (usually), not ours
-		return console.error(error, type, description);
+		return console.error(consoleDescription);
 
 	// silence EPROTO errors
-	if (error.code == "EPROTO") return console.error(error, type, description);
+	if (error.code == "EPROTO") return console.error(consoleDescription);
 
 	if (lastReasons.length == loopLimit) lastReasons.shift(); // remove first logged reason
 	lastReasons.push(error);
 
 	// DO NOT DELETE THIS CATCH, IT AVOIDS INFINITE LOOP IF THIS PROMISE REJECTS
-	devLogger(client, description, {
+	devLogger(client, embedDescription, {
 		title: type,
 		file: constructLogFile(client, error),
 		codeBlocks,
