@@ -42,20 +42,6 @@
                 "description": "`%CHOICE%` není platné FAQ klíčové slovo! Neudělali jste překlep?"
             }
         },
-        "poll": {
-            "ended": "Tato anketa již skončila!",
-            "suggestion": "Anketa lze vytvořit pomocí příkazu /poll.",
-            "vote": {
-                "counted": "Tvůj hlas byl započítán!",
-                "counted_suggestion": "Svůj hlas můžeš odebrat opětovnou reakcí.",
-                "removed": "Tvůj hlas byl odebrán!",
-                "removed_suggestion": "Hlasovat můžeš opětovnou reakcí."
-            },
-            "timeout": {
-                "no_type_given": "Zadanému časovému limitu chybí jednotka času!",
-                "example_types": "Příklady: `30s`, `1 min`, `10 hours`, `1 day`, `1 week`, `1 month`, `1 year`"
-            }
-        },
         "stats": {
             "usage": "Příkaz %COMMAND% byl použit %USE%krát.",
             "top_ten": "10 nejpoužívanějších příkazů:",
