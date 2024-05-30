@@ -42,20 +42,6 @@
                 "description": "`%CHOICE%` no es una palabra clave de FAQ válida! ¿Se le escapó el dedo?"
             }
         },
-        "poll": {
-            "ended": "¡Esta encuesta ha concluido!",
-            "suggestion": "¡Usa /poll para hacer una encuesta!",
-            "vote": {
-                "counted": "¡Tu voto ha sido contado!",
-                "counted_suggestion": "Puedes retirar tu voto reaccionando de nuevo.",
-                "removed": "¡Tu voto ha sido eliminado!",
-                "removed_suggestion": "Puedes agregar un nuevo voto reaccionando de nuevo."
-            },
-            "timeout": {
-                "no_type_given": "¡El tiempo dado no especifica cuánto dura!",
-                "example_types": "Ejemplo: `30s`, `1 min`, `10 hours`, `1 day`, `1 week`, `1 month`, `1 year`"
-            }
-        },
         "stats": {
             "usage": "%COMMAND% ha sido ejecutado %USE% veces.",
             "top_ten": "Los 10 comandos más utilizados:",
