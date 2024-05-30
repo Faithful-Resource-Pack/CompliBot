@@ -66,7 +66,7 @@
             "subtitle": "A myslím, že jsem se docela povedl.",
             "features": {
                 "title": "Funkce",
-                "description": "- Interakce s texturami v reálném čase pomocí `/texture`, `/compare` a `/cycle`.\n- Zjisti momentální stav úplnosti resource packu díky `/missing` nebo se podívej na tvoje vlastní příspěvky s `/about`.\n- Utility pro práci s obrázky jako třeba `/magnify`, `/tile`, `/palette` nebo `/animate`."
+                "description": "- Interakce s texturami v reálném čase pomocí `/texture`, `/compare` a `/cycle`.\n- Zjisti momentální stav úplnosti resource packu díky `/missing` nebo se podívej na tvoje vlastní příspěvky s `/contributions`.\n- Utility pro práci s obrázky jako třeba `/magnify`, `/tile`, `/palette` nebo `/animate`."
             },
             "developing": {
                 "title": "Vývoj",
