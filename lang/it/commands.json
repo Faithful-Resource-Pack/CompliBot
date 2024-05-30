@@ -47,7 +47,7 @@
             "subtitle": "E credo di esserne uscito abbastanza bene.",
             "features": {
                 "title": "Caratteristiche",
-                "description": "- Interazione in tempo reale con le texture usando `/texture`, `/compare` e `/cycle`.\n- Controllare i progressi del pacchetto di risorse con `/missing` o controllare i propri contributi con `/about`.\n- Utilità di manipolazione delle immagini come `/magnify`, `/tile`, `/palette` e `/animate`."
+                "description": "- Interazione in tempo reale con le texture usando `/texture`, `/compare` e `/cycle`.\n- Controllare i progressi del pacchetto di risorse con `/missing` o controllare i propri contributi con `/contributions`.\n- Utilità di manipolazione delle immagini come `/magnify`, `/tile`, `/palette` e `/animate`."
             },
             "developing": {
                 "title": "Sviluppo",
