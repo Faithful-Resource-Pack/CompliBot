@@ -10,7 +10,6 @@ import {
 } from "discord.js";
 import {
 	Message,
-	Automation,
 	StringSelectMenuInteraction,
 	ButtonInteraction,
 	ModalSubmitInteraction,
@@ -23,7 +22,6 @@ import { EmittingCollection } from "@helpers/emittingCollection";
 import { setData, getData } from "@utility/handleJSON";
 import { handleError } from "@functions/handleError";
 import { err, info, success } from "@helpers/logger";
-import { Poll } from "@helpers/poll";
 
 import { join } from "path";
 import chalk from "chalk";
@@ -41,9 +39,8 @@ export const paths = {
 		menus: join(__dirname, "..", "components", "menus"),
 		modals: join(__dirname, "..", "components", "modals"),
 	},
-	polls: "polls.json",
 	commandsProcessed: "commandsProcessed.json",
-};
+} as const;
 
 export const errors = [
 	{ displayName: "Disconnect", error: "disconnect" },
@@ -82,7 +79,6 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 	public verbose = false;
 	public firstStart = true; // used for prettier restarting in dev mode
 	public readonly tokens: Tokens;
-	public readonly automation = new Automation(this);
 
 	public readonly logs: Log[] = [];
 	private readonly maxLogs = 50;
@@ -92,7 +88,6 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 	public readonly modals = new Collection<string, Component<ModalSubmitInteraction>>();
 	public readonly slashCommands = new Collection<string, SlashCommand>();
 
-	public polls = new EmittingCollection<string, Poll>();
 	public commandsProcessed = new EmittingCollection<string, number>();
 
 	constructor(data: ClientOptions & { tokens: Tokens }, firstStart = true) {
@@ -122,8 +117,6 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 				this.loadEvents();
 				this.loadComponents();
 				this.loadCollections();
-
-				this.automation.start();
 			});
 
 		// all error types
@@ -132,6 +125,11 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 				if (reason) handleError(this, reason, displayName);
 			}),
 		);
+
+		// uptime kuma heartbeat for production bot
+		if (this.tokens.status) {
+			setInterval(() => fetch(this.tokens.status + this.ws.ping).catch(() => {}), 600000); // 10 minutes
+		}
 
 		return this;
 	}
@@ -168,7 +166,6 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 	 */
 	private loadCollections() {
 		if (this.verbose) console.log(`${info}Loading collection data...`);
-		this.loadCollection(this.polls, paths.polls, paths.json);
 		this.loadCollection(this.commandsProcessed, paths.commandsProcessed, paths.json);
 		return this;
 	}

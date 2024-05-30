@@ -45,27 +45,6 @@ export const deleteInteraction = new ButtonBuilder()
 	.setEmoji(emojis.delete)
 	.setCustomId("deleteInteraction");
 
-export const pollVote1 = new ButtonBuilder()
-	.setStyle(ButtonStyle.Primary)
-	.setEmoji("1️⃣")
-	.setCustomId("pollVote__0");
-export const pollVote2 = new ButtonBuilder()
-	.setStyle(ButtonStyle.Primary)
-	.setEmoji("2️⃣")
-	.setCustomId("pollVote__1");
-export const pollVote3 = new ButtonBuilder()
-	.setStyle(ButtonStyle.Primary)
-	.setEmoji("3️⃣")
-	.setCustomId("pollVote__2");
-export const pollVote4 = new ButtonBuilder()
-	.setStyle(ButtonStyle.Primary)
-	.setEmoji("4️⃣")
-	.setCustomId("pollVote__3");
-export const pollVote5 = new ButtonBuilder()
-	.setStyle(ButtonStyle.Primary)
-	.setEmoji("5️⃣")
-	.setCustomId("pollVote__4");
-
 export const pollUpvote = new ButtonBuilder()
 	.setStyle(ButtonStyle.Success)
 	.setEmoji(emojis.upvote)
@@ -79,12 +58,6 @@ export const pollDelete = new ButtonBuilder()
 	.setStyle(ButtonStyle.Danger)
 	.setEmoji(emojis.delete)
 	.setCustomId("pollDelete");
-
-export const pollVotes = [pollVote1, pollVote2, pollVote3, pollVote4, pollVote5];
-export const pollYesNo = new ActionRowBuilder<ButtonBuilder>().addComponents(
-	pollUpvote,
-	pollDownvote,
-);
 
 export const magnifyButtons = new ActionRowBuilder<ButtonBuilder>().addComponents(tile, palette);
 

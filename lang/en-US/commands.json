@@ -42,20 +42,6 @@
                 "description": "`%CHOICE%` is not a valid FAQ keyword! Have you made a typo?"
             }
         },
-        "poll": {
-            "ended": "This poll has ended!",
-            "suggestion": "Use /poll to make a poll!",
-            "vote": {
-                "counted": "Your vote has been counted!",
-                "counted_suggestion": "You can remove your vote by reacting again.",
-                "removed": "Your vote has been removed!",
-                "removed_suggestion": "You can add a new vote by reacting again."
-            },
-            "timeout": {
-                "no_type_given": "The given timeout doesn't specify which length it is!",
-                "example_types": "Example: `30s`, `1 min`, `10 hours`, `1 day`, `1 week`, `1 month`, `1 year`"
-            }
-        },
         "stats": {
             "usage": "%COMMAND% has run %USE% times.",
             "top_ten": "Top 10 most used commands:",
