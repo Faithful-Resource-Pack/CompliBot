@@ -61,7 +61,7 @@ export default async function getContributions(
 		...textures[contribution.texture],
 	}));
 
-	const packCount = {} as Record<string, number>;
+	const packCount: Record<string, number> = {};
 	const file = Buffer.from(
 		results
 			.sort(sortMethods[sort]) // most recent on top

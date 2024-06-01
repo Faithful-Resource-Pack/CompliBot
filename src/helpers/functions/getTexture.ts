@@ -129,25 +129,25 @@ export async function getTexture(
  * @param texture texture to get paths and uses from
  * @returns usable embed field data
  */
-export const addPathsToEmbed = (texture: GalleryTexture | Texture): APIEmbedField[] => {
-	const tmp = {} as Record<MinecraftEdition, string[]>;
-
-	texture.uses.forEach((use) => {
-		texture.paths
+export function addPathsToEmbed(texture: GalleryTexture | Texture): APIEmbedField[] {
+	const groupedPaths: Partial<Record<MinecraftEdition, string[]>> = texture.uses.reduce((acc, use) => {
+		const paths = texture.paths
 			.filter((el) => el.use === use.id)
-			.forEach((p) => {
+			.map((p) => {
 				const versions = p.versions.sort(minecraftSorter);
 				const versionRange = `\`[${
-					versions.length > 1 ? `${versions[0]} – ${versions.at(-1)}` : versions[0]
+					versions.length > 1 ? `${versions[0]} – ${versions[versions.length - 1]}` : versions[0]
 				}]\``;
-				const formatted = `${versionRange} ${p.name}`;
-				if (tmp[use.edition]) tmp[use.edition].push(formatted);
-				else tmp[use.edition] = [formatted];
+				return `${versionRange} ${p.name}`;
 			});
-	});
+		if (!acc[use.edition]) acc[use.edition] = [];
+		acc[use.edition].push(...paths);
+		return acc;
+	}, {});
 
-	return Object.entries(tmp).map(([edition, paths]) => ({
-		name: toTitleCase(edition),
+	// convert from use object to embed-compatible data
+	return Object.entries(groupedPaths).map(([edition, paths]) => ({
+		name: edition[0].toUpperCase() + edition.slice(1),
 		value: paths.join("\n"),
 	}));
-};
+}
