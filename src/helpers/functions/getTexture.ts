@@ -130,20 +130,23 @@ export async function getTexture(
  * @returns usable embed field data
  */
 export function addPathsToEmbed(texture: GalleryTexture | Texture): APIEmbedField[] {
-	const groupedPaths: Partial<Record<MinecraftEdition, string[]>> = texture.uses.reduce((acc, use) => {
-		const paths = texture.paths
-			.filter((el) => el.use === use.id)
-			.map((p) => {
-				const versions = p.versions.sort(minecraftSorter);
-				const versionRange = `\`[${
-					versions.length > 1 ? `${versions[0]} – ${versions[versions.length - 1]}` : versions[0]
-				}]\``;
-				return `${versionRange} ${p.name}`;
-			});
-		if (!acc[use.edition]) acc[use.edition] = [];
-		acc[use.edition].push(...paths);
-		return acc;
-	}, {});
+	const groupedPaths: Partial<Record<MinecraftEdition, string[]>> = texture.uses.reduce(
+		(acc, use) => {
+			const paths = texture.paths
+				.filter((el) => el.use === use.id)
+				.map((p) => {
+					const versions = p.versions.sort(minecraftSorter);
+					const versionRange = `\`[${
+						versions.length > 1 ? `${versions[0]} – ${versions[versions.length - 1]}` : versions[0]
+					}]\``;
+					return `${versionRange} ${p.name}`;
+				});
+			if (!acc[use.edition]) acc[use.edition] = [];
+			acc[use.edition].push(...paths);
+			return acc;
+		},
+		{},
+	);
 
 	// convert from use object to embed-compatible data
 	return Object.entries(groupedPaths).map(([edition, paths]) => ({

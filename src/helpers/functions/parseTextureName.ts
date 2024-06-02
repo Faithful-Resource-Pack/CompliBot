@@ -28,7 +28,9 @@ export default async function parseTextureName(
 
 	let results: Texture | Texture[];
 	try {
-		results = (await axios.get(`${interaction.client.tokens.apiUrl}textures/${name}/all`)).data;
+		results = (
+			await axios.get(`${interaction.client.tokens.apiUrl}textures/${encodeURIComponent(name)}/all`)
+		).data;
 	} catch {
 		// invalid request
 		await interaction.ephemeralReply({ embeds: [noResultEmbed] });
