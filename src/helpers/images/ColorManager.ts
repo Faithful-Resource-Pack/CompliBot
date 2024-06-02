@@ -287,7 +287,7 @@ export default class ColorManager {
 				}
 			} else options.hex = "000000ff";
 
-			const arr = options.hex.match(/.{2}/g); // cut it each 2 chars;
+			const arr = options.hex.match(/.{2}/g); // split into groups of two
 			this.color = {
 				r: parseInt(arr[0], 16),
 				g: parseInt(arr[1], 16),

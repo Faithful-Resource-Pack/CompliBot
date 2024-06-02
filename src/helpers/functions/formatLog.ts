@@ -41,9 +41,7 @@ export function formatLogURL(data: any) {
 
 	// slash command constructed url
 	if (data.guildId && data.channelId)
-		return `https://discord.com/channels/${data.guildId}/${data.channelId}/${
-			data.messageId ? data.messageId : ""
-		}`;
+		return `https://discord.com/channels/${data.guildId}/${data.channelId}/${data.messageId || ""}`;
 
 	if (data.guild) return `Guild ID is ${data.guild.id}`;
 
