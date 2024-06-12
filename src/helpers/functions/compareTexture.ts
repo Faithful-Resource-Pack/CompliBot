@@ -44,7 +44,7 @@ export function parseDisplay(display: string) {
  * @param loadedImages Array of loaded images
  * @param dimension Base image for dimensions
  * @param mcmeta mcmeta for the texture, used for the dimensions of a single frame
- * @returns 3D array with all of the frames and the number of frames
+ * @returns 3D array of packSet * pack * frames plus the number of frames
  */
 export function sliceTileSheet(loadedImages: Image[][], dimension: Image, mcmeta: MCMETA) {
 	const frameCount: number = !mcmeta.animation?.height
@@ -56,9 +56,11 @@ export function sliceTileSheet(loadedImages: Image[][], dimension: Image, mcmeta
 		canvasArray.push([]);
 		for (const image of images) {
 			canvasArray.at(-1).push([]);
-			const individualHeight = image.height / frameCount; // height of each frame adjusted for resolution
+			// height of each frame adjusted for resolution
+			const individualHeight = image.height / frameCount;
 			for (let i = 0; i < frameCount; ++i) {
-				const canvas = createCanvas(image.width, individualHeight); // canvas for each frame adjusted for resolution
+				// canvas for each frame adjusted for resolution
+				const canvas = createCanvas(image.width, individualHeight);
 				const ctx = canvas.getContext("2d");
 				ctx.imageSmoothingEnabled = false;
 
@@ -78,6 +80,33 @@ export function sliceTileSheet(loadedImages: Image[][], dimension: Image, mcmeta
 		}
 	}
 	return { canvasArray, frameCount }; // returns the 3D array with all of the frames and the number of frames
+}
+
+/**
+ * Generate an array of comparison images for each frame in the animation
+ * @author Superboxer47
+ * @param canvasArray 3D array of packSet * pack * frames
+ * @param frameCount number of frames in the animation
+ * @returns 2D array of comparison images * frames
+ */
+export async function generateComparisonFrames(canvasArray: Canvas[][][], frameCount: number) {
+	const stitchedFrames: Image[][] = [];
+	for (let i = 0; i < frameCount; ++i) {
+		// orient the frames vertically so they stitch properly
+		const framePromise: Promise<Image>[] = [];
+		// create comparison image for frame i
+		framePromise.push(
+			stitch(canvasArray.map((imageSet) => imageSet.map((image) => image[i]))).then((buf) =>
+				loadImage(buf),
+			),
+		);
+
+		// optimization to avoid nested awaits (technically still slowish)
+		const resolvedFrame = await Promise.all(framePromise);
+		stitchedFrames.push(resolvedFrame);
+	}
+
+	return stitchedFrames;
 }
 
 /**
@@ -112,26 +141,14 @@ export default async function compareTexture(client: Client, id: string, display
 	);
 
 	let attachment: AttachmentBuilder;
+	let filename: string;
 	if (isAnimated) {
 		const { canvasArray, frameCount } = sliceTileSheet(loadedImages, dimension, mcmeta);
-		const stitchedFrames: Image[][] = [];
-		for (let i = 0; i < frameCount; ++i) {
-			// orient the frames vertically so they stitch properly
-			const framePromise: Promise<Image>[] = [];
-			framePromise.push(
-				// image[i] is the frame of the image
-				stitch(canvasArray.map((imageSet) => imageSet.map((image) => image[i]))).then((buf) =>
-					loadImage(buf),
-				),
-			);
+		const stitchedFrames = await generateComparisonFrames(canvasArray, frameCount);
 
-			// technically still slowish, but faster than nested awaits
-			const resolvedFrame = await Promise.all(framePromise);
-			stitchedFrames.push(resolvedFrame);
-		}
-
-		const firstTileSheet = await stitch(stitchedFrames, 0);
-		const { magnified, factor, height, width } = await magnify(firstTileSheet, {
+		// stitch downwards to create one long tilesheet of full comparison images
+		const comparisonImageSheet = await stitch(stitchedFrames, 0);
+		const { magnified, factor, height, width } = await magnify(comparisonImageSheet, {
 			isAnimation: true,
 		});
 
@@ -142,14 +159,16 @@ export default async function compareTexture(client: Client, id: string, display
 			? height / frameCount
 			: mcmeta.animation.height * factor;
 		mcmeta.animation.width = !mcmeta.animation?.width ? width : mcmeta.animation.width * factor;
-		attachment = await animateToAttachment(magnified, mcmeta);
+		filename = `${result.texture.name}.gif`;
+		attachment = await animateToAttachment(magnified, mcmeta, filename);
 	} else {
 		const stitched = await stitch(loadedImages);
-		attachment = await magnifyToAttachment(stitched);
+		filename = `${result.texture.name}.png`;
+		attachment = await magnifyToAttachment(stitched, {}, filename);
 	}
 
 	const embed = new EmbedBuilder()
-		.setImage(`attachment://${isAnimated ? "animated.gif" : "magnified.png"}`)
+		.setImage(`attachment://${filename}`)
 		.setTitle(`[#${result.texture.id}] ${result.texture.name}`)
 		.setURL(`https://webapp.faithfulpack.net/gallery?show=${id}`)
 		.addFields(addPathsToEmbed(result))

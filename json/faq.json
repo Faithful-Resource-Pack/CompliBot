@@ -40,8 +40,8 @@
         "keywords": ["missing textures", "missing texture"]
     },
     {
-        "question": "Will Faithful ever be available on the Bedrock Edition Marketplace?",
-        "answer": "Unfortunately, getting resource packs onto the marketplace is a lengthy and complicated process, and a free pack hasn't been published to the marketplace yet. As well as this, community packs are disallowed from the marketplace, as there would be no fair way to compensate everyone involved otherwise monetarily. We would like to eventually release Faithful on the marketplace if possible, but if releasing a free resource pack on the marketplace is not possible, we will not release Faithful there.",
+        "question": "What happened to Faithful on the Bedrock Edition Marketplace, and will it ever be available again?",
+        "answer": "The previously listed version of Faithful 32x on the Bedrock marketplace (by Kraineff/xMrVizzy) was never official or licensed by us. As the stolen pack contained mostly our work, we contacted Mojang to take the pack off the marketplace since it was monetizing stolen work.\nUnfortunately, getting our resource packs onto the marketplace would be a lengthy and complicated process, since a free pack hasn't been published to the marketplace before. On top of this, community packs are disallowed from the marketplace, as there would be no fair way to compensate everyone involved otherwise monetarily. We would like to eventually release Faithful on the marketplace if possible, but if releasing a free resource pack on the marketplace is not possible, we will not release Faithful there.",
         "keywords": ["marketplace", "bedrock"]
     },
     {
@@ -87,28 +87,34 @@
     },
     {
         "question": "How can I submit my add-on to the website?",
-        "answer": "On https://webapp.faithfulpack.net/, log in with your Discord account. Next, in the navigation bar at the top, click Add-ons and select Upload. Finally, fill out the form that you're presented with, and when you're finished, click the Submit button. Your add-on will appear on the website when it has been reviewed and approved by a Manager.",
+        "answer": "On https://webapp.faithfulpack.net/, log in with your Discord account. Next, in the navigation bar at the top, click Add-ons and select Upload. Finally, fill out the form that you're presented with, and when you're finished, click the Submit button. Your add-on will appear on the website when it has been reviewed and approved by a manager.",
         "keywords": ["submit add-on", "add-on", "addon"]
     },
     {
         "question": "Does Faithful support mods?",
-        "answer": "Yes, we are currently in an early stage of rebooting Faithful 32x mod support, and many textures for various mods have already been made. For now, you can download what's done via the [Faithful Mods GitHub repository](https://github.com/Faithful-Resource-Pack/Faithful-32x-Mods) – A more convenient mod picker website is planned for our future site rewrite. Please check out the README file for more information, including how to contribute. You can also talk to others in <#1025645837247848458>.\nMod support for any packs besides Faithful 32x and Classic Faithful 32x Programmer Art is not currently planned. (If you decide to make textures for them, you can, just ask a Manager so they can set up a new repository.)",
+        "answer": "Yes, we are currently in an early stage of rebooting Faithful 32x mod support, and many textures for various mods have already been made. For now, you can download what's done via the [Faithful Mods GitHub repository](https://github.com/Faithful-Resource-Pack/Faithful-32x-Mods) – A more convenient mod picker website is planned for our future site rewrite. Please check out the README file for more information, including how to contribute. You can also talk to others in <#1025645837247848458>.\nMod support for any packs besides Faithful 32x and Classic Faithful 32x Programmer Art is not currently planned. (If you decide to make textures for them, you can, just ask a manager to set up a new repository.)",
         "keywords": ["mod support", "mods", "mod"]
     },
     {
         "question": "What happened to the existing Faithful mod support?",
-        "answer": "Mod support textures for Vattic-era Faithful were made by numerous people, and were collected and hosted by a group called the F32Organisation. Their website that hosts the textures still exists at http://f32.me/, but goes down often (it has most likely gone down indefinitely at the time of writing). Currently, the most reliable place to get the old Faithful mod textures is [the F32Organisation GitHub](https://github.com/F32Organization).\nWe used to host these textures on our website as well, but over time our mod picker broke down, leading to us removing the webpage. When the time is right, we intend to group the old F32Org textures with Classic Faithful 32x and give them a mod picker on the rewritten website alongside the new Faithful 32x mod support.",
+        "answer": "Mod support textures for Vattic-era Faithful were made by numerous people, and were collected and hosted by a group called the F32Organisation. Their website that hosts the textures still exists at http://f32.me/, but goes down often (it has most likely gone down indefinitely at the time of writing). Currently, the most reliable place to get the old Faithful mod textures is [the F32Organisation GitHub](https://github.com/F32Organization).\nWe used to host these textures on our website as well, but over time our mod picker broke down, leading to us unlisting them. When the time is right, we intend to group the old F32Org textures with Classic Faithful 32x and give them a mod picker on the rewritten website alongside the new Faithful 32x mod support.",
         "keywords": ["f32", "f32org", "old mod support"]
     },
     {
+        "question": "How do I submit a texture for a mod?",
+        "answer": "You can make a pull request to our [GitHub repository](https://github.com/Faithful-Resource-Pack/Faithful-32x-Mods) with your textures to the correct branch. There are plans in the future to make this easier to do; if you have any trouble with GitHub, please contact a manager.",
+        "keywords": ["submit mod"],
+        "discord": true
+    },
+    {
         "question": "CompliBot is offline! What do I do?",
-        "answer": "If the bot ever goes offline without previous notice from the developers, please ping __one__ of the online bot devs (<@473860522710794250>, <@360249987927638016>, or <@173336582265241601>) and alert them of the issue.",
+        "answer": "If one of the bots ever goes offline without previous notice from the developers, please ping __one__ of the online developers (<@473860522710794250>, <@360249987927638016>, or <@173336582265241601>) and alert them of the issue.",
         "keywords": ["bot offline", "bot dead", "bot down"],
         "discord": true
     },
     {
         "question": "I have found a bug in CompliBot or Wynem and I want to request a fix and/or give feedback, how do I do it?",
-        "answer": "If you find any bugs with CompliBot and/or have any requests, you can use the `/feedback` command to send feedback directly to the bot developers. For Wynem, you can use `e!suggest`. You can also report any CompliBot related problems directly by making an issue on the [GitHub repository](https://github.com/Faithful-Resource-Pack/CompliBot).",
+        "answer": "If you find any bugs with CompliBot/CompliBot Submissions or have any requests, you can use the `/feedback` command to send feedback directly to their GitHub issue pages, or make an issue directly on their respective repositories. For Wynem, you can use `e!suggest`.",
         "keywords": ["bot bug", "bot bugs", "bot issue"],
         "discord": true
     },
@@ -125,24 +131,23 @@
     },
     {
         "question": "How can I submit my tweak?",
-        "answer": "For the time being, tweaks can be submitted as add-ons using the standard add-on creation process. A Vanilla Tweaks-styled customiser is planned for the future, but we currently have no developer for it.",
+        "answer": "For the time being, tweaks can be submitted as add-ons using the standard add-on creation process. A Vanilla Tweaks-styled customizer is planned for the future, but we currently have no developer for it.",
         "keywords": ["tweak", "tweaks"]
     },
     {
-        "question": "How do I submit a texture for a mod?",
-        "answer": "For the time being, contact a Manager to receive further instructions. There are plans in the future to make this process easier to do.",
-        "keywords": ["submit mod"],
-        "discord": true
-    },
-    {
         "question": "Will Faithful affect my FPS?",
-        "answer": "The short answer is no. While ludicrously high-resolution packs may cause a minor decrease (well above the scope of the Faithful project), in general shaders are the major graphics-related culprit for causing large amounts of lag, not resource packs. When a resource pack claims to boost FPS, there's a good chance it's completely lying or it will cause a very marginal increase at best.",
+        "answer": "The short answer is no. While ludicrously high-resolution packs may cause a minor decrease (well above the scope of the Faithful project), in general shaders or mods are the major graphics-related culprit for causing large amounts of lag, not resource packs. When a resource pack claims to boost FPS, there's a good chance it's completely lying or it will cause a very marginal increase at best.",
         "keywords": ["fps", "lag", "performance"]
     },
     {
         "question": "How do I get the translator role?",
-        "answer": "Visit [our Crowdin](https://translate.faithfulpack.net) and see if you can help translate our Discord bot or web app. Once your translations get accepted, ping an online Manager to add the role.",
+        "answer": "Visit [our Crowdin](https://translate.faithfulpack.net) and see if you can help translate CompliBot or or the Faithful Web App. Once your translations get accepted, ping an online manager to add the role.",
         "keywords": ["crowdin", "translator", "translation"]
+    },
+    {
+        "question": "Items appear too big when using Bedrock Edition! What can I do?",
+        "answer": "This is a vanilla bug that's been in Bedrock for over a year ([MCPE-120618](https://bugs.mojang.com/browse/MCPE-120618)) which affects any pack with textures larger than default. There's a [fix made by MultiPixel](https://fxtwitter.com/MultiPixelHD/status/1786301423011119359) available, which may or may not work completely in the mean time.",
+        "keywords": ["big items", "bugged items", "oversized items"]
     },
     {
         "question": "How can I use Faithful textures in my own projects?",
