@@ -1,7 +1,6 @@
 import type { Event } from "@interfaces/events";
 import { Client, Message, EmbedBuilder } from "@client";
 import type { Submission } from "@interfaces/database";
-import { colors } from "@utility/colors";
 import axios from "axios";
 import { randint } from "@utility/methods";
 import prefixCommandHandler from "@helpers/prefixCommandHandler";
@@ -14,12 +13,12 @@ export default {
 
 		if (message.author.bot) return;
 
-		const packs: Record<string, Submission> = (
-			await axios.get(`${client.tokens.apiUrl}submissions/raw`)
-		).data;
-
-		// returns early if you're in a submission channel
-		if (Object.values(packs).some((pack) => pack.channels.submit == message.channel.id)) return;
+		let packs: Record<string, Submission>;
+		try {
+			packs = (await axios.get(`${client.tokens.apiUrl}submissions/raw`)).data;
+			// returns early if you're in a submission channel
+			if (Object.values(packs).some((pack) => pack.channels.submit == message.channel.id)) return;
+		} catch {} // api error, ignore
 
 		if (message.content.startsWith(client.tokens.prefix)) return prefixCommandHandler(message);
 
