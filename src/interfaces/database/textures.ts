@@ -41,7 +41,6 @@ export interface Contribution {
 	id: string;
 	date: number; // unix timestamp
 	texture: string; // texture ID
-	resolution: number; // texture resolution
 	pack: string;
 	authors: string[];
 }
