@@ -34,8 +34,8 @@ export const command: SlashCommand = {
 					.addChoices(
 						{ name: "Date (newest → oldest)", value: "dateDesc" },
 						{ name: "Date (oldest → newest)", value: "dateAsc" },
-						{ name: "Texture ID (newest → oldest)", value: "idDesc" },
-						{ name: "Texture ID (oldest → newest)", value: "idAsc" },
+						{ name: "Texture ID (largest → smallest)", value: "idDesc" },
+						{ name: "Texture ID (smallest → largest)", value: "idAsc" },
 						{ name: "Resource Pack", value: "pack" },
 					)
 					.setRequired(false),
