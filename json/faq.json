@@ -146,7 +146,7 @@
     },
     {
         "question": "Items appear too big when using Bedrock Edition! What can I do?",
-        "answer": "This is a vanilla bug that's been in Bedrock for over a year ([MCPE-120618](https://bugs.mojang.com/browse/MCPE-120618)) which affects any pack with textures larger than default. There's a [fix made by MultiPixel](https://fxtwitter.com/MultiPixelHD/status/1786301423011119359) available, which may or may not work completely in the mean time.",
+        "answer": "This is a vanilla bug that's been in Bedrock for over a year ([MCPE-120618](https://bugs.mojang.com/browse/MCPE-120618)) which affects any pack with textures larger than default. All Faithful packs shouldn't have this issue since a workaround has been found, but for other packs there's a [standalone fix made by MultiPixel](https://fxtwitter.com/MultiPixelHD/status/1786301423011119359) available.",
         "keywords": ["big items", "bugged items", "oversized items"]
     },
     {
