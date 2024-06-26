@@ -1,41 +1,46 @@
-import type { SlashCommandI } from "@interfaces/interactions";
 import { Collection } from "discord.js";
 import type { Event } from "@interfaces/events";
-import { Client, ChatInputCommandInteraction } from "@client";
+import { Client, ChatInputCommandInteraction, EmbedBuilder, Message } from "@client";
+import { handleError } from "@functions/handleError";
+import { colors } from "@utility/colors";
 
 export default {
 	name: "slashCommandUsed",
 	async execute(client: Client, interaction: ChatInputCommandInteraction) {
 		client.storeAction("slashCommand", interaction);
 
-		// get command name
-		const { commandName } = interaction;
-
 		// test if client has this command registered
-		if (!client.slashCommands.has(commandName)) return;
+		if (!client.slashCommands.has(interaction.commandName)) return;
+		const command = client.slashCommands.get(interaction.commandName);
 
-		// get this command
-		const command = client.slashCommands.get(commandName);
-
+		// ! await required for try catch support
 		try {
-			// try if there is a subcommand
-			const subCommand = interaction.options.getSubcommand();
-			// execute it if so
-			(command.execute as Collection<string, SlashCommandI>).get(subCommand)(interaction);
-		} catch (_err) {
-			// not a subcommand
-			try {
-				// execute command
-				(command.execute as SlashCommandI)(interaction);
-			} catch (err) {
-				console.trace(err);
-				return interaction.reply({
-					content: `${
-						interaction.strings().error.command
-					}\nError for the developers:\n\`\`\`${err}\`\`\``,
-					ephemeral: true,
-				});
+			// try subcommand
+			if (command.execute instanceof Collection) {
+				const subCommand = interaction.options.getSubcommand();
+				await command.execute.get(subCommand)(interaction);
 			}
+			// regular command
+			else await command.execute(interaction);
+		} catch (err) {
+			handleError(client, err, "Slash Command Error");
+
+			const embed = new EmbedBuilder()
+				.setTitle(interaction.strings().error.generic)
+				.setDescription(
+					`${interaction.strings().error.command}\nError for the developers:\n\`\`\`${err}\`\`\``,
+				)
+				.setColor(colors.red);
+
+			let msgEmbed: Message;
+			try {
+				msgEmbed = await interaction.reply({ embeds: [embed], fetchReply: true });
+			} catch {
+				// interaction already deferred, try following up instead
+				msgEmbed = await interaction.followUp({ embeds: [embed], fetchReply: true });
+			}
+
+			return msgEmbed.deleteButton();
 		}
 
 		// increase uses of that command
