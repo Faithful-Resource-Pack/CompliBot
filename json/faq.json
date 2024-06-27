@@ -61,7 +61,7 @@
     },
     {
         "question": "What are Jappa and Programmer Art textures?",
-        "answer": "*JAPPA* is the online nickname of Jasper Boerstra, Minecraft's lead artist and the author of the majority of textures used in versions 1.14 and newer. The \"new\" Minecraft textures are often called Jappa textures in his honour.\nProgrammer Art (oftentimes abbreviated as \"progart\" or \"PA\") is the name given by Mojang and used by the Minecraft artist community for the old textures, used in Minecraft prior to release 1.14. It's also the name of the built-in resource pack featured in newer versions that contains the old textures.\n*Whether a texture is Jappa or Programmer Art is not related to its pixel resolution (e.g. 16x16, 32x, 64x).*",
+        "answer": "JAPPA is the online nickname of Jasper Boerstra, Minecraft's art director and the author of the majority of textures used in versions 1.14 and newer. The \"new\" Minecraft textures are often called Jappa textures in his honour.\nProgrammer Art (oftentimes abbreviated as \"progart\" or \"PA\") is the name given by Mojang and used by the Minecraft artist community for the old textures, used in Minecraft prior to release 1.14. It's also the name of the built-in resource pack featured in newer versions that contains the old textures.\n*Whether a texture is Jappa or Programmer Art is not related to its pixel resolution (e.g. 16x16, 32x, 64x).*",
         "keywords": ["jappa", "progart", "prog art"]
     },
     {
@@ -97,7 +97,7 @@
     },
     {
         "question": "What happened to the existing Faithful mod support?",
-        "answer": "Mod support textures for Vattic-era Faithful were made by numerous people, and were collected and hosted by a group called the F32Organisation. Their website that hosts the textures still exists at http://f32.me/, but goes down often (it has most likely gone down indefinitely at the time of writing). Currently, the most reliable place to get the old Faithful mod textures is [the F32Organisation GitHub](https://github.com/F32Organization).\nWe used to host these textures on our website as well, but over time our mod picker broke down, leading to us unlisting them. When the time is right, we intend to group the old F32Org textures with Classic Faithful 32x and give them a mod picker on the rewritten website alongside the new Faithful 32x mod support.",
+        "answer": "Mod support textures for Vattic-era Faithful were made by numerous people, and were collected and hosted by a group called the F32Organization. Their website that hosts the textures still exists at http://f32.me/, but goes down often (it has most likely gone down indefinitely at the time of writing). Currently, the most reliable place to get the old Faithful mod textures is [the F32Organization GitHub](https://github.com/F32Organization).\nWe used to host these textures on our website as well, but over time our mod picker broke down, leading to us unlisting them. When the time is right, we intend to group the old F32Org textures with Classic Faithful 32x and give them a mod picker on the rewritten website alongside the new Faithful 32x mod support.",
         "keywords": ["f32", "f32org", "old mod support"]
     },
     {
