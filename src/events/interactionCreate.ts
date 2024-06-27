@@ -7,7 +7,7 @@ export default {
 		if (!interaction.inGuild()) return;
 
 		const banlist = await import("@json/botbans.json");
-		if (banlist.ids.indexOf(interaction.user.id) > -1) {
+		if (banlist.ids.includes(interaction.user.id)) {
 			// all interactions have the string() and reply() methods
 			return interaction.reply({
 				content: interaction.strings().error.botbanned,

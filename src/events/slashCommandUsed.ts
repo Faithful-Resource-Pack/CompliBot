@@ -17,8 +17,9 @@ export default {
 		try {
 			// try subcommand
 			if (command.execute instanceof Collection) {
-				const subCommand = interaction.options.getSubcommand();
-				await command.execute.get(subCommand)(interaction);
+				const subcommandName = interaction.options.getSubcommand();
+				const subcommand = command.execute.get(subcommandName);
+				await subcommand(interaction);
 			}
 			// regular command
 			else await command.execute(interaction);
