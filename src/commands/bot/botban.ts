@@ -1,4 +1,4 @@
-import type { SlashCommand, SlashCommandI } from "@interfaces/interactions";
+import type { SlashCommand, SlashCommandExecute } from "@interfaces/interactions";
 import { EmbedBuilder } from "@client";
 import {
 	Collection,
@@ -51,7 +51,7 @@ export const command: SlashCommand = {
 		)
 		.setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
 		.setDMPermission(false),
-	execute: new Collection<string, SlashCommandI>()
+	execute: new Collection<string, SlashCommandExecute>()
 		.set("edit", async (interaction) => {
 			const isAdding = interaction.options.getString("action", true) == "add";
 

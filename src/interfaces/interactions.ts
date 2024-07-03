@@ -21,10 +21,10 @@ export type AnyInteraction<Cached extends CacheType = CacheType> =
 export interface SlashCommand {
 	servers?: string[];
 	data: SyncSlashCommandBuilder | AsyncSlashCommandBuilder;
-	execute: Collection<string, SlashCommandI> | SlashCommandI;
+	execute: Collection<string, SlashCommandExecute> | SlashCommandExecute;
 }
 
-export type SlashCommandI = (interaction: ChatInputCommandInteraction) => Promise<any>;
+export type SlashCommandExecute = (interaction: ChatInputCommandInteraction) => Promise<any>;
 
 export type SyncSlashCommandBuilder =
 	| SlashCommandSubcommandsOnlyBuilder

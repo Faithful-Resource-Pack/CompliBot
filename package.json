@@ -9,16 +9,16 @@
         "prettier": "prettier \"{,!(node_modules)/**/}*.ts\" --config .prettierrc --write"
     },
     "devDependencies": {
-        "@types/node": "^20.14.0",
-        "nodemon": "^3.1.2",
-        "prettier": "^3.3.0"
+        "@types/node": "^20.14.9",
+        "nodemon": "^3.1.4",
+        "prettier": "^3.3.2"
     },
     "dependencies": {
-        "@napi-rs/canvas": "^0.1.52",
+        "@napi-rs/canvas": "^0.1.53",
         "@octokit/rest": "^20.1.1",
         "axios": "^1.7.2",
         "chalk": "^4.1.2",
-        "discord.js": "^14.15.3",
+        "discord.js": "^14.14.1",
         "gif-encoder-2": "^1.0.5",
         "ts-node": "^10.9.2",
         "tsconfig-paths": "^4.2.0"

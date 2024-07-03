@@ -1,4 +1,4 @@
-import type { SlashCommand, SlashCommandI } from "@interfaces/interactions";
+import type { SlashCommand, SlashCommandExecute } from "@interfaces/interactions";
 import { SlashCommandBuilder, Collection, version as djsVersion } from "discord.js";
 import { EmbedBuilder, Message } from "@client";
 import axios from "axios";
@@ -22,7 +22,7 @@ export const command: SlashCommand = {
 						.setRequired(false),
 				),
 		),
-	execute: new Collection<string, SlashCommandI>()
+	execute: new Collection<string, SlashCommandExecute>()
 		.set("bot", async (interaction) => {
 			// easier to get extended properties
 			const { client } = interaction;
