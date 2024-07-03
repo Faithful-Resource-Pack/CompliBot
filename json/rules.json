@@ -9,8 +9,8 @@
 			"description": "A much more in-depth version of our rules, punishment appeal information, and our thought process into giving punishments can be found here: https://docs.faithfulpack.net/pages/manuals/expanded-server-rules"
 		},
 		"changes": {
-			"title": "Last Update: 3 August 2023",
-			"description": "Update expanded rule link and switch bots.",
+			"title": "Last Update: 2 July 2024",
+			"description": "Clarify rule 9 and fixed grammar in rule 8.",
 			"footer": "The rules are subject to change at any time for any reason.",
 			"enabled": true
 		}
@@ -22,7 +22,7 @@
 		},
 		{
 			"title": "2️⃣ Use Common Sense",
-			"description": "This is the generic \"don’t be an idiot\" rule. Prohibited actions include raiding or brigading other servers, using hate speech or slurs, joking about tragedies or other sensitive topics, and spreading misinformation."
+			"description": "This is the generic \"don’t be an idiot\" rule. Prohibited actions include using hate speech or slurs, joking about tragedies or other sensitive topics, raiding or brigading other servers, or spreading misinformation."
 		},
 		{
 			"title": "3️⃣ Speak English",
@@ -42,15 +42,15 @@
 		},
 		{
 			"title": "7️⃣ Avoid NSFW and NSFL Content",
-			"description": "This includes, but is not limited to pornography, gore, and overly gross content; if you think it’s against the rules it probably will be. DM a moderator for approval if you’re very unsure."
+			"description": "This includes, but is not limited to pornography, gore, and overly gross content; if you think it’s against the rules it probably will be. You can DM a moderator for approval with borderline content."
 		},
 		{
 			"title": "8️⃣ Stay Away From Political Discussion",
-			"description": "General discussion about real-life events is still allowed from a more neutral perspective. If you really want to discuss politics, take it to a DM or another server."
+			"description": "General discussion about real-life events is still allowed from a more neutral perspective. If you really want to discuss politics, take it to direct messages or another server."
 		},
 		{
 			"title": "9️⃣ No Unsolicited Promoting or Advertising",
-			"description": "Any sort of advertising that is not in context or clearly solicited is disallowed. Spamming or DM messaging advertisements will get you reported to Discord and banned from the servers."
+			"description": "Any advertising must be done in context, and spamming or direct messaging advertisements will lead to an instant ban and report to Discord. Additionally, please refrain from requesting or making monetary transactions, including with cryptocurrencies, on the server."
 		},
 		{
 			"title": "🔟 Don’t Leak Private Information",
@@ -60,7 +60,7 @@
 	"server": [
 		{
 			"title": "1️⃣ Read & Follow the Rules of the Faithful Discord Servers",
-			"description": "The Faithful Discord rules extend to the Minecraft server as well. You can find them over at <#773991747549921301>, or see the [expanded rules](https://docs.faithfulpack.net/pages/manuals/expanded-server-rules) on our Docs site."
+			"description": "The Faithful Discord rules extend to the Minecraft server as well. You can find them over at <#773991747549921301>, or see the [expanded rules](https://docs.faithfulpack.net/pages/manuals/expanded-server-rules) on our docs site."
 		},
 		{
 			"title": "2️⃣ Don’t Grief Others' Builds",
