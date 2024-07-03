@@ -2,7 +2,7 @@
 	"rules_info": {
 		"heading": {
 			"title": "Faithful Discord Server Rules",
-			"description": "Not knowing these is not an excuse for misbehaving, and you can and will be held accountable for your actions. Punishments are up to the discretion of the moderators, and harassing them is only going to make your punishment worse.\n\n*Use `e!modping` or directly ping an online moderator if rules are being broken. **Please do not mini-mod!***"
+			"description": "Not knowing these is not an excuse for misbehaving, and you can and will be held accountable for your actions. Punishments are up to the discretion of the moderators, and harassing them will only make your punishment worse.\n\n*Use `e!modping` or directly ping an online moderator if rules are being broken. **Please do not mini-mod!***"
 		},
 		"expanded_rules": {
 			"title": "Were you warned or muted unfairly?",
@@ -10,7 +10,7 @@
 		},
 		"changes": {
 			"title": "Last Update: 2 July 2024",
-			"description": "Clarify rule 9 and fixed grammar in rule 8.",
+			"description": "Clarify that monetary transactions are banned in rule 9 and tweak rule 8.",
 			"footer": "The rules are subject to change at any time for any reason.",
 			"enabled": true
 		}
