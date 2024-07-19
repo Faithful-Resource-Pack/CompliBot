@@ -86,7 +86,7 @@ export async function getTexture(
 			.data;
 
 		const authors = lastContribution.authors.map((authorId) => {
-			if (interaction.guild.members.cache.get(authorId)) return `<@!${authorId}>`;
+			if (interaction.guild.members.cache.get(authorId)) return `<@${authorId}>`;
 
 			// fetch username if not in server
 			return contributionJSON.find((user) => user.id == authorId)?.username ?? "Anonymous";

@@ -25,7 +25,7 @@ export default {
 								.strings()
 								.error.permission.user_locked.replace(
 									"%USER%",
-									`<@!${messageInteraction.user.id}>`,
+									`<@${messageInteraction.user.id}>`,
 								),
 						)
 						.setColor(colors.red),
@@ -52,7 +52,7 @@ export default {
 								.strings()
 								.error.permission.user_locked.replace(
 									"%USER%",
-									`<@!${(await message.fetchReference()).author.id}>`,
+									`<@${(await message.fetchReference()).author.id}>`,
 								),
 						)
 						.setColor(colors.red),

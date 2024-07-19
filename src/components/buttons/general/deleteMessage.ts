@@ -27,7 +27,7 @@ export default {
 						.setDescription(
 							interaction
 								.strings()
-								.error.permission.user_locked.replace("%USER%", `<@!${authorId}>`),
+								.error.permission.user_locked.replace("%USER%", `<@${authorId}>`),
 						)
 						.setColor(colors.red),
 				],

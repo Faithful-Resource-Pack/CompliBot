@@ -23,7 +23,7 @@ export default {
 								.strings()
 								.error.permission.user_locked.replace(
 									"%USER%",
-									`<@!${messageInteraction.user.id}>`,
+									`<@${messageInteraction.user.id}>`,
 								),
 						)
 						.setColor(colors.red),
