@@ -40,6 +40,7 @@ export default {
 			case "monke":
 				await message.react("🎷").catch(() => {});
 				await message.react("🐒").catch(() => {});
+				break;
 			case "hello there":
 				message
 					.reply({
