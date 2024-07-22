@@ -22,7 +22,7 @@ export const command: SlashCommand = {
 				.addChoices(
 					{ name: "Faithful", value: "Faithful" },
 					{ name: "Classic Faithful Jappa", value: "Classic Faithful Jappa" },
-					{ name: "Classic Faithful Programmer Art", value: "Classic Faithful Programmer Art" },
+					{ name: "Classic Faithful Programmer Art", value: "Classic Faithful PA" },
 				)
 				.setRequired(true),
 		)
