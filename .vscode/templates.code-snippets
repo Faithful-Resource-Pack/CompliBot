@@ -58,9 +58,9 @@
 			"import type { Component } from \"@interfaces\";",
 			"\nexport default {",
 			"\tid: \"${1:Name}\"",
-			"\tasync execute(client, interaction) {"
+			"\tasync execute(client, interaction) {",
 			"\t\t${3://todo: implement component}",
-			"\t}"
+			"\t}",
 			"} as Component<${2:Interaction}>;"
 		]
 	},
