@@ -76,7 +76,7 @@ export const command: SlashCommand = {
 		const version =
 			edition == "bedrock"
 				? "latest" // always use latest bedrock version, easier to format
-				: interaction.options.getString("version") ?? "latest";
+				: (interaction.options.getString("version") ?? "latest");
 
 		const updateChannels = version === "latest";
 
