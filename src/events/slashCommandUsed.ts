@@ -44,8 +44,8 @@ export default {
 			return msgEmbed.deleteButton();
 		}
 
-		// increase uses of that command
-		const count = client.commandsProcessed.get(command.data.name) + 1;
-		client.commandsProcessed.set(command.data.name, isNaN(count) ? 1 : count);
+		// increment command usage
+		const count = (client.commandsProcessed.get(command.data.name) || 0) + 1;
+		client.commandsProcessed.set(command.data.name, count);
 	},
 } as Event;

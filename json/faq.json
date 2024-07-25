@@ -75,6 +75,11 @@
         "keywords": ["faithful programmer art", "faithful progart", "faithful pa"]
     },
     {
+        "question": "Does Faithful offer any resolutions above 64x?",
+        "answer": "The simple answer is no. The amount of effort required for a 128x or 256x pack increases exponentially compared with 64x, and the difference in-game becomes harder and harder to notice. There are \"Faithful\" packs that may have higher resolution textures, but these aren't official or endorsed by us, so your mileage may vary.",
+        "keywords": ["faithful 128x", "128x", "128"]
+    },
+    {
         "question": "I've found a bug in Faithful! Where do I report it?",
         "answer": "Please post any bug reports and/or opinions about the pack in <#774246985448030209> or report them as an issue on the appropriate GitHub repository.\n[Faithful GitHub](https://github.com/Faithful-Resource-Pack) • [Classic Faithful GitHub](https://github.com/ClassicFaithful)",
         "keywords": ["bug", "bugs", "issue", "feedback"]

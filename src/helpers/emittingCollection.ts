@@ -6,8 +6,8 @@ import EventEmitter from "events";
  * @author Juknum
  */
 export class EmittingCollection<K, V> extends Collection<K, V> {
-	// ! important note, the event should be emitted after everything
-	public events = new EventEmitter();
+	// ! events should be emitted after everything
+	public readonly events = new EventEmitter();
 
 	public set(key: K, value: V) {
 		super.set(key, value);
@@ -16,8 +16,8 @@ export class EmittingCollection<K, V> extends Collection<K, V> {
 	}
 
 	public delete(key: K) {
-		const r = super.delete(key);
+		const success = super.delete(key);
 		this.events.emit("dataDeleted", key);
-		return r;
+		return success;
 	}
 }
