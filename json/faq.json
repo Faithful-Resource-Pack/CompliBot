@@ -25,6 +25,11 @@
         "keywords": ["installation", "install"]
     },
     {
+        "question": "Can Faithful be installed on consoles?",
+        "answer": "There are methods of installing custom resource packs on consoles, but they're very unreliable and change often as it's not officially supported behavior. There's no universal method that will work for everyone and hacky workarounds will probably be needed, sometimes even involving paid file managers. You may have luck searching up methods for an individual console online but results are not guaranteed and may stop working in the future.",
+        "keywords": ["console", "console support", "xbox"]
+    },
+    {
         "question": "Is Faithful available for [Minecraft version/edition]?",
         "answer": "Each pack is different:\n- Faithful 32x currently supports Bedrock Edition, and Java versions from 1.6 to the latest release, 1.4 and Beta 1.7.\n- Classic Faithful 32x Jappa and PA are also available from 1.6 – the latest release and Bedrock Edition, but are currently not complete for b1.7 – 1.5.\n- Both 64x packs only currently support the latest Minecraft Java and Bedrock version.",
         "keywords": ["version", "versions"]
@@ -76,8 +81,8 @@
     },
     {
         "question": "Does Faithful offer any resolutions above 64x?",
-        "answer": "The simple answer is no. The amount of effort required for a 128x or 256x pack increases exponentially compared with 64x, and the difference in-game becomes harder and harder to notice. There are \"Faithful\" packs that may have higher resolution textures, but these aren't official or endorsed by us, so your mileage may vary.",
-        "keywords": ["faithful 128x", "128x", "128"]
+        "answer": "The simple answer is no. The amount of effort required for a 128x or 256x pack increases exponentially compared with our highest-supported resolution currently, 64x, and the difference in-game becomes harder and harder to notice. There are \"Faithful\" packs that may have higher resolution textures, but these aren't official or endorsed by us so your mileage may vary.",
+        "keywords": ["faithful 128x", "128x", "uhd", "higher resolution"]
     },
     {
         "question": "I've found a bug in Faithful! Where do I report it?",
