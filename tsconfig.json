@@ -5,8 +5,6 @@
 		"module": "commonjs",
 		"moduleResolution": "node",
 		"target": "ESNEXT",
-		"outDir": "dist",
-		"sourceMap": true,
 		"esModuleInterop": true,
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true,
@@ -14,6 +12,7 @@
 		"skipLibCheck": true,
 		"declaration": false,
 		"allowJs": true,
+		"checkJs": true,
 		"resolveJsonModule": true,
 		"baseUrl": "src",
 		"paths": {
