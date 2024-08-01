@@ -3,11 +3,11 @@ import { magnify, magnifyToAttachment } from "@images/magnify";
 import { Image, loadImage, createCanvas, Canvas } from "@napi-rs/canvas";
 import { Client, EmbedBuilder } from "@client";
 import { addPathsToEmbed } from "@functions/getTexture";
-import type { GalleryTexture } from "@interfaces/database";
+import type { GalleryTexture, MCMETA } from "@interfaces/database";
 import axios from "axios";
 import { ActionRowBuilder, AttachmentBuilder, ButtonBuilder } from "discord.js";
 import { template } from "@utility/buttons";
-import { animateToAttachment, MCMETA } from "@helpers/images/animate";
+import { animateToAttachment } from "@helpers/images/animate";
 
 /**
  * Get the corresponding pack IDs for a given display choice
@@ -123,7 +123,7 @@ export default async function compareTexture(client: Client, id: string, display
 	).data;
 
 	const isAnimated = result.paths.some((p) => p.mcmeta === true);
-	const mcmeta: MCMETA = result.mcmeta ?? ({} as MCMETA);
+	const mcmeta: MCMETA = result.mcmeta ?? {};
 	const displayMcmeta = structuredClone(mcmeta);
 
 	const packs = parseDisplay(display);

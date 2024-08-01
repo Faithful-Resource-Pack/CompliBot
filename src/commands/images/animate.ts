@@ -2,11 +2,12 @@ import type { SlashCommand } from "@interfaces/interactions";
 import { SlashCommandBuilder } from "discord.js";
 import { EmbedBuilder, Message } from "@client";
 import getImage, { imageNotFound } from "@images/getImage";
-import { animateToAttachment, MCMETA } from "@helpers/images/animate";
+import { animateToAttachment } from "@helpers/images/animate";
 import mcmetaList from "@json/mcmetas.json";
 import { magnify } from "@helpers/images/magnify";
 import { colors } from "@utility/colors";
 import axios from "axios";
+import { MCMETA } from "@interfaces/database";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()

@@ -1,6 +1,6 @@
 import { Collection } from "discord.js";
 import type { Event } from "@interfaces/events";
-import { Client, ChatInputCommandInteraction, EmbedBuilder, Message } from "@client";
+import { Client, ChatInputCommandInteraction, EmbedBuilder } from "@client";
 import { handleError } from "@functions/handleError";
 import { colors } from "@utility/colors";
 
@@ -33,13 +33,9 @@ export default {
 				)
 				.setColor(colors.red);
 
-			let msgEmbed: Message;
-			try {
-				msgEmbed = await interaction.reply({ embeds: [embed], fetchReply: true });
-			} catch {
-				// interaction already deferred, try following up instead
-				msgEmbed = await interaction.followUp({ embeds: [embed], fetchReply: true });
-			}
+			const msgEmbed = await interaction
+				.reply({ embeds: [embed], fetchReply: true })
+				.catch(() => interaction.followUp({ embeds: [embed], fetchReply: true }));
 
 			return msgEmbed.deleteButton();
 		}

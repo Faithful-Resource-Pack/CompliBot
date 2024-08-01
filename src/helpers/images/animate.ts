@@ -2,16 +2,7 @@ import { createCanvas, loadImage } from "@napi-rs/canvas";
 import GIFEncoder from "@images/GIFEncoder";
 import { AttachmentBuilder } from "discord.js";
 import { ImageSource } from "@images/getImage";
-
-export interface MCMETA {
-	animation: {
-		frametime?: number;
-		interpolate?: boolean;
-		frames?: (number | { index?: number; time?: number })[];
-		height?: number;
-		width?: number;
-	};
-}
+import { MCMETA } from "@interfaces/database";
 
 /**
  * Animate a given image with a given mcmeta

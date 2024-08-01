@@ -1,5 +1,3 @@
-import { MCMETA } from "@helpers/images/animate";
-
 export type MinecraftEdition = "java" | "bedrock";
 
 export interface Path {
@@ -50,4 +48,14 @@ export interface Contributor {
 	contributions: number;
 	username?: string;
 	uuid?: string;
+}
+
+export interface MCMETA {
+	animation?: Partial<{
+		frametime: number;
+		interpolate: boolean;
+		frames: (number | { index?: number; time?: number })[];
+		height: number;
+		width: number;
+	}>;
 }
