@@ -18,9 +18,7 @@ import { toTitleCase } from "@utility/methods";
 export const command: SlashCommand = {
 	async data(client) {
 		const [versions, packs] = await Promise.all([
-			axios
-				.get<string[]>(`${client.tokens.apiUrl}textures/versions`)
-				.then((res) => res.data),
+			axios.get<string[]>(`${client.tokens.apiUrl}textures/versions`).then((res) => res.data),
 			axios
 				.get<Pack[]>(`${client.tokens.apiUrl}packs/search?type=submission`)
 				.then((res) => res.data),

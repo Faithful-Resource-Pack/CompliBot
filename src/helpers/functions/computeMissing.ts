@@ -86,7 +86,10 @@ export async function computeMissingResults(
 	);
 
 	// object lookup is significantly faster than array finding when comparing
-	const check = requestTextures.reduce((o, key) => ({ ...o, [key]: true }), {});
+	const check = requestTextures.reduce((acc, cur) => {
+		acc[cur] = true;
+		return acc;
+	}, {});
 
 	// get texture that aren't in the check object
 	const diffResult = defaultTextures.filter((v) => !check[v]);
