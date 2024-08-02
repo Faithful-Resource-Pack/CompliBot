@@ -10,8 +10,10 @@ import minecraftSorter from "@utility/minecraftSorter";
 
 export const command: SlashCommand = {
 	async data(client) {
-		const packs: Record<string, Pack> = (await axios.get(`${client.tokens.apiUrl}packs/raw`)).data;
-		const versions: string[] = (await axios.get(`${client.tokens.apiUrl}textures/versions`)).data;
+		const [versions, packs] = await Promise.all([
+			axios.get<string[]>(`${client.tokens.apiUrl}textures/versions`).then((res) => res.data),
+			axios.get<Pack[]>(`${client.tokens.apiUrl}packs/raw`).then((res) => res.data),
+		]);
 		return new SlashCommandBuilder()
 			.setName("texture")
 			.setDescription("Displays a specified texture from either vanilla Minecraft or Faithful.")

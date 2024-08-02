@@ -10,8 +10,8 @@ export default {
 		client.storeAction("slashCommand", interaction);
 
 		// test if client has this command registered
-		if (!client.slashCommands.has(interaction.commandName)) return;
-		const command = client.slashCommands.get(interaction.commandName);
+		if (!client.commands.has(interaction.commandName)) return;
+		const command = client.commands.get(interaction.commandName);
 
 		// ! await required for try catch support
 		try {

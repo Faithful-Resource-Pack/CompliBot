@@ -17,9 +17,14 @@ import { toTitleCase } from "@utility/methods";
 
 export const command: SlashCommand = {
 	async data(client) {
-		const versions: string[] = (await axios.get(`${client.tokens.apiUrl}textures/versions`)).data;
-		const packs: Pack[] = (await axios.get(`${client.tokens.apiUrl}packs/search?type=submission`))
-			.data;
+		const [versions, packs] = await Promise.all([
+			axios
+				.get<string[]>(`${client.tokens.apiUrl}textures/versions`)
+				.then((res) => res.data),
+			axios
+				.get<Pack[]>(`${client.tokens.apiUrl}packs/search?type=submission`)
+				.then((res) => res.data),
+		]);
 		return new SlashCommandBuilder()
 			.setName("missing")
 			.setDescription("Displays the missing textures for a particular resource pack")

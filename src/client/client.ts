@@ -32,7 +32,7 @@ import axios from "axios";
 // not in a config file because dynamic data
 export const paths = {
 	json: join(process.cwd(), "json", "dynamic"), // json folder at root
-	slashCommands: join(__dirname, "..", "commands"),
+	commands: join(__dirname, "..", "commands"),
 	events: join(__dirname, "..", "events"),
 	components: {
 		buttons: join(__dirname, "..", "components", "buttons"),
@@ -86,7 +86,7 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 	public readonly menus = new Collection<string, Component<StringSelectMenuInteraction>>();
 	public readonly buttons = new Collection<string, Component<ButtonInteraction>>();
 	public readonly modals = new Collection<string, Component<ModalSubmitInteraction>>();
-	public readonly slashCommands = new Collection<string, SlashCommand>();
+	public readonly commands = new Collection<string, SlashCommand>();
 
 	public commandsProcessed = new EmittingCollection<string, number>();
 
@@ -98,7 +98,7 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 	}
 
 	public init(interaction?: AnyInteraction) {
-		// pretty stuff so it doesnt print the logo upon restart
+		// pretty stuff so it doesn't print the logo upon restart
 		if (!this.firstStart) {
 			console.log(`${success}Restarted`);
 			if (interaction) interaction.editReply({ content: "Reboot succeeded!" });
@@ -237,24 +237,23 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 			command: RESTPostAPIApplicationCommandsJSONBody;
 		}[] = [];
 
-		const commands = walkSync(paths.slashCommands).filter((file) => file.endsWith(".ts"));
-		for (const file of commands) {
-			const command: SlashCommand = require(file).command;
-
-			if (command.data instanceof Function) {
-				// for dynamic data (e.g. /missing)
-				const data = await command.data(this);
-				this.slashCommands.set(data.name, command);
-				commandsArr.push({
-					servers: command.servers,
-					command: data.toJSON(),
-				});
-			} else {
-				// regular data
-				this.slashCommands.set(command.data.name, command);
-				commandsArr.push({ servers: command.servers, command: command.data.toJSON() });
-			}
-		}
+		// optimization
+		await Promise.all(
+			walkSync(paths.commands)
+				.filter((file) => file.endsWith(".ts"))
+				.map(async (file) => {
+					const command: SlashCommand = await import(file).then(({ command }) => command);
+					const data =
+						command.data instanceof Function
+							? await command.data(this) // for dynamic data (e.g. /missing)
+							: command.data;
+					this.commands.set(data.name, command);
+					commandsArr.push({
+						servers: command.servers,
+						command: data.toJSON(),
+					});
+				}),
+		);
 
 		const rest = new REST({ version: "10" }).setToken(this.tokens.token);
 		const allGuilds: Record<string, FaithfulGuild> = (
@@ -267,29 +266,31 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 				el.servers = ["dev"];
 			});
 
-		const guilds: Record<string, RESTPostAPIApplicationCommandsJSONBody[]> = { global: [] };
-		for (const cmd of commandsArr) {
-			if (cmd.servers) {
-				cmd.servers.forEach((server) => {
-					if (!guilds[server]) guilds[server] = [];
-					guilds[server].push(cmd.command);
-				});
-				continue;
-			}
-			guilds.global.push(cmd.command);
-		}
+		const guilds: Record<string, RESTPostAPIApplicationCommandsJSONBody[]> = commandsArr.reduce(
+			(acc, cmd) => {
+				if (!cmd.servers) cmd.servers = ["global"];
+				for (const server of cmd.servers) {
+					if (!acc[server]) acc[server] = [];
+					acc[server].push(cmd.command);
+				}
+				return acc;
+			},
+			{ global: [] },
+		);
 
-		// faster than for..of (order doesn't matter)
 		await Promise.all(
 			Object.entries(allGuilds)
 				// if the client isn't in the guild, skip it
 				.filter(([, { id }]) => this.guilds.cache.get(id))
-				.map(async ([name, { id }]) => {
+				.map(([name, { id }]) => {
 					// add guild-specific commands (e.g. /eval)
-					await rest.put(Routes.applicationGuildCommands(this.user.id, id), {
-						body: guilds[name],
-					});
-					console.log(`${success}Successfully added slash commands to server: ${name}`);
+					rest
+						.put(Routes.applicationGuildCommands(this.user.id, id), {
+							body: guilds[name],
+						})
+						.then(() =>
+							console.log(`${success}Successfully added slash commands to server: ${name}`),
+						);
 				}),
 		);
 

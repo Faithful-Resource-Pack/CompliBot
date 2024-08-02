@@ -50,7 +50,7 @@ export const command: SlashCommand = {
 					},
 					{ name: "Discord Library", value: `Discord.js ${djsVersion}`, inline: true },
 					{ name: "Node.js", value: `${process.version}`, inline: true },
-					{ name: "Total Commands", value: `${client.slashCommands.size}`, inline: true },
+					{ name: "Total Commands", value: `${client.commands.size}`, inline: true },
 					{ name: "Commands Processed", value: `${commandCount}`, inline: true },
 					{ name: "Members Across Servers", value: `${memberCount}`, inline: true },
 				)
