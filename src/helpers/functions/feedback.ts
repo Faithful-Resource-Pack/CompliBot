@@ -1,10 +1,7 @@
 import { ModalSubmitInteraction } from "discord.js";
+import { Octokit } from "@octokit/rest";
 import { EmbedBuilder } from "@client";
 import { colors } from "@utility/colors";
-
-// ESM workaround
-const NewOctokit = (...params: any[]) =>
-	import("@octokit/rest").then(({ Octokit }) => new Octokit(...params));
 
 /**
  * Create GitHub issue with specified title and description
@@ -19,7 +16,7 @@ export default async function sendFeedback(
 	description: string,
 ) {
 	try {
-		const octokit = await NewOctokit({
+		const octokit = new Octokit({
 			auth: interaction.client.tokens.gitToken,
 		});
 
