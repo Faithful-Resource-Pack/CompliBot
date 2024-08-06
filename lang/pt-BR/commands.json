@@ -1,0 +1,63 @@
+{
+    "translation_credits": [
+        "Shadow"
+    ],
+    "command": {
+        "animate": {
+            "invalid_text": {
+                "title": "Suas regras do MCMETA são inválidas!",
+                "description": "Erros comuns não incluem nomes de propriedade com aspas duplas ou mau posicionamento de um caractere."
+            },
+            "invalid_file": {
+                "title": "Arquivo MCMETA inválido!",
+                "description": "Nenhuma propriedade `animation` foi encontrada no arquivo. Por favor, verifique se você enviou o arquivo correto."
+            }
+        },
+        "about": {
+            "missing_profile": {
+                "title": "%USER% não possui contribuições!",
+                "description": "Nenhum perfil no banco de dados foi encontrado para este usuário.",
+                "register": "Registre-se em https://webapp.faithfulpack.net para obter informações precisas sobre seus créditos e contribuições."
+            }
+        },
+        "coin": {
+            "reflip": {
+                "title": "Moeda relançada!",
+                "description": "Se você não conseguir o resultado que quer, tente, tente novamente..."
+            }
+        },
+        "botban": {
+            "unbannable": {
+                "title": "Não se pode proibir o uso do bot a esse usuário!",
+                "description": "Você não pode proibir o uso do bot a você mesmo, a um desenvolvedor ou alguém com permissões de administrador."
+            }
+        },
+        "embed": {
+            "not_enough_arguments": "Não foi fornecida informação suficiente!",
+            "need_more_info": "Você precisa ter uma descrição ou título para um envio."
+        },
+        "faq": {
+            "invalid_choice": {
+                "title": "Escolha inválida!",
+                "description": "`%CHOICE%` não é uma palavra-chave de FAQ válida! Você cometeu algum erro de digitação?"
+            }
+        },
+        "stats": {
+            "usage": "%COMMAND% já foi executado %USE% vezes.",
+            "top_ten": "Top 10 comandos mais usados:",
+            "not_found": "O comando `%COMMAND%` não existe!"
+        },
+        "info": {
+            "title": "Olá, eu sou CompliBot. Eu fui feito para os servidores do Discord Faithful.",
+            "subtitle": "E eu penso que me saí muito bem.",
+            "features": {
+                "title": "Funções",
+                "description": "- Interação de texturas em tempo real usando `/texture`, `/compare`, e `/cycle`.\n- Verifique o progresso do pacote de textura com `/missing` ou verifique suas contribuições com `/contribuitions`.\n- utilidades de manipulação de imagens de `/magnify`, `/tile`, `/palette` e `/animate`."
+            },
+            "developing": {
+                "title": "Desenvolvimento",
+                "description": "Estou totalmente aberto (escrito em TypeScript e Discord.js) e posso ser clonado no meu repositório GitHub [here](https://github.com/faithful-resource-pack/complibot).\n\nSe estiver interessado em desenvolver, contate <@473860522710794250>, <@360249987927638016>, ou <@173336582265241601> para mais informações."
+            }
+        }
+    }
+}
