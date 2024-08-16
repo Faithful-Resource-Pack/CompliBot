@@ -5,7 +5,7 @@ export const media: Record<string, { title: string, description: string }> = {
 	faithful_32x: {
 		title: `Faithful 32x:`,
 		description: `
-[${parseID(emojis.faithful_logo)} Website](https://faithfulpack.net/faithful32x/latest)
+[${parseID(emojis.faithful_logo)} Website](https://faithfulpack.net/faithful32x)
 
 [${parseID(emojis.curseforge)} Java Edition CurseForge](https://curseforge.com/minecraft/texture-packs/faithful-32x)
 
@@ -24,7 +24,7 @@ export const media: Record<string, { title: string, description: string }> = {
 	faithful_64x: {
 		title: "Faithful 64x:",
 		description: `
-[${parseID(emojis.faithful_logo)} Website](https://faithfulpack.net/faithful64x/latest)
+[${parseID(emojis.faithful_logo)} Website](https://faithfulpack.net/faithful64x)
 
 [${parseID(emojis.curseforge)} Java Edition CurseForge](https://curseforge.com/minecraft/texture-packs/faithful-64x)
 
