@@ -3,6 +3,7 @@ import {
 	Collection,
 	CacheType,
 	SlashCommandOptionsOnlyBuilder,
+	AutocompleteInteraction,
 } from "discord.js";
 import {
 	Client,
@@ -22,6 +23,7 @@ export interface SlashCommand {
 	servers?: string[];
 	data: SyncSlashCommandBuilder | AsyncSlashCommandBuilder;
 	execute: Collection<string, SlashCommandExecute> | SlashCommandExecute;
+	autocomplete?: (interaction: AutocompleteInteraction) => Promise<any>;
 }
 
 export type SlashCommandExecute = (interaction: ChatInputCommandInteraction) => Promise<any>;

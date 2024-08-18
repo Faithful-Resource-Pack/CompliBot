@@ -89,6 +89,7 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 	public readonly commands = new Collection<string, SlashCommand>();
 
 	public commandsProcessed = new EmittingCollection<string, number>();
+	public versions: string[] = [];
 
 	constructor(data: ClientOptions & { tokens: Tokens }, firstStart = true) {
 		super(data);
@@ -117,6 +118,7 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 				this.loadEvents();
 				this.loadComponents();
 				this.loadCollections();
+				this.loadVersions();
 			});
 
 		// all error types
@@ -330,7 +332,8 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 	 */
 	private loadComponents() {
 		if (this.verbose) console.log(`${info}Loading Discord components...`);
-		for (const [key, path] of Object.entries(paths.components)) this.loadComponent(this[key], path);
+		for (const [key, path] of Object.entries(paths.components))
+			this[key] = this.loadComponent(this[key], path);
 	}
 
 	/**
@@ -346,6 +349,17 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 			collection.set(component.id, component);
 		}
 		return collection;
+	}
+
+	/**
+	 * Load all Minecraft versions into the {@link versions} object
+	 * @author Evorp
+	 */
+	private async loadVersions() {
+		// horrible workaround for autocomplete (loading this every time takes too long)
+		this.versions = await axios
+			.get<string[]>(`${this.tokens.apiUrl}textures/versions`)
+			.then((res) => res.data);
 	}
 
 	/**

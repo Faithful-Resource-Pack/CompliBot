@@ -6,6 +6,7 @@ interface AllEvents extends ClientEvents {
 	buttonUsed: string;
 	selectMenuUsed: string;
 	modalSubmit: string;
+	autocomplete: string;
 }
 
 export interface Event {

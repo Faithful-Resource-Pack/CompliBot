@@ -59,7 +59,7 @@ export async function computeMissingResults(
 		await axios.get(`${client.tokens.apiUrl}textures/versions/${edition}`)
 	).data;
 
-	// latest version if versions doesn't include version (doesn't exist)
+	// latest version if versions doesn't include version (fix for autocomplete validation)
 	if (!versions.includes(version)) version = versions[0];
 
 	// same steps are reused for compared repos

@@ -6,14 +6,10 @@ import { getTexture } from "@functions/getTexture";
 import parseTextureName from "@functions/parseTextureName";
 import { textureChoiceEmbed } from "@helpers/choiceEmbed";
 import axios from "axios";
-import minecraftSorter from "@utility/minecraftSorter";
 
 export const command: SlashCommand = {
 	async data(client) {
-		const [versions, packs] = await Promise.all([
-			axios.get<string[]>(`${client.tokens.apiUrl}textures/versions`).then((res) => res.data),
-			axios.get<Pack[]>(`${client.tokens.apiUrl}packs/raw`).then((res) => res.data),
-		]);
+		const packs = axios.get<Pack[]>(`${client.tokens.apiUrl}packs/raw`).then((res) => res.data);
 		return new SlashCommandBuilder()
 			.setName("texture")
 			.setDescription("Displays a specified texture from either vanilla Minecraft or Faithful.")
@@ -31,18 +27,13 @@ export const command: SlashCommand = {
 				option
 					.setName("version")
 					.setDescription("Version of the searched texture (defaults to latest).")
-					.addChoices(
-						...versions
-							.sort(minecraftSorter)
-							.reverse() // newest at top
-							.map((version) => ({ name: version, value: version })),
-					)
+					.setAutocomplete(true) // autocomplete is handled in the event file itself
 					.setRequired(false),
 			);
 	},
 	async execute(interaction) {
 		const name = interaction.options.getString("name");
-		const version = interaction.options.getString("version", false) ?? "latest";
+		let version = interaction.options.getString("version", false) ?? "latest";
 
 		// fetching takes too long for big results
 		await interaction.deferReply();
@@ -50,6 +41,13 @@ export const command: SlashCommand = {
 
 		// no results or invalid search
 		if (!results) return;
+
+		const versions: string[] = (
+			await axios.get(`${interaction.client.tokens.apiUrl}textures/versions`)
+		).data;
+
+		// latest version if versions doesn't include version (fix for autocomplete validation)
+		if (!versions.includes(version)) version = "latest";
 
 		// only one result
 		if (results.length === 1) {

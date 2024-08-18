@@ -12,17 +12,13 @@ import {
 } from "@functions/computeMissing";
 import axios from "axios";
 import formatPack from "@utility/formatPack";
-import minecraftSorter from "@utility/minecraftSorter";
 import { toTitleCase } from "@utility/methods";
 
 export const command: SlashCommand = {
 	async data(client) {
-		const [versions, packs] = await Promise.all([
-			axios.get<string[]>(`${client.tokens.apiUrl}textures/versions`).then((res) => res.data),
-			axios
-				.get<Pack[]>(`${client.tokens.apiUrl}packs/search?type=submission`)
-				.then((res) => res.data),
-		]);
+		const packs = await axios
+			.get<Pack[]>(`${client.tokens.apiUrl}packs/search?type=submission`)
+			.then((res) => res.data);
 		return new SlashCommandBuilder()
 			.setName("missing")
 			.setDescription("Displays the missing textures for a particular resource pack")
@@ -48,13 +44,7 @@ export const command: SlashCommand = {
 				option
 					.setName("version")
 					.setDescription("The Minecraft version.")
-					// map to usable choice parameters
-					.addChoices(
-						...versions
-							.sort(minecraftSorter)
-							.reverse() // newest at top
-							.map((version) => ({ name: version, value: version })),
-					)
+					.setAutocomplete(true) // autocomplete is handled in the event file itself
 					.setRequired(false),
 			)
 			.addBooleanOption((option) =>
@@ -77,7 +67,7 @@ export const command: SlashCommand = {
 		const pack = interaction.options.getString("pack", true);
 		const checkModded = interaction.options.getBoolean("modded", false) ?? false;
 		const version =
-			edition == "bedrock"
+			edition === "bedrock"
 				? "latest" // always use latest bedrock version, easier to format
 				: (interaction.options.getString("version") ?? "latest");
 
