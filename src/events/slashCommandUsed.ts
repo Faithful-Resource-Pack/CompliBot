@@ -1,12 +1,12 @@
 import { Collection } from "discord.js";
 import type { Event } from "@interfaces/events";
-import { Client, ChatInputCommandInteraction, EmbedBuilder } from "@client";
+import { ChatInputCommandInteraction, EmbedBuilder } from "@client";
 import { handleError } from "@functions/handleError";
 import { colors } from "@utility/colors";
 
 export default {
 	name: "slashCommandUsed",
-	async execute(client: Client, interaction: ChatInputCommandInteraction) {
+	async execute(client, interaction: ChatInputCommandInteraction) {
 		client.storeAction("slashCommand", interaction);
 
 		// test if client has this command registered

@@ -1,5 +1,5 @@
 import type { Event } from "@interfaces/events";
-import { Client, Message, EmbedBuilder } from "@client";
+import { Message, EmbedBuilder } from "@client";
 import type { Submission } from "@interfaces/database";
 import axios from "axios";
 import { randint } from "@utility/methods";
@@ -7,7 +7,7 @@ import prefixCommandHandler from "@helpers/prefixCommandHandler";
 
 export default {
 	name: "messageCreate",
-	async execute(client: Client, message: Message) {
+	async execute(client, message: Message) {
 		// duplicate message for logger (ask @Juknum)
 		client.storeAction("message", structuredClone(message));
 
