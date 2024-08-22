@@ -26,7 +26,7 @@
         },
         "invalid_choice": {
             "title": "Escolha inválida!",
-            "description": "`%CHOICE%` não é uma palavra-chave de FAQ válida! Você cometeu algum erro de digitação?"
+            "description": "`%CHOICE%` não é uma palavra-chave válida! Você cometeu algum erro de digitação?"
         },
         "image": {
             "too_big": "Esta imagem é grande demais!",
