@@ -24,6 +24,10 @@
                 "description": "`%TEXTURENAME%` ainda não foi feito para %PACK% na versão %VERSION% ou foi ignorado!"
             }
         },
+        "invalid_choice": {
+            "title": "Escolha inválida!",
+            "description": "`%CHOICE%` não é uma palavra-chave de FAQ válida! Você cometeu algum erro de digitação?"
+        },
         "image": {
             "too_big": "Esta imagem é grande demais!",
             "too_long": "Esta imagem é longa demais!",
