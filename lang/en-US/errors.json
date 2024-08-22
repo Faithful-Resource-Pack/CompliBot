@@ -24,6 +24,10 @@
                 "description": "`%TEXTURENAME%` hasn't been made for %PACK% in version %VERSION% yet or is ignored!"
             }
         },
+        "invalid_choice": {
+            "title": "Invalid choice!",
+            "description": "`%CHOICE%` is not a valid keyword! Have you made a typo?"
+        },
         "image": {
             "too_big": "This image is too big!",
             "too_long": "This image is too long!",

@@ -7,31 +7,34 @@ export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
 		.setName("embed")
 		.setDescription(`Create a one-time custom embed.`)
-		.addStringOption((o) =>
-			o.setName("title").setDescription("What title the embed should have.").setRequired(false),
+		.addStringOption((option) =>
+			option
+				.setName("title")
+				.setDescription("What title the embed should have.")
+				.setRequired(false),
 		)
-		.addStringOption((o) =>
-			o
+		.addStringOption((option) =>
+			option
 				.setName("description")
 				.setDescription("What description the embed should have.")
 				.setRequired(false),
 		)
-		.addStringOption((o) =>
-			o
+		.addStringOption((option) =>
+			option
 				.setName("colour")
 				.setNameLocalization("en-US", "color")
 				.setDescription("Set the colour on the side of the embed.")
 				.setDescriptionLocalization("en-US", "Set the color on the side of the embed.")
 				.setRequired(false),
 		)
-		.addStringOption((o) =>
-			o.setName("footer").setDescription("Adds a footer to the embed").setRequired(false),
+		.addStringOption((option) =>
+			option.setName("footer").setDescription("Adds a footer to the embed").setRequired(false),
 		)
-		.addAttachmentOption((o) =>
-			o.setName("image").setDescription("Adds a main image to the embed").setRequired(false),
+		.addAttachmentOption((option) =>
+			option.setName("image").setDescription("Adds a main image to the embed").setRequired(false),
 		)
-		.addAttachmentOption((o) =>
-			o
+		.addAttachmentOption((option) =>
+			option
 				.setName("thumbnail")
 				.setDescription("Add a thumbnail to the top right corner of the embed")
 				.setRequired(false),

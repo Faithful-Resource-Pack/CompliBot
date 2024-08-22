@@ -38,11 +38,9 @@ export const command: SlashCommand = {
 			return interaction.reply({
 				embeds: [
 					new EmbedBuilder()
-						.setTitle(interaction.strings().command.faq.invalid_choice.title)
+						.setTitle(interaction.strings().error.invalid_choice.title)
 						.setDescription(
-							interaction
-								.strings()
-								.command.faq.invalid_choice.description.replace("%CHOICE%", choice),
+							interaction.strings().error.invalid_choice.description.replace("%CHOICE%", choice),
 						)
 						.setColor(colors.red),
 				],

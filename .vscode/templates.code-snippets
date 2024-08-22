@@ -39,7 +39,7 @@
 		"description": "Regular slash command template.",
 		"body": [
 			"import type { SlashCommand } from \"@interfaces/interactions\";",
-			"import { Client, EmbedBuilder } from \"@client\";",
+			"import { EmbedBuilder } from \"@client\";",
 			"import { SlashCommandBuilder } from \"discord.js\";",
 			"\nexport const command: SlashCommand = {",
 			"\tdata: new SlashCommandBuilder()",
