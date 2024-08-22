@@ -36,12 +36,6 @@
             "not_enough_arguments": "Não foi fornecida informação suficiente!",
             "need_more_info": "Você precisa ter uma descrição ou título para um envio."
         },
-        "faq": {
-            "invalid_choice": {
-                "title": "Escolha inválida!",
-                "description": "`%CHOICE%` não é uma palavra-chave de FAQ válida! Você cometeu algum erro de digitação?"
-            }
-        },
         "stats": {
             "usage": "%COMMAND% já foi executado %USE% vezes.",
             "top_ten": "Top 10 comandos mais usados:",

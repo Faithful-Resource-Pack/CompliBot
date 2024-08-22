@@ -36,12 +36,6 @@
             "not_enough_arguments": "Nebyl poskytnut dostatek informací!",
             "need_more_info": "Pro vložení je třeba definovat nadpis nebo popisek."
         },
-        "faq": {
-            "invalid_choice": {
-                "title": "Neplatná volba!",
-                "description": "`%CHOICE%` není platné FAQ klíčové slovo! Neudělali jste překlep?"
-            }
-        },
         "stats": {
             "usage": "Příkaz %COMMAND% byl použit %USE%krát.",
             "top_ten": "10 nejpoužívanějších příkazů:",

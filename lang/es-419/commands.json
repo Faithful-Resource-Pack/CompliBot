@@ -36,12 +36,6 @@
             "not_enough_arguments": "¡No se brindó suficiente información!",
             "need_more_info": "Es necesario tener una descripción o un título para una inserción."
         },
-        "faq": {
-            "invalid_choice": {
-                "title": "¡Opción no válida!",
-                "description": "`%CHOICE%` no es una palabra clave de FAQ válida! ¿Se le escapó el dedo?"
-            }
-        },
         "stats": {
             "usage": "%COMMAND% ha sido ejecutado %USE% veces.",
             "top_ten": "Los 10 comandos más utilizados:",
