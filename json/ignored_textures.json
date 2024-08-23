@@ -407,6 +407,7 @@
         "ui/realms_purchase_warning.png",
         "ui/realms_faq_bee.png",
         "ui/realms_faq_fox.png",
-        "ui/glyph_all_pack_small.png"
+        "ui/glyph_all_pack_small.png",
+        "ui/stack_progress_bar_"
     ]
 }
