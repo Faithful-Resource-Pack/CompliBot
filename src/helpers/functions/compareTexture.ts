@@ -152,7 +152,7 @@ export default async function compareTexture(client: Client, id: string, display
 			isAnimation: true,
 		});
 
-		if (!mcmeta.animation) mcmeta.animation = {};
+		mcmeta.animation ||= {};
 
 		// scale mcmeta info for new resolution
 		mcmeta.animation.height = !mcmeta.animation?.height
