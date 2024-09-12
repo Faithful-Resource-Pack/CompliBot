@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@napi-rs/canvas':
-        specifier: ^0.1.54
-        version: 0.1.54
+        specifier: ^0.1.55
+        version: 0.1.55
       '@octokit/rest':
         specifier: ^20.1.1
         version: 20.1.1
@@ -21,21 +21,21 @@ importers:
         specifier: ^4.1.2
         version: 4.1.2
       discord.js:
-        specifier: ^14.16.1
-        version: 14.16.1
+        specifier: ^14.16.2
+        version: 14.16.2
       gif-encoder-2:
         specifier: ^1.0.5
         version: 1.0.5
       ts-node:
         specifier: ^10.9.2
-        version: 10.9.2(@types/node@22.5.2)(typescript@5.3.3)
+        version: 10.9.2(@types/node@22.5.4)(typescript@5.3.3)
       tsconfig-paths:
         specifier: ^4.2.0
         version: 4.2.0
     devDependencies:
       '@types/node':
-        specifier: ^22.5.2
-        version: 22.5.2
+        specifier: ^22.5.4
+        version: 22.5.4
       nodemon:
         specifier: ^3.1.4
         version: 3.1.4
@@ -87,62 +87,62 @@ packages:
   '@jridgewell/trace-mapping@0.3.9':
     resolution: {integrity: sha512-3Belt6tdc8bPgAtbcmdtNJlirVoTmEb5e2gC94PnkwEW9jI6CAHUeoG85tjWP5WquqfavoMtMwiG4P926ZKKuQ==}
 
-  '@napi-rs/canvas-android-arm64@0.1.54':
-    resolution: {integrity: sha512-oYG+tnr0Zl1DgMcT+c7hLmPbB1RlYNAdRMkWSioxPg0F1Bc2D4nfyFBxal4M3JvY3GkuIBJoiDw5k3jjPeQzEA==}
+  '@napi-rs/canvas-android-arm64@0.1.55':
+    resolution: {integrity: sha512-zsc170uSA+mGTXiSpnXaTsBKzi/f2NATKLrCt5qp0ihR0YLSIGsNhNpYLQYSF6qvi2Uzjd9CyKEs+TKdj8oj3w==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [android]
 
-  '@napi-rs/canvas-darwin-arm64@0.1.54':
-    resolution: {integrity: sha512-F1JC05DEbsSVNlSEFyPxPS7a1kvNo+twyhE+QVx3XWTkMsoBgwkYaLEr7dkh+K7HTFQ0I0tF4TiFFbX+UpheKA==}
+  '@napi-rs/canvas-darwin-arm64@0.1.55':
+    resolution: {integrity: sha512-KMlL+O7viWsZ+c4qDoXUXyVEVXDcGrWuHuvt1VvUBcRjfsz/2of7i2rfClTzltX0nMKxU8JVKVrFSZOpPOZn4g==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [darwin]
 
-  '@napi-rs/canvas-darwin-x64@0.1.54':
-    resolution: {integrity: sha512-bQt1ySHxQaeAb9esRlgS8gTC2ZUvPdKdTv1l1bAPQ1iiBGKNQlKqb8NVCs+7hVjIbgGsNBa8RbmFNtUZStIMMQ==}
+  '@napi-rs/canvas-darwin-x64@0.1.55':
+    resolution: {integrity: sha512-ZiiK+tOGHD7GxAhq7F+gVYpWDQJ9Lr/eOI9gMXlnavmR14nVf3a8eYk3CX32yelurf6hMaMTjWISO9uAZDyRbA==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [darwin]
 
-  '@napi-rs/canvas-linux-arm-gnueabihf@0.1.54':
-    resolution: {integrity: sha512-Wek0w+CyegFRXI+B1d+TzzWg3XlJBe5V0EnQjCOEhDPfRm3uOFp/MULXnXX9uPXXVvlVBlxDXa64HFWmyHvr3g==}
+  '@napi-rs/canvas-linux-arm-gnueabihf@0.1.55':
+    resolution: {integrity: sha512-HxthhRQoayfjG3Z7bAJ7r9Zq/L0gAxj26xjZTcjBYokr14/gtjL+Q+tsvW5PvH3SuL2sqnNXHy/TqvXcI+iyIw==}
     engines: {node: '>= 10'}
     cpu: [arm]
     os: [linux]
 
-  '@napi-rs/canvas-linux-arm64-gnu@0.1.54':
-    resolution: {integrity: sha512-9nNIodomr2++bj6pL2MAC72SNIUlCVA5J4rjxrSIcSIJH9R9inAzG5nhEQNCAebCSQxPTcKYijn/zHIAb8aYqw==}
+  '@napi-rs/canvas-linux-arm64-gnu@0.1.55':
+    resolution: {integrity: sha512-b6PSk6923c6kyHMiluPUJVVHc7CJI7SfYb5MZetyeINtYGNIVj8a80pWgiMs3LJDrUePh+WC00zgDCRkFttKlg==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
 
-  '@napi-rs/canvas-linux-arm64-musl@0.1.54':
-    resolution: {integrity: sha512-BZ67nMQAvrCDmD6j2FvKdpy9xU22PoNqXDR2zswaKRcWg/cJWrjTYsbe9HfT9HELUID97M01aAtHNYmeiTA0+A==}
+  '@napi-rs/canvas-linux-arm64-musl@0.1.55':
+    resolution: {integrity: sha512-DHPR7F7Th9x0qkfSBojAgh7mPqInrj+IEJHvrKEsq8p0YTLBY8OUw8Va4OI7Z2zpiDsb2HVXq78Ws7KaekouFw==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
 
-  '@napi-rs/canvas-linux-x64-gnu@0.1.54':
-    resolution: {integrity: sha512-XmeRMnklzUnl7FwJc1Sph0Na1+4AFaQb1er97SMCUwqSy4x2caDuKZ2ac5Dj6tTDmbs/ph1NrJu2nCY5SjorKw==}
+  '@napi-rs/canvas-linux-x64-gnu@0.1.55':
+    resolution: {integrity: sha512-znEwyWCHtoAIQerxEQ30DRnVJQ1X8a0zQqOuylEPI1AKCH57ZiWQzFam4IUiFNoYhQyzron5v5cEteVbBkYGpg==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
 
-  '@napi-rs/canvas-linux-x64-musl@0.1.54':
-    resolution: {integrity: sha512-IST4w/WZCYZWt4/RxeHJITI7WX1wllVQx0HDGrcQu+KUMQ1x0J+ANiuZO3B37EuDEyR0zDpMatn7/oaYWr2q/Q==}
+  '@napi-rs/canvas-linux-x64-musl@0.1.55':
+    resolution: {integrity: sha512-mNWBiILhykehKlOzmbdTp8Fr25pnkHiC/01Ck9YjNWfV6Z3kBgJPWvG5J+WvkNnsPPu/K0JxTCryngj4h9Denw==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
 
-  '@napi-rs/canvas-win32-x64-msvc@0.1.54':
-    resolution: {integrity: sha512-rGxzWfvxjCWPGRzi21qlaqJzrpWC2wWqAHS/MsQQD89KiKhfz9x4oVGTHz8348w8zjEHAvXg2F25Se3L9jEiJw==}
+  '@napi-rs/canvas-win32-x64-msvc@0.1.55':
+    resolution: {integrity: sha512-e6K83IchwQUbG9JSS4QK88qWJpwDbDC+tm1ugjVwSRWBdnicB5TwbUruOGjc1umgfGUq3qnQBs3yO1ZLB6N2uA==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [win32]
 
-  '@napi-rs/canvas@0.1.54':
-    resolution: {integrity: sha512-/EbmJYc4Y/tumic2Ha9HwGH5jo/q0EEmAYuNwRDeCInfYdittrJKFPFmdWJ24AM+gZiC7IqfpxZOlw1GDSvzWw==}
+  '@napi-rs/canvas@0.1.55':
+    resolution: {integrity: sha512-Jw5ewjXboNSrEVXbUrj/l6800Stn1hHeMV4R/HbDkRGSMW3DLMOZAFGbd+d0174OpsjYFqc5SB3Q3wcatWsuMQ==}
     engines: {node: '>= 10'}
 
   '@octokit/auth-token@4.0.0':
@@ -221,8 +221,8 @@ packages:
   '@tsconfig/node16@1.0.4':
     resolution: {integrity: sha512-vxhUy4J8lyeyinH7Azl1pdd43GJhZH/tP2weN8TntQblOY+A0XbT8DJk1/oCPuOOyg/Ja757rG0CgHcWC8OfMA==}
 
-  '@types/node@22.5.2':
-    resolution: {integrity: sha512-acJsPTEqYqulZS/Yp/S3GgeE6GZ0qYODUR8aVr/DkhHQ8l9nd4j5x1/ZJy9/gHrRlFMqkO6i0I3E27Alu4jjPg==}
+  '@types/node@22.5.4':
+    resolution: {integrity: sha512-FDuKUJQm/ju9fT/SeX/6+gBzoPzlVCzfzmGkwKvRHQVxi4BntVbyIwf6a4Xn62mrvndLiml6z/UBXIdEVjQLXg==}
 
   '@types/ws@8.5.12':
     resolution: {integrity: sha512-3tPRkv1EtkDpzlgyKyI8pGsGZAGPEaXeu0DOj5DI25Ja91bdAYddYHbADRYVrZMRbfW+1l5YwXVDKohDJNQxkQ==}
@@ -325,8 +325,8 @@ packages:
   discord-api-types@0.37.97:
     resolution: {integrity: sha512-No1BXPcVkyVD4ZVmbNgDKaBoqgeQ+FJpzZ8wqHkfmBnTZig1FcH3iPPersiK1TUIAzgClh2IvOuVUYfcWLQAOA==}
 
-  discord.js@14.16.1:
-    resolution: {integrity: sha512-/diX4shp3q1F3EySGQbQl10el+KIpffLSOJdtM35gGV7zw2ED7rKbASKJT7UIR9L/lTd0KtNenZ/h739TN7diA==}
+  discord.js@14.16.2:
+    resolution: {integrity: sha512-VGNi9WE2dZIxYM8/r/iatQQ+3LT8STW4hhczJOwm+DBeHq66vsKDCk8trChNCB01sMO9crslYuEMeZl2d7r3xw==}
     engines: {node: '>=18'}
 
   fast-deep-equal@3.1.3:
@@ -608,44 +608,44 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  '@napi-rs/canvas-android-arm64@0.1.54':
+  '@napi-rs/canvas-android-arm64@0.1.55':
     optional: true
 
-  '@napi-rs/canvas-darwin-arm64@0.1.54':
+  '@napi-rs/canvas-darwin-arm64@0.1.55':
     optional: true
 
-  '@napi-rs/canvas-darwin-x64@0.1.54':
+  '@napi-rs/canvas-darwin-x64@0.1.55':
     optional: true
 
-  '@napi-rs/canvas-linux-arm-gnueabihf@0.1.54':
+  '@napi-rs/canvas-linux-arm-gnueabihf@0.1.55':
     optional: true
 
-  '@napi-rs/canvas-linux-arm64-gnu@0.1.54':
+  '@napi-rs/canvas-linux-arm64-gnu@0.1.55':
     optional: true
 
-  '@napi-rs/canvas-linux-arm64-musl@0.1.54':
+  '@napi-rs/canvas-linux-arm64-musl@0.1.55':
     optional: true
 
-  '@napi-rs/canvas-linux-x64-gnu@0.1.54':
+  '@napi-rs/canvas-linux-x64-gnu@0.1.55':
     optional: true
 
-  '@napi-rs/canvas-linux-x64-musl@0.1.54':
+  '@napi-rs/canvas-linux-x64-musl@0.1.55':
     optional: true
 
-  '@napi-rs/canvas-win32-x64-msvc@0.1.54':
+  '@napi-rs/canvas-win32-x64-msvc@0.1.55':
     optional: true
 
-  '@napi-rs/canvas@0.1.54':
+  '@napi-rs/canvas@0.1.55':
     optionalDependencies:
-      '@napi-rs/canvas-android-arm64': 0.1.54
-      '@napi-rs/canvas-darwin-arm64': 0.1.54
-      '@napi-rs/canvas-darwin-x64': 0.1.54
-      '@napi-rs/canvas-linux-arm-gnueabihf': 0.1.54
-      '@napi-rs/canvas-linux-arm64-gnu': 0.1.54
-      '@napi-rs/canvas-linux-arm64-musl': 0.1.54
-      '@napi-rs/canvas-linux-x64-gnu': 0.1.54
-      '@napi-rs/canvas-linux-x64-musl': 0.1.54
-      '@napi-rs/canvas-win32-x64-msvc': 0.1.54
+      '@napi-rs/canvas-android-arm64': 0.1.55
+      '@napi-rs/canvas-darwin-arm64': 0.1.55
+      '@napi-rs/canvas-darwin-x64': 0.1.55
+      '@napi-rs/canvas-linux-arm-gnueabihf': 0.1.55
+      '@napi-rs/canvas-linux-arm64-gnu': 0.1.55
+      '@napi-rs/canvas-linux-arm64-musl': 0.1.55
+      '@napi-rs/canvas-linux-x64-gnu': 0.1.55
+      '@napi-rs/canvas-linux-x64-musl': 0.1.55
+      '@napi-rs/canvas-win32-x64-msvc': 0.1.55
 
   '@octokit/auth-token@4.0.0': {}
 
@@ -727,13 +727,13 @@ snapshots:
 
   '@tsconfig/node16@1.0.4': {}
 
-  '@types/node@22.5.2':
+  '@types/node@22.5.4':
     dependencies:
       undici-types: 6.19.8
 
   '@types/ws@8.5.12':
     dependencies:
-      '@types/node': 22.5.2
+      '@types/node': 22.5.4
 
   '@vladfrangu/async_event_emitter@2.4.6': {}
 
@@ -826,7 +826,7 @@ snapshots:
 
   discord-api-types@0.37.97: {}
 
-  discord.js@14.16.1:
+  discord.js@14.16.2:
     dependencies:
       '@discordjs/builders': 1.9.0
       '@discordjs/collection': 1.5.3
@@ -964,14 +964,14 @@ snapshots:
 
   ts-mixer@6.0.4: {}
 
-  ts-node@10.9.2(@types/node@22.5.2)(typescript@5.3.3):
+  ts-node@10.9.2(@types/node@22.5.4)(typescript@5.3.3):
     dependencies:
       '@cspotcode/source-map-support': 0.8.1
       '@tsconfig/node10': 1.0.11
       '@tsconfig/node12': 1.0.11
       '@tsconfig/node14': 1.0.3
       '@tsconfig/node16': 1.0.4
-      '@types/node': 22.5.2
+      '@types/node': 22.5.4
       acorn: 8.12.1
       acorn-walk: 8.3.3
       arg: 4.1.3
