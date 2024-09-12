@@ -1,7 +1,7 @@
 [
     {
         "question": "What is Faithful? How did it come to be?",
-        "answer": "Faithful is a project spanning several Minecraft resource packs bearing the same name. The aim of Faithful is to provide a higher-resolution experience while still maintaining the look and feel of the vanilla textures.\nFaithful was originally started by Vattic in 2010, and since then he has given the current Faithful Administration the authority to maintain and update the pack officially.",
+        "answer": "Faithful is a project spanning several Minecraft resource packs bearing the same name. The aim of Faithful is to provide a higher-resolution experience while still maintaining the look and feel of the vanilla textures.\nFaithful was originally started by Vattic in 2010, and since then he has given the current Faithful administration the authority to maintain and update the pack officially.",
         "keywords": ["faithful", "about"]
     },
     {
@@ -31,7 +31,7 @@
     },
     {
         "question": "Is Faithful available for [Minecraft version/edition]?",
-        "answer": "Each pack is different:\n- Faithful 32x currently supports Bedrock Edition, and Java versions from 1.6 to the latest release, 1.4 and Beta 1.7.\n- Classic Faithful 32x Jappa and PA are also available from 1.6 – the latest release and Bedrock Edition, but are currently not complete for b1.7 – 1.5.\n- Both 64x packs only currently support the latest Minecraft Java and Bedrock version.",
+        "answer": "Each pack is different:\n- Faithful 32x currently supports Bedrock Edition, and Java versions from 1.6 to the latest release, 1.4 and Beta 1.7.\n- Classic Faithful 32x Jappa and PA are also available from 1.6–the latest release and Bedrock Edition, but are currently not complete for b1.7–1.5.\n- Both 64x packs only currently support the latest Minecraft Java and Bedrock version.",
         "keywords": ["version", "versions"]
     },
     {
@@ -86,12 +86,12 @@
     },
     {
         "question": "I've found a bug in Faithful! Where do I report it?",
-        "answer": "Please post any bug reports and/or opinions about the pack in <#774246985448030209> or report them as an issue on the appropriate GitHub repository.\n[Faithful GitHub](https://github.com/Faithful-Resource-Pack) • [Classic Faithful GitHub](https://github.com/ClassicFaithful)",
+        "answer": "Please post any bug reports and/or opinions about the pack in the relevant support channel or report them as an issue on the appropriate GitHub repository.\n[Faithful GitHub](https://github.com/Faithful-Resource-Pack) • [Classic Faithful GitHub](https://github.com/ClassicFaithful)",
         "keywords": ["bug", "bugs", "issue", "feedback"]
     },
     {
         "question": "How can I submit a texture to the pack? How does the approval process work?",
-        "answer": "For the main Faithful packs, please read [The Faithful Contributor's Handbook](https://docs.faithfulpack.net/pages/manuals/contributor-handbook).\nTL;DR: You will need to accept the agreement in <#991031483089186826> first. To submit textures, upload them to the appropriate submission channel (the file has to have the same name as the default texture), and the bot will take over from there and format it for you. Any text you include with the message will be added as a comment, and people pinged in the comment will be added as co-authors.\nFor your texture to be added to the pack, it must pass a round of community voting (lasting 2 days) and a round of private Art Director Council voting (lasting one day).\nFor Classic Faithful, the submission process is exactly the same but only takes one day of community voting and no council vote instead.",
+        "answer": "Please read [The Faithful Contributor's Handbook](https://docs.faithfulpack.net/pages/manuals/contributor-handbook).\nTL;DR: To submit textures, consent to the submission terms, then upload your textures to the appropriate submission channel (the file has to have the same name as the default texture), and the bot will take over from there and format it for you. Any text you include with the message will be added as a comment, and people pinged in the comment will be added as co-authors.\nFor a texture to be added to the pack, it must pass a round of community voting (lasting 2 days) and a round of private Art Director Council voting (lasting one day). For Classic Faithful, the submission process is exactly the same, but there's no council vote.",
         "keywords": ["submit", "approval"],
         "discord": true
     },
@@ -102,12 +102,12 @@
     },
     {
         "question": "Does Faithful support mods?",
-        "answer": "Yes, we are currently in an early stage of rebooting Faithful 32x mod support, and many textures for various mods have already been made. For now, you can download what's done via the [Faithful Mods GitHub repository](https://github.com/Faithful-Resource-Pack/Faithful-32x-Mods) – A more convenient mod picker website is planned for our future site rewrite. Please check out the README file for more information, including how to contribute. You can also talk to others in <#1025645837247848458>.\nMod support for any packs besides Faithful 32x and Classic Faithful 32x Programmer Art is not currently planned. (If you decide to make textures for them, you can, just ask a manager to set up a new repository.)",
+        "answer": "Yes, we are currently in an early stage of rebooting Faithful 32x mod support, and many textures for various mods have already been made. For now, you can download what's done via the [Faithful Mods GitHub repository](https://github.com/Faithful-Resource-Pack/Faithful-32x-Mods)—a more convenient mod picker website is planned for our future site rewrite. Please check out the README file for more information, including how to contribute. You can also talk to others in <#1025645837247848458>.\nMod support for any packs besides Faithful 32x and Classic Faithful 32x Programmer Art is not currently planned. (If you decide to make textures for them, you can, just ask a manager to set up a new repository.)",
         "keywords": ["mod support", "mods", "mod"]
     },
     {
         "question": "What happened to the existing Faithful mod support?",
-        "answer": "Mod support textures for Vattic-era Faithful were made by numerous people, and were collected and hosted by a group called the F32Organization. Their website that hosts the textures still exists at http://f32.me/, but goes down often (it has most likely gone down indefinitely at the time of writing). Currently, the most reliable place to get the old Faithful mod textures is [the F32Organization GitHub](https://github.com/F32Organization).\nWe used to host these textures on our website as well, but over time our mod picker broke down, leading to us unlisting them. When the time is right, we intend to group the old F32Org textures with Classic Faithful 32x and give them a mod picker on the rewritten website alongside the new Faithful 32x mod support.",
+        "answer": "Mod support textures for Vattic-era Faithful were made by numerous people, and were collected and hosted by a group called the F32Organization. Their website that hosts the textures still exists at http://f32.me/, but goes down often (it has most likely gone down indefinitely at the time of writing). Currently, the most reliable place to get the old Faithful mod textures is [the F32Organization GitHub](https://github.com/F32Organization).\nWe used to host these textures on our website as well, but over time our mod picker broke down, leading to us removing them. When the time is right, we intend to group the old F32Org textures with Classic Faithful 32x and give them a mod picker on the rewritten website alongside the new Faithful 32x mod support.",
         "keywords": ["f32", "f32org", "old mod support"]
     },
     {
@@ -129,14 +129,8 @@
         "discord": true
     },
     {
-        "question": "I need help from a moderator!",
-        "answer": "You can use Wynem's `e!modping` command to call an online Moderator to help. We kindly ask not to misuse the command.",
-        "keywords": ["modping", "moderator ping"],
-        "discord": true
-    },
-    {
         "question": "What's the difference between an add-on and a tweak?",
-        "answer": "We define the differences in the following way:\n**Tweak**: A tweak changes existing aspects about the game. They are one-off and smaller than an add-on – changes of multiple themes should not be grouped into one tweak. Examples: 3D items, Consistent Bedrock.\n**Add-on**: An add-on adds new features to the game, and/or is usually larger in scope than a tweak. Examples: New random variations for blocks/mobs.\nAdditionally, due to technical limitations, PBR resource packs cannot reuse textures from the main Faithful pack, and therefore can function as standalone – but for the sake of simplicity, they are also considered add-ons.\nLastly, collections of tweaks that the author chooses not to submit individually are considered add-ons as well.",
+        "answer": "We define the differences in the following way:\n**Tweak**: A tweak changes existing aspects about the game—they are one-off and smaller than an add-on. Examples: 3D items, Consistent Bedrock.\n**Add-on**: An add-on adds new features to the game, and/or is usually larger in scope than a tweak. Examples: New random variations for blocks/mobs.\nAdditionally, due to technical limitations, PBR resource packs cannot reuse textures from the main Faithful pack, and therefore can function as standalone, but for the sake of simplicity, they are also considered add-ons.\nLastly, collections of tweaks that the author chooses not to submit individually are considered add-ons as well.",
         "keywords": ["add-on vs tweak", "tweak vs add-on"]
     },
     {
