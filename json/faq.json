@@ -27,7 +27,7 @@
     {
         "question": "Can Faithful be installed on consoles?",
         "answer": "There are methods of installing custom resource packs on consoles, but they're very unreliable and change often as it's not officially supported behavior. There's no universal method that will work for everyone and hacky workarounds will probably be needed, sometimes even involving paid file managers. You may have luck searching up methods for an individual console online but results are not guaranteed and may stop working in the future.",
-        "keywords": ["console", "console support", "xbox"]
+        "keywords": ["console", "console support", "xbox", "playstation", "switch"]
     },
     {
         "question": "Is Faithful available for [Minecraft version/edition]?",
