@@ -4,6 +4,9 @@ import { AttachmentBuilder } from "discord.js";
 import { ImageSource } from "@images/getImage";
 import { MCMETA } from "@interfaces/database";
 
+// same length as magma
+export const MAX_FRAMETIME = 8;
+
 /**
  * Animate a given image with a given mcmeta
  * @author Superboxer4, Evorp, Juknum
@@ -19,8 +22,8 @@ export async function animate(origin: ImageSource, mcmeta: MCMETA): Promise<Buff
 	mcmeta.animation.height ||= tileSheet.width;
 	mcmeta.animation.width ||= tileSheet.width;
 
-	// cap frametime at 15 (prismarine crashes otherwise)
-	const frametime = Math.min(15, mcmeta.animation.frametime || 1);
+	// cap frametime (prismarine crashes otherwise)
+	const frametime = Math.min(MAX_FRAMETIME, mcmeta.animation.frametime || 1);
 
 	const frames: { index: number; duration: number }[] = [];
 	if (mcmeta.animation.frames?.length) {
