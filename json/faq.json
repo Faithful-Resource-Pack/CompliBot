@@ -30,6 +30,11 @@
         "keywords": ["console", "console support", "xbox", "playstation", "switch"]
     },
     {
+        "question": "Which Faithful pack is the best?",
+        "answer": "It's a matter of personal preference—no pack is \"better\" than the others since they all aim to accomplish completely different things. The best way to find which pack is your favorite is to simply try all of them and see which one(s) you like the most.",
+        "keywords": ["best", "best pack"]
+    },
+    {
         "question": "Is Faithful available for [Minecraft version/edition]?",
         "answer": "Each pack is different:\n- Faithful 32x currently supports Bedrock Edition, and Java versions from 1.6 to the latest release, 1.4 and Beta 1.7.\n- Classic Faithful 32x Jappa and PA are also available from 1.6–the latest release and Bedrock Edition, but are currently not complete for b1.7–1.5.\n- Both 64x packs only currently support the latest Minecraft Java and Bedrock version.",
         "keywords": ["version", "versions"]
