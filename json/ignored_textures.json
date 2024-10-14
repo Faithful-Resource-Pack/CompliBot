@@ -113,6 +113,7 @@
         "gui/inworld_menu_background.png",
         "gui/inworld_menu_list_background.png",
         "gui/tab_header_background.png",
+        "gui/sprites/container/bundle/slot_background.png",
         "gui/sprites/container/bundle/slot_highlight_back.png",
         "gui/sprites/container/bundle/slot_highlight_front.png",
         "gui/sprites/container/slot_highlight_back.png",
@@ -150,6 +151,7 @@
         "gui/touchgui2.png",
         "particle/vault_connection.png",
         "particle/ominous_spawning.png",
+        "particle/pixel.png",
         "environments/clouds.png",
         "persona_thumbnails/",
         "environment/end_portal_colors.png",
@@ -411,6 +413,7 @@
         "ui/realms_purchase_warning.png",
         "ui/realms_faq_bee.png",
         "ui/realms_faq_fox.png",
+        "ui/realms_faq_spider.png",
         "ui/glyph_all_pack_small.png",
         "ui/stack_progress_bar_"
     ]
