@@ -9,13 +9,13 @@ Actions:
 > last %actionCount% bot actions: slash commands, chat messages, etc...
 
 %templateStart%
-  INDEX        : %templateIndex%
-  TYPE         : %templateType%
-  TIMESTAMP    : %templateCreatedTimestamp%
-  URL          : %templateURL%
-  CONTENT      : %templateContent%
-  EMBEDS       : %templateEmbeds%
-  COMPONENTS   : %templateComponents%
+  INDEX      : %templateIndex%
+  TYPE       : %templateType%
+  TIMESTAMP  : %templateCreatedTimestamp%
+  URL        : %templateURL%
+  CONTENT    : %templateContent%
+  EMBEDS     : %templateEmbeds%
+  COMPONENTS : %templateComponents%
 
   ---
 %templateEnd%
