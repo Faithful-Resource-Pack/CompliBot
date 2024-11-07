@@ -85,14 +85,11 @@ export async function computeMissingResults(
 		f.replace(requestPath, ""),
 	);
 
-	// object lookup is significantly faster than array finding when comparing
-	const check = requestTextures.reduce((acc, cur) => {
-		acc[cur] = true;
-		return acc;
-	}, {});
+	// https://dev.to/arnaud/using-array-prototype-includes-vs-set-prototype-has-to-filter-arrays-41fg
+	const check = new Set(requestTextures);
 
 	// get texture that aren't in the check object
-	const diffResult = defaultTextures.filter((v) => !check[v]);
+	const diffResult = defaultTextures.filter((v) => !check.has(v));
 	const nonvanillaTextures = requestTextures.filter(
 		(texture) =>
 			!defaultTextures.includes(texture) &&
