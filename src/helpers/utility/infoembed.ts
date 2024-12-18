@@ -17,9 +17,9 @@ export const media: Record<string, { title: string, description: string }> = {
 
 [${parseID(emojis.mcpedl)} MCPEDL](https://mcpedl.com/faithful-32x/)
 
-[${parseID(emojis.github)} Java Edition GitHub](https://github.com/faithful-resource-pack/faithful-java-32x)
+[${parseID(emojis.github)} Java Edition GitHub](https://github.com/faithful-resource-pack/faithful-32x-java)
 
-[${parseID(emojis.github)} Bedrock Edition GitHub](https://github.com/faithful-resource-pack/faithful-bedrock-32x)`,
+[${parseID(emojis.github)} Bedrock Edition GitHub](https://github.com/faithful-resource-pack/faithful-32x-bedrock)`,
 	},
 	faithful_64x: {
 		title: "Faithful 64x:",
@@ -36,9 +36,9 @@ export const media: Record<string, { title: string, description: string }> = {
 
 [${parseID(emojis.mcpedl)} MCPEDL](https://mcpedl.com/faithful-64x/)
 
-[${parseID(emojis.github)} Java Edition GitHub](https://github.com/faithful-resource-pack/faithful-java-64x)
+[${parseID(emojis.github)} Java Edition GitHub](https://github.com/faithful-resource-pack/faithful-64x-java)
 
-[${parseID(emojis.github)} Bedrock Edition GitHub](https://github.com/faithful-resource-pack/faithful-bedrock-64x)
+[${parseID(emojis.github)} Bedrock Edition GitHub](https://github.com/faithful-resource-pack/faithful-64x-bedrock)
     `,
 	},
 
