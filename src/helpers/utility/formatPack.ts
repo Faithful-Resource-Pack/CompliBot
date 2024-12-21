@@ -30,6 +30,9 @@ export default function formatPack(pack: string, size = "512") {
 			name = "Classic Faithful 64x";
 			iconURL += "cf64_logo.png";
 			break;
+		case "classic_faithful_64x_progart":
+			name = "Classic Faithful 64x Programmer Art";
+			iconURL += "cf64pa_logo.png";
 		case "progart":
 			name = "Default Programmer Art";
 			// have to redefine since root directory is different

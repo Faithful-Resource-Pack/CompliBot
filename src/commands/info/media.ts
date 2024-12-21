@@ -19,6 +19,7 @@ export const command: SlashCommand = {
 					{ name: "Classic Faithful 32x Jappa", value: "classic_faithful_32x" },
 					{ name: "Classic Faithful 32x Programmer Art", value: "classic_faithful_32x_progart" },
 					{ name: "Classic Faithful 64x", value: "classic_faithful_64x" },
+					// TODO: add cf64pa when listings are added
 					{ name: "All", value: "all" },
 				),
 		),

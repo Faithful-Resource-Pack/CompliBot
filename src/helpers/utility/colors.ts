@@ -16,5 +16,6 @@ export const colors = {
 	classic_faithful_32x: "#00c756",
 	classic_faithful_32x_progart: "#a1db12",
 	classic_faithful_64x: "#9f00cf",
+	classic_faithful_64x_progart: "#0c2abd",
 	// workaround for getting const keys + djs compatible values
 } satisfies Record<string, ColorResolvable>;
