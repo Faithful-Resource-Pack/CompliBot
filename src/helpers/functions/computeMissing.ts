@@ -154,6 +154,7 @@ export async function updateVoiceChannel(client: Client, results: MissingData) {
 			axios.get(`https://api.faithfulpack.net/v2/settings/discord.channels.pack_progress`),
 		);
 
+	if (!packProgress[results.pack] || !packProgress[results.pack][results.edition]) return;
 	const channel = client.channels.cache.get(packProgress[results.pack][results.edition]);
 	// channel doesn't exist or can't be fetched, return early
 	if (!channel) return;
@@ -162,7 +163,7 @@ export async function updateVoiceChannel(client: Client, results: MissingData) {
 	switch (channel.type) {
 		case ChannelType.GuildVoice:
 			const pattern = /[.\d+]+(?!.*[.\d+])/;
-			if (channel.name.match(pattern)?.[0] == results.completion.toString()) break;
+			if (channel.name.match(pattern)?.[0] === results.completion.toString()) break;
 			const updatedName = channel.name.replace(pattern, results.completion.toString());
 			channel.setName(updatedName).catch(console.error);
 			break;
