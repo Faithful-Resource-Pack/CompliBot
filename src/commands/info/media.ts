@@ -42,7 +42,7 @@ export const command: SlashCommand = {
 							.setTitle(mediaInfo.title)
 							.setDescription(mediaInfo.description)
 							.setColor(colors[key] ?? colors.brand)
-							.setThumbnail(images[key == "default" ? "plain" : key]), // "default" is already used
+							.setThumbnail(images[key == "default" ? "main" : key]), // "default" is already used
 				),
 			});
 		}
@@ -51,7 +51,7 @@ export const command: SlashCommand = {
 			.setTitle(media[key].title)
 			.setDescription(media[key].description)
 			.setColor(colors[key] ?? colors.brand)
-			.setThumbnail(images[key == "default" ? "plain" : key]);
+			.setThumbnail(images[key == "default" ? "main" : key]);
 
 		interaction
 			.reply({ embeds: [embed], fetchReply: true })

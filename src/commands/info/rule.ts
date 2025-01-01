@@ -43,8 +43,8 @@ export const command: SlashCommand = {
 
 			await interaction.complete();
 
-			const thumbnail =
-				interaction.guildId == discord.guilds.classic_faithful.id ? images.cf_plain : images.plain;
+			const thumbnail: string =
+				interaction.guildId == discord.guilds.classic_faithful.id ? images.cf_main : images.main;
 
 			if (choice == "all")
 				await interaction.channel.send({
