@@ -4,7 +4,7 @@ import { ButtonInteraction, EmbedBuilder } from "@client";
 import { magnifyToAttachment } from "@images/magnify";
 import { parseDisplay } from "@functions/compareTexture";
 import formatPack from "@utility/formatPack";
-import { loadImage } from "@napi-rs/canvas";
+import { Image, loadImage } from "@napi-rs/canvas";
 import stitch from "@helpers/images/stitch";
 
 export default {
@@ -17,11 +17,12 @@ export default {
 		const display = message.embeds[0].footer.text.split(":")[1].trim();
 		const packs = parseDisplay(display);
 
-		const loadedImages = [];
+		const loadedImages: Image[][] = [];
 		for (const packSet of packs) {
 			loadedImages.push([]);
-			for (const pack of packSet)
-				loadedImages.at(-1).push(await loadImage(formatPack(pack, "64").iconURL));
+			for (const pack of packSet) {
+				loadedImages.at(-1).push(await loadImage(formatPack(pack, 64).iconURL));
+			}
 		}
 
 		const stitched = await stitch(loadedImages);
