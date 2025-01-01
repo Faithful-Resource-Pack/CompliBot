@@ -8,7 +8,7 @@
  */
 export default function formatPack(pack: string, size = "512") {
 	let name: string;
-	let iconURL = `https://database.faithfulpack.net/images/branding/logos/transparent/${size}/`;
+	let iconURL = "https://database.faithfulpack.net/images/branding/logos/transparent/hd/";
 	switch (pack) {
 		case "faithful_32x":
 			name = "Faithful 32x";
@@ -37,12 +37,13 @@ export default function formatPack(pack: string, size = "512") {
 		case "progart":
 			name = "Default Programmer Art";
 			// have to redefine since root directory is different
-			iconURL = `https://database.faithfulpack.net/images/bot/progart.png?w=${size}`;
+			iconURL = `https://database.faithfulpack.net/images/bot/progart.png`;
 			break;
 		default:
 			name = "Default Jappa";
-			iconURL = `https://database.faithfulpack.net/images/bot/default.png?w=${size}`;
+			iconURL = `https://database.faithfulpack.net/images/bot/default.png`;
 			break;
 	}
+	iconURL += `?w=${size}`;
 	return { name, iconURL };
 }

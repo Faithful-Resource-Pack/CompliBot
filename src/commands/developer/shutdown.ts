@@ -18,7 +18,7 @@ export const command: SlashCommand = {
 							.setAuthor({
 								name: "Member banned",
 								iconURL:
-									"https://raw.githubusercontent.com/Faithful-Resource-Pack/Branding/main/role%20icons/5%20-%20Moderator.png",
+									"https://raw.githubusercontent.com/Faithful-Resource-Pack/Branding/main/role_icons/5%20-%20Moderator.png",
 							})
 							.setDescription(`<@${interaction.user.id}> has been banned`)
 							.addFields({ name: "Reason", value: "trying to stop me lmao" })
