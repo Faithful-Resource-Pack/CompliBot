@@ -16,7 +16,7 @@
     },
     {
         "question": "Where can I download Faithful?",
-        "answer": "Each pack has its own page where downloads and articles are linked. These pages can be found using the links here:\n- [Faithful 32x](https://faithfulpack.net/faithful32x)\n- [Faithful 64x](https://faithfulpack.net/faithful64x)\n- [Classic Faithful 32x Jappa](https://faithfulpack.net/classicfaithful/32x-jappa)\n- [Classic Faithful 32x Programmer Art](https://faithfulpack.net/classicfaithful/32x-programmer-art)\n- [Classic Faithful 64x](https://faithfulpack.net/classicfaithful/64x-jappa)",
+        "answer": "Each pack has its own page where downloads and articles are linked. These pages can be found using the links here:\n- [Faithful 32x](https://faithfulpack.net/faithful32x)\n- [Faithful 64x](https://faithfulpack.net/faithful64x)\n- [Classic Faithful 32x](https://faithfulpack.net/classicfaithful/32x-programmer-art)\n- [Classic Faithful 32x Jappa](https://faithfulpack.net/classicfaithful/32x-jappa)\n- [Classic Faithful 64x Jappa](https://faithfulpack.net/classicfaithful/64x-jappa)",
         "keywords": ["downloads", "download"]
     },
     {
@@ -81,7 +81,7 @@
     },
     {
         "question": "But I don't like the new Minecraft textures! Faithful Programmer Art when?",
-        "answer": "You can use [Classic Faithful 32x Programmer Art](https://faithfulpack.net/classicfaithful/32x-programmer-art). There are plans for a dedicated Faithful Programmer Art pack in the future, but for the time being all main Faithful packs are based off the newest, \"Jappa\" textures.",
+        "answer": "[Classic Faithful 32x](https://faithfulpack.net/classicfaithful/32x-programmer-art) is the programmer art counterpart to Faithful, complete with the original textures from 2011 by Vattic. There are plans for a modern Faithful-styled Programmer Art pack in the future, but for the time being all programmer art packs are based on the original Faithful art from that time period.",
         "keywords": ["faithful programmer art", "faithful progart", "faithful pa"]
     },
     {

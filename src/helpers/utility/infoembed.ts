@@ -5,7 +5,7 @@ export const media: Record<string, { title: string, description: string }> = {
 	faithful_32x: {
 		title: `Faithful 32x:`,
 		description: `
-[${parseID(emojis.faithful_logo)} Website](https://faithfulpack.net/faithful32x)
+[${parseID(emojis.main_logo)} Website](https://faithfulpack.net/faithful32x)
 
 [${parseID(emojis.curseforge)} Java Edition CurseForge](https://curseforge.com/minecraft/texture-packs/faithful-32x)
 
@@ -24,7 +24,7 @@ export const media: Record<string, { title: string, description: string }> = {
 	faithful_64x: {
 		title: "Faithful 64x:",
 		description: `
-[${parseID(emojis.faithful_logo)} Website](https://faithfulpack.net/faithful64x)
+[${parseID(emojis.main_logo)} Website](https://faithfulpack.net/faithful64x)
 
 [${parseID(emojis.curseforge)} Java Edition CurseForge](https://curseforge.com/minecraft/texture-packs/faithful-64x)
 
@@ -45,7 +45,7 @@ export const media: Record<string, { title: string, description: string }> = {
 	classic_faithful_32x_progart: {
 		title: "Classic Faithful 32x:",
 		description: `
-[${parseID(emojis.faithful_logo)} Website](https://faithfulpack.net/classicfaithful/32x-programmer-art)
+[${parseID(emojis.main_logo)} Website](https://faithfulpack.net/classicfaithful/32x-programmer-art)
 
 [${parseID(emojis.curseforge)} CurseForge](https://curseforge.com/minecraft/texture-packs/classic-faithful-32x-pa)
 
@@ -65,7 +65,7 @@ export const media: Record<string, { title: string, description: string }> = {
 	classic_faithful_32x: {
 		title: "Classic Faithful 32x Jappa:",
 		description: `
-[${parseID(emojis.faithful_logo)} Website](https://faithfulpack.net/classicfaithful/32x-jappa)
+[${parseID(emojis.main_logo)} Website](https://faithfulpack.net/classicfaithful/32x-jappa)
 
 [${parseID(emojis.curseforge)} CurseForge](https://curseforge.com/minecraft/texture-packs/classic-faithful-32x-jappa)
 
@@ -84,7 +84,7 @@ export const media: Record<string, { title: string, description: string }> = {
 	classic_faithful_64x: {
 		title: "Classic Faithful 64x Jappa:",
 		description: `
-[${parseID(emojis.faithful_logo)} Website](https://faithfulpack.net/classicfaithful/64x-jappa)
+[${parseID(emojis.main_logo)} Website](https://faithfulpack.net/classicfaithful/64x-jappa)
 
 [${parseID(emojis.curseforge)} CurseForge](https://curseforge.com/minecraft/texture-packs/classic-faithful-64x)
 
