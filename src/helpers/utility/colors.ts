@@ -10,12 +10,12 @@ export const colors = {
 	green: "#4caf50",
 	coin: "#ffdc16",
 	// branding colors
-	brand: "#76c945",
-	faithful_32x: "#00a2ff",
-	faithful_64x: "#d8158d",
-	classic_faithful_32x: "#00c756",
-	classic_faithful_32x_progart: "#a1db12",
-	classic_faithful_64x: "#9f00cf",
-	classic_faithful_64x_progart: "#0c2abd",
+	brand: "#76C945",
+	faithful_32x: "#00A2FF",
+	faithful_64x: "#FF0092",
+	classic_faithful_32x: "#1257CA",
+	classic_faithful_32x_progart: "#5ED900",
+	classic_faithful_64x: "#FF6900",
+	classic_faithful_64x_progart: "#BE42FF",
 	// workaround for getting const keys + djs compatible values
 } satisfies Record<string, ColorResolvable>;
