@@ -25,8 +25,8 @@ export default {
 						.setTimestamp(),
 				],
 				files: [file],
-				fetchReply: true,
+				withResponse: true,
 			})
-			.then((message: Message) => message.deleteButton(true));
+			.then(({ resource }) => resource.message.deleteButton(true));
 	},
 } as Component<ButtonInteraction>;

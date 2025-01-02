@@ -28,7 +28,7 @@ export const command: SlashCommand = {
 		};
 
 		interaction
-			.reply({ content: guidelines[pack], fetchReply: true })
-			.then((message: Message) => message.deleteButton());
+			.reply({ content: guidelines[pack], withResponse: true })
+			.then(({ resource }) => resource.message.deleteButton());
 	},
 };

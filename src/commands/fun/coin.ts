@@ -24,8 +24,8 @@ export const command: SlashCommand = {
 			.reply({
 				embeds: [embed],
 				components: [new ActionRowBuilder<ButtonBuilder>().addComponents(reflip)],
-				fetchReply: true,
+				withResponse: true,
 			})
-			.then((message: Message) => message.deleteButton());
+			.then(({ resource }) => resource.message.deleteButton());
 	},
 };

@@ -37,7 +37,7 @@ export const command: SlashCommand = {
 			});
 		}
 		return interaction
-			.reply({ content, fetchReply: true })
-			.then((message: Message) => message.deleteButton());
+			.reply({ content, withResponse: true })
+			.then(({ resource }) => resource.message.deleteButton());
 	},
 };

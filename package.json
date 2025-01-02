@@ -9,7 +9,7 @@
         "prettier": "prettier \"{,!(node_modules)/**/}*.ts\" --config .prettierrc --write"
     },
     "devDependencies": {
-        "@types/node": "^22.10.2",
+        "@types/node": "^22.10.3",
         "nodemon": "^3.1.9",
         "prettier": "^3.4.2"
     },
@@ -18,7 +18,7 @@
         "@octokit/rest": "^20.1.1",
         "axios": "^1.7.9",
         "chalk": "^4.1.2",
-        "discord.js": "^14.16.3",
+        "discord.js": "^14.17.1",
         "gif-encoder-2": "^1.0.5",
         "ts-node": "^10.9.2",
         "tsconfig-paths": "^4.2.0"

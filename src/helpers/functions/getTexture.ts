@@ -120,7 +120,7 @@ export async function getTexture(
 		files.push(await animateToAttachment(magnified, texture.mcmeta));
 	} else files.push(await magnifyToAttachment(textureURL));
 
-	return { embeds: [embed], files, components: [textureButtons], ephemeral: false };
+	return { embeds: [embed], files, components: [textureButtons] };
 }
 
 /**

@@ -58,7 +58,7 @@ export const command: SlashCommand = {
 			.setFooter({ text: `Keywords: ${faqChoice.keywords.join(" • ")}` });
 
 		interaction
-			.reply({ embeds: [faqEmbed], fetchReply: true })
-			.then((message: Message) => message.deleteButton());
+			.reply({ embeds: [faqEmbed], withResponse: true })
+			.then(({ resource }) => resource.message.deleteButton());
 	},
 };

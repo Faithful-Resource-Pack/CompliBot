@@ -7,6 +7,7 @@ import {
 	PermissionFlagsBits,
 	InteractionReplyOptions,
 	BaseInteraction,
+	MessageFlags,
 } from "discord.js";
 import { strings, AllStrings } from "@helpers/strings";
 import { EmbedBuilder } from "@client";
@@ -84,16 +85,16 @@ function hasPermission(type: PermissionType, warnUser = true): boolean {
 async function ephemeralReply(options: InteractionReplyOptions) {
 	// it's already deferred so we delete the non-ephemeral message
 	await this.deleteReply().catch(() => {});
-	return this.followUp({ ...options, ephemeral: true });
+	return this.followUp({ ...options, flags: [MessageFlags.Ephemeral] });
 }
 
 function complete() {
-	return this.reply({ content: "** **", fetchReply: true })
-		.then((message: Message) => message.delete())
+	return this.reply({ content: "** **", withResponse: true })
+		.then(({ resource }) => resource.message.delete())
 		.catch(() => {});
 }
 
-// no idea how adding methods here adds them everywhere but I'm not complaining
+// adding them here adds them everywhere (thank you runtime prototypal inheritance)
 BaseInteraction.prototype.hasPermission = hasPermission;
 BaseInteraction.prototype.strings = strings;
 BaseInteraction.prototype.ephemeralReply = ephemeralReply;

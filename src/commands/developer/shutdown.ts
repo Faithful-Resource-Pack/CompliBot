@@ -24,9 +24,9 @@ export const command: SlashCommand = {
 							.addFields({ name: "Reason", value: "trying to stop me lmao" })
 							.setColor(colors.red),
 					],
-					fetchReply: true,
+					withResponse: true,
 				})
-				.then((message: Message) => message.deleteButton());
+				.then(({ resource }) => resource.message.deleteButton());
 		}
 		await interaction.reply({
 			embeds: [new EmbedBuilder().setTitle("Shutting down...")],

@@ -58,8 +58,8 @@ export const command: SlashCommand = {
 						name: choice.url,
 					}),
 				],
-				fetchReply: true,
+				withResponse: true,
 			})
-			.then((message: Message) => message.deleteButton());
+			.then(({ resource }) => resource.message.deleteButton());
 	},
 };

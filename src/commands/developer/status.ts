@@ -64,8 +64,8 @@ export const command: SlashCommand = {
 		await interaction
 			.reply({
 				embeds: [new EmbedBuilder().setTitle("Bot status successfully changed!")],
-				fetchReply: true,
+				withResponse: true,
 			})
-			.then((message: Message) => message.deleteButton());
+			.then(({ resource }) => resource.message.deleteButton());
 	},
 };

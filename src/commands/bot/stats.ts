@@ -59,8 +59,8 @@ export const command: SlashCommand = {
 					iconURL: heart,
 				});
 			interaction
-				.reply({ embeds: [embed], fetchReply: true })
-				.then((message: Message) => message.deleteButton());
+				.reply({ embeds: [embed], withResponse: true })
+				.then(({ resource }) => resource.message.deleteButton());
 		})
 		.set("command", async (interaction) => {
 			const command = interaction.options.getString("command");
