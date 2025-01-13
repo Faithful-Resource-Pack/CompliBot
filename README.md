@@ -1,8 +1,4 @@
-<img
-  src="https://database.faithfulpack.net/images/branding/logos/transparent/hd/complibot_logo.png?w=256"
-  alt="CompliBot Logo"
-  align="right"
->
+<img src="https://database.faithfulpack.net/images/branding/logos/transparent/hd/complibot_logo.png?w=256" alt="CompliBot Logo" align="right">
 <div align="center">
   <h1>CompliBot</h1>
   <h3>The official bot for the Faithful Discord servers.</h3>

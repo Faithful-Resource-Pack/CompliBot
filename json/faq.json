@@ -11,7 +11,7 @@
     },
     {
         "question": "Who is Kraineff, who is Vattic, and why are there two Faithfuls?",
-        "answer": "The original creator of the Faithful 32x32 resource pack, Vattic, abandoned the project in 2016 due to unfortunate and uncontrollable life circumstances. A few months after, an artist named Kraineff (also known as xMrVizzy) began maintaining Faithful, claiming Vattic gave him ownership of the project.\nAs Kraineff made increasingly questionable management decisions, people began questioning his legitimacy, and eventually the majority of his community left in November 2020 for their own community-run project, Compliance. Soon after, these contributors gained contact with Vattic after four years, who confirmed Kraineff had been profiting off a stolen name for years. This is documented in AntVenom's video [here](https://www.youtube.com/watch?v=kgZYBTlwaVs) if you want more information.\nDespite having been exposed as a thief, Kraineff still refused to relinquish the Faithful name. The now-official Compliance project decided to rebrand to Faithful regardless, causing there to be two Faithfuls.",
+        "answer": "Vattic, the original creator of Faithful 32x32, left the project in 2016 following real-life difficulties. An artist named Kraineff (formerly xMrVizzy) soon took over, claiming Vattic gave him ownership.\nIn November 2020, Kraineff's history of poor management culminated in an exodus of Faithful contributors, who formed their own community-run project called Compliance. Soon after, these contributors gained contact with Vattic, confirming that Kraineff had falsely claimed ownership and moreover had been profiting off a stolen name for years. With Vattic's blessing, Compliance rebranded to Faithful despite Kraineff refusing to give up the name, thus leading to both projects sharing the same name.\nFor more details, watch AntVenom's video [here](https://www.youtube.com/watch?v=kgZYBTlwaVs).",
         "keywords": ["kraineff", "vattic", "vizzy", "xmrvizzy"]
     },
     {
@@ -21,7 +21,7 @@
     },
     {
         "question": "How do I install Faithful/any resource pack?",
-        "answer": "We recommend giving [this Minecraft Wiki page](https://minecraft.wiki/w/Tutorials/Loading_a_resource_pack) a read. Add-ons and tweaks work in exactly the same way, except by applying them on top of the given base pack rather than alone.",
+        "answer": "We recommend giving [this Minecraft Wiki page](https://minecraft.wiki/w/Tutorials/Loading_a_resource_pack) a read. Add-ons and mod support work in exactly the same way, except by applying them on top of the given base pack rather than alone.",
         "keywords": ["installation", "install"]
     },
     {
@@ -51,7 +51,7 @@
     },
     {
         "question": "What happened to Faithful on the Bedrock Edition Marketplace, and will it ever be available again?",
-        "answer": "The previously listed version of Faithful 32x on the Bedrock marketplace (by Kraineff/xMrVizzy) was never official or licensed by us. As the stolen pack contained mostly our work, we contacted Mojang to take the pack off the marketplace since it was monetizing stolen work.\nUnfortunately, getting our resource packs onto the marketplace would be a lengthy and complicated process, since a free pack hasn't been published to the marketplace before. On top of this, community packs are disallowed from the marketplace, as there would be no fair way to compensate everyone involved otherwise monetarily. We would like to eventually release Faithful on the marketplace if possible, but if releasing a free resource pack on the marketplace is not possible, we will not release Faithful there.",
+        "answer": "The version of Faithful 32x previously listed on the Bedrock Marketplace was unauthorized and had been monetizing our stolen work, so we contacted Mojang to remove it.\nUnfortunately, publishing Faithful legitimately on the marketplace is complicated if not impossible due to restrictions surrounding free and contributor-led projects. We would like to eventually release Faithful there if possible, but only if it can remain free for all.",
         "keywords": ["marketplace", "bedrock"]
     },
     {
@@ -134,16 +134,6 @@
         "discord": true
     },
     {
-        "question": "What's the difference between an add-on and a tweak?",
-        "answer": "We define the differences in the following way:\n**Tweak**: A tweak changes existing aspects about the game—they are one-off and smaller than an add-on. Examples: 3D items, Consistent Bedrock.\n**Add-on**: An add-on adds new features to the game, and/or is usually larger in scope than a tweak. Examples: New random variations for blocks/mobs.\nAdditionally, due to technical limitations, PBR resource packs cannot reuse textures from the main Faithful pack, and therefore can function as standalone, but for the sake of simplicity, they are also considered add-ons.\nLastly, collections of tweaks that the author chooses not to submit individually are considered add-ons as well.",
-        "keywords": ["add-on vs tweak", "tweak vs add-on"]
-    },
-    {
-        "question": "How can I submit my tweak?",
-        "answer": "For the time being, tweaks can be submitted as add-ons using the standard add-on creation process. A Vanilla Tweaks-styled customizer is planned for the future, but we currently have no developer for it.",
-        "keywords": ["tweak", "tweaks"]
-    },
-    {
         "question": "Will Faithful affect my FPS?",
         "answer": "The short answer is no. While ludicrously high-resolution packs may cause a minor decrease (well above the scope of the Faithful project), in general shaders or mods are the major graphics-related culprit for causing large amounts of lag, not resource packs. When a resource pack claims to boost FPS, there's a good chance it's completely lying or it will cause a very marginal increase at best.",
         "keywords": ["fps", "lag", "performance"]
@@ -155,7 +145,7 @@
     },
     {
         "question": "Items appear too big when using Bedrock Edition! What can I do?",
-        "answer": "This is a vanilla bug that's been in Bedrock for over a year ([MCPE-120618](https://bugs.mojang.com/browse/MCPE-120618)) which affects any pack with textures larger than default. All Faithful packs shouldn't have this issue since a workaround has been found, but for other packs there's a [standalone fix made by MultiPixel](https://fxtwitter.com/MultiPixelHD/status/1786301423011119359) available.",
+        "answer": "This is a vanilla bug that's been in Bedrock for over a year ([MCPE-120618](https://bugs.mojang.com/browse/MCPE-120618)) which affects any pack with textures larger than default. A workaround has been found for most items, which is already included in all Faithful packs (any items that are still oversized in Faithful are likely unfixable), but for other packs there's a [standalone fix made by MultiPixel](https://fxtwitter.com/MultiPixelHD/status/1786301423011119359) available.",
         "keywords": ["big items", "bugged items", "oversized items"]
     },
     {
