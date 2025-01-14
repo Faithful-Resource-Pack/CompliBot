@@ -35,6 +35,7 @@
         "block/redstone_dust_overlay.png",
         "entity/enderman/enderman_eyes.png",
         "entity/phantom_eyes.png",
+        "entity/creaking/creaking_eyes.png",
         "block/water_overlay.png",
         "blocks/water_overlay.png",
         "entity/end_portal.png",
@@ -179,6 +180,7 @@
         "entity/lead_rope.png",
         "entity/loyalty_rope.png",
         "entity/pig/pigzombie.png",
+        "entity/creaking/creaking_eyes.png",
         "entity/villager/",
         "entity/zombie_villager/",
         "ui/Black.png",
@@ -411,7 +413,6 @@
         "ui/realms_faq_bee.png",
         "ui/realms_faq_fox.png",
         "ui/realms_faq_spider.png",
-        "ui/glyph_all_pack_small.png",
-        "ui/stack_progress_bar_"
+        "ui/glyph_all_pack_small.png"
     ]
 }
