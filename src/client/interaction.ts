@@ -13,6 +13,7 @@ import { strings, AllStrings } from "@helpers/strings";
 import { EmbedBuilder } from "@client";
 import { colors } from "@utility/colors";
 import { Client as ExtendedClient, Message } from "@client";
+import { AnyInteraction } from "@interfaces/interactions";
 
 export type PermissionType = "manager" | "dev" | "moderator" | "council";
 
@@ -45,7 +46,7 @@ declare module "discord.js" {
 		 * Hack to remove the "The application did not respond" message when not replying
 		 * @author Evorp
 		 */
-		complete(): Promise<Message>;
+		complete(): Promise<Message | null>;
 	}
 }
 
@@ -78,20 +79,20 @@ function hasPermission(type: PermissionType, warnUser = true): boolean {
 			break;
 	}
 
-	if (!out && warnUser) this.reply({ embeds: [noPermission], ephemeral: true });
+	if (!out && warnUser) this.reply({ embeds: [noPermission], flags: MessageFlags.Ephemeral });
 	return out;
 }
 
-async function ephemeralReply(options: InteractionReplyOptions) {
+async function ephemeralReply(this: AnyInteraction, options: InteractionReplyOptions) {
 	// it's already deferred so we delete the non-ephemeral message
 	await this.deleteReply().catch(() => {});
-	return this.followUp({ ...options, flags: [MessageFlags.Ephemeral] });
+	return this.followUp({ ...options, flags: MessageFlags.Ephemeral });
 }
 
-function complete() {
+function complete(this: AnyInteraction) {
 	return this.reply({ content: "** **", withResponse: true })
 		.then(({ resource }) => resource.message.delete())
-		.catch(() => {});
+		.catch(() => null);
 }
 
 // adding them here adds them everywhere (thank you runtime prototypal inheritance)

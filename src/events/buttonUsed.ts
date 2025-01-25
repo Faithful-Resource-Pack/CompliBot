@@ -2,6 +2,7 @@ import type { Event } from "@interfaces/events";
 import { ButtonInteraction, EmbedBuilder } from "@client";
 import { info } from "@helpers/logger";
 import { colors } from "@utility/colors";
+import { MessageFlags } from "discord.js";
 
 export default {
 	name: "buttonUsed",
@@ -18,7 +19,7 @@ export default {
 						.setDescription(interaction.strings().error.polls_removed)
 						.setColor(colors.red),
 				],
-				ephemeral: true,
+				flags: MessageFlags.Ephemeral,
 			});
 		}
 

@@ -1,6 +1,11 @@
 import type { SlashCommand } from "@interfaces/interactions";
 import { EmbedBuilder } from "@client";
-import { ColorResolvable, PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
+import {
+	ColorResolvable,
+	MessageFlags,
+	PermissionFlagsBits,
+	SlashCommandBuilder,
+} from "discord.js";
 import { colors } from "@utility/colors";
 
 export const command: SlashCommand = {
@@ -50,7 +55,7 @@ export const command: SlashCommand = {
 						.setDescription(interaction.strings().command.embed.need_more_info)
 						.setColor(colors.red),
 				],
-				ephemeral: true,
+				flags: MessageFlags.Ephemeral,
 			});
 		}
 

@@ -1,5 +1,5 @@
 import type { SlashCommand } from "@interfaces/interactions";
-import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
+import { SlashCommandBuilder, PermissionFlagsBits, MessageFlags } from "discord.js";
 
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
@@ -10,7 +10,7 @@ export const command: SlashCommand = {
 	async execute(interaction) {
 		if (!interaction.hasPermission("dev")) return;
 
-		await interaction.reply({ content: "Restarting...", ephemeral: true });
+		await interaction.reply({ content: "Restarting...", flags: MessageFlags.Ephemeral });
 		await interaction.client.restart(interaction);
 	},
 };

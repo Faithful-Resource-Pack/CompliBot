@@ -1,5 +1,6 @@
 import type { Event } from "@interfaces/events";
 import type { AnyInteraction } from "@interfaces/interactions";
+import { MessageFlags } from "discord.js";
 
 export default {
 	name: "interactionCreate",
@@ -11,7 +12,7 @@ export default {
 			// all interactions have the string() and reply() methods
 			return interaction.reply({
 				content: interaction.strings().error.botbanned,
-				ephemeral: true,
+				flags: MessageFlags.Ephemeral,
 			});
 		}
 

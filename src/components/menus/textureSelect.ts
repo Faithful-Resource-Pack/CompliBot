@@ -5,6 +5,7 @@ import { getTexture } from "@functions/getTexture";
 import axios from "axios";
 import { colors } from "@utility/colors";
 import { unencodeChoice } from "@helpers/choiceEmbed";
+import { MessageFlags } from "discord.js";
 
 export default {
 	id: "textureSelect",
@@ -26,7 +27,7 @@ export default {
 						)
 						.setColor(colors.red),
 				],
-				ephemeral: true,
+				flags: MessageFlags.Ephemeral,
 			});
 
 		interaction.deferUpdate();

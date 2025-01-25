@@ -2,6 +2,7 @@ import type { Component } from "@interfaces/components";
 import { info } from "@helpers/logger";
 import { ButtonInteraction, EmbedBuilder } from "@client";
 import { colors } from "@utility/colors";
+import { MessageFlags } from "discord.js";
 
 export default {
 	id: "deleteInteraction",
@@ -27,7 +28,7 @@ export default {
 						)
 						.setColor(colors.red),
 				],
-				ephemeral: true,
+				flags: MessageFlags.Ephemeral,
 			});
 
 		let fetchedRef = false;
@@ -54,7 +55,7 @@ export default {
 						)
 						.setColor(colors.red),
 				],
-				ephemeral: true,
+				flags: MessageFlags.Ephemeral,
 			});
 
 		try {
@@ -62,7 +63,7 @@ export default {
 		} catch (err) {
 			return interaction.reply({
 				content: interaction.strings().error.message.deleted,
-				ephemeral: true,
+				flags: MessageFlags.Ephemeral,
 			});
 		}
 	},

@@ -1,5 +1,5 @@
 import type { SlashCommand } from "@interfaces/interactions";
-import { SlashCommandBuilder } from "discord.js";
+import { MessageFlags, SlashCommandBuilder } from "discord.js";
 import { Message, EmbedBuilder } from "@client";
 import { colors } from "@utility/colors";
 import faqStrings from "@json/faq.json";
@@ -44,7 +44,7 @@ export const command: SlashCommand = {
 						)
 						.setColor(colors.red),
 				],
-				ephemeral: true,
+				flags: MessageFlags.Ephemeral,
 			});
 
 		const question: string = (

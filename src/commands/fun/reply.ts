@@ -1,5 +1,5 @@
 import type { SlashCommand } from "@interfaces/interactions";
-import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
+import { SlashCommandBuilder, PermissionFlagsBits, MessageFlags } from "discord.js";
 import { EmbedBuilder, Message } from "@client";
 import { colors } from "@utility/colors";
 
@@ -32,7 +32,7 @@ export const command: SlashCommand = {
 						.setDescription(interaction.strings().error.message.invalid.description)
 						.setColor(colors.red),
 				],
-				ephemeral: true,
+				flags: MessageFlags.Ephemeral,
 			});
 		} // message can't be fetched
 

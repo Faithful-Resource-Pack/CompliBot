@@ -2,6 +2,7 @@ import type { Component } from "@interfaces/components";
 import { ButtonInteraction, EmbedBuilder } from "@client";
 import { colors } from "@utility/colors";
 import { info } from "@helpers/logger";
+import { MessageFlags } from "discord.js";
 
 export default {
 	id: "reflip",
@@ -23,7 +24,7 @@ export default {
 						)
 						.setColor(colors.red),
 				],
-				ephemeral: true,
+				flags: MessageFlags.Ephemeral,
 			});
 
 		const res = Math.round(Math.random() * 100) / 100; // round to 2 decimal places
@@ -43,7 +44,7 @@ export default {
 					.setTitle(interaction.strings().command.coin.reflip.title)
 					.setDescription(interaction.strings().command.coin.reflip.description),
 			],
-			ephemeral: true,
+			flags: MessageFlags.Ephemeral,
 		});
 	},
 } as Component<ButtonInteraction>;

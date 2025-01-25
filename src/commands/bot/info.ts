@@ -1,5 +1,5 @@
 import type { SlashCommand } from "@interfaces/interactions";
-import { SlashCommandBuilder } from "discord.js";
+import { MessageFlags, SlashCommandBuilder } from "discord.js";
 import { EmbedBuilder } from "@client";
 import axios from "axios";
 
@@ -28,6 +28,6 @@ export const command: SlashCommand = {
 			)
 			.setThumbnail(image);
 
-		interaction.reply({ embeds: [embed], ephemeral: true });
+		interaction.reply({ embeds: [embed], flags: MessageFlags.Ephemeral });
 	},
 };
