@@ -43,7 +43,7 @@ export const command: SlashCommand = {
 			const replyOptions = await compareTexture(interaction.client, results[0].id, display);
 			if (!replyOptions) return imageTooBig(interaction);
 
-			return interaction.editReply(replyOptions).then((message: Message) => message.deleteButton());
+			return interaction.editReply(replyOptions).then((message) => message.deleteButton());
 		}
 
 		// multiple results

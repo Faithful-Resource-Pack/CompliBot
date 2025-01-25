@@ -19,15 +19,16 @@ declare module "discord.js" {
  * @param hasAuthorID whether to check for an author ID in the footer for permission later
  * @returns edited message
  */
-async function deleteButton(hasAuthorID?: boolean): Promise<Message> {
+async function deleteButton(this: Message, hasAuthorID?: boolean): Promise<Message> {
 	if (
 		this.components[0] != undefined &&
 		this.components.at(-1).components.length < 5 && //check there aren't 5 buttons
 		this.components.at(-1).components[0].type === ComponentType.Button //checks there isn't a select menu
 	) {
-		const deleteRow = ActionRowBuilder.from(this.components.at(-1)).addComponents(
-			hasAuthorID ? deleteMessage : deleteInteraction,
-		);
+		// typed as any since we know it's a button row but discord.js doesn't
+		const deleteRow = ActionRowBuilder.from<ButtonBuilder>(
+			this.components.at(-1) as any,
+		).addComponents(hasAuthorID ? deleteMessage : deleteInteraction);
 
 		return this.edit({
 			components: [...this.components.slice(0, -1), deleteRow],

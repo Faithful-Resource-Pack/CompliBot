@@ -268,7 +268,7 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 				el.servers = ["dev"];
 			});
 
-		const guilds: Record<string, RESTPostAPIApplicationCommandsJSONBody[]> = commandsArr.reduce(
+		const guilds = commandsArr.reduce<Record<string, RESTPostAPIApplicationCommandsJSONBody[]>>(
 			(acc, cmd) => {
 				if (!cmd.servers) cmd.servers = ["global"];
 				for (const server of cmd.servers) {

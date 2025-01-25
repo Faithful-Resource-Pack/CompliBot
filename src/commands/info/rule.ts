@@ -92,7 +92,8 @@ export const command: SlashCommand = {
 			return interaction.channel.send({ embeds: [embedExpandedRules, embedChanges] });
 		}
 
-		const ruleChoice = ruleStrings.rules[choice];
+		// numeric strings can be used to index arrays
+		const ruleChoice: (typeof ruleStrings.rules)[number] = ruleStrings.rules[choice];
 		return interaction
 			.reply({
 				embeds: [
@@ -102,8 +103,8 @@ export const command: SlashCommand = {
 						.setThumbnail(images.rules)
 						.setURL(`${baseUrl}#${Number(choice) + 1}`),
 				],
-				fetchReply: true,
+				withResponse: true,
 			})
-			.then((message: Message) => message.deleteButton());
+			.then(({ resource }) => resource.message.deleteButton());
 	},
 };

@@ -5,6 +5,7 @@ import {
 	AttachmentBuilder,
 	SlashCommandBuilder,
 	PermissionFlagsBits,
+	MessageFlags,
 } from "discord.js";
 import { readFileSync, writeFileSync } from "fs";
 import { join } from "path";
@@ -55,7 +56,7 @@ export const command: SlashCommand = {
 		.set("edit", async (interaction) => {
 			const isAdding = interaction.options.getString("action", true) == "add";
 
-			await interaction.deferReply({ ephemeral: true });
+			await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 			const banlist = require("@json/botbans.json");
 			const victim = interaction.options.getUser("subject");
 
@@ -93,7 +94,7 @@ export const command: SlashCommand = {
 		.set("view", async (interaction) => {
 			if (!interaction.hasPermission("dev")) return;
 
-			await interaction.deferReply({ ephemeral: true });
+			await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 			const buffer = readFileSync(join(process.cwd(), "json", "botbans.json"));
 			const txtBuff = Buffer.from(
 				`Botbanned IDs:\n\n${JSON.parse(buffer.toString("utf-8"))["ids"].join("\n")}`,

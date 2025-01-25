@@ -7,11 +7,13 @@ import {
 	PermissionFlagsBits,
 	InteractionReplyOptions,
 	BaseInteraction,
+	MessageFlags,
 } from "discord.js";
 import { strings, AllStrings } from "@helpers/strings";
 import { EmbedBuilder } from "@client";
 import { colors } from "@utility/colors";
 import { Client as ExtendedClient, Message } from "@client";
+import { AnyInteraction } from "@interfaces/interactions";
 
 export type PermissionType = "manager" | "dev" | "moderator" | "council";
 
@@ -44,7 +46,7 @@ declare module "discord.js" {
 		 * Hack to remove the "The application did not respond" message when not replying
 		 * @author Evorp
 		 */
-		complete(): Promise<Message>;
+		complete(): Promise<Message | null>;
 	}
 }
 
@@ -77,23 +79,23 @@ function hasPermission(type: PermissionType, warnUser = true): boolean {
 			break;
 	}
 
-	if (!out && warnUser) this.reply({ embeds: [noPermission], ephemeral: true });
+	if (!out && warnUser) this.reply({ embeds: [noPermission], flags: MessageFlags.Ephemeral });
 	return out;
 }
 
-async function ephemeralReply(options: InteractionReplyOptions) {
+async function ephemeralReply(this: AnyInteraction, options: InteractionReplyOptions) {
 	// it's already deferred so we delete the non-ephemeral message
 	await this.deleteReply().catch(() => {});
-	return this.followUp({ ...options, ephemeral: true });
+	return this.followUp({ ...options, flags: MessageFlags.Ephemeral });
 }
 
-function complete() {
-	return this.reply({ content: "** **", fetchReply: true })
-		.then((message: Message) => message.delete())
-		.catch(() => {});
+function complete(this: AnyInteraction) {
+	return this.reply({ content: "** **", withResponse: true })
+		.then(({ resource }) => resource.message.delete())
+		.catch(() => null);
 }
 
-// no idea how adding methods here adds them everywhere but I'm not complaining
+// adding them here adds them everywhere (thank you runtime prototypal inheritance)
 BaseInteraction.prototype.hasPermission = hasPermission;
 BaseInteraction.prototype.strings = strings;
 BaseInteraction.prototype.ephemeralReply = ephemeralReply;

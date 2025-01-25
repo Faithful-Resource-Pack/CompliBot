@@ -1,5 +1,5 @@
 import type { SlashCommand } from "@interfaces/interactions";
-import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
+import { SlashCommandBuilder, PermissionFlagsBits, MessageFlags } from "discord.js";
 import { Client, EmbedBuilder } from "@client";
 
 export const command: SlashCommand = {
@@ -14,7 +14,7 @@ export const command: SlashCommand = {
 		.setDMPermission(false),
 	async execute(interaction) {
 		if (!interaction.hasPermission("dev")) return;
-		await interaction.deferReply({ ephemeral: true });
+		await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
 		const clean = async (text: any, client: Client): Promise<string> => {
 			if (text && text.constructor.name === "Promise") text = await text;

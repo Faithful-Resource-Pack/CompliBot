@@ -12,10 +12,10 @@ export const command: SlashCommand = {
 		// NEVER USE AWAIT ASYNC
 		// only send response to maximize response time
 		interaction
-			.reply({ content: "** **", fetchReply: true })
-			.then((msg) => {
+			.reply({ content: "** **", withResponse: true })
+			.then(({ resource }) => {
 				const apiPing = interaction.client.ws.ping;
-				const botPing = msg.createdTimestamp - interaction.createdTimestamp;
+				const botPing = resource.message.createdTimestamp - interaction.createdTimestamp;
 
 				const embed = new EmbedBuilder()
 					.setTitle("Pong!")
@@ -27,6 +27,6 @@ export const command: SlashCommand = {
 
 				return interaction.editReply({ embeds: [embed] });
 			})
-			.then((message: Message) => message.deleteButton());
+			.then((message) => message.deleteButton());
 	},
 };

@@ -1,5 +1,5 @@
 import type { SlashCommand, SlashCommandExecute } from "@interfaces/interactions";
-import { SlashCommandBuilder, Collection, version as djsVersion } from "discord.js";
+import { SlashCommandBuilder, Collection, version as djsVersion, MessageFlags } from "discord.js";
 import { EmbedBuilder, Message } from "@client";
 import axios from "axios";
 import { colors } from "@utility/colors";
@@ -59,8 +59,8 @@ export const command: SlashCommand = {
 					iconURL: heart,
 				});
 			interaction
-				.reply({ embeds: [embed], fetchReply: true })
-				.then((message: Message) => message.deleteButton());
+				.reply({ embeds: [embed], withResponse: true })
+				.then(({ resource }) => resource.message.deleteButton());
 		})
 		.set("command", async (interaction) => {
 			const command = interaction.options.getString("command");
@@ -68,7 +68,7 @@ export const command: SlashCommand = {
 				// command doesn't exist
 				if (interaction.client.commandsProcessed.get(command) === undefined)
 					return interaction.reply({
-						ephemeral: true,
+						flags: MessageFlags.Ephemeral,
 						embeds: [
 							new EmbedBuilder()
 								.setTitle(interaction.strings().error.generic)
@@ -93,7 +93,7 @@ export const command: SlashCommand = {
 							)
 							.setTimestamp(),
 					],
-					ephemeral: true,
+					flags: MessageFlags.Ephemeral,
 				});
 			}
 
@@ -103,7 +103,7 @@ export const command: SlashCommand = {
 			);
 
 			interaction.reply({
-				ephemeral: true,
+				flags: MessageFlags.Ephemeral,
 				embeds: [
 					new EmbedBuilder()
 						.setTimestamp()

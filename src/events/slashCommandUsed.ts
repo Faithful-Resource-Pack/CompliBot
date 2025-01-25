@@ -34,8 +34,10 @@ export default {
 				.setColor(colors.red);
 
 			const msgEmbed = interaction.deferred
-				? await interaction.followUp({ embeds: [embed], fetchReply: true })
-				: await interaction.reply({ embeds: [embed], fetchReply: true });
+				? await interaction.followUp({ embeds: [embed], withResponse: true })
+				: await interaction
+						.reply({ embeds: [embed], withResponse: true })
+						.then(({ resource }) => resource.message);
 
 			return msgEmbed.deleteButton();
 		}

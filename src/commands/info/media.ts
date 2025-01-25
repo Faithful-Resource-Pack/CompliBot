@@ -54,7 +54,7 @@ export const command: SlashCommand = {
 			.setThumbnail(images[key == "default" ? "main" : key]);
 
 		interaction
-			.reply({ embeds: [embed], fetchReply: true })
-			.then((message: Message) => message.deleteButton());
+			.reply({ embeds: [embed], withResponse: true })
+			.then(({ resource }) => resource.message.deleteButton());
 	},
 };

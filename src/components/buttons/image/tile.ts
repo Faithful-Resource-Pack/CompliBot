@@ -28,8 +28,8 @@ export default {
 				],
 				files: [attachment],
 				components: [tileButtons],
-				fetchReply: true,
+				withResponse: true,
 			})
-			.then((message: Message) => message.deleteButton(true));
+			.then(({ resource }) => resource.message.deleteButton(true));
 	},
 } as Component<ButtonInteraction>;

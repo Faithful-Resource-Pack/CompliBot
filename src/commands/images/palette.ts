@@ -25,8 +25,8 @@ export const command: SlashCommand = {
 			.reply({
 				embeds: [embed],
 				files: [file],
-				fetchReply: true,
+				withResponse: true,
 			})
-			.then((message: Message) => message.deleteButton());
+			.then(({ resource }) => resource.message.deleteButton());
 	},
 };

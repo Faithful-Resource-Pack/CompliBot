@@ -6,12 +6,13 @@ import { parseDisplay } from "@functions/compareTexture";
 import formatPack from "@utility/formatPack";
 import { Image, loadImage } from "@napi-rs/canvas";
 import stitch from "@helpers/images/stitch";
+import { MessageFlags } from "discord.js";
 
 export default {
 	id: "comparisonTemplate",
 	async execute(client, interaction) {
 		if (client.verbose) console.log(`${info}Comparison template requested!`);
-		await interaction.deferReply({ ephemeral: true });
+		await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
 		const message = interaction.message;
 		const display = message.embeds[0].footer.text.split(":")[1].trim();

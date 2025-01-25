@@ -4,6 +4,7 @@ import { info } from "@helpers/logger";
 import { cycleTexture } from "@functions/cycleTexture";
 import { colors } from "@utility/colors";
 import { unencodeChoice } from "@helpers/choiceEmbed";
+import { MessageFlags } from "discord.js";
 
 export default {
 	id: "cycleSelect",
@@ -25,7 +26,7 @@ export default {
 						)
 						.setColor(colors.red),
 				],
-				ephemeral: true,
+				flags: MessageFlags.Ephemeral,
 			});
 
 		interaction.deferUpdate();

@@ -1,7 +1,7 @@
 import { Message, StringSelectMenuInteraction, EmbedBuilder } from "@client";
 import type { Component } from "@interfaces/components";
 import { info } from "@helpers/logger";
-import { MessageEditOptions } from "discord.js";
+import { MessageEditOptions, MessageFlags } from "discord.js";
 import compareTexture from "@functions/compareTexture";
 import { imageTooBig } from "@helpers/warnUser";
 import { colors } from "@utility/colors";
@@ -27,7 +27,7 @@ export default {
 						)
 						.setColor(colors.red),
 				],
-				ephemeral: true,
+				flags: MessageFlags.Ephemeral,
 			});
 
 		interaction.deferUpdate();

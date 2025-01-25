@@ -1,5 +1,5 @@
 import type { SlashCommand } from "@interfaces/interactions";
-import { SlashCommandBuilder } from "discord.js";
+import { MessageFlags, SlashCommandBuilder } from "discord.js";
 import { Message, EmbedBuilder } from "@client";
 import { colors } from "@utility/colors";
 import faqStrings from "@json/faq.json";
@@ -44,7 +44,7 @@ export const command: SlashCommand = {
 						)
 						.setColor(colors.red),
 				],
-				ephemeral: true,
+				flags: MessageFlags.Ephemeral,
 			});
 
 		const question: string = (
@@ -58,7 +58,7 @@ export const command: SlashCommand = {
 			.setFooter({ text: `Keywords: ${faqChoice.keywords.join(" • ")}` });
 
 		interaction
-			.reply({ embeds: [faqEmbed], fetchReply: true })
-			.then((message: Message) => message.deleteButton());
+			.reply({ embeds: [faqEmbed], withResponse: true })
+			.then(({ resource }) => resource.message.deleteButton());
 	},
 };
