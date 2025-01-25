@@ -52,10 +52,10 @@ export async function generalChoiceEmbed(
 
 	const embed = new EmbedBuilder()
 		.setTitle(`${choicesLength} results found`)
-		.setDescription(`If you can't what you're looking for, please be more specific!`);
+		.setDescription("If you can't find what you're looking for, please be more specific!");
 
 	await interaction
-		.editReply({ embeds: [embed], components: components })
+		.editReply({ embeds: [embed], components })
 		.then((message: Message) => message.deleteButton());
 }
 
