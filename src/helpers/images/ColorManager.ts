@@ -116,22 +116,20 @@ export default class ColorManager {
 		const l = (max + min) / 2;
 
 		// all color channels are equal so it's grayscale
-		if (!diff) h = s = 0;
-		else {
-			s = l > 0.5 ? diff / (2 - max - min) : diff / (max + min);
+		if (!diff) return { h: 0, s: 0, l };
+		s = l > 0.5 ? diff / (2 - max - min) : diff / (max + min);
 
-			// calculates hue based off the brightest channel
-			switch (max) {
-				case r:
-					h = (g - b) / diff + (g < b ? 6 : 0);
-					break;
-				case g:
-					h = (b - r) / diff + 2;
-					break;
-				case b:
-					h = (r - g) / diff + 4;
-					break;
-			}
+		// calculates hue based off the brightest channel
+		switch (max) {
+			case r:
+				h = (g - b) / diff + (g < b ? 6 : 0);
+				break;
+			case g:
+				h = (b - r) / diff + 2;
+				break;
+			case b:
+				h = (r - g) / diff + 4;
+				break;
 		}
 
 		// converts hue to match the other channels
