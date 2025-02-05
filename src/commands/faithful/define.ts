@@ -16,14 +16,14 @@ export const command: SlashCommand = {
 		let choice = interaction.options.getString("term", true).trim();
 
 		// easier to read markdown than final compiled site
-		const entries: string[] = (
+		const terms: string[] = (
 			await axios.get(
 				"https://raw.githubusercontent.com/Faithful-Resource-Pack/Docs/main/pages/textures/glossary.md",
 			)
 		).data.split("\n\n#");
 
 		// use partial title match
-		const match = entries.find((v) => new RegExp(`# .*${choice}.*`, "i").exec(v));
+		const match = terms.find((term) => new RegExp(`# .*${choice}.*`, "i").exec(term));
 
 		const errorEmbed = new EmbedBuilder()
 			.setTitle(interaction.strings().error.invalid_choice.title)

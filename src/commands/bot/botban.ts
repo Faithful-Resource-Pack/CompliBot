@@ -79,7 +79,7 @@ export const command: SlashCommand = {
 				JSON.stringify(
 					isAdding
 						? banlist.ids.concat([victim.id])
-						: banlist.ids.filter((v: string) => v != victim.id),
+						: banlist.ids.filter((id: string) => id != victim.id),
 				),
 			);
 
