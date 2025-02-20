@@ -407,13 +407,14 @@
         "ui/csb_particles.png",
         "ui/csb_sparkles.png",
         "ui/csb_title.png",
-        "ui/csb_subscribe_banner.png",
         "ui/realms_header_art.png",
         "ui/realms_poster_art_with_logo.png",
         "ui/realms_purchase_warning.png",
         "ui/realms_faq_bee.png",
         "ui/realms_faq_fox.png",
         "ui/realms_faq_spider.png",
-        "ui/glyph_all_pack_small.png"
+        "ui/glyph_all_pack_small.png",
+        "ui/subscription_MarketplacePass.png",
+        "ui/subscription_Realms.png"
     ]
 }
