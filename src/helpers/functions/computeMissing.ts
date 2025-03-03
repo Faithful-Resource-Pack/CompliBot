@@ -55,8 +55,12 @@ export async function computeMissingResults(
 			data: { ...baseData, version, completion: 0 },
 		};
 
+	const versions = (
+		await axios.get<string[]>(`${client.tokens.apiUrl}textures/versions/${edition}`)
+	).data;
+
 	// latest version if versions doesn't include version (fix for autocomplete validation)
-	if (!client.versions.includes(version)) version = client.versions[0];
+	if (!versions.includes(version)) version = versions[0];
 
 	// same steps are reused for compared repos
 	const [defaultPath, requestPath] = await Promise.all([
