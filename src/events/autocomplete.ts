@@ -12,12 +12,13 @@ export default {
 			const filtered = focusedOption.value
 				? client.versions.filter((v) => v.startsWith(focusedOption.value))
 				: client.versions;
-			return interaction.respond(
-				filtered
-					.sort(minecraftSorter)
-					.reverse() // newest at top
-					.map((version) => ({ name: version, value: version })),
-			);
+
+			const mapped = filtered
+				.sort(minecraftSorter)
+				.reverse() // newest at top
+				.map((version) => ({ name: version, value: version }));
+
+			return interaction.respond(mapped.length > 25 ? mapped.slice(0, 25) : mapped);
 		}
 
 		const command = client.commands.get(interaction.commandName);

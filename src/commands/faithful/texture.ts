@@ -44,12 +44,8 @@ export const command: SlashCommand = {
 		// no results or invalid search
 		if (!results) return;
 
-		const versions: string[] = (
-			await axios.get(`${interaction.client.tokens.apiUrl}textures/versions`)
-		).data;
-
 		// latest version if versions doesn't include version (fix for autocomplete validation)
-		if (!versions.includes(version)) version = "latest";
+		if (!interaction.client.versions.includes(version)) version = "latest";
 
 		// only one result
 		if (results.length === 1) {

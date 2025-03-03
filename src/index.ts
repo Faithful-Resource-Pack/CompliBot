@@ -5,7 +5,7 @@ import type { AnyInteraction } from "@interfaces/interactions";
 import tokens from "@json/tokens.json";
 
 export default function startClient(firstStart = true, interaction?: AnyInteraction) {
-	new Client(
+	const client = new Client(
 		{
 			tokens,
 			// remove this line to die instantly ~JackDotJS 2021
@@ -35,7 +35,8 @@ export default function startClient(firstStart = true, interaction?: AnyInteract
 			],
 		},
 		firstStart,
-	).init(interaction);
+	);
+	return client.init(interaction);
 }
 
 startClient();

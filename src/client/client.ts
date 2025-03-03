@@ -272,7 +272,7 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 			(acc, cmd) => {
 				if (!cmd.servers) cmd.servers = ["global"];
 				for (const server of cmd.servers) {
-					if (!acc[server]) acc[server] = [];
+					acc[server] ||= [];
 					acc[server].push(cmd.command);
 				}
 				return acc;

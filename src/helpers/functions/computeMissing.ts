@@ -45,7 +45,7 @@ export async function computeMissingResults(
 	checkModded: boolean,
 	callback?: (step: string) => Promise<void>,
 ): Promise<MissingResult> {
-	if (!callback) callback = async () => {};
+	callback ||= async () => {};
 
 	const baseData = { pack, edition };
 	const packs: Record<string, Pack> = (await axios.get(`${client.tokens.apiUrl}packs/raw`)).data;
@@ -55,12 +55,8 @@ export async function computeMissingResults(
 			data: { ...baseData, version, completion: 0 },
 		};
 
-	const versions: string[] = (
-		await axios.get(`${client.tokens.apiUrl}textures/versions/${edition}`)
-	).data;
-
 	// latest version if versions doesn't include version (fix for autocomplete validation)
-	if (!versions.includes(version)) version = versions[0];
+	if (!client.versions.includes(version)) version = client.versions[0];
 
 	// same steps are reused for compared repos
 	const [defaultPath, requestPath] = await Promise.all([
