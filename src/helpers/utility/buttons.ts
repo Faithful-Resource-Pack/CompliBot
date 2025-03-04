@@ -27,7 +27,7 @@ export const rotate = new ButtonBuilder()
 	.setCustomId("rotate");
 
 export const template = new ButtonBuilder()
-	.setStyle(ButtonStyle.Primary)
+	.setStyle(ButtonStyle.Secondary)
 	.setEmoji(emojis.question_mark)
 	.setCustomId("comparisonTemplate");
 

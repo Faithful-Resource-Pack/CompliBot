@@ -14,7 +14,6 @@ import { animateToAttachment } from "@images/animate";
 import minecraftSorter from "@utility/minecraftSorter";
 import { textureButtons } from "@utility/buttons";
 import { Image, loadImage } from "@napi-rs/canvas";
-import { toTitleCase } from "@utility/methods";
 import type { AnyInteraction } from "@interfaces/interactions";
 
 /**
@@ -34,7 +33,7 @@ export async function getTexture(
 ) {
 	const apiUrl = interaction.client.tokens.apiUrl;
 	const isAnimated = texture.paths.some((p) => p.mcmeta === true);
-	const packData: Pack = (await axios.get(`${apiUrl}packs/${pack}`)).data;
+	const packData = (await axios.get<Pack>(`${apiUrl}packs/${pack}`)).data;
 
 	const files: AttachmentBuilder[] = [];
 	const embed = new EmbedBuilder().setTitle(`[#${texture.id}] ${texture.name}`).setFooter({
@@ -44,7 +43,7 @@ export async function getTexture(
 
 	if (version !== "latest") embed.data.title += ` (${version})`;
 
-	const textureURL = await axios
+	const textureURL: string = await axios
 		.get(`${apiUrl}textures/${texture.id}/url/${pack}/${version}`)
 		.then((res) => res.request.res.responseUrl)
 		.catch(() => "");
@@ -82,7 +81,7 @@ export async function getTexture(
 
 	if (lastContribution) {
 		// surprisingly faster to fetch all users and filter on the client than doing a bunch of requests
-		const contributionJSON: Contributor[] = (await axios.get(`${apiUrl}contributions/authors`))
+		const contributionJSON = (await axios.get<Contributor[]>(`${apiUrl}contributions/authors`))
 			.data;
 
 		const authors = lastContribution.authors.map((authorId) => {
@@ -109,15 +108,22 @@ export async function getTexture(
 	embed.addFields(addPathsToEmbed(texture));
 
 	if (isAnimated) {
+		const { magnified, factor } = await magnify(textureURL, { isAnimation: true });
+
+		const { mcmeta } = texture;
 		// only add mcmeta field if there's special properties there
-		if (Object.keys(texture.mcmeta?.animation ?? {}).length)
+		if (Object.keys(mcmeta?.animation ?? {}).length) {
 			embed.addFields({
 				name: "MCMETA",
-				value: `\`\`\`json\n${JSON.stringify(texture.mcmeta.animation)}\`\`\``,
+				value: `\`\`\`json\n${JSON.stringify(mcmeta.animation)}\`\`\``,
 			});
 
-		const { magnified } = await magnify(textureURL, { isAnimation: true });
-		files.push(await animateToAttachment(magnified, texture.mcmeta));
+			// fix custom sizes
+			if (mcmeta.animation.width) mcmeta.animation.width *= factor;
+			if (mcmeta.animation.height) mcmeta.animation.height *= factor;
+		}
+
+		files.push(await animateToAttachment(magnified, mcmeta));
 	} else files.push(await magnifyToAttachment(textureURL));
 
 	return { embeds: [embed], files, components: [textureButtons] };
