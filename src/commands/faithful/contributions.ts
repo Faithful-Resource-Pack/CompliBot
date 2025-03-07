@@ -9,7 +9,7 @@ import getContributions from "@functions/getContributions";
 
 export const command: SlashCommand = {
 	async data(client) {
-		const packs: Pack[] = (await axios.get(`${client.tokens.apiUrl}packs/search?type=submission`))
+		const packs = (await axios.get<Pack[]>(`${client.tokens.apiUrl}packs/search?type=submission`))
 			.data;
 		return new SlashCommandBuilder()
 			.setName("contributions")

@@ -4,8 +4,8 @@ import { FaithfulGuild } from "client/client";
 import { ChannelType } from "discord.js";
 
 export default async function memberLog(client: Client, guildID: string) {
-	const guilds: Record<string, FaithfulGuild> = (
-		await axios.get(`${client.tokens.apiUrl}settings/discord.guilds`)
+	const guilds = (
+		await axios.get<Record<string, FaithfulGuild>>(`${client.tokens.apiUrl}settings/discord.guilds`)
 	).data;
 
 	const server = Object.values(guilds).find((el) => el.id === guildID);

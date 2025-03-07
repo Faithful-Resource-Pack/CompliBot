@@ -258,8 +258,8 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 		);
 
 		const rest = new REST({ version: "10" }).setToken(this.tokens.token);
-		const allGuilds: Record<string, FaithfulGuild> = (
-			await axios.get(`${this.tokens.apiUrl}settings/discord.guilds`)
+		const allGuilds = (
+			await axios.get<Record<string, FaithfulGuild>>(`${this.tokens.apiUrl}settings/discord.guilds`)
 		).data;
 
 		// lock all commands to dev server

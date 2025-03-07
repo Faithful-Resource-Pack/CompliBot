@@ -48,13 +48,16 @@ export default async function getContributions(
 	let contributionData: Contribution[] = [];
 	try {
 		contributionData = (
-			await axios.get(`${client.tokens.apiUrl}contributions/search/${user.id}/${pack || "all"}`)
+			await axios.get<Contribution[]>(
+				`${client.tokens.apiUrl}contributions/search/${user.id}/${pack || "all"}`,
+			)
 		).data;
 	} catch {
 		return;
 	}
 
-	const textures = (await axios.get(`${client.tokens.apiUrl}textures/raw`)).data;
+	const textures = (await axios.get<Record<string, Texture>>(`${client.tokens.apiUrl}textures/raw`))
+		.data;
 
 	// merge the two objects by id (faster than fetching individually)
 	const results: (Contribution & Texture)[] = contributionData.map((contribution) => ({

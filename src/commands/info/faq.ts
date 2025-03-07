@@ -47,8 +47,8 @@ export const command: SlashCommand = {
 				flags: MessageFlags.Ephemeral,
 			});
 
-		const question: string = (
-			await axios.get(`${interaction.client.tokens.apiUrl}settings/images.question`)
+		const question = (
+			await axios.get<string>(`${interaction.client.tokens.apiUrl}settings/images.question`)
 		).data;
 
 		const faqEmbed = new EmbedBuilder()

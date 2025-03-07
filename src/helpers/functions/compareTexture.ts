@@ -118,12 +118,12 @@ export async function generateComparisonFrames(canvasArray: Canvas[][][], frameC
  * @returns reply and edit options
  */
 export default async function compareTexture(client: Client, id: string, display = "all") {
-	const result: GalleryTexture = (
-		await axios.get(`${client.tokens.apiUrl}gallery/modal/${id}/latest`)
+	const result = (
+		await axios.get<GalleryTexture>(`${client.tokens.apiUrl}gallery/modal/${id}/latest`)
 	).data;
 
 	const isAnimated = result.paths.some((p) => p.mcmeta === true);
-	const mcmeta: MCMETA = result.mcmeta ?? {};
+	const mcmeta = result.mcmeta ?? {};
 	const displayMcmeta = structuredClone(mcmeta);
 
 	const packs = parseDisplay(display);
@@ -135,7 +135,7 @@ export default async function compareTexture(client: Client, id: string, display
 	const loadedImages: Image[][] = await Promise.all(
 		packs.map((packSet) =>
 			Promise.all(
-				packSet.map((pack) => result.urls[pack]).map((url) => loadImage(url).catch(() => null)),
+				packSet.map((pack) => loadImage(result.urls[pack]).catch<Image>(() => null)),
 			).then((images) => images.filter((image) => image)),
 		),
 	);

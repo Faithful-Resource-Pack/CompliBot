@@ -16,8 +16,8 @@ export const command: SlashCommand = {
 		let choice = interaction.options.getString("term", true).trim();
 
 		// easier to read markdown than final compiled site
-		const terms: string[] = (
-			await axios.get(
+		const terms = (
+			await axios.get<string>(
 				"https://raw.githubusercontent.com/Faithful-Resource-Pack/Docs/main/pages/textures/glossary.md",
 			)
 		).data.split("\n\n#");
@@ -48,8 +48,8 @@ export const command: SlashCommand = {
 			});
 		}
 
-		const question: string = (
-			await axios.get(`${interaction.client.tokens.apiUrl}settings/images.question`)
+		const question = (
+			await axios.get<string>(`${interaction.client.tokens.apiUrl}settings/images.question`)
 		).data;
 
 		const finalEmbed = new EmbedBuilder()

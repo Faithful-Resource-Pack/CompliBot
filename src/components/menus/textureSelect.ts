@@ -6,6 +6,7 @@ import axios from "axios";
 import { colors } from "@utility/colors";
 import { unencodeChoice } from "@helpers/choiceEmbed";
 import { MessageFlags } from "discord.js";
+import type { Texture } from "@interfaces/database";
 
 export default {
 	id: "textureSelect",
@@ -35,7 +36,7 @@ export default {
 		const [id, pack, version] = unencodeChoice(interaction);
 		const editOptions = await getTexture(
 			interaction,
-			(await axios.get(`${interaction.client.tokens.apiUrl}textures/${id}/all`)).data,
+			(await axios.get<Texture>(`${interaction.client.tokens.apiUrl}textures/${id}/all`)).data,
 			pack,
 			version,
 		);

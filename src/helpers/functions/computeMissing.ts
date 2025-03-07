@@ -32,6 +32,8 @@ export interface MissingResult {
 
 export type MissingEdition = MinecraftEdition | "all";
 
+export type PackProgress = Record<string, Record<MinecraftEdition, string>>;
+
 /**
  * Compute missing results for a given pack, edition, and version
  * @author Juknum, Evorp
@@ -48,7 +50,7 @@ export async function computeMissingResults(
 	callback ||= async () => {};
 
 	const baseData = { pack, edition };
-	const packs: Record<string, Pack> = (await axios.get(`${client.tokens.apiUrl}packs/raw`)).data;
+	const packs = (await axios.get<Record<string, Pack>>(`${client.tokens.apiUrl}packs/raw`)).data;
 	if (!packs[pack].github[edition])
 		return {
 			results: [`${formatPack(pack).name} doesn't support ${edition} edition.`],
@@ -130,7 +132,7 @@ export async function computeAllEditions(
 	checkModded: boolean,
 	callback?: (step: string) => Promise<void>,
 ) {
-	const editions: MinecraftEdition[] = (await axios.get(`${client.tokens.apiUrl}textures/editions`))
+	const editions = (await axios.get<MinecraftEdition[]>(`${client.tokens.apiUrl}textures/editions`))
 		.data;
 
 	return Promise.all(
@@ -148,9 +150,9 @@ export async function computeAllEditions(
  */
 export async function updateVoiceChannel(client: Client, results: MissingData) {
 	const { data: packProgress } = await axios
-		.get(`${client.tokens.apiUrl}settings/discord.channels.pack_progress`)
+		.get<PackProgress>(`${client.tokens.apiUrl}settings/discord.channels.pack_progress`)
 		// fix for "Error: socket hang up", I know it's stupid but it works somehow
-		.catch(() =>
+		.catch<PackProgress>(() =>
 			axios.get(`https://api.faithfulpack.net/v2/settings/discord.channels.pack_progress`),
 		);
 

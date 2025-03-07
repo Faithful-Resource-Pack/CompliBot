@@ -73,8 +73,8 @@ export const command: SlashCommand = {
 
 		const updateChannels = version === "latest";
 
-		const loading: string = (
-			await axios.get(`${interaction.client.tokens.apiUrl}settings/images.loading`)
+		const loading = (
+			await axios.get<string>(`${interaction.client.tokens.apiUrl}settings/images.loading`)
 		).data;
 
 		const loadingEmbed = new EmbedBuilder()

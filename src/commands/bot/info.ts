@@ -6,8 +6,8 @@ import axios from "axios";
 export const command: SlashCommand = {
 	data: new SlashCommandBuilder().setName("info").setDescription("General info about CompliBot."),
 	async execute(interaction) {
-		const image: string = (
-			await axios.get(`${interaction.client.tokens.apiUrl}settings/images.bot`)
+		const image = (
+			await axios.get<string>(`${interaction.client.tokens.apiUrl}settings/images.bot`)
 		).data;
 
 		const info = interaction.strings().command.info;

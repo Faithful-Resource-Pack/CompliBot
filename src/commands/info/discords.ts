@@ -7,8 +7,10 @@ import { toTitleCase } from "@utility/methods";
 
 export const command: SlashCommand = {
 	async data(client) {
-		const guilds: Record<string, FaithfulGuild> = (
-			await axios.get(`${client.tokens.apiUrl}settings/discord.guilds`)
+		const guilds = (
+			await axios.get<Record<string, FaithfulGuild>>(
+				`${client.tokens.apiUrl}settings/discord.guilds`,
+			)
 		).data;
 		return new SlashCommandBuilder()
 			.setName("discord")

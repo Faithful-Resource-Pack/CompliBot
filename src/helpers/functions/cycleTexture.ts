@@ -68,7 +68,7 @@ export async function cycleTexture(
 	display: string,
 	framerate?: number,
 ) {
-	const result: Texture = (await axios.get(`${client.tokens.apiUrl}textures/${id}/all`)).data;
+	const result = (await axios.get<Texture>(`${client.tokens.apiUrl}textures/${id}/all`)).data;
 
 	// no 2d arrays in cycle, but same id groups as compare, so we flatten it out
 	const packs = parseDisplay(display).flat();

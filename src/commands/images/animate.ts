@@ -73,7 +73,7 @@ export const command: SlashCommand = {
 			if (mcmeta.animation.frametime <= 0)
 				return interaction.ephemeralReply({ embeds: [invalidTextEmbed] });
 		} else if (mcmetaFile) {
-			mcmeta = (await axios.get(mcmetaFile.url)).data;
+			mcmeta = (await axios.get<MCMETA>(mcmetaFile.url)).data;
 
 			// invalid mcmeta file given (filters basically everything out)
 			if (!mcmeta.animation) {

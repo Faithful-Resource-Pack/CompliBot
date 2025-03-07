@@ -15,7 +15,9 @@ export default {
 
 		let packs: Record<string, Submission>;
 		try {
-			packs = (await axios.get(`${client.tokens.apiUrl}submissions/raw`)).data;
+			packs = (
+				await axios.get<Record<string, Submission>>(`${client.tokens.apiUrl}submissions/raw`)
+			).data;
 			// returns early if you're in a submission channel
 			if (Object.values(packs).some((pack) => pack.channels.submit == message.channel.id)) return;
 		} catch {} // api error, ignore

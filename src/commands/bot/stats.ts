@@ -30,7 +30,7 @@ export const command: SlashCommand = {
 
 			const commandCount =
 				Array.from(client.commandsProcessed.values()).reduce((acc, cur) => acc + cur, 0) + 1;
-			const heart: string = (await axios.get(`${client.tokens.apiUrl}settings/images.heart`)).data;
+			const heart = (await axios.get<string>(`${client.tokens.apiUrl}settings/images.heart`)).data;
 
 			const embed = new EmbedBuilder()
 				.setTitle(`${client.user.username}'s Statistics`)
