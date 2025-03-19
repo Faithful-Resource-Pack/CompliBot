@@ -47,7 +47,7 @@ export const media: Record<string, { title: string, description: string }> = {
 		description: `
 [${parseID(emojis.main_logo)} Website](https://faithfulpack.net/classic32x)
 
-[${parseID(emojis.curseforge)} CurseForge](https://www.curseforge.com/minecraft/texture-packs/classic-faithful-32x32)
+[${parseID(emojis.curseforge)} CurseForge](https://www.curseforge.com/minecraft/texture-packs/classic-faithful-32x)
 
 [${parseID(emojis.pmc)} Planet Minecraft](https://planetminecraft.com/texture-pack/classic-faithful-32x-pa)
 
