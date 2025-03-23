@@ -2,7 +2,7 @@
 export const emojis = {
 	// listings
 	pmc: "863132124333080576",
-	curseforge: "863132124306472980",
+	curseforge: "1353188028000108574",
 	modrinth: "1129458572095397965",
 	github: "1129461571601567855",
 	mcpedl: "1129458566659575918",
