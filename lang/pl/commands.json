@@ -13,23 +13,24 @@
                 "description": "Nie znaleziono właściwości `animation` w pliku. Sprawdź, czy przesłałeś poprawny plik."
             }
         },
+        "about": {
+            "missing_profile": {
+                "title": "%USER% nie ma kontrybucji!",
+                "description": "Nie jest znaleziony profil baza danych dla tęgo osobę.",
+                "register": "Zarejestrować na https://webapp.faithfulpack.net żeby dostać dokładne kontrybucji informacje I kredyty."
+            }
+        },
+        "coin": {
+            "reflip": {
+                "title": "Moneta znowu rzucona!",
+                "description": "Jeśli nie dostaniesz wyniku, spróbuj, spróbuj znowu..."
+            }
+        },
         "botban": {
             "unbannable": {
                 "title": "Temu użytkownikowi nie można odebrać uprawnień do korzystania z bota!",
                 "description": "Nie możesz odebrać sobie, programiście lub komuś z uprawnieniami administratora uprawnień do korzystania z bota."
             }
-        },
-        "in_submission": {
-            "title": "Nie możesz używać poleceń na kanale zgłaszania!",
-            "description": "Proszę użyć odpowiedniego kanału poleceń bota."
-        },
-        "images": {
-            "too_big": "Ten obraz jest zbyt duży, aby wykonać na nim %ACTION%!",
-            "too_long": "Ten obraz jest zbyt długi, aby go zanimować!",
-            "max_size": "Maksymalny rozmiar obrazu to 1024px².",
-            "max_length": "Maksymalna długość arkusza wynosi 32 ramki.",
-            "not_found": "Nie znaleziono żadnego obrazu!",
-            "suggestion": "Upewnij się, że przesłałeś obraz, odpowiedziałeś na poprawny obraz, użyłeś poprawnego adresu URL obrazu, lub że znajdujesz się na właściwym kanale."
         },
         "embed": {
             "not_enough_arguments": "Podano zbyt mało informacji!",
