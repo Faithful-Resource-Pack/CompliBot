@@ -21,8 +21,12 @@
             },
             "no_image": {
                 "title": "Nie znaleziono obrazu!",
-                "description": "`%TEXTURENAME%` nie został jeszcze stworzony dla %PACK% lub jest na czarnej liście!"
+                "description": "`%TEXTURENAME%` nie zostało zrobione dla %PACK% w wersji %VERSION% już albo jest zignorowany!"
             }
+        },
+        "invalid_choice": {
+            "title": "Nieprawidłowy wybór!",
+            "description": "`%CHOICE%` nie jest prawidłowym słowem kluczowym! Czy zrobiłeś literówkę?"
         },
         "image": {
             "too_big": "Ten obraz jest za duży!",
@@ -33,6 +37,7 @@
             "suggestion": "Upewnij się, że przesłałeś obraz, odpowiedziałeś na poprawny obraz, użyłeś poprawnego adresu URL obrazu, lub że znajdujesz się na właściwym kanale."
         },
         "command": "Jeden z moich deweloperów popełnił błąd podczas tworzenia tego polecenia! Nie martw się, błąd nie jest po Twojej stronie. Jeśli znów to nastąpi, skontaktuj się z <@360249987927638016>, <@473860522710794250>, lub <@173336582265241601>.",
+        "polls_removed": "Przeprowadzono ankiety Complibota zbędny przez natywny Discorda funkcje I zatem był, usunięto.",
         "permission": {
             "notice": "Nie masz do tego uprawnień!",
             "role_locked": "Tylko ktoś z rolą %TYPE% może tego użyć.",
