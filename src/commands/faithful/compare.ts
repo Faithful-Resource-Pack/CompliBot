@@ -26,10 +26,18 @@ export const command: SlashCommand = {
 					{ name: "All", value: "All" },
 				)
 				.setRequired(false),
+		)
+		.addStringOption((option) =>
+			option
+				.setName("version")
+				.setDescription("Version of the searched texture (defaults to latest).")
+				.setAutocomplete(true) // autocomplete is handled in the event file itself
+				.setRequired(false),
 		),
 	async execute(interaction) {
-		const display = interaction.options.getString("display", false) ?? "All";
 		const name = interaction.options.getString("texture", true);
+		const display = interaction.options.getString("display", false) ?? "All";
+		let version = interaction.options.getString("version", false) ?? "latest";
 
 		// sometimes it takes too long otherwise
 		await interaction.deferReply();
@@ -38,15 +46,18 @@ export const command: SlashCommand = {
 		// no results or invalid search
 		if (!results) return;
 
+		// latest version if versions doesn't include version (fix for autocomplete validation)
+		if (!interaction.client.versions.includes(version)) version = "latest";
+
 		// only one result
 		if (results.length === 1) {
-			const replyOptions = await compareTexture(interaction.client, results[0].id, display);
+			const replyOptions = await compareTexture(interaction.client, results[0].id, display, version);
 			if (!replyOptions) return imageTooBig(interaction);
 
 			return interaction.editReply(replyOptions).then((message) => message.deleteButton());
 		}
 
 		// multiple results
-		return textureChoiceEmbed(interaction, "compareSelect", results, display);
+		return textureChoiceEmbed(interaction, "compareSelect", results, display, version);
 	},
 };

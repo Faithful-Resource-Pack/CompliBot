@@ -115,11 +115,17 @@ export async function generateComparisonFrames(canvasArray: Canvas[][][], frameC
  * @param client Client used for getting config stuff
  * @param id texture id to look up
  * @param display which texture sets to display
+ * @param version which version to use
  * @returns reply and edit options
  */
-export default async function compareTexture(client: Client, id: string, display = "all") {
+export default async function compareTexture(
+	client: Client,
+	id: string,
+	display = "all",
+	version = "latest",
+) {
 	const result = (
-		await axios.get<GalleryTexture>(`${client.tokens.apiUrl}gallery/modal/${id}/latest`)
+		await axios.get<GalleryTexture>(`${client.tokens.apiUrl}gallery/modal/${id}/${version}`)
 	).data;
 
 	const isAnimated = result.paths.some((p) => p.mcmeta === true);

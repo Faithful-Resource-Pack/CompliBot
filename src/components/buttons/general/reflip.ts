@@ -9,7 +9,7 @@ export default {
 	async execute(client, interaction) {
 		if (client.verbose) console.log(`${info}Coin re-flipped!`);
 
-		const messageInteraction = interaction.message.interaction;
+		const messageInteraction = interaction.message.interactionMetadata;
 		const message = interaction.message;
 
 		if (messageInteraction != undefined && interaction.user.id != messageInteraction.user.id)

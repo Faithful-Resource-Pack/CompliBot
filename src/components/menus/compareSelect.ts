@@ -12,7 +12,7 @@ export default {
 	async execute(client, interaction) {
 		if (client.verbose) console.log(`${info}Texture selected!`);
 
-		const messageInteraction = interaction.message.interaction;
+		const messageInteraction = interaction.message.interactionMetadata;
 		const message = interaction.message;
 
 		if (interaction.user.id !== messageInteraction.user.id)
@@ -32,8 +32,13 @@ export default {
 
 		interaction.deferUpdate();
 
-		const [id, display] = unencodeChoice(interaction);
-		const editOptions: MessageEditOptions = await compareTexture(interaction.client, id, display);
+		const [id, display, version] = unencodeChoice(interaction);
+		const editOptions: MessageEditOptions = await compareTexture(
+			interaction.client,
+			id,
+			display,
+			version,
+		);
 
 		if (!editOptions) {
 			// stupid workaround for already having deferred the message
