@@ -11,10 +11,16 @@ export default {
 		if (client.verbose) console.log(`${info}Image was compared!`);
 
 		const message = interaction.message as Message;
-		const ids = message.embeds?.[0]?.title.match(/\d+/);
+		const id = message.embeds?.[0]?.title.match(/\d+/g)?.[0];
+		const version = message.embeds?.[0]?.title.match(/(?<=\()(.*?)(?=\))/g)?.[0] || "latest";
 
 		await interaction.deferReply();
-		const messageOptions: InteractionEditReplyOptions = await compareTexture(client, ids[0]);
+		const messageOptions: InteractionEditReplyOptions = await compareTexture(
+			client,
+			id,
+			"all",
+			version,
+		);
 		if (!messageOptions) return imageTooBig(interaction);
 
 		const embed = messageOptions.embeds[0] as EmbedBuilder;
