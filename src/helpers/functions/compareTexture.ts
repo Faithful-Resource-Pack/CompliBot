@@ -180,6 +180,8 @@ export default async function compareTexture(
 		.addFields(addPathsToEmbed(result))
 		.setFooter({ text: `Displaying: ${display ?? "All"}` });
 
+	if (version !== "latest") embed.data.title += ` (${version})`;
+
 	if (Object.keys(displayMcmeta?.animation ?? {}).length)
 		embed.addFields({
 			name: "MCMETA",
