@@ -5,7 +5,7 @@ import {
 	StringSelectMenuBuilder,
 } from "discord.js";
 import type { Texture } from "@interfaces/database";
-import minecraftSorter from "@utility/minecraftSorter";
+import versionSorter from "@utility/versionSorter";
 import axios from "axios";
 import type { AnyInteraction } from "@interfaces/interactions";
 
@@ -76,7 +76,7 @@ export async function textureChoiceEmbed(
 	const mappedResults: SelectMenuComponentOptionData[] = [];
 	for (const result of results) {
 		mappedResults.push({
-			label: `[#${result.id}] (${result.paths[0].versions.sort(minecraftSorter).at(-1)}) ${
+			label: `[#${result.id}] (${result.paths[0].versions.sort(versionSorter).at(-1)}) ${
 				result.name
 			}`,
 			description: result.paths[0].name,

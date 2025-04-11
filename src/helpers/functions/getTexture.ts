@@ -11,7 +11,7 @@ import type {
 	Pack,
 } from "@interfaces/database";
 import { animateToAttachment } from "@images/animate";
-import minecraftSorter from "@utility/minecraftSorter";
+import versionSorter from "@utility/versionSorter";
 import { textureButtons } from "@utility/buttons";
 import { Image, loadImage } from "@napi-rs/canvas";
 import type { AnyInteraction } from "@interfaces/interactions";
@@ -141,7 +141,7 @@ export function addPathsToEmbed(texture: GalleryTexture | Texture): APIEmbedFiel
 			const paths = texture.paths
 				.filter((el) => el.use === use.id)
 				.map((p) => {
-					const versions = p.versions.sort(minecraftSorter);
+					const versions = p.versions.sort(versionSorter);
 					const versionRange = `\`[${
 						versions.length > 1 ? `${versions[0]} – ${versions[versions.length - 1]}` : versions[0]
 					}]\``;

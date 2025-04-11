@@ -1,6 +1,6 @@
 import { AutocompleteInteraction } from "discord.js";
 import type { Event } from "@interfaces/events";
-import minecraftSorter from "@utility/minecraftSorter";
+import versionSorter from "@utility/versionSorter";
 
 export default {
 	name: "autocomplete",
@@ -14,7 +14,7 @@ export default {
 				: client.versions;
 
 			const mapped = filtered
-				.sort(minecraftSorter)
+				.sort(versionSorter)
 				.reverse() // newest at top
 				.map((version) => ({ name: version, value: version }));
 
