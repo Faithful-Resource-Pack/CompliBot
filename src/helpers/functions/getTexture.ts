@@ -147,7 +147,7 @@ export function addPathsToEmbed(texture: GalleryTexture | Texture): APIEmbedFiel
 					}]\``;
 					return `${versionRange} ${p.name}`;
 				});
-			if (!acc[use.edition]) acc[use.edition] = [];
+			acc[use.edition] ||= [];
 			acc[use.edition].push(...paths);
 			return acc;
 		},
