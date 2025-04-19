@@ -74,10 +74,10 @@ export const constructLogFile = (
  * @author TheRolf, Evorp
  * @param client discord client
  * @param error error description
- * @param type error title
+ * @param title error title
  */
-export async function handleError(client: Client, error: any, type: string) {
-	const consoleDescription = `${err}${type}\n${error.stack || error}`;
+export async function handleError(client: Client, error: any, title: string) {
+	const consoleDescription = `${err}${title}\n${error.stack || error}`;
 	if (client.tokens.dev) return console.error(consoleDescription);
 
 	const embedDescription = error.stack || JSON.stringify(error);
@@ -85,7 +85,7 @@ export async function handleError(client: Client, error: any, type: string) {
 	const codeBlocks = error.stack ? "" : "json";
 
 	if (error instanceof DiscordAPIError)
-		// discord's problem (usually), not ours
+		// discord's problem (usually), not ours (not worth logging in channel)
 		return console.error(consoleDescription);
 
 	// silence EPROTO errors
@@ -96,8 +96,8 @@ export async function handleError(client: Client, error: any, type: string) {
 
 	// DO NOT DELETE THIS CATCH, IT AVOIDS INFINITE LOOP IF THIS PROMISE REJECTS
 	devLogger(client, embedDescription, {
-		title: type,
 		file: constructLogFile(client, error),
+		title,
 		codeBlocks,
 	}).catch(console.error);
 }
