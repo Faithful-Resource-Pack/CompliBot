@@ -36,7 +36,7 @@
     },
     {
         "question": "Is Faithful available for [Minecraft version/edition]?",
-        "answer": "Each pack is different:\n- Faithful 32x currently supports Bedrock Edition, and Java versions from 1.6 to the latest release, 1.4 and Beta 1.7.\n- Classic Faithful 32x Jappa and PA are also available from 1.6–the latest release and Bedrock Edition, but are currently not complete for b1.7–1.5.\n- Both 64x packs only currently support the latest Minecraft Java and Bedrock version.",
+        "answer": "Each pack is different:\n- Faithful 32x currently supports Bedrock Edition, and Java versions from 1.6 to the latest release, 1.4 and Beta 1.7.\n- Both Classic Faithful 32x packs are also available from 1.6 to the latest release and Bedrock Edition, but are currently not complete for b1.7–1.5.\n- Faithful and Classic Faithful 64x Jappa currently support only the latest Minecraft Java and Bedrock version, and Classic Faithful 64x supports just Java Edition.",
         "keywords": ["version", "versions"]
     },
     {
@@ -46,17 +46,17 @@
     },
     {
         "question": "Why am I seeing missing/16x/vanilla textures while using Faithful?",
-        "answer": "You're most likely using an incomplete pack. Currently, the only 100% finished packs are both Faithful 32x and Classic Faithful 32x (Jappa and PA) for Java Edition. You can see each pack's completion at the top of the channel list of their respective Discord servers. If you want to help to get rid of these missing textures, you can help Faithful out by making a texture!",
+        "answer": "You're most likely using an incomplete pack. You can see each pack's completion at the top of the channel list of their respective Discord servers. If you want to help to get rid of these missing textures, you can help us out by making a texture!",
         "keywords": ["missing textures", "missing texture"]
     },
     {
         "question": "What happened to Faithful on the Bedrock Edition Marketplace, and will it ever be available again?",
-        "answer": "The version of Faithful 32x previously listed on the Bedrock Marketplace was unauthorized and had been monetizing our stolen work, so we contacted Mojang to remove it.\nUnfortunately, publishing Faithful legitimately on the marketplace is complicated if not impossible due to restrictions surrounding free and contributor-led projects. We would like to eventually release Faithful there if possible, but only if it can remain free for all.",
+        "answer": "The version of Faithful 32x previously listed on the Bedrock Marketplace was never official and had been monetizing our stolen work, so we contacted Mojang to remove it.\nUnfortunately, publishing Faithful legitimately on the marketplace is complicated if not impossible due to restrictions surrounding free and contributor-led projects. We would like to eventually release Faithful there if possible, but only if it can remain completely free.",
         "keywords": ["marketplace", "bedrock"]
     },
     {
         "question": "What Faithful listings are official?",
-        "answer": "Each pack has listings on our [website](https://faithfulpack.net), [CurseForge](https://www.curseforge.com/members/faithful_resource_pack/projects), and [Planet Minecraft](https://www.planetminecraft.com/member/faithful_resource_pack/), and some are on [Modrinth](https://modrinth.com/user/Faithful-Resource-Pack) and [MCPEDL](https://mcpedl.com/user/faithful-resource-pack/) too. You can also find our other media and each download link organized by pack in <#774391640306745374>.\n**Downloads from any other sites are unofficial, unsupported and could be dangerous!** Remember to stay safe on the internet.",
+        "answer": "Each pack has listings on our [website](https://faithfulpack.net), [CurseForge](https://www.curseforge.com/members/faithful_resource_pack/projects), [Modrinth](https://modrinth.com/user/Faithful-Resource-Pack), and [Planet Minecraft](https://www.planetminecraft.com/member/faithful_resource_pack/), and some are on [MCPEDL](https://mcpedl.com/user/faithful-resource-pack/).\n**Downloads from any other sites are unofficial, unsupported and could be dangerous!** Remember to stay safe on the internet.",
         "keywords": ["listings", "vendors"]
     },
     {
@@ -107,12 +107,12 @@
     },
     {
         "question": "Does Faithful support mods?",
-        "answer": "Yes, we are currently in an early stage of rebooting Faithful 32x mod support, and many textures for various mods have already been made. For now, you can download what's done via the [Faithful Mods GitHub repository](https://github.com/Faithful-Resource-Pack/Faithful-32x-Mods)—a more convenient mod picker website is planned for our future site rewrite. Please check out the README file for more information, including how to contribute. You can also talk to others in <#1025645837247848458>.\nMod support for any packs besides Faithful 32x and Classic Faithful 32x Programmer Art is not currently planned. (If you decide to make textures for them, you can, just ask a manager to set up a new repository.)",
+        "answer": "Yes, we are currently in an early stage of rebooting Faithful 32x mod support, and many textures for various mods have already been made. For now, you can download what's done via the [Faithful Mods GitHub repository](https://github.com/Faithful-Resource-Pack/Faithful-32x-Mods)—a more convenient mod picker website is planned in the future. Please check out the README file for more information, including how to contribute. You can also talk to others in <#1025645837247848458>.\nMod support for any packs besides Faithful 32x and Classic Faithful 32x is not currently planned (if you want to make textures for them, just ask a manager to set up a new repository).",
         "keywords": ["mod support", "mods", "mod"]
     },
     {
         "question": "What happened to the existing Faithful mod support?",
-        "answer": "Mod support textures for Vattic-era Faithful were made by numerous people, and were collected and hosted by a group called the F32Organization. Their website that hosts the textures still exists at http://f32.me/, but goes down often (it has most likely gone down indefinitely at the time of writing). Currently, the most reliable place to get the old Faithful mod textures is [the F32Organization GitHub](https://github.com/F32Organization).\nWe used to host these textures on our website as well, but over time our mod picker broke down, leading to us removing them. When the time is right, we intend to group the old F32Org textures with Classic Faithful 32x and give them a mod picker on the rewritten website alongside the new Faithful 32x mod support.",
+        "answer": "Mod support textures for Vattic-era Faithful were made by numerous people, and were collected and hosted by a group called the F32Organization. Their website that hosts the textures still exists at http://f32.me/, but goes down often (and has most likely gone down indefinitely at the time of writing). Currently, the most reliable place to get the old Faithful mod textures is [the F32Organization GitHub](https://github.com/F32Organization).\nWe used to host these textures on our website as well, but over time our mod picker broke down, leading to us removing them. When the time is right, we intend to group the old F32Org textures with Classic Faithful 32x and give them a proper mod picker on our website alongside the new Faithful 32x mod support.",
         "keywords": ["f32", "f32org", "old mod support"]
     },
     {
@@ -145,7 +145,7 @@
     },
     {
         "question": "Items appear too big when using Bedrock Edition! What can I do?",
-        "answer": "This is a vanilla bug that's been in Bedrock for over a year ([MCPE-120618](https://bugs.mojang.com/browse/MCPE-120618)) which affects any pack with textures larger than default. A workaround has been found for most items, which is already included in all Faithful packs (any items that are still oversized in Faithful are likely unfixable), but for other packs there's a [standalone fix made by MultiPixel](https://fxtwitter.com/MultiPixelHD/status/1786301423011119359) available.",
+        "answer": "This is a vanilla bug that's been in Bedrock for over four years ([MCPE-120618](https://bugs.mojang.com/browse/MCPE-120618)) which affects any pack with textures larger than default. A workaround has been found for most items, which is already included in all Faithful packs (any items that are still oversized in Faithful are likely unfixable), but for other packs there's a [standalone fix made by MultiPixel](https://fxtwitter.com/MultiPixelHD/status/1786301423011119359) available.",
         "keywords": ["big items", "bugged items", "oversized items"]
     },
     {
