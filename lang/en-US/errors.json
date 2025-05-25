@@ -31,7 +31,7 @@
         "image": {
             "too_big": "This image is too big!",
             "too_long": "This image is too long!",
-            "max_size": "The maximum size for an image is 1024px².",
+            "max_size": "The maximum size for an image is 1024x1024px.",
             "max_length": "The maximum length for a tilesheet is 32 frames.",
             "not_found": "No image was found!",
             "suggestion": "Make sure you uploaded an image, replied to a valid image, used a valid image URL, or are in the correct channel."

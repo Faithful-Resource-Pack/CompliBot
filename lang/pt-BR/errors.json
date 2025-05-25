@@ -31,7 +31,7 @@
         "image": {
             "too_big": "Esta imagem é grande demais!",
             "too_long": "Esta imagem é longa demais!",
-            "max_size": "O tamanho máximo para a imagem é 1024px².",
+            "max_size": "O tamanho máximo para a imagem é 1024x1024px.",
             "max_length": "O comprimento máximo de uma planilha é de 32 frames.",
             "not_found": "Nenhuma imagem foi encontrada!",
             "suggestion": "Certifique-se de ter carregado uma imagem, respondido a uma imagem válida, usado um URL de imagem válido ou estar no canal correto."

@@ -31,7 +31,7 @@
         "image": {
             "too_big": "Ten obraz jest za duży!",
             "too_long": "Ten obraz jest za długi!",
-            "max_size": "Maksymalny rozmiar obrazu to 1024px².",
+            "max_size": "Maksymalny rozmiar obrazu to 1024x1024px.",
             "max_length": "Maksymalna długość arkusza wynosi 32 ramki.",
             "not_found": "Nie znaleziono żadnego obrazu!",
             "suggestion": "Upewnij się, że przesłałeś obraz, odpowiedziałeś na poprawny obraz, użyłeś poprawnego adresu URL obrazu, lub że znajdujesz się na właściwym kanale."

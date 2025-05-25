@@ -27,7 +27,7 @@
         "image": {
             "too_big": "Questa immagine è troppo grande!",
             "too_long": "Questa immagine è troppo lunga!",
-            "max_size": "La dimensione massima di un'immagine è di 1024px².",
+            "max_size": "La dimensione massima di un'immagine è di 1024x1024px.",
             "max_length": "La lunghezza massima di un tileset è di 32 fotogrammi.",
             "not_found": "Nessuna immagine è stata trovata!",
             "suggestion": "Assicurati di aver caricato un'immagine, risposto a un'immagine valida, utilizzato un URL di immagine valido o di essere nel canale corretto."
