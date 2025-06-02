@@ -96,7 +96,7 @@
     },
     {
         "question": "How can I submit a texture to the pack? How does the approval process work?",
-        "answer": "Please read [The Faithful Contributor's Handbook](https://docs.faithfulpack.net/pages/manuals/contributor-handbook).\nTL;DR: To submit textures, consent to the submission terms, then upload your textures to the appropriate submission channel (the file has to have the same name as the default texture), and the bot will take over from there and format it for you. Any text you include with the message will be added as a comment, and people pinged in the comment will be added as co-authors.\nFor a texture to be added to the pack, it must pass a round of community voting (lasting 2 days) and a round of private Art Director Council voting (lasting one day). For Classic Faithful, the submission process is exactly the same, but there's no council vote.",
+        "answer": "Please read [The Faithful Contributor's Handbook](https://docs.faithfulpack.net/pages/manuals/contributor-handbook).\nTL;DR: To submit textures, consent to the submission terms, then upload your textures to the appropriate submission channel (the file has to have the same name as the default texture), and the bot will take over from there and format it for you. Any text you include with the message will be added as a comment, and people pinged in the comment will be added as co-authors.\nFor a texture to be added to the pack, it must pass a round of community voting (lasting 2 days). If it passes, the texture will be added to the pack in the next update or rolling release.",
         "keywords": ["submit", "approval", "contribute"],
         "discord": true
     },

@@ -18,15 +18,12 @@ export interface Submission {
 	id: string;
 	reference: string | null;
 	channels: SubmissionChannels;
-	council_enabled: boolean;
 	time_to_results: number;
-	time_to_council?: number; // not used if council disabled
 	contributor_role?: string;
 }
 
 // just the channels
 export interface SubmissionChannels {
 	submit: string;
-	council?: string; // not used if council disabled
 	results: string;
 }
