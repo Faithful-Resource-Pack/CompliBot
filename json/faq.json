@@ -45,13 +45,13 @@
         "question": "Is Faithful available for [Minecraft version/edition]?",
         "answer": "Each pack is different:\n- Faithful 32x currently supports Bedrock Edition, and Java versions from 1.6 to the latest release, 1.4 and Beta 1.7.\n- Both Classic Faithful 32x packs are also available from 1.6 to the latest release and Bedrock Edition, but are currently not complete for b1.7–1.5.\n- Faithful and Classic Faithful 64x Jappa currently support only the latest Minecraft Java and Bedrock version, and Classic Faithful 64x supports just Java Edition.",
         "keywords": ["version", "versions"],
-        "categories": ["installation", "packs"]
+        "categories": ["installation", "packs", "issues"]
     },
     {
         "question": "When will Faithful be available for [Minecraft version]?",
         "answer": "Since Faithful is a community-driven project, progress is dependent on people submitting textures. This means that there are no hard deadlines for a given pack to be completed for a new version. However, you can usually use an [experimental build](https://database.faithfulpack.net/packs/) of the pack in the mean time, which may include missing textures.\nIf you want to help out with pack progress, read the [Contributor's Handbook](https://docs.faithfulpack.net/pages/manuals/contributor-handbook) and inquire in the pack's respective Discord for more information.",
         "keywords": ["progress", "update", "new version"],
-        "categories": ["installation", "packs"]
+        "categories": ["installation", "packs", "issues"]
     },
     {
         "question": "Why am I seeing missing/16x/vanilla textures while using Faithful?",
@@ -114,16 +114,15 @@
     },
     {
         "question": "How can I submit a texture to the pack? How does the approval process work?",
-        "answer": "Please read [The Faithful Contributor's Handbook](https://docs.faithfulpack.net/pages/manuals/contributor-handbook).\nTL;DR: To submit textures, consent to the submission terms, then upload your textures to the appropriate submission channel (the file has to have the same name as the default texture), and the bot will take over from there and format it for you. Any text you include with the message will be added as a comment, and people pinged in the comment will be added as co-authors.\nFor a texture to be added to the pack, it must pass a round of community voting (lasting 2 days). If it passes, the texture will be added to the pack in the next update or rolling release.",
+        "answer": "Please read [The Faithful Contributor's Handbook](https://docs.faithfulpack.net/pages/manuals/contributor-handbook).\nTL;DR: To submit textures, consent to the submission terms, then upload your textures to the appropriate Discord submission channel (the file has to have the same name as the default texture), and the bot will take over from there and format it for you. Any text you include with the message will be added as a comment, and people pinged in the comment will be added as co-authors.\nFor a texture to be added to the pack, it must pass a round of community voting (lasting 2 days). If it passes, the texture will be added to the pack in the next update or rolling release.",
         "keywords": ["submit", "approval", "contribute"],
-        "categories": ["contribution", "discord"],
-        "discord": true
+        "categories": ["creating"]
     },
     {
         "question": "How can I submit my add-on to the website?",
         "answer": "On https://webapp.faithfulpack.net/, log in with your Discord account. Using the sidebar, navigate to the \"Upload\" tab in the add-on category. Finally, fill out the form that you're presented with, and when you're finished, click the Submit button. Your add-on will appear on the website when it has been reviewed and approved by a manager.",
         "keywords": ["submit add-on", "add-on", "addon"],
-        "categories": ["contribution"]
+        "categories": ["creating"]
     },
     {
         "question": "Does Faithful support mods?",
@@ -135,27 +134,26 @@
         "question": "What happened to the existing Faithful mod support?",
         "answer": "Mod support textures for Vattic-era Faithful were made by numerous people, and were collected and hosted by a group called the F32Organization. Their website that hosts the textures still exists at http://f32.me/, but goes down often (and has most likely gone down indefinitely at the time of writing). Currently, the most reliable place to get the old Faithful mod textures is [the F32Organization GitHub](https://github.com/F32Organization).\nWe used to host these textures on our website as well, but over time our mod picker broke down, leading to us removing them. When the time is right, we intend to group the old F32Org textures with Classic Faithful 32x and give them a proper mod picker on our website alongside the new Faithful 32x mod support.",
         "keywords": ["f32", "f32org", "old mod support"],
-        "categories": ["installation"]
+        "categories": ["history", "installation"]
     },
     {
         "question": "How do I submit a texture for a mod?",
         "answer": "You can make a pull request to our [GitHub repository](https://github.com/Faithful-Resource-Pack/Faithful-32x-Mods) with your textures to the correct branch. There are plans in the future to make this easier to do; if you have any trouble with GitHub, please contact a manager.",
         "keywords": ["submit mod"],
-        "categories": ["contribution"],
-        "discord": true
+        "categories": ["creating"]
     },
     {
         "question": "CompliBot is offline! What do I do?",
         "answer": "If one of the bots ever goes offline without previous notice from the developers, please ping __one__ of the online developers (<@473860522710794250>, <@360249987927638016>, or <@173336582265241601>) and alert them of the issue.",
         "keywords": ["bot offline", "bot dead", "bot down"],
-        "categories": ["issues", "discord"],
+        "categories": ["issues"],
         "discord": true
     },
     {
         "question": "I have found a bug in CompliBot or Wynem and I want to request a fix and/or give feedback, how do I do it?",
         "answer": "If you find any bugs with CompliBot/CompliBot Submissions or have any requests, you can use the `/feedback` command to send feedback directly to their GitHub issue pages, or make an issue directly on their respective repositories. For Wynem, you can use `e!suggest`.",
         "keywords": ["bot bug", "bot bugs", "bot issue"],
-        "categories": ["issues", "discord"],
+        "categories": ["issues"],
         "discord": true
     },
     {
@@ -168,7 +166,7 @@
         "question": "How do I get the translator role?",
         "answer": "Visit [our Crowdin](https://translate.faithfulpack.net) and see if you can help translate CompliBot or or the Faithful Web App. Once your translations get accepted, ping an online manager to add the role.",
         "keywords": ["crowdin", "translator", "translation"],
-        "categories": ["contribution"]
+        "categories": ["creating"]
     },
     {
         "question": "Items appear too big when using Bedrock Edition! What can I do?",
@@ -180,6 +178,6 @@
         "question": "How can I use Faithful textures in my own projects?",
         "answer": "First, read [our license](https://faithfulpack.net/license) to see that your project meets our terms (no monetization, giving clear credit, etc). If it meets all the terms and conditions, no further permission is required.",
         "keywords": ["permission", "usage", "distribution"],
-        "categories": ["contribution"]
+        "categories": ["creating"]
     }
 ]
