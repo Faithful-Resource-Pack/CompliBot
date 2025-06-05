@@ -6,7 +6,7 @@
  * @returns the new date
  */
 export const addSeconds = (d: Date, seconds?: number) => {
-	d.setSeconds(d.getSeconds() + seconds ?? 1);
+	d.setSeconds(d.getSeconds() + (seconds ?? 1));
 	return d;
 };
 

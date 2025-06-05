@@ -4,7 +4,7 @@ import {
 	PermissionFlagsBits,
 	PresenceStatusData,
 } from "discord.js";
-import { EmbedBuilder, Message } from "@client";
+import { EmbedBuilder } from "@client";
 import type { SlashCommand } from "@interfaces/interactions";
 
 export const command: SlashCommand = {

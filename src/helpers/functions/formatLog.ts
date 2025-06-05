@@ -8,13 +8,15 @@ import { Log } from "client/client";
  */
 export function formatLogType(log: Log) {
 	switch (log.type) {
-		case "slashCommand":
+		case "slashCommand": {
 			return `${log.type} [/${log.data.commandName}]`;
-		case "guildMemberUpdate":
+		}
+		case "guildMemberUpdate": {
 			return `${log.type} | ${log.data.user.username} ${
 				log.data.reason === "added" ? "joined" : "left"
 			} ${log.data.guild.name}`;
-		case "message":
+		}
+		case "message": {
 			let userType: string;
 			if (log.data.author) userType = log.data.author.bot ? "BOT" : "USER";
 			else userType = "Unknown (likely bot)";
@@ -22,8 +24,10 @@ export function formatLogType(log: Log) {
 			return `${log.type} | ${userType} | ${
 				log.data.author ? log.data.author.username : "Unknown"
 			}`;
-		default:
+		}
+		default: {
 			return log.type;
+		}
 	}
 }
 

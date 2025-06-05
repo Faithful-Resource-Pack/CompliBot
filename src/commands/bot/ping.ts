@@ -1,6 +1,6 @@
 import type { SlashCommand } from "@interfaces/interactions";
 import { SlashCommandBuilder } from "discord.js";
-import { EmbedBuilder, Message } from "@client";
+import { EmbedBuilder } from "@client";
 import { ping } from "@json/quotes.json";
 import { choice } from "@utility/methods";
 

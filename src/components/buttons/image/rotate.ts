@@ -1,6 +1,6 @@
 import type { Component } from "@interfaces/components";
 import { info } from "@helpers/logger";
-import { Message, ButtonInteraction, EmbedBuilder } from "@client";
+import { ButtonInteraction, EmbedBuilder } from "@client";
 import { tileToAttachment, untile } from "@images/tile";
 import { palette, flip, tile } from "@utility/buttons";
 import getImage, { imageNotFound } from "@images/getImage";

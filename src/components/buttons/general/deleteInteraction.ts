@@ -60,7 +60,7 @@ export default {
 
 		try {
 			return message.delete();
-		} catch (err) {
+		} catch {
 			return interaction.reply({
 				content: interaction.strings().error.message.deleted,
 				flags: MessageFlags.Ephemeral,

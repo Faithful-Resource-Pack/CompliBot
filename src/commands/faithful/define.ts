@@ -13,7 +13,7 @@ export const command: SlashCommand = {
 		),
 	async execute(interaction) {
 		await interaction.deferReply();
-		let choice = interaction.options.getString("term", true).trim();
+		const choice = interaction.options.getString("term", true).trim();
 
 		// easier to read markdown than final compiled site
 		const terms = (

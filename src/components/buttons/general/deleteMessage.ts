@@ -37,7 +37,7 @@ export default {
 
 		try {
 			message.delete();
-		} catch (err) {
+		} catch {
 			return interaction.reply({
 				content: interaction.strings().error.message.deleted,
 				flags: MessageFlags.Ephemeral,

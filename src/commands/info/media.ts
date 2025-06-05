@@ -1,7 +1,7 @@
 import type { SlashCommand } from "@interfaces/interactions";
 import { SlashCommandBuilder } from "discord.js";
 import { media } from "@utility/infoembed";
-import { Message, EmbedBuilder } from "@client";
+import { EmbedBuilder } from "@client";
 import axios from "axios";
 import { colors } from "@utility/colors";
 

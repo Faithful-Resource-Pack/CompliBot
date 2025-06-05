@@ -1,6 +1,6 @@
 import type { Component } from "@interfaces/components";
 import { info } from "@helpers/logger";
-import { Message, ButtonInteraction } from "@client";
+import { ButtonInteraction } from "@client";
 import { paletteToAttachment } from "@images/palette";
 import getImage, { imageNotFound } from "@images/getImage";
 import { imageTooBig } from "@helpers/warnUser";

@@ -1,10 +1,10 @@
 import { ImageData, createCanvas, loadImage } from "@napi-rs/canvas";
 
-export interface HEXA extends HEX {}
-
 export interface HEX {
 	value: string;
 }
+
+export interface HEXA extends HEX {}
 
 export interface RGBA extends RGB {
 	a: number;

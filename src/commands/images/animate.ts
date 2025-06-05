@@ -53,7 +53,7 @@ export const command: SlashCommand = {
 			if (!mcmetaText.endsWith("}")) mcmetaText += "}";
 			if (!mcmetaText.startsWith("{")) mcmetaText = "{" + mcmetaText;
 			// replace single quotes with double quotes
-			mcmetaText = mcmetaText.replace(/\'/g, '"');
+			mcmetaText = mcmetaText.replace(/'/g, '"');
 
 			const invalidTextEmbed = new EmbedBuilder()
 				.setTitle(interaction.strings().command.animate.invalid_text.title)

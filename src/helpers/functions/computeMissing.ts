@@ -163,12 +163,13 @@ export async function updateVoiceChannel(client: Client, results: MissingData) {
 
 	// you can add different patterns depending on the channel type
 	switch (channel.type) {
-		case ChannelType.GuildVoice:
+		case ChannelType.GuildVoice: {
 			const pattern = /[.\d+]+(?!.*[.\d+])/;
 			if (channel.name.match(pattern)?.[0] === results.completion.toString()) break;
 			const updatedName = channel.name.replace(pattern, results.completion.toString());
 			channel.setName(updatedName).catch(console.error);
 			break;
+		}
 	}
 }
 
@@ -209,7 +210,7 @@ export async function syncRepo(
  * @param filter stuff to disallow
  * @returns array of all paths in the directory
  */
-export const getAllFiles = (dir: string, filter: string[] = []): string[] => {
+export function getAllFiles(dir: string, filter: string[] = []): string[] {
 	const fileList: string[] = [];
 	readdirSync(dir).forEach((file) => {
 		file = normalize(join(dir, file));
@@ -225,7 +226,7 @@ export const getAllFiles = (dir: string, filter: string[] = []): string[] => {
 	});
 
 	return fileList;
-};
+}
 
 /**
  * Format an array of texture paths into a more human-readable format

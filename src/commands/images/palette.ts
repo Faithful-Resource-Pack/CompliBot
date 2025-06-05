@@ -1,6 +1,5 @@
 import type { SlashCommand } from "@interfaces/interactions";
 import { SlashCommandBuilder } from "discord.js";
-import { Message } from "@client";
 import { paletteToAttachment } from "@images/palette";
 import getImage, { imageNotFound } from "@images/getImage";
 import { imageTooBig } from "@helpers/warnUser";

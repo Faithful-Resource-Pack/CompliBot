@@ -1,6 +1,5 @@
 import type { SlashCommand } from "@interfaces/interactions";
 import { SlashCommandBuilder, AttachmentBuilder } from "discord.js";
-import { Message } from "@client";
 
 interface OrderOptions {
 	[order: string]: {

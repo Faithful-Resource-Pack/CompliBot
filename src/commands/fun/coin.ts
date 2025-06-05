@@ -1,6 +1,6 @@
 import type { SlashCommand } from "@interfaces/interactions";
 import { ActionRowBuilder, ButtonBuilder, SlashCommandBuilder } from "discord.js";
-import { Message, EmbedBuilder } from "@client";
+import { EmbedBuilder } from "@client";
 import { colors } from "@utility/colors";
 import { reflip } from "@utility/buttons";
 

@@ -52,7 +52,7 @@ export async function getTexture(
 	let image: Image;
 	try {
 		image = await loadImage(textureURL);
-	} catch (err) {
+	} catch {
 		const errorEmbed = new EmbedBuilder()
 			.setTitle(interaction.strings().error.texture.no_image.title)
 			.setDescription(

@@ -26,7 +26,7 @@ export function getData(options: GetOptions) {
 
 	try {
 		data = JSON.parse(readFileSync(file).toString());
-	} catch (_err) {
+	} catch {
 		// file/folder isn't valid
 		if (!existsSync(folder)) mkdirSync(folder, { recursive: true });
 
@@ -48,7 +48,7 @@ export function setData(options: SetOptions) {
 
 	try {
 		writeFileSync(file, JSON.stringify(options.data));
-	} catch (_err) {
+	} catch {
 		// file/folder isn't valid
 		if (!existsSync(folder)) mkdirSync(folder, { recursive: true });
 
