@@ -90,7 +90,9 @@ export default async function getImage(msgOrInteraction: Message | AnyInteractio
 			let original: Message;
 			try {
 				original = await msgOrInteraction.fetchReference();
-			} catch {}
+			} catch {
+				// reply deleted or not found
+			}
 			if (original) url = await getImageFromMessage(original);
 			if (isImage(url)) return url;
 		}

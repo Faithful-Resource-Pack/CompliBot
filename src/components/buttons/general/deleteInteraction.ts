@@ -34,7 +34,9 @@ export default {
 		let fetchedRef = false;
 		try {
 			fetchedRef = (await message.fetchReference()).author.id != interaction.user.id;
-		} catch {} // ref deleted or author not matching
+		} catch {
+			// ref deleted or author not matching
+		}
 
 		if (
 			message.reference !== undefined &&

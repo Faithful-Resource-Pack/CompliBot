@@ -1,6 +1,7 @@
 import { parseID, emojis } from "@utility/emojis";
 
-//prettier-ignore
+// prettier-ignore
+/* eslint-disable no-irregular-whitespace */
 export const media: Record<string, { title: string, description: string }> = {
 	faithful_32x: {
 		title: `Faithful 32x:`,

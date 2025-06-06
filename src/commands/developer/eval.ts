@@ -1,6 +1,7 @@
 import type { SlashCommand } from "@interfaces/interactions";
 import { SlashCommandBuilder, PermissionFlagsBits, MessageFlags } from "discord.js";
 import { Client, EmbedBuilder } from "@client";
+import { inspect } from "util";
 
 export const command: SlashCommand = {
 	servers: ["dev"],
@@ -16,24 +17,22 @@ export const command: SlashCommand = {
 		if (!interaction.hasPermission("dev")) return;
 		await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
-		const clean = async (text: any, client: Client): Promise<string> => {
+		const clean = async (text: unknown, client: Client): Promise<string> => {
 			if (text && text.constructor.name === "Promise") text = await text;
-			if (typeof text !== "string") text = require("util").inspect(text, { depth: 1 });
+			if (typeof text !== "string") text = inspect(text, { depth: 1 });
 
-			return text
+			// we now know that text is a string
+			return (text as string)
 				.replaceAll(client.tokens.token, "[BOT_TOKEN]")
 				.replaceAll(client.tokens.apiToken, "[API_TOKEN]")
 				.replaceAll(client.tokens.gitToken, "[GIT_TOKEN]")
 				.replace(/`/g, "`" + String.fromCharCode(8203))
 				.replace(/@/g, "@" + String.fromCharCode(8203));
 		};
-		/**
-		 * VARIABLES USED IN eval()
-		 */
 
+		/* eslint-disable @typescript-eslint/no-unused-vars */
 		const { client, channel, guild } = interaction;
-
-		// ----
+		/* eslint-enable @typescript-eslint/no-unused-vars */
 
 		const code = interaction.options.getString("code", true);
 		let evaluated: any;

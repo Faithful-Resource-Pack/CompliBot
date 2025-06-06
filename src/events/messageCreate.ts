@@ -20,7 +20,9 @@ export default {
 			).data;
 			// returns early if you're in a submission channel
 			if (Object.values(packs).some((pack) => pack.channels.submit == message.channel.id)) return;
-		} catch {} // api error, ignore
+		} catch {
+			// api error, ignore
+		}
 
 		if (message.content.startsWith(client.tokens.prefix)) return prefixCommandHandler(message);
 

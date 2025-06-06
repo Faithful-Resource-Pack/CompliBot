@@ -4,7 +4,7 @@ export interface HEX {
 	value: string;
 }
 
-export interface HEXA extends HEX {}
+export type HEXA = HEX;
 
 export interface RGBA extends RGB {
 	a: number;
@@ -110,14 +110,13 @@ export default class ColorManager {
 		const diff = max - min;
 
 		let h: number;
-		let s: number;
 
 		// average brightness across all three channels
 		const l = (max + min) / 2;
 
 		// all color channels are equal so it's grayscale
 		if (!diff) return { h: 0, s: 0, l };
-		s = l > 0.5 ? diff / (2 - max - min) : diff / (max + min);
+		const s = l > 0.5 ? diff / (2 - max - min) : diff / (max + min);
 
 		// calculates hue based off the brightest channel
 		switch (max) {
