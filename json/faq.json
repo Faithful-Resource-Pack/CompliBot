@@ -7,7 +7,7 @@
     },
     {
         "question": "What were the Compliance and Emulated Vattic projects?",
-        "answer": "The Faithful project was initially called Compliance, prior to when we had received approval from Vattic to continue Faithful under his brand. In addition, Classic Faithful was an entirely separate project called Emulated Vattic Textures (EM for short), but merged with the Faithful Project and adopted the Classic Faithful name during the Faithful rebrand.\nEssentially, Faithful and Compliance are one and the same, and Classic Faithful and Emulated Vattic are also one and the same.",
+        "answer": "Faithful was initially called Compliance, prior to when we had received approval from Vattic to continue Faithful under his brand. In addition, Classic Faithful was an entirely separate project called Emulated Vattic Textures (EM for short), but merged with Faithful and adopted the Classic Faithful name during the Faithful rebrand.\nEssentially, Faithful and Compliance are one and the same, and Classic Faithful and Emulated Vattic are also one and the same.",
         "keywords": ["compliance", "emulated vattic", "em", "rebrand"],
         "categories": ["history"]
     },
@@ -158,7 +158,7 @@
     },
     {
         "question": "Will Faithful affect my FPS?",
-        "answer": "The short answer is no. While ludicrously high-resolution packs may cause a minor decrease (well above the scope of the Faithful project), in general shaders or mods are the major graphics-related culprit for causing large amounts of lag, not resource packs. When a resource pack claims to boost FPS, there's a good chance it's completely lying or it will cause a very marginal increase at best.",
+        "answer": "The short answer is no. While ludicrously high-resolution packs may cause a minor decrease (well above the scope of any Faithful pack), in general shaders or mods are the major graphics-related culprit for causing large amounts of lag, not resource packs. When a resource pack claims to boost FPS, there's a good chance it's completely lying or it will cause a very marginal increase at best.",
         "keywords": ["fps", "lag", "performance"],
         "categories": ["installation"]
     },
