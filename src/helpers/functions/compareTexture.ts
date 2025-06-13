@@ -134,7 +134,7 @@ export default async function compareTexture(
 
 	const packs = parseDisplay(display);
 
-	const dimension = await loadImage(result.urls.default).catch(() => null);
+	const dimension = await loadImage(result.urls.default).catch<Image>(() => null);
 	if (!dimension || dimension.width * dimension.height * packs.flat().length > 262144) return;
 
 	// load all images at same time using promise.all (faster)
