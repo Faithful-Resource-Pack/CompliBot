@@ -113,14 +113,28 @@ export async function getTexture(
 		const { mcmeta } = texture;
 		// only add mcmeta field if there's special properties there
 		if (Object.keys(mcmeta?.animation ?? {}).length) {
+			const hasWidth = mcmeta.animation.width !== undefined;
+			const hasHeight = mcmeta.animation.height !== undefined;
+
+			// workaround for lack of per-pack mcmeta api support
+			if (pack.includes("32x")) {
+				if (hasWidth) mcmeta.animation.width *= 2;
+				if (hasHeight) mcmeta.animation.height *= 2;
+			}
+
+			if (pack.includes("64x")) {
+				if (hasWidth) mcmeta.animation.width *= 4;
+				if (hasHeight) mcmeta.animation.height *= 4;
+			}
+
 			embed.addFields({
 				name: "MCMETA",
 				value: `\`\`\`json\n${JSON.stringify(mcmeta.animation)}\`\`\``,
 			});
 
-			// fix custom sizes
-			if (mcmeta.animation.width) mcmeta.animation.width *= factor;
-			if (mcmeta.animation.height) mcmeta.animation.height *= factor;
+			// fix custom sizes (done after adding field since it messes up the numbers)
+			if (hasWidth) mcmeta.animation.width *= factor;
+			if (hasHeight) mcmeta.animation.height *= factor;
 		}
 
 		files.push(await animateToAttachment(magnified, mcmeta));

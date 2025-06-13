@@ -47,9 +47,9 @@ export function parseDisplay(display: string) {
  * @returns 3D array of packSet * pack * frames plus the number of frames
  */
 export function sliceTileSheet(loadedImages: Image[][], dimension: Image, mcmeta: MCMETA) {
-	const frameCount: number = !mcmeta.animation?.height
-		? dimension.height / dimension.width
-		: dimension.height / mcmeta.animation.height; // if height is not specified, assume square image
+	const frameCount: number = mcmeta.animation?.height
+		? dimension.height / mcmeta.animation.height
+		: dimension.height / dimension.width; // if height is not specified, assume square image
 
 	const canvasArray: Canvas[][][] = [];
 	for (const images of loadedImages) {
@@ -161,10 +161,10 @@ export default async function compareTexture(
 		mcmeta.animation ||= {};
 
 		// scale mcmeta info for new resolution
-		mcmeta.animation.height = !mcmeta.animation?.height
-			? height / frameCount
-			: mcmeta.animation.height * factor;
-		mcmeta.animation.width = !mcmeta.animation?.width ? width : mcmeta.animation.width * factor;
+		mcmeta.animation.height = mcmeta.animation?.height
+			? mcmeta.animation.height * factor
+			: height / frameCount;
+		mcmeta.animation.width = mcmeta.animation?.width ? mcmeta.animation.width * factor : width;
 		filename = `${result.texture.name}.gif`;
 		attachment = await animateToAttachment(magnified, mcmeta, filename);
 	} else {
