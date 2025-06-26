@@ -1,11 +1,11 @@
 import type { SlashCommand, SlashCommandExecute } from "@interfaces/interactions";
 import { EmbedBuilder } from "@client";
 import {
-	Collection,
 	AttachmentBuilder,
-	SlashCommandBuilder,
-	PermissionFlagsBits,
+	Collection,
 	MessageFlags,
+	PermissionFlagsBits,
+	SlashCommandBuilder,
 } from "discord.js";
 import { readFileSync, writeFileSync } from "fs";
 import { join } from "path";
@@ -95,11 +95,11 @@ export const command: SlashCommand = {
 			if (!interaction.hasPermission("dev")) return;
 
 			await interaction.deferReply({ flags: MessageFlags.Ephemeral });
-			const buffer = readFileSync(join(process.cwd(), "json", "botbans.json"));
-			const txtBuff = Buffer.from(
-				`Botbanned IDs:\n\n${JSON.parse(buffer.toString("utf-8"))["ids"].join("\n")}`,
-				"utf-8",
-			);
+			const buffer = readFileSync(join(process.cwd(), "json", "botbans.json"), {
+				encoding: "utf8",
+			});
+			const ids: string[] = JSON.parse(buffer).ids;
+			const txtBuff = Buffer.from(`Botbanned IDs:\n\n${ids.join("\n")}`, "utf-8");
 
 			// curly brackets used to fix scoping issues
 			switch (interaction.options.getString("format")) {
@@ -111,13 +111,13 @@ export const command: SlashCommand = {
 				case "embed": {
 					const embed = new EmbedBuilder()
 						.setTitle("Botbanned IDs:")
-						.setDescription(JSON.parse(buffer.toString("utf-8"))["ids"].join("\n"));
+						.setDescription(ids.join("\n"));
 					return interaction.editReply({ embeds: [embed] });
 				}
 				case "mentions": {
 					const pingEmbed = new EmbedBuilder()
 						.setTitle("Botbanned Users:")
-						.setDescription("<@" + JSON.parse(buffer.toString("utf-8"))["ids"].join(">\n<@") + ">");
+						.setDescription(ids.map((id) => `<@${id}>`).join("\n"));
 					return interaction.editReply({ embeds: [pingEmbed] });
 				}
 				default: {

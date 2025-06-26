@@ -1,5 +1,5 @@
 import { dev } from "@json/tokens.json";
-import { spawn, SpawnOptions } from "child_process";
+import { SpawnOptions, spawn } from "child_process";
 
 /**
  * spawn a child process and execute shell command
@@ -16,7 +16,7 @@ import { spawn, SpawnOptions } from "child_process";
  * @param cb callback to run afterwards (grabs error too)
  * @param options extra command line options for child_process
  */
-export const execSync = (cmd: string, cb: (err: any) => void, options: SpawnOptions = {}) => {
+export function execSync(cmd: string, cb: (err: any) => void, options: SpawnOptions = {}) {
 	// this would be way easier on a shell/bash script :P
 	const parts = cmd.split(/\s+/g);
 
@@ -42,25 +42,23 @@ export const execSync = (cmd: string, cb: (err: any) => void, options: SpawnOpti
 
 // execute multiple commands in series
 // this could be replaced by any flow control lib
-export const seriesSync = (cmds: string[], cb: (err: any) => void, options: SpawnOptions = {}) => {
+export function seriesSync(cmds: string[], cb: (err: any) => void, options: SpawnOptions = {}) {
 	const execNext = () => {
 		execSync(
 			cmds.shift(),
 			(err: any) => {
 				if (err) cb(err);
-				else {
-					if (cmds.length) execNext();
-					else cb(null);
-				}
+				else if (cmds.length) execNext();
+				else cb(null);
 			},
 			options,
 		);
 	};
 
 	execNext();
-};
+}
 
-export const exec = async (cmd: string, options: SpawnOptions = {}) => {
+export async function exec(cmd: string, options: SpawnOptions = {}) {
 	return new Promise((res, rej) => {
 		execSync(
 			cmd,
@@ -71,9 +69,9 @@ export const exec = async (cmd: string, options: SpawnOptions = {}) => {
 			options,
 		);
 	});
-};
+}
 
-export const series = async (cmds: string[], options: SpawnOptions = {}) => {
+export async function series(cmds: string[], options: SpawnOptions = {}) {
 	return new Promise((res, rej) => {
 		seriesSync(
 			cmds,
@@ -84,4 +82,4 @@ export const series = async (cmds: string[], options: SpawnOptions = {}) => {
 			options,
 		);
 	});
-};
+}

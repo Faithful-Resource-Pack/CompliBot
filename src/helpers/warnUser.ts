@@ -31,7 +31,7 @@ export async function warnUser(
  * @author Evorp
  * @param interaction interaction to reply to
  */
-export async function imageTooBig(interaction: AnyInteraction | Message) {
+export function imageTooBig(interaction: AnyInteraction | Message) {
 	// force english if it's a message
 	const imageStrings = interaction.strings(interaction instanceof Message).error.image;
 	return warnUser(interaction, imageStrings.too_big, imageStrings.max_size);

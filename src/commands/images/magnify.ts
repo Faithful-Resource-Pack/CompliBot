@@ -12,8 +12,8 @@ export const command: SlashCommand = {
 		.addAttachmentOption((o) =>
 			o.setName("image").setDescription("The image to magnify").setRequired(false),
 		)
-		.addNumberOption((num) => {
-			return num
+		.addNumberOption((num) =>
+			num
 				.addChoices(
 					{ name: "0.25x", value: 0.25 },
 					{ name: "0.5x", value: 0.5 },
@@ -25,8 +25,8 @@ export const command: SlashCommand = {
 				)
 				.setName("factor")
 				.setDescription("The scale factor the image should be enlarged by.")
-				.setRequired(false);
-		}),
+				.setRequired(false),
+		),
 	async execute(interaction) {
 		await interaction.deferReply();
 		const image = await getImage(interaction);

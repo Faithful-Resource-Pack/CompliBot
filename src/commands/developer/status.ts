@@ -1,8 +1,8 @@
 import {
 	ActivityType,
-	SlashCommandBuilder,
 	PermissionFlagsBits,
 	PresenceStatusData,
+	SlashCommandBuilder,
 } from "discord.js";
 import { EmbedBuilder } from "@client";
 import type { SlashCommand } from "@interfaces/interactions";
@@ -17,7 +17,7 @@ export const command: SlashCommand = {
 				.setDescription("What activity the bot is doing (e.g. playing, streaming)")
 				.addChoices(
 					...Object.values(ActivityType)
-						.filter((x) => typeof x == "string")
+						.filter((x) => typeof x === "string")
 						.map((i: string) => ({
 							name: i,
 							value: i,

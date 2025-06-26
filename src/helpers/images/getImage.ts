@@ -117,7 +117,7 @@ export default async function getImage(msgOrInteraction: Message | AnyInteractio
  * @author Evorp
  * @param interaction interaction to reply to
  */
-export async function imageNotFound(interaction: AnyInteraction | Message) {
+export function imageNotFound(interaction: AnyInteraction | Message) {
 	return warnUser(
 		interaction,
 		interaction.strings(interaction instanceof Message).error.image.not_found,
