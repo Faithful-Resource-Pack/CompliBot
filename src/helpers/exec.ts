@@ -38,7 +38,7 @@ export function execSync(cmd: string, cb: (err: any) => void, options: SpawnOpti
 
 		if (cb) cb(err);
 	});
-};
+}
 
 // execute multiple commands in series
 // this could be replaced by any flow control lib
