@@ -11,13 +11,15 @@
 
 ---
 
-## Found an issue?
+## Found a bug or want to suggest something?
+
 Please submit it using our [bug tracker](https://github.com/Faithful-Resource-Pack/CompliBot/issues/new/choose) or by using the `/feedback` form on our bot.
 
 ---
 
 ## Requirements
-- NodeJS 18+ https://nodejs.org
+
+- NodeJS 20+ https://nodejs.org
 - pnpm (`corepack enable` + `corepack prepare pnpm@latest --activate`)
 
 ## Running
@@ -25,6 +27,7 @@ Please submit it using our [bug tracker](https://github.com/Faithful-Resource-Pa
 ```bash
 pnpm install
 ```
+
 ```bash
 pnpm dev
 ```
