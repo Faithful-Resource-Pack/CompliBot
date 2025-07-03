@@ -175,6 +175,18 @@
         "categories": ["issues"]
     },
     {
+        "question": "Items have rendering issues in the player's hand. What can I do?",
+        "answer": "Chances are that you have the \"Item Stitching Fix\" Vanilla Tweaks pack enabled. This is incompatible with all Faithful packs since it hardcodes the fixed edges to only work with the vanilla textures. If you want the fix to work for all packs, you can use [this mod](https://modrinth.com/mod/modelfix) instead.",
+        "keywords": ["item edges", "item stitching fix"],
+        "categories": ["issues"]
+    },
+    {
+        "question": "Does Faithful accept sponsors or paid partners?",
+        "answer": "Simply put, no. Not only do sponsors/advertisements go against our open sourced ethos, but since Faithful has no single owner, any rewards can't be fairly distributed.",
+        "keywords": ["sponsor", "sponsorship"],
+        "categories": ["creating"]
+    },
+    {
         "question": "How can I use Faithful textures in my own projects?",
         "answer": "First, read [our license](https://faithfulpack.net/license) to see that your project meets our terms (no monetization, giving clear credit, etc). If it meets all the terms and conditions, no further permission is required.",
         "keywords": ["permission", "usage", "distribution"],
