@@ -176,7 +176,7 @@
     },
     {
         "question": "Items have rendering issues in the player's hand. What can I do?",
-        "answer": "Chances are that you have the \"Item Stitching Fix\" Vanilla Tweaks pack enabled. This is incompatible with all Faithful packs since it hardcodes the fixed edges to only work with the vanilla textures. If you want the fix to work for all packs, you can use [this mod](https://modrinth.com/mod/modelfix) instead.",
+        "answer": "Chances are that you have the \"Item Stitching Fix\" Vanilla Tweaks pack enabled. This is incompatible with all Faithful packs since it manually defines custom item models based on the vanilla textures and as a result, the fix only works with them. If you want the fix to work for all packs, you can use [this mod](https://modrinth.com/mod/modelfix) instead.",
         "keywords": ["item edges", "item stitching fix"],
         "categories": ["issues"]
     },
