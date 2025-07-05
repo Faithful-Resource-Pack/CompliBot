@@ -19,8 +19,8 @@ import { animateToAttachment } from "@helpers/images/animate";
 export function parseDisplay(display: string) {
 	const PACKS = [
 		["default", "faithful_32x", "faithful_64x"],
-		["default", "classic_faithful_32x", "classic_faithful_64x"],
-		["progart", "classic_faithful_32x_progart", "classic_faithful_64x_progart"],
+		["default", "classic_faithful_32x_jappa", "classic_faithful_64x"],
+		["progart", "classic_faithful_32x", "classic_faithful_64x"],
 	];
 	switch (display) {
 		case "Faithful":

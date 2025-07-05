@@ -13,9 +13,9 @@ export const colors = {
 	brand: "#76C945",
 	faithful_32x: "#00A2FF",
 	faithful_64x: "#FF0092",
-	classic_faithful_32x: "#1257CA",
-	classic_faithful_32x_progart: "#5ED900",
-	classic_faithful_64x: "#FF6900",
-	classic_faithful_64x_progart: "#BE42FF",
+	classic_faithful_32x: "#5ED900",
+	classic_faithful_64x: "#BE42FF",
+	classic_faithful_32x_jappa: "#1257CA",
+	classic_faithful_64x_jappa: "#FF6900",
 	// workaround for getting const keys + djs compatible values
 } satisfies Record<string, ColorResolvable>;

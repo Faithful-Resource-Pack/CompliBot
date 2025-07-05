@@ -19,20 +19,20 @@ export default function formatPack(pack: string, size?: number) {
 			iconURL += "f64_logo.png";
 			break;
 		case "classic_faithful_32x":
-			name = "Classic Faithful 32x Jappa";
-			iconURL += "cf32j_logo.png";
-			break;
-		case "classic_faithful_32x_progart":
 			name = "Classic Faithful 32x";
 			iconURL += "cf32_logo.png";
 			break;
 		case "classic_faithful_64x":
-			name = "Classic Faithful 64x Jappa";
-			iconURL += "cf64j_logo.png";
-			break;
-		case "classic_faithful_64x_progart":
 			name = "Classic Faithful 64x";
 			iconURL += "cf64_logo.png";
+			break;
+		case "classic_faithful_32x_jappa":
+			name = "Classic Faithful 32x Jappa";
+			iconURL += "cf32j_logo.png";
+			break;
+		case "classic_faithful_64x_jappa":
+			name = "Classic Faithful 64x Jappa";
+			iconURL += "cf64j_logo.png";
 			break;
 		case "progart":
 			name = "Default Programmer Art";

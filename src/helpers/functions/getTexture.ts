@@ -101,7 +101,7 @@ export async function getTexture(
 		});
 
 		/** @todo remove this when classic faithful credits are reasonably finished */
-		if (["classic_faithful_32x"].includes(pack))
+		if (["classic_faithful_32x_jappa"].includes(pack))
 			embed.setAuthor({ name: "Note: This pack may have misleading or outdated credits." });
 	}
 

@@ -43,7 +43,7 @@ export const media: Record<string, { title: string, description: string }> = {
     `,
 	},
 
-	classic_faithful_32x_progart: {
+	classic_faithful_32x: {
 		title: "Classic Faithful 32x:",
 		description: `
 [${parseID(emojis.main_logo)} Website](https://faithfulpack.net/classic32x)
@@ -62,8 +62,7 @@ export const media: Record<string, { title: string, description: string }> = {
     `,
 	},
 
-
-	classic_faithful_32x: {
+	classic_faithful_32x_jappa: {
 		title: "Classic Faithful 32x Jappa:",
 		description: `
 [${parseID(emojis.main_logo)} Website](https://faithfulpack.net/classic32x-jappa)
@@ -82,7 +81,7 @@ export const media: Record<string, { title: string, description: string }> = {
     `,
 	},
 
-	classic_faithful_64x: {
+	classic_faithful_64x_jappa: {
 		title: "Classic Faithful 64x Jappa:",
 		description: `
 [${parseID(emojis.main_logo)} Website](https://faithfulpack.net/classic64x-jappa)
