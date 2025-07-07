@@ -1,4 +1,4 @@
-import { Message, ActionRowBuilder, ComponentType } from "discord.js";
+import { Message, ActionRowBuilder, ComponentType, ActionRow } from "discord.js";
 import { deleteInteraction, deleteMessage } from "@utility/buttons";
 import { ButtonBuilder } from "discord.js";
 import { ExtendedClient } from "./client";
@@ -20,15 +20,16 @@ declare module "discord.js" {
  * @returns edited message
  */
 async function deleteButton(this: Message, hasAuthorID?: boolean): Promise<Message> {
+	// djs v14.19 workaround
+	const actionRow = this.components.at(-1) as ActionRow<any>;
+	const deleteComponent = hasAuthorID ? deleteMessage : deleteInteraction;
 	if (
 		this.components[0] != undefined &&
-		this.components.at(-1).components.length < 5 && //check there aren't 5 buttons
-		this.components.at(-1).components[0].type === ComponentType.Button //checks there isn't a select menu
+		actionRow.components.length < 5 && // check there aren't 5 buttons
+		actionRow.components[0].type === ComponentType.Button // checks there isn't a select menu
 	) {
-		// typed as any since we know it's a button row but discord.js doesn't
-		const deleteRow = ActionRowBuilder.from<ButtonBuilder>(
-			this.components.at(-1) as any,
-		).addComponents(hasAuthorID ? deleteMessage : deleteInteraction);
+		const deleteRow =
+			ActionRowBuilder.from<ButtonBuilder>(actionRow).addComponents(deleteComponent);
 
 		return this.edit({
 			components: [...this.components.slice(0, -1), deleteRow],
@@ -37,9 +38,7 @@ async function deleteButton(this: Message, hasAuthorID?: boolean): Promise<Messa
 	return this.edit({
 		components: [
 			...this.components,
-			new ActionRowBuilder<ButtonBuilder>().addComponents([
-				hasAuthorID ? deleteMessage : deleteInteraction,
-			]),
+			new ActionRowBuilder<ButtonBuilder>().addComponents(deleteComponent),
 		],
 	});
 }
