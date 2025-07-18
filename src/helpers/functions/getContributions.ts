@@ -71,8 +71,8 @@ export default async function getContributions(
 			.sort(sortMethods[sort]) // most recent on top
 			.map((data) => {
 				const packName = formatPack(data.pack).name;
-				if (!packCount[packName]) packCount[packName] = 0;
-				packCount[packName] += 1;
+				packCount[packName] ||= 0;
+				++packCount[packName];
 				if (pack) return `[#${data.texture}] ${data.name}`;
 				return `${packName}: [#${data.texture}] ${data.name}`;
 			})

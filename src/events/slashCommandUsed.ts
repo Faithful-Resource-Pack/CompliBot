@@ -43,7 +43,7 @@ export default {
 		}
 
 		// increment command usage
-		const count = (client.commandsProcessed.get(command.data.name) || 0) + 1;
-		client.commandsProcessed.set(command.data.name, count);
+		const count = (client.commandsProcessed.get(interaction.commandName) || 0) + 1;
+		client.commandsProcessed.set(interaction.commandName, count);
 	},
 } as Event;
