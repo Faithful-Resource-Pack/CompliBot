@@ -37,8 +37,6 @@
             "need_more_info": "Pro vložení je třeba definovat nadpis nebo popisek."
         },
         "stats": {
-            "usage": "Příkaz %COMMAND% byl použit %USE%krát.",
-            "top_ten": "10 nejpoužívanějších příkazů:",
             "not_found": "Příkaz `%COMMAND%` neexistuje!"
         },
         "info": {
