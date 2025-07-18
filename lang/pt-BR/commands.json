@@ -37,8 +37,6 @@
             "need_more_info": "Você precisa ter uma descrição ou título para um envio."
         },
         "stats": {
-            "usage": "%COMMAND% já foi executado %USE% vezes.",
-            "top_ten": "Top 10 comandos mais usados:",
             "not_found": "O comando `%COMMAND%` não existe!"
         },
         "info": {
