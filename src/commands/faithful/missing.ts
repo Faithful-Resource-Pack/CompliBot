@@ -139,7 +139,7 @@ export const command: SlashCommand = {
 		}
 
 		const files: AttachmentBuilder[] = [];
-		const resultEmbed = new EmbedBuilder();
+		const resultEmbed = new EmbedBuilder().setTimestamp();
 
 		for (const response of responses) {
 			const packName = formatPack(pack).name;

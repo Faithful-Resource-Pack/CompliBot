@@ -1,5 +1,11 @@
 import type { SlashCommand, SlashCommandExecute } from "@interfaces/interactions";
-import { SlashCommandBuilder, Collection, version as djsVersion, MessageFlags } from "discord.js";
+import {
+	SlashCommandBuilder,
+	Collection,
+	version as djsVersion,
+	MessageFlags,
+	AttachmentBuilder,
+} from "discord.js";
 import { EmbedBuilder } from "@client";
 import axios from "axios";
 import { colors } from "@utility/colors";
@@ -14,7 +20,7 @@ export const command: SlashCommand = {
 		.addSubcommand((subcommand) =>
 			subcommand
 				.setName("command")
-				.setDescription("Returns top 10 most used commands.")
+				.setDescription("Returns usage for all commands.")
 				.addStringOption((option) =>
 					option
 						.setName("command")
@@ -65,8 +71,9 @@ export const command: SlashCommand = {
 		.set("command", async (interaction) => {
 			const command = interaction.options.getString("command");
 			if (command) {
+				const total = interaction.client.commandsProcessed.get(command);
 				// command doesn't exist
-				if (interaction.client.commandsProcessed.get(command) === undefined)
+				if (total === undefined)
 					return interaction.reply({
 						flags: MessageFlags.Ephemeral,
 						embeds: [
@@ -81,19 +88,8 @@ export const command: SlashCommand = {
 
 				return interaction.reply({
 					embeds: [
-						new EmbedBuilder()
-							.setTitle(
-								interaction
-									.strings()
-									.command.stats.usage.replace("%COMMAND%", command)
-									.replace(
-										"%USE%",
-										interaction.client.commandsProcessed.get(command).toString() ?? "0",
-									),
-							)
-							.setTimestamp(),
+						new EmbedBuilder().setTitle(`/${command} has run ${total} times!`).setTimestamp(),
 					],
-					flags: MessageFlags.Ephemeral,
 				});
 			}
 
@@ -102,26 +98,19 @@ export const command: SlashCommand = {
 				(a, b) => b[1] - a[1],
 			);
 
+			const formatted = Buffer.from(data.map(([key, value]) => `${key}: ${value}`).join("\n"));
+			const file = new AttachmentBuilder(formatted, { name: "stats-command.txt" });
+
+			const total = Array.from(interaction.client.commandsProcessed.values()).reduce(
+				(acc, cur) => cur + acc,
+				0,
+			);
+
 			interaction.reply({
-				flags: MessageFlags.Ephemeral,
 				embeds: [
-					new EmbedBuilder()
-						.setTimestamp()
-						.setTitle(interaction.strings().command.stats.top_ten)
-						.setDescription(
-							data
-								.slice(0, data.length > 10 ? 10 : data.length)
-								.map(([key, value], i) => {
-									let index = `\`${i + 1}.`;
-									index += " ".repeat(Math.max(0, 4 - index.length)) + "`";
-									let command = `\`${key}`;
-									command += " ".repeat(Math.max(0, 13 - command.length)) + "`";
-									const count = `\`${value}\``;
-									return `${index} ${command} – ${count}`;
-								})
-								.join("\n"),
-						),
+					new EmbedBuilder().setTitle(`${total} commands have been run in total!`).setTimestamp(),
 				],
+				files: [file],
 			});
 		}),
 };

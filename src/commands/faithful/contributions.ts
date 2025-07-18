@@ -70,7 +70,7 @@ export const command: SlashCommand = {
 			});
 		}
 
-		const embed = new EmbedBuilder();
+		const embed = new EmbedBuilder().setTimestamp();
 		const files: AttachmentBuilder[] = [];
 
 		// nested ternaries were getting really ugly here
