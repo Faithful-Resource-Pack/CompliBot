@@ -418,6 +418,8 @@
         "ui/realms_faq_spider.png",
         "ui/glyph_all_pack_small.png",
         "ui/subscription_MarketplacePass.png",
-        "ui/subscription_Realms.png"
+        "ui/subscription_Realms.png",
+        "ui/realms_core_logo.png",
+        "ui/realms_plus_logo.png"
     ]
 }
