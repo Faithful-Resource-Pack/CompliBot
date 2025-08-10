@@ -102,7 +102,7 @@ export const media: Record<string, { title: string, description: string }> = {
 ### General:
 [Website](https://faithfulpack.net/) • [Docs](https://docs.faithfulpack.net/) • [Web App](https://webapp.faithfulpack.net) • [License](https://faithfulpack.net/license) • [Translate](https://translate.faithfulpack.net/)
 ### Listings:
-[Website](https://faithfulpack.net/news) • [CurseForge](https://www.curseforge.com/members/faithful_resource_pack/projects) • [Modrinth](https://modrinth.com/user/faithful-resource-pack) • [Planet Minecraft](https://planetminecraft.com/member/faithful_resource_pack/) • [MCPEDL](https://mcpedl.com/user/faithful-resource-pack/)
+[Website](https://faithfulpack.net/news) • [CurseForge](https://www.curseforge.com/members/faithful_resource_pack/projects) • [Modrinth](https://modrinth.com/organization/faithful-resource-pack) • [Planet Minecraft](https://planetminecraft.com/member/faithful_resource_pack/) • [MCPEDL](https://mcpedl.com/user/faithful-resource-pack/)
 ### Media:
 [Twitter](https://twitter.com/faithfulpack/) • [Bluesky](https://bsky.app/profile/faithfulpack.net) • [Reddit](https://reddit.com/r/faithfulpack/) • [Main GitHub](https://github.com/faithful-resource-pack/) • [Classic Faithful GitHub](https://github.com/classicfaithful/)`,
 	},

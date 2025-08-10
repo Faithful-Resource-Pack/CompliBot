@@ -67,7 +67,7 @@
     },
     {
         "question": "What Faithful listings are official?",
-        "answer": "Each pack has listings on our [website](https://faithfulpack.net), [CurseForge](https://www.curseforge.com/members/faithful_resource_pack/projects), [Modrinth](https://modrinth.com/user/Faithful-Resource-Pack), and [Planet Minecraft](https://www.planetminecraft.com/member/faithful_resource_pack/), and some are on [MCPEDL](https://mcpedl.com/user/faithful-resource-pack/).\n**Downloads from any other sites are unofficial, unsupported and could be dangerous!** Remember to stay safe on the internet.",
+        "answer": "Each pack has listings on our [website](https://faithfulpack.net), [CurseForge](https://www.curseforge.com/members/faithful_resource_pack/projects), [Modrinth](https://modrinth.com/organization/Faithful-Resource-Pack), and [Planet Minecraft](https://www.planetminecraft.com/member/faithful_resource_pack/), and some are on [MCPEDL](https://mcpedl.com/user/faithful-resource-pack/).\n**Downloads from any other sites are unofficial, unsupported and could be dangerous!** Remember to stay safe on the internet.",
         "keywords": ["listings", "vendors"],
         "categories": ["installation", "packs"]
     },
