@@ -51,7 +51,7 @@ export default {
 						content:
 							randint(0, 4) == 1
 								? "https://i.imgur.com/hAuUsnD.png"
-								: "https://media1.tenor.com/images/8dc53503f5a5bb23ef12b2c83a0e1d4d/tenor.gif",
+								: "https://c.tenor.com/L5n55GiSbx4AAAAd/tenor.gif",
 					})
 					.then((message) => message.deleteButton());
 				break;
