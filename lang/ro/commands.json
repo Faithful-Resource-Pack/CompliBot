@@ -1,0 +1,55 @@
+{
+    "translation_credits": [
+        "@mrcxlinux"
+    ],
+    "command": {
+        "animate": {
+            "invalid_text": {
+                "title": "Regulile tale MCMETA nu sunt valide!",
+                "description": "Erorile comune includ neluarea în ghilimele duble a numelor cheilor de proprietăți sau plasarea greșită a unui caracter."
+            },
+            "invalid_file": {
+                "title": "Fișier MCMETA invalid!",
+                "description": "Nici o proprietate `animation` nu a fost găsită în fișier. Vă rugăm să verificați dacă ați încărcat fișierul corect."
+            }
+        },
+        "about": {
+            "missing_profile": {
+                "title": "%USER% nu are contribuții!",
+                "description": "Nu a fost găsit nici un profil pe baza de date pentru acest utilizator.",
+                "register": "Înregistrați-vă la https://webapp.faithfulpack.net pentru a obține informații și credite cu contribuții exacte."
+            }
+        },
+        "coin": {
+            "reflip": {
+                "title": "Moneda a fost aruncată din nou!",
+                "description": "Dacă nu obții rezultatul pe care îl vrei, încearcă din nou..."
+            }
+        },
+        "botban": {
+            "unbannable": {
+                "title": "Acest utilizator nu poate fi botbanat!",
+                "description": "Nu te poți botbana singur, un dezvoltator sau cineva cu drepturi de administrator."
+            }
+        },
+        "embed": {
+            "not_enough_arguments": "Nu au fost furnizate informații suficiente!",
+            "need_more_info": "Trebuie să aveți fie o descriere, fie un titlu pentru a încorpora."
+        },
+        "stats": {
+            "not_found": "Comanda `%COMMAND%` nu există!"
+        },
+        "info": {
+            "title": "Bună, sunt CompliBot. Am fost făcut pentru serverele Faithful de Discord.",
+            "subtitle": "Şi cred că am ieşit destul de bine.",
+            "features": {
+                "title": "Funcții",
+                "description": "- Interacțiune cu texturi în timp real folosind /texture, /compare și /cycle.\n- Verifică progresul pachetului de resurse cu /missing sau verifică-ți contribuțiile cu /contributions.\n- Utilitare de manipulare a imaginilor precum /magnify, /tile, /palette și /animate."
+            },
+            "developing": {
+                "title": "Dezvoltare",
+                "description": "Sunt complet open-source (scris în TypeScript și Discord.js) și pot fi clonat din repository-ul meu GitHub [aici](https://github.com/faithful-resource-pack/complibot).\n\nDacă ești interesat de dezvoltare, contactează <@473860522710794250>, <@360249987927638016> sau <@173336582265241601> pentru mai multe informații."
+            }
+        }
+    }
+}
