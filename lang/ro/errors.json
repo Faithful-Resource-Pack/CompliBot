@@ -1,0 +1,47 @@
+{
+    "translation_credits": [
+        "@mrcxlinux"
+    ],
+    "error": {
+        "placeholder": "Această funcție nu a fost încă implementată!",
+        "generic": "Acțiune eșuată",
+        "botbanned": "Nu poți folosi botul pentru că ai fost banat de bot!",
+        "message": {
+            "deleted": "Acest mesaj a fost deja șters!",
+            "invalid": {
+                "title": "ID-ul mesajului este invalid!",
+                "description": "Asigurați-vă că mesajul nu a fost șters și că poate fi preluat."
+            },
+            "no_author": "Autorul acestui mesaj nu a putut fi găsit!"
+        },
+        "texture": {
+            "no_results": {
+                "title": "Nici un rezultat găsit!",
+                "description": "Nu au fost găsite rezultate pentru %TEXTURENAME%. Ai făcut o greșeală de scris?"
+            },
+            "no_image": {
+                "title": "Imaginea nu a fost găsită!",
+                "description": "`%TEXTURENAME%` nu a fost făcut pentru %PACK% în versiunea %VERSION% încă sau este ignorat!"
+            }
+        },
+        "invalid_choice": {
+            "title": "Alegere invalidă!",
+            "description": "`%CHOICE%` nu este un cuvânt cheie valid! Ai făcut o greșeală de scris?"
+        },
+        "image": {
+            "too_big": "Această imagine este prea mare!",
+            "too_long": "Această imagine este prea lungă!",
+            "max_size": "Dimensiunea maximă pentru o imagine este de 1024x1024px.",
+            "max_length": "Lungimea maximă pentru o parcelă este de 32 de cadre.",
+            "not_found": "Nu a fost găsită nicio imagine!",
+            "suggestion": "Asigură-te că ai încărcat o imagine, ai răspuns la o imagine validă, ai folosit un URL cu o imagine validă sau că ești pe canalul corect."
+        },
+        "command": "Unul dintre dezvoltatorii mei a făcut o eroare în timp ce făcea această comandă! Nu-ți face griji, eroarea nu este de partea ta. Vă rugăm să contactați <@360249987927638016>, <@473860522710794250>, sau <@173336582265241601> în cazul în care acest lucru continuă să se întâmple.",
+        "polls_removed": "Sondajele CompliBot au fost redundante de către opțiunea nativă Discord și astfel au fost eliminate.",
+        "permission": {
+            "notice": "Nu ai permisiunea să faci asta!",
+            "role_locked": "Doar %TYPE% poate utiliza acest lucru.",
+            "user_locked": "Doar %USER% poate utiliza acest lucru."
+        }
+    }
+}
