@@ -50,7 +50,7 @@ export default {
 					.reply({
 						content:
 							randint(0, 4) == 1
-								? "https://i.imgur.com/hAuUsnD.png"
+								? "https://preview.redd.it/6n6zu25c66211.png?width=960&crop=smart&auto=webp&s=62024911a6d6dd85f83a2eb305df6082f118c8d1"
 								: "https://c.tenor.com/L5n55GiSbx4AAAAd/tenor.gif",
 					})
 					.then((message) => message.deleteButton());
