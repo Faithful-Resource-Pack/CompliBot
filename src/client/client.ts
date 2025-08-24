@@ -309,7 +309,7 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 	 */
 	private loadEvents() {
 		if (this.tokens.maintenance)
-			return this.on("ready", () => {
+			return this.on("clientReady", () => {
 				this.user.setPresence({
 					activities: [{ name: "under maintenance", type: ActivityType.Playing }],
 					status: "idle",

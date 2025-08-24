@@ -3,7 +3,7 @@ import { success } from "@helpers/logger";
 import { ActivityType } from "discord.js";
 
 export default {
-	name: "ready",
+	name: "clientReady",
 	async execute(client) {
 		console.log(`${success}${client.user.username} is online!`);
 		client.user.setActivity(`commands`, { type: ActivityType.Listening });
