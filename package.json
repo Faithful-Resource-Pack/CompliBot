@@ -11,17 +11,17 @@
     },
     "devDependencies": {
         "@eslint/js": "^9.35.0",
-        "@types/node": "^24.3.1",
+        "@types/node": "^24.4.0",
         "eslint": "^9.35.0",
         "nodemon": "^3.1.10",
         "prettier": "^3.6.2",
-        "typescript-eslint": "^8.42.0"
+        "typescript-eslint": "^8.43.0"
     },
     "dependencies": {
-        "@napi-rs/canvas": "^0.1.78",
+        "@napi-rs/canvas": "^0.1.80",
         "@octokit/rest": "^22.0.0",
-        "axios": "^1.11.0",
-        "chalk": "^5.6.0",
+        "axios": "^1.12.2",
+        "chalk": "^5.6.2",
         "discord.js": "^14.22.1",
         "gif-encoder-2": "^1.0.5",
         "ts-node": "^10.9.2",
