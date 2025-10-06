@@ -92,15 +92,20 @@ export async function computeMissingResults(
 
 	// get texture that aren't in the check object
 	const diffResult = defaultTextures.filter((path) => !check.has(path));
-	const nonvanillaTextures = requestTextures.filter(
-		(path) =>
+	const nonvanillaTextures = requestTextures.filter((path) => {
+		const normalizedPath = path.replace(/\\/g, "/");
+		const validDir =
+			normalizedPath.startsWith("/assets/minecraft/textures") ||
+			normalizedPath.startsWith("/assets/realms") ||
+			normalizedPath.startsWith("/textures");
+
+		return (
+			validDir &&
 			!defaultTextures.includes(path) &&
-			!path.endsWith("huge_chungus.png") && // we do a little trolling
 			!editionFilter.includes(path) &&
-			(path.replace(/\\/g, "/").startsWith("/assets/minecraft/textures") ||
-				path.replace(/\\/g, "/").startsWith("/assets/realms") ||
-				path.replace(/\\/g, "/").startsWith("/textures")),
-	);
+			!normalizedPath.endsWith("huge_chungus.png") // we do a little trolling
+		);
+	});
 
 	// fix for returning an empty buffer which is still truthy
 	const nonvanillaFile = nonvanillaTextures.length
