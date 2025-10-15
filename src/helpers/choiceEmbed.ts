@@ -42,7 +42,7 @@ export async function generalChoiceEmbed(
 
 		const menu = new StringSelectMenuBuilder()
 			.setCustomId(`${menuID}_${currentRow}`)
-			.setPlaceholder("Select an option!")
+			.setPlaceholder("Select an option…")
 			.addOptions(options);
 
 		const row = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(menu);
