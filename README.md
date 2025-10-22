@@ -1,11 +1,11 @@
 <img src="https://database.faithfulpack.net/images/branding/logos/transparent/hd/complibot_logo.png?w=256" alt="CompliBot Logo" align="right">
 <div align="center">
-  <h1>CompliBot</h1>
+  <h1>CompliBot Commands</h1>
   <h3>The official bot for the Faithful Discord servers.</h3>
 
-  ![RepoSize](https://img.shields.io/github/repo-size/Faithful-Resource-Pack/CompliBot)
-  ![Issues](https://img.shields.io/github/issues/Faithful-Resource-Pack/CompliBot)
-  ![PullRequests](https://img.shields.io/github/issues-pr/Faithful-Resource-Pack/CompliBot)
+  ![RepoSize](https://img.shields.io/github/repo-size/Faithful-Resource-Pack/CompliBot-Commands)
+  ![Issues](https://img.shields.io/github/issues/Faithful-Resource-Pack/CompliBot-Commands)
+  ![PullRequests](https://img.shields.io/github/issues-pr/Faithful-Resource-Pack/CompliBot-Commands)
   [![Crowdin](https://badges.crowdin.net/e/656f9fc7c628d23c87426953b11cf26c/localized.svg)](https://faithful.crowdin.com/complibot)
 </div>
 
@@ -13,7 +13,7 @@
 
 ## Found a bug or want to suggest something?
 
-Please submit it using our [bug tracker](https://github.com/Faithful-Resource-Pack/CompliBot/issues/new/choose) or by using the `/feedback` form on our bot.
+Please submit it using our [bug tracker](https://github.com/Faithful-Resource-Pack/CompliBot-Commands/issues/new/choose) or by using the `/feedback` form on our bot.
 
 ---
 

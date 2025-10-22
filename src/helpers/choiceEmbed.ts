@@ -5,7 +5,7 @@ import {
 	StringSelectMenuBuilder,
 } from "discord.js";
 import type { Texture } from "@interfaces/database";
-import versionSorter from "@utility/versionSorter";
+import versionRange from "@utility/versionRange";
 import axios from "axios";
 import type { AnyInteraction } from "@interfaces/interactions";
 
@@ -73,16 +73,12 @@ export async function textureChoiceEmbed(
 	results: Texture[],
 	...values: string[]
 ) {
-	const mappedResults: SelectMenuComponentOptionData[] = [];
-	for (const result of results) {
-		mappedResults.push({
-			label: `[#${result.id}] (${result.paths[0].versions.sort(versionSorter).at(-1)}) ${
-				result.name
-			}`,
-			description: result.paths[0].name,
-			value: `${result.id}__${values.join("__")}`,
-		});
-	}
+	const mappedResults = results.map<SelectMenuComponentOptionData>(({ id, name, paths }) => ({
+		// usually the first path is the most important
+		label: `[#${id}] (${versionRange(paths[0].versions)}) ${name}`,
+		description: paths[0].name,
+		value: `${id}__${values.join("__")}`,
+	}));
 
 	return generalChoiceEmbed(interaction, menuID, mappedResults);
 }
