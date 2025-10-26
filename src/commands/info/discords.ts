@@ -1,7 +1,7 @@
 import type { SlashCommand } from "@interfaces/interactions";
 import { SlashCommandBuilder } from "discord.js";
 import axios from "axios";
-import { FaithfulGuild } from "client/client";
+import { FaithfulGuild } from "@client";
 import { toTitleCase } from "@utility/methods";
 
 export const command: SlashCommand = {

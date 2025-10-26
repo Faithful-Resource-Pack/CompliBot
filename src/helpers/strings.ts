@@ -1,5 +1,5 @@
-import commands from "@/lang/en-US/commands.json";
-import errors from "@/lang/en-US/errors.json";
+import commands from "@lang/en-US/commands.json";
+import errors from "@lang/en-US/errors.json";
 import { mergeDeep } from "@utility/methods";
 
 export const JSONFiles = ["commands", "errors"];

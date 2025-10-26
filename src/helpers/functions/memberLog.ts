@@ -1,6 +1,6 @@
 import { Client } from "@client";
 import axios from "axios";
-import { FaithfulGuild } from "client/client";
+import { FaithfulGuild } from "@client";
 import { ChannelType } from "discord.js";
 
 export default async function memberLog(client: Client, guildID: string) {
@@ -11,7 +11,7 @@ export default async function memberLog(client: Client, guildID: string) {
 	const server = Object.values(guilds).find((el) => el.id === guildID);
 
 	// server doesn't have channel for member logging
-	if (!server?.member_log) return;
+	if (!server || !server.member_log) return;
 
 	const channel = client.channels.cache.get(server.member_log);
 	const count = client.guilds.cache.get(server.id).memberCount;

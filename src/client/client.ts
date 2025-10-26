@@ -25,7 +25,7 @@ import { err, info, success } from "@helpers/logger";
 
 import { join } from "path";
 import chalk from "chalk";
-import startClient from "index";
+import startClient from "@index";
 import walkSync from "@helpers/walkSync";
 import axios from "axios";
 

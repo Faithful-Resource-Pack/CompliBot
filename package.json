@@ -18,11 +18,11 @@
         "typescript-eslint": "^8.46.2"
     },
     "dependencies": {
-        "@napi-rs/canvas": "^0.1.80",
+        "@napi-rs/canvas": "^0.1.81",
         "@octokit/rest": "^22.0.0",
         "axios": "^1.12.2",
         "chalk": "^5.6.2",
-        "discord.js": "^14.23.2",
+        "discord.js": "^14.24.0",
         "gif-encoder-2": "^1.0.5",
         "ts-node": "^10.9.2",
         "tsconfig-paths": "^4.2.0"

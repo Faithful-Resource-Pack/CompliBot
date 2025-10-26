@@ -1,33 +1,21 @@
 {
-	"ts-node": {
-		"require": [ "tsconfig-paths/register" ]
-	},
-	"compilerOptions": {
-		"typeRoots": [ "./node_modules/@types"],
-		"lib": ["ESNext"],
-		"module": "commonjs",
-		"moduleResolution": "node",
-		"target": "ESNEXT",
-		"esModuleInterop": true,
-		"experimentalDecorators": true,
-		"emitDecoratorMetadata": true,
-		"allowSyntheticDefaultImports": true,
-		"declaration": false,
-		"allowJs": true,
-		"noEmit": true,
-		"resolveJsonModule": true,
-		"baseUrl": "src",
-		"paths": {
-			"@/*": ["../*"],
-			"@client": ["client"],
-			"@functions/*": ["helpers/functions/*"],
-			"@utility/*": ["helpers/utility/*"],
-			"@helpers/*": ["helpers/*"],
-			"@interfaces/*": ["interfaces/*"],
-			"@json/*": ["../json/*"],
-			"@images/*": ["helpers/images/*"]
-		}
-	},
 	"exclude": ["node_modules"],
-	"include": ["src"]
+	"compilerOptions": {
+		"resolveJsonModule": true,
+		"esModuleInterop": true,
+		"module": "commonjs",
+		"target": "ESNEXT",
+		"noEmit": true,
+		"paths": {
+			"@client": ["./src/client"],
+			"@functions/*": ["./src/helpers/functions/*"],
+			"@utility/*": ["./src/helpers/utility/*"],
+			"@helpers/*": ["./src/helpers/*"],
+			"@interfaces/*": ["./src/interfaces/*"],
+			"@lang/*": ["./lang/*"],
+			"@json/*": ["./json/*"],
+			"@images/*": ["./src/helpers/images/*"],
+			"@index": ["./src/index.ts"]
+		}
+	}
 }

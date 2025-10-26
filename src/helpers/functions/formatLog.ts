@@ -1,4 +1,4 @@
-import { Log } from "client/client";
+import { Log } from "@client";
 
 /**
  * Format the log type into a human-readable format
