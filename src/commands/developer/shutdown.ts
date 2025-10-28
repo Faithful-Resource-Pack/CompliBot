@@ -29,7 +29,7 @@ export const command: SlashCommand = {
 				.then(({ resource }) => resource.message.deleteButton());
 		}
 		await interaction.reply({
-			embeds: [new EmbedBuilder().setTitle("Shutting down...")],
+			embeds: [new EmbedBuilder().setTitle("Shutting down…")],
 		});
 		return process.exit();
 	},

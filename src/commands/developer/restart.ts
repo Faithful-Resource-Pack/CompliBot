@@ -10,7 +10,7 @@ export const command: SlashCommand = {
 	async execute(interaction) {
 		if (!interaction.hasPermission("dev")) return;
 
-		await interaction.reply({ content: "Restarting...", flags: MessageFlags.Ephemeral });
+		await interaction.reply({ content: "Restarting…", flags: MessageFlags.Ephemeral });
 		await interaction.client.restart(interaction);
 	},
 };

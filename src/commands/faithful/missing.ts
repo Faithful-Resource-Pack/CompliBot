@@ -78,8 +78,8 @@ export const command: SlashCommand = {
 		).data;
 
 		const loadingEmbed = new EmbedBuilder()
-			.setTitle("Searching for missing textures...")
-			.setDescription("This can take some time, please wait...")
+			.setTitle("Searching for missing textures…")
+			.setDescription("This can take some time, please wait…")
 			.setThumbnail(loading)
 			.addFields({ name: "Steps", value: "\u200b" });
 
@@ -90,9 +90,9 @@ export const command: SlashCommand = {
 
 		const stepCallback = async (step: string) => {
 			// when in the computing function this function is called when a step is being executed
-			if (step === "") steps = ["Next one..."];
+			if (step === "") steps = ["Next one…"];
 			else {
-				if (steps.length === 1 && steps[0] === "Next one...") steps = [];
+				if (steps.length === 1 && steps[0] === "Next one…") steps = [];
 				steps.push(step);
 			}
 
