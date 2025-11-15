@@ -419,7 +419,19 @@
         "ui/glyph_all_pack_small.png",
         "ui/subscription_MarketplacePass.png",
         "ui/subscription_Realms.png",
+        "ui/csb_animated_banner_default.png",
+        "ui/csb_animated_banner_hover.png",
+        "ui/minecraft_marketplace_title.png",
+        "ui/store_progress_screen_background.png",
+        "ui/ping_none.png",
+        "ui/ping_low.png",
+        "ui/ping_medium.png",
+        "ui/ping_high.png",
+        "ui/union.png",
         "ui/realms_core_logo.png",
-        "ui/realms_plus_logo.png"
+        "ui/realms_plus_logo.png",
+        "ui/mpp_banner_logo_portal.png",
+        "ui/mpp_banner_logo_slim.png"
     ]
 }
+
