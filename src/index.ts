@@ -8,7 +8,7 @@ export default function startClient(firstStart = true, interaction?: AnyInteract
 	const client = new Client(
 		{
 			tokens,
-			// remove this line to die instantly ~JackDotJS 2021
+			// remove this line to die instantly ~sharkaccino, 2021
 			allowedMentions: { parse: ["users", "roles"], repliedUser: false },
 			partials: [
 				Partials.Channel,

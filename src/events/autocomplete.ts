@@ -13,7 +13,7 @@ export default {
 				? client.versions.filter((v) => v.startsWith(focusedOption.value))
 				: client.versions;
 
-			const mapped = filtered
+			const mapped = Array.from(filtered)
 				.sort(versionSorter)
 				.reverse() // newest at top
 				.map((version) => ({ name: version, value: version }));
