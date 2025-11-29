@@ -16,6 +16,8 @@ import { textureButtons } from "@utility/buttons";
 import { Image, loadImage } from "@napi-rs/canvas";
 import type { AnyInteraction } from "@interfaces/interactions";
 
+export const MAX_DISPLAYED_AUTHORS = 9; // + 1 for gallery link
+
 /**
  * Create a full texture embed with provided information
  * @author Juknum, Evorp, RobertR11
@@ -67,13 +69,13 @@ export async function getTexture(
 		return { embeds: [errorEmbed], components: [] };
 	}
 
+	const galleryURL = `https://webapp.faithfulpack.net/gallery/${texture.uses[0].edition}/${pack}/${version}/all/?show=${texture.id}`;
+
 	embed
-		.setURL(
-			`https://webapp.faithfulpack.net/gallery/${texture.uses[0].edition}/${pack}/${version}/all/?show=${texture.id}`,
-		)
-		.addFields({ name: "Resolution", value: `${image.width}×${image.height}` })
+		.setURL(galleryURL)
 		.setThumbnail(textureURL)
-		.setImage(`attachment://${isAnimated ? "animated.gif" : "magnified.png"}`);
+		.setImage(`attachment://${isAnimated ? "animated.gif" : "magnified.png"}`)
+		.addFields({ name: "Resolution", value: `${image.width}×${image.height}` });
 
 	const lastContribution = texture.contributions
 		.filter((contribution) => contribution.pack === pack)
@@ -91,18 +93,29 @@ export async function getTexture(
 			return contributionJSON.find((user) => user.id == authorId)?.username ?? "Anonymous";
 		});
 
-		const displayContribution = `<t:${Math.trunc(lastContribution.date / 1000)}:d> – ${authors.join(
-			", ",
-		)}`;
+		const displayedAuthors = authors.slice(0, MAX_DISPLAYED_AUTHORS);
+		let displayedContribution =
+			displayedAuthors.length === 1
+				? // don't add the bullet point if there's only one
+					displayedAuthors[0]
+				: displayedAuthors.map((a) => `- ${a}`).join("\n");
+		if (authors.length > displayedAuthors.length) {
+			const missingAuthors = authors.length - displayedAuthors.length;
+			displayedContribution += `\n- *[See ${missingAuthors} more authors on the gallery](${galleryURL})*`;
+		}
 
+		const formattedDate = `<t:${Math.trunc(lastContribution.date / 1000)}:d>`;
 		embed.addFields({
-			name: authors.length == 1 ? "Latest Author" : "Latest Authors",
-			value: displayContribution,
+			name: `Contributed on ${formattedDate} by`,
+			value: displayedContribution,
 		});
 
 		/** @todo remove this when classic faithful credits are reasonably finished */
-		if (["classic_faithful_32x_jappa"].includes(pack))
-			embed.setAuthor({ name: "Note: This pack may have misleading or outdated credits." });
+		if (
+			["classic_faithful_32x_jappa"].includes(pack) &&
+			new Date(lastContribution.date).getFullYear() < 2024
+		)
+			embed.setAuthor({ name: "Note: This contribution may be outdated or misleading." });
 	}
 
 	embed.addFields(addPathsToEmbed(texture));
