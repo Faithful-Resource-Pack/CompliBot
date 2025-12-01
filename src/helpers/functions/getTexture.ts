@@ -34,25 +34,28 @@ export async function getTexture(
 	version = "latest",
 ) {
 	const apiUrl = interaction.client.tokens.apiUrl;
+	const textureURL = `${apiUrl}textures/${texture.id}/url/${pack}/${version}`;
+	const galleryURL = `https://webapp.faithfulpack.net/gallery/${texture.uses[0].edition}/${pack}/${version}/all/?show=${texture.id}`;
 	const isAnimated = texture.paths.some((p) => p.mcmeta === true);
+
+	// need to get pack information early if the image doesn't exist
 	const packData = (await axios.get<Pack>(`${apiUrl}packs/${pack}`)).data;
 
 	const files: AttachmentBuilder[] = [];
-	const embed = new EmbedBuilder().setTitle(`[#${texture.id}] ${texture.name}`).setFooter({
-		text: packData.name,
-		iconURL: packData.logo,
-	});
+	const embed = new EmbedBuilder()
+		.setTitle(`[#${texture.id}] ${texture.name}`)
+		.setURL(galleryURL)
+		.setFooter({
+			text: packData.name,
+			iconURL: packData.logo,
+		});
 
 	if (version !== "latest") embed.data.title += ` (${version})`;
 
-	const textureURL: string = await axios
-		.get(`${apiUrl}textures/${texture.id}/url/${pack}/${version}`)
-		.then((res) => res.request.res.responseUrl)
-		.catch(() => "");
-
-	// test if url isn't a 404
+	// save image data for magnifying later
 	let image: Image;
 	try {
+		// check if 404
 		image = await loadImage(textureURL);
 	} catch {
 		const errorEmbed = new EmbedBuilder()
@@ -69,12 +72,10 @@ export async function getTexture(
 		return { embeds: [errorEmbed], components: [] };
 	}
 
-	const galleryURL = `https://webapp.faithfulpack.net/gallery/${texture.uses[0].edition}/${pack}/${version}/all/?show=${texture.id}`;
-
 	embed
-		.setURL(galleryURL)
 		.setThumbnail(textureURL)
 		.setImage(`attachment://${isAnimated ? "animated.gif" : "magnified.png"}`)
+		// we have the loaded image already so can just reuse it for width/height
 		.addFields({ name: "Resolution", value: `${image.width}×${image.height}` });
 
 	const lastContribution = texture.contributions
@@ -82,32 +83,28 @@ export async function getTexture(
 		.sort((a, b) => (a.date > b.date ? -1 : 1))?.[0];
 
 	if (lastContribution) {
-		// surprisingly faster to fetch all users and filter on the client than doing a bunch of requests
-		const contributionJSON = (await axios.get<Contributor[]>(`${apiUrl}contributions/authors`))
-			.data;
+		const displayedAuthors = lastContribution.authors.slice(0, MAX_DISPLAYED_AUTHORS);
+		const authorsOutsideServer = displayedAuthors.filter(
+			(id) => interaction.guild.members.cache.get(id) === undefined,
+		);
 
-		const authors = lastContribution.authors.map((authorId) => {
-			if (interaction.guild.members.cache.get(authorId)) return `<@${authorId}>`;
+		let authors: string[];
+		if (authorsOutsideServer.length) {
+			const contributionJSON = (
+				await axios.get<Contributor[]>(`${apiUrl}users/${authorsOutsideServer.join(",")}`)
+			).data;
 
-			// fetch username if not in server
-			return contributionJSON.find((user) => user.id == authorId)?.username ?? "Anonymous";
-		});
-
-		const displayedAuthors = authors.slice(0, MAX_DISPLAYED_AUTHORS);
-		let displayedContribution =
-			displayedAuthors.length === 1
-				? // don't add the bullet point if there's only one
-					displayedAuthors[0]
-				: displayedAuthors.map((a) => `- ${a}`).join("\n");
-		if (authors.length > displayedAuthors.length) {
-			const missingAuthors = authors.length - displayedAuthors.length;
-			displayedContribution += `\n- *[See ${missingAuthors} more authors on the gallery](${galleryURL})*`;
-		}
+			authors = displayedAuthors.map((id) =>
+				interaction.guild.members.cache.get(id)
+					? `<@${id}>`
+					: (contributionJSON.find((user) => user.id == id)?.username ?? "Anonymous"),
+			);
+		} else authors = displayedAuthors.map((id) => `<@${id}>`);
 
 		const formattedDate = `<t:${Math.trunc(lastContribution.date / 1000)}:d>`;
 		embed.addFields({
 			name: `Contributed on ${formattedDate} by`,
-			value: displayedContribution,
+			value: formatTextureAuthors(authors, galleryURL),
 		});
 
 		/** @todo remove this when classic faithful credits are reasonably finished */
@@ -118,10 +115,11 @@ export async function getTexture(
 			embed.setAuthor({ name: "Note: This contribution may be outdated or misleading." });
 	}
 
+	// add path fields at bottom
 	embed.addFields(addPathsToEmbed(texture));
 
 	if (isAnimated) {
-		const { magnified, factor } = await magnify(textureURL, { isAnimation: true });
+		const { magnified, factor } = await magnify(image, { isAnimation: true });
 
 		const { mcmeta } = texture;
 		// only add mcmeta field if there's special properties there
@@ -151,9 +149,29 @@ export async function getTexture(
 		}
 
 		files.push(await animateToAttachment(magnified, mcmeta));
-	} else files.push(await magnifyToAttachment(textureURL));
+	} else files.push(await magnifyToAttachment(image));
 
 	return { embeds: [embed], files, components: [textureButtons] };
+}
+
+/**
+ * Format texture authors into a markdown list
+ * @author Evorp
+ * @param authors authors to format
+ * @param galleryURL for if there's overflow
+ * @returns formatted string
+ */
+export function formatTextureAuthors(authors: string[], galleryURL: string) {
+	// don't add the bullet point if there's only one
+	const displayedContribution =
+		authors.length === 1 ? authors[0] : authors.map((a) => `- ${a}`).join("\n");
+
+	const missingAuthors = authors.length - authors.length;
+	if (missingAuthors > 0) {
+		const notice = `See ${missingAuthors} more ${missingAuthors === 1 ? "author" : "authors"} on the gallery`;
+		return `${displayedContribution}\n[*${notice}*](${galleryURL})`;
+	}
+	return displayedContribution;
 }
 
 /**
