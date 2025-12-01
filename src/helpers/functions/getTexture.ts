@@ -83,28 +83,10 @@ export async function getTexture(
 		.sort((a, b) => (a.date > b.date ? -1 : 1))?.[0];
 
 	if (lastContribution) {
-		const displayedAuthors = lastContribution.authors.slice(0, MAX_DISPLAYED_AUTHORS);
-		const authorsOutsideServer = displayedAuthors.filter(
-			(id) => interaction.guild.members.cache.get(id) === undefined,
-		);
-
-		let authors: string[];
-		if (authorsOutsideServer.length) {
-			const contributionJSON = (
-				await axios.get<Contributor[]>(`${apiUrl}users/${authorsOutsideServer.join(",")}`)
-			).data;
-
-			authors = displayedAuthors.map((id) =>
-				interaction.guild.members.cache.get(id)
-					? `<@${id}>`
-					: (contributionJSON.find((user) => user.id == id)?.username ?? "Anonymous"),
-			);
-		} else authors = displayedAuthors.map((id) => `<@${id}>`);
-
 		const formattedDate = `<t:${Math.trunc(lastContribution.date / 1000)}:d>`;
 		embed.addFields({
 			name: `Contributed on ${formattedDate} by`,
-			value: formatTextureAuthors(authors, galleryURL),
+			value: await formatTextureAuthors(interaction, lastContribution.authors, galleryURL),
 		});
 
 		/** @todo remove this when classic faithful credits are reasonably finished */
@@ -155,18 +137,39 @@ export async function getTexture(
 }
 
 /**
- * Format texture authors into a markdown list
+ * Format texture authors into a list
  * @author Evorp
+ * @param interaction original interaction
  * @param authors authors to format
  * @param galleryURL for if there's overflow
  * @returns formatted string
  */
-export function formatTextureAuthors(authors: string[], galleryURL: string) {
-	// don't add the bullet point if there's only one
-	const displayedContribution =
-		authors.length === 1 ? authors[0] : authors.map((a) => `- ${a}`).join("\n");
+export async function formatTextureAuthors(
+	interaction: AnyInteraction,
+	authors: string[],
+	galleryURL: string,
+) {
+	const displayedAuthors = authors.slice(0, MAX_DISPLAYED_AUTHORS);
+	const authorsOutsideServer = displayedAuthors.filter(
+		(id) => interaction.guild.members.cache.get(id) === undefined,
+	);
 
-	const missingAuthors = authors.length - authors.length;
+	let formattedAuthors: string[];
+	if (authorsOutsideServer.length) {
+		const contributors = (
+			await axios.get<Contributor[]>(
+				`${interaction.client.tokens.apiUrl}users/${authorsOutsideServer.join(",")}`,
+			)
+		).data;
+
+		formattedAuthors = displayedAuthors.map((id) => {
+			if (interaction.guild.members.cache.get(id)) return `<@${id}>`;
+			return contributors.find((user) => user.id == id)?.username ?? "Anonymous";
+		});
+	} else formattedAuthors = displayedAuthors.map((id) => `<@${id}>`);
+
+	const displayedContribution = formattedAuthors.join("\n");
+	const missingAuthors = authors.length - displayedAuthors.length;
 	if (missingAuthors > 0) {
 		const notice = `See ${missingAuthors} more ${missingAuthors === 1 ? "author" : "authors"} on the gallery`;
 		return `${displayedContribution}\n[*${notice}*](${galleryURL})`;
