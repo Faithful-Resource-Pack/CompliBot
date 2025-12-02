@@ -156,11 +156,13 @@ export async function formatTextureAuthors(
 
 	let formattedAuthors: string[];
 	if (authorsOutsideServer.length) {
-		const contributors = (
-			await axios.get<Contributor[]>(
+		const rawContributors = (
+			await axios.get<Contributor[] | Contributor>(
 				`${interaction.client.tokens.apiUrl}users/${authorsOutsideServer.join(",")}`,
 			)
 		).data;
+
+		const contributors = Array.isArray(rawContributors) ? rawContributors : [rawContributors];
 
 		formattedAuthors = displayedAuthors.map((id) => {
 			if (interaction.guild.members.cache.get(id)) return `<@${id}>`;
