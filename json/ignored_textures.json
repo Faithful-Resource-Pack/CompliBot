@@ -3,6 +3,7 @@
     "modded": [
         "assets/fabric/",
         "assets/forge/",
+        "assets/neoforge/",
         "assets/fml/",
         "assets/modmenu/"
     ],
