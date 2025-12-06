@@ -171,13 +171,19 @@
     {
         "question": "Items appear too big when using Bedrock Edition! What can I do?",
         "answer": "This is a vanilla bug that's been in Bedrock for over four years ([MCPE-120618](https://bugs.mojang.com/browse/MCPE-120618)) which affects any pack with textures larger than default. A workaround has been found for most items, which is already included in all Faithful packs (any items that are still oversized in Faithful are likely unfixable), but for other packs there's a [standalone fix made by MultiPixel](https://fxtwitter.com/MultiPixelHD/status/1786301423011119359) available.",
-        "keywords": ["big items", "bugged items", "oversized items"],
+        "keywords": ["big items", "bugged items", "oversized items", "bedrock items"],
         "categories": ["issues"]
     },
     {
         "question": "Items have rendering issues in the player's hand. What can I do?",
         "answer": "Chances are that you have the \"Item Stitching Fix\" Vanilla Tweaks pack enabled. This is incompatible with all Faithful packs since it manually defines custom item models based on the vanilla textures, and hence won't work with any custom resource pack. If you want the fix to work for all packs, you can use [this mod](https://modrinth.com/mod/modelfix) instead.",
         "keywords": ["item edges", "item stitching fix"],
+        "categories": ["issues"]
+    },
+    {
+        "question": "Why do my GUI and items look distorted in-game?",
+        "answer": "This is likely caused by an incompatible GUI scaling factor. Due to the way Minecraft renders menus, you must use a GUI scale divisible by two for 32x packs and a GUI scale divisible by four for 64x packs. There is unfortunately no other way to prevent distortion besides physically adjusting the scale.",
+        "keywords": ["distortion", "distorted", "gui scale", "gui scaling"],
         "categories": ["issues"]
     },
     {
