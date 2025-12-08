@@ -34,12 +34,18 @@ export async function getTexture(
 	version = "latest",
 ) {
 	const apiUrl = interaction.client.tokens.apiUrl;
-	const textureURL = `${apiUrl}textures/${texture.id}/url/${pack}/${version}`;
 	const galleryURL = `https://webapp.faithfulpack.net/gallery/${texture.uses[0].edition}/${pack}/${version}/all/?show=${texture.id}`;
 	const isAnimated = texture.paths.some((p) => p.mcmeta === true);
 
-	// need to get pack information early if the image doesn't exist
-	const packData = (await axios.get<Pack>(`${apiUrl}packs/${pack}`)).data;
+	const [textureURL, packData] = await Promise.all([
+		// discord hates image redirects in thumbnails
+		axios
+			.get(`${apiUrl}textures/${texture.id}/url/${pack}/${version}`)
+			.then((res): string => res.request.res.responseUrl)
+			.catch(() => ""),
+		// need to get pack information early if the image doesn't exist
+		axios.get<Pack>(`${apiUrl}packs/${pack}`).then((res) => res.data),
+	]);
 
 	const files: AttachmentBuilder[] = [];
 	const embed = new EmbedBuilder()
