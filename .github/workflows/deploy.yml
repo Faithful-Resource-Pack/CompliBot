@@ -13,9 +13,9 @@ jobs:
               uses: appleboy/ssh-action@master
               with:
                   host: ${{ secrets.VPS_HOST_IP }}
-                  USERNAME: ${{ secrets.USERNAME }}
                   PORT: ${{ secrets.VPS_PORT }}
-                  KEY: ${{ secrets.VPS_SSH_KEY }}
+                  USERNAME: ${{ secrets.VPS_BOT_USERNAME }}
+                  KEY: ${{ secrets.VPS_BOT_SSH_KEY }}
                   script: |
                       cd ./CompliBot
                       git checkout main
