@@ -12,10 +12,10 @@ jobs:
             - name: Executing remote command
               uses: appleboy/ssh-action@master
               with:
-                  host: ${{ secrets.HOST }}
+                  host: ${{ secrets.VPS_HOST_IP }}
                   USERNAME: ${{ secrets.USERNAME }}
-                  PORT: ${{ secrets.PORT }}
-                  KEY: ${{ secrets.SSH }}
+                  PORT: ${{ secrets.VPS_PORT }}
+                  KEY: ${{ secrets.VPS_SSH_KEY }}
                   script: |
                       cd ./CompliBot
                       git checkout main
