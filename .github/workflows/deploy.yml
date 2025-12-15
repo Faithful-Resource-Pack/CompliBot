@@ -17,10 +17,10 @@ jobs:
                   USERNAME: ${{ secrets.VPS_BOT_USERNAME }}
                   KEY: ${{ secrets.VPS_BOT_SSH_KEY }}
                   script: |
-                      cd ./CompliBot
+                      cd ./CompliBot-Commands
                       git checkout main
                       git stash
                       git pull
                       pnpm install
-                      pm2 delete "complibot"
-                      pm2 start "pnpm start" --name "complibot"
+                      pm2 delete "complibot-commands"
+                      pm2 start "pnpm start" --name "complibot-commands"
