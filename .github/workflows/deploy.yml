@@ -1,26 +1,25 @@
-name: Deploy
+name: Deploy CompliBot Commands
 
 on:
-    push:
-        branches: [main]
-    workflow_dispatch:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
-    build:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Executing remote command
-              uses: appleboy/ssh-action@master
-              with:
-                  host: ${{ secrets.VPS_HOST_IP }}
-                  PORT: ${{ secrets.VPS_PORT }}
-                  USERNAME: ${{ secrets.VPS_BOT_USERNAME }}
-                  KEY: ${{ secrets.VPS_BOT_SSH_KEY }}
-                  script: |
-                      cd ./CompliBot-Commands
-                      git checkout main
-                      git stash
-                      git pull
-                      pnpm install
-                      pm2 delete "complibot-commands"
-                      pm2 start "pnpm start" --name "complibot-commands"
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Executing remote command
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.VPS_HOST_IP }}
+        USERNAME: ${{ secrets.VPS_BOT_USERNAME }}
+        PORT: ${{ secrets.VPS_SSH_PORT }}
+        KEY: ${{ secrets.VPS_BOT_SSH_KEY }}
+        script: |
+          cd ./CompliBot-Commands
+          git stash
+          git pull
+          pnpm install
+          pm2 delete "complibot-commands"
+          pm2 start "pnpm start" --name "complibot-commands"
