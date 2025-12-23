@@ -39,6 +39,12 @@ export const command: SlashCommand = {
 						{ name: "Resource Pack", value: "pack" },
 					)
 					.setRequired(false),
+			)
+			.addBooleanOption((option) =>
+				option
+					.setName("current")
+					.setDescription("Only show current contributions (default true)")
+					.setRequired(false),
 			);
 	},
 	async execute(interaction) {
@@ -48,8 +54,9 @@ export const command: SlashCommand = {
 		const user = interaction.options.getUser("user", false) ?? interaction.user;
 		const pack = interaction.options.getString("pack", false);
 		const sort = interaction.options.getString("sort", false) ?? "dateDesc";
+		const current = interaction.options.getBoolean("current", false) ?? true;
 
-		const response = await getContributions(interaction.client, user, pack, sort);
+		const response = await getContributions(interaction.client, user, pack, current, sort);
 		if (!response) {
 			interaction.ephemeralReply({
 				embeds: [
@@ -75,6 +82,7 @@ export const command: SlashCommand = {
 
 		// nested ternaries were getting really ugly here
 		let embedTitle = `${user.displayName} has ${response.results.length} `;
+		embedTitle += current ? "current " : "total ";
 		embedTitle += response.results.length === 1 ? "contribution" : "contributions";
 		if (pack) embedTitle += ` in ${formatPack(pack).name}`;
 		embedTitle += "!";

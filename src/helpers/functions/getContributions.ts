@@ -31,6 +31,16 @@ const sortMethods: Record<
 	pack: (a, b) => PACK_ORDER.indexOf(a.pack) - PACK_ORDER.indexOf(b.pack),
 };
 
+const filterLatestContributions = (contributions: Contribution[]) =>
+	Object.values(
+		contributions.reduce<Record<string, Contribution>>((acc, cur) => {
+			const old = acc[cur.texture];
+			// new date wins
+			if (!old || old.date < cur.date) acc[cur.texture] = cur;
+			return acc;
+		}, {}),
+	);
+
 /**
  * Get contributions for a given user and pack
  * @author Evorp
@@ -42,25 +52,29 @@ const sortMethods: Record<
 export default async function getContributions(
 	client: Client,
 	user: User,
-	pack?: string,
-	sort?: string,
+	pack: string | null,
+	current: boolean,
+	sort: string,
 ): Promise<ContributionResult> {
 	let contributionData: Contribution[] = [];
 	try {
-		contributionData = (
-			await axios.get<Contribution[]>(
-				`${client.tokens.apiUrl}contributions/search/${user.id}/${pack || "all"}`,
-			)
-		).data;
+		contributionData = Object.values(
+			(await axios.get<Contribution[]>(`${client.tokens.apiUrl}contributions/raw`)).data,
+		);
 	} catch {
 		return;
 	}
+
+	const packContribs = pack ? contributionData.filter((c) => c.pack === pack) : contributionData;
+	const withUser = current
+		? filterLatestContributions(packContribs).filter((c) => c.authors.includes(user.id))
+		: packContribs.filter((contrib) => contrib.authors.includes(user.id));
 
 	const textures = (await axios.get<Record<string, Texture>>(`${client.tokens.apiUrl}textures/raw`))
 		.data;
 
 	// merge the two objects by id (faster than fetching individually)
-	const results: (Contribution & Texture)[] = contributionData.map((contribution) => ({
+	const results: (Contribution & Texture)[] = withUser.map((contribution) => ({
 		...contribution,
 		...textures[contribution.texture],
 	}));
@@ -73,8 +87,9 @@ export default async function getContributions(
 				const packName = formatPack(data.pack).name;
 				packCount[packName] ||= 0;
 				++packCount[packName];
-				if (pack) return `[#${data.texture}] ${data.name}`;
-				return `${packName}: [#${data.texture}] ${data.name}`;
+				return pack
+					? `[#${data.texture}] ${data.name}`
+					: `${packName}: [#${data.texture}] ${data.name}`;
 			})
 			// gives empty string if no results
 			.join("\n"),
