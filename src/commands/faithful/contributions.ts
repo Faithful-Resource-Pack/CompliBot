@@ -43,7 +43,7 @@ export const command: SlashCommand = {
 			.addBooleanOption((option) =>
 				option
 					.setName("current")
-					.setDescription("Only show current contributions (default true)")
+					.setDescription("Only show current contributions (default is true)")
 					.setRequired(false),
 			);
 	},

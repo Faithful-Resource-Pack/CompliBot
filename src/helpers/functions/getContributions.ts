@@ -31,7 +31,7 @@ const sortMethods: Record<
 	pack: (a, b) => PACK_ORDER.indexOf(a.pack) - PACK_ORDER.indexOf(b.pack),
 };
 
-const filterLatestContributions = (contributions: Contribution[]) =>
+const deduplicateContributions = (contributions: Contribution[]) =>
 	Object.values(
 		contributions.reduce<Record<string, Contribution>>((acc, cur) => {
 			const old = acc[cur.texture];
@@ -39,6 +39,11 @@ const filterLatestContributions = (contributions: Contribution[]) =>
 			if (!old || old.date < cur.date) acc[cur.texture] = cur;
 			return acc;
 		}, {}),
+	);
+
+const filterLatestContributions = (contributions: Contribution[]) =>
+	Object.values(Object.groupBy(contributions, ({ pack }) => pack)).flatMap(
+		deduplicateContributions,
 	);
 
 /**
@@ -65,10 +70,9 @@ export default async function getContributions(
 		return;
 	}
 
-	const packContribs = pack ? contributionData.filter((c) => c.pack === pack) : contributionData;
-	const withUser = current
-		? filterLatestContributions(packContribs).filter((c) => c.authors.includes(user.id))
-		: packContribs.filter((contrib) => contrib.authors.includes(user.id));
+	const baseData = current ? filterLatestContributions(contributionData) : contributionData;
+	const withPack = pack ? baseData.filter((c) => c.pack === pack) : baseData;
+	const withUser = withPack.filter((contrib) => contrib.authors.includes(user.id));
 
 	const textures = (await axios.get<Record<string, Texture>>(`${client.tokens.apiUrl}textures/raw`))
 		.data;
