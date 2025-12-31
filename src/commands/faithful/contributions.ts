@@ -58,7 +58,7 @@ export const command: SlashCommand = {
 
 		const response = await getContributions(interaction.client, user, pack, current, sort);
 		if (!response) {
-			interaction.ephemeralReply({
+			return interaction.ephemeralReply({
 				embeds: [
 					new EmbedBuilder()
 						.setTitle(

@@ -7,7 +7,7 @@ import { User } from "discord.js";
 export interface ContributionResult {
 	results: (Contribution & Texture)[];
 	count: string;
-	file?: Buffer;
+	file: Buffer;
 }
 
 // schema for sorting textures
@@ -31,21 +31,6 @@ const sortMethods: Record<
 	pack: (a, b) => PACK_ORDER.indexOf(a.pack) - PACK_ORDER.indexOf(b.pack),
 };
 
-const deduplicateContributions = (contributions: Contribution[]) =>
-	Object.values(
-		contributions.reduce<Record<string, Contribution>>((acc, cur) => {
-			const old = acc[cur.texture];
-			// new date wins
-			if (!old || old.date < cur.date) acc[cur.texture] = cur;
-			return acc;
-		}, {}),
-	);
-
-const filterLatestContributions = (contributions: Contribution[]) =>
-	Object.values(Object.groupBy(contributions, ({ pack }) => pack)).flatMap(
-		deduplicateContributions,
-	);
-
 /**
  * Get contributions for a given user and pack
  * @author Evorp
@@ -60,18 +45,21 @@ export default async function getContributions(
 	pack: string | null,
 	current: boolean,
 	sort: string,
-): Promise<ContributionResult> {
+): Promise<ContributionResult | undefined> {
 	let contributionData: Contribution[] = [];
 	try {
 		contributionData = Object.values(
-			(await axios.get<Contribution[]>(`${client.tokens.apiUrl}contributions/raw`)).data,
+			(
+				await axios.get<Contribution[]>(
+					`${client.tokens.apiUrl}contributions/${current ? "current" : "raw"}`,
+				)
+			).data,
 		);
 	} catch {
 		return;
 	}
 
-	const baseData = current ? filterLatestContributions(contributionData) : contributionData;
-	const withPack = pack ? baseData.filter((c) => c.pack === pack) : baseData;
+	const withPack = pack ? contributionData.filter((c) => c.pack === pack) : contributionData;
 	const withUser = withPack.filter((contrib) => contrib.authors.includes(user.id));
 
 	const textures = (await axios.get<Record<string, Texture>>(`${client.tokens.apiUrl}textures/raw`))
@@ -86,7 +74,7 @@ export default async function getContributions(
 	const packCount: Record<string, number> = {};
 	const file = Buffer.from(
 		results
-			.sort(sortMethods[sort]) // most recent on top
+			.sort(sortMethods[sort])
 			.map((data) => {
 				const packName = formatPack(data.pack).name;
 				packCount[packName] ||= 0;
@@ -95,7 +83,6 @@ export default async function getContributions(
 					? `[#${data.texture}] ${data.name}`
 					: `${packName}: [#${data.texture}] ${data.name}`;
 			})
-			// gives empty string if no results
 			.join("\n"),
 	);
 
