@@ -4,7 +4,7 @@ import { ImageSource } from "@images/getImage";
 
 export interface MagnifyOptions {
 	isAnimation?: boolean;
-	factor?: number;
+	factor?: number | null;
 }
 
 /**

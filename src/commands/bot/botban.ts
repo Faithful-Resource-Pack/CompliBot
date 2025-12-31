@@ -1,4 +1,4 @@
-import type { SlashCommand, SlashCommandExecute } from "@interfaces/interactions";
+import type { BotBans, SlashCommand, SlashCommandExecute } from "@interfaces/interactions";
 import { EmbedBuilder } from "@client";
 import {
 	AttachmentBuilder,
@@ -57,8 +57,8 @@ export const command: SlashCommand = {
 			const isAdding = interaction.options.getString("action", true) == "add";
 
 			await interaction.deferReply({ flags: MessageFlags.Ephemeral });
-			const banlist = require("@json/botbans.json");
-			const victim = interaction.options.getUser("subject");
+			const banlist: BotBans = require("@json/botbans.json");
+			const victim = interaction.options.getUser("subject", true);
 
 			if (
 				interaction.client.tokens.developers.includes(victim.id) ||

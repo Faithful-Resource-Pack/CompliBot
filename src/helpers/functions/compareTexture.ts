@@ -16,7 +16,7 @@ import { animateToAttachment } from "@helpers/images/animate";
  * @param display displayed packs
  * @returns selected packs
  */
-export function parseDisplay(display: string) {
+export function parseDisplay(display = "all") {
 	const PACKS = [
 		["default", "faithful_32x", "faithful_64x"],
 		["default", "classic_faithful_32x_jappa", "classic_faithful_64x_jappa"],
@@ -140,9 +140,9 @@ export default async function compareTexture(
 	// load all images at same time using promise.all (faster)
 	const loadedImages: Image[][] = await Promise.all(
 		packs.map((packSet) =>
-			Promise.all(
-				packSet.map((pack) => loadImage(result.urls[pack]).catch<Image>(() => null)),
-			).then((images) => images.filter((image) => image)),
+			Promise.all<Image | null>(
+				packSet.map((pack) => loadImage(result.urls[pack]).catch(() => null)),
+			).then((images) => images.filter((image) => image !== null)),
 		),
 	);
 

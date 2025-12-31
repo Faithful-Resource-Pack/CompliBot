@@ -14,7 +14,9 @@ import { imageTooBig } from "@helpers/warnUser";
 export default async function prefixCommandHandler(message: Message) {
 	const args = message.content.split(" ");
 
-	const command = args.shift().slice(message.client.tokens.prefix.length);
+	const command = args.shift()?.slice(message.client.tokens.prefix.length);
+	// no command, just a slash
+	if (!command) return;
 
 	// when adding a new prefix command remember to register it here
 	const prefixCommands = ["m", "z", "t", "p"];

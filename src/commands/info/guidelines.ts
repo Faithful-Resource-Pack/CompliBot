@@ -17,7 +17,7 @@ export const command: SlashCommand = {
 				.setRequired(true),
 		),
 	async execute(interaction) {
-		const pack = interaction.options.getString("pack");
+		const pack = interaction.options.getString("pack", true);
 
 		const guidelines = {
 			faithful_32x: "https://docs.faithfulpack.net/pages/textures/f32-texturing-guidelines",

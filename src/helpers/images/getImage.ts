@@ -8,7 +8,7 @@ import type { AnyInteraction } from "@interfaces/interactions";
 // remove url metadata to use url itself (discord adds for authentication)
 export const removeMetadata = (url: string) => url.split("?")[0];
 
-export const isImage = (url: string) => url && /(png|jpg|jpeg|webp)$/g.test(removeMetadata(url));
+export const isImage = (url?: string) => url && /(png|jpg|jpeg|webp)$/g.test(removeMetadata(url));
 
 // taken from @napi-rs/canvas.loadImage;
 export type ImageSource = string | URL | Buffer | ArrayBufferLike | Uint8Array | Image | Readable;
@@ -20,7 +20,7 @@ export type ImageSource = string | URL | Buffer | ArrayBufferLike | Uint8Array |
  * @returns untreated URL (may have metadata)
  */
 export async function getImageFromMessage(message: Message) {
-	let url: string;
+	let url: string | undefined;
 	if (message.attachments.size) {
 		for (const attachment of message.attachments.values()) {
 			url = attachment.url;
@@ -56,7 +56,8 @@ export async function getImageFromMessage(message: Message) {
 export async function getImageFromChannel(msgOrInteraction: Message | Interaction, limit = 20) {
 	let messages: Message[];
 	try {
-		const fetched = await msgOrInteraction.channel.messages.fetch({ limit });
+		const fetched = await msgOrInteraction.channel?.messages.fetch({ limit });
+		if (!fetched) return "";
 		messages = Array.from(fetched.values());
 	} catch {
 		return "";
@@ -78,7 +79,7 @@ export async function getImageFromChannel(msgOrInteraction: Message | Interactio
  * @returns found image url (removed metadata)
  */
 export default async function getImage(msgOrInteraction: Message | AnyInteraction) {
-	let url: string;
+	let url: string | undefined;
 
 	// if it's a message we check if the message itself has an attachment
 	if (msgOrInteraction instanceof Message) {
@@ -87,7 +88,7 @@ export default async function getImage(msgOrInteraction: Message | AnyInteractio
 
 		// if there's no attachment we check if it's a reply
 		if (msgOrInteraction.type === MessageType.Reply) {
-			let original: Message;
+			let original: Message | undefined;
 			try {
 				original = await msgOrInteraction.fetchReference();
 			} catch {

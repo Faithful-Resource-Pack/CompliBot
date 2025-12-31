@@ -68,32 +68,33 @@ export const command: SlashCommand = {
 				),
 			);
 
-			if (choice != "all") return;
+			if (choice !== "all") return;
 
-			const embedExpandedRules = new EmbedBuilder()
-				.setColor(colors.brand)
-				.setTitle(ruleStrings.rules_info.expanded_rules.title)
-				.setDescription(ruleStrings.rules_info.expanded_rules.description);
-
-			let embedChanges: EmbedBuilder; // needs to be declared outside the block to prevent block scope shenanigans
+			// the extra stuff at the bottom (expanded rules + changelog)
+			const infoEmbeds = [
+				new EmbedBuilder()
+					.setColor(colors.brand)
+					.setTitle(ruleStrings.rules_info.expanded_rules.title)
+					.setDescription(ruleStrings.rules_info.expanded_rules.description),
+			];
 
 			if (ruleStrings.rules_info.changes.enabled) {
-				// only for the changes note
-				embedChanges = new EmbedBuilder()
-					.setTitle(ruleStrings.rules_info.changes.title)
-					.setColor(colors.brand)
-					.setDescription(ruleStrings.rules_info.changes.description)
-					.setFooter({
-						text: ruleStrings.rules_info.changes.footer,
-						iconURL: thumbnail,
-					});
+				infoEmbeds.push(
+					new EmbedBuilder()
+						.setTitle(ruleStrings.rules_info.changes.title)
+						.setColor(colors.brand)
+						.setDescription(ruleStrings.rules_info.changes.description)
+						.setFooter({
+							text: ruleStrings.rules_info.changes.footer,
+							iconURL: thumbnail,
+						}),
+				);
 			}
 
-			return interaction.channel.send({ embeds: [embedExpandedRules, embedChanges] });
+			return interaction.channel.send({ embeds: infoEmbeds });
 		}
 
-		// numeric strings can be used to index arrays
-		const ruleChoice: (typeof ruleStrings.rules)[number] = ruleStrings.rules[choice];
+		const ruleChoice: (typeof ruleStrings.rules)[number] = ruleStrings.rules[Number(choice)];
 		return interaction
 			.reply({
 				embeds: [

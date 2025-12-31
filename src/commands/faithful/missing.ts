@@ -7,7 +7,7 @@ import {
 	computeAllEditions,
 	MissingData,
 	MissingResult,
-	updateVoiceChannel,
+	updateProgressChannel,
 	MissingEdition,
 } from "@functions/computeMissing";
 import axios from "axios";
@@ -108,7 +108,6 @@ export const command: SlashCommand = {
 			}
 
 			return {
-				diffFile: null,
 				results: [errMessage],
 				data: options,
 			};
@@ -150,7 +149,7 @@ export const command: SlashCommand = {
 			const fieldTitle = `${packName} – ${missingInfo}`;
 
 			// modded messes with the percentage so we don't update VCs if it's enabled
-			if (updateChannels && !checkModded) updateVoiceChannel(interaction.client, response.data);
+			if (updateChannels && !checkModded) updateProgressChannel(interaction.client, response.data);
 
 			// no repo found for the asked pack + edition
 			if (!response.diffFile) {

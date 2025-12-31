@@ -171,7 +171,7 @@ export async function formatTextureAuthors(
 		const contributors = Array.isArray(rawContributors) ? rawContributors : [rawContributors];
 
 		formattedAuthors = displayedAuthors.map((id) => {
-			if (interaction.guild.members.cache.get(id)) return `<@${id}>`;
+			if (interaction.guild?.members.cache.get(id)) return `<@${id}>`;
 			return contributors.find((user) => user.id == id)?.username ?? "Anonymous";
 		});
 	} else formattedAuthors = displayedAuthors.map((id) => `<@${id}>`);

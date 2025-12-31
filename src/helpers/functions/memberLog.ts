@@ -14,10 +14,10 @@ export default async function memberLog(client: Client, guildID: string) {
 	if (!server || !server.member_log) return;
 
 	const channel = client.channels.cache.get(server.member_log);
-	const count = client.guilds.cache.get(server.id).memberCount;
+	const count = client.guilds.cache.get(server.id)?.memberCount;
 
 	// you can add different patterns depending on the channel type
-	switch (channel.type) {
+	switch (channel?.type) {
 		case ChannelType.GuildText:
 			channel.setName(`members-${count}`);
 			break;

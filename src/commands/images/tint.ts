@@ -25,7 +25,9 @@ export const command: SlashCommand = {
 		const image = await getImage(interaction);
 		if (!image) return imageNotFound(interaction);
 
-		const file = await multiplyToAttachment(image, interaction.options.getString("colour"));
+		const color = interaction.options.getString("colour", true);
+		const file = await multiplyToAttachment(image, color);
+
 		await interaction
 			.editReply({
 				files: [file],

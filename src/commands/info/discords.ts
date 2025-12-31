@@ -11,6 +11,7 @@ export const command: SlashCommand = {
 				`${client.tokens.apiUrl}settings/discord.guilds`,
 			)
 		).data;
+
 		return new SlashCommandBuilder()
 			.setName("discord")
 			.setDescription("Shows a Faithful discord.")

@@ -14,7 +14,7 @@ export const BASE_REPOS_PATH = "repos";
 
 // the stuff that was computed
 export interface MissingData {
-	edition: string;
+	edition: MissingEdition;
 	pack: string;
 	version: string;
 	// only created if everything exists
@@ -110,7 +110,7 @@ export async function computeMissingResults(
 	// fix for returning an empty buffer which is still truthy
 	const nonvanillaFile = nonvanillaTextures.length
 		? Buffer.from(formatResults(nonvanillaTextures), "utf8")
-		: null;
+		: undefined;
 
 	return {
 		data: {
@@ -148,21 +148,27 @@ export async function computeAllEditions(
 }
 
 /**
- * Updates a progress VC channel with computed data
+ * Updates a progress channel with computed data
  * @author Evorp
  * @param client client to get channel with
  * @param results results to format channel with
  */
-export async function updateVoiceChannel(client: Client, results: MissingData) {
-	const { data: packProgress } = await axios
-		.get<PackProgress>(`${client.tokens.apiUrl}settings/discord.channels.pack_progress`)
-		// fix for "Error: socket hang up", I know it's stupid but it works somehow
-		.catch<PackProgress>(() =>
-			axios.get(`https://api.faithfulpack.net/v2/settings/discord.channels.pack_progress`),
-		);
+export async function updateProgressChannel(client: Client, results: MissingData) {
+	const allProgress = (
+		await axios
+			.get<PackProgress>(`${client.tokens.apiUrl}settings/discord.channels.pack_progress`)
+			// fix for "Error: socket hang up", I know it's stupid but it works somehow
+			.catch(() =>
+				axios.get<PackProgress>(
+					`https://api.faithfulpack.net/v2/settings/discord.channels.pack_progress`,
+				),
+			)
+	).data;
 
-	if (!packProgress[results.pack] || !packProgress[results.pack][results.edition]) return;
-	const channel = client.channels.cache.get(packProgress[results.pack][results.edition]);
+	const packProgress = allProgress[results.pack];
+	if (!packProgress || !packProgress[results.edition]) return;
+
+	const channel = client.channels.cache.get(packProgress[results.edition]);
 	// channel doesn't exist or can't be fetched, return early
 	if (!channel) return;
 
@@ -170,7 +176,7 @@ export async function updateVoiceChannel(client: Client, results: MissingData) {
 	switch (channel.type) {
 		case ChannelType.GuildVoice: {
 			const pattern = /[.\d+]+(?!.*[.\d+])/;
-			if (channel.name.match(pattern)?.[0] === results.completion.toString()) break;
+			if (channel.name.match(pattern)?.[0] === results.completion?.toString()) break;
 			const updatedName = channel.name.replace(pattern, results.completion.toString());
 			channel.setName(updatedName).catch(console.error);
 			break;
@@ -185,7 +191,7 @@ export async function updateVoiceChannel(client: Client, results: MissingData) {
  */
 export async function syncRepo(
 	pack: Pack,
-	edition: MissingEdition,
+	edition: MinecraftEdition,
 	version: string,
 	callback?: (step: string) => Promise<void>,
 ) {
@@ -194,12 +200,12 @@ export async function syncRepo(
 	const cwd = join(process.cwd(), BASE_REPOS_PATH, githubInfo.repo);
 
 	if (!existsSync(cwd)) {
-		await callback(`Downloading \`${pack.name}\` (${edition}) pack…`);
+		await callback?.(`Downloading \`${pack.name}\` (${edition}) pack…`);
 		mkdirSync(cwd, { recursive: true });
 		await exec(`git clone ${url} .`, { cwd });
 	}
 
-	await callback(`Updating ${pack.name} with latest version of \`${version}\` known…`);
+	await callback?.(`Updating ${pack.name} with latest version of \`${version}\` known…`);
 	await series(
 		["git stash", "git remote update", "git fetch", `git checkout ${version}`, `git pull`],
 		{ cwd },

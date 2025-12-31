@@ -12,6 +12,7 @@ export default {
 		if (client.verbose) console.log(`${info}Texture selected!`);
 
 		const messageInteraction = interaction.message.interactionMetadata;
+		if (!messageInteraction) return; // something has gone very wrong
 		const message = interaction.message;
 
 		if (interaction.user.id !== messageInteraction.user.id)

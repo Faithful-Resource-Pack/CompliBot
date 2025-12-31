@@ -17,7 +17,7 @@ export const command: SlashCommand = {
 				.setRequired(true),
 		),
 	async execute(interaction) {
-		let content: string;
+		let content = "";
 		const pack = interaction.options.getString("pack", true);
 		switch (pack) {
 			case "faithful_32x":

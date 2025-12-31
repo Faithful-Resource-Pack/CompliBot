@@ -7,7 +7,7 @@ import { choice } from "@utility/methods";
 import { error as randomSentences } from "@json/quotes.json";
 import { formatLogContent, formatLogType, formatLogURL } from "@functions/formatLog";
 
-const lastReasons = [];
+const lastReasons: any[] = [];
 const loopLimit = 3; // how many times the same error needs to be made to trigger a loop
 
 /**
@@ -25,7 +25,7 @@ export const constructLogFile = (
 		encoding: "utf-8",
 	});
 
-	const template = logTemplate.match(new RegExp(/%templateStart%([\s\S]*?)%templateEnd/))[1]; // get message template
+	const template = logTemplate.match(new RegExp(/%templateStart%([\s\S]*?)%templateEnd/))?.[1]; // get message template
 
 	const sentence = choice(randomSentences);
 	const logText =
@@ -41,7 +41,7 @@ export const constructLogFile = (
 			(acc, log, index) =>
 				acc +
 				template
-					.replace("%templateIndex%", String(index + 1))
+					?.replace("%templateIndex%", String(index + 1))
 					.replace("%templateType%", formatLogType(log))
 					.replace(
 						"%templateCreatedTimestamp%",

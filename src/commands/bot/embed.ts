@@ -74,7 +74,8 @@ export const command: SlashCommand = {
 		if (title) embed.setTitle(title);
 		if (description) embed.setDescription(description);
 		if (color) {
-			if (colors[color]) embed.setColor(colors[color]);
+			const presetColor = colors[color as keyof typeof colors];
+			if (presetColor) embed.setColor(presetColor);
 			else if (!color.startsWith("#")) embed.setColor(`#${color}`);
 			else embed.setColor(color as ColorResolvable);
 		}

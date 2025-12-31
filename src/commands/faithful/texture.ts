@@ -34,7 +34,7 @@ export const command: SlashCommand = {
 			);
 	},
 	async execute(interaction) {
-		const name = interaction.options.getString("name");
+		const name = interaction.options.getString("name", true);
 		let version = interaction.options.getString("version", false) ?? "latest";
 
 		// fetching takes too long for big results

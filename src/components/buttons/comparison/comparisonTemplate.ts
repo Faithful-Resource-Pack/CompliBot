@@ -15,7 +15,7 @@ export default {
 		await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
 		const message = interaction.message;
-		const display = message.embeds[0].footer.text.split(":")[1].trim();
+		const display = message.embeds[0].footer?.text.split(":")[1].trim();
 		const packs = parseDisplay(display);
 
 		const loadedImages: Image[][] = [];

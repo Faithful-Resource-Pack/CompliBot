@@ -1,6 +1,7 @@
 import commands from "@lang/en-US/commands.json";
 import errors from "@lang/en-US/errors.json";
 import { mergeDeep } from "@utility/methods";
+import { AnyInteraction } from "@interfaces/interactions";
 
 export const JSONFiles = ["commands", "errors"];
 export const baseTranslations = { ...commands, ...errors };
@@ -12,7 +13,7 @@ export type AllStrings = typeof baseTranslations;
  * @param forceEnglish whether to only use english or determine language
  * @returns all strings in the correct language
  */
-export function strings(forceEnglish = false): AllStrings {
+export function strings(this: AnyInteraction, forceEnglish = false): AllStrings {
 	if (forceEnglish || ["en-GB", "en-US"].includes(this.locale)) return baseTranslations;
 
 	// not in english

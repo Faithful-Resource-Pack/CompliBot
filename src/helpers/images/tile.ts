@@ -18,7 +18,10 @@ export interface TileOptions {
  * @param options what shape and randomness
  * @returns tiled image as buffer
  */
-export async function tile(origin: ImageSource, options: TileOptions = {}): Promise<Buffer> {
+export async function tile(
+	origin: ImageSource,
+	options: TileOptions = {},
+): Promise<Buffer | undefined> {
 	const input = await loadImage(origin);
 
 	// 1048576px is the same size as a magnified image

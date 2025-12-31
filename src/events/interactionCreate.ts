@@ -1,5 +1,5 @@
 import type { Event } from "@interfaces/events";
-import type { AnyInteraction } from "@interfaces/interactions";
+import type { AnyInteraction, BotBans } from "@interfaces/interactions";
 import { MessageFlags } from "discord.js";
 
 export default {
@@ -7,7 +7,7 @@ export default {
 	async execute(client, interaction: AnyInteraction) {
 		if (!interaction.inGuild()) return;
 
-		const banlist = await import("@json/botbans.json");
+		const banlist = await import("@json/botbans.json").then<BotBans>((res) => res.default);
 		if (banlist.ids.includes(interaction.user.id)) {
 			// all interactions have the string() and reply() methods
 			return interaction.reply({

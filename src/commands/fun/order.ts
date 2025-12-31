@@ -48,7 +48,7 @@ export const command: SlashCommand = {
 				.setRequired(true),
 		),
 	async execute(interaction) {
-		const choice = options[interaction.options.getString("item")];
+		const choice = options[interaction.options.getString("item", true)];
 		interaction
 			.reply({
 				content: choice.caption,

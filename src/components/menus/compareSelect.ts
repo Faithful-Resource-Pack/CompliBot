@@ -1,7 +1,7 @@
 import { Message, StringSelectMenuInteraction, EmbedBuilder } from "@client";
 import type { Component } from "@interfaces/components";
 import { info } from "@helpers/logger";
-import { MessageEditOptions, MessageFlags } from "discord.js";
+import { MessageFlags } from "discord.js";
 import compareTexture from "@functions/compareTexture";
 import { imageTooBig } from "@helpers/warnUser";
 import { colors } from "@utility/colors";
@@ -13,6 +13,7 @@ export default {
 		if (client.verbose) console.log(`${info}Texture selected!`);
 
 		const messageInteraction = interaction.message.interactionMetadata;
+		if (!messageInteraction) return; // something has gone very wrong
 		const message = interaction.message;
 
 		if (interaction.user.id !== messageInteraction.user.id)
@@ -33,12 +34,7 @@ export default {
 		interaction.deferUpdate();
 
 		const [id, display, version] = unencodeChoice(interaction);
-		const editOptions: MessageEditOptions = await compareTexture(
-			interaction.client,
-			id,
-			display,
-			version,
-		);
+		const editOptions = await compareTexture(interaction.client, id, display, version);
 
 		if (!editOptions) {
 			// stupid workaround for already having deferred the message

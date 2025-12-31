@@ -235,7 +235,7 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 	 */
 	public async loadSlashCommands() {
 		const commandsArr: {
-			servers: string[];
+			servers?: string[];
 			command: RESTPostAPIApplicationCommandsJSONBody;
 		}[] = [];
 

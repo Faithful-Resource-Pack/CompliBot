@@ -14,16 +14,18 @@ export const command: SlashCommand = {
 				.setRequired(true),
 		)
 		.addStringOption((option) =>
-			option.setName("reply").setDescription("Message ID to reply to").setRequired(true),
+			option.setName("reply-id").setDescription("Message ID to reply to").setRequired(true),
 		)
 		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
 		.setDMPermission(false),
 	async execute(interaction) {
 		if (!interaction.hasPermission("dev")) return;
 
-		let msg: Message;
+		const replyID = interaction.options.getString("reply-id", true);
+
+		let msg: Message | undefined;
 		try {
-			msg = await interaction.channel.messages.fetch(interaction.options.getString("reply"));
+			msg = await interaction.channel?.messages.fetch(replyID);
 		} catch {
 			return interaction.reply({
 				embeds: [

@@ -41,7 +41,7 @@ export const command: SlashCommand = {
 						new EmbedBuilder()
 							.setTitle(mediaInfo.title)
 							.setDescription(mediaInfo.description)
-							.setColor(colors[key] ?? colors.brand)
+							.setColor(colors[key as keyof typeof colors] ?? colors.brand)
 							.setThumbnail(images[key == "default" ? "main" : key]), // "default" is already used
 				),
 			});
@@ -50,7 +50,7 @@ export const command: SlashCommand = {
 		const embed = new EmbedBuilder()
 			.setTitle(media[key].title)
 			.setDescription(media[key].description)
-			.setColor(colors[key] ?? colors.brand)
+			.setColor(colors[key as keyof typeof colors] ?? colors.brand)
 			.setThumbnail(images[key == "default" ? "main" : key]);
 
 		interaction

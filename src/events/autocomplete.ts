@@ -22,6 +22,6 @@ export default {
 		}
 
 		const command = client.commands.get(interaction.commandName);
-		if (command) return command.autocomplete(interaction);
+		if (command) return command.autocomplete?.(interaction);
 	},
 } as Event;

@@ -7,8 +7,10 @@ import {
 	ModalBuilder,
 } from "discord.js";
 
+type FeedbackType = "bug" | "suggestion";
+
 // I'm sorry...
-export const feedbackFormat = {
+export const feedbackFormat: Record<FeedbackType, TextInputBuilder[]> = {
 	bug: [
 		new TextInputBuilder()
 			.setCustomId("bugTitle")
@@ -68,7 +70,7 @@ export const command: SlashCommand = {
 				.setRequired(true),
 		),
 	async execute(interaction) {
-		const type = interaction.options.getString("type");
+		const type = interaction.options.getString("type", true) as FeedbackType;
 		const modal = new ModalBuilder().setCustomId(`${type}Ticket`).setTitle(`New ${type} issue`);
 
 		modal.addComponents(

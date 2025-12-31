@@ -24,7 +24,7 @@ export interface BaseTexture {
 export interface Texture extends BaseTexture {
 	uses: Use[];
 	paths: Path[];
-	contributions?: Contribution[];
+	contributions: Contribution[];
 	mcmeta?: MCMETA;
 }
 

@@ -14,4 +14,4 @@ export interface Event {
 	execute: EventExecute;
 }
 
-export type EventExecute = (client: Client, ...args: any[]) => Promise<any>;
+export type EventExecute = (client: Client<true>, ...args: any[]) => Promise<any>;

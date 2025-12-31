@@ -7,7 +7,6 @@ export default {
 	name: "guildCreate",
 	async execute(client, guild: Guild) {
 		client.storeAction("guildJoined", guild);
-
 		client.loadSlashCommands();
 
 		const embed = new EmbedBuilder()

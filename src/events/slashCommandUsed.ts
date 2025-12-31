@@ -9,9 +9,9 @@ export default {
 	async execute(client, interaction: ChatInputCommandInteraction) {
 		client.storeAction("slashCommand", interaction);
 
-		// test if client has this command registered
-		if (!client.commands.has(interaction.commandName)) return;
 		const command = client.commands.get(interaction.commandName);
+		// command doesn't exist
+		if (!command) return;
 
 		// ! await required for try catch support
 		try {
@@ -19,7 +19,7 @@ export default {
 			if (command.execute instanceof Collection) {
 				const subcommandName = interaction.options.getSubcommand();
 				const subcommand = command.execute.get(subcommandName);
-				await subcommand(interaction);
+				await subcommand?.(interaction);
 			}
 			// regular command
 			else await command.execute(interaction);

@@ -14,7 +14,7 @@ import type { AnyInteraction } from "@interfaces/interactions";
 export default async function parseTextureName(
 	name: string,
 	interaction: AnyInteraction,
-): Promise<Texture[]> {
+): Promise<Texture[] | undefined> {
 	name = name.trim().replace(".png", "").replace("#", "").replace(/ /g, "_");
 
 	const noResultEmbed = new EmbedBuilder()

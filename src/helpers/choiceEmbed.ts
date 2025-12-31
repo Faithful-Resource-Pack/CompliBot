@@ -42,7 +42,7 @@ export async function generalChoiceEmbed(
 			// take relevant slice (end not included)
 			.slice(currentRow * menuLength, (1 + currentRow) * menuLength)
 			.reduce<SelectMenuComponentOptionData[]>((acc, cur, i) => {
-				messageLength += cur.label.length + cur.description.length;
+				messageLength += cur.label.length + (cur.description?.length ?? 0);
 				// stop accepting new
 				if (messageLength > MAX_LENGTH) return acc;
 				acc.push({ ...cur, emoji: emojis[i] });
