@@ -73,7 +73,7 @@ export interface FaithfulGuild {
 /**
  * Extend client class to add message component collections, tokens, and slash commands directly
  * @author Nick, Evorp, Juknum
- * @template Ready so interfaces don't complain about overriding classes wrong
+ * @template Ready so interfaces don't complain about overriding classes incorrectly
  */
 export class ExtendedClient<Ready extends boolean = boolean> extends Client<Ready> {
 	public verbose = false;
@@ -314,7 +314,6 @@ export class ExtendedClient<Ready extends boolean = boolean> extends Client<Read
 					activities: [{ name: "under maintenance", type: ActivityType.Playing }],
 					status: "idle",
 				});
-				this.user.setStatus("idle");
 			});
 
 		if (this.verbose) console.log(`${info}Loading event handlers...`);

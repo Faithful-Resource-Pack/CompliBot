@@ -89,7 +89,7 @@ export async function textureChoiceEmbed(
 ) {
 	const mappedResults = results.map<SelectMenuComponentOptionData>(({ id, name, paths }) => ({
 		// usually the first path is the most important
-		label: `[#${id}] (${versionRange(paths[0].versions)}) ${name}`,
+		label: `[#${id}] ${name} (${versionRange(paths[0].versions)})`,
 		description: paths[0].name,
 		value: `${id}__${values.join("__")}`,
 	}));
