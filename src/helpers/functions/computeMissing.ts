@@ -1,13 +1,16 @@
+import type { MinecraftEdition, Pack, PackGitHub } from "@interfaces/database";
+import formatPack from "@utility/formatPack";
+import { toTitleCase } from "@utility/methods";
+import { Client } from "@client";
+
 import { exec, series } from "@helpers/exec";
 import { existsSync, mkdirSync, readdirSync, statSync } from "fs";
-import formatPack from "@utility/formatPack";
-import { Client } from "@client";
-import { ChannelType } from "discord.js";
 import { join, normalize } from "path";
 
-import ignoredTextures from "@json/ignored_textures.json";
+import { ChannelType } from "discord.js";
 import axios from "axios";
-import type { MinecraftEdition, Pack, PackGitHub } from "@interfaces/database";
+
+import ignoredTextures from "@json/ignored_textures.json";
 
 // starting from process.cwd()
 export const BASE_REPOS_PATH = "repos";
@@ -53,7 +56,7 @@ export async function computeMissingResults(
 	const packs = (await axios.get<Record<string, Pack>>(`${client.tokens.apiUrl}packs/raw`)).data;
 	if (!packs[pack].github[edition])
 		return {
-			results: [`${formatPack(pack).name} doesn't support ${edition} edition.`],
+			results: [`${formatPack(pack).name} doesn't support ${toTitleCase(edition)} Edition.`],
 			data: { ...baseData, version, completion: 0 },
 		};
 
@@ -61,7 +64,7 @@ export async function computeMissingResults(
 		await axios.get<string[]>(`${client.tokens.apiUrl}textures/versions/${edition}`)
 	).data;
 
-	// latest version if versions doesn't include version (fix for autocomplete validation)
+	// need to fetch since client.versions doesn't filter by edition
 	if (!versions.includes(version)) version = versions[0];
 
 	// same steps are reused for compared repos
